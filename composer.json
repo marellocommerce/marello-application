@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "marellocommerce/marello": "1.0.0-alpha"
+        "marellocommerce/marello": "dev-master"
     },
     "config": {
         "component-dir": "web/bundles/components"
