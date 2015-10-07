@@ -1,0 +1,50 @@
+{
+    "name": "marellocommerce/marello-application-dev",
+    "description": "Marello ERP for Commerce dev",
+    "homepage": "https://github.com/marellocommerce/marello-application-dev.git",
+    "license": "OSL-3.0",
+    "autoload": {
+        "psr-0": {
+            "Marello\\Bundle": "src/Marello/src",
+            "": "src/"
+        }
+    },
+    "repositories": [
+        {
+          "type": "composer",
+          "url": "http://packagist.orocrm.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.9",
+        "oro/platform": "1.8.*"
+    },
+    "config": {
+        "component-dir": "web/bundles/components"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        }
+    }
+}
