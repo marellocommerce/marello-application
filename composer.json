@@ -5,7 +5,7 @@
     "license": "OSL-3.0",
     "autoload": {
         "psr-0": {
-            "Marello\\Bundle": "src/Marello/src",
+            "Marello\\Bundle\\": "src/Marello/src",
             "": "src/"
         }
     },
@@ -46,5 +46,8 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "^3.0@dev"
     }
 }

@@ -1,0 +1,3 @@
+[submodule "src/Marello"]
+	path = src/Marello
+	url = git@github.com:marellocommerce/marello-dev.git
