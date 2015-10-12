@@ -1,0 +1,4 @@
+marello_order_bundle:
+    resource: @MarelloOrderBundle/Controller
+    type:     annotation
+    prefix:   /order

@@ -6,9 +6,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
+ * @Oro\Config
  * @ORM\Table(name="marello_order_order")
  */
 class Order
@@ -18,6 +20,13 @@ class Order
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.id"
+     *          }
+     *      }
+     * )
      */
     protected $id;
 
@@ -55,7 +64,7 @@ class Order
      *
      * @ORM\Column(type="money")
      */
-    protected $grandtotal;
+    protected $grandTotal;
 
     /**
      * @var Collection|OrderItem[]
@@ -73,6 +82,34 @@ class Order
      * @var AbstractTypedAddress
      */
     protected $shippingAddress;
+
+    /**
+     * @var \DateTime $created
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.created_at"
+     *          }
+     *      }
+     * )
+     */
+    protected $createdAt;
+
+    /**
+     * @var \DateTime $updated
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.updated_at"
+     *          }
+     *      }
+     * )
+     */
+    protected $updatedAt;
 
     /*
      * TODO: Relation with sales channel.
@@ -154,19 +191,19 @@ class Order
     /**
      * @return int
      */
-    public function getGrandtotal()
+    public function getGrandTotal()
     {
-        return $this->grandtotal;
+        return $this->grandTotal;
     }
 
     /**
-     * @param int $grandtotal
+     * @param int $grandTotal
      *
      * @return $this
      */
-    public function setGrandtotal($grandtotal)
+    public function setGrandTotal($grandTotal)
     {
-        $this->grandtotal = $grandtotal;
+        $this->grandTotal = $grandTotal;
 
         return $this;
     }
@@ -224,10 +261,35 @@ class Order
      *
      * @return $this
      */
-    public function addItem(OrderItem $item) {
+    public function addItem(OrderItem $item)
+    {
         $this->items->add($item);
         $item->setOrder($this);
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return \Datetime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @return \Datetime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

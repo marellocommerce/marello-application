@@ -3,9 +3,11 @@
 namespace Marello\Bundle\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
+ * @Oro\Config
  * @ORM\Table(name="marello_order_order_item")
  */
 class OrderItem
@@ -22,7 +24,7 @@ class OrderItem
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      */
     protected $sku;
 

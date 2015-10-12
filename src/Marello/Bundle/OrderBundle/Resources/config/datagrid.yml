@@ -1,0 +1,59 @@
+datagrid:
+    marello-order:
+        source:
+            type: orm
+            query:
+                select:
+                    - o
+                from:
+                    - { table: MarelloOrderBundle:Order, alias: o}
+        columns:
+            orderNumber:
+                label: marello.order.order_number.label
+                frontend_type: integer
+#            salesChannel:
+            orderReference:
+                label: marello.order.order_reference.label
+                frontend_type: integer
+            grandTotal:
+                label: marello.order.grand_total.label
+                frontend_type: currency
+            createdAt:
+                label: oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label: oro.ui.updated_at
+                frontend_type: datetime
+
+        filters:
+            columns:
+                orderNumber:
+                    type: number
+                    data_name: o.orderNumber
+                createdAt:
+                    type: datetime
+                    data_name: o.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: o.updatedAt
+    marello-order-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - i
+                from:
+                    - { table: MarelloOrderBundle:OrderItem, alias: i}
+        columns:
+            sku:
+                label: marello.order.orderitem.sku.label
+                frontend_type: string
+            name:
+                label: marello.order.orderitem.name.label
+                frontend_type: string
+            quantity:
+                label: marello.order.orderitem.quantity.label
+                frontend_type: number
+            price:
+                label: marello.order.orderitem.price.label
+                frontend_type: currency

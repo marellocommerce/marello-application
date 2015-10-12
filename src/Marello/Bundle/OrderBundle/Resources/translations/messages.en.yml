@@ -1,0 +1,22 @@
+marello:
+    order:
+        entity_plural_label:      Orders
+        entity_label:             Order
+        id.label:                 Id
+        items.label:              Items
+        subtotal.label:           Subtotal
+        total_tax.label:          Total Tax
+        grand_total.label:        Grand Total
+        order_number.label:       Order Number
+        order_reference.label:    Order Reference
+
+        orderitem:
+            entity_label:         Order Item
+            id.label:             Id
+            sku.label:            SKU
+            tax.label:            Tax
+            name.label:           Name
+            order.label:          Order
+            price.label:          Price
+            quantity.label:       Quantity
+            total_price.label:    Total Price
