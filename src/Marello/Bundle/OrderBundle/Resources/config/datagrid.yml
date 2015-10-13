@@ -15,6 +15,14 @@ datagrid:
             orderReference:
                 label: marello.order.order_reference.label
                 frontend_type: string
+            billingAddress:
+                type: twig
+                template: MarelloOrderBundle:Datagrid:addressName.html.twig
+                label: marello.order.billing_address.name.label
+            shippingAddress:
+                type: twig
+                template: MarelloOrderBundle:Datagrid:addressName.html.twig
+                label: marello.order.shipping_address.name.label
             grandTotal:
                 label: marello.order.grand_total.label
                 frontend_type: currency

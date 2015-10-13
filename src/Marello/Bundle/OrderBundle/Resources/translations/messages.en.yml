@@ -10,8 +10,12 @@ marello:
         order_date.label:         Order Date
         grand_total.label:        Grand Total
         order_reference.label:    Order Reference
-        billing_address.label:    Billing Address
-        shipping_address.label:   Shipping Address
+        billing_address:
+            label:                Billing Address
+            name.label:           Bill to Name
+        shipping_address:
+            label:                Shipping Address
+            name.label:           Ship to Name
         address:
             email.label:          E-Mail
             phone.label:          Phone
