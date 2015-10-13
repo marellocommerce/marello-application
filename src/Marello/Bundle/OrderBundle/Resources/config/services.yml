@@ -1,4 +1,7 @@
 services:
-#    marello_order.example:
-#        class: Marello\Bundle\OrderBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+    marello_order.listener.datagrid.order_grid_address_filter_listener:
+        class: Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener
+        arguments:
+            - @oro_locale.dql.formatter.name
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order, method: onBuildBefore }

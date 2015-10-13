@@ -3,14 +3,25 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Entity\TypedAddress;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
 
-class LoadOrderData extends AbstractFixture
+class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    function getDependencies()
+    {
+        return [
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData'
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -48,6 +59,7 @@ class LoadOrderData extends AbstractFixture
 
         $orderEntities = [];
 
+        $chNo = 0;
         foreach ($orders as $order) {
             $billing = new TypedAddress();
             $billing->setFirstName('Falco');
@@ -71,6 +83,8 @@ class LoadOrderData extends AbstractFixture
             );
 
             $orderEntity = new Order($billing, $shipping);
+            $orderEntity->setSalesChannel($this->getReference('marello_sales_channel_' . $chNo));
+            $chNo = (int)!$chNo;
             $total       = 0;
 
             foreach ($order as $attribute => $value) {

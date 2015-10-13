@@ -21,6 +21,7 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.order.id.label'|trans, '%09d'|format(entity.id)) }}
+                    {{ UI.renderProperty('marello.order.sales_channel.label'|trans, entity.salesChannel) }}
                     {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.orderReference) }}
                     {{ UI.renderProperty('marello.order.order_date.label'|trans, entity.createdAt|oro_format_datetime) }}
                 </div>

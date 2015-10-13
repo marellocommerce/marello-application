@@ -6,12 +6,22 @@ datagrid:
                 select:
                     - o
                 from:
-                    - { table: MarelloOrderBundle:Order, alias: o}
+                    - { table: MarelloOrderBundle:Order, alias: o }
+                join:
+                    left:
+                        billingAddress:
+                            join: o.billingAddress
+                            alias: ba
+                        shippingAddress:
+                            join: o.shippingAddress
+                            alias: sa
         columns:
             id:
                 label: marello.order.id.label
                 frontend_type: string
-#            salesChannel:
+            salesChannel:
+                label: marello.order.sales_channel.label
+                frontend_type: string
             orderReference:
                 label: marello.order.order_reference.label
                 frontend_type: string
@@ -37,9 +47,21 @@ datagrid:
                 id:
                     type: number
                     data_name: o.id
+                salesChannel:
+                    type: entity
+                    data_name: o.salesChannel
+                    options:
+                        field_options:
+                            class: Marello\Bundle\SalesBundle\Entity\SalesChannel
                 orderReference:
                     type: number
                     data_name: o.orderReference
+                billingAddress:
+                    type: string
+                    data_name: billingName # This alias is generated using OrderGrdiAddressFilterListener
+                shippingAddress:
+                    type: string
+                    data_name: shippingName # This alias is generated using OrderGrdiAddressFilterListener
                 createdAt:
                     type: datetime
                     data_name: o.createdAt
@@ -72,6 +94,23 @@ datagrid:
                         - i.order = :order_id
             bind_parameters:
                 order_id: orderId
+        totals:
+            price_total:
+                per_page: true
+                hide_if_one_page: false
+                columns:
+                    price:
+                        label: marello.order.subtotal.label
+                        expr: 'SUM(i.price)'
+                        formatter: currency
+                    tax:
+                        label: marello.order.total_tax.label
+                        expr: 'SUM(i.tax)'
+                        formatter: currency
+                    totalPrice:
+                        label: marello.order.grand_total.label
+                        expr: 'SUM(i.totalPrice)'
+                        formatter: currency
         columns:
             sku:
                 label: marello.order.orderitem.sku.label
@@ -84,4 +123,10 @@ datagrid:
                 frontend_type: number
             price:
                 label: marello.order.orderitem.price.label
+                frontend_type: currency
+            tax:
+                label: marello.order.orderitem.tax.label
+                frontend_type: currency
+            totalPrice:
+                label: marello.order.orderitem.total_price.label
                 frontend_type: currency

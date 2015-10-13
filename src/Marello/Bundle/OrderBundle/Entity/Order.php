@@ -5,6 +5,7 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
@@ -108,9 +109,12 @@ class Order
      */
     protected $updatedAt;
 
-    /*
-     * TODO: Relation with sales channel.
+    /**
+     * @var SalesChannel
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      */
+    protected $salesChannel;
 
     /**
      * @param AbstractTypedAddress|null $billingAddress
@@ -304,5 +308,25 @@ class Order
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return SalesChannel
+     */
+    public function getSalesChannel()
+    {
+        return $this->salesChannel;
+    }
+
+    /**
+     * @param SalesChannel $salesChannel
+     *
+     * @return $this
+     */
+    public function setSalesChannel($salesChannel)
+    {
+        $this->salesChannel = $salesChannel;
+
+        return $this;
     }
 }

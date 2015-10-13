@@ -1,0 +1,9 @@
+oro_menu_config:
+    items:
+        sales:
+            label: marello.sales.navigation.sales.label
+            uri: '#'
+    tree:
+        application_menu:
+            children:
+                sales: ~

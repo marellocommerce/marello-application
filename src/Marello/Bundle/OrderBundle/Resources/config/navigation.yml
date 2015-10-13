@@ -1,8 +1,5 @@
 oro_menu_config:
     items:
-        sales:
-            label: Sales
-            uri: '#'
         orders:
             label: marello.order.entity_plural_label
             route: marello_order_order_index

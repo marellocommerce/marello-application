@@ -9,6 +9,7 @@ marello:
         total_tax.label:          TAX Total
         order_date.label:         Order Date
         grand_total.label:        Grand Total
+        sales_channel.label:      Sales Channel
         order_reference.label:    Order Reference
         billing_address:
             label:                Billing Address
