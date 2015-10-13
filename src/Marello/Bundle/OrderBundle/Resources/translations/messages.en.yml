@@ -10,6 +10,11 @@ marello:
         order_date.label:         Order Date
         grand_total.label:        Grand Total
         order_reference.label:    Order Reference
+        billing_address.label:    Billing Address
+        shipping_address.label:   Shipping Address
+        address:
+            email.label:          E-Mail
+            phone.label:          Phone
         datablock:
             general:              General
             billing_and_payment:  Billing & Payment
@@ -23,7 +28,7 @@ marello:
             id.label:             Id
             sku.label:            SKU
             tax.label:            Tax
-            name.label:           Name
+            name.label:           Product
             order.label:          Order
             price.label:          Price
             quantity.label:       Quantity

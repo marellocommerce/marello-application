@@ -6,6 +6,8 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\OrderBundle\Entity\TypedAddress;
+use Oro\Bundle\AddressBundle\Entity\AddressType;
 
 class LoadOrderData extends AbstractFixture
 {
@@ -47,7 +49,28 @@ class LoadOrderData extends AbstractFixture
         $orderEntities = [];
 
         foreach ($orders as $order) {
-            $orderEntity = new Order();
+            $billing = new TypedAddress();
+            $billing->setFirstName('Falco');
+            $billing->setLastName('van der Maden');
+            $billing->setStreet('Torenallee 20');
+            $billing->setPostalCode('5617 BC');
+            $billing->setCity('Eindhoven');
+            $billing->setCountry(
+                $manager->getRepository('OroAddressBundle:Country')->find('NL')
+            );
+            $billing->setPhone('+31 40 7074808');
+            $billing->setEmail('falco@madia.nl');
+
+            $shipping = clone $billing;
+
+            $billing->getTypes()->add(
+                $manager->getRepository('OroAddressBundle:AddressType')->find(AddressType::TYPE_BILLING)
+            );
+            $shipping->getTypes()->add(
+                $manager->getRepository('OroAddressBundle:AddressType')->find(AddressType::TYPE_SHIPPING)
+            );
+
+            $orderEntity = new Order($billing, $shipping);
             $total       = 0;
 
             foreach ($order as $attribute => $value) {
@@ -121,6 +144,7 @@ class LoadOrderData extends AbstractFixture
 
         foreach ($orders as $order) {
             foreach ($items as $item) {
+
                 $itemEntity = new OrderItem();
 
                 foreach ($item as $attribute => $value) {

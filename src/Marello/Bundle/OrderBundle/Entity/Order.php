@@ -69,11 +69,15 @@ class Order
 
     /**
      * @var AbstractTypedAddress
+     *
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\TypedAddress", cascade={"persist", "remove"})
      */
     protected $billingAddress;
 
     /**
      * @var AbstractTypedAddress
+     *
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\TypedAddress", cascade={"persist", "remove"})
      */
     protected $shippingAddress;
 
@@ -119,7 +123,7 @@ class Order
     ) {
         $this->items           = new ArrayCollection();
         $this->billingAddress  = $billingAddress;
-        $this->shippingAddress = $shippingAddress ?: $billingAddress;
+        $this->shippingAddress = $shippingAddress;
     }
 
     /**
