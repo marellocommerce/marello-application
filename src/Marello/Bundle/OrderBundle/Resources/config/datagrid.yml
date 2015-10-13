@@ -80,6 +80,8 @@ datagrid:
                 link:       view_link
                 icon:       eye-open
                 rowAction:  true
+        options:
+            export: true
 
     marello-order-items:
         source:
