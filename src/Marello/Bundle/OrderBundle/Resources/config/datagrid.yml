@@ -26,12 +26,12 @@ datagrid:
                 label: marello.order.order_reference.label
                 frontend_type: string
             billingAddress:
-                type: twig
-                template: MarelloOrderBundle:Datagrid:addressName.html.twig
+                frontend_type: string
+                data_name: billingName                  # This alias is generated using OrderGrdiAddressFilterListener
                 label: marello.order.billing_address.name.label
             shippingAddress:
-                type: twig
-                template: MarelloOrderBundle:Datagrid:addressName.html.twig
+                frontend_type: string
+                data_name: shippingName                 # This alias is generated using OrderGrdiAddressFilterListener
                 label: marello.order.shipping_address.name.label
             grandTotal:
                 label: marello.order.grand_total.label
@@ -58,10 +58,10 @@ datagrid:
                     data_name: o.orderReference
                 billingAddress:
                     type: string
-                    data_name: billingName # This alias is generated using OrderGrdiAddressFilterListener
+                    data_name: billingName              # This alias is generated using OrderGrdiAddressFilterListener
                 shippingAddress:
                     type: string
-                    data_name: shippingName # This alias is generated using OrderGrdiAddressFilterListener
+                    data_name: shippingName             # This alias is generated using OrderGrdiAddressFilterListener
                 createdAt:
                     type: datetime
                     data_name: o.createdAt
