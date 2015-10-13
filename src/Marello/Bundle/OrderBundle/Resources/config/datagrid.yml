@@ -8,13 +8,13 @@ datagrid:
                 from:
                     - { table: MarelloOrderBundle:Order, alias: o}
         columns:
-            orderNumber:
-                label: marello.order.order_number.label
-                frontend_type: integer
+            id:
+                label: marello.order.id.label
+                frontend_type: string
 #            salesChannel:
             orderReference:
                 label: marello.order.order_reference.label
-                frontend_type: integer
+                frontend_type: string
             grandTotal:
                 label: marello.order.grand_total.label
                 frontend_type: currency
@@ -24,18 +24,33 @@ datagrid:
             updatedAt:
                 label: oro.ui.updated_at
                 frontend_type: datetime
-
         filters:
             columns:
-                orderNumber:
+                id:
                     type: number
-                    data_name: o.orderNumber
+                    data_name: o.id
+                orderReference:
+                    type: number
+                    data_name: o.orderReference
                 createdAt:
                     type: datetime
                     data_name: o.createdAt
                 updatedAt:
                     type: datetime
                     data_name: o.updatedAt
+        properties:
+            view_link:
+                type:   url
+                route:  marello_order_order_view
+                params:
+                    id: id
+        actions:
+            view:
+                type:       navigate
+                link:       view_link
+                icon:       eye-open
+                rowAction:  true
+
     marello-order-items:
         source:
             type: orm
@@ -44,6 +59,11 @@ datagrid:
                     - i
                 from:
                     - { table: MarelloOrderBundle:OrderItem, alias: i}
+                where:
+                    and:
+                        - i.order = :order_id
+            bind_parameters:
+                order_id: orderId
         columns:
             sku:
                 label: marello.order.orderitem.sku.label

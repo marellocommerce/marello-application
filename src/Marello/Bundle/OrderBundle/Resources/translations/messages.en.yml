@@ -1,15 +1,23 @@
 marello:
     order:
+        # Order entity
         entity_plural_label:      Orders
         entity_label:             Order
-        id.label:                 Id
+        id.label:                 Order Number
         items.label:              Items
         subtotal.label:           Subtotal
-        total_tax.label:          Total Tax
+        total_tax.label:          TAX Total
+        order_date.label:         Order Date
         grand_total.label:        Grand Total
-        order_number.label:       Order Number
         order_reference.label:    Order Reference
+        datablock:
+            general:              General
+            billing_and_payment:  Billing & Payment
+            delivery:             Delivery
+            order_items:          Order Items
+            activity:             Activity
 
+        # OrderItem entity
         orderitem:
             entity_label:         Order Item
             id.label:             Id

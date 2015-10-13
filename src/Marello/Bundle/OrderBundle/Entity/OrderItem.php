@@ -22,7 +22,7 @@ class OrderItem
     protected $id;
 
     /**
-     * @var int
+     * @var string
      *
      * @ORM\Column(type="string")
      */
@@ -39,6 +39,7 @@ class OrderItem
      * @var Order
      *
      * @ORM\ManyToOne(targetEntity="Order", inversedBy="items")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $order;
 
@@ -79,7 +80,7 @@ class OrderItem
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getSku()
     {
@@ -87,7 +88,7 @@ class OrderItem
     }
 
     /**
-     * @param int $sku
+     * @param string $sku
      *
      * @return $this
      */

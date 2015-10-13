@@ -1,0 +1,117 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroAddressBundle::macros.html.twig' as address %}
+
+{% oro_title_set({params : {"%id%": '%09d'|format(entity.id) }}) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity':      entity,
+    'indexPath':   path('marello_order_order_index'),
+    'indexLabel': 'marello.order.entity_plural_label'|trans,
+    'entityTitle': '%09d'|format(entity.id)
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set general %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.id.label'|trans, '%09d'|format(entity.id)) }}
+                    {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.orderReference) }}
+                    {{ UI.renderProperty('marello.order.order_date.label'|trans, entity.createdAt|oro_format_datetime) }}
+                </div>
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.subtotal.label'|trans, entity.subtotal|oro_format_currency) }}
+                    {{ UI.renderProperty('marello.order.total_tax.label'|trans, entity.totalTax|oro_format_currency) }}
+                    {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.grandTotal|oro_format_currency) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set billing %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ address.renderAddress(entity.billingAddress) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set delivery %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ address.renderAddress(entity.shippingAddress) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set items %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-order-items', {'orderId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set activity %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {# Activity #}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.order.datablock.general'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [general] }
+            ]
+        },
+        {
+            'title': 'marello.order.datablock.billing_and_payment'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [billing] }
+            ]
+        },
+        {
+            'title': 'marello.order.datablock.delivery'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [delivery] }
+            ]
+        },
+        {
+            'title': 'marello.order.datablock.order_items'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [items] }
+            ]
+        },
+        {
+            'title': 'marello.order.datablock.activity'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [activity] }
+            ]
+        }
+    ] %}
+
+    {% set id = 'marelloOrderView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

@@ -12,6 +12,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @ORM\Entity
  * @Oro\Config
  * @ORM\Table(name="marello_order_order")
+ * @ORM\HasLifecycleCallbacks
  */
 class Order
 {
@@ -19,6 +20,7 @@ class Order
      * @var int
      *
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -29,14 +31,6 @@ class Order
      * )
      */
     protected $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer", unique=true)
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $orderNumber;
 
     /**
      * @var int
@@ -69,7 +63,7 @@ class Order
     /**
      * @var Collection|OrderItem[]
      *
-     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"persist", "remove"})
      */
     protected $items;
 
@@ -115,17 +109,33 @@ class Order
      * TODO: Relation with sales channel.
      */
 
-    public function __construct()
-    {
-        $this->items = new ArrayCollection();
+    /**
+     * @param AbstractTypedAddress|null $billingAddress
+     * @param AbstractTypedAddress|null $shippingAddress
+     */
+    public function __construct(
+        AbstractTypedAddress $billingAddress = null,
+        AbstractTypedAddress $shippingAddress = null
+    ) {
+        $this->items           = new ArrayCollection();
+        $this->billingAddress  = $billingAddress;
+        $this->shippingAddress = $shippingAddress ?: $billingAddress;
     }
 
     /**
-     * @return int
+     * @ORM\PreUpdate()
      */
-    public function getOrderNumber()
+    public function preUpdate()
     {
-        return $this->orderNumber;
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function prePersist()
+    {
+        $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**

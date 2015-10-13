@@ -6,6 +6,8 @@ oro_menu_config:
         orders:
             label: marello.order.entity_plural_label
             route: marello_order_order_index
+            extras:
+                routes: ['marello_order_order_*']
     tree:
         application_menu:
             children:
@@ -13,3 +15,7 @@ oro_menu_config:
                     children:
                         orders: ~
                     position: 20
+
+oro_titles:
+    marello_order_order_index: marello.order.entity_plural_label
+    marello_order_order_view: 'Order #%%id%%'
