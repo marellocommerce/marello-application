@@ -10,7 +10,13 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
- * @Oro\Config
+ * @Oro\Config(
+ *      defaultValues={
+ *          "entity"={
+ *              "icon"="icon-list-alt"
+ *          }
+ *      }
+ * )
  * @ORM\Table(name="marello_order_order")
  * @ORM\HasLifecycleCallbacks
  */
@@ -22,13 +28,6 @@ class Order
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.id"
-     *          }
-     *      }
-     * )
      */
     protected $id;
 
