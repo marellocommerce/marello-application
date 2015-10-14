@@ -1,0 +1,60 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%product.name%": entity.name } }) %}
+{% set gridName  = 'marello-stockitem-grid' %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_product_index'),
+        'indexLabel':  'marello.product.entity_plural_label'|trans,
+        'entityTitle': entity.name|default('N/A')
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('marello_product_api_delete_product', {'id': entity.id}),
+            'dataRedirect': path('marello_product_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-channel',
+            'dataId': entity.id,
+            'entity_label': 'marello.product.entity_label'|trans,
+        }) }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path': path('marello_product_update', {'id': entity.id}),
+            'entity_label': 'marello.product.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}
+
+{% block content_data %}
+    {% set id = 'product-view' %}
+    {% set productInformationWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('marello_product_widget_info', {id: entity.id}),
+            'title': 'marello.product.product_information'|trans
+        }) }}
+    {% endset %}
+
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'subblocks': [
+            {'data' : [productInformationWidget] },
+        ]
+    }] %}
+
+    {% set data = {
+        'dataBlocks': dataBlocks,
+    } %}
+
+    {{ parent() }}
+{% endblock %}

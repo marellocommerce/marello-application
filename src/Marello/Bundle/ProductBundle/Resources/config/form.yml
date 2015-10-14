@@ -1,0 +1,66 @@
+parameters:
+    ## form types
+    marello_product.product_form.type.class:                  Marello\Bundle\ProductBundle\Form\Type\ProductType
+    marello_product.product_form.type.product_api.class:      Marello\Bundle\ProductBundle\Form\Type\ProductApiType
+
+    ## form handlers
+    marello_product.product_form.handler.class:               Marello\Bundle\ProductBundle\Form\Handler\ProductHandler
+    marello_product.product_form.handler.product_api.class:   Marello\Bundle\ProductBundle\Form\Handler\ProductApiHandler
+
+    ## api manager
+    marello_product.manager.api.class:                        Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+
+services:
+    ## form types
+    marello_product.product_form.type.class:
+        class: %marello_product.product_form.type.class%
+        tags:
+            - { name: form.type, alias: marello_product_form }
+
+    marello_product.product_form.type.product_api:
+        class: %marello_product.product_form.type.product_api.class%
+        tags:
+            - { name: form.type, alias: marello_product_api_form }
+
+    ## forms
+    marello_product.product.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - 'marello_product_form'
+            - 'marello_product_form'
+
+
+    marello_product.product_api.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - ~
+            - 'marello_product_api_form'
+
+    ## form handlers
+    marello_product.product_form.handler:
+        class: %marello_product.product_form.handler.class%
+        scope: request
+        arguments:
+            - @marello_product.product.form
+            - @request
+            - @doctrine.orm.entity_manager
+
+    marello_product.product_form.handler.product_api:
+        class: %marello_product.product_form.handler.product_api.class%
+        scope: request
+        arguments:
+            - @marello_product.product_api.form
+            - @request
+            - @doctrine.orm.entity_manager
+            - @oro_entity.routing_helper
+
+    marello_product.manager.api:
+        class: %marello_product.manager.api.class%
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %marello_product.entity.class%
+            - @doctrine.orm.entity_manager

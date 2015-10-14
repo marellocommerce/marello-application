@@ -1,0 +1,16 @@
+marello:
+    product:
+        product_information:      Product Information
+        entity_plural_label:      Products
+        entity_label:             Product
+        owner.label:              Owner
+        name.label:               Productname
+        sku.label:                SKU
+        price.label:              Price
+        status.label:             Status
+        stock_level.label:        Total stock
+
+        controller.message.saved: Product saved
+
+        navigation:
+            product.label:          Products
