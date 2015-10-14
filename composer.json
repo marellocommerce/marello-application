@@ -48,6 +48,6 @@
         }
     },
     "require-dev": {
-        "sensio/generator-bundle": "^3.0@dev"
+        "symfony/var-dumper": "^3.0@dev"
     }
 }
