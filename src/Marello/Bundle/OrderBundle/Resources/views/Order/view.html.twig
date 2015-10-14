@@ -4,6 +4,25 @@
 {% import 'OroAddressBundle::macros.html.twig' as address %}
 
 {% oro_title_set({params : {"%id%": '%09d'|format(entity.id) }}) %}
+{% block navButtons %}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('marello_order_order_edit', { id: entity.id }),
+            'entity_label': 'marello.order.entity_label'|trans
+        }) }}
+    {% endif %}
+
+    {#{% if resource_granted('DELETE', vehicle) %}#}
+        {#{{ UI.deleteButton({#}
+            {#'dataUrl': path('inventory_api_delete_vehicle', {'id': vehicle.id}),#}
+            {#'dataRedirect': path('inventory.vehicle_index'),#}
+            {#'aCss': 'no-hash remove-button',#}
+            {#'id': 'btn-remove-vehicle',#}
+            {#'dataId': vehicle.id,#}
+            {#'entity_label': 'Vehicle'|trans,#}
+        {#}) }}#}
+    {#{% endif %}#}
+{% endblock navButtons %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {

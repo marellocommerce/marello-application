@@ -74,12 +74,21 @@ datagrid:
                 route:  marello_order_order_view
                 params:
                     id: id
+            edit_link:
+                type:   url
+                route:  marello_order_order_edit
+                params:
+                    id: id
         actions:
             view:
                 type:       navigate
                 link:       view_link
                 icon:       eye-open
                 rowAction:  true
+            edit:
+                type:       navigate
+                link:       edit_link
+                icon:       edit
         options:
             export: true
 

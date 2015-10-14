@@ -32,7 +32,22 @@ class OrderController extends Controller
     }
 
     /**
+     * @Config\Route("/create")
+     * @Config\Method({"GET", "POST"})
+     * @Config\Template("MarelloOrderBundle:Order:edit.html.twig")
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function createAction(Request $request)
+    {
+        return $this->update($request);
+    }
+
+    /**
      * @Config\Route("/{id}/edit", requirements={"id"="\d+"})
+     * @Config\Method({"GET", "POST"})
      * @Config\Template
      *
      * @param Request $request
@@ -48,8 +63,8 @@ class OrderController extends Controller
     /**
      * Handles order updates and creation.
      *
-     * @param Request    $request
-     * @param Order|null $order
+     * @param Request $request
+     * @param Order   $order
      *
      * @return array
      */

@@ -44,21 +44,21 @@ class Order
      *
      * @ORM\Column(type="money")
      */
-    protected $subtotal;
+    protected $subtotal = 0;
 
     /**
      * @var int
      *
      * @ORM\Column(type="money")
      */
-    protected $totalTax;
+    protected $totalTax = 0;
 
     /**
      * @var int
      *
      * @ORM\Column(type="money")
      */
-    protected $grandTotal;
+    protected $grandTotal = 0;
 
     /**
      * @var Collection|OrderItem[]
@@ -84,7 +84,7 @@ class Order
     /**
      * @var \DateTime $created
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     * @ORM\Column(name="created_at", type="datetime")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -98,7 +98,7 @@ class Order
     /**
      * @var \DateTime $updated
      *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     * @ORM\Column(name="updated_at", type="datetime")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={

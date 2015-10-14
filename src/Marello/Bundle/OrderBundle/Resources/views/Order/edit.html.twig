@@ -1,7 +1,10 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
-
-{% set formAction = path('marello_order_order_edit', { 'id': form.vars.value.id }) %}
+{% if form.vars.value.id %}
+    {% set formAction = path('marello_order_order_edit', { 'id': form.vars.value.id }) %}
+{% else %}
+    {% set formAction = path('marello_order_order_create') %}
+{% endif %}
 
 {% block navButtons %}
     {% if form.vars.value.id and resource_granted('DELETE', form.vars.value) %}

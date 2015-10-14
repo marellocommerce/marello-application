@@ -9,17 +9,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('orderReference')
-            ->add('subtotal', 'oro_money')
-            ->add('totalTax', 'oro_money')
-            ->add('grandTotal', 'oro_money')
+            ->add('salesChannel', 'genemu_jqueryselect2_entity', [
+                'class' => 'MarelloSalesBundle:SalesChannel',
+            ])
             ->add('billingAddress', 'marello_address')
             ->add('shippingAddress', 'marello_address');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
