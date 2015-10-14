@@ -1,0 +1,72 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+
+{% set entity = form.vars.value %}
+{% set formAction = entity.id ? path('marello_product_update', { id: entity.id }) : path('marello_product_create') %}
+
+{% if entity.id %}
+    {% oro_title_set({params : {"%product.name%": entity.name } }) %}
+{% endif %}
+
+{% block pageHeader %}
+    {% if entity.id %}
+        {% set breadcrumbs = {
+            'entity':      entity,
+            'indexPath':   path('marello_product_index'),
+            'indexLabel':  'marello.product.entity_plural_label'|trans,
+            'entityTitle': entity.name|default('N/A')
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.product.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title }%}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if entity.id and resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('marello_product_api_delete_product', {'id': entity.id}),
+            'dataRedirect': path('marello_product_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-channel',
+            'dataId': entity.id,
+            'entity_label': 'marello.product.entity_label'|trans,
+        }) }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+
+    {{ UI.cancelButton(path('marello_product_index')) }}
+
+    {% set html = UI.saveAndCloseButton() %}
+    {% if form.vars.value.id or resource_granted('marello_product_update') %}
+        {% set html = html ~ UI.saveAndStayButton() %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock %}
+
+
+{% block content_data %}
+    {% set id = 'product-update' %}
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'subblocks': [{
+                'title': 'General',
+                'data':  [
+                    form_row(form.name),
+                    form_row(form.sku),
+                    form_row(form.price),
+                    form_row(form.status),
+                    form_row(form.stockLevel)
+                ]
+            }]
+        }
+    ] %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+
+    {{ parent() }}
+{% endblock %}

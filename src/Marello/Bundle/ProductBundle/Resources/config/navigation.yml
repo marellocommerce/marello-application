@@ -1,0 +1,22 @@
+oro_menu_config:
+    items:
+        products:
+            label: marello.product.navigation.product.label
+            uri: '#'
+
+        products_list:
+            label: marello.product.entity_plural_label
+            route: marello_product_index
+            extras:
+                routes: ['marello_product_*']
+    tree:
+        application_menu:
+            children:
+                products:
+                    children:
+                        products_list: ~
+                    position: 10
+
+oro_titles:
+    marello_product_index: marello.order.entity_plural_label
+    marello_product_index: 'marello.product.entity_label #%%name%%'
