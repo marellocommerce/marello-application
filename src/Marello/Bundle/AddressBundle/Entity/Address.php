@@ -1,13 +1,13 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Entity;
+namespace Marello\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
+use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="marello_order_typed_address")
+ * @ORM\Table(name="marello_address")
  * @ORM\AssociationOverrides({
  *      @ORM\AssociationOverride(name="region",
  *          joinColumns={
@@ -16,7 +16,7 @@ use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
  *      )
  * })
  */
-class TypedAddress extends AbstractTypedAddress
+class Address extends AbstractAddress
 {
     /**
      * @var string

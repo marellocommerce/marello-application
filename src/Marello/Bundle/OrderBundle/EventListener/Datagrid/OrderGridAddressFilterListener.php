@@ -32,11 +32,11 @@ class OrderGridAddressFilterListener
         $config->offsetAddToArrayByPath('source.query.select', [
             $this->dqlNameFormatter->getFormattedNameDQL(
                 'ba',
-                'Marello\Bundle\OrderBundle\Entity\TypedAddress'
+                'Marello\Bundle\AddressBundle\Entity\Address'
             ) . ' as billingName',
             $this->dqlNameFormatter->getFormattedNameDQL(
                 'sa',
-                'Marello\Bundle\OrderBundle\Entity\TypedAddress'
+                'Marello\Bundle\AddressBundle\Entity\Address'
             ) . ' as shippingName',
         ]);
     }

@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress;
+use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
@@ -68,16 +68,16 @@ class Order
     protected $items;
 
     /**
-     * @var AbstractTypedAddress
+     * @var AbstractAddress
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\TypedAddress", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
      */
     protected $billingAddress;
 
     /**
-     * @var AbstractTypedAddress
+     * @var AbstractAddress
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\TypedAddress", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
      */
     protected $shippingAddress;
 
@@ -117,12 +117,12 @@ class Order
     protected $salesChannel;
 
     /**
-     * @param AbstractTypedAddress|null $billingAddress
-     * @param AbstractTypedAddress|null $shippingAddress
+     * @param AbstractAddress|null $billingAddress
+     * @param AbstractAddress|null $shippingAddress
      */
     public function __construct(
-        AbstractTypedAddress $billingAddress = null,
-        AbstractTypedAddress $shippingAddress = null
+        AbstractAddress $billingAddress = null,
+        AbstractAddress $shippingAddress = null
     ) {
         $this->items           = new ArrayCollection();
         $this->billingAddress  = $billingAddress;
@@ -226,7 +226,7 @@ class Order
     }
 
     /**
-     * @return AbstractTypedAddress
+     * @return AbstractAddress
      */
     public function getShippingAddress()
     {
@@ -234,7 +234,7 @@ class Order
     }
 
     /**
-     * @param AbstractTypedAddress $shippingAddress
+     * @param AbstractAddress $shippingAddress
      *
      * @return $this
      */
@@ -246,7 +246,7 @@ class Order
     }
 
     /**
-     * @return AbstractTypedAddress
+     * @return AbstractAddress
      */
     public function getBillingAddress()
     {
@@ -254,7 +254,7 @@ class Order
     }
 
     /**
-     * @param AbstractTypedAddress $billingAddress
+     * @param AbstractAddress $billingAddress
      *
      * @return $this
      */

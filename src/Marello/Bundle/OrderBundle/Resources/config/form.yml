@@ -1,0 +1,5 @@
+services:
+    marello_order.form.type.order:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderType
+        tags:
+            - { name: form.type, alias: marello_order_order }

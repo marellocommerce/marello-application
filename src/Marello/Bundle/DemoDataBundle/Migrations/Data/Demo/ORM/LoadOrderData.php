@@ -5,10 +5,9 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\OrderBundle\Entity\TypedAddress;
-use Oro\Bundle\AddressBundle\Entity\AddressType;
 
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -61,7 +60,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
         $chNo = 0;
         foreach ($orders as $order) {
-            $billing = new TypedAddress();
+            $billing = new Address();
             $billing->setFirstName('Falco');
             $billing->setLastName('van der Maden');
             $billing->setStreet('Torenallee 20');
@@ -74,13 +73,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             $billing->setEmail('falco@madia.nl');
 
             $shipping = clone $billing;
-
-            $billing->getTypes()->add(
-                $manager->getRepository('OroAddressBundle:AddressType')->find(AddressType::TYPE_BILLING)
-            );
-            $shipping->getTypes()->add(
-                $manager->getRepository('OroAddressBundle:AddressType')->find(AddressType::TYPE_SHIPPING)
-            );
 
             $orderEntity = new Order($billing, $shipping);
             $orderEntity->setSalesChannel($this->getReference('marello_sales_channel_' . $chNo));

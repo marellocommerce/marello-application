@@ -1,0 +1,9 @@
+Marello\Bundle\AddressBundle\Entity\Address:
+    properties:
+        street:
+            - NotBlank: ~
+        city:
+            - NotBlank: ~
+        postalCode:
+            - NotBlank: ~
+    constraints: ~

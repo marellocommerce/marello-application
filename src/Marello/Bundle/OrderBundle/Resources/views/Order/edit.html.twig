@@ -1,0 +1,84 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% set formAction = path('marello_order_order_edit', { 'id': form.vars.value.id }) %}
+
+{% block navButtons %}
+    {% if form.vars.value.id and resource_granted('DELETE', form.vars.value) %}
+        {#{{ UI.deleteButton({#}
+        {#'dataUrl': path('inventory_api_delete_vehicle', {'id': form.vars.value.id}),#}
+        {#'dataRedirect': path('marello_order_order_index'),#}
+        {#'aCss': 'no-hash remove-button',#}
+        {#'id': 'btn-remove-tag',#}
+        {#'dataId': form.vars.value.id,#}
+        {#'entity_label': 'marello.order.entity_label'|trans#}
+        {#}) }}#}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {{ UI.cancelButton(path('marello_order_order_index')) }}
+    {% set html = UI.saveAndCloseButton() %}
+    {% if resource_granted('inventory.vehicle_update') %}
+        {% set html = html ~ UI.saveAndStayButton() %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({ 'html': html }) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('marello_order_order_index'),
+        'indexLabel': 'marello.order.entity_plural_label'|trans,
+        'entityTitle': '%09d'|format(form.vars.value.id)
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.order.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'vehicle-edit' %}
+
+    {% set billingAddress = form_widget(form.billingAddress) %}
+    {% set shippingAddress = form_widget(form.shippingAddress) %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_rest(form)
+                ]
+            }]
+        },
+        {
+            'title': 'marello.order.billing_address.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    billingAddress
+                ]
+            }]
+        },
+        {
+            'title': 'marello.order.shipping_address.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    shippingAddress
+                ]
+            }]
+        },
+    ] %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

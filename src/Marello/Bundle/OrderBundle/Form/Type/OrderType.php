@@ -1,0 +1,37 @@
+<?php
+
+namespace Marello\Bundle\OrderBundle\Form\Type;
+
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class OrderType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('orderReference')
+            ->add('subtotal', 'oro_money')
+            ->add('totalTax', 'oro_money')
+            ->add('grandTotal', 'oro_money')
+            ->add('billingAddress', 'marello_address')
+            ->add('shippingAddress', 'marello_address');
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => 'Marello\Bundle\OrderBundle\Entity\Order',
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'marello_order_order';
+    }
+}
