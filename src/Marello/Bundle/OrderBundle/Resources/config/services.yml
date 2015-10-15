@@ -5,3 +5,9 @@ services:
             - @oro_locale.dql.formatter.name
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order, method: onBuildBefore }
+
+    marello_order.listener.doctrine.order_number_generator_listener:
+        class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderNumberGeneratorListener
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_listener, event: postFlush }

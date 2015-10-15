@@ -33,6 +33,13 @@ class Order
     protected $id;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     */
+    protected $orderNumber;
+
+    /**
      * @var int
      *
      * @ORM\Column(type="integer", nullable=true)
@@ -326,6 +333,26 @@ class Order
     public function setSalesChannel($salesChannel)
     {
         $this->salesChannel = $salesChannel;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrderNumber()
+    {
+        return $this->orderNumber;
+    }
+
+    /**
+     * @param string $orderNumber
+     *
+     * @return $this
+     */
+    public function setOrderNumber($orderNumber)
+    {
+        $this->orderNumber = $orderNumber;
 
         return $this;
     }

@@ -20,9 +20,7 @@
     {% endif %}
     {{ UI.cancelButton(path('marello_order_order_index')) }}
     {% set html = UI.saveAndCloseButton() %}
-    {% if resource_granted('inventory.vehicle_update') %}
-        {% set html = html ~ UI.saveAndStayButton() %}
-    {% endif %}
+    {% set html = html ~ UI.saveAndStayButton() %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}
 {% endblock navButtons %}
 
@@ -32,7 +30,7 @@
         'entity':      form.vars.value,
         'indexPath':   path('marello_order_order_index'),
         'indexLabel': 'marello.order.entity_plural_label'|trans,
-        'entityTitle': '%09d'|format(form.vars.value.id)
+        'entityTitle': form.vars.value.orderNumber
         } %}
         {{ parent() }}
     {% else %}

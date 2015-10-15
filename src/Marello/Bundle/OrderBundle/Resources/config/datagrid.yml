@@ -16,8 +16,8 @@ datagrid:
                             join: o.shippingAddress
                             alias: sa
         columns:
-            id:
-                label: marello.order.id.label
+            orderNumber:
+                label: marello.order.order_number.label
                 frontend_type: string
             salesChannel:
                 label: marello.order.sales_channel.label
@@ -44,9 +44,9 @@ datagrid:
                 frontend_type: datetime
         filters:
             columns:
-                id:
-                    type: number
-                    data_name: o.id
+                orderNumber:
+                    type: string
+                    data_name: o.orderNumber
                 salesChannel:
                     type: entity
                     data_name: o.salesChannel
@@ -105,23 +105,6 @@ datagrid:
                         - i.order = :order_id
             bind_parameters:
                 order_id: orderId
-        totals:
-            price_total:
-                per_page: true
-                hide_if_one_page: false
-                columns:
-                    price:
-                        label: marello.order.subtotal.label
-                        expr: 'SUM(i.price)'
-                        formatter: currency
-                    tax:
-                        label: marello.order.total_tax.label
-                        expr: 'SUM(i.tax)'
-                        formatter: currency
-                    totalPrice:
-                        label: marello.order.grand_total.label
-                        expr: 'SUM(i.totalPrice)'
-                        formatter: currency
         columns:
             sku:
                 label: marello.order.orderitem.sku.label
