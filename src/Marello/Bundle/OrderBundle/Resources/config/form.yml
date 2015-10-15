@@ -3,3 +3,13 @@ services:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderType
         tags:
             - { name: form.type, alias: marello_order_order }
+
+    marello_order.form.type.order_item:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderItemType
+        tags:
+            - { name: form.type, alias: marello_order_item }
+
+    marello_order.form.type.order_item_collection:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderItemCollectionType
+        tags:
+            - { name: form.type, alias: marello_order_item_collection }

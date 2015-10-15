@@ -7,22 +7,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderType extends AbstractType
+class OrderItemType extends AbstractType
 {
+    const NAME = 'marello_order_item';
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('orderNumber')
-            ->add('orderReference')
-            ->add('salesChannel', 'genemu_jqueryselect2_entity', [
-                'class' => 'MarelloSalesBundle:SalesChannel',
-            ])
-            ->add('billingAddress', 'marello_address')
-            ->add('shippingAddress', 'marello_address')
-            ->add('items', 'marello_order_item_collection');
+            ->add('sku')
+            ->add('name')
+            ->add('quantity')
+            ->add('price')
+            ->add('tax')
+            ->add('totalPrice');
     }
 
     /**
@@ -31,15 +31,16 @@ class OrderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\OrderBundle\Entity\Order',
+            'data_class' => 'Marello\Bundle\OrderBundle\Entity\OrderItem',
         ]);
     }
+
 
     /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return 'marello_order_order';
+        return self::NAME;
     }
 }

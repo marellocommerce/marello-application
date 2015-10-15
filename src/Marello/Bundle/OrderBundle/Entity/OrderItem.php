@@ -132,7 +132,7 @@ class OrderItem
      *
      * @return $this
      */
-    public function setOrder($order)
+    public function setOrder($order = null)
     {
         $this->order = $order;
 

@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\OrderBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,11 +76,26 @@ class OrderController extends Controller
             $order = new Order();
         }
 
+        /*
+         * Copy of original order items collection to be used as a reference to find detached order items.
+         */
+        $originalItems = new ArrayCollection($order->getItems()->toArray());
+
         $form = $this->createForm('marello_order_order', $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
+
+            /*
+             * Remove detached order items.
+             */
+            $originalItems->filter(function (OrderItem $originalItem) use ($order) {
+                return false === $order->getItems()->contains($originalItem);
+            })->map(function (OrderItem $orderItem) use ($manager) {
+                $manager->remove($orderItem);
+            });
+
             $manager->persist($order);
             $manager->flush();
 
@@ -90,7 +107,10 @@ class OrderController extends Controller
                     ],
                 ],
                 [
-                    'route' => 'marello_order_order_index',
+                    'route'      => 'marello_order_order_view',
+                    'parameters' => [
+                        'id' => $order->getId(),
+                    ],
                 ],
                 $order
             );

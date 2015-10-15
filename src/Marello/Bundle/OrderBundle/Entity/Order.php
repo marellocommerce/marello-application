@@ -70,7 +70,7 @@ class Order
     /**
      * @var Collection|OrderItem[]
      *
-     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"persist"}, orphanRemoval=true)
      */
     protected $items;
 
@@ -289,6 +289,18 @@ class Order
     {
         $this->items->add($item);
         $item->setOrder($this);
+
+        return $this;
+    }
+
+    /**
+     * @param OrderItem $item
+     *
+     * @return $this
+     */
+    public function removeItem(OrderItem $item)
+    {
+        $this->items->removeElement($item);
 
         return $this;
     }

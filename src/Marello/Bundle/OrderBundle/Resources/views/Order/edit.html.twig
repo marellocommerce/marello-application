@@ -7,17 +7,6 @@
 {% endif %}
 
 {% block navButtons %}
-    {% if form.vars.value.id and resource_granted('DELETE', form.vars.value) %}
-        {#{{ UI.deleteButton({#}
-        {#'dataUrl': path('inventory_api_delete_vehicle', {'id': form.vars.value.id}),#}
-        {#'dataRedirect': path('marello_order_order_index'),#}
-        {#'aCss': 'no-hash remove-button',#}
-        {#'id': 'btn-remove-tag',#}
-        {#'dataId': form.vars.value.id,#}
-        {#'entity_label': 'marello.order.entity_label'|trans#}
-        {#}) }}#}
-        {{ UI.buttonSeparator() }}
-    {% endif %}
     {{ UI.cancelButton(path('marello_order_order_index')) }}
     {% set html = UI.saveAndCloseButton() %}
     {% set html = html ~ UI.saveAndStayButton() %}
@@ -44,6 +33,7 @@
 
     {% set billingAddress = form_widget(form.billingAddress) %}
     {% set shippingAddress = form_widget(form.shippingAddress) %}
+    {% set orderItems = form_widget(form.items) %}
 
     {% set dataBlocks = [
         {
@@ -73,6 +63,16 @@
                 'title': '',
                 'data': [
                     shippingAddress
+                ]
+            }]
+        },
+        {
+            'title': 'marello.order.items.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    orderItems
                 ]
             }]
         },
