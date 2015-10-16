@@ -18,7 +18,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     function getDependencies()
     {
         return [
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData'
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData',
         ];
     }
 
@@ -76,8 +76,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
             $orderEntity = new Order($billing, $shipping);
             $orderEntity->setSalesChannel($this->getReference('marello_sales_channel_' . $chNo));
-            $chNo = (int)!$chNo;
-            $total       = 0;
+            $chNo  = (int)!$chNo;
+            $total = 0;
 
             foreach ($order as $attribute => $value) {
                 call_user_func([$orderEntity, 'set' . $attribute], $value);
@@ -149,6 +149,10 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         ];
 
         foreach ($orders as $order) {
+            $subtotal = 0;
+            $tax      = 0;
+            $total    = 0;
+
             foreach ($items as $item) {
 
                 $itemEntity = new OrderItem();
@@ -157,7 +161,16 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                     call_user_func([$itemEntity, 'set' . $attribute], $value);
                     $order->addItem($itemEntity);
                 }
+
+                $subtotal += $itemEntity->getPrice();
+                $tax += $itemEntity->getTax();
+                $total += $itemEntity->getTotalPrice();
             }
+            $order
+                ->setSubtotal($subtotal)
+                ->setTotalTax($tax)
+                ->setGrandTotal($total);
+
             $manager->persist($order);
         }
     }
