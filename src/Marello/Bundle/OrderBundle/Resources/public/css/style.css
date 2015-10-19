@@ -1,0 +1,14 @@
+.order-items-table-container {
+    max-width: 100%;
+}
+
+.order-items-table-container table {
+    width: 100%;
+}
+
+.desktop-version .order-items-table-container .oro-item-collection input {
+    width: auto;
+    height: auto;
+    min-width: 100%;
+    box-sizing: border-box;
+}

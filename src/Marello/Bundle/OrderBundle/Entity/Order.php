@@ -71,6 +71,7 @@ class Order
      * @var Collection|OrderItem[]
      *
      * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"id" = "ASC"})
      */
     protected $items;
 

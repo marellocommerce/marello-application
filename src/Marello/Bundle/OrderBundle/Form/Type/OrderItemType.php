@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -34,7 +33,6 @@ class OrderItemType extends AbstractType
             'data_class' => 'Marello\Bundle\OrderBundle\Entity\OrderItem',
         ]);
     }
-
 
     /**
      * {@inheritdoc}
