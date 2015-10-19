@@ -64,7 +64,7 @@ class OrderNumberGeneratorListener
     {
         $changedOrders = [];
         foreach ($orders as $order) {
-            if (empty($order->getOrderNumber())) {
+            if (!$order->getOrderNumber()) {
                 $changedOrders[] = $order->setOrderNumber(sprintf('%09d', $order->getId()));
             }
         }
