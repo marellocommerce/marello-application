@@ -58,6 +58,15 @@
                     data-last-index="{{ form.children|length}}"
                     data-prototype-name="{{ prototype_name }}"
                     {% if prototype_html is defined %}data-prototype="{{ prototype_html|escape }}"{% endif %}>
+                <thead>
+                    <tr>
+                        <th>{{ 'marello.product.entity_label'|trans }}</th>
+                        <th>{{ 'marello.order.orderitem.quantity.label'|trans }}</th>
+                        <th>{{ 'marello.order.orderitem.price.label'|trans }}</th>
+                        <th>{{ 'marello.order.orderitem.tax.label'|trans }}</th>
+                        <th>{{ 'marello.order.orderitem.total_price.label'|trans }}</th>
+                    </tr>
+                </thead>
                 {% if form.children|length %}
                     {% for child in form.children %}
                         {{ _self.marello_order_item_collection_item_prototype(child) }}
