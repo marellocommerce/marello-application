@@ -315,4 +315,13 @@ class Product extends ExtendProduct
     {
         $this->updatedAt = new \DateTime();
     }
+
+    /**
+     * @return string
+     */
+    function __toString()
+    {
+        return $this->name;
+    }
+
 }

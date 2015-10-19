@@ -16,8 +16,9 @@ class OrderItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('sku')
-            ->add('name')
+            ->add('product', 'genemu_jqueryselect2_entity', [
+                'class' => 'Marello\Bundle\ProductBundle\Entity\Product'
+            ])
             ->add('quantity')
             ->add('price')
             ->add('tax')

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
@@ -22,18 +23,12 @@ class OrderItem
     protected $id;
 
     /**
-     * @var string
+     * @var Product
      *
-     * @ORM\Column(type="string")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    protected $sku;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string")
-     */
-    protected $name;
+    protected $product;
 
     /**
      * @var Order
@@ -77,46 +72,6 @@ class OrderItem
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSku()
-    {
-        return $this->sku;
-    }
-
-    /**
-     * @param string $sku
-     *
-     * @return $this
-     */
-    public function setSku($sku)
-    {
-        $this->sku = $sku;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     /**
@@ -215,6 +170,26 @@ class OrderItem
     public function setTotalPrice($totalPrice)
     {
         $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return $this
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
 
         return $this;
     }

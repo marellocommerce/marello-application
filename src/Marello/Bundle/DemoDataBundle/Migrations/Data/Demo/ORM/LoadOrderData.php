@@ -19,6 +19,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     {
         return [
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData',
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData',
         ];
     }
 
@@ -99,48 +100,42 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     {
         $items = [
             [
-                'Sku'        => 'HSTUC',
-                'Name'       => 'Classic Unisex Scrubs Top',
+                'Product' => $this->getReference('marello-product-1'),
                 'Quantity'   => 10,
                 'Price'      => 29.99,
                 'Tax'        => 5,
                 'TotalPrice' => '34.99',
             ],
             [
-                'Sku'        => 'HSSUC',
-                'Name'       => 'Classic Unisex Scrub Set',
+                'Product' => $this->getReference('marello-product-2'),
                 'Quantity'   => 2,
                 'Price'      => 29.99,
                 'Tax'        => 5,
                 'TotalPrice' => '34.99',
             ],
             [
-                'Sku'        => 'HSSUC3',
-                'Name'       => 'Custom logo patch',
+                'Product' => $this->getReference('marello-product-3'),
                 'Quantity'   => 5,
                 'Price'      => 21.18,
                 'Tax'        => 5,
                 'TotalPrice' => '36.18',
             ],
             [
-                'Sku'        => 'HSSUC5',
-                'Name'       => 'Custom embroidery',
+                'Product' => $this->getReference('marello-product-4'),
                 'Quantity'   => 7,
                 'Price'      => 29.99,
                 'Tax'        => 5,
                 'TotalPrice' => '34.99',
             ],
             [
-                'Sku'        => 'HCCM',
-                'Name'       => 'Men\'s Counter Coat',
+                'Product' => $this->getReference('marello-product-5'),
                 'Quantity'   => 2,
                 'Price'      => 36.99,
                 'Tax'        => 5,
                 'TotalPrice' => '41.99',
             ],
             [
-                'Sku'        => 'HCCMR',
-                'Name'       => 'Men\'s Counter Coat red',
+                'Product' => $this->getReference('marello-product-6'),
                 'Quantity'   => 13,
                 'Price'      => 34.49,
                 'Tax'        => 5,

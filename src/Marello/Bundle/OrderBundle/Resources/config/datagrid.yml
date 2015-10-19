@@ -100,18 +100,25 @@ datagrid:
                     - i
                 from:
                     - { table: MarelloOrderBundle:OrderItem, alias: i}
+                join:
+                    left:
+                        product:
+                            join: i.product
+                            alias: product
                 where:
                     and:
                         - i.order = :order_id
             bind_parameters:
                 order_id: orderId
         columns:
-            sku:
-                label: marello.order.orderitem.sku.label
+            productSKU:
+                label: marello.product.sku.label
                 frontend_type: string
-            name:
-                label: marello.order.orderitem.name.label
+                data_name: product.sku
+            productName:
+                label: marello.product.name.label
                 frontend_type: string
+                data_name: product.name
             quantity:
                 label: marello.order.orderitem.quantity.label
                 frontend_type: number

@@ -42,7 +42,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             while (($data = fgetcsv($handle, 1000, ",")) !== false) {
                 $data = array_combine($headers, array_values($data));
 
-                $this->createProduct($data, $manager);
+                $product = $this->createProduct($data, $manager);
+                $this->setReference('marello-product-' . $i, $product);
                 $i++;
             }
             fclose($handle);
@@ -57,5 +58,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setName($data['name']);
         $product->setStockLevel($data['stock_level']);
         $manager->persist($product);
+
+        return $product;
     }
 }
