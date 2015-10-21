@@ -2,6 +2,7 @@ parameters:
     ## form types
     marello_product.product_form.type.class:                  Marello\Bundle\ProductBundle\Form\Type\ProductType
     marello_product.product_form.type.product_api.class:      Marello\Bundle\ProductBundle\Form\Type\ProductApiType
+    marello_product.product_form.type.product_select.class:   Marello\Bundle\ProductBundle\Form\Type\ProductSelectType
 
     ## form handlers
     marello_product.product_form.handler.class:               Marello\Bundle\ProductBundle\Form\Handler\ProductHandler
@@ -21,6 +22,11 @@ services:
         class: %marello_product.product_form.type.product_api.class%
         tags:
             - { name: form.type, alias: marello_product_api_form }
+
+    marello_product.product_form.type.product_select:
+        class: %marello_product.product_form.type.product_select.class%
+        tags:
+            - { name: form.type, alias: marello_product_select }
 
     ## forms
     marello_product.product.form:
