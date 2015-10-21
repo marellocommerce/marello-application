@@ -20,9 +20,9 @@ class LoadSalesData extends AbstractFixture
     protected function loadSalesChannels(ObjectManager $manager)
     {
         $channel1 = new SalesChannel('Webshop NL');
-        $channel1->setOwner($this->getReference('default_organization'));
+        $channel1->setOwner($manager->getRepository('OroOrganizationBundle:Organization')->findOneBy([]));
         $channel2 = new SalesChannel('Store Amsterdam');
-        $channel2->setOwner($this->getReference('default_organization'));
+        $channel2->setOwner($manager->getRepository('OroOrganizationBundle:Organization')->findOneBy([]));
 
         $manager->persist($channel1);
         $manager->persist($channel2);
