@@ -1,4 +1,10 @@
 marello:
     sales:
         navigation:
-            sales.label: Sales
+            sales.label:                        Sales
+        saleschannel:
+            entity_label:                       Sales Channel
+            entity_plural_label:                Sales Channels
+            name.label:                         Name
+            active.label:                       Active
+            channel_type.label:                 Type

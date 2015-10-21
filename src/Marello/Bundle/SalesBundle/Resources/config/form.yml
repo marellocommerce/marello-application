@@ -1,0 +1,5 @@
+services:
+    marello_sales_form_type_saleschannel:
+        class: Marello\Bundle\SalesBundle\Form\Type\SalesChannelType
+        tags:
+             - { name: form.type, alias: marello_sales_channel }
