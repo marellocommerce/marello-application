@@ -34,7 +34,7 @@ datagrid:
                 frontend_type:      string
             price:
                 label:              marello.product.price.label
-                frontend_type:      oro_money
+                frontend_type:      string
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
@@ -84,7 +84,7 @@ datagrid:
                         field_options:
                             class: Marello\Bundle\ProductBundle\Entity\ProductStatus
                 price:
-                    type:             oro_money
+                    type:             string
                     data_name:        p.price
         actions:
             view:
