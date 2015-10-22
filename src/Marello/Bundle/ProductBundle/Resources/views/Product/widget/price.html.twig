@@ -1,0 +1,16 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ UI.renderProperty('marello.product.price.label'|trans, product.price) }}
+        </div>
+    </div>
+    <div class="row-divider"></div>
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ dataGrid.renderGrid('marello-productprice-grid', { productId: product.id }, { cssClass: 'inner-grid' })  }}
+        </div>
+    </div>
+</div>

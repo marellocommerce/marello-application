@@ -1,0 +1,38 @@
+datagrid:
+    marello-productprice-grid:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - salesChannel.name as channelName
+                    - productPrice.currency
+                    - productPrice.value as price
+                from:
+                    - { table: Marello\Bundle\PricingBundle\Entity\ProductPrice, alias: productPrice }
+                join:
+                    left:
+                        - { join: productPrice.channel, alias: salesChannel }
+                where:
+                    and:
+                        - productPrice.product = :productId
+            bind_parameters:
+                - productId
+        columns:
+            channelName:
+                label:            marello.sales.saleschannel.entity_label
+            currency:
+                label:            marello.productprice.currency.label
+            price:
+                label:            marello.productprice.price.label
+        sorters:
+            columns:
+                channelName:    { data_name: salesChannel.name }
+                currency:       { data_name: productPrice.currency }
+                price:          { data_name: productPrice.value }
+        options:
+            entityHint: productprice
+            toolbarOptions:
+                hide: true
+                pagination:
+                    hide: true
