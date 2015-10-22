@@ -17,7 +17,13 @@ use Marello\Bundle\ProductBundle\Model\ExtendProduct;
  * Represents a Marello Product
  *
  * @ORM\Entity
- * @ORM\Table(name="marello_product_product")
+ * @ORM\Table(
+ *      name="marello_product_product",
+ *      indexes={
+ *          @ORM\Index(name="idx_marello_product_created_at", columns={"created_at"}),
+ *          @ORM\Index(name="idx_marello_product_updated_at", columns={"updated_at"})
+ *      }
+ * )
  * @ORM\HasLifecycleCallbacks()
  * @Config(
  *  routeName="marello_product_index",

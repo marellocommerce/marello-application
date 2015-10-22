@@ -13,7 +13,15 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
  * Represents a Marello ProductPrice
  *
  * @ORM\Entity
- * @ORM\Table(name="marello_product_price")
+ * @ORM\Table(
+ *      name="marello_product_price",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="marello_product_price_uidx",
+ *              columns={"product_id", "channel_id", "currency"}
+ *          )
+ *      }
+ * )
  * @ORM\HasLifecycleCallbacks()
  * @Config(
  *  defaultValues={
@@ -49,6 +57,7 @@ class ProductPrice
      * @var SalesChannel
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
+     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $channel;
 
