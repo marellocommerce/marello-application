@@ -1,4 +1,4 @@
-git <?php
+<?php
 
 namespace Marello\Bundle\ProductBundle\Migrations\Schema;
 
