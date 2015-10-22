@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'MarelloPricingBundle:Form:fields.html.twig' %}
 
 {% set entity = form.vars.value %}
 {% set formAction = entity.id ? path('marello_product_update', { id: entity.id }) : path('marello_product_create') %}
@@ -47,6 +48,7 @@
 
 {% block content_data %}
     {% set id = 'product-update' %}
+    {% set productPrices = form_widget(form.prices) %}
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
@@ -58,6 +60,16 @@
                     form_row(form.price),
                     form_row(form.status),
                     form_row(form.stockLevel)
+                ]
+            }]
+        },
+        {
+            'title': 'marello.productprice.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    productPrices
                 ]
             }]
         }

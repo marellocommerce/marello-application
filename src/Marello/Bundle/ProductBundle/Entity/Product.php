@@ -9,7 +9,10 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+
 use Marello\Bundle\ProductBundle\Model\ExtendProduct;
+
 /**
  * Represents a Marello Product
  *
@@ -121,6 +124,14 @@ class Product extends ExtendProduct
     protected $organization;
 
     /**
+     * @var Collection|ProductPrice[]
+     *
+     * @ORM\OneToMany(targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"id" = "ASC"})
+     */
+    protected $prices;
+
+    /**
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -148,6 +159,11 @@ class Product extends ExtendProduct
      */
     protected $updatedAt;
 
+    public function __construct()
+    {
+        $this->prices           = new ArrayCollection();
+    }
+
     /**
      * @return int
      */
@@ -166,10 +182,13 @@ class Product extends ExtendProduct
 
     /**
      * @param string $name
+     * @return Product
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -182,10 +201,13 @@ class Product extends ExtendProduct
 
     /**
      * @param string $sku
+     * @return Product
      */
     public function setSku($sku)
     {
         $this->sku = $sku;
+
+        return $this;
     }
 
     /**
@@ -198,10 +220,13 @@ class Product extends ExtendProduct
 
     /**
      * @param float $price
+     * @return Product
      */
     public function setPrice($price)
     {
         $this->price = $price;
+
+        return $this;
     }
 
     /**
@@ -214,10 +239,13 @@ class Product extends ExtendProduct
 
     /**
      * @param int $stockLevel
+     * @return Product
      */
     public function setStockLevel($stockLevel)
     {
         $this->stockLevel = $stockLevel;
+
+        return $this;
     }
 
     /**
@@ -230,10 +258,52 @@ class Product extends ExtendProduct
 
     /**
      * @param ProductStatus $status
+     * @return Product
      */
     public function setStatus(ProductStatus $status)
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getPrices()
+    {
+        return $this->prices;
+    }
+
+    /**
+     * Add item
+     *
+     * @param ProductPrice $price
+     * @return Product
+     */
+    public function addPrice(ProductPrice $price)
+    {
+        if (!$this->prices->contains($price)) {
+            $this->prices->add($price);
+            $price->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove item
+     *
+     * @param ProductPrice $price
+     * @return Product
+     */
+    public function removePrice(ProductPrice $price)
+    {
+        if ($this->prices->contains($price)) {
+            $this->prices->removeElement($price);
+        }
+
+        return $this;
     }
 
     /**
@@ -246,10 +316,13 @@ class Product extends ExtendProduct
 
     /**
      * @param User $owner
+     * @return Product
      */
     public function setOwner($owner)
     {
         $this->owner = $owner;
+
+        return $this;
     }
 
     /**
@@ -262,10 +335,13 @@ class Product extends ExtendProduct
 
     /**
      * @param Organization $organization
+     * @return Product
      */
     public function setOrganization($organization)
     {
         $this->organization = $organization;
+
+        return $this;
     }
 
     /**
@@ -278,10 +354,13 @@ class Product extends ExtendProduct
 
     /**
      * @param \DateTime $createdAt
+     * @return Product
      */
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
@@ -294,10 +373,13 @@ class Product extends ExtendProduct
 
     /**
      * @param \DateTime $updatedAt
+     * @return Product
      */
     public function setUpdatedAt($updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**

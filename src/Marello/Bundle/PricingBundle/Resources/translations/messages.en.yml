@@ -1,0 +1,6 @@
+marello:
+    productprice:
+        entity_plural_label:        Product Prices
+        entity_label:               Product Price
+        price.label:                Price
+        currency.label:             Currency
