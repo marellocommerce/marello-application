@@ -3,15 +3,22 @@
 namespace Marello\Bundle\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\ProductBundle\Entity\Product;
+
+use JMS\Serializer\Annotation as JMS;
+
+use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
 
 /**
  * @ORM\Entity
  * @Oro\Config
  * @ORM\Table(name="marello_order_order_item")
+ *
+ * @JMS\ExclusionPolicy("ALL")
  */
-class OrderItem
+class OrderItem extends ExtendOrderItem
 {
     /**
      * @var int
@@ -19,6 +26,8 @@ class OrderItem
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @JMS\Expose
      */
     protected $id;
 
@@ -27,6 +36,8 @@ class OrderItem
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
      * @ORM\JoinColumn(onDelete="SET NULL")
+     *
+     * @JMS\Expose
      */
     protected $product;
 
@@ -42,6 +53,8 @@ class OrderItem
      * @var int
      *
      * @ORM\Column(type="integer")
+     *
+     * @JMS\Expose
      */
     protected $quantity;
 
@@ -49,6 +62,8 @@ class OrderItem
      * @var int
      *
      * @ORM\Column(type="money")
+     *
+     * @JMS\Expose
      */
     protected $price;
 
@@ -56,6 +71,8 @@ class OrderItem
      * @var int
      *
      * @ORM\Column(type="money")
+     *
+     * @JMS\Expose
      */
     protected $tax;
 
@@ -63,6 +80,8 @@ class OrderItem
      * @var int
      *
      * @ORM\Column(type="money")
+     *
+     * @JMS\Expose
      */
     protected $totalPrice;
 

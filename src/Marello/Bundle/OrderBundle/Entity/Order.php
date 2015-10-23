@@ -5,6 +5,8 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
+use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -20,8 +22,10 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * )
  * @ORM\Table(name="marello_order_order")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @JMS\ExclusionPolicy("ALL")
  */
-class Order
+class Order extends ExtendOrder
 {
     /**
      * @var int
@@ -29,6 +33,8 @@ class Order
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     *
+     * @JMS\Expose
      */
     protected $id;
 
@@ -36,6 +42,8 @@ class Order
      * @var string
      *
      * @ORM\Column(type="string", unique=true, nullable=true)
+     *
+     * @JMS\Expose
      */
     protected $orderNumber;
 
@@ -43,6 +51,8 @@ class Order
      * @var int
      *
      * @ORM\Column(type="integer", nullable=true)
+     *
+     * @JMS\Expose
      */
     protected $orderReference;
 
@@ -50,6 +60,8 @@ class Order
      * @var int
      *
      * @ORM\Column(type="money")
+     *
+     * @JMS\Expose
      */
     protected $subtotal = 0;
 
@@ -57,6 +69,8 @@ class Order
      * @var int
      *
      * @ORM\Column(type="money")
+     *
+     * @JMS\Expose
      */
     protected $totalTax = 0;
 
@@ -64,6 +78,8 @@ class Order
      * @var int
      *
      * @ORM\Column(type="money")
+     *
+     * @JMS\Expose
      */
     protected $grandTotal = 0;
 
@@ -72,6 +88,9 @@ class Order
      *
      * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
+     *
+     * @JMS\Type("ArrayCollection<Marello\Bundle\OrderBundle\Entity\OrderItem>")
+     * @JMS\Expose
      */
     protected $items;
 
@@ -79,6 +98,8 @@ class Order
      * @var AbstractAddress
      *
      * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
+     *
+     * @JMS\Expose
      */
     protected $billingAddress;
 
@@ -86,6 +107,8 @@ class Order
      * @var AbstractAddress
      *
      * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
+     *
+     * @JMS\Expose
      */
     protected $shippingAddress;
 
@@ -121,6 +144,8 @@ class Order
      * @var SalesChannel
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
+     *
+     * @JMS\Expose
      */
     protected $salesChannel;
 

@@ -1,3 +1,6 @@
+parameters:
+    marello_order.entity.order.class: Marello\Bundle\OrderBundle\Entity\Order
+
 services:
     marello_order.form.type.order:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderType
@@ -13,3 +16,32 @@ services:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderItemCollectionType
         tags:
             - { name: form.type, alias: marello_order_item_collection }
+
+    marello_order.manager.order.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %marello_order.entity.order.class%
+            - @doctrine.orm.entity_manager
+
+    marello_order.form.type.order_api:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderApiType
+        tags:
+            - { name: form.type, alias: marello_order_api }
+
+    marello_order.form.order_api:
+            class: Symfony\Component\Form\Form
+            factory_method: createNamed
+            factory_service: form.factory
+            arguments:
+                - ~
+                - 'marello_order_api'
+
+    marello_order.form.handler.order_api:
+        class: Marello\Bundle\OrderBundle\Form\Handler\OrderApiHandler
+        scope: request
+        arguments:
+            - @marello_order.form.order_api
+            - @request
+            - @doctrine.orm.entity_manager
+            - @oro_entity.routing_helper
