@@ -17,7 +17,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "entity"={
  *              "icon"="icon-list-alt"
- *          }
+ *          },
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
+ *          },
  *      }
  * )
  * @ORM\Table(name="marello_order_order")
@@ -88,9 +92,6 @@ class Order extends ExtendOrder
      *
      * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
-     *
-     * @JMS\Type("ArrayCollection<Marello\Bundle\OrderBundle\Entity\OrderItem>")
-     * @JMS\Expose
      */
     protected $items;
 

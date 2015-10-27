@@ -2,21 +2,27 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderApiType extends OrderType
+class OrderApiType extends AbstractType
 {
-
     const NAME = 'marello_order_api';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
-
-        $builder->add('items', 'collection', [
-            'type' => 'marello_order_item',
-        ]);
+        $builder
+            ->add('orderNumber')
+            ->add('orderReference')
+            ->add('salesChannel', 'entity', [
+                'class' => 'MarelloSalesBundle:SalesChannel',
+            ])
+            ->add('billingAddress', 'marello_address')
+            ->add('shippingAddress', 'marello_address')
+            ->add('subtotal', 'money')
+            ->add('totalTax', 'money')
+            ->add('grandTotal', 'money');
     }
 
     /**

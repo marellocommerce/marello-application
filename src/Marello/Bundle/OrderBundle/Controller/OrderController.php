@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,6 +15,7 @@ class OrderController extends Controller
     /**
      * @Config\Route("/")
      * @Config\Template
+     * @Security\AclAncestor("marello_order_view")
      */
     public function indexAction()
     {
@@ -23,6 +25,7 @@ class OrderController extends Controller
     /**
      * @Config\Route("/{id}", requirements={"id"="\d+"})
      * @Config\Template
+     * @Security\AclAncestor("marello_order_view")
      *
      * @param Order $order
      *
@@ -37,6 +40,7 @@ class OrderController extends Controller
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template("MarelloOrderBundle:Order:edit.html.twig")
+     * @Security\AclAncestor("marello_order_create")
      *
      * @param Request $request
      *
@@ -51,6 +55,7 @@ class OrderController extends Controller
      * @Config\Route("/{id}/edit", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template
+     * @Security\AclAncestor("marello_order_update")
      *
      * @param Request $request
      * @param Order   $order

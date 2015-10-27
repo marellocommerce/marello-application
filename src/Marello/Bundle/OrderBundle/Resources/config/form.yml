@@ -29,6 +29,11 @@ services:
         tags:
             - { name: form.type, alias: marello_order_api }
 
+    marello_order.form.type.order_item_api:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderItemApiType
+        tags:
+            - { name: form.type, alias: marello_order_item_api }
+
     marello_order.form.order_api:
             class: Symfony\Component\Form\Form
             factory_method: createNamed
