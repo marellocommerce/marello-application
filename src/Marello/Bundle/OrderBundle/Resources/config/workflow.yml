@@ -1,0 +1,79 @@
+workflows:
+    marello_order_b2c_workflow:
+        label:        Marello Order Workflow
+        entity:       Marello\Bundle\OrderBundle\Entity\Order
+        start_step:   pending
+
+        steps:
+            pending:
+                label:  Pending Order
+                allowed_transitions:
+                    - hold_pending
+                    - cancel
+                    - invoice
+            cancelled:
+                label:  Cancelled
+                allowed_transitions: []
+            pending_on_hold:
+                label:  On Hold
+                allowed_transitions:
+                    - un_hold_pending
+            invoice_on_hold:
+                label:  On Hold
+                allowed_transitions:
+                    - un_hold_invoice
+            invoice:
+                label:  Order Payed
+                allowed_transitions:
+                    - hold_invoice
+                    - credit
+                    - ship
+            credit:
+                label:  Closed
+                allowed_transitions: []
+            shipped:
+                label:  Complete
+                allowed_transitions: []
+
+        transitions:
+            cancel:
+                label:    Cancel
+                step_to:  cancelled
+                transition_definition: cancel_definition
+            hold_pending:
+                label:    Hold
+                step_to:  pending_on_hold
+                transition_definition: hold_definition
+            un_hold_pending:
+                label:    Un-Hold
+                step_to:  pending
+                transition_definition: un_hold_definition
+            hold_invoice:
+                label:    Hold
+                step_to:  invoice_on_hold
+                transition_definition: hold_definition
+            un_hold_invoice:
+                label:    Un-Hold
+                step_to:  invoice
+                transition_definition: un_hold_definition
+            invoice:
+                label:    Invoice
+                step_to:  invoice
+                transition_definition: invoice_definition
+            ship:
+                label:    Ship
+                step_to:  shipped
+                transition_definition: ship_definition
+            credit:
+                label:    Credit
+                step_to:  credit
+                transition_definition: credit_definition
+
+        transition_definitions:
+            cancel_definition: []
+            hold_definition: []
+            un_hold_definition: []
+            invoice_definition: []
+            credit_definition: []
+            ship_definition: []
+

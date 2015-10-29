@@ -10,6 +10,8 @@ use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 /**
  * @ORM\Entity
@@ -22,6 +24,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *              "type"="ACL",
  *              "group_name"=""
  *          },
+ *          "workflow"={
+ *              "active_workflow"="marello_order_b2c_workflow"
+ *          }
  *      }
  * )
  * @ORM\Table(name="marello_order_order")
@@ -149,6 +154,22 @@ class Order extends ExtendOrder
      * @JMS\Expose
      */
     protected $salesChannel;
+
+    /**
+     * @var WorkflowItem
+     *
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
+     * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowItem;
+
+    /**
+     * @var WorkflowStep
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
+     * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowStep;
 
     /**
      * @param AbstractAddress|null $billingAddress
@@ -394,5 +415,45 @@ class Order extends ExtendOrder
         $this->orderNumber = $orderNumber;
 
         return $this;
+    }
+
+    /**
+     * @param WorkflowItem $workflowItem
+     *
+     * @return $this
+     */
+    public function setWorkflowItem($workflowItem)
+    {
+        $this->workflowItem = $workflowItem;
+
+        return $this;
+    }
+
+    /**
+     * @return WorkflowItem
+     */
+    public function getWorkflowItem()
+    {
+        return $this->workflowItem;
+    }
+
+    /**
+     * @param WorkflowItem $workflowStep
+     *
+     * @return $this
+     */
+    public function setWorkflowStep($workflowStep)
+    {
+        $this->workflowStep = $workflowStep;
+
+        return $this;
+    }
+
+    /**
+     * @return WorkflowStep
+     */
+    public function getWorkflowStep()
+    {
+        return $this->workflowStep;
     }
 }
