@@ -16,5 +16,5 @@ oro_menu_config:
 oro_titles:
     marello_order_order_index: marello.order.entity_plural_label
     marello_order_order_view: 'Order #%%id%%'
-    marello_order_order_edit: 'Order #%%id%% - Edit'
+    marello_order_order_update: 'Order #%%id%% - Update'
     marello_order_order_create: 'New order'

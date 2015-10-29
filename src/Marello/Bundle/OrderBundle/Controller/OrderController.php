@@ -5,8 +5,8 @@ namespace Marello\Bundle\OrderBundle\Controller;
 use Doctrine\Common\Collections\ArrayCollection;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,7 +23,7 @@ class OrderController extends Controller
     }
 
     /**
-     * @Config\Route("/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
      * @Config\Template
      * @Security\AclAncestor("marello_order_view")
      *
@@ -39,7 +39,7 @@ class OrderController extends Controller
     /**
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
-     * @Config\Template("MarelloOrderBundle:Order:edit.html.twig")
+     * @Config\Template("MarelloOrderBundle:Order:update.html.twig")
      * @Security\AclAncestor("marello_order_create")
      *
      * @param Request $request
@@ -52,7 +52,7 @@ class OrderController extends Controller
     }
 
     /**
-     * @Config\Route("/{id}/edit", requirements={"id"="\d+"})
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\AclAncestor("marello_order_update")
@@ -62,7 +62,7 @@ class OrderController extends Controller
      *
      * @return array
      */
-    public function editAction(Request $request, Order $order)
+    public function updateAction(Request $request, Order $order)
     {
         return $this->update($request, $order);
     }
@@ -106,7 +106,7 @@ class OrderController extends Controller
 
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
-                    'route'      => 'marello_order_order_edit',
+                    'route'      => 'marello_order_order_update',
                     'parameters' => [
                         'id' => $order->getId(),
                     ],

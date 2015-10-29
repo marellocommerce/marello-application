@@ -1,7 +1,7 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 {% if form.vars.value.id %}
-    {% set formAction = path('marello_order_order_edit', { 'id': form.vars.value.id }) %}
+    {% set formAction = path('marello_order_order_update', { 'id': form.vars.value.id }) %}
     {% oro_title_set({params : {"%id%": entity.orderNumber }}) %}
 {% else %}
     {% set formAction = path('marello_order_order_create') %}

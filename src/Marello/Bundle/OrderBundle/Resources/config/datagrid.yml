@@ -76,7 +76,7 @@ datagrid:
                     id: id
             edit_link:
                 type:   url
-                route:  marello_order_order_edit
+                route:  marello_order_order_update
                 params:
                     id: id
         actions:
