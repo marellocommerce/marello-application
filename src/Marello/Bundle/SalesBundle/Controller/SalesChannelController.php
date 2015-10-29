@@ -28,7 +28,7 @@ class SalesChannelController extends Controller
     }
 
     /**
-     * @Config\Route("/{id}", requirements={"id":"\d+"})
+     * @Config\Route("/delete/{id}", requirements={"id":"\d+"})
      * @Config\Method("DELETE")
      *
      * @param SalesChannel $channel
@@ -64,7 +64,7 @@ class SalesChannelController extends Controller
     /**
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
-     * @Config\Template("MarelloSalesBundle:SalesChannel:edit.html.twig")
+     * @Config\Template("MarelloSalesBundle:SalesChannel:update.html.twig")
      *
      * @param Request $request
      *
@@ -76,7 +76,7 @@ class SalesChannelController extends Controller
     }
 
     /**
-     * @Config\Route("/{id}/edit", requirements={"id":"\d+"})
+     * @Config\Route("/update/{id}", requirements={"id":"\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      *
@@ -85,11 +85,19 @@ class SalesChannelController extends Controller
      *
      * @return array
      */
-    public function editAction(SalesChannel $channel, Request $request)
+    public function updateAction(SalesChannel $channel, Request $request)
     {
         return $this->update($channel, $request);
     }
 
+    /**
+     * Handles common update and create functionality.
+     *
+     * @param SalesChannel $channel
+     * @param Request      $request
+     *
+     * @return array|RedirectResponse
+     */
     private function update(SalesChannel $channel, Request $request)
     {
         $form = $this->createForm('marello_sales_channel', $channel);

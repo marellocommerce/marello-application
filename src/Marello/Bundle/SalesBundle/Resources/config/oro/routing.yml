@@ -1,4 +1,4 @@
 marello_sales_bundle:
     resource: "@MarelloSalesBundle/Controller"
     type:     annotation
-    prefix:   /sales
+    prefix:   /marello/sales

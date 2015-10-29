@@ -1,7 +1,7 @@
 marello_order_bundle:
     resource: @MarelloOrderBundle/Controller
     type:     annotation
-    prefix:   /order
+    prefix:   /marello/order
 
 marello_order_bundle_api:
     resource: "@MarelloOrderBundle/Resources/config/oro/routing_api.yml"

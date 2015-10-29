@@ -12,14 +12,11 @@ class OrderControllerTest extends WebTestCase
 {
     protected $createdId = null;
 
-    /**
-     * @before
-     */
     protected function setUp()
     {
         $this->initClient();
         $this->loadFixtures([
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData',
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData',
         ]);
     }
 
@@ -37,7 +34,7 @@ class OrderControllerTest extends WebTestCase
 
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
 
-        $this->assertEmpty(json_decode($response->getContent(), true));
+        $this->assertCount(4, json_decode($response->getContent(), true));
     }
 
     /**
