@@ -4,6 +4,7 @@ namespace Marello\Bundle\SalesBundle\Controller;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,6 +20,12 @@ class SalesChannelController extends Controller
      * @Config\Route("/")
      * @Config\Method("GET")
      * @Config\Template
+     * @Security\Acl(
+     *      id="marello_sales_channel_view",
+     *      type="entity",
+     *      permission="VIEW",
+     *      class="MarelloSalesBundle:SalesChannel"
+     * )
      */
     public function indexAction()
     {
@@ -30,6 +37,12 @@ class SalesChannelController extends Controller
     /**
      * @Config\Route("/delete/{id}", requirements={"id":"\d+"})
      * @Config\Method("DELETE")
+     * @Security\Acl(
+     *      id="marello_sales_channel_delete",
+     *      type="entity",
+     *      permission="DELETE",
+     *      class="MarelloSalesBundle:SalesChannel"
+     * )
      *
      * @param SalesChannel $channel
      *
@@ -65,6 +78,12 @@ class SalesChannelController extends Controller
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template("MarelloSalesBundle:SalesChannel:update.html.twig")
+     * @Security\Acl(
+     *      id="marello_sales_channel_create",
+     *      type="entity",
+     *      permission="CREATE",
+     *      class="MarelloSalesBundle:SalesChannel"
+     * )
      *
      * @param Request $request
      *
@@ -79,6 +98,12 @@ class SalesChannelController extends Controller
      * @Config\Route("/update/{id}", requirements={"id":"\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template
+     * @Security\Acl(
+     *      id="marello_sales_channel_update",
+     *      type="entity",
+     *      permission="UPDATE",
+     *      class="MarelloSalesBundle:SalesChannel"
+     * )
      *
      * @param SalesChannel $channel
      * @param Request      $request

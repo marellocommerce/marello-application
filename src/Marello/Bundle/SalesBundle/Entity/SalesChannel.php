@@ -9,9 +9,10 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
  * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_sales_sales_channel")
+ * @ORM\HasLifecycleCallbacks
  * @Config(
+ *  routeName="marello_sales_saleschannel_index",
  *  defaultValues={
  *      "entity"={"icon"="icon-sitemap"},
  *      "ownership"={
@@ -29,7 +30,6 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 class SalesChannel
 {
     const DEFAULT_TYPE = 'marello';
-
 
     /**
      * @var int
