@@ -23,9 +23,6 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  *          "security"={
  *              "type"="ACL",
  *              "group_name"=""
- *          },
- *          "workflow"={
- *              "active_workflow"="marello_order_b2c_workflow"
  *          }
  *      }
  * )
