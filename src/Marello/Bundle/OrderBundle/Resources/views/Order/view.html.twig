@@ -11,17 +11,6 @@
             'entity_label': 'marello.order.entity_label'|trans
         }) }}
     {% endif %}
-
-    {#{% if resource_granted('DELETE', vehicle) %}#}
-        {#{{ UI.deleteButton({#}
-            {#'dataUrl': path('inventory_api_delete_vehicle', {'id': vehicle.id}),#}
-            {#'dataRedirect': path('inventory.vehicle_index'),#}
-            {#'aCss': 'no-hash remove-button',#}
-            {#'id': 'btn-remove-vehicle',#}
-            {#'dataId': vehicle.id,#}
-            {#'entity_label': 'Vehicle'|trans,#}
-        {#}) }}#}
-    {#{% endif %}#}
 {% endblock navButtons %}
 
 {% block pageHeader %}
