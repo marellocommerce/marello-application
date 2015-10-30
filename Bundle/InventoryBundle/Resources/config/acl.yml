@@ -1,0 +1,4 @@
+marello_inventory_warehouse_create:
+    type:       entity
+    class:      MarelloInventoryBundle:Warehouse
+    permission: CREATE
