@@ -1,0 +1,5 @@
+services:
+    marello_inventory.form.type.warehouse:
+        class: Marello\Bundle\InventoryBundle\Form\Type\WarehouseType
+        tags:
+            - { name: form.type, alias: marello_warehouse }
