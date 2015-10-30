@@ -1,0 +1,4 @@
+marello_enterprise_inventory_bundle:
+    resource: @MarelloEnterpriseInventoryBundle/Controller
+    type:     annotation
+    prefix:   /marello/inventory

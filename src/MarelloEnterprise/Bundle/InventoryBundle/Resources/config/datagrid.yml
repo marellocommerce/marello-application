@@ -1,0 +1,34 @@
+datagrid:
+    marello-enterprise-inventory-warehouse-gird:
+        source:
+            type: orm
+            query:
+                select:
+                    - w
+                from:
+                    - { table: MarelloInventoryBundle:Warehouse, alias: w }
+        columns:
+            label:
+                label: marello.inventory.warehouse.label.label
+            default:
+                label: marello.inventory.warehouse.default.label
+                frontend_type: boolean
+        properties:
+            update_link:
+                type:   url
+                route:  marelloenterprise_inventory_warehouse_update
+                params:
+                    id: id
+            delete_link:
+                type:   url
+                route:  marelloenterprise_inventory_warehouse_delete
+                params:
+                    id: id
+        actions:
+            delete:
+                type: delete
+                link: delete_link
+                confirmation: true
+            update:
+                type: navigate
+                link: update_link

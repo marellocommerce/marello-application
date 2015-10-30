@@ -3,3 +3,5 @@ marello:
         warehouse:
             entity_label:           Warehouse
             entity_plural_label:    Warehouses
+            label.label:            Label
+            default.label:          Default
