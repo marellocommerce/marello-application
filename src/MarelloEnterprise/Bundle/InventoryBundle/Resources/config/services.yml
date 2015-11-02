@@ -1,0 +1,5 @@
+services:
+    marello_enterprise.event_listener.doctrine.default_warehouse_subscriber:
+        class: MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
