@@ -28,7 +28,10 @@ datagrid:
             delete:
                 type: delete
                 link: delete_link
+                icon: trash
                 confirmation: true
             update:
                 type: navigate
                 link: update_link
+                icon: edit
+                rowAction: true
