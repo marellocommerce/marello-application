@@ -1,5 +1,12 @@
 services:
-    marello_enterprise.event_listener.doctrine.default_warehouse_subscriber:
+    marello_enterprise.inventory.event_listener.doctrine.default_warehouse_subscriber:
         class: MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber
         tags:
             - { name: doctrine.event_subscriber }
+
+    marello_enterprise.invenotry.validator.default_warehosue_exists:
+        class: MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExistsValidator
+        arguments:
+            - @doctrine
+        tags:
+            - { name: validator.constraint_validator, alias: marello_enterprise_inventory.default_warehouse_exists }
