@@ -11,6 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
+use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelFieldSubscriber;
 use Marello\Bundle\PricingBundle\Form\EventListener\PricesCollectionFieldSubscriber;
 
@@ -91,7 +92,7 @@ class ProductType extends AbstractType
             [
                 'required' => true,
                 'label'    => 'marello.product.stock_level.label',
-                'read_only'    => false
+                'read_only'    => true
             ]
         )
         ->add('prices',
@@ -108,7 +109,7 @@ class ProductType extends AbstractType
         $resolver->setDefaults(
             array('data_class' => 'Marello\\Bundle\\ProductBundle\\Entity\\Product',
                   'intention' => 'product',
-                  'single_form' => false,
+                  'single_form' => true,
                 )
         );
     }

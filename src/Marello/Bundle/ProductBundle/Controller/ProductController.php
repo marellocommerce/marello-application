@@ -76,7 +76,7 @@ class ProductController extends Controller
         if ($handler->process($product)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.product.controller.message.saved')
+                $this->get('translator')->trans('marello.product.messages.success.saved')
             );
 
             return $this->get('oro_ui.router')->redirectAfterSave(

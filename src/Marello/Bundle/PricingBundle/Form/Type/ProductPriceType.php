@@ -48,7 +48,7 @@ class ProductPriceType extends AbstractType
         $resolver->setDefaults(
             array('data_class' => 'Marello\\Bundle\\PricingBundle\\Entity\\ProductPrice',
                   'intention' => 'productprice',
-                  'single_form' => false)
+                  'single_form' => true)
         );
     }
 

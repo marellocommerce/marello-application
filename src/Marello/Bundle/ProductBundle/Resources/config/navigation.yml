@@ -18,5 +18,7 @@ oro_menu_config:
                     position: 10
 
 oro_titles:
-    marello_product_index: marello.order.entity_plural_label
-    marello_product_index: 'marello.product.entity_label #%%name%%'
+    marello_product_index: marello.product.entity_plural_label
+    marello_product_view: 'Product #%%id%%'
+    marello_product_update: 'Product #%%id%% - Update'
+    marello_product_create: 'New product'
