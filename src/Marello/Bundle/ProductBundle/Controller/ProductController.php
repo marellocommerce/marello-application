@@ -127,6 +127,18 @@ class ProductController extends Controller
             'product' => $product
         ];
     }
+
+    /**
+     * @Route("/widget/price/{id}", name="marello_product_widget_price", requirements={"id"="\d+"})
+     * @AclAncestor("marello_product_view")
+     * @Template()
+     */
+    public function priceAction(Product $product)
+    {
+        return [
+            'product' => $product
+        ];
+    }
 }
 
 

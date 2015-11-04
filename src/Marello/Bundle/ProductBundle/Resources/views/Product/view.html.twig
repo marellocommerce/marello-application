@@ -41,7 +41,15 @@
         {{ oro_widget_render({
             'widgetType': 'block',
             'url': path('marello_product_widget_info', {id: entity.id}),
-            'title': 'marello.product.product_information'|trans
+            'title': ''
+        }) }}
+    {% endset %}
+
+    {% set productPriceWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('marello_product_widget_price', {id: entity.id}),
+            'title': ''
         }) }}
     {% endset %}
 
@@ -51,6 +59,17 @@
             {'data' : [productInformationWidget] },
         ]
     }] %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.productprice.entity_plural_label'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                productPriceWidget
+            ]
+        }]
+    }]) %}
 
     {% set data = {
         'dataBlocks': dataBlocks,

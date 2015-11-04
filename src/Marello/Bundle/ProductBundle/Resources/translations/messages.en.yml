@@ -4,9 +4,9 @@ marello:
         entity_plural_label:        Products
         entity_label:               Product
         owner.label:                Owner
-        name.label:                 Productname
+        name.label:                 Name
         sku.label:                  SKU
-        price.label:                Price
+        price.label:                Default Price
         status.label:               Status
         stock_level.label:          Total stock
 

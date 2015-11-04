@@ -3,13 +3,14 @@
 namespace Marello\Bundle\SalesBundle\Controller;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\SecurityBundle\Annotation as Security;
+
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 /**
  * @Config\Route("/channel")
@@ -17,11 +18,11 @@ use Symfony\Component\HttpFoundation\Response;
 class SalesChannelController extends Controller
 {
     /**
-     * @Config\Route("/")
+     * @Config\Route("/", name="marello_sales_saleschannel_index")
      * @Config\Method("GET")
      * @Config\Template
      * @Security\Acl(
-     *      id="marello_sales_channel_view",
+     *      id="marello_sales_saleschannel_view",
      *      type="entity",
      *      permission="VIEW",
      *      class="MarelloSalesBundle:SalesChannel"
@@ -85,67 +86,68 @@ class SalesChannelController extends Controller
      *      class="MarelloSalesBundle:SalesChannel"
      * )
      *
-     * @param Request $request
      *
      * @return array
      */
-    public function createAction(Request $request)
+    public function createAction()
     {
-        return $this->update(new SalesChannel(), $request);
+        return $this->update(new SalesChannel());
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id":"\d+"})
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_sales_saleschannel_update")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\Acl(
-     *      id="marello_sales_channel_update",
+     *      id="marello_sales_saleschannel_update",
      *      type="entity",
-     *      permission="UPDATE",
+     *      permission="EDIT",
      *      class="MarelloSalesBundle:SalesChannel"
      * )
      *
      * @param SalesChannel $channel
-     * @param Request      $request
      *
      * @return array
      */
-    public function updateAction(SalesChannel $channel, Request $request)
+    public function updateAction(SalesChannel $channel)
     {
-        return $this->update($channel, $request);
+        return $this->update($channel);
     }
 
     /**
      * Handles common update and create functionality.
-     *
      * @param SalesChannel $channel
-     * @param Request      $request
      *
-     * @return array|RedirectResponse
+     * @return array
      */
-    private function update(SalesChannel $channel, Request $request)
+    protected function update(SalesChannel $channel)
     {
-        $form = $this->createForm('marello_sales_channel', $channel);
-        $form->handleRequest($request);
+        $handler = $this->get('marello_sales.saleschannel_form.handler');
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($channel);
-            $entityManager->flush();
+        if ($handler->process($channel)) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('marello.sales.saleschannel.controller.message.saved')
+            );
 
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
-                    'route'      => 'marello_sales_saleschannel_edit',
-                    'parameters' => ['id' => $channel->getId()],
+                    'route'      => 'marello_sales_saleschannel_update',
+                    'parameters' => [
+                        'id'                      => $channel->getId(),
+                        '_enableContentProviders' => 'mainMenu'
+                    ]
                 ],
-                ['route' => 'marello_sales_saleschannel_index'],
+                [
+                    'route'      => 'marello_sales_saleschannel_index'
+                ],
                 $channel
             );
         }
 
         return [
             'entity' => $channel,
-            'form'   => $form->createView(),
+            'form'   => $handler->getFormView(),
         ];
     }
 }

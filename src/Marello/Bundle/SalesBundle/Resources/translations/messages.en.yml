@@ -8,3 +8,13 @@ marello:
             name.label:                         Name
             active.label:                       Active
             channel_type.label:                 Type
+            controller.message.saved:           Sales Channel saved
+            form.choose_saleschannel:           Choose Sales Channel
+
+        system_configuration:
+            groups:
+                saleschannels.title:              Sales Channels
+                saleschannels_saleschannel.title: Sales Channels Settings
+
+            fields:
+                default_channel.label:          Default Channels
