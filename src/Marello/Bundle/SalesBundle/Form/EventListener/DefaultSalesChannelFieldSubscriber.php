@@ -74,6 +74,9 @@ class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
     public function getDefaultDataChannels()
     {
         $config = $this->configManager->get('marello_sales.default_channels');
+        if(!$config) {
+            return array();
+        }
 
         $defaultChannels = array();
         foreach($config as $channel) {
