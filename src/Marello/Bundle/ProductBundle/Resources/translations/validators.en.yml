@@ -1,0 +1,5 @@
+marello:
+    product:
+        messages:
+            error:
+                sku:                SKU already exists, please provide a unique SKU

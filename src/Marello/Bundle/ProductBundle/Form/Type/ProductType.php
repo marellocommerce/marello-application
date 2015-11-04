@@ -83,7 +83,6 @@ class ProductType extends AbstractType
                 'label' => 'marello.product.status.label',
                 'class' => 'MarelloProductBundle:ProductStatus',
                 'property' => 'label',
-//                'data'  => ProductStatus::DEFAULT_STATUS,
                 'required' => true,
             )
         )

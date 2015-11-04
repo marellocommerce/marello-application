@@ -14,4 +14,3 @@ Marello\Bundle\ProductBundle\Entity\Product:
             - NotBlank: ~
             - Type:
                 type: float
-                message: The value {{ value }} is not a valid {{ type }}.
