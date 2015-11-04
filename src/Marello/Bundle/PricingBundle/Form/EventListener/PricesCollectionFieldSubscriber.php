@@ -40,9 +40,7 @@ class PricesCollectionFieldSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getData();
         $form = $event->getForm();
-
         if (!$entity || null === $entity->getId()) {
-
             if($form->has('channels')) {
                 if($entity instanceof Product) {
                     if(count($entity->getChannels()) > 0) {
@@ -52,10 +50,9 @@ class PricesCollectionFieldSubscriber implements EventSubscriberInterface
                             $default->setCurrency($this->getDefaultCurrency());
                             $entity->addPrice($default);
                         }
+                        $event->setData($entity);
                     }
                 }
-
-                $event->setData($entity);
             }
         }
     }

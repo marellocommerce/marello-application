@@ -47,17 +47,15 @@ class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getData();
         $form = $event->getForm();
-
         if (!$entity || null === $entity->getId()) {
             if ($form->has('channels')) {
                 if ($form->getConfig()->hasOption('data_class')) {
-                    $entityClass = $form->getConfig()->getOption('data_class');
-                    $entity = new $entityClass();
-
                     if ($entity instanceof SalesChannelAwareInterface) {
                         $channels = $this->getDefaultDataChannels();
-                        foreach ($channels as $_channel) {
-                            $entity->addChannel($_channel);
+                        if(!is_null($channels) && count($channels) !== 0) {
+                            foreach ($channels as $_channel) {
+                                $entity->addChannel($_channel);
+                            }
                         }
                     }
 

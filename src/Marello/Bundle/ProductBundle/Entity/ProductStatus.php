@@ -23,6 +23,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  */
 class ProductStatus
 {
+    const DEFAULT_STATUS = 'Enabled';
     /**
      * @ORM\Column(name="name", type="string", length=32)
      * @ORM\Id
