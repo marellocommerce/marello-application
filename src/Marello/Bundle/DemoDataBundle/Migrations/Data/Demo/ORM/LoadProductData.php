@@ -9,7 +9,10 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 
-class LoadProductData extends AbstractFixture implements DependentFixtureInterface {
+class LoadProductData extends AbstractFixture implements DependentFixtureInterface
+{
+    protected $defaultUser;
+    protected $defaultOrganization;
 
     public function getDependencies() {
         return ['Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductStatusData'];
@@ -21,6 +24,9 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
      */
     public function load(ObjectManager $manager)
     {
+        $this->defaultUser = $manager->getRepository('OroUserBundle:User')->find(1);
+        $this->defaultOrganization = $manager->getRepository('OroOrganizationBundle:Organization')->getOrganizationById(1);
+
         $this->loadProducts($manager);
         $manager->flush();
     }
@@ -28,12 +34,11 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     /**
      *
      */
-    public function loadProducts($manager)
+    public function loadProducts(ObjectManager $manager)
     {
         $handle = fopen(__DIR__ . DIRECTORY_SEPARATOR . 'dictionaries' . DIRECTORY_SEPARATOR . "products.csv", "r");
         if ($handle) {
             $headers = array();
-            $products = array();
             if (($data = fgetcsv($handle, 1000, ",")) !== false) {
                 //read headers
                 $headers = $data;
@@ -57,6 +62,16 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setPrice($data['price']);
         $product->setName($data['name']);
         $product->setStockLevel($data['stock_level']);
+        $product->setOrganization(
+            $this->defaultOrganization
+        );
+        $product->setOwner(
+            $this->defaultUser
+        );
+
+        $randomNumber = rand(0,100);
+        $status = ($randomNumber % 2 == 0) ? $this->getReference('product_status_enabled') : $this->getReference('product_status_disabled');
+        $product->setStatus($status);
         $manager->persist($product);
 
         return $product;

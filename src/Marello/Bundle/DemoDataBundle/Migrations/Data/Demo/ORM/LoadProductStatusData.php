@@ -26,6 +26,7 @@ class LoadProductStatusData extends AbstractFixture
             $status = new ProductStatus($name);
             $status->setLabel($label);
             $manager->persist($status);
+            $this->setReference('product_status_'.$name, $status);
         }
 
         $manager->flush();
