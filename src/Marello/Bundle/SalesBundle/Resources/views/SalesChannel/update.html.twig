@@ -2,7 +2,7 @@
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
 {% if form.vars.value.id %}
-    {% set formAction = path('marello_sales_saleschannel_edit', { 'id': form.vars.value.id }) %}
+    {% set formAction = path('marello_sales_saleschannel_update', { 'id': form.vars.value.id }) %}
     {% oro_title_set({params : {"%name%": entity.name }}) %}
 {% else %}
     {% set formAction = path('marello_sales_saleschannel_create') %}

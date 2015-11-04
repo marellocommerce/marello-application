@@ -12,6 +12,8 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_sales_sales_channel")
  * @Config(
+ *  routeName="marello_sales_saleschannel_index",
+ *  routeView="marello_sales_saleschannel_view",
  *  defaultValues={
  *      "entity"={"icon"="icon-sitemap"},
  *      "ownership"={

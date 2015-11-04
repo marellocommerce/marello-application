@@ -10,6 +10,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 
 use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 
@@ -44,7 +46,7 @@ use Marello\Bundle\ProductBundle\Model\ExtendProduct;
  *  }
  * )
  */
-class Product extends ExtendProduct
+class Product extends ExtendProduct implements SalesChannelAwareInterface
 {
     /**
      * @var integer
@@ -138,6 +140,13 @@ class Product extends ExtendProduct
     protected $prices;
 
     /**
+     * @var Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
+     */
+    protected $channels;
+
+    /**
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -168,6 +177,7 @@ class Product extends ExtendProduct
     public function __construct()
     {
         $this->prices           = new ArrayCollection();
+        $this->channels         = new ArrayCollection();
     }
 
     /**
@@ -307,6 +317,44 @@ class Product extends ExtendProduct
     {
         if ($this->prices->contains($price)) {
             $this->prices->removeElement($price);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChannels()
+    {
+        return $this->channels;
+    }
+
+    /**
+     * Add item
+     *
+     * @param SalesChannel $channel
+     * @return Product
+     */
+    public function addChannel(SalesChannel $channel)
+    {
+        if (!$this->channels->contains($channel)) {
+            $this->channels->add($channel);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove item
+     *
+     * @param SalesChannel $channel
+     * @return Product
+     */
+    public function removeChannel(SalesChannel $channel)
+    {
+        if ($this->channels->contains($channel)) {
+            $this->channels->removeElement($channel);
         }
 
         return $this;

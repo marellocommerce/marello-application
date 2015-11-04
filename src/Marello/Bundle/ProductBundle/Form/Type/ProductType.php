@@ -2,14 +2,37 @@
 
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
+use Doctrine\ORM\EntityManager;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
+use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelFieldSubscriber;
+use Marello\Bundle\PricingBundle\Form\EventListener\PricesCollectionFieldSubscriber;
 
 class ProductType extends AbstractType
 {
     const NAME = 'marello_product_form';
+
+    /** @var ConfigManager */
+    protected $configManager;
+
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var LocaleSettings $localeSettings */
+    protected $localeSettings;
+
+    public function __construct(ConfigManager $configManager, EntityManager $em, LocaleSettings $localeSettings)
+    {
+        $this->configManager = $configManager;
+        $this->em = $em;
+        $this->localeSettings = $localeSettings;
+    }
 
     /**
      * {@inheritdoc}
@@ -17,6 +40,18 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
+            'channels',
+            'genemu_jqueryselect2_entity',
+            [
+                'class' => 'MarelloSalesBundle:SalesChannel',
+                'label' => 'marello.sales.saleschannel.entity_label',
+                'multiple' => true,
+            ]
+        );
+
+        $builder->addEventSubscriber(new DefaultSalesChannelFieldSubscriber($this->configManager, $this->em));
+        $builder
+        ->add(
             'name',
             'text',
             [
@@ -62,6 +97,7 @@ class ProductType extends AbstractType
         ->add('prices',
             'marello_product_price_collection'
         );
+        $builder->addEventSubscriber(new PricesCollectionFieldSubscriber($this->localeSettings));
     }
 
     /**
@@ -72,7 +108,8 @@ class ProductType extends AbstractType
         $resolver->setDefaults(
             array('data_class' => 'Marello\\Bundle\\ProductBundle\\Entity\\Product',
                   'intention' => 'product',
-                  'single_form' => false)
+                  'single_form' => false,
+                )
         );
     }
 

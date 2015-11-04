@@ -19,4 +19,4 @@ oro_menu_config:
 oro_titles:
     marello_sales_saleschannel_index:   marello.sales.saleschannel.entity_plural_label
     marello_sales_saleschannel_create:  New Sales Channel
-    marello_sales_saleschannel_edit:    '%%name%% - Edit'
+    marello_sales_saleschannel_update:    '%%name%% - Edit'

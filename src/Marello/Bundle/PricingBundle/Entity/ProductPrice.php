@@ -129,7 +129,7 @@ class ProductPrice
      *
      * @return $this
      */
-    public function setChannel($channel)
+    public function setChannel(SalesChannel $channel)
     {
         $this->channel = $channel;
 

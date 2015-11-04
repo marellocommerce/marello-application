@@ -26,7 +26,7 @@ class ProductPriceCollectionType extends AbstractType
         $resolver->setDefaults(
             [
                 'type'                 => ProductPriceType::NAME,
-                'show_form_when_empty' => false,
+                'show_form_when_empty' => true,
                 'error_bubbling'       => false,
                 'cascade_validation'   => true,
                 'prototype_name'       => '__nameproductprice__',

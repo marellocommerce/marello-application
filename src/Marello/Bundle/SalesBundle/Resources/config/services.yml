@@ -1,0 +1,19 @@
+parameters:
+    marello_sales.saleschannel.entity.class:      Marello\Bundle\SalesBundle\Entity\SalesChannel
+    marello_sales.saleschannel.subscriber.class:  Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelFieldSubscriber
+
+services:
+    marello_sales.saleschannel.form_subscriber:
+        class: %marello_sales.saleschannel.subscriber.class%
+        arguments:
+            - @oro_config.user
+            - @doctrine.orm.entity_manager
+
+    # Autocomplete search handler
+    marello_sales.saleschannel.form.autocomplete.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %marello_sales.saleschannel.entity.class%
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: saleschannels, acl_resource: marello_product_view }

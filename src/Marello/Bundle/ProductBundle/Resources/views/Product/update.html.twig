@@ -49,12 +49,14 @@
 {% block content_data %}
     {% set id = 'product-update' %}
     {% set productPrices = form_widget(form.prices) %}
+    {# TODO:: create channels widget... #}
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
             'subblocks': [{
                 'title': 'General',
                 'data':  [
+                    form_widget(form.channels),
                     form_row(form.name),
                     form_row(form.sku),
                     form_row(form.status),

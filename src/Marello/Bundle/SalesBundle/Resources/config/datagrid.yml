@@ -25,7 +25,7 @@ datagrid:
                 params: [ id ]
             edit_link:
                 type:   url
-                route:  marello_sales_saleschannel_edit
+                route:  marello_sales_saleschannel_update
                 params: [ id ]
         actions:
             edit:
