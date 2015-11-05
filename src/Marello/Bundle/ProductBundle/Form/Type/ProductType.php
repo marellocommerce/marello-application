@@ -42,11 +42,9 @@ class ProductType extends AbstractType
     {
         $builder->add(
             'channels',
-            'genemu_jqueryselect2_entity',
+            'marello_sales_saleschannel_select',
             [
-                'class' => 'MarelloSalesBundle:SalesChannel',
-                'label' => 'marello.sales.saleschannel.entity_label',
-                'multiple' => true,
+                'label' => 'marello.sales.saleschannel.entity_label'
             ]
         );
 
