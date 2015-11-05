@@ -1,0 +1,36 @@
+{% block marello_product_inventory_widget %}
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Product</th>
+            {% for whInventory in form.vars.value.warehouses %}
+                <th colspan="2">{{ whInventory.warehouse.label }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {{ form_row(form.warehouses) }}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block marello_warehouse_inventory_collection_row %}
+    <tr>
+        <td>{{ form.vars.value.first.product }}</td>
+        {{ form_widget(form) }}
+    </tr>
+{% endblock %}
+
+{% block marello_warehouse_inventory_row %}
+    <td>
+        {{ form.vars.value.quantity }}
+    </td>
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block marello_warehouse_inventory_widget %}
+    <td class="marello_inventory-warehouse-inventory-widget">
+        {{ form_widget(form.modifyOperator) }}
+        {{ form_widget(form.modifyAmount) }}
+    </td>
+{% endblock %}

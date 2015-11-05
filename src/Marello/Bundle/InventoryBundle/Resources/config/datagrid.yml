@@ -1,0 +1,37 @@
+datagrid:
+    marello-inventory-item:
+        source:
+            type: orm
+            query:
+                select:
+                    - i
+                from:
+                    - { table: MarelloInventoryBundle:InventoryItem, alias: i }
+        columns:
+            product:
+                label: marello.inventory.item.product.label
+                frontend_type: string
+            quantity:
+                label: marello.inventory.item.quantity.label
+                frontend_type: number
+
+    marello-inventory-product-item:
+        source:
+            type: orm
+            query:
+                select:
+                    - w
+                    - SUM(i.quantity) AS  stock
+                from:
+                    - { table: MarelloInventoryBundle:InventoryItem, alias: i }
+                join:
+                    left:
+                        - { join: i.warehouse, alias: w }
+                groupBy: w.id
+        columns:
+            warehouse:
+                label: Warehouse
+                data_name: w
+            stock:
+                label: Stock
+                data_name: stock

@@ -15,7 +15,7 @@ class WarehouseController extends Controller
 {
 
     /**
-     * @Config\Route("/update_current", requirements={"id"="\d+"})
+     * @Config\Route("/update-default", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @AclAncestor("marello_inventory_warehouse_update")

@@ -1,0 +1,5 @@
+services:
+    marello_inventory.model.factory.product_inventory:
+        class: Marello\Bundle\InventoryBundle\Model\Factory\ProductInventoryFactory
+        arguments:
+            - @doctrine

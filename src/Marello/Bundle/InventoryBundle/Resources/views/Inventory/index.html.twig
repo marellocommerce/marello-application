@@ -1,0 +1,15 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridName = 'marello-inventory-item' %}
+{% set pageTitle = 'marello.inventory.item.entity_label'|trans %}
+
+{#{% block navButtons %}#}
+    {#{% if resource_granted('inventory.vehicle_view') %}#}
+        {#<div class="btn-group">#}
+            {#{{ UI.addButton({#}
+                {#'path': path('inventory.vehicle_create'),#}
+                {#'entity_label': 'Vehicle'|trans#}
+            {#}) }}#}
+        {#</div>#}
+    {#{% endif %}#}
+{#{% endblock %}#}

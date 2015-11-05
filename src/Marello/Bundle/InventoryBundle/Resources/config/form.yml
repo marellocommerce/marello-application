@@ -3,3 +3,18 @@ services:
         class: Marello\Bundle\InventoryBundle\Form\Type\WarehouseType
         tags:
             - { name: form.type, alias: marello_warehouse }
+
+    marello_intentory.form.type.warehouse_inventory:
+        class: Marello\Bundle\InventoryBundle\Form\Type\WarehouseInventoryType
+        tags:
+             - { name: form.type, alias: marello_warehouse_inventory }
+
+    marello_intentory.form.type.warehouse_inventory_collection:
+        class: Marello\Bundle\InventoryBundle\Form\Type\WarehouseInventoryCollectionType
+        tags:
+             - { name: form.type, alias: marello_warehouse_inventory_collection }
+
+    marello_inventory.form.type.product_inventory:
+        class: Marello\Bundle\InventoryBundle\Form\Type\ProductInventoryType
+        tags:
+             - { name: form.type, alias: marello_product_inventory }
