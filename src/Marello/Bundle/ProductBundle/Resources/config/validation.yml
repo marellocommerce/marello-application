@@ -1,0 +1,19 @@
+Marello\Bundle\ProductBundle\Entity\Product:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: sku
+            message: 'marello.product.messages.error.sku'
+    properties:
+        channels:
+            - NotBlank:
+                message:  'marello.product.messages.error.channels'
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        sku:
+            - NotBlank: ~
+        price:
+            - NotBlank: ~
+            - Type:
+                type: float

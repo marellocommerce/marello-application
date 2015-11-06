@@ -1,0 +1,12 @@
+Marello\Bundle\PricingBundle\Entity\ProductPrice:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [channel, currency, value]
+            message: 'marello.product.messages.error.sku'
+    properties:
+        channel:
+            - NotBlank: ~
+        currency:
+            - NotBlank: ~
+        value:
+            - NotBlank: ~

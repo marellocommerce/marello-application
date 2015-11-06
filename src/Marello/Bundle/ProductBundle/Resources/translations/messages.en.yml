@@ -10,7 +10,11 @@ marello:
         status.label:               Status
         stock_level.label:          Total stock
 
-        controller.message.saved:   Product saved
+        messages:
+            success:
+                saved:              Product saved
+            error:
+                sku:                SKU already exists, please provide a unique SKU
         form.choose.product:        Choose Product
 
         navigation:

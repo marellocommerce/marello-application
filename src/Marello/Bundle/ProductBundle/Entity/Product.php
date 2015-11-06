@@ -24,6 +24,12 @@ use Marello\Bundle\ProductBundle\Model\ExtendProduct;
  *      indexes={
  *          @ORM\Index(name="idx_marello_product_created_at", columns={"created_at"}),
  *          @ORM\Index(name="idx_marello_product_updated_at", columns={"updated_at"})
+ *      },
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="marello_product_product_skuidx",
+ *              columns={"sku"}
+ *          )
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()

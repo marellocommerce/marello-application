@@ -47,10 +47,8 @@ class ProductHandler
     public function process(Product $entity)
     {
         $this->form->setData($entity);
-
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
             $this->form->submit($this->request);
-
             if ($this->form->isValid()) {
                 $this->onSuccess($entity);
 
@@ -68,18 +66,7 @@ class ProductHandler
      */
     public function getFormView()
     {
-        $form = $this->form;
-
-        $config = $form->getConfig();
-        /** @var FormInterface $form */
-        $form = $config->getFormFactory()->createNamed(
-            $form->getName(),
-            $config->getType()->getName(),
-            $form->getData()
-        );
-
-
-        return $form->createView();
+        return $this->form->createView();
     }
 
     /**
