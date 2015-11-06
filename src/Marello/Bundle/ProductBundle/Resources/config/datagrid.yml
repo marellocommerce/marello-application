@@ -55,6 +55,10 @@ datagrid:
                 type:       url
                 route:      marello_product_api_delete_product
                 params:     [ id ]
+            inventory_link:
+                type:       url
+                route:      marello_inventory_inventory_update
+                params:     [ id ]
         sorters:
             columns:
                 sku:            { data_name: p.sku }
@@ -106,6 +110,10 @@ datagrid:
                 acl_resource:   marello_product_delete
                 icon:           trash
                 label:          oro.grid.action.delete
+            inventory:
+                type:           navigate
+                icon:           list-alt
+                link:           inventory_link
         options:
             entityHint: product
             export: true
