@@ -7,13 +7,38 @@ datagrid:
                     - i
                 from:
                     - { table: MarelloInventoryBundle:InventoryItem, alias: i }
+                join:
+                    left:
+                        - { join: i.product, alias: p }
+                        - { join: i.warehouse, alias: w }
+                orderBy:
+                    - { column: p.sku, dir: asc }
+                    - { column: w.id, dir: asc }
         columns:
+            sku:
+                label: marello.product.sku.label
+                data_name: product.sku
             product:
                 label: marello.inventory.item.product.label
+                frontend_type: string
+                data_name: product.name
+            warehouse:
+                label: marello.inventory.warehouse.entity_label
                 frontend_type: string
             quantity:
                 label: marello.inventory.item.quantity.label
                 frontend_type: number
+        properties:
+            inventory_link:
+                type:       url
+                route:      marello_inventory_inventory_update
+                params:     { id: product.id }
+        actions:
+            inventory:
+                type:           navigate
+                icon:           list-alt
+                link:           inventory_link
+                rowAction:      true
 
     marello-inventory-product-item:
         source:

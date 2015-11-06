@@ -133,4 +133,12 @@ class Warehouse
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    function __toString()
+    {
+        return $this->label;
+    }
 }

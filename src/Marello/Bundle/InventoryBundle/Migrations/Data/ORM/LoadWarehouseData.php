@@ -15,7 +15,7 @@ class LoadWarehouseData implements FixtureInterface
     {
         $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
 
-        $defaultWarehouse = new Warehouse('Default Warehouse', true);
+        $defaultWarehouse = new Warehouse('Warehouse', true);
         $defaultWarehouse->setOwner($organization);
 
         $manager->persist($defaultWarehouse);
