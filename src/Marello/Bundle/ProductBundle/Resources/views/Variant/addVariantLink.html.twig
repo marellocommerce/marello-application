@@ -1,0 +1,12 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{{ UI.link({
+    'path': path(
+    'marello_product_variant', {
+        entityClass: oro_class_name(entity, true),
+        entityId: entity.id
+    }),
+    'title': 'marello.product.add_variant.label'|trans,
+    'label': 'marello.product.add_variant.label'|trans,
+    'iCss': 'icon-barcode',
+    'aCss': 'action-link',
+}) }}

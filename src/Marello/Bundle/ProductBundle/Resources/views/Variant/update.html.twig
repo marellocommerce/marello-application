@@ -1,0 +1,65 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'MarelloProductBundle:Variant:Form/fields.html.twig' %}
+
+{% set entity = form.vars.value %}
+{% set formAction = path('marello_product_create_variant', { id: parent.id }) %}
+
+{% if parent.id %}
+    {% oro_title_set({params : {"%product.name%": parent.name } }) %}
+{% endif %}
+
+{% block pageHeader %}
+    {% if entity.id %}
+        {% set breadcrumbs = {
+            'entity':      parent,
+            'indexPath':   path('marello_product_view', { id: parent.id}),
+            'indexLabel':  'marello.product.variant.entity_plural_label'|trans,
+            'entityTitle': parent.name|default('N/A')
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.product.variant.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title }%}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_product_view', { id: parent.id })) }}
+
+    {% set html = UI.saveAndCloseButton() %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock %}
+
+
+{% block content_data %}
+    {% set id = 'product-variant' %}
+    {% set dataBlocks = [
+        {
+            'title': 'General Information'|trans,
+            'subblocks': [{
+                'title': '',
+                'data':  [
+                    form_row(form.variantCode)
+                ]
+            }]
+        }
+    ] %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title': 'Variants'|trans,
+        'subblocks': [{
+            'title': '',
+            'useSpan': false,
+            'data' : [
+                form_widget(form.products)
+            ]
+        }]
+    }] ) %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+
+    {{ parent() }}
+{% endblock %}

@@ -1,21 +1,32 @@
 marello:
     product:
-        product_information:        Product Information
         entity_plural_label:        Products
         entity_label:               Product
-        owner.label:                Owner
         name.label:                 Name
         sku.label:                  SKU
-        price.label:                Default Price
+        price.label:                Default price
         status.label:               Status
         stock_level.label:          Total stock
 
+        variant:
+            entity_plural_label:    Variants
+            entity_label:           Variant
+            variant_code.label:     Variant code
+
+        create_variant.label:       Create Variant
+        add_variant.label:          Add Variant
+
         messages:
             success:
-                saved:              Product saved
+                product:
+                    saved:          Product saved
+                variant:
+                    saved:          Variant saved
             error:
                 sku:                SKU already exists, please provide a unique SKU
-        form.choose.product:        Choose Product
+
+        form.choose.product:        Choose product
+        product_information:        Product Information
 
         navigation:
             product.label:          Products

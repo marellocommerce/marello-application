@@ -39,9 +39,6 @@ use Marello\Bundle\ProductBundle\Model\ExtendProduct;
  *  defaultValues={
  *      "entity"={"icon"="icon-barcode"},
  *      "ownership"={
- *              "owner_type"="USER",
- *              "owner_field_name"="owner",
- *              "owner_column_name"="user_owner_id",
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"
  *      },
@@ -123,11 +120,11 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     protected $status;
 
     /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
+     * @var string
+     *
+     * @ORM\Column(name="variant_code", type="string", nullable=true)
      */
-    protected $owner;
+    protected $variantCode;
 
     /**
      * @var Organization
@@ -271,6 +268,25 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     }
 
     /**
+     * @return string
+     */
+    public function getVariantCode()
+    {
+        return $this->variantCode;
+    }
+
+    /**
+     * @param string $variantCode
+     * @return Product
+     */
+    public function setVariantCode($variantCode)
+    {
+        $this->variantCode = $variantCode;
+
+        return $this;
+    }
+
+    /**
      * @return ProductStatus
      */
     public function getStatus()
@@ -362,25 +378,6 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
         if ($this->channels->contains($channel)) {
             $this->channels->removeElement($channel);
         }
-
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
-
-    /**
-     * @param User $owner
-     * @return Product
-     */
-    public function setOwner($owner)
-    {
-        $this->owner = $owner;
 
         return $this;
     }
