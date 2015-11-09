@@ -35,3 +35,4 @@ datagrid:
                 link: update_link
                 icon: edit
                 rowAction: true
+        action_configuration: @marello_enterprise.datagird.warehouse_grid_delete_action_checker->getCheckCallback
