@@ -25,7 +25,8 @@ class WarehouseExtension extends AbstractTypeExtension
         parent::buildForm($builder, $options);
 
         $builder->add('default', 'checkbox', [
-            'required' => false
+            'required' => false,
+            'tooltip'  => 'marello_enterprise.inventory.warehouse.delete',
         ]);
     }
 
