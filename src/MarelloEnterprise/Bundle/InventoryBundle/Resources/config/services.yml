@@ -10,3 +10,6 @@ services:
             - @doctrine
         tags:
             - { name: validator.constraint_validator, alias: marello_enterprise_inventory.default_warehouse_exists }
+
+    marello_enterprise.datagird.warehouse_grid_delete_action_checker:
+        class: MarelloEnterprise\Bundle\InventoryBundle\DataGrid\WarehouseGridDeleteActionChecker

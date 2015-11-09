@@ -2,10 +2,9 @@
     <table class="table table-condensed table-bordered marello_inventory-product-inventory-table">
         <thead>
         <tr>
-            <th>Product</th>
-            {% for whInventory in form.vars.value.warehouses %}
-                <th colspan="2">{{ whInventory.warehouse.label }}</th>
-            {% endfor %}
+            <th>Warehouse</th>
+            <th>Quantity</th>
+            <th>Adjustment</th>
         </tr>
         </thead>
         <tbody>
@@ -15,17 +14,19 @@
 {% endblock %}
 
 {% block marello_warehouse_inventory_collection_row %}
-    <tr>
-        <td>{{ form.vars.value.first.product }}</td>
-        {{ form_widget(form) }}
-    </tr>
+    {{ form_widget(form) }}
 {% endblock %}
 
 {% block marello_warehouse_inventory_row %}
-    <td>
-        <strong>{{ form.vars.value.quantity }}</strong>
-    </td>
-    {{ form_widget(form) }}
+    <tr>
+        <td>
+            {{ form.vars.value.warehouse }}
+        </td>
+        <td>
+            <strong>{{ form.vars.value.quantity }}</strong>
+        </td>
+        {{ form_widget(form) }}
+    </tr>
 {% endblock %}
 
 {% block marello_warehouse_inventory_widget %}
