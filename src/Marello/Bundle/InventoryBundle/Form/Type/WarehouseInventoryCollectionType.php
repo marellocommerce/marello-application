@@ -9,6 +9,9 @@ class WarehouseInventoryCollectionType extends AbstractType
 {
     const NAME = 'marello_warehouse_inventory_collection';
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -18,11 +21,17 @@ class WarehouseInventoryCollectionType extends AbstractType
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return 'collection';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return self::NAME;

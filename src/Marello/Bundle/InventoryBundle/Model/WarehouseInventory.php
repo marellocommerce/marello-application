@@ -67,6 +67,11 @@ class WarehouseInventory
         return new static($item);
     }
 
+    /**
+     * Modifies and returns inventory item entity for warehouse.
+     *
+     * @return InventoryItem
+     */
     public function getModifiedInventoryItem()
     {
         if ($this->modifyOperator === self::OPERATOR_INCREASE) {

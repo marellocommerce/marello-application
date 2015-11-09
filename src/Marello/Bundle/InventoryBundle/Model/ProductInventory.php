@@ -14,6 +14,9 @@ class ProductInventory
     /** @var Product */
     protected $product;
 
+    /**
+     * @param Product $product
+     */
     public function __construct(Product $product)
     {
         $this->warehouses = new ArrayCollection();
@@ -29,6 +32,8 @@ class ProductInventory
     }
 
     /**
+     * Modifies and returns inventory items for all warehouses.
+     *
      * @return Collection!InventoryItem[]
      */
     public function getModifiedInventoryItems()

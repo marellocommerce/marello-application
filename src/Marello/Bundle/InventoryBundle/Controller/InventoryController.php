@@ -46,6 +46,9 @@ class InventoryController extends Controller
      */
     public function updateAction(Product $product, Request $request)
     {
+        /*
+         * Create product inventory model for update page.
+         */
         $factory   = $this->get('marello_inventory.model.factory.product_inventory');
         $inventory = $factory->getProductInventory($product);
         $form      = $this->createForm('marello_product_inventory', $inventory);
@@ -54,8 +57,16 @@ class InventoryController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em    = $this->getDoctrine()->getManager();
+
+            /*
+             * Retrieve inventory item entities from model.
+             */
             $items = $inventory->getModifiedInventoryItems();
 
+            /*
+             * Persist inventory items which have quantity > 0.
+             * Remove inventory items which are already in database but now have quantity = 0.
+             */
             $items->map(function (InventoryItem $item) use ($em) {
                 if ($item->getQuantity()) {
                     $em->persist($item);
@@ -63,6 +74,7 @@ class InventoryController extends Controller
                     $em->remove($item);
                 }
             });
+
             $em->flush();
 
             return $this->get('oro_ui.router')->redirectAfterSave(
