@@ -4,8 +4,13 @@ namespace Marello\Bundle\InventoryBundle\Model;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Validator\Constraints\WarehouseInventory as WarehouseInventoryConstraint;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @WarehouseInventoryConstraint
+ */
 class WarehouseInventory
 {
     const OPERATOR_INCREASE = 'increase';
@@ -20,6 +25,8 @@ class WarehouseInventory
 
     /**
      * Amount to increase/decrease the quantity.
+     *
+     * @Assert\GreaterThanOrEqual(value=0)
      *
      * @var int
      */

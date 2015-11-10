@@ -6,6 +6,7 @@ use Marello\Bundle\InventoryBundle\Model\WarehouseInventory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 class WarehouseInventoryType extends AbstractType
 {
@@ -23,7 +24,7 @@ class WarehouseInventoryType extends AbstractType
                     WarehouseInventory::OPERATOR_DECREASE => 'Decrease',
                 ],
             ])
-            ->add('modifyAmount', 'number', []);
+            ->add('modifyAmount', 'number');
     }
 
     /**
@@ -32,7 +33,8 @@ class WarehouseInventoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\InventoryBundle\Model\WarehouseInventory',
+            'data_class'         => 'Marello\Bundle\InventoryBundle\Model\WarehouseInventory',
+            'cascade_validation' => true,
         ]);
     }
 

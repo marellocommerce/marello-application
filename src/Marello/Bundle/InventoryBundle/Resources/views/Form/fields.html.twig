@@ -30,12 +30,13 @@
 {% endblock %}
 
 {% block marello_warehouse_inventory_widget %}
-    <td class="marello_inventory-warehouse-inventory-widget">
+    <td class="marello_inventory-warehouse-inventory-widget {{ form.modifyAmount.vars.errors|length ? 'has-errors' : '' }}">
         {{ form_widget(form.modifyOperator, {
             attr: {
                 style: 'width: 100px;'
             }
         }) }}
         {{ form_widget(form.modifyAmount) }}
+        {{ form_errors(form.modifyAmount) }}
     </td>
 {% endblock %}

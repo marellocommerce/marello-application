@@ -22,7 +22,8 @@ class WarehouseType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\InventoryBundle\Entity\Warehouse',
+            'data_class'         => 'Marello\Bundle\InventoryBundle\Entity\Warehouse',
+            'cascade_validation' => true,
         ]);
     }
 

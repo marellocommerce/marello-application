@@ -24,7 +24,8 @@ class ProductInventoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\InventoryBundle\Model\ProductInventory',
+            'data_class'         => 'Marello\Bundle\InventoryBundle\Model\ProductInventory',
+            'cascade_validation' => true,
         ]);
     }
 

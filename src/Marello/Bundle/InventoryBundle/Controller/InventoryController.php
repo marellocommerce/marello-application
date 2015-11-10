@@ -30,9 +30,14 @@ class InventoryController extends Controller
      * @Config\Template
      *
      * @param Product $product
+     *
+     * @return array
      */
     public function viewAction(Product $product)
     {
+        return [
+            'entity' => $product,
+        ];
     }
 
     /**
@@ -56,7 +61,7 @@ class InventoryController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em    = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
 
             /*
              * Retrieve inventory item entities from model.

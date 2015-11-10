@@ -22,3 +22,5 @@ oro_menu_config:
 
 oro_titles:
     marello_inventory_warehouse_updatedefault: 'Default Warehouse - Update'
+    marello_inventory_inventory_index: 'marello.inventory.label'
+    marello_inventory_inventory_update: 'Update Inventory'
