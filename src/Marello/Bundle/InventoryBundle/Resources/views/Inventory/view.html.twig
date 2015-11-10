@@ -25,7 +25,22 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-
+                    <table class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Warehouse</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for warehouse in inventory.warehouses %}
+                                <tr>
+                                    <td>{{ warehouse.warehouse }}</td>
+                                    <td>{{ warehouse.quantity }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

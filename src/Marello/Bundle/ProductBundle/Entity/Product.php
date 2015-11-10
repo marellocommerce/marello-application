@@ -2,19 +2,19 @@
 
 namespace Marello\Bundle\ProductBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
-
-use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 
 /**
  * Represents a Marello Product
@@ -152,6 +152,20 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      */
     protected $channels;
+
+    /**
+     * @var Collection|InventoryItem[]
+     *
+     * @ORM\OneToMany(
+     *      targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem",
+     *      mappedBy="product",
+     *      cascade={"remove"},
+     *      orphanRemoval=true,
+     *      fetch="EXTRA_LAZY"
+     * )
+     * @ORM\OrderBy({"id" = "ASC"})
+     */
+    protected $inventoryItems;
 
     /**
      * @var \DateTime $createdAt
@@ -465,6 +479,26 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|InventoryItem[]
+     */
+    public function getInventoryItems()
+    {
+        return $this->inventoryItems;
+    }
+
+    /**
+     * @param Collection|InventoryItem[] $inventoryItems
+     *
+     * @return $this
+     */
+    public function setInventoryItems($inventoryItems)
+    {
+        $this->inventoryItems = $inventoryItems;
+
+        return $this;
     }
 
 }

@@ -26,7 +26,7 @@ class InventoryItem
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="inventoryItems")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @var Product

@@ -35,8 +35,12 @@ class InventoryController extends Controller
      */
     public function viewAction(Product $product)
     {
+        $factory   = $this->get('marello_inventory.model.factory.product_inventory');
+        $inventory = $factory->getProductInventory($product);
+
         return [
-            'entity' => $product,
+            'entity'    => $product,
+            'inventory' => $inventory,
         ];
     }
 
