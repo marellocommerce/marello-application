@@ -14,7 +14,7 @@
     {% set breadcrumbs = {
         'entity':      form.vars.value,
         'indexPath':   path('marello_inventory_inventory_index'),
-        'indexLabel': 'Inventory'|trans,
+        'indexLabel': 'marello.inventory.label'|trans,
         'entityTitle': entity.sku
     } %}
     {{ parent() }}

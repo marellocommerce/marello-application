@@ -14,7 +14,7 @@
     {% set breadcrumbs = {
         'entity':      entity,
         'indexPath':   path('marello_inventory_inventory_index'),
-        'indexLabel': 'Inventory'|trans,
+        'indexLabel': 'marello.inventory.label'|trans,
         'entityTitle': entity.sku
     } %}
     {{ parent() }}
@@ -27,18 +27,18 @@
                 <div class="responsive-block">
                     <table class="table table-bordered table-condensed">
                         <thead>
-                            <tr>
-                                <th>Warehouse</th>
-                                <th>Quantity</th>
-                            </tr>
+                        <tr>
+                            <th>{{ 'marello.inventory.warehouse.entity_label'|trans }}</th>
+                            <th>{{ 'marello.inventory.item.quantity.label'|trans }}</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for warehouse in inventory.warehouses %}
-                                <tr>
-                                    <td>{{ warehouse.warehouse }}</td>
-                                    <td>{{ warehouse.quantity }}</td>
-                                </tr>
-                            {% endfor %}
+                        {% for warehouse in inventory.warehouses %}
+                            <tr>
+                                <td>{{ warehouse.warehouse }}</td>
+                                <td>{{ warehouse.quantity }}</td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -47,11 +47,11 @@
     {% endset %}
     {% set dataBlocks = [
     {
-    'title': 'Data'|trans,
-    'class': 'active',
-    'subblocks': [
-    { 'data' : [data] }
-    ]
+        'title': 'Data'|trans,
+        'class': 'active',
+        'subblocks': [
+            { 'data' : [data] }
+        ]
     }
     ] %}
 

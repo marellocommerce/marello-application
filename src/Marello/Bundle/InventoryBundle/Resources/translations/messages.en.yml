@@ -12,3 +12,6 @@ marello:
             product.label:          Product
             warehouse.label:        Warehouse
             quantity.label:         Quantity
+        model:
+            warehouse:
+                adjustment.label:   Adjustment
