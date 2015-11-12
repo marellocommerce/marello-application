@@ -1,10 +1,12 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set route = entity.variantCode ?
+path('marello_product_add_variant', { parentId: entity.id, id: 5, entityClass: oro_class_name(entity, true) })
+: path('marello_product_create_variant' , { id: entity.id })
+%}
+
 {{ UI.link({
-    'path': path(
-    'marello_product_variant', {
-        entityClass: oro_class_name(entity, true),
-        entityId: entity.id
-    }),
+    'path': route,
     'title': 'marello.product.add_variant.label'|trans,
     'label': 'marello.product.add_variant.label'|trans,
     'iCss': 'icon-barcode',

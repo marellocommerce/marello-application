@@ -2,7 +2,7 @@
 {% form_theme form with 'MarelloProductBundle:Variant:Form/fields.html.twig' %}
 
 {% set entity = form.vars.value %}
-{% set formAction = path('marello_product_create_variant', { id: parent.id }) %}
+{% set formAction = entity.id ? path('marello_product_add_variant', { parentId: parent.id, id: entity.id }) : path('marello_product_create_variant', { id: parent.id }) %}
 
 {% if parent.id %}
     {% oro_title_set({params : {"%product.name%": parent.name } }) %}

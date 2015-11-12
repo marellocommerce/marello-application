@@ -3,6 +3,8 @@
 namespace Marello\Bundle\ProductBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -16,7 +18,7 @@ use Marello\Bundle\ProductBundle\Entity\Variant;
 class VariantController extends Controller
 {
     /**
-     * @Route("/variant/create/{id}", requirements={"id"="\d+"}, name="marello_product_create_variant")
+     * @Route("/variant/create/parent/{id}", requirements={"id"="\d+"}, name="marello_product_create_variant")
      * @Acl(
      *      id="marello_product_create_variant",
      *      type="entity",
@@ -34,22 +36,36 @@ class VariantController extends Controller
     }
 
     /**
-     * @Route("/variant/update/{parentId}/{variantId}", requirements={"parentId"="\d+", "variantId"="\d+"}, name="marello_product_update_variant")
+     * @Route("/variant/add/{id}/parent/{parentId}", requirements={"id"="\d+","parentId"="\d+"}, name="marello_product_add_variant")
      * @Acl(
-     *      id="marello_product_update_variant",
+     *      id="marello_product_add_variant",
      *      type="entity",
      *      permission="EDIT",
      *      class="MarelloProductBundle:Variant"
      * )
      * @Template("MarelloProductBundle:Variant:update.html.twig")
      *
-     * @param Product $product
+     * @param Request $request
      * @param Variant $variant
      * @return array
+     * @throws NotFoundHttpException
      */
-    public function updateVariantAction(Product $product, Variant $variant)
+    public function updateVariantAction(Request $request, Variant $variant)
     {
-        return $this->updateVariant($product, $variant);
+        $entityClass = $request->get('entityClass');
+
+        if ($entityClass) {
+            $entityClass = $this->get('oro_entity.routing_helper')->decodeClassName($entityClass);
+            $parentId = $request->get('parentId');
+            if ($parentId && $entityClass === $this->container->getParameter('marello_product.entity.class')) {
+                $repository = $this->getDoctrine()->getRepository($entityClass);
+                /** @var Product $parent */
+                $parent = $repository->find($parentId);
+                return $this->updateVariant($parent, $variant);
+            }
+        } else {
+            throw new NotFoundHttpException(sprintf('Entity class "%s" is not found', $entityClass));
+        }
     }
 
     /**

@@ -41,6 +41,7 @@ class ProductVariantType extends AbstractType
             array('data_class' => 'Marello\\Bundle\\ProductBundle\\Entity\\Variant',
                   'intention' => 'variant',
                   'single_form' => false,
+                  'cascade_validation' => true
             )
         );
     }
