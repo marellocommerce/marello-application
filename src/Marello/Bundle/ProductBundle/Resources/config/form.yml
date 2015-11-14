@@ -3,11 +3,13 @@ parameters:
     marello_product.product_form.type.class:                  Marello\Bundle\ProductBundle\Form\Type\ProductType
     marello_product.product_form.type.product_api.class:      Marello\Bundle\ProductBundle\Form\Type\ProductApiType
     marello_product.product_form.type.product_select.class:   Marello\Bundle\ProductBundle\Form\Type\ProductSelectType
+    marello_product.form.type.product_collection.class:       Marello\Bundle\ProductBundle\Form\Type\ProductCollectionType
+    marello_product.product_variant_form.type.class:          Marello\Bundle\ProductBundle\Form\Type\ProductVariantType
 
     ## form handlers
     marello_product.product_form.handler.class:               Marello\Bundle\ProductBundle\Form\Handler\ProductHandler
     marello_product.product_form.handler.product_api.class:   Marello\Bundle\ProductBundle\Form\Handler\ProductApiHandler
-
+    marello_product.product_variant_form.handler.class:       Marello\Bundle\ProductBundle\Form\Handler\ProductVariantHandler
     ## api manager
     marello_product.manager.api.class:                        Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
 
@@ -32,6 +34,16 @@ services:
         tags:
             - { name: form.type, alias: marello_product_select }
 
+    marello_product.form.type.product_collection:
+        class: %marello_product.form.type.product_collection.class%
+        tags:
+             - { name: form.type, alias: marello_product_collection }
+
+    marello_product.product_variant_form.type:
+        class: %marello_product.product_variant_form.type.class%
+        tags:
+             - { name: form.type, alias: marello_product_variant_form }
+
     ## forms
     marello_product.product.form:
         class: Symfony\Component\Form\Form
@@ -50,6 +62,16 @@ services:
             - ~
             - 'marello_product_api_form'
 
+
+    marello_product.product_variant.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - 'marello_product_variant_form'
+            - 'marello_product_variant_form'
+
+
     ## form handlers
     marello_product.product_form.handler:
         class: %marello_product.product_form.handler.class%
@@ -67,6 +89,14 @@ services:
             - @request
             - @doctrine.orm.entity_manager
             - @oro_entity.routing_helper
+
+    marello_product.product_variant_form.handler:
+        class: %marello_product.product_variant_form.handler.class%
+        scope: request
+        arguments:
+            - @marello_product.product_variant.form
+            - @request
+            - @doctrine.orm.entity_manager
 
     marello_product.manager.api:
         class: %marello_product.manager.api.class%

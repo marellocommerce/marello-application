@@ -2,19 +2,19 @@
 
 namespace Marello\Bundle\ProductBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
-use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
+
+use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 
 /**
  * Represents a Marello Product
@@ -40,9 +40,6 @@ use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
  *  defaultValues={
  *      "entity"={"icon"="icon-barcode"},
  *      "ownership"={
- *              "owner_type"="USER",
- *              "owner_field_name"="owner",
- *              "owner_column_name"="user_owner_id",
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"
  *      },
@@ -110,7 +107,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * @var ProductStatus
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\ProductStatus")
-     * @ORM\JoinColumn(name="marello_product_status_name", referencedColumnName="name")
+     * @ORM\JoinColumn(name="product_status", referencedColumnName="name")
      * @ConfigField(
      *  defaultValues={
      *      "dataaudit"={"auditable"=true},
@@ -123,12 +120,6 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      **/
     protected $status;
 
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
 
     /**
      * @var Organization
@@ -152,6 +143,14 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      */
     protected $channels;
+
+    /**
+     * @var Variant
+     *
+     * @ORM\ManyToOne(targetEntity="Variant")
+     * @ORM\JoinColumn(name="variant_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $variant;
 
     /**
      * @var Collection|InventoryItem[]
@@ -352,6 +351,25 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     }
 
     /**
+     * @return Variant
+     */
+    public function getVariant()
+    {
+        return $this->variant;
+    }
+
+    /**
+     * @param Variant $variant
+     * @return Product
+     */
+    public function setVariant(Variant $variant)
+    {
+        $this->variant = $variant;
+
+        return $this;
+    }
+
+    /**
      * Add item
      *
      * @param SalesChannel $channel
@@ -377,25 +395,6 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
         if ($this->channels->contains($channel)) {
             $this->channels->removeElement($channel);
         }
-
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
-
-    /**
-     * @param User $owner
-     * @return Product
-     */
-    public function setOwner($owner)
-    {
-        $this->owner = $owner;
 
         return $this;
     }

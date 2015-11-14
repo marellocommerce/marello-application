@@ -9,3 +9,11 @@ services:
             - ["name"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: products, acl_resource: marello_product_view }
+
+    marello_product.widget_provider.actions.add_variant:
+        parent: oro_ui.widget_provider.action_button.abstract
+        arguments:
+            - marello_add_variant_button
+            - marello_add_variant_link
+        tags:
+            - { name: oro_ui.view_action_provider, group: product }

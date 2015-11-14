@@ -1,0 +1,203 @@
+<?php
+
+namespace Marello\Bundle\ProductBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+/**
+ * Represents a Marello Variant Product
+ *
+ * @ORM\Entity
+ * @ORM\Table(name="marello_product_variant")
+ * @ORM\HasLifecycleCallbacks()
+ * @Config(
+ *  routeName="marello_product_index",
+ *  routeView="marello_product_view",
+ *  defaultValues={
+ *      "entity"={"icon"="icon-barcode"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      },
+ *  }
+ * )
+ */
+class Variant
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="variant_code", type="string", nullable=true, unique=true)
+     */
+    protected $variantCode;
+
+    /**
+     * @var Collection $products
+     *
+     * @ORM\ManyToMany(targetEntity="Product",cascade={"persist"})
+     * @ORM\JoinTable(name="marello_product_to_variant")
+     */
+    protected $products;
+
+    /**
+     * @var \DateTime $createdAt
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.created_at"
+     *          }
+     *      }
+     * )
+     */
+    protected $createdAt;
+
+    /**
+     * @var \DateTime $updatedAt
+     *
+     * @ORM\Column(name="updated_at", type="datetime")
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.updated_at"
+     *          }
+     *      }
+     * )
+     */
+    protected $updatedAt;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantCode()
+    {
+        return $this->variantCode;
+    }
+
+    /**
+     * @param string $variantCode
+     */
+    public function setVariantCode($variantCode)
+    {
+        $this->variantCode = $variantCode;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * Add item
+     *
+     * @param Product $item
+     * @return Product
+     */
+    public function addProduct(Product $item)
+    {
+        if (!$this->products->contains($item)) {
+            $this->products->add($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove item
+     *
+     * @param Product $item
+     * @return Product
+     */
+    public function removeProduct(Product $item)
+    {
+        if ($this->products->contains($item)) {
+            $this->products->removeElement($item);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
+     * Pre persist event handler
+     *
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = clone $this->createdAt;
+    }
+
+    /**
+     * Pre update event handler
+     *
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+}

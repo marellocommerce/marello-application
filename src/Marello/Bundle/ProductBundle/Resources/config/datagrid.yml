@@ -118,3 +118,57 @@ datagrid:
             entityHint: product
             export: true
             entity_pagination: true
+
+    marello-product-variant-grid:
+        extended_entity_name: Marello\Bundle\ProductBundle\Entity\Product
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - p.name
+                    - p.sku
+                    - p.price
+                    - s.label as status
+                    - p.stockLevel
+                from:
+                    - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
+                join:
+                    left:
+                        - { join: p.status, alias: s }
+                where:
+                    and:
+                        - p.variant = :variantId
+                        - p.id != :productId
+            bind_parameters:
+                - variantId
+                - productId
+        columns:
+            sku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string
+            stockLevel:
+                label:              marello.product.stock_level.label
+                frontend_type:      string
+            status:
+                label:              marello.product.status.label
+                frontend_type:      string
+            price:
+                label:              marello.product.price.label
+                frontend_type:      string
+        sorters:
+            columns:
+                name:           { data_name: p.name }
+                sku:            { data_name: p.sku }
+                price:          { data_name: p.price }
+            default:
+                stockLevel:  DESC
+        options:
+            entityHint: product
+            toolbarOptions:
+                hide: true
+                pagination:
+                    hide: true
