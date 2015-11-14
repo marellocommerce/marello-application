@@ -106,7 +106,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * @var ProductStatus
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\ProductStatus")
-     * @ORM\JoinColumn(name="marello_product_status_name", referencedColumnName="name")
+     * @ORM\JoinColumn(name="product_status", referencedColumnName="name")
      * @ConfigField(
      *  defaultValues={
      *      "dataaudit"={"auditable"=true},
@@ -119,12 +119,6 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      **/
     protected $status;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="variant_code", type="string", nullable=true)
-     */
-    protected $variantCode;
 
     /**
      * @var Organization
@@ -148,6 +142,14 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      */
     protected $channels;
+
+    /**
+     * @var Variant
+     *
+     * @ORM\ManyToOne(targetEntity="Variant")
+     * @ORM\JoinColumn(name="variant_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $variant;
 
     /**
      * @var \DateTime $createdAt
@@ -268,25 +270,6 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     }
 
     /**
-     * @return string
-     */
-    public function getVariantCode()
-    {
-        return $this->variantCode;
-    }
-
-    /**
-     * @param string $variantCode
-     * @return Product
-     */
-    public function setVariantCode($variantCode)
-    {
-        $this->variantCode = $variantCode;
-
-        return $this;
-    }
-
-    /**
      * @return ProductStatus
      */
     public function getStatus()
@@ -350,6 +333,25 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     public function getChannels()
     {
         return $this->channels;
+    }
+
+    /**
+     * @return Variant
+     */
+    public function getVariant()
+    {
+        return $this->variant;
+    }
+
+    /**
+     * @param Variant $variant
+     * @return Product
+     */
+    public function setVariant(Variant $variant)
+    {
+        $this->variant = $variant;
+
+        return $this;
     }
 
     /**

@@ -47,8 +47,9 @@ class MarelloProductBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_product_product');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('variant_id', 'integer', ['notnull' => false]);
+        $table->addColumn('product_status', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
-        $table->addColumn('marello_product_status_name', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('sku', 'string', ['length' => 255]);
         $table->addColumn('price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
@@ -59,10 +60,11 @@ class MarelloProductBundleInstaller implements Installation
         $table->addColumn('cost', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['sku'], 'marello_product_product_skuidx');
-        $table->addIndex(['marello_product_status_name'], 'IDX_25845B8DA050B8C8', []);
         $table->addIndex(['organization_id'], 'IDX_25845B8D32C8A3DE', []);
         $table->addIndex(['created_at'], 'idx_marello_product_created_at', []);
         $table->addIndex(['updated_at'], 'idx_marello_product_updated_at', []);
+        $table->addIndex(['product_status'], 'IDX_25845B8D197C24B8', []);
+        $table->addIndex(['variant_id'], 'IDX_25845B8D3B69A9AF', []);
     }
 
     /**
@@ -134,16 +136,22 @@ class MarelloProductBundleInstaller implements Installation
     {
         $table = $schema->getTable('marello_product_product');
         $table->addForeignKeyConstraint(
-            $schema->getTable('oro_organization'),
-            ['organization_id'],
+            $schema->getTable('marello_product_variant'),
+            ['variant_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_product_product_status'),
-            ['marello_product_status_name'],
+            ['product_status'],
             ['name'],
             ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 
@@ -156,14 +164,14 @@ class MarelloProductBundleInstaller implements Installation
     {
         $table = $schema->getTable('marello_product_to_variant');
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_product_product'),
-            ['product_id'],
+            $schema->getTable('marello_product_variant'),
+            ['variant_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_product_variant'),
-            ['variant_id'],
+            $schema->getTable('marello_product_product'),
+            ['product_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
@@ -178,14 +186,14 @@ class MarelloProductBundleInstaller implements Installation
     {
         $table = $schema->getTable('product_saleschannel');
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_sales_sales_channel'),
-            ['saleschannel_id'],
+            $schema->getTable('marello_product_product'),
+            ['product_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_product_product'),
-            ['product_id'],
+            $schema->getTable('marello_sales_sales_channel'),
+            ['saleschannel_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );

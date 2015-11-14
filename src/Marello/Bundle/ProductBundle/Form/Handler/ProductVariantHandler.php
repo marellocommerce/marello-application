@@ -91,7 +91,7 @@ class ProductVariantHandler
         // add products from collection as a variant
         foreach ($products as $product) {
             $entity->addProduct($product);
-            $product->setVariantCode($entity->getVariantCode());
+            $product->setVariant($entity);
         }
 
         $this->manager->persist($entity);

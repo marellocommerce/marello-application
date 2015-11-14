@@ -5,7 +5,7 @@
 <div class="widget-content">
     <div class="row-fluid form-horizontal">
         <div class="responsive-block">
-            {{ dataGrid.renderGrid(gridName, { variantCode: product.variantCode }, { cssClass: 'inner-grid' }) }}
+            {{ dataGrid.renderGrid(gridName, { variantId: product.variant.id, productId: product.id }, { cssClass: 'inner-grid' }) }}
         </div>
     </div>
 </div>
