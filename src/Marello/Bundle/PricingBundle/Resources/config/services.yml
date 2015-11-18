@@ -1,0 +1,12 @@
+parameters:
+    marello_productprice.product.form.extension.class: Marello\Bundle\PricingBundle\Form\Extension\PricingTypeExtension
+    marello_productprice.product.model.pricing_aware_interface.class:  Marello\Bundle\PricingBundle\Model\PricingAwareInterface
+
+services:
+    marello_productprice.product.form.extension:
+        class: %marello_productprice.product.form.extension.class%
+        arguments:
+            - @oro_locale.settings
+            - %marello_productprice.product.model.pricing_aware_interface.class%
+        tags:
+            - { name: form.type_extension, alias: marello_product_form }

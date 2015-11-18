@@ -40,6 +40,8 @@
 {% endmacro %}
 
 {% block marello_product_price_collection_widget %}
+    {# pricing_enabled button from parent form #}
+    {{ form.parent.pricing_enabled is defined ? form_row(form.parent.pricing_enabled): '' }}
     {% spaceless %}
         {% if prototype is defined %}
             {% set prototype_html = _self.marello_product_price_collection_item_prototype(form) %}

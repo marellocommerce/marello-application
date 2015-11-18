@@ -8,12 +8,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelFieldSubscriber;
-use Marello\Bundle\PricingBundle\Form\EventListener\PricesCollectionFieldSubscriber;
 
 class ProductType extends AbstractType
 {
@@ -25,14 +23,10 @@ class ProductType extends AbstractType
     /** @var EntityManager */
     protected $em;
 
-    /** @var LocaleSettings $localeSettings */
-    protected $localeSettings;
-
-    public function __construct(ConfigManager $configManager, EntityManager $em, LocaleSettings $localeSettings)
+    public function __construct(ConfigManager $configManager, EntityManager $em)
     {
         $this->configManager = $configManager;
         $this->em = $em;
-        $this->localeSettings = $localeSettings;
     }
 
     /**
@@ -96,7 +90,6 @@ class ProductType extends AbstractType
         ->add('prices',
             'marello_product_price_collection'
         );
-        $builder->addEventSubscriber(new PricesCollectionFieldSubscriber($this->localeSettings));
     }
 
     /**

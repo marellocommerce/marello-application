@@ -13,7 +13,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
-
+use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 
 /**
@@ -50,7 +50,9 @@ use Marello\Bundle\ProductBundle\Model\ExtendProduct;
  *  }
  * )
  */
-class Product extends ExtendProduct implements SalesChannelAwareInterface
+class Product extends ExtendProduct implements
+    SalesChannelAwareInterface,
+    PricingAwareInterface
 {
     /**
      * @var integer
@@ -165,6 +167,13 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * @ORM\OrderBy({"id" = "ASC"})
      */
     protected $inventoryItems;
+
+    /**
+     * @var array $data
+     *
+     * @ORM\Column(name="data", type="json_array", nullable=true)
+     */
+    protected $data;
 
     /**
      * @var \DateTime $createdAt
@@ -397,6 +406,25 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @param array $data
+     * @return Product
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
