@@ -6,12 +6,14 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
     protected $defaultOrganization;
+    protected $defaultWarehouse;
 
     public function getDependencies() {
         return [
@@ -27,6 +29,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     public function load(ObjectManager $manager)
     {
         $this->defaultOrganization = $manager->getRepository('OroOrganizationBundle:Organization')->getOrganizationById(1);
+        $this->defaultWarehouse = $manager->getRepository('MarelloInventoryBundle:Warehouse')->getDefault();
 
         $this->loadProducts($manager);
         $manager->flush();
@@ -62,10 +65,12 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setSku($data['sku']);
         $product->setPrice($data['price']);
         $product->setName($data['name']);
-        $product->setStockLevel($data['stock_level']);
-        $product->setOrganization(
-            $this->defaultOrganization
-        );
+        $inventoryItem = new InventoryItem();
+        $inventoryItem->setProduct($product);
+        $inventoryItem->setWarehouse($this->defaultWarehouse);
+        $inventoryItem->setQuantity($data['stock_level']);
+        $product->getInventoryItems()->add($inventoryItem);
+        $product->setOwner($this->defaultOrganization);
 
         $randomNumber = rand(0,100);
         $status = ($randomNumber % 2 == 0) ? $this->getReference('product_status_enabled') : $this->getReference('product_status_disabled');

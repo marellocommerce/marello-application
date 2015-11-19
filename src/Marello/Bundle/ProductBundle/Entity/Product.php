@@ -2,9 +2,12 @@
 
 namespace Marello\Bundle\ProductBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
@@ -37,8 +40,8 @@ use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
  *  defaultValues={
  *      "entity"={"icon"="icon-barcode"},
  *      "ownership"={
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
+ *          "organization_field_name"="owner",
+ *          "organization_column_name"="owner_id"
  *      },
  *      "security"={
  *          "type"="ACL",
@@ -117,12 +120,14 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
      */
-    protected $organization;
+    protected $owner;
 
     /**
      * @var Collection|ProductPrice[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice", mappedBy="product", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice", mappedBy="product",
+     *                                                                                 cascade={"persist"},
+     *                                                                                 orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
      */
     protected $prices;
@@ -148,7 +153,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * @ORM\OneToMany(
      *      targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem",
      *      mappedBy="product",
-     *      cascade={"remove"},
+     *      cascade={"remove", "persist"},
      *      orphanRemoval=true,
      *      fetch="EXTRA_LAZY"
      * )
@@ -186,8 +191,9 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
 
     public function __construct()
     {
-        $this->prices           = new ArrayCollection();
-        $this->channels         = new ArrayCollection();
+        $this->prices         = new ArrayCollection();
+        $this->channels       = new ArrayCollection();
+        $this->inventoryItems = new ArrayCollection();
     }
 
     /**
@@ -208,6 +214,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
 
     /**
      * @param string $name
+     *
      * @return Product
      */
     public function setName($name)
@@ -227,6 +234,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
 
     /**
      * @param string $sku
+     *
      * @return Product
      */
     public function setSku($sku)
@@ -246,6 +254,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
 
     /**
      * @param float $price
+     *
      * @return Product
      */
     public function setPrice($price)
@@ -265,6 +274,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
 
     /**
      * @param ProductStatus $status
+     *
      * @return Product
      */
     public function setStatus(ProductStatus $status)
@@ -286,6 +296,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * Add item
      *
      * @param ProductPrice $price
+     *
      * @return Product
      */
     public function addPrice(ProductPrice $price)
@@ -302,6 +313,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * Remove item
      *
      * @param ProductPrice $price
+     *
      * @return Product
      */
     public function removePrice(ProductPrice $price)
@@ -331,6 +343,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
 
     /**
      * @param Variant $variant
+     *
      * @return Product
      */
     public function setVariant(Variant $variant)
@@ -344,6 +357,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * Add item
      *
      * @param SalesChannel $channel
+     *
      * @return Product
      */
     public function addChannel(SalesChannel $channel)
@@ -359,6 +373,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      * Remove item
      *
      * @param SalesChannel $channel
+     *
      * @return Product
      */
     public function removeChannel(SalesChannel $channel)
@@ -373,18 +388,19 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     /**
      * @return Organization
      */
-    public function getOrganization()
+    public function getOwner()
     {
-        return $this->organization;
+        return $this->owner;
     }
 
     /**
-     * @param Organization $organization
+     * @param Organization $owner
+     *
      * @return Product
      */
-    public function setOrganization($organization)
+    public function setOwner($owner)
     {
-        $this->organization = $organization;
+        $this->owner = $owner;
 
         return $this;
     }
@@ -399,6 +415,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
 
     /**
      * @param \DateTime $createdAt
+     *
      * @return Product
      */
     public function setCreatedAt($createdAt)
@@ -418,6 +435,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
 
     /**
      * @param \DateTime $updatedAt
+     *
      * @return Product
      */
     public function setUpdatedAt($updatedAt)

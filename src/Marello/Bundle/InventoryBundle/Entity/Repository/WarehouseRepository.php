@@ -21,4 +21,9 @@ class WarehouseRepository extends EntityRepository
 
         return $qb->getQuery()->execute();
     }
+
+    public function getDefault()
+    {
+        return $this->findOneBy(['default' => true]);
+    }
 }

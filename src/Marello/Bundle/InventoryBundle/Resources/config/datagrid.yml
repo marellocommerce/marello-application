@@ -4,35 +4,32 @@ datagrid:
             type: orm
             query:
                 select:
-                    - i
+                    - p
+                    - COALESCE(SUM(i.quantity), 0) AS stockLevel
                 from:
-                    - { table: MarelloInventoryBundle:InventoryItem, alias: i }
+                    - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
-                        - { join: i.product, alias: p }
-                        - { join: i.warehouse, alias: w }
-                orderBy:
-                    - { column: p.sku, dir: asc }
-                    - { column: w.id, dir: asc }
+                        - { join: p.inventoryItems, alias: i }
+                groupBy: p.id
         columns:
             sku:
                 label: marello.product.sku.label
-                data_name: product.sku
+                data_name: sku
             product:
                 label: marello.inventory.item.product.label
                 frontend_type: string
-                data_name: product.name
-            warehouse:
-                label: marello.inventory.warehouse.entity_label
-                frontend_type: string
+                data_name: name
             quantity:
                 label: marello.inventory.item.quantity.label
                 frontend_type: number
+                data_name: stockLevel
+
         properties:
             inventory_link:
                 type:       url
                 route:      marello_inventory_inventory_update
-                params:     { id: product.id }
+                params:     { id: id }
         actions:
             inventory:
                 type:           navigate
