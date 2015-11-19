@@ -11,14 +11,16 @@ datagrid:
                     - p.sku
                     - p.price
                     - s.label as status
-                    - p.stockLevel
                     - p.createdAt
                     - p.updatedAt
+                    - COALESCE(SUM(i.quantity), 0) AS stockLevel
                 from:
-                    - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
+                    - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
+                        - { join: p.inventoryItems, alias: i }
+                groupBy: p.id
         columns:
             sku:
                 label:              marello.product.sku.label
@@ -28,7 +30,8 @@ datagrid:
                 frontend_type:      string
             stockLevel:
                 label:              marello.product.stock_level.label
-                frontend_type:      string
+                frontend_type:      number
+                data_name:          stockLevel
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
@@ -63,7 +66,7 @@ datagrid:
             columns:
                 sku:            { data_name: p.sku }
                 name:           { data_name: p.name }
-                stockLevel:     { data_name: p.stockLevel }
+                stockLevel:     { data_name: stockLevel }
                 status:         { data_name: s.label }
                 price:          { data_name: p.price }
                 createdAt:      { data_name: p.createdAt }
@@ -80,7 +83,7 @@ datagrid:
                     data_name:        p.name
                 stockLevel:
                     type:             string
-                    data_name:        p.stockLevel
+                    data_name:        stockLevel
                 status:
                     type: entity
                     data_name: s
@@ -114,6 +117,7 @@ datagrid:
                 type:           navigate
                 icon:           list-alt
                 link:           inventory_link
+                acl_resource:   marello_inventory_product_stock_modify
         options:
             entityHint: product
             export: true

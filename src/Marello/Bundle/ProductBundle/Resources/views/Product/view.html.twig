@@ -33,6 +33,23 @@
             'entity_label': 'marello.product.entity_label'|trans
         }) }}
     {% endif %}
+    {% if resource_granted('marello_inventory_product_stock_modify') %}
+        {{ UI.buttonSeparator() }}
+        {{ UI.button({
+            'path': path('marello_inventory_inventory_update', {'id': entity.id}),
+            'label': 'marello.inventory.label'|trans,
+            'title': 'marello.inventory.label'|trans,
+            'iCss': 'icon-list-alt'
+        }) }}
+    {% elseif resource_granted('marello_inventory_product_stock_view') %}
+        {{ UI.buttonSeparator() }}
+        {{ UI.button({
+            'path': path('marello_inventory_inventory_view', {'id': entity.id}),
+            'label': 'marello.inventory.label'|trans,
+            'title': 'marello.inventory.label'|trans,
+            'iCss': 'icon-list-alt'
+        }) }}
+    {% endif %}
 {% endblock %}
 
 {% block content_data %}

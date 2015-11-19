@@ -15,6 +15,7 @@ use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Represents a Marello Product
@@ -100,13 +101,6 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     protected $price;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="stock_level", type="float", nullable=true)
-     */
-    protected $stockLevel;
-
-    /**
      * @var ProductStatus
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\ProductStatus")
@@ -125,6 +119,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
 
     /**
      * @var User
+     *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_owner_id", referencedColumnName="id", onDelete="SET NULL")
      */
@@ -262,25 +257,6 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     public function setPrice($price)
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getStockLevel()
-    {
-        return $this->stockLevel;
-    }
-
-    /**
-     * @param int $stockLevel
-     * @return Product
-     */
-    public function setStockLevel($stockLevel)
-    {
-        $this->stockLevel = $stockLevel;
 
         return $this;
     }

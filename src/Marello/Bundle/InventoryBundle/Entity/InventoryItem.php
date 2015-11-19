@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository")
@@ -11,6 +12,15 @@ use Marello\Bundle\ProductBundle\Entity\Product;
  *      name="marello_inventory_item",
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(columns={"product_id", "warehouse_id"})
+ *      }
+ * )
+ * @Config(
+ *      defaultValues={
+ *          "security"={
+ *              "type"="ACL",
+ *              "permissions"="VIEW;EDIT",
+ *              "group_name"=""
+ *          }
  *      }
  * )
  */
