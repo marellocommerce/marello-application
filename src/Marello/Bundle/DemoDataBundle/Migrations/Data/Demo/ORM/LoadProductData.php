@@ -11,11 +11,13 @@ use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
-    protected $defaultUser;
     protected $defaultOrganization;
 
     public function getDependencies() {
-        return ['Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductStatusData'];
+        return [
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductStatusData',
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData'
+        ];
     }
 
     /**
@@ -24,7 +26,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
      */
     public function load(ObjectManager $manager)
     {
-        $this->defaultUser = $manager->getRepository('OroUserBundle:User')->find(1);
         $this->defaultOrganization = $manager->getRepository('OroOrganizationBundle:Organization')->getOrganizationById(1);
 
         $this->loadProducts($manager);
@@ -65,13 +66,13 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setOrganization(
             $this->defaultOrganization
         );
-        $product->setOwner(
-            $this->defaultUser
-        );
 
         $randomNumber = rand(0,100);
         $status = ($randomNumber % 2 == 0) ? $this->getReference('product_status_enabled') : $this->getReference('product_status_disabled');
         $product->setStatus($status);
+        $product->addChannel($this->getReference('marello_sales_channel_0'));
+        $product->addChannel($this->getReference('marello_sales_channel_1'));
+
         $manager->persist($product);
 
         return $product;

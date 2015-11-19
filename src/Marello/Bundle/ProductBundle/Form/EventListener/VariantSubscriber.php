@@ -1,0 +1,40 @@
+<?php
+
+namespace Marello\Bundle\ProductBundle\Form\EventListener;
+
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+use Marello\Bundle\ProductBundle\Entity\Variant;
+
+class VariantSubscriber implements EventSubscriberInterface
+{
+    /**
+     * Get subscribed events
+     * @return array
+     */
+    public static function getSubscribedEvents()
+    {
+        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+    }
+
+    /**
+     * Preset data for channels
+     * @param FormEvent $event
+     */
+    public function preSetData(FormEvent $event)
+    {
+        $entity = $event->getData();
+        $form = $event->getForm();
+        if (!$entity || null === $entity->getId()) {
+            if($form->has('variantCode')) {
+                if($entity instanceof Variant && count($entity->getProducts()) > 0) {
+                    $parent = $entity->getProducts()->first();
+                    $entity->setVariantCode($parent->getSku());
+                    $event->setData($entity);
+                }
+            }
+        }
+    }
+}
