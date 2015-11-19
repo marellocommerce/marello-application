@@ -15,7 +15,7 @@ use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Form\Type\ProductType;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 
-class PricingTypeExtension extends AbstractTypeExtension
+class ProductTypeExtension extends AbstractTypeExtension
 {
     /** @var LocaleSettings $localeSettings */
     protected $localeSettings;
@@ -47,7 +47,7 @@ class PricingTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'loadPricingCollection']);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'loadPricingSettings']);
         $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'handleEnabledState']);
     }
 
@@ -55,7 +55,7 @@ class PricingTypeExtension extends AbstractTypeExtension
      * Preset data for channels
      * @param FormEvent $event
      */
-    public function loadPricingCollection(FormEvent $event)
+    public function loadPricingSettings(FormEvent $event)
     {
         $product = $event->getData();
 
@@ -77,22 +77,28 @@ class PricingTypeExtension extends AbstractTypeExtension
             ]
         );
 
-//        $form = $event->getForm();
-//        if (!$product || null === $product->getId()) {
-//            if($form->has('channels')) {
-//                if($entity instanceof Product) {
-//                    if(count($entity->getChannels()) > 0) {
-//                        foreach($entity->getChannels() as $_channel) {
-//                            $default = new ProductPrice();
-//                            $default->setChannel($_channel);
-//                            $default->setCurrency($this->getDefaultCurrency());
-//                            $entity->addPrice($default);
-//                        }
-//                        $event->setData($entity);
-//                    }
-//                }
-//            }
-//        }
+
+        $this->addPricingCollection($form, $product, $event);
+    }
+
+    public function addPricingCollection($form, $product, $event)
+    {
+        $form->add('prices',
+            'marello_product_price_collection'
+        );
+
+        if (!$product || null === $product->getId()) {
+            if(count($product->getChannels()) > 0) {
+                foreach($product->getChannels() as $_channel) {
+                    $default = new ProductPrice();
+                    $default->setChannel($_channel);
+                    $product->addPrice($default);
+                }
+
+            }
+        }
+
+        $event->setData($product);
     }
 
     /**

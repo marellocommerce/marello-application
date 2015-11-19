@@ -3,6 +3,7 @@
         {{ form_widget(form.channel) }}
     </td>
     <td>
+        <div class="cell-currency-symbol align-center"><span>{{ currency_symbol }}</span></div>
         {{ form_widget(form.currency) }}
     </td>
     <td>
@@ -41,7 +42,7 @@
 
 {% block marello_product_price_collection_widget %}
     {# pricing_enabled button from parent form #}
-    {% set options = {pricing_enable_id: form.parent.pricing_enabled.vars.id} %}
+    {% set options = { pricing_enable_id: form.parent.pricing_enabled.vars.id } %}
     {% set pricingEnabled = form.parent.vars.value.data.pricing_enabled is defined and form.parent.vars.value.data.pricing_enabled %}
     {% spaceless %}
         {% if prototype is defined %}

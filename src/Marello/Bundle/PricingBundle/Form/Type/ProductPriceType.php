@@ -4,12 +4,28 @@ namespace Marello\Bundle\PricingBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class ProductPriceType extends AbstractType
 {
     const NAME = 'marello_product_price';
+
+    /**
+     * @var LocaleSettings
+     */
+    protected $localeSettings;
+
+    /**
+     * @param LocaleSettings $localeSettings
+     */
+    public function __construct(LocaleSettings $localeSettings)
+    {
+        $this->localeSettings = $localeSettings;
+    }
 
     /**
      * {@inheritdoc}
@@ -25,10 +41,10 @@ class ProductPriceType extends AbstractType
                 ]
             )
             ->add('currency',
-                'text',
+                'hidden',
                 [
                     'required' => true,
-                    'label'    => 'marello.productprice.currency.label',
+                    'data' => $this->localeSettings->getCurrency()
                 ]
             )
             ->add('value',
@@ -45,11 +61,24 @@ class ProductPriceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        $currencyCode = $this->localeSettings->getCurrency();
+        $currencySymbol = $this->localeSettings->getCurrencySymbolByCurrency($currencyCode);
+
         $resolver->setDefaults(
             array('data_class' => 'Marello\\Bundle\\PricingBundle\\Entity\\ProductPrice',
                   'intention' => 'productprice',
-                  'single_form' => true)
+                  'single_form' => true,
+                  'currency_symbol' => $currencySymbol
+            )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['currency_symbol'] = $options['currency_symbol'];
     }
 
     /**

@@ -86,9 +86,6 @@ class ProductType extends AbstractType
                 'label'    => 'marello.product.stock_level.label',
                 'read_only'    => true
             ]
-        )
-        ->add('prices',
-            'marello_product_price_collection'
         );
     }
 

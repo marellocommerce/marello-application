@@ -13,16 +13,14 @@ define(function (require) {
 
         var enableHandler = function () {
             if ($enableEl.is(':checked')) {
-                console.log('checked')
                 $el.addClass('pricing-enabled');
             } else {
-                console.log('not checked')
                 $el.removeClass('pricing-enabled');
             }
         };
 
         $enableEl.on('click', enableHandler);
-        console.log($enableEl);
+
         enableHandler();
 
     };
