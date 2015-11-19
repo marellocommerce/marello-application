@@ -5,7 +5,7 @@
 {% set formAction = entity.id ? path('marello_product_update', { id: entity.id }) : path('marello_product_create') %}
 
 {% if entity.id %}
-    {% oro_title_set({params : {"%product.name%": entity.name } }) %}
+    {% oro_title_set({params : {"%name%": entity.name } }) %}
 {% endif %}
 
 {% block pageHeader %}
@@ -59,8 +59,7 @@
                     form_row(form.channels),
                     form_row(form.name),
                     form_row(form.sku),
-                    form_row(form.status),
-                    form_row(form.stockLevel)
+                    form_row(form.status)
                 ]
             }]
         },

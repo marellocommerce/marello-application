@@ -84,15 +84,6 @@ class ProductType extends AbstractType
                 'required' => true,
             )
         )
-        ->add(
-            'stockLevel',
-            'text',
-            [
-                'required' => true,
-                'label'    => 'marello.product.stock_level.label',
-                'read_only'    => true
-            ]
-        )
         ->add('prices',
             'marello_product_price_collection'
         );
