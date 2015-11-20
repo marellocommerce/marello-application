@@ -2,37 +2,34 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
-use Marello\Bundle\InventoryBundle\Model\WarehouseInventory;
+use Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemModifyTransformer;
+use Marello\Bundle\InventoryBundle\Model\InventoryItemModify;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class WarehouseInventoryType extends AbstractType
+class InventoryItemType extends AbstractType
 {
-    const NAME = 'marello_warehouse_inventory';
+    const NAME = 'marello_inventory_item';
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('modifyOperator', 'choice', [
                 'choices' => [
-                    WarehouseInventory::OPERATOR_INCREASE => 'Increase',
-                    WarehouseInventory::OPERATOR_DECREASE => 'Decrease',
+                    InventoryItemModify::OPERATOR_INCREASE => 'Increase',
+                    InventoryItemModify::OPERATOR_DECREASE => 'Decrease',
                 ],
             ])
             ->add('modifyAmount', 'number');
+
+        $builder->addModelTransformer(new InventoryItemModifyTransformer());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\InventoryBundle\Model\WarehouseInventory',
+            'data_class'         => 'Marello\Bundle\InventoryBundle\Model\InventoryItemModify',
             'cascade_validation' => true,
         ]);
     }

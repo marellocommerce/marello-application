@@ -4,14 +4,9 @@ namespace Marello\Bundle\InventoryBundle\Model;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Validator\Constraints\WarehouseInventory as WarehouseInventoryConstraint;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @WarehouseInventoryConstraint
- */
-class WarehouseInventory
+class InventoryItemModify
 {
     const OPERATOR_INCREASE = 'increase';
     const OPERATOR_DECREASE = 'decrease';
@@ -40,46 +35,22 @@ class WarehouseInventory
      */
     protected $inventoryItem = null;
 
-    protected function __construct(InventoryItem $item)
+    /**
+     * InventoryItemModify constructor.
+     *
+     * @param InventoryItem $inventoryItem
+     */
+    public function __construct(InventoryItem $inventoryItem)
     {
-        $this->inventoryItem = $item;
+        $this->inventoryItem = $inventoryItem;
     }
 
     /**
-     * Names constructor for new WarehouseInventory from existing inventory item.
+     * Modifies underlying inventory item.
      *
-     * @param InventoryItem $item
-     *
-     * @return static
+     * @return $this
      */
-    public static function fromInventoryItem(InventoryItem $item)
-    {
-        return new static($item);
-    }
-
-    /**
-     * Named constructor for new WarehouseInventory from product and warehouse.
-     *
-     * @param Warehouse $warehouse
-     * @param Product   $product
-     *
-     * @return static
-     */
-    public static function fromWarehouseAndProduct(Warehouse $warehouse, Product $product = null)
-    {
-        $item = new InventoryItem();
-        $item->setProduct($product);
-        $item->setWarehouse($warehouse);
-
-        return new static($item);
-    }
-
-    /**
-     * Modifies and returns inventory item entity for warehouse.
-     *
-     * @return InventoryItem
-     */
-    public function getModifiedInventoryItem()
+    public function modify()
     {
         if ($this->modifyOperator === self::OPERATOR_INCREASE) {
             $this->inventoryItem->modifyQuantity($this->modifyAmount);
@@ -87,6 +58,14 @@ class WarehouseInventory
             $this->inventoryItem->modifyQuantity(-$this->modifyAmount);
         }
 
+        return $this;
+    }
+
+    /**
+     * @return InventoryItem
+     */
+    public function getInventoryItem()
+    {
         return $this->inventoryItem;
     }
 
@@ -115,26 +94,6 @@ class WarehouseInventory
     }
 
     /**
-     * @return string
-     */
-    public function getModifyOperator()
-    {
-        return $this->modifyOperator;
-    }
-
-    /**
-     * @param string $modifyOperator
-     *
-     * @return $this
-     */
-    public function setModifyOperator($modifyOperator)
-    {
-        $this->modifyOperator = $modifyOperator;
-
-        return $this;
-    }
-
-    /**
      * @return int
      */
     public function getModifyAmount()
@@ -155,10 +114,22 @@ class WarehouseInventory
     }
 
     /**
-     * @return InventoryItem
+     * @return string
      */
-    public function getInventoryItem()
+    public function getModifyOperator()
     {
-        return $this->inventoryItem;
+        return $this->modifyOperator;
+    }
+
+    /**
+     * @param string $modifyOperator
+     *
+     * @return $this
+     */
+    public function setModifyOperator($modifyOperator)
+    {
+        $this->modifyOperator = $modifyOperator;
+
+        return $this;
     }
 }

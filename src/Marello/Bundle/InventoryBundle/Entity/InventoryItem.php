@@ -79,7 +79,7 @@ class InventoryItem
      *
      * @return $this
      */
-    public function setProduct($product)
+    public function setProduct($product = null)
     {
         $this->product = $product;
 
@@ -99,7 +99,7 @@ class InventoryItem
      *
      * @return $this
      */
-    public function setWarehouse(Warehouse $warehouse)
+    public function setWarehouse(Warehouse $warehouse = null)
     {
         $this->warehouse = $warehouse;
 

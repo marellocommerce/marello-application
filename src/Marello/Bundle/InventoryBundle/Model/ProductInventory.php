@@ -4,23 +4,18 @@ namespace Marello\Bundle\InventoryBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Marello\Bundle\ProductBundle\Entity\Product;
 
 class ProductInventory
 {
     /** @var Collection|WarehouseInventory[] */
     protected $warehouses;
 
-    /** @var Product */
-    protected $product;
-
     /**
-     * @param Product $product
+     * ProductInventory constructor.
      */
-    public function __construct(Product $product)
+    public function __construct()
     {
         $this->warehouses = new ArrayCollection();
-        $this->product    = $product;
     }
 
     /**
@@ -41,13 +36,5 @@ class ProductInventory
         return $this->warehouses->map(function (WarehouseInventory $inventory) {
             return $inventory->getModifiedInventoryItem();
         });
-    }
-
-    /**
-     * @return Product
-     */
-    public function getProduct()
-    {
-        return $this->product;
     }
 }

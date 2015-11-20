@@ -3,17 +3,14 @@
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
 use Doctrine\ORM\EntityManager;
-
+use Marello\Bundle\PricingBundle\Form\EventListener\PricesCollectionFieldSubscriber;
+use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelFieldSubscriber;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-
-use Marello\Bundle\ProductBundle\Entity\ProductStatus;
-use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelFieldSubscriber;
-use Marello\Bundle\PricingBundle\Form\EventListener\PricesCollectionFieldSubscriber;
 
 class ProductType extends AbstractType
 {
@@ -83,6 +80,13 @@ class ProductType extends AbstractType
                 'property' => 'label',
                 'required' => true,
             )
+        )
+        ->add(
+            'inventoryItems',
+            'marello_inventory_item_collection',
+            [
+                'label' => 'marello.inventory.label'
+            ]
         )
         ->add('prices',
             'marello_product_price_collection'

@@ -18,3 +18,13 @@ services:
         class: Marello\Bundle\InventoryBundle\Form\Type\ProductInventoryType
         tags:
              - { name: form.type, alias: marello_product_inventory }
+
+    marello_inventory.form.type.inventory_item_collection:
+        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemCollectionType
+        tags:
+            - { name: form.type, alias: marello_inventory_item_collection }
+
+    marello_inventory.form.type.inventory_item:
+        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType
+        tags:
+            - { name: form.type, alias: marello_inventory_item }

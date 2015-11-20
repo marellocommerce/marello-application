@@ -11,14 +11,22 @@ class WarehouseType extends AbstractType
 {
     const NAME = 'marello_warehouse';
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('label', 'text', [
                 'constraints' => new NotNull(),
+            ])->add('address', 'marello_address', [
+                'constraints' => new NotNull(),
             ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
