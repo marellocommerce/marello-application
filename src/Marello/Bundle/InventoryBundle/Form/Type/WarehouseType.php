@@ -19,9 +19,7 @@ class WarehouseType extends AbstractType
         $builder
             ->add('label', 'text', [
                 'constraints' => new NotNull(),
-            ])->add('address', 'marello_address', [
-                'constraints' => new NotNull(),
-            ]);
+            ])->add('address', 'marello_address', ['required' => false]);
     }
 
     /**

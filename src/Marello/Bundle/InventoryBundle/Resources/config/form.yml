@@ -21,6 +21,8 @@ services:
 
     marello_inventory.form.type.inventory_item_collection:
         class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemCollectionType
+        arguments:
+            - @marello_inventory.form.subscriber.inventory_item_collection
         tags:
             - { name: form.type, alias: marello_inventory_item_collection }
 
@@ -28,3 +30,8 @@ services:
         class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType
         tags:
             - { name: form.type, alias: marello_inventory_item }
+
+    marello_inventory.form.subscriber.inventory_item_collection:
+        class: Marello\Bundle\InventoryBundle\Form\Subscriber\InventoryItemCollectionSubscriber
+        arguments:
+            - @doctrine

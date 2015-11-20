@@ -478,15 +478,27 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     }
 
     /**
-     * @param Collection|InventoryItem[] $inventoryItems
+     * @param InventoryItem $item
      *
      * @return $this
      */
-    public function setInventoryItems($inventoryItems)
+    public function addInventoryItem(InventoryItem $item)
     {
-        $this->inventoryItems = $inventoryItems;
+        $item->setProduct($this);
+        $this->inventoryItems->add($item);
 
         return $this;
     }
 
+    /**
+     * @param InventoryItem $item
+     *
+     * @return $this
+     */
+    public function removeInventoryItem(InventoryItem $item)
+    {
+        $this->inventoryItems->removeElement($item);
+
+        return $this;
+    }
 }

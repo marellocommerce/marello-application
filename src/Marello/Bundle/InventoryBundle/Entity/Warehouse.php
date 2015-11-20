@@ -61,8 +61,9 @@ class Warehouse
      * @var Address
      *
      * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=true)
      */
-    protected $address;
+    protected $address = null;
 
     /**
      * @param string $label
