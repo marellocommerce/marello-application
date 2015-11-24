@@ -27,8 +27,8 @@ class ProductType extends AbstractType
 
     public function __construct(ConfigManager $configManager, EntityManager $em, LocaleSettings $localeSettings)
     {
-        $this->configManager = $configManager;
-        $this->em = $em;
+        $this->configManager  = $configManager;
+        $this->em             = $em;
         $this->localeSettings = $localeSettings;
     }
 
@@ -41,56 +41,57 @@ class ProductType extends AbstractType
             'channels',
             'marello_sales_saleschannel_select',
             [
-                'label' => 'marello.sales.saleschannel.entity_label'
+                'label' => 'marello.sales.saleschannel.entity_label',
             ]
         );
 
         $builder->addEventSubscriber(new DefaultSalesChannelFieldSubscriber($this->configManager, $this->em));
         $builder
-        ->add(
-            'name',
-            'text',
-            [
-                'required' => true,
-                'label'    => 'marello.product.name.label'
-            ]
-        )
-        ->add(
-            'sku',
-            'text',
-            [
-                'required' => true,
-                'label'    => 'marello.product.sku.label'
-            ]
-        )
-        ->add(
-            'price',
-            'oro_money',
-            [
-                'required' => true,
-                'label' => 'marello.product.price.label'
-            ]
-        )
-        ->add(
-            'status',
-            'entity',
-            array(
-                'label' => 'marello.product.status.label',
-                'class' => 'MarelloProductBundle:ProductStatus',
-                'property' => 'label',
-                'required' => true,
+            ->add(
+                'name',
+                'text',
+                [
+                    'required' => true,
+                    'label'    => 'marello.product.name.label',
+                ]
             )
-        )
-        ->add(
-            'inventoryItems',
-            'marello_inventory_item_collection',
-            [
-                'label' => 'marello.inventory.label'
-            ]
-        )
-        ->add('prices',
-            'marello_product_price_collection'
-        );
+            ->add(
+                'sku',
+                'text',
+                [
+                    'required' => true,
+                    'label'    => 'marello.product.sku.label',
+                ]
+            )
+            ->add(
+                'price',
+                'oro_money',
+                [
+                    'required' => true,
+                    'label'    => 'marello.product.price.label',
+                ]
+            )
+            ->add(
+                'status',
+                'entity',
+                [
+                    'label'    => 'marello.product.status.label',
+                    'class'    => 'MarelloProductBundle:ProductStatus',
+                    'property' => 'label',
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'inventoryItems',
+                'marello_inventory_item_collection',
+                [
+                    'label'              => 'marello.inventory.label',
+                    'cascade_validation' => true,
+                ]
+            )
+            ->add('prices',
+                'marello_product_price_collection'
+            );
         $builder->addEventSubscriber(new PricesCollectionFieldSubscriber($this->localeSettings));
     }
 
@@ -99,12 +100,12 @@ class ProductType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            array('data_class' => 'Marello\\Bundle\\ProductBundle\\Entity\\Product',
-                  'intention' => 'product',
-                  'single_form' => true,
-                )
-        );
+        $resolver->setDefaults([
+            'data_class'         => 'Marello\\Bundle\\ProductBundle\\Entity\\Product',
+            'intention'          => 'product',
+            'single_form'        => true,
+            'cascade_validation' => true,
+        ]);
     }
 
     /**

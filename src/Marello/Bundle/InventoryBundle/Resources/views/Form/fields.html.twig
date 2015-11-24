@@ -1,4 +1,4 @@
-{% block marello_product_inventory_widget %}
+{% block marello_inventory_item_collection_widget %}
     <table class="table table-condensed table-bordered marello_inventory-product-inventory-table">
         <thead>
         <tr>
@@ -8,16 +8,16 @@
         </tr>
         </thead>
         <tbody>
-        {{ form_row(form.warehouses) }}
+        {{ form_rest(form) }}
         </tbody>
     </table>
 {% endblock %}
 
-{% block marello_warehouse_inventory_collection_row %}
+{% block marello_inventory_item_collection_row %}
     {{ form_widget(form) }}
 {% endblock %}
 
-{% block marello_warehouse_inventory_row %}
+{% block marello_inventory_item_row %}
     <tr>
         <td>
             {{ form.vars.value.warehouse }}
@@ -29,7 +29,7 @@
     </tr>
 {% endblock %}
 
-{% block marello_warehouse_inventory_widget %}
+{% block marello_inventory_item_widget %}
     <td class="marello_inventory-warehouse-inventory-widget {{ form.modifyAmount.vars.errors|length ? 'has-errors' : '' }}">
         {{ form_widget(form.modifyOperator, {
             attr: {

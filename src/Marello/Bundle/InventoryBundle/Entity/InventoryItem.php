@@ -26,6 +26,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  */
 class InventoryItem
 {
+    const MODIFY_OPERATOR_INCREASE = 'increase';
+    const MODIFY_OPERATOR_DECREASE = 'decrease';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")

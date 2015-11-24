@@ -38,6 +38,11 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * Initializes collection of items. Creates new items for warehouses which yet don't exist in it.
+     *
+     * @param FormEvent $event
+     */
     public function initializeCollection(FormEvent $event)
     {
         /** @var Collection|InventoryItem[]|null $items */
@@ -52,6 +57,13 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
         $event->setData($items);
     }
 
+    /**
+     * Fills item collection so it contains all warehouses.
+     *
+     * @param Collection $items
+     *
+     * @return Collection
+     */
     protected function fillItemCollection(Collection $items)
     {
         $indexed = [];
@@ -68,6 +80,10 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
                 $newItem = new InventoryItem();
                 $newItem->setWarehouse($warehouse);
 
+                /*
+                 * Add item to collection, collection is not ordered, so any new warehouses will be added to end.
+                 * TODO: Solve this by ordering warehouses when retrieving relation on Product entity.
+                 */
                 $items->add($newItem);
             }
         }
@@ -75,13 +91,17 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
         return $items;
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function setProduct(FormEvent $event)
     {
         if ($parent = $event->getForm()->getParent()) {
             $items = $event->getData();
             $product = $parent->getData();
 
-            $items->map(function (InventoryItem $item) use ($product) {
+            /** @var InventoryItem $item */
+            $items->map(function ($item) use ($product) {
                 $item->setProduct($product);
             });
         }
