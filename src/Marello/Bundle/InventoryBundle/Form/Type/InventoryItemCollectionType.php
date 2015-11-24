@@ -2,13 +2,9 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
-use Doctrine\Common\Collections\Collection;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InventoryItemCollectionType extends AbstractType
@@ -47,6 +43,7 @@ class InventoryItemCollectionType extends AbstractType
             'allow_delete'       => false,
             'type'               => InventoryItemType::NAME,
             'cascade_validation' => true,
+            'by_reference'       => false,
         ]);
     }
 

@@ -2,13 +2,12 @@
 
 namespace Marello\Bundle\ProductBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
 /**
  * Represents a Marello Variant Product
  *
@@ -46,9 +45,11 @@ class Variant
     protected $variantCode;
 
     /**
-     * @var Collection $products
+     * @see \Marello\Bundle\InventoryBundle\Form\Type\ProductInventoryType
      *
-     * @ORM\ManyToMany(targetEntity="Product",cascade={"persist"})
+     * @var Collection|Product[] $products
+     *
+     * @ORM\OneToMany(targetEntity="Product", cascade={"persist"}, mappedBy="variant")
      * @ORM\JoinTable(name="marello_product_to_variant")
      */
     protected $products;
@@ -81,6 +82,9 @@ class Variant
      */
     protected $updatedAt;
 
+    /**
+     * Variant constructor.
+     */
     public function __construct()
     {
         $this->products = new ArrayCollection();
@@ -111,7 +115,7 @@ class Variant
     }
 
     /**
-     * @return Collection
+     * @return Collection|Product[]
      */
     public function getProducts()
     {
@@ -122,6 +126,7 @@ class Variant
      * Add item
      *
      * @param Product $item
+     *
      * @return Product
      */
     public function addProduct(Product $item)
@@ -137,6 +142,7 @@ class Variant
      * Remove item
      *
      * @param Product $item
+     *
      * @return Product
      */
     public function removeProduct(Product $item)

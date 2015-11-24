@@ -1,4 +1,8 @@
 {% block marello_inventory_item_collection_widget %}
+    {{ form_rest(form) }}
+{% endblock %}
+
+{% block marello_inventory_item_collection_row %}
     <table class="table table-condensed table-bordered marello_inventory-product-inventory-table">
         <thead>
         <tr>
@@ -8,13 +12,9 @@
         </tr>
         </thead>
         <tbody>
-        {{ form_rest(form) }}
+            {{ form_widget(form) }}
         </tbody>
     </table>
-{% endblock %}
-
-{% block marello_inventory_item_collection_row %}
-    {{ form_widget(form) }}
 {% endblock %}
 
 {% block marello_inventory_item_row %}
@@ -39,4 +39,14 @@
         {{ form_widget(form.modifyAmount) }}
         {{ form_errors(form.modifyAmount) }}
     </td>
+{% endblock %}
+
+{% block marello_variant_inventory_widget %}
+    {{ form_widget(form.products) }}
+{% endblock %}
+
+{% block marello_product_inventory_row %}
+    {{ form_label(form, form.vars.value.name ~ ' ' ~ form.vars.value.sku, {required: false}) }}
+    {{ form_widget(form) }}
+    <hr/>
 {% endblock %}

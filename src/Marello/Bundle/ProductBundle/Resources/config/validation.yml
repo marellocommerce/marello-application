@@ -15,5 +15,3 @@ Marello\Bundle\ProductBundle\Entity\Product:
             - NotBlank: ~
         price:
             - NotBlank: ~
-            - Type:
-                type: float

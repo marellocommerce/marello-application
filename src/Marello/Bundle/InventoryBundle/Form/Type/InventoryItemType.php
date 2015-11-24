@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -10,6 +9,8 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
 class InventoryItemType extends AbstractType
 {
@@ -31,9 +32,10 @@ class InventoryItemType extends AbstractType
             ->add('modifyAmount', 'number', [
                 'mapped'      => false,
                 'constraints' => new GreaterThanOrEqual(0),
+                'data'        => 0,
             ]);
 
-        $modifyItem = function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             /** @var InventoryItem $data */
             $data = $event->getData();
             $form = $event->getForm();
@@ -61,9 +63,7 @@ class InventoryItemType extends AbstractType
                  */
                 $form->get('modifyAmount')->addError(new FormError('Resulting quantity should be greater than 0.'));
             }
-        };
-
-        $builder->addEventListener(FormEvents::SUBMIT, $modifyItem);
+        });
     }
 
     /**

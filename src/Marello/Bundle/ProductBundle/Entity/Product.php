@@ -125,9 +125,12 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     /**
      * @var Collection|ProductPrice[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice", mappedBy="product",
-     *                                                                                 cascade={"persist"},
-     *                                                                                 orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice",
+     *     mappedBy="product",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
      * @ORM\OrderBy({"id" = "ASC"})
      */
     protected $prices;
@@ -142,7 +145,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
     /**
      * @var Variant
      *
-     * @ORM\ManyToOne(targetEntity="Variant")
+     * @ORM\ManyToOne(targetEntity="Variant", inversedBy="products")
      * @ORM\JoinColumn(name="variant_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $variant;
@@ -155,7 +158,7 @@ class Product extends ExtendProduct implements SalesChannelAwareInterface
      *      mappedBy="product",
      *      cascade={"remove", "persist"},
      *      orphanRemoval=true,
-     *      fetch="EXTRA_LAZY"
+     *      fetch="LAZY"
      * )
      * @ORM\OrderBy({"id" = "ASC"})
      */

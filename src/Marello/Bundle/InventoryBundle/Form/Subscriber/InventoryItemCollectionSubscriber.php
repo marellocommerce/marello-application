@@ -5,10 +5,12 @@ namespace Marello\Bundle\InventoryBundle\Form\Subscriber;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
 class InventoryItemCollectionSubscriber implements EventSubscriberInterface
 {
@@ -34,7 +36,6 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
     {
         return [
             FormEvents::PRE_SET_DATA => ['initializeCollection', 100],
-            FormEvents::SUBMIT       => 'setProduct',
         ];
     }
 
