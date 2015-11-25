@@ -153,9 +153,9 @@ class Product extends ExtendProduct implements
      * @ORM\OneToMany(
      *      targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem",
      *      mappedBy="product",
-     *      cascade={"remove"},
+     *      cascade={"remove", "persist"},
      *      orphanRemoval=true,
-     *      fetch="EXTRA_LAZY"
+     *      fetch="LAZY"
      * )
      * @ORM\OrderBy({"id" = "ASC"})
      */

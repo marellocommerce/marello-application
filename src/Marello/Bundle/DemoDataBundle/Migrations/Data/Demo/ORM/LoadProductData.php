@@ -70,7 +70,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $inventoryItem->setWarehouse($this->defaultWarehouse);
         $inventoryItem->setQuantity($data['stock_level']);
         $product->getInventoryItems()->add($inventoryItem);
-        $product->setOwner($this->defaultOrganization);
 
         $randomNumber = rand(0,100);
         $status = ($randomNumber % 2 == 0) ? $this->getReference('product_status_enabled') : $this->getReference('product_status_disabled');

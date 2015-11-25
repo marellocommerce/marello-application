@@ -79,13 +79,12 @@ class ProductType extends AbstractType
             )
         )
         ->add(
-            'stockLevel',
-            'text',
-            [
-                'required' => true,
-                'label'    => 'marello.product.stock_level.label',
-                'read_only'    => true
-            ]
+            'inventoryItems',
+            'marello_inventory_item_collection',
+            array(
+                'label'              => 'marello.inventory.label',
+                'cascade_validation' => true,
+            )
         );
     }
 
@@ -98,6 +97,7 @@ class ProductType extends AbstractType
             array('data_class' => 'Marello\\Bundle\\ProductBundle\\Entity\\Product',
                   'intention' => 'product',
                   'single_form' => true,
+                  'cascade_validation' => true,
                 )
         );
     }
