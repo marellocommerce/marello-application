@@ -20,7 +20,6 @@ services:
         arguments:
             - @oro_config.user
             - @doctrine.orm.entity_manager
-            - @oro_locale.settings
         tags:
             - { name: form.type, alias: marello_product_form }
 

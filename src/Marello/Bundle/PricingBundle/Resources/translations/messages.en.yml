@@ -4,3 +4,6 @@ marello:
         entity_label:               Product Price
         price.label:                Price
         currency.label:             Currency
+
+        form:
+            pricing_enabled.label:  Enable Channel Pricing

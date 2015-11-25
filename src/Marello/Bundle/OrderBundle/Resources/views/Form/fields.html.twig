@@ -32,7 +32,7 @@
     {% endif %}
     <tr data-content="{{ name }}"
         data-validation-optional-group
-        class="row-oro oro-multiselect-holder{% if not allow_delete %} not-removable{% endif %}">
+        class="oro-multiselect-holder{% if not allow_delete %} not-removable{% endif %}">
         {{ form_widget(form, {disabled: disabled}) }}
         <td>
             {% if allow_delete %}
@@ -65,6 +65,9 @@
                         <th>{{ 'marello.order.orderitem.price.label'|trans }}</th>
                         <th>{{ 'marello.order.orderitem.tax.label'|trans }}</th>
                         <th>{{ 'marello.order.orderitem.total_price.label'|trans }}</th>
+                        {% if form.vars.allow_delete %}
+                            <th class="marello-order-row-item-actions"></th>
+                        {% endif %}
                     </tr>
                 </thead>
                 {% if form.children|length %}

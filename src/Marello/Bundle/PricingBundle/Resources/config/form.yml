@@ -1,12 +1,12 @@
 services:
     marello_productprice.form.type.productprice:
         class: Marello\Bundle\PricingBundle\Form\Type\ProductPriceType
+        arguments:
+            - @oro_locale.settings
         tags:
             - { name: form.type, alias: marello_product_price }
 
     marello_productprice.form.type.product_price_collection:
         class: Marello\Bundle\PricingBundle\Form\Type\ProductPriceCollectionType
-        arguments:
-            - @oro_locale.settings
         tags:
             - { name: form.type, alias: marello_product_price_collection }

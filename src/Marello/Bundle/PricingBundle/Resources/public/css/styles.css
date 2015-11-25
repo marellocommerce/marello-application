@@ -1,0 +1,7 @@
+.productpricing-wrapper .productpricing-table-container {
+    display: none;
+}
+
+.productpricing-wrapper.pricing-enabled .productpricing-table-container{
+    display: block;
+}
