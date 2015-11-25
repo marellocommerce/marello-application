@@ -113,11 +113,6 @@ datagrid:
                 acl_resource:   marello_product_delete
                 icon:           trash
                 label:          oro.grid.action.delete
-            inventory:
-                type:           navigate
-                icon:           list-alt
-                link:           inventory_link
-                acl_resource:   marello_inventory_product_stock_modify
         options:
             entityHint: product
             export: true
