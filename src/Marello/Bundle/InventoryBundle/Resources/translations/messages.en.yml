@@ -6,6 +6,7 @@ marello:
             entity_plural_label:    Warehouses
             label.label:            Label
             default.label:          Default
+            address.label:          Address
         item:
             entity_label:           Inventory
             entity_plural_label:    Inventory Items

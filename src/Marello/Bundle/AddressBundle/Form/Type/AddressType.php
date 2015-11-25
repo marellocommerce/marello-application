@@ -11,6 +11,8 @@ class AddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->remove('label');
+
         $builder
             ->add('email', 'email', [
                 'constraints' => new Constraint\Email(),

@@ -20,6 +20,7 @@
 
 {% block content_data %}
     {% set id = 'vehicle-edit' %}
+    {% set addressField = form_widget(form.address) %}
 
     {% set dataBlocks = [{
         'title': 'General'|trans,
@@ -27,7 +28,16 @@
         'subblocks': [{
             'title': '',
             'data': [
-                form(form)
+                form_rest(form)
+            ]
+        }]
+    },{
+        'title': 'marello.inventory.warehouse.address.label'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': '',
+            'data': [
+                addressField
             ]
         }]
     }] %}

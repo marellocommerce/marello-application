@@ -1,7 +1,7 @@
 oro_menu_config:
     items:
         warehouses:
-            label: marello.inventory.warehouse.entity_plural_label
+            label: marello.inventory.warehouse.entity_label
             route: marello_inventory_warehouse_updatedefault
             extras:
                 routes: ['marello_inventory_warehouse_*']
