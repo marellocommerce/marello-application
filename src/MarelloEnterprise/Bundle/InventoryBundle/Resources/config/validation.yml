@@ -1,3 +1,0 @@
-Marello\Bundle\InventoryBundle\Entity\Warehouse:
-    constraints:
-        - MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists: ~

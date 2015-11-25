@@ -1,6 +1,0 @@
-services:
-    marello_enterprise.form.extension.warehouse:
-        class: MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\WarehouseExtension
-        tags:
-            - { name: form.type_extension, alias: marello_warehouse }
-
