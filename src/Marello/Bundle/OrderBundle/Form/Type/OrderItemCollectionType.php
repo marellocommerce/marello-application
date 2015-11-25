@@ -33,7 +33,7 @@ class OrderItemCollectionType extends AbstractType
                 'prototype'            => true,
                 'handle_primary'       => false,
                 'attr'                 => [
-                    'class' => 'table table-condensed table-striped table-bordered',
+                    'class' => 'grid table-hover table table-bordered table-condensed',
                 ],
             ]
         );
