@@ -1,7 +1,7 @@
 marello:
     inventory:
         label:                      Inventory
-        variant_inventory:          Variant Inventory
+        variant_inventory_label:    Variant Inventory
         warehouse:
             entity_label:           Warehouse
             entity_plural_label:    Warehouses

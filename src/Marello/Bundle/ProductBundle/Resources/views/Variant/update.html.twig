@@ -35,26 +35,18 @@
     {% set id = 'product-variant' %}
     {% set dataBlocks = [
         {
-            'title': 'General Information'|trans,
+            'title': 'Variants'|trans,
             'subblocks': [{
                 'title': '',
-                'data':  [
-                    form_row(form.variantCode)
+                'useSpan': false,
+                'data' : [
+                    form_row(form.variantCode),
+                    UI.renderProperty('marello.product.variant.variant_code.label'|trans, entity.variantCode),
+                    form_widget(form.products)
                 ]
             }]
         }
     ] %}
-
-    {% set dataBlocks = dataBlocks|merge([{
-        'title': 'Variants'|trans,
-        'subblocks': [{
-            'title': '',
-            'useSpan': false,
-            'data' : [
-                form_widget(form.products)
-            ]
-        }]
-    }] ) %}
 
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
