@@ -75,4 +75,19 @@ class InventoryController extends Controller
             'entity' => $product,
         ];
     }
+
+    /**
+     * @Config\Route("/widget/info/{id}", name="marello_inventory_widget_info", requirements={"id"="\d+"})
+     * @Config\Template
+     *
+     * @param Product $product
+     * @return array
+     */
+    public function infoAction(Product $product)
+    {
+        $item = $product->getInventoryItems()->first();
+        return [
+            'item' => $item
+        ];
+    }
 }

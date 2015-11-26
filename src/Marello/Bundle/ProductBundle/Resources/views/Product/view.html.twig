@@ -53,6 +53,14 @@
         }) }}
     {% endset %}
 
+    {% set productInventoryWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('marello_inventory_widget_info', {id: entity.id}),
+            'title': ''
+        }) }}
+    {% endset %}
+
     {% set dataBlocks = [{
         'title': 'General'|trans,
         'subblocks': [
@@ -67,6 +75,17 @@
             'useSpan': false,
             'data' : [
                 productPriceWidget
+            ]
+        }]
+    }]) %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.inventory.item.entity_label'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                productInventoryWidget
             ]
         }]
     }]) %}
