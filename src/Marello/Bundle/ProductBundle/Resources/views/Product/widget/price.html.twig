@@ -7,10 +7,12 @@
             {{ UI.renderProperty('marello.product.price.label'|trans, product.price|oro_format_currency) }}
         </div>
     </div>
+    {% if product.prices|length > 0 %}
     <div class="row-divider"></div>
     <div class="row-fluid form-horizontal">
         <div class="responsive-block">
             {{ dataGrid.renderGrid('marello-productprice-grid', { productId: product.id }, { cssClass: 'inner-grid' })  }}
         </div>
     </div>
+    {% endif %}
 </div>
