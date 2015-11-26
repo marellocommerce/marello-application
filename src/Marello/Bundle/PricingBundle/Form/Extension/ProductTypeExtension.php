@@ -131,6 +131,7 @@ class ProductTypeExtension extends AbstractTypeExtension
 
         if (!$pricingEnabled) {
             $data[PricingAwareInterface::CHANNEL_PRICING_DROP_KEY] = true;
+            $this->clearPricingCollection($product);
         }
 
         $data[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = $pricingEnabled;
@@ -176,5 +177,18 @@ class ProductTypeExtension extends AbstractTypeExtension
         }
 
         return in_array($this->interface, class_implements($product), true);
+    }
+
+    /**
+     * Remove prices from the collection on product
+     * @param Product $product
+     */
+    protected function clearPricingCollection($product)
+    {
+        if(count($product->getPrices()) > 0) {
+            foreach($product->getPrices() as $_price) {
+                $product->removePrice($_price);
+            }
+        }
     }
 }
