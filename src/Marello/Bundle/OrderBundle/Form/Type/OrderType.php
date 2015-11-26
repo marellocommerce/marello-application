@@ -16,8 +16,8 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('orderNumber')
-            ->add('orderReference')
+            ->add('orderNumber', 'hidden')
+            ->add('orderReference' ,'hidden')
             ->add('salesChannel', 'genemu_jqueryselect2_entity', [
                 'class' => 'MarelloSalesBundle:SalesChannel',
             ])
