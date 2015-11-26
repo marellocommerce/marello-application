@@ -19,11 +19,7 @@ class ProductVariantType extends AbstractType
     {
         $builder->add(
             'variantCode',
-            'text',
-            [
-                'required' => true,
-                'label'    => 'marello.product.variant.variant_code.label',
-            ]
+            'hidden'
         )
         ->add(
             'products',

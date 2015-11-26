@@ -34,7 +34,7 @@ class ProductCollectionType extends AbstractType
                 'prototype'            => true,
                 'handle_primary'       => false,
                 'attr'                 => [
-                    'class' => 'table table-condensed table-striped table-bordered',
+                    'class' => 'table-hover table table-condensed table-bordered',
                 ],
             ]
         );

@@ -1,0 +1,13 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set route = path('marello_inventory_inventory_update', { id: entity.id }) %}
+
+{% if entity.variant %}
+{{ UI.button({
+    'path': route,
+    'title': 'marello.inventory.variant_inventory_label'|trans,
+    'label': 'marello.inventory.variant_inventory_label'|trans,
+    'iCss': 'icon-list-alt',
+    'aCss': 'action-link',
+}) }}
+{% endif %}

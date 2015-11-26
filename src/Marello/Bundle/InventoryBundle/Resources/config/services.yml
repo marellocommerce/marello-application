@@ -1,1 +1,8 @@
 services:
+    marello_product.widget_provider.actions.variant_mass_inventory:
+        parent: oro_ui.widget_provider.action_button.abstract
+        arguments:
+            - marello_variant_mass_inventory_button
+            - marello_variant_mass_inventory_link
+        tags:
+            - { name: oro_ui.view_action_provider, group: product }

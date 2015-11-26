@@ -36,7 +36,6 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
     {
         return [
             FormEvents::PRE_SET_DATA => ['initializeCollection', 100],
-            FormEvents::SUBMIT       => 'setProduct',
         ];
     }
 
