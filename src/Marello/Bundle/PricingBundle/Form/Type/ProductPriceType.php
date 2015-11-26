@@ -68,6 +68,7 @@ class ProductPriceType extends AbstractType
             array('data_class' => 'Marello\\Bundle\\PricingBundle\\Entity\\ProductPrice',
                   'intention' => 'productprice',
                   'single_form' => true,
+                  'currency' => $currencyCode,
                   'currency_symbol' => $currencySymbol
             )
         );
@@ -78,6 +79,7 @@ class ProductPriceType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
+        $view->vars['currency'] = $options['currency'];
         $view->vars['currency_symbol'] = $options['currency_symbol'];
     }
 

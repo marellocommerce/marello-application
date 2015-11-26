@@ -3,7 +3,9 @@
         {{ form_widget(form.channel) }}
     </td>
     <td>
-        <div class="cell-currency-symbol align-center"><span>{{ currency_symbol }}</span></div>
+        <div class="cell-currency">
+            <span class="currency">{{ currency ~ ' ' ~ '(' ~ currency_symbol ~ ')' }}</span>
+        </div>
         {{ form_widget(form.currency) }}
     </td>
     <td>
