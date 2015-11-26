@@ -25,6 +25,7 @@ datagrid:
                 label:            marello.productprice.currency.label
             price:
                 label:            marello.productprice.price.label
+                frontend_type:    currency
         sorters:
             columns:
                 channelName:    { data_name: salesChannel.name }

@@ -65,7 +65,9 @@ class InventoryController extends Controller
                     'route'      => 'marello_inventory_inventory_update',
                     'parameters' => ['id' => $product->getId()],
                 ],
-                ['route' => 'marello_inventory_inventory_index'],
+                [   'route' => 'marello_product_view',
+                    'parameters' => ['id' => $product->getId()]
+                ],
                 $product
             );
         }
