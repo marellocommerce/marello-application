@@ -34,8 +34,19 @@
 
     {% set billingAddress = form_widget(form.billingAddress) %}
     {% set shippingAddress = form_widget(form.shippingAddress) %}
+    {% set orderItems = form_widget(form.items) %}
 
     {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_rest(form)
+                ]
+            }]
+        },
         {
             'title': 'marello.order.billing_address.label'|trans,
             'class': 'active',
@@ -55,7 +66,17 @@
                     shippingAddress
                 ]
             }]
-        }
+        },
+        {
+            'title': 'marello.order.items.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    orderItems
+                ]
+            }]
+        },
     ] %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

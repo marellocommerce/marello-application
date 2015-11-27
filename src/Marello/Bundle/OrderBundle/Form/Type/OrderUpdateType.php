@@ -2,31 +2,22 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Form\Listener\OrderTotalsSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderType extends AbstractType
+class OrderUpdateType extends AbstractType
 {
+    const NAME = 'marello_order_update';
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('salesChannel', 'genemu_jqueryselect2_entity', [
-                'class' => 'MarelloSalesBundle:SalesChannel',
-            ])
             ->add('billingAddress', 'marello_address')
-            ->add('shippingAddress', 'marello_address')
-            ->add('items', 'marello_order_item_collection');
-
-        /*
-         * Takes care of setting order totals.
-         */
-        $builder->addEventSubscriber(new OrderTotalsSubscriber());
+            ->add('shippingAddress', 'marello_address');
     }
 
     /**
@@ -44,6 +35,6 @@ class OrderType extends AbstractType
      */
     public function getName()
     {
-        return 'marello_order_order';
+        return self::NAME;
     }
 }

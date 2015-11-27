@@ -39,7 +39,7 @@ class OrderController extends Controller
     /**
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
-     * @Config\Template("MarelloOrderBundle:Order:update.html.twig")
+     * @Config\Template
      * @Security\AclAncestor("marello_order_create")
      *
      * @param Request $request
@@ -77,6 +77,8 @@ class OrderController extends Controller
      */
     protected function update(Request $request, Order $order = null)
     {
+        $formName = $order ? 'marello_order_update' : 'marello_order_order';
+
         if ($order === null) {
             $order = new Order();
         }
@@ -86,7 +88,7 @@ class OrderController extends Controller
          */
         $originalItems = new ArrayCollection($order->getItems()->toArray());
 
-        $form = $this->createForm('marello_order_order', $order);
+        $form = $this->createForm($formName, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

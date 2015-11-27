@@ -7,6 +7,11 @@ services:
         tags:
             - { name: form.type, alias: marello_order_order }
 
+    marello_order.form.type.order_update:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderUpdateType
+        tags:
+            - { name: form.type, alias: marello_order_update }
+
     marello_order.form.type.order_item:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderItemType
         tags:
