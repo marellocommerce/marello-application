@@ -61,8 +61,7 @@ class ProductVariantHandler
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
-                $appendProducts = $this->form->get('products')->getData();
-                $this->onSuccess($entity,$appendProducts);
+                $this->updateProducts($entity);
 
                 return true;
             }
@@ -86,14 +85,8 @@ class ProductVariantHandler
      *
      * @param Variant $entity
      */
-    protected function onSuccess(Variant $entity, $products)
+    protected function updateProducts(Variant $entity)
     {
-        // add products from collection as a variant
-        foreach ($products as $product) {
-            $entity->addProduct($product);
-            $product->setVariant($entity);
-        }
-
         $this->manager->persist($entity);
         $this->manager->flush();
     }

@@ -359,7 +359,7 @@ class Product extends ExtendProduct implements
      *
      * @return Product
      */
-    public function setVariant(Variant $variant)
+    public function setVariant(Variant $variant = null)
     {
         $this->variant = $variant;
 
