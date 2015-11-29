@@ -31,7 +31,7 @@ class VariantSubscriber implements EventSubscriberInterface
             if($form->has('variantCode')) {
                 if($entity instanceof Variant && count($entity->getProducts()) > 0) {
                     $parent = $entity->getProducts()->first();
-                    $entity->setVariantCode($this->_getVariantCode($parent->getSku()));
+                    $entity->setVariantCode($this->getVariantCode($parent->getSku()));
                     $event->setData($entity);
                 }
             }
@@ -43,7 +43,7 @@ class VariantSubscriber implements EventSubscriberInterface
      * @param $input
      * @return string
      */
-    protected function _getVariantCode($input)
+    protected function getVariantCode($input)
     {
         $hash = hash('md5', $input);
         return substr($hash, 0, 10);
