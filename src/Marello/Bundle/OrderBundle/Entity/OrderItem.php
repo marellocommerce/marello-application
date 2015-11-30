@@ -42,6 +42,20 @@ class OrderItem extends ExtendOrderItem
     protected $product;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=false)
+     */
+    protected $productName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=false)
+     */
+    protected $productSku;
+
+    /**
      * @var Order
      *
      * @ORM\ManyToOne(targetEntity="Order", inversedBy="items")
@@ -84,6 +98,15 @@ class OrderItem extends ExtendOrderItem
      * @JMS\Expose
      */
     protected $totalPrice;
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->productName = $this->product->getName();
+        $this->productSku  = $this->product->getSku();
+    }
 
     /**
      * @return int
@@ -211,5 +234,21 @@ class OrderItem extends ExtendOrderItem
         $this->product = $product;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductSku()
+    {
+        return $this->productSku;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductName()
+    {
+        return $this->productName;
     }
 }
