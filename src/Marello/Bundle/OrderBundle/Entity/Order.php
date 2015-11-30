@@ -5,13 +5,16 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 use JMS\Serializer\Annotation as JMS;
-use Marello\Bundle\OrderBundle\Model\ExtendOrder;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
+
+use Marello\Bundle\OrderBundle\Model\ExtendOrder;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 /**
  * @ORM\Entity
@@ -147,10 +150,18 @@ class Order extends ExtendOrder
      * @var SalesChannel
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
+     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      *
      * @JMS\Expose
      */
     protected $salesChannel;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    protected $salesChannelName;
 
     /**
      * @var WorkflowItem
@@ -182,7 +193,7 @@ class Order extends ExtendOrder
     }
 
     /**
-     * @ORM\PreUpdate()
+     * @ORM\PreUpdate
      */
     public function preUpdate()
     {
@@ -190,11 +201,12 @@ class Order extends ExtendOrder
     }
 
     /**
-     * @ORM\PrePersist()
+     * @ORM\PrePersist
      */
     public function prePersist()
     {
-        $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->createdAt        = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->salesChannelName = $this->salesChannel->getName();
     }
 
     /**
@@ -452,5 +464,13 @@ class Order extends ExtendOrder
     public function getWorkflowStep()
     {
         return $this->workflowStep;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalesChannelName()
+    {
+        return $this->salesChannelName;
     }
 }
