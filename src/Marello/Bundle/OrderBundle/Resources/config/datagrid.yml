@@ -22,6 +22,7 @@ datagrid:
             salesChannel:
                 label: marello.order.sales_channel.label
                 frontend_type: string
+                data_name: salesChannelName
             orderReference:
                 label: marello.order.order_reference.label
                 frontend_type: string
@@ -49,7 +50,7 @@ datagrid:
                     data_name: o.orderNumber
                 salesChannel:
                     type: entity
-                    data_name: o.salesChannel
+                    data_name: salesChannelName
                     options:
                         field_options:
                             class: Marello\Bundle\SalesBundle\Entity\SalesChannel

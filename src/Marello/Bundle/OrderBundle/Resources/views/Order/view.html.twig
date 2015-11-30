@@ -29,7 +29,7 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.order.order_number.label'|trans, entity.orderNumber) }}
-                    {{ UI.renderProperty('marello.order.sales_channel.label'|trans, entity.salesChannel) }}
+                    {{ UI.renderProperty('marello.order.sales_channel.label'|trans, entity.salesChannel|default(entity.salesChannelName)) }}
                     {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.orderReference) }}
                     {{ UI.renderProperty('marello.order.order_date.label'|trans, entity.createdAt|oro_format_datetime) }}
                 </div>
