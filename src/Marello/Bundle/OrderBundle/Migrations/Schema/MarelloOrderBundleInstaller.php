@@ -43,9 +43,9 @@ class MarelloOrderBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_order_order');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('saleschannel_id', 'integer', ['notnull' => false]);
         $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
-        $table->addColumn('saleschannel_id', 'integer', ['notnull' => false]);
         $table->addColumn('shippingaddress_id', 'integer', ['notnull' => false]);
         $table->addColumn('billingaddress_id', 'integer', ['notnull' => false]);
         $table->addColumn('ordernumber', 'string', ['notnull' => false, 'length' => 255]);
@@ -55,13 +55,14 @@ class MarelloOrderBundleInstaller implements Installation
         $table->addColumn('grandtotal', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
-        $table->setPrimaryKey(['id']);
-        $table->addIndex(['saleschannel_id'], 'idx_a619dd644c7a5b2e', []);
+        $table->addColumn('saleschannelname', 'string', ['length' => 255]);
+        $table->addUniqueIndex(['shippingaddress_id'], 'uniq_a619dd64b1835c8f');
+        $table->addUniqueIndex(['workflow_item_id'], 'uniq_a619dd641023c4ee');
         $table->addUniqueIndex(['billingaddress_id'], 'uniq_a619dd6443656fe6');
+        $table->addIndex(['saleschannel_id'], 'idx_a619dd644c7a5b2e', []);
         $table->addUniqueIndex(['ordernumber'], 'uniq_a619dd64989a8203');
         $table->addIndex(['workflow_step_id'], 'idx_a619dd6471fe882c', []);
-        $table->addUniqueIndex(['workflow_item_id'], 'uniq_a619dd641023c4ee');
-        $table->addUniqueIndex(['shippingaddress_id'], 'uniq_a619dd64b1835c8f');
+        $table->setPrimaryKey(['id']);
     }
 
     /**
@@ -79,8 +80,8 @@ class MarelloOrderBundleInstaller implements Installation
         $table->addColumn('price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('totalprice', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addIndex(['order_id'], 'idx_1118665c8d9f6d38', []);
         $table->setPrimaryKey(['id']);
+        $table->addIndex(['order_id'], 'idx_1118665c8d9f6d38', []);
         $table->addIndex(['product_id'], 'idx_1118665c4584665a', []);
     }
 
@@ -93,6 +94,12 @@ class MarelloOrderBundleInstaller implements Installation
     {
         $table = $schema->getTable('marello_order_order');
         $table->addForeignKeyConstraint(
+            $schema->getTable('marello_sales_sales_channel'),
+            ['saleschannel_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => 'SET NULL']
+        );
+        $table->addForeignKeyConstraint(
             $schema->getTable('oro_workflow_step'),
             ['workflow_step_id'],
             ['id'],
@@ -103,12 +110,6 @@ class MarelloOrderBundleInstaller implements Installation
             ['workflow_item_id'],
             ['id'],
             ['onUpdate' => null, 'onDelete' => 'SET NULL']
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_sales_sales_channel'),
-            ['saleschannel_id'],
-            ['id'],
-            ['onUpdate' => null, 'onDelete' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),

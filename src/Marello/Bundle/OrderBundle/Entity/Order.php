@@ -159,7 +159,7 @@ class Order extends ExtendOrder
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=false)
      */
     protected $salesChannelName;
 
