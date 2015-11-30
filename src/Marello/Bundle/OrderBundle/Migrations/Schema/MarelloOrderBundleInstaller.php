@@ -56,13 +56,13 @@ class MarelloOrderBundleInstaller implements Installation
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updated_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('saleschannelname', 'string', ['length' => 255]);
-        $table->addUniqueIndex(['shippingaddress_id'], 'uniq_a619dd64b1835c8f');
-        $table->addUniqueIndex(['workflow_item_id'], 'uniq_a619dd641023c4ee');
-        $table->addUniqueIndex(['billingaddress_id'], 'uniq_a619dd6443656fe6');
-        $table->addIndex(['saleschannel_id'], 'idx_a619dd644c7a5b2e', []);
         $table->addUniqueIndex(['ordernumber'], 'uniq_a619dd64989a8203');
-        $table->addIndex(['workflow_step_id'], 'idx_a619dd6471fe882c', []);
         $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['billingaddress_id'], 'uniq_a619dd6443656fe6');
+        $table->addUniqueIndex(['workflow_item_id'], 'uniq_a619dd641023c4ee');
+        $table->addIndex(['workflow_step_id'], 'idx_a619dd6471fe882c', []);
+        $table->addIndex(['saleschannel_id'], 'idx_a619dd644c7a5b2e', []);
+        $table->addUniqueIndex(['shippingaddress_id'], 'uniq_a619dd64b1835c8f');
     }
 
     /**
@@ -80,9 +80,11 @@ class MarelloOrderBundleInstaller implements Installation
         $table->addColumn('price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('totalprice', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->setPrimaryKey(['id']);
-        $table->addIndex(['order_id'], 'idx_1118665c8d9f6d38', []);
+        $table->addColumn('productname', 'string', ['length' => 255]);
+        $table->addColumn('productsku', 'string', ['length' => 255]);
         $table->addIndex(['product_id'], 'idx_1118665c4584665a', []);
+        $table->addIndex(['order_id'], 'idx_1118665c8d9f6d38', []);
+        $table->setPrimaryKey(['id']);
     }
 
     /**
