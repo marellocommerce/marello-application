@@ -133,6 +133,7 @@ class Variant
     {
         if (!$this->products->contains($item)) {
             $this->products->add($item);
+            $item->setVariant($this);
         }
 
         return $this;
@@ -149,6 +150,7 @@ class Variant
     {
         if ($this->products->contains($item)) {
             $this->products->removeElement($item);
+            $item->setVariant(null);
         }
 
         return $this;
