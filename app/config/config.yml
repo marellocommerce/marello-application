@@ -179,6 +179,11 @@ lexik_maintenance:
 #
 # ORO Bundles config
 #
+oro_ui:
+    settings:
+        organization_name:
+            value:            "Marello"
+
 oro_distribution:
     entry_point: ~
 
@@ -190,12 +195,16 @@ oro_require_js:
 
 oro_help:
     defaults:
-        server: http://help.orocrm.com/
+        link: 'http://www.marello.com/'
+        server: http://www.marello.com/
         prefix: Third_Party
     vendors:
         Oro:
             prefix: ~
             alias: Platform
+        Marello:
+            prefix: ~
+            alias: Marello
     routes:
         oro_default:
             uri: Platform/OroDashboardBundle
