@@ -12,7 +12,7 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 /**
  * Represents a Marello ProductPrice
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\PricingBundle\Entity\Repository\ProductPriceRepository")
  * @ORM\Table(
  *      name="marello_product_price",
  *      uniqueConstraints={

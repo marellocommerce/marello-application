@@ -17,9 +17,10 @@ class ProductSelectType extends AbstractType
                 'autocomplete_alias' => 'products',
                 'create_form_route'  => 'marello_product_create',
                 'grid_name' => 'marello-products-grid',
-                'create_enabled' => false,
                 'configs'            => [
-                    'placeholder' => 'marello.product.form.choose_product'
+                    'placeholder' => 'marello.product.form.choose_product',
+                    'result_template_twig' => 'MarelloProductBundle:Product:Autocomplete/result.html.twig',
+                    'selection_template_twig' => 'MarelloProductBundle:Product:Autocomplete/selection.html.twig',
                 ],
             ]
         );

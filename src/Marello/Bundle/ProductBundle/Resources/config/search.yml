@@ -12,3 +12,7 @@ Marello\Bundle\ProductBundle\Entity\Product:
             name: name
             target_type: text
             target_fields: [name]
+        -
+            name: sku
+            target_type: text
+            target_fields: [sku]

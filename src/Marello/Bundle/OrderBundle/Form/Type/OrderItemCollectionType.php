@@ -32,9 +32,9 @@ class OrderItemCollectionType extends AbstractType
                 'prototype_name'       => '__nameorderitem__',
                 'prototype'            => true,
                 'handle_primary'       => false,
-                'attr'                 => [
-                    'class' => 'table-hover table table-bordered table-condensed',
-                ],
+//                'attr'                 => [
+//                    'class' => 'table-hover table table-bordered table-condensed',
+//                ],
             ]
         );
     }

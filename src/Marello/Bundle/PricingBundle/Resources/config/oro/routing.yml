@@ -1,0 +1,4 @@
+marello_pricing_bundle:
+    resource: "@MarelloPricingBundle/Controller"
+    type:     annotation
+    prefix:   /marello/product/pricing
