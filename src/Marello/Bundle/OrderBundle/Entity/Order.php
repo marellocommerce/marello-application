@@ -26,6 +26,9 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
  *          "security"={
  *              "type"="ACL",
  *              "group_name"=""
+ *          },
+ *          "workflow"={
+ *              "active_workflow"="marello_order_b2c_workflow_1"
  *          }
  *      }
  * )
