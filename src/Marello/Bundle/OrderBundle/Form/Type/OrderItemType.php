@@ -27,6 +27,9 @@ class OrderItemType extends AbstractType
                     'create_enabled' => false,
                 ]
             )
+//            ->add('product', 'genemu_jqueryselect2_entity', [
+//                'class' => 'Marello\Bundle\ProductBundle\Entity\Product'
+//            ])
             ->add('quantity')
             ->add('price',
                 'text',

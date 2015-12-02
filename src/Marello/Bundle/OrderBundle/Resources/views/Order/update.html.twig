@@ -40,8 +40,7 @@
              data-page-component-options="{{ {
                  view: 'marelloorder/js/app/views/order-items-view',
                  prices: prices|default({})
-             }|json_encode }}"
-             data-layout="separate">
+             }|json_encode }}">
             {{ form_widget(form.items) }}
             {{ form_errors(form.items) }}
         </div>

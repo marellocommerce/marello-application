@@ -19,19 +19,13 @@ define(function(require) {
          */
         options: {
             prices: {},
-            pricesRoute: 'orob2b_pricing_matching_price',
-            currency: null
+            pricesRoute: 'marello_pricing_price_by_channel',
         },
 
         /**
          * @property {jQuery}
          */
         $form: null,
-
-        /**
-         * @property {jQuery}
-         */
-        $currency: null,
 
         /**
          * @property {jQuery}
@@ -43,7 +37,8 @@ define(function(require) {
          */
         initialize: function(options) {
             this.options = $.extend(true, {}, this.options, options || {});
-            //this.initLayout().done(_.bind(this.handleLayoutInit, this));
+            this.initLayout().done(_.bind(this.handleLayoutInit, this));
+            this.delegate('click', '.add-line-item', this.addRow);
         },
 
         /**
@@ -52,23 +47,52 @@ define(function(require) {
         handleLayoutInit: function() {
             this.$form = this.$el.closest('form');
             this.$salesChannel = this.$form.find(':input[data-ftid="' + this.$form.attr('name') + '_salesChannel"]');
-            console.log(this.$salesChannel);
-            //this.$currency = this.$form.find(':input[data-ftid="' + this.$form.attr('name') + '_curren    cy"]');
-            //
             this.$el.find('.add-list-item').mousedown(function(e) {
                 $(this).click();
             });
-            //
-            //mediator.on('order:get:line-items-matched-prices', this.getLineItemsMatchedPrices, this);
-            //mediator.on('order:load:line-items-matched-prices', this.loadLineItemsMatchedPrices, this);
-            //
-            //this.$priceList.change(_.bind(function() {
-            //    this.loadLineItemsMatchedPrices(this.getItems(), function(response) {
-            //        mediator.trigger('order:refresh:line-items-matched-prices', response);
-            //    });
-            //}, this));
+
+            mediator.on('order:get:line-items-prices', this.getLineItemsPrices, this);
+            mediator.on('order:load:line-items-prices', this.loadLineItemsPrices, this);
+
+            this.$salesChannel.change(_.bind(function() {
+                this.loadLineItemsPrices(this.getItems(), function(response) {
+                    mediator.trigger('order:refresh:line-items-prices', response);
+                });
+            }, this));
         },
 
+        /**
+         * handle index and html for the collection container
+         * @param $listContainer
+         * @returns {{nextIndex: *, nextItemHtml: *}}
+         */
+        getCollectionInfo: function($listContainer) {
+            var index = $listContainer.data('last-index') || $listContainer.children().length;
+
+            var prototypeName = $listContainer.attr('data-prototype-name') || '__name__';
+            var html = $listContainer.attr('data-prototype').replace(new RegExp(prototypeName, 'g'), index);
+            return {
+                nextIndex: index,
+                nextItemHtml: html
+            };
+        },
+
+        /**
+         * handle add button
+         */
+        addRow: function() {
+            var _self = this.$el.find('.add-line-item');
+            var containerSelector = $(_self).data('container') || '.collection-fields-list';
+            var $listContainer = this.$el.find('.row-oro').find(containerSelector).first();
+            var collectionInfo = this.getCollectionInfo($listContainer);
+            $listContainer.append(collectionInfo.nextItemHtml)
+                .trigger('content:changed')
+                .data('last-index', collectionInfo.nextIndex + 1);
+
+            $listContainer.find('input.position-input').each(function(i, el) {
+                $(el).val(i);
+            });
+        },
 
         /**
          * @returns {Array} products
@@ -87,27 +111,26 @@ define(function(require) {
         /**
          * @param {Function} callback
          */
-        getLineItemsMatchedPrices: function(callback) {
-            callback(this.options.matchedPrices);
+        getLineItemsPrices: function(callback) {
+            callback(this.options.prices);
         },
 
         /**
          * @param {Array} items
          * @param {Function} callback
          */
-        loadLineItemsMatchedPrices: function(items, callback) {
+        loadLineItemsPrices: function(items, callback) {
             var params = {
-                items: items,
-                currency: this._getCurrency()
+                product_ids: items
             };
 
-            var priceList = this._getPriceList();
-            if (priceList.length !== 0) {
-                params = _.extend(params, {pricelist: priceList});
+            var salesChannel = this._getSalesChannel();
+            if (salesChannel.length !== 0) {
+                params = _.extend(params, {salesChannel: salesChannel});
             }
 
             $.ajax({
-                url: routing.generate(this.options.matchedPricesRoute, params),
+                url: routing.generate(this.options.pricesRoute, params),
                 type: 'GET',
                 success: function(response) {
                     callback(response);
@@ -116,6 +139,10 @@ define(function(require) {
                     callback();
                 }
             });
+        },
+
+        _getSalesChannel: function() {
+            return this.$salesChannel.length !== 0 ? this.$salesChannel.val() : '';
         },
 
         /**
@@ -132,25 +159,12 @@ define(function(require) {
                     return;
                 }
 
-                var unitCode = $lineItem.find('select[data-ftid$="_productUnit"]')[0].value;
                 var quantity = $lineItem.find('input[data-ftid$="_quantity"]')[0].value;
 
-                items.push({'product': productId, 'unit': unitCode, 'qty': quantity});
+                items.push({'product': productId, 'qty': quantity});
             });
 
             return items;
-        },
-
-        /**
-         * @returns {String}
-         * @private
-         */
-        _getCurrency: function() {
-            var currency = this.options.currency;
-            if (this.$currency.length !== 0) {
-                currency = this.$currency.val();
-            }
-            return currency;
         },
 
         /**
@@ -161,12 +175,12 @@ define(function(require) {
                 return;
             }
 
-            //mediator.off('order:get:line-items-matched-prices', this.getLineItemsMatchedPrices, this);
-            //mediator.off('order:load:line-items-matched-prices', this.loadLineItemsMatchedPrices, this);
+            mediator.off('order:get:line-items-prices', this.getLineItemsPrices, this);
+            mediator.off('order:load:line-items-prices', this.loadLineItemsPrices, this);
 
             OrderItemsView.__super__.dispose.call(this);
         }
     });
 
-        return OrderItemsView;
+    return OrderItemsView;
 });
