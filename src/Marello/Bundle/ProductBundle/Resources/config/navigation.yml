@@ -9,6 +9,10 @@ oro_menu_config:
             route: marello_product_index
             extras:
                 routes: ['marello_product_*']
+        # disable activities tab and it's children
+        activities_tab:
+            display: false
+            displayChildren: false
     tree:
         application_menu:
             children:
