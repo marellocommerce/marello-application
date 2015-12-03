@@ -11,3 +11,10 @@ services:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: doctrine.event_listener, event: postFlush }
+
+    marello_order.manager.order.api:
+        class: Marello\Bundle\OrderBundle\Entity\Manager\OrderApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %marello_order.entity.order.class%
+            - @doctrine.orm.entity_manager

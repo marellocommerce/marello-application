@@ -13,16 +13,15 @@ class OrderApiType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('orderNumber')
             ->add('orderReference')
             ->add('salesChannel', 'entity', [
                 'class' => 'MarelloSalesBundle:SalesChannel',
             ])
             ->add('billingAddress', 'marello_address')
             ->add('shippingAddress', 'marello_address')
-            ->add('subtotal', 'money')
-            ->add('totalTax', 'money')
-            ->add('grandTotal', 'money');
+            ->add('items', 'collection', [
+                'type' => OrderItemApiType::NAME
+            ]);
     }
 
     /**
