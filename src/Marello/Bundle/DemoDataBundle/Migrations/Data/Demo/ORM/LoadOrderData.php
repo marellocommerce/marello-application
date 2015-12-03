@@ -36,60 +36,50 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
     public function loadOrders(ObjectManager $manager)
     {
-        $orders = [
-            [
-                'OrderReference' => 123456,
-                'Subtotal'       => 100,
-                'TotalTax'       => 20,
-            ],
-            [
-                'Subtotal' => 100,
-                'TotalTax' => 20,
-            ],
-            [
-                'Subtotal' => 1000,
-                'TotalTax' => 100,
-            ],
-            [
-                'OrderReference' => 5674321,
-                'Subtotal'       => 799,
-                'TotalTax'       => 199,
-            ],
-        ];
-
-        $orderEntities = [];
-
-        $chNo = 0;
-        foreach ($orders as $order) {
-            $billing = new Address();
-            $billing->setFirstName('Falco');
-            $billing->setLastName('van der Maden');
-            $billing->setStreet('Torenallee 20');
-            $billing->setPostalCode('5617 BC');
-            $billing->setCity('Eindhoven');
-            $billing->setCountry(
-                $manager->getRepository('OroAddressBundle:Country')->find('NL')
-            );
-            $billing->setPhone('+31 40 7074808');
-            $billing->setEmail('falco@madia.nl');
-
-            $shipping = clone $billing;
-
-            $orderEntity = new Order($billing, $shipping);
-            $orderEntity->setSalesChannel($this->getReference('marello_sales_channel_' . $chNo));
-            $chNo  = (int)!$chNo;
-            $total = 0;
-
-            foreach ($order as $attribute => $value) {
-                call_user_func([$orderEntity, 'set' . $attribute], $value);
-                if ($attribute === 'Subtotal' | $attribute === 'TotalTax') {
-                    $total += $value;
-                }
+        $handle = fopen($this->loadDictionary('customers.csv'), 'r');
+        if ($handle) {
+            $headers = array();
+            if (($data = fgetcsv($handle, 1000, ",")) !== false) {
+                //read headers
+                $headers = $data;
             }
-            $orderEntities[] = $orderEntity->setGrandTotal($total);
+            $i = 0;
+            while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+                $data = array_combine($headers, array_values($data));
+
+                $this->createOrder($data, $manager);
+                $i++;
+            }
+            fclose($handle);
         }
 
-        return $orderEntities;
+    }
+
+    protected function createOrder(array $order, $manager)
+    {
+        $billing = new Address();
+        $billing->setNamePrefix($order['title']);
+        $billing->setFirstName($order['firstname']);
+        $billing->setLastName($order['lastname']);
+        $billing->setStreet($order['street_address']);
+        $billing->setPostalCode($order['zipcode']);
+        $billing->setCity($order['city']);
+        $billing->setCountry(
+            $manager->getRepository('OroAddressBundle:Country')->find($order['country'])
+        );
+        $billing->setRegion(
+            $manager->getRepository('OroAddressBundle:Region')->findOneBy(['code' => $order['state']])
+        );
+        $billing->setCompany($order['company']);
+        $billing->setPhone($order['telephone_number']);
+        $billing->setEmail($order['email']);
+        $shipping = clone $billing;
+
+        $orderEntity = new Order($billing, $shipping);
+
+        $chNo = rand(0,1);
+        $orderEntity->setSalesChannel($this->getReference('marello_sales_channel_' . $chNo));
+        $this->loadOrderItems($manager,$orderEntity);
     }
 
     /**
@@ -98,50 +88,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
      */
     private function loadOrderItems(ObjectManager $manager, array $orders)
     {
-        $items = [
-            [
-                'Product' => $this->getReference('marello-product-1'),
-                'Quantity'   => 10,
-                'Price'      => 29.99,
-                'Tax'        => 5,
-                'TotalPrice' => '34.99',
-            ],
-            [
-                'Product' => $this->getReference('marello-product-2'),
-                'Quantity'   => 2,
-                'Price'      => 29.99,
-                'Tax'        => 5,
-                'TotalPrice' => '34.99',
-            ],
-            [
-                'Product' => $this->getReference('marello-product-3'),
-                'Quantity'   => 5,
-                'Price'      => 21.18,
-                'Tax'        => 5,
-                'TotalPrice' => '36.18',
-            ],
-            [
-                'Product' => $this->getReference('marello-product-4'),
-                'Quantity'   => 7,
-                'Price'      => 29.99,
-                'Tax'        => 5,
-                'TotalPrice' => '34.99',
-            ],
-            [
-                'Product' => $this->getReference('marello-product-5'),
-                'Quantity'   => 2,
-                'Price'      => 36.99,
-                'Tax'        => 5,
-                'TotalPrice' => '41.99',
-            ],
-            [
-                'Product' => $this->getReference('marello-product-6'),
-                'Quantity'   => 13,
-                'Price'      => 34.49,
-                'Tax'        => 5,
-                'TotalPrice' => '39.99',
-            ],
-        ];
 
         foreach ($orders as $order) {
             $subtotal = 0;
@@ -168,5 +114,68 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
             $manager->persist($order);
         }
+    }
+
+    protected function loadDictionary($name)
+    {
+        static $dictionaries = array();
+
+        $dictionaryDir = $this->container
+            ->get('kernel')
+            ->locateResource('@MarelloDemoDataBundle/Migrations/Data/Demo/ORM/dictionaries');
+
+        if (!isset($dictionaries[$name])) {
+            $dictionary = array();
+            $fileName = $dictionaryDir . DIRECTORY_SEPARATOR . $name;
+            foreach (file($fileName) as $item) {
+                $dictionary[] = trim($item);
+            }
+            $dictionaries[$name] = $dictionary;
+        }
+
+        return $dictionaries[$name];
+    }
+
+    /**
+     * Generates an email
+     *
+     * @param  string $firstName
+     * @param  string $lastName
+     * @return string
+     */
+    private function generateEmail($firstName, $lastName)
+    {
+        $uniqueString = substr(uniqid(rand()), -5, 5);
+        $domains = array('yahoo.com', 'gmail.com', 'example.com', 'hotmail.com', 'aol.com', 'msn.com');
+        $randomIndex = rand(0, count($domains) - 1);
+        $domain = $domains[$randomIndex];
+
+        return sprintf("%s.%s_%s@%s", strtolower($firstName), strtolower($lastName), $uniqueString, $domain);
+    }
+
+    /**
+     * Generate a first name
+     *
+     * @return string
+     */
+    private function generateFirstName()
+    {
+        $firstNamesDictionary = $this->loadDictionary('first_names.txt');
+        $randomIndex = rand(0, count($firstNamesDictionary) - 1);
+
+        return trim($firstNamesDictionary[$randomIndex]);
+    }
+
+    /**
+     * Generates a last name
+     *
+     * @return string
+     */
+    private function generateLastName()
+    {
+        $lastNamesDictionary = $this->loadDictionary('last_names.txt');
+        $randomIndex = rand(0, count($lastNamesDictionary) - 1);
+
+        return trim($lastNamesDictionary[$randomIndex]);
     }
 }
