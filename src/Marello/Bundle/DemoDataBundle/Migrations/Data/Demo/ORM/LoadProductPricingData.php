@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 
 class LoadProductPricingData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -52,7 +53,7 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
     {
         if(!count($product->getPrices()) > 0) {
             $data = $product->getData();
-            $data['rfm_enabled'] = true;
+            $data[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
             $product->setData($data);
 
             $channels = $product->getChannels();

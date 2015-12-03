@@ -117,15 +117,24 @@ define(function(require) {
             }
             var identifier = this._getPriceIdentifier();
             if (identifier) {
-                this.price = prices[identifier] || {};
+                if(prices[identifier].message) {
+                    //TODO:: disable saving since this product cannot be sold in this channel...
+                    console.log(prices[identifier].message);
+                } else {
+                    this.price = prices[identifier] || {};
+                }
             } else {
                 this.price = {};
             }
 
             this.priceIdentifier = identifier;
 
+            var $priceValue = parseFloat(this.getPriceValue()).toFixed(2);
+            if($priceValue === "NaN" || $priceValue === null) {
+                $priceValue = parseFloat(0).toFixed(2);
+            }
             this.fieldsByName.price
-                .val(this.getPriceValue());
+                .val($priceValue);
 
             this.updateRowTotals();
         },
@@ -134,16 +143,14 @@ define(function(require) {
          * update row totals
          */
         updateRowTotals: function() {
-            if(!this.getPriceValue() || !this.fieldsByName.quantity.val()) {
-                return;
-            }
             var $price = this.getPriceValue();
             var $quantity = this.fieldsByName.quantity.val();
-            var $totalPrice = ($price * $quantity);
+            var $totalPrice = parseFloat($price * $quantity).toFixed(2);
             var $priceExcl = (($totalPrice / (this.taxPercentage + 100)) * 100);
             var $tax = parseFloat(Math.round($totalPrice - $priceExcl)).toFixed(2);
             this.fieldsByName.tax.val($tax);
             this.fieldsByName.totalPrice.val($totalPrice);
+
         },
 
         /**
