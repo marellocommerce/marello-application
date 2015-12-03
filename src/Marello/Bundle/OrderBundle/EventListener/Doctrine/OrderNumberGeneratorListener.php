@@ -47,6 +47,7 @@ class OrderNumberGeneratorListener
         foreach ($changedOrders as $order) {
             $em->persist($order);
         }
+
         if (!empty($changedOrders)) {
             $em->flush($changedOrders);
         }

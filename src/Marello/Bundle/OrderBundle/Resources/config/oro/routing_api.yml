@@ -1,7 +1,3 @@
 marello_order_order_api:
     resource:     "@MarelloOrderBundle/Controller/Api/Rest/OrderController.php"
     type:         rest
-marello_order_order_item_api:
-    resource:     "@MarelloOrderBundle/Controller/Api/Rest/OrderItemController.php"
-    parent:       marello_order_order_api
-    type:         rest
