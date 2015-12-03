@@ -15,7 +15,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")
  * @Oro\Config
  * @ORM\Table(name="marello_order_order_item")
- *
+ * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")
  */
 class OrderItem extends ExtendOrderItem

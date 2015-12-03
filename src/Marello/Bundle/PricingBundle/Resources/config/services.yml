@@ -1,7 +1,9 @@
 parameters:
+    marello_productprice.entity.class: Marello\Bundle\PricingBundle\Entity\ProductPrice
     marello_productprice.product.form.extension.class: Marello\Bundle\PricingBundle\Form\Extension\ProductTypeExtension
     marello_productprice.product.model.pricing_aware_interface.class:  Marello\Bundle\PricingBundle\Model\PricingAwareInterface
 
+    marello_productprice.product.provider.product_price.class: Marello\Bundle\PricingBundle\Provider\ProductPriceProvider
 services:
     marello_productprice.product.form.extension:
         class: %marello_productprice.product.form.extension.class%
@@ -10,3 +12,9 @@ services:
             - %marello_productprice.product.model.pricing_aware_interface.class%
         tags:
             - { name: form.type_extension, alias: marello_product_form }
+
+    marello_productprice.product.provider.product_price:
+        class: %marello_productprice.product.provider.product_price.class%
+        arguments:
+            - @doctrine
+            - %marello_productprice.entity.class%

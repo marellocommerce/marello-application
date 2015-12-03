@@ -25,7 +25,8 @@ marello:
             error:
                 sku:                SKU already exists, please provide a unique SKU
 
-        form.choose.product:        Choose product
+        form.choose_product:        Select Product
+        form.add_product:           Add Product
         product_information:        Product Information
 
         navigation:
