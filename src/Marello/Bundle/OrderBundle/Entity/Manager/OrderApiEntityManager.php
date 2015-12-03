@@ -12,31 +12,48 @@ class OrderApiEntityManager extends ApiEntityManager
      */
     protected function getSerializationConfig()
     {
-        $addressConfig = [];
+        $addressConfig = [
+            'exclusion_policy' => 'all',
+            'fields'           => [
+                'namePrefix'   => [],
+                'firstName'    => [],
+                'middleName'   => [],
+                'lastName'     => [],
+                'nameSuffix'   => [],
+                'street'       => [],
+                'street2'      => [],
+                'city'         => [],
+                'country'      => [],
+                'region'       => [],
+                'organization' => [],
+                'postalCode'   => [],
+                'email'        => [],
+                'phone'        => [],
+            ],
+        ];
+
+        $itemConfig = [
+            'exclusion_policy' => 'all',
+            'fields'           => [
+                'productName' => [],
+                'productSku'  => [],
+                'quantity'    => [],
+                'price'       => [],
+                'tax'         => [],
+                'totalPrice'  => [],
+            ],
+        ];
 
         $config = [
             'exclusion_policy' => 'all',
             'fields'           => [
-                'id'              => [
-                    'result_name' => 'id',
-                ],
-                'orderNumber'     => [
-                    'result_name' => 'orderNumber',
-                ],
-                'orderReference'  => [
-                    'result_name' => 'orderReference',
-                ],
-                'subtotal'        => [
-                    'result_name' => 'subtotal',
-                ],
-                'totalTax'        => [
-                    'result_name' => 'totalTax',
-                ],
-                'grandTotal'      => [
-                    'result_name' => 'grandTotal',
-                ],
-                'items'           => [
-                ],
+                'id'              => [],
+                'orderNumber'     => [],
+                'orderReference'  => [],
+                'subtotal'        => [],
+                'totalTax'        => [],
+                'grandTotal'      => [],
+                'items'           => $itemConfig,
                 'billingAddress'  => $addressConfig,
                 'shippingAddress' => $addressConfig,
             ],

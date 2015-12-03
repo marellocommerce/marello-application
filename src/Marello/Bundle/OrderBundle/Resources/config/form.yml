@@ -29,6 +29,8 @@ services:
 
     marello_order.form.type.order_item_api:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderItemApiType
+        arguments:
+            - @marello_order.form.data_transformer.product_to_sku
         tags:
             - { name: form.type, alias: marello_order_item_api }
 
@@ -48,3 +50,8 @@ services:
             - @request
             - @doctrine.orm.entity_manager
             - @oro_entity.routing_helper
+
+    marello_order.form.data_transformer.product_to_sku:
+        class: Marello\Bundle\OrderBundle\Form\DataTransformer\ProductToSkuTransformer
+        arguments:
+            - @doctrine
