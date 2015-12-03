@@ -7,3 +7,6 @@ marello:
 
         form:
             pricing_enabled.label:  Enable Channel Pricing
+
+        messages:
+            no_price_found:         No price found

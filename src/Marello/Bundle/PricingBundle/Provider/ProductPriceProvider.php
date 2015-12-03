@@ -4,6 +4,8 @@ namespace Marello\Bundle\PricingBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Oro\Bundle\TranslationBundle\Translation\Translator;
+
 use Marello\Bundle\PricingBundle\Entity\Repository\ProductPriceRepository;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
@@ -19,17 +21,24 @@ class ProductPriceProvider
     /** @var string $productClassName */
     protected $productClassName;
 
+    /** @var $translator */
+    protected $translator;
     /**
      * ProductPriceProvider constructor.
      * @param ManagerRegistry $registry
      * @param $productPriceClassName
      * @param $productClassName
+     * @param $translator
      */
-    public function __construct(ManagerRegistry $registry, $productPriceClassName,$productClassName)
+    public function __construct(ManagerRegistry $registry,
+        $productPriceClassName,
+        $productClassName,
+        $translator)
     {
         $this->registry = $registry;
         $this->productPriceClassName = $productPriceClassName;
         $this->productClassName = $productClassName;
+        $this->translator = $translator;
     }
 
     /**
@@ -49,7 +58,7 @@ class ProductPriceProvider
             foreach($products as $product) {
                 if(!array_key_exists(self::PRICE_IDENTIFIER.$product['product'], $result)) {
                     $result[self::PRICE_IDENTIFIER.$product['product']] = [
-                        'message' => 'No price found',
+                        'message' => $this->translator->trans('marello.productprice.messages.no_price_found'),
                     ];
                 }
             }

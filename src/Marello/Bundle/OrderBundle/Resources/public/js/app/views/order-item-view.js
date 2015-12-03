@@ -118,6 +118,7 @@ define(function(require) {
             var identifier = this._getPriceIdentifier();
             if (identifier) {
                 if(prices[identifier].message) {
+                    this.price = {};
                     //TODO:: disable saving since this product cannot be sold in this channel...
                     console.log(prices[identifier].message);
                 } else {
