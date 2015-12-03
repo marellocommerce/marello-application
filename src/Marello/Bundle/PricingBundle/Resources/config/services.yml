@@ -18,3 +18,5 @@ services:
         arguments:
             - @doctrine
             - %marello_productprice.entity.class%
+            - %marello_product.entity.class%
+            - @translator

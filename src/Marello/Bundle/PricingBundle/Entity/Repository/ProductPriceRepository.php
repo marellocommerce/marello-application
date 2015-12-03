@@ -11,30 +11,24 @@ use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 class ProductPriceRepository extends EntityRepository
 {
     /**
-     * Return product prices for specified price list and product IDs
+     * Return product prices for specified channel and productId
      *
      * @param int $salesChannel
-     * @param array $productIds
+     * @param int $productId
      *
      * @return ProductPrice[]
      */
-    public function findBySalesChannel(
-        $salesChannel,
-        array $productIds
-    ) {
-        if (!$productIds) {
-            return [];
-        }
-
+    public function findOneBySalesChannel($salesChannel, $productId)
+    {
         $qb = $this->createQueryBuilder('price');
         $qb
             ->where(
                 $qb->expr()->eq('IDENTITY(price.channel)', ':salesChannel'),
-                $qb->expr()->in('IDENTITY(price.product)', ':productIds')
+                $qb->expr()->eq('IDENTITY(price.product)', ':productId')
             )
             ->setParameter('salesChannel', $salesChannel)
-            ->setParameter('productIds', $productIds);
+            ->setParameter('productId', $productId);
 
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getScalarResult();
     }
 }

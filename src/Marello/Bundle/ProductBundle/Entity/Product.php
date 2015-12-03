@@ -20,7 +20,7 @@ use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 /**
  * Represents a Marello Product
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository")
  * @ORM\Table(
  *      name="marello_product_product",
  *      indexes={
