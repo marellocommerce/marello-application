@@ -5,12 +5,31 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+
 use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
-class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
+class LoadOrderData extends AbstractFixture
+    implements DependentFixtureInterface, ContainerAwareInterface
 {
+    const DEFAULT_TAX_PERCENTAGE = 21;
+
+    const FLUSH_MAX = 50;
+
+    /** @var ContainerInterface */
+    protected $container;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 
     /**
      * {@inheritdoc}
@@ -20,6 +39,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         return [
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData',
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData',
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductPricingData',
         ];
     }
 
@@ -28,29 +48,30 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $orders = $this->loadOrders($manager);
-        $this->loadOrderItems($manager, $orders);
-
-        $manager->flush();
+        $this->loadOrders($manager);
     }
 
     public function loadOrders(ObjectManager $manager)
     {
-        $handle = fopen($this->loadDictionary('customers.csv'), 'r');
+        $handle  = fopen($this->getDictionaryDir() . DIRECTORY_SEPARATOR . 'orderAddresses.csv', "r");
         if ($handle) {
             $headers = array();
-            if (($data = fgetcsv($handle, 1000, ",")) !== false) {
+            if (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 //read headers
                 $headers = $data;
             }
             $i = 0;
-            while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+            while (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 $data = array_combine($headers, array_values($data));
 
                 $this->createOrder($data, $manager);
                 $i++;
+                if ($i % self::FLUSH_MAX == 0) {
+                    $manager->flush();
+                }
             }
             fclose($handle);
+            $manager->flush();
         }
 
     }
@@ -70,112 +91,119 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $billing->setRegion(
             $manager->getRepository('OroAddressBundle:Region')->findOneBy(['code' => $order['state']])
         );
-        $billing->setCompany($order['company']);
         $billing->setPhone($order['telephone_number']);
         $billing->setEmail($order['email']);
         $shipping = clone $billing;
 
-        $orderEntity = new Order($billing, $shipping);
+        $orderEntity = new Order($billing, $shipping);;
+        $chNo = rand(0,3);
 
-        $chNo = rand(0,1);
         $orderEntity->setSalesChannel($this->getReference('marello_sales_channel_' . $chNo));
         $this->loadOrderItems($manager,$orderEntity);
     }
 
     /**
      * @param ObjectManager $manager
-     * @param Order[]       $orders
+     * @param Order[]       $order
      */
-    private function loadOrderItems(ObjectManager $manager, array $orders)
+    private function loadOrderItems(ObjectManager $manager, $order)
     {
-
-        foreach ($orders as $order) {
-            $subtotal = 0;
-            $tax      = 0;
-            $total    = 0;
-
-            foreach ($items as $item) {
-
-                $itemEntity = new OrderItem();
-
-                foreach ($item as $attribute => $value) {
-                    call_user_func([$itemEntity, 'set' . $attribute], $value);
-                    $order->addItem($itemEntity);
-                }
-
-                $subtotal += $itemEntity->getPrice();
-                $tax += $itemEntity->getTax();
-                $total += $itemEntity->getTotalPrice();
+        $randItemsCount = rand(1,10);
+        $tax = $subtotal = $total = 0;
+        for ($i = 0;$i < $randItemsCount; $i++) {
+            $randQty = rand(1,7);
+            $channel = $order->getSalesChannel();
+            $channelId = $channel->getId();
+            $product = $this->getRandomProduct($manager, $channel);
+            if(count($product) === 0) {
+                $range = $this->getMinAndMaxId($manager->getRepository('MarelloProductBundle:Product'));
+                $product = $manager->getRepository('MarelloProductBundle:Product')->find(rand($range[1], $range[2]));
             }
-            $order
-                ->setSubtotal($subtotal)
-                ->setTotalTax($tax)
-                ->setGrandTotal($total);
 
-            $manager->persist($order);
+            if(is_array($product)) {
+                $product = array_shift($product);
+            }
+
+            $unitPrice = $product->getPrices()->filter( function($price) use ($channelId) {
+                return $price->getChannel()->getId() === $channelId;
+            });
+
+            $itemBasePrice = $product->getPrice();
+            if(count($unitPrice) > 0) {
+                $itemBasePrice = $unitPrice->first()->getValue();
+            }
+
+            $itemEntity = new OrderItem();
+            $itemEntity->setProduct($product);
+            $itemEntity->setOrder($order);
+            $itemEntity->setQuantity($randQty);
+            $itemEntity->setPrice($itemBasePrice);
+
+            // calculate total price (qty * price)
+            $itemEntity->setTotalPrice(($itemBasePrice * $randQty));
+            // calculate tax
+            $priceExcl = (($itemEntity->getTotalPrice() / (self::DEFAULT_TAX_PERCENTAGE + 100)) * 100);
+            $itemTax = ($itemEntity->getTotalPrice() - $priceExcl);
+            $itemEntity->setTax($itemTax);
+
+            // accumulate the totals for order
+            $subtotal += $itemEntity->getTotalPrice();
+            $tax += $itemEntity->getTax();
+            $total += $itemEntity->getTotalPrice();
+            $order->addItem($itemEntity);
         }
+
+        $order
+            ->setSubtotal($subtotal)
+            ->setTotalTax($tax)
+            ->setGrandTotal($total);
+
+        $manager->persist($order);
     }
 
-    protected function loadDictionary($name)
+    protected function getDictionaryDir()
     {
-        static $dictionaries = array();
-
-        $dictionaryDir = $this->container
+        return $this->container
             ->get('kernel')
             ->locateResource('@MarelloDemoDataBundle/Migrations/Data/Demo/ORM/dictionaries');
-
-        if (!isset($dictionaries[$name])) {
-            $dictionary = array();
-            $fileName = $dictionaryDir . DIRECTORY_SEPARATOR . $name;
-            foreach (file($fileName) as $item) {
-                $dictionary[] = trim($item);
-            }
-            $dictionaries[$name] = $dictionary;
-        }
-
-        return $dictionaries[$name];
     }
 
     /**
-     * Generates an email
-     *
-     * @param  string $firstName
-     * @param  string $lastName
-     * @return string
+     * Get random product based on saleschannel from order
+     * @param $manager
+     * @param $channel
+     * @return mixed
      */
-    private function generateEmail($firstName, $lastName)
+    protected function getRandomProduct($manager, $channel)
     {
-        $uniqueString = substr(uniqid(rand()), -5, 5);
-        $domains = array('yahoo.com', 'gmail.com', 'example.com', 'hotmail.com', 'aol.com', 'msn.com');
-        $randomIndex = rand(0, count($domains) - 1);
-        $domain = $domains[$randomIndex];
+        $repo = $manager->getRepository('MarelloProductBundle:Product');
+        $count = $this->getProductCount($repo);
+        $qb = $repo->createQueryBuilder('p');
 
-        return sprintf("%s.%s_%s@%s", strtolower($firstName), strtolower($lastName), $uniqueString, $domain);
+        return $qb
+            ->where(
+                $qb->expr()->isMemberOf(':salesChannel', 'p.channels')
+            )
+            ->setFirstResult(rand(0, $count - 1))
+            ->setMaxResults(1)
+            ->setParameter('salesChannel', $channel)
+            ->getQuery()
+            ->getResult();
     }
 
-    /**
-     * Generate a first name
-     *
-     * @return string
-     */
-    private function generateFirstName()
+    protected function getProductCount($repo)
     {
-        $firstNamesDictionary = $this->loadDictionary('first_names.txt');
-        $randomIndex = rand(0, count($firstNamesDictionary) - 1);
-
-        return trim($firstNamesDictionary[$randomIndex]);
+        return $repo->createQueryBuilder('p')
+            ->select('COUNT(p)')
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
-    /**
-     * Generates a last name
-     *
-     * @return string
-     */
-    private function generateLastName()
+    protected function getMinAndMaxId($repo)
     {
-        $lastNamesDictionary = $this->loadDictionary('last_names.txt');
-        $randomIndex = rand(0, count($lastNamesDictionary) - 1);
-
-        return trim($lastNamesDictionary[$randomIndex]);
+        return $repo->createQueryBuilder('p')
+            ->select('MIN(p), MAX(p)')
+            ->getQuery()
+            ->getSingleResult();
     }
 }

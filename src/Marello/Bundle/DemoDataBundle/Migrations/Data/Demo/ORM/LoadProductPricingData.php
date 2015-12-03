@@ -52,23 +52,27 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
     private function createProductPrice($product,$manager)
     {
         if(!count($product->getPrices()) > 0) {
-            $data = $product->getData();
-            $data[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
-            $product->setData($data);
-
             $channels = $product->getChannels();
-            $productPrice = new ProductPrice();
+            $max = count($product->getChannels());
+            $channelCount = rand(1,$max);
+            $i=1;
             foreach($channels as $channel) {
-                $productPrice->setProduct($product);
-                $productPrice->setCurrency($this->currency);
-                $productPercentage = rand(80,90);
-                $productPriceValue = ($product->getPrice() * ($productPercentage / 100));
-                $productPrice->setValue(round((float)$productPriceValue, 2));
-                $productPrice->setChannel($channel);
+                if($i <= $channelCount) {
+                    $productPrice = new ProductPrice();
+                    $data = $product->getData();
+                    $data[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
+                    $product->setData($data);
+                    $productPrice->setProduct($product);
+                    $productPrice->setCurrency($this->currency);
+                    $productPercentage = rand(85,95);
+                    $productPriceValue = ($product->getPrice() * ($productPercentage / 100));
+                    $productPrice->setValue(round((float)$productPriceValue, 2));
+                    $productPrice->setChannel($channel);
+                    $manager->persist($product);
+                    $manager->persist($productPrice);
+                }
+                $i++;
             }
-
-            $manager->persist($product);
-            $manager->persist($productPrice);
         }
     }
 }

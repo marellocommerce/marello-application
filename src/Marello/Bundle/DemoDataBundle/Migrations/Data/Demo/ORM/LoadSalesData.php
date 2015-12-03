@@ -8,6 +8,15 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class LoadSalesData extends AbstractFixture
 {
+    /**
+     * @var array
+     */
+    protected $data = array(
+        array('name' => 'Magento Store', 'type' => 'magento'),
+        array('name' => 'Flagship Store New York', 'type' => 'pos'),
+        array('name' => 'Store Washington D.C.', 'type' => 'pos'),
+        array('name' => 'HQ', 'type' => 'marello'),
+    );
 
     /**
      * {@inheritdoc}
@@ -19,17 +28,18 @@ class LoadSalesData extends AbstractFixture
 
     protected function loadSalesChannels(ObjectManager $manager)
     {
-        $channel1 = new SalesChannel('Webshop NL');
-        $channel1->setOwner($manager->getRepository('OroOrganizationBundle:Organization')->findOneBy([]));
-        $channel2 = new SalesChannel('Store Amsterdam');
-        $channel2->setOwner($manager->getRepository('OroOrganizationBundle:Organization')->findOneBy([]));
+        $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getOrganizationById(1);
+        $i = 0;
+        foreach ($this->data as $values) {
+            $channel = new SalesChannel($values['name']);
+            $channel->setChannelType($values['type']);
+            $channel->setOwner($organization);
 
-        $manager->persist($channel1);
-        $manager->persist($channel2);
+            $manager->persist($channel);
+            $this->setReference('marello_sales_channel_'.$i, $channel);
+            $i++;
+        }
 
         $manager->flush();
-
-        $this->setReference('marello_sales_channel_0', $channel1);
-        $this->setReference('marello_sales_channel_1', $channel2);
     }
 }
