@@ -1,0 +1,10 @@
+oro_dashboard_config:
+    widgets:
+        quick_launchpad:
+            items:
+                orders:
+                    label:      marello.order.entity_plural_label
+                    icon:       list-alt
+                    route:      marello_order_order_index
+                    acl:        marello_order_view
+                    position:   25
