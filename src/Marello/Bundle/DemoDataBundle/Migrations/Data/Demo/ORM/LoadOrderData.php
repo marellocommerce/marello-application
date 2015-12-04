@@ -21,6 +21,14 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     /** @var ObjectManager $manager */
     protected $manager;
 
+    /** @var array $data */
+    protected $data = array(
+        'Magento Store' => '10',
+        'Flagship Store New York' => '20',
+        'Store Washington D.C.' => '30',
+        'HQ' => '40',
+    );
+
     /**
      * {@inheritdoc}
      */
@@ -95,8 +103,15 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
         $orderEntity = new Order($billing, $shipping);;
         $chNo = rand(0,3);
+        $channel = $this->getReference('marello_sales_channel_' . $chNo);
+        $orderEntity->setSalesChannel($channel);
+        $setReferenceNumber = (rand(0,100) % 2 == 0) ? true : false;
+        if($setReferenceNumber) {
+            $min = (int) $this->data[$channel->getName()] . '0000000';
+            $max = $min + rand(1,1000);
+            $orderEntity->setOrderReference(rand($min, $max));
+        }
 
-        $orderEntity->setSalesChannel($this->getReference('marello_sales_channel_' . $chNo));
         $this->loadOrderItems($orderEntity);
     }
 
@@ -106,11 +121,11 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
      */
     private function loadOrderItems($order)
     {
-        $randItemsCount = rand(1,6);
+        $randItemsCount = rand(1,4);
         $tax = $subtotal = $total = 0;
         $productRp = $this->getRepository('MarelloProductBundle:Product');
         for ($i = 0;$i < $randItemsCount; $i++) {
-            $randQty = rand(1,5);
+            $randQty = rand(1,3);
             $channel = $order->getSalesChannel();
             $channelId = $channel->getId();
             $product = $this->getRandomProduct($channel, $productRp);
