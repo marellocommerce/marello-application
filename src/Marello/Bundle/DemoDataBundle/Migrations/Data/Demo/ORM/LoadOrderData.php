@@ -108,10 +108,10 @@ class LoadOrderData extends AbstractFixture
      */
     private function loadOrderItems(ObjectManager $manager, $order)
     {
-        $randItemsCount = rand(1,10);
+        $randItemsCount = rand(1,6);
         $tax = $subtotal = $total = 0;
         for ($i = 0;$i < $randItemsCount; $i++) {
-            $randQty = rand(1,7);
+            $randQty = rand(1,5);
             $channel = $order->getSalesChannel();
             $channelId = $channel->getId();
             $product = $this->getRandomProduct($manager, $channel);
