@@ -11,7 +11,11 @@ use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 
 class LoadProductPricingData extends AbstractFixture implements DependentFixtureInterface
 {
+    /** @var string $currency */
     protected $currency = 'USD';
+
+    /** @var ObjectManager $manager */
+    protected $manager;
 
     public function getDependencies() {
         return [
@@ -24,36 +28,37 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
      */
     public function load(ObjectManager $manager)
     {
-        $this->loadProductPrices($manager);
-        $manager->flush();
+        $this->manager = $manager;
+        $this->loadProductPrices();
     }
 
     /**
-     * @param ObjectManager $manager
+     * {@inheritDoc}
      */
-    public function loadProductPrices(ObjectManager $manager)
+    public function loadProductPrices()
     {
-        $products = $manager->getRepository('MarelloProductBundle:Product')->findAll();
+        $products = $this->getRepository()->findAll();
         foreach ($products as $product) {
             $productRef = rand(0,145);
             $skip = ($productRef % 2 == 0) ? true : false;
 
             if(!$skip) {
-                $this->createProductPrice($product,$manager);
+                $this->createProductPrice($product);
             }
             continue;
         }
+        $this->manager->flush();
     }
 
     /**
+     * Create new product price
      * @param $product
-     * @param $manager
      */
-    private function createProductPrice($product,$manager)
+    private function createProductPrice($product)
     {
         if(!count($product->getPrices()) > 0) {
             $channels = $product->getChannels();
-            $max = count($product->getChannels());
+            $max = count($channels);
             $channelCount = rand(1,$max);
             $i=1;
             foreach($channels as $channel) {
@@ -68,11 +73,21 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
                     $productPriceValue = ($product->getPrice() * ($productPercentage / 100));
                     $productPrice->setValue(round((float)$productPriceValue, 2));
                     $productPrice->setChannel($channel);
-                    $manager->persist($product);
-                    $manager->persist($productPrice);
+                    $this->manager->persist($product);
+                    $this->manager->persist($productPrice);
                 }
                 $i++;
             }
         }
     }
+
+    /**
+     * get repository
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getRepository()
+    {
+        return $this->manager->getRepository('MarelloProductBundle:Product');
+    }
+
 }

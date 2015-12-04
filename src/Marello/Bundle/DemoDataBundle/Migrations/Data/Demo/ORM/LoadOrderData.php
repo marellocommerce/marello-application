@@ -6,30 +6,20 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-
 use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
-class LoadOrderData extends AbstractFixture
-    implements DependentFixtureInterface, ContainerAwareInterface
+class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
+    /** default tax percentage constant */
     const DEFAULT_TAX_PERCENTAGE = 21;
 
+    /** flush manager count */
     const FLUSH_MAX = 50;
 
-    /** @var ContainerInterface */
-    protected $container;
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
+    /** @var ObjectManager $manager */
+    protected $manager;
 
     /**
      * {@inheritdoc}
@@ -48,12 +38,16 @@ class LoadOrderData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        $this->loadOrders($manager);
+        $this->manager = $manager;
+        $this->loadOrders();
     }
 
-    public function loadOrders(ObjectManager $manager)
+    /**
+     * load orders
+     */
+    public function loadOrders()
     {
-        $handle  = fopen($this->getDictionaryDir() . DIRECTORY_SEPARATOR . 'orderAddresses.csv', "r");
+        $handle  = fopen($this->getDictionary('orderAddresses.csv'), "r");
         if ($handle) {
             $headers = array();
             if (($data = fgetcsv($handle, 1000, ";")) !== false) {
@@ -64,19 +58,23 @@ class LoadOrderData extends AbstractFixture
             while (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 $data = array_combine($headers, array_values($data));
 
-                $this->createOrder($data, $manager);
+                $this->createOrder($data);
                 $i++;
                 if ($i % self::FLUSH_MAX == 0) {
-                    $manager->flush();
+                    $this->manager->flush();
                 }
             }
             fclose($handle);
-            $manager->flush();
+            $this->manager->flush();
         }
 
     }
 
-    protected function createOrder(array $order, $manager)
+    /**
+     * create orders and related entities
+     * @param array $order
+     */
+    protected function createOrder(array $order)
     {
         $billing = new Address();
         $billing->setNamePrefix($order['title']);
@@ -86,10 +84,10 @@ class LoadOrderData extends AbstractFixture
         $billing->setPostalCode($order['zipcode']);
         $billing->setCity($order['city']);
         $billing->setCountry(
-            $manager->getRepository('OroAddressBundle:Country')->find($order['country'])
+            $this->getRepository('OroAddressBundle:Country')->find($order['country'])
         );
         $billing->setRegion(
-            $manager->getRepository('OroAddressBundle:Region')->findOneBy(['code' => $order['state']])
+            $this->getRepository('OroAddressBundle:Region')->findOneBy(['code' => $order['state']])
         );
         $billing->setPhone($order['telephone_number']);
         $billing->setEmail($order['email']);
@@ -99,25 +97,26 @@ class LoadOrderData extends AbstractFixture
         $chNo = rand(0,3);
 
         $orderEntity->setSalesChannel($this->getReference('marello_sales_channel_' . $chNo));
-        $this->loadOrderItems($manager,$orderEntity);
+        $this->loadOrderItems($orderEntity);
     }
 
     /**
-     * @param ObjectManager $manager
-     * @param Order[]       $order
+     * create new order items and related entities
+     * @param Order $order
      */
-    private function loadOrderItems(ObjectManager $manager, $order)
+    private function loadOrderItems($order)
     {
         $randItemsCount = rand(1,6);
         $tax = $subtotal = $total = 0;
+        $productRp = $this->getRepository('MarelloProductBundle:Product');
         for ($i = 0;$i < $randItemsCount; $i++) {
             $randQty = rand(1,5);
             $channel = $order->getSalesChannel();
             $channelId = $channel->getId();
-            $product = $this->getRandomProduct($manager, $channel);
+            $product = $this->getRandomProduct($channel, $productRp);
             if(count($product) === 0) {
-                $range = $this->getMinAndMaxId($manager->getRepository('MarelloProductBundle:Product'));
-                $product = $manager->getRepository('MarelloProductBundle:Product')->find(rand($range[1], $range[2]));
+                $range = $this->getMinMaxProductId($productRp);
+                $product = $productRp->find(rand($range[1], $range[2]));
             }
 
             if(is_array($product)) {
@@ -158,25 +157,17 @@ class LoadOrderData extends AbstractFixture
             ->setTotalTax($tax)
             ->setGrandTotal($total);
 
-        $manager->persist($order);
-    }
-
-    protected function getDictionaryDir()
-    {
-        return $this->container
-            ->get('kernel')
-            ->locateResource('@MarelloDemoDataBundle/Migrations/Data/Demo/ORM/dictionaries');
+        $this->manager->persist($order);
     }
 
     /**
      * Get random product based on saleschannel from order
-     * @param $manager
-     * @param $channel
+     * @param \Marello\Bundle\SalesBundle\Entity\SalesChannel $channel
+     * @param \Doctrine\Common\Persistence\ObjectRepository $repo
      * @return mixed
      */
-    protected function getRandomProduct($manager, $channel)
+    protected function getRandomProduct($channel,$repo)
     {
-        $repo = $manager->getRepository('MarelloProductBundle:Product');
         $count = $this->getProductCount($repo);
         $qb = $repo->createQueryBuilder('p');
 
@@ -191,6 +182,11 @@ class LoadOrderData extends AbstractFixture
             ->getResult();
     }
 
+    /**
+     * Get product count
+     * @param \Doctrine\Common\Persistence\ObjectRepository $repo
+     * @return mixed
+     */
     protected function getProductCount($repo)
     {
         return $repo->createQueryBuilder('p')
@@ -199,11 +195,36 @@ class LoadOrderData extends AbstractFixture
             ->getSingleScalarResult();
     }
 
-    protected function getMinAndMaxId($repo)
+    /**
+     * Get the min and max ID for product
+     * @param \Doctrine\Common\Persistence\ObjectRepository $repo
+     * @return mixed
+     */
+    protected function getMinMaxProductId($repo)
     {
         return $repo->createQueryBuilder('p')
             ->select('MIN(p), MAX(p)')
             ->getQuery()
             ->getSingleResult();
+    }
+
+    /**
+     * Get repository for class
+     * @param $className
+     * @return \Doctrine\Common\Persistence\ObjectRepository
+     */
+    private function getRepository($className)
+    {
+        return $this->manager->getRepository($className);
+    }
+
+    /**
+     * Get dictionary file by name
+     * @param $name
+     * @return string
+     */
+    private function getDictionary($name)
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . 'dictionaries' . DIRECTORY_SEPARATOR . $name;
     }
 }

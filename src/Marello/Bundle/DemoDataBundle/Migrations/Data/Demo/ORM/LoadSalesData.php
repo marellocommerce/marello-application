@@ -4,10 +4,14 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class LoadSalesData extends AbstractFixture
 {
+    /** @var ObjectManager $manager */
+    protected $manager;
+
     /**
      * @var array
      */
@@ -23,23 +27,27 @@ class LoadSalesData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        $this->loadSalesChannels($manager);
+        $this->manager = $manager;
+        $this->loadSalesChannels();
     }
 
-    protected function loadSalesChannels(ObjectManager $manager)
+    /**
+     * load and create SalesChannels
+     */
+    protected function loadSalesChannels()
     {
-        $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getOrganizationById(1);
+        $organization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getOrganizationById(1);
         $i = 0;
         foreach ($this->data as $values) {
             $channel = new SalesChannel($values['name']);
             $channel->setChannelType($values['type']);
             $channel->setOwner($organization);
 
-            $manager->persist($channel);
+            $this->manager->persist($channel);
             $this->setReference('marello_sales_channel_'.$i, $channel);
             $i++;
         }
 
-        $manager->flush();
+        $this->manager->flush();
     }
 }
