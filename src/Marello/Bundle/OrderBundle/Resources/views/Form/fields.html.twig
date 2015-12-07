@@ -56,6 +56,9 @@
         data-page-component-options="{{ {view: 'marelloorder/js/app/views/order-item-view'}|json_encode }}">
         {{ form_widget(form) }}
 
+        <td class="order-line-item-notifications">
+            <span class="error" style="display:none;"><i class="icon-exclamation-sign"></i></span>
+        </td>
         {% if allow_delete %}
             <td class="order-line-item-remove">
                 <button type="button" class="remove-line-item btn icons-holder"><i class="icon-remove"></i></button>
@@ -84,6 +87,7 @@
                             <th class="order-line-item-price"><span>{{ 'marello.order.orderitem.price.label'|trans }}</span></th>
                             <th class="order-line-item-tax"><span>{{ 'marello.order.orderitem.tax.label'|trans }}</span></th>
                             <th class="order-line-item-total-price"><span>{{ 'marello.order.orderitem.total_price.label'|trans }}</span></th>
+                            <th class="order-line-item-notifications"></th>
                             {% if form.vars.allow_delete %}
                                 <th class="order-row-item-actions"></th>
                             {% endif %}

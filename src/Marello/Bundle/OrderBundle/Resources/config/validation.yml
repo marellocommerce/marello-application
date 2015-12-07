@@ -7,3 +7,15 @@ Marello\Bundle\AddressBundle\Entity\Address:
         postalCode:
             - NotBlank: ~
     constraints: ~
+
+Marello\Bundle\OrderBundle\Entity\OrderItem:
+    properties:
+        product:
+            - NotBlank: ~
+        price:
+            - NotBlank: ~
+        tax:
+            - NotBlank: ~
+        totalPrice:
+            - NotBlank: ~
+    constraints: ~

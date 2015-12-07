@@ -58,7 +58,7 @@ class ProductPriceProvider
             foreach($products as $product) {
                 if(!array_key_exists(self::PRICE_IDENTIFIER.$product['product'], $result)) {
                     $result[self::PRICE_IDENTIFIER.$product['product']] = [
-                        'message' => $this->translator->trans('marello.productprice.messages.no_price_found'),
+                        'message' => $this->translator->trans('marello.productprice.messages.product_not_salable'),
                     ];
                 }
             }

@@ -21,6 +21,11 @@
     padding: 7px 10px;
 }
 
+.order-line-items tr.order-line-item .order-line-item-notifications span.error {
+    font-size:29px;
+    color: #c81717;
+}
+
 .order-line-items .add-line-item {
     margin-top: 10px;
 }

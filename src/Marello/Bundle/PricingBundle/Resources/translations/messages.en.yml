@@ -9,4 +9,4 @@ marello:
             pricing_enabled.label:  Enable Channel Pricing
 
         messages:
-            no_price_found:         No price found
+            product_not_salable:    Product is not salable in the chosen Sales Channel
