@@ -14,7 +14,8 @@ define(function(require) {
      */
     OrderItemView = BaseView.extend({
         options: {
-            ftid: ''
+            ftid: '',
+            salable: null
         },
 
         /**
@@ -77,6 +78,9 @@ define(function(require) {
             this.initPrice();
         },
 
+        /**
+         * initialize price triggers and field events
+         */
         initPrice: function() {
             this.addFieldEvents('product', this.updatePrice);
             this.addFieldEvents('quantity', this.updateRowTotals);
@@ -118,22 +122,25 @@ define(function(require) {
             var identifier = this._getPriceIdentifier();
             if (identifier) {
                 if(prices[identifier].message) {
-                    this.price = {};
-                    //TODO:: disable saving since this product cannot be sold in this channel...
-                    console.log(prices[identifier].message);
+                    this.price = '';
+                    this.updateRowTotals();
+                    this.options.salable = false;
                 } else {
                     this.price = prices[identifier] || {};
+                    this.options.salable = true;
                 }
             } else {
                 this.price = {};
             }
+            mediator.trigger('order:update:line-items', {'elm': this.$el, 'salable': this.options.salable},this);
 
             this.priceIdentifier = identifier;
 
             var $priceValue = parseFloat(this.getPriceValue()).toFixed(2);
             if($priceValue === "NaN" || $priceValue === null) {
-                $priceValue = parseFloat(0).toFixed(2);
+                $priceValue = '';
             }
+
             this.fieldsByName.price
                 .val($priceValue);
 
@@ -145,13 +152,17 @@ define(function(require) {
          */
         updateRowTotals: function() {
             var $price = this.getPriceValue();
-            var $quantity = this.fieldsByName.quantity.val();
-            var $totalPrice = parseFloat($price * $quantity).toFixed(2);
-            var $priceExcl = (($totalPrice / (this.taxPercentage + 100)) * 100);
-            var $tax = parseFloat(Math.round($totalPrice - $priceExcl)).toFixed(2);
+            var $totalPrice = '';
+            var $tax = '';
+            if($price) {
+                var $quantity = this.fieldsByName.quantity.val();
+                $totalPrice = parseFloat($price * $quantity).toFixed(2);
+                var $priceExcl = (($totalPrice / (this.taxPercentage + 100)) * 100);
+                $tax = parseFloat(Math.round($totalPrice - $priceExcl)).toFixed(2);
+            }
+
             this.fieldsByName.tax.val($tax);
             this.fieldsByName.totalPrice.val($totalPrice);
-
         },
 
         /**
@@ -216,6 +227,9 @@ define(function(require) {
             return name.join('');
         },
 
+        /**
+         * remove single line item
+         */
         removeRow: function() {
             this.$el.trigger('content:remove');
             this.remove();

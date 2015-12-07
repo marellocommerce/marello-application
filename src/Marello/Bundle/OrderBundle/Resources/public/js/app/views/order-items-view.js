@@ -1,12 +1,14 @@
 define(function(require) {
     'use strict';
 
-    var OrderItemsView;
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var routing = require('routing');
-    var mediator = require('oroui/js/mediator');
-    var BaseView = require('oroui/js/app/views/base/view');
+    var OrderItemsView,
+        $ = require('jquery'),
+        _ = require('underscore'),
+        __ = require('orotranslation/js/translator'),
+        DeleteConfirmation = require('oroui/js/delete-confirmation'),
+        routing = require('routing'),
+        mediator = require('oroui/js/mediator'),
+        BaseView = require('oroui/js/app/views/base/view');
 
     /**
      * @export marelloorder/js/app/views/order-items-view
@@ -33,6 +35,16 @@ define(function(require) {
         $salesChannel: null,
 
         /**
+         * @property {Object}
+         */
+        $channelHistory: {'prev':null, 'current':null},
+
+        /**
+         * @property {Object}
+         */
+        $confirm: false,
+
+        /**
          * @inheritDoc
          */
         initialize: function(options) {
@@ -53,13 +65,18 @@ define(function(require) {
 
             mediator.on('order:get:line-items-prices', this.getLineItemsPrices, this);
             mediator.on('order:load:line-items-prices', this.loadLineItemsPrices, this);
+            mediator.on('order:update:line-items', this.updateLineItems, this);
 
             this.$salesChannel.change(_.bind(function() {
                 this.loadLineItemsPrices(this.getItems(), function(response) {
                     mediator.trigger('order:refresh:line-items-prices', response);
                 });
+                this.setChannelHistory(this._getSalesChannel());
             }, this));
+
+            this.initChannelHistory();
         },
+
 
         /**
          * handle index and html for the collection container
@@ -91,6 +108,73 @@ define(function(require) {
 
             $listContainer.find('input.position-input').each(function(i, el) {
                 $(el).val(i);
+            });
+        },
+
+        /**
+         * initialize channel history (current and prev selected channels)
+         */
+        initChannelHistory: function () {
+            this.setChannelHistory(this._getSalesChannel());
+        },
+
+        /**
+         * update the current and prev channels
+         * @param channel
+         */
+        setChannelHistory: function(channel) {
+            this.$channelHistory.prev = (this.$channelHistory.current === null) ? parseInt(channel) : this.$channelHistory.current;
+            this.$channelHistory.current = parseInt(channel);
+        },
+
+        /**
+         * update line items with a not-salable class and show which line item
+         * is not salable by displaying the error element
+         * @param options
+         */
+        updateLineItems: function (options) {
+            if(null === options.salable) {
+                return;
+            }
+            var $elm = options.elm;
+            var $errorElm = $elm.find('td.order-line-item-notifications span.error');
+            if(false === options.salable) {
+                $errorElm.show();
+                if(!this.$confirm) {
+                    this.handleConfirmation();
+                }
+            } else {
+                $errorElm.hide();
+                this.$confirm = false;
+            }
+        },
+
+        /**
+         * show confirmation that once you change the channel,
+         * you will not be able to save the order. On cancel
+         * change the channel back to it's previous selected channel
+         */
+        handleConfirmation: function() {
+            var _self = this;
+            _self.$confirm = true;
+            var message = __('You cannot save this order, there are errors in the Order Items, please correct them before saving the order');
+            var confirm = new DeleteConfirmation({
+                content: message,
+                okText: __('OK')
+            });
+
+            confirm.open();
+            confirm.on('cancel', function(){
+                _self.$confirm = false;
+                _self.$salesChannel.val(_self.$channelHistory.prev).trigger('change');
+            });
+
+            confirm.on('close', function(){
+                _self.$confirm = false;
+            });
+
+            confirm.on('ok', function(){
+                _self.$confirm = false;
             });
         },
 
@@ -141,6 +225,11 @@ define(function(require) {
             });
         },
 
+        /**
+         * get sales channel value
+         * @returns {string}
+         * @private
+         */
         _getSalesChannel: function() {
             return this.$salesChannel.length !== 0 ? this.$salesChannel.val() : '';
         },
@@ -177,6 +266,7 @@ define(function(require) {
 
             mediator.off('order:get:line-items-prices', this.getLineItemsPrices, this);
             mediator.off('order:load:line-items-prices', this.loadLineItemsPrices, this);
+            mediator.off('order:update:line-items', this.updateLineItems, this);
 
             OrderItemsView.__super__.dispose.call(this);
         }
