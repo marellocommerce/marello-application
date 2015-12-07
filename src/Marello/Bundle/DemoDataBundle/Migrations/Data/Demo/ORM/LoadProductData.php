@@ -8,12 +8,17 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
+    /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
     protected $defaultOrganization;
+
+    /** @var \Marello\Bundle\InventoryBundle\Entity\Warehouse $defaultWarehouse */
     protected $defaultWarehouse;
+
+    /** @var ObjectManager $manager */
+    protected $manager;
 
     public function getDependencies() {
         return [
@@ -28,19 +33,19 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
      */
     public function load(ObjectManager $manager)
     {
-        $this->defaultOrganization = $manager->getRepository('OroOrganizationBundle:Organization')->getOrganizationById(1);
-        $this->defaultWarehouse = $manager->getRepository('MarelloInventoryBundle:Warehouse')->getDefault();
+        $this->manager = $manager;
+        $this->defaultOrganization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getOrganizationById(1);
+        $this->defaultWarehouse = $this->manager->getRepository('MarelloInventoryBundle:Warehouse')->getDefault();
 
-        $this->loadProducts($manager);
-        $manager->flush();
+        $this->loadProducts();
     }
 
     /**
-     *
+     * load products
      */
-    public function loadProducts(ObjectManager $manager)
+    public function loadProducts()
     {
-        $handle = fopen(__DIR__ . DIRECTORY_SEPARATOR . 'dictionaries' . DIRECTORY_SEPARATOR . "products.csv", "r");
+        $handle = fopen($this->getDictionary('products.csv'), "r");
         if ($handle) {
             $headers = array();
             if (($data = fgetcsv($handle, 1000, ",")) !== false) {
@@ -51,15 +56,21 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             while (($data = fgetcsv($handle, 1000, ",")) !== false) {
                 $data = array_combine($headers, array_values($data));
 
-                $product = $this->createProduct($data, $manager);
+                $product = $this->createProduct($data);
                 $this->setReference('marello-product-' . $i, $product);
                 $i++;
             }
             fclose($handle);
         }
+        $this->manager->flush();
     }
 
-    private function createProduct(array $data, $manager)
+    /**
+     * create new products and inventory items
+     * @param array $data
+     * @return Product $product
+     */
+    private function createProduct(array $data)
     {
         $product = new Product();
         $product->setSku($data['sku']);
@@ -74,16 +85,29 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $randomNumber = rand(0,100);
         $status = ($randomNumber % 2 == 0) ? $this->getReference('product_status_enabled') : $this->getReference('product_status_disabled');
         $product->setStatus($status);
-        if ($randomNumber % 2 == 0) {
-            $product->addChannel($this->getReference('marello_sales_channel_0'));
-            $product->addChannel($this->getReference('marello_sales_channel_1'));
-        } else {
-            $ref = rand(0,1);
-            $product->addChannel($this->getReference('marello_sales_channel_'.$ref));
+
+        $channelCount = rand(1,4);
+
+        for ($i=1; $i <= $channelCount;$i++) {
+            $ref = rand(0,3);
+            $channel = $this->getReference('marello_sales_channel_'.$ref);
+            if(!$product->getChannels()->contains($channel)) {
+                $product->addChannel($channel);
+            }
         }
 
-        $manager->persist($product);
+        $this->manager->persist($product);
 
         return $product;
+    }
+
+    /**
+     * Get dictionary file by name
+     * @param $name
+     * @return string
+     */
+    private function getDictionary($name)
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . 'dictionaries' . DIRECTORY_SEPARATOR . $name;
     }
 }

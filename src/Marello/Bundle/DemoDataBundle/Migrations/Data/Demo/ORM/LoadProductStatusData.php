@@ -9,6 +9,9 @@ use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 
 class LoadProductStatusData extends AbstractFixture
 {
+    /** @var ObjectManager $manager */
+    protected $manager;
+
     /**
      * @var array
      */
@@ -22,13 +25,22 @@ class LoadProductStatusData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
+        $this->manager = $manager;
+        $this->loadProductStatuses();
+    }
+
+    /**
+     * load and create product statuses
+     */
+    public function loadProductStatuses()
+    {
         foreach ($this->data as $name => $label) {
             $status = new ProductStatus($name);
             $status->setLabel($label);
-            $manager->persist($status);
+            $this->manager->persist($status);
             $this->setReference('product_status_'.$name, $status);
         }
 
-        $manager->flush();
+        $this->manager->flush();
     }
 }

@@ -49,11 +49,8 @@ datagrid:
                     type: string
                     data_name: o.orderNumber
                 salesChannel:
-                    type: entity
-                    data_name: salesChannelName
-                    options:
-                        field_options:
-                            class: Marello\Bundle\SalesBundle\Entity\SalesChannel
+                    type: string
+                    data_name: o.salesChannelName
                 orderReference:
                     type: number
                     data_name: o.orderReference
