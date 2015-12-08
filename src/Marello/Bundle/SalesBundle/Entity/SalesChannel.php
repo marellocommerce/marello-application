@@ -32,7 +32,6 @@ class SalesChannel
 {
     const DEFAULT_TYPE = 'marello';
 
-
     /**
      * @var int
      *

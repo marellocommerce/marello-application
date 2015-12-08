@@ -82,23 +82,6 @@ class OrderController extends RestController implements ClassResourceInterface
     }
 
     /**
-     * Update an Order
-     *
-     * @ApiDoc(
-     *     description="Update Order via the Api",
-     *     resource=true
-     * )
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function putAction($id)
-    {
-        return $this->handleUpdateRequest($id);
-    }
-
-    /**
      * Get entity Manager
      *
      * @return ApiEntityManager

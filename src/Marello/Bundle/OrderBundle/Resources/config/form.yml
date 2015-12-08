@@ -24,6 +24,8 @@ services:
 
     marello_order.form.type.order_api:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderApiType
+        arguments:
+            - @marello_order.form.data_transformer.sales_channel_to_id
         tags:
             - { name: form.type, alias: marello_order_api }
 
@@ -55,3 +57,9 @@ services:
         class: Marello\Bundle\OrderBundle\Form\DataTransformer\ProductToSkuTransformer
         arguments:
             - @doctrine
+
+    marello_order.form.data_transformer.sales_channel_to_id:
+        class: Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer
+        arguments:
+            - @doctrine.orm.entity_manager
+            - MarelloSalesBundle:SalesChannel

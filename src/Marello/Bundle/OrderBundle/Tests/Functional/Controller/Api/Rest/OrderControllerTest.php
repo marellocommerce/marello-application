@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -10,41 +11,38 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class OrderControllerTest extends WebTestCase
 {
-    protected $createdId = null;
-
     protected function setUp()
     {
-        $this->initClient();
+        $this->initClient(
+            [],
+            $this->generateWsseAuthHeader()
+        );
         $this->loadFixtures([
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData',
         ]);
     }
 
-    public function testIndexIsEmpty()
+    public function testIndex()
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_order_api_get_orders'),
-            [],
-            [],
-            $this->generateWsseAuthHeader()
+            $this->getUrl('marello_order_api_get_orders')
         );
 
         $response = $this->client->getResponse();
 
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
 
-        $this->assertCount(4, json_decode($response->getContent(), true));
+        $this->assertCount(10, json_decode($response->getContent(), true));
     }
 
     /**
-     * @depends testIndexIsEmpty
      */
     public function testCreate()
     {
         $data = [
             'orderReference'  => 333444,
-            'salesChannel'    => $this->getReference('marello_sales_channel_0')->getId(),
+            'salesChannel'    => $this->getReference('marello_sales_channel_3')->getId(),
             'billingAddress'  => [
                 'firstName'  => 'Falco',
                 'lastName'   => 'van der Maden',
@@ -63,48 +61,67 @@ class OrderControllerTest extends WebTestCase
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
             ],
-            'subtotal'        => 1000,
-            'totalTax'        => 200,
-            'grandTotal'      => 1200,
+            'items'           => [
+                [
+                    'product'    => 'msj002',
+                    'quantity'   => 1,
+                    'price'      => 190.0,
+                    'tax'        => 190.0 * 0.2,
+                    'totalPrice' => 190.0 * 1.2,
+                ],
+                [
+                    'product'    => 'msj005',
+                    'quantity'   => 1,
+                    'price'      => 175.0,
+                    'tax'        => 175.0 * 0.2,
+                    'totalPrice' => 175.0 * 1.2,
+                ],
+            ],
         ];
 
         $this->client->request(
             'POST',
             $this->getUrl('marello_order_api_post_order'),
-            [],
-            [],
-            $this->generateWsseAuthHeader(),
-            json_encode($data)
+            $data
         );
 
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertArrayHasKey('id', $response);
 
-        $this->createdId = $response['id'];
+        /** @var Order $order */
+        $order = $this->client->getContainer()
+            ->get('doctrine')
+            ->getRepository('MarelloOrderBundle:Order')
+            ->findOneBy($response);
+
+        $this->assertEquals($data['orderReference'], $order->getOrderReference());
+        $this->assertCount(2, $order->getItems());
     }
 
     /**
-     * @depends testCreate
      */
     public function testGet()
     {
-        $this->initClient([], [], true);
         $this->client->request(
             'GET',
-            $this->getUrl('marello_order_api_get_order', ['id' => $this->createdId]),
-            [],
-            [],
-            $this->generateWsseAuthHeader()
+            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('marello_order_first')->getId()])
         );
 
         $response = $this->client->getResponse();
-
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
     }
 
-    public function testUpdate()
+    /**
+     */
+    public function testGetNotFound()
     {
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_order_api_get_order', ['id' => 0])
+        );
 
+        $response = $this->client->getResponse();
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_NOT_FOUND);
     }
 }

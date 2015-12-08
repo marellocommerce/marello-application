@@ -30,14 +30,13 @@ class OrderItemApiType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('product', 'text', [
-                'mapped'           => false,
-                'data_transformer' => $this->productModelTransformer,
-            ])
+            ->add('product', 'text')
             ->add('quantity', 'number')
             ->add('price', 'oro_money')
             ->add('tax', 'oro_money')
             ->add('totalPrice', 'oro_money');
+
+        $builder->get('product')->addModelTransformer($this->productModelTransformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -66,7 +66,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             while (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 $data = array_combine($headers, array_values($data));
 
-                $this->createOrder($data);
+                $order = $this->createOrder($data);
+                if (!$i) $this->setReference('marello_order_first', $order);
                 $i++;
                 if ($i % self::FLUSH_MAX == 0) {
                     $this->manager->flush();
@@ -113,6 +114,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         }
 
         $this->loadOrderItems($orderEntity);
+
+        return $orderEntity;
     }
 
     /**
