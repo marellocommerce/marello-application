@@ -5,6 +5,9 @@ namespace Marello\Bundle\InventoryBundle\Tests\Functional\Controller;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @dbIsolation
+ */
 class WarehouseControllerTest extends WebTestCase
 {
     public function setUp()

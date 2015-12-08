@@ -27,8 +27,8 @@ class PricingController extends Controller
     public function getProductPriceByChannelAction(Request $request)
     {
         return new JsonResponse($this->get('marello_productprice.product.provider.product_price')->getPrices(
-            $request->get('salesChannel'),
-            $request->get('product_ids', [])
+            $request->query->get('salesChannel'),
+            $request->query->get('product_ids', [])
         ));
     }
 }
