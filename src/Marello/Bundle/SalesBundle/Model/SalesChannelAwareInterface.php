@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\SalesBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 interface SalesChannelAwareInterface
@@ -19,7 +20,7 @@ interface SalesChannelAwareInterface
     public function removeChannel(SalesChannel $channel);
 
     /**
-     * @return ArrayCollection
+     * @return Collection|SalesChannel[]
      */
     public function getChannels();
 }
