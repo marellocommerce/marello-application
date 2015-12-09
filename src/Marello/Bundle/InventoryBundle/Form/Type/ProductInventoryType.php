@@ -34,7 +34,7 @@ class ProductInventoryType extends AbstractType
              * If product has variant, product itself is removed from collection of variant products.
              */
             if ($data && $variant = $data->getVariant()) {
-                $variant->removeProduct($data);
+                $variant->getProducts()->removeElement($data);
             }
         });
     }
