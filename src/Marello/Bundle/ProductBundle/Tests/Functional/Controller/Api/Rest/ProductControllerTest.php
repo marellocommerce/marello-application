@@ -36,8 +36,7 @@ class ProductControllerTest extends WebTestCase
             'name' => 'New Product',
             'sku' => 'product123',
             'price' => 10,
-            'stockLevel' => 1,
-            'stockItems' => [
+            'inventoryItems' => [
                 [
                     'sku' => 'product123',
                     'qty' => 100,

@@ -16,7 +16,7 @@ class ProductControllerTest extends WebTestCase
     {
         $this->initClient(
             ['debug' => false],
-            array_merge($this->generateBasicAuthHeader(), array('HTTP_X-CSRF-Header' => 1))
+            array_merge($this->generateBasicAuthHeader(), ['HTTP_X-CSRF-Header' => 1])
         );
     }
 
@@ -32,13 +32,13 @@ class ProductControllerTest extends WebTestCase
         $crawler      = $this->client->request('GET', $this->getUrl('marello_product_create'));
         $name         = 'Super duper product';
         $sku          = 'SKU-1234';
-        $stockLevel   = 100;
+        $defaultPrice = 100;
         $form         = $crawler->selectButton('Save and Close')->form();
 
 
-        $form['marello_product_form[name]']         = $name;
-        $form['marello_product_form[sku]']          = $sku;
-        $form['marello_product_form[stockLevel]']   = $stockLevel;
+        $form['marello_product_form[name]']  = $name;
+        $form['marello_product_form[sku]']   = $sku;
+        $form['marello_product_form[price]'] = $defaultPrice;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -53,6 +53,7 @@ class ProductControllerTest extends WebTestCase
 
     /**
      * @param string $name
+     *
      * @depends testCreateProduct
      *
      * @return string
@@ -61,23 +62,23 @@ class ProductControllerTest extends WebTestCase
     {
         $response = $this->client->requestGrid(
             'marello-products-grid',
-            array('marello-products-grid[_filter][name][value]' => $name)
+            ['marello-products-grid[_filter][name][value]' => $name]
         );
 
         $result = $this->getJsonResponseContent($response, 200);
         $result = reset($result['data']);
 
         $returnValue = $result;
-        $crawler = $this->client->request(
+        $crawler     = $this->client->request(
             'GET',
-            $this->getUrl('marello_product_update', array('id' => $result['id']))
+            $this->getUrl('marello_product_update', ['id' => $result['id']])
         );
-        $result = $this->client->getResponse();
+        $result      = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
         /** @var Form $form */
-        $form = $crawler->selectButton('Save and Close')->form();
-        $name = 'name' . $this->generateRandomString();
+        $form                               = $crawler->selectButton('Save and Close')->form();
+        $name                               = 'name' . $this->generateRandomString();
         $form['marello_product_form[name]'] = $name;
 
         $this->client->followRedirects(true);
@@ -88,11 +89,13 @@ class ProductControllerTest extends WebTestCase
         $this->assertContains("Product saved", $crawler->html());
 
         $returnValue['name'] = $name;
+
         return $returnValue;
     }
 
     /**
      * @param array $returnValue
+     *
      * @depends testUpdateProduct
      *
      * @return string
@@ -101,7 +104,7 @@ class ProductControllerTest extends WebTestCase
     {
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('marello_product_view', array('id' => $returnValue['id']))
+            $this->getUrl('marello_product_view', ['id' => $returnValue['id']])
         );
 
         $result = $this->client->getResponse();
@@ -111,6 +114,7 @@ class ProductControllerTest extends WebTestCase
 
     /**
      * @param array $returnValue
+     *
      * @depends testUpdateProduct
      *
      * @return string
@@ -121,7 +125,7 @@ class ProductControllerTest extends WebTestCase
             'GET',
             $this->getUrl(
                 'marello_product_widget_info',
-                array('id' => $returnValue['id'], '_widgetContainer' => 'block')
+                ['id' => $returnValue['id'], '_widgetContainer' => 'block']
             )
         );
 

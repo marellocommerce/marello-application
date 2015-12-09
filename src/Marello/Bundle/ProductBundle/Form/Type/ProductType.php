@@ -2,13 +2,9 @@
 
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelFieldSubscriber;
@@ -17,16 +13,17 @@ class ProductType extends AbstractType
 {
     const NAME = 'marello_product_form';
 
-    /** @var ConfigManager */
-    protected $configManager;
+    /** @var DefaultSalesChannelFieldSubscriber */
+    protected $defaultSalesChannelFieldSubscriber;
 
-    /** @var EntityManager */
-    protected $em;
-
-    public function __construct(ConfigManager $configManager, EntityManager $em)
+    /**
+     * ProductType constructor.
+     *
+     * @param DefaultSalesChannelFieldSubscriber $defaultSalesChannelFieldSubscriber
+     */
+    public function __construct(DefaultSalesChannelFieldSubscriber $defaultSalesChannelFieldSubscriber)
     {
-        $this->configManager = $configManager;
-        $this->em = $em;
+        $this->defaultSalesChannelFieldSubscriber = $defaultSalesChannelFieldSubscriber;
     }
 
     /**
@@ -38,54 +35,53 @@ class ProductType extends AbstractType
             'channels',
             'marello_sales_saleschannel_select',
             [
-                'label' => 'marello.sales.saleschannel.entity_label'
+                'label' => 'marello.sales.saleschannel.entity_label',
             ]
-        );
+        )->addEventSubscriber($this->defaultSalesChannelFieldSubscriber);
 
-        $builder->addEventSubscriber(new DefaultSalesChannelFieldSubscriber($this->configManager, $this->em));
         $builder
-        ->add(
-            'name',
-            'text',
-            [
-                'required' => true,
-                'label'    => 'marello.product.name.label'
-            ]
-        )
-        ->add(
-            'sku',
-            'text',
-            [
-                'required' => true,
-                'label'    => 'marello.product.sku.label'
-            ]
-        )
-        ->add(
-            'price',
-            'oro_money',
-            [
-                'required' => true,
-                'label' => 'marello.product.price.label'
-            ]
-        )
-        ->add(
-            'status',
-            'entity',
-            array(
-                'label' => 'marello.product.status.label',
-                'class' => 'MarelloProductBundle:ProductStatus',
-                'property' => 'label',
-                'required' => true,
+            ->add(
+                'name',
+                'text',
+                [
+                    'required' => true,
+                    'label'    => 'marello.product.name.label',
+                ]
             )
-        )
-        ->add(
-            'inventoryItems',
-            'marello_inventory_item_collection',
-            array(
-                'label'              => 'marello.inventory.label',
-                'cascade_validation' => true,
+            ->add(
+                'sku',
+                'text',
+                [
+                    'required' => true,
+                    'label'    => 'marello.product.sku.label',
+                ]
             )
-        );
+            ->add(
+                'price',
+                'oro_money',
+                [
+                    'required' => true,
+                    'label'    => 'marello.product.price.label',
+                ]
+            )
+            ->add(
+                'status',
+                'entity',
+                [
+                    'label'    => 'marello.product.status.label',
+                    'class'    => 'MarelloProductBundle:ProductStatus',
+                    'property' => 'label',
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'inventoryItems',
+                'marello_inventory_item_collection',
+                [
+                    'label'              => 'marello.inventory.label',
+                    'cascade_validation' => true,
+                ]
+            );
     }
 
     /**
@@ -94,11 +90,12 @@ class ProductType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array('data_class' => 'Marello\\Bundle\\ProductBundle\\Entity\\Product',
-                  'intention' => 'product',
-                  'single_form' => true,
-                  'cascade_validation' => true,
-                )
+            [
+                'data_class'         => 'Marello\Bundle\ProductBundle\Entity\Product',
+                'intention'          => 'product',
+                'single_form'        => true,
+                'cascade_validation' => true,
+            ]
         );
     }
 
