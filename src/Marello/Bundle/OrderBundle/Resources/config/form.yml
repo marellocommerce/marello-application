@@ -56,7 +56,7 @@ services:
     marello_order.form.data_transformer.product_to_sku:
         class: Marello\Bundle\OrderBundle\Form\DataTransformer\ProductToSkuTransformer
         arguments:
-            - @doctrine
+            - @doctrine.orm.entity_manager
 
     marello_order.form.data_transformer.sales_channel_to_id:
         class: Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer

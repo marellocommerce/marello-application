@@ -3,11 +3,11 @@
 namespace Marello\Bundle\OrderBundle\Form\DataTransformer;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 
-class ProductToSkuTransformer implements DataTransformerInterface
+class ProductToSkuTransformer extends EntityToIdTransformer
 {
 
     /** @var Registry */
@@ -16,36 +16,26 @@ class ProductToSkuTransformer implements DataTransformerInterface
     /**
      * ProductToSkuTransformer constructor.
      *
-     * @param Registry $doctrine
+     * @param EntityManager $em
      */
-    public function __construct(Registry $doctrine)
+    public function __construct(EntityManager $em)
     {
-        $this->doctrine = $doctrine;
+        parent::__construct(
+            $em,
+            'MarelloProductBundle:Product',
+            'sku',
+            function (EntityRepository $repository, $sku) {
+                $qb = $repository->createQueryBuilder('p');
+
+                return $qb
+                    ->where(
+                        $qb->expr()->like(
+                            'p.sku',
+                            $qb->expr()->literal($sku)
+                        )
+                    );
+            }
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function transform($value)
-    {
-        if (!$value instanceof Product) {
-            return null;
-        }
-
-        return $value->getSku();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function reverseTransform($value)
-    {
-        $product = $this->doctrine->getRepository('MarelloProductBundle:Product')->findOneBy(['sku' => $value]);
-
-        if (!$product) {
-            throw new TransformationFailedException(sprintf('Product with SKU: "%s" not found.', $value));
-        }
-
-        return $product;
-    }
 }
