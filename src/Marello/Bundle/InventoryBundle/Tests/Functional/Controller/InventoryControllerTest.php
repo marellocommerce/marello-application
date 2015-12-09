@@ -18,7 +18,7 @@ class InventoryControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData'
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData',
         ]);
     }
 

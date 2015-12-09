@@ -7,7 +7,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
- * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository")
+ * @ORM\Entity()
  * @ORM\Table(
  *      name="marello_inventory_item",
  *      uniqueConstraints={
