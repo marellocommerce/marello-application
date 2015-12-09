@@ -2,17 +2,12 @@
 
 namespace Marello\Bundle\OrderBundle\Form\DataTransformer;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 
 class ProductToSkuTransformer extends EntityToIdTransformer
 {
-
-    /** @var Registry */
-    protected $doctrine;
-
     /**
      * ProductToSkuTransformer constructor.
      *
