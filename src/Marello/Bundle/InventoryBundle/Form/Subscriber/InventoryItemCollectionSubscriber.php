@@ -91,20 +91,4 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
 
         return $items;
     }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function setProduct(FormEvent $event)
-    {
-        if ($parent = $event->getForm()->getParent()) {
-            $items = $event->getData();
-            $product = $parent->getData();
-
-            /** @var InventoryItem $item */
-            $items->map(function ($item) use ($product) {
-                $item->setProduct($product);
-            });
-        }
-    }
 }
