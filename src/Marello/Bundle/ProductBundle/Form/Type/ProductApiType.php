@@ -2,11 +2,12 @@
 
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
+use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemApiType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
-class ProductApiType extends ProductType
+class ProductApiType extends AbstractType
 {
     const NAME = 'marello_product_api_form';
 
@@ -15,7 +16,22 @@ class ProductApiType extends ProductType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
+        $builder
+            ->add('name')
+            ->add('sku')
+            ->add('price')
+            ->add('status', 'entity', [
+                'class' => 'Marello\Bundle\ProductBundle\Entity\ProductStatus',
+            ])
+            ->add('prices')
+            ->add('channels')
+            ->add('inventory', 'collection', [
+                'property_path' => 'inventoryItems',
+                'type'          => new InventoryItemApiType(),
+                'allow_add'     => true,
+                'allow_delete'  => true,
+                'by_reference'  => false,
+            ]);
     }
 
     /**
@@ -25,10 +41,9 @@ class ProductApiType extends ProductType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Marello\Bundle\ProductBundle\Entity\Product',
-                'intention' => 'product',
+                'data_class'         => 'Marello\Bundle\ProductBundle\Entity\Product',
                 'cascade_validation' => true,
-                'csrf_protection' => false
+                'csrf_protection'    => false,
             ]
         );
     }

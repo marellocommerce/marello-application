@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller\Api\Rest;
 
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @outputBuffering enabled
@@ -11,201 +13,174 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
  */
 class ProductControllerTest extends WebTestCase
 {
-    /**
-     * @var array
-     */
-    protected $productPostData = [
-
-    ];
 
     protected function setUp()
     {
         $this->initClient([], $this->generateWsseAuthHeader());
 
-        if (!isset($this->productPostData['owner'])) {
-            $this->productPostData['owner'] = $this->getContainer()
+        $this->loadFixtures([
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductPricingData',
+        ]);
+    }
+
+    /**
+     * @return \Marello\Bundle\InventoryBundle\Entity\Warehouse
+     */
+    protected function getDefaultWarehouse()
+    {
+        return $this->getContainer()
+            ->get('doctrine')
+            ->getRepository('MarelloInventoryBundle:Warehouse')
+            ->getDefault();
+    }
+
+    /**
+     * Asserts product
+     *
+     * @param Product|null $product
+     * @param array        $data
+     */
+    protected function assertProductApiResult(Product $product = null, array $data = [])
+    {
+        $this->assertArrayHasKey('id', $data);
+        $this->assertEquals($product->getId(), $data['id']);
+
+        $this->assertArrayHasKey('name', $data);
+        $this->assertEquals($product->getName(), $data['name']);
+
+        $this->assertArrayHasKey('sku', $data);
+        $this->assertEquals($product->getSku(), $data['sku']);
+
+        $this->assertArrayHasKey('price', $data);
+        $this->assertEquals($product->getPrice(), $data['price']);
+
+        $this->assertArrayHasKey('createdAt', $data);
+        $this->assertArrayHasKey('updatedAt', $data);
+        $this->assertArrayHasKey('status', $data);
+        $this->assertArrayHasKey('organization', $data);
+        $this->assertArrayHasKey('prices', $data);
+        $this->assertArrayHasKey('channels', $data);
+        $this->assertArrayHasKey('inventory', $data);
+    }
+
+    public function testIndex()
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_product_api_get_products')
+        );
+
+        $response = $this->client->getResponse();
+
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertCount(10, $content, '10 products should be returned.');
+
+        foreach ($content as $item) {
+            $product = $this->getContainer()
                 ->get('doctrine')
-                ->getRepository('OroUserBundle:User')
-                ->findOneBy(['username' => self::USER_NAME])->getId();
+                ->getRepository('MarelloProductBundle:Product')
+                ->find($item['id']);
+            $this->assertProductApiResult($product, $item);
         }
     }
 
-    public function testProductApiCreate()
+    public function testGet()
     {
-        $request = [
-            'name' => 'New Product',
-            'sku' => 'product123',
-            'price' => 10,
-            'inventoryItems' => [
-                [
-                    'sku' => 'product123',
-                    'qty' => 100,
-                    'warehouse' => 1,
-                ]
+        /** @var Product $product */
+        $product = $this->getReference('marello-product-0');
+
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_product_api_get_product', ['id' => $product->getId()])
+        );
+
+        $response = $this->client->getResponse();
+
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertProductApiResult($product, $content);
+    }
+
+    public function testCreate()
+    {
+        $data = [
+            'name'      => 'New Product',
+            'sku'       => 'NEW-SKU',
+            'price'     => 200.00,
+            'status'    => 'enabled',
+            'inventory' => [
+                ['quantity' => 10, 'warehouse' => $this->getDefaultWarehouse()->getId()],
             ],
-            'owner' => $this->productPostData['owner']
+            'channels'  => [
+                $this->getReference('marello_sales_channel_0')->getId(),
+            ],
         ];
 
         $this->client->request(
             'POST',
             $this->getUrl('marello_product_api_post_product'),
-            $request
+            $data
         );
 
-        $response = $this->getJsonResponseContent($this->client->getResponse(), 201);
+        $response = $this->client->getResponse();
 
-        return $response['id'];
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_CREATED);
+        $this->assertArrayHasKey('id', $content);
+
+        $product = $this->getContainer()
+            ->get('doctrine')
+            ->getRepository('MarelloProductBundle:Product')
+            ->find($content['id']);
+
+        $this->assertEquals($data['name'], $product->getName());
+        $this->assertEquals($data['sku'], $product->getSku());
+        $this->assertEquals($data['price'], $product->getPrice());
+        $this->assertEquals($data['status'], $product->getStatus()->getName());
+        $this->assertCount(1, $product->getInventoryItems());
+        $this->assertEquals(
+            reset($data['inventory'])['quantity'],
+            $product->getInventoryItems()->first()->getQuantity()
+        );
+        $this->assertEquals(
+            reset($data['inventory'])['warehouse'],
+            $product->getInventoryItems()->first()->getWarehouse()->getId()
+        );
+        $this->assertCount(1, $product->getChannels());
+        $this->assertEquals(reset($data['channels']), $product->getChannels()->first()->getId());
     }
 
-    /**
-     * @depends testProductApiCreate
-     */
-    public function testProductListCget()
+    public function testCreateWithInvalidData()
     {
-//        $this->client->request('GET', $this->getUrl('marello_product_api_get_products'));
-//        $products = $this->getJsonResponseContent($this->client->getResponse(), 200);
-//
-//        $this->assertCount(1, $products);
-//        $product = $products[0];
-//
-//        //tmp fix for letting "asserting equal" pass ...
-//        unset($product['id']);
-//        unset($product['organization']);
-//
-//
-//        $this->assertProductDataEquals(
-//            [
-//                'name' => $this->productPostData['name'],
-//                'sku' => $this->productPostData['sku'],
-//                'price' => $this->productPostData['price'],
-//                'stockLevel' => $this->productPostData['stockLevel'],
-//                'owner' => 1,
-//            ],
-//            $product
-//        );
-    }
-
-    /**
-     * @depends testProductApiCreate
-     * @param integer $id
-     * @return array
-     */
-    public function testProductGet($id)
-    {
-        $this->client->request('GET', $this->getUrl('marello_product_api_get_product', ['id' => $id]));
-
-        $product = $this->getJsonResponseContent($this->client->getResponse(), 200);
-
-        var_dump($product);
-        die();
-
-        $this->assertProductDataEquals(
-            [
-                'name' => $this->productPostData['name'],
-                'sku' => $this->productPostData['sku'],
-                'price' => $this->productPostData['price'],
-                'stockLevel' => $this->productPostData['stockLevel'],
-                'owner' => 1,
+        $data = [
+            'name'      => 'New Product',
+            'sku'       => 'NEW-SKU',
+            'price'     => 200.00,
+            'status'    => 'enabled',
+            'inventory' => [
+                ['quantity' => 10, 'warehouse' => -5 /* wrong ID */ ],
             ],
-            $product
-        );
-
-        return $product;
-    }
-
-    /**
-     * @depends testProductGet
-     * @param array $originalCase
-     * @return integer
-     */
-    public function testProductPut(array $originalCase)
-    {
-        $id = $originalCase['id'];
-
-        $putData = [
-            'name' => 'Updated Name',
-            'sku' => 'Updatedsku1234',
-            'price' => 15,
-            'stockLevel' => 150,
-            'owner' => 1
+            'channels'  => [
+                $this->getReference('marello_sales_channel_0')->getId(),
+            ],
         ];
 
         $this->client->request(
-            'PUT',
-            $this->getUrl('marello_product_api_put_product', ['id' => $id]),
-            $putData,
-            [],
-            $this->generateWsseAuthHeader()
+            'POST',
+            $this->getUrl('marello_product_api_post_product'),
+            $data
         );
 
-        $result = $this->client->getResponse();
-        $this->assertEmptyResponseStatusCodeEquals($result, 204);
+        $response = $this->client->getResponse();
 
-        $this->client->request(
-            'GET',
-            $this->getUrl('marello_product_api_get_product', ['id' => $id])
-        );
-
-        $updatedCase = $this->getJsonResponseContent($this->client->getResponse(), 200);
-        $expectedCase = array_merge($originalCase, $putData);
-
-        $this->assertProductDataEquals($expectedCase, $updatedCase);
-
-        return $id;
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_BAD_REQUEST);
     }
 
-
-    /**
-     * @depends testProductPut
-     * @param integer $id
-     * @return integer
-     */
-    public function testProductDelete($id)
-    {
-        $this->client->request(
-            'DELETE',
-            $this->getUrl('marello_product_api_delete_product', ['id' => $id]),
-            [],
-            [],
-            $this->generateWsseAuthHeader()
-        );
-        $result = $this->client->getResponse();
-        $this->assertEmptyResponseStatusCodeEquals($result, 204);
-        $this->client->request(
-            'GET',
-            $this->getUrl('marello_product_api_get_product', ['id' => $id]),
-            [],
-            [],
-            $this->generateWsseAuthHeader()
-        );
-        $result = $this->client->getResponse();
-        $this->assertJsonResponseStatusCodeEquals($result, 404);
-    }
-
-    /**
-     * @param array $expected
-     * @param array $actual
-     */
-    protected function assertProductDataEquals(array $expected, array $actual)
-    {
-        $this->assertArrayHasKey('name', $actual);
-        $this->assertNotEmpty($actual['name']);
-
-        $this->assertArrayHasKey('sku', $actual);
-        $this->assertNotEmpty($actual['sku']);
-
-        $this->assertArrayHasKey('price', $actual);
-        $this->assertNotEmpty($actual['price']);
-
-        $this->assertArrayHasKey('stockLevel', $actual);
-        $this->assertNotEmpty($actual['stockLevel']);
-        $this->assertInternalType('integer', $actual['stockLevel']);
-
-        $this->assertArrayHasKey('owner', $actual);
-        $this->assertNotEmpty($actual['owner']);
-        $this->assertGreaterThan(0, $actual['owner']);
-        $this->assertInternalType('integer', $actual['owner']);
-
-        $this->assertArrayIntersectEquals($expected, $actual);
-    }
+    // TODO: Test Update + Delete
 }

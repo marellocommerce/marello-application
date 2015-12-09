@@ -11,7 +11,7 @@ parameters:
     marello_product.product_form.handler.product_api.class:   Marello\Bundle\ProductBundle\Form\Handler\ProductApiHandler
     marello_product.product_variant_form.handler.class:       Marello\Bundle\ProductBundle\Form\Handler\ProductVariantHandler
     ## api manager
-    marello_product.manager.api.class:                        Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    marello_product.manager.api.class:                        Marello\Bundle\ProductBundle\Entity\Manager\ProductApiEntityManager
 
 services:
     ## form types

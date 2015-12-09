@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Form;
 
 /**
  * @outputBuffering enabled
