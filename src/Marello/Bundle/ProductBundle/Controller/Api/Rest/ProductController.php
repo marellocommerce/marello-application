@@ -17,8 +17,6 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
-
 /**
  * @Rest\RouteResource("product")
  * @Rest\NamePrefix("marello_product_api_")

@@ -46,13 +46,13 @@ class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
     public function preSetData(FormEvent $event)
     {
         $entity = $event->getData();
-        $form = $event->getForm();
+        $form   = $event->getForm();
         if (!$entity || null === $entity->getId()) {
             if ($form->has('channels')) {
                 if ($form->getConfig()->hasOption('data_class')) {
                     if ($entity instanceof SalesChannelAwareInterface) {
                         $channels = $this->getDefaultDataChannels();
-                        if(!is_null($channels) && count($channels) !== 0) {
+                        if (!is_null($channels) && count($channels) !== 0) {
                             foreach ($channels as $_channel) {
                                 $entity->addChannel($_channel);
                             }
@@ -72,19 +72,19 @@ class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
     public function getDefaultDataChannels()
     {
         $config = $this->configManager->get('marello_sales.default_channels');
-        if(!$config) {
-            return array();
+        if (!$config) {
+            return [];
         }
 
-        $defaultChannels = array();
-        foreach($config as $channel) {
+        $defaultChannels = [];
+        foreach ($config as $channel) {
             $defaultChannels[] = $channel->getName();
         }
 
         return $this->em->getRepository('MarelloSalesBundle:SalesChannel')
             ->createQueryBuilder('sc')
             ->where('sc.name IN(:channels)')
-            ->setParameter('channels',$defaultChannels)
+            ->setParameter('channels', $defaultChannels)
             ->orderBy('sc.name', 'ASC')
             ->getQuery()
             ->getResult();

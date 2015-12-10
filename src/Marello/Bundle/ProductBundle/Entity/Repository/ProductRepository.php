@@ -3,10 +3,8 @@
 namespace Marello\Bundle\ProductBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\QueryBuilder;
 
-use Marello\Bundle\PricingBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\Product;
 
 class ProductRepository extends EntityRepository
 {
@@ -18,10 +16,8 @@ class ProductRepository extends EntityRepository
      *
      * @return Product[]
      */
-    public function findBySalesChannel(
-        $salesChannel,
-        array $productIds
-    ) {
+    public function findBySalesChannel($salesChannel, array $productIds)
+    {
         if (!$productIds) {
             return [];
         }

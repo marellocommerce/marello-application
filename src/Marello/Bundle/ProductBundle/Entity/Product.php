@@ -495,7 +495,7 @@ class Product extends ExtendProduct implements
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return $this->name;
     }

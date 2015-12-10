@@ -21,7 +21,7 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
     /**
      * {@inheritdoc}
      */
-    function getDependencies()
+    public function getDependencies()
     {
         return [
             'Oro\Bundle\CalendarBundle\Migrations\Data\ORM\LoadDashboardData',
@@ -41,10 +41,10 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
 
         if ($mainDashboard) {
             $widgets = $this->getWidgets();
-            if(count($widgets) > 0) {
-                foreach($widgets as $widget) {
+            if (count($widgets) > 0) {
+                foreach ($widgets as $widget) {
                     $action = $this->widgets[$widget->getName()];
-                    if($action === 'remove') {
+                    if ($action === 'remove') {
                         $manager->remove($widget);
                     } else {
                         $widget->setLayoutPosition($action);

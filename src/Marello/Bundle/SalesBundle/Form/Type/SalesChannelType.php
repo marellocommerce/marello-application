@@ -8,13 +8,22 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesChannelType extends AbstractType
 {
+    const NAME = 'marello_sales_channel';
+
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name')
+        $builder
+            ->add('name')
             ->add('channelType')
             ->add('active');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -27,6 +36,6 @@ class SalesChannelType extends AbstractType
      */
     public function getName()
     {
-        return 'marello_sales_channel';
+        return self::NAME;
     }
 }

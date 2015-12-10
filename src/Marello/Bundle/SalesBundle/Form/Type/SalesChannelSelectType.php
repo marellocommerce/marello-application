@@ -2,9 +2,9 @@
 namespace Marello\Bundle\SalesBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
@@ -31,16 +31,14 @@ class SalesChannelSelectType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'autocomplete_alias' => 'saleschannels',
-                'configs'            => [
-                    'multiple'    => true,
-                    'placeholder' => 'marello.sales.saleschannel.form.choose_saleschannel',
-                    'allowClear'  => true,
-                ],
-            ]
-        );
+        $resolver->setDefaults([
+            'autocomplete_alias' => 'saleschannels',
+            'configs'            => [
+                'multiple'    => true,
+                'placeholder' => 'marello.sales.saleschannel.form.choose_saleschannel',
+                'allowClear'  => true,
+            ],
+        ]);
     }
 
     /**
@@ -52,6 +50,7 @@ class SalesChannelSelectType extends AbstractType
             FormEvents::PRE_SUBMIT,
             function (FormEvent $event) {
                 $value = $event->getData();
+
                 if (empty($value)) {
                     $event->setData([]);
                 }

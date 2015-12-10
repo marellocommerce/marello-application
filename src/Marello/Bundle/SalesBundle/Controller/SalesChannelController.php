@@ -64,8 +64,9 @@ class SalesChannelController extends Controller
              * Foreign constraint violation in this case means that there are still entities in marello,
              * which are associated to this particular channel. These should be deleted before channel itself.
              *
-             * TODO: Display this message. When delete action returns code 500, it is overridden in js with a different one.
-             *       Code 500 is the correct one that should be returned, so probably a modification in js will be needed.
+             * TODO: Display this message. When delete action returns code 500, it is overridden in js with a different
+             *       one. Code 500 is the correct one that should be returned, so probably a modification in js will be
+             *       needed.
              */
             $this->addFlash('error', 'marello.sales.messages.sales_channel_has_associations');
 

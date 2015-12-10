@@ -8,12 +8,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
 
 class PricingController extends Controller
 {
@@ -32,5 +28,3 @@ class PricingController extends Controller
         ));
     }
 }
-
-

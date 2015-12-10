@@ -3,6 +3,7 @@
 namespace Marello\Bundle\SalesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity()
  * @ORM\Table(name="marello_sales_entity_name")

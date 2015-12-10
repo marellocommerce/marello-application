@@ -63,7 +63,8 @@ class ProductStatus
      * Set address type label
      *
      * @param string $label
-     * @return ServiceType
+     *
+     * @return $this
      */
     public function setLabel($label)
     {
@@ -89,4 +90,4 @@ class ProductStatus
     {
         return (string)$this->label;
     }
-} 
+}

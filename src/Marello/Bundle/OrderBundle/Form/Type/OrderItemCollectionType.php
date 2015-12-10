@@ -23,20 +23,15 @@ class OrderItemCollectionType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'type'                 => OrderItemType::NAME,
-                'show_form_when_empty' => false,
-                'error_bubbling'       => false,
-                'cascade_validation'   => true,
-                'prototype_name'       => '__nameorderitem__',
-                'prototype'            => true,
-                'handle_primary'       => false,
-//                'attr'                 => [
-//                    'class' => 'table-hover table table-bordered table-condensed',
-//                ],
-            ]
-        );
+        $resolver->setDefaults([
+            'type'                 => OrderItemType::NAME,
+            'show_form_when_empty' => false,
+            'error_bubbling'       => false,
+            'cascade_validation'   => true,
+            'prototype_name'       => '__nameorderitem__',
+            'prototype'            => true,
+            'handle_primary'       => false,
+        ]);
     }
 
     /**

@@ -32,7 +32,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     /**
      * {@inheritdoc}
      */
-    function getDependencies()
+    public function getDependencies()
     {
         return [
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData',
@@ -67,7 +67,9 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 $data = array_combine($headers, array_values($data));
 
                 $order = $this->createOrder($data);
-                if (!$i) $this->setReference('marello_order_first', $order);
+                if (!$i) {
+                    $this->setReference('marello_order_first', $order);
+                }
                 $i++;
                 if ($i % self::FLUSH_MAX == 0) {
                     $this->manager->flush();
@@ -82,6 +84,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     /**
      * create orders and related entities
      * @param array $order
+     *
+     * @return Order
      */
     protected function createOrder(array $order)
     {
@@ -102,14 +106,14 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $billing->setEmail($order['email']);
         $shipping = clone $billing;
 
-        $orderEntity = new Order($billing, $shipping);;
-        $chNo = rand(0,3);
+        $orderEntity = new Order($billing, $shipping);
+        $chNo = rand(0, 3);
         $channel = $this->getReference('marello_sales_channel_' . $chNo);
         $orderEntity->setSalesChannel($channel);
-        $setReferenceNumber = (rand(0,100) % 2 == 0) ? true : false;
-        if($setReferenceNumber) {
-            $min = (int) $this->data[$channel->getName()] . '0000000';
-            $max = $min + rand(1,1000);
+        $setReferenceNumber = (rand(0, 100) % 2 == 0) ? true : false;
+        if ($setReferenceNumber) {
+            $min = (int) ($this->data[$channel->getName()] . '0000000');
+            $max = $min + rand(1, 1000);
             $orderEntity->setOrderReference(rand($min, $max));
         }
 
@@ -124,29 +128,29 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
      */
     private function loadOrderItems($order)
     {
-        $randItemsCount = rand(1,4);
+        $randItemsCount = rand(1, 4);
         $tax = $subtotal = $total = 0;
         $productRp = $this->getRepository('MarelloProductBundle:Product');
-        for ($i = 0;$i < $randItemsCount; $i++) {
-            $randQty = rand(1,3);
+        for ($i = 0; $i < $randItemsCount; $i++) {
+            $randQty = rand(1, 3);
             $channel = $order->getSalesChannel();
             $channelId = $channel->getId();
             $product = $this->getRandomProduct($channel, $productRp);
-            if(count($product) === 0) {
+            if (count($product) === 0) {
                 $range = $this->getMinMaxProductId($productRp);
                 $product = $productRp->find(rand($range[1], $range[2]));
             }
 
-            if(is_array($product)) {
+            if (is_array($product)) {
                 $product = array_shift($product);
             }
 
-            $unitPrice = $product->getPrices()->filter( function($price) use ($channelId) {
+            $unitPrice = $product->getPrices()->filter(function($price) use ($channelId) {
                 return $price->getChannel()->getId() === $channelId;
             });
 
             $itemBasePrice = $product->getPrice();
-            if(count($unitPrice) > 0) {
+            if (count($unitPrice) > 0) {
                 $itemBasePrice = $unitPrice->first()->getValue();
             }
 
@@ -179,12 +183,14 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     }
 
     /**
-     * Get random product based on saleschannel from order
+     * Get random product based on SalesChannel from order
+     *
      * @param \Marello\Bundle\SalesBundle\Entity\SalesChannel $channel
      * @param \Doctrine\Common\Persistence\ObjectRepository $repo
+     *
      * @return mixed
      */
-    protected function getRandomProduct($channel,$repo)
+    protected function getRandomProduct($channel, $repo)
     {
         $count = $this->getProductCount($repo);
         $qb = $repo->createQueryBuilder('p');

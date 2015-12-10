@@ -4,8 +4,6 @@ namespace Marello\Bundle\PricingBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-use Oro\Bundle\TranslationBundle\Translation\Translator;
-
 use Marello\Bundle\PricingBundle\Entity\Repository\ProductPriceRepository;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
@@ -30,11 +28,12 @@ class ProductPriceProvider
      * @param $productClassName
      * @param $translator
      */
-    public function __construct(ManagerRegistry $registry,
+    public function __construct(
+        ManagerRegistry $registry,
         $productPriceClassName,
         $productClassName,
-        $translator)
-    {
+        $translator
+    ) {
         $this->registry = $registry;
         $this->productPriceClassName = $productPriceClassName;
         $this->productClassName = $productClassName;
@@ -54,11 +53,12 @@ class ProductPriceProvider
         $productCount = count($products);
         $resultCount = count($result);
 
-        if($productCount !== $resultCount) {
-            foreach($products as $product) {
-                if(!array_key_exists(self::PRICE_IDENTIFIER.$product['product'], $result)) {
-                    $result[self::PRICE_IDENTIFIER.$product['product']] = [
-                        'message' => $this->translator->trans('marello.pricing.productprice.messages.product_not_salable'),
+        if ($productCount !== $resultCount) {
+            foreach ($products as $product) {
+                if (!array_key_exists(self::PRICE_IDENTIFIER . $product['product'], $result)) {
+                    $result[self::PRICE_IDENTIFIER . $product['product']] = [
+                        'message' => $this->translator
+                            ->trans('marello.pricing.productprice.messages.product_not_salable'),
                     ];
                 }
             }
@@ -73,16 +73,16 @@ class ProductPriceProvider
      * @param $products
      * @return array
      */
-    protected function getPricesBySalesChannel($channel,$products)
+    protected function getPricesBySalesChannel($channel, $products)
     {
         $result = [];
-        $products = $this->getRepository($this->productClassName)->findBySalesChannel($channel,$products);
+        $products = $this->getRepository($this->productClassName)->findBySalesChannel($channel, $products);
 
-        foreach($products as $product) {
-            $price = $this->getRepository($this->productPriceClassName)->findOneBySalesChannel($channel,$product);
+        foreach ($products as $product) {
+            $price = $this->getRepository($this->productPriceClassName)->findOneBySalesChannel($channel, $product);
             $pricesCount = count($price);
             $priceValue = null;
-            if($pricesCount > 0 && $pricesCount < 2) {
+            if ($pricesCount > 0 && $pricesCount < 2) {
                 $price = array_shift($price);
                 $priceValue = (float)$price['price_value'];
             } else {

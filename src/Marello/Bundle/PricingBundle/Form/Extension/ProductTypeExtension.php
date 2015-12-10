@@ -81,15 +81,21 @@ class ProductTypeExtension extends AbstractTypeExtension
         $this->addPricingCollection($form, $product, $event);
     }
 
+    /**
+     * @param $form
+     * @param $product
+     * @param $event
+     */
     public function addPricingCollection($form, $product, $event)
     {
-        $form->add('prices',
+        $form->add(
+            'prices',
             'marello_product_price_collection'
         );
 
         if (!$product || null === $product->getId()) {
-            if(count($product->getChannels()) > 0) {
-                foreach($product->getChannels() as $_channel) {
+            if (count($product->getChannels()) > 0) {
+                foreach ($product->getChannels() as $_channel) {
                     $default = new ProductPrice();
                     $default->setChannel($_channel);
                     $product->addPrice($default);
@@ -185,8 +191,8 @@ class ProductTypeExtension extends AbstractTypeExtension
      */
     protected function clearPricingCollection($product)
     {
-        if(count($product->getPrices()) > 0) {
-            foreach($product->getPrices() as $_price) {
+        if (count($product->getPrices()) > 0) {
+            foreach ($product->getPrices() as $_price) {
                 $product->removePrice($_price);
             }
         }

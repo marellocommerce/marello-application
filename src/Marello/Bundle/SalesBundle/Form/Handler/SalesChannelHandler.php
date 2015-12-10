@@ -80,7 +80,6 @@ class SalesChannelHandler
             $form->getData()
         );
 
-
         return $form->createView();
     }
 

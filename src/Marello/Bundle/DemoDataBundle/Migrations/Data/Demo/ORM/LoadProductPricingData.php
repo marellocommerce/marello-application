@@ -17,9 +17,12 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
     /** @var ObjectManager $manager */
     protected $manager;
 
-    public function getDependencies() {
-        return [
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData'];
+    /**
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return ['Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData'];
     }
 
     /**
@@ -39,10 +42,10 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
     {
         $products = $this->getRepository()->findAll();
         foreach ($products as $product) {
-            $productRef = rand(0,145);
-            $skip = ($productRef % 2 == 0) ? true : false;
+            $productRef = rand(0, 145);
+            $skip       = ($productRef % 2 == 0) ? true : false;
 
-            if(!$skip) {
+            if (!$skip) {
                 $this->createProductPrice($product);
             }
             continue;
@@ -56,20 +59,20 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
      */
     private function createProductPrice($product)
     {
-        if(!count($product->getPrices()) > 0) {
+        if (!count($product->getPrices()) > 0) {
             $channels = $product->getChannels();
             $max = count($channels);
-            $channelCount = rand(1,$max);
+            $channelCount = rand(1, $max);
             $i=1;
-            foreach($channels as $channel) {
-                if($i <= $channelCount) {
+            foreach ($channels as $channel) {
+                if ($i <= $channelCount) {
                     $productPrice = new ProductPrice();
                     $data = $product->getData();
                     $data[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
                     $product->setData($data);
                     $productPrice->setProduct($product);
                     $productPrice->setCurrency($this->currency);
-                    $productPercentage = rand(85,95);
+                    $productPercentage = rand(85, 95);
                     $productPriceValue = ($product->getPrice() * ($productPercentage / 100));
                     $productPrice->setValue(round((float)$productPriceValue, 2));
                     $productPrice->setChannel($channel);
@@ -89,5 +92,4 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
     {
         return $this->manager->getRepository('MarelloProductBundle:Product');
     }
-
 }

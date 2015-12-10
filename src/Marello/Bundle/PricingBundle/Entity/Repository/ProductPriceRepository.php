@@ -3,8 +3,6 @@
 namespace Marello\Bundle\PricingBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\Expr\Join;
-use Doctrine\ORM\QueryBuilder;
 
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 

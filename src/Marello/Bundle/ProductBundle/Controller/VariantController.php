@@ -36,7 +36,10 @@ class VariantController extends Controller
     }
 
     /**
-     * @Route("/variant/add/{id}/parent/{parentId}", requirements={"id"="\d+","parentId"="\d+"}, name="marello_product_add_variant")
+     * @Route(
+     *     "/variant/add/{id}/parent/{parentId}",
+     *     requirements={"id"="\d+","parentId"="\d+"}, name="marello_product_add_variant"
+     * )
      * @Acl(
      *      id="marello_product_add_variant",
      *      type="entity",
@@ -84,7 +87,7 @@ class VariantController extends Controller
         if ($handler->process($variant, $product)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
-                    $this->get('translator')->trans('marello.product.messages.success.variant.saved')
+                $this->get('translator')->trans('marello.product.messages.success.variant.saved')
             );
 
             /*
@@ -125,5 +128,3 @@ class VariantController extends Controller
         ];
     }
 }
-
-

@@ -20,7 +20,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     /** @var ObjectManager $manager */
     protected $manager;
 
-    public function getDependencies() {
+    public function getDependencies()
+    {
         return [
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductStatusData',
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData'
@@ -34,8 +35,12 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
-        $this->defaultOrganization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getOrganizationById(1);
-        $this->defaultWarehouse = $this->manager->getRepository('MarelloInventoryBundle:Warehouse')->getDefault();
+        $this->defaultOrganization = $this->manager
+            ->getRepository('OroOrganizationBundle:Organization')
+            ->getOrganizationById(1);
+        $this->defaultWarehouse = $this->manager
+            ->getRepository('MarelloInventoryBundle:Warehouse')
+            ->getDefault();
 
         $this->loadProducts();
     }
@@ -82,16 +87,18 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $inventoryItem->setQuantity($data['stock_level']);
         $product->getInventoryItems()->add($inventoryItem);
 
-        $randomNumber = rand(0,100);
-        $status = ($randomNumber % 2 == 0) ? $this->getReference('product_status_enabled') : $this->getReference('product_status_disabled');
+        $randomNumber = rand(0, 100);
+        $status = ($randomNumber % 2 == 0) ?
+            $this->getReference('product_status_enabled') :
+            $this->getReference('product_status_disabled');
         $product->setStatus($status);
 
-        $channelCount = rand(1,4);
+        $channelCount = rand(1, 4);
 
-        for ($i=1; $i <= $channelCount;$i++) {
-            $ref = rand(0,3);
+        for ($i=1; $i <= $channelCount; $i++) {
+            $ref = rand(0, 3);
             $channel = $this->getReference('marello_sales_channel_'.$ref);
-            if(!$product->getChannels()->contains($channel)) {
+            if (!$product->getChannels()->contains($channel)) {
                 $product->addChannel($channel);
             }
         }

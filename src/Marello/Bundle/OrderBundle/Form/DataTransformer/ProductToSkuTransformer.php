@@ -32,5 +32,4 @@ class ProductToSkuTransformer extends EntityToIdTransformer
             }
         );
     }
-
 }

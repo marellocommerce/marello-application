@@ -58,6 +58,10 @@ class ProductController extends Controller
      *      class="MarelloProductBundle:Product"
      * )
      * @Template()
+     *
+     * @param Product $product
+     *
+     * @return array
      */
     public function updateAction(Product $product)
     {
@@ -107,7 +111,11 @@ class ProductController extends Controller
     /**
      * @Route("/view/{id}", requirements={"id"="\d+"}, name="marello_product_view")
      * @AclAncestor("marello_product_view")
-     * @Template()
+     * @Template
+     *
+     * @param Product $product
+     *
+     * @return array
      */
     public function viewAction(Product $product)
     {
@@ -119,7 +127,11 @@ class ProductController extends Controller
     /**
      * @Route("/widget/info/{id}", name="marello_product_widget_info", requirements={"id"="\d+"})
      * @AclAncestor("marello_product_view")
-     * @Template()
+     * @Template
+     *
+     * @param Product $product
+     *
+     * @return array
      */
     public function infoAction(Product $product)
     {
@@ -131,7 +143,11 @@ class ProductController extends Controller
     /**
      * @Route("/widget/price/{id}", name="marello_product_widget_price", requirements={"id"="\d+"})
      * @AclAncestor("marello_product_view")
-     * @Template()
+     * @Template
+     *
+     * @param Product $product
+     *
+     * @return array
      */
     public function priceAction(Product $product)
     {
@@ -140,5 +156,3 @@ class ProductController extends Controller
         ];
     }
 }
-
-
