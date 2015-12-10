@@ -2,11 +2,11 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine;
 
-
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 
 class DefaultWarehouseSubscriber implements EventSubscriber

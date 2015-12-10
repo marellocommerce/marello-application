@@ -2,15 +2,17 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
-use Oro\Bundle\UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
+
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 
 /**
  * @Config\Route("/warehouse")

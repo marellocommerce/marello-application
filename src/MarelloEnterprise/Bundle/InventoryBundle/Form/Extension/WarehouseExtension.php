@@ -29,5 +29,4 @@ class WarehouseExtension extends AbstractTypeExtension
             'tooltip'  => 'marello_enterprise.inventory.warehouse.delete',
         ]);
     }
-
 }
