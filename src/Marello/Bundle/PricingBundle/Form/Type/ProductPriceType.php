@@ -51,7 +51,7 @@ class ProductPriceType extends AbstractType
                 'oro_money',
                 [
                     'required' => true,
-                    'label'    => 'marello.productprice.price.label',
+                    'label'    => 'marello.pricing.productprice.value.label',
                 ]
             );
     }

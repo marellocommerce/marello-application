@@ -17,11 +17,11 @@ datagrid:
                 label: marello.product.sku.label
                 data_name: sku
             product:
-                label: marello.inventory.item.product.label
+                label: marello.inventoryitem.product.label
                 frontend_type: string
                 data_name: name
             quantity:
-                label: marello.inventory.item.quantity.label
+                label: marello.inventoryitem.quantity.label
                 frontend_type: number
                 data_name: stockLevel
 

@@ -11,7 +11,10 @@ marello:
         grand_total.label:        Grand Total
         order_number.label:       Order Number
         sales_channel.label:      Sales Channel
+        sales_channel_name.label: Sales Channel
         order_reference.label:    Order Reference
+        workflow_item.label:      Workflow Item
+        workflow_step.label:      Workflow Step
         billing_address:
             label:                Billing Address
             name.label:           Bill to Name
@@ -39,3 +42,6 @@ marello:
             price.label:          Price
             quantity.label:       Quantity
             total_price.label:    Total Price
+            product_name.label:   Product Name
+            product_sku.label:    Product SKU
+            product.label:        Product

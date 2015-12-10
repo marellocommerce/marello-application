@@ -1,12 +1,17 @@
 marello:
-    productprice:
-        entity_plural_label:        Product Prices
-        entity_label:               Product Price
-        price.label:                Price
-        currency.label:             Currency
+    pricing:
+        productprice:
+            entity_plural_label:        Product Prices
+            entity_label:               Product Price
+            currency.label:             Currency
+            id.label:                   Id
+            created_at.label:           Created At
+            value.label:                Price
+            channel.label:              Sales Channel
+            product.label:              Product
 
-        form:
-            pricing_enabled.label:  Enable Channel Pricing
+            form:
+                pricing_enabled.label:  Enable Sales Channel Pricing
 
-        messages:
-            product_not_salable:    Product is not salable in the chosen Sales Channel
+            messages:
+                product_not_salable:    Product is not salable in the chosen Sales Channel

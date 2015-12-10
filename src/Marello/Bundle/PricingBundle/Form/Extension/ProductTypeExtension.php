@@ -70,7 +70,7 @@ class ProductTypeExtension extends AbstractTypeExtension
             PricingAwareInterface::CHANNEL_PRICING_STATE_KEY,
             'checkbox',
             [
-                'label' => 'marello.productprice.form.pricing_enabled.label',
+                'label' => 'marello.pricing.productprice.form.pricing_enabled.label',
                 'mapped' => false,
                 'required' => false,
                 'data' => $pricingEnabled,

@@ -6,15 +6,32 @@ marello:
         sku.label:                  SKU
         price.label:                Default price
         status.label:               Status
-        stock_level.label:          Total stock
+        cost.label:                 Cost
+        data.label:                 Data
+        id.label:                   Id
+        type.label:                 Product Type
+        stock_level.label:          Total Stock
+
+        channels.label:             Sales Channels
+        inventory_items.label:      Inventory Items
+        organization.label:         Organization
+        variant.label:              Variant
+        prices.label:               Product Prices
+
 
         variant:
+            label:                  Variant
             entity_plural_label:    Variants
             entity_label:           Variant
+            id.label:               Id
             variant_code.label:     Variant code
+            products.label:         Products
 
-        create_variant.label:       Create Variant
-        add_variant.label:          Add Variant
+        productstatus:
+            entity_label:           Product Status
+            label.label:            Label
+            name.label:             Name
+
 
         messages:
             success:
@@ -28,6 +45,8 @@ marello:
         form.choose_product:        Select Product
         form.add_product:           Add Product
         product_information:        Product Information
+        create_variant.label:       Create Variant
+        add_variant.label:          Add Variant
 
         navigation:
             product.label:          Products
