@@ -43,6 +43,26 @@ datagrid:
             updatedAt:
                 label: oro.ui.updated_at
                 frontend_type: datetime
+        sorters:
+            columns:
+                orderNumber:
+                    data_name: o.orderNumber
+                salesChannel:
+                    data_name: o.salesChannel
+                orderReference:
+                    data_name: o.orderReference
+                billingAddress:
+                    data_name: billingName
+                shippingAddress:
+                    data_name: shippingName
+                grandTotal:
+                    data_name: o.grandTotal
+                createdAt:
+                    data_name: o.createdAt
+                updatedAt:
+                    data_name: o.updatedAt
+            default:
+                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 orderNumber:
