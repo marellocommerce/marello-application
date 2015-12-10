@@ -3,11 +3,13 @@ marello:
         navigation:
             sales.label:                        Sales
         saleschannel:
-            entity_label:                       Channel
-            entity_plural_label:                Channels
+            entity_label:                       Sales Channel
+            entity_plural_label:                Sales Channels
+            id.label:                           Id
             name.label:                         Name
             active.label:                       Active
             channel_type.label:                 Type
+            owner.label:                        Owner
             controller.message.saved:           Sales Channel saved
             form.choose_saleschannel:           Choose Sales Channel
 
@@ -17,4 +19,4 @@ marello:
                 saleschannels_saleschannel.title: Sales Channels Settings
 
             fields:
-                default_channel.label:          Default Channels
+                default_channel.label:          Default Sales Channels

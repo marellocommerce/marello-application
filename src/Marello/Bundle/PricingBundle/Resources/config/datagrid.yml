@@ -22,9 +22,9 @@ datagrid:
             channelName:
                 label:            marello.sales.saleschannel.entity_label
             currency:
-                label:            marello.productprice.currency.label
+                label:            marello.pricing.productprice.currency.label
             price:
-                label:            marello.productprice.price.label
+                label:            marello.pricing.productprice.value.label
                 frontend_type:    currency
         sorters:
             columns:
