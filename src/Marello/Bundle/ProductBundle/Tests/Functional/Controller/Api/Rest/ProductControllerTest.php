@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller\Api\Rest;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -63,6 +65,9 @@ class ProductControllerTest extends WebTestCase
         $this->assertArrayHasKey('inventory', $data);
     }
 
+    /**
+     * Tests index of products. Should return HTTP OK.
+     */
     public function testIndex()
     {
         $this->client->request(
@@ -87,6 +92,9 @@ class ProductControllerTest extends WebTestCase
         }
     }
 
+    /**
+     * Tests getting one product. Should return HTTP OK.
+     */
     public function testGet()
     {
         /** @var Product $product */
@@ -156,6 +164,9 @@ class ProductControllerTest extends WebTestCase
         $this->assertEquals(reset($data['channels']), $product->getChannels()->first()->getId());
     }
 
+    /**
+     * Tests creating product with invalid data. Should return HTTP Bad Request.
+     */
     public function testCreateWithInvalidData()
     {
         $data = [
@@ -164,7 +175,7 @@ class ProductControllerTest extends WebTestCase
             'price'     => 200.00,
             'status'    => 'enabled',
             'inventory' => [
-                ['quantity' => 10, 'warehouse' => -5 /* wrong ID */ ],
+                ['quantity' => 10, 'warehouse' => -5 /* wrong ID */],
             ],
             'channels'  => [
                 $this->getReference('marello_sales_channel_0')->getId(),
@@ -182,5 +193,76 @@ class ProductControllerTest extends WebTestCase
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_BAD_REQUEST);
     }
 
-    // TODO: Test Update + Delete
+    /**
+     * Tests updating product. Should return HTTP No Content and update product in database.
+     */
+    public function testUpdate()
+    {
+        /** @var Product $product */
+        $product = $this->getReference('marello-product-0');
+
+        $data = [
+            'name'      => 'New name of product',
+            'sku'       => $product->getSku(),
+            'price'     => $product->getPrice(),
+            'status'    => $product->getStatus()->getName(),
+            'inventory' => $product->getInventoryItems()->map(function (InventoryItem $item) {
+                return ['quantity' => $item->getQuantity(), 'warehouse' => $item->getWarehouse()->getId()];
+            })->toArray(),
+            'channels'  => $product->getChannels()->map(function (SalesChannel $channel) {
+                return $channel->getId();
+            })->toArray(),
+        ];
+
+        $this->client->request(
+            'PUT',
+            $this->getUrl('marello_product_api_put_product', ['id' => $product->getId()]),
+            $data
+        );
+
+        $response = $this->client->getResponse();
+
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_NO_CONTENT);
+
+        $product = $this->getContainer()
+            ->get('doctrine')
+            ->getRepository('MarelloProductBundle:Product')
+            ->find($product->getId());
+
+        $this->assertEquals($data['name'], $product->getName());
+    }
+
+    /**
+     * Tests deleting Product. This should return HTTP No Content.
+     */
+    public function testDelete()
+    {
+        $productId = $this->getReference('marello-product-0')->getId();
+
+        $this->client->request(
+            'DELETE',
+            $this->getUrl('marello_product_api_delete_product', ['id' => $productId])
+        );
+
+        $response = $this->client->getResponse();
+
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Tests deleting a non-existent Product. This should return HTTP Not Found.
+     */
+    public function testDeleteNonExistent()
+    {
+        $productId = $this->getReference('marello-product-0')->getId() -1;
+
+        $this->client->request(
+            'DELETE',
+            $this->getUrl('marello_product_api_delete_product', ['id' => $productId])
+        );
+
+        $response = $this->client->getResponse();
+
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_NOT_FOUND);
+    }
 }
