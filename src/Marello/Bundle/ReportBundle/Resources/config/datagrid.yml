@@ -44,48 +44,47 @@ datagrid:
             acl_resource: oro_report_view
             query:
                 select:
-#                    - p.id
-#                    - p.name
+                    - p.name
                     - p.sku
-#                    - p.price
-#                    - s.label as status
+                    - p.price
+                    - s.label as status
                     - SUM(i.quantity) AS stockLevel
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
-                where:
-                    and:
-                        - stockLevel <= 5
                 join:
                     left:
-#                        - { join: p.status, alias: s }
+                        - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
+                where:
+                    and:
+                        - i.quantity < 5
                 groupBy: p.sku
         columns:
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
-#            name:
-#                label:              marello.product.name.label
-#                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string
             stockLevel:
                 label:              marello.product.stock_level.label
                 frontend_type:      number
                 data_name:          stockLevel
-#            status:
-#                label:              marello.product.status.label
-#                frontend_type:      string
-#            price:
-#                label:              marello.product.price.label
-#                frontend_type:      currency
+            status:
+                label:              marello.product.status.label
+                frontend_type:      string
+            price:
+                label:              marello.product.price.label
+                frontend_type:      currency
         sorters:
             columns:
                 sku:            { data_name: p.sku }
-#                name:           { data_name: p.name }
+                name:           { data_name: p.name }
                 stockLevel:     { data_name: stockLevel }
-#                status:         { data_name: s.label }
-#                price:          { data_name: p.price }
-#            default:
-#                name:  DESC
+                status:         { data_name: s.label }
+                price:          { data_name: p.price }
+            default:
+                name:  DESC
         options:
             entityHint: report data
             export: false
