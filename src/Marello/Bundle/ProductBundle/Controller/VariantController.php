@@ -4,6 +4,7 @@ namespace Marello\Bundle\ProductBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -57,18 +58,22 @@ class VariantController extends Controller
     {
         $entityClass = $request->get('entityClass');
 
-        if ($entityClass) {
-            $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);
-            $parentId = $request->get('parentId');
-            if ($parentId && $entityClass === $this->container->getParameter('marello_product.entity.class')) {
-                $repository = $this->getDoctrine()->getRepository($entityClass);
-                /** @var Product $parent */
-                $parent = $repository->find($parentId);
-                return $this->updateVariant($parent, $variant);
-            }
-        } else {
+        if (!$entityClass) {
             throw new NotFoundHttpException(sprintf('Entity class "%s" is not found', $entityClass));
         }
+
+        $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);
+        $parentId = $request->get('parentId');
+
+        if ($parentId && $entityClass === $this->container->getParameter('marello_product.entity.class')) {
+            $repository = $this->getDoctrine()->getRepository($entityClass);
+            /** @var Product $parent */
+            $parent = $repository->find($parentId);
+
+            return $this->updateVariant($parent, $variant);
+        }
+
+        return new Response('', Response::HTTP_BAD_REQUEST);
     }
 
     /**
