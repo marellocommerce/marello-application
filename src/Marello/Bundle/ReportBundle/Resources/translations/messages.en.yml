@@ -1,0 +1,16 @@
+marello:
+    report:
+        menu:
+            static_reports_tab.label:   Reports
+            orders_report_tab.label:   Orders
+
+            revenue_per_sales_channel.label:  Revenue per Sales Channel
+            revenue_per_sales_channel.description: Revenue per Sales Channel
+
+        title:
+            revenue_per_sales_channel: Revenue per Sales Channel
+
+        datagrid:
+            columns:
+                total_orders.label:    Total Orders
+                total_revenue.label:   Total Revenue

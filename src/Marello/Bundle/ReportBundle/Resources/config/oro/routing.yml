@@ -1,0 +1,4 @@
+marello_report:
+    resource: "@MarelloReportBundle/Controller"
+    type:     annotation
+    prefix:   /marello/report
