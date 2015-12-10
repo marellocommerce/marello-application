@@ -55,7 +55,7 @@ class VariantController extends Controller
         $entityClass = $request->get('entityClass');
 
         if ($entityClass) {
-            $entityClass = $this->get('oro_entity.routing_helper')->decodeClassName($entityClass);
+            $entityClass = $this->get('oro_entity.routing_helper')->resolveEntityClass($entityClass);
             $parentId = $request->get('parentId');
             if ($parentId && $entityClass === $this->container->getParameter('marello_product.entity.class')) {
                 $repository = $this->getDoctrine()->getRepository($entityClass);

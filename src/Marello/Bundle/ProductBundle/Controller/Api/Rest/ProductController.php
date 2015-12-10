@@ -5,6 +5,7 @@ namespace Marello\Bundle\ProductBundle\Controller\Api\Rest;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -44,12 +45,15 @@ class ProductController extends RestController implements ClassResourceInterface
      *     resource=true
      * )
      * @AclAncestor("marello_product_view")
+     *
+     * @param Request $request
+     *
      * @return Response
      */
-    public function cgetAction()
+    public function cgetAction(Request $request)
     {
-        $page  = (int)$this->getRequest()->get('page', 1);
-        $limit = (int)$this->getRequest()->get('limit', self::ITEMS_PER_PAGE);
+        $page  = (int)$request->query->get('page', 1);
+        $limit = (int)$request->query->get('limit', self::ITEMS_PER_PAGE);
 
         return $this->handleGetListRequest($page, $limit);
     }
