@@ -1,8 +1,6 @@
 <?php
 namespace Marello\Bundle\SalesBundle\Form\Type;
 
-use Doctrine\ORM\EntityManager;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -15,16 +13,18 @@ class SalesChannelSelectType extends AbstractType
 {
     const NAME = 'marello_sales_saleschannel_select';
 
+    /** @var EntitiesToIdsTransformer */
+    protected $modelTransformer;
+
     /**
-     * @var EntityManager
+     * SalesChannelSelectType constructor.
+     *
+     * @param EntitiesToIdsTransformer $modelTransformer
      */
-    protected $entityManager;
-
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntitiesToIdsTransformer $modelTransformer)
     {
-        $this->entityManager = $entityManager;
+        $this->modelTransformer = $modelTransformer;
     }
-
 
     /**
      * {@inheritdoc}
@@ -32,23 +32,15 @@ class SalesChannelSelectType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'autocomplete_alias'  => 'saleschannels',
-                'configs'             => array(
-                    'multiple'                   => true,
-                    'placeholder'                => 'marello.sales.saleschannel.form.choose_saleschannel',
-                    'allowClear'                 => true,
-                )
-            )
+            [
+                'autocomplete_alias' => 'saleschannels',
+                'configs'            => [
+                    'multiple'    => true,
+                    'placeholder' => 'marello.sales.saleschannel.form.choose_saleschannel',
+                    'allowClear'  => true,
+                ],
+            ]
         );
-//        $resolver->setDefaults(
-//            [
-//                'class' => 'MarelloSalesBundle:SalesChannel',
-//                'entity_class' => 'MarelloSalesBundle:SalesChannel',
-//                'label' => 'marello.sales.saleschannel.entity_label',
-//                'multiple' => true,
-//            ]
-//        );
     }
 
     /**
@@ -61,13 +53,12 @@ class SalesChannelSelectType extends AbstractType
             function (FormEvent $event) {
                 $value = $event->getData();
                 if (empty($value)) {
-                    $event->setData(array());
+                    $event->setData([]);
                 }
             }
         );
-        $builder->addModelTransformer(
-            new EntitiesToIdsTransformer($this->entityManager, $options['entity_class'])
-        );
+
+        $builder->addModelTransformer($this->modelTransformer);
     }
 
     /**

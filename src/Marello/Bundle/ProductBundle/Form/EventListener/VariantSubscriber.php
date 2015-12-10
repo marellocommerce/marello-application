@@ -2,9 +2,9 @@
 
 namespace Marello\Bundle\ProductBundle\Form\EventListener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Marello\Bundle\ProductBundle\Entity\Variant;
 
@@ -16,20 +16,23 @@ class VariantSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+        return [
+            FormEvents::PRE_SET_DATA => 'preSetData',
+        ];
     }
 
     /**
-     * Preset data for channels
+     * Preset data for channels.
+     *
      * @param FormEvent $event
      */
     public function preSetData(FormEvent $event)
     {
         $entity = $event->getData();
-        $form = $event->getForm();
+        $form   = $event->getForm();
         if (!$entity || null === $entity->getId()) {
-            if($form->has('variantCode')) {
-                if($entity instanceof Variant && count($entity->getProducts()) > 0) {
+            if ($form->has('variantCode')) {
+                if ($entity instanceof Variant && count($entity->getProducts()) > 0) {
                     $parent = $entity->getProducts()->first();
                     $entity->setVariantCode($this->getVariantCode($parent->getSku()));
                     $event->setData($entity);
@@ -40,12 +43,15 @@ class VariantSubscriber implements EventSubscriberInterface
 
     /**
      * Generate md5 hash for input, will be used as variant code
+     *
      * @param $input
+     *
      * @return string
      */
     protected function getVariantCode($input)
     {
         $hash = hash('md5', $input);
+
         return substr($hash, 0, 10);
     }
 }

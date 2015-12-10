@@ -15,12 +15,12 @@ class LoadSalesData extends AbstractFixture
     /**
      * @var array
      */
-    protected $data = array(
-        array('name' => 'Magento Store', 'type' => 'magento'),
-        array('name' => 'Flagship Store New York', 'type' => 'pos'),
-        array('name' => 'Store Washington D.C.', 'type' => 'pos'),
-        array('name' => 'HQ', 'type' => 'marello'),
-    );
+    protected $data = [
+        ['name' => 'Magento Store', 'type' => 'magento'],
+        ['name' => 'Flagship Store New York', 'type' => 'pos'],
+        ['name' => 'Store Washington D.C.', 'type' => 'pos'],
+        ['name' => 'HQ', 'type' => 'marello'],
+    ];
 
     /**
      * {@inheritdoc}

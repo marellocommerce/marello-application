@@ -22,12 +22,12 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     protected $manager;
 
     /** @var array $data */
-    protected $data = array(
-        'Magento Store' => '10',
+    protected $data = [
+        'Magento Store'           => '10',
         'Flagship Store New York' => '20',
-        'Store Washington D.C.' => '30',
-        'HQ' => '40',
-    );
+        'Store Washington D.C.'   => '30',
+        'HQ'                      => '40',
+    ];
 
     /**
      * {@inheritdoc}
@@ -57,7 +57,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     {
         $handle  = fopen($this->getDictionary('orderAddresses.csv'), "r");
         if ($handle) {
-            $headers = array();
+            $headers = [];
             if (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 //read headers
                 $headers = $data;

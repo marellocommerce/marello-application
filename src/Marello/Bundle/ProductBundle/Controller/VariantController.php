@@ -77,16 +77,21 @@ class VariantController extends Controller
     protected function updateVariant(Product $product, Variant $variant)
     {
         $handler = $this->get('marello_product.product_variant_form.handler');
-        //add product to the handler
+
+        /*
+         * Process request using handler.
+         */
         if ($handler->process($variant, $product)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
                     $this->get('translator')->trans('marello.product.messages.success.variant.saved')
             );
 
-            //redirect to the product page
+            /*
+             * Redirect to product page.
+             */
             return $this->get('oro_ui.router')->redirectAfterSave(
-                array(),
+                [],
                 [
                     'route'      => 'marello_product_view',
                     'parameters' => [
@@ -108,7 +113,7 @@ class VariantController extends Controller
     /**
      * @Route("/variant/widget/info/{id}", name="marello_product_variant_widget_info", requirements={"id"="\d+"})
      * @AclAncestor("marello_product_view")
-     * @Template()
+     * @Template
      *
      * @param Product $product
      * @return array

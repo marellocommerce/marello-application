@@ -33,14 +33,13 @@ class ProductVariantHandler
     protected $parent;
 
     /**
-     *
      * @param FormInterface $form
-     * @param Request $request
+     * @param Request       $request
      * @param ObjectManager $manager
      */
     public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
     {
-        $this->form = $form;
+        $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;
     }
@@ -50,6 +49,7 @@ class ProductVariantHandler
      *
      * @param Variant $entity
      * @param Product $parent
+     *
      * @return bool True on successful processing, false otherwise
      */
     public function process(Variant $entity, Product $parent)
@@ -57,7 +57,7 @@ class ProductVariantHandler
         $this->setParentEntity($entity, $parent);
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
+        if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
@@ -93,6 +93,7 @@ class ProductVariantHandler
 
     /**
      * Set the parent product to the Variant entity
+     *
      * @param Variant $entity
      * @param Product $parent
      */

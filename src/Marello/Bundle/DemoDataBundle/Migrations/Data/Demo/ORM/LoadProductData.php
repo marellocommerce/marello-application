@@ -47,7 +47,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     {
         $handle = fopen($this->getDictionary('products.csv'), "r");
         if ($handle) {
-            $headers = array();
+            $headers = [];
             if (($data = fgetcsv($handle, 1000, ",")) !== false) {
                 //read headers
                 $headers = $data;

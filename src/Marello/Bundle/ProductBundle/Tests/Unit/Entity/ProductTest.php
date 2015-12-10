@@ -2,9 +2,12 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Entity;
 
-class ProductTest extends \PHPUnit_Framework_TestCase  {
+use Marello\Bundle\ProductBundle\Entity\Product;
 
-    /** @var Marello\Bundle\ProductBundle\Entity\Product $entity */
+class ProductTest extends \PHPUnit_Framework_TestCase
+{
+
+    /** @var Product $entity */
     protected $entity;
 
     protected function setUp()
@@ -28,10 +31,10 @@ class ProductTest extends \PHPUnit_Framework_TestCase  {
     public function testSetGet($property, $value = null, $expected = null)
     {
         if ($value !== null) {
-            call_user_func_array(array($this->entity, 'set' . ucfirst($property)), array($value));
+            call_user_func_array([$this->entity, 'set' . ucfirst($property)], [$value]);
         }
 
-        $this->assertEquals($expected, call_user_func_array(array($this->entity, 'get' . ucfirst($property)), array()));
+        $this->assertEquals($expected, call_user_func_array([$this->entity, 'get' . ucfirst($property)], []));
     }
 
     /**
@@ -39,22 +42,22 @@ class ProductTest extends \PHPUnit_Framework_TestCase  {
      */
     public function getSetDataProvider()
     {
-        $name = 'New Product';
-        $sku = 'product123';
-        $stockLevel = 100;
+        $name         = 'New Product';
+        $sku          = 'product123';
+        $stockLevel   = 100;
         $createdAt    = new \DateTime('now');
         $updatedAt    = new \DateTime('now');
         $owner        = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
         $organization = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
 
         return [
-            'name'                => ['name', $name, $name],
-            'sku'                 => ['sku', $sku, $sku],
-            'stockLevel'          => ['stockLevel', $stockLevel, $stockLevel],
-            'createdAt'           => ['createdAt', $createdAt, $createdAt],
-            'updatedAt'           => ['updatedAt', $updatedAt, $updatedAt],
-            'owner'               => ['owner', $owner, $owner],
-            'organization'        => ['organization', $organization, $organization]
+            'name'         => ['name', $name, $name],
+            'sku'          => ['sku', $sku, $sku],
+            'stockLevel'   => ['stockLevel', $stockLevel, $stockLevel],
+            'createdAt'    => ['createdAt', $createdAt, $createdAt],
+            'updatedAt'    => ['updatedAt', $updatedAt, $updatedAt],
+            'owner'        => ['owner', $owner, $owner],
+            'organization' => ['organization', $organization, $organization],
         ];
     }
 }

@@ -41,14 +41,15 @@ class SalesChannelHandler
     /**
      * Process form
      *
-     * @param  SalesChannel  $entity
+     * @param  SalesChannel $entity
+     *
      * @return bool True on successful processing, false otherwise
      */
     public function process(SalesChannel $entity)
     {
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
+        if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
@@ -71,6 +72,7 @@ class SalesChannelHandler
         $form = $this->form;
 
         $config = $form->getConfig();
+
         /** @var FormInterface $form */
         $form = $config->getFormFactory()->createNamed(
             $form->getName(),

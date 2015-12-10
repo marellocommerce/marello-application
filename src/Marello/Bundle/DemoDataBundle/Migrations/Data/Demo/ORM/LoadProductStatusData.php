@@ -15,10 +15,10 @@ class LoadProductStatusData extends AbstractFixture
     /**
      * @var array
      */
-    protected $data = array(
+    protected $data = [
         'disabled' => 'Disabled',
-        'enabled' => 'Enabled'
-    );
+        'enabled'  => 'Enabled',
+    ];
 
     /**
      * @param ObjectManager $manager

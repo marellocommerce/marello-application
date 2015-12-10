@@ -75,7 +75,7 @@ class ProductPriceProvider
      */
     protected function getPricesBySalesChannel($channel,$products)
     {
-        $result = array();
+        $result = [];
         $products = $this->getRepository($this->productClassName)->findBySalesChannel($channel,$products);
 
         foreach($products as $product) {

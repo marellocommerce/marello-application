@@ -12,11 +12,12 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
     /** @var ObjectManager $manager */
     protected $manager;
 
-    protected $widgets = array(
-        'my_calendar' => 'remove',
-        'recent_emails' => [0,10],
-        'quick_launchpad' => [1,20]
-    );
+    protected $widgets = [
+        'my_calendar'     => 'remove',
+        'recent_emails'   => [0, 10],
+        'quick_launchpad' => [1, 20],
+    ];
+
     /**
      * {@inheritdoc}
      */

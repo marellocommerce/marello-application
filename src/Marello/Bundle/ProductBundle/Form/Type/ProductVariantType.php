@@ -17,14 +17,10 @@ class ProductVariantType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'variantCode',
-            'hidden'
-        )
-        ->add(
-            'products',
-            'marello_product_collection'
-        );
+        $builder
+            ->add('variantCode', 'hidden')
+            ->add('products', 'marello_product_collection');
+
         $builder->addEventSubscriber(new VariantSubscriber());
     }
 
@@ -33,13 +29,12 @@ class ProductVariantType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            array('data_class' => 'Marello\\Bundle\\ProductBundle\\Entity\\Variant',
-                  'intention' => 'variant',
-                  'single_form' => false,
-                  'cascade_validation' => true
-            )
-        );
+        $resolver->setDefaults([
+            'data_class'         => 'Marello\Bundle\ProductBundle\Entity\Variant',
+            'intention'          => 'variant',
+            'single_form'        => false,
+            'cascade_validation' => true,
+        ]);
     }
 
     /**

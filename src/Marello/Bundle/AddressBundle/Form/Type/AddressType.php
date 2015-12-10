@@ -9,6 +9,9 @@ use Symfony\Component\Validator\Constraints as Constraint;
 
 class AddressType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->remove('label');
@@ -23,6 +26,9 @@ class AddressType extends AbstractType
             ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

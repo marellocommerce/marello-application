@@ -27,14 +27,13 @@ class ProductApiHandler
     protected $manager;
 
     /**
-     *
      * @param FormInterface $form
-     * @param Request $request
+     * @param Request       $request
      * @param ObjectManager $manager
      */
     public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
     {
-        $this->form = $form;
+        $this->form    = $form;
         $this->request = $request;
         $this->manager = $manager;
     }
@@ -43,13 +42,14 @@ class ProductApiHandler
      * Process form
      *
      * @param  Product $entity
+     *
      * @return bool True on successful processing, false otherwise
      */
     public function process(Product $entity)
     {
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
+        if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
