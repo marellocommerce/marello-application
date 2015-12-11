@@ -65,6 +65,8 @@ class ProductVariantHandler
 
                 return true;
             }
+
+            dump($this->form->getErrors());
         }
 
         return false;

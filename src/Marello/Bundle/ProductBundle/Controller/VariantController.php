@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,7 @@ class VariantController extends Controller
 {
     /**
      * @Route("/variant/create/parent/{id}", requirements={"id"="\d+"}, name="marello_product_create_variant")
+     * @Method({"GET", "POST"})
      * @Acl(
      *      id="marello_product_create_variant",
      *      type="entity",
