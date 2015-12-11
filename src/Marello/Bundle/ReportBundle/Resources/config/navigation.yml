@@ -1,0 +1,58 @@
+oro_menu_config:
+    items:
+        static_reports_tab:
+            label: 'marello.report.menu.static_reports_tab.label'
+            uri: '#'
+            extras:
+                position: 10
+
+        orders_report_tab:
+            label: 'marello.report.menu.orders_report_tab.label'
+            uri: '#'
+            extras:
+                position: 5
+                skipBreadcrumbs: true
+
+        products_report_tab:
+            label: 'marello.report.menu.products_report_tab.label'
+            uri: '#'
+            extras:
+                position: 10
+                skipBreadcrumbs: true
+
+        revenue_per_sales_channel:
+            label: 'marello.report.menu.revenue_per_sales_channel.label'
+            route: 'marello_report_index'
+            routeParameters:
+                reportGroupName: 'orders'
+                reportName:      'revenue_per_sales_channel'
+            extras:
+                description: 'marello.report.menu.revenue_per_sales_channel.description'
+                skipBreadcrumbs: true
+
+        low_stock_products:
+            label: 'marello.report.menu.low_stock_products.label'
+            route: 'marello_report_index'
+            routeParameters:
+                reportGroupName: 'products'
+                reportName:      'low_stock_products'
+            extras:
+                description: 'marello.report.menu.low_stock_products.description'
+                skipBreadcrumbs: true
+
+    tree:
+        application_menu:
+            children:
+                reports_tab:
+                    children:
+                        static_reports_tab:
+                            children:
+                                orders_report_tab:
+                                    children:
+                                        revenue_per_sales_channel: ~
+                                products_report_tab:
+                                    children:
+                                        low_stock_products: ~
+
+oro_titles:
+    marello_report_index: '%%reportName%% - %%reportGroup%%'

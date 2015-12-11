@@ -1,0 +1,90 @@
+datagrid:
+    marello_report-orders-revenue_per_sales_channel:
+        pageTitle: marello.report.title.revenue_per_sales_channel
+        source:
+            type: orm
+            acl_resource: oro_report_view
+            query:
+                select:
+                    - channel.name as salesChannelName
+                    - COUNT(o.orderNumber) as totalOrders
+                    - SUM(o.grandTotal) as totalRevenue
+                from:
+                    - { table: MarelloOrderBundle:Order, alias: o }
+                join:
+                    left:
+                        - { join: o.salesChannel, alias: channel }
+                groupBy: salesChannelName
+        columns:
+            salesChannelName:
+                label: marello.order.sales_channel.label
+                frontend_type: string
+                data_name: salesChannelName
+            totalOrders:
+                label: marello.report.datagrid.columns.total_orders.label
+                frontend_type: string
+            totalRevenue:
+                label: marello.report.datagrid.columns.total_revenue.label
+                frontend_type: currency
+        sorters:
+            columns:
+                salesChannelName:       { data_name: salesChannelName }
+                totalOrders:            { data_name: totalOrders }
+                totalRevenue:           { data_name: totalRevenue }
+            default:
+                totalRevenue: DESC
+        options:
+            entityHint: report data
+            export: false
+
+    marello_report-products-low_stock_products:
+        pageTitle: marello.report.title.low_stock_products
+        source:
+            type: orm
+            acl_resource: oro_report_view
+            query:
+                select:
+                    - p.name
+                    - p.sku
+                    - p.price
+                    - s.label as status
+                    - SUM(i.quantity) AS stockLevel
+                from:
+                    - { table: MarelloProductBundle:Product, alias: p }
+                join:
+                    left:
+                        - { join: p.status, alias: s }
+                        - { join: p.inventoryItems, alias: i }
+                where:
+                    and:
+                        - i.quantity < 5
+                groupBy: p.sku
+        columns:
+            sku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string
+            stockLevel:
+                label:              marello.product.stock_level.label
+                frontend_type:      number
+                data_name:          stockLevel
+            status:
+                label:              marello.product.status.label
+                frontend_type:      string
+            price:
+                label:              marello.product.price.label
+                frontend_type:      currency
+        sorters:
+            columns:
+                sku:            { data_name: p.sku }
+                name:           { data_name: p.name }
+                stockLevel:     { data_name: stockLevel }
+                status:         { data_name: s.label }
+                price:          { data_name: p.price }
+            default:
+                name:  DESC
+        options:
+            entityHint: report data
+            export: false

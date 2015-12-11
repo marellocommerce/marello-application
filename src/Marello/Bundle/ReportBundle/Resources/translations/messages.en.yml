@@ -1,0 +1,21 @@
+marello:
+    report:
+        menu:
+            static_reports_tab.label:   Reports
+            orders_report_tab.label:    Orders
+            products_report_tab.label:  Products
+
+            revenue_per_sales_channel.label:  Revenue per Sales Channel
+            revenue_per_sales_channel.description: Revenue per Sales Channel
+
+            low_stock_products.label:  Low Stock Products
+            low_stock_products.description: Products with stock less than 5
+
+        title:
+            revenue_per_sales_channel: Revenue per Sales Channel
+            low_stock_products: Low Stock Products
+
+        datagrid:
+            columns:
+                total_orders.label:    Total Orders
+                total_revenue.label:   Total Revenue
