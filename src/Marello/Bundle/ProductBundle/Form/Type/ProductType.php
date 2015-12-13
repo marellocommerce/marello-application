@@ -6,22 +6,37 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelFieldSubscriber;
 
 class ProductType extends AbstractType
 {
     const NAME = 'marello_product_form';
+
+    /** @var DefaultSalesChannelFieldSubscriber */
+    protected $defaultSalesChannelFieldSubscriber;
+
+    /**
+     * ProductType constructor.
+     *
+     * @param DefaultSalesChannelFieldSubscriber $defaultSalesChannelFieldSubscriber
+     */
+    public function __construct(DefaultSalesChannelFieldSubscriber $defaultSalesChannelFieldSubscriber)
+    {
+        $this->defaultSalesChannelFieldSubscriber = $defaultSalesChannelFieldSubscriber;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('channels', 'marello_sales_saleschannel_select', [
+        $builder->add('channels', 'marello_sales_saleschannel_select',
+            [
                 'label' => 'marello.sales.saleschannel.entity_label',
-            ])
-            ->add('name', 'text', [
+            ]
+        )
+        ->addEventSubscriber($this->defaultSalesChannelFieldSubscriber)
+        ->add('name', 'text', [
                 'required' => true,
                 'label'    => 'marello.product.name.label',
             ])

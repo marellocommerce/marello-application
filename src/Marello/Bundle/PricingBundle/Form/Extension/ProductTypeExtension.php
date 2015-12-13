@@ -92,18 +92,6 @@ class ProductTypeExtension extends AbstractTypeExtension
             'prices',
             'marello_product_price_collection'
         );
-
-        if (!$product || null === $product->getId()) {
-            if (count($product->getChannels()) > 0) {
-                foreach ($product->getChannels() as $_channel) {
-                    $default = new ProductPrice();
-                    $default->setChannel($_channel);
-                    $product->addPrice($default);
-                }
-
-            }
-        }
-
         $event->setData($product);
     }
 

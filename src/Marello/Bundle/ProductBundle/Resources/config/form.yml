@@ -19,11 +19,15 @@ services:
         class: %marello_product.product_form.type.class%
         tags:
             - { name: form.type, alias: marello_product_form }
+        arguments:
+            - @marello_sales.saleschannel.form_subscriber
 
     marello_product.product_form.type.product_api:
         class: %marello_product.product_form.type.product_api.class%
         tags:
             - { name: form.type, alias: marello_product_api_form }
+        arguments:
+            - @marello_sales.saleschannel.form_subscriber
 
     marello_product.product_form.type.product_select:
         class: %marello_product.product_form.type.product_select.class%

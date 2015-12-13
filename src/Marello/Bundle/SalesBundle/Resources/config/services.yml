@@ -4,6 +4,12 @@ parameters:
     marello_sales.saleschannel.model.channel_aware_interface.class:  Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface
 
 services:
+    marello_sales.saleschannel.form_subscriber:
+        class: %marello_sales.saleschannel.subscriber.class%
+        arguments:
+            - @oro_config.user
+            - @doctrine.orm.entity_manager
+
     # Autocomplete search handler
     marello_sales.saleschannel.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler
