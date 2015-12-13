@@ -22,7 +22,7 @@ oro_system_configuration:
                     general_setup:
                         children:
                             sales:
-                                priority: 500
+                                priority: 100
                                 children:
                                     saleschannels_saleschannel:
                                         priority: 100

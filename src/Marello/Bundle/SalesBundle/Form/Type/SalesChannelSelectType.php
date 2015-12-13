@@ -35,7 +35,7 @@ class SalesChannelSelectType extends AbstractType
             'autocomplete_alias' => 'saleschannels',
             'configs'            => [
                 'multiple'    => true,
-                'placeholder' => 'marello.sales.saleschannel.form.choose_saleschannel',
+                'placeholder' => 'marello.sales.saleschannel.form.select_saleschannel',
                 'allowClear'  => true,
             ],
         ]);

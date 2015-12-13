@@ -48,19 +48,14 @@ class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
         $entity = $event->getData();
         $form   = $event->getForm();
         if (!$entity || null === $entity->getId()) {
-            if ($form->has('channels')) {
-                if ($form->getConfig()->hasOption('data_class')) {
-                    if ($entity instanceof SalesChannelAwareInterface) {
-                        $channels = $this->getDefaultDataChannels();
-                        if (!is_null($channels) && count($channels) !== 0) {
-                            foreach ($channels as $_channel) {
-                                $entity->addChannel($_channel);
-                            }
-                        }
+            if ($form->has('channels') && $entity instanceof SalesChannelAwareInterface) {
+                $channels = $this->getDefaultChannels();
+                if (!is_null($channels) && count($channels) !== 0) {
+                    foreach ($channels as $_channel) {
+                        $entity->addChannel($_channel);
                     }
-
-                    $event->setData($entity);
                 }
+                $event->setData($entity);
             }
         }
     }
@@ -69,7 +64,7 @@ class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
      * Get default channels for new products.
      * @return array $qb
      */
-    public function getDefaultDataChannels()
+    public function getDefaultChannels()
     {
         $config = $this->configManager->get('marello_sales.default_channels');
         if (!$config) {
