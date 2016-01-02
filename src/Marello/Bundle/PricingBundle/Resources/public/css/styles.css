@@ -1,7 +1,7 @@
-.productpricing-wrapper .productpricing-table-container {
+.pricing-line-items .marello-item-collection {
     display: none;
 }
 
-.productpricing-wrapper.pricing-enabled .productpricing-table-container{
+.pricing-line-items.pricing-enabled .marello-item-collection {
     display: block;
 }
