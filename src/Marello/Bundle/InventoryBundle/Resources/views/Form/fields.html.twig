@@ -3,41 +3,47 @@
 {% endblock %}
 
 {% block marello_inventory_item_collection_row %}
-    <table class="table table-condensed table-bordered marello_inventory-product-inventory-table">
-        <thead>
-        <tr>
-            <th>{{ 'marello.inventory.warehouse.entity_label'|trans }}</th>
-            <th>{{ 'marello.inventory.inventoryitem.quantity.label'|trans }}</th>
-            <th>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</th>
-        </tr>
-        </thead>
-        <tbody>
-            {{ form_widget(form) }}
-        </tbody>
-    </table>
+    <div class="row-oro">
+        <div class="marello-item-collection grid-container">
+            <table class="grid table-hover table table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th class="inventory-line-item-warehouse"><span>{{ 'marello.inventory.warehouse.entity_label'|trans }}</span></th>
+                    <th class="inventory-line-item-quantity"><span>{{ 'marello.inventory.inventoryitem.quantity.label'|trans }}</span></th>
+                    <th class="inventory-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                    {{ form_widget(form) }}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 
 {% block marello_inventory_item_row %}
-    <tr>
-        <td>
-            {{ form.vars.value.warehouse }}
+    <tr class="inventory-line-item">
+        <td class="inventory-line-item-warehouse">
+            <div class="fields-row">
+                {{ form.vars.value.warehouse }}
+            </div>
         </td>
-        <td>
-            <strong>{{ form.vars.value.quantity }}</strong>
+        <td class="inventory-line-item-quantity">
+            <div class="fields-row">
+                <strong>{{ form.vars.value.quantity }}</strong>
+            </div>
         </td>
         {{ form_widget(form) }}
     </tr>
 {% endblock %}
 
 {% block marello_inventory_item_widget %}
-    <td class="marello_inventory-warehouse-inventory-widget {{ form.modifyAmount.vars.errors|length ? 'has-errors' : '' }}">
-        {{ form_widget(form.modifyOperator, {
-            attr: {
-                style: 'width: 100px;'
-            }
-        }) }}
-        {{ form_widget(form.modifyAmount) }}
-        {{ form_errors(form.modifyAmount) }}
+    <td class="inventory-line-item-adjustment {{ form.modifyAmount.vars.errors|length ? 'has-errors' : '' }}">
+        <div class="fields-row">
+            {{ form_widget(form.modifyOperator) }}
+            {{ form_widget(form.modifyAmount) }}
+            {{ form_errors(form.modifyAmount) }}
+        </div>
     </td>
 {% endblock %}
 
