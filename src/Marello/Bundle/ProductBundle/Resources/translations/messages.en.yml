@@ -44,6 +44,7 @@ marello:
 
         form.choose_product:        Select Product
         form.add_product:           Add Product
+        form.add_variant:           Add Variant
         product_information:        Product Information
         create_variant.label:       Create Variant
         add_variant.label:          Add Variant

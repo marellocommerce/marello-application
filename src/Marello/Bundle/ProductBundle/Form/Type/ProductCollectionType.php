@@ -32,10 +32,7 @@ class ProductCollectionType extends AbstractType
                 'cascade_validation'   => true,
                 'prototype_name'       => '__nameproducts__',
                 'prototype'            => true,
-                'handle_primary'       => false,
-                'attr'                 => [
-                    'class' => 'table-hover table table-condensed table-bordered',
-                ],
+                'handle_primary'       => false
             ]
         );
     }
