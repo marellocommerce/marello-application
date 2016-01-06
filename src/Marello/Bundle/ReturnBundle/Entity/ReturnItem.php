@@ -6,8 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="marello_return_item")
+ * @ORM\HasLifecycleCallbacks
  */
 class ReturnItem
 {
@@ -70,6 +71,26 @@ class ReturnItem
      * @ORM\Column(type="datetime")
      */
     protected $updatedAt;
+
+    /**
+     * Copies product sku and name to attributes within this return item.
+     *
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->sku       = $this->orderItem->getProductSku();
+        $this->name      = $this->orderItem->getProductName();
+        $this->createdAt = $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->updatedAt = new \DateTime();
+    }
 
     /**
      * @return int

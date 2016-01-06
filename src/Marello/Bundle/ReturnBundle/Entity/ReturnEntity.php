@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ReturnBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -9,8 +10,9 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\Table(name="marello_return_return")
+ * @ORM\HasLifecycleCallbacks
  */
 class ReturnEntity
 {
@@ -41,7 +43,11 @@ class ReturnEntity
     /**
      * @var Collection|ReturnItem[]
      *
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\ReturnBundle\Entity\ReturnItem", mappedBy="return")
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\ReturnBundle\Entity\ReturnItem",
+     *     mappedBy="return",
+     *     cascade={"persist", "remove"}
+     * )
      * @ORM\JoinColumn
      */
     protected $returnItems;
@@ -75,6 +81,32 @@ class ReturnEntity
      * @ORM\Column(type="datetime")
      */
     protected $updatedAt;
+
+    /**
+     * ReturnEntity constructor.
+     */
+    public function __construct()
+    {
+        $this->returnItems = new ArrayCollection();
+    }
+
+    /**
+     * Copies product sku and name to attributes within this return item.
+     *
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->createdAt = $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->updatedAt = new \DateTime();
+    }
 
     /**
      * @return int
@@ -149,13 +181,25 @@ class ReturnEntity
     }
 
     /**
-     * @param Collection|ReturnItem[] $returnItems
+     * @param ReturnItem $item
      *
      * @return $this
      */
-    public function setReturnItems($returnItems)
+    public function addReturnItem(ReturnItem $item)
     {
-        $this->returnItems = $returnItems;
+        $this->returnItems->add($item->setReturn($this));
+
+        return $this;
+    }
+
+    /**
+     * @param ReturnItem $item
+     *
+     * @return $this
+     */
+    public function removeReturnItem(ReturnItem $item)
+    {
+        $this->returnItems->removeElement($item);
 
         return $this;
     }

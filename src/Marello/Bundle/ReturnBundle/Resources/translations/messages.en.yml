@@ -1,4 +1,5 @@
 marello:
     return:
-        entity_label: Return
-        entity_plural_label: Returns
+        entity_label:             Return
+        entity_plural_label:      Returns
+        return_number.label:      Return Number
