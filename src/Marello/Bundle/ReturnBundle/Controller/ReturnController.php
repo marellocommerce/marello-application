@@ -39,9 +39,11 @@ class ReturnController extends Controller
      * @Security\AclAncestor("marello_return_view")
      *
      * @param ReturnEntity $return
+     *
+     * @return array
      */
     public function viewAction(ReturnEntity $return)
     {
-
+        return ['entity' => $return];
     }
 }

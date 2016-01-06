@@ -3,3 +3,8 @@ marello:
         entity_label:             Return
         entity_plural_label:      Returns
         return_number.label:      Return Number
+
+        returnitem:
+            entity_label:         Returned Item
+            entity_plural_label:  Returned items
+            quantity.label:       Quantity Returned

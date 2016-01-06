@@ -72,3 +72,41 @@ datagrid:
                 link:       view_link
                 icon:       eye-open
                 rowAction:  true
+
+    marello-return-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - ri
+                from:
+                    - { table: MarelloReturnBundle:ReturnItem, alias: ri }
+                join:
+                    left:
+                        - { join: ri.orderItem, alias: oi }
+                where:
+                    and:
+                        - ri.return = :return_id
+            bind_parameters:
+                return_id: returnId
+        columns:
+            sku:
+                data_name: sku
+                label: marello.product.sku.label
+                frontend_type: string
+            product:
+                data_name: name
+                label: marello.product.name.label
+                frontend_type: string
+            quantityOrdered:
+                data_name: orderItem.quantity
+                label: marello.order.orderitem.quantity.label
+                frontend_type: number
+            quantityReturned:
+                data_name: quantity
+                label: marello.return.returnitem.quantity.label
+                frontend_type: number
+            price:
+                data_name: orderItem.price
+                label: marello.order.orderitem.price.label
+                frontend_type: currency
