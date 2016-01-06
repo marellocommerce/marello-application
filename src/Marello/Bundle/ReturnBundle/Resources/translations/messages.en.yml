@@ -1,0 +1,4 @@
+marello:
+    return:
+        entity_label: Return
+        entity_plural_label: Returns

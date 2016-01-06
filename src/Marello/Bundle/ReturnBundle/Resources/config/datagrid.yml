@@ -1,0 +1,19 @@
+datagrid:
+    marello-return:
+        source:
+            type: orm
+            query:
+                select:
+                    - r
+                from:
+                    - { table: MarelloReturnBundle:ReturnEntity, alias: r }
+            join:
+                left:
+                    order:
+                        join: r.order
+                        alias: o
+        columns:
+            orderNumber:
+                data_name: o.orderNumber
+                label: marello.order.order_number.label
+                frontend_type: string

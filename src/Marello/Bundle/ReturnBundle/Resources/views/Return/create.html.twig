@@ -1,0 +1,82 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% set formAction = path('marello_return_create') %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_return_index')) }}
+    {% set html = UI.saveAndCloseButton() %}
+    {% set html = html ~ UI.saveAndStayButton() %}
+    {{ UI.dropdownSaveButton({ 'html': html }) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.return.entity_label'|trans}) %}
+    {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'order-create' %}
+
+    {% set billingAddress = form_widget(form.billingAddress) %}
+    {% set shippingAddress = form_widget(form.shippingAddress) %}
+    {% set orderItems %}
+        <div class="order-line-items"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marelloorder/js/app/views/order-items-view',
+                 prices: prices|default({})
+             }|json_encode }}">
+            {{ form_widget(form.items) }}
+            {{ form_errors(form.items) }}
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+    {
+    'title': 'General'|trans,
+    'class': 'active',
+    'subblocks': [{
+    'title': '',
+    'data': [
+    form_rest(form)
+    ]
+    }]
+    },
+    {
+    'title': 'marello.order.items.label'|trans,
+    'class': 'active',
+    'subblocks': [{
+    'title': '',
+    'data': [
+    orderItems
+    ]
+    }]
+    },
+    {
+    'title': 'marello.order.billing_address.label'|trans,
+    'class': 'active',
+    'subblocks': [{
+    'title': '',
+    'data': [
+    billingAddress
+    ]
+    }]
+    },
+    {
+    'title': 'marello.order.shipping_address.label'|trans,
+    'class': 'active',
+    'subblocks': [{
+    'title': '',
+    'data': [
+    shippingAddress
+    ]
+    }]
+    },
+    ] %}
+    {% set data = {
+    'formErrors': form_errors(form)? form_errors(form) : null,
+    'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}
