@@ -38,20 +38,6 @@ class ReturnItem
     protected $orderItem;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string")
-     */
-    protected $sku;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string")
-     */
-    protected $name;
-
-    /**
      * @var int
      *
      * @ORM\Column(type="integer")
@@ -79,8 +65,6 @@ class ReturnItem
      */
     public function prePersist()
     {
-        $this->sku       = $this->orderItem->getProductSku();
-        $this->name      = $this->orderItem->getProductName();
         $this->createdAt = $this->updatedAt = new \DateTime();
     }
 
@@ -114,22 +98,6 @@ class ReturnItem
     public function getUpdatedAt()
     {
         return $this->updatedAt;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSku()
-    {
-        return $this->sku;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**

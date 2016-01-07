@@ -1,10 +1,14 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
-{% set formAction = path('marello_return_create') %}
+{% set order = form.vars.value.order %}
+
+{% set formAction = path('marello_return_return_create', {
+    'id': order.id
+}) %}
 
 {% block navButtons %}
-    {{ UI.cancelButton(path('marello_return_index')) }}
+    {{ UI.cancelButton(path('marello_order_order_index')) }}
     {% set html = UI.saveAndCloseButton() %}
     {% set html = html ~ UI.saveAndStayButton() %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}
@@ -16,67 +20,47 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'order-create' %}
+    {% set id = 'return-create' %}
 
-    {% set billingAddress = form_widget(form.billingAddress) %}
-    {% set shippingAddress = form_widget(form.shippingAddress) %}
-    {% set orderItems %}
-        <div class="order-line-items"
-             data-page-component-module="oroui/js/app/components/view-component"
-             data-page-component-options="{{ {
-                 view: 'marelloorder/js/app/views/order-items-view',
-                 prices: prices|default({})
-             }|json_encode }}">
-            {{ form_widget(form.items) }}
-            {{ form_errors(form.items) }}
+    {% set orderData %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.order_number.label'|trans, order.orderNumber) }}
+                    {{ UI.renderProperty('marello.order.sales_channel.label'|trans, order.salesChannel|default(order.salesChannelName)) }}
+                    {{ UI.renderProperty('marello.order.order_reference.label'|trans, order.orderReference) }}
+                    {{ UI.renderProperty('marello.order.order_date.label'|trans, order.createdAt|oro_format_datetime) }}
+                </div>
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.subtotal.label'|trans, order.subtotal|oro_format_currency) }}
+                    {{ UI.renderProperty('marello.order.total_tax.label'|trans, order.totalTax|oro_format_currency) }}
+                    {{ UI.renderProperty('marello.order.grand_total.label'|trans, order.grandTotal|oro_format_currency) }}
+                </div>
+            </div>
         </div>
     {% endset %}
 
     {% set dataBlocks = [
-    {
-    'title': 'General'|trans,
-    'class': 'active',
-    'subblocks': [{
-    'title': '',
-    'data': [
-    form_rest(form)
-    ]
-    }]
-    },
-    {
-    'title': 'marello.order.items.label'|trans,
-    'class': 'active',
-    'subblocks': [{
-    'title': '',
-    'data': [
-    orderItems
-    ]
-    }]
-    },
-    {
-    'title': 'marello.order.billing_address.label'|trans,
-    'class': 'active',
-    'subblocks': [{
-    'title': '',
-    'data': [
-    billingAddress
-    ]
-    }]
-    },
-    {
-    'title': 'marello.order.shipping_address.label'|trans,
-    'class': 'active',
-    'subblocks': [{
-    'title': '',
-    'data': [
-    shippingAddress
-    ]
-    }]
-    },
+        {
+            'title': 'marello.order.entity_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [orderData] }
+            ]
+        },
+        {
+            'title': 'marello.order.orderitem.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'data': [
+                    form_rest(form)
+                ]
+            }]
+        },
     ] %}
     {% set data = {
-    'formErrors': form_errors(form)? form_errors(form) : null,
-    'dataBlocks': dataBlocks,
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
     } %}
     {{ parent() }}
 {% endblock content_data %}

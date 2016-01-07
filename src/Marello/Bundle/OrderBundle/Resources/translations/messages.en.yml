@@ -33,7 +33,8 @@ marello:
 
         # OrderItem entity
         orderitem:
-            entity_label:         Order Item
+            entity_label:         Ordered Item
+            entity_plural_label:  Ordered Items
             id.label:             Id
             sku.label:            SKU
             tax.label:            Tax

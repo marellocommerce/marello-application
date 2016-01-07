@@ -1,3 +1,17 @@
 parameters:
 
 services:
+    marello_return.form.type.return:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnType
+        tags:
+            - { name: form.type, alias: marello_return }
+
+    marello_return.form.type.return_item:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemType
+        tags:
+            - { name: form.type, alias: marello_return_item }
+
+    marello_return.form.type.return_item_collection:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemCollectionType
+        tags:
+            - { name: form.type, alias: marello_return_item_collection }

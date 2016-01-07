@@ -97,6 +97,11 @@ datagrid:
                 route:  marello_order_order_update
                 params:
                     id: id
+            return_link:
+                type:   url
+                route:  marello_return_return_create
+                params:
+                    id: id
         actions:
             view:
                 type:       navigate
@@ -107,6 +112,10 @@ datagrid:
                 type:       navigate
                 link:       edit_link
                 icon:       edit
+            return:
+                type:       navigate
+                link:       return_link
+                icon:       refresh
         options:
             export: true
 

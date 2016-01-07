@@ -26,11 +26,42 @@ class ReturnController extends Controller
      * @Config\Template
      * @Security\AclAncestor("marello_return_create")
      *
-     * @param Order $order
+     * @param Order   $order
+     * @param Request $request
+     *
+     * @return array
      */
     public function createAction(Order $order, Request $request)
     {
+        $return = new ReturnEntity();
+        $return->setOrder($order);
 
+        $form = $this->createForm('marello_return', $return);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+
+            $manager->persist($return);
+            $manager->flush();
+
+            return $this->get('oro_ui.router')->redirectAfterSave(
+                [
+                    'route'      => 'marello_return_return_view',
+                    'parameters' => [
+                        'id' => $order->getId(),
+                    ],
+                ],
+                [
+                    'route' => 'marello_return_return_index',
+                ],
+                $order
+            );
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
     }
 
     /**

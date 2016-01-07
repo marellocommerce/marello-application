@@ -66,8 +66,6 @@ class MarelloReturnBundleInstaller implements Installation
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('orderitem_id', 'integer', ['notnull' => false]);
         $table->addColumn('return_id', 'integer', ['notnull' => false]);
-        $table->addColumn('sku', 'string', ['length' => 255]);
-        $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('quantity', 'integer', []);
         $table->addColumn('createdat', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updatedat', 'datetime', ['comment' => '(DC2Type:datetime)']);

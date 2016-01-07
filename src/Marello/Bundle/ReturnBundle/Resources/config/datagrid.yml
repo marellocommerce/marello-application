@@ -91,11 +91,11 @@ datagrid:
                 return_id: returnId
         columns:
             sku:
-                data_name: sku
+                data_name: orderItem.productSku
                 label: marello.product.sku.label
                 frontend_type: string
             product:
-                data_name: name
+                data_name: orderItem.productName
                 label: marello.product.name.label
                 frontend_type: string
             quantityOrdered:
