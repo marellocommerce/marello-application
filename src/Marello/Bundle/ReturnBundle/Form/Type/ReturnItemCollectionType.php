@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -22,12 +23,18 @@ class ReturnItemCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type' => ReturnItemType::NAME,
+            'type'                 => ReturnItemType::NAME,
+            'show_form_when_empty' => false,
+            'error_bubbling'       => false,
+            'cascade_validation'   => true,
+            'prototype_name'       => '__namereturnitem__',
+            'prototype'            => true,
+            'handle_primary'       => false,
         ]);
     }
 
     public function getParent()
     {
-        return 'collection';
+        return CollectionType::NAME;
     }
 }

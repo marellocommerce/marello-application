@@ -3,6 +3,8 @@ parameters:
 services:
     marello_return.form.type.return:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnType
+        arguments:
+            - @marello_return.form.subscriber.return_type_subscriber
         tags:
             - { name: form.type, alias: marello_return }
 
@@ -15,3 +17,6 @@ services:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemCollectionType
         tags:
             - { name: form.type, alias: marello_return_item_collection }
+
+    marello_return.form.subscriber.return_type_subscriber:
+        class: Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnTypeSubscriber

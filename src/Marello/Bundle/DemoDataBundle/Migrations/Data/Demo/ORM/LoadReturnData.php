@@ -32,8 +32,7 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
             $return->setOrder($order);
 
             $order->getItems()->map(function (OrderItem $item) use ($return) {
-                $returnItem = new ReturnItem();
-                $returnItem->setOrderItem($item);
+                $returnItem = new ReturnItem($item);
                 $returnItem->setQuantity(rand(1, $item->getQuantity()));
 
                 $return->addReturnItem($returnItem);

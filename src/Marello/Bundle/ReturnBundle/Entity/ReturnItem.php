@@ -59,6 +59,16 @@ class ReturnItem
     protected $updatedAt;
 
     /**
+     * ReturnItem constructor.
+     *
+     * @param OrderItem $orderItem
+     */
+    public function __construct(OrderItem $orderItem)
+    {
+        $this->orderItem = $orderItem;
+    }
+
+    /**
      * Copies product sku and name to attributes within this return item.
      *
      * @ORM\PrePersist
