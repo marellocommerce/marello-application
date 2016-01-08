@@ -12,7 +12,9 @@ class ReturnItemType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('quantity');
+        $builder->add('quantity', 'number', [
+            'data' => 0,
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -1,6 +1,16 @@
+parameters:
+    marello_return.entity.return.class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
+
 services:
     marello_return.listener.doctrine.return_number_generator_listener:
         class: Marello\Bundle\ReturnBundle\EventListener\Doctrine\ReturnNumberGeneratorListener
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: doctrine.event_listener, event: postFlush }
+
+    marello_return.manager.return.api:
+        class: Marello\Bundle\ReturnBundle\Entity\Manager\ReturnApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %marello_return.entity.return.class%
+            - @doctrine.orm.entity_manager

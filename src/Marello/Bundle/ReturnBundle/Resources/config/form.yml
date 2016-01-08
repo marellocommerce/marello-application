@@ -20,3 +20,20 @@ services:
 
     marello_return.form.subscriber.return_type_subscriber:
         class: Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnTypeSubscriber
+
+    marello_return.form.return_api:
+            class: Symfony\Component\Form\Form
+            factory_method: createNamed
+            factory_service: form.factory
+            arguments:
+                - ~
+                - 'marello_return_api'
+
+    marello_return.form.handler.return_api:
+        class: Marello\Bundle\ReturnBundle\Form\Handler\ReturnApiHandler
+        scope: request
+        arguments:
+            - @marello_return.form.return_api
+            - @request
+            - @doctrine.orm.entity_manager
+            - @oro_entity.routing_helper

@@ -33,8 +33,7 @@ class ReturnTypeSubscriber implements EventSubscriberInterface
         $return->getOrder()
             ->getItems()
             ->map(function (OrderItem $orderItem) use ($return) {
-                $returnItem = new ReturnItem($orderItem);
-                $return->addReturnItem($returnItem);
+                $return->addReturnItem(new ReturnItem($orderItem));
             });
 
         $event->setData($return);
