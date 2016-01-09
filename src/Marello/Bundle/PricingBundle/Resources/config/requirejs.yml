@@ -1,3 +1,0 @@
-config:
-    paths:
-        'marellopricing/js/app/components/pricing-settings': 'bundles/marellopricing/js/app/components/pricing-settings.js'

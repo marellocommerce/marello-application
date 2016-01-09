@@ -32,9 +32,6 @@ class ProductPriceCollectionType extends AbstractType
                 'prototype_name'       => '__nameproductprice__',
                 'prototype'            => true,
                 'handle_primary'       => false,
-                'attr'                 => [
-                    'class' => 'table-hover table table-condensed table-bordered',
-                ],
             ]
         );
     }

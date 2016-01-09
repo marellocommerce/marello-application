@@ -1,11 +1,19 @@
-.marello_inventory-warehouse-inventory-widget {
+.inventory-line-item-adjustment {
     .selector, input {
         display: inline-block;
         vertical-align: top;
     }
 
     .selector {
-        width: auto;
+        width: 100px !important;
+    }
+
+    .selector span {
+        width:98px !important;
+    }
+
+    .selector select {
+        width:100px;
     }
 
     input {
@@ -13,7 +21,7 @@
     }
 }
 
-.marello_inventory-warehouse-inventory-widget.has-errors {
+.inventory-line-item-adjustment.has-errors {
     input, .selector {
         border: 1px solid #e9322d;
         box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(211,33,33,0.6);
@@ -21,11 +29,5 @@
 
     span.validation-failed {
         display: inline;
-    }
-}
-
-.marello_inventory-product-inventory-table {
-    td {
-        line-height: 30px;
     }
 }

@@ -33,6 +33,14 @@
 
 {% block content_data %}
     {% set id = 'product-variant' %}
+    {% set productVariants %}
+        <div class="variant-line-items"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-items-view'}|json_encode }}">
+            {{ form_widget(form.products) }}
+            {{ form_errors(form.products) }}
+        </div>
+    {% endset %}
     {% set dataBlocks = [
         {
             'title': 'Variants'|trans,
@@ -42,7 +50,7 @@
                 'data' : [
                     form_row(form.variantCode),
                     UI.renderProperty('marello.product.variant.variant_code.label'|trans, entity.variantCode),
-                    form_widget(form.products)
+                    productVariants
                 ]
             }]
         }

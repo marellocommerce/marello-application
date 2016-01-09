@@ -8,14 +8,14 @@ define(function(require) {
         DeleteConfirmation = require('oroui/js/delete-confirmation'),
         routing = require('routing'),
         mediator = require('oroui/js/mediator'),
-        BaseView = require('oroui/js/app/views/base/view');
+        AbstractItemsView = require('marellolayout/js/app/views/abstract-items-view');
 
     /**
      * @export marelloorder/js/app/views/order-items-view
-     * @extends oroui.app.views.base.View
+     * @extends marellolayout.app.views.AbstractItemsView
      * @class marelloorder.app.views.OrderItemsView
      */
-    OrderItemsView = BaseView.extend({
+    OrderItemsView = AbstractItemsView.extend({
         /**
          * @property {Object}
          */
@@ -49,19 +49,15 @@ define(function(require) {
          */
         initialize: function(options) {
             this.options = $.extend(true, {}, this.options, options || {});
-            this.initLayout().done(_.bind(this.handleLayoutInit, this));
-            this.delegate('click', '.add-line-item', this.addRow);
+            OrderItemsView.__super__.initialize.apply(this, arguments);
         },
 
         /**
          * Doing something after loading child components
          */
         handleLayoutInit: function() {
-            this.$form = this.$el.closest('form');
+            OrderItemsView.__super__.handleLayoutInit.apply(this, arguments);
             this.$salesChannel = this.$form.find(':input[data-ftid="' + this.$form.attr('name') + '_salesChannel"]');
-            this.$el.find('.add-list-item').mousedown(function(e) {
-                $(this).click();
-            });
 
             mediator.on('order:get:line-items-prices', this.getLineItemsPrices, this);
             mediator.on('order:load:line-items-prices', this.loadLineItemsPrices, this);
@@ -75,40 +71,6 @@ define(function(require) {
             }, this));
 
             this.initChannelHistory();
-        },
-
-
-        /**
-         * handle index and html for the collection container
-         * @param $listContainer
-         * @returns {{nextIndex: *, nextItemHtml: *}}
-         */
-        getCollectionInfo: function($listContainer) {
-            var index = $listContainer.data('last-index') || $listContainer.children().length;
-
-            var prototypeName = $listContainer.attr('data-prototype-name') || '__name__';
-            var html = $listContainer.attr('data-prototype').replace(new RegExp(prototypeName, 'g'), index);
-            return {
-                nextIndex: index,
-                nextItemHtml: html
-            };
-        },
-
-        /**
-         * handle add button
-         */
-        addRow: function() {
-            var _self = this.$el.find('.add-line-item');
-            var containerSelector = $(_self).data('container') || '.collection-fields-list';
-            var $listContainer = this.$el.find('.row-oro').find(containerSelector).first();
-            var collectionInfo = this.getCollectionInfo($listContainer);
-            $listContainer.append(collectionInfo.nextItemHtml)
-                .trigger('content:changed')
-                .data('last-index', collectionInfo.nextIndex + 1);
-
-            $listContainer.find('input.position-input').each(function(i, el) {
-                $(el).val(i);
-            });
         },
 
         /**
@@ -176,20 +138,6 @@ define(function(require) {
             confirm.on('ok', function(){
                 _self.$confirm = false;
             });
-        },
-
-        /**
-         * @returns {Array} products
-         */
-        getProductsId: function() {
-            var products = this.$el.find('input[data-ftid$="_product"]');
-            products = _.filter(products, function(product) {
-                return product.value.length > 0;
-            });
-            products = _.map(products, function(product) {
-                return product.value;
-            });
-            return products;
         },
 
         /**
