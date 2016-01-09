@@ -1,0 +1,112 @@
+datagrid:
+    marello-return:
+        source:
+            type: orm
+            query:
+                select:
+                    - r
+                    - COALESCE(SUM(ri.quantity), 0) AS returnItemCount
+                from:
+                    - { table: MarelloReturnBundle:ReturnEntity, alias: r }
+                join:
+                    left:
+                        - { join: r.order, alias: o }
+                        - { join: r.returnItems, alias: ri }
+                groupBy: r.id
+        columns:
+            returnNumber:
+                data_name: returnnumber
+                label: marello.return.return_number.label
+                frontend_type: string
+            orderNumber:
+                data_name: order.orderNumber
+                label: marello.order.order_number.label
+                frontend_type: string
+            returnItems:
+                data_name: returnItemCount
+                label: marello.return.returnitem.entity_plural_label
+                frontend_type: number
+            createdAt:
+                label: oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label: oro.ui.updated_at
+                frontend_type: datetime
+        filters:
+            columns:
+                returnNumber:
+                    type: string
+                    data_name: r.returnNumber
+                orderNumber:
+                    type: string
+                    data_name: o.orderNumber
+                createdAt:
+                    type: datetime
+                    data_name: r.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: r.updatedAt
+        sorters:
+            columns:
+                returnNumber:
+                    data_name: r.returnNumber
+                orderNumber:
+                    data_name: o.orderNumber
+                returnItems:
+                    data_name: returnItemCount
+                createdAt:
+                    data_name: r.createdAt
+                updatedAt:
+                    data_name: r.updatedAt
+            default:
+                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        properties:
+            view_link:
+                type:   url
+                route:  marello_return_return_view
+                params:
+                    id: id
+        actions:
+            view:
+                type:       navigate
+                link:       view_link
+                icon:       eye-open
+                rowAction:  true
+
+    marello-return-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - ri
+                from:
+                    - { table: MarelloReturnBundle:ReturnItem, alias: ri }
+                join:
+                    left:
+                        - { join: ri.orderItem, alias: oi }
+                where:
+                    and:
+                        - ri.return = :return_id
+            bind_parameters:
+                return_id: returnId
+        columns:
+            sku:
+                data_name: orderItem.productSku
+                label: marello.product.sku.label
+                frontend_type: string
+            product:
+                data_name: orderItem.productName
+                label: marello.product.name.label
+                frontend_type: string
+            quantityOrdered:
+                data_name: orderItem.quantity
+                label: marello.order.orderitem.quantity.label
+                frontend_type: number
+            quantityReturned:
+                data_name: quantity
+                label: marello.return.returnitem.quantity.label
+                frontend_type: number
+            price:
+                data_name: orderItem.price
+                label: marello.order.orderitem.price.label
+                frontend_type: currency
