@@ -51,7 +51,7 @@
     {% set productPrices %}
         {% set pricingEnabled = form.vars.value.data.pricing_enabled is defined and form.vars.value.data.pricing_enabled %}
         {% set priceEnableElement = { pricing_enable_id: form.pricing_enabled.vars.id } %}
-        <div class="pricing-line-items {% if  pricingEnabled %}pricing-enabled{% endif %}"
+        <div class="pricing-line-items {% if pricingEnabled %}pricing-enabled{% endif %}"
              data-page-component-module="oroui/js/app/components/view-component"
              data-page-component-options="{{ {
                  view: 'marellopricing/js/app/views/pricing-items-view',

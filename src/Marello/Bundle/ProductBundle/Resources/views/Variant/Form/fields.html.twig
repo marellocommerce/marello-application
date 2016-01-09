@@ -42,7 +42,7 @@
         {% set disabled = widget.parent.vars.disabled %}
     {% endif %}
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
-        class="variant-line-item"
+        class="marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}">
         {{ form_widget(form, {disabled: disabled}) }}
