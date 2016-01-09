@@ -21,6 +21,10 @@
     padding: 7px 10px;
 }
 
+.marello-line-items table.grid td.display-value {
+    line-height: 30px;
+}
+
 .marello-line-items tr.marello-line-item .marello-line-item-notifications span.error {
     font-size:29px;
     color: #c81717;
