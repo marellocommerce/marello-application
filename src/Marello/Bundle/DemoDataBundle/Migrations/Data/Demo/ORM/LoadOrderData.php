@@ -55,7 +55,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
      */
     public function loadOrders()
     {
-        $handle  = fopen($this->getDictionary('orderAddresses.csv'), "r");
+        $handle  = fopen($this->getDictionary('order_data.csv'), "r");
         if ($handle) {
             $headers = [];
             if (($data = fgetcsv($handle, 1000, ";")) !== false) {
@@ -66,10 +66,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             while (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 $data = array_combine($headers, array_values($data));
 
-                $order = $this->createOrder($data);
-                if (!$i) {
-                    $this->setReference('marello_order_first', $order);
-                }
+                $this->createOrder($data);
                 $i++;
                 if ($i % self::FLUSH_MAX == 0) {
                     $this->manager->flush();
@@ -107,19 +104,16 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $shipping = clone $billing;
 
         $orderEntity = new Order($billing, $shipping);
-        $chNo = rand(0, 3);
-        $channel = $this->getReference('marello_sales_channel_' . $chNo);
+        $channel = $this->getReference('marello_sales_channel_' . $order['channel']);
         $orderEntity->setSalesChannel($channel);
-        $setReferenceNumber = (rand(0, 100) % 2 == 0) ? true : false;
-        if ($setReferenceNumber) {
-            $min = (int) ($this->data[$channel->getName()] . '0000000');
-            $max = $min + rand(1, 1000);
-            $orderEntity->setOrderReference(rand($min, $max));
+        if($order['order_ref'] !== 'NULL') {
+            $orderEntity->setOrderReference($order['order_ref']);
         }
-
-        $this->loadOrderItems($orderEntity);
-
-        return $orderEntity;
+        $orderEntity
+            ->setSubtotal(0)
+            ->setTotalTax(0)
+            ->setGrandTotal(0);
+        $this->manager->persist($orderEntity);
     }
 
     /**
@@ -178,7 +172,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             ->setSubtotal($subtotal)
             ->setTotalTax($tax)
             ->setGrandTotal($total);
-
+        var_dump($order->getOrderNumber());
+        die(__METHOD__);
         $this->manager->persist($order);
     }
 
