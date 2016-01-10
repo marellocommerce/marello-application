@@ -12,9 +12,6 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
 class LoadOrderItemData extends AbstractFixture implements DependentFixtureInterface
 {
-    /** default tax percentage constant */
-    const DEFAULT_TAX_PERCENTAGE = 21;
-
     /** flush manager count */
     const FLUSH_MAX = 50;
 
