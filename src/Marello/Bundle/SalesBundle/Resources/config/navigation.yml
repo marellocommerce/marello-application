@@ -11,6 +11,20 @@ oro_menu_config:
             route: marello_sales_saleschannel_index
             extras:
                 routes: ['marello_sales_saleschannel_*']
+
+        shortcut_new_saleschannel:
+            label: 'marello.sales.saleschannel.menu.shortcut_new_saleschannel.label'
+            route: 'marello_sales_saleschannel_create'
+            extras:
+                description: 'marello.sales.saleschannel.menu.shortcut_new_saleschannel.description'
+                isCustomAction: true
+
+        shortcut_list_saleschannel:
+            label: 'marello.sales.saleschannel.menu.shortcut_list_saleschannel.label'
+            route: 'marello_sales_saleschannel_index'
+            extras:
+                description: 'marello.sales.saleschannel.menu.shortcut_list_saleschannel.description'
+                isCustomAction: true
     tree:
         application_menu:
             children:
@@ -18,6 +32,10 @@ oro_menu_config:
                 system_tab:
                     children:
                         sales_channel: ~
+        shortcuts:
+            children:
+                shortcut_new_saleschannel: ~
+                shortcut_list_saleschannel: ~
 
 oro_titles:
     marello_sales_saleschannel_index:   marello.sales.saleschannel.entity_plural_label

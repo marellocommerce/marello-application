@@ -1,146 +1,146 @@
-organization_id,user_owner_id,name,sku,price,stock_level
-1,1,French Cuff Cotton Twill Oxford,msj002,190.0,24
-1,1,Slim fit Dobby Oxford Shirt,msj005,175.0,-3
-1,1,Plaid Cotton Shirt,msj008,160.0,25
-1,1,Sullivan Sport Coat,msj011,510.0,23
-1,1,Linen Blazer,msj014,455.0,22
-1,1,Stretch Cotton Blazer,msj017,490.0,25
-1,1,Chelsea Tee,mtk005,75.0,24
-1,1,Merino V-neck Pullover Sweater,mtk008,210.0,25
-1,1,Lexington Cardigan Sweater,mtk011,240.0,24
-1,1,Core Striped Sport Shirt,mtk014,125.0,25
-1,1,Bowery Chino Pants,mpd005,140.0,25
-1,1,The Essential Boot Cut Jean,mpd011,140.0,10
-1,1,Flat Front  Trouser,mpd017,195.0,25
-1,1,Black NoLIta Cami,wbk002L,150.0,10
-1,1,Tori Tank,wbk005,60.0,6
-1,1,Delancy Cardigan Sweater,wbk008,275.0,25
-1,1,Ludlow Oxford Top,wbk011,185.0,24
-1,1,Elizabeth Knit Top,wbk014,210.0,23
-1,1,Essex Pencil Skirt,wsd004,185.0,25
-1,1,Racer Back Maxi Dress,wsd007,280.0,25
-1,1,Sheath,wsd012,305.0,25
-1,1,Convertible Dress,wsd017,340.0,24
-1,1,Park Avenue Pleat Front Trousers,wpd014,245.0,25
-1,1,Aviator Sunglasses,ace000,295.0,0
-1,1,Jackie O Round Sunglasses,ace001,295.0,18
-1,1,Retro Chic Eyeglasses,ace002,295.0,25
-1,1,"Barclay d'Orsay pump, Nude",aws004,390.0,25
-1,1,Ann Ankle Boot,aws009,470.0,25
-1,1,"Hana Flat, Charcoal",aws014,210.0,25
-1,1,Dorian Perforated Oxford,ams004,410.0,25
-1,1,Wingtip Cognac Oxford,ams005,375.0,25
-1,1,"Suede Loafer, Navy",ams014,310.0,25
-1,1,Isla Crossbody Handbag,abl000,290.0,13
-1,1,Florentine Satchel Handbag,abl001,625.0,-35
-1,1,Flatiron Tablet Sleeve,abl002,150.0,23
-1,1,Broad St. Flapover Briefcase,abl003,570.0,24
-1,1,Houston Travel Wallet,abl004,210.0,18
-1,1,Roller Suitcase,abl005,650.0,15
-1,1,"Classic Hardshell Suitcase 21""",abl006,650.0,15
-1,1,"Classic Hardshell Suitcase 29""",abl007,750.0,13
-1,1,Body Wash with Lemon Flower Extract and Aloe Vera,hdb000,28.0,13
-1,1,Bath Minerals and Salt,hdb001,25.0,0
-1,1,Shea Enfused Hydrating Body Lotion,hdb002,28.0,25
-1,1,Titian Raw Silk Pillow,hdb005,125.0,24
-1,1,Shay Printed Pillow,hdb006,210.0,23
-1,1,Carnegie Alpaca Throw,hdb007,275.0,24
-1,1,Park Row Throw,hdb008,240.0,25
-1,1,Gramercy Throw,hdb009,275.0,24
-1,1,Herald Glass Vase,hdd000,110.0,1
-1,1,Modern Murray Ceramic Vase,hdd002,135.0,8
-1,1,Stone Salt and Pepper Shakers,hdd004,65.0,25
-1,1,Fragrance Diffuser Reeds,hdd005,75.0,25
-1,1,Geometric Candle Holders,hdd006,90.0,25
-1,1,Madison LX2200,hde001,425.0,2
-1,1,Madison RX3400,hde003,715.0,23
-1,1,16GB Memory Card,hde004,30.0,25
-1,1,8GB Memory Card,hde005,20.0,23
-1,1,Large Camera Bag,hde006,120.0,22
-1,1,Madison Earbuds,hde010,35.0,23
-1,1,Madison Overear Headphones,hde011,125.0,25
-1,1,Madison 8GB Digital Media Player,hde012,150.0,24
-1,1,Compact mp3 Player,hde013,40.0,-35
-1,1,Khaki Bowery Chino Pants,mpd000,140.0,19
-1,1,Bowery Chino Pants,mpd00328,140.0,25
-1,1,Khaki Bowery Chino Pants,mpd00028,140.0,20
-1,1,Chelsea Tee,mtk000xs,75.0,20
-1,1,Merino V-neck Pullover Sweater,mtk006xs,210.0,10
-1,1,Lexington Cardigan Sweater,mtk009xl,240.0,21
-1,1,Core Striped Sport Shirt,mtk012xs,125.0,23
-1,1,French Cuff Cotton Twill Oxford,msj000xl,190.0,17
-1,1,Slim fit Dobby Oxford Shirt,msj003xs,175.0,15
-1,1,Plaid Cotton Shirt,msj006xs,160.0,7
-1,1,Sullivan Sport Coat,msj009xs,510.0,10
-1,1,Linen Blazer,msj012xl,455.0,14
-1,1,Stretch Cotton Blazer,msj015xs,490.0,24
-1,1,NoLIta Cami,wbk000xl,150.0,19
-1,1,Tori Tank,wbk003xs,60.0,0
-1,1,Delancy Cardigan Sweater,wbk006xl,275.0,0
-1,1,Ludlow Oxford Top,wbk009xs,185.0,25
-1,1,Elizabeth Knit Top,wbk012xl,210.0,15
-1,1,DUMBO Boyfriend Jean,wpd00532,210.0,10
-1,1,TriBeCa Skinny Jean,wpd00032,185.0,13
-1,1,Park Avenue Pleat Front Trousers,wpd01012,245.0,20
-1,1,Racer Back Maxi Dress,wsd005xs,280.0,5
-1,1,Racer Back Maxi Dress,wsd005xl,280.0,15
-1,1,"Classic Hardshell Suitcase 19""",abl009,600.0,7
-1,1,"Pearl Strand Necklace-18""",acj00118,250.0,0
-1,1,"Pearl Strand Necklace-24""",acj00124,250.0,1
-1,1,Blue Horizons Bracelets,acj0006s,55.0,19
-1,1,Pearl Stud Earrings,acj003,110.0,15
-1,1,Swing Time Earrings,acj004,75.0,53
-1,1,Silver Desert Necklace,acj000,210.0,43
-1,1,Swiss Movement Sports Watch,acj005,500.0,1
-1,1,Thomas Overcoat,Pmo000xl,590.0,33
-1,1,Draper Suit Coat,Pmo001xs,510.0,33
-1,1,Lincoln Blazer,Pmo002xl,455.0,33
-1,1,Bushwick Skinny Jean,Pmp00028,195.0,33
-1,1,Draper Pant,Pmp00138,295.0,33
-1,1,Olive Bushwick Skinny Jean,Pmp00228,195.0,33
-1,1,Avery Oxford Shirt,Pms000xl,210.0,33
-1,1,Slim-fit Dobby Oxford Shirt,Pms002xs,175.0,33
-1,1,Carroll Check Dress Shirt,Pms003xl,160.0,33
-1,1,Clark Dress Shirt,Pms004xs,210.0,33
-1,1,French Cuff Cotton Twill Oxford,Pms005xl,190.0,0
-1,1,Merino V-neck Pullover Sweater,Pmtk000xs,210.0,33
-1,1,Striped Crew Tee,Pmtk001xl,75.0,33
-1,1,Oatmeal Henley Tee,Pmtk004xs,125.0,33
-1,1,Henley Tee,Pmtk005xl,125.0,33
-1,1,Merino V-neck Pullover Sweater,Pmtk006xl,210.0,33
-1,1,TriBeCa Skinny Jean,Pwb00032,185.0,33
-1,1,Villa Bermuda Shorts,Pwb00126,150.0,33
-1,1,Cornelia Skirt,Pwb00312,225.0,33
-1,1,Grand Slim Straight Jean,Pwb00532,225.0,33
-1,1,Hester Ankle Pant,Pwb00632,260.0,33
-1,1,Angela Wrap Dress,Pwd00012,395.0,33
-1,1,Jane Dress,Pwd00112,510.0,33
-1,1,Jacqueline Medallion Dress,Pwd00212,425.0,33
-1,1,Ludlow Seersucker Top,Pwt000xl,185.0,33
-1,1,Gans Trench Coat,Pwt001xl,550.0,33
-1,1,Sheri Collar Shirt,Pwt002xl,140.0,33
-1,1,Charcoal Sheri Collar Shirt,Pwt003xl,140.0,33
-1,1,Milli Cardigan,Pwt004xl,240.0,33
-1,1,Stretch Cotton Camisole,Pwt005xl,60.0,33
-1,1,Noa Sheer Blouse,Pwt006xl,175.0,33
-1,1,Brooklyn Jean Jacket,Pwt007xl,320.0,33
-1,1,Mercer Loafer,shm00012,310.0,19
-1,1,Broad St Saddle Shoes,shm00112,390.0,19
-1,1,Empire Oxford,shm00212,410.0,19
-1,1,Lenox Boot,shm00312,550.0,19
-1,1,Studio Dress Shoe,shm00412,410.0,19
-1,1,Carnegie Sneaker,shm00512,350.0,19
-1,1,Hudson Snakeskin Pump,shw00010,375.0,19
-1,1,Prima Pump,shw00110,375.0,19
-1,1,Plaza Platform,shw00210,320.0,19
-1,1,Annie Pump,shw00310,390.0,19
-1,1,Broadway Pump,shw00410,410.0,19
-1,1,Ellis Flat,shw00510,250.0,19
-1,1,Studio Dress Shoe,shm009,410.0,19
-1,1,Black Nolita Cami,wbk002M,150.0,25
-1,1,NoLIta Cami-Pink-L,wbk000c-Pink-L,150.0,9
-1,1,Black Nolita Cami-Black-XS,wbk002c-Black-XS,150.0,23
-1,1,Black Nolita Cami-Black-S,wbk002c-Black-S,150.0,23
-1,1,My Configurable Product-Black-6,ABC 456-Black-6,50.0,10
-1,1,My Configurable Product-Black-8,ABC 456-Black-8,50.0,10
-1,1,My Configurable Product-Black-10,ABC 456-Black-10,50.0,10
+name,sku,price,stock_level,status,channel
+My Configurable Product-Black-10,ABC 456-Black-10,50,10,enabled,2;3;4
+My Configurable Product-Black-6,ABC 456-Black-6,50,10,enabled,1;2;4
+My Configurable Product-Black-8,ABC 456-Black-8,50,10,disabled,1
+Isla Crossbody Handbag,abl000,290,13,disabled,1;3
+Florentine Satchel Handbag,abl001,625,-35,disabled,3
+Flatiron Tablet Sleeve,abl002,150,23,enabled,1;4
+Broad St. Flapover Briefcase,abl003,570,24,enabled,2;4
+Houston Travel Wallet,abl004,210,18,disabled,1;3
+Roller Suitcase,abl005,650,15,disabled,1;2;4
+Classic Hardshell Suitcase 21,abl006,650,15,disabled,1
+Classic Hardshell Suitcase 29,abl007,750,13,disabled,2;4
+Classic Hardshell Suitcase 19,abl009,600,7,disabled,1;3
+Aviator Sunglasses,ace000,295,0,disabled,2;3;4
+Jackie O Round Sunglasses,ace001,295,18,disabled,1;3;4
+Retro Chic Eyeglasses,ace002,295,25,enabled,1;2;4
+Silver Desert Necklace,acj000,210,43,disabled,2;3
+Blue Horizons Bracelets,acj0006s,55,19,enabled,1;3
+Pearl Strand Necklace-18,acj00118,250,0,enabled,2
+Pearl Strand Necklace-24,acj00124,250,1,enabled,2;3
+Pearl Stud Earrings,acj003,110,15,disabled,4
+Swing Time Earrings,acj004,75,53,disabled,1;4
+Swiss Movement Sports Watch,acj005,500,1,disabled,3
+Dorian Perforated Oxford,ams004,410,25,enabled,4
+Wingtip Cognac Oxford,ams005,375,25,enabled,1
+Suede Loafer Navy,ams014,310,25,enabled,2;3;4
+Barclay d'Orsay pump Nude,aws004,390,25,enabled,3
+Ann Ankle Boot,aws009,470,25,disabled,1;2;3
+Hana Flat Charcoal,aws014,210,25,enabled,1
+Body Wash with Lemon Flower Extract and Aloe Vera,hdb000,28,13,enabled,1;2
+Bath Minerals and Salt,hdb001,25,0,disabled,3
+Shea Enfused Hydrating Body Lotion,hdb002,28,25,disabled,1;3;4
+Titian Raw Silk Pillow,hdb005,125,24,disabled,1;2;3
+Shay Printed Pillow,hdb006,210,23,disabled,1;3;4
+Carnegie Alpaca Throw,hdb007,275,24,enabled,1;2;3
+Park Row Throw,hdb008,240,25,enabled,2;4
+Gramercy Throw,hdb009,275,24,enabled,1;2
+Herald Glass Vase,hdd000,110,1,enabled,1;3;4
+Modern Murray Ceramic Vase,hdd002,135,8,disabled,1;2
+Stone Salt and Pepper Shakers,hdd004,65,25,disabled,1;2
+Fragrance Diffuser Reeds,hdd005,75,25,enabled,3;4
+Geometric Candle Holders,hdd006,90,25,enabled,3;4
+Madison LX2200,hde001,425,2,disabled,2;3
+Madison RX3400,hde003,715,23,enabled,1;2;4
+16GB Memory Card,hde004,30,25,enabled,3
+8GB Memory Card,hde005,20,23,disabled,2;4
+Large Camera Bag,hde006,120,22,enabled,1
+Madison Earbuds,hde010,35,23,disabled,1;2;3;4
+Madison Overear Headphones,hde011,125,25,disabled,1;4
+Madison 8GB Digital Media Player,hde012,150,24,disabled,1;2
+Compact mp3 Player,hde013,40,-35,enabled,2;4
+Khaki Bowery Chino Pants,mpd000,140,19,disabled,2
+Khaki Bowery Chino Pants,mpd00028,140,20,disabled,1;2;3
+Bowery Chino Pants,mpd00328,140,25,disabled,2;3;4
+Bowery Chino Pants,mpd005,140,25,enabled,2;3;4
+The Essential Boot Cut Jean,mpd011,140,10,disabled,1;2
+Flat Front  Trouser,mpd017,195,25,enabled,2;3
+French Cuff Cotton Twill Oxford,msj000xl,190,17,enabled,2
+French Cuff Cotton Twill Oxford,msj002,190,24,disabled,1;3;4
+Slim fit Dobby Oxford Shirt,msj003xs,175,15,enabled,1;4
+Slim fit Dobby Oxford Shirt,msj005,175,-3,enabled,4
+Plaid Cotton Shirt,msj006xs,160,7,enabled,2;3;4
+Plaid Cotton Shirt,msj008,160,25,enabled,3
+Sullivan Sport Coat,msj009xs,510,10,disabled,3
+Sullivan Sport Coat,msj011,510,23,disabled,2;4
+Linen Blazer,msj012xl,455,14,disabled,3
+Linen Blazer,msj014,455,22,disabled,1;2;3;4
+Stretch Cotton Blazer,msj015xs,490,24,enabled,1;3;4
+Stretch Cotton Blazer,msj017,490,25,enabled,2;3;4
+Chelsea Tee,mtk000xs,75,20,enabled,1;2;4
+Chelsea Tee,mtk005,75,24,disabled,2;4
+Merino V-neck Pullover Sweater,mtk006xs,210,10,enabled,3
+Merino V-neck Pullover Sweater,mtk008,210,25,enabled,4
+Lexington Cardigan Sweater,mtk009xl,240,21,enabled,4
+Lexington Cardigan Sweater,mtk011,240,24,disabled,1
+Core Striped Sport Shirt,mtk012xs,125,23,disabled,3
+Core Striped Sport Shirt,mtk014,125,25,disabled,1;3;4
+Thomas Overcoat,Pmo000xl,590,33,disabled,1;4
+Draper Suit Coat,Pmo001xs,510,33,disabled,1;2
+Lincoln Blazer,Pmo002xl,455,33,enabled,1;3;4
+Bushwick Skinny Jean,Pmp00028,195,33,enabled,2;3
+Draper Pant,Pmp00138,295,33,disabled,2
+Olive Bushwick Skinny Jean,Pmp00228,195,33,enabled,1;3;4
+Avery Oxford Shirt,Pms000xl,210,33,disabled,3;4
+Slim-fit Dobby Oxford Shirt,Pms002xs,175,33,disabled,1;3;4
+Carroll Check Dress Shirt,Pms003xl,160,33,disabled,1;3;4
+Clark Dress Shirt,Pms004xs,210,33,enabled,2
+French Cuff Cotton Twill Oxford,Pms005xl,190,0,enabled,1;4
+Merino V-neck Pullover Sweater,Pmtk000xs,210,33,enabled,1;2
+Striped Crew Tee,Pmtk001xl,75,33,disabled,1;2
+Oatmeal Henley Tee,Pmtk004xs,125,33,enabled,2;4
+Henley Tee,Pmtk005xl,125,33,enabled,3
+Merino V-neck Pullover Sweater,Pmtk006xl,210,33,enabled,3
+TriBeCa Skinny Jean,Pwb00032,185,33,disabled,2;3;4
+Villa Bermuda Shorts,Pwb00126,150,33,enabled,1;3;4
+Cornelia Skirt,Pwb00312,225,33,disabled,1;2;3
+Grand Slim Straight Jean,Pwb00532,225,33,enabled,2;3
+Hester Ankle Pant,Pwb00632,260,33,disabled,3;4
+Angela Wrap Dress,Pwd00012,395,33,disabled,1;2;4
+Jane Dress,Pwd00112,510,33,enabled,1;3;4
+Jacqueline Medallion Dress,Pwd00212,425,33,enabled,3;4
+Ludlow Seersucker Top,Pwt000xl,185,33,disabled,1
+Gans Trench Coat,Pwt001xl,550,33,disabled,2;3
+Sheri Collar Shirt,Pwt002xl,140,33,disabled,2;4
+Charcoal Sheri Collar Shirt,Pwt003xl,140,33,disabled,4
+Milli Cardigan,Pwt004xl,240,33,enabled,2
+Stretch Cotton Camisole,Pwt005xl,60,33,enabled,2
+Noa Sheer Blouse,Pwt006xl,175,33,disabled,1;2;3
+Brooklyn Jean Jacket,Pwt007xl,320,33,enabled,4
+Mercer Loafer,shm00012,310,19,disabled,1
+Broad St Saddle Shoes,shm00112,390,19,enabled,2;3
+Empire Oxford,shm00212,410,19,disabled,4
+Lenox Boot,shm00312,550,19,disabled,4
+Studio Dress Shoe,shm00412,410,19,disabled,1;2
+Carnegie Sneaker,shm00512,350,19,disabled,4
+Studio Dress Shoe,shm009,410,19,disabled,2;3
+Hudson Snakeskin Pump,shw00010,375,19,enabled,1
+Prima Pump,shw00110,375,19,disabled,1;2;4
+Plaza Platform,shw00210,320,19,enabled,1;2;3
+Annie Pump,shw00310,390,19,enabled,1
+Broadway Pump,shw00410,410,19,disabled,2;3
+Ellis Flat,shw00510,250,19,enabled,1;2
+NoLIta Cami-Pink-L,wbk000c-Pink-L,150,9,enabled,1
+NoLIta Cami,wbk000xl,150,19,disabled,2;3
+Black Nolita Cami-Black-S,wbk002c-Black-S,150,23,disabled,1;3;4
+Black Nolita Cami-Black-XS,wbk002c-Black-XS,150,23,enabled,1;2;4
+Black NoLIta Cami,wbk002L,150,10,disabled,1;3
+Black Nolita Cami,wbk002M,150,25,disabled,2;3
+Tori Tank,wbk003xs,60,0,enabled,2;3
+Tori Tank,wbk005,60,6,disabled,1;2;4
+Delancy Cardigan Sweater,wbk006xl,275,0,enabled,1;2
+Delancy Cardigan Sweater,wbk008,275,25,enabled,1;3;4
+Ludlow Oxford Top,wbk009xs,185,25,disabled,1;3;4
+Ludlow Oxford Top,wbk011,185,24,disabled,1
+Elizabeth Knit Top,wbk012xl,210,15,disabled,1;3;4
+Elizabeth Knit Top,wbk014,210,23,enabled,3;4
+TriBeCa Skinny Jean,wpd00032,185,13,disabled,2;4
+DUMBO Boyfriend Jean,wpd00532,210,10,enabled,1;2;3;4
+Park Avenue Pleat Front Trousers,wpd01012,245,20,enabled,2;4
+Park Avenue Pleat Front Trousers,wpd014,245,25,enabled,1;3;4
+Essex Pencil Skirt,wsd004,185,25,disabled,1;3;4
+Racer Back Maxi Dress,wsd005xl,280,15,enabled,3
+Racer Back Maxi Dress,wsd005xs,280,5,enabled,1;2;3;4
+Racer Back Maxi Dress,wsd007,280,25,disabled,4
+Sheath,wsd012,305,25,enabled,1;2
+Convertible Dress,wsd017,340,24,disabled,1;2;3

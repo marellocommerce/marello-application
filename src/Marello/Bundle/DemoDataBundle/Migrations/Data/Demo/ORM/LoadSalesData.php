@@ -37,7 +37,7 @@ class LoadSalesData extends AbstractFixture
     protected function loadSalesChannels()
     {
         $organization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getOrganizationById(1);
-        $i = 0;
+        $i = 1;
         foreach ($this->data as $values) {
             $channel = new SalesChannel($values['name']);
             $channel->setChannelType($values['type']);

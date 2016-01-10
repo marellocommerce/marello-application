@@ -87,20 +87,14 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $inventoryItem->setQuantity($data['stock_level']);
         $product->getInventoryItems()->add($inventoryItem);
 
-        $randomNumber = rand(0, 100);
-        $status = ($randomNumber % 2 == 0) ?
-            $this->getReference('product_status_enabled') :
-            $this->getReference('product_status_disabled');
+        $status = $this->getReference('product_status_' . $data['status']);
         $product->setStatus($status);
 
-        $channelCount = rand(1, 4);
+        $channels = explode(';',$data['channel']);
 
-        for ($i=1; $i <= $channelCount; $i++) {
-            $ref = rand(0, 3);
-            $channel = $this->getReference('marello_sales_channel_'.$ref);
-            if (!$product->getChannels()->contains($channel)) {
-                $product->addChannel($channel);
-            }
+        foreach ($channels as $channelId) {
+            $channel = $this->getReference('marello_sales_channel_'. (int)$channelId);
+            $product->addChannel($channel);
         }
 
         $this->manager->persist($product);

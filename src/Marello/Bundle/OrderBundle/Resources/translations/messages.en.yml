@@ -46,3 +46,9 @@ marello:
             product_name.label:   Product Name
             product_sku.label:    Product SKU
             product.label:        Product
+
+        menu:
+            shortcut_new_order.label: Create new order
+            shortcut_new_order.description: Create new order instance
+            shortcut_list_orders.label: Show order list
+            shortcut_list_orders.description: List of orders

@@ -22,7 +22,9 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
      */
     public function getDependencies()
     {
-        return ['Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData'];
+        return [
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData',
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData'];
     }
 
     /**
@@ -40,48 +42,47 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
      */
     public function loadProductPrices()
     {
-        $products = $this->getRepository()->findAll();
-        foreach ($products as $product) {
-            $productRef = rand(0, 145);
-            $skip       = ($productRef % 2 == 0) ? true : false;
-
-            if (!$skip) {
-                $this->createProductPrice($product);
+        $handle = fopen($this->getDictionary('product_prices.csv'), "r");
+        if ($handle) {
+            $headers = [];
+            if (($data = fgetcsv($handle, 1000, ",")) !== false) {
+                //read headers
+                $headers = $data;
             }
-            continue;
+            $i = 0;
+            while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+                $data = array_combine($headers, array_values($data));
+
+                $this->createProductPrice($data);
+                $i++;
+            }
+            fclose($handle);
         }
         $this->manager->flush();
     }
 
     /**
      * Create new product price
-     * @param $product
+     * @param $data
      */
-    private function createProductPrice($product)
+    private function createProductPrice($data)
     {
-        if (!count($product->getPrices()) > 0) {
-            $channels = $product->getChannels();
-            $max = count($channels);
-            $channelCount = rand(1, $max);
-            $i=1;
-            foreach ($channels as $channel) {
-                if ($i <= $channelCount) {
-                    $productPrice = new ProductPrice();
-                    $data = $product->getData();
-                    $data[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
-                    $product->setData($data);
-                    $productPrice->setProduct($product);
-                    $productPrice->setCurrency($this->currency);
-                    $productPercentage = rand(85, 95);
-                    $productPriceValue = ($product->getPrice() * ($productPercentage / 100));
-                    $productPrice->setValue(round((float)$productPriceValue, 2));
-                    $productPrice->setChannel($channel);
-                    $this->manager->persist($product);
-                    $this->manager->persist($productPrice);
-                }
-                $i++;
-            }
+        $productResult = $this->getRepository()->findBySku($data['sku']);
+        if(is_array($productResult)) {
+            $product = array_shift($productResult);
         }
+
+        $channel = $this->getReference('marello_sales_channel_'. (int)$data['channel']);
+        $productPrice = new ProductPrice();
+        $productData = $product->getData();
+        $productData[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
+        $product->setData($productData);
+        $productPrice->setProduct($product);
+        $productPrice->setCurrency($this->currency);
+        $productPrice->setValue((float)$data['price']);
+        $productPrice->setChannel($channel);
+        $this->manager->persist($product);
+        $this->manager->persist($productPrice);
     }
 
     /**
@@ -91,5 +92,15 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
     private function getRepository()
     {
         return $this->manager->getRepository('MarelloProductBundle:Product');
+    }
+
+    /**
+     * Get dictionary file by name
+     * @param $name
+     * @return string
+     */
+    private function getDictionary($name)
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . 'dictionaries' . DIRECTORY_SEPARATOR . $name;
     }
 }
