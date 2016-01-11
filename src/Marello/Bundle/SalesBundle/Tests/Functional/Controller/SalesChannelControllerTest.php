@@ -46,7 +46,7 @@ class SalesChannelControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_sales_saleschannel_update', ['id' => $this->getReference('marello_sales_channel_0')])
+            $this->getUrl('marello_sales_saleschannel_update', ['id' => $this->getReference('marello_sales_channel_1')])
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);

@@ -125,7 +125,7 @@ class ProductControllerTest extends WebTestCase
                 ['quantity' => 10, 'warehouse' => $this->getDefaultWarehouse()->getId()],
             ],
             'channels'  => [
-                $this->getReference('marello_sales_channel_0')->getId(),
+                $this->getReference('marello_sales_channel_1')->getId(),
             ],
         ];
 
@@ -178,7 +178,7 @@ class ProductControllerTest extends WebTestCase
                 ['quantity' => 10, 'warehouse' => -5 /* wrong ID */],
             ],
             'channels'  => [
-                $this->getReference('marello_sales_channel_0')->getId(),
+                $this->getReference('marello_sales_channel_1')->getId(),
             ],
         ];
 

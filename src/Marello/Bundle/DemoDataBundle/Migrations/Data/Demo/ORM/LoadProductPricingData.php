@@ -3,9 +3,8 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 
@@ -23,8 +22,9 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
     public function getDependencies()
     {
         return [
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData',
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData',
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData'];
+        ];
     }
 
     /**
@@ -63,18 +63,20 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
 
     /**
      * Create new product price
+     *
      * @param $data
      */
     private function createProductPrice($data)
     {
         $productResult = $this->getRepository()->findBySku($data['sku']);
-        if(is_array($productResult)) {
+        if (is_array($productResult)) {
             $product = array_shift($productResult);
         }
 
-        $channel = $this->getReference('marello_sales_channel_'. (int)$data['channel']);
+        $channel      = $this->getReference('marello_sales_channel_' . (int)$data['channel']);
         $productPrice = new ProductPrice();
-        $productData = $product->getData();
+        $productData  = $product->getData();
+
         $productData[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
         $product->setData($productData);
         $productPrice->setProduct($product);
@@ -96,7 +98,9 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
 
     /**
      * Get dictionary file by name
+     *
      * @param $name
+     *
      * @return string
      */
     private function getDictionary($name)

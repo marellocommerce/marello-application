@@ -55,7 +55,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             while (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 $data = array_combine($headers, array_values($data));
 
-                $this->createOrder($data);
+                $this->setReference('marello_order_' . $i, $this->createOrder($data));
                 $i++;
                 if ($i % self::FLUSH_MAX == 0) {
                     $this->manager->flush();
@@ -95,7 +95,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $orderEntity = new Order($billing, $shipping);
         $channel = $this->getReference('marello_sales_channel_' . $order['channel']);
         $orderEntity->setSalesChannel($channel);
-        if($order['order_ref'] !== 'NULL') {
+        if ($order['order_ref'] !== 'NULL') {
             $orderEntity->setOrderReference($order['order_ref']);
         }
         $orderEntity
@@ -104,6 +104,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             ->setGrandTotal(0);
 
         $this->manager->persist($orderEntity);
+
+        return $orderEntity;
     }
 
     /**
