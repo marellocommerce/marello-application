@@ -5,28 +5,18 @@ define(function(require) {
         $ = require('jquery'),
         _ = require('underscore'),
         mediator = require('oroui/js/mediator'),
-        BaseView = require('oroui/js/app/views/base/view');
+        AbstractItemView = require('marellolayout/js/app/views/abstract-item-view');
 
     /**
      * @export marelloorder/js/app/views/order-item-view
-     * @extends oroui.app.views.base.View
+     * @extends marellolayout.app.views.AbstractItemView
      * @class marelloorder.app.views.OrderItemView
      */
-    OrderItemView = BaseView.extend({
+    OrderItemView = AbstractItemView.extend({
         options: {
             ftid: '',
             salable: null
         },
-
-        /**
-         * @property {jQuery}
-         */
-        $fields: null,
-
-        /**
-         * @property {Object}
-         */
-        fieldsByName: null,
 
         /**
          * @property {Object}
@@ -41,11 +31,6 @@ define(function(require) {
         /**
          * @property {Object}
          */
-        change: {},
-
-        /**
-         * @property {Object}
-         */
         taxPercentage: 21,
 
         /**
@@ -53,28 +38,14 @@ define(function(require) {
          */
         initialize: function(options) {
             this.options = $.extend(true, {}, this.options, options || {});
-            if (!this.options.ftid) {
-                this.options.ftid = this.$el.data('content').toString()
-                    .replace(/[^a-zA-Z0-9]+/g, '_').replace(/_+$/, '');
-            }
-
-            this.initLayout().done(_.bind(this.handleLayoutInit, this));
-            this.delegate('click', '.remove-line-item', this.removeRow);
+            OrderItemView.__super__.initialize.apply(this, arguments);
         },
 
         /**
          * Doing something after loading child components
          */
         handleLayoutInit: function() {
-            var self = this;
-            this.$fields = this.$el.find(':input[data-ftid]');
-            this.fieldsByName = {};
-            this.$fields.each(function() {
-                var $field = $(this);
-                var name = self.normalizeName($field.data('ftid').replace(self.options.ftid + '_', ''));
-                self.fieldsByName[name] = $field;
-            });
-
+            OrderItemView.__super__.handleLayoutInit.apply(this, arguments);
             this.initPrice();
         },
 
@@ -121,7 +92,7 @@ define(function(require) {
             }
             var identifier = this._getPriceIdentifier();
             if (identifier) {
-                if(prices[identifier].message) {
+                if(prices[identifier].message !== undefined) {
                     this.price = '';
                     this.updateRowTotals();
                     this.options.salable = false;
@@ -173,66 +144,6 @@ define(function(require) {
             var productId = this._getProductId();
 
             return productId.length === 0 ? null : 'product-id-' + productId;
-        },
-
-        /**
-         * @returns {String}
-         * @private
-         */
-        _getProductId: function() {
-            return this.fieldsByName.hasOwnProperty('product') ? this.fieldsByName.product.val() : '';
-        },
-
-        /**
-         * @returns {String|Null}
-         */
-        getPriceValue: function() {
-            return !_.isEmpty(this.price) ? this.price.value : null;
-        },
-
-        /**
-         * @param {String} field
-         * @param {Function} callback
-         */
-        addFieldEvents: function(field, callback) {
-            this.fieldsByName[field].change(_.bind(function() {
-                if (this.change[field]) {
-                    clearTimeout(this.change[field]);
-                }
-
-                callback.call(this);
-            }, this));
-
-            this.fieldsByName[field].keyup(_.bind(function() {
-                if (this.change[field]) {
-                    clearTimeout(this.change[field]);
-                }
-
-                this.change[field] = setTimeout(_.bind(callback, this), 1500);
-            }, this));
-        },
-
-        /**
-         * Convert name with "_" to name with upper case, example: some_name > someName
-         *
-         * @param {String} name
-         *
-         * @returns {String}
-         */
-        normalizeName: function(name) {
-            name = name.split('_');
-            for (var i = 1, iMax = name.length; i < iMax; i++) {
-                name[i] = name[i][0].toUpperCase() + name[i].substr(1);
-            }
-            return name.join('');
-        },
-
-        /**
-         * remove single line item
-         */
-        removeRow: function() {
-            this.$el.trigger('content:remove');
-            this.remove();
         },
 
         /**

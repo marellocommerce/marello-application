@@ -9,6 +9,21 @@ oro_menu_config:
             route: marello_product_index
             extras:
                 routes: ['marello_product_*']
+
+        shortcut_new_product:
+            label: 'marello.product.menu.shortcut_new_product.label'
+            route: 'marello_product_create'
+            extras:
+                description: 'marello.product.menu.shortcut_new_product.description'
+                isCustomAction: true
+
+        shortcut_list_products:
+            label: 'marello.product.menu.shortcut_list_products.label'
+            route: 'marello_product_index'
+            extras:
+                description: 'marello.product.menu.shortcut_list_products.description'
+                isCustomAction: true
+
         # disable activities tab and it's children
         activities_tab:
             display: false
@@ -20,6 +35,10 @@ oro_menu_config:
                     children:
                         products_list: ~
                     position: 10
+        shortcuts:
+            children:
+                shortcut_new_product: ~
+                shortcut_list_products: ~
 
 oro_titles:
     marello_product_index: marello.product.entity_plural_label

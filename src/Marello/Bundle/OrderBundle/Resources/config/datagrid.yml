@@ -62,7 +62,7 @@ datagrid:
                 updatedAt:
                     data_name: o.updatedAt
             default:
-                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                orderNumber: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 orderNumber:

@@ -5,6 +5,21 @@ oro_menu_config:
             route: marello_order_order_index
             extras:
                 routes: ['marello_order_order_*']
+
+        shortcut_new_order:
+            label: 'marello.order.menu.shortcut_new_order.label'
+            route: 'marello_order_order_create'
+            extras:
+                description: 'marello.order.menu.shortcut_new_order.description'
+                isCustomAction: true
+
+        shortcut_list_orders:
+            label: 'marello.order.menu.shortcut_list_orders.label'
+            route: 'marello_order_order_index'
+            extras:
+                description: 'marello.order.menu.shortcut_list_orders.description'
+                isCustomAction: true
+
     tree:
         application_menu:
             children:
@@ -12,6 +27,10 @@ oro_menu_config:
                     children:
                         orders: ~
                     position: 20
+        shortcuts:
+            children:
+                shortcut_new_order: ~
+                shortcut_list_orders: ~
 
 oro_titles:
     marello_order_order_index: marello.order.entity_plural_label

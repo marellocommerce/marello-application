@@ -18,7 +18,6 @@ marello:
         variant.label:              Variant
         prices.label:               Product Prices
 
-
         variant:
             label:                  Variant
             entity_plural_label:    Variants
@@ -32,7 +31,6 @@ marello:
             label.label:            Label
             name.label:             Name
 
-
         messages:
             success:
                 product:
@@ -44,9 +42,16 @@ marello:
 
         form.choose_product:        Select Product
         form.add_product:           Add Product
+        form.add_variant:           Add Variant
         product_information:        Product Information
         create_variant.label:       Create Variant
         add_variant.label:          Add Variant
 
         navigation:
             product.label:          Products
+
+        menu:
+            shortcut_new_product.label: Create new product
+            shortcut_new_product.description: Create new product instance
+            shortcut_list_products.label: Show product list
+            shortcut_list_products.description: List of products
