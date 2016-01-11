@@ -50,6 +50,23 @@ class ReturnController extends RestController implements ClassResourceInterface
     }
 
     /**
+     * REST GET item
+     *
+     * @param string $id
+     *
+     * @ApiDoc(
+     *     description="Get one Return entity by id",
+     *     resource=true
+     * )
+     *
+     * @return Response
+     */
+    public function getAction($id)
+    {
+        return $this->handleGetRequest($id);
+    }
+
+    /**
      * Get entity Manager
      *
      * @return ApiEntityManager

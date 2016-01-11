@@ -10,12 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ReturnControllerTest extends WebTestCase
 {
-    protected function setUp()
+    public function setUp()
     {
         $this->initClient(
             [],
-            $this->generateWsseAuthHeader()
+            $this->generateBasicAuthHeader()
         );
+
         $this->loadFixtures([
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadReturnData',
         ]);
@@ -25,13 +26,9 @@ class ReturnControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_return_api_get_returns')
+            $this->getUrl('marello_return_return_index')
         );
 
-        $response = $this->client->getResponse();
-
-        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
-
-        $this->assertCount(10, json_decode($response->getContent(), true));
+        $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
     }
 }
