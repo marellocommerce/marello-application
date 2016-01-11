@@ -92,7 +92,7 @@ define(function(require) {
             }
             var identifier = this._getPriceIdentifier();
             if (identifier) {
-                if(prices[identifier].message) {
+                if(prices[identifier].message !== undefined) {
                     this.price = '';
                     this.updateRowTotals();
                     this.options.salable = false;

@@ -186,7 +186,7 @@ define(function(require) {
          * @returns {Array} products
          */
         getItems: function() {
-            var lineItems = this.$el.find('.order-line-item');
+            var lineItems = this.$el.find('.marello-line-item');
             var items = [];
 
             _.each(lineItems, function(lineItem) {
