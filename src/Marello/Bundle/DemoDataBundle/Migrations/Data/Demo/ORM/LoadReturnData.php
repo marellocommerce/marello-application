@@ -14,7 +14,7 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
     public function getDependencies()
     {
         return [
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData',
+            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderItemData',
         ];
     }
 
@@ -22,6 +22,7 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
     {
         $orders = $manager->getRepository('MarelloOrderBundle:Order')->findAll();
 
+        $i = 0;
         foreach ($orders as $order) {
             if (rand(0, 3) !== 0) {
                 continue;
@@ -39,6 +40,7 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
             });
 
             $manager->persist($return);
+            $this->setReference('marello_return_' . $i++, $return);
         }
 
         $manager->flush();

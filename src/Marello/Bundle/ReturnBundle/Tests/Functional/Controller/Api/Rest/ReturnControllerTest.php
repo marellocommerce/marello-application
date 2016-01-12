@@ -16,6 +16,7 @@ class ReturnControllerTest extends WebTestCase
             [],
             $this->generateWsseAuthHeader()
         );
+
         $this->loadFixtures([
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadReturnData',
         ]);
@@ -31,6 +32,22 @@ class ReturnControllerTest extends WebTestCase
         $response = $this->client->getResponse();
 
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+
+        $this->assertCount(10, json_decode($response->getContent(), true));
+    }
+
+    public function testGet()
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_return_api_get_return', ['id' => $this->getReference('marello_return_1')->getId()])
+        );
+
+        $response = $this->client->getResponse();
+
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+
+        dump(json_decode($response->getContent(), true));
 
         $this->assertCount(10, json_decode($response->getContent(), true));
     }

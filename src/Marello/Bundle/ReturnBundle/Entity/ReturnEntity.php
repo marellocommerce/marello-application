@@ -46,7 +46,8 @@ class ReturnEntity
      * @ORM\OneToMany(
      *     targetEntity="Marello\Bundle\ReturnBundle\Entity\ReturnItem",
      *     mappedBy="return",
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist"},
+     *     orphanRemoval=true
      * )
      * @ORM\JoinColumn
      */

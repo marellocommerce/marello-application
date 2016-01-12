@@ -55,7 +55,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             while (($data = fgetcsv($handle, 1000, ";")) !== false) {
                 $data = array_combine($headers, array_values($data));
 
-                $this->setReference('marello_order_' . $i, $this->createOrder($data));
+                $this->setReference('marello_order_' . $i, $this->createOrder($data, $i));
                 $i++;
                 if ($i % self::FLUSH_MAX == 0) {
                     $this->manager->flush();
@@ -69,11 +69,13 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
     /**
      * create orders and related entities
+     *
      * @param array $order
+     * @param int   $orderNo
      *
      * @return Order
      */
-    protected function createOrder(array $order)
+    protected function createOrder(array $order, $orderNo)
     {
         $billing = new Address();
         $billing->setNamePrefix($order['title']);
@@ -101,7 +103,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $orderEntity
             ->setSubtotal(0)
             ->setTotalTax(0)
-            ->setGrandTotal(0);
+            ->setGrandTotal(0)
+            ->setOrderNumber(sprintf('%09d', $orderNo + 1));
 
         $this->manager->persist($orderEntity);
 

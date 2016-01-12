@@ -24,8 +24,8 @@ class ReturnItem
     /**
      * @var ReturnEntity
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ReturnBundle\Entity\ReturnEntity", inversedBy="returnItems")
-     * @ORM\JoinColumn
+     * @ORM\ManyToOne(targetEntity="ReturnEntity", inversedBy="returnItems")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $return;
 
