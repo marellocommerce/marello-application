@@ -38,17 +38,33 @@ class ReturnControllerTest extends WebTestCase
 
     public function testGet()
     {
+        $testedReturn = $this->getReference('marello_return_1');
+
         $this->client->request(
             'GET',
-            $this->getUrl('marello_return_api_get_return', ['id' => $this->getReference('marello_return_1')->getId()])
+            $this->getUrl('marello_return_api_get_return', ['id' => $testedReturn->getId()])
         );
 
         $response = $this->client->getResponse();
 
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
 
-        dump(json_decode($response->getContent(), true));
+        $result = json_decode($response->getContent(), true);
 
-        $this->assertCount(10, json_decode($response->getContent(), true));
+        $this->assertArrayHasKey('id', $result);
+        $this->assertArrayHasKey('returnNumber', $result);
+        $this->assertArrayHasKey('returnItems', $result);
+
+        $this->assertEquals($testedReturn->getId(), $result['id']);
+        $this->assertEquals($testedReturn->getReturnNumber(), $result['returnNumber']);
+
+        $this->assertCount($testedReturn->getReturnItems()->count(), $result['returnItems']);
+    }
+
+    /**
+     */
+    public function testCreate()
+    {
+        // TODO: test create
     }
 }

@@ -10,6 +10,8 @@ services:
 
     marello_return.form.type.return_api:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnApiType
+        arguments:
+            - @marello_return.form.data_transformer.order_to_order_number
         tags:
             - { name: form.type, alias: marello_return_api }
 
@@ -42,3 +44,8 @@ services:
             - @request
             - @doctrine.orm.entity_manager
             - @oro_entity.routing_helper
+
+    marello_return.form.data_transformer.order_to_order_number:
+        class: Marello\Bundle\ReturnBundle\Form\DataTransformer\OrderToOrderNumberTransformer
+        arguments:
+            - @doctrine.orm.entity_manager

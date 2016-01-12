@@ -33,7 +33,7 @@ class ReturnController extends RestController implements ClassResourceInterface
      *     description="Number of items per page. defaults to 10."
      * )
      * @ApiDoc(
-     *     description="Get a list of all Order Entities",
+     *     description="Get a list of all Return Entities",
      *     resource=true
      * )
      *
@@ -64,6 +64,21 @@ class ReturnController extends RestController implements ClassResourceInterface
     public function getAction($id)
     {
         return $this->handleGetRequest($id);
+    }
+
+    /**
+     * Create new Return
+     *
+     * @ApiDoc(
+     *     description="Create a new Return via the Api",
+     *     resource=true
+     * )
+     *
+     * @return Response
+     */
+    public function postAction()
+    {
+        return $this->handleCreateRequest();
     }
 
     /**
