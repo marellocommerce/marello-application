@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
-use Marello\Bundle\OrderBundle\Form\Type\OrderItemApiType;
 use Marello\Bundle\ReturnBundle\Form\DataTransformer\OrderToOrderNumberTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,25 +28,27 @@ class ReturnApiType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('order', 'text', [
+            ->add('order', 'entity', [
                 'required'    => true,
                 'constraints' => new NotNull(),
+                'class'       => 'MarelloOrderBundle:Order',
             ])
             ->add('returnNumber', 'text', [
                 'required' => false,
             ])
             ->add('returnItems', 'collection', [
-                'type'      => OrderItemApiType::NAME,
+                'type'      => ReturnItemApiType::NAME,
                 'allow_add' => true,
             ]);
 
-        $builder->get('order')->addModelTransformer($this->orderToOrderNumberTransformer);
+        //$builder->get('order')->addModelTransformer($this->orderToOrderNumberTransformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\ReturnBundle\Entity\ReturnEntity',
+            'data_class'      => 'Marello\Bundle\ReturnBundle\Entity\ReturnEntity',
+            'csrf_protection' => false,
         ]);
     }
 

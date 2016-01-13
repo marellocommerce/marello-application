@@ -2,6 +2,10 @@
 
 namespace Marello\Bundle\ReturnBundle\Tests\Functional\Controller\Api\Rest;
 
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -61,10 +65,52 @@ class ReturnControllerTest extends WebTestCase
         $this->assertCount($testedReturn->getReturnItems()->count(), $result['returnItems']);
     }
 
-    /**
-     */
     public function testCreate()
     {
-        // TODO: test create
+        /** @var Order $returnedOrder */
+        $returnedOrder = $this->getReference('marello_order_unreturned');
+
+        $data = [
+            'order'       => $returnedOrder->getId(),
+            'returnItems' => $returnedOrder->getItems()->map(function (OrderItem $item) {
+                return [
+                    'orderItem' => $item->getId(),
+                    'quantity'  => $item->getQuantity(),
+                ];
+            })->toArray(),
+        ];
+
+        $this->client->request(
+            'POST',
+            $this->getUrl('marello_return_api_post_return'),
+            $data
+        );
+
+        $response = json_decode($this->client->getResponse()->getContent(), true);
+
+        $this->assertArrayHasKey('id', $response);
+
+        /** @var ReturnEntity $return */
+        $return = $this->client->getContainer()
+            ->get('doctrine')
+            ->getRepository('MarelloReturnBundle:ReturnEntity')
+            ->findOneBy($response);
+
+        $this->assertEquals(
+            $data['order'],
+            $return->getOrder()->getId(),
+            'Created return should have correct order assigned.'
+        );
+
+        $orderedItemIds = $returnedOrder->getItems()->map(function (OrderItem $orderItem) {
+            return $orderItem->getId();
+        });
+
+        $returnedItemIds = $return->getReturnItems()->map(function(ReturnItem $returnItem) {
+            return $returnItem->getOrderItem()->getId();
+        });
+
+        $this->assertEquals(count($orderedItemIds), count($returnedItemIds));
+        $this->assertEquals($orderedItemIds->toArray(), $returnedItemIds->toArray());
     }
 }

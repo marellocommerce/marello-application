@@ -14,7 +14,9 @@ class ReturnItemApiType extends AbstractType
     {
         $builder
             ->add('quantity', 'number')
-            ->add('orderItem', 'integer');
+            ->add('orderItem', 'entity', [
+                'class' => 'MarelloOrderBundle:OrderItem'
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

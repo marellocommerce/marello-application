@@ -20,6 +20,11 @@ services:
         tags:
             - { name: form.type, alias: marello_return_item }
 
+    marello_return.form.type.return_item_api:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemApiType
+        tags:
+            - { name: form.type, alias: marello_return_item_api }
+
     marello_return.form.type.return_item_collection:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemCollectionType
         tags:

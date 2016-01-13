@@ -63,7 +63,7 @@ class ReturnItem
      *
      * @param OrderItem $orderItem
      */
-    public function __construct(OrderItem $orderItem)
+    public function __construct(OrderItem $orderItem = null)
     {
         $this->orderItem = $orderItem;
     }
