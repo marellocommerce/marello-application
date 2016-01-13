@@ -71,7 +71,7 @@ class ReturnControllerTest extends WebTestCase
         $returnedOrder = $this->getReference('marello_order_unreturned');
 
         $data = [
-            'order'       => $returnedOrder->getId(),
+            'order'       => $returnedOrder->getOrderNumber(),
             'returnItems' => $returnedOrder->getItems()->map(function (OrderItem $item) {
                 return [
                     'orderItem' => $item->getId(),
@@ -97,7 +97,7 @@ class ReturnControllerTest extends WebTestCase
             ->findOneBy($response);
 
         $this->assertEquals(
-            $data['order'],
+            $returnedOrder->getId(),
             $return->getOrder()->getId(),
             'Created return should have correct order assigned.'
         );
@@ -106,11 +106,18 @@ class ReturnControllerTest extends WebTestCase
             return $orderItem->getId();
         });
 
-        $returnedItemIds = $return->getReturnItems()->map(function(ReturnItem $returnItem) {
+        $returnedItemIds = $return->getReturnItems()->map(function (ReturnItem $returnItem) {
             return $returnItem->getOrderItem()->getId();
         });
 
         $this->assertEquals(count($orderedItemIds), count($returnedItemIds));
         $this->assertEquals($orderedItemIds->toArray(), $returnedItemIds->toArray());
+
+        $return->getReturnItems()->map(function (ReturnItem $returnItem) {
+            $this->assertEquals(
+                $returnItem->getOrderItem()->getQuantity(),
+                $returnItem->getQuantity()
+            );
+        });
     }
 }
