@@ -28,10 +28,9 @@ class ReturnApiType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('order', 'entity', [
+            ->add('order', 'text', [
                 'required'    => true,
                 'constraints' => new NotNull(),
-                'class'       => 'MarelloOrderBundle:Order',
             ])
             ->add('returnNumber', 'text', [
                 'required' => false,
@@ -41,7 +40,7 @@ class ReturnApiType extends AbstractType
                 'allow_add' => true,
             ]);
 
-        //$builder->get('order')->addModelTransformer($this->orderToOrderNumberTransformer);
+        $builder->get('order')->addModelTransformer($this->orderToOrderNumberTransformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

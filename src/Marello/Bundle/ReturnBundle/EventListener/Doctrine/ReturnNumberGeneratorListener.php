@@ -40,7 +40,7 @@ class ReturnNumberGeneratorListener
         $changedReturns = $this->updateReturnNumbers($this->returns);
 
         /*
-         * Empty returns array to indicate that all returns have been process and to prevent loop on flushing.
+         * Empty returns array to indicate that all returns have been processed and to prevent loop on flushing.
          */
         $this->returns = [];
 
@@ -65,6 +65,10 @@ class ReturnNumberGeneratorListener
     {
         $changedReturns = [];
         foreach ($returns as $return) {
+            /*
+             * Only generate new return number if return has not one assigned yet. It is possible that return number
+             * would be set by some kind of external system pushing data to marello using API for example.
+             */
             if (!$return->getReturnNumber()) {
                 $changedReturns[] = $return->setReturnNumber(sprintf('%09d', $return->getId()));
             }
