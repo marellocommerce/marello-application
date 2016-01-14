@@ -5,7 +5,6 @@ namespace Marello\Bundle\ReportBundle\Tests\Functional\Controller;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 /**
- * @outputBuffering enabled
  * @dbIsolation
  */
 class ReportControllerTest extends WebTestCase

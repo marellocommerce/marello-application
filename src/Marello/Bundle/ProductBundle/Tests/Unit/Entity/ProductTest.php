@@ -53,10 +53,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return [
             'name'         => ['name', $name, $name],
             'sku'          => ['sku', $sku, $sku],
-            'stockLevel'   => ['stockLevel', $stockLevel, $stockLevel],
             'createdAt'    => ['createdAt', $createdAt, $createdAt],
             'updatedAt'    => ['updatedAt', $updatedAt, $updatedAt],
-            'owner'        => ['owner', $owner, $owner],
             'organization' => ['organization', $organization, $organization],
         ];
     }
