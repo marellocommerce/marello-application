@@ -2,16 +2,17 @@
 
 namespace Marello\Bundle\OrderBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
 
-use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
-use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
+use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")
@@ -107,6 +108,15 @@ class OrderItem extends ExtendOrderItem
      * @ORM\OneToMany(targetEntity="Marello\Bundle\ReturnBundle\Entity\ReturnItem", mappedBy="orderItem", cascade={})
      */
     protected $returnItems;
+
+    /**
+     * OrderItem constructor.
+     */
+    public function __construct()
+    {
+        $this->returnItems = new ArrayCollection();
+    }
+
 
     /**
      * @ORM\PrePersist

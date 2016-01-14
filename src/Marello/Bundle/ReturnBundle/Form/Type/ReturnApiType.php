@@ -25,6 +25,9 @@ class ReturnApiType extends AbstractType
         $this->orderToOrderNumberTransformer = $orderToOrderNumberTransformer;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -43,6 +46,9 @@ class ReturnApiType extends AbstractType
         $builder->get('order')->addModelTransformer($this->orderToOrderNumberTransformer);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

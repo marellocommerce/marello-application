@@ -10,6 +10,9 @@ class ReturnItemType extends AbstractType
 {
     const NAME = 'marello_return_item';
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('quantity', 'number', [
@@ -17,10 +20,14 @@ class ReturnItemType extends AbstractType
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\ReturnBundle\Entity\ReturnItem',
+            'data_class'  => 'Marello\Bundle\ReturnBundle\Entity\ReturnItem',
+            'constraints' => new ReturnItemConstraint(),
         ]);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ReportBundle\Validator\Constraints;
+namespace Marello\Bundle\ReturnBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
@@ -17,7 +17,7 @@ class ReturnItemConstraint extends Constraint
      */
     public function validatedBy()
     {
-        return 'Marello\Bundle\ReportBundle\Validator\ReturnItemValidator';
+        return 'Marello\Bundle\ReturnBundle\Validator\ReturnItemValidator';
     }
 
     /**

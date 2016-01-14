@@ -20,6 +20,9 @@ class ReturnItemCollectionType extends AbstractType
         return self::NAME;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -33,6 +36,9 @@ class ReturnItemCollectionType extends AbstractType
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return CollectionType::NAME;

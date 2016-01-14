@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ReportBundle\Validator;
+namespace Marello\Bundle\ReturnBundle\Validator;
 
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Symfony\Component\Validator\Constraint;
