@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\OrderBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
 
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -98,6 +100,13 @@ class OrderItem extends ExtendOrderItem
      * @JMS\Expose
      */
     protected $totalPrice;
+
+    /**
+     * @var ReturnItem[]|Collection
+     *
+     * @ORM\OneToMany(targetEntity="Marello\Bundle\ReturnBundle\Entity\ReturnItem", mappedBy="orderItem", cascade={})
+     */
+    protected $returnItems;
 
     /**
      * @ORM\PrePersist
@@ -250,5 +259,13 @@ class OrderItem extends ExtendOrderItem
     public function getProductName()
     {
         return $this->productName;
+    }
+
+    /**
+     * @return Collection|ReturnItem[]
+     */
+    public function getReturnItems()
+    {
+        return $this->returnItems;
     }
 }
