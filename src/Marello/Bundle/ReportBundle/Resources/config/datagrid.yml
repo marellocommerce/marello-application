@@ -84,7 +84,7 @@ datagrid:
                 status:         { data_name: s.label }
                 price:          { data_name: p.price }
             default:
-                name:  DESC
+                stockLevel:  ASC
         options:
             entityHint: report data
             export: false
