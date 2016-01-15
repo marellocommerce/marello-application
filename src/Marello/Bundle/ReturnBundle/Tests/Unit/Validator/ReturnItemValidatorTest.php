@@ -49,13 +49,20 @@ class ReturnItemValidatorTest extends TestCase
         $orderItem = new OrderItem();
         $orderItem->setQuantity($total);
 
+        $testedItem = null;
+
         foreach ($distribution as $q) {
             $returnItem = new ReturnItem($orderItem);
+            $returnItem->setQuantity($q);
 
-            $orderItem->getReturnItems()->add($returnItem->setQuantity($q));
+            if ($testedItem) {
+                $orderItem->getReturnItems()->add($returnItem);
+            } else {
+                $testedItem = $returnItem;
+            }
         }
 
-        return $orderItem->getReturnItems()->first();
+        return $testedItem;
     }
 
     public function validateDataProvider()

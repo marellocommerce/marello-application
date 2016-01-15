@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
+use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,8 +27,9 @@ class ReturnItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'  => 'Marello\Bundle\ReturnBundle\Entity\ReturnItem',
-            'constraints' => new ReturnItemConstraint(),
+            'data_class'         => 'Marello\Bundle\ReturnBundle\Entity\ReturnItem',
+            'constraints'        => new ReturnItemConstraint(),
+            'cascade_validation' => true,
         ]);
     }
 

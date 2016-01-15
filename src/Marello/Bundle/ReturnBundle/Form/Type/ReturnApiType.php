@@ -39,8 +39,9 @@ class ReturnApiType extends AbstractType
                 'required' => false,
             ])
             ->add('returnItems', 'collection', [
-                'type'      => ReturnItemApiType::NAME,
-                'allow_add' => true,
+                'type'         => ReturnItemApiType::NAME,
+                'allow_add'    => true,
+                'by_reference' => false,
             ]);
 
         $builder->get('order')->addModelTransformer($this->orderToOrderNumberTransformer);

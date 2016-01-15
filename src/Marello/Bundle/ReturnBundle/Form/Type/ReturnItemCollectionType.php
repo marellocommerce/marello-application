@@ -33,6 +33,7 @@ class ReturnItemCollectionType extends AbstractType
             'prototype_name'       => '__namereturnitem__',
             'prototype'            => true,
             'handle_primary'       => false,
+            'by_reference'         => false,
         ]);
     }
 

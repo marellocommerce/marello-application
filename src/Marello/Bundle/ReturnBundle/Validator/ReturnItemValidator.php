@@ -31,17 +31,15 @@ class ReturnItemValidator extends ConstraintValidator
         }
 
         /*
-         * Return item itself should be included in collection.
-         * Reduce all return items into a sum of their quantities.
+         * Reduce all return items into a sum of their quantities and add validated item quantity.
          */
-        $returnedQuantity = array_reduce(
+        $returnedQuantity = $returnItem->getQuantity() + array_reduce(
             $orderItem->getReturnItems()->toArray(),
             function ($carry, ReturnItem $item) {
                 return $carry + $item->getQuantity();
             },
             0
         );
-
         /*
          * If returned quantity is greater than ordered, create a constraint violation.
          */
