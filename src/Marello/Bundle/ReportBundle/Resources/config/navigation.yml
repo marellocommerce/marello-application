@@ -40,6 +40,26 @@ oro_menu_config:
                 description: 'marello.report.menu.low_stock_products.description'
                 skipBreadcrumbs: true
 
+        best_selling_items:
+            label: 'marello.report.menu.best_selling_items.label'
+            route: 'marello_report_index'
+            routeParameters:
+                reportGroupName: 'orders'
+                reportName:      'best_selling_items'
+            extras:
+                description: 'marello.report.menu.best_selling_items.description'
+                skipBreadcrumbs: true
+
+        worst_selling_items:
+            label: 'marello.report.menu.worst_selling_items.label'
+            route: 'marello_report_index'
+            routeParameters:
+                reportGroupName: 'orders'
+                reportName:      'worst_selling_items'
+            extras:
+                description: 'marello.report.menu.worst_selling_items.description'
+                skipBreadcrumbs: true
+
     tree:
         application_menu:
             children:
@@ -53,6 +73,8 @@ oro_menu_config:
                                 products_report_tab:
                                     children:
                                         low_stock_products: ~
+                                        best_selling_items: ~
+                                        worst_selling_items: ~
 
 oro_titles:
     marello_report_index: '%%reportName%% - %%reportGroup%%'
