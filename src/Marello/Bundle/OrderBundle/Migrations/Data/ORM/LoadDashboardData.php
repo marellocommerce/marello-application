@@ -26,7 +26,7 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
 
         if ($mainDashboard) {
             $mainDashboard->addWidget($this->createWidgetModel('order_statistics_widget', [0,0]));
-            $mainDashboard->addWidget($this->createWidgetModel('lastest_orders_widget', [1,0]));
+            $mainDashboard->addWidget($this->createWidgetModel('latest_orders_widget', [1,0]));
 
             $manager->flush();
         }
