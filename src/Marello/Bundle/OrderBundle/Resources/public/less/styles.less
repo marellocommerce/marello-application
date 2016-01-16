@@ -76,3 +76,62 @@
     padding-top: 7px !important;
     text-align: right !important;
 }
+
+.quick-launchpad-toolbar {
+    &.with-widget-items{
+        overflow: hidden;
+    }
+    & > li.widget-item {
+        padding: 0 15px;
+        margin: 15px 0;
+        background: none;
+        &:first-child {
+            padding: 0 15px;
+        }
+        & > .title {
+            display: inherit;
+            padding: 0;
+            font-weight: normal;
+            max-width:100%;
+        }
+        & > .value {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+        & > div.deviation {
+            overflow: hidden;
+            font-size: 11px;
+            & > .deviation {
+                &.positive{
+                    color: #9bad37;
+                }
+                &.negative{
+                    color: #ff0800;
+                }
+            }
+        }
+        & > div.compare-date-range {
+            overflow: hidden;
+            font-size: 11px;
+
+            & > .date-range {
+                &.compare-label{
+                    float: left;
+                    margin-right:5px;
+                }
+                &.compare-value{
+                    float: left;
+                }
+
+            }
+        }
+    }
+    & > li.separator{
+        width: 96%;
+        height: 0;
+        border-bottom: 1px solid #eaeaea;
+        border-left: none;
+        margin: 0 13px;
+        padding: 0;
+    }
+}
