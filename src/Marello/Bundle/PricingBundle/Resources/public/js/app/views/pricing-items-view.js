@@ -49,6 +49,18 @@ define(function(require) {
             }
         },
 
+        /**
+         * @returns {Array} products
+         */
+        clearItems: function() {
+            var lineItems = this.$sourceElement.find('.marello-line-item');
+            _.each(lineItems, function(lineItem) {
+                var $lineItem = $(lineItem);
+                $lineItem.find('input[data-ftid$="_value"]')[0].value = 0;
+            });
+
+        },
+
         handleDeleteConfirmation: function() {
             var _self = this;
             var message = __('By disabling the Channel Pricing, all data from Channel Pricing will be lost upon saving. Are you sure?');
@@ -62,6 +74,10 @@ define(function(require) {
             confirm.on('cancel', function() {
                 _self.$sourceElement.addClass('pricing-enabled');
                 _self.$checkBoxElement.prop('checked',true);
+            });
+
+            confirm.on('ok', function() {
+                _self.clearItems();
             });
         },
 
