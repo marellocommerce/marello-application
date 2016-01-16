@@ -15,7 +15,7 @@ use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository")
  * @Oro\Config(
  *      defaultValues={
  *          "entity"={

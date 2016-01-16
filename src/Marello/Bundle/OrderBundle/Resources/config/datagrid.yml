@@ -149,3 +149,51 @@ datagrid:
             totalPrice:
                 label: marello.order.orderitem.total_price.label
                 frontend_type: currency
+
+    dashboard-latest-orders-grid:
+            source:
+                type: orm
+                query:
+                    select:
+                        - o
+                    from:
+                        - { table: MarelloOrderBundle:Order, alias: o }
+            columns:
+                orderNumber:
+                    label: marello.order.order_number.label
+                    frontend_type: string
+                salesChannel:
+                    label: marello.order.sales_channel.label
+                    frontend_type: string
+                    data_name: salesChannelName
+                orderReference:
+                    label: marello.order.order_reference.label
+                    frontend_type: string
+                grandTotal:
+                    label: marello.order.grand_total.label
+                    frontend_type: currency
+            sorters:
+                columns:
+                    orderNumber:
+                        data_name: o.orderNumber
+                default:
+                    orderNumber: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+            properties:
+                view_link:
+                    type:   url
+                    route:  marello_order_order_view
+                    params:
+                        id: id
+            actions:
+                view:
+                    type:       navigate
+                    link:       view_link
+                    icon:       eye-open
+                    rowAction:  true
+            options:
+                export: false
+                toolbarOptions:
+                    hide: true
+                    pageSize:
+                        items: [5]
+                        default_per_page: 5
