@@ -8,6 +8,7 @@ define(function(require) {
         DeleteConfirmation = require('oroui/js/delete-confirmation'),
         routing = require('routing'),
         mediator = require('oroui/js/mediator'),
+        layout = require('oroui/js/layout'),
         AbstractItemsView = require('marellolayout/js/app/views/abstract-items-view');
 
     /**
@@ -100,7 +101,9 @@ define(function(require) {
             }
             var $elm = options.elm;
             var $errorElm = $elm.find('td.order-line-item-notifications span.error');
-            if(false === options.salable) {
+            if(false === options.salable.value) {
+                $errorElm.find('i').attr('data-content', options.salable.message);
+                layout.initPopover($errorElm);
                 $errorElm.show();
                 if(!this.$confirm) {
                     this.handleConfirmation();

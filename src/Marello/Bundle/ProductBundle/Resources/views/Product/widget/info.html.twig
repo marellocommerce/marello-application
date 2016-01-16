@@ -6,6 +6,15 @@
             {{ UI.renderProperty('marello.product.sku.label'|trans, product.sku) }}
             {{ UI.renderProperty('marello.product.name.label'|trans, product.name) }}
             {{ UI.renderProperty('marello.product.status.label'|trans, product.status) }}
+            {% set productChannels = '' %}
+            {% for channel in product.channels %}
+                {% if productChannels is empty %}
+                    {% set productChannels = channel.name %}
+                {% else %}
+                    {% set productChannels = productChannels ~ ', ' ~ channel.name %}
+                {% endif %}
+            {% endfor %}
+            {{ UI.renderProperty('marello.product.channels.label'|trans,productChannels) }}
         </div>
     </div>
 </div>

@@ -95,10 +95,10 @@ define(function(require) {
                 if(prices[identifier].message !== undefined) {
                     this.price = '';
                     this.updateRowTotals();
-                    this.options.salable = false;
+                    this.options.salable = {value: false, message: prices[identifier].message};
                 } else {
                     this.price = prices[identifier] || {};
-                    this.options.salable = true;
+                    this.options.salable.value = {value: true, message: ''};
                 }
             } else {
                 this.price = {};

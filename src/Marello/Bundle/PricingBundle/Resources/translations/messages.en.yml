@@ -15,4 +15,4 @@ marello:
                 add_channel_price:      Add Channel Price
 
             messages:
-                product_not_salable:    Product is not salable in the chosen Sales Channel
+                product_not_salable:    Product cannot be sold in the chosen Sales Channel

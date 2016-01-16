@@ -92,11 +92,6 @@ datagrid:
                 route:  marello_order_order_view
                 params:
                     id: id
-            edit_link:
-                type:   url
-                route:  marello_order_order_update
-                params:
-                    id: id
             return_link:
                 type:   url
                 route:  marello_return_return_create
@@ -108,10 +103,6 @@ datagrid:
                 link:       view_link
                 icon:       eye-open
                 rowAction:  true
-            edit:
-                type:       navigate
-                link:       edit_link
-                icon:       edit
             return:
                 type:       navigate
                 link:       return_link
