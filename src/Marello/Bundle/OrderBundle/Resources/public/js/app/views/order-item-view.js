@@ -98,7 +98,7 @@ define(function(require) {
                     this.options.salable = {value: false, message: prices[identifier].message};
                 } else {
                     this.price = prices[identifier] || {};
-                    this.options.salable.value = {value: true, message: ''};
+                    this.options.salable = {value: true, message: ''};
                 }
             } else {
                 this.price = {};
