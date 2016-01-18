@@ -1,0 +1,9 @@
+marello_return_view:
+    type:       entity
+    class:      MarelloReturnBundle:ReturnEntity
+    permission: VIEW
+
+marello_return_create:
+    type:       entity
+    class:      MarelloReturnBundle:ReturnEntity
+    permission: CREATE
