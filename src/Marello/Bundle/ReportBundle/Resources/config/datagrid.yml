@@ -84,7 +84,103 @@ datagrid:
                 status:         { data_name: s.label }
                 price:          { data_name: p.price }
             default:
-                name:  DESC
+                stockLevel:  ASC
         options:
             entityHint: report data
             export: false
+
+    marello_report-orders-best_selling_items:
+            pageTitle: marello.report.title.best_selling_items
+            source:
+                type: orm
+                acl_resource: oro_report_view
+                query:
+                    select:
+                        - oi.productName
+                        - oi.productSku
+                        - product.createdAt as createdAt
+                        - SUM(oi.quantity) AS quantitySold
+                    from:
+                        - { table: MarelloOrderBundle:OrderItem, alias: oi }
+                    join:
+                        left:
+                            - { join: oi.product, alias: product }
+                    groupBy: oi.productSku, oi.productName
+            columns:
+                productSku:
+                    label:              marello.product.sku.label
+                    frontend_type:      string
+                productName:
+                    label:              marello.product.name.label
+                    frontend_type:      string
+                createdAt:
+                    label:              oro.ui.created_at
+                    frontend_type:      datetime
+                quantitySold:
+                    label:              marello.report.datagrid.columns.quantity_sold.label
+                    frontend_type:      number
+                    data_name:          quantitySold
+            sorters:
+                columns:
+                    productSku:            { data_name: oi.productSku }
+                    productName:           { data_name: oi.productName }
+                    createdAt:             { data_name: createdAt }
+                    quantitySold:          { data_name: quantitySold }
+                default:
+                    quantitySold:  DESC
+            options:
+                entityHint: report data
+                export: false
+                toolbarOptions:
+                    hide: true
+                    pageSize:
+                        items: [5]
+                        default_per_page: 5
+
+    marello_report-orders-worst_selling_items:
+            pageTitle: marello.report.title.worst_selling_items
+            source:
+                type: orm
+                acl_resource: oro_report_view
+                query:
+                    select:
+                        - oi.productName
+                        - oi.productSku
+                        - product.createdAt as createdAt
+                        - SUM(oi.quantity) AS quantitySold
+                    from:
+                        - { table: MarelloOrderBundle:OrderItem, alias: oi }
+                    join:
+                        left:
+                            - { join: oi.product, alias: product }
+                    groupBy: oi.productSku, oi.productName
+            columns:
+                productSku:
+                    label:              marello.product.sku.label
+                    frontend_type:      string
+                productName:
+                    label:              marello.product.name.label
+                    frontend_type:      string
+                createdAt:
+                    label:              oro.ui.created_at
+                    frontend_type:      datetime
+                quantitySold:
+                    label:              marello.report.datagrid.columns.quantity_sold.label
+                    frontend_type:      number
+                    data_name:          quantitySold
+            sorters:
+                columns:
+                    productSku:            { data_name: oi.productSku }
+                    productName:           { data_name: oi.productName }
+                    createdAt:             { data_name: createdAt }
+                    quantitySold:          { data_name: quantitySold }
+                default:
+                    quantitySold: ASC
+            options:
+                entityHint: report data
+                export: false
+                toolbarOptions:
+                    hide: true
+                    pageSize:
+                        items: [5]
+                        default_per_page: 5

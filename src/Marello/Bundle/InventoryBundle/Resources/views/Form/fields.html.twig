@@ -8,7 +8,8 @@
             <table class="grid table-hover table table-bordered table-condensed">
                 <thead>
                 <tr>
-                    <th class="inventory-line-item-warehouse"><span>{{ 'marello.inventory.warehouse.entity_label'|trans }}</span></th>
+                    <th class="inventory-line-item-sku"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
+                    <th class="inventory-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
                     <th class="inventory-line-item-quantity"><span>{{ 'marello.inventory.inventoryitem.quantity.label'|trans }}</span></th>
                     <th class="inventory-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
                 </tr>
@@ -23,9 +24,14 @@
 
 {% block marello_inventory_item_row %}
     <tr class="marello-line-item display-values">
-        <td class="inventory-line-item-warehouse">
+        <td class="inventory-line-item-sku">
             <div class="fields-row">
-                {{ form.vars.value.warehouse }}
+                {{ form.vars.value.product.sku  }}
+            </div>
+        </td>
+        <td class="inventory-line-item-product">
+            <div class="fields-row">
+                {{ form.vars.value.product.name  }}
             </div>
         </td>
         <td class="inventory-line-item-quantity">
@@ -52,7 +58,6 @@
 {% endblock %}
 
 {% block marello_product_inventory_row %}
-    {{ form_label(form, form.vars.value.name ~ ' ' ~ form.vars.value.sku, {required: false}) }}
     {{ form_widget(form) }}
     <hr/>
 {% endblock %}

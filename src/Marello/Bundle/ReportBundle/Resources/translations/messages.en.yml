@@ -11,11 +11,20 @@ marello:
             low_stock_products.label:  Low Stock Products
             low_stock_products.description: Products with stock less than 5
 
+            worst_selling_items.label: All time worst selling
+            worst_selling_items.description: Product all time flop sellers
+
+            best_selling_items.label:  All time best selling
+            best_selling_items.description: Product all time best sellers
+
         title:
             revenue_per_sales_channel: Revenue per Sales Channel
             low_stock_products: Low Stock Products
+            worst_selling_items: Flop selling Products
+            best_selling_items: Top selling Products
 
         datagrid:
             columns:
-                total_orders.label:    Total Orders
-                total_revenue.label:   Total Revenue
+                total_orders.label:       Total Orders
+                total_revenue.label:      Total Revenue
+                quantity_sold.label:      Quantity Sold
