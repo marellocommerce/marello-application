@@ -5,6 +5,8 @@ marello:
         return_number.label:      Return Number
 
         returnitem:
-            entity_label:         Returned Item
-            entity_plural_label:  Returned items
-            quantity.label:       Quantity Returned
+            entity_label:               Returned Item
+            entity_plural_label:        Returned items
+            ordered_quantity.label:     Quantity Ordered
+            returned_quantity.label:    Quantity Returned
+            quantity.label:             Return Quantity
