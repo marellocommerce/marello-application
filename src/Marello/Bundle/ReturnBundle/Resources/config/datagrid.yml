@@ -24,7 +24,7 @@ datagrid:
                 frontend_type: string
             returnItems:
                 data_name: returnItemCount
-                label: marello.return.returnitem.quantity.label
+                label: marello.return.returnitem.returned_quantity.label
                 frontend_type: number
             createdAt:
                 label: oro.ui.created_at
