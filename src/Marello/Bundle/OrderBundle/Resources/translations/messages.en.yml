@@ -64,6 +64,7 @@ marello:
                 orders_number.label: Total Orders
                 revenue.label: Total Order Revenue
                 average_order_value.label: Average Order Value
+                metric_name: Metric name
 
             latest_orders:
                 title: Latest orders

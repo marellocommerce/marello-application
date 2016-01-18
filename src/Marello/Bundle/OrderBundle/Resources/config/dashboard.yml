@@ -52,7 +52,7 @@ oro_dashboard_config:
                         label: marello.order.dashboard.order_statistics.widget_items.label
                         attr:
                             placeholder: oro.dashboard.widget.big_number.choose_metrics_placeholder
-                        item_label: oro.dashboard.widget.big_number.metricName
+                        item_label: marello.order.dashboard.order_statistics.metric_name
                         required: false
                         widget_name: order_statistics_widget
 

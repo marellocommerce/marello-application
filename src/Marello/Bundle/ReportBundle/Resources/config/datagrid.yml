@@ -98,10 +98,13 @@ datagrid:
                     select:
                         - oi.productName
                         - oi.productSku
+                        - product.createdAt as createdAt
                         - SUM(oi.quantity) AS quantitySold
-                        - SUM(oi.totalPrice) AS totalRevenue
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
+                    join:
+                        left:
+                            - { join: oi.product, alias: product }
                     groupBy: oi.productSku, oi.productName
             columns:
                 productSku:
@@ -110,19 +113,19 @@ datagrid:
                 productName:
                     label:              marello.product.name.label
                     frontend_type:      string
+                createdAt:
+                    label:              oro.ui.created_at
+                    frontend_type:      datetime
                 quantitySold:
                     label:              marello.report.datagrid.columns.quantity_sold.label
                     frontend_type:      number
                     data_name:          quantitySold
-                totalRevenue:
-                    label:              marello.report.datagrid.columns.total_revenue.label
-                    frontend_type:      currency
             sorters:
                 columns:
                     productSku:            { data_name: oi.productSku }
                     productName:           { data_name: oi.productName }
+                    createdAt:             { data_name: createdAt }
                     quantitySold:          { data_name: quantitySold }
-                    totalRevenue:          { data_name: totalRevenue }
                 default:
                     quantitySold:  DESC
             options:
@@ -143,10 +146,13 @@ datagrid:
                     select:
                         - oi.productName
                         - oi.productSku
+                        - product.createdAt as createdAt
                         - SUM(oi.quantity) AS quantitySold
-                        - SUM(oi.totalPrice) AS totalRevenue
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
+                    join:
+                        left:
+                            - { join: oi.product, alias: product }
                     groupBy: oi.productSku, oi.productName
             columns:
                 productSku:
@@ -155,22 +161,21 @@ datagrid:
                 productName:
                     label:              marello.product.name.label
                     frontend_type:      string
+                createdAt:
+                    label:              oro.ui.created_at
+                    frontend_type:      datetime
                 quantitySold:
                     label:              marello.report.datagrid.columns.quantity_sold.label
                     frontend_type:      number
                     data_name:          quantitySold
-                totalRevenue:
-                    label:              marello.report.datagrid.columns.total_revenue.label
-                    frontend_type:      currency
             sorters:
                 columns:
                     productSku:            { data_name: oi.productSku }
                     productName:           { data_name: oi.productName }
+                    createdAt:             { data_name: createdAt }
                     quantitySold:          { data_name: quantitySold }
-                    totalRevenue:          { data_name: totalRevenue }
                 default:
                     quantitySold: ASC
-                    totalRevenue:  ASC
             options:
                 entityHint: report data
                 export: false
