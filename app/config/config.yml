@@ -211,6 +211,9 @@ oro_help:
 
 oro_theme:
     active_theme: oro
+    themes:
+        oro:
+            icon: bundles/marellolayout/images/marello.ico
 
 oro_sidebar:
     sidebar_widgets:
