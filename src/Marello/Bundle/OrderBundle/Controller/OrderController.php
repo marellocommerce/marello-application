@@ -154,7 +154,7 @@ class OrderController extends Controller
     /**
      * @Config\Route("/update/address/{id}", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Config\Template("MarelloOrderBundle:Order:widget/updateAddress.html.twig")
      * @Security\AclAncestor("marello_order_update")
      *
      * @param Request $request
@@ -167,11 +167,8 @@ class OrderController extends Controller
         $responseData = array(
             'saved' => false,
         );
-        $form  = $this->createForm('marello_address.form.type.address', $address);
+        $form  = $this->createForm('marello_address', $address);
         $form->handleRequest($request);
-
-        // Update order modification date when an address is changed
-        //$order->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();

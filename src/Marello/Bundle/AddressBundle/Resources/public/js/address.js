@@ -47,6 +47,10 @@ define([
             this._openAddressEditForm(__('Update Address'), this._getUrl('addressUpdateUrl'));
         },
 
+        getAddressWidget: function() {
+            return this.options.widget;
+        },
+
         _openAddressEditForm: function(title, url) {
             if (!this.addressEditDialog) {
                 this.addressEditDialog = new DialogWidget({
@@ -76,13 +80,13 @@ define([
                 this.addressEditDialog.on('formSave', _.bind(function() {
                     this.addressEditDialog.remove();
                     messenger.notificationFlashMessage('success', __('Address saved'));
-                    //this.reloadAddresses();
+                    this.reloadAddress();
                 }, this));
             }
         },
 
-        reloadAddresses: function() {
-            this.getCollection().fetch({reset: true});
+        reloadAddress: function() {
+            this.getAddressWidget().render();
         },
     });
 });

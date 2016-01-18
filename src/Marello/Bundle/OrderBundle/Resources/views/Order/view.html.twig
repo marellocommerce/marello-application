@@ -37,7 +37,6 @@
         {{ oro_widget_render({
             'widgetType': 'block',
             'url': path('marello_order_order_address', {id: entity.billingAddress.id, typeId: 1}),
-            'title': ''
         }) }}
     {% endset %}
 
@@ -45,7 +44,6 @@
         {{ oro_widget_render({
             'widgetType': 'block',
             'url': path('marello_order_order_address', {id: entity.shippingAddress.id, typeId: 2}),
-            'title': ''
         }) }}
     {% endset %}
 
