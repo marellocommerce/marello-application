@@ -1,7 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
-{% import 'OroAddressBundle::macros.html.twig' as address %}
 
 {% oro_title_set({params : {"%id%": entity.orderNumber }}) %}
 
@@ -34,28 +33,20 @@
         </div>
     {% endset %}
 
-    {% set billing %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ UI.renderHtmlProperty('marello.order.billing_address.label'|trans, address.renderAddress(entity.billingAddress)) }}
-                    {{ UI.renderProperty('marello.order.address.email.label'|trans, entity.billingAddress.email) }}
-                    {{ UI.renderProperty('marello.order.address.phone.label'|trans, entity.billingAddress.phone) }}
-                </div>
-            </div>
-        </div>
+    {% set billingAddressWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('marello_order_order_address', {id: entity.billingAddress.id, typeId: 1}),
+            'title': ''
+        }) }}
     {% endset %}
 
-    {% set delivery %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ UI.renderHtmlProperty('marello.order.shipping_address.label'|trans, address.renderAddress(entity.shippingAddress)) }}
-                    {{ UI.renderProperty('marello.order.address.email.label'|trans, entity.shippingAddress.email) }}
-                    {{ UI.renderProperty('marello.order.address.phone.label'|trans, entity.shippingAddress.phone) }}
-                </div>
-            </div>
-        </div>
+    {% set shippingAddressWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('marello_order_order_address', {id: entity.shippingAddress.id, typeId: 2}),
+            'title': ''
+        }) }}
     {% endset %}
 
     {% set items %}
@@ -90,14 +81,14 @@
             'title': 'marello.order.datablock.billing_and_payment'|trans,
             'class': 'active',
             'subblocks': [
-                { 'data' : [billing] }
+                { 'data' : [billingAddressWidget] }
             ]
         },
         {
             'title': 'marello.order.datablock.delivery'|trans,
             'class': 'active',
             'subblocks': [
-                { 'data' : [delivery] }
+                { 'data' : [shippingAddressWidget] }
             ]
         },
         {

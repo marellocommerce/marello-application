@@ -1,0 +1,3 @@
+config:
+    paths:
+        'marelloaddress/js/address': 'bundles/marelloaddress/js/address.js'
