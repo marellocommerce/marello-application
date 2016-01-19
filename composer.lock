@@ -667,16 +667,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.5.2",
+            "version": "v1.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "47c7128262da274f590ae6f86eb137a7a64e82af"
+                "reference": "47cdc76ceb95cc591d9c79a36dc3794975b5d136"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/47c7128262da274f590ae6f86eb137a7a64e82af",
-                "reference": "47c7128262da274f590ae6f86eb137a7a64e82af",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/47cdc76ceb95cc591d9c79a36dc3794975b5d136",
+                "reference": "47cdc76ceb95cc591d9c79a36dc3794975b5d136",
                 "shasum": ""
             },
             "require": {
@@ -733,7 +733,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-12-03 10:50:37"
+            "time": "2015-12-19 05:03:47"
         },
         {
             "name": "doctrine/collections",
@@ -803,16 +803,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "311001fd9865a4d0d59efff4eac6d7dcb3f5270c"
+                "reference": "10f1f19651343f87573129ca970aef1a47a6f29e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/311001fd9865a4d0d59efff4eac6d7dcb3f5270c",
-                "reference": "311001fd9865a4d0d59efff4eac6d7dcb3f5270c",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/10f1f19651343f87573129ca970aef1a47a6f29e",
+                "reference": "10f1f19651343f87573129ca970aef1a47a6f29e",
                 "shasum": ""
             },
             "require": {
@@ -872,7 +872,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2015-12-04 12:49:42"
+            "time": "2015-12-25 13:10:16"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -2798,16 +2798,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "a4bee9f4b344b66e0a0d96c7afae1e92edf385fe"
+                "reference": "f9e27c3e202faf14fd581ef41355d83bb4b7eb7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/a4bee9f4b344b66e0a0d96c7afae1e92edf385fe",
-                "reference": "a4bee9f4b344b66e0a0d96c7afae1e92edf385fe",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/f9e27c3e202faf14fd581ef41355d83bb4b7eb7d",
+                "reference": "f9e27c3e202faf14fd581ef41355d83bb4b7eb7d",
                 "shasum": ""
             },
             "require": {
@@ -2860,7 +2860,7 @@
                 "json",
                 "schema"
             ],
-            "time": "2015-09-08 22:28:04"
+            "time": "2016-01-06 14:37:04"
         },
         {
             "name": "knplabs/gaufrette",
@@ -3398,12 +3398,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:marellocommerce/marello.git",
-                "reference": "6f4ac824c1792459f0427ab1f77547b4144c308b"
+                "reference": "96ff4e8c6ccd7d86489d1d4734b830bd0799a4da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/6f4ac824c1792459f0427ab1f77547b4144c308b",
-                "reference": "6f4ac824c1792459f0427ab1f77547b4144c308b",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/96ff4e8c6ccd7d86489d1d4734b830bd0799a4da",
+                "reference": "96ff4e8c6ccd7d86489d1d4734b830bd0799a4da",
                 "shasum": ""
             },
             "require": {
@@ -3436,20 +3436,20 @@
                 "source": "https://github.com/marellocommerce/marello/tree/master",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2015-12-16 12:58:00"
+            "time": "2016-01-19 11:42:49"
         },
         {
             "name": "michelf/php-markdown",
-            "version": "1.5.0",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/michelf/php-markdown.git",
-                "reference": "e1aabe18173231ebcefc90e615565742fc1c7fd9"
+                "reference": "156e56ee036505ec637d761ee62dc425d807183c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/e1aabe18173231ebcefc90e615565742fc1c7fd9",
-                "reference": "e1aabe18173231ebcefc90e615565742fc1c7fd9",
+                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/156e56ee036505ec637d761ee62dc425d807183c",
+                "reference": "156e56ee036505ec637d761ee62dc425d807183c",
                 "shasum": ""
             },
             "require": {
@@ -3472,14 +3472,14 @@
             ],
             "authors": [
                 {
-                    "name": "John Gruber",
-                    "homepage": "http://daringfireball.net/"
-                },
-                {
                     "name": "Michel Fortin",
                     "email": "michel.fortin@michelf.ca",
                     "homepage": "https://michelf.ca/",
                     "role": "Developer"
+                },
+                {
+                    "name": "John Gruber",
+                    "homepage": "https://daringfireball.net/"
                 }
             ],
             "description": "PHP Markdown",
@@ -3487,20 +3487,20 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2015-03-01 12:03:08"
+            "time": "2015-12-24 01:37:31"
         },
         {
             "name": "moment/moment",
-            "version": "2.10.6",
+            "version": "2.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moment/moment.git",
-                "reference": "f3fbef9d9875bbff340b527dbe3f1c447a942f69"
+                "reference": "d731fe7e2678e585ae66cbe86033d1890688ef40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment/zipball/f3fbef9d9875bbff340b527dbe3f1c447a942f69",
-                "reference": "f3fbef9d9875bbff340b527dbe3f1c447a942f69",
+                "url": "https://api.github.com/repos/moment/moment/zipball/d731fe7e2678e585ae66cbe86033d1890688ef40",
+                "reference": "d731fe7e2678e585ae66cbe86033d1890688ef40",
                 "shasum": ""
             },
             "require": {
@@ -3541,7 +3541,7 @@
                 "time",
                 "validate"
             ],
-            "time": "2015-07-28 04:39:50"
+            "time": "2016-01-09 13:13:07"
         },
         {
             "name": "monolog/monolog",
@@ -3890,16 +3890,16 @@
         },
         {
             "name": "oro/doctrine-extensions",
-            "version": "1.0.10",
+            "version": "1.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orocrm/doctrine-extensions.git",
-                "reference": "0abf1f4e3b612a9e6f82a7207f10545719f2d64e"
+                "reference": "068102e896c8739355b99b794d59d321dff655d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/doctrine-extensions/zipball/0abf1f4e3b612a9e6f82a7207f10545719f2d64e",
-                "reference": "0abf1f4e3b612a9e6f82a7207f10545719f2d64e",
+                "url": "https://api.github.com/repos/orocrm/doctrine-extensions/zipball/068102e896c8739355b99b794d59d321dff655d7",
+                "reference": "068102e896c8739355b99b794d59d321dff655d7",
                 "shasum": ""
             },
             "require": {
@@ -3910,7 +3910,7 @@
                 "doctrine/data-fixtures": "dev-master",
                 "doctrine/orm": "<2.5.0",
                 "phpunit/phpunit": "4.*",
-                "symfony/yaml": ">=2.0.4"
+                "symfony/yaml": "2.*"
             },
             "type": "library",
             "autoload": {
@@ -3940,7 +3940,7 @@
                 "postgresql",
                 "type"
             ],
-            "time": "2015-10-08 13:56:38"
+            "time": "2016-01-05 20:17:20"
         },
         {
             "name": "oro/jsplumb",
@@ -4252,16 +4252,16 @@
         },
         {
             "name": "piwik/device-detector",
-            "version": "3.4.3",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/piwik/device-detector.git",
-                "reference": "b4fca02d5e1198a798e9855b30dec50b8c1132ed"
+                "reference": "df9e81508f65f33436bab0daaaf942e1d59c89a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/piwik/device-detector/zipball/b4fca02d5e1198a798e9855b30dec50b8c1132ed",
-                "reference": "b4fca02d5e1198a798e9855b30dec50b8c1132ed",
+                "url": "https://api.github.com/repos/piwik/device-detector/zipball/df9e81508f65f33436bab0daaaf942e1d59c89a1",
+                "reference": "df9e81508f65f33436bab0daaaf942e1d59c89a1",
                 "shasum": ""
             },
             "require": {
@@ -4299,7 +4299,7 @@
                 "parser",
                 "useragent"
             ],
-            "time": "2015-12-13 20:41:13"
+            "time": "2015-12-31 15:58:23"
         },
         {
             "name": "psr/log",
@@ -5075,16 +5075,16 @@
         },
         {
             "name": "symfony/swiftmailer-bundle",
-            "version": "v2.3.9",
+            "version": "v2.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/swiftmailer-bundle.git",
-                "reference": "3d21ada19f23631f558ad6df653b168e35362e78"
+                "reference": "5e1a90f28213231ceee19c953bbebc5b5b95c690"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/3d21ada19f23631f558ad6df653b168e35362e78",
-                "reference": "3d21ada19f23631f558ad6df653b168e35362e78",
+                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/5e1a90f28213231ceee19c953bbebc5b5b95c690",
+                "reference": "5e1a90f28213231ceee19c953bbebc5b5b95c690",
                 "shasum": ""
             },
             "require": {
@@ -5128,7 +5128,7 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2015-11-28 10:59:29"
+            "time": "2016-01-15 16:41:20"
         },
         {
             "name": "symfony/symfony",
