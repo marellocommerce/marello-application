@@ -178,18 +178,6 @@ datagrid:
                         data_name: o.orderNumber
                 default:
                     orderNumber: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
-            properties:
-                view_link:
-                    type:   url
-                    route:  marello_order_order_view
-                    params:
-                        id: id
-            actions:
-                view:
-                    type:       navigate
-                    link:       view_link
-                    icon:       eye-open
-                    rowAction:  true
             options:
                 export: false
                 toolbarOptions:
