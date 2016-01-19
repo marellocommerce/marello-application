@@ -104,7 +104,7 @@ datagrid:
                 frontend_type: number
             quantityReturned:
                 data_name: quantity
-                label: marello.return.returnitem.quantity.label
+                label: marello.return.returnitem.returned_quantity.label
                 frontend_type: number
             price:
                 data_name: orderItem.price
