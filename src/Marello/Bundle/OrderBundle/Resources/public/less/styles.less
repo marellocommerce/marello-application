@@ -136,15 +136,13 @@
     }
 }
 .order-address-block {
-    width: 40%;
-    height: 125px;
+    width: 450px;
     float: left;
     overflow: hidden;
 
     .order-address-edit {
         position: relative;
         float: right;
-        margin-right: 100px;
         z-index: 99;
 
         .btn {
@@ -157,6 +155,11 @@
             box-shadow: none;
             padding: 0;
         }
+    }
+
+    address {
+        width: calc(100% - 20px);
+        display: inline-block;
     }
 
     .control-group {
