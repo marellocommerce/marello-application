@@ -11,9 +11,10 @@ class LoadReturnReasonsData extends AbstractFixture
 {
     /** @var array */
     protected $data = [
-        'No Reason' => true,
-        'Damage'    => false,
-        // TODO: Come up with more reasons
+        'Too big'                    => false,
+        'Too small'                  => false,
+        'Does not meet expectations' => false,
+        'Damaged'                    => false,
     ];
 
     /**
