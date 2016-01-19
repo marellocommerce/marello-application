@@ -3,7 +3,7 @@ oro_dashboard_config:
         quick_launchpad:
             items:
                 returns:
-                    label:      marello.return.entity_plural_label
+                    label:      marello.return.returnentity.entity_plural_label
                     icon:       refresh
                     route:      marello_return_return_index
                     acl:        marello_return_view
