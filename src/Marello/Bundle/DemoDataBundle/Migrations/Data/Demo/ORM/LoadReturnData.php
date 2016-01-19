@@ -15,7 +15,6 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
     {
         return [
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderItemData',
-            'Marello\Bundle\ReturnBundle\Migrations\Data\ORM\LoadReturnReasonsData',
         ];
     }
 
