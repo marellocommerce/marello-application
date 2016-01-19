@@ -1,0 +1,36 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroAddressBundle::macros.html.twig' as address %}
+{% set label = 'marello.order.'~ addressType ~'_address.label' %}
+<div class="widget-content">
+    <div class="order-address-block">
+        <div id="order-address-{{ orderAddress.id }}">
+            {% if marello_order_order_address is not defined or resource_granted(marello_order_order_address) %}
+                <div class="order-address-edit">
+                    <button class="btn address-edit-button" id="edit-address-{{ orderAddress.id }}" title="{{ 'marello.order.address.edit_action'|trans }}"><i class="icon-edit hide-text">{{ 'marello.order.address.edit_action'|trans }}</i></button>
+                </div>
+            {% endif %}
+
+            <address>
+                {{ UI.renderHtmlProperty(label|trans, address.renderAddress(orderAddress)) }}
+            </address>
+            {{ UI.renderProperty('marello.order.address.email.label'|trans, orderAddress.email) }}
+            {{ UI.renderProperty('marello.order.address.phone.label'|trans, orderAddress.phone) }}
+            <script type="text/javascript">
+                require(['jquery', 'underscore', 'routing', 'marelloaddress/js/address', 'oroui/js/widget-manager'],
+                    function($, _, routing, Address, widgetManager) {
+                        widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget){
+                            /** @type marelloaddress.Address */
+                            var orderAddress = new Address({
+                                el: '#order-address-{{ orderAddress.id }}',
+                                addressId: {{ orderAddress.id }},
+                                addressUpdateUrl: function() {
+                                    return routing.generate('marello_order_order_updateaddress', {'id': {{ orderAddress.id }} })
+                                },
+                                widget: widget
+                            });
+                        });
+                    });
+            </script>
+        </div>
+    </div>
+</div>

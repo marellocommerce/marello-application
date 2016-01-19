@@ -24,6 +24,7 @@ marello:
         address:
             email.label:          E-Mail
             phone.label:          Phone
+            edit_action:          Edit Address
         datablock:
             general:              General
             billing_and_payment:  Billing & Payment

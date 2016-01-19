@@ -61,4 +61,43 @@ class OrderControllerTest extends WebTestCase
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
     }
+
+    public function testGetAddress()
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_order_order_address', [
+                'id' => $this->getReference('marello_order_0')->getBillingAddress()->getId(),
+                'typeId' => 1,
+                '_widgetContainer' => 'block'
+            ])
+        );
+
+        $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
+    }
+
+    public function testUpdateAddress()
+    {
+        $crawler = $this->client->request(
+            'GET',
+            $this->getUrl('marello_order_order_updateaddress', [
+                'id' => $this->getReference('marello_order_0')->getBillingAddress()->getId(),
+                '_widgetContainer' => 'block'
+            ])
+        );
+
+        $result      = $this->client->getResponse();
+        $this->assertResponseStatusCodeEquals($result, Response::HTTP_OK);
+
+        /** @var Form $form */
+        $form                               = $crawler->selectButton('Save')->form();
+        $name                               = 'Han Solo';
+        $form['marello_address[firstName]'] = $name;
+
+        $this->client->followRedirects(true);
+        $this->client->submit($form);
+
+        $result = $this->client->getResponse();
+        $this->assertResponseStatusCodeEquals($result, Response::HTTP_OK);
+    }
 }

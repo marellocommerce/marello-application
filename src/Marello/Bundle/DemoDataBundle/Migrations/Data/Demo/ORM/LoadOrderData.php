@@ -88,7 +88,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             $this->getRepository('OroAddressBundle:Country')->find($order['country'])
         );
         $billing->setRegion(
-            $this->getRepository('OroAddressBundle:Region')->findOneBy(['code' => $order['state']])
+            $this->getRepository('OroAddressBundle:Region')->findOneBy(['combinedCode' => $order['country'] . '-' . $order['state']])
         );
         $billing->setPhone($order['telephone_number']);
         $billing->setEmail($order['email']);

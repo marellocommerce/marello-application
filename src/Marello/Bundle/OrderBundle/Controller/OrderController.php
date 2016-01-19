@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+use Marello\Bundle\AddressBundle\Entity\Address;
+
 class OrderController extends Controller
 {
     /**
@@ -127,5 +129,54 @@ class OrderController extends Controller
             'entity' => $order,
             'form'   => $form->createView(),
         ];
+    }
+
+    /**
+     * @Config\Route("/widget/address/{id}/{typeId}", requirements={"id"="\d+","typeId"="\d+"})
+     * @Config\Method({"GET", "POST"})
+     * @Config\Template
+     * @Security\AclAncestor("marello_order_update")
+     *
+     * @param Request $request
+     * @param Address $address
+     *
+     * @return array
+     */
+    public function addressAction(Request $request, Address $address)
+    {
+        return [
+            'orderAddress' => $address,
+            'addressType' => ((int)$request->get('typeId') === 1) ? 'billing' : 'shipping'
+        ];
+    }
+
+
+    /**
+     * @Config\Route("/update/address/{id}", requirements={"id"="\d+"})
+     * @Config\Method({"GET", "POST"})
+     * @Config\Template("MarelloOrderBundle:Order:widget/updateAddress.html.twig")
+     * @Security\AclAncestor("marello_order_update")
+     *
+     * @param Request $request
+     * @param Address $address
+     *
+     * @return array
+     */
+    public function updateAddressAction(Request $request, Address $address)
+    {
+        $responseData = array(
+            'saved' => false,
+        );
+        $form  = $this->createForm('marello_address', $address);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            $responseData['orderAddress'] = $address;
+            $responseData['saved'] = true;
+        }
+
+        $responseData['form'] = $form->createView();
+        return $responseData;
     }
 }
