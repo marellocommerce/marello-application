@@ -16,7 +16,7 @@ datagrid:
         columns:
             returnNumber:
                 data_name: returnnumber
-                label: marello.return.return_number.label
+                label: marello.return.returnentity.return_number.label
                 frontend_type: string
             orderNumber:
                 data_name: order.orderNumber

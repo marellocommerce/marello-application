@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
@@ -13,8 +15,9 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  * @ORM\Entity
  * @ORM\Table(name="marello_return_return")
  * @ORM\HasLifecycleCallbacks
+ * @Config
  */
-class ReturnEntity
+class ReturnEntity extends ExtendReturnEntity
 {
 
     /**

@@ -9,7 +9,7 @@
     {% set breadcrumbs = {
     'entity':      entity,
     'indexPath':   path('marello_return_return_index'),
-    'indexLabel': 'marello.return.entity_plural_label'|trans,
+    'indexLabel': 'marello.return.returnentity.entity_plural_label'|trans,
     'entityTitle': entity.returnNumber
     } %}
     {{ parent() }}
@@ -38,9 +38,10 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('marello.return.return_number.label'|trans, entity.returnNumber) }}
+                    {{ UI.renderProperty('marello.return.returnentity.return_number.label'|trans, entity.returnNumber) }}
                     {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|oro_format_datetime) }}
                     {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('marello.return.returnentity.reason.label'|trans, entity.reason) }}
                 </div>
             </div>
         </div>
@@ -68,7 +69,7 @@
 
     {% set dataBlocks = [
         {
-            'title': 'marello.return.entity_label'|trans,
+            'title': 'marello.return.returnentity.entity_label'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data' : [return] }

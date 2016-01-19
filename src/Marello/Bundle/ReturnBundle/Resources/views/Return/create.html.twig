@@ -15,7 +15,7 @@
 {% endblock navButtons %}
 
 {% block pageHeader %}
-    {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.return.entity_label'|trans}) %}
+    {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.return.returnentity.entity_label'|trans}) %}
     {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
 {% endblock pageHeader %}
 
@@ -40,12 +40,27 @@
         </div>
     {% endset %}
 
+    {% set returnData %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                {{ form_row(form.reason) }}
+            </div>
+        </div>
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'marello.order.entity_label'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data' : [orderData] }
+            ]
+        },
+        {
+            'title': 'marello.return.returnentity.entity_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [returnData] }
             ]
         },
         {

@@ -1,8 +1,11 @@
 marello:
     return:
-        entity_label:             Return
-        entity_plural_label:      Returns
-        return_number.label:      Return Number
+
+        returnentity:
+            entity_label:             Return
+            entity_plural_label:      Returns
+            return_number.label:      Return Number
+            reason.label:             Return Reason
 
         returnitem:
             entity_label:               Returned Item
