@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
 use Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnTypeSubscriber;
+use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnEntityConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -45,7 +46,8 @@ class ReturnType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\ReturnBundle\Entity\ReturnEntity',
+            'data_class'  => 'Marello\Bundle\ReturnBundle\Entity\ReturnEntity',
+            'constraints' => new ReturnEntityConstraint(),
         ]);
     }
 
