@@ -7,6 +7,7 @@ use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnEntityConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ReturnType extends AbstractType
 {
@@ -31,9 +32,10 @@ class ReturnType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('reason', 'oro_enum_choice', [
-            'enum_code' => 'marello_return_reason',
-            'required'  => true,
-            'label'     => 'marello.return.returnentity.reason.label',
+            'enum_code'   => 'marello_return_reason',
+            'required'    => true,
+            'constraints' => new NotNull(),
+            'label'       => 'marello.return.returnentity.reason.label',
         ]);
         $builder->add('returnItems', ReturnItemCollectionType::NAME);
 
