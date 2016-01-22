@@ -60,18 +60,16 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
     }
 
     /**
-     * get widgets
-     * @return mixed
+     * @return array
      */
     protected function getWidgets()
     {
-        $rp = $this->manager->getRepository('OroDashboardBundle:Widget');
-        $qb = $rp->createQueryBuilder('wdt');
-
-        return $qb
+        return $this->manager->getRepository('OroDashboardBundle:Widget')
+            ->createQueryBuilder('wdt')
             ->where("wdt.name IN(:widgets)")
             ->setParameter('widgets', array_keys($this->widgets))
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 }
