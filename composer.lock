@@ -3397,13 +3397,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:marellocommerce/marello.git",
-                "reference": "96ff4e8c6ccd7d86489d1d4734b830bd0799a4da"
+                "url": "https://github.com/marellocommerce/marello.git",
+                "reference": "f9ed0ee9d63159c48b958097b9249f3755749ca8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/96ff4e8c6ccd7d86489d1d4734b830bd0799a4da",
-                "reference": "96ff4e8c6ccd7d86489d1d4734b830bd0799a4da",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/f9ed0ee9d63159c48b958097b9249f3755749ca8",
+                "reference": "f9ed0ee9d63159c48b958097b9249f3755749ca8",
                 "shasum": ""
             },
             "require": {
@@ -3436,7 +3436,7 @@
                 "source": "https://github.com/marellocommerce/marello/tree/master",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2016-01-19 11:42:49"
+            "time": "2016-01-22 18:30:27"
         },
         {
             "name": "michelf/php-markdown",
@@ -4252,16 +4252,16 @@
         },
         {
             "name": "piwik/device-detector",
-            "version": "3.5.0",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/piwik/device-detector.git",
-                "reference": "df9e81508f65f33436bab0daaaf942e1d59c89a1"
+                "reference": "29830f9bd67c8300e37828db0688161dd6f5f7a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/piwik/device-detector/zipball/df9e81508f65f33436bab0daaaf942e1d59c89a1",
-                "reference": "df9e81508f65f33436bab0daaaf942e1d59c89a1",
+                "url": "https://api.github.com/repos/piwik/device-detector/zipball/29830f9bd67c8300e37828db0688161dd6f5f7a5",
+                "reference": "29830f9bd67c8300e37828db0688161dd6f5f7a5",
                 "shasum": ""
             },
             "require": {
@@ -4299,7 +4299,7 @@
                 "parser",
                 "useragent"
             ],
-            "time": "2015-12-31 15:58:23"
+            "time": "2016-01-21 22:26:37"
         },
         {
             "name": "psr/log",
