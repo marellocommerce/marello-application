@@ -19,6 +19,11 @@ class ReturnItemType extends AbstractType
         $builder->add('quantity', 'number', [
             'data' => 0,
         ]);
+        $builder->add('reason', 'oro_enum_choice', [
+            'enum_code'   => 'marello_return_reason',
+            'required'    => true,
+            'label'       => 'marello.return.returnentity.reason.label',
+        ]);
     }
 
     /**

@@ -5,7 +5,6 @@ marello:
             entity_label:             Return
             entity_plural_label:      Returns
             return_number.label:      Return Number
-            reason.label:             Return Reason
 
         returnitem:
             entity_label:               Returned Item
@@ -13,3 +12,4 @@ marello:
             ordered_quantity.label:     Quantity Ordered
             returned_quantity.label:    Quantity Returned
             quantity.label:             Return Quantity
+            reason.label:               Return Reason

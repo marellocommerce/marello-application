@@ -106,6 +106,10 @@ datagrid:
                 data_name: quantity
                 label: marello.return.returnitem.returned_quantity.label
                 frontend_type: number
+            reason:
+                data_name: reason
+                label: marello.return.returnitem.reason.label
+                frontend_type: string
             price:
                 data_name: orderItem.price
                 label: marello.order.orderitem.price.label

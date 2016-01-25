@@ -40,27 +40,12 @@
         </div>
     {% endset %}
 
-    {% set returnData %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                {{ form_row(form.reason) }}
-            </div>
-        </div>
-    {% endset %}
-
     {% set dataBlocks = [
         {
             'title': 'marello.order.entity_label'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data' : [orderData] }
-            ]
-        },
-        {
-            'title': 'marello.return.returnentity.entity_label'|trans,
-            'class': 'active',
-            'subblocks': [
-                { 'data' : [returnData] }
             ]
         },
         {

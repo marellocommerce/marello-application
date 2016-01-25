@@ -6,6 +6,7 @@ use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ReturnItemApiType extends AbstractType
 {
@@ -21,6 +22,11 @@ class ReturnItemApiType extends AbstractType
             ->add('orderItem', 'entity', [
                 'class' => 'MarelloOrderBundle:OrderItem',
             ]);
+        $builder->add('reason', 'oro_enum_choice', [
+            'enum_code'   => 'marello_return_reason',
+            'required'    => true,
+            'constraints' => new NotNull()
+        ]);
     }
 
     /**

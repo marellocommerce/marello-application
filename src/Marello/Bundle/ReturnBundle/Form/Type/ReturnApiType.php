@@ -35,10 +35,6 @@ class ReturnApiType extends AbstractType
                 'required'    => true,
                 'constraints' => new NotNull(),
             ])
-            ->add('reason', 'oro_enum_choice', [
-                'enum_code'   => 'marello_return_reason',
-                'constraints' => new NotNull(),
-            ])
             ->add('returnNumber', 'text', [
                 'required' => false,
             ])

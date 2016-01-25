@@ -27,6 +27,12 @@
         </div>
         {{ form_errors(form.quantity) }}
     </td>
+    <td class="return-line-item-reason">
+        <div class="fields-row">
+            {{ form_widget(form.reason) }}
+        </div>
+        {{ form_errors(form.reason) }}
+    </td>
 {% endblock %}
 
 {% macro marello_return_item_collection_item_prototype(widget) %}
@@ -69,6 +75,7 @@
                         <th class="return-line-item-ordered-quantity"><span>{{ 'marello.return.returnitem.ordered_quantity.label'|trans }}</span></th>
                         <th class="return-line-item-returned-quantity"><span>{{ 'marello.return.returnitem.returned_quantity.label'|trans }}</span></th>
                         <th class="return-line-item-quantity"><span>{{ 'marello.return.returnitem.quantity.label'|trans }}</span></th>
+                        <th class="return-line-item-reason"><span>{{ 'marello.return.returnitem.reason.label'|trans }}</span></th>
                         <th class="return-line-item-notifications"></th>
                     </tr>
                     </thead>

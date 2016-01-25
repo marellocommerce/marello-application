@@ -4,13 +4,16 @@ namespace Marello\Bundle\ReturnBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\ReturnBundle\Model\ExtendReturnItem;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="marello_return_item")
  * @ORM\HasLifecycleCallbacks
+ * @Config
  */
-class ReturnItem
+class ReturnItem extends ExtendReturnItem
 {
     /**
      * @var int

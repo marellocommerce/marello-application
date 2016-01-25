@@ -31,12 +31,6 @@ class ReturnType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('reason', 'oro_enum_choice', [
-            'enum_code'   => 'marello_return_reason',
-            'required'    => true,
-            'constraints' => new NotNull(),
-            'label'       => 'marello.return.returnentity.reason.label',
-        ]);
         $builder->add('returnItems', ReturnItemCollectionType::NAME);
 
         $builder->addEventSubscriber($this->returnTypeSubscriber);

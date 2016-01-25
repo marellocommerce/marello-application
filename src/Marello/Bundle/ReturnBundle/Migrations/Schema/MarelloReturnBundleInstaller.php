@@ -59,18 +59,6 @@ class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAware
         $table->addIndex(['order_id'], 'idx_3c549d8d8d9f6d38', []);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['workflow_item_id'], 'uniq_3c549d8d1023c4ee');
-
-        $this->extendExtension->addEnumField(
-            $schema,
-            $table,
-            'reason',
-            'marello_return_reason',
-            false,
-            false,
-            [
-                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
-            ]
-        );
     }
 
     /**
@@ -90,6 +78,18 @@ class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAware
         $table->addIndex(['return_id'], 'idx_ae43aff6227416d5', []);
         $table->addIndex(['orderitem_id'], 'idx_ae43aff6e76e9c94', []);
         $table->setPrimaryKey(['id']);
+
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'reason',
+            'marello_return_reason',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+            ]
+        );
     }
 
     /**
