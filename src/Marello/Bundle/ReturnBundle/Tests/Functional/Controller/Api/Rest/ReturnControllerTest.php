@@ -72,11 +72,11 @@ class ReturnControllerTest extends WebTestCase
 
         $data = [
             'order'       => $returnedOrder->getOrderNumber(),
-            'reason'      => 'damaged',
             'returnItems' => $returnedOrder->getItems()->map(function (OrderItem $item) {
                 return [
                     'orderItem' => $item->getId(),
                     'quantity'  => $item->getQuantity(),
+                    'reason'    => 'damaged',
                 ];
             })->toArray(),
         ];
