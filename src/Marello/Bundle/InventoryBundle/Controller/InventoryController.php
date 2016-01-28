@@ -65,8 +65,9 @@ class InventoryController extends Controller
                     'route'      => 'marello_inventory_inventory_update',
                     'parameters' => ['id' => $product->getId()],
                 ],
-                [   'route' => 'marello_product_view',
-                    'parameters' => ['id' => $product->getId()]
+                [
+                    'route'      => 'marello_product_view',
+                    'parameters' => ['id' => $product->getId()],
                 ],
                 $product
             );
@@ -83,13 +84,30 @@ class InventoryController extends Controller
      * @Config\Template
      *
      * @param Product $product
+     *
      * @return array
      */
     public function infoAction(Product $product)
     {
         $item = $product->getInventoryItems()->first();
+
         return [
-            'item' => $item
+            'item' => $item,
+        ];
+    }
+
+    /**
+     * @Config\Route("/log/{id}", requirements={"id"="\d+"})
+     * @Config\Template
+     *
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function logAction(Product $product)
+    {
+        return [
+            'product' => $product
         ];
     }
 }

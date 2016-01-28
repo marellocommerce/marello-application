@@ -1,0 +1,7 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block page_container %}
+    <div class="widget-content">
+        {{ dataGrid.renderGrid('marello-inventory-log', {'productId': product.id}) }}
+    </div>
+{% endblock %}

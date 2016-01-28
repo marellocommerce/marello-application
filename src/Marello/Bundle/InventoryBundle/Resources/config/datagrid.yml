@@ -57,3 +57,33 @@ datagrid:
             stock:
                 label: Stock
                 data_name: stock
+
+    marello-inventory-log:
+        source:
+            type: orm
+            query:
+                select:
+                    - l
+                from:
+                    - { table: MarelloInventoryBundle:InventoryLog, alias: l }
+                join:
+                    left:
+                        - { join: l.inventoryItem, alias: i }
+                where:
+                    and:
+                        - IDENTITY(i.product) = :product_id
+            bind_parameters:
+                product_id: productId
+        columns:
+            changeAmount:
+                label: marello.inventory.inventorylog.changeAmount.label
+                frontend_type: number
+            actionType:
+                label: marello.inventory.inventorylog.actionType.label
+                frontend_type: string
+            user:
+                label: marello.inventory.inventorylog.user.label
+                frontend_type: string
+            createdAt:
+                label: marello.inventory.inventorylog.createdAt.label
+                frontend_type: datetime

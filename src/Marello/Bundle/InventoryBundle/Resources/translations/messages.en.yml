@@ -11,10 +11,6 @@ marello:
             id.label:               Id
             owner.label:            Owner
 
-        model:
-            warehouse:
-                adjustment.label:   Adjustment
-
         inventoryitem:
             entity_label:               Inventory Item
             entity_plural_label:        Inventory Items
@@ -22,3 +18,16 @@ marello:
             quantity.label:             Quantity
             warehouse.label:            Warehouse
             product.label:              Product
+
+        inventorylog:
+            entity_label:           Inventory Log
+            entity_plural_label:    Inventory Logs
+            id.label:               Id
+            changeAmount.label:     Quantity Change
+            actionType.label:       Trigger
+            user.label:             User
+            inventoryItem.label:    Inventory Item
+            createdAt.label:        Created At
+
+        logaction:
+            manual:                 Manual

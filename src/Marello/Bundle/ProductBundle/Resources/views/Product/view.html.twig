@@ -16,7 +16,27 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
+    {{ UI.clientButton({
+        'dataUrl': path('marello_inventory_inventory_log', {id: entity.id}),
+        'label': 'marello.inventory.inventorylog.entity_label'|trans,
+        'widget': {
+            'type': 'dialog',
+            'multiple': false,
+            'options': {
+                'alias': 'inventory-log-dialog',
+                'dialogOptions' : {
+                    'title' : 'marello.inventory.inventorylog.entity_label'|trans,
+                    'allowMaximize': true,
+                    'allowMinimize': true,
+                    'dblclick': 'maximize',
+                    'maximizedHeightDecreaseBy': 'minimize-bar',
+                    'width': 1000
+                }
+            }
+        }
+    }) }}
     {% if resource_granted('DELETE', entity) %}
+        {{ UI.buttonSeparator() }}
         {{ UI.deleteButton({
             'dataUrl': path('marello_product_api_delete_product', {'id': entity.id}),
             'dataRedirect': path('marello_product_index'),
@@ -25,9 +45,9 @@
             'dataId': entity.id,
             'entity_label': 'marello.product.entity_label'|trans,
         }) }}
-        {{ UI.buttonSeparator() }}
     {% endif %}
     {% if resource_granted('EDIT', entity) %}
+        {{ UI.buttonSeparator() }}
         {{ UI.editButton({
             'path': path('marello_product_update', {'id': entity.id}),
             'entity_label': 'marello.product.entity_label'|trans
