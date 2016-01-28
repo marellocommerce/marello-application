@@ -22,29 +22,49 @@ class InventoryLog
     protected $id;
 
     /**
+     * @ORM\Column(type="integer", nullable=false)
+     *
      * @var int
      */
     protected $changeAmount;
 
     /**
+     * @ORM\Column(type="string", nullable=false)
+     *
      * @var string
      */
     protected $actionType;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
+     *
      * @var User
      */
     protected $user = null;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem")
+     * @ORM\JoinColumn(nullable=false)
+     *
      * @var InventoryItem
      */
     protected $inventoryItem;
 
     /**
+     * @ORM\Column(type="datetime", nullable=false)
+     *
      * @var \DateTime
      */
-    protected $createdAt;
+    protected $createdAt = null;
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * @return int

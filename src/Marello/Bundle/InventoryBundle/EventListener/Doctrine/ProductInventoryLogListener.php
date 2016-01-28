@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
 
 class ProductInventoryLogListener
 {
@@ -11,12 +12,10 @@ class ProductInventoryLogListener
     {
         $entity = $args->getObject();
 
-        if (!$entity instanceof InventoryItem) {
+        if (!$entity instanceof Product) {
             return;
         }
 
-        if ($args->hasChangedField('product')) {
-            // TODO: If this works .. it's great!
-        }
+
     }
 }
