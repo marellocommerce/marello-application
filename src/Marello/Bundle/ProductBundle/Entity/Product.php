@@ -71,7 +71,7 @@ class Product extends ExtendProduct implements
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "excluded"=true
+     *              "short"=true
      *          }
      *      }
      * )

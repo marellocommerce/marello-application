@@ -5,12 +5,20 @@ oro_menu_config:
             route: marello_inventory_warehouse_updatedefault
             extras:
                 routes: ['marello_inventory_warehouse_*']
+        inventory:
+            label: marello.inventory.label
+            route: marello_inventory_inventory_index
+            extras:
+                routes: ['marello_inventory_inventory_*']
     tree:
         application_menu:
             children:
                 system_tab:
                     children:
                         warehouses: ~
+                products:
+                    children:
+                        inventory: ~
 
 oro_titles:
     marello_inventory_warehouse_updatedefault: 'Default Warehouse - Update'

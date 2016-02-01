@@ -1,0 +1,31 @@
+parameters:
+    marello_inventory.importexport.template_fixture.inventory_item.class: Marello\Bundle\InventoryBundle\ImportExport\TemplateFixture\InventoryItemFixture
+
+    marello_inventory.inventoryitem.entity.class: Marello\Bundle\InventoryBundle\Entity\InventoryItem
+
+services:
+    marello_inventory.importexport.data_converter:
+        parent: oro_importexport.data_converter.configurable
+
+    marello_inventory.importexport.template_fixture.data_converter.inventory_item:
+        parent: oro_importexport.data_converter.template_fixture.configurable
+
+    # Export processor
+    marello_inventory.importexport.processor.export:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, [@marello_inventory.importexport.data_converter]]
+        tags:
+            - { name: oro_importexport.processor, type: export, entity: %marello_inventory.inventoryitem.entity.class%, alias: marello_inventory_item }
+
+    marello_inventory.importexport.processor.export_template:
+        parent: oro_importexport.processor.export_abstract
+        calls:
+            - [setDataConverter, [@marello_inventory.importexport.template_fixture.data_converter.inventory_item]]
+        tags:
+            - { name: oro_importexport.processor, type: export_template, entity: %marello_inventory.inventoryitem.entity.class%, alias: marello_inventory_item }
+
+    marello_inventory.importexport.template_fixture.inventory_item:
+        class: %marello_inventory.importexport.template_fixture.inventory_item.class%
+        tags:
+            - { name: oro_importexport.template_fixture }

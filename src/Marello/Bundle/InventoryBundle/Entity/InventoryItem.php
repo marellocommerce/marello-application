@@ -5,6 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * @ORM\Entity()
@@ -33,7 +34,13 @@ class InventoryItem
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
-     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=10
+     *          }
+     *      }
+     * )
      * @var int
      */
     protected $id;
@@ -41,7 +48,14 @@ class InventoryItem
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="inventoryItems")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=20,
+     *              "short"=true
+     *          }
+     *      }
+     * )
      * @var Product
      */
     protected $product;
@@ -49,14 +63,27 @@ class InventoryItem
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=30,
+     *              "short"=true
+     *          }
+     *      }
+     * )
      * @var Warehouse
      */
     protected $warehouse;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
-     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      * @var int
      */
     protected $quantity = 0;

@@ -21,10 +21,37 @@ datagrid:
                 frontend_type: string
                 data_name: name
             quantity:
-                label: marello.inventory.inventoryitem.quantity.label
+                label: marello.product.stock_level.label
                 frontend_type: number
                 data_name: stockLevel
-
+            status:
+                label: marello.product.status.label
+                frontend_type: string
+                data_name: status
+            createdAt:
+                label:              oro.ui.created_at
+                frontend_type:      datetime
+                data_name:          createdAt
+        filters:
+            columns:
+                sku:
+                    type:             string
+                    data_name:        sku
+                product:
+                    type:             string
+                    data_name:        name
+                quantity:
+                    type:             string
+                    data_name:        stockLevel
+                status:
+                    type: entity
+                    data_name: s
+                    options:
+                        field_options:
+                            class: Marello\Bundle\ProductBundle\Entity\ProductStatus
+                createdAt:
+                    type:             datetime
+                    data_name:        createdAt
         properties:
             inventory_link:
                 type:       url
@@ -36,6 +63,8 @@ datagrid:
                 icon:           list-alt
                 link:           inventory_link
                 rowAction:      true
+        options:
+            export: true
 
     marello-inventory-product-item:
         source:
