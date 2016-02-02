@@ -1,0 +1,7 @@
+<span class={{ value > 0 ? 'text-success' : 'text-error' }}>
+    {% if value > 0 %}
+        <i class="fa fa-caret-up"></i> {{ value }}
+    {% else %}
+        <i class="fa fa-caret-down"></i> {{ -value }}
+    {% endif %}
+</span>

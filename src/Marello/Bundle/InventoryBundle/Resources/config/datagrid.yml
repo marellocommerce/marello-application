@@ -77,9 +77,13 @@ datagrid:
         columns:
             changeAmount:
                 label: marello.inventory.inventorylog.changeAmount.label
-                frontend_type: number
+                type: twig
+                frontend_type: html
+                template: MarelloInventoryBundle::Datagrid/InventoryLog/changeAmount.html.twig
             actionType:
                 label: marello.inventory.inventorylog.actionType.label
+                type: translatable
+                domain: MarelloInventoryLogAction
                 frontend_type: string
             user:
                 label: marello.inventory.inventorylog.user.label
