@@ -98,7 +98,8 @@ class ProductHandler
 
             $this->dispatcher->dispatch(InventoryLogEvent::NAME, new InventoryLogEvent(
                 $item->getData(),
-                $amount,
+                $item->getData()->getQuantity() - $amount,
+                $item->getData()->getQuantity(),
                 'manual'
             ));
         }

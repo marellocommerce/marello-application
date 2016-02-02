@@ -41,7 +41,8 @@ class InventoryLogListener
         $log
             ->setInventoryItem($event->getInventoryItem())
             ->setActionType($event->getType())
-            ->setChangeAmount($event->getChangeAmount())
+            ->setOldQuantity($event->getOldQuantity())
+            ->setNewQuantity($event->getNewQuantity())
             ->setUser($event->getUser());
 
         /*

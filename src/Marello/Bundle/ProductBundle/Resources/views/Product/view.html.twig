@@ -17,7 +17,7 @@
 
 {% block navButtons %}
     {{ UI.clientButton({
-        'dataUrl': path('marello_inventory_inventory_log', {id: entity.id}),
+        'dataUrl': path('marello_inventory_inventorylog_list', {id: entity.id}),
         'label': 'marello.inventory.inventorylog.entity_label'|trans,
         'widget': {
             'type': 'dialog',
@@ -81,10 +81,15 @@
         }) }}
     {% endset %}
 
+    {% set inventoryChart %}
+        {% render controller('MarelloInventoryBundle:InventoryLog:chart', {id: entity.id}) %}
+        {#{% placeholder marello_inventory_log_chart_item with {id: entity.id} %}#}
+    {% endset %}
+
     {% set dataBlocks = [{
         'title': 'General'|trans,
         'subblocks': [
-            {'data' : [productInformationWidget] },
+            {'data' : [productInformationWidget, inventoryChart] },
         ]
     }] %}
 

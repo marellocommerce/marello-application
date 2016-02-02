@@ -13,9 +13,6 @@ class InventoryLogEvent extends Event
     /** @var InventoryItem */
     protected $inventoryItem;
 
-    /** @var int */
-    protected $changeAmount;
-
     /** @var User */
     protected $user;
 
@@ -25,27 +22,36 @@ class InventoryLogEvent extends Event
     /** @var array */
     protected $payload = [];
 
+    /** @var int */
+    private $oldQuantity;
+
+    /** @var int */
+    private $newQuantity;
+
     /**
      * InventoryLogEvent constructor.
      *
      * @param InventoryItem $inventoryItem Inventory for which is this event created.
-     * @param int           $changeAmount  Amount how much has inventory changed.
+     * @param int           $oldQuantity   Old inventory quantity.
+     * @param int           $newQuantity   New Inventory quantity.
      * @param string        $type          Type of change.
      * @param User          $user          User making the change.
      * @param array         $payload       Payload containing any additional parameters.
      */
     public function __construct(
         InventoryItem $inventoryItem,
-        $changeAmount,
+        $oldQuantity,
+        $newQuantity,
         $type,
         User $user = null,
         array $payload = []
     ) {
         $this->inventoryItem = $inventoryItem;
-        $this->changeAmount  = $changeAmount;
         $this->user          = $user;
         $this->type          = $type;
         $this->payload       = $payload;
+        $this->oldQuantity   = $oldQuantity;
+        $this->newQuantity   = $newQuantity;
     }
 
     /**
@@ -74,18 +80,6 @@ class InventoryLogEvent extends Event
     public function getChangeAmount()
     {
         return $this->changeAmount;
-    }
-
-    /**
-     * @param int $changeAmount
-     *
-     * @return $this
-     */
-    public function setChangeAmount($changeAmount)
-    {
-        $this->changeAmount = $changeAmount;
-
-        return $this;
     }
 
     /**
@@ -146,5 +140,21 @@ class InventoryLogEvent extends Event
         $this->payload = $payload;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNewQuantity()
+    {
+        return $this->newQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOldQuantity()
+    {
+        return $this->oldQuantity;
     }
 }

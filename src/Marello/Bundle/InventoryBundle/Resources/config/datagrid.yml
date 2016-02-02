@@ -64,6 +64,7 @@ datagrid:
             query:
                 select:
                     - l
+                    - (l.newQuantity - l.oldQuantity) AS changeAmount
                 from:
                     - { table: MarelloInventoryBundle:InventoryLog, alias: l }
                 join:
@@ -76,6 +77,7 @@ datagrid:
                 product_id: productId
         columns:
             changeAmount:
+                data_name: changeAmount
                 label: marello.inventory.inventorylog.changeAmount.label
                 type: twig
                 frontend_type: html

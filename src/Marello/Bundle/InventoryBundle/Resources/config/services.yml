@@ -7,15 +7,10 @@ services:
         tags:
             - { name: oro_ui.view_action_provider, group: product }
 
-    marello_inventory.logging.inventory_logger:
-        class: Marello\Bundle\InventoryBundle\Logging\InventoryLogger
+    marello_inventory.logging.chart_builder:
+        class: Marello\Bundle\InventoryBundle\Logging\ChartBuilder
         arguments:
             - @doctrine
-
-    marello_inventory.logging.handler.manual:
-        class: Marello\Bundle\InventoryBundle\Logging\InventoryLogActionHandler
-        tags:
-            - { name: marello_inventory.logging.inventory_logger, type: manual }
 
     marello_inventory.event_listener.doctrine.product_inventory_log:
         class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\ProductInventoryLogListener

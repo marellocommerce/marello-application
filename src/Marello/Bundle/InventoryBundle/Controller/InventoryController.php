@@ -95,19 +95,4 @@ class InventoryController extends Controller
             'item' => $item,
         ];
     }
-
-    /**
-     * @Config\Route("/log/{id}", requirements={"id"="\d+"})
-     * @Config\Template
-     *
-     * @param Product $product
-     *
-     * @return array
-     */
-    public function logAction(Product $product)
-    {
-        return [
-            'product' => $product
-        ];
-    }
 }

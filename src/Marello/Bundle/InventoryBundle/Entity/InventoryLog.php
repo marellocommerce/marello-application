@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLogRepository")
  * @ORM\Table(name="marello_inventory_log")
  * @ORM\HasLifecycleCallbacks
  */
@@ -26,7 +26,14 @@ class InventoryLog
      *
      * @var int
      */
-    protected $changeAmount;
+    protected $oldQuantity;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     *
+     * @var int
+     */
+    protected $newQuantity;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -75,14 +82,6 @@ class InventoryLog
     }
 
     /**
-     * @return int
-     */
-    public function getChangeAmount()
-    {
-        return $this->changeAmount;
-    }
-
-    /**
      * @return string
      */
     public function getActionType()
@@ -104,18 +103,6 @@ class InventoryLog
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-
-    /**
-     * @param int $changeAmount
-     *
-     * @return $this
-     */
-    public function setChangeAmount($changeAmount)
-    {
-        $this->changeAmount = $changeAmount;
-
-        return $this;
     }
 
     /**
@@ -158,6 +145,46 @@ class InventoryLog
     public function setInventoryItem($inventoryItem)
     {
         $this->inventoryItem = $inventoryItem;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOldQuantity()
+    {
+        return $this->oldQuantity;
+    }
+
+    /**
+     * @param int $oldQuantity
+     *
+     * @return $this
+     */
+    public function setOldQuantity($oldQuantity)
+    {
+        $this->oldQuantity = $oldQuantity;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNewQuantity()
+    {
+        return $this->newQuantity;
+    }
+
+    /**
+     * @param int $newQuantity
+     *
+     * @return $this
+     */
+    public function setNewQuantity($newQuantity)
+    {
+        $this->newQuantity = $newQuantity;
 
         return $this;
     }
