@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 
+use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\Util\Codes;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @dbIsolation
@@ -43,6 +45,9 @@ class OrderControllerTest extends WebTestCase
         $data = [
             'orderReference'  => 333444,
             'salesChannel'    => $this->getReference('marello_sales_channel_3')->getId(),
+            'subtotal'        => 365.00,
+            'totalTax'        => 76.65,
+            'grandTotal'      => 365.00,
             'billingAddress'  => [
                 'firstName'  => 'Falco',
                 'lastName'   => 'van der Maden',
@@ -65,16 +70,16 @@ class OrderControllerTest extends WebTestCase
                 [
                     'product'    => 'msj002',
                     'quantity'   => 1,
-                    'price'      => 190.0,
-                    'tax'        => 190.0 * 0.2,
-                    'totalPrice' => 190.0 * 1.2,
+                    'price'      => 190.00,
+                    'tax'        => 39.90,
+                    'totalPrice' => 190.00,
                 ],
                 [
                     'product'    => 'msj005',
                     'quantity'   => 1,
-                    'price'      => 175.0,
-                    'tax'        => 175.0 * 0.2,
-                    'totalPrice' => 175.0 * 1.2,
+                    'price'      => 175.00,
+                    'tax'        => 36.75,
+                    'totalPrice' => 175.00,
                 ],
             ],
         ];
@@ -86,7 +91,6 @@ class OrderControllerTest extends WebTestCase
         );
 
         $response = json_decode($this->client->getResponse()->getContent(), true);
-
         $this->assertArrayHasKey('id', $response);
 
         /** @var Order $order */
@@ -110,6 +114,58 @@ class OrderControllerTest extends WebTestCase
 
         $response = $this->client->getResponse();
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+    }
+
+    public function testUpdate()
+    {
+        $data = [
+            'orderReference'  => 222222,
+            'subtotal'        => 365.00,
+            'totalTax'        => 76.65,
+            'grandTotal'      => 365.00,
+            'billingAddress'  => [
+                'firstName'  => 'Han',
+                'lastName'   => 'Solo',
+                'country'    => 'NL',
+                'street'     => 'Hollywood Blvd',
+                'city'       => 'Eindhoven',
+                'region'     => 'NL-NB',
+                'postalCode' => '5617 BC',
+            ],
+            'shippingAddress' => [
+                'firstName'  => 'Han',
+                'lastName'   => 'Solo',
+                'country'    => 'NL',
+                'street'     => 'Hollywood Blvd',
+                'city'       => 'Alderaan',
+                'region'     => 'NL-NB',
+                'postalCode' => '5617 BC',
+            ],
+            'items'           => [
+                [
+                    'product'    => 'msj002',
+                    'quantity'   => 1,
+                    'price'      => 190.00,
+                    'tax'        => 39.90,
+                    'totalPrice' => 190.00,
+                ],
+                [
+                    'product'    => 'msj005',
+                    'quantity'   => 1,
+                    'price'      => 175.00,
+                    'tax'        => 36.75,
+                    'totalPrice' => 175.00,
+                ],
+            ],
+        ];
+
+        $this->client->request(
+            'PUT',
+            $this->getUrl('marello_order_api_put_order', ['id' => $this->getReference('marello_order_0')->getId()]),
+            $data
+        );
+
+        $this->assertEquals($this->client->getResponse()->getStatusCode(), Codes::HTTP_NO_CONTENT);
     }
 
     /**
