@@ -62,7 +62,6 @@ datagrid:
                 type:           navigate
                 icon:           list-alt
                 link:           inventory_link
-                rowAction:      true
         options:
             export: true
 
