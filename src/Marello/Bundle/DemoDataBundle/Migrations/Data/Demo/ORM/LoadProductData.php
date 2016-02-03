@@ -23,6 +23,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
+            'Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\LoadOrganizationAndBusinessUnitData',
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductStatusData',
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData'
         ];
@@ -35,9 +36,14 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
-        $this->defaultOrganization = $this->manager
+        $organizations = $this->manager
             ->getRepository('OroOrganizationBundle:Organization')
-            ->getOrganizationById(1);
+            ->findAll();
+
+        if (is_array($organizations) && count($organizations) > 0) {
+            $this->defaultOrganization = array_shift($organizations);
+        }
+
         $this->defaultWarehouse = $this->manager
             ->getRepository('MarelloInventoryBundle:Warehouse')
             ->getDefault();
@@ -81,6 +87,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setSku($data['sku']);
         $product->setPrice($data['price']);
         $product->setName($data['name']);
+        $product->setOrganization($this->defaultOrganization);
         $inventoryItem = new InventoryItem();
         $inventoryItem->setProduct($product);
         $inventoryItem->setWarehouse($this->defaultWarehouse);

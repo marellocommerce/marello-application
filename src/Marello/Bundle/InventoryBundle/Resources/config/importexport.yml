@@ -10,6 +10,21 @@ services:
     marello_inventory.importexport.template_fixture.data_converter.inventory_item:
         parent: oro_importexport.data_converter.template_fixture.configurable
 
+    # Strategy
+    marello_inventory.importexport.strategy.inventory.add_or_replace:
+        class: Marello\Bundle\InventoryBundle\ImportExport\Strategy\InventoryItemUpdateStrategy
+        parent: oro_importexport.strategy.configurable_add_or_replace
+
+    # Import processor
+    marello_inventory.importexport.processor.import.add_or_replace:
+        parent: oro_importexport.processor.import_abstract
+        calls:
+            - [setDataConverter, [@marello_inventory.importexport.data_converter]]
+            - [setStrategy, [@marello_inventory.importexport.strategy.inventory.add_or_replace]]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: %marello_inventory.inventoryitem.entity.class%, alias: marello_inventory.add_or_replace }
+            - { name: oro_importexport.processor, type: import_validation, entity: %marello_inventory.inventoryitem.entity.class%, alias: marello_inventory.add_or_replace }
+
     # Export processor
     marello_inventory.importexport.processor.export:
         parent: oro_importexport.processor.export_abstract

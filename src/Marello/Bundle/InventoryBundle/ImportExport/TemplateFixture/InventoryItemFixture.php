@@ -6,6 +6,9 @@ use Oro\Bundle\ImportExportBundle\TemplateFixture\AbstractTemplateRepository;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class InventoryItemFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
 {
@@ -35,12 +38,10 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
 
     /**
      * @param string  $key
-     * @param Account $entity
+     * @param InventoryItem $entity
      */
     public function fillEntityData($key, $entity)
     {
-        $productRepo = $this->templateManager
-            ->getEntityRepository('Marello\Bundle\ProductBundle\Entity\Product');
         $warehouseRepo = $this->templateManager
             ->getEntityRepository('Marello\Bundle\InventoryBundle\Entity\Warehouse');
 
@@ -48,12 +49,33 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
             case 'Macbook':
                 $entity
                     ->setId(1)
-                    ->setProduct($productRepo->getEntity('Macbook Pro'))
-                    ->setQuantity(10)
+                    ->setProduct($this->createProduct($entity))
+                    ->setQuantity(12)
                     ->setWarehouse($warehouseRepo->getEntity('main'));
                 return;
         }
 
         parent::fillEntityData($key, $entity);
+    }
+
+    /**
+     * Create Product
+     * @return Product
+     */
+    public function createProduct($item)
+    {
+        $entity = new Product();
+        $entity->setName('Woood Coffee Table');
+        $entity->setSku('WCT-1');
+        $entity->setPrice(399.00);
+
+        $status = new ProductStatus('enabled');
+        $entity->setStatus($status);
+
+        $channel = new SalesChannel('magento');
+        $entity->addChannel($channel);
+
+        $entity->addInventoryItem($item);
+        return $entity;
     }
 }

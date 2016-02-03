@@ -37,7 +37,7 @@ class InventoryItem
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "order"=10
+     *              "excluded"=true
      *          }
      *      }
      * )
@@ -51,8 +51,9 @@ class InventoryItem
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "order"=20,
-     *              "short"=true
+     *              "order"=10,
+     *              "header"="",
+     *              "full"=true,
      *          }
      *      }
      * )
@@ -66,8 +67,7 @@ class InventoryItem
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "order"=30,
-     *              "short"=true
+     *              "excluded"=true
      *          }
      *      }
      * )
@@ -80,7 +80,8 @@ class InventoryItem
      * @ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "excluded"=true
+     *              "order"=20,
+     *              "header"="Total Stock"
      *          }
      *      }
      * )
@@ -94,6 +95,15 @@ class InventoryItem
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return InventoryItem
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**
