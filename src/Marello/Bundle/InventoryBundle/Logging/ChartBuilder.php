@@ -71,7 +71,7 @@ class ChartBuilder
             }
 
             $values[] = [
-                'time' => $currentTime->format('Y-m-d'),
+                'time' => $currentTime->format(DATE_ISO8601),
                 'quantity' => $newValue
             ];
 

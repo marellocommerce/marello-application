@@ -1,3 +1,11 @@
-darn
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 
-{{ chartView.render()|raw }}
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            <div class="responsive-block">
+                {{ chartView.render()|raw }}
+            </div>
+        </div>
+    </div>
+</div>

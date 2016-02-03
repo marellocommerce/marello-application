@@ -49,22 +49,22 @@ class InventoryLogController extends Controller
         $viewBuilder = $this->container->get('oro_chart.view_builder');
 
         $view = $viewBuilder
+            ->setArrayData($items)
             ->setOptions([
-                'name'        => 'line_chart',
+                'name'        => 'marelloinventory',
                 'data_schema' => [
                     'label' => [
-                        'type'       => 'string',
+                        'type'       => 'datetime',
                         'field_name' => 'time',
                         'label'      => 'Time',
                     ],
                     'value' => [
-                        'type'       => 'number',
+                        'type'       => 'integer',
                         'field_name' => 'quantity',
                         'label'      => 'Quantity',
                     ],
-                ],
+                ]
             ])
-            ->setArrayData($items)
             ->getView();
 
         return [

@@ -81,15 +81,18 @@
         }) }}
     {% endset %}
 
-    {% set inventoryChart %}
-        {% render controller('MarelloInventoryBundle:InventoryLog:chart', {id: entity.id}) %}
-        {#{% placeholder marello_inventory_log_chart_item with {id: entity.id} %}#}
+    {% set productInventoryLogWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('marello_inventory_inventorylog_chart', {id: entity.id}),
+            'title': ''
+        }) }}
     {% endset %}
 
     {% set dataBlocks = [{
         'title': 'General'|trans,
         'subblocks': [
-            {'data' : [productInformationWidget, inventoryChart] },
+            {'data' : [productInformationWidget] },
         ]
     }] %}
 
@@ -111,6 +114,17 @@
             'useSpan': false,
             'data' : [
                 productInventoryWidget
+            ]
+        }]
+    }]) %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.inventory.inventorylog.entity_label'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                productInventoryLogWidget
             ]
         }]
     }]) %}
