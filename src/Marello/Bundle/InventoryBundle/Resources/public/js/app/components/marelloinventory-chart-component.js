@@ -72,6 +72,7 @@ define(function(require) {
                 }
                 return label;
             };
+
             var getYLabel = function(data) {
                 var label = dataFormatter.formatValue(data, yFormat);
                 if (label === null) {
@@ -87,6 +88,9 @@ define(function(require) {
                 return label;
             };
 
+            var ticks = [],
+                ticksFinished = false;
+
             var makeChart = function(rawData, count, key) {
                 var chartData = [];
 
@@ -99,9 +103,13 @@ define(function(require) {
                     var xValue = dataFormatter.parseValue(rawData[i].label, xFormat);
                     xValue = xValue === null ? parseInt(i) : xValue;
 
+                    ticksFinished || ticks.push(xValue);
+
                     var item = [xValue, yValue];
                     chartData.push(item);
                 }
+
+                ticksFinished = true;
 
                 return {
                     label: key,
@@ -122,6 +130,8 @@ define(function(require) {
 
                 charts.push(result);
             });
+
+            console.log(ticks);
 
             Flotr.draw(
                 $chart.get(0),
@@ -152,18 +162,18 @@ define(function(require) {
                         title: options.data_schema.value.label + '  '
                     },
                     xaxis: {
-                        autoscale: true,
-                        autoscaleMargin: 0,
                         tickFormatter: function(x) {
                             return getXLabel(x);
                         },
                         title: this.narrowScreen ? ' ' : options.data_schema.label.label,
                         labelsAngle: this.narrowScreen ? 45 : 0,
-                        margin: true
+                        margin: true,
+                        autoscale: true,
+                        ticks: ticks
                     },
                     HtmlText: false,
                     grid: {
-                        verticalLines: false
+                        verticalLines: true
                     },
                     legend: {
                         show: true,

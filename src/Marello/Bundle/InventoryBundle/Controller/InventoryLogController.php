@@ -38,8 +38,8 @@ class InventoryLogController extends Controller
      */
     public function chartAction(Product $product, Request $request)
     {
-        $from     = new \DateTime($request->query->get('from', 'now - 1 week'));
-        $to       = new \DateTime($request->query->get('to', 'now'));
+        $from     = new \DateTime($request->query->get('from', 'tomorrow - 1 second - 1 week'));
+        $to       = new \DateTime($request->query->get('to', 'tomorrow - 1 second'));
         $interval = $request->get('interval', '1 day');
 
         $items = $this
@@ -54,12 +54,10 @@ class InventoryLogController extends Controller
                 'name'        => 'marelloinventory',
                 'data_schema' => [
                     'label' => [
-                        'type'       => 'datetime',
                         'field_name' => 'time',
                         'label'      => 'Time',
                     ],
                     'value' => [
-                        'type'       => 'integer',
                         'field_name' => 'quantity',
                         'label'      => 'Quantity',
                     ],

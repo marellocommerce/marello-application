@@ -5,7 +5,7 @@ oro_chart:
           - name: label
             label: oro.chart.multiline_chart.params.label
             required: true
-            default_type: date
+            default_type: day
           - name: value
             label: oro.chart.multiline_chart.params.value
             required: true

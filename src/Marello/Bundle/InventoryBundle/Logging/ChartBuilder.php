@@ -28,8 +28,8 @@ class ChartBuilder
 
         $grouped = $this->groupByInventoryItem($logItems);
 
-        foreach ($grouped as $inventoryItemId => $logs) {
-            $grouped[$inventoryItemId] = $this->valuesPerInterval($logs, $from, $to, $interval);
+        foreach ($grouped as $inventoryItemLabel => $logs) {
+            $grouped[$inventoryItemLabel] = $this->valuesPerInterval($logs, $from, $to, $interval);
         }
 
         return $grouped;
@@ -41,13 +41,13 @@ class ChartBuilder
 
         array_map(
             function (InventoryLog $inventoryLog) use (&$grouped) {
-                $inventoryItemId = $inventoryLog->getInventoryItem()->getId();
+                $inventoryItemLabel = $inventoryLog->getInventoryItem()->getWarehouse()->getLabel();
 
-                if (!array_key_exists($inventoryItemId, $grouped)) {
-                    $grouped[$inventoryItemId] = [];
+                if (!array_key_exists($inventoryItemLabel, $grouped)) {
+                    $grouped[$inventoryItemLabel] = [];
                 }
 
-                $grouped[$inventoryItemId][] = $inventoryLog;
+                $grouped[$inventoryItemLabel][] = $inventoryLog;
             },
             $logItems
         );
