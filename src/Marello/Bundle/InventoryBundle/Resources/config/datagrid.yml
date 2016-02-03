@@ -93,3 +93,8 @@ datagrid:
             createdAt:
                 label: marello.inventory.inventorylog.createdAt.label
                 frontend_type: datetime
+        sorters:
+            columns:
+                createdAt:      { data_name: l.createdAt }
+            default:
+                createdAt:  DESC
