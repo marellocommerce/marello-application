@@ -65,6 +65,7 @@ datagrid:
                 select:
                     - l
                     - (l.newQuantity - l.oldQuantity) AS changeAmount
+                    - CASE WHEN ((l.newQuantity - l.oldQuantity) > 0) THEN 'increase' ELSE 'decrease' AS changeDirection
                 from:
                     - { table: MarelloInventoryBundle:InventoryLog, alias: l }
                 join:
@@ -77,24 +78,29 @@ datagrid:
                 product_id: productId
         columns:
             changeAmount:
-                data_name: changeAmount
-                label: marello.inventory.inventorylog.changeAmount.label
-                type: twig
-                frontend_type: html
-                template: MarelloInventoryBundle::Datagrid/InventoryLog/changeAmount.html.twig
+                data_name:      changeAmount
+                label:          marello.inventory.inventorylog.changeAmount.label
+                type:           twig
+                frontend_type:  html
+                template:       MarelloInventoryBundle::Datagrid/InventoryLog/changeAmount.html.twig
+            changeDirection:
+                data_name:      changeDirection
+                label:          Change Direction
+                frontend_type:  string
             actionType:
-                label: marello.inventory.inventorylog.actionType.label
-                type: translatable
-                domain: MarelloInventoryLogAction
-                frontend_type: string
+                label:          marello.inventory.inventorylog.actionType.label
+                type:           translatable
+                domain:         MarelloInventoryLogAction
+                frontend_type:  string
             user:
-                label: marello.inventory.inventorylog.user.label
-                frontend_type: string
+                label:          marello.inventory.inventorylog.user.label
+                frontend_type:  string
             createdAt:
-                label: marello.inventory.inventorylog.createdAt.label
-                frontend_type: datetime
+                label:          marello.inventory.inventorylog.createdAt.label
+                frontend_type:  datetime
         sorters:
             columns:
-                createdAt:      { data_name: l.createdAt }
+                createdAt:
+                    data_name:  l.createdAt
             default:
-                createdAt:  DESC
+                createdAt:      DESC

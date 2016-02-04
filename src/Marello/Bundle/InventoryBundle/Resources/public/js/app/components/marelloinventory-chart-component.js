@@ -131,8 +131,6 @@ define(function(require) {
                 charts.push(result);
             });
 
-            console.log(ticks);
-
             Flotr.draw(
                 $chart.get(0),
                 charts,
