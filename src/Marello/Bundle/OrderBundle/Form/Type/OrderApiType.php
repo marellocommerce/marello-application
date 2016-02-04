@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
-use Marello\Bundle\OrderBundle\Form\Listener\OrderTotalsSubscriber;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,19 +29,17 @@ class OrderApiType extends AbstractType
         $builder
             ->add('orderReference')
             ->add('salesChannel', 'number')
+            ->add('subtotal', 'oro_money')
+            ->add('totalTax', 'oro_money')
+            ->add('grandTotal', 'oro_money')
             ->add('billingAddress', 'marello_address')
             ->add('shippingAddress', 'marello_address')
-            ->add('items', 'collection', [
+            ->add('items', OrderItemCollectionType::NAME, [
                 'type'         => OrderItemApiType::NAME,
                 'allow_add'    => true,
             ]);
 
         $builder->get('salesChannel')->addModelTransformer($this->salesChannelTransformer);
-
-        /*
-         * Takes care of setting order totals.
-         */
-        $builder->addEventSubscriber(new OrderTotalsSubscriber());
     }
 
     /**
