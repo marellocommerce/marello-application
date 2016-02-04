@@ -97,6 +97,17 @@
     }] %}
 
     {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.inventory.inventorylog.entity_label'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                productInventoryLogWidget
+            ]
+        }]
+    }]) %}
+
+    {% set dataBlocks = dataBlocks|merge([{
         'title' : 'marello.pricing.productprice.entity_plural_label'|trans,
         'subblocks': [{
             'title' : null,
@@ -114,17 +125,6 @@
             'useSpan': false,
             'data' : [
                 productInventoryWidget
-            ]
-        }]
-    }]) %}
-
-    {% set dataBlocks = dataBlocks|merge([{
-        'title' : 'marello.inventory.inventorylog.entity_label'|trans,
-        'subblocks': [{
-            'title' : null,
-            'useSpan': false,
-            'data' : [
-                productInventoryLogWidget
             ]
         }]
     }]) %}
