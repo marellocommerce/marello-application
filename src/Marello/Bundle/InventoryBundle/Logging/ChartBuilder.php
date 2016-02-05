@@ -20,7 +20,15 @@ class ChartBuilder
         $this->doctrine = $doctrine;
     }
 
-    public function getChartData($product, $from, $to, $interval = '1 day')
+    /**
+     * @param int           $product  Product ID
+     * @param \DateTime     $from     Start of period
+     * @param \DateTime     $to       End of period
+     * @param \DateInterval $interval Interval
+     *
+     * @return array
+     */
+    public function getChartData($product, \DateTime $from, \DateTime $to, \DateInterval $interval)
     {
         $logItems = $this->doctrine
             ->getRepository('MarelloInventoryBundle:InventoryLog')
@@ -55,27 +63,33 @@ class ChartBuilder
         return $grouped;
     }
 
-    protected function valuesPerInterval($logs, $from, $to, $interval)
+    /**
+     * @param InventoryLog[] $logs
+     * @param \DateTime      $from
+     * @param \DateTime      $to
+     * @param \DateInterval  $interval
+     *
+     * @return array
+     */
+    protected function valuesPerInterval($logs, \DateTime $from, \DateTime $to, \DateInterval $interval)
     {
-        /** @var \DateTime $currentTime */
-        $currentTime = clone $from;
         /** @var InventoryLog $log */
         $log      = reset($logs);
         $values   = [];
         $newValue = $log->getOldQuantity();
 
-        while ($currentTime <= $to) {
+        $period   = new \DatePeriod($from, $interval, $to);
+
+        foreach ($period as $currentTime) {
             while (($log !== false) && ($log->getCreatedAt() <= $currentTime)) {
                 $newValue = $log->getNewQuantity();
                 $log      = next($logs);
             }
 
             $values[] = [
-                'time' => $currentTime->format(DATE_ISO8601),
-                'quantity' => $newValue
+                'time'     => $currentTime->format(DATE_ISO8601),
+                'quantity' => $newValue,
             ];
-
-            $currentTime->modify('+ ' . $interval);
         }
 
         return $values;

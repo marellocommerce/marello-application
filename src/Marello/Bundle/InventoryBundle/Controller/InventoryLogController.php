@@ -38,9 +38,17 @@ class InventoryLogController extends Controller
      */
     public function chartAction(Product $product, Request $request)
     {
+        /*
+         * Create parameters required for chart.
+         */
         $from     = new \DateTime($request->query->get('from', 'tomorrow - 1 second - 1 week'));
         $to       = new \DateTime($request->query->get('to', 'tomorrow - 1 second'));
-        $interval = $request->get('interval', '1 day');
+        $interval = new \DateInterval($request->get('interval', 'PT24H'));
+
+        /*
+         * Add interval to end date once, so the end date will be included in results.
+         */
+        $to->add($interval);
 
         $items = $this
             ->get('marello_inventory.logging.chart_builder')
@@ -61,12 +69,13 @@ class InventoryLogController extends Controller
                         'field_name' => 'quantity',
                         'label'      => 'Quantity',
                     ],
-                ]
+                ],
             ])
             ->getView();
 
         return [
             'chartView' => $view,
+            'product'   => $product,
         ];
     }
 }
