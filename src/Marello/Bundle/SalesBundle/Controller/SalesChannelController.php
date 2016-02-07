@@ -21,12 +21,7 @@ class SalesChannelController extends Controller
      * @Config\Route("/", name="marello_sales_saleschannel_index")
      * @Config\Method("GET")
      * @Config\Template
-     * @Security\Acl(
-     *      id="marello_sales_saleschannel_view",
-     *      type="entity",
-     *      permission="VIEW",
-     *      class="MarelloSalesBundle:SalesChannel"
-     * )
+     * @Security\AclAncestor("marello_sales_saleschannel_view")
      */
     public function indexAction()
     {
@@ -38,12 +33,7 @@ class SalesChannelController extends Controller
     /**
      * @Config\Route("/delete/{id}", requirements={"id":"\d+"})
      * @Config\Method("DELETE")
-     * @Security\Acl(
-     *      id="marello_sales_channel_delete",
-     *      type="entity",
-     *      permission="DELETE",
-     *      class="MarelloSalesBundle:SalesChannel"
-     * )
+     * @Security\AclAncestor("marello_sales_saleschannel_delete")
      *
      * @param SalesChannel $channel
      *
@@ -80,12 +70,7 @@ class SalesChannelController extends Controller
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template("MarelloSalesBundle:SalesChannel:update.html.twig")
-     * @Security\Acl(
-     *      id="marello_sales_channel_create",
-     *      type="entity",
-     *      permission="CREATE",
-     *      class="MarelloSalesBundle:SalesChannel"
-     * )
+     * @Security\AclAncestor("marello_sales_saleschannel_create")
      *
      *
      * @return array
@@ -99,12 +84,7 @@ class SalesChannelController extends Controller
      * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_sales_saleschannel_update")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
-     * @Security\Acl(
-     *      id="marello_sales_saleschannel_update",
-     *      type="entity",
-     *      permission="EDIT",
-     *      class="MarelloSalesBundle:SalesChannel"
-     * )
+     * @Security\AclAncestor("marello_sales_saleschannel_update")
      *
      * @param SalesChannel $channel
      *

@@ -21,7 +21,9 @@ datagrid:
             orderNumber:
                 data_name: order.orderNumber
                 label: marello.order.order_number.label
-                frontend_type: string
+                type: twig
+                frontend_type: html
+                template: MarelloOrderBundle:Order:Datagrid/Property/orderNumber.html.twig
             returnItems:
                 data_name: returnItemCount
                 label: marello.return.returnitem.returned_quantity.label

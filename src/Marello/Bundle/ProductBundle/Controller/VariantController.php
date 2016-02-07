@@ -11,8 +11,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Variant;
@@ -22,12 +21,7 @@ class VariantController extends Controller
     /**
      * @Route("/variant/create/parent/{id}", requirements={"id"="\d+"}, name="marello_product_create_variant")
      * @Method({"GET", "POST"})
-     * @Acl(
-     *      id="marello_product_create_variant",
-     *      type="entity",
-     *      permission="CREATE",
-     *      class="MarelloProductBundle:Variant"
-     * )
+     * @Security\AclAncestor("marello_product_create_variant")
      * @Template("MarelloProductBundle:Variant:update.html.twig")
      *
      * @param Product $product
@@ -43,12 +37,7 @@ class VariantController extends Controller
      *     "/variant/add/{id}/parent/{parentId}",
      *     requirements={"id"="\d+","parentId"="\d+"}, name="marello_product_add_variant"
      * )
-     * @Acl(
-     *      id="marello_product_add_variant",
-     *      type="entity",
-     *      permission="EDIT",
-     *      class="MarelloProductBundle:Variant"
-     * )
+     * @Security\AclAncestor("marello_product_add_variant")
      * @Template("MarelloProductBundle:Variant:update.html.twig")
      *
      * @param Request $request
@@ -122,7 +111,7 @@ class VariantController extends Controller
 
     /**
      * @Route("/variant/widget/info/{id}", name="marello_product_variant_widget_info", requirements={"id"="\d+"})
-     * @AclAncestor("marello_product_view")
+     * @Security\AclAncestor("marello_product_view")
      * @Template
      *
      * @param Product $product
