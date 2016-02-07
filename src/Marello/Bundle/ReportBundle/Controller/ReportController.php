@@ -2,25 +2,22 @@
 
 namespace Marello\Bundle\ReportBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
 
 class ReportController extends Controller
 {
     /**
-     * @Route(
+     * @Config\Route(
      *      "/static/{reportGroupName}/{reportName}/{_format}",
      *      name="marello_report_index",
      *      requirements={"reportGroupName"="\w+", "reportName"="\w+", "_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
-     * @Template
-     * @AclAncestor("oro_report_view")
+     * @Config\Template
+     * @Security\AclAncestor("oro_report_view")
      */
     public function indexAction($reportGroupName, $reportName)
     {
