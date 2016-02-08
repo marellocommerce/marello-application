@@ -43,7 +43,7 @@ class InventoryLogController extends Controller
          */
         $from     = new \DateTime($request->query->get('from', 'tomorrow - 1 second - 1 week'));
         $to       = new \DateTime($request->query->get('to', 'tomorrow - 1 second'));
-        $interval = new \DateInterval($request->get('interval', 'PT24H'));
+        $interval = new \DateInterval($request->get('interval', 'P1D'));
 
         /*
          * Add interval to end date once, so the end date will be included in results.

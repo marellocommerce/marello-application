@@ -34,7 +34,7 @@ class ChartBuilder
             ->getRepository('MarelloInventoryBundle:InventoryLog')
             ->findByProductAndPeriod($product, $from, $to);
 
-        $grouped = $this->groupByInventoryItem($logItems);
+        $grouped = $this->groupByWarehouse($logItems);
 
         foreach ($grouped as $inventoryItemLabel => $logs) {
             $grouped[$inventoryItemLabel] = $this->valuesPerInterval($logs, $from, $to, $interval);
@@ -43,7 +43,12 @@ class ChartBuilder
         return $grouped;
     }
 
-    protected function groupByInventoryItem($logItems)
+    /**
+     * @param InventoryLog[] $logItems
+     *
+     * @return InventoryLog[][]
+     */
+    protected function groupByWarehouse($logItems)
     {
         $grouped = [];
 
@@ -64,31 +69,37 @@ class ChartBuilder
     }
 
     /**
-     * @param InventoryLog[] $logs
+     * @param InventoryLog[] $inventoryLogs
      * @param \DateTime      $from
      * @param \DateTime      $to
      * @param \DateInterval  $interval
      *
      * @return array
      */
-    protected function valuesPerInterval($logs, \DateTime $from, \DateTime $to, \DateInterval $interval)
+    protected function valuesPerInterval($inventoryLogs, \DateTime $from, \DateTime $to, \DateInterval $interval)
     {
-        /** @var InventoryLog $log */
-        $log      = reset($logs);
-        $values   = [];
-        $newValue = $log->getOldQuantity();
+        /** @var InventoryLog $currentLog */
+        $currentLog = reset($inventoryLogs);
+        $values     = [];
+        $nextValue  = $currentLog->getOldQuantity();
 
-        $period   = new \DatePeriod($from, $interval, $to);
+        $period = new \DatePeriod($from, $interval, $to);
 
         foreach ($period as $currentTime) {
-            while (($log !== false) && ($log->getCreatedAt() <= $currentTime)) {
-                $newValue = $log->getNewQuantity();
-                $log      = next($logs);
+            /*
+             * Go trough logs until no more logs are present or current log is further in future as current time.
+             */
+            while (($currentLog !== false) && ($currentLog->getCreatedAt() <= $currentTime)) {
+                $nextValue  = $currentLog->getNewQuantity();
+                $currentLog = next($inventoryLogs);
             }
 
+            /*
+             * Create record corresponding to current date.
+             */
             $values[] = [
                 'time'     => $currentTime->format(DATE_ISO8601),
-                'quantity' => $newValue,
+                'quantity' => $nextValue,
             ];
         }
 
