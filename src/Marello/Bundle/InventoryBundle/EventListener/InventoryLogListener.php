@@ -9,7 +9,7 @@ use Marello\Bundle\InventoryBundle\Events\InventoryLogEvent;
 class InventoryLogListener
 {
     /** @var array */
-    protected $supportedTypes = ['manual'];
+    protected $supportedTypes = ['manual', 'import'];
 
     /** @var Registry */
     protected $doctrine;

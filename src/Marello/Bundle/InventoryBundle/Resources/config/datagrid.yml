@@ -4,48 +4,53 @@ datagrid:
             type: orm
             query:
                 select:
-                    - p
+                    - p.id
+                    - p.name
+                    - p.sku
+                    - p.price
+                    - s.label as status
+                    - p.createdAt
+                    - p.updatedAt
                     - COALESCE(SUM(i.quantity), 0) AS stockLevel
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
+                        - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
                 groupBy: p.id
         columns:
             sku:
-                label: marello.product.sku.label
-                data_name: sku
+                label:              marello.product.sku.label
+                frontend_type:      string
             product:
-                label: marello.inventory.inventoryitem.product.label
-                frontend_type: string
-                data_name: name
+                label:              marello.inventory.inventoryitem.product.label
+                frontend_type:      string
+                data_name:          name
             quantity:
-                label: marello.product.stock_level.label
-                frontend_type: number
-                data_name: stockLevel
+                label:              marello.product.stock_level.label
+                frontend_type:      number
+                data_name:          stockLevel
             status:
-                label: marello.product.status.label
-                frontend_type: string
-                data_name: status
+                label:              marello.product.status.label
+                frontend_type:      string
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
-                data_name:          createdAt
         filters:
             columns:
                 sku:
                     type:             string
-                    data_name:        sku
+                    data_name:        p.sku
                 product:
                     type:             string
-                    data_name:        name
+                    data_name:        p.name
                 quantity:
                     type:             string
                     data_name:        stockLevel
                 status:
-                    type: entity
-                    data_name: s
+                    type:             entity
+                    data_name:        s
                     options:
                         field_options:
                             class: Marello\Bundle\ProductBundle\Entity\ProductStatus

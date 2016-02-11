@@ -4,12 +4,12 @@ namespace Marello\Bundle\InventoryBundle\ImportExport\Strategy;
 
 use Doctrine\Common\Util\ClassUtils;
 
+use Marello\Bundle\InventoryBundle\Events\InventoryLogEvent;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
 class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 {
-
     /**
      * @param object $entity
      * @param bool   $isFullData
@@ -56,6 +56,10 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             }
             $this->databaseHelper->resetIdentifier($entity);
             $this->cachedEntities[$oid] = $entity;
+            $this->eventDispatcher->dispatch(
+                InventoryLogEvent::NAME,
+                new InventoryLogEvent($entity, 0, $entity->getQuantity(), 'import')
+            );
         }
 
 
@@ -128,8 +132,14 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             && !$fieldsExcluded
             && !array_intersect(array($fieldRelationName, $fieldName), $excludedFields)
         ) {
+            $oldQuantity = $existingEntity->getQuantity();
+
             //manually handle quantity update
             $existingEntity->modifyQuantity($entity->getQuantity());
+            $this->eventDispatcher->dispatch(
+                InventoryLogEvent::NAME,
+                new InventoryLogEvent($existingEntity, $oldQuantity, $existingEntity->getQuantity(), 'import')
+            );
 
             //manually handle product relation
             $entity->setProduct($existingEntity->getProduct());
