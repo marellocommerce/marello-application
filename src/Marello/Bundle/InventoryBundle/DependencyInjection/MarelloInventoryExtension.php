@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\DependencyInjection;
 
-use Marello\Bundle\InventoryBundle\DependencyInjection\Compiler\InventoryLogActionHandlerCompilerPass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
