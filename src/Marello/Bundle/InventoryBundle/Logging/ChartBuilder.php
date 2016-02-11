@@ -89,7 +89,14 @@ class ChartBuilder
             }
         }
 
-        return $grouped;
+        $named = array_combine(
+            array_map(function (Warehouse $warehouse) {
+                return $warehouse->getLabel();
+            }, $warehouses),
+            array_values($grouped)
+        );
+
+        return $named;
     }
 
     /**
