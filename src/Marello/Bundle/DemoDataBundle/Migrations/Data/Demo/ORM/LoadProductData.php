@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface
@@ -96,7 +97,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $status = $this->getReference('product_status_' . $data['status']);
         $product->setStatus($status);
 
-        $channels = explode(';',$data['channel']);
+        $channels = explode(';', $data['channel']);
 
         foreach ($channels as $channelId) {
             $channel = $this->getReference('marello_sales_channel_'. (int)$channelId);
@@ -104,6 +105,15 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         }
 
         $this->manager->persist($product);
+
+        $inventoryLog = new InventoryLog();
+        $inventoryLog
+            ->setOldQuantity(0)
+            ->setNewQuantity($inventoryItem->getQuantity())
+            ->setActionType('import')
+            ->setInventoryItem($inventoryItem);
+
+        $this->manager->persist($inventoryLog);
 
         return $product;
     }
