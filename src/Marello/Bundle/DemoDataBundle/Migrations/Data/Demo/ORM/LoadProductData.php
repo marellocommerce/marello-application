@@ -23,7 +23,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
-            'Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\LoadOrganizationAndBusinessUnitData',
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductStatusData',
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData'
         ];
