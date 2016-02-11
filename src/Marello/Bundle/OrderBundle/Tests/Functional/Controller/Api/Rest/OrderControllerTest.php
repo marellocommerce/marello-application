@@ -3,7 +3,6 @@
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\Util\Codes;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -48,6 +47,10 @@ class OrderControllerTest extends WebTestCase
             'subtotal'        => 365.00,
             'totalTax'        => 76.65,
             'grandTotal'      => 365.00,
+            'paymentMethod'   => 'creditcard',
+            'paymentDetails'  => 'Visa card, ref: xxxxxx-xxxx-xxxx',
+            'shippingMethod'  => 'freeshipping',
+            'shippingAmount'  => 5,
             'billingAddress'  => [
                 'firstName'  => 'Falco',
                 'lastName'   => 'van der Maden',
@@ -123,6 +126,10 @@ class OrderControllerTest extends WebTestCase
             'subtotal'        => 365.00,
             'totalTax'        => 76.65,
             'grandTotal'      => 365.00,
+            'paymentMethod'   => 'creditcard',
+            'paymentDetails'  => 'Visa card, ref: xxxxxx-xxxx-xxxx',
+            'shippingMethod'  => 'freeshipping',
+            'shippingAmount'  => 5,
             'billingAddress'  => [
                 'firstName'  => 'Han',
                 'lastName'   => 'Solo',
@@ -141,22 +148,6 @@ class OrderControllerTest extends WebTestCase
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
             ],
-            'items'           => [
-                [
-                    'product'    => 'msj002',
-                    'quantity'   => 1,
-                    'price'      => 190.00,
-                    'tax'        => 39.90,
-                    'totalPrice' => 190.00,
-                ],
-                [
-                    'product'    => 'msj005',
-                    'quantity'   => 1,
-                    'price'      => 175.00,
-                    'tax'        => 36.75,
-                    'totalPrice' => 175.00,
-                ],
-            ],
         ];
 
         $this->client->request(
@@ -165,7 +156,7 @@ class OrderControllerTest extends WebTestCase
             $data
         );
 
-        $this->assertEquals($this->client->getResponse()->getStatusCode(), Codes::HTTP_NO_CONTENT);
+        $this->assertEquals($this->client->getResponse()->getStatusCode(), Response::HTTP_NO_CONTENT);
     }
 
     /**
