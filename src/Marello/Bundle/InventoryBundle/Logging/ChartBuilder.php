@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Logging;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 
 class ChartBuilder
 {
@@ -34,10 +35,10 @@ class ChartBuilder
             ->getRepository('MarelloInventoryBundle:InventoryLog')
             ->findByProductAndPeriod($product, $from, $to);
 
-        $grouped = $this->groupByWarehouse($logItems);
+        $grouped = $this->groupByWarehouse($logItems, $product);
 
-        foreach ($grouped as $inventoryItemLabel => $logs) {
-            $grouped[$inventoryItemLabel] = $this->valuesPerInterval($logs, $from, $to, $interval);
+        foreach ($grouped as $warehouseLabel => $logs) {
+            $grouped[$warehouseLabel] = $this->valuesPerInterval($logs, $from, $to, $interval);
         }
 
         return $grouped;
@@ -48,22 +49,45 @@ class ChartBuilder
      *
      * @return InventoryLog[][]
      */
-    protected function groupByWarehouse($logItems)
+    protected function groupByWarehouse(array $logItems, $product)
     {
         $grouped = [];
 
-        array_map(
-            function (InventoryLog $inventoryLog) use (&$grouped) {
-                $inventoryItemLabel = $inventoryLog->getInventoryItem()->getWarehouse()->getLabel();
+        /** @var Warehouse[] $warehouses */
+        $warehouses = $this->doctrine
+            ->getRepository('MarelloInventoryBundle:Warehouse')
+            ->findAll();
 
-                if (!array_key_exists($inventoryItemLabel, $grouped)) {
-                    $grouped[$inventoryItemLabel] = [];
-                }
+        /*
+         * Initialize dataset for each warehouse.
+         */
+        foreach ($warehouses as $warehouse) {
+            $grouped[$warehouse->getId()] = [];
+        }
 
-                $grouped[$inventoryItemLabel][] = $inventoryLog;
-            },
-            $logItems
-        );
+        /*
+         * Put items into a group with appropriate warehouse.
+         */
+        foreach ($logItems as $inventoryLog) {
+            $grouped[$inventoryLog->getInventoryItem()->getWarehouse()->getId()][] = $inventoryLog;
+        }
+
+        /*
+         * Find last change for each warehouse without any change in given period.
+         */
+        foreach ($grouped as $warehouse => $logs) {
+            if (!empty($logs)) {
+                continue;
+            }
+
+            $lastChange = $this->doctrine
+                ->getRepository('MarelloInventoryBundle:InventoryLog')
+                ->findLastChangeForProductAndWarehouse($product, $warehouse);
+
+            if ($lastChange) {
+                $grouped[$warehouse] = [$lastChange];
+            }
+        }
 
         return $grouped;
     }
@@ -76,12 +100,12 @@ class ChartBuilder
      *
      * @return array
      */
-    protected function valuesPerInterval($inventoryLogs, \DateTime $from, \DateTime $to, \DateInterval $interval)
+    protected function valuesPerInterval(array $inventoryLogs, \DateTime $from, \DateTime $to, \DateInterval $interval)
     {
         /** @var InventoryLog $currentLog */
         $currentLog = reset($inventoryLogs);
         $values     = [];
-        $nextValue  = $currentLog->getOldQuantity();
+        $nextValue  = $currentLog ? $currentLog->getOldQuantity() : 0;
 
         $period = new \DatePeriod($from, $interval, $to);
 
@@ -89,7 +113,7 @@ class ChartBuilder
             /*
              * Go trough logs until no more logs are present or current log is further in future as current time.
              */
-            while (($currentLog !== false) && ($currentLog->getCreatedAt() <= $currentTime)) {
+            while ($currentLog && ($currentLog->getCreatedAt() <= $currentTime)) {
                 $nextValue  = $currentLog->getNewQuantity();
                 $currentLog = next($inventoryLogs);
             }

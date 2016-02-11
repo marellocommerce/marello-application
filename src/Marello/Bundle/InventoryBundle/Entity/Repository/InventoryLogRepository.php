@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
 class InventoryLogRepository extends EntityRepository
@@ -38,6 +39,25 @@ class InventoryLogRepository extends EntityRepository
         });
     }
 
+    public function findLastChangeForProductAndWarehouse($product, $warehouse)
+    {
+        $qb = $this->createQueryBuilder('l');
+
+        $this->addProductConstraint($qb, $product);
+        $this->addWarehouseConstraint($qb, $warehouse);
+
+        $qb->orderBy($qb->expr()->desc('l.createdAt'))
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getResult();
+
+        if (empty($result)) {
+            return null;
+        }
+
+        return reset($result);
+    }
+
     /**
      * @param QueryBuilder $qb
      * @param Product|int  $product
@@ -66,5 +86,15 @@ class InventoryLogRepository extends EntityRepository
                 'from' => $from,
                 'to'   => $to,
             ]);
+    }
+
+    private function addWarehouseConstraint(QueryBuilder $qb, $warehouse)
+    {
+        if ($warehouse instanceof Warehouse) {
+            $warehouse = $warehouse->getId();
+        }
+
+        $qb
+            ->andWhere($qb->expr()->eq('IDENTITY(ii.warehouse)', $qb->expr()->literal($warehouse)));
     }
 }
