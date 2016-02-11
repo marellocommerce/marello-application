@@ -2,17 +2,15 @@
 
 namespace Marello\Bundle\ProductBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Variant;
@@ -20,15 +18,10 @@ use Marello\Bundle\ProductBundle\Entity\Variant;
 class VariantController extends Controller
 {
     /**
-     * @Route("/variant/create/parent/{id}", requirements={"id"="\d+"}, name="marello_product_create_variant")
-     * @Method({"GET", "POST"})
-     * @Acl(
-     *      id="marello_product_create_variant",
-     *      type="entity",
-     *      permission="CREATE",
-     *      class="MarelloProductBundle:Variant"
-     * )
-     * @Template("MarelloProductBundle:Variant:update.html.twig")
+     * @Config\Route("/variant/create/parent/{id}", requirements={"id"="\d+"}, name="marello_product_create_variant")
+     * @Config\Method({"GET", "POST"})
+     * @Security\AclAncestor("marello_product_create_variant")
+     * @Config\Template("MarelloProductBundle:Variant:update.html.twig")
      *
      * @param Product $product
      * @return array
@@ -39,17 +32,12 @@ class VariantController extends Controller
     }
 
     /**
-     * @Route(
+     * @Config\Route(
      *     "/variant/add/{id}/parent/{parentId}",
      *     requirements={"id"="\d+","parentId"="\d+"}, name="marello_product_add_variant"
      * )
-     * @Acl(
-     *      id="marello_product_add_variant",
-     *      type="entity",
-     *      permission="EDIT",
-     *      class="MarelloProductBundle:Variant"
-     * )
-     * @Template("MarelloProductBundle:Variant:update.html.twig")
+     * @Security\AclAncestor("marello_product_add_variant")
+     * @Config\Template("MarelloProductBundle:Variant:update.html.twig")
      *
      * @param Request $request
      * @param Variant $variant
@@ -121,9 +109,9 @@ class VariantController extends Controller
     }
 
     /**
-     * @Route("/variant/widget/info/{id}", name="marello_product_variant_widget_info", requirements={"id"="\d+"})
-     * @AclAncestor("marello_product_view")
-     * @Template
+     * @Config\Route("/variant/widget/info/{id}", name="marello_product_variant_widget_info", requirements={"id"="\d+"})
+     * @Security\AclAncestor("marello_product_view")
+     * @Config\Template
      *
      * @param Product $product
      * @return array

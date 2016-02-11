@@ -3,31 +3,23 @@
 namespace Marello\Bundle\ProductBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 
 class ProductController extends Controller
 {
     /**
-     * @Route(
+     * @Config\Route(
      *      "/{_format}",
      *      name="marello_product_index",
      *      requirements={"_format"="html|json"},
      *      defaults={"_format"="html"}
      * )
-     * @Acl(
-     *      id="marello_product_view",
-     *      type="entity",
-     *      permission="VIEW",
-     *      class="MarelloProductBundle:Product"
-     * )
-     * @Template()
+     * @Security\AclAncestor("marello_product_view")
+     * @Config\Template
      */
     public function indexAction()
     {
@@ -35,14 +27,9 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/create", name="marello_product_create")
-     * @Acl(
-     *      id="marello_product_create",
-     *      type="entity",
-     *      permission="CREATE",
-     *      class="MarelloProductBundle:Product"
-     * )
-     * @Template("MarelloProductBundle:Product:update.html.twig")
+     * @Config\Route("/create", name="marello_product_create")
+     * @Security\AclAncestor("marello_product_create")
+     * @Config\Template("MarelloProductBundle:Product:update.html.twig")
      */
     public function createAction()
     {
@@ -50,14 +37,9 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/update/{id}", requirements={"id"="\d+"}, name="marello_product_update")
-     * @Acl(
-     *      id="marello_product_update",
-     *      type="entity",
-     *      permission="EDIT",
-     *      class="MarelloProductBundle:Product"
-     * )
-     * @Template()
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_product_update")
+     * @Security\AclAncestor("marello_product_update")
+     * @Config\Template
      *
      * @param Product $product
      *
@@ -109,9 +91,9 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/view/{id}", requirements={"id"="\d+"}, name="marello_product_view")
-     * @AclAncestor("marello_product_view")
-     * @Template
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_product_view")
+     * @Security\AclAncestor("marello_product_view")
+     * @Config\Template
      *
      * @param Product $product
      *
@@ -125,9 +107,9 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/widget/info/{id}", name="marello_product_widget_info", requirements={"id"="\d+"})
-     * @AclAncestor("marello_product_view")
-     * @Template
+     * @Config\Route("/widget/info/{id}", name="marello_product_widget_info", requirements={"id"="\d+"})
+     * @Security\AclAncestor("marello_product_view")
+     * @Config\Template
      *
      * @param Product $product
      *
@@ -141,9 +123,9 @@ class ProductController extends Controller
     }
 
     /**
-     * @Route("/widget/price/{id}", name="marello_product_widget_price", requirements={"id"="\d+"})
-     * @AclAncestor("marello_product_view")
-     * @Template
+     * @Config\Route("/widget/price/{id}", name="marello_product_widget_price", requirements={"id"="\d+"})
+     * @Security\AclAncestor("marello_product_view")
+     * @Config\Template
      *
      * @param Product $product
      *

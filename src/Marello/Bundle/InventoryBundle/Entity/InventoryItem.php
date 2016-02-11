@@ -5,6 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * @ORM\Entity()
@@ -33,7 +34,13 @@ class InventoryItem
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
-     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      * @var int
      */
     protected $id;
@@ -41,7 +48,15 @@ class InventoryItem
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="inventoryItems")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=10,
+     *              "header"="",
+     *              "full"=true,
+     *          }
+     *      }
+     * )
      * @var Product
      */
     protected $product;
@@ -49,14 +64,27 @@ class InventoryItem
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      * @var Warehouse
      */
     protected $warehouse;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
-     *
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=20,
+     *              "header"="Total Stock"
+     *          }
+     *      }
+     * )
      * @var int
      */
     protected $quantity = 0;
@@ -67,6 +95,15 @@ class InventoryItem
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return InventoryItem
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**

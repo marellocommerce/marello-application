@@ -1,0 +1,19 @@
+marello_saleschannel_create:
+    type: entity
+    class: MarelloSalesBundle:SalesChannel
+    permission: CREATE
+
+marello_saleschannel_view:
+    type: entity
+    class: MarelloSalesBundle:SalesChannel
+    permission: VIEW
+
+marello_saleschannel_update:
+    type: entity
+    class: MarelloSalesBundle:SalesChannel
+    permission: EDIT
+
+marello_saleschannel_delete:
+    type: entity
+    class: MarelloSalesBundle:SalesChannel
+    permission: DELETE

@@ -2,3 +2,14 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% set gridName = 'marello-inventory-item' %}
 {% set pageTitle = 'marello.inventory.inventoryitem.entity_label'|trans %}
+
+{% block navButtons %}
+    {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
+    entity_class: entity_class,
+    exportProcessor: 'marello_inventory_item',
+    exportTemplateProcessor: 'marello_inventory_item',
+    importProcessor: 'marello_inventory.add_or_replace',
+    importTitle: 'Import Inventory',
+    dataGridName: gridName
+    } %}
+{% endblock %}

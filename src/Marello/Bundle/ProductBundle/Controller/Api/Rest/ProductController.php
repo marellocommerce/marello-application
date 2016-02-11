@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\ProductBundle\Controller\Api\Rest;
 
-use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
-use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,8 +11,8 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
+use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 
 /**
@@ -42,7 +40,7 @@ class ProductController extends RestController implements ClassResourceInterface
      *     description="Get a list of all Product Entities",
      *     resource=true
      * )
-     * @AclAncestor("marello_product_view")
+     * @Security\AclAncestor("marello_product_view")
      *
      * @param Request $request
      *
@@ -65,7 +63,7 @@ class ProductController extends RestController implements ClassResourceInterface
      *     description="Get one Product entity by id",
      *     resource=true
      * )
-     * @AclAncestor("marello_product_view")
+     * @Security\AclAncestor("marello_product_view")
      * @return Response
      */
     public function getAction($id)
@@ -82,12 +80,7 @@ class ProductController extends RestController implements ClassResourceInterface
      *     description="Delete Product from application",
      *     resource=true
      * )
-     * @Acl(
-     *      id="marello_product_delete",
-     *      type="entity",
-     *      permission="DELETE",
-     *      class="MarelloProductBundle:Product"
-     * )
+     * @Security\AclAncestor("marello_product_delete")
      * @return Response
      */
     public function deleteAction($id)
@@ -102,7 +95,7 @@ class ProductController extends RestController implements ClassResourceInterface
      *     description="Create a new Product via the Api",
      *     resource=true
      * )
-     * @AclAncestor("marello_product_create")
+     * @Security\AclAncestor("marello_product_create")
      */
     public function postAction()
     {
@@ -118,7 +111,7 @@ class ProductController extends RestController implements ClassResourceInterface
      *     description="Update Product via Rest api",
      *     resource=true
      * )
-     * @AclAncestor("marello_product_update")
+     * @Security\AclAncestor("marello_product_update")
      * @return Response
      */
     public function putAction($id)
