@@ -97,6 +97,7 @@ services:
             - @marello_product.product_variant.form
             - @request
             - @doctrine.orm.entity_manager
+            - @event_dispatcher
 
     marello_product.manager.api:
         class: %marello_product.manager.api.class%
