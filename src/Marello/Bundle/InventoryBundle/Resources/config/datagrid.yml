@@ -120,6 +120,8 @@ datagrid:
                 data_name:      changeDirection
                 label:          Change Direction
                 frontend_type:  string
+                type:           translatable
+                domain:         MarelloInventoryChangeDirection
             actionType:
                 label:          marello.inventory.inventorylog.actionType.label
                 type:           translatable
@@ -137,3 +139,7 @@ datagrid:
                     data_name:  l.createdAt
             default:
                 createdAt:      DESC
+        options:
+            toolbarOptions:
+                pageSize:
+                    default_per_page: 10

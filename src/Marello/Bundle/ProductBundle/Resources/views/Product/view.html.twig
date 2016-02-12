@@ -16,25 +16,10 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    {{ UI.clientButton({
-        'dataUrl': path('marello_inventory_inventorylog_list', {id: entity.id}),
-        'label': 'marello.inventory.inventorylog.entity_label'|trans,
-        'widget': {
-            'type': 'dialog',
-            'multiple': false,
-            'options': {
-                'alias': 'inventory-log-dialog',
-                'dialogOptions' : {
-                    'title' : 'marello.inventory.inventorylog.entity_label'|trans,
-                    'allowMaximize': true,
-                    'allowMinimize': true,
-                    'dblclick': 'maximize',
-                    'maximizedHeightDecreaseBy': 'minimize-bar',
-                    'width': 1000
-                }
-            }
-        }
-    }) }}
+        {{ UI.button({
+            'path': path('marello_inventory_inventorylog_list', {'id': entity.id}),
+            'label': 'marello.inventory.inventorylog.entity_label'|trans
+        }) }}
     {% if resource_granted('DELETE', entity) %}
         {{ UI.buttonSeparator() }}
         {{ UI.deleteButton({
@@ -73,6 +58,13 @@
         }) }}
     {% endset %}
 
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'subblocks': [
+            {'data' : [productInformationWidget] },
+        ]
+    }] %}
+
     {% set productInventoryWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
@@ -89,20 +81,19 @@
         }) }}
     {% endset %}
 
-    {% set dataBlocks = [{
-        'title': 'General'|trans,
-        'subblocks': [
-            {'data' : [productInformationWidget] },
-        ]
-    }] %}
+    {% set productInventoryGrid %}
+        {{ dataGrid.renderGrid('marello-inventory-log', {'productId': entity.id}) }}
+    {% endset %}
 
     {% set dataBlocks = dataBlocks|merge([{
-        'title' : 'marello.inventory.inventorylog.entity_label'|trans,
+        'title' : 'marello.inventory.label'|trans,
         'subblocks': [{
             'title' : null,
             'useSpan': false,
             'data' : [
-                productInventoryLogWidget
+                productInventoryWidget,
+                productInventoryLogWidget,
+                productInventoryGrid
             ]
         }]
     }]) %}
@@ -114,17 +105,6 @@
             'useSpan': false,
             'data' : [
                 productPriceWidget
-            ]
-        }]
-    }]) %}
-
-    {% set dataBlocks = dataBlocks|merge([{
-        'title' : 'marello.inventory.inventoryitem.entity_label'|trans,
-        'subblocks': [{
-            'title' : null,
-            'useSpan': false,
-            'data' : [
-                productInventoryWidget
             ]
         }]
     }]) %}
