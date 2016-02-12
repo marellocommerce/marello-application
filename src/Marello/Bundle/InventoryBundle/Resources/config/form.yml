@@ -30,3 +30,22 @@ services:
         class: Marello\Bundle\InventoryBundle\Form\Subscriber\InventoryItemCollectionSubscriber
         arguments:
             - @doctrine
+
+    ## forms
+    marello_inventory.form.product_inventory:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - 'marello_product_inventory'
+            - 'marello_product_inventory'
+
+    ## form handlers
+    marello_inventory.form.handler.product_inventory:
+        class: Marello\Bundle\InventoryBundle\Form\Handler\ProductInventoryHandler
+        scope: request
+        arguments:
+            - @marello_inventory.form.product_inventory
+            - @request
+            - @doctrine.orm.entity_manager
+            - @event_dispatcher
