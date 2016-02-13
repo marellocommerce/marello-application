@@ -33,18 +33,25 @@
                     form_row(form.inventoryItems),
                 ]
             }]
-        },
-        {
-            'title': 'marello.product.variant.entity_plural_label'|trans,
-            'class': 'active',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    form_widget(form.variant),
-                ]
-            }]
         }
     ] %}
+
+    {% if form.variant.products|length > 0 %}
+        {% set dataBlocks = dataBlocks|merge([
+            {
+                'title': 'marello.product.variant.entity_plural_label'|trans,
+                'class': 'active',
+                'subblocks': [{
+                    'title': '',
+                    'data': [
+                        form_widget(form.variant),
+                    ]
+                }]
+            }
+            ])
+        %}
+    {% endif %}
+
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,
