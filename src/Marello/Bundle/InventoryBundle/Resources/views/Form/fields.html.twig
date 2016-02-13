@@ -1,3 +1,4 @@
+
 {% block marello_inventory_item_collection_widget %}
     {{ form_rest(form) }}
 {% endblock %}
@@ -8,8 +9,10 @@
             <table class="grid table-hover table table-bordered table-condensed">
                 <thead>
                 <tr>
-                    <th class="inventory-line-item-sku"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
-                    <th class="inventory-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
+                    {% if form.parent.vars.name == 'marello_product_inventory' or form.parent.vars.name != 'marello_product_form' %}
+                        <th class="inventory-line-item-sku"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
+                        <th class="inventory-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
+                    {% endif %}
                     <th class="inventory-line-item-quantity"><span>{{ 'marello.inventory.inventoryitem.quantity.label'|trans }}</span></th>
                     <th class="inventory-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
                 </tr>
@@ -24,16 +27,25 @@
 
 {% block marello_inventory_item_row %}
     <tr class="marello-line-item display-values">
-        <td class="inventory-line-item-sku">
-            <div class="fields-row">
-                {{ form.vars.value.product.sku  }}
-            </div>
-        </td>
-        <td class="inventory-line-item-product">
-            <div class="fields-row">
-                {{ form.vars.value.product.name  }}
-            </div>
-        </td>
+        {% if form.parent.parent.vars.name == 'marello_product_inventory' or form.parent.parent.vars.name != 'marello_product_form' %}
+            <td class="inventory-line-item-sku">
+                <div class="fields-row">
+                    {{ form.vars.value.product.sku  }}
+                </div>
+            </td>
+            <td class="inventory-line-item-product">
+                <div class="fields-row">
+                    {% set productViewGranted = resource_granted('marello_product_view') %}
+                    {%- if productViewGranted -%}
+                        <a href="{{ path('marello_product_view', {'id': form.vars.value.product.id}) }}">
+                            {{ form.vars.value.product.name }}
+                        </a>
+                    {%- else -%}
+                        {{ form.vars.value.product.name}}
+                    {%- endif -%}
+                </div>
+            </td>
+        {% endif %}
         <td class="inventory-line-item-quantity">
             <div class="fields-row">
                 <strong>{{ form.vars.value.quantity }}</strong>

@@ -119,7 +119,6 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         $itemData = null,
         array $excludedFields = array()
     ) {
-        // manually handle recursive relation to accounts
         $entityName = ClassUtils::getClass($entity);
         $fieldRelationName = 'product';
         $fieldName = 'quantity';
