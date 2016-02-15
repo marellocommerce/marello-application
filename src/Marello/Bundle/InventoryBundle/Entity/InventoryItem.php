@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -90,6 +92,27 @@ class InventoryItem
     protected $quantity = 0;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLog",
+     *     cascade={"persist", "remove"},
+     *     mappedBy="inventoryItem",
+     *     fetch="EXTRA_LAZY"
+     * )
+     *
+     * @var Collection
+     */
+    protected $inventoryLogs;
+
+    /**
+     * InventoryItem constructor.
+     */
+    public function __construct()
+    {
+        $this->inventoryLogs = new ArrayCollection();
+    }
+
+
+    /**
      * @return int
      */
     public function getId()
@@ -174,6 +197,38 @@ class InventoryItem
     public function modifyQuantity($amount)
     {
         $this->quantity += $amount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getInventoryLogs()
+    {
+        return $this->inventoryLogs;
+    }
+
+    /**
+     * @param InventoryLog $log
+     *
+     * @return $this
+     */
+    public function addInventoryLog(InventoryLog $log)
+    {
+        $this->inventoryLogs->add($log);
+
+        return $this;
+    }
+
+    /**
+     * @param InventoryLog $log
+     *
+     * @return $this
+     */
+    public function removeInventoryLog(InventoryLog $log)
+    {
+        $this->inventoryLogs->removeElement($log);
 
         return $this;
     }
