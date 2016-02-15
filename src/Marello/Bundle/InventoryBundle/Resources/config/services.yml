@@ -12,11 +12,6 @@ services:
         arguments:
             - @doctrine
 
-    marello_inventory.event_listener.doctrine.product_inventory_log:
-        class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\ProductInventoryLogListener
-        tags:
-            - { name: doctrine.event_listener, event: preUpdate }
-
     marello_inventory.event_listener.inventory_log:
         class: Marello\Bundle\InventoryBundle\EventListener\InventoryLogListener
         arguments:
