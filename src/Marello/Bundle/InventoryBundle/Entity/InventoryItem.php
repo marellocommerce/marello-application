@@ -111,7 +111,6 @@ class InventoryItem
         $this->inventoryLogs = new ArrayCollection();
     }
 
-
     /**
      * @return int
      */
