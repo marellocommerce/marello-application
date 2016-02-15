@@ -22,7 +22,7 @@ class ChartBuilder
     }
 
     /**
-     * @param int           $product  Product ID
+     * @param Product|int   $product  Product ID
      * @param \DateTime     $from     Start of period
      * @param \DateTime     $to       End of period
      * @param \DateInterval $interval Interval
