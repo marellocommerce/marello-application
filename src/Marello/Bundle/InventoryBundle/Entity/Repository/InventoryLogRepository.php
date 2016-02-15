@@ -39,6 +39,14 @@ class InventoryLogRepository extends EntityRepository
         });
     }
 
+    /**
+     * Looks up last change for given product and warehouse.
+     *
+     * @param $product
+     * @param $warehouse
+     *
+     * @return mixed|null
+     */
     public function findLastChangeForProductAndWarehouse($product, $warehouse)
     {
         $qb = $this->createQueryBuilder('l');
@@ -59,6 +67,8 @@ class InventoryLogRepository extends EntityRepository
     }
 
     /**
+     * Add product constraint to given QueryBuilder.
+     *
      * @param QueryBuilder $qb
      * @param Product|int  $product
      */
@@ -74,6 +84,8 @@ class InventoryLogRepository extends EntityRepository
     }
 
     /**
+     * Adds period constraint for given QueryBuilder.
+     *
      * @param QueryBuilder $qb
      * @param \DateTime    $from
      * @param \DateTime    $to
@@ -88,6 +100,12 @@ class InventoryLogRepository extends EntityRepository
             ]);
     }
 
+    /**
+     * Adds Warehouse constraint to given QueryBuilder.
+     *
+     * @param QueryBuilder $qb
+     * @param Warehouse|int $warehouse
+     */
     private function addWarehouseConstraint(QueryBuilder $qb, $warehouse)
     {
         if ($warehouse instanceof Warehouse) {

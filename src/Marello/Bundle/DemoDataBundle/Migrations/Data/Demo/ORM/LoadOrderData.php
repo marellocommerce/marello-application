@@ -5,10 +5,8 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -88,7 +86,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             $this->getRepository('OroAddressBundle:Country')->find($order['country'])
         );
         $billing->setRegion(
-            $this->getRepository('OroAddressBundle:Region')->findOneBy(['combinedCode' => $order['country'] . '-' . $order['state']])
+            $this->getRepository('OroAddressBundle:Region')
+                ->findOneBy(['combinedCode' => $order['country'] . '-' . $order['state']])
         );
         $billing->setPhone($order['telephone_number']);
         $billing->setEmail($order['email']);

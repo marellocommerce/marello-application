@@ -120,11 +120,14 @@ class InventoryItem
     }
 
     /**
+     * @param int $id
+     *
      * @return InventoryItem
      */
     public function setId($id)
     {
         $this->id = $id;
+        
         return $this;
     }
 

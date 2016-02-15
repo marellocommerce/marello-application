@@ -3,12 +3,8 @@
 namespace Marello\Bundle\OrderBundle\Entity\Repository;
 
 use DateTime;
-
 use Doctrine\ORM\EntityRepository;
-
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
-
-use Marello\Bundle\OrderBundle\Entity\Order;
 
 class OrderRepository extends EntityRepository
 {

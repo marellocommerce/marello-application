@@ -46,7 +46,7 @@ class ChartBuilderTest extends WebTestCase
             ->first();
 
         /*
-         * Get start and end points of interval +- 3 days around craetion of this single log.
+         * Get start and end points of interval +- 3 days around creation of this single log.
          */
         $from = clone $log->getCreatedAt();
         $to   = clone $log->getCreatedAt();

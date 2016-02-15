@@ -44,11 +44,10 @@ class InventoryController extends Controller
      * @Config\Template
      *
      * @param Product $product
-     * @param Request $request
      *
      * @return array|RedirectResponse
      */
-    public function updateAction(Product $product, Request $request)
+    public function updateAction(Product $product)
     {
         $handler = $this->get('marello_inventory.form.handler.product_inventory');
 
