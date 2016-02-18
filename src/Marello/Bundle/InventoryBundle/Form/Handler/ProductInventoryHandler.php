@@ -88,6 +88,9 @@ class ProductInventoryHandler
             $this->dispatchInventoryLogIfRequired($item);
         }
 
+        /*
+         * For each product under variant, go trough its inventory items.
+         */
         foreach ($this->form->get('variant')->get('products') as $product) {
             foreach ($product->get('inventoryItems') as $item) {
                 $this->dispatchInventoryLogIfRequired($item);
@@ -99,17 +102,23 @@ class ProductInventoryHandler
     }
 
     /**
-     * @param FormInterface $item
+     * @param FormInterface $item marello_inventory_item form type.
      */
     protected function dispatchInventoryLogIfRequired(FormInterface $item)
     {
         $operator = $item->get('modifyOperator')->getData();
         $amount   = $item->get('modifyAmount')->getData();
 
+        /*
+         * Do nothing if amount changed is 0.
+         */
         if ($amount === 0) {
             return;
         }
 
+        /*
+         * Adjust for given operator.
+         */
         if ($operator === InventoryItem::MODIFY_OPERATOR_DECREASE) {
             $amount *= -1;
         }

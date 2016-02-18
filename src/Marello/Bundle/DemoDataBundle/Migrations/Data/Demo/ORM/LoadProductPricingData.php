@@ -71,6 +71,8 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
         $productResult = $this->getRepository()->findBySku($data['sku']);
         if (is_array($productResult)) {
             $product = array_shift($productResult);
+        } else {
+            return;
         }
 
         $channel      = $this->getReference('marello_sales_channel_' . (int)$data['channel']);

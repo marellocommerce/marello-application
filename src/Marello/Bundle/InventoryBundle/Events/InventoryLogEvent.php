@@ -75,14 +75,6 @@ class InventoryLogEvent extends Event
     }
 
     /**
-     * @return int
-     */
-    public function getChangeAmount()
-    {
-        return $this->changeAmount;
-    }
-
-    /**
      * @return User
      */
     public function getUser()

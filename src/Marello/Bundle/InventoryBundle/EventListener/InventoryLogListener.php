@@ -8,8 +8,14 @@ use Marello\Bundle\InventoryBundle\Events\InventoryLogEvent;
 
 class InventoryLogListener
 {
-    /** @var array */
-    protected $supportedTypes = ['manual', 'import'];
+    /**
+     * @var array Supported inventory log event types.
+     */
+    protected $supportedTypes = [
+        'manual',       // Event caused by manual change of quantity (by user trough UI).
+        'import',       // Event caused by importing inventory changes.
+        'workflow'      // Event caused by change in workflow status of an Order for example.
+    ];
 
     /** @var Registry */
     protected $doctrine;
@@ -25,6 +31,10 @@ class InventoryLogListener
     }
 
     /**
+     * Process given inventory log event.
+     *
+     * Responsible for creating inventory log record in database.
+     *
      * @param InventoryLogEvent $event
      */
     public function log(InventoryLogEvent $event)
@@ -46,7 +56,8 @@ class InventoryLogListener
             ->setUser($event->getUser());
 
         /*
-         * Only persist new log, no need to flush .. that would be done after product is persisted.
+         * New log is only persisted, not flushed. This is done in order to not mess with any transaction login in
+         * progress. If event is fired outside of such logic, flush the EM manually.
          */
         $this->doctrine->getManager()->persist($log);
     }

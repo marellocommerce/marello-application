@@ -5,6 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Logging;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\ProductBundle\Entity\Product;
 
 class ChartBuilder
 {
@@ -22,7 +23,7 @@ class ChartBuilder
     }
 
     /**
-     * @param int           $product  Product ID
+     * @param Product|int   $product  Product ID
      * @param \DateTime     $from     Start of period
      * @param \DateTime     $to       End of period
      * @param \DateInterval $interval Interval
@@ -46,8 +47,9 @@ class ChartBuilder
 
     /**
      * @param InventoryLog[] $logItems
+     * @param Product|int    $product
      *
-     * @return InventoryLog[][]
+     * @return \Marello\Bundle\InventoryBundle\Entity\InventoryLog[][]
      */
     protected function groupByWarehouse(array $logItems, $product)
     {

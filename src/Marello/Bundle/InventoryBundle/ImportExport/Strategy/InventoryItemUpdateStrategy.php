@@ -3,19 +3,19 @@
 namespace Marello\Bundle\InventoryBundle\ImportExport\Strategy;
 
 use Doctrine\Common\Util\ClassUtils;
-
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Events\InventoryLogEvent;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
 class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 {
     /**
-     * @param object $entity
-     * @param bool   $isFullData
-     * @param bool   $isPersistNew
+     * @param object           $entity
+     * @param bool             $isFullData
+     * @param bool             $isPersistNew
      * @param mixed|array|null $itemData
-     * @param array $searchContext
+     * @param array            $searchContext
+     *
      * @return null|object
      */
     protected function processEntity(
@@ -23,7 +23,7 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         $isFullData = false,
         $isPersistNew = false,
         $itemData = null,
-        array $searchContext = array()
+        array $searchContext = []
     ) {
         $oid = spl_object_hash($entity);
         if (isset($this->cachedEntities[$oid])) {
@@ -35,7 +35,7 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 
         // no entity inventory entity id found for this product,
         // we cannot update inventory for products which don't exist
-        if(!$entityId) {
+        if (!$entityId) {
             return null;
         }
 
@@ -83,7 +83,7 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     protected function getInventoryItemIdByProduct($product)
     {
         $identityValues = $this->fieldHelper->getIdentityValues($product);
-        $productEntity = $this->findEntityByIdentityValues(get_class($product), $identityValues);
+        $productEntity  = $this->findEntityByIdentityValues(get_class($product), $identityValues);
         if (!$productEntity) {
             return false;
         }
@@ -98,7 +98,7 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     }
 
     /**
-     * @param object $entity
+     * @param object     $entity
      * @param array|null $itemData
      */
     protected function updateRelations($entity, array $itemData = null)
@@ -117,11 +117,12 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         $entity,
         $existingEntity,
         $itemData = null,
-        array $excludedFields = array()
+        array $excludedFields = []
     ) {
-        $entityName = ClassUtils::getClass($entity);
+        // manually handle recursive relation to accounts
+        $entityName        = ClassUtils::getClass($entity);
         $fieldRelationName = 'product';
-        $fieldName = 'quantity';
+        $fieldName         = 'quantity';
 
         $fieldsExcluded = ($this->isFieldExcluded($entityName, $fieldRelationName, $itemData) ||
             $this->isFieldExcluded($entityName, $fieldName, $itemData));
@@ -129,7 +130,7 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         if ($entity instanceof InventoryItem
             && $existingEntity instanceof InventoryItem
             && !$fieldsExcluded
-            && !array_intersect(array($fieldRelationName, $fieldName), $excludedFields)
+            && !array_intersect([$fieldRelationName, $fieldName], $excludedFields)
         ) {
             $oldQuantity = $existingEntity->getQuantity();
 
@@ -143,24 +144,9 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             //manually handle product relation
             $entity->setProduct($existingEntity->getProduct());
 
-            $excludedFields = array_merge($excludedFields, array($fieldName,$fieldRelationName));
+            $excludedFields = array_merge($excludedFields, [$fieldName, $fieldRelationName]);
         }
 
         parent::importExistingEntity($entity, $existingEntity, $itemData, $excludedFields);
-    }
-
-    /**
-     * Increment context counters.
-     *
-     * @param $entity
-     */
-    protected function updateContextCounters($entity)
-    {
-        $identifier = $this->databaseHelper->getIdentifier($entity);
-        if ($identifier) {
-            $this->context->incrementUpdateCount();
-        } else {
-            $this->context->incrementAddCount();
-        }
     }
 }
