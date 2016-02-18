@@ -47,14 +47,14 @@ class OrderItem extends ExtendOrderItem
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(name="product_name",type="string", nullable=false)
      */
     protected $productName;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(name="product_sku",type="string", nullable=false)
      */
     protected $productSku;
 
@@ -69,7 +69,7 @@ class OrderItem extends ExtendOrderItem
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="quantity",type="integer",nullable=false)
      *
      * @JMS\Expose
      */
@@ -78,7 +78,7 @@ class OrderItem extends ExtendOrderItem
     /**
      * @var int
      *
-     * @ORM\Column(type="money")
+     * @ORM\Column(name="price",type="money")
      *
      * @JMS\Expose
      */
@@ -87,16 +87,40 @@ class OrderItem extends ExtendOrderItem
     /**
      * @var int
      *
-     * @ORM\Column(type="money")
+     * @ORM\Column(name="tax",type="money")
      *
      * @JMS\Expose
      */
     protected $tax;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="tax_percent", type="percent", nullable=true)
+     * @JMS\Expose
+     */
+    protected $taxPercent;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="discount_percent", type="percent", nullable=true)
+     * @JMS\Expose
+     */
+    protected $discountPercent;
+
+    /**
+     * @var double
+     *
+     * @ORM\Column(name="discount_amount", type="money", nullable=true)
+     * @JMS\Expose
+     */
+    protected $discountAmount;
+
+    /**
      * @var int
      *
-     * @ORM\Column(type="money")
+     * @ORM\Column(name="total_price",type="money", nullable=false)
      *
      * @JMS\Expose
      */
@@ -116,7 +140,6 @@ class OrderItem extends ExtendOrderItem
     {
         $this->returnItems = new ArrayCollection();
     }
-
 
     /**
      * @ORM\PrePersist
@@ -277,5 +300,53 @@ class OrderItem extends ExtendOrderItem
     public function getReturnItems()
     {
         return $this->returnItems;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTaxPercent()
+    {
+        return $this->taxPercent;
+    }
+
+    /**
+     * @param float $taxPercent
+     */
+    public function setTaxPercent($taxPercent)
+    {
+        $this->taxPercent = $taxPercent;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDiscountPercent()
+    {
+        return $this->discountPercent;
+    }
+
+    /**
+     * @param float $discountPercent
+     */
+    public function setDiscountPercent($discountPercent)
+    {
+        $this->discountPercent = $discountPercent;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDiscountAmount()
+    {
+        return $this->discountAmount;
+    }
+
+    /**
+     * @param float $discountAmount
+     */
+    public function setDiscountAmount($discountAmount)
+    {
+        $this->discountAmount = $discountAmount;
     }
 }

@@ -11,6 +11,10 @@ marello:
             id.label:               Id
             owner.label:            Owner
 
+        model:
+            warehouse:
+                adjustment.label:   Adjustment
+
         inventoryitem:
             entity_label:               Inventory Item
             entity_plural_label:        Inventory Items

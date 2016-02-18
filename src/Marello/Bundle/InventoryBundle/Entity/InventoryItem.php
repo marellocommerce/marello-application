@@ -54,7 +54,6 @@ class InventoryItem
      *      defaultValues={
      *          "importexport"={
      *              "order"=10,
-     *              "header"="",
      *              "full"=true,
      *          }
      *      }

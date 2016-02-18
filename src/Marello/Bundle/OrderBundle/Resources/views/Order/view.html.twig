@@ -15,7 +15,8 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set general %}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
@@ -33,29 +34,63 @@
                     {%- endif -%}
                     {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.orderReference) }}
                     {{ UI.renderProperty('marello.order.order_date.label'|trans, entity.createdAt|oro_format_datetime) }}
-                </div>
-                <div class="responsive-block">
-                    {{ UI.renderProperty('marello.order.subtotal.label'|trans, entity.subtotal|oro_format_currency) }}
-                    {{ UI.renderProperty('marello.order.total_tax.label'|trans, entity.totalTax|oro_format_currency) }}
-                    {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.grandTotal|oro_format_currency) }}
+                    {{ UI.renderProperty('marello.order.status.label'|trans, entity.workflowStep.label) }}
                 </div>
             </div>
         </div>
     {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
 
+    {% set totalsWidget %}
+        <div class="responsive-block">
+            {{ UI.renderProperty('marello.order.subtotal.label'|trans, entity.subtotal|oro_format_currency) }}
+            {{ UI.renderProperty('marello.order.total_tax.label'|trans, entity.totalTax|oro_format_currency) }}
+            {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.grandTotal|oro_format_currency) }}
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [totalsWidget] }]) %}
+
+    {% set paymentSubblocks = [] %}
     {% set billingAddressWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
             'url': path('marello_order_order_address', {id: entity.billingAddress.id, typeId: 1}),
         }) }}
     {% endset %}
+    {% set paymentSubblocks = paymentSubblocks|merge([{'data' : [billingAddressWidget] }]) %}
 
+    {% set paymentWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.paymentMethod) }}
+                    {{ UI.renderHtmlProperty('marello.order.payment_details.label'|trans, entity.paymentDetails) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set paymentSubblocks = paymentSubblocks|merge([{'data' : [paymentWidget] }]) %}
+
+    {% set shippingSubblocks = [] %}
     {% set shippingAddressWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
             'url': path('marello_order_order_address', {id: entity.shippingAddress.id, typeId: 2}),
         }) }}
     {% endset %}
+    {% set shippingSubblocks = shippingSubblocks|merge([{'data' : [shippingAddressWidget] }]) %}
+
+    {% set shippingWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.shipping_method.label'|trans, entity.shippingMethod) }}
+                    {{ UI.renderProperty('marello.order.shipping_amount.label'|trans, entity.shippingAmount|oro_format_currency) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set shippingSubblocks = shippingSubblocks|merge([{'data' : [shippingWidget] }]) %}
 
     {% set items %}
         <div class="widget-content">
@@ -81,23 +116,17 @@
         {
             'title': 'marello.order.datablock.general'|trans,
             'class': 'active',
-            'subblocks': [
-                { 'data' : [general] }
-            ]
+            'subblocks': generalSubblocks
         },
         {
             'title': 'marello.order.datablock.billing_and_payment'|trans,
             'class': 'active',
-            'subblocks': [
-                { 'data' : [billingAddressWidget] }
-            ]
+            'subblocks': paymentSubblocks
         },
         {
             'title': 'marello.order.datablock.delivery'|trans,
             'class': 'active',
-            'subblocks': [
-                { 'data' : [shippingAddressWidget] }
-            ]
+            'subblocks': shippingSubblocks
         },
         {
             'title': 'marello.order.datablock.order_items'|trans,
@@ -106,13 +135,6 @@
                 { 'data' : [items] }
             ]
         },
-        {
-            'title': 'marello.order.datablock.activity'|trans,
-            'class': 'active',
-            'subblocks': [
-                { 'data' : [activity] }
-            ]
-        }
     ] %}
 
     {% set id = 'marelloOrderView' %}

@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
-use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 
 class OrderApiType extends AbstractType
 {
@@ -34,6 +37,10 @@ class OrderApiType extends AbstractType
             ->add('grandTotal', 'oro_money')
             ->add('billingAddress', 'marello_address')
             ->add('shippingAddress', 'marello_address')
+            ->add('paymentMethod', 'text')
+            ->add('paymentDetails', 'text')
+            ->add('shippingMethod', 'text')
+            ->add('shippingAmount', 'oro_money')
             ->add('items', OrderItemCollectionType::NAME, [
                 'type'         => OrderItemApiType::NAME,
                 'allow_add'    => true,

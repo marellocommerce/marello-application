@@ -47,37 +47,84 @@ class Order extends ExtendOrder
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true, nullable=true)
+     * @ORM\Column(name="order_number",type="string", unique=true, nullable=true)
      */
     protected $orderNumber;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="order_reference",type="string", nullable=true)
      */
     protected $orderReference;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="money")
+     * @ORM\Column(name="subtotal",type="money")
      */
     protected $subtotal = 0;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="money")
+     * @ORM\Column(name="total_tax",type="money")
      */
     protected $totalTax = 0;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="money")
+     * @ORM\Column(name="grand_total",type="money")
      */
     protected $grandTotal = 0;
+
+    /**
+     * @var string
+     * @ORM\Column(name="currency", type="string", length=10, nullable=true)
+     */
+    protected $currency;
+
+    /**
+     * @var string
+     * @ORM\Column(name="payment_method", type="string", length=255, nullable=true)
+     */
+    protected $paymentMethod;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="payment_details", type="string", length=255, nullable=true)
+     */
+    protected $paymentDetails;
+
+    /**
+     * @var double
+     *
+     * @ORM\Column(name="shipping_amount", type="money", nullable=true)
+     */
+    protected $shippingAmount;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="shipping_method", type="string", nullable=true)
+     */
+    protected $shippingMethod;
+
+    /**
+     * @var double
+     *
+     * @ORM\Column(name="discount_amount", type="money", nullable=true)
+     */
+    protected $discountAmount;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="discount_percent", type="percent", nullable=true)
+     */
+    protected $discountPercent;
 
     /**
      * @var Collection|OrderItem[]
@@ -140,7 +187,7 @@ class Order extends ExtendOrder
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(name="saleschannel_name",type="string", nullable=false)
      */
     protected $salesChannelName;
 
@@ -453,5 +500,138 @@ class Order extends ExtendOrder
     public function getSalesChannelName()
     {
         return $this->salesChannelName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     * @return $this
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
+    }
+
+    /**
+     * @param string $paymentMethod
+     * @return $this
+     */
+    public function setPaymentMethod($paymentMethod)
+    {
+        $this->paymentMethod = $paymentMethod;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentDetails()
+    {
+        return $this->paymentDetails;
+    }
+
+    /**
+     * @param string $paymentDetails
+     * @return $this
+     */
+    public function setPaymentDetails($paymentDetails)
+    {
+        $this->paymentDetails = $paymentDetails;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getShippingAmount()
+    {
+        return $this->shippingAmount;
+    }
+
+    /**
+     * @param float $shippingAmount
+     * @return $this
+     */
+    public function setShippingAmount($shippingAmount)
+    {
+        $this->shippingAmount = $shippingAmount;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getShippingMethod()
+    {
+        return $this->shippingMethod;
+    }
+
+    /**
+     * @param float $shippingMethod
+     * @return $this
+     */
+    public function setShippingMethod($shippingMethod)
+    {
+        $this->shippingMethod = $shippingMethod;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDiscountAmount()
+    {
+        return $this->discountAmount;
+    }
+
+    /**
+     * @param float $discountAmount
+     * @return $this
+     */
+    public function setDiscountAmount($discountAmount)
+    {
+        $this->discountAmount = $discountAmount;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDiscountPercent()
+    {
+        return $this->discountPercent;
+    }
+
+    /**
+     * @param float $discountPercent
+     * @return $this
+     */
+    public function setDiscountPercent($discountPercent)
+    {
+        $this->discountPercent = $discountPercent;
+
+        return $this;
     }
 }
