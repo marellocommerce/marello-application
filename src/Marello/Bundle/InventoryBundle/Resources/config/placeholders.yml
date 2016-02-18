@@ -7,3 +7,10 @@ items:
         template:   MarelloInventoryBundle:Inventory:addVariantInventoryButton.html.twig
         applicable: @oro_ui.placeholder.filter->isInstanceOf($entity$, %marello_product.entity.class%)
         acl:        marello_inventory_product_stock_modify
+    marello_inventory_log_chart_item:
+        action:     MarelloInventoryBundle:InventoryLog:chart
+        applicable: true
+placeholders:
+    marello_inventory_log_chart:
+        items:
+            marello_inventory_log_chart_item: ~

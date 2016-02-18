@@ -3,12 +3,11 @@
 namespace Marello\Bundle\ProductBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\Variant;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-
-use Marello\Bundle\ProductBundle\Entity\Variant;
-use Marello\Bundle\ProductBundle\Entity\Product;
 
 class ProductVariantHandler
 {
@@ -32,16 +31,25 @@ class ProductVariantHandler
      */
     protected $parent;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
-     * @param FormInterface $form
-     * @param Request       $request
-     * @param ObjectManager $manager
+     * @param FormInterface            $form
+     * @param Request                  $request
+     * @param ObjectManager            $manager
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
-    {
-        $this->form    = $form;
-        $this->request = $request;
-        $this->manager = $manager;
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        ObjectManager $manager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->form            = $form;
+        $this->request         = $request;
+        $this->manager         = $manager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

@@ -6,3 +6,15 @@ services:
             - marello_variant_mass_inventory_link
         tags:
             - { name: oro_ui.view_action_provider, group: product }
+
+    marello_inventory.logging.chart_builder:
+        class: Marello\Bundle\InventoryBundle\Logging\ChartBuilder
+        arguments:
+            - @doctrine
+
+    marello_inventory.event_listener.inventory_log:
+        class: Marello\Bundle\InventoryBundle\EventListener\InventoryLogListener
+        arguments:
+            - @doctrine
+        tags:
+            - { name: kernel.event_listener, event: marello.inventory.log, method: log }

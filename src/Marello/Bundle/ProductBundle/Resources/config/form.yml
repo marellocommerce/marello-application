@@ -79,6 +79,7 @@ services:
             - @marello_product.product.form
             - @request
             - @doctrine.orm.entity_manager
+            - @event_dispatcher
 
     marello_product.product_form.handler.product_api:
         class: %marello_product.product_form.handler.product_api.class%
@@ -96,6 +97,7 @@ services:
             - @marello_product.product_variant.form
             - @request
             - @doctrine.orm.entity_manager
+            - @event_dispatcher
 
     marello_product.manager.api:
         class: %marello_product.manager.api.class%

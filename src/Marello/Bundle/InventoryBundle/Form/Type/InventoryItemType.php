@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -9,8 +10,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
 class InventoryItemType extends AbstractType
 {
@@ -23,11 +22,12 @@ class InventoryItemType extends AbstractType
     {
         $builder
             ->add('modifyOperator', 'choice', [
-                'choices' => [
-                    InventoryItem::MODIFY_OPERATOR_INCREASE => 'Increase',
-                    InventoryItem::MODIFY_OPERATOR_DECREASE => 'Decrease',
+                'choices'            => [
+                    InventoryItem::MODIFY_OPERATOR_INCREASE => 'increase',
+                    InventoryItem::MODIFY_OPERATOR_DECREASE => 'decrease',
                 ],
-                'mapped'  => false,
+                'mapped'             => false,
+                'translation_domain' => 'MarelloInventoryChangeDirection',
             ])
             ->add('modifyAmount', 'number', [
                 'mapped'      => false,

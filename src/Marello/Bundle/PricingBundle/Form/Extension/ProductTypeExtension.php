@@ -2,18 +2,15 @@
 
 namespace Marello\Bundle\PricingBundle\Form\Extension;
 
+use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Form\Type\ProductType;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
-use Marello\Bundle\ProductBundle\Form\Type\ProductType;
-use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 
 class ProductTypeExtension extends AbstractTypeExtension
 {

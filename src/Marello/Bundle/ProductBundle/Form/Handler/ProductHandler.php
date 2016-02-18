@@ -3,39 +3,43 @@
 namespace Marello\Bundle\ProductBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Events\InventoryLogEvent;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
-
 class ProductHandler
 {
-    /**
-     * @var FormInterface
-     */
+    /** @var FormInterface */
     protected $form;
 
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManager */
     protected $manager;
 
+    /** @var EventDispatcherInterface */
+    private $dispatcher;
+
     /**
-     * @param FormInterface $form
-     * @param Request       $request
-     * @param ObjectManager $manager
+     * @param FormInterface            $form
+     * @param Request                  $request
+     * @param ObjectManager            $manager
+     * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
-    {
-        $this->form    = $form;
-        $this->request = $request;
-        $this->manager = $manager;
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        ObjectManager $manager,
+        EventDispatcherInterface $dispatcher
+    ) {
+        $this->form       = $form;
+        $this->request    = $request;
+        $this->manager    = $manager;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -79,6 +83,27 @@ class ProductHandler
      */
     protected function onSuccess(Product $entity)
     {
+        /** @var FormInterface $item */
+        foreach ($this->form->get('inventoryItems') as $item) {
+            $operator = $item->get('modifyOperator')->getData();
+            $amount   = $item->get('modifyAmount')->getData();
+
+            if ($amount === 0) {
+                continue;
+            }
+
+            if ($operator === InventoryItem::MODIFY_OPERATOR_DECREASE) {
+                $amount *= -1;
+            }
+
+            $this->dispatcher->dispatch(InventoryLogEvent::NAME, new InventoryLogEvent(
+                $item->getData(),
+                $item->getData()->getQuantity() - $amount,
+                $item->getData()->getQuantity(),
+                'manual'
+            ));
+        }
+
         $this->manager->persist($entity);
         $this->manager->flush();
     }

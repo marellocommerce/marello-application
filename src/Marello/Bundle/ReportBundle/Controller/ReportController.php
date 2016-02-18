@@ -18,6 +18,11 @@ class ReportController extends Controller
      * )
      * @Config\Template
      * @Security\AclAncestor("oro_report_view")
+     *
+     * @param string $reportGroupName
+     * @param string $reportName
+     *
+     * @return array
      */
     public function indexAction($reportGroupName, $reportName)
     {

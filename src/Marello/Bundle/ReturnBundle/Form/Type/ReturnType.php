@@ -7,7 +7,6 @@ use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnEntityConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 class ReturnType extends AbstractType
 {

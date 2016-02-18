@@ -120,9 +120,7 @@ class ProductController extends RestController implements ClassResourceInterface
     }
 
     /**
-     * Get entity Manager
-     *
-     * @return ApiEntityManager
+     * {@inheritdoc}
      */
     public function getManager()
     {
@@ -139,7 +137,7 @@ class ProductController extends RestController implements ClassResourceInterface
     }
 
     /**
-     * @return ApiFormHandler
+     * {@inheritdoc}
      */
     public function getFormHandler()
     {

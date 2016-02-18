@@ -44,36 +44,29 @@ class InventoryController extends Controller
      * @Config\Template
      *
      * @param Product $product
-     * @param Request $request
      *
      * @return array|RedirectResponse
      */
-    public function updateAction(Product $product, Request $request)
+    public function updateAction(Product $product)
     {
-        $form = $this->createForm('marello_product_inventory', $product);
+        $handler = $this->get('marello_inventory.form.handler.product_inventory');
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $em->persist($product);
-            $em->flush();
-
+        if ($handler->process($product)) {
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route'      => 'marello_inventory_inventory_update',
                     'parameters' => ['id' => $product->getId()],
                 ],
-                [   'route' => 'marello_product_view',
-                    'parameters' => ['id' => $product->getId()]
+                [
+                    'route'      => 'marello_product_view',
+                    'parameters' => ['id' => $product->getId()],
                 ],
                 $product
             );
         }
 
         return [
-            'form'   => $form->createView(),
+            'form'   => $handler->getFormView(),
             'entity' => $product,
         ];
     }
@@ -83,13 +76,15 @@ class InventoryController extends Controller
      * @Config\Template
      *
      * @param Product $product
+     *
      * @return array
      */
     public function infoAction(Product $product)
     {
         $item = $product->getInventoryItems()->first();
+
         return [
-            'item' => $item
+            'item' => $item,
         ];
     }
 }

@@ -60,6 +60,9 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
 
     /**
      * Create Product
+     *
+     * @param $item
+     *
      * @return Product
      */
     public function createProduct($item)
