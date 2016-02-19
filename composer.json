@@ -24,6 +24,10 @@
         "component-dir": "web/bundles/components"
     },
     "scripts": {
+        "test": [
+            "phpunit -c app --tap --testsuite=\"Unit Tests\"",
+            "phpunit -c app --tap --testsuite=\"Functional Tests\""
+        ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
