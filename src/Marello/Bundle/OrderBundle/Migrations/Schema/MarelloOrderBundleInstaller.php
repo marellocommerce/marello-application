@@ -55,9 +55,17 @@ class MarelloOrderBundleInstaller implements Installation
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('payment_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_details', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('shipping_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn(
+            'shipping_amount',
+            'money',
+            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
+        );
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('discount_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn(
+            'discount_amount',
+            'money',
+            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
+        );
         $table->addColumn('discount_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('order_reference', 'string', ['notnull' => false, 'length' => 255]);
@@ -89,7 +97,11 @@ class MarelloOrderBundleInstaller implements Installation
         $table->addColumn('total_price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('tax_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('discount_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
-        $table->addColumn('discount_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn(
+            'discount_amount',
+            'money',
+            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
+        );
         $table->addColumn('product_name', 'string', ['length' => 255]);
         $table->addColumn('product_sku', 'string', ['length' => 255]);
         $table->setPrimaryKey(['id']);
