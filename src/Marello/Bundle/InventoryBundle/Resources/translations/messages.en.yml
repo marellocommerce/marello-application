@@ -24,14 +24,15 @@ marello:
             product.label:              Product
 
         inventorylog:
-            entity_label:           Inventory Log
-            entity_plural_label:    Inventory Logs
-            id.label:               Id
-            changeAmount.label:     Quantity Change
-            actionType.label:       Trigger
-            user.label:             User
-            inventoryItem.label:    Inventory Item
-            createdAt.label:        Created At
+            entity_label:                   Inventory Log
+            entity_plural_label:            Inventory Logs
+            id.label:                       Id
+            changeAmount.label:             Stock Change
+            changeAllocatedAmount.label:    Allocated Stock Change
+            actionType.label:               Trigger
+            user.label:                     User
+            inventoryItem.label:            Inventory Item
+            createdAt.label:                Created At
 
         logaction:
             manual:                 Manual

@@ -98,7 +98,7 @@ datagrid:
                 select:
                     - l
                     - (l.newQuantity - l.oldQuantity) AS changeAmount
-                    - CASE WHEN ((l.newQuantity - l.oldQuantity) > 0) THEN 'increase' ELSE 'decrease' AS changeDirection
+                    - (l.newAllocatedQuantity - l.oldAllocatedQuantity) AS changeAllocatedAmount
                 from:
                     - { table: MarelloInventoryBundle:InventoryLog, alias: l }
                 join:
@@ -116,12 +116,12 @@ datagrid:
                 type:           twig
                 frontend_type:  html
                 template:       MarelloInventoryBundle::Datagrid/InventoryLog/changeAmount.html.twig
-            changeDirection:
-                data_name:      changeDirection
-                label:          Change Direction
-                frontend_type:  string
-                type:           translatable
-                domain:         MarelloInventoryChangeDirection
+            changeAllocatedAmount:
+                data_name:      changeAllocatedAmount
+                label:          marello.inventory.inventorylog.changeAllocatedAmount.label
+                type:           twig
+                frontend_type:  html
+                template:       MarelloInventoryBundle::Datagrid/InventoryLog/changeAmount.html.twig
             actionType:
                 label:          marello.inventory.inventorylog.actionType.label
                 type:           translatable
