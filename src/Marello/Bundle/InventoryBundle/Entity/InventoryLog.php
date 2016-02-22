@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\InventoryBundle\Model\InventoryType;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
@@ -34,6 +35,13 @@ class InventoryLog
      * @var int
      */
     protected $newQuantity;
+
+    /**
+     * @ORM\Column(type="string", length=32, nullable=false)
+     *
+     * @var string
+     */
+    protected $inventoryType = InventoryType::STANDARD;
 
     /**
      * @ORM\Column(type="string", nullable=false)

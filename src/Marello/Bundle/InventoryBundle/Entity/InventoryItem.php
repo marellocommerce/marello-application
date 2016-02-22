@@ -43,6 +43,7 @@ class InventoryItem
      *          }
      *      }
      * )
+     *
      * @var int
      */
     protected $id;
@@ -58,6 +59,7 @@ class InventoryItem
      *          }
      *      }
      * )
+     *
      * @var Product
      */
     protected $product;
@@ -72,6 +74,7 @@ class InventoryItem
      *          }
      *      }
      * )
+     *
      * @var Warehouse
      */
     protected $warehouse;
@@ -86,9 +89,17 @@ class InventoryItem
      *          }
      *      }
      * )
+     *
      * @var int
      */
     protected $quantity = 0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     *
+     * @var int
+     */
+    protected $allocatedQuantity = 0;
 
     /**
      * @ORM\OneToMany(
@@ -126,7 +137,7 @@ class InventoryItem
     public function setId($id)
     {
         $this->id = $id;
-        
+
         return $this;
     }
 
@@ -230,6 +241,38 @@ class InventoryItem
     public function removeInventoryLog(InventoryLog $log)
     {
         $this->inventoryLogs->removeElement($log);
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAllocatedQuantity()
+    {
+        return $this->allocatedQuantity;
+    }
+
+    /**
+     * @param mixed $allocatedQuantity
+     *
+     * @return $this
+     */
+    public function setAllocatedQuantity($allocatedQuantity)
+    {
+        $this->allocatedQuantity = $allocatedQuantity;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $amount
+     *
+     * @return $this
+     */
+    public function modifyAllocatedQuantity($amount)
+    {
+        $this->allocatedQuantity += $amount;
 
         return $this;
     }
