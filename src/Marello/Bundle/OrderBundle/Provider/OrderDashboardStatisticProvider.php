@@ -68,7 +68,7 @@ class OrderDashboardStatisticProvider
         if (count($previousInterval)) {
             $pastResult = $this->{$getterName}($previousInterval);
 
-            $result['deviation'] = $this->translator->trans('orocrm.magento.dashboard.e_commerce_statistic.no_changes');
+            $result['deviation'] = $this->translator->trans('marello.order.dashboard.order_statistics.no_changes');
 
             $deviation = $value - $pastResult;
             if ($pastResult != 0 && $dataType !== 'percent') {
