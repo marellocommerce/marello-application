@@ -10,11 +10,11 @@ use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrate
 class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 {
     /**
-     * @param object           $entity
-     * @param bool             $isFullData
-     * @param bool             $isPersistNew
-     * @param mixed|array|null $itemData
-     * @param array            $searchContext
+     * @param object|InventoryItem $entity
+     * @param bool                 $isFullData
+     * @param bool                 $isPersistNew
+     * @param mixed|array|null     $itemData
+     * @param array                $searchContext
      *
      * @return null|object
      */
@@ -58,7 +58,13 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             $this->cachedEntities[$oid] = $entity;
             $this->eventDispatcher->dispatch(
                 InventoryLogEvent::NAME,
-                new InventoryLogEvent($entity, 0, $entity->getQuantity(), 'import')
+                new InventoryLogEvent(
+                    $entity,
+                    0,
+                    $entity->getQuantity(),
+                    'import',
+                    0
+                )
             );
         }
 
@@ -138,7 +144,13 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             $existingEntity->modifyQuantity($entity->getQuantity());
             $this->eventDispatcher->dispatch(
                 InventoryLogEvent::NAME,
-                new InventoryLogEvent($existingEntity, $oldQuantity, $existingEntity->getQuantity(), 'import')
+                new InventoryLogEvent(
+                    $existingEntity,
+                    $oldQuantity,
+                    $existingEntity->getQuantity(),
+                    'import',
+                    $existingEntity->getAllocatedQuantity()
+                )
             );
 
             //manually handle product relation

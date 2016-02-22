@@ -123,11 +123,15 @@ class ProductInventoryHandler
             $amount *= -1;
         }
 
+        /** @var InventoryItem $data */
+        $data = $item->getData();
+
         $this->dispatcher->dispatch(InventoryLogEvent::NAME, new InventoryLogEvent(
-            $item->getData(),
-            $item->getData()->getQuantity() - $amount,
-            $item->getData()->getQuantity(),
-            'manual'
+            $data,
+            $data->getQuantity() - $amount,
+            $data->getQuantity(),
+            'manual',
+            $data->getAllocatedQuantity()
         ));
     }
 }

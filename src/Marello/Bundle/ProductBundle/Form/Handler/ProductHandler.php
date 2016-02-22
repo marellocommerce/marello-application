@@ -96,12 +96,19 @@ class ProductHandler
                 $amount *= -1;
             }
 
-            $this->dispatcher->dispatch(InventoryLogEvent::NAME, new InventoryLogEvent(
-                $item->getData(),
-                $item->getData()->getQuantity() - $amount,
-                $item->getData()->getQuantity(),
-                'manual'
-            ));
+            /** @var InventoryItem $data */
+            $data = $item->getData();
+
+            $this->dispatcher->dispatch(
+                InventoryLogEvent::NAME,
+                new InventoryLogEvent(
+                    $data,
+                    $data->getQuantity() - $amount,
+                    $data->getQuantity(),
+                    'manual',
+                    $data->getAllocatedQuantity()
+                )
+            );
         }
 
         $this->manager->persist($entity);

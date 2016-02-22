@@ -3,7 +3,6 @@
 namespace Marello\Bundle\InventoryBundle\Events;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Model\InventoryType;
 use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -23,42 +22,48 @@ class InventoryLogEvent extends Event
     /** @var array */
     protected $payload = [];
 
-    /** @var string */
-    protected $inventoryType;
+    /** @var int */
+    protected $oldQuantity;
 
     /** @var int */
-    private $oldQuantity;
-
+    protected $newQuantity;
     /** @var int */
-    private $newQuantity;
+
+    protected $oldAllocatedQuantity;
+    /** @var int */
+
+    protected $newAllocatedQuantity;
 
     /**
      * InventoryLogEvent constructor.
      *
-     * @param InventoryItem $inventoryItem Inventory for which is this event created.
-     * @param int           $oldQuantity   Old inventory quantity.
-     * @param int           $newQuantity   New Inventory quantity.
-     * @param string        $trigger       Type of change.
-     * @param string        $inventoryType Type of inventory change.
-     * @param User          $user          User making the change.
-     * @param array         $payload       Payload containing any additional parameters.
+     * @param InventoryItem $inventoryItem        Inventory for which is this event created.
+     * @param int           $oldQuantity          Old inventory quantity.
+     * @param int           $newQuantity          New Inventory quantity.
+     * @param string        $trigger              Type of change.
+     * @param int           $oldAllocatedQuantity Old allocated inventory quantity.
+     * @param int           $newAllocatedQuantity New allocated Inventory quantity.
+     * @param User          $user                 User making the change.
+     * @param array         $payload              Payload containing any additional parameters.
      */
     public function __construct(
         InventoryItem $inventoryItem,
         $oldQuantity,
         $newQuantity,
         $trigger,
-        $inventoryType = InventoryType::STANDARD,
+        $oldAllocatedQuantity,
+        $newAllocatedQuantity = null,
         User $user = null,
         array $payload = []
     ) {
-        $this->inventoryItem = $inventoryItem;
-        $this->user          = $user;
-        $this->trigger       = $trigger;
-        $this->inventoryType = $inventoryType;
-        $this->payload       = $payload;
-        $this->oldQuantity   = $oldQuantity;
-        $this->newQuantity   = $newQuantity;
+        $this->inventoryItem        = $inventoryItem;
+        $this->user                 = $user;
+        $this->trigger              = $trigger;
+        $this->payload              = $payload;
+        $this->oldQuantity          = $oldQuantity;
+        $this->newQuantity          = $newQuantity;
+        $this->oldAllocatedQuantity = $oldAllocatedQuantity;
+        $this->newAllocatedQuantity = $newAllocatedQuantity === null ? $oldAllocatedQuantity : $newAllocatedQuantity;
     }
 
     /**
@@ -158,10 +163,18 @@ class InventoryLogEvent extends Event
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getInventoryType()
+    public function getOldAllocatedQuantity()
     {
-        return $this->inventoryType;
+        return $this->oldAllocatedQuantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNewAllocatedQuantity()
+    {
+        return $this->newAllocatedQuantity;
     }
 }

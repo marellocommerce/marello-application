@@ -37,11 +37,18 @@ class InventoryLog
     protected $newQuantity;
 
     /**
-     * @ORM\Column(type="string", length=32, nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      *
-     * @var string
+     * @var int
      */
-    protected $inventoryType = InventoryType::STANDARD;
+    protected $oldAllocatedQuantity;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     *
+     * @var int
+     */
+    protected $newAllocatedQuantity;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -198,21 +205,41 @@ class InventoryLog
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getInventoryType()
+    public function getOldAllocatedQuantity()
     {
-        return $this->inventoryType;
+        return $this->oldAllocatedQuantity;
     }
 
     /**
-     * @param string $inventoryType
+     * @param int $oldAllocatedQuantity
      *
      * @return $this
      */
-    public function setInventoryType($inventoryType)
+    public function setOldAllocatedQuantity($oldAllocatedQuantity)
     {
-        $this->inventoryType = $inventoryType;
+        $this->oldAllocatedQuantity = $oldAllocatedQuantity;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNewAllocatedQuantity()
+    {
+        return $this->newAllocatedQuantity;
+    }
+
+    /**
+     * @param int $newAllocatedQuantity
+     *
+     * @return $this
+     */
+    public function setNewAllocatedQuantity($newAllocatedQuantity)
+    {
+        $this->newAllocatedQuantity = $newAllocatedQuantity;
 
         return $this;
     }
