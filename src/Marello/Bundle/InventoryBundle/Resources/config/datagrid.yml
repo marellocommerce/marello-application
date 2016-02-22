@@ -143,3 +143,24 @@ datagrid:
             toolbarOptions:
                 pageSize:
                     default_per_page: 10
+
+    marello-inventory-log-extended:
+        extends: marello-inventory-log
+        filters:
+            columns:
+                changeAmount:
+                    type:             number
+                    data_name:        changeAmount
+                changeAllocatedAmount:
+                    type:             number
+                    data_name:        changeAllocatedAmount
+                actionType:
+                    type:             string
+                    data_name:        l.actionType
+                createdAt:
+                    type:             datetime
+                    data_name:        createdAt
+        options:
+            toolbarOptions:
+                pageSize:
+                    default_per_page: 50
