@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Events;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Model\InventoryType;
 use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -17,10 +18,13 @@ class InventoryLogEvent extends Event
     protected $user;
 
     /** @var string */
-    protected $type;
+    protected $trigger;
 
     /** @var array */
     protected $payload = [];
+
+    /** @var string */
+    protected $inventoryType;
 
     /** @var int */
     private $oldQuantity;
@@ -34,7 +38,8 @@ class InventoryLogEvent extends Event
      * @param InventoryItem $inventoryItem Inventory for which is this event created.
      * @param int           $oldQuantity   Old inventory quantity.
      * @param int           $newQuantity   New Inventory quantity.
-     * @param string        $type          Type of change.
+     * @param string        $trigger       Type of change.
+     * @param string        $inventoryType Type of inventory change.
      * @param User          $user          User making the change.
      * @param array         $payload       Payload containing any additional parameters.
      */
@@ -42,13 +47,15 @@ class InventoryLogEvent extends Event
         InventoryItem $inventoryItem,
         $oldQuantity,
         $newQuantity,
-        $type,
+        $trigger,
+        $inventoryType = InventoryType::STANDARD,
         User $user = null,
         array $payload = []
     ) {
         $this->inventoryItem = $inventoryItem;
         $this->user          = $user;
-        $this->type          = $type;
+        $this->trigger       = $trigger;
+        $this->inventoryType = $inventoryType;
         $this->payload       = $payload;
         $this->oldQuantity   = $oldQuantity;
         $this->newQuantity   = $newQuantity;
@@ -97,19 +104,19 @@ class InventoryLogEvent extends Event
     /**
      * @return string
      */
-    public function getType()
+    public function getTrigger()
     {
-        return $this->type;
+        return $this->trigger;
     }
 
     /**
-     * @param string $type
+     * @param string $trigger
      *
      * @return $this
      */
-    public function setType($type)
+    public function setTrigger($trigger)
     {
-        $this->type = $type;
+        $this->trigger = $trigger;
 
         return $this;
     }
@@ -148,5 +155,13 @@ class InventoryLogEvent extends Event
     public function getOldQuantity()
     {
         return $this->oldQuantity;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInventoryType()
+    {
+        return $this->inventoryType;
     }
 }

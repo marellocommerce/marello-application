@@ -196,4 +196,24 @@ class InventoryLog
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getInventoryType()
+    {
+        return $this->inventoryType;
+    }
+
+    /**
+     * @param string $inventoryType
+     *
+     * @return $this
+     */
+    public function setInventoryType($inventoryType)
+    {
+        $this->inventoryType = $inventoryType;
+
+        return $this;
+    }
 }

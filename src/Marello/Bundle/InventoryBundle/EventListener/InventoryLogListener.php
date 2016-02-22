@@ -42,7 +42,7 @@ class InventoryLogListener
         /*
          * If event is of unsupported type, don't handle it.
          */
-        if (!in_array($event->getType(), $this->supportedTypes)) {
+        if (!in_array($event->getTrigger(), $this->supportedTypes)) {
             return;
         }
 
@@ -50,7 +50,8 @@ class InventoryLogListener
 
         $log
             ->setInventoryItem($event->getInventoryItem())
-            ->setActionType($event->getType())
+            ->setActionType($event->getTrigger())
+            ->setInventoryType($event->getInventoryType())
             ->setOldQuantity($event->getOldQuantity())
             ->setNewQuantity($event->getNewQuantity())
             ->setUser($event->getUser());
