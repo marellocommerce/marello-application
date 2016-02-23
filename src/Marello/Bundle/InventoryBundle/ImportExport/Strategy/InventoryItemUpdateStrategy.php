@@ -5,7 +5,6 @@ namespace Marello\Bundle\InventoryBundle\ImportExport\Strategy;
 use Doctrine\Common\Util\ClassUtils;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
-use Marello\Bundle\InventoryBundle\Events\InventoryLogEvent;
 use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
 use Oro\Bundle\ImportExportBundle\Field\DatabaseHelper;
 use Oro\Bundle\ImportExportBundle\Field\FieldHelper;
@@ -77,10 +76,6 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             }
             $this->databaseHelper->resetIdentifier($entity);
             $this->cachedEntities[$oid] = $entity;
-            $this->eventDispatcher->dispatch(
-                InventoryLogEvent::NAME,
-                InventoryLogEvent::create($entity, 'import')
-            );
 
             $this->inventoryLogger->directLog(
                 $entity,

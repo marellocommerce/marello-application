@@ -16,10 +16,3 @@ services:
         class: Marello\Bundle\InventoryBundle\Logging\InventoryLogger
         arguments:
             - @doctrine
-
-    marello_inventory.event_listener.inventory_log:
-        class: Marello\Bundle\InventoryBundle\EventListener\InventoryLogListener
-        arguments:
-            - @doctrine
-        tags:
-            - { name: kernel.event_listener, event: marello.inventory.log, method: log }
