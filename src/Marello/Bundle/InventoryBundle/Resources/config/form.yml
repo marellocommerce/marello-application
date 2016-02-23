@@ -48,4 +48,4 @@ services:
             - @marello_inventory.form.product_inventory
             - @request
             - @doctrine.orm.entity_manager
-            - @event_dispatcher
+            - @marello_inventory.logging.inventory_logger
