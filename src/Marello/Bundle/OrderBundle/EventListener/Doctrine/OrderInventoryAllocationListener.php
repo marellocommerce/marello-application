@@ -27,7 +27,10 @@ class OrderInventoryAllocationListener
         $this->logger    = $logger;
     }
 
-    public function prePersist(LifecycleEventArgs $args)
+    /**
+     * @param LifecycleEventArgs $args
+     */
+    public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
 
@@ -35,12 +38,14 @@ class OrderInventoryAllocationListener
             return;
         }
 
+        /*
+         * TODO: Create strategy to determine from where and how to select warehouse.
+         */
         $warehouse = $args->getEntityManager()
             ->getRepository('MarelloInventoryBundle:Warehouse')
             ->getDefault();
 
         $items = [];
-
         foreach ($entity->getItems() as $item) {
             $inventoryItem = $args->getEntityManager()
                 ->getRepository('MarelloInventoryBundle:InventoryItem')

@@ -36,4 +36,4 @@ services:
             - @marello_inventory.allocation.allocator
             - @marello_inventory.logging.inventory_logger
         tags:
-            - { name: doctrine.event_listener, event: prePersist, method: prePersist }
+            - { name: doctrine.event_listener, event: postPersist, method: postPersist }
