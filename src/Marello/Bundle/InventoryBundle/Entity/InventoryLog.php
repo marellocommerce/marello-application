@@ -3,10 +3,11 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\InventoryBundle\Model\InventoryType;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
+ * Represents changes in inventory items over time.
+ *
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLogRepository")
  * @ORM\Table(name="marello_inventory_log")
  * @ORM\HasLifecycleCallbacks
