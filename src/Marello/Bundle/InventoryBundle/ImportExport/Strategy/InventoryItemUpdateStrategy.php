@@ -58,13 +58,7 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             $this->cachedEntities[$oid] = $entity;
             $this->eventDispatcher->dispatch(
                 InventoryLogEvent::NAME,
-                new InventoryLogEvent(
-                    $entity,
-                    0,
-                    $entity->getQuantity(),
-                    'import',
-                    0
-                )
+                InventoryLogEvent::create($entity, 'import')
             );
         }
 
@@ -142,15 +136,11 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 
             //manually handle quantity update
             $existingEntity->modifyQuantity($entity->getQuantity());
+
             $this->eventDispatcher->dispatch(
                 InventoryLogEvent::NAME,
-                new InventoryLogEvent(
-                    $existingEntity,
-                    $oldQuantity,
-                    $existingEntity->getQuantity(),
-                    'import',
-                    $existingEntity->getAllocatedQuantity()
-                )
+                InventoryLogEvent::create($existingEntity, 'import')
+                    ->setOldQuantity($oldQuantity)
             );
 
             //manually handle product relation

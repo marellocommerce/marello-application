@@ -101,13 +101,8 @@ class ProductHandler
 
             $this->dispatcher->dispatch(
                 InventoryLogEvent::NAME,
-                new InventoryLogEvent(
-                    $data,
-                    $data->getQuantity() - $amount,
-                    $data->getQuantity(),
-                    'manual',
-                    $data->getAllocatedQuantity()
-                )
+                InventoryLogEvent::create($data, 'manual')
+                    ->setOldQuantity($data->getQuantity() - $amount)
             );
         }
 

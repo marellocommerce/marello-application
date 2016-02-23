@@ -35,35 +35,30 @@ class InventoryLogEvent extends Event
     protected $newAllocatedQuantity;
 
     /**
+     * @param InventoryItem $inventoryItem
+     * @param string        $trigger
+     *
+     * @return InventoryLogEvent
+     */
+    public static function create(InventoryItem $inventoryItem, $trigger)
+    {
+        return new self($inventoryItem, $trigger);
+    }
+
+    /**
      * InventoryLogEvent constructor.
      *
-     * @param InventoryItem $inventoryItem        Inventory for which is this event created.
-     * @param int           $oldQuantity          Old inventory quantity.
-     * @param int           $newQuantity          New Inventory quantity.
-     * @param string        $trigger              Type of change.
-     * @param int           $oldAllocatedQuantity Old allocated inventory quantity.
-     * @param int           $newAllocatedQuantity New allocated Inventory quantity.
-     * @param User          $user                 User making the change.
-     * @param array         $payload              Payload containing any additional parameters.
+     * @param InventoryItem $inventoryItem Inventory for which is this event created.
+     * @param string        $trigger       Type of change.
      */
     public function __construct(
         InventoryItem $inventoryItem,
-        $oldQuantity,
-        $newQuantity,
-        $trigger,
-        $oldAllocatedQuantity,
-        $newAllocatedQuantity = null,
-        User $user = null,
-        array $payload = []
+        $trigger
     ) {
         $this->inventoryItem        = $inventoryItem;
-        $this->user                 = $user;
         $this->trigger              = $trigger;
-        $this->payload              = $payload;
-        $this->oldQuantity          = $oldQuantity;
-        $this->newQuantity          = $newQuantity;
-        $this->oldAllocatedQuantity = $oldAllocatedQuantity;
-        $this->newAllocatedQuantity = $newAllocatedQuantity === null ? $oldAllocatedQuantity : $newAllocatedQuantity;
+        $this->oldQuantity          = $this->newQuantity = $inventoryItem->getQuantity();
+        $this->oldAllocatedQuantity = $this->newAllocatedQuantity = $inventoryItem->getAllocatedQuantity();
     }
 
     /**
@@ -176,5 +171,53 @@ class InventoryLogEvent extends Event
     public function getNewAllocatedQuantity()
     {
         return $this->newAllocatedQuantity;
+    }
+
+    /**
+     * @param int $oldQuantity
+     *
+     * @return InventoryLogEvent
+     */
+    public function setOldQuantity($oldQuantity)
+    {
+        $this->oldQuantity = $oldQuantity;
+
+        return $this;
+    }
+
+    /**
+     * @param int $newQuantity
+     *
+     * @return InventoryLogEvent
+     */
+    public function setNewQuantity($newQuantity)
+    {
+        $this->newQuantity = $newQuantity;
+
+        return $this;
+    }
+
+    /**
+     * @param int $oldAllocatedQuantity
+     *
+     * @return InventoryLogEvent
+     */
+    public function setOldAllocatedQuantity($oldAllocatedQuantity)
+    {
+        $this->oldAllocatedQuantity = $oldAllocatedQuantity;
+
+        return $this;
+    }
+
+    /**
+     * @param int $newAllocatedQuantity
+     *
+     * @return InventoryLogEvent
+     */
+    public function setNewAllocatedQuantity($newAllocatedQuantity)
+    {
+        $this->newAllocatedQuantity = $newAllocatedQuantity;
+
+        return $this;
     }
 }
