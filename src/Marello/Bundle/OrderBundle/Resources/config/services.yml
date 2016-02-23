@@ -34,5 +34,6 @@ services:
         class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderInventoryAllocationListener
         arguments:
             - @marello_inventory.allocation.allocator
+            - @marello_inventory.logging.inventory_logger
         tags:
             - { name: doctrine.event_listener, event: prePersist, method: prePersist }

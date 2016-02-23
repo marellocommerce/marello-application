@@ -6,7 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
+ * @ORM\Table(name="marello_inventory_allocation")
  */
 class InventoryAllocation
 {
