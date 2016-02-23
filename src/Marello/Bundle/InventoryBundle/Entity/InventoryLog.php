@@ -81,6 +81,16 @@ class InventoryLog
     protected $createdAt = null;
 
     /**
+     * InventoryLog constructor.
+     *
+     * @param InventoryItem $inventoryItem
+     */
+    public function __construct(InventoryItem $inventoryItem)
+    {
+        $this->inventoryItem = $inventoryItem;
+    }
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist()
