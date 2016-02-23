@@ -33,7 +33,7 @@ class InventoryLogger
      *
      * @param InventoryItem $item
      * @param string        $trigger
-     * @param Closure      $setValues Closure used to set log values. Takes InventoryLog as single parameter.
+     * @param Closure       $setValues Closure used to set log values. Takes InventoryLog as single parameter.
      */
     public function directLog(InventoryItem $item, $trigger, Closure $setValues)
     {
@@ -59,7 +59,7 @@ class InventoryLogger
      *
      * @param InventoryItem[]|InventoryItem $items
      * @param string                        $trigger
-     * @param Closure|null                 $modifyLog
+     * @param Closure|null                  $modifyLog
      *
      * @throws \Exception
      */
