@@ -27,28 +27,28 @@ class InventoryLog
      *
      * @var int
      */
-    protected $oldQuantity;
+    protected $oldQuantity = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
      *
      * @var int
      */
-    protected $newQuantity;
+    protected $newQuantity = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
      *
      * @var int
      */
-    protected $oldAllocatedQuantity;
+    protected $oldAllocatedQuantity = 0;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
      *
      * @var int
      */
-    protected $newAllocatedQuantity;
+    protected $newAllocatedQuantity = 0;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -84,10 +84,12 @@ class InventoryLog
      * InventoryLog constructor.
      *
      * @param InventoryItem $inventoryItem
+     * @param string        $trigger
      */
-    public function __construct(InventoryItem $inventoryItem)
+    public function __construct(InventoryItem $inventoryItem, $trigger)
     {
         $this->inventoryItem = $inventoryItem;
+        $this->actionType    = $trigger;
     }
 
     /**
@@ -131,18 +133,6 @@ class InventoryLog
     }
 
     /**
-     * @param string $actionType
-     *
-     * @return $this
-     */
-    public function setActionType($actionType)
-    {
-        $this->actionType = $actionType;
-
-        return $this;
-    }
-
-    /**
      * @param User $user
      *
      * @return $this
@@ -160,18 +150,6 @@ class InventoryLog
     public function getInventoryItem()
     {
         return $this->inventoryItem;
-    }
-
-    /**
-     * @param InventoryItem $inventoryItem
-     *
-     * @return $this
-     */
-    public function setInventoryItem($inventoryItem)
-    {
-        $this->inventoryItem = $inventoryItem;
-
-        return $this;
     }
 
     /**

@@ -4,11 +4,32 @@ namespace Marello\Bundle\InventoryBundle\ImportExport\Strategy;
 
 use Doctrine\Common\Util\ClassUtils;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
 use Marello\Bundle\InventoryBundle\Events\InventoryLogEvent;
+use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
+use Oro\Bundle\ImportExportBundle\Field\DatabaseHelper;
+use Oro\Bundle\ImportExportBundle\Field\FieldHelper;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
+use Oro\Bundle\ImportExportBundle\Strategy\Import\ImportStrategyHelper;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 {
+    /** @var InventoryLogger */
+    protected $inventoryLogger;
+
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        ImportStrategyHelper $strategyHelper,
+        FieldHelper $fieldHelper,
+        DatabaseHelper $databaseHelper,
+        InventoryLogger $inventoryLogger
+    ) {
+        parent::__construct($eventDispatcher, $strategyHelper, $fieldHelper, $databaseHelper);
+
+        $this->inventoryLogger = $inventoryLogger;
+    }
+
     /**
      * @param object|InventoryItem $entity
      * @param bool                 $isFullData
@@ -59,6 +80,15 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             $this->eventDispatcher->dispatch(
                 InventoryLogEvent::NAME,
                 InventoryLogEvent::create($entity, 'import')
+            );
+
+            $this->inventoryLogger->directLog(
+                $entity,
+                'import',
+                function (InventoryLog $log) use ($entity) {
+                    $log->setNewQuantity($entity->getQuantity());
+                    $log->setNewAllocatedQuantity($entity->getAllocatedQuantity());
+                }
             );
         }
 
@@ -133,14 +163,20 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             && !array_intersect([$fieldRelationName, $fieldName], $excludedFields)
         ) {
             $oldQuantity = $existingEntity->getQuantity();
+            $oldAllocatedQuantity = $existingEntity->getAllocatedQuantity();
 
             //manually handle quantity update
             $existingEntity->modifyQuantity($entity->getQuantity());
 
-            $this->eventDispatcher->dispatch(
-                InventoryLogEvent::NAME,
-                InventoryLogEvent::create($existingEntity, 'import')
-                    ->setOldQuantity($oldQuantity)
+            $this->inventoryLogger->directLog(
+                $existingEntity,
+                'import',
+                function (InventoryLog $log) use ($existingEntity, $oldQuantity, $oldAllocatedQuantity) {
+                    $log->setOldQuantity($oldQuantity);
+                    $log->setNewQuantity($existingEntity->getQuantity());
+                    $log->setOldAllocatedQuantity($oldAllocatedQuantity);
+                    $log->setNewAllocatedQuantity($existingEntity->getAllocatedQuantity());
+                }
             );
 
             //manually handle product relation

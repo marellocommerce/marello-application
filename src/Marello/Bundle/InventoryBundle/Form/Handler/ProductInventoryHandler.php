@@ -3,10 +3,8 @@
 namespace Marello\Bundle\InventoryBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Events\InventoryLogEvent;
+use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,25 +19,25 @@ class ProductInventoryHandler
     /** @var ObjectManager */
     protected $manager;
 
-    /** @var EventDispatcherInterface */
-    private $dispatcher;
+    /** @var InventoryLogger */
+    protected $inventoryLogger;
 
     /**
-     * @param FormInterface            $form
-     * @param Request                  $request
-     * @param ObjectManager            $manager
-     * @param EventDispatcherInterface $dispatcher
+     * @param FormInterface   $form
+     * @param Request         $request
+     * @param ObjectManager   $manager
+     * @param InventoryLogger $inventoryLogger
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         ObjectManager $manager,
-        EventDispatcherInterface $dispatcher
+        InventoryLogger $inventoryLogger
     ) {
-        $this->form       = $form;
-        $this->request    = $request;
-        $this->manager    = $manager;
-        $this->dispatcher = $dispatcher;
+        $this->form            = $form;
+        $this->request         = $request;
+        $this->manager         = $manager;
+        $this->inventoryLogger = $inventoryLogger;
     }
 
     /**
@@ -83,53 +81,15 @@ class ProductInventoryHandler
      */
     protected function onSuccess(Product $entity)
     {
-        /** @var FormInterface $item */
-        foreach ($this->form->get('inventoryItems') as $item) {
-            $this->dispatchInventoryLogIfRequired($item);
+        $items = $entity->getInventoryItems()->toArray();
+
+        foreach ($entity->getVariant()->getProducts() as $product) {
+            $items = array_merge($items, $product->getInventoryItems()->toArray());
         }
 
-        /*
-         * For each product under variant, go trough its inventory items.
-         */
-        foreach ($this->form->get('variant')->get('products') as $product) {
-            foreach ($product->get('inventoryItems') as $item) {
-                $this->dispatchInventoryLogIfRequired($item);
-            }
-        }
+        $this->inventoryLogger->log($items, 'manual');
 
         $this->manager->persist($entity->getVariant());
         $this->manager->flush();
-    }
-
-    /**
-     * @param FormInterface $item marello_inventory_item form type.
-     */
-    protected function dispatchInventoryLogIfRequired(FormInterface $item)
-    {
-        $operator = $item->get('modifyOperator')->getData();
-        $amount   = $item->get('modifyAmount')->getData();
-
-        /*
-         * Do nothing if amount changed is 0.
-         */
-        if ($amount === 0) {
-            return;
-        }
-
-        /*
-         * Adjust for given operator.
-         */
-        if ($operator === InventoryItem::MODIFY_OPERATOR_DECREASE) {
-            $amount *= -1;
-        }
-
-        /** @var InventoryItem $data */
-        $data = $item->getData();
-
-        $this->dispatcher->dispatch(
-            InventoryLogEvent::NAME,
-            InventoryLogEvent::create($data, 'manual')
-                ->setOldQuantity($data->getQuantity() - $amount)
-        );
     }
 }
