@@ -20,7 +20,7 @@ class InventoryAllocation
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem", cascade={})
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      *
      * @var InventoryItem
@@ -41,6 +41,18 @@ class InventoryAllocation
      * @var OrderItem
      */
     protected $targetOrderItem = null;
+
+    /**
+     * InventoryAllocation constructor.
+     *
+     * @param InventoryItem $inventoryItem
+     * @param int           $quantity
+     */
+    public function __construct(InventoryItem $inventoryItem, $quantity)
+    {
+        $this->inventoryItem = $inventoryItem;
+        $this->quantity      = $quantity;
+    }
 
     /**
      * @return int
