@@ -114,6 +114,18 @@ class InventoryItem
     protected $inventoryLogs;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryAllocation",
+     *     cascade={"remove"},
+     *     mappedBy="inventoryItem",
+     *     fetch="LAZY"
+     * )
+     *
+     * @var InventoryAllocation
+     */
+    protected $allocations;
+
+    /**
      * InventoryItem constructor.
      */
     public function __construct()
@@ -275,5 +287,13 @@ class InventoryItem
         $this->allocatedQuantity += $amount;
 
         return $this;
+    }
+
+    /**
+     * @return InventoryAllocation
+     */
+    public function getAllocations()
+    {
+        return $this->allocations;
     }
 }
