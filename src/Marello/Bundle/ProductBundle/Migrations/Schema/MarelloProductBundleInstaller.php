@@ -143,13 +143,13 @@ class MarelloProductBundleInstaller implements Installation
     }
 
     /**
-     * Add product_saleschannel foreign keys.
+     * Add marello_product_saleschannel foreign keys.
      *
      * @param Schema $schema
      */
     protected function addProductSaleschannelForeignKeys(Schema $schema)
     {
-        $table = $schema->getTable('product_saleschannel');
+        $table = $schema->getTable('marello_product_saleschannel');
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_sales_sales_channel'),
             ['saleschannel_id'],
