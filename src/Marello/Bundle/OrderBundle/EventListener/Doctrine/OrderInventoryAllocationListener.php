@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\InventoryAllocation\InventoryAllocator;
 use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
 class OrderInventoryAllocationListener
 {
@@ -38,23 +41,30 @@ class OrderInventoryAllocationListener
             return;
         }
 
-        /*
-         * TODO: Create strategy to determine from where and how to select warehouse.
-         */
-        $warehouse = $args->getEntityManager()
+        $loggedItems = [];
+
+        foreach ($entity->getItems() as $item) {
+            $loggedItems[] = $inventoryItem = $this->getInventoryItemToAllocate($item, $args->getEntityManager());
+            $this->allocator->allocate($inventoryItem, $item->getQuantity(), $item);
+        }
+
+        $this->logger->log($loggedItems, 'workflow');
+    }
+
+    /**
+     * @param OrderItem     $item
+     * @param EntityManager $em
+     *
+     * @return InventoryItem
+     */
+    protected function getInventoryItemToAllocate(OrderItem $item, EntityManager $em)
+    {
+        $warehouse = $em
             ->getRepository('MarelloInventoryBundle:Warehouse')
             ->getDefault();
 
-        $items = [];
-        foreach ($entity->getItems() as $item) {
-            $inventoryItem = $args->getEntityManager()
-                ->getRepository('MarelloInventoryBundle:InventoryItem')
-                ->findOneByWarehouseAndProduct($warehouse, $item->getProduct());
-
-            $this->allocator->allocate($inventoryItem, $item->getQuantity(), $item);
-            $items[] = $inventoryItem;
-        }
-
-        $this->logger->log($items, 'workflow');
+        return $em
+            ->getRepository('MarelloInventoryBundle:InventoryItem')
+            ->findOrCreateByWarehouseAndProduct($warehouse, $item->getProduct());
     }
 }

@@ -81,8 +81,8 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
                 $entity,
                 'import',
                 function (InventoryLog $log) use ($entity) {
-                    $log->setNewQuantity($entity->getQuantity());
-                    $log->setNewAllocatedQuantity($entity->getAllocatedQuantity());
+                    $log->setOldQuantity(0);
+                    $log->setOldAllocatedQuantity(0);
                 }
             );
         }
@@ -166,11 +166,9 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             $this->inventoryLogger->directLog(
                 $existingEntity,
                 'import',
-                function (InventoryLog $log) use ($existingEntity, $oldQuantity, $oldAllocatedQuantity) {
+                function (InventoryLog $log) use ($oldQuantity, $oldAllocatedQuantity) {
                     $log->setOldQuantity($oldQuantity);
-                    $log->setNewQuantity($existingEntity->getQuantity());
                     $log->setOldAllocatedQuantity($oldAllocatedQuantity);
-                    $log->setNewAllocatedQuantity($existingEntity->getAllocatedQuantity());
                 }
             );
 

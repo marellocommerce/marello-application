@@ -19,8 +19,8 @@ class InventoryAllocationListener
             return;
         }
 
-        $entity->getInventoryItem()->modifyAllocatedQuantity($entity->getQuantity());
-        $args->getEntityManager()->persist($entity->getInventoryItem());
+        $inventoryItem = $entity->getInventoryItem();
+        $inventoryItem->modifyAllocatedQuantity($entity->getQuantity());
     }
 
     /**

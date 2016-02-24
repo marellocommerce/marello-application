@@ -118,8 +118,8 @@ class InventoryLogger
         }
 
         return (new InventoryLog($inventoryItem, $trigger))
-            ->setNewQuantity($inventoryItem->getQuantity())
-            ->setNewAllocatedQuantity($inventoryItem->getAllocatedQuantity());
+            ->setOldQuantity(0)
+            ->setOldAllocatedQuantity(0);
     }
 
     /**
@@ -154,20 +154,12 @@ class InventoryLogger
             $log
                 ->setOldQuantity($changeSet['quantity'][0])
                 ->setNewQuantity($changeSet['quantity'][1]);
-        } else {
-            $log
-                ->setNewQuantity($item->getQuantity())
-                ->setOldQuantity($item->getQuantity());
         }
 
         if ($allocatedQuantityChanged) {
             $log
                 ->setOldAllocatedQuantity($changeSet['allocatedQuantity'][0])
-                ->setNewAllocatedQuantity($changeSet['allocatedQuantity'][0]);
-        } else {
-            $log
-                ->setOldAllocatedQuantity($item->getAllocatedQuantity())
-                ->setNewAllocatedQuantity($item->getAllocatedQuantity());
+                ->setNewAllocatedQuantity($changeSet['allocatedQuantity'][1]);
         }
 
         return $log;
