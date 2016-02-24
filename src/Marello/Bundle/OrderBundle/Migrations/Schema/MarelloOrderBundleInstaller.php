@@ -53,6 +53,7 @@ class MarelloOrderBundleInstaller implements Installation
         $table->addColumn('updated_at', 'datetime', []);
         $table->addColumn('saleschannel_name', 'string', ['length' => 255]);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
+        $table->addColumn('coupon_code', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_details', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn(
