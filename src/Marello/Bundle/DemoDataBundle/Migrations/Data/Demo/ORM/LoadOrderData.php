@@ -5,7 +5,6 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use League\Csv\Reader;
 use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -18,6 +17,11 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
     /** @var ObjectManager $manager */
     protected $manager;
+
+    protected $ordersFile = null;
+    protected $ordersFileHeader = [];
+    protected $itemsFile = null;
+    protected $itemsFileHeader = [];
 
     /**
      * {@inheritdoc}
@@ -38,24 +42,12 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     {
         $this->manager = $manager;
 
-        $orderData = Reader::createFromPath(__DIR__ . '/dictionaries/order_data.csv');
-        $orderData->setDelimiter(';');
-        $orderDataHeader = $orderData->fetchOne();
-        $orderData       = $orderData->setOffset(1)->fetchAll();
-
-        $orderItemData = Reader::createFromPath(__DIR__ . '/dictionaries/order_items.csv');
-        $orderItemData->setDelimiter(',');
-        $orderItemHeader = $orderItemData->fetchOne();
-        $orderItemData   = $orderItemData->setOffset(1)->fetch();
-
         /** @var Order $order */
         $order = null;
 
         $createdOrders = 0;
 
-        foreach ($orderItemData as $itemRow) {
-            $itemRow = array_combine($orderItemHeader, $itemRow);
-
+        while (($itemRow = $this->popOrderItemRow()) !== false) {
             if ($order && ($itemRow['order_number'] !== $order->getOrderNumber())) {
                 /*
                  * Compute Order totals.
@@ -76,7 +68,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 $createdOrders++;
                 $this->setReference('marello_order_' . $order->getOrderNumber(), $order);
 
-                if (!$createdOrders % self::FLUSH_MAX) {
+                if (!($createdOrders % self::FLUSH_MAX)) {
                     $manager->flush();
                 }
 
@@ -84,11 +76,10 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             }
 
             if (!$order) {
-                $orderRow = array_combine($orderDataHeader, current($orderData));
+                $orderRow = $this->popOrderRow();
 
                 $order = $this->createOrder($orderRow);
                 $order->setOrderNumber($itemRow['order_number']);
-                next($orderData);
             }
 
             $item = $this->createOrderItem($itemRow);
@@ -96,6 +87,56 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         }
 
         $manager->flush();
+
+        $this->closeFiles();
+    }
+
+    /**
+     * Close all open files.
+     */
+    protected function closeFiles()
+    {
+        if ($this->ordersFile) {
+            fclose($this->ordersFile);
+        }
+
+        if ($this->itemsFile) {
+            fclose($this->itemsFile);
+        }
+    }
+
+    /**
+     * @return array|bool
+     */
+    protected function popOrderRow()
+    {
+        if (!$this->ordersFile) {
+            $this->ordersFile       = fopen(__DIR__ . '/dictionaries/order_data.csv', 'r');
+            $this->ordersFileHeader = fgetcsv($this->ordersFile, 1000, ';');
+        }
+
+        $row = fgetcsv($this->ordersFile, 1000, ';');
+
+        return $row !== false
+            ? array_combine($this->ordersFileHeader, $row)
+            : false;
+    }
+
+    /**
+     * @return array|bool
+     */
+    protected function popOrderItemRow()
+    {
+        if (!$this->itemsFile) {
+            $this->itemsFile       = fopen(__DIR__ . '/dictionaries/order_items.csv', 'r');
+            $this->itemsFileHeader = fgetcsv($this->itemsFile, 1000, ',');
+        }
+
+        $row = fgetcsv($this->itemsFile, 1000, ',');
+
+        return $row !== false
+            ? array_combine($this->itemsFileHeader, $row)
+            : false;
     }
 
     /**
