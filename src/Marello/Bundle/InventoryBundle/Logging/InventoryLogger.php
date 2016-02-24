@@ -14,9 +14,6 @@ class InventoryLogger
     /** @var Registry */
     protected $doctrine;
 
-    /** @var EntityManager */
-    protected $manager = null;
-
     /**
      * InventoryLogger constructor.
      *
@@ -170,11 +167,7 @@ class InventoryLogger
      */
     protected function manager()
     {
-        if ($this->manager) {
-            return $this->manager;
-        }
-
-        return $this->manager = $this->doctrine
+        return $this->doctrine
             ->getManager();
     }
 }

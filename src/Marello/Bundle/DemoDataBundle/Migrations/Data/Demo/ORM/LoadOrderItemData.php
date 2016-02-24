@@ -69,21 +69,15 @@ class LoadOrderItemData extends AbstractFixture implements DependentFixtureInter
      */
     private function createOrderItems($orderItem)
     {
+        /** @var Order $order */
         $order = $this->getRepository('MarelloOrderBundle:Order')
-            ->createQueryBuilder('o')
-            ->where('o.orderNumber LIKE :orderId')
-            ->setParameter('orderId', $orderItem['order_number'])
-            ->getQuery()
-            ->getSingleResult();
+            ->findOneBy(['orderNumber' => $orderItem['order_number']]);
 
-        $productResult = $this->getRepository('MarelloProductBundle:Product')->findBySku($orderItem['sku']);
-        if (is_array($productResult)) {
-            /** @var \Marello\Bundle\ProductBundle\Entity\Product $product */
-            $product = array_shift($productResult);
-        }
+        $product = $this->getRepository('MarelloProductBundle:Product')
+            ->findOneBy(['sku' => $orderItem['sku']]);
+
         $itemEntity = new OrderItem();
         $itemEntity->setProduct($product);
-        $itemEntity->setOrder($order);
         $itemEntity->setQuantity($orderItem['qty']);
         $itemEntity->setPrice($orderItem['price']);
         $itemEntity->setTotalPrice($orderItem['total_price']);

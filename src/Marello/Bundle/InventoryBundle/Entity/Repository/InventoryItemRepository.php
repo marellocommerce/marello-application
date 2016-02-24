@@ -23,11 +23,10 @@ class InventoryItemRepository extends EntityRepository
     /**
      * @param Warehouse $warehouse
      * @param Product   $product
-     * @param bool      $persistNew
      *
      * @return InventoryItem|null
      */
-    public function findOrCreateByWarehouseAndProduct(Warehouse $warehouse, Product $product, $persistNew = false)
+    public function findOrCreateByWarehouseAndProduct(Warehouse $warehouse, Product $product)
     {
         $inventoryItem = $this->findOneByWarehouseAndProduct($warehouse, $product);
 
@@ -37,9 +36,7 @@ class InventoryItemRepository extends EntityRepository
                 ->setWarehouse($warehouse)
                 ->setProduct($product);
 
-            if ($persistNew) {
-                $this->getEntityManager()->persist($inventoryItem);
-            }
+            $this->getEntityManager()->persist($inventoryItem);
         }
 
         return $inventoryItem;
