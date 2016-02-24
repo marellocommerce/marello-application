@@ -5,13 +5,16 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use League\Csv\Reader;
 use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
 
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
     /** flush manager count */
-    const FLUSH_MAX = 50;
+    const FLUSH_MAX = 25;
 
     /** @var ObjectManager $manager */
     protected $manager;
@@ -34,99 +37,126 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
-        $this->loadOrders();
-    }
 
-    /**
-     * load orders
-     */
-    public function loadOrders()
-    {
-        $handle  = fopen($this->getDictionary('order_data.csv'), "r");
-        if ($handle) {
-            $headers = [];
-            if (($data = fgetcsv($handle, 1000, ";")) !== false) {
-                //read headers
-                $headers = $data;
-            }
-            $i = 0;
-            while (($data = fgetcsv($handle, 1000, ";")) !== false) {
-                $data = array_combine($headers, array_values($data));
+        $orderData = Reader::createFromPath(__DIR__ . '/dictionaries/order_data.csv');
+        $orderData->setDelimiter(';');
+        $orderDataHeader = $orderData->fetchOne();
+        $orderData       = $orderData->setOffset(1)->fetchAll();
 
-                $this->setReference('marello_order_' . $i, $this->createOrder($data, $i));
-                $i++;
-                if ($i % self::FLUSH_MAX == 0) {
-                    $this->manager->flush();
+        $orderItemData = Reader::createFromPath(__DIR__ . '/dictionaries/order_items.csv');
+        $orderItemData->setDelimiter(',');
+        $orderItemHeader = $orderItemData->fetchOne();
+        $orderItemData   = $orderItemData->setOffset(1)->fetch();
+
+        /** @var Order $order */
+        $order = null;
+
+        $createdOrders = 0;
+
+        foreach ($orderItemData as $itemRow) {
+            $itemRow = array_combine($orderItemHeader, $itemRow);
+
+            if ($order && ($itemRow['order_number'] !== $order->getOrderNumber())) {
+                /*
+                 * Compute Order totals.
+                 */
+                $total = $tax = $grandTotal = 0;
+                $order->getItems()->map(function (OrderItem $item) use (&$total, &$tax, &$grandTotal) {
+                    $total += ($item->getQuantity() * $item->getPrice());
+                    $tax += $item->getTax();
+                    $grandTotal += $item->getTotalPrice();
+                });
+
+                $order
+                    ->setSubtotal($total)
+                    ->setTotalTax($tax)
+                    ->setGrandTotal($grandTotal);
+
+                $manager->persist($order);
+                $createdOrders++;
+                $this->setReference('marello_order_' . $order->getOrderNumber(), $order);
+
+                if (!$createdOrders % self::FLUSH_MAX) {
+                    $manager->flush();
                 }
+
+                $order = null;
             }
-            fclose($handle);
-            $this->manager->flush();
+
+            if (!$order) {
+                $orderRow = array_combine($orderDataHeader, current($orderData));
+
+                $order = $this->createOrder($orderRow);
+                $order->setOrderNumber($itemRow['order_number']);
+                next($orderData);
+            }
+
+            $item = $this->createOrderItem($itemRow);
+            $order->addItem($item);
         }
 
+        $manager->flush();
     }
 
     /**
-     * create orders and related entities
-     *
-     * @param array $order
-     * @param int   $orderNo
+     * @param array $row
      *
      * @return Order
      */
-    protected function createOrder(array $order, $orderNo)
+    protected function createOrder($row)
     {
         $billing = new Address();
-        $billing->setNamePrefix($order['title']);
-        $billing->setFirstName($order['firstname']);
-        $billing->setLastName($order['lastname']);
-        $billing->setStreet($order['street_address']);
-        $billing->setPostalCode($order['zipcode']);
-        $billing->setCity($order['city']);
+        $billing->setNamePrefix($row['title']);
+        $billing->setFirstName($row['firstname']);
+        $billing->setLastName($row['lastname']);
+        $billing->setStreet($row['street_address']);
+        $billing->setPostalCode($row['zipcode']);
+        $billing->setCity($row['city']);
         $billing->setCountry(
-            $this->getRepository('OroAddressBundle:Country')->find($order['country'])
+            $this->manager
+                ->getRepository('OroAddressBundle:Country')->find($row['country'])
         );
         $billing->setRegion(
-            $this->getRepository('OroAddressBundle:Region')
-                ->findOneBy(['combinedCode' => $order['country'] . '-' . $order['state']])
+            $this->manager
+                ->getRepository('OroAddressBundle:Region')
+                ->findOneBy(['combinedCode' => $row['country'] . '-' . $row['state']])
         );
-        $billing->setPhone($order['telephone_number']);
-        $billing->setEmail($order['email']);
+        $billing->setPhone($row['telephone_number']);
+        $billing->setEmail($row['email']);
+
         $shipping = clone $billing;
 
         $orderEntity = new Order($billing, $shipping);
-        $channel = $this->getReference('marello_sales_channel_' . $order['channel']);
-        $orderEntity->setSalesChannel($channel);
-        if ($order['order_ref'] !== 'NULL') {
-            $orderEntity->setOrderReference($order['order_ref']);
-        }
-        $orderEntity
-            ->setSubtotal(0)
-            ->setTotalTax(0)
-            ->setGrandTotal(0)
-            ->setOrderNumber(sprintf('%09d', $orderNo + 1));
 
-        $this->manager->persist($orderEntity);
+        $channel = $this->getReference('marello_sales_channel_' . $row['channel']);
+        $orderEntity->setSalesChannel($channel);
+
+        if ($row['order_ref'] !== 'NULL') {
+            $orderEntity->setOrderReference($row['order_ref']);
+        }
 
         return $orderEntity;
     }
 
     /**
-     * Get repository for class
-     * @param $className
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * @param array $row
+     *
+     * @return OrderItem
      */
-    private function getRepository($className)
+    protected function createOrderItem($row)
     {
-        return $this->manager->getRepository($className);
-    }
+        /** @var Product $product */
+        $product = $this->manager
+            ->getRepository('MarelloProductBundle:Product')
+            ->findOneBy(['sku' => $row['sku']]);
 
-    /**
-     * Get dictionary file by name
-     * @param $name
-     * @return string
-     */
-    private function getDictionary($name)
-    {
-        return __DIR__ . DIRECTORY_SEPARATOR . 'dictionaries' . DIRECTORY_SEPARATOR . $name;
+        $itemEntity = new OrderItem();
+        $itemEntity->setProduct($product);
+        $itemEntity->setQuantity($row['qty']);
+        $itemEntity->setPrice($row['price']);
+        $itemEntity->setTotalPrice($row['total_price']);
+        $itemEntity->setTax($row['tax']);
+
+        return $itemEntity;
     }
 }

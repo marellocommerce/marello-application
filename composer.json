@@ -22,7 +22,8 @@
     ],
     "require": {
         "php": ">=5.4.9",
-        "oro/platform": "1.8.*"
+        "oro/platform": "1.8.*",
+        "league/csv": "^8.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
