@@ -11,7 +11,9 @@ datagrid:
                     - s.label as status
                     - p.createdAt
                     - p.updatedAt
-                    - COALESCE(SUM(i.quantity), 0) AS stockLevel
+                    - COALESCE(SUM(i.quantity), 0) AS quantity
+                    - COALESCE(SUM(i.allocatedQuantity), 0) AS allocatedQuantity
+                    - COALESCE(SUM(i.quantity - i.allocatedQuantity), 0) AS virtualQuantity
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -28,9 +30,17 @@ datagrid:
                 frontend_type:      string
                 data_name:          name
             quantity:
-                label:              marello.product.stock_level.label
+                label:              marello.inventory.inventoryitem.quantity.label
                 frontend_type:      number
-                data_name:          stockLevel
+                data_name:          quantity
+            allocatedQuantity:
+                label:              marello.inventory.inventoryitem.allocatedQuantity.label
+                frontend_type:      number
+                data_name:          allocatedQuantity
+            virtualQuantity:
+                label:              marello.inventory.inventoryitem.virtualQuantity.label
+                frontend_type:      number
+                data_name:          virtualQuantity
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
@@ -46,8 +56,14 @@ datagrid:
                     type:             string
                     data_name:        p.name
                 quantity:
-                    type:             string
-                    data_name:        stockLevel
+                    type:             number
+                    data_name:        quantity
+                allocatedQuantity:
+                    type:             number
+                    data_name:        allocatedQuantity
+                virtualQuantity:
+                    type:             number
+                    data_name:        virtualQuantity
                 status:
                     type:             entity
                     data_name:        s
@@ -69,27 +85,6 @@ datagrid:
                 link:           inventory_link
         options:
             export: true
-
-    marello-inventory-product-item:
-        source:
-            type: orm
-            query:
-                select:
-                    - w
-                    - SUM(i.quantity) AS  stock
-                from:
-                    - { table: MarelloInventoryBundle:InventoryItem, alias: i }
-                join:
-                    left:
-                        - { join: i.warehouse, alias: w }
-                groupBy: w.id
-        columns:
-            warehouse:
-                label: Warehouse
-                data_name: w
-            stock:
-                label: Stock
-                data_name: stock
 
     marello-inventory-log:
         source:
@@ -137,6 +132,10 @@ datagrid:
             columns:
                 createdAt:
                     data_name:  l.createdAt
+                changeAmount:
+                    data_name:  changeAmount
+                changeAllocatedAmount:
+                    data_name:  changeAllocatedAmount
             default:
                 createdAt:      DESC
         options:

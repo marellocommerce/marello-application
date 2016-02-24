@@ -121,7 +121,7 @@ class InventoryItem
      *     fetch="LAZY"
      * )
      *
-     * @var InventoryAllocation
+     * @var InventoryAllocation[]|Collection
      */
     protected $allocations;
 
@@ -290,10 +290,18 @@ class InventoryItem
     }
 
     /**
-     * @return InventoryAllocation
+     * @return InventoryAllocation[]|Collection
      */
     public function getAllocations()
     {
         return $this->allocations;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVirtualQuantity()
+    {
+        return $this->quantity - $this->allocatedQuantity;
     }
 }
