@@ -47,10 +47,8 @@ class MarelloInventoryBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_inventory_allocation');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('targetorderitem_id', 'integer', ['notnull' => false]);
         $table->addColumn('inventoryitem_id', 'integer', []);
         $table->addColumn('quantity', 'integer', []);
-        $table->addIndex(['targetorderitem_id'], 'idx_1976994326d8ba98', []);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['inventoryitem_id'], 'idx_19769943243d10ea', []);
     }
@@ -122,12 +120,6 @@ class MarelloInventoryBundleInstaller implements Installation
     protected function addMarelloInventoryAllocationForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_inventory_allocation');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_order_item'),
-            ['targetorderitem_id'],
-            ['id'],
-            ['onUpdate' => null, 'onDelete' => null]
-        );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_inventory_item'),
             ['inventoryitem_id'],
