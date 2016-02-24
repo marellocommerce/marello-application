@@ -106,14 +106,13 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
         $this->manager->persist($product);
 
-        $inventoryLog = new InventoryLog();
+        $inventoryLog = new InventoryLog($inventoryItem, 'import');
+
         $inventoryLog
             ->setOldQuantity(0)
             ->setNewQuantity($inventoryItem->getQuantity())
-            ->setActionType('import')
             ->setOldAllocatedQuantity(0)
-            ->setNewAllocatedQuantity(0)
-            ->setInventoryItem($inventoryItem);
+            ->setNewAllocatedQuantity(0);
 
         $this->manager->persist($inventoryLog);
 
