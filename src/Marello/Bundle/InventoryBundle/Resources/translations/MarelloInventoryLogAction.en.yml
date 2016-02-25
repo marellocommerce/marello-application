@@ -1,3 +1,6 @@
-manual:     Manual
-import:     Import
-workflow:   Workflow
+manual:             Manual
+import:             Import
+order_workflow:
+    pending:            Pending Order
+    shipped:            Shipped Order
+    cancelled:          Cancelled Order

@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryAllocation;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
@@ -135,11 +136,23 @@ class OrderItem extends ExtendOrderItem implements AllocationTargetInterface
     protected $returnItems;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryAllocation",
+     *     mappedBy="targetOrderItem",
+     *     cascade={}
+     * )
+     *
+     * @var InventoryAllocation[]|Collection
+     */
+    protected $inventoryAllocations;
+
+    /**
      * OrderItem constructor.
      */
     public function __construct()
     {
         $this->returnItems = new ArrayCollection();
+        $this->inventoryAllocations = new ArrayCollection();
     }
 
     /**
@@ -359,5 +372,13 @@ class OrderItem extends ExtendOrderItem implements AllocationTargetInterface
     public static function getAllocationPropertyName()
     {
         return 'OrderItem';
+    }
+
+    /**
+     * @return Collection|InventoryAllocation[]
+     */
+    public function getInventoryAllocations()
+    {
+        return $this->inventoryAllocations;
     }
 }

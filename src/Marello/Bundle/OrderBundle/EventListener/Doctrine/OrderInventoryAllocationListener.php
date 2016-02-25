@@ -48,7 +48,7 @@ class OrderInventoryAllocationListener
             $this->allocator->allocate($inventoryItem, $item->getQuantity(), $item);
         }
 
-        $this->logger->log($loggedItems, 'workflow');
+        $this->logger->log($loggedItems, 'order_workflow.pending');
     }
 
     /**

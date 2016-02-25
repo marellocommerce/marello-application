@@ -1,0 +1,18 @@
+services:
+    marello_order.workflow.order_ship_action:
+        class: Marello\Bundle\OrderBundle\Workflow\OrderShipAction
+        arguments:
+            - @oro_workflow.context_accessor
+            - @doctrine
+            - @marello_inventory.logging.inventory_logger
+        tags:
+            - { name: oro_workflow.action, alias: marello_ship_order }
+
+    marello_order.workflow.order_cancel_action:
+        class: Marello\Bundle\OrderBundle\Workflow\OrderCancelAction
+        arguments:
+            - @oro_workflow.context_accessor
+            - @doctrine
+            - @marello_inventory.logging.inventory_logger
+        tags:
+            - { name: oro_workflow.action, alias: marello_cancel_order }
