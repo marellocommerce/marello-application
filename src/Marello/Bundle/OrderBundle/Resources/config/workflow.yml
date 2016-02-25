@@ -2,6 +2,7 @@ workflows:
     marello_order_b2c_workflow_1:
         label:        'Order B2C Workflow #1'
         entity:       Marello\Bundle\OrderBundle\Entity\Order
+        entity_attribute: order
         start_step:   pending
 
         steps:
@@ -70,16 +71,22 @@ workflows:
                 transition_definition: credit_definition
 
         transition_definitions:
-            cancel_definition: []
+            cancel_definition:
+                post_actions:
+                    - @marello_cancel_order: ~
             hold_definition: []
             un_hold_definition: []
             invoice_definition: []
             credit_definition: []
-            ship_definition: []
+            ship_definition:
+                post_actions:
+                    - @marello_ship_order: ~
+
 
     marello_order_b2c_workflow_2:
         label:        'Order B2C Workflow #2'
         entity:       Marello\Bundle\OrderBundle\Entity\Order
+        entity_attribute: order
         start_step:   pending
 
         steps:
@@ -148,10 +155,14 @@ workflows:
                 transition_definition: credit_definition
 
         transition_definitions:
-            cancel_definition: []
+            cancel_definition:
+                post_actions:
+                    - @marello_cancel_order: ~
             hold_definition: []
             un_hold_definition: []
             invoice_definition: []
             credit_definition: []
-            ship_definition: []
+            ship_definition:
+                post_actions:
+                    - @marello_ship_order: ~
 

@@ -21,6 +21,7 @@ class MarelloOrderExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('workflow_actions.yml');
         $loader->load('form.yml');
     }
 }
