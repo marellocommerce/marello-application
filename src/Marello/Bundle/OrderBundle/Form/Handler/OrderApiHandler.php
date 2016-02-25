@@ -13,7 +13,12 @@ class OrderApiHandler implements FormAwareInterface
     /**
      * @var FormInterface
      */
-    protected $form;
+    protected $createForm;
+
+    /**
+     * @var FormInterface
+     */
+    protected $updateForm;
 
     /**
      * @var Request
@@ -26,15 +31,21 @@ class OrderApiHandler implements FormAwareInterface
     protected $manager;
 
     /**
-     * @param FormInterface $form
+     * @param FormInterface $createForm
+     * @param FormInterface $updateForm
      * @param Request       $request
      * @param ObjectManager $manager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
-    {
-        $this->form    = $form;
-        $this->request = $request;
-        $this->manager = $manager;
+    public function __construct(
+        FormInterface $createForm,
+        FormInterface $updateForm,
+        Request $request,
+        ObjectManager $manager
+    ) {
+        $this->createForm = $createForm;
+        $this->updateForm = $updateForm;
+        $this->request    = $request;
+        $this->manager    = $manager;
     }
 
     /**
@@ -46,12 +57,14 @@ class OrderApiHandler implements FormAwareInterface
      */
     public function process(Order $entity)
     {
-        $this->form->setData($entity);
+        $form = $this->getForm();
+
+        $form->setData($entity);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($this->request);
+            $form->submit($this->request);
 
-            if ($this->form->isValid()) {
+            if ($form->isValid()) {
                 $this->onSuccess($entity);
 
                 return true;
@@ -77,6 +90,6 @@ class OrderApiHandler implements FormAwareInterface
      */
     public function getForm()
     {
-        return $this->form;
+        return $this->request->getMethod() === 'PUT' ? $this->updateForm : $this->createForm;
     }
 }
