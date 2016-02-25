@@ -29,3 +29,11 @@ services:
             - @oro_locale.formatter.date_time
             - @oro_security.acl_helper
             - @translator.default
+
+    marello_order.event_listener.doctrine.order_inventory_allocation_listener:
+        class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderInventoryAllocationListener
+        arguments:
+            - @marello_inventory.allocation.allocator
+            - @marello_inventory.logging.inventory_logger
+        tags:
+            - { name: doctrine.event_listener, event: postPersist, method: postPersist }

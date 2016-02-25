@@ -13,6 +13,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
+use Marello\Bundle\InventoryBundle\InventoryAllocation\AllocationTargetInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")
@@ -21,7 +22,7 @@ use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")
  */
-class OrderItem extends ExtendOrderItem
+class OrderItem extends ExtendOrderItem implements AllocationTargetInterface
 {
     /**
      * @var int
@@ -348,5 +349,15 @@ class OrderItem extends ExtendOrderItem
     public function setDiscountAmount($discountAmount)
     {
         $this->discountAmount = $discountAmount;
+    }
+
+    /**
+     * Returns name of property, that this entity is mapped to InventoryAllocation under.
+     *
+     * @return string
+     */
+    public static function getAllocationPropertyName()
+    {
+        return 'OrderItem';
     }
 }

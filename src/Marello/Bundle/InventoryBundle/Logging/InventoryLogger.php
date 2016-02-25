@@ -14,9 +14,6 @@ class InventoryLogger
     /** @var Registry */
     protected $doctrine;
 
-    /** @var EntityManager */
-    protected $manager = null;
-
     /**
      * InventoryLogger constructor.
      *
@@ -33,7 +30,7 @@ class InventoryLogger
      *
      * @param InventoryItem $item
      * @param string        $trigger
-     * @param Closure      $setValues Closure used to set log values. Takes InventoryLog as single parameter.
+     * @param Closure       $setValues Closure used to set log values. Takes InventoryLog as single parameter.
      */
     public function directLog(InventoryItem $item, $trigger, Closure $setValues)
     {
@@ -59,7 +56,7 @@ class InventoryLogger
      *
      * @param InventoryItem[]|InventoryItem $items
      * @param string                        $trigger
-     * @param Closure|null                 $modifyLog
+     * @param Closure|null                  $modifyLog
      *
      * @throws \Exception
      */
@@ -118,8 +115,8 @@ class InventoryLogger
         }
 
         return (new InventoryLog($inventoryItem, $trigger))
-            ->setNewQuantity($inventoryItem->getQuantity())
-            ->setNewAllocatedQuantity($inventoryItem->getAllocatedQuantity());
+            ->setOldQuantity(0)
+            ->setOldAllocatedQuantity(0);
     }
 
     /**
@@ -154,20 +151,12 @@ class InventoryLogger
             $log
                 ->setOldQuantity($changeSet['quantity'][0])
                 ->setNewQuantity($changeSet['quantity'][1]);
-        } else {
-            $log
-                ->setNewQuantity($item->getQuantity())
-                ->setOldQuantity($item->getQuantity());
         }
 
         if ($allocatedQuantityChanged) {
             $log
                 ->setOldAllocatedQuantity($changeSet['allocatedQuantity'][0])
-                ->setNewAllocatedQuantity($changeSet['allocatedQuantity'][0]);
-        } else {
-            $log
-                ->setOldAllocatedQuantity($item->getAllocatedQuantity())
-                ->setNewAllocatedQuantity($item->getAllocatedQuantity());
+                ->setNewAllocatedQuantity($changeSet['allocatedQuantity'][1]);
         }
 
         return $log;
@@ -178,11 +167,7 @@ class InventoryLogger
      */
     protected function manager()
     {
-        if ($this->manager) {
-            return $this->manager;
-        }
-
-        return $this->manager = $this->doctrine
+        return $this->doctrine
             ->getManager();
     }
 }

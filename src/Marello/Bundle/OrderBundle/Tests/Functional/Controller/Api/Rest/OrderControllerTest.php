@@ -124,14 +124,6 @@ class OrderControllerTest extends WebTestCase
     public function testUpdate()
     {
         $data = [
-            'orderReference'  => 222222,
-            'subtotal'        => 365.00,
-            'totalTax'        => 76.65,
-            'grandTotal'      => 365.00,
-            'paymentMethod'   => 'creditcard',
-            'paymentDetails'  => 'Visa card, ref: xxxxxx-xxxx-xxxx',
-            'shippingMethod'  => 'freeshipping',
-            'shippingAmount'  => 5,
             'billingAddress'  => [
                 'firstName'  => 'Han',
                 'lastName'   => 'Solo',
@@ -158,7 +150,9 @@ class OrderControllerTest extends WebTestCase
             $data
         );
 
-        $this->assertEquals($this->client->getResponse()->getStatusCode(), Response::HTTP_NO_CONTENT);
+        $response = $this->client->getResponse();
+
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_NO_CONTENT);
     }
 
     /**

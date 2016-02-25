@@ -29,6 +29,11 @@ services:
         tags:
             - { name: form.type, alias: marello_order_api }
 
+    marello_order.form.type.order_update_api:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderApiUpdateType
+        tags:
+            - { name: form.type, alias: marello_order_update_api }
+
     marello_order.form.type.order_item_api:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderItemApiType
         arguments:
@@ -44,11 +49,20 @@ services:
                 - ~
                 - 'marello_order_api'
 
+    marello_order.form.order_update_api:
+            class: Symfony\Component\Form\Form
+            factory_method: createNamed
+            factory_service: form.factory
+            arguments:
+                - ~
+                - 'marello_order_update_api'
+
     marello_order.form.handler.order_api:
         class: Marello\Bundle\OrderBundle\Form\Handler\OrderApiHandler
         scope: request
         arguments:
             - @marello_order.form.order_api
+            - @marello_order.form.order_update_api
             - @request
             - @doctrine.orm.entity_manager
             - @oro_entity.routing_helper

@@ -16,3 +16,14 @@ services:
         class: Marello\Bundle\InventoryBundle\Logging\InventoryLogger
         arguments:
             - @doctrine
+
+    marello_inventory.event_listener.doctrine.inventory_allocation:
+        class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\InventoryAllocationListener
+        tags:
+            - {name: doctrine.event_listener, event: prePersist, method: prePersist }
+            - {name: doctrine.event_listener, event: preRemove, method: preRemove }
+
+    marello_inventory.allocation.allocator:
+        class: Marello\Bundle\InventoryBundle\InventoryAllocation\InventoryAllocator
+        arguments:
+            - @doctrine

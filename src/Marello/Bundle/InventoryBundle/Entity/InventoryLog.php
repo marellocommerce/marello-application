@@ -3,10 +3,11 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\InventoryBundle\Model\InventoryType;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
+ * Represents changes in inventory items over time.
+ *
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLogRepository")
  * @ORM\Table(name="marello_inventory_log")
  * @ORM\HasLifecycleCallbacks
@@ -27,28 +28,28 @@ class InventoryLog
      *
      * @var int
      */
-    protected $oldQuantity = 0;
+    protected $oldQuantity;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
      *
      * @var int
      */
-    protected $newQuantity = 0;
+    protected $newQuantity;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
      *
      * @var int
      */
-    protected $oldAllocatedQuantity = 0;
+    protected $oldAllocatedQuantity;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
      *
      * @var int
      */
-    protected $newAllocatedQuantity = 0;
+    protected $newAllocatedQuantity;
 
     /**
      * @ORM\Column(type="string", nullable=false)
@@ -90,6 +91,9 @@ class InventoryLog
     {
         $this->inventoryItem = $inventoryItem;
         $this->actionType    = $trigger;
+
+        $this->oldQuantity          = $this->newQuantity = $inventoryItem->getQuantity();
+        $this->oldAllocatedQuantity = $this->newAllocatedQuantity = $inventoryItem->getAllocatedQuantity();
     }
 
     /**
