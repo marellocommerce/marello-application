@@ -47,15 +47,23 @@ class OrderCancelAction extends OrderTransitionAction
         $this->changedInventory = [];
 
         $order->getItems()->map(function (OrderItem $orderItem) {
-            $this->deallocateItem($orderItem);
+            $this->cancelOrderItem($orderItem);
         });
 
+        /*
+         * Log all changed inventory.
+         */
         $this->logger->log($this->changedInventory, 'order_workflow.cancelled');
 
         $this->doctrine->getManager()->flush();
     }
 
-    protected function deallocateItem(OrderItem $orderItem)
+    /**
+     * Deallocates all inventory allocated towards item (items have not been shipped and allocation was released).
+     *
+     * @param OrderItem $orderItem
+     */
+    protected function cancelOrderItem(OrderItem $orderItem)
     {
         $allocations = $orderItem->getInventoryAllocations();
 

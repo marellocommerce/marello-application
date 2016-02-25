@@ -50,11 +50,19 @@ class OrderShipAction extends OrderTransitionAction
             $this->shipOrderItem($orderItem);
         });
 
+        /*
+         * Log all changed inventory.
+         */
         $this->logger->log($this->changedInventory, 'order_workflow.shipped');
 
         $this->doctrine->getManager()->flush();
     }
 
+    /**
+     * Deallocates all items allocated to this item and reduces real stock, indicating that item has been shipped.
+     *
+     * @param OrderItem $orderItem
+     */
     protected function shipOrderItem(OrderItem $orderItem)
     {
         $allocations = $orderItem->getInventoryAllocations();
