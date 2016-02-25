@@ -28,6 +28,14 @@
             "phpunit -c app --tap --testsuite=\"Unit Tests\"",
             "phpunit -c app --tap --testsuite=\"Functional Tests\""
         ],
+        "test-extended": [
+            "rm -rf app/cache/*",
+            "app/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --force",
+            "app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures ./vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures",
+            "app/console oro:test:schema:update --env test",
+            "phpunit -c app --tap --testsuite=\"Unit Tests\"",
+            "phpunit -c app --tap --testsuite=\"Functional Tests\""
+        ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
