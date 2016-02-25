@@ -75,7 +75,6 @@ class InventoryLogControllerTest extends WebTestCase
 
         $result = reset($result['data']);
 
-        $this->assertEquals('Increase', $result['changeDirection']);
         $this->assertEquals('Import', $result['actionType']);
     }
 }
