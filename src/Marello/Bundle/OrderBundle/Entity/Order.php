@@ -127,6 +127,12 @@ class Order extends ExtendOrder
     protected $discountPercent;
 
     /**
+     * @var string
+     * @ORM\Column(name="coupon_code", type="string", length=255, nullable=true)
+     */
+    protected $couponCode;
+
+    /**
      * @var Collection|OrderItem[]
      *
      * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"persist"}, orphanRemoval=true)
@@ -634,4 +640,21 @@ class Order extends ExtendOrder
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getCouponCode()
+    {
+        return $this->couponCode;
+    }
+
+    /**
+     * @param string $couponCode
+     */
+    public function setCouponCode($couponCode)
+    {
+        $this->couponCode = $couponCode;
+    }
+
 }

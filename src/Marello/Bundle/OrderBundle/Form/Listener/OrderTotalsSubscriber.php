@@ -36,6 +36,8 @@ class OrderTotalsSubscriber implements EventSubscriberInterface
             $grandTotal += $item->getTotalPrice();
         });
 
+        $grandTotal = $grandTotal - $order->getDiscountAmount();
+
         $order
             ->setSubtotal($total)
             ->setTotalTax($tax)

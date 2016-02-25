@@ -15,6 +15,9 @@ marello:
         order_reference.label:    Order Reference
         workflow_item.label:      Workflow Item
         workflow_step.label:      Workflow Step
+        currency.label:           Currency
+        coupon_code.label:        Coupon Code
+        discount_amount.label:    Discount Amount
         payment_method.label:     Payment Method
         payment_details.label:    Payment Details
         shipping_method.label:    Shippingmethod

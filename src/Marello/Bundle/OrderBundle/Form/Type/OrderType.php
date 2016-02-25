@@ -19,6 +19,14 @@ class OrderType extends AbstractType
             ->add('salesChannel', 'genemu_jqueryselect2_entity', [
                 'class' => 'MarelloSalesBundle:SalesChannel',
             ])
+            ->add('discountAmount', 'oro_money', [
+                    'label' => 'marello.order.discount_amount.label',
+                    'required' => false
+                ]
+            )
+            ->add('couponCode', 'text', [
+                'required' => false
+            ])
             ->add('billingAddress', 'marello_address')
             ->add('shippingAddress', 'marello_address')
             ->add('items', 'marello_order_item_collection');
