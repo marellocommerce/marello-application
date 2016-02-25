@@ -30,7 +30,12 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
  *          }
  *      }
  * )
- * @ORM\Table(name="marello_order_order")
+ * @ORM\Table(
+ *      name="marello_order_order",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(columns={"order_reference", "saleschannel_id"})
+ *      }
+ * )
  * @ORM\HasLifecycleCallbacks
  */
 class Order extends ExtendOrder
@@ -94,7 +99,7 @@ class Order extends ExtendOrder
     /**
      * @var string
      *
-     * @ORM\Column(name="payment_details", type="string", length=255, nullable=true)
+     * @ORM\Column(name="payment_details", type="text", nullable=true)
      */
     protected $paymentDetails;
 
