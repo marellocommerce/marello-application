@@ -100,13 +100,13 @@ class MarelloProductBundleInstaller implements Installation
     }
 
     /**
-     * Create product_saleschannel table
+     * Create marello_product_saleschannel table
      *
      * @param Schema $schema
      */
     protected function createProductSaleschannelTable(Schema $schema)
     {
-        $table = $schema->createTable('product_saleschannel');
+        $table = $schema->createTable('marello_product_saleschannel');
         $table->addColumn('product_id', 'integer', []);
         $table->addColumn('saleschannel_id', 'integer', []);
         $table->setPrimaryKey(['product_id', 'saleschannel_id']);
@@ -143,13 +143,13 @@ class MarelloProductBundleInstaller implements Installation
     }
 
     /**
-     * Add product_saleschannel foreign keys.
+     * Add marello_product_saleschannel foreign keys.
      *
      * @param Schema $schema
      */
     protected function addProductSaleschannelForeignKeys(Schema $schema)
     {
-        $table = $schema->getTable('product_saleschannel');
+        $table = $schema->getTable('marello_product_saleschannel');
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_sales_sales_channel'),
             ['saleschannel_id'],
