@@ -3398,12 +3398,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "f9ed0ee9d63159c48b958097b9249f3755749ca8"
+                "reference": "90de9f7e615e9b907650bfacccdb77cd38a971ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/f9ed0ee9d63159c48b958097b9249f3755749ca8",
-                "reference": "f9ed0ee9d63159c48b958097b9249f3755749ca8",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/90de9f7e615e9b907650bfacccdb77cd38a971ea",
+                "reference": "90de9f7e615e9b907650bfacccdb77cd38a971ea",
                 "shasum": ""
             },
             "require": {
@@ -3436,7 +3436,7 @@
                 "source": "https://github.com/marellocommerce/marello/tree/master",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2016-01-22 18:30:27"
+            "time": "2016-02-26 18:41:32"
         },
         {
             "name": "michelf/php-markdown",
