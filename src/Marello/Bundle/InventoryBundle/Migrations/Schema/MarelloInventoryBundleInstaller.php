@@ -49,8 +49,10 @@ class MarelloInventoryBundleInstaller implements Installation
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('inventoryitem_id', 'integer', []);
         $table->addColumn('quantity', 'integer', []);
+        $table->addColumn('targetorderitem_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['inventoryitem_id'], 'idx_19769943243d10ea', []);
+        $table->addIndex(['targetorderitem_id'], 'idx_1976994326d8ba98', []);
     }
 
     /**
@@ -80,6 +82,7 @@ class MarelloInventoryBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_inventory_log');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('order_id', 'integer', ['notnull' => false]);
         $table->addColumn('user_id', 'integer', ['notnull' => false]);
         $table->addColumn('inventoryitem_id', 'integer', []);
         $table->addColumn('oldquantity', 'integer', []);
@@ -126,6 +129,12 @@ class MarelloInventoryBundleInstaller implements Installation
             ['id'],
             ['onUpdate' => null, 'onDelete' => 'CASCADE']
         );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_order_order_item'),
+            ['targetorderitem_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => null]
+        );
     }
 
     /**
@@ -158,6 +167,12 @@ class MarelloInventoryBundleInstaller implements Installation
     protected function addMarelloInventoryLogForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_inventory_log');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_order_order'),
+            ['order_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => null]
+        );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
             ['user_id'],

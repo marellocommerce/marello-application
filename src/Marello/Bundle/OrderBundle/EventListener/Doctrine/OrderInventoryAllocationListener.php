@@ -5,6 +5,7 @@ namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
 use Marello\Bundle\InventoryBundle\InventoryAllocation\InventoryAllocator;
 use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -48,7 +49,13 @@ class OrderInventoryAllocationListener
             $this->allocator->allocate($inventoryItem, $item->getQuantity(), $item);
         }
 
-        $this->logger->log($loggedItems, 'order_workflow.pending');
+        $this->logger->log(
+            $loggedItems,
+            'order_workflow.pending',
+            function (InventoryLog $log) use ($entity) {
+                $log->setOrder($entity);
+            }
+        );
     }
 
     /**

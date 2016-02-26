@@ -122,6 +122,12 @@ datagrid:
                 type:           translatable
                 domain:         MarelloInventoryLogAction
                 frontend_type:  string
+            order:
+                data_name:      order
+                label:          marello.order.entity_label
+                type:           twig
+                frontend_type:  html
+                template:       MarelloInventoryBundle::Datagrid/InventoryLog/order.html.twig
             user:
                 label:          marello.inventory.inventorylog.user.label
                 frontend_type:  string

@@ -4,6 +4,7 @@ namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
 use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -53,7 +54,13 @@ class OrderShipAction extends OrderTransitionAction
         /*
          * Log all changed inventory.
          */
-        $this->logger->log($this->changedInventory, 'order_workflow.shipped');
+        $this->logger->log(
+            $this->changedInventory,
+            'order_workflow.shipped',
+            function (InventoryLog $log) use ($order) {
+                $log->setOrder($order);
+            }
+        );
 
         $this->doctrine->getManager()->flush();
     }

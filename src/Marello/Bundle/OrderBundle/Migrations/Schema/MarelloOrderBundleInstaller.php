@@ -32,27 +32,6 @@ class MarelloOrderBundleInstaller implements Installation
         /** Foreign keys generation **/
         $this->addMarelloOrderOrderForeignKeys($schema);
         $this->addMarelloOrderOrderItemForeignKeys($schema);
-
-        $this->addTargetOrderItemColumn($schema);
-    }
-
-    /**
-     * Adds Order item to inventory allocation as a target column.
-     *
-     * @param Schema $schema
-     */
-    protected function addTargetOrderItemColumn(Schema $schema)
-    {
-        $table = $schema->getTable('marello_inventory_allocation');
-        $table->addColumn('targetorderitem_id', 'integer', ['notnull' => false]);
-        $table->addIndex(['targetorderitem_id'], 'idx_1976994326d8ba98', []);
-
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_order_item'),
-            ['targetorderitem_id'],
-            ['id'],
-            ['onUpdate' => null, 'onDelete' => null]
-        );
     }
 
     /**

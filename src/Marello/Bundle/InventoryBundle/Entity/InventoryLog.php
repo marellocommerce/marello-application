@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
@@ -65,6 +66,14 @@ class InventoryLog
      * @var User
      */
     protected $user = null;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order", cascade={})
+     * @ORM\JoinColumn(nullable=true)
+     *
+     * @var Order
+     */
+    protected $order = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem")
@@ -232,6 +241,26 @@ class InventoryLog
     public function setNewAllocatedQuantity($newAllocatedQuantity)
     {
         $this->newAllocatedQuantity = $newAllocatedQuantity;
+
+        return $this;
+    }
+
+    /**
+     * @return Order
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return $this
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
 
         return $this;
     }

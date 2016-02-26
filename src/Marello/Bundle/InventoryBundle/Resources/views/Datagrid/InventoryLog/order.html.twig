@@ -1,0 +1,3 @@
+{% if value is not null %}
+    <a href="{{ path('marello_order_order_view', {'id': value.id}) }}">#{{ value.orderNumber }}</a>
+{% endif %}
