@@ -110,7 +110,7 @@ class InventoryLogger
      */
     protected function getNewItemLog(InventoryItem $inventoryItem, $trigger)
     {
-        if (!$inventoryItem->getQuantity() && $inventoryItem->getAllocatedQuantity()) {
+        if (!$inventoryItem->getQuantity() && !$inventoryItem->getAllocatedQuantity()) {
             return null;
         }
 
