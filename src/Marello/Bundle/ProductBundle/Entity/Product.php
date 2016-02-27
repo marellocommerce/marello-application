@@ -142,6 +142,7 @@ class Product extends ExtendProduct implements
      * @var Collection
      *
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
+     * @ORM\JoinTable(name="marello_product_saleschannel")
      */
     protected $channels;
 
