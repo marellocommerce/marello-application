@@ -24,7 +24,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductStatusData',
             'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData'
         ];
     }
@@ -94,7 +93,11 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $inventoryItem->setQuantity($data['stock_level']);
         $product->getInventoryItems()->add($inventoryItem);
 
-        $status = $this->getReference('product_status_' . $data['status']);
+        $status = $this->manager
+            ->getRepository('MarelloProductBundle:ProductStatus')
+            ->findOneByName($data['status']);
+
+        //$status = $this->getReference('product_status_' . $data['status']);
         $product->setStatus($status);
 
         $channels = explode(';', $data['channel']);
