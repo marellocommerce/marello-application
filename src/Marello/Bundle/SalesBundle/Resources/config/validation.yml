@@ -1,0 +1,10 @@
+Marello\Bundle\SalesBundle\Entity\SalesChannel:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        code:
+            - NotBlank: ~
+        channelType:
+            - NotBlank: ~

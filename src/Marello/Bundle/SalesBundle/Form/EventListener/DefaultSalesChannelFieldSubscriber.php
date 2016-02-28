@@ -66,20 +66,10 @@ class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
      */
     public function getDefaultChannels()
     {
-        $config = $this->configManager->get('marello_sales.default_channels');
-        if (!$config) {
-            return [];
-        }
-
-        $defaultChannels = [];
-        foreach ($config as $channel) {
-            $defaultChannels[] = $channel->getName();
-        }
-
         return $this->em->getRepository('MarelloSalesBundle:SalesChannel')
             ->createQueryBuilder('sc')
-            ->where('sc.name IN(:channels)')
-            ->setParameter('channels', $defaultChannels)
+            ->where('sc.active = 1')
+            ->andWhere('sc.default = 1')
             ->orderBy('sc.name', 'ASC')
             ->getQuery()
             ->getResult();

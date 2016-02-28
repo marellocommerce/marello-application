@@ -8,6 +8,8 @@ marello:
             id.label:                           Id
             name.label:                         Name
             active.label:                       Active
+            default.label:                      Default
+            code.label:                         Code
             channel_type.label:                 Type
             owner.label:                        Owner
             controller.message.saved:           Sales Channel saved

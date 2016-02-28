@@ -17,8 +17,14 @@ class SalesChannelType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('code')
             ->add('channelType')
-            ->add('active');
+            ->add('default', 'checkbox',[
+                'required' => false
+            ])
+            ->add('active', 'checkbox',[
+                'required' => false
+            ]);
     }
 
     /**
