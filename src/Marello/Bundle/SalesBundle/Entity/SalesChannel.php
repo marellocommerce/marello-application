@@ -10,7 +10,14 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="marello_sales_sales_channel")
+ * @ORM\Table(name="marello_sales_sales_channel",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="marello_sales_sales_channel_codeidx",
+ *              columns={"code"}
+ *          )
+ *      }
+ * )
  * @Config(
  *  routeName="marello_sales_saleschannel_index",
  *  routeView="marello_sales_saleschannel_view",
