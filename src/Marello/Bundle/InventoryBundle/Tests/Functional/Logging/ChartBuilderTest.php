@@ -54,23 +54,20 @@ class ChartBuilderTest extends WebTestCase
         $from->modify('- 3 days');
         $to->modify('+ 3 days');
 
-        $interval = new \DateInterval('P1D');
-
         $data = $this->chartBuilder->getChartData(
-            $product->getId(),
+            $product,
             $from,
-            $to,
-            $interval
+            $to
         );
 
-        $this->assertCount(1, $data, 'Data should contain values for one warehouse. (based on demo data)');
+        $this->assertCount(3, $data, 'Data should contain values for one warehouse. (based on demo data)');
 
         /*
          * Get single warehouse from result.
          */
         $data = reset($data);
 
-        $this->assertCount(6, $data, 'For given test interval, there should be 6 generated values.');
+        $this->assertCount(7, $data, 'For given test interval, there should be 6 generated values.');
 
         $first = reset($data);
         $last  = end($data);

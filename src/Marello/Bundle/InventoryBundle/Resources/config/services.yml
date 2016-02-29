@@ -11,6 +11,8 @@ services:
         class: Marello\Bundle\InventoryBundle\Logging\ChartBuilder
         arguments:
             - @doctrine
+            - @oro_dashboard.datetime.helper
+            - @translator
 
     marello_inventory.logging.inventory_logger:
         class: Marello\Bundle\InventoryBundle\Logging\InventoryLogger
