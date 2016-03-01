@@ -66,19 +66,23 @@
     }] %}
 
     {% set productInventoryWidget %}
-        {{ oro_widget_render({
-            'widgetType': 'block',
-            'url': path('marello_inventory_widget_info', {id: entity.id}),
-            'title': ''
-        }) }}
+        <div class="responsive-block">
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('marello_inventory_widget_info', {id: entity.id}),
+                'title': ''
+            }) }}
+        </div>
     {% endset %}
 
     {% set productInventoryLogWidget %}
-        {{ oro_widget_render({
-            'widgetType': 'block',
-            'url': path('marello_inventory_inventorylog_chart', {id: entity.id}),
-            'title': ''
-        }) }}
+        <div class="responsive-block">
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('marello_inventory_inventorylog_chart', {id: entity.id}),
+                'title': ''
+            }) }}
+        </div>
     {% endset %}
 
     {% set productInventoryGrid %}
