@@ -1,0 +1,9 @@
+config:
+    paths:
+        'marello/js/datagrid/cell/string-cell': 'bundles/marellodatagrid/js/datagrid/cell/string-cell.js'
+
+    map:
+        '*':
+            'oro/datagrid/cell/string-cell': 'marello/js/datagrid/cell/string-cell'
+        'marello/js/datagrid/cell/string-cell':
+            'oro/datagrid/cell/string-cell': 'oro/datagrid/cell/string-cell'

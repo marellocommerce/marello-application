@@ -1,5 +1,7 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'MarelloPricingBundle:Form:fields.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% set gridName = 'marello-product-saleschannel-grid' %}
 
 {% set entity = form.vars.value %}
 {% set formAction = entity.id ? path('marello_product_update', { id: entity.id }) : path('marello_product_create') %}
@@ -61,6 +63,12 @@
             {{ form_errors(form.prices) }}
         </div>
     {% endset %}
+
+    {% set channelIds = [] %}
+    {% for channel in form.vars.value.channels %}
+        {% set channelIds = channelIds|merge([channel.id]) %}
+    {% endfor %}
+
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
@@ -70,7 +78,8 @@
                     form_row(form.channels),
                     form_row(form.name),
                     form_row(form.sku),
-                    form_row(form.status)
+                    form_row(form.status),
+                    dataGrid.renderGrid(gridName, { product: form.vars.value.id ? : null, channels: channelIds })
                 ]
             }]
         },

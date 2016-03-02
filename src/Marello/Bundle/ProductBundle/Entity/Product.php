@@ -189,7 +189,7 @@ class Product extends ExtendProduct implements
 
     /**
      * @var Collection
-     *
+     * unidirectional many-to-many
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      * @ORM\JoinTable(name="marello_product_saleschannel")
      */
