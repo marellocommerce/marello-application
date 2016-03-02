@@ -22,7 +22,7 @@ class LoadDemoData extends AbstractFixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData'
+            LoadOrderData::class
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Logging;
 
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
 use Marello\Bundle\InventoryBundle\Logging\ChartBuilder;
@@ -23,7 +24,7 @@ class ChartBuilderTest extends WebTestCase
         $this->chartBuilder = $this->client->getContainer()->get('marello_inventory.logging.chart_builder');
 
         $this->loadFixtures([
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData',
+            LoadProductData::class
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductPricingData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,7 +19,7 @@ class InventoryControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductPricingData',
+            LoadProductPricingData::class,
         ]);
     }
 

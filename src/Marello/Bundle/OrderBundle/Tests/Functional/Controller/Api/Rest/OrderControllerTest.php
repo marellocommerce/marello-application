@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 
-use Symfony\Component\HttpFoundation\Response;
-
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @dbIsolation
@@ -19,7 +19,7 @@ class OrderControllerTest extends WebTestCase
             $this->generateWsseAuthHeader()
         );
         $this->loadFixtures([
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData',
+            LoadOrderData::class,
         ]);
     }
 

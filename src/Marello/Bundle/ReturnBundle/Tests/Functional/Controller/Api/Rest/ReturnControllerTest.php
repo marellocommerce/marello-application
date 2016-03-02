@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ReturnBundle\Tests\Functional\Controller\Api\Rest;
 
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadReturnData;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
@@ -22,7 +23,7 @@ class ReturnControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadReturnData',
+            LoadReturnData::class,
         ]);
     }
 
