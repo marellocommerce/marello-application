@@ -12,7 +12,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $name         = 'Marello\Bundle\ProductBundle\Entity\Product';
+        $name         = Product::class;
         $this->entity = new $name();
     }
 

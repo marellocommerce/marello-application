@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Logging;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
@@ -28,9 +30,9 @@ class InventoryLoggerTest extends TestCase
      */
     public function setUp()
     {
-        $this->uow      = $this->prophesize('\Doctrine\ORM\UnitOfWork');
-        $this->manager  = $this->prophesize('\Doctrine\ORM\EntityManager');
-        $this->doctrine = $this->prophesize('\Doctrine\Bundle\DoctrineBundle\Registry');
+        $this->uow      = $this->prophesize(UnitOfWork::class);
+        $this->manager  = $this->prophesize(EntityManager::class);
+        $this->doctrine = $this->prophesize(Registry::class);
 
         /*
          * Do nothing when asked to compute change sets...
@@ -69,7 +71,7 @@ class InventoryLoggerTest extends TestCase
          * Mock entity manager...
          */
         $this->manager
-            ->persist(Argument::type('\Marello\Bundle\InventoryBundle\Entity\InventoryLog'))
+            ->persist(Argument::type(InventoryLog::class))
             ->shouldBeCalled();
 
         /*
@@ -89,8 +91,7 @@ class InventoryLoggerTest extends TestCase
         /**
          * Mock entity manager...
          */
-        $manager = $this->prophesize('\Doctrine\ORM\EntityManager');
-        $manager
+        $this->manager
             ->persist()
             ->shouldNotBeCalled();
 
@@ -124,7 +125,7 @@ class InventoryLoggerTest extends TestCase
          */
         $this->manager
             ->persist(Argument::that(function ($log) {
-                $this->assertInstanceOf('\Marello\Bundle\InventoryBundle\Entity\InventoryLog', $log);
+                $this->assertInstanceOf(InventoryLog::class, $log);
                 $this->assertEquals(0, $log->getOldQuantity(), 'Old quantity for new item should be 0.');
                 $this->assertEquals(0, $log->getOldAllocatedQuantity(), 'Old allocated quantity should be 0.');
                 $this->assertEquals(10, $log->getNewQuantity(), 'New quantity should be 10 (as specified change).');
@@ -228,7 +229,7 @@ class InventoryLoggerTest extends TestCase
                     $oldAllocated,
                     $newAllocated
                 ) {
-                    $this->assertInstanceOf('\Marello\Bundle\InventoryBundle\Entity\InventoryLog', $log);
+                    $this->assertInstanceOf(InventoryLog::class, $log);
                     $this->assertEquals(
                         $oldQuantity,
                         $log->getOldQuantity(),
@@ -259,7 +260,7 @@ class InventoryLoggerTest extends TestCase
              * If there is nothing in the change set, expect nothing to be logged.
              */
             $this->manager
-                ->persist(Argument::type('\Marello\Bundle\InventoryBundle\Entity\InventoryLog'))
+                ->persist(Argument::type(InventoryLog::class))
                 ->shouldNotBeCalled();
         }
 

@@ -252,7 +252,7 @@ class ProductControllerTest extends WebTestCase
      */
     public function testDeleteNonExistent()
     {
-        $productId = $this->getReference('marello-product-0')->getId() -1;
+        $productId = $this->getReference('marello-product-0')->getId() - 1;
 
         $this->client->request(
             'DELETE',

@@ -51,7 +51,7 @@ class OrderControllerTest extends WebTestCase
             'paymentDetails'  => 'Visa card, ref: xxxxxx-xxxx-xxxx',
             'shippingMethod'  => 'freeshipping',
             'discountAmount'  => 10,
-            'couponCode'     => 'XFZDSFSDFSFSD',
+            'couponCode'      => 'XFZDSFSDFSFSD',
             'shippingAmount'  => 5,
             'billingAddress'  => [
                 'firstName'  => 'Falco',

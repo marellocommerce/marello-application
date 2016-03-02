@@ -7,6 +7,7 @@ use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
 use Marello\Bundle\ReturnBundle\Validator\ReturnItemValidator;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ReturnItemValidatorTest extends TestCase
@@ -22,13 +23,13 @@ class ReturnItemValidatorTest extends TestCase
         parent::setUp();
 
         $this->builder = $this
-            ->getMockForAbstractClass('Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface');
+            ->getMockForAbstractClass(ConstraintViolationBuilderInterface::class);
 
         $this->builder->expects($this->any())
             ->method('atPath')
             ->will($this->returnValue($this->builder));
 
-        $context = $this->getMockForAbstractClass('Symfony\Component\Validator\Context\ExecutionContextInterface');
+        $context = $this->getMockForAbstractClass(ExecutionContextInterface::class);
 
         $context->expects($this->any())
             ->method('buildViolation')
