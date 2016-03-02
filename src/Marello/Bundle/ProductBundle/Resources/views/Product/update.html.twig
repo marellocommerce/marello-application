@@ -68,17 +68,17 @@
     {% for channel in form.vars.value.channels %}
         {% set channelIds = channelIds|merge([channel.id]) %}
     {% endfor %}
-
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
             'subblocks': [{
                 'title': 'General',
                 'data':  [
-                    form_row(form.channels),
                     form_row(form.name),
                     form_row(form.sku),
                     form_row(form.status),
+                    form_widget(form.addSalesChannels, {'id': 'addSalesChannels'}),
+                    form_widget(form.removeSalesChannels, {'id': 'removeSalesChannels'}),
                     dataGrid.renderGrid(gridName, { product: form.vars.value.id ? : null, channels: channelIds })
                 ]
             }]

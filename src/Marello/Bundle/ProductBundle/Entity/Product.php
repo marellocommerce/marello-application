@@ -446,6 +446,14 @@ class Product extends ExtendProduct implements
     }
 
     /**
+     * @return bool
+     */
+    public function hasChannels()
+    {
+        return count($this->channels) > 0;
+    }
+
+    /**
      * Remove item
      *
      * @param SalesChannel $channel

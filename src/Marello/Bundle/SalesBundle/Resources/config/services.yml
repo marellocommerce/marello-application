@@ -7,7 +7,6 @@ services:
     marello_sales.saleschannel.form_subscriber:
         class: %marello_sales.saleschannel.subscriber.class%
         arguments:
-            - @oro_config.user
             - @doctrine.orm.entity_manager
 
     # Autocomplete search handler
