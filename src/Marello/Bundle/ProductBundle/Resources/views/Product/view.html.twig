@@ -42,6 +42,7 @@
 
 {% block content_data %}
     {% set id = 'product-view' %}
+    {% set generalSubblocks = [] %}
     {% set productInformationWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
@@ -49,6 +50,24 @@
             'title': ''
         }) }}
     {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }]) %}
+
+
+    {% set productInventoryLogChart %}
+        <div class="responsive-block">
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('marello_inventory_inventorylog_chart', {id: entity.id}),
+                'title': ''
+            }) }}
+        </div>
+    {% endset %}
+    {#{% set generalSubblocks = generalSubblocks|merge([{'data' : [productInventoryLogChart] }]) %}#}
+
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'subblocks': generalSubblocks
+    }] %}
 
     {% set productPriceWidget %}
         {{ oro_widget_render({
@@ -57,13 +76,6 @@
             'title': ''
         }) }}
     {% endset %}
-
-    {% set dataBlocks = [{
-        'title': 'General'|trans,
-        'subblocks': [
-            {'data' : [productInformationWidget] },
-        ]
-    }] %}
 
     {% set productInventoryWidget %}
         <div class="responsive-block">
@@ -75,30 +87,12 @@
         </div>
     {% endset %}
 
-    {% set productInventoryLogWidget %}
-        <div class="responsive-block">
-            {{ oro_widget_render({
-                'widgetType': 'block',
-                'url': path('marello_inventory_inventorylog_chart', {id: entity.id}),
-                'title': ''
-            }) }}
-        </div>
-    {% endset %}
-
-    {% set productInventoryGrid %}
-        {{ dataGrid.renderGrid('marello-inventory-log', {'productId': entity.id}) }}
-    {% endset %}
-
     {% set dataBlocks = dataBlocks|merge([{
         'title' : 'marello.inventory.label'|trans,
         'subblocks': [{
-            'title' : null,
+            'title' : 'Inventory Movements',
             'useSpan': false,
-            'data' : [
-                productInventoryWidget,
-                productInventoryLogWidget,
-                productInventoryGrid
-            ]
+            'data' : [ productInventoryWidget, productInventoryLogChart ]
         }]
     }]) %}
 
