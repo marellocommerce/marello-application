@@ -3,13 +3,12 @@
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Form\Subscriber;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
-use Symfony\Component\Form\FormEvent;
-
+use Doctrine\Common\Collections\Collection;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Form\Subscriber\InventoryItemCollectionSubscriber;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormInterface;
 
 class InventoryItemCollectionSubscriberTest extends WebTestCase
 {
@@ -28,7 +27,7 @@ class InventoryItemCollectionSubscriberTest extends WebTestCase
      */
     public function testInitializeCollectionWhenEmpty()
     {
-        $form  = $this->getMock('\Symfony\Component\Form\FormInterface');
+        $form  = $this->getMock(FormInterface::class);
         $event = new FormEvent($form, null);
 
         $this->subscriber->initializeCollection($event);
@@ -36,12 +35,12 @@ class InventoryItemCollectionSubscriberTest extends WebTestCase
         $data = $event->getData();
 
         $this->assertCount(1, $data, 'There should be one inventory item present (for default WH).');
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $data, 'Data should be Collection.');
+        $this->assertInstanceOf(Collection::class, $data, 'Data should be Collection.');
 
         /** @var InventoryItem $item */
         $item = $data->first();
 
-        $this->assertInstanceOf('\Marello\Bundle\InventoryBundle\Entity\InventoryItem', $item);
+        $this->assertInstanceOf(InventoryItem::class, $item);
         $this->assertEquals(0, $item->getQuantity(), 'New item should have 0 quantity.');
     }
 
@@ -50,7 +49,7 @@ class InventoryItemCollectionSubscriberTest extends WebTestCase
      */
     public function testInitializeCollectionWhenNotEmpty()
     {
-        $form = $this->getMock('\Symfony\Component\Form\FormInterface');
+        $form = $this->getMock(FormInterface::class);
 
         $defaultWarehouse = $this->getContainer()
             ->get('doctrine')
@@ -71,12 +70,12 @@ class InventoryItemCollectionSubscriberTest extends WebTestCase
         $data = $event->getData();
 
         $this->assertCount(1, $data, 'One inventory item from initial data should be kept.');
-        $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $data, 'Data should be Collection.');
+        $this->assertInstanceOf(Collection::class, $data, 'Data should be Collection.');
 
         /** @var InventoryItem $item */
         $item = $data->first();
 
-        $this->assertInstanceOf('\Marello\Bundle\InventoryBundle\Entity\InventoryItem', $item);
+        $this->assertInstanceOf(InventoryItem::class, $item);
         $this->assertEquals(99, $item->getQuantity(), 'Item should have the same quantity.');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,7 +19,7 @@ class SalesChannelControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData',
+            LoadSalesData::class,
         ]);
     }
 

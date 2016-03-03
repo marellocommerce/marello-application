@@ -43,20 +43,14 @@ class InventoryLogController extends Controller
          */
         $from     = new \DateTime($request->query->get('from', 'tomorrow - 1 second - 1 week'));
         $to       = new \DateTime($request->query->get('to', 'tomorrow - 1 second'));
-        $interval = new \DateInterval($request->get('interval', 'P1D'));
-
-        /*
-         * Add interval to end date once, so the end date will be included in results.
-         */
-        $to->add($interval);
 
         $items = $this
             ->get('marello_inventory.logging.chart_builder')
-            ->getChartData($product, $from, $to, $interval);
+            ->getChartData($product, $from, $to);
 
         $viewBuilder = $this->container->get('oro_chart.view_builder');
 
-        $view = $viewBuilder
+        $chartView = $viewBuilder
             ->setArrayData($items)
             ->setOptions([
                 'name'        => 'marelloinventory',
@@ -73,9 +67,6 @@ class InventoryLogController extends Controller
             ])
             ->getView();
 
-        return [
-            'chartView' => $view,
-            'product'   => $product,
-        ];
+        return compact('chartView', 'product');
     }
 }
