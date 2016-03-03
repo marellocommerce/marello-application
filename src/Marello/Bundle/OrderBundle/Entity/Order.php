@@ -160,7 +160,7 @@ class Order extends ExtendOrder
     protected $shippingAddress;
 
     /**
-     * @var \DateTime $created
+     * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
      * @Oro\ConfigField(
@@ -174,7 +174,7 @@ class Order extends ExtendOrder
     protected $createdAt;
 
     /**
-     * @var \DateTime $updated
+     * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime")
      * @Oro\ConfigField(
@@ -186,6 +186,13 @@ class Order extends ExtendOrder
      * )
      */
     protected $updatedAt;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="invoiced_at", type="datetime", nullable=true)
+     */
+    protected $invoicedAt;
 
     /**
      * @var SalesChannel
@@ -660,6 +667,26 @@ class Order extends ExtendOrder
     public function setCouponCode($couponCode)
     {
         $this->couponCode = $couponCode;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getInvoicedAt()
+    {
+        return $this->invoicedAt;
+    }
+
+    /**
+     * @param \DateTime $invoicedAt
+     *
+     * @return $this
+     */
+    public function setInvoicedAt($invoicedAt)
+    {
+        $this->invoicedAt = $invoicedAt;
+
+        return $this;
     }
 
 }

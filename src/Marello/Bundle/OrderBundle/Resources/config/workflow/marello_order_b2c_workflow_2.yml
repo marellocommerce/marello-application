@@ -1,0 +1,102 @@
+workflows:
+    marello_order_b2c_workflow_2:
+        label:        'Order B2C Workflow #2'
+        entity:       Marello\Bundle\OrderBundle\Entity\Order
+        entity_attribute: order
+        start_step:   pending
+        attributes:
+            payment_reference:
+                label: 'Payment Reference'
+                type: string
+
+        steps:
+            pending:
+                label:  Pending Order
+                allowed_transitions:
+                    - hold_pending
+                    - cancel
+                    - ship
+            cancelled:
+                label:  Cancelled
+                allowed_transitions: []
+            pending_on_hold:
+                label:  On Hold
+                allowed_transitions:
+                    - un_hold_pending
+            shipped_on_hold:
+                label:  On Hold
+                allowed_transitions:
+                    - un_hold_shipped
+            invoice:
+                label:  Complete
+                allowed_transitions:
+                    - credit
+            credit:
+                label:  Closed
+                allowed_transitions: []
+            shipped:
+                label:  Shipped
+                allowed_transitions:
+                    - invoice
+                    - hold_shipped
+
+        transitions:
+            cancel:
+                label:    Cancel
+                step_to:  cancelled
+                transition_definition: cancel_definition
+            hold_pending:
+                label:    Hold
+                step_to:  pending_on_hold
+                transition_definition: hold_definition
+            un_hold_pending:
+                label:    Un-Hold
+                step_to:  pending
+                transition_definition: un_hold_definition
+            hold_shipped:
+                label:    Hold
+                step_to:  shipped_on_hold
+                transition_definition: hold_definition
+            un_hold_shipped:
+                label:    Un-Hold
+                step_to:  shipped
+                transition_definition: un_hold_definition
+            invoice:
+                label:    Invoice
+                step_to:  invoice
+                transition_definition: invoice_definition
+                form_options:
+                    attribute_fields:
+                        payment_reference:
+                            form_type: text
+                            options:
+                                required: true
+                                constraints:
+                                  - NotBlank: ~
+                    attribute_default_values:
+                        payment_reference: ''
+            ship:
+                label:    Ship
+                step_to:  shipped
+                transition_definition: ship_definition
+            credit:
+                label:    Credit
+                step_to:  credit
+                transition_definition: credit_definition
+
+        transition_definitions:
+            cancel_definition:
+                post_actions:
+                    - @marello_cancel_order: ~
+            hold_definition: []
+            un_hold_definition: []
+            invoice_definition:
+                post_actions:
+                    - @create_object:
+                        class: \DateTime
+                        attribute: $order.invoicedAt
+            credit_definition: []
+            ship_definition:
+                post_actions:
+                    - @marello_ship_order: ~
+
