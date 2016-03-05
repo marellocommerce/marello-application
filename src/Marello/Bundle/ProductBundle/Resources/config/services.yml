@@ -18,3 +18,13 @@ services:
             - marello_add_variant_link
         tags:
             - { name: oro_ui.view_action_provider, group: product }
+
+    marello_product.util.product_helper:
+        class: Marello\Bundle\ProductBundle\Util\ProductHelper
+
+    marello_product.twig.product_extension:
+        class: Marello\Bundle\ProductBundle\Twig\ProductExtension
+        arguments:
+            - @marello_product.util.product_helper
+        tags:
+            - { name: twig.extension }

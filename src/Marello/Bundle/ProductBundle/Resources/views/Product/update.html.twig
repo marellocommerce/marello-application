@@ -64,10 +64,7 @@
         </div>
     {% endset %}
 
-    {% set channelIds = [] %}
-    {% for channel in form.vars.value.channels %}
-        {% set channelIds = channelIds|merge([channel.id]) %}
-    {% endfor %}
+    {% set channelIds = marello_product_get_saleschannel_ids(entity) %}
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
@@ -76,10 +73,7 @@
                 'data':  [
                     form_row(form.name),
                     form_row(form.sku),
-                    form_row(form.status),
-                    form_widget(form.addSalesChannels, {'id': 'addSalesChannels'}),
-                    form_widget(form.removeSalesChannels, {'id': 'removeSalesChannels'}),
-                    dataGrid.renderGrid(gridName, { product: form.vars.value.id ? : null, channels: channelIds })
+                    form_row(form.status)
                 ]
             }]
         },
@@ -101,6 +95,18 @@
                 'title': '',
                 'data': [
                     form_row(form.inventoryItems),
+                ]
+            }]
+        },
+        {
+            'title': 'marello.sales.saleschannel.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': 'marello.sales.saleschannel.header.label'|trans,
+                'data': [
+                    form_widget(form.addSalesChannels, {'id': 'addSalesChannels'}),
+                    form_widget(form.removeSalesChannels, {'id': 'removeSalesChannels'}),
+                    dataGrid.renderGrid(gridName, { product: form.vars.value.id ? : null, channels: channelIds })
                 ]
             }]
         }

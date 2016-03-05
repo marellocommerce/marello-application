@@ -3,6 +3,7 @@ marello:
         navigation:
             sales.label:                        Sales
         saleschannel:
+            header.label:                       Manage Sales Channels
             entity_label:                       Sales Channel
             entity_plural_label:                Sales Channels
             id.label:                           Id
@@ -14,16 +15,10 @@ marello:
             owner.label:                        Owner
             controller.message.saved:           Sales Channel saved
             form.select_saleschannel:           Select Sales Channel
+            selected_channels.label:            Selected Sales Channels
 
             menu:
                 shortcut_new_saleschannel.label: Create new sales channel
                 shortcut_new_saleschannel.description: Create new sales channel instance
                 shortcut_list_saleschannel.label: Show sales channel list
                 shortcut_list_saleschannel.description: Show list of sales channels
-        system_configuration:
-            groups:
-                saleschannels.title:              Sales Channels
-                saleschannels_saleschannel.title: Sales Channels Settings
-
-            fields:
-                default_channel.label:          Default Sales Channels

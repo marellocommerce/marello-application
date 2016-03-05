@@ -16,10 +16,10 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-        {{ UI.button({
-            'path': path('marello_inventory_inventorylog_list', {'id': entity.id}),
-            'label': 'marello.inventory.inventorylog.entity_label'|trans
-        }) }}
+    {{ UI.button({
+        'path': path('marello_inventory_inventorylog_list', {'id': entity.id}),
+        'label': 'marello.inventory.inventorylog.entity_label'|trans
+    }) }}
     {% if resource_granted('DELETE', entity) %}
         {{ UI.buttonSeparator() }}
         {{ UI.deleteButton({

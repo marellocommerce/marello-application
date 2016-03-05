@@ -226,6 +226,15 @@ datagrid:
             columns:
                 hasChannel:           { data_name: hasChannel }
             default:                  { hasChannel: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC }
+        filters:
+            columns:
+                hasChannel:
+                    label:            marello.sales.saleschannel.selected_channels.label
+                    type:             boolean
+                    data_name:        hasChannel
+            default:
+                hasChannel:
+                    value:            1
         properties:
             id: ~
         options:
