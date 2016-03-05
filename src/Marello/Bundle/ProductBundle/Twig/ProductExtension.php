@@ -7,6 +7,8 @@ use Marello\Bundle\ProductBundle\Util\ProductHelper;
 
 class ProductExtension extends \Twig_Extension
 {
+    const NAME = 'marello_product';
+    
     /** @var ProductHelper */
     protected $productHelper;
 
@@ -27,7 +29,7 @@ class ProductExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'marello_product';
+        return self::NAME;
     }
 
     /**
