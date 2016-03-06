@@ -62,14 +62,13 @@
             }) }}
         </div>
     {% endset %}
-    {#{% set generalSubblocks = generalSubblocks|merge([{'data' : [productInventoryLogChart] }]) %}#}
 
     {% set dataBlocks = [{
         'title': 'General'|trans,
         'subblocks': generalSubblocks
     }] %}
 
-    {% set productPriceWidget %}
+    {% set productChannelPriceWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
             'url': path('marello_product_widget_price', {id: entity.id}),
@@ -108,12 +107,12 @@
     }]) %}
 
     {% set dataBlocks = dataBlocks|merge([{
-        'title' : 'marello.pricing.productprice.entity_plural_label'|trans,
+        'title' : 'marello.pricing.header.label'|trans,
         'subblocks': [{
             'title' : null,
             'useSpan': false,
             'data' : [
-                productPriceWidget
+                productChannelPriceWidget
             ]
         }]
     }]) %}

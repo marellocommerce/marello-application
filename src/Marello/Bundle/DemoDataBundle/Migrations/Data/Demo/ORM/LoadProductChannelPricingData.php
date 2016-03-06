@@ -5,14 +5,11 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 
-class LoadProductPricingData extends AbstractFixture implements DependentFixtureInterface
+class LoadProductChannelPricingData extends AbstractFixture implements DependentFixtureInterface
 {
-    /** @var string $currency */
-    protected $currency = 'USD';
-
     /** @var ObjectManager $manager */
     protected $manager;
 
@@ -42,7 +39,7 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
      */
     public function loadProductPrices()
     {
-        $handle = fopen($this->getDictionary('product_prices.csv'), "r");
+        $handle = fopen($this->getDictionary('product_channel_prices.csv'), "r");
         if ($handle) {
             $headers = [];
             if (($data = fgetcsv($handle, 1000, ",")) !== false) {
@@ -75,18 +72,18 @@ class LoadProductPricingData extends AbstractFixture implements DependentFixture
             return;
         }
 
-        $channel      = $this->getReference('marello_sales_channel_' . (int)$data['channel']);
-        $productPrice = new ProductPrice();
-        $productData  = $product->getData();
+        $channel                = $this->getReference('marello_sales_channel_' . (int)$data['channel']);
+        $productChannelPrice    = new ProductChannelPrice();
+        $productData            = $product->getData();
 
         $productData[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
         $product->setData($productData);
-        $productPrice->setProduct($product);
-        $productPrice->setCurrency($this->currency);
-        $productPrice->setValue((float)$data['price']);
-        $productPrice->setChannel($channel);
+        $productChannelPrice->setProduct($product);
+        $productChannelPrice->setCurrency($channel->getCurrency());
+        $productChannelPrice->setValue((float)$data['price']);
+        $productChannelPrice->setChannel($channel);
         $this->manager->persist($product);
-        $this->manager->persist($productPrice);
+        $this->manager->persist($productChannelPrice);
     }
 
     /**

@@ -1,4 +1,4 @@
-Marello\Bundle\PricingBundle\Entity\ProductPrice:
+Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [channel, currency, value]

@@ -31,7 +31,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         return [
             LoadSalesData::class,
             LoadProductData::class,
-            LoadProductPricingData::class,
+            LoadProductChannelPricingData::class,
         ];
     }
 

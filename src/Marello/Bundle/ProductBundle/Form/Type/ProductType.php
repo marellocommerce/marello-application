@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
-use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelFieldSubscriber;
+use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
+use Marello\Bundle\PricingBundle\Form\EventListener\DefaultPricingSubscriber;
+use Marello\Bundle\PricingBundle\Form\EventListener\DefaultChannelPricingSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -11,17 +13,29 @@ class ProductType extends AbstractType
 {
     const NAME = 'marello_product_form';
 
-    /** @var DefaultSalesChannelFieldSubscriber */
-    protected $defaultSalesChannelFieldSubscriber;
+    /** @var DefaultSalesChannelSubscriber */
+    protected $defaultSalesChannelSubscriber;
+
+    /** @var DefaultPricingSubscriber */
+    protected $defaultPricingSubscriber;
+
+    /** @var DefaultChannelPricingSubscriber */
+    protected $defaultChannelPricingSubscriber;
 
     /**
      * ProductType constructor.
-     *
-     * @param DefaultSalesChannelFieldSubscriber $defaultSalesChannelFieldSubscriber
+     * @param DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber
+     * @param DefaultPricingSubscriber $defaultPricingSubscriber
+     * @param DefaultChannelPricingSubscriber $defaultChannelPricingSubscriber
      */
-    public function __construct(DefaultSalesChannelFieldSubscriber $defaultSalesChannelFieldSubscriber)
+    public function __construct(
+        DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber,
+        DefaultPricingSubscriber $defaultPricingSubscriber,
+        DefaultChannelPricingSubscriber $defaultChannelPricingSubscriber)
     {
-        $this->defaultSalesChannelFieldSubscriber = $defaultSalesChannelFieldSubscriber;
+        $this->defaultSalesChannelSubscriber    = $defaultSalesChannelSubscriber;
+        $this->defaultPricingSubscriber         = $defaultPricingSubscriber;
+        $this->defaultChannelPricingSubscriber  = $defaultChannelPricingSubscriber;
     }
 
     /**
@@ -40,12 +54,6 @@ class ProductType extends AbstractType
                 [
                     'required' => true,
                     'label'    => 'marello.product.sku.label',
-                ]
-            )
-            ->add('price', 'oro_money',
-                [
-                    'required' => true,
-                    'label'    => 'marello.product.price.label',
                 ]
             )
             ->add('status', 'entity',
@@ -83,7 +91,9 @@ class ProductType extends AbstractType
                 ]
             );
 
-        $builder->addEventSubscriber($this->defaultSalesChannelFieldSubscriber);
+        $builder->addEventSubscriber($this->defaultSalesChannelSubscriber);
+        $builder->addEventSubscriber($this->defaultPricingSubscriber);
+        $builder->addEventSubscriber($this->defaultChannelPricingSubscriber);
     }
 
     /**

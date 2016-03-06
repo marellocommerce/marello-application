@@ -8,7 +8,7 @@ define(function(require) {
         AbstractItemsView = require('marellolayout/js/app/views/abstract-items-view');
 
     /**
-     * @export marellopricing/js/app/views/pricing-items-view
+     * @export marellopricing/js/app/views/channel-pricing-items-view
      * @extends marellolayout.app.views.AbstractItemsView
      * @class marellopricing.app.views.PricingItemsView
      */

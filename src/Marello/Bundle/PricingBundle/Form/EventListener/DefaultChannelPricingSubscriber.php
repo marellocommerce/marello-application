@@ -1,64 +1,59 @@
 <?php
 
-namespace Marello\Bundle\PricingBundle\Form\Extension;
+namespace Marello\Bundle\PricingBundle\Form\EventListener;
 
-use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Form\Type\ProductType;
-use Marello\Bundle\ProductBundle\Util\ProductHelper;
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
-use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\FormBuilderInterface;
+use Doctrine\ORM\EntityManager;
+
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ProductTypeExtension extends AbstractTypeExtension
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Util\ProductHelper;
+use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
+
+class DefaultChannelPricingSubscriber implements EventSubscriberInterface
 {
-    /** @var LocaleSettings $localeSettings */
-    protected $localeSettings;
+    /** @var EntityManager $em */
+    protected $em;
 
-    /** @var string $awareInterface  */
+    /** @var string $interface  */
     protected $interface;
 
     /** @var Product $helper  */
     protected $helper;
 
     /**
-     * PricingTypeExtension constructor.
-     * @param LocaleSettings $localeSettings
+     * DefaultChannelPricingSubscriber constructor.
+     * @param EntityManager $em
      * @param string $interface
      * @param ProductHelper $helper
      */
-    public function __construct(LocaleSettings $localeSettings, $interface, ProductHelper $helper)
+    public function __construct(EntityManager $em, $interface, ProductHelper $helper)
     {
-        $this->localeSettings = $localeSettings;
+        $this->em = $em;
         $this->interface = $interface;
         $this->helper = $helper;
     }
 
     /**
-     * {@inheritdoc}
+     * Get subscribed events
+     * @return array
      */
-    public function getExtendedType()
+    public static function getSubscribedEvents()
     {
-        return ProductType::NAME;
+        return [
+            FormEvents::PRE_SET_DATA    => 'addChannelPricingData',
+            FormEvents::POST_SUBMIT     => 'handleEnabledState'
+        ];
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'loadPricingSettings']);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'handleEnabledState']);
-    }
-
-    /**
-     * Preset data for channels
+     *
      * @param FormEvent $event
      */
-    public function loadPricingSettings(FormEvent $event)
+    public function addChannelPricingData(FormEvent $event)
     {
         $product = $event->getData();
 
@@ -73,34 +68,24 @@ class ProductTypeExtension extends AbstractTypeExtension
             PricingAwareInterface::CHANNEL_PRICING_STATE_KEY,
             'checkbox',
             [
-                'label' => 'marello.pricing.productprice.form.pricing_enabled.label',
+                'label' => 'marello.pricing.productchannelprice.form.pricing_enabled.label',
                 'mapped' => false,
                 'required' => false,
                 'data' => $pricingEnabled,
             ]
         );
 
-
-        $this->addPricingCollection($form, $product, $event);
-    }
-
-    /**
-     * @param $form
-     * @param $product
-     * @param $event
-     */
-    public function addPricingCollection($form, $product, $event)
-    {
         $channels = $this->helper->getSalesChannelsIds($product);
         $form->add(
-            'prices',
-            'marello_product_price_collection',
+            'channelPrices',
+            'marello_product_channel_price_collection',
             [
                 'options' => [
                     'channels' => $channels
                 ]
             ]
         );
+
         $event->setData($product);
     }
 
@@ -134,7 +119,7 @@ class ProductTypeExtension extends AbstractTypeExtension
 
         if (!$pricingEnabled) {
             $data[PricingAwareInterface::CHANNEL_PRICING_DROP_KEY] = true;
-            $this->clearPricingCollection($product);
+            $this->clearChannelPricingCollection($product);
         }
 
         $data[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = $pricingEnabled;
@@ -148,7 +133,7 @@ class ProductTypeExtension extends AbstractTypeExtension
      *
      * @return bool
      */
-    protected function getPricingEnabled(FormInterface $form)
+        protected function getPricingEnabled(FormInterface $form)
     {
         if (!$form->has(PricingAwareInterface::CHANNEL_PRICING_STATE_KEY)) {
             throw new \InvalidArgumentException(sprintf('%s form child is missing'));
@@ -160,12 +145,16 @@ class ProductTypeExtension extends AbstractTypeExtension
     }
 
     /**
-     * Get default currency for application
-     * @return string
+     * Remove channel prices from the collection on product
+     * @param Product $product
      */
-    public function getDefaultCurrency()
+    protected function clearChannelPricingCollection($product)
     {
-        return $this->localeSettings->getCurrency();
+        if (count($product->getChannelPrices()) > 0) {
+            foreach ($product->getChannelPrices() as $_price) {
+                $product->removeChannelPrice($_price);
+            }
+        }
     }
 
     /**
@@ -180,18 +169,5 @@ class ProductTypeExtension extends AbstractTypeExtension
         }
 
         return in_array($this->interface, class_implements($product), true);
-    }
-
-    /**
-     * Remove prices from the collection on product
-     * @param Product $product
-     */
-    protected function clearPricingCollection($product)
-    {
-        if (count($product->getPrices()) > 0) {
-            foreach ($product->getPrices() as $_price) {
-                $product->removePrice($_price);
-            }
-        }
     }
 }

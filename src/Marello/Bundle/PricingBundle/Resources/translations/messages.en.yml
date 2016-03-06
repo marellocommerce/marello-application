@@ -1,8 +1,18 @@
 marello:
     pricing:
+        header.label:                   Prices
         productprice:
-            entity_plural_label:        Product Prices
-            entity_label:               Product Price
+            entity_plural_label:        Default Prices
+            entity_label:               Default Price
+            currency.label:             Currency
+            id.label:                   Id
+            created_at.label:           Created At
+            value.label:                Price
+            product.label:              Product
+
+        productchannelprice:
+            entity_plural_label:        Product Channel Prices
+            entity_label:               Product Channel Price
             currency.label:             Currency
             id.label:                   Id
             created_at.label:           Created At

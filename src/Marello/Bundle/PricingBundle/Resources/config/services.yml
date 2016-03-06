@@ -1,23 +1,22 @@
-parameters:
-    marello_productprice.entity.class: Marello\Bundle\PricingBundle\Entity\ProductPrice
-    marello_productprice.product.form.extension.class: Marello\Bundle\PricingBundle\Form\Extension\ProductTypeExtension
-    marello_productprice.product.model.pricing_aware_interface.class:  Marello\Bundle\PricingBundle\Model\PricingAwareInterface
-
-    marello_productprice.product.provider.product_price.class: Marello\Bundle\PricingBundle\Provider\ProductPriceProvider
 services:
-    marello_productprice.product.form.extension:
-        class: %marello_productprice.product.form.extension.class%
-        arguments:
-            - @oro_locale.settings
-            - %marello_productprice.product.model.pricing_aware_interface.class%
-            - @marello_product.util.product_helper
-        tags:
-            - { name: form.type_extension, alias: marello_product_form }
-
-    marello_productprice.product.provider.product_price:
-        class: %marello_productprice.product.provider.product_price.class%
+    marello_productprice.product.provider.product_channel_price:
+        class: Marello\Bundle\PricingBundle\Provider\ProductChannelPriceProvider
         arguments:
             - @doctrine
-            - %marello_productprice.entity.class%
-            - %marello_product.entity.class%
+            - Marello\Bundle\PricingBundle\Entity\ProductChannelPrice
+            - Marello\Bundle\ProductBundle\Entity\Product
             - @translator
+
+    marello_productprice.price.form_subscriber:
+        class: Marello\Bundle\PricingBundle\Form\EventListener\DefaultPricingSubscriber
+        arguments:
+            - @doctrine.orm.entity_manager
+            - Marello\Bundle\PricingBundle\Model\PricingAwareInterface
+            - @marello_product.util.product_helper
+
+    marello_productprice.channelprice.form_subscriber:
+        class: Marello\Bundle\PricingBundle\Form\EventListener\DefaultChannelPricingSubscriber
+        arguments:
+            - @doctrine.orm.entity_manager
+            - Marello\Bundle\PricingBundle\Model\PricingAwareInterface
+            - @marello_product.util.product_helper

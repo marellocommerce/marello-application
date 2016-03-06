@@ -21,6 +21,8 @@ services:
             - { name: form.type, alias: marello_product_form }
         arguments:
             - @marello_sales.saleschannel.form_subscriber
+            - @marello_productprice.price.form_subscriber
+            - @marello_productprice.channelprice.form_subscriber
 
     marello_product.product_form.type.product_api:
         class: %marello_product.product_form.type.product_api.class%

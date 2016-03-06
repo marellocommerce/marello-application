@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 
-class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
+class DefaultSalesChannelSubscriber implements EventSubscriberInterface
 {
     /** @var EntityManager $em */
     protected $em;

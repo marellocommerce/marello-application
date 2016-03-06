@@ -1,6 +1,6 @@
 parameters:
     marello_sales.saleschannel.entity.class:      Marello\Bundle\SalesBundle\Entity\SalesChannel
-    marello_sales.saleschannel.subscriber.class:  Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelFieldSubscriber
+    marello_sales.saleschannel.subscriber.class:  Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber
     marello_sales.saleschannel.model.channel_aware_interface.class:  Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface
 
 services:
