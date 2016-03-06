@@ -60,7 +60,6 @@ class ProductHandler
                 $addChannels = $this->form->get('addSalesChannels')->getData();
                 $removeChannels = $this->form->get('removeSalesChannels')->getData();
                 $this->onSuccess($entity, $addChannels, $removeChannels);
-//                $this->onSuccess($entity);
 
                 return true;
             }
@@ -83,6 +82,8 @@ class ProductHandler
      * "Success" form handler
      *
      * @param Product $entity
+     * @param array $addChannels
+     * @param array $removeChannels
      */
     protected function onSuccess(Product $entity, array $addChannels, array $removeChannels)
     {
