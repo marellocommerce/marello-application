@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": ">=5.4.9",
+        "php": ">=5.5.9",
         "oro/platform": "1.8.*"
     },
     "config": {
@@ -61,6 +61,7 @@
         }
     },
     "require-dev": {
-        "symfony/var-dumper": "^3.0@dev"
+        "phpunit/phpunit": "^4.5.0",
+        "symfony/var-dumper": "3.0.*"
     }
 }
