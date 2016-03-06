@@ -4,6 +4,8 @@ namespace Marello\Bundle\PricingBundle\Form\Type;
 
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
+use Doctrine\ORM\EntityRepository;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -32,9 +34,16 @@ class ProductPriceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $channels = $options['product_channels'];
+
         $builder
             ->add('channel', 'genemu_jqueryselect2_entity', [
                 'class' => 'MarelloSalesBundle:SalesChannel',
+                'query_builder' => function(EntityRepository $er) use ($channels) {
+                    return $er->createQueryBuilder('sc')
+                        ->where('sc.id IN(:channels)')
+                        ->setParameter('channels', $channels);
+                },
             ])
             ->add('currency', 'hidden', [
                 'required' => true,
@@ -55,11 +64,12 @@ class ProductPriceType extends AbstractType
         $currencySymbol = $this->localeSettings->getCurrencySymbolByCurrency($currencyCode);
 
         $resolver->setDefaults([
-            'data_class'      => 'Marello\Bundle\PricingBundle\Entity\ProductPrice',
-            'intention'       => 'productprice',
-            'single_form'     => true,
-            'currency'        => $currencyCode,
-            'currency_symbol' => $currencySymbol,
+            'data_class'        => 'Marello\Bundle\PricingBundle\Entity\ProductPrice',
+            'intention'         => 'productprice',
+            'single_form'       => true,
+            'currency'          => $currencyCode,
+            'currency_symbol'   => $currencySymbol,
+            'channels'          => []
         ]);
     }
 

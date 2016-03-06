@@ -5,6 +5,7 @@ namespace Marello\Bundle\PricingBundle\Form\Extension;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Form\Type\ProductType;
+use Marello\Bundle\ProductBundle\Util\ProductHelper;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,15 +21,20 @@ class ProductTypeExtension extends AbstractTypeExtension
     /** @var string $awareInterface  */
     protected $interface;
 
+    /** @var Product $helper  */
+    protected $helper;
+
     /**
      * PricingTypeExtension constructor.
      * @param LocaleSettings $localeSettings
      * @param string $interface
+     * @param ProductHelper $helper
      */
-    public function __construct(LocaleSettings $localeSettings, $interface)
+    public function __construct(LocaleSettings $localeSettings, $interface, ProductHelper $helper)
     {
         $this->localeSettings = $localeSettings;
         $this->interface = $interface;
+        $this->helper = $helper;
     }
 
     /**
@@ -85,9 +91,15 @@ class ProductTypeExtension extends AbstractTypeExtension
      */
     public function addPricingCollection($form, $product, $event)
     {
+        $channels = $this->helper->getSalesChannelsIds($product);
         $form->add(
             'prices',
-            'marello_product_price_collection'
+            'marello_product_price_collection',
+            [
+                'options' => [
+                    'channels' => $channels
+                ]
+            ]
         );
         $event->setData($product);
     }
