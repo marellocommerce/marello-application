@@ -35,7 +35,6 @@ class VariantControllerTest extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-
         $this->assertHtmlResponseStatusCodeEquals($response, Response::HTTP_OK);
     }
 

@@ -38,13 +38,11 @@ class ProductControllerTest extends WebTestCase
         $crawler      = $this->client->request('GET', $this->getUrl('marello_product_create'));
         $name         = 'Super duper product';
         $sku          = 'SKU-1234';
-        $defaultPrice = 100;
         $form         = $crawler->selectButton('Save and Close')->form();
 
 
         $form['marello_product_form[name]']  = $name;
         $form['marello_product_form[sku]']   = $sku;
-        $form['marello_product_form[price]'] = $defaultPrice;
         $form['marello_product_form[addSalesChannels]'] = $this->getReference('marello_sales_channel_1')->getId();
 
         $this->client->followRedirects(true);

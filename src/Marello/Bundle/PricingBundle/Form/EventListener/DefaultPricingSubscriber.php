@@ -9,9 +9,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
-use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
-
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 class DefaultPricingSubscriber implements EventSubscriberInterface
 {
     /** @var EntityManager $em */
@@ -47,9 +47,10 @@ class DefaultPricingSubscriber implements EventSubscriberInterface
 
         if (!$entity || null === $entity->getId()) {
             if ($entity instanceof PricingAwareInterface && $entity instanceof SalesChannelAwareInterface) {
-                foreach ($entity->getChannels() as $channel) {
+                $currencies = $this->getCurrencies($entity->getChannels());
+                foreach ($currencies as $currency) {
                     $price = new ProductPrice();
-                    $price->setCurrency($channel->getCurrency());
+                    $price->setCurrency($currency);
                     $price->setValue(0);
                     $entity->addPrice($price);
                 }
@@ -61,5 +62,21 @@ class DefaultPricingSubscriber implements EventSubscriberInterface
             'prices',
             'marello_product_price_collection'
         );
+    }
+
+    /**
+     * Get available currencies for all sales channels
+     * @param $channels
+     * @return array
+     */
+    private function getCurrencies($channels)
+    {
+        $currencies = [];
+        $channels
+            ->map(function (SalesChannel $channel) use (&$currencies) {
+                $currencies[] = $channel->getCurrency();
+            });
+
+        return array_unique($currencies);
     }
 }

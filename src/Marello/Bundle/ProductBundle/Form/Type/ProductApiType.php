@@ -19,7 +19,6 @@ class ProductApiType extends AbstractType
         $builder
             ->add('name')
             ->add('sku')
-            ->add('price')
             ->add('status', 'entity', [
                 'class' => 'Marello\Bundle\ProductBundle\Entity\ProductStatus',
             ])

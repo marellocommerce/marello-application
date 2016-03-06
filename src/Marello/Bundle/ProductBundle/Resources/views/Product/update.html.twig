@@ -53,6 +53,9 @@
     {% set productChannelPrices %}
         {% set pricingEnabled = form.vars.value.data.pricing_enabled is defined and form.vars.value.data.pricing_enabled %}
         {% set priceEnableElement = { pricing_enable_id: form.pricing_enabled.vars.id } %}
+        <h5 class="user-fieldset">
+            <span>{{ 'marello.pricing.productchannelprice.entity_plural_label'|trans }}</span>
+        </h5>
         <div class="pricing-line-items {% if pricingEnabled %}pricing-enabled{% endif %}"
              data-page-component-module="oroui/js/app/components/view-component"
              data-page-component-options="{{ {
@@ -65,6 +68,10 @@
     {% endset %}
 
     {% set productPrices %}
+        <h5 class="user-fieldset">
+            <span>{{ 'marello.pricing.productprice.entity_plural_label'|trans }}</span>
+        </h5>
+        <div class="row-divider"></div>
         <div class="pricing-line-items pricing-enabled"
              data-page-component-module="oroui/js/app/components/view-component"
              data-page-component-options="{{ {
@@ -74,6 +81,7 @@
             {{ form_widget(form.prices) }}
             {{ form_errors(form.prices) }}
         </div>
+        <div class="row-divider"></div>
     {% endset %}
 
     {% set channelIds = marello_product_get_saleschannel_ids(entity) %}
@@ -104,7 +112,7 @@
             'title': 'marello.inventory.label'|trans,
             'class': 'active',
             'subblocks': [{
-                'title': '',
+                'title': 'marello.inventory.label'|trans,
                 'data': [
                     form_row(form.inventoryItems),
                 ]

@@ -4,12 +4,8 @@ namespace Marello\Bundle\PricingBundle\Form\Type;
 
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
-use Doctrine\ORM\EntityRepository;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductPriceType extends AbstractType
@@ -54,15 +50,6 @@ class ProductPriceType extends AbstractType
             'intention'         => 'productprice',
             'single_form'       => true,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-//        $view->vars['currency']        = $options['currency'];
-//        $view->vars['currency_symbol'] = $options['currency_symbol'];
     }
 
     /**

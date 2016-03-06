@@ -9,7 +9,6 @@ datagrid:
                     - p.id
                     - p.name
                     - p.sku
-                    - p.price
                     - s.label as status
                     - p.createdAt
                     - p.updatedAt
@@ -35,9 +34,6 @@ datagrid:
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
-            price:
-                label:              marello.product.price.label
-                frontend_type:      currency
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
@@ -68,7 +64,6 @@ datagrid:
                 name:           { data_name: p.name }
                 stockLevel:     { data_name: stockLevel }
                 status:         { data_name: s.label }
-                price:          { data_name: p.price }
                 createdAt:      { data_name: p.createdAt }
                 updatedAt:      { data_name: p.updatedAt }
             default:
@@ -90,9 +85,6 @@ datagrid:
                     options:
                         field_options:
                             class: Marello\Bundle\ProductBundle\Entity\ProductStatus
-                price:
-                    type:             currency
-                    data_name:        p.price
         actions:
             view:
                 type:           navigate
@@ -127,7 +119,6 @@ datagrid:
                 select:
                     - p.name
                     - p.sku
-                    - p.price
                     - s.label as status
                     - SUM(i.quantity) AS stockLevel
                 from:
@@ -157,14 +148,10 @@ datagrid:
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
-            price:
-                label:              marello.product.price.label
-                frontend_type:      currency
         sorters:
             columns:
                 name:           { data_name: p.name }
                 sku:            { data_name: p.sku }
-                price:          { data_name: p.price }
             default:
                 stockLevel:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         options:
