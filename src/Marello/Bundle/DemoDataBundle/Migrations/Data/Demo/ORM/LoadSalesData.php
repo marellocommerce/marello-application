@@ -15,10 +15,10 @@ class LoadSalesData extends AbstractFixture
      * @var array
      */
     protected $data = [
-        ['name' => 'Magento Store', 'code' => 'magento_store','type' => 'magento'],
-        ['name' => 'Flagship Store New York','code' => 'pos_nyc', 'type' => 'pos'],
-        ['name' => 'Store Washington D.C.', 'code' => 'pos_washington','type' => 'pos'],
-        ['name' => 'HQ','code' => 'marello_headquarters','type' => 'marello'],
+        ['name' => 'Magento Store', 'code' => 'magento_store','type' => 'magento', 'currency' => 'EUR'],
+        ['name' => 'Flagship Store New York','code' => 'pos_nyc', 'type' => 'pos', 'currency' => 'USD'],
+        ['name' => 'Store Washington D.C.', 'code' => 'pos_washington','type' => 'pos', 'currency' => 'USD'],
+        ['name' => 'HQ','code' => 'marello_headquarters','type' => 'marello', 'currency' => 'EUR'],
     ];
 
     /**
@@ -42,6 +42,7 @@ class LoadSalesData extends AbstractFixture
             $channel = new SalesChannel($values['name']);
             $channel->setChannelType($values['type']);
             $channel->setCode($values['code']);
+            $channel->setCurrency($values['currency']);
             $channel->setOwner($organization);
 
             $this->manager->persist($channel);

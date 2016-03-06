@@ -2,7 +2,7 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% oro_title_set({params : {"%name%": entity.name } }) %}
-{% set gridName  = 'marello-stockitem-grid' %}
+{% set gridName  = 'marello-products-grid' %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {
@@ -87,6 +87,17 @@
         </div>
     {% endset %}
 
+    {% set productSalesChannelWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-product-saleschannel-grid', {'product': entity.id, 'channels': marello_product_get_saleschannel_ids(entity)}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+
     {% set dataBlocks = dataBlocks|merge([{
         'title' : 'marello.inventory.label'|trans,
         'subblocks': [{
@@ -124,6 +135,16 @@
         }]) %}
     {% endif %}
 
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.sales.saleschannel.entity_plural_label'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                productSalesChannelWidget
+            ]
+        }]
+    }]) %}
     {% set data = {
         'dataBlocks': dataBlocks,
     } %}

@@ -1,7 +1,7 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'MarelloPricingBundle:Form:fields.html.twig' %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
-{% set gridName = 'marello-product-saleschannel-grid' %}
+{% set gridName = 'marello-product-saleschannel-extended-grid' %}
 
 {% set entity = form.vars.value %}
 {% set formAction = entity.id ? path('marello_product_update', { id: entity.id }) : path('marello_product_create') %}

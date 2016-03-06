@@ -49,6 +49,7 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('updatedat', 'datetime', []);
         $table->addColumn('is_default', 'boolean', []);
         $table->addColumn('code', 'string', ['length' => 255]);
+        $table->addColumn('currency', 'string', ['length' => 5]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'marello_sales_sales_channel_codeidx');
         $table->addIndex(['owner_id'], 'idx_37c71d17e3c61f9', []);

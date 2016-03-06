@@ -15,7 +15,7 @@ class LoadSalesChannelData extends AbstractFixture
      * @var array
      */
     protected $data = [
-        ['name' => 'Main','code' => 'main','type' => 'marello'],
+        ['name' => 'Main','code' => 'main','type' => 'marello', 'currency' => 'EUR'],
     ];
 
     /**
@@ -39,6 +39,7 @@ class LoadSalesChannelData extends AbstractFixture
             $channel = new SalesChannel($values['name']);
             $channel->setChannelType($values['type']);
             $channel->setCode($values['code']);
+            $channel->setCurrency($values['currency']);
             $channel->setOwner($organization);
 
             $this->manager->persist($channel);

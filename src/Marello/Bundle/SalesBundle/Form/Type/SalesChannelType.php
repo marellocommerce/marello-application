@@ -19,6 +19,7 @@ class SalesChannelType extends AbstractType
             ->add('name')
             ->add('code')
             ->add('channelType')
+            ->add('currency', 'oro_currency')
             ->add('default', 'checkbox',[
                 'required' => false
             ])

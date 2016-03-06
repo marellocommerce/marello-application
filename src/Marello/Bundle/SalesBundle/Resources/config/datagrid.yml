@@ -17,6 +17,9 @@ datagrid:
             channelType:
                 label:                marello.sales.saleschannel.channel_type.label
                 frontend_type:        string
+            currency:
+                label:                marello.sales.saleschannel.currency.label
+                frontend_type:        string
             active:
                 label:                marello.sales.saleschannel.active.label
                 frontend_type:        boolean

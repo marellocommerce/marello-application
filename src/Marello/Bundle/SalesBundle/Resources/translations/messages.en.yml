@@ -10,6 +10,7 @@ marello:
             name.label:                         Name
             active.label:                       Active
             default.label:                      Default
+            currency.label:                     Currency
             code.label:                         Code
             channel_type.label:                 Type
             owner.label:                        Owner

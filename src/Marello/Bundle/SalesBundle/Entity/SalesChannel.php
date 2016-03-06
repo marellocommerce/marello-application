@@ -63,6 +63,12 @@ class SalesChannel
     protected $code;
 
     /**
+     * @var string
+     * @ORM\Column(name="currency", type="string", length=5, nullable=false)
+     */
+    protected $currency;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(type="boolean", nullable=false)
@@ -301,6 +307,25 @@ class SalesChannel
     public function setCode($code)
     {
         $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     * @return $this
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
 
         return $this;
     }
