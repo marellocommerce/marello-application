@@ -5,6 +5,7 @@ namespace Marello\Bundle\ReturnBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnItem;
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
@@ -14,6 +15,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  * @Config
  */
 class ReturnItem extends ExtendReturnItem
+    implements CurrencyAwareInterface
 {
     /**
      * @var int
@@ -171,5 +173,13 @@ class ReturnItem extends ExtendReturnItem
         $this->quantity = $quantity;
 
         return $this;
+    }
+
+    /**
+     * Get currency for returnItem from "sibling" orderItem
+     */
+    public function getCurrency()
+    {
+        return $this->orderItem->getCurrency();
     }
 }

@@ -19,7 +19,10 @@ datagrid:
                 label:            marello.pricing.productprice.currency.label
             price:
                 label:            marello.pricing.productprice.value.label
-                frontend_type:    currency
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
         sorters:
             columns:
                 currency:       { data_name: productPrice.currency }
@@ -57,7 +60,10 @@ datagrid:
                 label:            marello.pricing.productprice.currency.label
             price:
                 label:            marello.pricing.productprice.value.label
-                frontend_type:    currency
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
         sorters:
             columns:
                 channelName:    { data_name: salesChannel.name }

@@ -115,4 +115,7 @@ datagrid:
             price:
                 data_name: orderItem.price
                 label: marello.order.orderitem.price.label
-                frontend_type: currency
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right

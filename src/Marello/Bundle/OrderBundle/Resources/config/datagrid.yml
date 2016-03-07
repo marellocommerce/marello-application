@@ -17,32 +17,35 @@ datagrid:
                             alias: sa
         columns:
             orderNumber:
-                label: marello.order.order_number.label
-                frontend_type: string
+                label:            marello.order.order_number.label
+                frontend_type:    string
             salesChannel:
-                label: marello.order.sales_channel.label
-                frontend_type: string
-                data_name: salesChannelName
+                label:            marello.order.sales_channel.label
+                frontend_type:    string
+                data_name:        salesChannelName
             orderReference:
-                label: marello.order.order_reference.label
-                frontend_type: string
+                label:            marello.order.order_reference.label
+                frontend_type:    string
             billingAddress:
-                frontend_type: string
-                data_name: billingName                  # This alias is generated using OrderGrdiAddressFilterListener
-                label: marello.order.billing_address.name.label
+                frontend_type:    string
+                data_name:        billingName # This alias is generated using OrderGrdiAddressFilterListener
+                label:            marello.order.billing_address.name.label
             shippingAddress:
-                frontend_type: string
-                data_name: shippingName                 # This alias is generated using OrderGrdiAddressFilterListener
-                label: marello.order.shipping_address.name.label
+                frontend_type:    string
+                data_name:        shippingName # This alias is generated using OrderGrdiAddressFilterListener
+                label:            marello.order.shipping_address.name.label
             grandTotal:
-                label: marello.order.grand_total.label
-                frontend_type: currency
+                label:            marello.order.grand_total.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
             createdAt:
-                label: oro.ui.created_at
-                frontend_type: datetime
+                label:            oro.ui.created_at
+                frontend_type:    datetime
             updatedAt:
-                label: oro.ui.updated_at
-                frontend_type: datetime
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
         sorters:
             columns:
                 orderNumber:
@@ -142,13 +145,22 @@ datagrid:
                 frontend_type: number
             price:
                 label: marello.order.orderitem.price.label
-                frontend_type: currency
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
             tax:
                 label: marello.order.orderitem.tax.label
-                frontend_type: currency
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
             totalPrice:
                 label: marello.order.orderitem.total_price.label
-                frontend_type: currency
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
 
     dashboard-latest-orders-grid:
             source:
