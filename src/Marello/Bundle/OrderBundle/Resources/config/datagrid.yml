@@ -183,7 +183,10 @@ datagrid:
                     frontend_type: string
                 grandTotal:
                     label: marello.order.grand_total.label
-                    frontend_type: currency
+                    type:             localized_number
+                    method:           formatCurrency
+                    context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                    align:            right
             sorters:
                 columns:
                     orderNumber:

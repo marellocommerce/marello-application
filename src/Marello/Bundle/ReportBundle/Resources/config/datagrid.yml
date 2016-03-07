@@ -7,6 +7,7 @@ datagrid:
             query:
                 select:
                     - channel.name as salesChannelName
+                    - channel.currency
                     - COUNT(o.orderNumber) as totalOrders
                     - SUM(o.grandTotal) as totalRevenue
                 from:
