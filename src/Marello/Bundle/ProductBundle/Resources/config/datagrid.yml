@@ -170,14 +170,10 @@ datagrid:
                     - sc
                 from:
                     - { table: MarelloSalesBundle:SalesChannel, alias: sc }
-                join:
-                    left:
-                        - { join: MarelloProductBundle:Product, alias: p, conditionType: WITH, condition: 'p.id = :product'}
                 where:
                     and:
                         - sc.id IN(:channels)
             bind_parameters:
-                - product
                 - channels
         columns:
             name:
@@ -216,6 +212,8 @@ datagrid:
                             CASE WHEN sc.id IN (:channels) AND sc.id NOT IN (:data_not_in)
                             THEN true ELSE false END
                         END) as hasChannel
+            bind_parameters:
+                - product
         columns:
             hasChannel:
                 label:                ~
