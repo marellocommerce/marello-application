@@ -15,7 +15,7 @@ workflows:
                 allowed_transitions:
                     - hold_pending
                     - cancel
-                    - ship
+                    - prepare_shipping
             cancelled:
                 label:  Cancelled
                 allowed_transitions: []
@@ -34,6 +34,10 @@ workflows:
             credit:
                 label:  Closed
                 allowed_transitions: []
+            pick_and_pack:
+                label: Pick and Pack
+                allowed_transitions:
+                    - ship
             shipped:
                 label:  Shipped
                 allowed_transitions:
@@ -83,6 +87,10 @@ workflows:
                 label:    Credit
                 step_to:  credit
                 transition_definition: credit_definition
+            prepare_shipping:
+                label:    Prepare Shipping
+                step_to:  pick_and_pack
+                transition_definition: prepare_shipping_definition
 
         transition_definitions:
             cancel_definition:
@@ -99,4 +107,5 @@ workflows:
             ship_definition:
                 post_actions:
                     - @marello_ship_order: ~
+            prepare_shipping_definition: []
 
