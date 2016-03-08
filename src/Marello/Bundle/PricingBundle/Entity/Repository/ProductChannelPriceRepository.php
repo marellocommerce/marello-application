@@ -4,9 +4,9 @@ namespace Marello\Bundle\PricingBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 
-class ProductPriceRepository extends EntityRepository
+class ProductChannelPriceRepository extends EntityRepository
 {
     /**
      * Return product prices for specified channel and productId
@@ -14,7 +14,7 @@ class ProductPriceRepository extends EntityRepository
      * @param int $salesChannel
      * @param int $productId
      *
-     * @return ProductPrice[]
+     * @return ProductChannelPrice[]
      */
     public function findOneBySalesChannel($salesChannel, $productId)
     {

@@ -8,6 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface
@@ -84,7 +85,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     {
         $product = new Product();
         $product->setSku($data['sku']);
-        $product->setPrice($data['price']);
         $product->setName($data['name']);
         $product->setOrganization($this->defaultOrganization);
         $inventoryItem = new InventoryItem();
@@ -97,14 +97,25 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ->getRepository('MarelloProductBundle:ProductStatus')
             ->findOneByName($data['status']);
 
-        //$status = $this->getReference('product_status_' . $data['status']);
         $product->setStatus($status);
-
         $channels = explode(';', $data['channel']);
-
+        $currencies = [];
         foreach ($channels as $channelId) {
             $channel = $this->getReference('marello_sales_channel_'. (int)$channelId);
             $product->addChannel($channel);
+            $currencies[] = $channel->getCurrency();
+        }
+
+        $currencies = array_unique($currencies);
+        /**
+         * add default prices foor all currencies
+         */
+        foreach ($currencies as $currency) {
+            // add prices
+            $price = new ProductPrice();
+            $price->setCurrency($currency);
+            $price->setValue($data['price']);
+            $product->addPrice($price);
         }
 
         $this->manager->persist($product);

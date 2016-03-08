@@ -1,0 +1,14 @@
+Marello\Bundle\SalesBundle\Entity\SalesChannel:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: code
+            message: 'marello.sales.messages.error.code'
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        code:
+            - NotBlank: ~
+        channelType:
+            - NotBlank: ~

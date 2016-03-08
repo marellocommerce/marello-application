@@ -31,7 +31,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         return [
             LoadSalesData::class,
             LoadProductData::class,
-            LoadProductPricingData::class,
+            LoadProductChannelPricingData::class,
         ];
     }
 
@@ -171,7 +171,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
         $channel = $this->getReference('marello_sales_channel_' . $row['channel']);
         $orderEntity->setSalesChannel($channel);
-
+        $orderEntity->setCurrency($channel->getCurrency());
         if ($row['order_ref'] !== 'NULL') {
             $orderEntity->setOrderReference($row['order_ref']);
         }

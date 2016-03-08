@@ -2,7 +2,7 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% oro_title_set({params : {"%name%": entity.name } }) %}
-{% set gridName  = 'marello-stockitem-grid' %}
+{% set gridName  = 'marello-products-grid' %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {
@@ -16,10 +16,10 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-        {{ UI.button({
-            'path': path('marello_inventory_inventorylog_list', {'id': entity.id}),
-            'label': 'marello.inventory.inventorylog.entity_label'|trans
-        }) }}
+    {{ UI.button({
+        'path': path('marello_inventory_inventorylog_list', {'id': entity.id}),
+        'label': 'marello.inventory.inventorylog.entity_label'|trans
+    }) }}
     {% if resource_granted('DELETE', entity) %}
         {{ UI.buttonSeparator() }}
         {{ UI.deleteButton({
@@ -42,6 +42,7 @@
 
 {% block content_data %}
     {% set id = 'product-view' %}
+    {% set generalSubblocks = [] %}
     {% set productInformationWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
@@ -49,21 +50,31 @@
             'title': ''
         }) }}
     {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }]) %}
 
-    {% set productPriceWidget %}
+
+    {% set productInventoryLogChart %}
+        <div class="responsive-block">
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('marello_inventory_inventorylog_chart', {id: entity.id}),
+                'title': ''
+            }) }}
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'subblocks': generalSubblocks
+    }] %}
+
+    {% set productChannelPriceWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
             'url': path('marello_product_widget_price', {id: entity.id}),
             'title': ''
         }) }}
     {% endset %}
-
-    {% set dataBlocks = [{
-        'title': 'General'|trans,
-        'subblocks': [
-            {'data' : [productInformationWidget] },
-        ]
-    }] %}
 
     {% set productInventoryWidget %}
         <div class="responsive-block">
@@ -75,40 +86,33 @@
         </div>
     {% endset %}
 
-    {% set productInventoryLogWidget %}
-        <div class="responsive-block">
-            {{ oro_widget_render({
-                'widgetType': 'block',
-                'url': path('marello_inventory_inventorylog_chart', {id: entity.id}),
-                'title': ''
-            }) }}
+    {% set productSalesChannelWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-product-saleschannel-grid', {'channels': marello_product_get_saleschannel_ids(entity)}) }}
+                </div>
+            </div>
         </div>
     {% endset %}
 
-    {% set productInventoryGrid %}
-        {{ dataGrid.renderGrid('marello-inventory-log', {'productId': entity.id}) }}
-    {% endset %}
 
     {% set dataBlocks = dataBlocks|merge([{
         'title' : 'marello.inventory.label'|trans,
         'subblocks': [{
-            'title' : null,
+            'title' : 'Inventory Movements',
             'useSpan': false,
-            'data' : [
-                productInventoryWidget,
-                productInventoryLogWidget,
-                productInventoryGrid
-            ]
+            'data' : [ productInventoryWidget, productInventoryLogChart ]
         }]
     }]) %}
 
     {% set dataBlocks = dataBlocks|merge([{
-        'title' : 'marello.pricing.productprice.entity_plural_label'|trans,
+        'title' : 'marello.pricing.header.label'|trans,
         'subblocks': [{
             'title' : null,
             'useSpan': false,
             'data' : [
-                productPriceWidget
+                productChannelPriceWidget
             ]
         }]
     }]) %}
@@ -130,6 +134,16 @@
         }]) %}
     {% endif %}
 
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.sales.saleschannel.entity_plural_label'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                productSalesChannelWidget
+            ]
+        }]
+    }]) %}
     {% set data = {
         'dataBlocks': dataBlocks,
     } %}

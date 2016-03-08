@@ -18,3 +18,23 @@ services:
             - marello_add_variant_link
         tags:
             - { name: oro_ui.view_action_provider, group: product }
+
+    marello_product.util.product_helper:
+        class: Marello\Bundle\ProductBundle\Util\ProductHelper
+
+    marello_product.twig.product_extension:
+        class: Marello\Bundle\ProductBundle\Twig\ProductExtension
+        arguments:
+            - @marello_product.util.product_helper
+        tags:
+            - { name: twig.extension }
+
+    marello_product.util.datagrid.datagridhelper:
+        class: Marello\Bundle\ProductBundle\Util\Datagrid\DatagridHelper
+
+    marello_product.listener.datagrid.product_saleschannel_column_listener:
+        class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSalesChannelColumnListener
+        arguments:
+            - @marello_product.util.datagrid.datagridhelper
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-saleschannel-extended-grid, method: buildBefore }

@@ -6,8 +6,6 @@ use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductPriceType extends AbstractType
@@ -33,12 +31,8 @@ class ProductPriceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('channel', 'genemu_jqueryselect2_entity', [
-                'class' => 'MarelloSalesBundle:SalesChannel',
-            ])
             ->add('currency', 'hidden', [
                 'required' => true,
-                'data'     => $this->localeSettings->getCurrency(),
             ])
             ->add('value', 'oro_money', [
                 'required' => true,
@@ -51,25 +45,11 @@ class ProductPriceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $currencyCode   = $this->localeSettings->getCurrency();
-        $currencySymbol = $this->localeSettings->getCurrencySymbolByCurrency($currencyCode);
-
         $resolver->setDefaults([
-            'data_class'      => 'Marello\Bundle\PricingBundle\Entity\ProductPrice',
-            'intention'       => 'productprice',
-            'single_form'     => true,
-            'currency'        => $currencyCode,
-            'currency_symbol' => $currencySymbol,
+            'data_class'        => 'Marello\Bundle\PricingBundle\Entity\ProductPrice',
+            'intention'         => 'productprice',
+            'single_form'       => true,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['currency']        = $options['currency'];
-        $view->vars['currency_symbol'] = $options['currency_symbol'];
     }
 
     /**

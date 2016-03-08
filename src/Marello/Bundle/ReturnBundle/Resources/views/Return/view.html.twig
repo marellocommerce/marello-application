@@ -31,6 +31,7 @@
                     {%- else -%}
                         {{ UI.renderProperty('marello.order.order_number.label'|trans, entity.order.orderNumber) }}
                     {%- endif -%}
+                    {{ UI.renderProperty('marello.order.currency.label'|trans, entity.order.currency) }}
                     {% set channelViewGranted = resource_granted('marello_saleschannel_update') %}
                     {%- if channelViewGranted -%}
                         {%- set channelData -%}
@@ -46,9 +47,10 @@
                     {{ UI.renderProperty('marello.order.order_date.label'|trans, entity.order.createdAt|oro_format_datetime) }}
                 </div>
                 <div class="responsive-block">
-                    {{ UI.renderProperty('marello.order.subtotal.label'|trans, entity.order.subtotal|oro_format_currency) }}
-                    {{ UI.renderProperty('marello.order.total_tax.label'|trans, entity.order.totalTax|oro_format_currency) }}
-                    {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency) }}
+                    {{ UI.renderProperty('marello.order.subtotal.label'|trans, entity.order.subtotal|oro_format_currency({'currency':entity.order.currency})) }}
+                    {{ UI.renderProperty('marello.order.total_tax.label'|trans, entity.order.totalTax|oro_format_currency({'currency':entity.order.currency})) }}
+                    {{ UI.renderProperty('marello.order.discount_amount.label'|trans, entity.order.discountAmount|oro_format_currency({'currency':entity.order.currency})) }}
+                    {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
                 </div>
             </div>
         </div>

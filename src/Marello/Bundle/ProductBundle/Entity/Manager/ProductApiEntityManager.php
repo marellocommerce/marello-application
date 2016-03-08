@@ -14,7 +14,6 @@ class ProductApiEntityManager extends ApiEntityManager
                 'id'             => null,
                 'name'           => null,
                 'sku'            => null,
-                'price'          => null,
                 'status'         => [
                     'exclusion_policy' => 'all',
                     'fields'           => [
@@ -27,6 +26,13 @@ class ProductApiEntityManager extends ApiEntityManager
                     'fields'           => ['id' => null],
                 ],
                 'prices'         => [
+                    'exclusion_policy' => 'all',
+                    'fields'           => [
+                        'currency' => null,
+                        'value'    => null,
+                    ],
+                ],
+                'channelPrices'         => [
                     'exclusion_policy' => 'all',
                     'fields'           => [
                         'currency' => null,

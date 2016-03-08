@@ -11,11 +11,20 @@ datagrid:
             name:
                 label:                marello.sales.saleschannel.name.label
                 frontend_type:        string
+            code:
+                label:                marello.sales.saleschannel.code.label
+                frontend_type:        string
             channelType:
                 label:                marello.sales.saleschannel.channel_type.label
                 frontend_type:        string
+            currency:
+                label:                marello.sales.saleschannel.currency.label
+                frontend_type:        string
             active:
                 label:                marello.sales.saleschannel.active.label
+                frontend_type:        boolean
+            default:
+                label:                marello.sales.saleschannel.default.label
                 frontend_type:        boolean
         properties:
             id: ~

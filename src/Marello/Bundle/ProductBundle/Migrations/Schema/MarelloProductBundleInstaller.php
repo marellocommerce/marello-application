@@ -28,12 +28,12 @@ class MarelloProductBundleInstaller implements Installation
         /** Tables generation **/
         $this->createMarelloProductProductTable($schema);
         $this->createMarelloProductProductStatusTable($schema);
+        $this->createMarelloProductSaleschannelTable($schema);
         $this->createMarelloProductVariantTable($schema);
-        $this->createProductSaleschannelTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloProductProductForeignKeys($schema);
-        $this->addProductSaleschannelForeignKeys($schema);
+        $this->addMarelloProductSaleschannelForeignKeys($schema);
     }
 
     /**
@@ -50,15 +50,11 @@ class MarelloProductBundleInstaller implements Installation
         $table->addColumn('variant_id', 'integer', ['notnull' => false]);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('sku', 'string', ['length' => 255]);
-        $table->addColumn('price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('price', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('type', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn(
-            'cost',
-            'money',
-            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
-        );
+        $table->addColumn('cost', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['sku'], 'marello_product_product_skuidx');
@@ -84,6 +80,21 @@ class MarelloProductBundleInstaller implements Installation
     }
 
     /**
+     * Create marello_product_saleschannel table
+     *
+     * @param Schema $schema
+     */
+    protected function createMarelloProductSaleschannelTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_product_saleschannel');
+        $table->addColumn('product_id', 'integer', []);
+        $table->addColumn('saleschannel_id', 'integer', []);
+        $table->setPrimaryKey(['product_id', 'saleschannel_id']);
+        $table->addIndex(['product_id'], 'idx_f49a19a74584665a', []);
+        $table->addIndex(['saleschannel_id'], 'idx_f49a19a732758fe', []);
+    }
+
+    /**
      * Create marello_product_variant table
      *
      * @param Schema $schema
@@ -97,21 +108,6 @@ class MarelloProductBundleInstaller implements Installation
         $table->addColumn('updated_at', 'datetime', []);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['variant_code'], 'uniq_78de08d98eda60d');
-    }
-
-    /**
-     * Create marello_product_saleschannel table
-     *
-     * @param Schema $schema
-     */
-    protected function createProductSaleschannelTable(Schema $schema)
-    {
-        $table = $schema->createTable('marello_product_saleschannel');
-        $table->addColumn('product_id', 'integer', []);
-        $table->addColumn('saleschannel_id', 'integer', []);
-        $table->setPrimaryKey(['product_id', 'saleschannel_id']);
-        $table->addIndex(['product_id'], 'idx_f49a19a74584665a', []);
-        $table->addIndex(['saleschannel_id'], 'idx_f49a19a732758fe', []);
     }
 
     /**
@@ -147,18 +143,18 @@ class MarelloProductBundleInstaller implements Installation
      *
      * @param Schema $schema
      */
-    protected function addProductSaleschannelForeignKeys(Schema $schema)
+    protected function addMarelloProductSaleschannelForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_product_saleschannel');
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_sales_sales_channel'),
-            ['saleschannel_id'],
+            $schema->getTable('marello_product_product'),
+            ['product_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_product_product'),
-            ['product_id'],
+            $schema->getTable('marello_sales_sales_channel'),
+            ['saleschannel_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );

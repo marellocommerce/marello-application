@@ -11,12 +11,6 @@
         </div>
         {{ form_errors(form.sku) }}
     </td>
-    <td class="variant-line-item-price">
-        <div class="fields-row">
-            {{ form_widget(form.price) }}
-        </div>
-        {{ form_errors(form.price) }}
-    </td>
     <td class="variant-line-item-status">
         <div class="fields-row">
             {{ form_widget(form.status) }}
@@ -71,7 +65,6 @@
                     <tr>
                         <th class="variant-line-item-name"><span>{{ 'marello.product.name.label'|trans }}</span></th>
                         <th class="variant-line-item-sku"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
-                        <th class="variant-line-item-price"><span>{{ 'marello.product.price.label'|trans }}</span></th>
                         <th class="variant-line-item-status"><span>{{ 'marello.product.status.label'|trans }}</span></th>
                         {% if form.vars.allow_delete %}
                             <th class="variant-row-item-actions"></th>

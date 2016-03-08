@@ -44,22 +44,22 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'vehicle-edit' %}
+    {% set id = 'saleschannel-edit' %}
 
     {% set dataBlocks = [{
     'title': 'General'|trans,
     'class': 'active',
-    'subblocks': [{
-    'title': '',
-    'formErrors': form_errors(form)? form_errors(form) : null,
-    'data': [
-    form_rest(form)
-    ]
-    }]
+        'subblocks': [{
+            'title': '',
+            'formErrors': form_errors(form)? form_errors(form) : null,
+            'data': [
+                form_rest(form)
+            ]
+        }]
     }]
     %}
     {% set data = {
-    'dataBlocks': dataBlocks,
+        'dataBlocks': dataBlocks,
     } %}
     {{ parent() }}
 {% endblock content_data %}

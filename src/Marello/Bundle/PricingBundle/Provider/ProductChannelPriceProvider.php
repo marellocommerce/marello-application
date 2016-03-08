@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Marello\Bundle\PricingBundle\Entity\Repository\ProductPriceRepository;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
-class ProductPriceProvider
+class ProductChannelPriceProvider
 {
     const PRICE_IDENTIFIER = 'product-id-';
     /** @var ManagerRegistry $registry  */

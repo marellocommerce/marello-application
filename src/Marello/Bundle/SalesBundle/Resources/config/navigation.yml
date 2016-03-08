@@ -28,8 +28,7 @@ oro_menu_config:
     tree:
         application_menu:
             children:
-                sales: ~
-                system_tab:
+                sales:
                     children:
                         sales_channel: ~
         shortcuts:

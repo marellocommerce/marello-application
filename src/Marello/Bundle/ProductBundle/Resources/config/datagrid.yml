@@ -9,7 +9,6 @@ datagrid:
                     - p.id
                     - p.name
                     - p.sku
-                    - p.price
                     - s.label as status
                     - p.createdAt
                     - p.updatedAt
@@ -35,9 +34,6 @@ datagrid:
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
-            price:
-                label:              marello.product.price.label
-                frontend_type:      currency
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
@@ -68,7 +64,6 @@ datagrid:
                 name:           { data_name: p.name }
                 stockLevel:     { data_name: stockLevel }
                 status:         { data_name: s.label }
-                price:          { data_name: p.price }
                 createdAt:      { data_name: p.createdAt }
                 updatedAt:      { data_name: p.updatedAt }
             default:
@@ -90,9 +85,6 @@ datagrid:
                     options:
                         field_options:
                             class: Marello\Bundle\ProductBundle\Entity\ProductStatus
-                price:
-                    type:             currency
-                    data_name:        p.price
         actions:
             view:
                 type:           navigate
@@ -127,7 +119,6 @@ datagrid:
                 select:
                     - p.name
                     - p.sku
-                    - p.price
                     - s.label as status
                     - SUM(i.quantity) AS stockLevel
                 from:
@@ -157,14 +148,10 @@ datagrid:
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
-            price:
-                label:              marello.product.price.label
-                frontend_type:      currency
         sorters:
             columns:
                 name:           { data_name: p.name }
                 sku:            { data_name: p.sku }
-                price:          { data_name: p.price }
             default:
                 stockLevel:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         options:
@@ -173,3 +160,91 @@ datagrid:
                 hide: true
                 pagination:
                     hide: true
+
+    marello-product-saleschannel-grid:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - sc
+                from:
+                    - { table: MarelloSalesBundle:SalesChannel, alias: sc }
+                where:
+                    and:
+                        - sc.id IN(:channels)
+            bind_parameters:
+                - channels
+        columns:
+            name:
+                label:                marello.sales.saleschannel.name.label
+                frontend_type:        string
+            code:
+                label:                marello.sales.saleschannel.code.label
+                frontend_type:        string
+            channelType:
+                label:                marello.sales.saleschannel.channel_type.label
+                frontend_type:        string
+            currency:
+                label:                marello.sales.saleschannel.currency.label
+                frontend_type:        string
+            active:
+                label:                marello.sales.saleschannel.active.label
+                frontend_type:        boolean
+            default:
+                label:                marello.sales.saleschannel.default.label
+                frontend_type:        boolean
+        properties:
+            id: ~
+        options:
+            entityHint: sc
+
+    marello-product-saleschannel-extended-grid:
+        extends: marello-product-saleschannel-grid
+        source:
+            query:
+                select:
+                    - >
+                        (CASE WHEN (:product IS NOT NULL) THEN
+                            CASE WHEN (sc.id IN (:channels) OR sc.id IN (:data_in)) AND sc.id NOT IN (:data_not_in)
+                            THEN true ELSE false END
+                        ELSE
+                            CASE WHEN sc.id IN (:channels) AND sc.id NOT IN (:data_not_in)
+                            THEN true ELSE false END
+                        END) as hasChannel
+            bind_parameters:
+                - product
+        columns:
+            hasChannel:
+                label:                ~
+                editable:             true
+                frontend_type:        boolean
+                add_before:           true
+        sorters:
+            columns:
+                hasChannel:           { data_name: hasChannel }
+            default:                  { hasChannel: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC }
+        filters:
+            columns:
+                hasChannel:
+                    label:            marello.sales.saleschannel.selected_channels.label
+                    type:             boolean
+                    data_name:        hasChannel
+                currency:
+                    label:            marello.sales.saleschannel.currency.label
+                    type:             string
+                    data_name:        sc.currency
+            default:
+                hasChannel:
+                    value:            1
+        properties:
+            id: ~
+        options:
+            entityHint: product
+            removeWhereClause: true
+            rowSelection:
+                dataField: id
+                columnName: hasChannel
+                selectors:
+                    included: '#addSalesChannels'
+                    excluded: '#removeSalesChannels'

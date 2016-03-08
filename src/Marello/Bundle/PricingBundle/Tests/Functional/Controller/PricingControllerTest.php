@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductPricingData;
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductChannelPricingData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,7 +19,7 @@ class PricingControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadProductPricingData::class,
+            LoadProductChannelPricingData::class,
         ]);
     }
 

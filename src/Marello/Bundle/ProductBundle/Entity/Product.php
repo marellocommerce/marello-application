@@ -11,6 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -102,20 +103,6 @@ class Product extends ExtendProduct implements
     protected $sku;
 
     /**
-     * @var double
-     *
-     * @ORM\Column(name="price", type="money", nullable=false)
-     * @ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $price;
-
-    /**
      * @var ProductStatus
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\ProductStatus")
@@ -188,8 +175,21 @@ class Product extends ExtendProduct implements
     protected $prices;
 
     /**
-     * @var Collection
+     * @var Collection|ProductChannelPrice[]
      *
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductChannelPrice",
+     *     mappedBy="product",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"id" = "ASC"})
+     */
+    protected $channelPrices;
+
+    /**
+     * @var Collection
+     * unidirectional many-to-many
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      * @ORM\JoinTable(name="marello_product_saleschannel")
      */
@@ -268,6 +268,7 @@ class Product extends ExtendProduct implements
     public function __construct()
     {
         $this->prices         = new ArrayCollection();
+        $this->channelPrices  = new ArrayCollection();
         $this->channels       = new ArrayCollection();
         $this->inventoryItems = new ArrayCollection();
     }
@@ -316,26 +317,6 @@ class Product extends ExtendProduct implements
     public function setSku($sku)
     {
         $this->sku = $sku;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param float $price
-     *
-     * @return Product
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
 
         return $this;
     }
@@ -404,6 +385,47 @@ class Product extends ExtendProduct implements
     /**
      * @return Collection
      */
+    public function getChannelPrices()
+    {
+        return $this->channelPrices;
+    }
+
+    /**
+     * Add item
+     *
+     * @param ProductChannelPrice $channelPrice
+     *
+     * @return Product
+     */
+    public function addChannelPrice(ProductChannelPrice $channelPrice)
+    {
+        if (!$this->channelPrices->contains($channelPrice)) {
+            $this->channelPrices->add($channelPrice);
+            $channelPrice->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove item
+     *
+     * @param ProductChannelPrice $channelPrice
+     *
+     * @return Product
+     */
+    public function removeChannelPrice(ProductChannelPrice $channelPrice)
+    {
+        if ($this->channelPrices->contains($channelPrice)) {
+            $this->channelPrices->removeElement($channelPrice);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
     public function getChannels()
     {
         return $this->channels;
@@ -443,6 +465,14 @@ class Product extends ExtendProduct implements
         }
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasChannels()
+    {
+        return count($this->channels) > 0;
     }
 
     /**

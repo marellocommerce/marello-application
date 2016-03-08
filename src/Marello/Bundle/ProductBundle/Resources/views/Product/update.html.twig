@@ -1,5 +1,7 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'MarelloPricingBundle:Form:fields.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% set gridName = 'marello-product-saleschannel-extended-grid' %}
 
 {% set entity = form.vars.value %}
 {% set formAction = entity.id ? path('marello_product_update', { id: entity.id }) : path('marello_product_create') %}
@@ -48,26 +50,47 @@
 
 {% block content_data %}
     {% set id = 'product-update' %}
-    {% set productPrices %}
+    {% set productChannelPrices %}
         {% set pricingEnabled = form.vars.value.data.pricing_enabled is defined and form.vars.value.data.pricing_enabled %}
         {% set priceEnableElement = { pricing_enable_id: form.pricing_enabled.vars.id } %}
+        <h5 class="user-fieldset">
+            <span>{{ 'marello.pricing.productchannelprice.entity_plural_label'|trans }}</span>
+        </h5>
         <div class="pricing-line-items {% if pricingEnabled %}pricing-enabled{% endif %}"
              data-page-component-module="oroui/js/app/components/view-component"
              data-page-component-options="{{ {
-                 view: 'marellopricing/js/app/views/pricing-items-view',
+                 view: 'marellopricing/js/app/views/channel-pricing-items-view',
                  options: priceEnableElement|default({})
+             }|json_encode }}">
+            {{ form_widget(form.channelPrices) }}
+            {{ form_errors(form.channelPrices) }}
+        </div>
+    {% endset %}
+
+    {% set productPrices %}
+        <h5 class="user-fieldset">
+            <span>{{ 'marello.pricing.productprice.entity_plural_label'|trans }}</span>
+        </h5>
+        <div class="row-divider"></div>
+        <div class="pricing-line-items pricing-enabled"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellolayout/js/app/views/abstract-items-view',
+                 options: {}
              }|json_encode }}">
             {{ form_widget(form.prices) }}
             {{ form_errors(form.prices) }}
         </div>
+        <div class="row-divider"></div>
     {% endset %}
+
+    {% set channelIds = marello_product_get_saleschannel_ids(entity)|length > 0 ? marello_product_get_saleschannel_ids(entity) : 0 %}
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
             'subblocks': [{
                 'title': 'General',
                 'data':  [
-                    form_row(form.channels),
                     form_row(form.name),
                     form_row(form.sku),
                     form_row(form.status)
@@ -75,13 +98,13 @@
             }]
         },
         {
-            'title': 'marello.pricing.productprice.entity_plural_label'|trans,
+            'title': 'marello.pricing.header.label'|trans,
             'class': 'active',
             'subblocks': [{
                 'title': '',
                 'data': [
-                    form_row(form.price),
-                    productPrices
+                    productPrices,
+                    productChannelPrices
                 ]
             }]
         },
@@ -89,9 +112,21 @@
             'title': 'marello.inventory.label'|trans,
             'class': 'active',
             'subblocks': [{
-                'title': '',
+                'title': 'marello.inventory.label'|trans,
                 'data': [
                     form_row(form.inventoryItems),
+                ]
+            }]
+        },
+        {
+            'title': 'marello.sales.saleschannel.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': 'marello.sales.saleschannel.header.label'|trans,
+                'data': [
+                    form_widget(form.addSalesChannels, {'id': 'addSalesChannels'}),
+                    form_widget(form.removeSalesChannels, {'id': 'removeSalesChannels'}),
+                    dataGrid.renderGrid(gridName, { product: form.vars.value.id ? : null, channels: channelIds })
                 ]
             }]
         }

@@ -10,3 +10,15 @@ services:
         class: Marello\Bundle\PricingBundle\Form\Type\ProductPriceCollectionType
         tags:
             - { name: form.type, alias: marello_product_price_collection }
+
+    marello_productprice.form.type.productchannelprice:
+        class: Marello\Bundle\PricingBundle\Form\Type\ProductChannelPriceType
+        arguments:
+            - @oro_locale.settings
+        tags:
+            - { name: form.type, alias: marello_product_channel_price }
+
+    marello_productprice.form.type.product_channel_price_collection:
+        class: Marello\Bundle\PricingBundle\Form\Type\ProductChannelPriceCollectionType
+        tags:
+            - { name: form.type, alias: marello_product_channel_price_collection }

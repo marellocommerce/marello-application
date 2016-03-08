@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -56,7 +57,9 @@ class ProductHandler
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
-                $this->onSuccess($entity);
+                $addChannels = $this->form->get('addSalesChannels')->getData();
+                $removeChannels = $this->form->get('removeSalesChannels')->getData();
+                $this->onSuccess($entity, $addChannels, $removeChannels);
 
                 return true;
             }
@@ -79,12 +82,44 @@ class ProductHandler
      * "Success" form handler
      *
      * @param Product $entity
+     * @param array $addChannels
+     * @param array $removeChannels
      */
-    protected function onSuccess(Product $entity)
+    protected function onSuccess(Product $entity, array $addChannels, array $removeChannels)
     {
+        $this->addChannels($entity, $addChannels);
+        $this->removeChannels($entity, $removeChannels);
         $this->inventoryLogger->log($entity->getInventoryItems()->toArray(), 'manual');
 
         $this->manager->persist($entity);
         $this->manager->flush();
+    }
+
+    /**
+     * Add channels to product
+     *
+     * @param Product  $product
+     * @param SalesChannel[] $channels
+     */
+    protected function addChannels(Product $product, array $channels)
+    {
+        /** @var $channel SalesChannel */
+        foreach ($channels as $channel) {
+            $product->addChannel($channel);
+        }
+    }
+
+    /**
+     * Remove channels from product
+     *
+     * @param Product  $product
+     * @param SalesChannel[] $channels
+     */
+    protected function removeChannels(Product $product, array $channels)
+    {
+        /** @var $channels SalesChannel */
+        foreach ($channels as $channel) {
+            $product->removeChannel($channel);
+        }
     }
 }

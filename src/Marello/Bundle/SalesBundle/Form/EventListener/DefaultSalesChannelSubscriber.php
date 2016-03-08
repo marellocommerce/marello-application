@@ -8,25 +8,18 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 
-class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
+class DefaultSalesChannelSubscriber implements EventSubscriberInterface
 {
-    /** @var ConfigManager $configManager */
-    protected $configManager;
-
     /** @var EntityManager $em */
     protected $em;
 
     /**
-     * @param ConfigManager $configManager
      * @param EntityManager $em
      */
-    public function __construct(ConfigManager $configManager, EntityManager $em)
+    public function __construct(EntityManager $em)
     {
-        $this->configManager = $configManager;
         $this->em = $em;
     }
 
@@ -36,7 +29,10 @@ class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+        return [
+            FormEvents::PRE_SET_DATA    => 'preSetData',
+            FormEvents::POST_SET_DATA   => 'postSetData'
+        ];
     }
 
     /**
@@ -46,13 +42,12 @@ class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
     public function preSetData(FormEvent $event)
     {
         $entity = $event->getData();
-        $form   = $event->getForm();
         if (!$entity || null === $entity->getId()) {
-            if ($form->has('channels') && $entity instanceof SalesChannelAwareInterface) {
+            if ($entity instanceof SalesChannelAwareInterface) {
                 $channels = $this->getDefaultChannels();
                 if (!is_null($channels) && count($channels) !== 0) {
-                    foreach ($channels as $_channel) {
-                        $entity->addChannel($_channel);
+                    foreach ($channels as $channel) {
+                        $entity->addChannel($channel);
                     }
                 }
                 $event->setData($entity);
@@ -66,22 +61,27 @@ class DefaultSalesChannelFieldSubscriber implements EventSubscriberInterface
      */
     public function getDefaultChannels()
     {
-        $config = $this->configManager->get('marello_sales.default_channels');
-        if (!$config) {
-            return [];
-        }
-
-        $defaultChannels = [];
-        foreach ($config as $channel) {
-            $defaultChannels[] = $channel->getName();
-        }
-
         return $this->em->getRepository('MarelloSalesBundle:SalesChannel')
             ->createQueryBuilder('sc')
-            ->where('sc.name IN(:channels)')
-            ->setParameter('channels', $defaultChannels)
+            ->where('sc.active = 1')
+            ->andWhere('sc.default = 1')
             ->orderBy('sc.name', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Add channels to hidden add field
+     * @param FormEvent $event
+     */
+    public function postSetData(FormEvent $event)
+    {
+        $product = $event->getData();
+        if ($product && $product instanceof SalesChannelAwareInterface && !$product->getId() && $product->hasChannels()) {
+            $form = $event->getForm();
+            if ($form->has('addSalesChannels')) {
+                $form->get('addSalesChannels')->setData($product->getChannels());
+            }
+        }
     }
 }

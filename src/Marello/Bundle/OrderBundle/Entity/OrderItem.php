@@ -15,6 +15,7 @@ use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\InventoryBundle\InventoryAllocation\AllocationTargetInterface;
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")
@@ -23,7 +24,8 @@ use Marello\Bundle\InventoryBundle\InventoryAllocation\AllocationTargetInterface
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")
  */
-class OrderItem extends ExtendOrderItem implements AllocationTargetInterface
+class OrderItem extends ExtendOrderItem
+    implements AllocationTargetInterface, CurrencyAwareInterface
 {
     /**
      * @var int
@@ -380,5 +382,13 @@ class OrderItem extends ExtendOrderItem implements AllocationTargetInterface
     public function getInventoryAllocations()
     {
         return $this->inventoryAllocations;
+    }
+
+    /**
+     * Get currency for orderItem from Order
+     */
+    public function getCurrency()
+    {
+        return $this->order->getCurrency();
     }
 }

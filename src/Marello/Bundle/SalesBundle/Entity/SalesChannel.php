@@ -8,9 +8,16 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="marello_sales_sales_channel")
+ * @ORM\Table(name="marello_sales_sales_channel",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="marello_sales_sales_channel_codeidx",
+ *              columns={"code"}
+ *          )
+ *      }
+ * )
  * @Config(
  *  routeName="marello_sales_saleschannel_index",
  *  routeView="marello_sales_saleschannel_view",
@@ -49,11 +56,31 @@ class SalesChannel
     protected $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=false)
+     */
+    protected $code;
+
+    /**
+     * @var string
+     * @ORM\Column(name="currency", type="string", length=5, nullable=false)
+     */
+    protected $currency;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(type="boolean", nullable=false)
      */
     protected $active = true;
+
+    /**
+     * @var boolean
+     * mark a channel as a default channel
+     * @ORM\Column(name="is_default", type="boolean", nullable=false)
+     */
+    protected $default = true;
 
     /**
      * @var OrganizationInterface
@@ -241,6 +268,64 @@ class SalesChannel
     public function setActive($active)
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * @param boolean $default
+     *
+     * @return $this
+     */
+    public function setDefault($default)
+    {
+        $this->default = $default;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param $code
+     * @return $this
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     * @return $this
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
 
         return $this;
     }

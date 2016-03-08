@@ -26,27 +26,10 @@ class MarelloSalesBundleInstaller implements Installation
     public function up(Schema $schema, QueryBag $queries)
     {
         /** Tables generation **/
-        $this->createMarelloSalesEntityNameTable($schema);
         $this->createMarelloSalesSalesChannelTable($schema);
 
         /** Foreign keys generation **/
-        $this->addMarelloSalesEntityNameForeignKeys($schema);
         $this->addMarelloSalesSalesChannelForeignKeys($schema);
-    }
-
-    /**
-     * Create marello_sales_entity_name table
-     *
-     * @param Schema $schema
-     */
-    protected function createMarelloSalesEntityNameTable(Schema $schema)
-    {
-        $table = $schema->createTable('marello_sales_entity_name');
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('channel_id', 'integer', ['notnull' => false]);
-        $table->addColumn('name', 'string', ['length' => 255]);
-        $table->addIndex(['channel_id'], 'idx_5214fe6d72f5a1aa', []);
-        $table->setPrimaryKey(['id']);
     }
 
     /**
@@ -62,26 +45,14 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('active', 'boolean', []);
         $table->addColumn('channeltype', 'string', ['length' => 255]);
-        $table->addColumn('createdat', 'datetime', ['comment' => '(DC2Type:datetime)']);
-        $table->addColumn('updatedat', 'datetime', ['comment' => '(DC2Type:datetime)']);
-        $table->addIndex(['owner_id'], 'idx_37c71d17e3c61f9', []);
+        $table->addColumn('createdat', 'datetime', []);
+        $table->addColumn('updatedat', 'datetime', []);
+        $table->addColumn('is_default', 'boolean', []);
+        $table->addColumn('code', 'string', ['length' => 255]);
+        $table->addColumn('currency', 'string', ['length' => 5]);
         $table->setPrimaryKey(['id']);
-    }
-
-    /**
-     * Add marello_sales_entity_name foreign keys.
-     *
-     * @param Schema $schema
-     */
-    protected function addMarelloSalesEntityNameForeignKeys(Schema $schema)
-    {
-        $table = $schema->getTable('marello_sales_entity_name');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_sales_sales_channel'),
-            ['channel_id'],
-            ['id'],
-            ['onUpdate' => null, 'onDelete' => 'CASCADE']
-        );
+        $table->addUniqueIndex(['code'], 'marello_sales_sales_channel_codeidx');
+        $table->addIndex(['owner_id'], 'idx_37c71d17e3c61f9', []);
     }
 
     /**
@@ -96,7 +67,7 @@ class MarelloSalesBundleInstaller implements Installation
             $schema->getTable('oro_organization'),
             ['owner_id'],
             ['id'],
-            ['onUpdate' => null, 'onDelete' => null]
+            ['onDelete' => null, 'onUpdate' => null]
         );
     }
 }

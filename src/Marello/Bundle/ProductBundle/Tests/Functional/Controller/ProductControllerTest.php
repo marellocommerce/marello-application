@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Form;
 
@@ -19,6 +20,10 @@ class ProductControllerTest extends WebTestCase
             ['debug' => false],
             array_merge($this->generateBasicAuthHeader(), ['HTTP_X-CSRF-Header' => 1])
         );
+
+        $this->loadFixtures([
+            LoadSalesData::class,
+        ]);
     }
 
     public function testIndex()
@@ -33,13 +38,12 @@ class ProductControllerTest extends WebTestCase
         $crawler      = $this->client->request('GET', $this->getUrl('marello_product_create'));
         $name         = 'Super duper product';
         $sku          = 'SKU-1234';
-        $defaultPrice = 100;
         $form         = $crawler->selectButton('Save and Close')->form();
 
 
         $form['marello_product_form[name]']  = $name;
         $form['marello_product_form[sku]']   = $sku;
-        $form['marello_product_form[price]'] = $defaultPrice;
+        $form['marello_product_form[addSalesChannels]'] = $this->getReference('marello_sales_channel_1')->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -81,6 +85,8 @@ class ProductControllerTest extends WebTestCase
         $form                               = $crawler->selectButton('Save and Close')->form();
         $name                               = 'name' . $this->generateRandomString();
         $form['marello_product_form[name]'] = $name;
+        $form['marello_product_form[removeSalesChannels]'] = $this->getReference('marello_sales_channel_1')->getId();
+        $form['marello_product_form[addSalesChannels]'] = $this->getReference('marello_sales_channel_2')->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -110,6 +116,7 @@ class ProductControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertContains("{$this->getReference('marello_sales_channel_2')->getName()}", $crawler->html());
         $this->assertContains("{$returnValue['name']}", $crawler->html());
     }
 

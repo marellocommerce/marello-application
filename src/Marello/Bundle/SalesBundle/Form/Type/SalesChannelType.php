@@ -6,9 +6,24 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+
 class SalesChannelType extends AbstractType
 {
     const NAME = 'marello_sales_channel';
+
+    /**
+     * @var LocaleSettings
+     */
+    protected $localeSettings;
+
+    /**
+     * @param LocaleSettings $localeSettings
+     */
+    public function __construct(LocaleSettings $localeSettings)
+    {
+        $this->localeSettings = $localeSettings;
+    }
 
     /**
      * {@inheritdoc}
@@ -17,8 +32,17 @@ class SalesChannelType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('code')
             ->add('channelType')
-            ->add('active');
+            ->add('currency', 'oro_currency',[
+                'data' => $this->localeSettings->getCurrency()
+            ])
+            ->add('default', 'checkbox',[
+                'required' => false
+            ])
+            ->add('active', 'checkbox',[
+                'required' => false
+            ]);
     }
 
     /**

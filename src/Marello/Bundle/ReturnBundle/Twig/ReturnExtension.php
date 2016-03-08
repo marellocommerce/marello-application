@@ -7,6 +7,8 @@ use Marello\Bundle\ReturnBundle\Util\ReturnHelper;
 
 class ReturnExtension extends \Twig_Extension
 {
+    const NAME = 'marello_return';
+
     /** @var ReturnHelper */
     protected $returnHelper;
 
@@ -27,7 +29,7 @@ class ReturnExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'marello_return';
+        return self::NAME;
     }
 
     /**

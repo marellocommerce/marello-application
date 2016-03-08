@@ -5,17 +5,52 @@ datagrid:
             acl_resource: marello_product_view
             query:
                 select:
-                    - salesChannel.name as channelName
                     - productPrice.currency
                     - productPrice.value as price
                 from:
                     - { table: Marello\Bundle\PricingBundle\Entity\ProductPrice, alias: productPrice }
-                join:
-                    left:
-                        - { join: productPrice.channel, alias: salesChannel }
                 where:
                     and:
                         - productPrice.product = :productId
+            bind_parameters:
+                - productId
+        columns:
+            currency:
+                label:            marello.pricing.productprice.currency.label
+            price:
+                label:            marello.pricing.productprice.value.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
+        sorters:
+            columns:
+                currency:       { data_name: productPrice.currency }
+                price:          { data_name: productPrice.value }
+        options:
+            entityHint: productprice
+            toolbarOptions:
+                hide: true
+                pagination:
+                    hide: true
+
+    marello-productchannelprice-grid:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - salesChannel.name as channelName
+                    - productChannelPrice.currency
+                    - productChannelPrice.value as price
+                from:
+                    - { table: Marello\Bundle\PricingBundle\Entity\ProductChannelPrice, alias: productChannelPrice }
+                join:
+                    left:
+                        - { join: productChannelPrice.channel, alias: salesChannel }
+                where:
+                    and:
+                        - productChannelPrice.product = :productId
             bind_parameters:
                 - productId
         columns:
@@ -25,14 +60,17 @@ datagrid:
                 label:            marello.pricing.productprice.currency.label
             price:
                 label:            marello.pricing.productprice.value.label
-                frontend_type:    currency
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
         sorters:
             columns:
                 channelName:    { data_name: salesChannel.name }
-                currency:       { data_name: productPrice.currency }
-                price:          { data_name: productPrice.value }
+                currency:       { data_name: productChannelPrice.currency }
+                price:          { data_name: productChannelPrice.value }
         options:
-            entityHint: productprice
+            entityHint: productchannelprice
             toolbarOptions:
                 hide: true
                 pagination:

@@ -7,6 +7,7 @@ datagrid:
             query:
                 select:
                     - channel.name as salesChannelName
+                    - channel.currency
                     - COUNT(o.orderNumber) as totalOrders
                     - SUM(o.grandTotal) as totalRevenue
                 from:
@@ -25,7 +26,10 @@ datagrid:
                 frontend_type: string
             totalRevenue:
                 label: marello.report.datagrid.columns.total_revenue.label
-                frontend_type: currency
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
         sorters:
             columns:
                 salesChannelName:       { data_name: salesChannelName }
