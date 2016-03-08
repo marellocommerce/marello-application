@@ -6,6 +6,7 @@ services:
             - Marello\Bundle\PricingBundle\Entity\ProductChannelPrice
             - Marello\Bundle\ProductBundle\Entity\Product
             - @translator
+            - @oro_locale.settings
 
     marello_productprice.price.form_subscriber:
         class: Marello\Bundle\PricingBundle\Form\EventListener\DefaultPricingSubscriber

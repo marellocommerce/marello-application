@@ -26,4 +26,18 @@ class PricingController extends Controller
             $request->query->get('product_ids', [])
         ));
     }
+
+    /**
+     * @Config\Route("/get-currency-by-channel", name="marello_saleschannel_currency_by_channel")
+     * @Config\Method({"GET"})
+     * @Security\AclAncestor("marello_product_view")
+     *
+     * {@inheritdoc}
+     */
+    public function getCurrencyByChannelAction(Request $request)
+    {
+        return new JsonResponse($this->get('marello_productprice.product.provider.product_channel_price')->getCurrency(
+            $request->query->get('salesChannel')
+        ));
+    }
 }

@@ -4,6 +4,8 @@ define(function(require) {
     var PricingItemsView,
         $ = require('jquery'),
         __ = require('orotranslation/js/translator'),
+        routing = require('routing'),
+        mediator = require('oroui/js/mediator'),
         DeleteConfirmation = require('oroui/js/delete-confirmation'),
         AbstractItemsView = require('marellolayout/js/app/views/abstract-items-view');
 
@@ -16,7 +18,9 @@ define(function(require) {
         /**
          * @property {Object}
          */
-        options: {},
+        options: {
+            currencyRoute: 'marello_saleschannel_currency_by_channel'
+        },
         /**
          * @property {jQuery}
          */
@@ -37,7 +41,25 @@ define(function(require) {
             this.$sourceElement = options.el;
             this.$checkBoxElement = this.$sourceElement.find('#' + options.options.pricing_enable_id);
             this.delegate('click','#' + options.options.pricing_enable_id, this.enableHandler);
+            mediator.on('pricing:load:line-item-currency', this.loadLineItemCurrency, this);
             PricingItemsView.__super__.initialize.apply(this, arguments);
+        },
+
+        /**
+         * @param {Array} item
+         * @param {Function} callback
+         */
+        loadLineItemCurrency: function(item, callback) {
+            $.ajax({
+                url: routing.generate(this.options.currencyRoute, item),
+                type: 'GET',
+                success: function(response) {
+                    callback(response);
+                },
+                error: function(response) {
+                    callback();
+                }
+            });
         },
 
         enableHandler: function() {
@@ -88,6 +110,8 @@ define(function(require) {
             if (this.disposed) {
                 return;
             }
+
+            mediator.off('pricing:load:line-item-currency', this.loadLineItemCurrency, this);
 
             PricingItemsView.__super__.dispose.call(this);
         }

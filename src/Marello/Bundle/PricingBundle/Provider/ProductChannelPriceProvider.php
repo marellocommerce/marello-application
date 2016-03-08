@@ -6,10 +6,13 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Marello\Bundle\PricingBundle\Entity\Repository\ProductPriceRepository;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class ProductChannelPriceProvider
 {
     const PRICE_IDENTIFIER = 'product-id-';
+    const CURRENCY_IDENTIFIER = 'currency-';
+
     /** @var ManagerRegistry $registry  */
     protected $registry;
 
@@ -21,23 +24,32 @@ class ProductChannelPriceProvider
 
     /** @var $translator */
     protected $translator;
+
+    /**
+     * @var LocaleSettings
+     */
+    protected $localeSettings;
+
     /**
      * ProductPriceProvider constructor.
      * @param ManagerRegistry $registry
      * @param $productPriceClassName
      * @param $productClassName
      * @param $translator
+     * @param LocaleSettings $localeSettings
      */
     public function __construct(
         ManagerRegistry $registry,
         $productPriceClassName,
         $productClassName,
-        $translator
+        $translator,
+        LocaleSettings $localeSettings
     ) {
         $this->registry = $registry;
         $this->productPriceClassName = $productPriceClassName;
         $this->productClassName = $productClassName;
         $this->translator = $translator;
+        $this->localeSettings = $localeSettings;
     }
 
     /**
@@ -92,6 +104,22 @@ class ProductChannelPriceProvider
                 'value' => $priceValue,
             ];
         }
+
+        return $result;
+    }
+
+    /**
+     * Get currency for channel.
+     * @param $channelId
+     * @return array
+     */
+    public function getCurrency($channelId)
+    {
+        $channel = $this->getRepository('MarelloSalesBundle:SalesChannel')->find($channelId);
+        $result[self::CURRENCY_IDENTIFIER.$channel->getId()] = [
+            'currencyCode' => $channel->getCurrency(),
+            'currencySymbol' => $this->localeSettings->getCurrencySymbolByCurrency($channel->getCurrency())
+        ];
 
         return $result;
     }
