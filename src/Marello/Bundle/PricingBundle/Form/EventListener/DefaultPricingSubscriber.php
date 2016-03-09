@@ -45,16 +45,29 @@ class DefaultPricingSubscriber implements EventSubscriberInterface
         $entity = $event->getData();
         $form   = $event->getForm();
 
-        if (!$entity || null === $entity->getId()) {
-            if ($entity instanceof PricingAwareInterface && $entity instanceof SalesChannelAwareInterface) {
-                $currencies = $this->getCurrencies($entity->getChannels());
-                foreach ($currencies as $currency) {
-                    $price = new ProductPrice();
-                    $price->setCurrency($currency);
-                    $price->setValue(0);
-                    $entity->addPrice($price);
+        if ($entity instanceof PricingAwareInterface && $entity instanceof SalesChannelAwareInterface) {
+            if ($entity->hasPrices()) {
+                $allCurrencies = $this->getCurrencies($entity->getChannels());
+                $existingCurrencies = [];
+                $entity
+                    ->getPrices()
+                    ->map(function (ProductPrice $price) use (&$existingCurrencies) {
+                        $existingCurrencies[] = $price->getCurrency();
+                    });
+
+                $currencies = array_diff($allCurrencies, $existingCurrencies);
+
+                if (!empty($currencies)) {
+                    //only add prices for currencies which have not been added yet!
+                    foreach ($currencies as $currency) {
+                        $price = new ProductPrice();
+                        $price->setCurrency($currency);
+                        $price->setValue(0);
+                        $entity->addPrice($price);
+                    }
+                    $event->setData($entity);
                 }
-                $event->setData($entity);
+
             }
         }
 

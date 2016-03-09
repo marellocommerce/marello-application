@@ -3,7 +3,6 @@
 namespace Marello\Bundle\ProductBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -162,7 +161,7 @@ class Product extends ExtendProduct implements
     protected $organization;
 
     /**
-     * @var Collection|ProductPrice[]
+     * @var ArrayCollection|ProductPrice[]
      *
      * @ORM\OneToMany(
      *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice",
@@ -175,7 +174,7 @@ class Product extends ExtendProduct implements
     protected $prices;
 
     /**
-     * @var Collection|ProductChannelPrice[]
+     * @var ArrayCollection|ProductChannelPrice[]
      *
      * @ORM\OneToMany(
      *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductChannelPrice",
@@ -188,7 +187,7 @@ class Product extends ExtendProduct implements
     protected $channelPrices;
 
     /**
-     * @var Collection
+     * @var ArrayCollection
      * unidirectional many-to-many
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      * @ORM\JoinTable(name="marello_product_saleschannel")
@@ -204,7 +203,7 @@ class Product extends ExtendProduct implements
     protected $variant;
 
     /**
-     * @var Collection|InventoryItem[]
+     * @var ArrayCollection|InventoryItem[]
      *
      * @ORM\OneToMany(
      *      targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem",
@@ -342,7 +341,7 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return Collection
+     * @return ArrayCollection
      */
     public function getPrices()
     {
@@ -383,7 +382,16 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return Collection
+     * has prices
+     * @return bool
+     */
+    public function hasPrices()
+    {
+        return count($this->prices) > 0;
+    }
+
+    /**
+     * @return ArrayCollection
      */
     public function getChannelPrices()
     {
@@ -424,7 +432,16 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return Collection
+     * has channel prices
+     * @return bool
+     */
+    public function hasChannelPrices()
+    {
+        return count($this->channelPrices) > 0;
+    }
+
+    /**
+     * @return ArrayCollection
      */
     public function getChannels()
     {
@@ -594,7 +611,7 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return Collection|InventoryItem[]
+     * @return ArrayCollection|InventoryItem[]
      */
     public function getInventoryItems()
     {

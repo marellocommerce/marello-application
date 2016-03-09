@@ -26,4 +26,7 @@ interface SalesChannelAwareInterface
      * @return Collection|SalesChannel[]
      */
     public function getChannels();
+
+    /** @return bool */
+    public function hasChannels();
 }
