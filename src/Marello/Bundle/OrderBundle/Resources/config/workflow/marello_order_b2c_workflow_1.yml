@@ -144,4 +144,4 @@ workflows:
                         template: marello_order_payment_reminder
                         entity: $order
                     - @flash_message:
-                        message: 'Remainder has been sent.'
+                        message: 'Reminder has been sent.'
