@@ -8,6 +8,14 @@ workflows:
             payment_reference:
                 label: 'Payment Reference'
                 type: string
+            payment_details:
+                label: 'Payment Details'
+                type: string
+            invoiced_at:
+                label: 'Invoiced At'
+                type: object
+                options:
+                    class: \DateTime
         steps:
             pending:
                 label:  Pending Order
@@ -76,8 +84,19 @@ workflows:
                                 required: true
                                 constraints:
                                   - NotBlank: ~
-                    attribute_default_values:
-                        payment_reference: ''
+                        payment_details:
+                            form_type: text
+                            options:
+                                required: true
+                                constraints:
+                                  - NotBlank: ~
+                        invoiced_at:
+                            form_type: oro_datetime
+                            options:
+                                required: true
+                                constraints:
+                                  - NotBlank: ~
+                                  - DateTime: ~
             ship:
                 label:    Ship
                 step_to:  shipped
@@ -99,9 +118,15 @@ workflows:
             un_hold_definition: []
             invoice_definition:
                 post_actions:
-                    - @create_object:
-                        class: \DateTime
+                    - @assign_value:
+                        attribute: $order.paymentReference
+                        value: payment_reference
+                    - @assign_value:
+                        attribute: $order.paymentDetails
+                        value: payment_details
+                    - @assign_value:
                         attribute: $order.invoicedAt
+                        value: invoiced_at
             credit_definition: []
             ship_definition:
                 post_actions:
