@@ -4,7 +4,6 @@ namespace Marello\Bundle\PricingBundle\Form\EventListener;
 
 use Doctrine\ORM\EntityManager;
 
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
