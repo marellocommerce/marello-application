@@ -98,6 +98,12 @@ class Order extends ExtendOrder
 
     /**
      * @var string
+     * @ORM\Column(name="payment_reference", type="string", length=255, nullable=true)
+     */
+    protected $paymentReference;
+
+    /**
+     * @var string
      *
      * @ORM\Column(name="payment_details", type="text", nullable=true)
      */
@@ -685,6 +691,26 @@ class Order extends ExtendOrder
     public function setInvoicedAt($invoicedAt)
     {
         $this->invoicedAt = $invoicedAt;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentReference()
+    {
+        return $this->paymentReference;
+    }
+
+    /**
+     * @param string $paymentReference
+     *
+     * @return $this
+     */
+    public function setPaymentReference($paymentReference)
+    {
+        $this->paymentReference = $paymentReference;
 
         return $this;
     }

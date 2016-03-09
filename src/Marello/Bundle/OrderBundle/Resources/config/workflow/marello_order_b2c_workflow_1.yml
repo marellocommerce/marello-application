@@ -20,9 +20,10 @@ workflows:
             pending:
                 label:  Pending Order
                 allowed_transitions:
+                    - payment_reminder
+                    - invoice
                     - hold_pending
                     - cancel
-                    - invoice
             cancelled:
                 label:  Cancelled
                 allowed_transitions: []
@@ -109,6 +110,10 @@ workflows:
                 label:    Prepare Shipping
                 step_to:  pick_and_pack
                 transition_definition: prepare_shipping_definition
+            payment_reminder:
+                label:    Payment Reminder
+                step_to:  pending
+                transition_definition: payment_reminder_definition
 
         transition_definitions:
             cancel_definition:
@@ -120,15 +125,23 @@ workflows:
                 post_actions:
                     - @assign_value:
                         attribute: $order.paymentReference
-                        value: payment_reference
+                        value: $payment_reference
                     - @assign_value:
                         attribute: $order.paymentDetails
-                        value: payment_details
+                        value: $payment_details
                     - @assign_value:
                         attribute: $order.invoicedAt
-                        value: invoiced_at
+                        value: $invoiced_at
             credit_definition: []
             ship_definition:
                 post_actions:
                     - @marello_ship_order: ~
             prepare_shipping_definition: []
+            payment_reminder_definition:
+                post_actions:
+                    - @send_notification_email_template:
+                        to: $order.billingAddress.email
+                        template: marello_order_payment_reminder
+                        entity: $order
+                    - @flash_message:
+                        message: 'Remainder has been sent.'

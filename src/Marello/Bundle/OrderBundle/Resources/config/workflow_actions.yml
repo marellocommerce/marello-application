@@ -16,3 +16,11 @@ services:
             - @marello_inventory.logging.inventory_logger
         tags:
             - { name: oro_workflow.action, alias: marello_cancel_order }
+
+    marello_order.workflow.send_notification_email_template:
+        class: Marello\Bundle\OrderBundle\Workflow\SendNotificationEmailTemplateAction
+        parent: oro_email.workflow.action.send_email_template
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: oro_workflow.action, alias: send_notification_email_template }

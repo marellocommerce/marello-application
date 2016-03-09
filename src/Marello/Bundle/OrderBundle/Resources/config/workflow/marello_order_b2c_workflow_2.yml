@@ -8,6 +8,14 @@ workflows:
             payment_reference:
                 label: 'Payment Reference'
                 type: string
+            payment_details:
+                label: 'Payment Details'
+                type: string
+            invoiced_at:
+                label: 'Invoiced At'
+                type: object
+                options:
+                    class: \DateTime
 
         steps:
             pending:
