@@ -57,6 +57,11 @@ class PricingExtension extends \Twig_Extension
             return $this->formatData($data['currencyCode'], $data['currencySymbol']);
         }
 
+        if (!empty($data['currencyCode']) && empty($data['currencySymbol'])) {
+            $currencySymbol = $this->provider->getCurrencySymbol($data['currencyCode']);
+            return $this->formatData($data['currencyCode'], $currencySymbol);
+        }
+
         if(!empty($data['salesChannel'])) {
             $currencyData = $this->provider->getCurrency($data['salesChannel']);
             $key = sprintf('currency-%s', $data['salesChannel']);

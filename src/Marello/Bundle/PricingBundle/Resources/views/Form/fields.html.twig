@@ -98,7 +98,7 @@
     <td class="pricing-line-item-currency">
         <div class="fields-row">
             <div class="cell-currency">
-                <span class="currency">{{ form.currency.vars.value }}</span>
+                <span class="currency">{{ marello_pricing_get_currency_data({'currencyCode' : form.currency.vars.value}) }}</span>
             </div>
             {{ form_widget(form.currency) }}
         </div>

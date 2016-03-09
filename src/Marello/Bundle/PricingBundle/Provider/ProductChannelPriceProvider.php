@@ -116,10 +116,20 @@ class ProductChannelPriceProvider
         $channel = $this->getRepository(SalesChannel::class)->find($channelId);
         $result[self::CURRENCY_IDENTIFIER.$channel->getId()] = [
             'currencyCode' => $channel->getCurrency(),
-            'currencySymbol' => $this->localeSettings->getCurrencySymbolByCurrency($channel->getCurrency())
+            'currencySymbol' => $this->getCurrencySymbol($channel->getCurrency())
         ];
 
         return $result;
+    }
+
+    /**
+     * Get currency symbol for currency.
+     * @param $currencyCode
+     * @return array
+     */
+    public function getCurrencySymbol($currencyCode)
+    {
+        return $this->localeSettings->getCurrencySymbolByCurrency($currencyCode);
     }
 
     /**
