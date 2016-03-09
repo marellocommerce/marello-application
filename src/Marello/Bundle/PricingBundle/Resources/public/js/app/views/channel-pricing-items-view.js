@@ -19,7 +19,7 @@ define(function(require) {
          * @property {Object}
          */
         options: {
-            currencyRoute: 'marello_saleschannel_currency_by_channel'
+            currencyRoute: 'marello_pricing_currency_by_channel'
         },
         /**
          * @property {jQuery}

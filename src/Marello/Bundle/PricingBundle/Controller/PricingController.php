@@ -28,9 +28,9 @@ class PricingController extends Controller
     }
 
     /**
-     * @Config\Route("/get-currency-by-channel", name="marello_saleschannel_currency_by_channel")
+     * @Config\Route("/get-currency-by-channel", name="marello_pricing_currency_by_channel")
      * @Config\Method({"GET"})
-     * @Security\AclAncestor("marello_product_view")
+     * @Security\AclAncestor("marello_sales_saleschannel_view")
      *
      * {@inheritdoc}
      */

@@ -4,14 +4,18 @@ define(function(require) {
     var ChannelPricingItemView,
         $ = require('jquery'),
         _ = require('underscore'),
+        mediator = require('oroui/js/mediator'),
         AbstractItemView = require('marellolayout/js/app/views/abstract-item-view');
 
     /**
-     * @export marelloorder/js/app/views/order-item-view
+     * @export marellopricing/js/app/views/channel-pricing-item-view
      * @extends marellolayout.app.views.AbstractItemView
-     * @class marelloorder.app.views.OrderItemView
+     * @class marellopricing.app.views.ChannelPricingItemView
      */
     ChannelPricingItemView = AbstractItemView.extend({
+        /**
+         * @property {Object}
+         */
         options: {
             ftid: ''
         },
@@ -26,7 +30,15 @@ define(function(require) {
          */
         currencyData: null,
 
-        currencySelector: null,
+        /**
+         * @property {jQuery}
+         */
+        $currencySelector: null,
+
+        /**
+         * @property string
+         */
+        currencySelectorClass: 'span.currency',
 
         /**
          * @inheritDoc
@@ -34,7 +46,7 @@ define(function(require) {
         initialize: function(options) {
             this.options = $.extend(true, {}, this.options, options || {});
             ChannelPricingItemView.__super__.initialize.apply(this, arguments);
-            this.currencySelector = this.$el.children('td.pricing-line-item-currency')[0];
+            this.$currencySelector = this.$el.find(this.currencySelectorClass);
         },
 
         /**
@@ -89,13 +101,21 @@ define(function(require) {
                     this.currencyData = currency[identifier] || {};
                 }
             }
-
-            var formattedCurrency = this.currencyData.currencyCode + ' ' + '(' + this.currencyData.currencySymbol + ')'
-
+            // update currency hidden field
             this.fieldsByName.currency
                 .val(this.currencyData.currencyCode);
 
-            $(this.currencySelector).find('span.currency')[0].innerHTML = formattedCurrency;
+            // update display value
+            $(this.$currencySelector).html(this._formatCurrency());
+        },
+
+        /**
+         * format currency data
+         * @returns {string}
+         * @private
+         */
+        _formatCurrency: function() {
+           return this.currencyData.currencyCode + ' ' + '(' + this.currencyData.currencySymbol + ')'
         },
 
         /**

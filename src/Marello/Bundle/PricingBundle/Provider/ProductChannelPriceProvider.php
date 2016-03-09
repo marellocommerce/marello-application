@@ -5,7 +5,11 @@ namespace Marello\Bundle\PricingBundle\Provider;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Marello\Bundle\PricingBundle\Entity\Repository\ProductPriceRepository;
+use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class ProductChannelPriceProvider
@@ -33,21 +37,15 @@ class ProductChannelPriceProvider
     /**
      * ProductPriceProvider constructor.
      * @param ManagerRegistry $registry
-     * @param $productPriceClassName
-     * @param $productClassName
      * @param $translator
      * @param LocaleSettings $localeSettings
      */
     public function __construct(
         ManagerRegistry $registry,
-        $productPriceClassName,
-        $productClassName,
         $translator,
         LocaleSettings $localeSettings
     ) {
         $this->registry = $registry;
-        $this->productPriceClassName = $productPriceClassName;
-        $this->productClassName = $productClassName;
         $this->translator = $translator;
         $this->localeSettings = $localeSettings;
     }
@@ -88,10 +86,10 @@ class ProductChannelPriceProvider
     protected function getPricesBySalesChannel($channel, $products)
     {
         $result = [];
-        $products = $this->getRepository($this->productClassName)->findBySalesChannel($channel, $products);
+        $products = $this->getRepository(Product::class)->findBySalesChannel($channel, $products);
 
         foreach ($products as $product) {
-            $price = $this->getRepository($this->productPriceClassName)->findOneBySalesChannel($channel, $product);
+            $price = $this->getRepository(ProductChannelPrice::class)->findOneBySalesChannel($channel, $product);
             $pricesCount = count($price);
             $priceValue = null;
             if ($pricesCount > 0 && $pricesCount < 2) {
@@ -115,7 +113,7 @@ class ProductChannelPriceProvider
      */
     public function getCurrency($channelId)
     {
-        $channel = $this->getRepository('MarelloSalesBundle:SalesChannel')->find($channelId);
+        $channel = $this->getRepository(SalesChannel::class)->find($channelId);
         $result[self::CURRENCY_IDENTIFIER.$channel->getId()] = [
             'currencyCode' => $channel->getCurrency(),
             'currencySymbol' => $this->localeSettings->getCurrencySymbolByCurrency($channel->getCurrency())
