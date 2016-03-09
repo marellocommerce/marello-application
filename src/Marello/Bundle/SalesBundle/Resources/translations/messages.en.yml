@@ -15,6 +15,7 @@ marello:
             channel_type.label:                 Type
             owner.label:                        Owner
             controller.message.saved:           Sales Channel saved
+            form.select_saleschannels:          Select Sales Channels
             form.select_saleschannel:           Select Sales Channel
             selected_channels.label:            Selected Sales Channels
 

@@ -13,8 +13,6 @@ services:
 
     marello_productprice.form.type.productchannelprice:
         class: Marello\Bundle\PricingBundle\Form\Type\ProductChannelPriceType
-        arguments:
-            - @oro_locale.settings
         tags:
             - { name: form.type, alias: marello_product_channel_price }
 

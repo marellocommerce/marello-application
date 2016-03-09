@@ -21,6 +21,8 @@ services:
 
     marello_product.util.product_helper:
         class: Marello\Bundle\ProductBundle\Util\ProductHelper
+        arguments:
+            - @doctrine.orm.entity_manager
 
     marello_product.twig.product_extension:
         class: Marello\Bundle\ProductBundle\Twig\ProductExtension

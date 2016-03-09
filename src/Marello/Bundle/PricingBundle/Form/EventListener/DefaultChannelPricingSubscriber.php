@@ -75,13 +75,13 @@ class DefaultChannelPricingSubscriber implements EventSubscriberInterface
             ]
         );
 
-        $channels = $this->helper->getSalesChannelsIds($product);
+        $channels = $this->helper->getExcludedSalesChannelsIds($product);
         $form->add(
             'channelPrices',
             'marello_product_channel_price_collection',
             [
                 'options' => [
-                    'channels' => $channels
+                    'excluded_channels' => $channels
                 ]
             ]
         );

@@ -19,3 +19,10 @@ services:
             - @doctrine.orm.entity_manager
             - Marello\Bundle\PricingBundle\Model\PricingAwareInterface
             - @marello_product.util.product_helper
+
+    marello_productprice.twig.pricing_extension:
+        class: Marello\Bundle\PricingBundle\Twig\PricingExtension
+        arguments:
+            - @marello_productprice.product.provider.product_channel_price
+        tags:
+            - { name: twig.extension }

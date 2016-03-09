@@ -2,62 +2,27 @@
 namespace Marello\Bundle\SalesBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
 
 class SalesChannelSelectType extends AbstractType
 {
     const NAME = 'marello_sales_saleschannel_select';
-
-    /** @var EntitiesToIdsTransformer */
-    protected $modelTransformer;
-
-    /**
-     * SalesChannelSelectType constructor.
-     *
-     * @param EntitiesToIdsTransformer $modelTransformer
-     */
-    public function __construct(EntitiesToIdsTransformer $modelTransformer)
-    {
-        $this->modelTransformer = $modelTransformer;
-    }
 
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'autocomplete_alias' => 'saleschannels',
-            'configs'            => [
-                'multiple'    => true,
-                'placeholder' => 'marello.sales.saleschannel.form.select_saleschannel',
-                'allowClear'  => true,
-            ],
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->addEventListener(
-            FormEvents::PRE_SUBMIT,
-            function (FormEvent $event) {
-                $value = $event->getData();
-
-                if (empty($value)) {
-                    $event->setData([]);
-                }
-            }
+        $resolver->setDefaults(
+            [
+                'autocomplete_alias' => 'saleschannels',
+                'configs'            => [
+                    'placeholder' => 'marello.sales.saleschannel.form.select_saleschannel',
+                    'result_template_twig' => 'MarelloSalesBundle:SalesChannel:Autocomplete/result.html.twig',
+                    'selection_template_twig' => 'MarelloSalesBundle:SalesChannel:Autocomplete/selection.html.twig',
+                ],
+            ]
         );
-
-        $builder->addModelTransformer($this->modelTransformer);
     }
 
     /**
@@ -67,7 +32,6 @@ class SalesChannelSelectType extends AbstractType
     {
         return 'oro_jqueryselect2_hidden';
     }
-
     /**
      * {@inheritdoc}
      */

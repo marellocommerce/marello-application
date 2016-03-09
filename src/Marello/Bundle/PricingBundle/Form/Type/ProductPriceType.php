@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\PricingBundle\Form\Type;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -11,19 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ProductPriceType extends AbstractType
 {
     const NAME = 'marello_product_price';
-
-    /**
-     * @var LocaleSettings
-     */
-    protected $localeSettings;
-
-    /**
-     * @param LocaleSettings $localeSettings
-     */
-    public function __construct(LocaleSettings $localeSettings)
-    {
-        $this->localeSettings = $localeSettings;
-    }
 
     /**
      * {@inheritdoc}
