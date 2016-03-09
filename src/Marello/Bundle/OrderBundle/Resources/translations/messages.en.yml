@@ -18,6 +18,7 @@ marello:
         currency.label:           Currency
         coupon_code.label:        Coupon Code
         discount_amount.label:    Discount Amount
+        invoiced_at.label:        Invoiced At
         payment_method.label:     Payment Method
         payment_details.label:    Payment Details
         shipping_method.label:    Shippingmethod

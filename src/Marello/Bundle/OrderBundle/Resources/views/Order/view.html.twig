@@ -35,7 +35,7 @@
                     {%- endif -%}
                     {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.orderReference) }}
                     {{ UI.renderProperty('marello.order.order_date.label'|trans, entity.createdAt|oro_format_datetime) }}
-                    {{ UI.renderProperty('marello.order.status.label'|trans, entity.workflowStep.label) }}
+                    {{ UI.renderProperty('marello.order.status.label'|trans, entity.workflowStep ? entity.workflowStep.label : null) }}
                 </div>
             </div>
         </div>
@@ -66,6 +66,7 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.invoiced_at.label'|trans, entity.invoicedAt|oro_format_datetime) }}
                     {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.paymentMethod) }}
                     {{ UI.renderHtmlProperty('marello.order.payment_details.label'|trans, entity.paymentDetails|nl2br) }}
                 </div>
