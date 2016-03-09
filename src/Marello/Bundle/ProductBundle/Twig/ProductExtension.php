@@ -10,7 +10,7 @@ class ProductExtension extends \Twig_Extension
     const NAME = 'marello_product';
     
     /** @var ProductHelper */
-    protected $productHelper;
+    protected $helper;
 
     /**
      * ProductExtension constructor.
@@ -19,7 +19,7 @@ class ProductExtension extends \Twig_Extension
      */
     public function __construct(ProductHelper $productHelper)
     {
-        $this->productHelper = $productHelper;
+        $this->helper = $productHelper;
     }
 
     /**
@@ -54,6 +54,6 @@ class ProductExtension extends \Twig_Extension
      */
     public function getSalesChannelsIds(Product $product)
     {
-        return $this->productHelper->getSalesChannelsIds($product);
+        return $this->helper->getSalesChannelsIds($product);
     }
 }

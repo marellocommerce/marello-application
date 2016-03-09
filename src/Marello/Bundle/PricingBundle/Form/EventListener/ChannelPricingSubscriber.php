@@ -13,7 +13,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Util\ProductHelper;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 
-class DefaultChannelPricingSubscriber implements EventSubscriberInterface
+class ChannelPricingSubscriber implements EventSubscriberInterface
 {
     /** @var EntityManager $em */
     protected $em;
@@ -133,7 +133,7 @@ class DefaultChannelPricingSubscriber implements EventSubscriberInterface
      *
      * @return bool
      */
-        protected function getPricingEnabled(FormInterface $form)
+    protected function getPricingEnabled(FormInterface $form)
     {
         if (!$form->has(PricingAwareInterface::CHANNEL_PRICING_STATE_KEY)) {
             throw new \InvalidArgumentException(sprintf('%s form child is missing'));

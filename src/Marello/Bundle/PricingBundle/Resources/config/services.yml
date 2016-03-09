@@ -7,14 +7,13 @@ services:
             - @oro_locale.settings
 
     marello_productprice.price.form_subscriber:
-        class: Marello\Bundle\PricingBundle\Form\EventListener\DefaultPricingSubscriber
+        class: Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber
         arguments:
             - @doctrine.orm.entity_manager
-            - Marello\Bundle\PricingBundle\Model\PricingAwareInterface
-            - @marello_product.util.product_helper
+            - @oro_locale.settings
 
     marello_productprice.channelprice.form_subscriber:
-        class: Marello\Bundle\PricingBundle\Form\EventListener\DefaultChannelPricingSubscriber
+        class: Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber
         arguments:
             - @doctrine.orm.entity_manager
             - Marello\Bundle\PricingBundle\Model\PricingAwareInterface

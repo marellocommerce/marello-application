@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 /**
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks
@@ -35,7 +35,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *  }
  * )
  */
-class SalesChannel
+class SalesChannel implements CurrencyAwareInterface
 {
     const DEFAULT_TYPE = 'marello';
 

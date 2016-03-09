@@ -7,12 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 /**
  * Class BasePrice
  * @ORM\MappedSuperclass
  */
 
-class BasePrice
+class BasePrice implements CurrencyAwareInterface
 {
     /**
      * @var integer

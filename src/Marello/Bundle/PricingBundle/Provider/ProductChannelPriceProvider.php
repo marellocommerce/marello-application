@@ -29,9 +29,7 @@ class ProductChannelPriceProvider
     /** @var $translator */
     protected $translator;
 
-    /**
-     * @var LocaleSettings
-     */
+    /** @var LocaleSettings */
     protected $localeSettings;
 
     /**
@@ -107,6 +105,7 @@ class ProductChannelPriceProvider
     }
 
     /**
+     * todo:: move to a sales shannel helper
      * Get currency for channel.
      * @param $channelId
      * @return array
@@ -123,6 +122,7 @@ class ProductChannelPriceProvider
     }
 
     /**
+     * todo:: move to a pricing helper?
      * Get currency symbol for currency.
      * @param $currencyCode
      * @return array

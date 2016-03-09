@@ -9,8 +9,11 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class ProductHelper
 {
-    /** @var ObjectManager */
+    /** @var ObjectManager $manager */
     protected $manager;
+
+    /** @var LocaleSettings $localeSettings */
+    protected $localeSettings;
 
     public function __construct(ObjectManager $manager)
     {

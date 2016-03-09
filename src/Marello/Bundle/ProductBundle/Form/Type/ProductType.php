@@ -3,8 +3,8 @@
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
-use Marello\Bundle\PricingBundle\Form\EventListener\DefaultPricingSubscriber;
-use Marello\Bundle\PricingBundle\Form\EventListener\DefaultChannelPricingSubscriber;
+use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
+use Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,29 +13,30 @@ class ProductType extends AbstractType
 {
     const NAME = 'marello_product_form';
 
-    /** @var DefaultSalesChannelSubscriber */
+    /** @var DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber*/
     protected $defaultSalesChannelSubscriber;
 
-    /** @var DefaultPricingSubscriber */
-    protected $defaultPricingSubscriber;
+    /** @var PricingSubscriber $pricingSubscriber */
+    protected $pricingSubscriber;
 
-    /** @var DefaultChannelPricingSubscriber */
-    protected $defaultChannelPricingSubscriber;
+    /** @var ChannelPricingSubscriber $channelPricingSubscriber */
+    protected $channelPricingSubscriber;
 
     /**
      * ProductType constructor.
      * @param DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber
-     * @param DefaultPricingSubscriber $defaultPricingSubscriber
-     * @param DefaultChannelPricingSubscriber $defaultChannelPricingSubscriber
+     * @param PricingSubscriber $pricingSubscriber
+     * @param ChannelPricingSubscriber $channelPricingSubscriber
      */
     public function __construct(
         DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber,
-        DefaultPricingSubscriber $defaultPricingSubscriber,
-        DefaultChannelPricingSubscriber $defaultChannelPricingSubscriber)
+        PricingSubscriber $pricingSubscriber,
+        ChannelPricingSubscriber $channelPricingSubscriber
+    )
     {
         $this->defaultSalesChannelSubscriber    = $defaultSalesChannelSubscriber;
-        $this->defaultPricingSubscriber         = $defaultPricingSubscriber;
-        $this->defaultChannelPricingSubscriber  = $defaultChannelPricingSubscriber;
+        $this->pricingSubscriber         = $pricingSubscriber;
+        $this->channelPricingSubscriber  = $channelPricingSubscriber;
     }
 
     /**
@@ -92,8 +93,8 @@ class ProductType extends AbstractType
             );
 
         $builder->addEventSubscriber($this->defaultSalesChannelSubscriber);
-        $builder->addEventSubscriber($this->defaultPricingSubscriber);
-        $builder->addEventSubscriber($this->defaultChannelPricingSubscriber);
+        $builder->addEventSubscriber($this->pricingSubscriber);
+        $builder->addEventSubscriber($this->channelPricingSubscriber);
     }
 
     /**
