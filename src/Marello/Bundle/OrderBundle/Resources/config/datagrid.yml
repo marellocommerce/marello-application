@@ -200,3 +200,48 @@ datagrid:
                     pageSize:
                         items: [5]
                         default_per_page: 5
+
+    dashboard-order-revenue-saleschannels-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - channel.name as salesChannelName
+                    - channel.currency
+                    - COUNT(o.orderNumber) as totalOrders
+                    - SUM(o.grandTotal) as totalRevenue
+                from:
+                    - { table: MarelloOrderBundle:Order, alias: o }
+                join:
+                    left:
+                        - { join: o.salesChannel, alias: channel }
+                groupBy: salesChannelName
+        columns:
+            salesChannelName:
+                label: marello.order.sales_channel.label
+                frontend_type: string
+                data_name: salesChannelName
+            totalOrders:
+                label: marello.report.datagrid.columns.total_orders.label
+                frontend_type: string
+            totalRevenue:
+                label: marello.report.datagrid.columns.total_revenue.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
+        sorters:
+            columns:
+                salesChannelName:       { data_name: salesChannelName }
+                totalOrders:            { data_name: totalOrders }
+                totalRevenue:           { data_name: totalRevenue }
+            default:
+                totalOrders: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        options:
+            entityHint: orders
+            export: false
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [5]
+                    default_per_page: 5

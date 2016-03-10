@@ -20,18 +20,6 @@ class PricingSubscriber implements EventSubscriberInterface
     /** @var EntityManager $em */
     protected $em;
 
-    /** @var LocaleSettings $localeSettings */
-    protected $localeSettings;
-
-    /**
-     * @param EntityManager $em
-     */
-    public function __construct(EntityManager $em, LocaleSettings $localeSettings)
-    {
-        $this->em = $em;
-        $this->localeSettings = $localeSettings;
-    }
-
     /**
      * Get subscribed events
      * @return array
@@ -109,27 +97,8 @@ class PricingSubscriber implements EventSubscriberInterface
 
             if (!empty($removedPrices)) {
                 //only remove prices for currencies which have been deleted!
-                $defaultPrice = null;
                 foreach ($removedPrices as $price) {
-                    if ($this->localeSettings->getCurrency() === $price->getCurrency()) {
-                        $defaultPrice = $price;
-                        continue;
-                    }
                     $product->removePrice($price);
-                }
-
-                // check if the default price is the "last" price left in the collection
-                // if not, we can remove it safely
-                if (count($product->getPrices()) > 1) {
-                    $product->removePrice($defaultPrice);
-                }
-
-                // if prices is still empty, add the application currency price
-                if (!$product->hasPrices()) {
-                    $price = new ProductPrice();
-                    $price->setCurrency($this->localeSettings->getCurrency());
-                    $price->setValue(0);
-                    $product->addPrice($price);
                 }
             }
         }

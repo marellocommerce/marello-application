@@ -63,3 +63,11 @@ oro_dashboard_config:
             acl:         marello_order_view
             description: marello.order.dashboard.latest_orders.description
             icon:        bundles/orodashboard/img/no_icon.png
+
+        top_revenue_channels_widget:
+            label:       marello.order.dashboard.top_revenue_channels.title
+            route:       oro_dashboard_widget
+            route_parameters: { bundle: MarelloOrderBundle, name: topRevenueChannels }
+            acl:         marello_order_view
+            description: marello.order.dashboard.top_revenue_channels.description
+            icon:        bundles/orodashboard/img/no_icon.png

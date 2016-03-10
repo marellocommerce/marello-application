@@ -71,16 +71,22 @@
         <h5 class="user-fieldset">
             <span>{{ 'marello.pricing.productprice.entity_plural_label'|trans }}</span>
         </h5>
-        <div class="row-divider"></div>
-        <div class="pricing-line-items pricing-enabled"
-             data-page-component-module="oroui/js/app/components/view-component"
-             data-page-component-options="{{ {
-                 view: 'marellolayout/js/app/views/abstract-items-view',
-                 options: {}
-             }|json_encode }}">
-            {{ form_widget(form.prices) }}
-            {{ form_errors(form.prices) }}
-        </div>
+        {% if form.prices|length > 0 %}
+            <div class="row-divider"></div>
+            <div class="pricing-line-items pricing-enabled"
+                 data-page-component-module="oroui/js/app/components/view-component"
+                 data-page-component-options="{{ {
+                     view: 'marellolayout/js/app/views/abstract-items-view',
+                     options: {}
+                 }|json_encode }}">
+                {{ form_widget(form.prices) }}
+                {{ form_errors(form.prices) }}
+            </div>
+        {% else %}
+            <div class="no-data">
+                <span>{{ 'marello.pricing.productprice.no_channels_enabled_or_configured'|trans }}</span>
+            </div>
+        {% endif %}
         <div class="row-divider"></div>
     {% endset %}
 

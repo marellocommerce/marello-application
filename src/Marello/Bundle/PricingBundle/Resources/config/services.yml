@@ -10,7 +10,6 @@ services:
         class: Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber
         arguments:
             - @doctrine.orm.entity_manager
-            - @oro_locale.settings
 
     marello_productprice.channelprice.form_subscriber:
         class: Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber

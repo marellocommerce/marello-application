@@ -81,3 +81,6 @@ marello:
                 description: 5 Latest orders from all sales channels
                 view_all: View all
 
+            top_revenue_channels:
+                title: Order revenue per sales channel
+                description: Order revenue per sales channel

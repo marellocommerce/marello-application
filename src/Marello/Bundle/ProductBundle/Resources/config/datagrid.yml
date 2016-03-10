@@ -213,7 +213,10 @@ datagrid:
                             THEN true ELSE false END
                         END) as hasChannel
             bind_parameters:
-                - product
+                -
+                    name: product
+                    default: null
+                    type: integer
         columns:
             hasChannel:
                 label:                ~
@@ -248,3 +251,7 @@ datagrid:
                 selectors:
                     included: '#addSalesChannels'
                     excluded: '#removeSalesChannels'
+            toolbarOptions:
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
