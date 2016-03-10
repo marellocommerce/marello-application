@@ -35,7 +35,8 @@ class SalesChannelType extends AbstractType
             ->add('code')
             ->add('channelType')
             ->add('currency', 'oro_currency',[
-                'data' => $this->localeSettings->getCurrency()
+                'data' => (isset($options['data']) && $options['data']->getCurrency() !== null) ?
+                    $options['data']->getCurrency() : $this->localeSettings->getCurrency()
             ])
             ->add('default', 'checkbox',[
                 'required' => false
@@ -51,7 +52,7 @@ class SalesChannelType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\SalesBundle\Entity\SalesChannel',
+            'data_class' => 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
         ]);
     }
 
