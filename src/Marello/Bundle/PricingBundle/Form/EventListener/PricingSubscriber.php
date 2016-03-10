@@ -2,23 +2,24 @@
 
 namespace Marello\Bundle\PricingBundle\Form\EventListener;
 
-use Doctrine\ORM\EntityManager;
-
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
+use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
-use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
-
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class PricingSubscriber implements EventSubscriberInterface
 {
-    /** @var EntityManager $em */
-    protected $em;
+    /** @var CurrencyProvider $provider */
+    protected $provider;
+
+    public function __construct(CurrencyProvider $provider)
+    {
+        $this->provider = $provider;
+    }
 
     /**
      * Get subscribed events
@@ -42,7 +43,7 @@ class PricingSubscriber implements EventSubscriberInterface
         $form   = $event->getForm();
 
         if ($entity instanceof PricingAwareInterface && $entity instanceof SalesChannelAwareInterface) {
-            $currencies = $this->getCurrencies($entity->getChannels());
+            $currencies = $this->provider->getCurrencies($entity->getChannels());
             if ($entity->hasPrices()) {
                 $existingCurrencies = [];
                 $entity
@@ -82,9 +83,25 @@ class PricingSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
         if ($form->has('removeSalesChannels')) {
             $data = $form->get('removeSalesChannels')->getData();
-            $entities = (!empty($data)) ? $data : $product->getPrices();
+            if (empty($data)) {
+                return;
+            }
+            $removedChannelIds = [];
+            foreach($data as $sc) {
+                $removedChannelIds[] = $sc->getId();
+            }
             // currencies which should be removed
-            $currencies = $this->getCurrencies($entities);
+            $currencies = $this->provider->getCurrencies($data);
+
+            // unset currency for channels which still holds a currency
+            // and is not removed..
+            foreach ($product->getChannels() as $channel) {
+                if (in_array($channel->getCurrency(), $currencies)
+                    && !in_array($channel->getId(), $removedChannelIds)) {
+                    unset($currencies[$channel->getCurrency()]);
+                }
+            }
+
             $removedPrices = [];
             // get prices which should be removed based on the currencies left
             $product
@@ -104,29 +121,5 @@ class PricingSubscriber implements EventSubscriberInterface
         }
 
         $event->setData($product);
-    }
-
-    /**
-     * Get available currencies
-     * @param $entities
-     * @return array
-     */
-    private function getCurrencies($entities)
-    {
-        $currencies = [];
-        if (!is_array($entities)) {
-            $entities
-                ->map(function (CurrencyAwareInterface $entity) use (&$currencies) {
-                    $currencies[] = $entity->getCurrency();
-                });
-        } else {
-            foreach ($entities as $entity) {
-                if ($entity instanceof CurrencyAwareInterface) {
-                    $currencies[] = $entity->getCurrency();
-                }
-            }
-        }
-
-        return array_unique($currencies);
     }
 }

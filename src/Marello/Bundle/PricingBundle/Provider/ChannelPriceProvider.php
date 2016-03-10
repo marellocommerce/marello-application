@@ -8,44 +8,30 @@ use Marello\Bundle\PricingBundle\Entity\Repository\ProductPriceRepository;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
-class ProductChannelPriceProvider
+class ChannelPriceProvider
 {
     const PRICE_IDENTIFIER = 'product-id-';
-    const CURRENCY_IDENTIFIER = 'currency-';
 
     /** @var ManagerRegistry $registry  */
     protected $registry;
 
-    /** @var string $productPriceClassName */
-    protected $productPriceClassName;
-
-    /** @var string $productClassName */
-    protected $productClassName;
-
     /** @var $translator */
     protected $translator;
 
-    /** @var LocaleSettings */
-    protected $localeSettings;
-
     /**
-     * ProductPriceProvider constructor.
+     * ChannelPriceProvider constructor.
      * @param ManagerRegistry $registry
      * @param $translator
-     * @param LocaleSettings $localeSettings
      */
     public function __construct(
         ManagerRegistry $registry,
-        $translator,
-        LocaleSettings $localeSettings
+        $translator
     ) {
         $this->registry = $registry;
         $this->translator = $translator;
-        $this->localeSettings = $localeSettings;
     }
 
     /**
@@ -102,34 +88,6 @@ class ProductChannelPriceProvider
         }
 
         return $result;
-    }
-
-    /**
-     * todo:: move to a sales shannel helper
-     * Get currency for channel.
-     * @param $channelId
-     * @return array
-     */
-    public function getCurrency($channelId)
-    {
-        $channel = $this->getRepository(SalesChannel::class)->find($channelId);
-        $result[self::CURRENCY_IDENTIFIER.$channel->getId()] = [
-            'currencyCode' => $channel->getCurrency(),
-            'currencySymbol' => $this->getCurrencySymbol($channel->getCurrency())
-        ];
-
-        return $result;
-    }
-
-    /**
-     * todo:: move to a pricing helper?
-     * Get currency symbol for currency.
-     * @param $currencyCode
-     * @return array
-     */
-    public function getCurrencySymbol($currencyCode)
-    {
-        return $this->localeSettings->getCurrencySymbolByCurrency($currencyCode);
     }
 
     /**

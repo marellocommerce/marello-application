@@ -9,6 +9,11 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
 
+    marello_sales.saleschannel.provider.channel_provider:
+        class: Marello\Bundle\SalesBundle\Provider\ChannelProvider
+        arguments:
+            - @doctrine.orm.entity_manager
+
     # Autocomplete search handler
     marello_sales.saleschannel.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler

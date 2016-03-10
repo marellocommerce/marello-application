@@ -11,7 +11,7 @@ marello:
             product.label:              Product
             no_channels_enabled_or_configured: >
                                     No configured channels found for the current product.
-                                    Please make sure Sales Channels exist and are linked to this product.
+                                    Please make sure Sales Channels exist and linked.
 
         productchannelprice:
             entity_plural_label:        Product Channel Prices

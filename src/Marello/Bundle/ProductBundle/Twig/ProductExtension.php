@@ -3,23 +3,23 @@
 namespace Marello\Bundle\ProductBundle\Twig;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Util\ProductHelper;
+use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 
 class ProductExtension extends \Twig_Extension
 {
     const NAME = 'marello_product';
     
-    /** @var ProductHelper */
-    protected $helper;
+    /** @var ChannelProvider */
+    protected $provider;
 
     /**
      * ProductExtension constructor.
      *
-     * @param ProductHelper $productHelper
+     * @param ChannelProvider $provider
      */
-    public function __construct(ProductHelper $productHelper)
+    public function __construct(ChannelProvider $provider)
     {
-        $this->helper = $productHelper;
+        $this->provider = $provider;
     }
 
     /**
@@ -41,7 +41,7 @@ class ProductExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction(
-                'marello_product_get_saleschannel_ids',
+                'marello_sales_get_saleschannel_ids',
                 [$this, 'getSalesChannelsIds']
             ),
         ];
@@ -54,6 +54,6 @@ class ProductExtension extends \Twig_Extension
      */
     public function getSalesChannelsIds(Product $product)
     {
-        return $this->helper->getSalesChannelsIds($product);
+        return $this->provider->getSalesChannelsIds($product);
     }
 }

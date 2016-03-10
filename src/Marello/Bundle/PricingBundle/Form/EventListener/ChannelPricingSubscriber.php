@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Util\ProductHelper;
+use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 
 class ChannelPricingSubscriber implements EventSubscriberInterface
@@ -21,20 +21,20 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
     /** @var string $interface  */
     protected $interface;
 
-    /** @var Product $helper  */
-    protected $helper;
+    /** @var ChannelProvider $provider  */
+    protected $provider;
 
     /**
-     * DefaultChannelPricingSubscriber constructor.
+     * ChannelPricingSubscriber constructor.
      * @param EntityManager $em
      * @param string $interface
-     * @param ProductHelper $helper
+     * @param ChannelProvider $provider
      */
-    public function __construct(EntityManager $em, $interface, ProductHelper $helper)
+    public function __construct(EntityManager $em, $interface, ChannelProvider $provider)
     {
         $this->em = $em;
         $this->interface = $interface;
-        $this->helper = $helper;
+        $this->provider = $provider;
     }
 
     /**
@@ -75,7 +75,7 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
             ]
         );
 
-        $channels = $this->helper->getExcludedSalesChannelsIds($product);
+        $channels = $this->provider->getExcludedSalesChannelsIds($product);
         $form->add(
             'channelPrices',
             'marello_product_channel_price_collection',
@@ -109,6 +109,15 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
         $data = $product->getData();
         if (!$data) {
             $data = [];
+        }
+
+        if ($form->has('removeSalesChannels') && !empty($form->get('removeSalesChannels')->getData())) {
+            $removedChannels = $form->get('removeSalesChannels')->getData();
+            $this->removePricesByChannels($removedChannels, $product);
+            $data[PricingAwareInterface::CHANNEL_PRICING_DROP_KEY] = true;
+            if (!$product->hasChannelPrices()) {
+                $pricingEnabled = false;
+            }
         }
 
         if (array_key_exists(PricingAwareInterface::CHANNEL_PRICING_STATE_KEY, $data)
@@ -157,6 +166,21 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
         }
     }
 
+    protected function removePricesByChannels(array $channels, $product)
+    {
+        $ids = [];
+        foreach ($channels as $channel) {
+            $ids[] = $channel->getId();
+        }
+
+        if (count($product->getChannelPrices()) > 0) {
+            foreach ($product->getChannelPrices() as $_price) {
+                if (in_array($_price->getChannel()->getId(), $ids)) {
+                    $product->removeChannelPrice($_price);
+                }
+            }
+        }
+    }
     /**
      * @param Product $product
      *

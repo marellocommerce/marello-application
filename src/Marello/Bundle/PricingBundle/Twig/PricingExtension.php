@@ -2,21 +2,21 @@
 
 namespace Marello\Bundle\PricingBundle\Twig;
 
-use Marello\Bundle\PricingBundle\Provider\ProductChannelPriceProvider;
+use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
 
 class PricingExtension extends \Twig_Extension
 {
     const NAME = 'marello_pricing';
     
-    /** @var ProductChannelPriceProvider */
+    /** @var CurrencyProvider */
     protected $provider;
 
     /**
      * PricingExtension constructor.
      *
-     * @param ProductChannelPriceProvider $provider
+     * @param CurrencyProvider $provider
      */
-    public function __construct(ProductChannelPriceProvider $provider)
+    public function __construct(CurrencyProvider $provider)
     {
         $this->provider = $provider;
     }
@@ -63,7 +63,7 @@ class PricingExtension extends \Twig_Extension
         }
 
         if(!empty($data['salesChannel'])) {
-            $currencyData = $this->provider->getCurrency($data['salesChannel']);
+            $currencyData = $this->provider->getCurrencyDataByChannel($data['salesChannel']);
             $key = sprintf('currency-%s', $data['salesChannel']);
             return $this->formatData($currencyData[$key]['currencyCode'], $currencyData[$key]['currencySymbol']);
         }

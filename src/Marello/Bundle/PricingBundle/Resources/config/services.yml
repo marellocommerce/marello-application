@@ -1,26 +1,31 @@
 services:
-    marello_productprice.product.provider.product_channel_price:
-        class: Marello\Bundle\PricingBundle\Provider\ProductChannelPriceProvider
+    marello_productprice.pricing.provider.currency_provider:
+        class: Marello\Bundle\PricingBundle\Provider\CurrencyProvider
+        arguments:
+            - @doctrine
+            - @oro_locale.settings
+
+    marello_productprice.pricing.provider.channelprice_provider:
+        class: Marello\Bundle\PricingBundle\Provider\ChannelPriceProvider
         arguments:
             - @doctrine
             - @translator
-            - @oro_locale.settings
 
-    marello_productprice.price.form_subscriber:
+    marello_productprice.pricing.price.form_subscriber:
         class: Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber
         arguments:
-            - @doctrine.orm.entity_manager
+            - @marello_productprice.pricing.provider.currency_provider
 
-    marello_productprice.channelprice.form_subscriber:
+    marello_productprice.pricing.channelprice.form_subscriber:
         class: Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber
         arguments:
             - @doctrine.orm.entity_manager
             - Marello\Bundle\PricingBundle\Model\PricingAwareInterface
-            - @marello_product.util.product_helper
+            - @marello_sales.saleschannel.provider.channel_provider
 
-    marello_productprice.twig.pricing_extension:
+    marello_productprice.pricing.twig.pricing_extension:
         class: Marello\Bundle\PricingBundle\Twig\PricingExtension
         arguments:
-            - @marello_productprice.product.provider.product_channel_price
+            - @marello_productprice.pricing.provider.currency_provider
         tags:
             - { name: twig.extension }

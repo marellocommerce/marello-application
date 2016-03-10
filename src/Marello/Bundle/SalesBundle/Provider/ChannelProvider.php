@@ -1,20 +1,21 @@
 <?php
 
-namespace Marello\Bundle\ProductBundle\Util;
+namespace Marello\Bundle\SalesBundle\Provider;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
-class ProductHelper
+class ChannelProvider
 {
     /** @var ObjectManager $manager */
     protected $manager;
 
-    /** @var LocaleSettings $localeSettings */
-    protected $localeSettings;
-
+    /**
+     * ChannelProvider constructor.
+     * @param ObjectManager $manager
+     */
     public function __construct(ObjectManager $manager)
     {
         $this->manager = $manager;
@@ -34,7 +35,7 @@ class ProductHelper
             ->getChannels()
             ->map(function (SalesChannel $channel) use (&$ids) {
                 $ids[] = $channel->getId();
-        });
+            });
 
         return $ids;
     }

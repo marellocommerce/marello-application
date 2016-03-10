@@ -1,7 +1,8 @@
 Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: [channel, currency]
+#            todo:: custom validator for unique [product, channel, currency]
+            fields: [channel, currency, value]
             message: 'marello.pricing.productchannelprice.messages.error.unique_channel_price'
     properties:
         channel:

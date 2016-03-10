@@ -90,7 +90,7 @@
         <div class="row-divider"></div>
     {% endset %}
 
-    {% set channelIds = marello_product_get_saleschannel_ids(entity)|length > 0 ? marello_product_get_saleschannel_ids(entity) : 0 %}
+    {% set channelIds = marello_sales_get_saleschannel_ids(entity)|length > 0 ? marello_sales_get_saleschannel_ids(entity) : 0 %}
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,

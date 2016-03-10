@@ -43,7 +43,7 @@ class ProductExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $functions);
 
         $expectedFunctions = array(
-            'marello_product_get_saleschannel_ids'
+            'marello_sales_get_saleschannel_ids'
         );
 
         /** @var \Twig_SimpleFunction $function */
