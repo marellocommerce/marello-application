@@ -64,6 +64,8 @@ class MarelloOrderBundleInstaller implements Installation
         $table->addColumn('order_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('total_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('grand_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('payment_reference', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('invoiced_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['billingaddress_id'], 'uniq_a619dd6443656fe6');
         $table->addUniqueIndex(['workflow_item_id'], 'uniq_a619dd641023c4ee');
