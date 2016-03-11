@@ -14,10 +14,11 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
 
     protected $widgets = [
         'my_calendar'     => 'remove',
-        'order_statistics_widget' => [0,0],
+        'top_revenue_channels_widget' => [0,0],
+        'order_statistics_widget' => [0,1],
         'latest_orders_widget' => [1,0],
         'recent_emails'   => [1, 2],
-        'quick_launchpad' => [0,1],
+        'quick_launchpad' => [0,2],
     ];
 
     /**
