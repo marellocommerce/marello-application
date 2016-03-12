@@ -29,17 +29,12 @@ class SalesChannelType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //$option = (isset($options['data']) && $options['data']->getCurrency() !== null);
         $builder->addEventSubscriber($this->salesChannelFormSubscriber);
         $builder
             ->add('name')
             ->add('code')
             ->add('channelType')
-            ->add('currency', 'oro_currency',[
-//                'data' => ($option) ? $options['data']->getCurrency() : $this->localeSettings->getCurrency(),
-//                'disabled' => ($option) ? true : false
-                  'required' => true
-            ])
+            ->add('currency', 'oro_currency')
             ->add('default', 'checkbox',[
                 'required' => false
             ])

@@ -49,19 +49,19 @@ class SalesChannelFormSubscriber implements EventSubscriberInterface
         /** @var SalesChannel $data */
         $data = $event->getData();
 
-        if ($data === null) {
-            return;
+        if ($data !== null) {
+            $currency = $data->getCurrency();
         }
+
+        if (!($data && $data->getId())) {
+            $currency = $this->localeSettings->getCurrency();
+        }
+
+        FormUtils::replaceField($form, 'currency', ['data' => $currency]);
 
         $this->disableFields($form, $data);
 
-        if (!($data && $data->getId())
-            && $data instanceof CurrencyAwareInterface
-        ) {
-            $defaultCurrency = $this->localeSettings->getCurrency();
-            $data->setCurrency($defaultCurrency);
-            $event->setData($data);
-        }
+        $event->setData($data);
     }
 
     /**
@@ -95,7 +95,7 @@ class SalesChannelFormSubscriber implements EventSubscriberInterface
         }
 
         if ($channel->getCurrency() !== null) {
-            // disable type field
+            // disable currency field
             FormUtils::replaceField($form, 'currency', ['disabled' => true]);
         }
     }
