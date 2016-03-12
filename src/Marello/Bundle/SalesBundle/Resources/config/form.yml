@@ -8,7 +8,7 @@ services:
     marello_sales_form_type_saleschannel:
         class: %marello_sales.form_type.saleschannel.class%
         arguments:
-            - @oro_locale.settings
+            - @marello_sales.saleschannel.form_subscriber
         tags:
              - { name: form.type, alias: marello_sales_channel }
              

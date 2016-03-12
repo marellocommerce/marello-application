@@ -20,7 +20,7 @@ services:
         tags:
             - { name: form.type, alias: marello_product_form }
         arguments:
-            - @marello_sales.saleschannel.form_subscriber
+            - @marello_sales.saleschannel.form_default_channels_subscriber
             - @marello_productprice.pricing.price.form_subscriber
             - @marello_productprice.pricing.channelprice.form_subscriber
 
@@ -29,7 +29,7 @@ services:
         tags:
             - { name: form.type, alias: marello_product_api_form }
         arguments:
-            - @marello_sales.saleschannel.form_subscriber
+            - @marello_sales.saleschannel.form_default_channels_subscriber
 
     marello_product.product_form.type.product_select:
         class: %marello_product.product_form.type.product_select.class%
