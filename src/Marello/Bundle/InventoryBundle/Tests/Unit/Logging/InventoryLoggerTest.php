@@ -8,6 +8,7 @@ use Doctrine\ORM\UnitOfWork;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
 use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
@@ -22,6 +23,9 @@ class InventoryLoggerTest extends TestCase
     /** @var \Prophecy\Prophecy\ObjectProphecy */
     protected $doctrine;
 
+    /** @var \Prophecy\Prophecy\ObjectProphecy */
+    protected $storage;
+
     /** @var InventoryLogger */
     protected $logger;
 
@@ -33,6 +37,7 @@ class InventoryLoggerTest extends TestCase
         $this->uow      = $this->prophesize(UnitOfWork::class);
         $this->manager  = $this->prophesize(EntityManager::class);
         $this->doctrine = $this->prophesize(Registry::class);
+        $this->storage  = $this->prophesize(TokenStorageInterface::class);
 
         /*
          * Do nothing when asked to compute change sets...
@@ -58,7 +63,7 @@ class InventoryLoggerTest extends TestCase
         /*
          * Create logger...
          */
-        $this->logger = new InventoryLogger($this->doctrine->reveal());
+        $this->logger = new InventoryLogger($this->doctrine->reveal(), $this->storage->reveal());
     }
 
     /**

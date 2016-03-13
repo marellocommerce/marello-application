@@ -18,18 +18,18 @@ class InventoryLogger
     protected $doctrine;
 
     /** @var TokenStorageInterface */
-    protected $tokenStorage;
+    protected $storage;
 
     /**
      * InventoryLogger constructor.
      *
      * @param Registry $doctrine
-     * @param TokenStorageInterface $tokenStorage
+     * @param TokenStorageInterface $storage
      */
-    public function __construct(Registry $doctrine, TokenStorageInterface $tokenStorage = null)
+    public function __construct(Registry $doctrine, TokenStorageInterface $storage = null)
     {
         $this->doctrine     = $doctrine;
-        $this->tokenStorage = $tokenStorage;
+        $this->storage = $storage;
     }
 
     /**
@@ -200,12 +200,12 @@ class InventoryLogger
      */
     protected function setUserReference(InventoryLog $logItem)
     {
-        if (null === $this->tokenStorage) {
+        if (null === $this->storage) {
             return;
         }
 
-        if (null !== $this->tokenStorage->getToken()) {
-            $user = $this->tokenStorage->getToken()->getUser();
+        if (null !== $this->storage->getToken()) {
+            $user = $this->storage->getToken()->getUser();
             $logItem->setUser($user);
         }
     }
