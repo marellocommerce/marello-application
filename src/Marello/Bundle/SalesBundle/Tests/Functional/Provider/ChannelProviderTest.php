@@ -2,9 +2,7 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Provider;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -14,6 +12,10 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class ChannelProviderTest extends WebTestCase
 {
+    /**
+     * @var EntityManager
+     */
+    protected $em;
 
     public function setUp()
     {
@@ -25,16 +27,42 @@ class ChannelProviderTest extends WebTestCase
         $this->loadFixtures([
             LoadProductData::class
         ]);
+
+        $this->em = $this->client->getKernel()->getContainer()->get('doctrine.orm.entity_manager');
     }
 
+    /**
+     * test get sales channels ids
+     */
     public function testGetAssociatedSalesChannelIds()
     {
         /** @var ChannelProvider $provider */
-        $provider = $this->getMockBuilder(ChannelProvider::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $provider = new ChannelProvider($this->em);
         /** @var Product $product */
         $product = $this->getReference('marello-product-0');
+
+        $actual = $provider->getSalesChannelsIds($product);
+
+        $this->assertCount($product->getChannels()->count(), $actual);
+
+        $ids = [];
+        $product
+            ->getChannels()
+            ->map(function (SalesChannel $channel) use (&$ids) {
+                $ids[] = $channel->getId();
+            });
+        $this->assertEquals($ids, $actual);
+    }
+
+    /**
+     * test get excluded sales channels ids
+     */
+    public function testGetNotAssociatedSalesChannelIds()
+    {
+        /** @var Product $product */
+        $product = $this->getReference('marello-product-0');
+
+        $provider = new ChannelProvider($this->em);
 
         $ids = [];
         $product
@@ -43,9 +71,7 @@ class ChannelProviderTest extends WebTestCase
                 $ids[] = $channel->getId();
             });
 
-        $actual = $provider->getSalesChannelsIds($product);
-
-        $this->assertCount($ids, $actual);
-        $this->assertEquals($ids, $actual);
+        $actual = $provider->getExcludedSalesChannelsIds($product);
+        $this->assertNotEquals($ids, $actual);
     }
 }

@@ -54,12 +54,7 @@ class ChannelProvider
 
         $ids = $this->manager
             ->getRepository(SalesChannel::class)
-            ->createQueryBuilder('sc')
-            ->select('sc.id')
-            ->where('sc.id NOT IN(:channels)')
-            ->setParameter('channels', $relatedIds)
-            ->getQuery()
-            ->getArrayResult();
+            ->findExcludedSalesChannelIds($relatedIds);
 
         foreach ($ids as $k => $v) {
             $excludedIds[] = $v['id'];
