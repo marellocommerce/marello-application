@@ -18,6 +18,7 @@ services:
         class: Marello\Bundle\InventoryBundle\Logging\InventoryLogger
         arguments:
             - @doctrine
+            - @security.token_storage
 
     marello_inventory.event_listener.doctrine.inventory_allocation:
         class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\InventoryAllocationListener

@@ -6,22 +6,30 @@ use Closure;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
 
 class InventoryLogger
 {
+    const MANUAL_TRIGGER = 'manual';
+
     /** @var Registry */
     protected $doctrine;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /**
      * InventoryLogger constructor.
      *
      * @param Registry $doctrine
+     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(Registry $doctrine)
+    public function __construct(Registry $doctrine, TokenStorageInterface $tokenStorage = null)
     {
-        $this->doctrine = $doctrine;
+        $this->doctrine     = $doctrine;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -35,6 +43,10 @@ class InventoryLogger
     public function directLog(InventoryItem $item, $trigger, Closure $setValues)
     {
         $log = new InventoryLog($item, $trigger);
+
+        if ($trigger === self::MANUAL_TRIGGER) {
+            $this->setUserReference($log);
+        }
 
         call_user_func($setValues, $log);
 
@@ -86,6 +98,10 @@ class InventoryLogger
                 continue;
             }
 
+            if ($trigger === self::MANUAL_TRIGGER) {
+                $this->setUserReference($log);
+            }
+
             /*
              * If log needs to be modified, do it.
              */
@@ -132,13 +148,11 @@ class InventoryLogger
         $uow       = $this->manager()->getUnitOfWork();
         $changeSet = $uow->getEntityChangeSet($item);
 
-        $log = new InventoryLog($item, $trigger);
-
         /*
          * Check if any of quantities were changed.
          */
-        $quantityChanged          = array_key_exists('quantity', $changeSet);
-        $allocatedQuantityChanged = array_key_exists('allocatedQuantity', $changeSet);
+        $quantityChanged          = $this->quantityChanged('quantity',$changeSet);
+        $allocatedQuantityChanged = $this->quantityChanged('allocatedQuantity',$changeSet);
 
         /*
          * If no quantity was changed, return null and do not log any changes.
@@ -146,6 +160,8 @@ class InventoryLogger
         if (!$quantityChanged && !$allocatedQuantityChanged) {
             return null;
         }
+
+        $log = new InventoryLog($item, $trigger);
 
         if ($quantityChanged) {
             $log
@@ -160,6 +176,38 @@ class InventoryLogger
         }
 
         return $log;
+    }
+
+    /**
+     * Check if quantity for the field has really changed based
+     * on the values entered
+     * @param $field
+     * @param $changeSet
+     * @return bool
+     */
+    protected function quantityChanged($field, $changeSet)
+    {
+        if(!array_key_exists($field, $changeSet)) {
+            return false;
+        }
+
+        return ((int)$changeSet[$field][0] !== (int)$changeSet[$field][1]);
+    }
+
+    /**
+     * Set user as reference on inventory log item
+     * @param InventoryLog $logItem
+     */
+    protected function setUserReference(InventoryLog $logItem)
+    {
+        if (null === $this->tokenStorage) {
+            return;
+        }
+
+        if (null !== $this->tokenStorage->getToken()) {
+            $user = $this->tokenStorage->getToken()->getUser();
+            $logItem->setUser($user);
+        }
     }
 
     /**
