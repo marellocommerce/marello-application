@@ -140,8 +140,7 @@ workflows:
             payment_reminder_definition:
                 post_actions:
                     - @send_notification_email_template:
-                        to: $order.billingAddress.email
+                        order: $order
                         template: marello_order_payment_reminder
-                        entity: $order
                     - @flash_message:
                         message: 'Reminder has been sent.'

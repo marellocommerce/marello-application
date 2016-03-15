@@ -37,3 +37,9 @@ services:
             - @marello_inventory.logging.inventory_logger
         tags:
             - { name: doctrine.event_listener, event: postPersist, method: postPersist }
+
+    marello_order.model.email.email_send_processor:
+        class: Marello\Bundle\OrderBundle\Model\Email\EmailSendProcessor
+        arguments:
+            - @oro_notification.email_processor
+            - @doctrine.orm.entity_manager

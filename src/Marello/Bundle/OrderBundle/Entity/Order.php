@@ -5,14 +5,13 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Marello\Bundle\AddressBundle\Entity\Address;
+use Marello\Bundle\OrderBundle\Model\ExtendOrder;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
-
-use Marello\Bundle\OrderBundle\Model\ExtendOrder;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository")
@@ -362,7 +361,7 @@ class Order extends ExtendOrder
     }
 
     /**
-     * @return AbstractAddress
+     * @return Address
      */
     public function getBillingAddress()
     {
@@ -370,7 +369,7 @@ class Order extends ExtendOrder
     }
 
     /**
-     * @param AbstractAddress $billingAddress
+     * @param Address $billingAddress
      *
      * @return $this
      */
@@ -536,6 +535,7 @@ class Order extends ExtendOrder
 
     /**
      * @param string $currency
+     *
      * @return $this
      */
     public function setCurrency($currency)
@@ -555,6 +555,7 @@ class Order extends ExtendOrder
 
     /**
      * @param string $paymentMethod
+     *
      * @return $this
      */
     public function setPaymentMethod($paymentMethod)
@@ -574,6 +575,7 @@ class Order extends ExtendOrder
 
     /**
      * @param string $paymentDetails
+     *
      * @return $this
      */
     public function setPaymentDetails($paymentDetails)
@@ -593,6 +595,7 @@ class Order extends ExtendOrder
 
     /**
      * @param float $shippingAmount
+     *
      * @return $this
      */
     public function setShippingAmount($shippingAmount)
@@ -612,6 +615,7 @@ class Order extends ExtendOrder
 
     /**
      * @param float $shippingMethod
+     *
      * @return $this
      */
     public function setShippingMethod($shippingMethod)
@@ -631,6 +635,7 @@ class Order extends ExtendOrder
 
     /**
      * @param float $discountAmount
+     *
      * @return $this
      */
     public function setDiscountAmount($discountAmount)
@@ -650,6 +655,7 @@ class Order extends ExtendOrder
 
     /**
      * @param float $discountPercent
+     *
      * @return $this
      */
     public function setDiscountPercent($discountPercent)

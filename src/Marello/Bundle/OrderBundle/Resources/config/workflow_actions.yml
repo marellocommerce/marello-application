@@ -19,8 +19,8 @@ services:
 
     marello_order.workflow.send_notification_email_template:
         class: Marello\Bundle\OrderBundle\Workflow\SendNotificationEmailTemplateAction
-        parent: oro_email.workflow.action.send_email_template
         arguments:
-            - '@oro_config.manager'
+            - @oro_workflow.context_accessor
+            - @marello_order.model.email.email_send_processor
         tags:
             - { name: oro_workflow.action, alias: send_notification_email_template }
