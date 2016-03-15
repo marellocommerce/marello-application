@@ -2,55 +2,62 @@
 
 namespace Marello\Bundle\OrderBundle\Workflow;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EmailBundle\Mailer\Processor;
-use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
-use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
-use Oro\Bundle\EmailBundle\Workflow\Action\SendEmailTemplate;
-use Oro\Bundle\EntityBundle\Provider\EntityNameResolver;
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Model\Email\EmailSendProcessor;
+use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
+use Oro\Bundle\WorkflowBundle\Model\Action\AbstractAction;
+use Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
-class SendNotificationEmailTemplateAction extends SendEmailTemplate
+class SendNotificationEmailTemplateAction extends AbstractAction
 {
-    /** @var ConfigManager */
-    private $cm;
+    /** @var array */
+    protected $options;
 
-    public function __construct(
-        ContextAccessor $contextAccessor,
-        Processor $emailProcessor,
-        EmailAddressHelper $emailAddressHelper,
-        EntityNameResolver $entityNameResolver,
-        EmailRenderer $renderer,
-        ObjectManager $objectManager,
-        ValidatorInterface $validator,
-        ConfigManager $cm
-    ) {
-        parent::__construct(
-            $contextAccessor,
-            $emailProcessor,
-            $emailAddressHelper,
-            $entityNameResolver,
-            $renderer,
-            $objectManager,
-            $validator
-        );
+    /** @var EmailSendProcessor */
+    protected $emailSendProcessor;
 
-        $this->cm = $cm;
+    public function __construct(ContextAccessor $contextAccessor, EmailSendProcessor $emailSendProcessor)
+    {
+        parent::__construct($contextAccessor);
+
+        $this->emailSendProcessor = $emailSendProcessor;
     }
 
+
+    /**
+     * @param mixed $context
+     */
+    protected function executeAction($context)
+    {
+        /** @var Order $order */
+        $order = $this->contextAccessor->getValue($context, $this->getOption($this->options, 'order'));
+
+        /** @var string $template */
+        $template = $this->getOption($this->options, 'template');
+
+        $this->emailSendProcessor->sendMessage($order, $template);
+    }
+
+    /**
+     * Initialize action based on passed options.
+     *
+     * @param array $options
+     *
+     * @return ActionInterface
+     * @throws InvalidParameterException
+     */
     public function initialize(array $options)
     {
-        if (empty($options['from'])) {
-            $options['from'] = [
-                'name'  => $this->cm->get('oro_notification.email_notification_sender_name'),
-                'email' => $this->cm->get('oro_notification.email_notification_sender_email'),
-            ];
+        if (!isset($options['order']) || !$options['order'] instanceof PropertyPathInterface) {
+            throw new InvalidParameterException('Parameter order is required.');
         }
 
-        return parent::initialize($options);
+        if (!isset($options['template'])) {
+            throw new InvalidParameterException('Parameter template is required');
+        }
+
+        $this->options = $options;
     }
-
-
 }
