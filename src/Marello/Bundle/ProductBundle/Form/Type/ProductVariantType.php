@@ -19,7 +19,26 @@ class ProductVariantType extends AbstractType
     {
         $builder
             ->add('variantCode', 'hidden')
-            ->add('products', 'marello_product_collection');
+            ->add(
+                'addVariants',
+                'oro_entity_identifier',
+                [
+                    'class'    => 'MarelloProductBundle:Product',
+                    'required' => false,
+                    'mapped'   => false,
+                    'multiple' => true,
+                ]
+            )
+            ->add(
+                'removeVariants',
+                'oro_entity_identifier',
+                [
+                    'class'    => 'MarelloProductBundle:Product',
+                    'required' => false,
+                    'mapped'   => false,
+                    'multiple' => true,
+                ]
+            );
 
         $builder->addEventSubscriber(new VariantSubscriber());
     }
