@@ -119,6 +119,9 @@ workflows:
             cancel_definition:
                 post_actions:
                     - @marello_cancel_order: ~
+                    - @send_notification_email_template:
+                        order: $order
+                        template: marello_order_cancelled
             hold_definition: []
             un_hold_definition: []
             invoice_definition:
@@ -132,11 +135,21 @@ workflows:
                     - @assign_value:
                         attribute: $order.invoicedAt
                         value: $invoiced_at
-            credit_definition: []
+                    - @send_notification_email_template:
+                        order: $order
+                        template: marello_order_invoiced
+            credit_definition:
+                post_actions:
+                    - @send_notification_email_template:
+                        order: $order
+                        template: marello_order_credited
+            prepare_shipping_definition: []
             ship_definition:
                 post_actions:
                     - @marello_ship_order: ~
-            prepare_shipping_definition: []
+                    - @send_notification_email_template:
+                        order: $order
+                        template: marello_order_shipped_confirmation
             payment_reminder_definition:
                 post_actions:
                     - @send_notification_email_template:

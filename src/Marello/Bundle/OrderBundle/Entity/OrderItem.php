@@ -18,7 +18,7 @@ use Marello\Bundle\InventoryBundle\InventoryAllocation\AllocationTargetInterface
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 
 /**
- * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")
+ * @ORM\Entity
  * @Oro\Config
  * @ORM\Table(name="marello_order_order_item")
  * @ORM\HasLifecycleCallbacks()
