@@ -59,10 +59,12 @@ class DefaultSalesChannelSubscriber implements EventSubscriberInterface
      */
     public function getDefaultChannels()
     {
-        return $this->em->getRepository('MarelloSalesBundle:SalesChannel')
-            ->createQueryBuilder('sc')
-            ->where('sc.active = 1')
-            ->andWhere('sc.default = 1')
+        $qb = $this->em->getRepository('MarelloSalesBundle:SalesChannel')
+            ->createQueryBuilder('sc');
+
+        return $qb
+            ->where($qb->expr()->eq('sc.active', $qb->expr()->literal(true)))
+            ->andWhere($qb->expr()->eq('sc.default', $qb->expr()->literal(true)))
             ->orderBy('sc.name', 'ASC')
             ->getQuery()
             ->getResult();
@@ -75,6 +77,7 @@ class DefaultSalesChannelSubscriber implements EventSubscriberInterface
     public function postSetData(FormEvent $event)
     {
         $product = $event->getData();
+
         if ($product &&
             $product instanceof SalesChannelAwareInterface &&
             !$product->getId() &&
