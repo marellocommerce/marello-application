@@ -24,8 +24,7 @@ use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")
  */
-class OrderItem extends ExtendOrderItem
-    implements AllocationTargetInterface, CurrencyAwareInterface
+class OrderItem extends ExtendOrderItem implements AllocationTargetInterface, CurrencyAwareInterface
 {
     /**
      * @var int

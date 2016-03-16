@@ -70,17 +70,26 @@ class UniqueEntityCollectionValidator extends ConstraintValidator
         /* @var $class \Doctrine\Common\Persistence\Mapping\ClassMetadata */
         foreach ($fields as $fieldName) {
             if (!$class->hasField($fieldName) && !$class->hasAssociation($fieldName)) {
-                throw new ConstraintDefinitionException(sprintf('The field "%s" is not mapped by Doctrine, so it cannot be used for uniqueness.',
-                    $fieldName));
+                throw new ConstraintDefinitionException(
+                    sprintf(
+                        'The field "%s" is not mapped by Doctrine, so it cannot be used for uniqueness.',
+                        $fieldName
+                    )
+                );
             }
 
             $accessor = $this->getPropertyAccessor();
-            if(!$accessor->getValue($entity, $fieldName)) {
-                throw new InvalidMethodException(sprintf('Entity "%s" has no method public method for property %s',
-                    get_class($entity), $fieldName));
+            if (!$accessor->getValue($entity, $fieldName)) {
+                throw new InvalidMethodException(
+                    sprintf(
+                        'Entity "%s" has no method public method for property %s',
+                        get_class($entity),
+                        $fieldName
+                    )
+                );
             }
 
-            $fieldsAsKey = sprintf('%s-%s',$fieldsAsKey,$fieldName);
+            $fieldsAsKey = sprintf('%s-%s', $fieldsAsKey, $fieldName);
         }
 
         /*

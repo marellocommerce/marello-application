@@ -32,8 +32,7 @@ class ProductType extends AbstractType
         DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber,
         PricingSubscriber $pricingSubscriber,
         ChannelPricingSubscriber $channelPricingSubscriber
-    )
-    {
+    ) {
         $this->defaultSalesChannelSubscriber    = $defaultSalesChannelSubscriber;
         $this->pricingSubscriber         = $pricingSubscriber;
         $this->channelPricingSubscriber  = $channelPricingSubscriber;
@@ -45,19 +44,25 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text',
+            ->add(
+                'name',
+                'text',
                 [
                     'required' => true,
                     'label'    => 'marello.product.name.label',
                 ]
             )
-            ->add('sku', 'text',
+            ->add(
+                'sku',
+                'text',
                 [
                     'required' => true,
                     'label'    => 'marello.product.sku.label',
                 ]
             )
-            ->add('status', 'entity',
+            ->add(
+                'status',
+                'entity',
                 [
                     'label'    => 'marello.product.status.label',
                     'class'    => 'MarelloProductBundle:ProductStatus',
@@ -65,7 +70,9 @@ class ProductType extends AbstractType
                     'required' => true,
                 ]
             )
-            ->add('inventoryItems', 'marello_inventory_item_collection',
+            ->add(
+                'inventoryItems',
+                'marello_inventory_item_collection',
                 [
                     'label'              => 'marello.inventory.label',
                     'cascade_validation' => true,

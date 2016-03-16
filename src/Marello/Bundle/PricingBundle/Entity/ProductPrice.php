@@ -3,10 +3,7 @@
 namespace Marello\Bundle\PricingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-
-use Marello\Bundle\PricingBundle\Entity\BasePrice;
 
 /**
  * Represents a Marello ProductPrice

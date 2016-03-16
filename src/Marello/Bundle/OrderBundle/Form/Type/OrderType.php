@@ -16,17 +16,28 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('salesChannel', 'genemu_jqueryselect2_entity', [
-                'class' => 'MarelloSalesBundle:SalesChannel',
-            ])
-            ->add('discountAmount', 'oro_money', [
-                    'label' => 'marello.order.discount_amount.label',
-                    'required' => false
+            ->add(
+                'salesChannel',
+                'genemu_jqueryselect2_entity',
+                [
+                    'class' => 'MarelloSalesBundle:SalesChannel',
                 ]
             )
-            ->add('couponCode', 'text', [
-                'required' => false
-            ])
+            ->add(
+                'discountAmount',
+                'oro_money',
+                [
+                    'label'    => 'marello.order.discount_amount.label',
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'couponCode',
+                'text',
+                [
+                    'required' => false,
+                ]
+            )
             ->add('billingAddress', 'marello_address')
             ->add('shippingAddress', 'marello_address')
             ->add('items', 'marello_order_item_collection');

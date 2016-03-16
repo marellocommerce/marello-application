@@ -7,7 +7,7 @@ use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
 class PricingExtension extends \Twig_Extension
 {
     const NAME = 'marello_pricing';
-    
+
     /** @var CurrencyProvider */
     protected $provider;
 
@@ -59,20 +59,24 @@ class PricingExtension extends \Twig_Extension
 
         if (!empty($data['currencyCode']) && empty($data['currencySymbol'])) {
             $currencySymbol = $this->provider->getCurrencySymbol($data['currencyCode']);
+
             return $this->formatData($data['currencyCode'], $currencySymbol);
         }
 
-        if(!empty($data['salesChannel'])) {
+        if (!empty($data['salesChannel'])) {
             $currencyData = $this->provider->getCurrencyDataByChannel($data['salesChannel']);
-            $key = sprintf('currency-%s', $data['salesChannel']);
+            $key          = sprintf('currency-%s', $data['salesChannel']);
+
             return $this->formatData($currencyData[$key]['currencyCode'], $currencyData[$key]['currencySymbol']);
         }
     }
 
     /**
      * Format currency data
+     *
      * @param $currencyCode
      * @param $currencySymbol
+     *
      * @return string
      */
     private function formatData($currencyCode, $currencySymbol)

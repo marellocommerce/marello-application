@@ -720,5 +720,4 @@ class Order extends ExtendOrder
 
         return $this;
     }
-
 }

@@ -2,14 +2,10 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Provider;
 
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class ChannelProviderTest extends WebTestCase

@@ -4,7 +4,6 @@ namespace Marello\Bundle\ProductBundle\Util\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
-
 class DatagridHelper
 {
     const DATAGRID_COLUMNS_NAME  = '[columns][%s]';
@@ -41,7 +40,7 @@ class DatagridHelper
             $columnsConfig['columns'] = array_merge($column, $columnsConfig['columns']);
 
             // set new grid config
-            $this->gridConfig->offsetSetByPath('[columns]',$columnsConfig['columns']);
+            $this->gridConfig->offsetSetByPath('[columns]', $columnsConfig['columns']);
         }
     }
 

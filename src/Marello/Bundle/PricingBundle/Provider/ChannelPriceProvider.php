@@ -9,8 +9,6 @@ use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
-
 class ChannelPriceProvider
 {
     const PRICE_IDENTIFIER = 'product-id-';

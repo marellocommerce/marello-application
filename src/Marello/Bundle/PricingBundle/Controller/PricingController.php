@@ -21,10 +21,12 @@ class PricingController extends Controller
      */
     public function getProductPriceByChannelAction(Request $request)
     {
-        return new JsonResponse($this->get('marello_productprice.pricing.provider.channelprice_provider'    )->getPrices(
-            $request->query->get('salesChannel'),
-            $request->query->get('product_ids', [])
-        ));
+        return new JsonResponse(
+            $this->get('marello_productprice.pricing.provider.channelprice_provider')->getPrices(
+                $request->query->get('salesChannel'),
+                $request->query->get('product_ids', [])
+            )
+        );
     }
 
     /**
@@ -36,8 +38,10 @@ class PricingController extends Controller
      */
     public function getCurrencyByChannelAction(Request $request)
     {
-        return new JsonResponse($this->get('marello_productprice.pricing.provider.currency_provider')->getCurrencyDataByChannel(
-            $request->query->get('salesChannel')
-        ));
+        return new JsonResponse(
+            $this->get('marello_productprice.pricing.provider.currency_provider')->getCurrencyDataByChannel(
+                $request->query->get('salesChannel')
+            )
+        );
     }
 }

@@ -14,8 +14,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  * @ORM\HasLifecycleCallbacks
  * @Config
  */
-class ReturnItem extends ExtendReturnItem
-    implements CurrencyAwareInterface
+class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
 {
     /**
      * @var int

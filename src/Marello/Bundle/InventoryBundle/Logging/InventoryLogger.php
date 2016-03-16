@@ -23,13 +23,13 @@ class InventoryLogger
     /**
      * InventoryLogger constructor.
      *
-     * @param Registry $doctrine
+     * @param Registry              $doctrine
      * @param TokenStorageInterface $storage
      */
     public function __construct(Registry $doctrine, TokenStorageInterface $storage = null)
     {
-        $this->doctrine     = $doctrine;
-        $this->storage = $storage;
+        $this->doctrine = $doctrine;
+        $this->storage  = $storage;
     }
 
     /**
@@ -151,8 +151,8 @@ class InventoryLogger
         /*
          * Check if any of quantities were changed.
          */
-        $quantityChanged          = $this->quantityChanged('quantity',$changeSet);
-        $allocatedQuantityChanged = $this->quantityChanged('allocatedQuantity',$changeSet);
+        $quantityChanged          = $this->quantityChanged('quantity', $changeSet);
+        $allocatedQuantityChanged = $this->quantityChanged('allocatedQuantity', $changeSet);
 
         /*
          * If no quantity was changed, return null and do not log any changes.
@@ -181,13 +181,15 @@ class InventoryLogger
     /**
      * Check if quantity for the field has really changed based
      * on the values entered
+     *
      * @param $field
      * @param $changeSet
+     *
      * @return bool
      */
     protected function quantityChanged($field, $changeSet)
     {
-        if(!array_key_exists($field, $changeSet)) {
+        if (!array_key_exists($field, $changeSet)) {
             return false;
         }
 
@@ -196,6 +198,7 @@ class InventoryLogger
 
     /**
      * Set user as reference on inventory log item
+     *
      * @param InventoryLog $logItem
      */
     protected function setUserReference(InventoryLog $logItem)

@@ -7,6 +7,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
+
 /**
  * @ORM\Entity()
  * @ORM\HasLifecycleCallbacks

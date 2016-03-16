@@ -4,7 +4,6 @@ namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller\Api\Rest;
 
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductChannelPricingData;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;

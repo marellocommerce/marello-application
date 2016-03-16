@@ -87,7 +87,7 @@ class PricingSubscriber implements EventSubscriberInterface
                 return;
             }
             $removedChannelIds = [];
-            foreach($data as $sc) {
+            foreach ($data as $sc) {
                 $removedChannelIds[] = $sc->getId();
             }
             // currencies which should be removed

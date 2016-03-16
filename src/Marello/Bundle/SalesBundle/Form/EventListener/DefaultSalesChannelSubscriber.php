@@ -3,12 +3,10 @@
 namespace Marello\Bundle\SalesBundle\Form\EventListener;
 
 use Doctrine\ORM\EntityManager;
-
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 
 class DefaultSalesChannelSubscriber implements EventSubscriberInterface
 {
@@ -77,7 +75,11 @@ class DefaultSalesChannelSubscriber implements EventSubscriberInterface
     public function postSetData(FormEvent $event)
     {
         $product = $event->getData();
-        if ($product && $product instanceof SalesChannelAwareInterface && !$product->getId() && $product->hasChannels()) {
+        if ($product &&
+            $product instanceof SalesChannelAwareInterface &&
+            !$product->getId() &&
+            $product->hasChannels()
+        ) {
             $form = $event->getForm();
             if ($form->has('addSalesChannels')) {
                 $form->get('addSalesChannels')->setData($product->getChannels());

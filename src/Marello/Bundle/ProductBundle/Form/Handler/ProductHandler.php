@@ -3,7 +3,6 @@
 namespace Marello\Bundle\ProductBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;

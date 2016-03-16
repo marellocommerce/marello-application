@@ -40,7 +40,14 @@ class FormatterContextResolver
             if ($record->getRootEntity() instanceof CurrencyAwareInterface) {
                 return [$record->getRootEntity()->getCurrency()];
             }
-            throw new \LogicException(sprintf('%s is not implementing Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface', get_class($record->getRootEntity())));
+
+            throw new \LogicException(
+                sprintf(
+                    '%s does not implement %s',
+                    get_class($record->getRootEntity()),
+                    CurrencyAwareInterface::class
+                )
+            );
         };
     }
 }
