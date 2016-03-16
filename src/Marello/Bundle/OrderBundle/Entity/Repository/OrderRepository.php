@@ -12,6 +12,7 @@ class OrderRepository extends EntityRepository
      * @param \DateTime $start
      * @param \DateTime $end
      * @param AclHelper $aclHelper
+     *
      * @return int
      */
     public function getTotalRevenueValue(\DateTime $start, \DateTime $end, AclHelper $aclHelper)
@@ -19,7 +20,7 @@ class OrderRepository extends EntityRepository
         $select = 'SUM(
              CASE WHEN orders.grandTotal IS NOT NULL THEN orders.grandTotal ELSE 0 END
              ) as val';
-        $qb    = $this->createQueryBuilder('orders');
+        $qb     = $this->createQueryBuilder('orders');
         $qb->select($select)
             ->andWhere($qb->expr()->between('orders.createdAt', ':dateStart', ':dateEnd'))
             ->setParameter('dateStart', $start)
@@ -27,18 +28,19 @@ class OrderRepository extends EntityRepository
 
         $value = $aclHelper->apply($qb)->getOneOrNullResult();
 
-        return $value['val'] ? : 0;
+        return $value['val'] ?: 0;
     }
 
     /**
      * @param \DateTime $start
      * @param \DateTime $end
      * @param AclHelper $aclHelper
+     *
      * @return int
      */
     public function getTotalOrdersNumberValue(\DateTime $start, \DateTime $end, AclHelper $aclHelper)
     {
-        $qb    = $this->createQueryBuilder('o');
+        $qb = $this->createQueryBuilder('o');
         $qb->select('count(o.id) as val')
             ->andWhere($qb->expr()->between('o.createdAt', ':dateStart', ':dateEnd'))
             ->setParameter('dateStart', $start)
@@ -46,7 +48,7 @@ class OrderRepository extends EntityRepository
 
         $value = $aclHelper->apply($qb)->getOneOrNullResult();
 
-        return $value['val'] ? : 0;
+        return $value['val'] ?: 0;
     }
 
     /**
@@ -55,6 +57,7 @@ class OrderRepository extends EntityRepository
      * @param \DateTime $start
      * @param \DateTime $end
      * @param AclHelper $aclHelper
+     *
      * @return int
      */
     public function getAverageOrderValue(\DateTime $start, \DateTime $end, AclHelper $aclHelper)
@@ -63,7 +66,7 @@ class OrderRepository extends EntityRepository
              CASE WHEN o.grandTotal IS NOT NULL THEN o.grandTotal ELSE 0 END
              ) as revenue,
              count(o.id) as ordersCount';
-        $qb    = $this->createQueryBuilder('o');
+        $qb     = $this->createQueryBuilder('o');
         $qb->select($select)
             ->andWhere($qb->expr()->between('o.createdAt', ':dateStart', ':dateEnd'))
             ->setParameter('dateStart', $start)

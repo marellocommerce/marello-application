@@ -18,13 +18,18 @@ class SendNotificationEmailTemplateAction extends AbstractAction
     /** @var EmailSendProcessor */
     protected $emailSendProcessor;
 
+    /**
+     * SendNotificationEmailTemplateAction constructor.
+     *
+     * @param ContextAccessor    $contextAccessor
+     * @param EmailSendProcessor $emailSendProcessor
+     */
     public function __construct(ContextAccessor $contextAccessor, EmailSendProcessor $emailSendProcessor)
     {
         parent::__construct($contextAccessor);
 
         $this->emailSendProcessor = $emailSendProcessor;
     }
-
 
     /**
      * @param mixed $context
