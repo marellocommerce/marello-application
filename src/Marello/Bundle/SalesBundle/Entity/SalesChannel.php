@@ -9,7 +9,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_sales_sales_channel",
  *      uniqueConstraints={

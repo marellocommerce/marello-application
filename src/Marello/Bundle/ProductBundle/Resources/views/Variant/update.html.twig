@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'MarelloProductBundle:Variant:Form/fields.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% set gridName = 'marello-product-variant-extended-grid' %}
 
 {% set entity = form.vars.value %}
 {% set formAction = entity.id ? path('marello_product_add_variant', { parentId: parent.id, id: entity.id }) : path('marello_product_create_variant', { id: parent.id }) %}
@@ -18,7 +19,7 @@
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.product.variant.entity_label'|trans}) %}
+        {% set title = 'marello.layout.add_entity'|trans({'%entityName%': 'marello.product.variant.entity_plural_label'|trans}) %}
         {% include 'OroUIBundle::page_title_block.html.twig' with { title: title }%}
     {% endif %}
 {% endblock pageHeader %}
@@ -33,14 +34,6 @@
 
 {% block content_data %}
     {% set id = 'product-variant' %}
-    {% set productVariants %}
-        <div class="variant-line-items"
-             data-page-component-module="oroui/js/app/components/view-component"
-             data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-items-view'}|json_encode }}">
-            {{ form_widget(form.products) }}
-            {{ form_errors(form.products) }}
-        </div>
-    {% endset %}
     {% set dataBlocks = [
         {
             'title': 'Variants'|trans,
@@ -49,7 +42,9 @@
                 'useSpan': false,
                 'data' : [
                     form_row(form.variantCode),
-                    productVariants
+                    form_widget(form.addVariants, {'id': 'addVariants'}),
+                    form_widget(form.removeVariants, {'id': 'removeVariants'}),
+                    dataGrid.renderGrid(gridName, { product: parent.id ? : null, variant: parent.variant.id ? : null })
                 ]
             }]
         }
