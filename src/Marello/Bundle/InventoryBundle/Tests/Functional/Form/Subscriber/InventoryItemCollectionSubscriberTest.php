@@ -10,6 +10,9 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 
+/**
+ * @dbIsolation
+ */
 class InventoryItemCollectionSubscriberTest extends WebTestCase
 {
     /** @var InventoryItemCollectionSubscriber */

@@ -6,6 +6,9 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
+/**
+ * @dbIsolation
+ */
 class InventoryItemTypeTest extends WebTestCase
 {
     public function setUp()

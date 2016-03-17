@@ -5,6 +5,9 @@ namespace Marello\Bundle\InventoryBundle\Tests\Functional\Entity\Repository;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
+/**
+ * @dbIsolation
+ */
 class WarehouseRepositoryTest extends WebTestCase
 {
     /** @var WarehouseRepository */
