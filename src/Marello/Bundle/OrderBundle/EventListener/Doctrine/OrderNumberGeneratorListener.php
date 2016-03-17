@@ -51,6 +51,10 @@ class OrderNumberGeneratorListener
      */
     public function postFlush(PostFlushEventArgs $args)
     {
+        if (empty($this->orders)) {
+            return;
+        }
+
         $em            = $args->getEntityManager();
         $changedOrders = $this->updateOrderNumbers($this->orders);
 
