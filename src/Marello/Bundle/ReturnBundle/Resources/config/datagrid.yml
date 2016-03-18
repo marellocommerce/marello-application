@@ -5,14 +5,15 @@ datagrid:
             query:
                 select:
                     - r
-                    - COALESCE(SUM(ri.quantity), 0) AS returnItemCount
+                    - SUM(ri.quantity) AS returnItemCount
+                    - (SELECT SUM(oi.quantity) FROM MarelloOrderBundle:OrderItem oi WHERE oi.order = r.order ) AS orderItemCount
                 from:
                     - { table: MarelloReturnBundle:ReturnEntity, alias: r }
                 join:
                     left:
-                        - { join: r.order, alias: o }
                         - { join: r.returnItems, alias: ri }
-                groupBy: r.id
+                        - { join: r.order, alias: o }
+                groupBy: r.id, o.id
         columns:
             returnNumber:
                 data_name: returnnumber
@@ -27,6 +28,10 @@ datagrid:
             returnItems:
                 data_name: returnItemCount
                 label: marello.return.returnitem.returned_quantity.label
+                frontend_type: number
+            orderItems:
+                data_name: orderItemCount
+                label: marello.return.returnitem.ordered_quantity.label
                 frontend_type: number
             createdAt:
                 label: oro.ui.created_at
