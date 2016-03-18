@@ -1,0 +1,15 @@
+parameters:
+services:
+    marello_notification.email.send_processor:
+        class: Marello\Bundle\NotificationBundle\Email\SendProcessor
+        arguments:
+            - @oro_notification.email_processor
+            - @doctrine.orm.entity_manager
+
+    marello_notification.workflow.send_notification_action:
+        class: Marello\Bundle\NotificationBundle\Workflow\SendNotificationAction
+        arguments:
+            - @oro_workflow.context_accessor
+            - @marello_notification.email.send_processor
+        tags:
+            - { name: oro_workflow.action, alias: marello_notification_send }
