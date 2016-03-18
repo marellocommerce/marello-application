@@ -20,6 +20,13 @@ services:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: doctrine.event_listener, event: postFlush }
 
+    marello_order.listener.doctrine.order_number_generator_listener:
+        class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderOrganizationListener
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
     marello_order.manager.order.api:
         class: Marello\Bundle\OrderBundle\Entity\Manager\OrderApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
