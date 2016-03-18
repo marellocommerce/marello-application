@@ -166,8 +166,9 @@ workflows:
             cancel_definition:
                 post_actions:
                     - @marello_cancel_order: ~
-                    - @send_notification_email_template:
-                        order: $order
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.billingAddress.email
                         template: marello_order_cancelled
             hold_definition: []
             un_hold_definition: []
@@ -182,25 +183,29 @@ workflows:
                     - @assign_value:
                         attribute: $order.invoicedAt
                         value: $invoiced_at
-                    - @send_notification_email_template:
-                        order: $order
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.billingAddress.email
                         template: marello_order_invoiced
             credit_definition:
                 post_actions:
-                    - @send_notification_email_template:
-                        order: $order
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.billingAddress.email
                         template: marello_order_credited
             prepare_shipping_definition: []
             ship_definition:
                 post_actions:
                     - @marello_ship_order: ~
-                    - @send_notification_email_template:
-                        order: $order
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.billingAddress.email
                         template: marello_order_shipped_confirmation
             payment_reminder_definition:
                 post_actions:
-                    - @send_notification_email_template:
-                        order: $order
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.billingAddress.email
                         template: marello_order_payment_reminder
                     - @flash_message:
                         message: 'Reminder has been sent.'

@@ -4,8 +4,8 @@ namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Marello\Bundle\NotificationBundle\Email\SendProcessor;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Model\Email\EmailSendProcessor;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 
 class OrderNumberGeneratorListener
@@ -68,11 +68,15 @@ class OrderNumberGeneratorListener
             $em->persist($order);
         }
 
-        /** @var EmailSendProcessor $emailSendProcessor */
+        /** @var SendProcessor $emailSendProcessor */
         $emailSendProcessor = $this->emailSendProcessorLink->getService();
 
         foreach ($createdOrders as $order) {
-            $emailSendProcessor->sendMessage($order, 'marello_order_accepted_confirmation');
+            $emailSendProcessor->sendNotification(
+                'marello_order_accepted_confirmation',
+                [$order->getBillingAddress()->getEmail()],
+                $order
+            );
         }
 
         if (!empty($changedOrders)) {
