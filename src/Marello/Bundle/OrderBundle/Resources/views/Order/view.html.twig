@@ -106,15 +106,9 @@
         </div>
     {% endset %}
 
-    {% set activity %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {# Activity #}
-                </div>
-            </div>
-        </div>
-    {% endset %}
+    {%- set activitiesData -%}
+        {% placeholder view_content_data_activities with {entity: entity} %}
+    {%- endset -%}
 
     {% set dataBlocks = [
         {
@@ -139,6 +133,13 @@
                 { 'data' : [items] }
             ]
         },
+        {
+            'title': 'Activity',
+            'subblocks': [{
+                'spanClass': 'empty',
+                'data': [activitiesData]
+            }]
+        }
     ] %}
 
     {% set id = 'marelloOrderView' %}
