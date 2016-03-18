@@ -10,6 +10,7 @@ use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
@@ -26,6 +27,10 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  *          },
  *          "workflow"={
  *              "active_workflow"="marello_order_b2c_workflow_1"
+ *          },
+ *          "ownership"={
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
  *          }
  *      }
  * )
@@ -229,6 +234,14 @@ class Order extends ExtendOrder
      * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $workflowStep;
+
+    /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", nullable=false)
+     */
+    protected $organization;
 
     /**
      * @param AbstractAddress|null $billingAddress
@@ -717,6 +730,26 @@ class Order extends ExtendOrder
     public function setPaymentReference($paymentReference)
     {
         $this->paymentReference = $paymentReference;
+
+        return $this;
+    }
+
+    /**
+     * @return Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param Organization $organization
+     *
+     * @return $this
+     */
+    public function setOrganization(Organization $organization)
+    {
+        $this->organization = $organization;
 
         return $this;
     }

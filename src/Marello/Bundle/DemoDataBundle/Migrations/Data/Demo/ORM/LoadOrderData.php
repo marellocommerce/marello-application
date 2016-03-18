@@ -9,6 +9,7 @@ use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -47,6 +48,10 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
         $createdOrders = 0;
 
+        $organization = $manager
+            ->getRepository(Organization::class)
+            ->getFirst();
+
         while (($itemRow = $this->popOrderItemRow()) !== false) {
             if ($order && ($itemRow['order_number'] !== $order->getOrderNumber())) {
                 /*
@@ -78,7 +83,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             if (!$order) {
                 $orderRow = $this->popOrderRow();
 
-                $order = $this->createOrder($orderRow);
+                $order = $this->createOrder($orderRow, $organization);
                 $order->setOrderNumber($itemRow['order_number']);
             }
 
@@ -144,7 +149,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
      *
      * @return Order
      */
-    protected function createOrder($row)
+    protected function createOrder($row, Organization $organization)
     {
         $billing = new Address();
         $billing->setNamePrefix($row['title']);
@@ -175,6 +180,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         if ($row['order_ref'] !== 'NULL') {
             $orderEntity->setOrderReference($row['order_ref']);
         }
+
+        $orderEntity->setOrganization($organization);
 
         return $orderEntity;
     }
