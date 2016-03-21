@@ -19,5 +19,6 @@ services:
         class: Marello\Bundle\NotificationBundle\Provider\NotificationActivityListProvider
         arguments:
            - @oro_entity.doctrine_helper
+           - @translator
         tags:
            - { name: oro_activity_list.provider, priority: 80 }

@@ -96,7 +96,7 @@ class Notification extends ExtendNotification implements EmailNotificationInterf
     /**
      * Gets a template can be used to prepare a notification message
      *
-     * @return EmailTemplateInterface
+     * @return EmailTemplate
      */
     public function getTemplate()
     {

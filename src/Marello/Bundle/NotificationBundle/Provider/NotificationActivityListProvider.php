@@ -10,20 +10,25 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class NotificationActivityListProvider implements ActivityListProviderInterface
 {
     /** @var DoctrineHelper */
     protected $doctrineHelper;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * NotificationActivityListProvider constructor.
      *
      * @param DoctrineHelper $doctrineHelper
      */
-    public function __construct(DoctrineHelper $doctrineHelper)
+    public function __construct(DoctrineHelper $doctrineHelper, TranslatorInterface $translator)
     {
         $this->doctrineHelper = $doctrineHelper;
+        $this->translator     = $translator;
     }
 
     /**
@@ -50,11 +55,11 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
      */
     public function getSubject($entity)
     {
-        return $entity->getTemplate()->getSubject();
+        return $this->translator->trans($entity->getTemplate()->getName(), [], 'MarelloNotification');
     }
 
     /**
-     * @param object $entity
+     * @param object|Notification $entity
      *
      * @return string|null
      */
