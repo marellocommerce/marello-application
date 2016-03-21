@@ -2,9 +2,10 @@
 
 namespace Marello\Bundle\NotificationBundle\Model;
 
+use Oro\Bundle\ActivityBundle\Model\ActivityInterface;
 use Oro\Bundle\ActivityBundle\Model\ExtendActivity;
 
-class ExtendNotification
+class ExtendNotification implements ActivityInterface
 {
     use ExtendActivity;
 

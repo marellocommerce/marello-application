@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
+use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor;
 
@@ -17,16 +18,24 @@ class SendProcessor
     /** @var ObjectManager */
     protected $manager;
 
+    /** @var ActivityManager */
+    protected $activityManager;
+
     /**
      * EmailSendProcessor constructor.
      *
      * @param EmailNotificationProcessor $emailNotificationProcessor
      * @param ObjectManager              $manager
+     * @param ActivityManager            $activityManager
      */
-    public function __construct(EmailNotificationProcessor $emailNotificationProcessor, ObjectManager $manager)
-    {
+    public function __construct(
+        EmailNotificationProcessor $emailNotificationProcessor,
+        ObjectManager $manager,
+        ActivityManager $activityManager
+    ) {
         $this->emailNotificationProcessor = $emailNotificationProcessor;
         $this->manager                    = $manager;
+        $this->activityManager            = $activityManager;
     }
 
     /**
@@ -66,6 +75,8 @@ class SendProcessor
          */
         $notification = new Notification($template, $recipients, $entity->getOrganization());
         $this->emailNotificationProcessor->process($entity, [$notification]);
+
+        $this->activityManager->addActivityTarget($notification, $entity);
 
         $this->manager->persist($notification);
         $this->manager->flush();
