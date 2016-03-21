@@ -32,10 +32,6 @@ class SendProcessorTest extends WebTestCase
             ]
         );
 
-        $this->oroProcessorMock = $this->prophesize(EmailNotificationProcessor::class);
-
-        $this->getContainer()->set('oro_notification.email_processor', $this->oroProcessorMock->reveal());
-
         $this->sendProcessor = $this->getContainer()->get('marello_notification.email.send_processor');
     }
 
@@ -48,9 +44,12 @@ class SendProcessorTest extends WebTestCase
         /** @var Order $order */
         $order = $this->getReference('marello_order_1');
 
-        $this->oroProcessorMock
-            ->process(Argument::exact($order), Argument::type('array'))
-            ->shouldBeCalled();
+        $notificationsBefore = count(
+            $this->getContainer()
+                ->get('doctrine')
+                ->getRepository(Notification::class)
+                ->findAll()
+        );
 
         $this->sendProcessor->sendNotification(
             'marello_order_accepted_confirmation',
@@ -58,12 +57,14 @@ class SendProcessorTest extends WebTestCase
             $order
         );
 
-        $notifications = $this->getContainer()
-            ->get('doctrine')
-            ->getRepository(Notification::class)
-            ->findAll();
+        $notificationsAfter = count(
+            $this->getContainer()
+                ->get('doctrine')
+                ->getRepository(Notification::class)
+                ->findAll()
+        );
 
-        $this->assertCount(1, $notifications);
+        $this->assertEquals(1, $notificationsAfter - $notificationsBefore);
     }
 
     /**
