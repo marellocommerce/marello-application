@@ -1,2 +1,2 @@
 bundles:
-    - { name: Marello\Bundle\NotificationBundle\MarelloNotificationBundle, priority: 40 }
+    - { name: Marello\Bundle\NotificationBundle\MarelloNotificationBundle, priority: 30 }

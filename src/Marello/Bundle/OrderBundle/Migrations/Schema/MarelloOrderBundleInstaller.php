@@ -3,6 +3,8 @@
 namespace Marello\Bundle\OrderBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -10,8 +12,11 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloOrderBundleInstaller implements Installation
+class MarelloOrderBundleInstaller implements Installation, ActivityExtensionAwareInterface
 {
+    /** @var ActivityExtension */
+    protected $activityExtension;
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +37,8 @@ class MarelloOrderBundleInstaller implements Installation
         /** Foreign keys generation **/
         $this->addMarelloOrderOrderForeignKeys($schema);
         $this->addMarelloOrderOrderItemForeignKeys($schema);
+
+        $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_order_order');
     }
 
     /**
@@ -181,5 +188,15 @@ class MarelloOrderBundleInstaller implements Installation
             ['id'],
             ['onUpdate' => null, 'onDelete' => 'SET NULL']
         );
+    }
+
+    /**
+     * Sets the ActivityExtension
+     *
+     * @param ActivityExtension $activityExtension
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
     }
 }

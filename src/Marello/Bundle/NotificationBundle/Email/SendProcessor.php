@@ -64,7 +64,7 @@ class SendProcessor
          * Sending of notification emails is deferred, notification can be persisted but not yet sent.
          * This depends on application configuration.
          */
-        $notification = new Notification($template, $recipients);
+        $notification = new Notification($template, $recipients, $entity->getOrganization());
         $this->emailNotificationProcessor->process($entity, [$notification]);
 
         $this->manager->persist($notification);

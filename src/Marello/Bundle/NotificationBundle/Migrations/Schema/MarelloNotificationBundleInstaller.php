@@ -41,11 +41,15 @@ class MarelloNotificationBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_notification');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('template_id', 'integer', []);
         $table->addColumn('recipients', 'json_array', []);
+        $table->addColumn('createdat', 'datetime', ['comment' => '(DC2Type:datetime)']);
+        $table->addIndex(['organization_id'], 'idx_c883e86632c8a3de', []);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['template_id'], 'idx_c883e8665da0fb8', []);
     }
+
 
     /**
      * Add marello_notification foreign keys.
@@ -55,6 +59,12 @@ class MarelloNotificationBundleInstaller implements Installation
     protected function addMarelloNotificationForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_notification');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => 'SET NULL']
+        );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_email_template'),
             ['template_id'],

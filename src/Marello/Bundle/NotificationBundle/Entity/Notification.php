@@ -3,6 +3,7 @@
 namespace Marello\Bundle\NotificationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\NotificationBundle\Model\ExtendNotification;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -15,6 +16,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  * @ORM\Table(name="marello_notification")
  * @Config(
  *  defaultValues={
+ *      "grouping"={"groups"={"activity"}},
  *      "ownership"={
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"
@@ -26,7 +28,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *  }
  * )
  */
-class Notification implements EmailNotificationInterface
+class Notification extends ExtendNotification implements EmailNotificationInterface
 {
     /**
      * @ORM\Id
@@ -76,6 +78,8 @@ class Notification implements EmailNotificationInterface
      */
     public function __construct(EmailTemplate $template, array $recipients, Organization $organization)
     {
+        parent::__construct();
+
         $this->template     = $template;
         $this->recipients   = $recipients;
         $this->organization = $organization;

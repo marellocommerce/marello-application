@@ -93,7 +93,7 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
      */
     public function getOrganization($activityEntity)
     {
-        return $activityEntity->getNotification()->getOrganization();
+        return $activityEntity->getOrganization();
     }
 
     /**
