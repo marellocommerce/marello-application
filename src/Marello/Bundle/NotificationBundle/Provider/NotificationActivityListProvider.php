@@ -101,7 +101,7 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
      */
     public function getTemplate()
     {
-        // TODO: Implement getTemplate() method.
+        return 'MarelloNotificationBundle:Notification/js:activityItemTemplate.js.twig';
     }
 
     /**
