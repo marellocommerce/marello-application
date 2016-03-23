@@ -8,6 +8,7 @@ use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor;
 
 class SendProcessor
@@ -21,21 +22,27 @@ class SendProcessor
     /** @var ActivityManager */
     protected $activityManager;
 
+    /** @var EmailRenderer */
+    protected $renderer;
+
     /**
      * EmailSendProcessor constructor.
      *
      * @param EmailNotificationProcessor $emailNotificationProcessor
      * @param ObjectManager              $manager
      * @param ActivityManager            $activityManager
+     * @param EmailRenderer              $renderer
      */
     public function __construct(
         EmailNotificationProcessor $emailNotificationProcessor,
         ObjectManager $manager,
-        ActivityManager $activityManager
+        ActivityManager $activityManager,
+        EmailRenderer $renderer
     ) {
         $this->emailNotificationProcessor = $emailNotificationProcessor;
         $this->manager                    = $manager;
         $this->activityManager            = $activityManager;
+        $this->renderer = $renderer;
     }
 
     /**
@@ -68,12 +75,16 @@ class SendProcessor
             );
         }
 
+        list ($subjectRendered, $templateRendered) = $this->renderer->compileMessage(
+            $template,
+            compact('entity')
+        );
         /*
          * Create new notification and process it using email notification processor.
          * Sending of notification emails is deferred, notification can be persisted but not yet sent.
          * This depends on application configuration.
          */
-        $notification = new Notification($template, $recipients, $entity->getOrganization());
+        $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
         $this->emailNotificationProcessor->process($entity, [$notification]);
 
         $this->activityManager->addActivityTarget($notification, $entity);
