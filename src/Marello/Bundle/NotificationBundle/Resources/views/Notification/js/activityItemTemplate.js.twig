@@ -14,3 +14,11 @@
 
     {{ parent() }}
 {% endblock %}
+
+{% block activityContent %}
+    <div class="marello-notification-activity-body">
+        <%= data.body %>
+    </div>
+
+    {{ parent() }}
+{% endblock %}

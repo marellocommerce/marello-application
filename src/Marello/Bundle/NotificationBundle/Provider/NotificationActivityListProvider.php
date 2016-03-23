@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\NotificationBundle\Provider;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Oro\Bundle\ActivityListBundle\Entity\ActivityList;
 use Oro\Bundle\ActivityListBundle\Entity\ActivityOwner;
@@ -9,6 +10,7 @@ use Oro\Bundle\ActivityListBundle\Model\ActivityListProviderInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -20,15 +22,24 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var ServiceLink */
+    protected $entityManagerLink;
+
     /**
      * NotificationActivityListProvider constructor.
      *
-     * @param DoctrineHelper $doctrineHelper
+     * @param DoctrineHelper      $doctrineHelper
+     * @param TranslatorInterface $translator
+     * @param ServiceLink         $entityManagerLink
      */
-    public function __construct(DoctrineHelper $doctrineHelper, TranslatorInterface $translator)
-    {
-        $this->doctrineHelper = $doctrineHelper;
-        $this->translator     = $translator;
+    public function __construct(
+        DoctrineHelper $doctrineHelper,
+        TranslatorInterface $translator,
+        ServiceLink $entityManagerLink
+    ) {
+        $this->doctrineHelper    = $doctrineHelper;
+        $this->translator        = $translator;
+        $this->entityManagerLink = $entityManagerLink;
     }
 
     /**
@@ -44,8 +55,8 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
         $provider = $configManager->getProvider('activity');
 
         return $provider->hasConfigById($configId)
-            && $provider->getConfigById($configId)->has('activities')
-            && in_array(Notification::class, $provider->getConfigById($configId)->get('activities'));
+        && $provider->getConfigById($configId)->has('activities')
+        && in_array(Notification::class, $provider->getConfigById($configId)->get('activities'));
     }
 
     /**
@@ -88,7 +99,17 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
      */
     public function getData(ActivityList $activityListEntity)
     {
-        return [];
+        /** @var EntityManagerInterface $em */
+        $em = $this->entityManagerLink->getService();
+
+        /** @var Notification $entity */
+        $entity = $em
+            ->getRepository($activityListEntity->getRelatedActivityClass())
+            ->find($activityListEntity->getRelatedActivityId());
+
+        return [
+            'body' => $entity->getBody(),
+        ];
     }
 
     /**
