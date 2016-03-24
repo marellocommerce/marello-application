@@ -35,15 +35,17 @@ class ProductControllerTest extends WebTestCase
 
     public function testCreateProduct()
     {
-        $crawler      = $this->client->request('GET', $this->getUrl('marello_product_create'));
-        $name         = 'Super duper product';
-        $sku          = 'SKU-1234';
-        $form         = $crawler->selectButton('Save and Close')->form();
+        $crawler = $this->client->request('GET', $this->getUrl('marello_product_create'));
+        $name    = 'Super duper product';
+        $sku     = 'SKU-1234';
+        $form    = $crawler->selectButton('Save and Close')->form();
 
 
-        $form['marello_product_form[name]']  = $name;
-        $form['marello_product_form[sku]']   = $sku;
-        $form['marello_product_form[addSalesChannels]'] = $this->getReference('marello_sales_channel_1')->getId();
+        $form['marello_product_form[name]']               = $name;
+        $form['marello_product_form[sku]']                = $sku;
+        $form['marello_product_form[desiredStockLevel]']  = 10;
+        $form['marello_product_form[purchaseStockLevel]'] = 2;
+        $form['marello_product_form[addSalesChannels]']   = $this->getReference('marello_sales_channel_1')->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -82,11 +84,13 @@ class ProductControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
         /** @var Form $form */
-        $form                               = $crawler->selectButton('Save and Close')->form();
-        $name                               = 'name' . $this->generateRandomString();
-        $form['marello_product_form[name]'] = $name;
+        $form                                              = $crawler->selectButton('Save and Close')->form();
+        $name                                              = 'name' . $this->generateRandomString();
+        $form['marello_product_form[name]']                = $name;
+        $form['marello_product_form[desiredStockLevel]']   = 20;
+        $form['marello_product_form[purchaseStockLevel]']  = 10;
         $form['marello_product_form[removeSalesChannels]'] = $this->getReference('marello_sales_channel_1')->getId();
-        $form['marello_product_form[addSalesChannels]'] = $this->getReference('marello_sales_channel_2')->getId();
+        $form['marello_product_form[addSalesChannels]']    = $this->getReference('marello_sales_channel_2')->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);

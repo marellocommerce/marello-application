@@ -50,6 +50,8 @@ class MarelloProductBundleInstaller implements Installation
         $table->addColumn('variant_id', 'integer', ['notnull' => false]);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('sku', 'string', ['length' => 255]);
+        $table->addColumn('desiredstocklevel', 'integer', []);
+        $table->addColumn('purchasestocklevel', 'integer', []);
         $table->addColumn(
             'price',
             'money',

@@ -2,12 +2,13 @@
 
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
-use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
-use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
 use Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber;
+use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
+use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ProductType extends AbstractType
 {
@@ -68,6 +69,24 @@ class ProductType extends AbstractType
                     'class'    => 'MarelloProductBundle:ProductStatus',
                     'property' => 'label',
                     'required' => true,
+                ]
+            )
+            ->add(
+                'desiredStockLevel',
+                'number',
+                [
+                    'label' => 'marello.product.desired_stock_level.label',
+                    'required' => true,
+                    'constraints' => new NotNull(),
+                ]
+            )
+            ->add(
+                'purchaseStockLevel',
+                'number',
+                [
+                    'label' => 'marello.product.purchase_stock_level.label',
+                    'required' => true,
+                    'constraints' => new NotNull(),
                 ]
             )
             ->add(

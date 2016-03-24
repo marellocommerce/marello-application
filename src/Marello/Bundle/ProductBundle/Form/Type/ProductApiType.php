@@ -6,6 +6,7 @@ use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemApiType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ProductApiType extends AbstractType
 {
@@ -22,6 +23,20 @@ class ProductApiType extends AbstractType
             ->add('status', 'entity', [
                 'class' => 'Marello\Bundle\ProductBundle\Entity\ProductStatus',
             ])
+            ->add(
+                'desiredStockLevel',
+                'number',
+                [
+                    'constraints' => new NotNull(),
+                ]
+            )
+            ->add(
+                'purchaseStockLevel',
+                'number',
+                [
+                    'constraints' => new NotNull(),
+                ]
+            )
             ->add('prices')
             ->add('channels')
             ->add('inventory', 'collection', [

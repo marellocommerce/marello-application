@@ -116,6 +116,8 @@ class ProductControllerTest extends WebTestCase
             'name'      => 'New Product',
             'sku'       => 'NEW-SKU',
             'status'    => 'enabled',
+            'desiredStockLevel' => 10,
+            'purchaseStockLevel' => 2,
 //            'prices'    => [
 //                [
 //                    'currency' => $this->getReference('marello_sales_channel_1')->getCurrency(),
@@ -184,6 +186,8 @@ class ProductControllerTest extends WebTestCase
             'name'      => 'New Product',
             'sku'       => 'NEW-SKU',
             'status'    => 'enabled',
+            'desiredStockLevel' => 10,
+            'purchaseStockLevel' => 2,
 //            'prices'    => [
 //                [
 //                    'currency' => $this->getReference('marello_sales_channel_1')->getCurrency(),
@@ -220,6 +224,8 @@ class ProductControllerTest extends WebTestCase
         $data = [
             'name'      => 'New name of product',
             'sku'       => $product->getSku(),
+            'desiredStockLevel' => 10,
+            'purchaseStockLevel' => 2,
 //            'price'     => $product->getPrice(),
 //            'prices'    => $product->getPrices()->map(function (ProductPrice $price) {
 //                return ['currency' => $price->getCurrency(), 'value' => $price->getValue()];

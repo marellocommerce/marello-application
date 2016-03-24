@@ -231,6 +231,20 @@ class Product extends ExtendProduct implements
     protected $data;
 
     /**
+     * @ORM\Column(type="integer")
+     *
+     * @var int
+     */
+    protected $desiredStockLevel;
+
+    /**
+     * @ORM\Column(type="integer")
+     *
+     * @var int
+     */
+    protected $purchaseStockLevel;
+
+    /**
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -639,6 +653,46 @@ class Product extends ExtendProduct implements
     public function removeInventoryItem(InventoryItem $item)
     {
         $this->inventoryItems->removeElement($item);
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDesiredStockLevel()
+    {
+        return $this->desiredStockLevel;
+    }
+
+    /**
+     * @param int $desiredStockLevel
+     *
+     * @return $this
+     */
+    public function setDesiredStockLevel($desiredStockLevel)
+    {
+        $this->desiredStockLevel = $desiredStockLevel;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPurchaseStockLevel()
+    {
+        return $this->purchaseStockLevel;
+    }
+
+    /**
+     * @param int $purchaseStockLevel
+     *
+     * @return $this
+     */
+    public function setPurchaseStockLevel($purchaseStockLevel)
+    {
+        $this->purchaseStockLevel = $purchaseStockLevel;
 
         return $this;
     }

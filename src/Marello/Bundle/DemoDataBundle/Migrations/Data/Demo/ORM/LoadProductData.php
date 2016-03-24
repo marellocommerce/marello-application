@@ -86,6 +86,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product = new Product();
         $product->setSku($data['sku']);
         $product->setName($data['name']);
+        $product->setDesiredStockLevel(rand($data['stock_level'], $data['stock_level'] + 10));
+        $product->setPurchaseStockLevel(rand(1, $product->getDesiredStockLevel()));
         $product->setOrganization($this->defaultOrganization);
         $inventoryItem = new InventoryItem();
         $inventoryItem->setProduct($product);
