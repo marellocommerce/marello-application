@@ -11,6 +11,8 @@ marello:
         id.label:                   Id
         type.label:                 Product Type
         stock_level.label:          Total Stock
+        desired_stock_level.label:  Desired Stock Level
+        purchase_stock_level.label: Purchase Stock Level
 
         channels.label:             Sales Channels
         inventory_items.label:      Inventory Items
