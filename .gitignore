@@ -19,3 +19,4 @@ composer.lock
 *~
 
 /app/SymfonyRequirements.php
+app/bootstrap.php.cache
