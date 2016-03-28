@@ -64,6 +64,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                     $grandTotal += $item->getTotalPrice();
                 });
 
+                $grandTotal += $order->getShippingAmount();
+
                 $order
                     ->setSubtotal($total)
                     ->setTotalTax($tax)
@@ -177,9 +179,18 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $channel = $this->getReference('marello_sales_channel_' . $row['channel']);
         $orderEntity->setSalesChannel($channel);
         $orderEntity->setCurrency($channel->getCurrency());
+
         if ($row['order_ref'] !== 'NULL') {
             $orderEntity->setOrderReference($row['order_ref']);
         }
+
+        $orderEntity->setPaymentMethod($row['payment_method']);
+        if ($row['payment_details'] !== 'NULL') {
+            $orderEntity->setPaymentDetails($row['payment_details']);
+        }
+
+        $orderEntity->setShippingMethod($row['shipping_method']);
+        $orderEntity->setShippingAmount($row['shipping_amount']);
 
         $orderEntity->setOrganization($organization);
 
