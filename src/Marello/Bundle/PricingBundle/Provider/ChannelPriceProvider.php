@@ -3,11 +3,12 @@
 namespace Marello\Bundle\PricingBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityRepository;
 
-use Marello\Bundle\PricingBundle\Entity\Repository\ProductPriceRepository;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
-use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class ChannelPriceProvider
 {
@@ -71,15 +72,13 @@ class ChannelPriceProvider
         $products = $this->getRepository(Product::class)->findBySalesChannel($channel, $products);
 
         foreach ($products as $product) {
-            $price = $this->getRepository(ProductChannelPrice::class)->findOneBySalesChannel($channel, $product);
-            $pricesCount = count($price);
-            $priceValue = null;
-            if ($pricesCount > 0 && $pricesCount < 2) {
-                $price = array_shift($price);
-                $priceValue = (float)$price['price_value'];
-            } else {
-                $priceValue = (float)$product->getPrice();
+            $priceValue = $this->getDefaultPrice($channel, $product);
+            $channelPrice = $this->getChannelPrice($channel, $product);
+
+            if ($channelPrice['hasPrice']) {
+                $priceValue = $channelPrice['price'];
             }
+
             $result[self::PRICE_IDENTIFIER.$product->getId()] = [
                 'value' => $priceValue,
             ];
@@ -89,8 +88,45 @@ class ChannelPriceProvider
     }
 
     /**
+     * Get channel price
+     * @param $channel
+     * @param $product
+     * @return array $data
+     */
+    public function getChannelPrice($channel, $product)
+    {
+        $data = ['hasPrice' => false];
+        $price = $this->getRepository(ProductChannelPrice::class)->findOneBySalesChannel($channel, $product->getId());
+        $pricesCount = count($price);
+
+        if ($pricesCount > 0 && $pricesCount < 2) {
+            $price = array_shift($price);
+            $data['hasPrice'] = true;
+            $data['price'] = (float)$price['price_value'];
+        }
+
+        return $data;
+    }
+
+    /**
+     * Get Default price by currency for product
+     * @param $channel
+     * @param $product
+     * @return float
+     */
+    public function getDefaultPrice($channel, $product)
+    {
+        $currency = $this->getRepository(SalesChannel::class)->find($channel)->getCurrency();
+        $price = $this->getRepository(ProductPrice::class)->findOneBy(
+            ['id' => $product->getId(), 'currency' => $currency]
+        );
+
+        return (float)$price->getValue();
+    }
+
+    /**
      * @param string $className
-     * @return ProductPriceRepository | ProductRepository
+     * @return EntityRepository
      */
     protected function getRepository($className)
     {
