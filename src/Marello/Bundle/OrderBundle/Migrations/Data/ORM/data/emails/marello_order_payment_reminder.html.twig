@@ -1,12 +1,57 @@
 @name = marello_order_payment_reminder
 @entityName = Marello\Bundle\OrderBundle\Entity\Order
-@subject = Your order no. {{ entity.orderNumber }} is still not paid
+@subject = Pending payment for order #{{ entity.orderNumber }}
 @isSystem = 1
 @isEditable = 1
 
-<h1>{{ entity.orderNumber }}</h1>
-<div>
-    <p>
-        {# TODO: Come up with reasonable tempalte. #}
-    </p>
-</div>
+<table cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+    <tr>
+        <td>
+            <table cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                <tr>
+                    <td class="email-heading">
+                        <h1 style="font-size: 16px; color: #0066cc;">Thank you for your order from {{ entity.salesChannelName }}.</h1>
+                        <p>We send you this email to remind you that there is an order without a received payment. <br/>
+                        Details of the pending order can be found below.</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>The order is placed on {{ entity.createdAt }} at {{ entity.salesChannelName }}</p>
+        </td>
+    </tr>
+    <tr class="order-information">
+        <td>
+            <table style="border: 1px solid #99caff;" cellspacing="5" cellpadding="15" border="0">
+                <tbody>
+                <tr>
+                    <td style="background-color: #e6f2ff;" class="address-details">
+                        <h3 style="font-size: 12px; color: #0066cc;">Bill to:</h3>
+                        <p><span class="no-link">{{ entity.billingAddress }}</span></p>
+                    </td>
+                    <td style="background-color: #e6f2ff;" class="address-details">
+                        <h3 style="font-size: 12px; color: #0066cc;">Ship to:</h3>
+                        <p>{{ entity.shippingAddress }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="background-color: #e6f2ff;" class="method-info">
+                        <h3 style="font-size: 12px; color: #0066cc;">Shipping method:</h3>
+                        <p>{{ entity.shippingMethod }}</p>
+                    </td>
+                    <td style="background-color: #e6f2ff;" class="method-info">
+                        <h3 style="font-size: 12px; color: #0066cc;">Payment method:</h3>
+                        {{ entity.paymentMethod }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>

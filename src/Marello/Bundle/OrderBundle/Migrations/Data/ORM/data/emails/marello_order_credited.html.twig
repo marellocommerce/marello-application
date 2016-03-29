@@ -1,12 +1,23 @@
 @name = marello_order_credited
 @entityName = Marello\Bundle\OrderBundle\Entity\Order
-@subject = Your order no. {{ entity.orderNumber }} has been credited
+@subject = Your order #{{ entity.orderNumber }} has been credited
 @isSystem = 1
 @isEditable = 1
 
-<h1>{{ entity.orderNumber }}</h1>
-<div>
-    <p>
-        {# TODO: Come up with reasonable tempalte. #}
-    </p>
-</div>
+<table cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td>
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="email-heading">
+                                <h1 style="font-size: 16px; color: #0066cc;">Order #{{ entity.orderNumber }} has been credited.</h1>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

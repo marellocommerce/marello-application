@@ -110,13 +110,18 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
         $currencies = array_unique($currencies);
         /**
-         * add default prices foor all currencies
+         * add default prices for all currencies
          */
         foreach ($currencies as $currency) {
             // add prices
             $price = new ProductPrice();
             $price->setCurrency($currency);
-            $price->setValue($data['price']);
+            if (count($currencies) > 1 && $currency === 'USD') {
+                $price->setValue(($data['price'] * 1.12));
+            } else {
+                $price->setValue($data['price']);
+            }
+
             $product->addPrice($price);
         }
 

@@ -1,12 +1,39 @@
 @name = marello_order_shipped_confirmation
 @entityName = Marello\Bundle\OrderBundle\Entity\Order
-@subject = Your order no. {{ entity.orderNumber }} has been shipped.
+@subject = Your order #{{ entity.orderNumber }} has been shipped.
 @isSystem = 1
 @isEditable = 1
 
-<h1>{{ entity.orderNumber }}</h1>
-<div>
-    <p>
-        {# TODO: Come up with reasonable tempalte. #}
-    </p>
-</div>
+<table cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+    <tr>
+        <td>
+            <table cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                <tr>
+                    <td class="email-heading">
+                        <h1 style="font-size: 16px; color: #0066cc;">Thank you for your order from {{ entity.salesChannelName }}.</h1>
+                        <p>The product(s) below from your order with order #{{ entity.orderNumber }} are ready to ship.</p>
+                        <p>Your order will be delivered by {{ entity.shippingMethod }}.</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr class="shipping-information">
+        <td>
+            <table style="border: 1px solid #99caff;" cellspacing="5" cellpadding="15" border="0">
+                <tbody>
+                <tr>
+                    <td style="background-color: #e6f2ff;" class="address-details">
+                        <h3 style="font-size: 12px; color: #0066cc;">Ship to:</h3>
+                        <p>{{ entity.shippingAddress }}</p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
