@@ -121,7 +121,7 @@ class ChannelPriceProvider
             ['id' => $product->getId(), 'currency' => $currency]
         );
 
-        return (float)$price->getValue();
+        return (is_object($price)) ? (float)$price->getValue() : null;
     }
 
     /**
