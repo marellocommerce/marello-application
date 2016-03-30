@@ -18,4 +18,14 @@ class PurchaseOrderController extends Controller
     {
         return ['entity_class' => PurchaseOrder::class];
     }
+
+    /**
+     * @Config\Route("/select-products")
+     * @Config\Template
+     * @Security\AclAncestor("marello_purchase_order_create")
+     */
+    public function selectProductsAction()
+    {
+        return [];
+    }
 }

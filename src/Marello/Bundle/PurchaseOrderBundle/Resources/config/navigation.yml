@@ -15,3 +15,4 @@ oro_menu_config:
 
 oro_titles:
     marello_purchaseorder_purchaseorder_index: 'marello.purchaseorder.entity_plural_label'
+    marello_purchaseorder_purchaseorder_selectproducts: 'Create Purchase Order - Select Products'

@@ -3,3 +3,5 @@ marello:
         entity_label:                       Purchase Order
         entity_plural_label:                Purchase Orders
         purchase_order_number.label:        PO Number
+
+        select_products:                    Products to include in new PO

@@ -4,4 +4,10 @@
 {% set pageTitle = 'marello.purchaseorder.entity_plural_label'|trans %}
 
 {% block navButtons %}
+    <div class="btn-group">
+        {{ UI.addButton({
+            'path': path('marello_purchaseorder_purchaseorder_selectproducts'),
+            'entity_label': 'marello.order.entity_label'|trans
+        }) }}
+    </div>
 {% endblock %}

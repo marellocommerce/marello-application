@@ -26,5 +26,63 @@ datagrid:
                 updatedAt:
                     data_name:      po.updatedAt
             default:
-                createdAt:          "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                purchaseOrderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        filters:
+            columns:
+                purchaseOrrderNumber:
+                    type: string
+                    data_name: po.orderNumber
+                createdAt:
+                    type: datetime
+                    data_name: po.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: po.updatedAt
+
+    marello-purchase-order-item-candidates:
+        source:
+            type: orm
+            query:
+                select:
+                    - p.id
+                    - p.sku
+                    - p.name
+                    - p.purchaseStockLevel
+                    - COALESCE(SUM(i.quantity - i.allocatedQuantity), 0) AS virtualQuantity
+                from:
+                    - { table: MarelloProductBundle:Product, alias: p }
+                join:
+                    left:
+                        - { join: p.inventoryItems, alias: i }
+                        - { join: p.status, alias: s }
+                where:
+                    and:
+                        - s.name = 'enabled'                                          # Only select product with enabled status
+                having: SUM(i.quantity - i.allocatedQuantity) < p.purchaseStockLevel  # Only products with virtual stock lower than required purchase stock level
+                groupBy: p.id
+        columns:
+            sku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string
+            virtualQuantity:
+                label:              marello.inventory.inventoryitem.virtualQuantity.label
+                frontend_type:      number
+                data_name:          virtualQuantity
+            purchaseStockLevel:
+                label:              marello.product.purchase_stock_level.label
+                frontend_type:      number
+        filters:
+            columns:
+                sku:
+                    type: string
+                    data_name: p.sku
+                name:
+                    type: string
+                    data_name: p.name
+
+
+
 
