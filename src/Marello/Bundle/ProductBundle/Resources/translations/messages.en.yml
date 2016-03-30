@@ -11,7 +11,7 @@ marello:
         id.label:                   Id
         type.label:                 Product Type
         stock_level.label:          Total Stock
-
+        channel_prices.label:       Product Channel Prices
         channels.label:             Sales Channels
         inventory_items.label:      Inventory Items
         organization.label:         Organization

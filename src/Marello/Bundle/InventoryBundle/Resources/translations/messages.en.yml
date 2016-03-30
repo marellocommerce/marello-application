@@ -20,8 +20,8 @@ marello:
             entity_plural_label:        Inventory Items
             id.label:                   Id
             quantity.label:             Real Stock
-            allocatedQuantity.label:    Allocated Stock
-            virtualQuantity.label:      Virtual Stock
+            allocated_quantity.label:   Allocated Stock
+            virtual_quantity.label:     Virtual Stock
             warehouse.label:            Warehouse
             product.label:              Product
 

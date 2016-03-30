@@ -34,11 +34,11 @@ datagrid:
                 frontend_type:      number
                 data_name:          quantity
             allocatedQuantity:
-                label:              marello.inventory.inventoryitem.allocatedQuantity.label
+                label:              marello.inventory.inventoryitem.allocated_quantity.label
                 frontend_type:      number
                 data_name:          allocatedQuantity
             virtualQuantity:
-                label:              marello.inventory.inventoryitem.virtualQuantity.label
+                label:              marello.inventory.inventoryitem.virtual_quantity.label
                 frontend_type:      number
                 data_name:          virtualQuantity
             status:
