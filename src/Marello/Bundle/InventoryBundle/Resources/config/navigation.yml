@@ -10,6 +10,7 @@ oro_menu_config:
             route: marello_inventory_inventory_index
             extras:
                 routes: ['marello_inventory_inventory_*', 'marello_inventory_inventorylog_list']
+                position: 20
     tree:
         application_menu:
             children:

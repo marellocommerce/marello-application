@@ -1,0 +1,4 @@
+marello_purchase_order_bundle:
+    resource: "@MarelloPurchaseOrderBundle/Controller"
+    type:     annotation
+    prefix:   /marello/po

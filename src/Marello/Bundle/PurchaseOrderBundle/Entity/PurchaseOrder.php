@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\Entity;
+namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,7 +12,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="marello_order_purchase_order")
+ * @ORM\Table(name="marello_purchase_order")
  */
 class PurchaseOrder
 {
@@ -36,7 +36,7 @@ class PurchaseOrder
      * @var Collection|PurchaseOrderItem[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\PurchaseOrderItem",
+     *     targetEntity="PurchaseOrderItem",
      *     cascade={"persist"},
      *     mappedBy="order"
      * )

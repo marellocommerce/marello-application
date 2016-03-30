@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\Entity;
+namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -9,7 +9,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="marello_order_purchase_order_item")
+ * @ORM\Table(name="marello_purchase_order_item")
  */
 class PurchaseOrderItem
 {
@@ -32,7 +32,7 @@ class PurchaseOrderItem
     /**
      * @var PurchaseOrder
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\PurchaseOrder", inversedBy="items")
+     * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="items")
      */
     protected $order;
 

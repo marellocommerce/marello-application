@@ -1,0 +1,17 @@
+oro_menu_config:
+    items:
+        purchase_orders:
+            label: marello.purchaseorder.entity_plural_label
+            route: marello_purchaseorder_purchaseorder_index
+            extras:
+                routes: ['marello_purchaseorder_purchaseorder_*']
+                position: 30
+    tree:
+        application_menu:
+            children:
+                products:
+                    children:
+                        purchase_orders: ~
+
+oro_titles:
+    marello_purchaseorder_purchaseorder_index: 'marello.purchaseorder.entity_plural_label'

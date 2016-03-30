@@ -1,0 +1,30 @@
+datagrid:
+    marello-purchase-order:
+        source:
+            type: orm
+            query:
+                select:
+                    - po
+                from:
+                    - { table: MarelloPurchaseOrderBundle:PurchaseOrder, alias: po }
+        columns:
+            purchaseOrderNumber:
+                label:              marello.purchaseorder.purchase_order_number.label
+                frontend_type:      string
+            createdAt:
+                label:              oro.ui.created_at
+                frontend_type:      datetime
+            updatedAt:
+                label:              oro.ui.updated_at
+                frontend_type:      datetime
+        sorters:
+            columns:
+                purchaseOrderNumber:
+                    data_name:      po.purchaseOrderNumber
+                createdAt:
+                    data_name:      po.createdAt
+                updatedAt:
+                    data_name:      po.updatedAt
+            default:
+                createdAt:          "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+

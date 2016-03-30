@@ -9,6 +9,7 @@ oro_menu_config:
             route: marello_product_index
             extras:
                 routes: ['marello_product_*']
+                position: 10
 
         shortcut_new_product:
             label: 'marello.product.menu.shortcut_new_product.label'
