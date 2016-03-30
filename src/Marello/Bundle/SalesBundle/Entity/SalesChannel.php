@@ -3,14 +3,13 @@
 namespace Marello\Bundle\SalesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository")
- * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_sales_sales_channel",
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(
@@ -19,7 +18,7 @@ use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
  *          )
  *      }
  * )
- * @Config(
+ * @Oro\Config(
  *  routeName="marello_sales_saleschannel_index",
  *  routeView="marello_sales_saleschannel_view",
  *  defaultValues={
@@ -105,7 +104,7 @@ class SalesChannel implements CurrencyAwareInterface
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.created_at"
@@ -119,7 +118,7 @@ class SalesChannel implements CurrencyAwareInterface
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.updated_at"

@@ -3,7 +3,7 @@
 namespace Marello\Bundle\PricingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * Represents a Marello ProductPrice
@@ -19,7 +19,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()
- * @Config(
+ * @Oro\Config(
  *  defaultValues={
  *      "entity"={"icon"="icon-usd"},
  *      "security"={

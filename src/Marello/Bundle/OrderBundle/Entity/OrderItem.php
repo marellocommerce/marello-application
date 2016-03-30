@@ -18,8 +18,8 @@ use Marello\Bundle\InventoryBundle\InventoryAllocation\AllocationTargetInterface
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 
 /**
- * @ORM\Entity
- * @Oro\Config
+ * @ORM\Entity()
+ * @Oro\Config()
  * @ORM\Table(name="marello_order_order_item")
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")

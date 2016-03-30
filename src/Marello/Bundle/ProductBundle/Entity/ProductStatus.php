@@ -4,16 +4,14 @@ namespace Marello\Bundle\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 /**
  * Class ProductStatus
  * @package Marello\Bundle\ProductBundle\Entity
  *
  * @ORM\Entity
  * @ORM\Table(name="marello_product_product_status")
- * @Config(
+ * @Oro\Config(
  *      defaultValues={
  *          "grouping"={
  *              "groups"={"dictionary"}
@@ -26,7 +24,7 @@ class ProductStatus
     /**
      * @ORM\Column(name="name", type="string", length=32)
      * @ORM\Id
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "identity"=true

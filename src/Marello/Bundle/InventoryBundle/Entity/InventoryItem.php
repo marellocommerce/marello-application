@@ -6,8 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository")
@@ -17,7 +16,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  *          @ORM\UniqueConstraint(columns={"product_id", "warehouse_id"})
  *      }
  * )
- * @Config(
+ * @Oro\Config(
  *      defaultValues={
  *          "security"={
  *              "type"="ACL",
@@ -36,7 +35,7 @@ class InventoryItem
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -51,7 +50,7 @@ class InventoryItem
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="inventoryItems")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "order"=10,
@@ -67,7 +66,7 @@ class InventoryItem
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -81,7 +80,7 @@ class InventoryItem
 
     /**
      * @ORM\Column(type="integer", nullable=false)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "order"=20,

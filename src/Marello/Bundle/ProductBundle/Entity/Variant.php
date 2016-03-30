@@ -5,16 +5,15 @@ namespace Marello\Bundle\ProductBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * Represents a Marello Variant Product
  *
- * @ORM\Entity
+ * @ORM\Entity()
  * @ORM\Table(name="marello_product_variant")
  * @ORM\HasLifecycleCallbacks()
- * @Config(
+ * @Oro\Config(
  *  routeName="marello_product_index",
  *  routeView="marello_product_view",
  *  defaultValues={
@@ -58,7 +57,7 @@ class Variant
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="created_at", type="datetime")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.created_at"
@@ -72,7 +71,7 @@ class Variant
      * @var \DateTime $updatedAt
      *
      * @ORM\Column(name="updated_at", type="datetime")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.updated_at"
