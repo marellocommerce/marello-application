@@ -65,7 +65,7 @@ class UniqueEntityCollectionValidator extends ConstraintValidator
 
         $em = $this->registry->getManagerForClass(get_class($entity));
         $class = $em->getClassMetadata(get_class($entity));
-        $fieldsAsKey = null;
+        $fieldValue = null;
 
         /* @var $class \Doctrine\Common\Persistence\Mapping\ClassMetadata */
         foreach ($fields as $fieldName) {
@@ -79,7 +79,8 @@ class UniqueEntityCollectionValidator extends ConstraintValidator
             }
 
             $accessor = $this->getPropertyAccessor();
-            if (!$accessor->getValue($entity, $fieldName)) {
+            $value = $accessor->getValue($entity, $fieldName);
+            if (!$value) {
                 throw new InvalidMethodException(
                     sprintf(
                         'Entity "%s" has no method public method for property %s',
@@ -88,22 +89,31 @@ class UniqueEntityCollectionValidator extends ConstraintValidator
                     )
                 );
             }
+            
+            $function = sprintf('get%s', ucfirst($fieldName));
+            $value = $entity->$function();
+            if (is_object($value)) {
+                $value = $value->getId();
+            }
 
-            $fieldsAsKey = sprintf('%s-%s', $fieldsAsKey, $fieldName);
+            if ($fieldValue) {
+                $fieldValue = sprintf('%s-%s', $fieldValue, $value);
+            } else {
+                $fieldValue = $value;
+            }
         }
 
         /*
          * There is already an item in the collection with this entity, create constraint violation.
          */
         $errorPath = null !== $constraint->errorPath ? $constraint->errorPath : $fields[0];
-
-        if (in_array($fieldsAsKey, $this->collection)) {
+        if (in_array($fieldValue, $this->collection)) {
             $this->context->buildViolation($constraint->message)
                 ->atPath($errorPath)
                 ->addViolation();
         }
 
-        $this->collection[] = $fieldsAsKey;
+        $this->collection[] = $fieldValue;
     }
 
     /**

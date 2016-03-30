@@ -19,7 +19,7 @@ class AddressType extends AbstractType
         $builder
             ->add('email', 'email', [
                 'constraints' => new Constraint\Email(),
-                'required'    => false,
+                'required'    => true,
             ])
             ->add('phone', 'text', [
                 'required' => false,
