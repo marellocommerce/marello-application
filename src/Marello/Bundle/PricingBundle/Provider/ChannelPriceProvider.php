@@ -118,7 +118,7 @@ class ChannelPriceProvider
     {
         $currency = $this->getRepository(SalesChannel::class)->find($channel)->getCurrency();
         $price = $this->getRepository(ProductPrice::class)->findOneBy(
-            ['id' => $product->getId(), 'currency' => $currency]
+            ['product' => $product->getId(), 'currency' => $currency]
         );
 
         return (is_object($price)) ? (float)$price->getValue() : null;

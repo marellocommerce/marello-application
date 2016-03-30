@@ -57,6 +57,11 @@ marello:
             product_sku.label:    Product SKU
             product.label:        Product
 
+        messages:
+            success:
+                order:
+                    saved:          Order saved
+
         menu:
             shortcut_new_order.label: Create new order
             shortcut_new_order.description: Create new order instance
