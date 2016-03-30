@@ -3398,17 +3398,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "5cc924e62a6f85e32db80c84b64936c57608e06b"
+                "reference": "3578f6ee1b0f94be77e135e592786741b0e2b187"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/5cc924e62a6f85e32db80c84b64936c57608e06b",
-                "reference": "5cc924e62a6f85e32db80c84b64936c57608e06b",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/3578f6ee1b0f94be77e135e592786741b0e2b187",
+                "reference": "3578f6ee1b0f94be77e135e592786741b0e2b187",
                 "shasum": ""
             },
             "require": {
                 "oro/platform": "1.8.*",
-                "php": ">=5.4.9"
+                "php": ">=5.5.9"
             },
             "type": "library",
             "extra": {
@@ -3433,10 +3433,10 @@
             "description": "Marello",
             "homepage": "https://github.com/marellocommerce/marello.git",
             "support": {
-                "source": "https://github.com/marellocommerce/marello/tree/master",
+                "source": "https://github.com/marellocommerce/marello/tree/1.0.0-alpha2",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2016-02-27 07:43:27"
+            "time": "2016-03-30 12:18:40"
         },
         {
             "name": "michelf/php-markdown",
