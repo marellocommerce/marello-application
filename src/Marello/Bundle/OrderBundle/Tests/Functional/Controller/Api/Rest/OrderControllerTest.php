@@ -54,22 +54,24 @@ class OrderControllerTest extends WebTestCase
             'couponCode'      => 'XFZDSFSDFSFSD',
             'shippingAmount'  => 5,
             'billingAddress'  => [
-                'firstName'  => 'Falco',
-                'lastName'   => 'van der Maden',
+                'firstName'  => 'John',
+                'lastName'   => 'Doe',
                 'country'    => 'NL',
                 'street'     => 'Torenallee 20',
                 'city'       => 'Eindhoven',
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
+                'email'      => 'john.doe@example.com'
             ],
             'shippingAddress' => [
-                'firstName'  => 'Falco',
-                'lastName'   => 'van der Maden',
+                'firstName'  => 'John',
+                'lastName'   => 'Doe',
                 'country'    => 'NL',
                 'street'     => 'Torenallee 20',
                 'city'       => 'Eindhoven',
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
+                'email'      => 'john.doe@example.com'
             ],
             'items'           => [
                 [
@@ -132,6 +134,7 @@ class OrderControllerTest extends WebTestCase
                 'city'       => 'Eindhoven',
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
+                'email'      => 'gi.doe@example.com'
             ],
             'shippingAddress' => [
                 'firstName'  => 'Han',
@@ -141,6 +144,7 @@ class OrderControllerTest extends WebTestCase
                 'city'       => 'Alderaan',
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
+                'email'      => 'gi.doe@example.com'
             ],
         ];
 
