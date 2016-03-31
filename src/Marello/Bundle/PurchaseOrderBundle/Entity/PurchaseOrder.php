@@ -5,6 +5,8 @@ namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -110,9 +112,42 @@ class PurchaseOrder
     protected $organization;
 
     /**
-     * PurchaseOrder constructor.
+     * Creates order using products
+     *
+     * @param array|Product[] $products
+     * @param Organization    $organization
+     *
+     * @return self
      */
-    public function __construct()
+    public static function usingProducts(array $products, Organization $organization)
+    {
+        $order = new self($organization);
+
+        foreach ($products as $product) {
+            $virtualStock = array_reduce(
+                $product->getInventoryItems()->toArray(),
+                function ($carry, InventoryItem $item) {
+                    return $carry + $item->getVirtualQuantity();
+                },
+                0
+            );
+
+            $amount = $product->getDesiredStockLevel() - $virtualStock;
+            $order->addItem(
+                new PurchaseOrderItem($product, $amount)
+            );
+        }
+
+        return $order;
+    }
+
+
+    /**
+     * PurchaseOrder constructor.
+     *
+     * @param Organization $organization
+     */
+    protected function __construct(Organization $organization)
     {
         $this->items = new ArrayCollection();
     }

@@ -100,6 +100,18 @@ class PurchaseOrderItem
     protected $updatedAt;
 
     /**
+     * PurchaseOrderItem constructor.
+     *
+     * @param Product       $product
+     * @param int           $orderedAmount
+     */
+    public function __construct(Product $product, $orderedAmount)
+    {
+        $this->product       = $product;
+        $this->orderedAmount = $orderedAmount;
+    }
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -115,5 +127,17 @@ class PurchaseOrderItem
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @param PurchaseOrder $order
+     *
+     * @return $this
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+
+        return $this;
     }
 }
