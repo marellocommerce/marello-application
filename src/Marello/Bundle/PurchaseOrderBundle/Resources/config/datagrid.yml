@@ -47,8 +47,10 @@ datagrid:
                     - p.id
                     - p.sku
                     - p.name
+                    - p.desiredStockLevel
                     - p.purchaseStockLevel
                     - COALESCE(SUM(i.quantity - i.allocatedQuantity), 0) AS virtualQuantity
+                    - (p.desiredStockLevel - COALESCE(SUM(i.quantity - i.allocatedQuantity), 0)) AS orderAmount
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -58,6 +60,19 @@ datagrid:
                 where:
                     and:
                         - s.name = 'enabled'                                          # Only select product with enabled status
+                        - >
+                            p.id NOT IN (
+                                SELECT
+                                    IDENTITY(poi.product)
+                                FROM
+                                    MarelloPurchaseOrderBundle:PurchaseOrderItem poi
+                                LEFT JOIN
+                                    poi.order po
+                                LEFT JOIN
+                                    po.workflowStep ws
+                                WHERE
+                                    ws.name = 'pending'
+                            )
                 having: SUM(i.quantity - i.allocatedQuantity) < p.purchaseStockLevel  # Only products with virtual stock lower than required purchase stock level
                 groupBy: p.id
         columns:
@@ -67,13 +82,20 @@ datagrid:
             name:
                 label:              marello.product.name.label
                 frontend_type:      string
+            desiredStockLevel:
+                label:              marello.product.desired_stock_level.label
+                frontend_type:      number
+            purchaseStockLevel:
+                label:              marello.product.purchase_stock_level.label
+                frontend_type:      number
             virtualQuantity:
                 label:              marello.inventory.inventoryitem.virtualQuantity.label
                 frontend_type:      number
                 data_name:          virtualQuantity
-            purchaseStockLevel:
-                label:              marello.product.purchase_stock_level.label
+            orderAmount:
+                label:              marello.purchaseorder.order_amount.label
                 frontend_type:      number
+                data_name:          orderAmount
         filters:
             columns:
                 sku:
