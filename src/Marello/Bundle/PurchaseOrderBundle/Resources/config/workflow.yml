@@ -1,0 +1,32 @@
+workflows:
+    marello_purchase_order_workflow:
+        label: "Purchase Order Workflow"
+        entity: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
+        entity_attribute: po
+        start_step: pending
+        steps:
+            pending:
+                label: "Pending"
+                allowed_transitions:
+                    - partially_receive
+                    - fully_receive
+            partially_received:
+                label: "Partially received"
+                allowed_transitions:
+                    - fully_receive
+            fully_received:
+                label: "Fully received"
+                allowed_transitions: []
+        transitions:
+            partially_receive:
+                label:  "Receive partially"
+                step_to: partially_received
+                transition_definition: partially_receive_definition
+            fully_receive:
+                label:  "Receive fully"
+                step_to: fully_received
+                transition_definition: fully_receive_definition
+        transition_definitions:
+            partially_receive_definition: []
+            fully_receive_definition: []
+
