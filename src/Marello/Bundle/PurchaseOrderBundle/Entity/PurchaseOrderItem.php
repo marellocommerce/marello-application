@@ -102,8 +102,8 @@ class PurchaseOrderItem
     /**
      * PurchaseOrderItem constructor.
      *
-     * @param Product       $product
-     * @param int           $orderedAmount
+     * @param Product $product
+     * @param int     $orderedAmount
      */
     public function __construct(Product $product, $orderedAmount)
     {
@@ -147,5 +147,25 @@ class PurchaseOrderItem
     public function getOrderedAmount()
     {
         return $this->orderedAmount;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * @param int $orderedAmount
+     *
+     * @return $this
+     */
+    public function setOrderedAmount($orderedAmount)
+    {
+        $this->orderedAmount = $orderedAmount;
+
+        return $this;
     }
 }
