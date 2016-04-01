@@ -62,14 +62,14 @@ class PurchaseOrderItem
      *
      * @ORM\Column(type="integer")
      */
-    protected $receivedAmount;
+    protected $receivedAmount = 0;
 
     /**
      * @var string
      *
      * @ORM\Column(type="string")
      */
-    protected $status;
+    protected $status = 'pending';
 
     /**
      * @var \DateTime
