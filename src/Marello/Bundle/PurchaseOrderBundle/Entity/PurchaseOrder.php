@@ -41,7 +41,7 @@ class PurchaseOrder
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      *
      * @var string
      */
@@ -76,7 +76,7 @@ class PurchaseOrder
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
