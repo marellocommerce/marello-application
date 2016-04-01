@@ -16,7 +16,7 @@ class PurchaseOrderItemCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'                 => PurchaseOrderItemType::class,
+            'type'                 => PurchaseOrderItemType::NAME,
             'show_form_when_empty' => false,
             'error_bubbling'       => false,
             'cascade_validation'   => true,

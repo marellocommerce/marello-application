@@ -14,7 +14,7 @@ class PurchaseOrderCreateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('items', PurchaseOrderItemCollectionType::class, [
+            ->add('items', PurchaseOrderItemCollectionType::NAME, [
 
             ]);
     }

@@ -140,4 +140,12 @@ class PurchaseOrderItem
 
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getOrderedAmount()
+    {
+        return $this->orderedAmount;
+    }
 }
