@@ -150,14 +150,6 @@ class PurchaseOrderItem
     }
 
     /**
-     * @return Product
-     */
-    public function getProduct()
-    {
-        return $this->product;
-    }
-
-    /**
      * @param int $orderedAmount
      *
      * @return $this
@@ -167,5 +159,13 @@ class PurchaseOrderItem
         $this->orderedAmount = $orderedAmount;
 
         return $this;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 }
