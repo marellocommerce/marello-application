@@ -8,3 +8,5 @@ marello:
 
         purchaseorderitem:
             order_amount.label:                 Order Amount
+            ordered_amount.label:               Ordered Amount
+            received_amount.label:              Received Amount
