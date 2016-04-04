@@ -168,4 +168,20 @@ class PurchaseOrderItem
     {
         return $this->product;
     }
+
+    /**
+     * @return string
+     */
+    public function getProductSku()
+    {
+        return $this->productSku;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductName()
+    {
+        return $this->productName;
+    }
 }

@@ -267,7 +267,7 @@ class PurchaseOrder
      */
     public function addItem(PurchaseOrderItem $item)
     {
-        $this->items->add($item);
+        $this->items->add($item->setOrder($this));
 
         return $this;
     }

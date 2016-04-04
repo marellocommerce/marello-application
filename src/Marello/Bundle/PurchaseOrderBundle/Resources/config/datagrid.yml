@@ -38,6 +38,42 @@ datagrid:
                 updatedAt:
                     type: datetime
                     data_name: po.updatedAt
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: marello_purchaseorder_purchaseorder_view
+                params:
+                    - id
+        actions:
+            view:
+                type:          navigate
+                label:         oro.grid.action.view
+                link:          view_link
+                icon:          eye-open
+                acl_resource:  marello_purchase_order_view
+                rowAction:     true
+
+    marello-purchase-order-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - poi
+                from:
+                    - { table: MarelloPurchaseOrderBundle:PurchaseOrderItem, alias: poi }
+                where:
+                    and:
+                        - IDENTITY(poi.order) = :order_id
+            bind_parameters:
+                order_id: order_id
+        columns:
+            productSku:
+                label: marello.product.sku.label
+                frontend_type: string
+            productName:
+                label: marello.product.name.label
+                frontend_type: string
 
     marello-purchase-order-item-candidates:
         source:

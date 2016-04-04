@@ -21,6 +21,22 @@ class PurchaseOrderController extends Controller
     }
 
     /**
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Template
+     * @Security\AclAncestor("marello_purchase_order_view")
+     *
+     * @param PurchaseOrder $purchaseOrder
+     *
+     * @return array
+     */
+    public function viewAction(PurchaseOrder $purchaseOrder)
+    {
+        return [
+            'entity' => $purchaseOrder,
+        ];
+    }
+
+    /**
      * @Config\Route("/select-products")
      * @Config\Template
      * @Security\AclAncestor("marello_purchase_order_create")
@@ -66,7 +82,7 @@ class PurchaseOrderController extends Controller
 
         return [
             'products' => $products,
-            'form' => $form->createView()
+            'form'     => $form->createView(),
         ];
     }
 }
