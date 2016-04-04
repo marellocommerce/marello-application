@@ -29,9 +29,9 @@ datagrid:
                 purchaseOrderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         filters:
             columns:
-                purchaseOrrderNumber:
+                purchaseOrderNumber:
                     type: string
-                    data_name: po.orderNumber
+                    data_name: po.purchaseOrderNumber
                 createdAt:
                     type: datetime
                     data_name: po.createdAt
