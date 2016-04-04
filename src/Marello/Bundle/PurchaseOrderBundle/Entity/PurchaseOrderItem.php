@@ -184,4 +184,36 @@ class PurchaseOrderItem
     {
         return $this->productName;
     }
+
+    /**
+     * @return int
+     */
+    public function getReceivedAmount()
+    {
+        return $this->receivedAmount;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
 }

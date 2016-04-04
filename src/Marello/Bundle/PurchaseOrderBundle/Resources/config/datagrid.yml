@@ -74,6 +74,12 @@ datagrid:
             productName:
                 label: marello.product.name.label
                 frontend_type: string
+            orderedAmount:
+                label: marello.purchaseorder.purchaseorderitem.ordered_amount.label
+                frontend_type: number
+            receivedAmount:
+                label: marello.purchaseorder.purchaseorderitem.received_amount.label
+                frontend_type: number
 
     marello-purchase-order-item-candidates:
         source:
@@ -130,7 +136,7 @@ datagrid:
                 frontend_type:      number
                 data_name:          virtualQuantity
             orderAmount:
-                label:              marello.purchaseorder.order_amount.label
+                label:              marello.purchaseorder.purchaseorderitem.order_amount.label
                 frontend_type:      number
                 data_name:          orderAmount
 
