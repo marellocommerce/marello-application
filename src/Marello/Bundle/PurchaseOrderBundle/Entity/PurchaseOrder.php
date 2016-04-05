@@ -147,8 +147,9 @@ class PurchaseOrder
      *
      * @param Organization $organization
      */
-    protected function __construct(Organization $organization)
+    public function __construct(Organization $organization)
     {
+        $this->organization = $organization;
         $this->items = new ArrayCollection();
     }
 
