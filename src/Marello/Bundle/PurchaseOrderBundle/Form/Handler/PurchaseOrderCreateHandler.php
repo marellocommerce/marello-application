@@ -95,7 +95,7 @@ class PurchaseOrderCreateHandler
         $qbs
             ->select('IDENTITY(poi.product)')
             ->join('poi.order', 'po')
-            ->join('poi.workflowStep', 'ws')
+            ->join('po.workflowStep', 'ws')
             ->where($qbs->expr()->eq('ws.name', $qbs->expr()->literal('pending')));
 
         $qb
@@ -107,8 +107,8 @@ class PurchaseOrderCreateHandler
             ->andWhere($qb->expr()->notIn('p.id', $qbs->getDQL()))
             ->groupBy('p.id');
 
-        if (!empty($productIds)) {
-            $qb->where(
+        if ($productIds) {
+            $qb->andWhere(
                 $invertSelection
                     ? $qb->expr()->notIn('p.id', $productIds)
                     : $qb->expr()->in('p.id', $productIds)
