@@ -1,7 +1,7 @@
-marello_purchase_order_update:
+marello_purchase_order_create:
     type:       entity
     class:      MarelloPurchaseOrderBundle:PurchaseOrder
-    permission: EDIT
+    permission: CREATE
 
 marello_purchase_order_view:
     type:       entity

@@ -59,6 +59,9 @@ class PurchaseOrderCreateHandler
 
         $organization = null;
 
+        /*
+         * Get organization of currently logged in user, or use first one.
+         */
         if ($token = $this->tokenStorage->getToken()) {
             $organization = $token->getOrganizationContext();
         } else {
