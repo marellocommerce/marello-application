@@ -4,4 +4,5 @@
 {% set pageTitle = 'marello.purchaseorder.select_products'|trans %}
 
 {% block navButtons %}
-{% endblock %}
+    {{ UI.cancelButton(path('marello_purchaseorder_purchaseorder_index')) }}
+{% endblock navButtons %}

@@ -14,7 +14,7 @@ class PurchaseOrderControllerTest extends WebTestCase
 {
     protected function setUp()
     {
-        $this->initClient($this->generateBasicAuthHeader());
+        $this->initClient([], $this->generateBasicAuthHeader());
         $this->loadFixtures([LoadPurchaseOrderData::class]);
     }
 
@@ -36,6 +36,22 @@ class PurchaseOrderControllerTest extends WebTestCase
             'GET',
             $this->getUrl('marello_purchaseorder_purchaseorder_view', ['id' => $po->getId()])
         );
+
+        $this->assertHtmlResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
+    }
+
+    /** @test */
+    public function testSelectProductsAction()
+    {
+        $this->client->request('GET', $this->getUrl('marello_purchaseorder_purchaseorder_selectproducts'));
+
+        $this->assertHtmlResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
+    }
+
+    /** @test */
+    public function testCreateAction()
+    {
+        $this->client->request('GET', $this->getUrl('marello_purchaseorder_purchaseorder_create'));
 
         $this->assertHtmlResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
     }

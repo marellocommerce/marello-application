@@ -5,6 +5,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Form\Handler;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,20 +46,16 @@ class PurchaseOrderCreateHandler
     }
 
     /**
-     * @param array|int[] $products Array of product ids.
+     * @param array|int[] $products       Array of product ids.
+     * @param bool        $invertProducts Whether the selection ofr products should be inverted.
      *
      * @return bool
      */
-    public function handle(array $products)
+    public function handle(array $products, $invertProducts)
     {
-        $pqb = $this->doctrine->getRepository(Product::class)->createQueryBuilder('p');
+        $qb = $this->createProductsQueryBuilder($products, $invertProducts);
 
-        $pqb
-            ->select('p')
-            ->join('p.inventoryItems', 'ii')
-            ->where($pqb->expr()->in('p.id', $products));
-
-        $products = $pqb->getQuery()->getResult();
+        $products = $qb->getQuery()->getResult();
 
         $organization = null;
 
@@ -81,6 +78,44 @@ class PurchaseOrderCreateHandler
         }
 
         return false;
+    }
+
+    /**
+     * @param array $productIds
+     * @param bool  $invertSelection
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function createProductsQueryBuilder(array $productIds, $invertSelection)
+    {
+        $qb = $this->doctrine->getRepository(Product::class)->createQueryBuilder('p');
+
+        $qbs = $this->doctrine->getRepository(PurchaseOrderItem::class)->createQueryBuilder('poi');
+
+        $qbs
+            ->select('IDENTITY(poi.product)')
+            ->join('poi.order', 'po')
+            ->join('poi.workflowStep', 'ws')
+            ->where($qbs->expr()->eq('ws.name', $qbs->expr()->literal('pending')));
+
+        $qb
+            ->select('p')
+            ->join('p.inventoryItems', 'i')
+            ->join('p.status', 's')
+            ->having('SUM(i.quantity - i.allocatedQuantity) < p.purchaseStockLevel')
+            ->andWhere($qb->expr()->eq('s.name', $qb->expr()->literal('enabled')))
+            ->andWhere($qb->expr()->notIn('p.id', $qbs->getDQL()))
+            ->groupBy('p.id');
+
+        if (!empty($productIds)) {
+            $qb->where(
+                $invertSelection
+                    ? $qb->expr()->notIn('p.id', $productIds)
+                    : $qb->expr()->in('p.id', $productIds)
+            );
+        }
+
+        return $qb;
     }
 
     /**

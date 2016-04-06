@@ -7,7 +7,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\PurchaseOrderBundle\Entity\Repository\PurchaseOrderItemRepository")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_purchase_order_item")
  */

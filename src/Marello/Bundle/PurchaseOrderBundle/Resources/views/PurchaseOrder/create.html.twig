@@ -3,7 +3,7 @@
 {% set formAction = path('marello_purchaseorder_purchaseorder_create') %}
 
 {% block navButtons %}
-    {{ UI.cancelButton(path('marello_purchaseorder_purchaseorder_index')) }}
+    {{ UI.cancelButton(path('marello_purchaseorder_purchaseorder_selectproducts')) }}
     {% set html = UI.saveAndCloseButton() %}
     {% set html = html ~ UI.saveAndStayButton() %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}
