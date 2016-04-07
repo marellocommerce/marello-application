@@ -40,7 +40,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  *          @ORM\UniqueConstraint(columns={"order_reference", "saleschannel_id"})
  *      }
  * )
- * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks()
  */
 class Order extends ExtendOrder
 {

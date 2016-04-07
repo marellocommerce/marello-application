@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity()
  * @ORM\Table(name="marello_return_item")
- * @ORM\HasLifecycleCallbacks
- * @Config
+ * @ORM\HasLifecycleCallbacks()
+ * @Oro\Config()
  */
 class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
 {
@@ -52,6 +52,13 @@ class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.created_at"
+     *          }
+     *      }
+     * )
      */
     protected $createdAt;
 
@@ -59,6 +66,13 @@ class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.updated_at"
+     *          }
+     *      }
+     * )
      */
     protected $updatedAt;
 

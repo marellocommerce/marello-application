@@ -94,6 +94,10 @@ class OrderController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('marello.order.messages.success.order.saved')
+            );
             $manager = $this->getDoctrine()->getManager();
 
             /*

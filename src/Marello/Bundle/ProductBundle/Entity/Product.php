@@ -5,8 +5,7 @@ namespace Marello\Bundle\ProductBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
@@ -35,7 +34,7 @@ use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()
- * @Config(
+ * @Oro\Config(
  *  routeName="marello_product_index",
  *  routeView="marello_product_view",
  *  defaultValues={
@@ -61,7 +60,7 @@ class Product extends ExtendProduct implements
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id", type="integer")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -75,7 +74,7 @@ class Product extends ExtendProduct implements
      * @var string
      *
      * @ORM\Column(name="name", type="string", nullable=false)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -89,7 +88,7 @@ class Product extends ExtendProduct implements
      * @var string
      *
      * @ORM\Column(name="sku", type="string", nullable=false)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "order"=10,
@@ -106,7 +105,7 @@ class Product extends ExtendProduct implements
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\ProductStatus")
      * @ORM\JoinColumn(name="product_status", referencedColumnName="name")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -120,7 +119,7 @@ class Product extends ExtendProduct implements
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=true)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -134,7 +133,7 @@ class Product extends ExtendProduct implements
      * @var double
      *
      * @ORM\Column(name="cost", type="money", nullable=true)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -149,7 +148,7 @@ class Product extends ExtendProduct implements
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *  defaultValues={
      *      "dataaudit"={"auditable"=true},
      *      "importexport"={
@@ -220,7 +219,7 @@ class Product extends ExtendProduct implements
      * @var array $data
      *
      * @ORM\Column(name="data", type="json_array", nullable=true)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
@@ -248,7 +247,7 @@ class Product extends ExtendProduct implements
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="created_at", type="datetime")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.created_at"
@@ -265,7 +264,7 @@ class Product extends ExtendProduct implements
      * @var \DateTime $updatedAt
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.updated_at"

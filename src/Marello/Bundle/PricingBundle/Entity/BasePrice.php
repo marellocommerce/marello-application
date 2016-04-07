@@ -5,7 +5,7 @@ namespace Marello\Bundle\PricingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\MappedSuperclass
@@ -47,7 +47,7 @@ class BasePrice implements CurrencyAwareInterface
      * @var \DateTime $createdAt
      *
      * @ORM\Column(name="created_at", type="datetime")
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.created_at"
@@ -61,7 +61,7 @@ class BasePrice implements CurrencyAwareInterface
      * @var \DateTime $updatedAt
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.updated_at"

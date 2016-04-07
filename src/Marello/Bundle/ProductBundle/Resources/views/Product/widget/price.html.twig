@@ -2,27 +2,23 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 <div class="widget-content">
-    {% if product.prices|length > 0 %}
     <div class="row-fluid form-horizontal">
-        <h5 class="user-fieldset">
-            <span>{{ 'marello.pricing.productprice.entity_plural_label'|trans }}</span>
-        </h5>
-        <div class="row-divider"></div>
-        <div class="responsive-block">
+        {% if product.prices|length > 0 %}
+            <h5 class="user-fieldset">
+                <span>{{ 'marello.pricing.productprice.entity_plural_label'|trans }}</span>
+            </h5>
+            <div class="narrow-divider"></div>
             {{ dataGrid.renderGrid('marello-productprice-grid', { productId: product.id }, { cssClass: 'inner-grid' })  }}
-        </div>
-    </div>
-    {% endif %}
-    {% if product.channelPrices|length > 0 %}
-    <div class="row-divider"></div>
-    <div class="row-fluid form-horizontal">
-        <h5 class="user-fieldset">
-            <span>{{ 'marello.pricing.productchannelprice.entity_plural_label'|trans }}</span>
-        </h5>
+        {% endif %}
+        {% if product.channelPrices|length > 0 %}
         <div class="row-divider"></div>
-        <div class="responsive-block">
+        <div class="row-fluid form-horizontal">
+            <h5 class="user-fieldset">
+                <span>{{ 'marello.pricing.productchannelprice.entity_plural_label'|trans }}</span>
+            </h5>
+            <div class="narrow-divider"></div>
             {{ dataGrid.renderGrid('marello-productchannelprice-grid', { productId: product.id }, { cssClass: 'inner-grid' })  }}
         </div>
+        {% endif %}
     </div>
-    {% endif %}
 </div>

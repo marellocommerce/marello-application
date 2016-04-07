@@ -73,12 +73,12 @@ class ChartBuilder
                     return ['time' => $value['date'], 'quantity' => $value['quantity']];
                 }, $dates)
             ),
-            $this->translator->trans('marello.inventory.inventoryitem.allocatedQuantity.label') => array_values(
+            $this->translator->trans('marello.inventory.inventoryitem.allocated_quantity.label') => array_values(
                 array_map(function ($value) {
                     return ['time' => $value['date'], 'quantity' => $value['allocatedQuantity']];
                 }, $dates)
             ),
-            $this->translator->trans('marello.inventory.inventoryitem.virtualQuantity.label')   => array_values(
+            $this->translator->trans('marello.inventory.inventoryitem.virtual_quantity.label')   => array_values(
                 array_map(function ($value) {
                     return ['time' => $value['date'], 'quantity' => $value['quantity'] - $value['allocatedQuantity']];
                 }, $dates)

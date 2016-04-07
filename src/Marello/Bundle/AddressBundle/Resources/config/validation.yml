@@ -1,0 +1,4 @@
+Marello\Bundle\AddressBundle\Entity\Address:
+    properties:
+        email:
+            - NotBlank: ~

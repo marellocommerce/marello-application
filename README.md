@@ -24,6 +24,7 @@ php composer.phar install
 Run unit tests
 --------------
 
+Please make sure you have at least phpunit 4.5.0 or above.
 To run unit tests of any bundles :
 
 ```bash

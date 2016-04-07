@@ -5,15 +5,15 @@ namespace Marello\Bundle\NotificationBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\NotificationBundle\Model\ExtendNotification;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\NotificationBundle\Processor\EmailNotificationInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
- * @ORM\Entity
- * @ORM\HasLifecycleCallbacks
+ * @ORM\Entity()
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_notification")
- * @Config(
+ * @Oro\Config(
  *  defaultValues={
  *      "grouping"={"groups"={"activity"}},
  *      "ownership"={

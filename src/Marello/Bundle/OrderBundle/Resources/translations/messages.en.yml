@@ -1,61 +1,74 @@
 marello:
     order:
         # Order entity
-        entity_plural_label:      Orders
-        entity_label:             Order
-        id.label:                 Order Number
-        items.label:              Items
-        subtotal.label:           Subtotal
-        total_tax.label:          TAX Total
-        order_date.label:         Order Date
-        grand_total.label:        Grand Total
-        order_number.label:       Order Number
-        sales_channel.label:      Sales Channel
-        sales_channel_name.label: Sales Channel
-        order_reference.label:    Order Reference
-        workflow_item.label:      Workflow Item
-        workflow_step.label:      Workflow Step
-        currency.label:           Currency
-        coupon_code.label:        Coupon Code
-        discount_amount.label:    Discount Amount
-        invoiced_at.label:        Invoiced At
-        payment_method.label:     Payment Method
-        payment_details.label:    Payment Details
-        shipping_method.label:    Shippingmethod
-        shipping_amount.label:    Shipping costs
-        status.label:             Order Status
+        entity_plural_label:        Orders
+        entity_label:               Order
+        id.label:                   Id
+        items.label:                Items
+        subtotal.label:             Subtotal
+        total_tax.label:            TAX Total
+        order_date.label:           Order Date
+        grand_total.label:          Grand Total
+        order_number.label:         Order Number
+        sales_channel.label:        Sales Channel
+        sales_channel_name.label:   Sales Channel
+        order_reference.label:      Order Reference
+        workflow_item.label:        Workflow Item
+        workflow_step.label:        Workflow Step
+        organization.label:         Organization
+        currency.label:             Currency
+        coupon_code.label:          Coupon Code
+        discount_amount.label:      Discount Amount
+        discount_percent.label:     Discount Percent
+        invoiced_at.label:          Invoiced At
+        payment_method.label:       Payment Method
+        payment_details.label:      Payment Details
+        payment_reference.label:    Payment Details
+        shipping_method.label:      Shippingmethod
+        shipping_amount.label:      Shipping costs
+        status.label:               Order Status
         billing_address:
-            label:                Billing Address
-            name.label:           Bill to Name
+            label:                  Billing Address
+            name.label:             Bill to Name
         shipping_address:
-            label:                Shipping Address
-            name.label:           Ship to Name
+            label:                  Shipping Address
+            name.label:             Ship to Name
         address:
-            email.label:          E-Mail
-            phone.label:          Phone
-            edit_action:          Edit Address
+            email.label:            E-Mail
+            phone.label:            Phone
+            edit_action:            Edit Address
         datablock:
-            general:              General
-            billing_and_payment:  Billing & Payment
-            delivery:             Delivery
-            order_items:          Order Items
-            activity:             Activity
+            general:                General
+            billing_and_payment:    Billing & Payment
+            delivery:               Delivery
+            order_items:            Order Items
+            activity:               Activity
 
         # OrderItem entity
         orderitem:
-            entity_label:         Ordered Item
-            entity_plural_label:  Ordered Items
-            id.label:             Id
-            sku.label:            SKU
-            tax.label:            Tax
-            name.label:           Product
-            order.label:          Order
-            price.label:          Price
-            quantity.label:       Quantity
-            total_price.label:    Total Price
-            product_name.label:   Product Name
-            product_sku.label:    Product SKU
-            product.label:        Product
+            entity_label:           Ordered Item
+            entity_plural_label:    Ordered Items
+            id.label:               Id
+            sku.label:              SKU
+            tax.label:              Tax
+            name.label:             Product
+            order.label:            Order
+            price.label:            Price
+            quantity.label:         Quantity
+            total_price.label:      Total Price
+            product_name.label:     Product Name
+            product_sku.label:      Product SKU
+            product.label:          Product
+            discount_amount.label:  Discount Amount
+            discount_percent.label: Discount Percent
+            tax_percent.label:      Tax Percent
+            return_items.label:     Returned items
+
+
+        messages:
+            success:
+                order:
+                    saved:          Order saved
 
         menu:
             shortcut_new_order.label: Create new order

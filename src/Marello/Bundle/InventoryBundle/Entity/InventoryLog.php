@@ -11,7 +11,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLogRepository")
  * @ORM\Table(name="marello_inventory_log")
- * @ORM\HasLifecycleCallbacks
+ * @ORM\HasLifecycleCallbacks()
  */
 class InventoryLog
 {
