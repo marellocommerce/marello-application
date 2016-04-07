@@ -15,7 +15,13 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  * @ORM\Entity()
  * @ORM\Table(name="marello_return_return")
  * @ORM\HasLifecycleCallbacks()
- * @Oro\Config()
+ * @Oro\Config(
+ *      defaultValues={
+ *          "workflow"={
+ *              "active_workflow"="marello_return_workflow"
+ *          }
+ *      }
+ * )
  */
 class ReturnEntity extends ExtendReturnEntity
 {

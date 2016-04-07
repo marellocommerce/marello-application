@@ -1,0 +1,72 @@
+workflows:
+    marello_return_workflow:
+        label: "Return Workflow"
+        entity: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
+        entity_attribute: return
+        start_step: pending
+
+        steps:
+            pending:
+                label: "Pending"
+                allowed_transitions:
+                    - receive
+                    - send_reminder
+            received:
+                label: "Received"
+                allowed_transitions:
+                    - contents_verified
+                    - contents_not_verified
+            inspection:
+                label: "Inspection"
+                allowed_transitions:
+                    - inspection_ok
+                    - inspection_not_ok
+            received_on_hold:
+                label: "On Hold"
+                allowed_transitions:
+                    - continue_received
+            inspection_on_hold:
+                label: "On Hold"
+                allowed_transitions: []
+            done:
+                label: "Done"
+                allowed_transitions: []
+
+        transitions:
+            send_reminder:
+                label: "Send Reminder"
+                step_to: pending
+                transition_definition: send_reminder_def
+            receive:
+                label: "Receive Return"
+                step_to: received
+                transition_definition: receive_def
+            contents_verified:
+                label: "Contents verified"
+                step_to: inspection
+                transition_definition: contents_verified_def
+            contents_not_verified:
+                label: "Contents not verified"
+                step_to: received_on_hold
+                transition_definition: contents_not_verified_def
+            continue_received:
+                label: "Continue Return"
+                step_to: inspection
+                transition_definition: continue_received_def
+            inspection_ok:
+                label: "Inspection OK"
+                step_to: done
+                transition_definition: inspection_ok_def
+            inspection_not_ok:
+                label: "Inspection not OK"
+                step_to: inspection_on_hold
+                transition_definition: inspection_not_ok_def
+
+        transition_definitions:
+            send_reminder_def: ~
+            receive_def: ~
+            contents_verified_def: ~
+            contents_not_verified_def: ~
+            continue_received_def: ~
+            inspection_ok_def: ~
+            inspection_not_ok_def: ~
