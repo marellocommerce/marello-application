@@ -19,7 +19,7 @@ workflows:
             inspection:
                 label: "Inspection"
                 allowed_transitions:
-                    - inspection_ok
+                    - credit
                     - inspection_not_ok
             received_on_hold:
                 label: "On Hold"
@@ -27,9 +27,14 @@ workflows:
                     - continue_received
             inspection_on_hold:
                 label: "On Hold"
+                allowed_transitions:
+                    - credit
+                    - ship_back
+            credited:
+                label: "Credited"
                 allowed_transitions: []
-            done:
-                label: "Done"
+            shipped:
+                label: "Shipped"
                 allowed_transitions: []
 
         transitions:
@@ -53,14 +58,18 @@ workflows:
                 label: "Continue Return"
                 step_to: inspection
                 transition_definition: continue_received_def
-            inspection_ok:
-                label: "Inspection OK"
-                step_to: done
-                transition_definition: inspection_ok_def
             inspection_not_ok:
                 label: "Inspection not OK"
                 step_to: inspection_on_hold
                 transition_definition: inspection_not_ok_def
+            credit:
+                label: "Credit (Inspection OK)"
+                step_to: credited
+                transition_definition: credit_def
+            ship_back:
+                label: "Ship back to customer"
+                step_to: shipped
+                transition_definition: ship_back_def
 
         transition_definitions:
             send_reminder_def: ~
@@ -70,3 +79,5 @@ workflows:
             continue_received_def: ~
             inspection_ok_def: ~
             inspection_not_ok_def: ~
+            credit_def: ~
+            ship_back_def: ~
