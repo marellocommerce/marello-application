@@ -72,12 +72,32 @@ workflows:
                 transition_definition: ship_back_def
 
         transition_definitions:
-            send_reminder_def: ~
-            receive_def: ~
+            send_reminder_def:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $return
+                        recipient: $return.order.billingAddress.email
+                        template: marello_return_reminder
+            receive_def:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $return
+                        recipient: $return.order.billingAddress.email
+                        template: marello_return_received
             contents_verified_def: ~
-            contents_not_verified_def: ~
+            contents_not_verified_def:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $return
+                        recipient: $return.order.billingAddress.email
+                        template: marello_return_not_verified
             continue_received_def: ~
             inspection_ok_def: ~
-            inspection_not_ok_def: ~
+            inspection_not_ok_def:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $return
+                        recipient: $return.order.billingAddress.email
+                        template: marello_return_inspection_not_ok
             credit_def: ~
             ship_back_def: ~

@@ -3,6 +3,8 @@
 namespace Marello\Bundle\ReturnBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
@@ -13,8 +15,14 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAwareInterface
+class MarelloReturnBundleInstaller implements
+    Installation,
+    ExtendExtensionAwareInterface,
+    ActivityExtensionAwareInterface
 {
+    /** @var ActivityExtension */
+    protected $activityExtension;
+
     /** @var ExtendExtension */
     protected $extendExtension;
 
@@ -50,6 +58,8 @@ class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAware
                 'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
             ]
         );
+
+        $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_return_return');
     }
 
     /**
@@ -64,10 +74,12 @@ class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAware
         $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_id', 'integer', ['notnull' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('returnnumber', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('createdat', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('updatedat', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addIndex(['order_id'], 'idx_3c549d8d8d9f6d38', []);
+        $table->addIndex(['organization_id']);
         $table->addUniqueIndex(['workflow_item_id'], 'uniq_3c549d8d1023c4ee');
         $table->addIndex(['workflow_step_id'], 'idx_3c549d8d71fe882c', []);
         $table->setPrimaryKey(['id']);
@@ -118,6 +130,12 @@ class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAware
             ['id'],
             ['onUpdate' => null, 'onDelete' => null]
         );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => null]
+        );
     }
 
     /**
@@ -150,5 +168,15 @@ class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAware
     public function setExtendExtension(ExtendExtension $extendExtension)
     {
         $this->extendExtension = $extendExtension;
+    }
+
+    /**
+     * Sets the ActivityExtension
+     *
+     * @param ActivityExtension $activityExtension
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
     }
 }

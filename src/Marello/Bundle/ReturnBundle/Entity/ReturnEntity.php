@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
@@ -19,7 +20,11 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  *      defaultValues={
  *          "workflow"={
  *              "active_workflow"="marello_return_workflow"
- *          }
+ *          },
+ *          "ownership"={
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
+ *          },
  *      }
  * )
  */
@@ -77,6 +82,14 @@ class ReturnEntity extends ExtendReturnEntity
      * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $workflowStep;
+
+    /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $organization;
 
     /**
      * @var \DateTime
@@ -172,6 +185,7 @@ class ReturnEntity extends ExtendReturnEntity
     public function setOrder($order)
     {
         $this->order = $order;
+        $this->organization = $order->getOrganization();
 
         return $this;
     }
@@ -266,5 +280,13 @@ class ReturnEntity extends ExtendReturnEntity
         $this->workflowStep = $workflowStep;
 
         return $this;
+    }
+
+    /**
+     * @return Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
     }
 }
