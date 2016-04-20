@@ -1,0 +1,37 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% block navButtons %}
+
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('marello_return_return_index'),
+        'indexLabel': 'marello.return.returnentity.entity_plural_label'|trans,
+        'entityTitle': form.vars.value.returnNumber
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'vehicle-edit' %}
+
+    {% set dataBlocks = [{
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form(form),
+                ]
+            }]
+        }]
+    %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

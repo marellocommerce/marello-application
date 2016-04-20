@@ -49,13 +49,13 @@ class ReturnController extends Controller
                 [
                     'route'      => 'marello_return_return_view',
                     'parameters' => [
-                        'id' => $order->getId(),
+                        'id' => $return->getId(),
                     ],
                 ],
                 [
                     'route' => 'marello_return_return_index',
                 ],
-                $order
+                $return
             );
         }
 
@@ -76,5 +76,45 @@ class ReturnController extends Controller
     public function viewAction(ReturnEntity $return)
     {
         return ['entity' => $return];
+    }
+
+    /**
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"})
+     * @Config\Template
+     * @Security\AclAncestor("marello_return_update")
+     *
+     * @param ReturnEntity $return
+     * @param Request      $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function updateAction(ReturnEntity $return, Request $request)
+    {
+        $form = $this->createForm('marello_return', $return);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+
+            $manager->persist($return);
+            $manager->flush();
+
+            return $this->get('oro_ui.router')->redirectAfterSave(
+                [
+                    'route'      => 'marello_return_return_view',
+                    'parameters' => [
+                        'id' => $return->getId(),
+                    ],
+                ],
+                [
+                    'route' => 'marello_return_return_index',
+                ],
+                $return
+            );
+        }
+
+        return [
+            'form' => $form->createView(),
+        ];
     }
 }
