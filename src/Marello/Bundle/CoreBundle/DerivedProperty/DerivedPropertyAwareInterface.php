@@ -10,7 +10,7 @@ interface DerivedPropertyAwareInterface
     public function getId();
 
     /**
-     * @param $id
+     * @param int $id
      */
     public function setDerivedProperty($id);
 }

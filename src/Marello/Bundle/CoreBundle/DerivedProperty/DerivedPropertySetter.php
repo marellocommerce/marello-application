@@ -24,6 +24,9 @@ class DerivedPropertySetter
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @param OnFlushEventArgs $args
+     */
     public function onFlush(OnFlushEventArgs $args)
     {
         $em  = $args->getEntityManager();
@@ -40,6 +43,11 @@ class DerivedPropertySetter
         }
     }
 
+    /**
+     * @param PostFlushEventArgs $args
+     *
+     * @throws \Exception
+     */
     public function postFlush(PostFlushEventArgs $args)
     {
         if (empty($this->generate)) {
