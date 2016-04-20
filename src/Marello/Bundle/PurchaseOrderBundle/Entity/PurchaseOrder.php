@@ -5,6 +5,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -29,7 +30,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  *      }
  * )
  */
-class PurchaseOrder
+class PurchaseOrder implements DerivedPropertyAwareInterface
 {
     /**
      * @ORM\Id
@@ -302,5 +303,15 @@ class PurchaseOrder
         $this->organization = $organization;
 
         return $this;
+    }
+
+    /**
+     * @param $id
+     */
+    public function setDerivedProperty($id)
+    {
+        if (!$this->purchaseOrderNumber) {
+            $this->setPurchaseOrderNumber(sprintf('%09d', $id));
+        }
     }
 }

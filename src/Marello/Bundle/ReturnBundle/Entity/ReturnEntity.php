@@ -5,6 +5,7 @@ namespace Marello\Bundle\ReturnBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -13,7 +14,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="ReturnEntityRepository")
  * @ORM\Table(name="marello_return_return")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Config(
@@ -28,7 +29,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  *      }
  * )
  */
-class ReturnEntity extends ExtendReturnEntity
+class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInterface
 {
 
     /**
@@ -288,5 +289,15 @@ class ReturnEntity extends ExtendReturnEntity
     public function getOrganization()
     {
         return $this->organization;
+    }
+
+    /**
+     * @param $id
+     */
+    public function setDerivedProperty($id)
+    {
+        if (!$this->returnNumber) {
+            $this->setReturnNumber(sprintf('%09d', $id));
+        }
     }
 }

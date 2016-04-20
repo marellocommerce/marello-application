@@ -1,6 +1,0 @@
-services:
-    marello_purchaseorder.listener.doctrine.purchase_order_number_generator:
-        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderNumberGenerator
-        tags:
-            - { name: doctrine.event_listener, event: onFlush }
-            - { name: doctrine.event_listener, event: postFlush }

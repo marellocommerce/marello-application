@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\Address;
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
@@ -42,7 +43,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Order extends ExtendOrder
+class Order extends ExtendOrder implements DerivedPropertyAwareInterface
 {
     /**
      * @var int
@@ -752,5 +753,15 @@ class Order extends ExtendOrder
         $this->organization = $organization;
 
         return $this;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setDerivedProperty($id)
+    {
+        if (!$this->orderNumber) {
+            $this->setOrderNumber(sprintf('%09d', $id));
+        }
     }
 }

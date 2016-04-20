@@ -12,13 +12,12 @@ services:
         tags:
             - { name: oro_service_link, service: marello_notification.email.send_processor }
 
-    marello_order.listener.doctrine.order_number_generator_listener:
-        class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderNumberGeneratorListener
+    marello_order.listener.order_created_notification_sender:
+        class: Marello\Bundle\OrderBundle\EventListener\OrderCreatedNotificationSender
         arguments:
-            - '@marello_order.email_processor_link'
+            - "@marello_order.email_processor_link"
         tags:
-            - { name: doctrine.event_listener, event: onFlush }
-            - { name: doctrine.event_listener, event: postFlush }
+            - { name: kernel.event_listener, event: "marello.core.derived_property_set", method: derivedPropertySet }
 
     marello_order.listener.doctrine.order_number_generator_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderOrganizationListener
