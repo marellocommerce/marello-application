@@ -55,7 +55,6 @@ class PurchaseOrder
      *     cascade={"persist"},
      *     mappedBy="order"
      * )
-     * @ORM\JoinColumns
      */
     protected $items;
 

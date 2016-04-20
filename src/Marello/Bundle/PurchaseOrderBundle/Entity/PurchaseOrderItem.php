@@ -33,6 +33,7 @@ class PurchaseOrderItem
      * @var PurchaseOrder
      *
      * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="items")
+     * @ORM\JoinColumn
      */
     protected $order;
 
