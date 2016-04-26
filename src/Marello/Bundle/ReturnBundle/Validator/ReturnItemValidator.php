@@ -35,7 +35,11 @@ class ReturnItemValidator extends ConstraintValidator
          */
         $returnedQuantity = array_reduce(
             $orderItem->getReturnItems()->toArray(),
-            function ($carry, ReturnItem $item) {
+            function ($carry, ReturnItem $item) use ($constraint, $returnItem) {
+                if ((!$constraint->includeSelf) && ($item === $returnItem)) {
+                    return $carry;
+                }
+
                 return $carry + $item->getQuantity();
             },
             0

@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ReturnBundle\Validator\Constraints;
 
+use Marello\Bundle\ReturnBundle\Validator\ReturnItemValidator;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -12,12 +13,23 @@ class ReturnItemConstraint extends Constraint
     /** @var string */
     public $message = 'Returned quantity is greater than ordered.';
 
+    /** @var bool */
+    public $includeSelf = true;
+
+    /**
+     * @return string
+     */
+    public function getDefaultOption()
+    {
+        return 'includeSelf';
+    }
+
     /**
      * @return string
      */
     public function validatedBy()
     {
-        return 'Marello\Bundle\ReturnBundle\Validator\ReturnItemValidator';
+        return ReturnItemValidator::class;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Marello\Bundle\ReturnBundle\Form\Type;
 use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReturnItemType extends AbstractType
@@ -16,13 +17,17 @@ class ReturnItemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('quantity', 'number', [
-            'data' => 0,
-        ]);
+        if ($options['update']) {
+            $builder->add('quantity', 'number');
+        } else {
+            $builder->add('quantity', 'number', [
+                'data' => 0,
+            ]);
+        }
         $builder->add('reason', 'oro_enum_choice', [
-            'enum_code'   => 'marello_return_reason',
-            'required'    => true,
-            'label'       => 'marello.return.returnentity.reason.label',
+            'enum_code' => 'marello_return_reason',
+            'required'  => true,
+            'label'     => 'marello.return.returnentity.reason.label',
         ]);
     }
 
@@ -33,7 +38,10 @@ class ReturnItemType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class'         => 'Marello\Bundle\ReturnBundle\Entity\ReturnItem',
-            'constraints'        => new ReturnItemConstraint(),
+            'update'             => false,
+            'constraints'        => function (Options $options) {
+                return new ReturnItemConstraint(!$options['update']);
+            },
             'cascade_validation' => true,
         ]);
     }

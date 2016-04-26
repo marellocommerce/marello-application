@@ -8,6 +8,11 @@ services:
         tags:
             - { name: form.type, alias: marello_return }
 
+    marello_return.form.type.return_update:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnUpdateType
+        tags:
+            - { name: form.type, alias: marello_return_update }
+
     marello_return.form.type.return_api:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnApiType
         arguments:

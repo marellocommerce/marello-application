@@ -4,6 +4,7 @@ namespace Marello\Bundle\ReturnBundle\Form\Type;
 
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReturnItemCollectionType extends AbstractType
@@ -27,6 +28,9 @@ class ReturnItemCollectionType extends AbstractType
     {
         $resolver->setDefaults([
             'type'                 => ReturnItemType::NAME,
+            'options'              => function (Options $options) {
+                return ['update' => $options['update']];
+            },
             'show_form_when_empty' => false,
             'error_bubbling'       => false,
             'cascade_validation'   => true,
@@ -34,6 +38,7 @@ class ReturnItemCollectionType extends AbstractType
             'prototype'            => true,
             'handle_primary'       => false,
             'by_reference'         => false,
+            'update'               => false,
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace Marello\Bundle\ReturnBundle\Controller;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\ReturnBundle\Form\Type\ReturnUpdateType;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -90,7 +91,7 @@ class ReturnController extends Controller
      */
     public function updateAction(ReturnEntity $return, Request $request)
     {
-        $form = $this->createForm('marello_return', $return);
+        $form = $this->createForm(ReturnUpdateType::NAME, $return);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

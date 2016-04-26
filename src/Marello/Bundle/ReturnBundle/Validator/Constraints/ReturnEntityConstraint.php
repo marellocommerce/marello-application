@@ -1,6 +1,7 @@
 <?php
 namespace Marello\Bundle\ReturnBundle\Validator\Constraints;
 
+use Marello\Bundle\ReturnBundle\Validator\ReturnEntityValidator;
 use Symfony\Component\Validator\Constraint;
 
 class ReturnEntityConstraint extends Constraint
@@ -13,7 +14,7 @@ class ReturnEntityConstraint extends Constraint
      */
     public function validatedBy()
     {
-        return 'Marello\Bundle\ReturnBundle\Validator\ReturnEntityValidator';
+        return ReturnEntityValidator::class;
     }
 
     /**

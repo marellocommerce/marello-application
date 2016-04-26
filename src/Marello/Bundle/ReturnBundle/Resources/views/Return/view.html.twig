@@ -15,6 +15,16 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
+{% block navButtons %}
+    {% if resource_granted('EDIT', entity) and entity.workflowStep.name matches '/_on_hold$/' %}
+        {{ UI.buttonSeparator() }}
+        {{ UI.editButton({
+            'path': path('marello_return_return_update', {'id': entity.id}),
+            'entity_label': 'marello.return.returnentity.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
 {% block content_data %}
     {% set order %}
         <div class="widget-content">
@@ -68,16 +78,6 @@
         </div>
     {% endset %}
 
-    {% set activity %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {# Activity #}
-                </div>
-            </div>
-        </div>
-    {% endset %}
-
     {% set items %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -108,13 +108,6 @@
             'class': 'active',
             'subblocks': [
                 { 'data' : [items] }
-            ]
-        },
-        {
-            'title': 'marello.order.datablock.activity'|trans,
-            'class': 'active',
-            'subblocks': [
-                { 'data' : [activity] }
             ]
         }
     ] %}
