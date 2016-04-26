@@ -61,7 +61,7 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
      * @ORM\OneToMany(
      *     targetEntity="Marello\Bundle\ReturnBundle\Entity\ReturnItem",
      *     mappedBy="return",
-     *     cascade={"persist"},
+     *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
      * @ORM\JoinColumn

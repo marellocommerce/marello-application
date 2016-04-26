@@ -102,7 +102,7 @@ class ReturnController extends Controller
 
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
-                    'route'      => 'marello_return_return_view',
+                    'route'      => 'marello_return_return_update',
                     'parameters' => [
                         'id' => $return->getId(),
                     ],
