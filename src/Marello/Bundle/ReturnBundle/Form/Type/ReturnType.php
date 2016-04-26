@@ -31,6 +31,14 @@ class ReturnType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add(
+            'salesChannel',
+            'genemu_jqueryselect2_entity',
+            [
+                'class' => 'MarelloSalesBundle:SalesChannel',
+            ]
+        );
+
         $builder->add('returnItems', ReturnItemCollectionType::NAME);
 
         $builder->addEventSubscriber($this->returnTypeSubscriber);

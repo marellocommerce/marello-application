@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -68,6 +69,21 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
      * @ORM\JoinColumn
      */
     protected $returnItems;
+
+    /**
+     * @var SalesChannel
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
+     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     */
+    protected $salesChannel;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="saleschannel_name",type="string", nullable=false)
+     */
+    protected $salesChannelName;
 
     /**
      * @var WorkflowItem
@@ -136,6 +152,7 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
      */
     public function prePersist()
     {
+        $this->salesChannelName = $this->salesChannel->getName();
         $this->createdAt = $this->updatedAt = new \DateTime();
     }
 
@@ -300,5 +317,33 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
         if (!$this->returnNumber) {
             $this->setReturnNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * @return SalesChannel
+     */
+    public function getSalesChannel()
+    {
+        return $this->salesChannel;
+    }
+
+    /**
+     * @param SalesChannel $salesChannel
+     *
+     * @return $this
+     */
+    public function setSalesChannel($salesChannel)
+    {
+        $this->salesChannel = $salesChannel;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalesChannelName()
+    {
+        return $this->salesChannelName;
     }
 }
