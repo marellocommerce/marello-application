@@ -22,11 +22,11 @@ workflows:
                     - credit
                     - inspection_not_ok
             received_on_hold:
-                label: "On Hold"
+                label: "On Hold (Verification)"
                 allowed_transitions:
                     - continue_received
             inspection_on_hold:
-                label: "On Hold"
+                label: "On Hold (Inspection)"
                 allowed_transitions:
                     - credit
                     - ship_back

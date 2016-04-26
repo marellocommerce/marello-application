@@ -20,7 +20,8 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  * @Oro\Config(
  *      defaultValues={
  *          "workflow"={
- *              "active_workflow"="marello_return_workflow"
+ *              "active_workflow"="marello_return_workflow",
+ *              "show_step_in_grid"=true
  *          },
  *          "ownership"={
  *              "organization_field_name"="organization",

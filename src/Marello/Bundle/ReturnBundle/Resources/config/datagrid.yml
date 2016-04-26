@@ -5,7 +5,9 @@ datagrid:
             query:
                 select:
                     - r
-                    - SUM(ri.quantity) AS returnItemCount
+                    - ws.label AS wsLabel
+                    - ws.name AS wsName
+                    - COALESCE(SUM(ri.quantity), 0) AS returnItemCount
                     - (SELECT SUM(oi.quantity) FROM MarelloOrderBundle:OrderItem oi WHERE oi.order = r.order ) AS orderItemCount
                 from:
                     - { table: MarelloReturnBundle:ReturnEntity, alias: r }
@@ -13,6 +15,7 @@ datagrid:
                     left:
                         - { join: r.returnItems, alias: ri }
                         - { join: r.order, alias: o }
+                        - { join: r.workflowStep, alias: ws }
                 groupBy: r.id, o.id
         columns:
             returnNumber:
@@ -39,6 +42,9 @@ datagrid:
             updatedAt:
                 label: oro.ui.updated_at
                 frontend_type: datetime
+            workflowStep:
+                label: oro.workflow.workflowstep.grid.label
+                data_name: wsLabel
         filters:
             columns:
                 returnNumber:
@@ -53,6 +59,13 @@ datagrid:
                 updatedAt:
                     type: datetime
                     data_name: r.updatedAt
+                workflowStep:
+                    type: entity
+                    data_name: r.workflowStep
+                    options:
+                        field_type: oro_workflow_step_select
+                        field_options:
+                            workflow_entity_class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
         sorters:
             columns:
                 returnNumber:
