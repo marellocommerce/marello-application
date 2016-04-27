@@ -36,6 +36,7 @@ class ReturnController extends Controller
     {
         $return = new ReturnEntity();
         $return->setOrder($order);
+        $return->setSalesChannel($order->getSalesChannel());
 
         $form = $this->createForm('marello_return', $return);
         $form->handleRequest($request);

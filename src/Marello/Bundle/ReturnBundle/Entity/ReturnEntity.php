@@ -152,7 +152,6 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
      */
     public function prePersist()
     {
-        $this->salesChannelName = $this->salesChannel->getName();
         $this->createdAt = $this->updatedAt = new \DateTime();
     }
 
@@ -332,9 +331,12 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
      *
      * @return $this
      */
-    public function setSalesChannel($salesChannel)
+    public function setSalesChannel($salesChannel = null)
     {
         $this->salesChannel = $salesChannel;
+        if ($this->salesChannel) {
+            $this->salesChannelName = $this->salesChannel->getName();
+        }
 
         return $this;
     }
