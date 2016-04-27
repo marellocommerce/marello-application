@@ -63,29 +63,6 @@ class MarelloReturnBundleInstaller implements
     }
 
     /**
-     * Create marello_return_return table
-     *
-     * @param Schema $schema
-     */
-    protected function createMarelloReturnReturnTable(Schema $schema)
-    {
-        $table = $schema->createTable('marello_return_return');
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
-        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
-        $table->addColumn('order_id', 'integer', ['notnull' => false]);
-        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
-        $table->addColumn('returnnumber', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('createdat', 'datetime', ['comment' => '(DC2Type:datetime)']);
-        $table->addColumn('updatedat', 'datetime', ['comment' => '(DC2Type:datetime)']);
-        $table->addIndex(['order_id'], 'idx_3c549d8d8d9f6d38', []);
-        $table->addIndex(['organization_id']);
-        $table->addUniqueIndex(['workflow_item_id'], 'uniq_3c549d8d1023c4ee');
-        $table->addIndex(['workflow_step_id'], 'idx_3c549d8d71fe882c', []);
-        $table->setPrimaryKey(['id']);
-    }
-
-    /**
      * Create marello_return_item table
      *
      * @param Schema $schema
@@ -97,45 +74,37 @@ class MarelloReturnBundleInstaller implements
         $table->addColumn('return_id', 'integer', ['notnull' => false]);
         $table->addColumn('orderitem_id', 'integer', ['notnull' => false]);
         $table->addColumn('quantity', 'integer', []);
-        $table->addColumn('createdat', 'datetime', ['comment' => '(DC2Type:datetime)']);
-        $table->addColumn('updatedat', 'datetime', ['comment' => '(DC2Type:datetime)']);
+        $table->addColumn('createdat', 'datetime', []);
+        $table->addColumn('updatedat', 'datetime', []);
+        $table->setPrimaryKey(['id']);
         $table->addIndex(['orderitem_id'], 'idx_ae43aff6e76e9c94', []);
         $table->addIndex(['return_id'], 'idx_ae43aff6227416d5', []);
-        $table->setPrimaryKey(['id']);
     }
 
     /**
-     * Add marello_return_return foreign keys.
+     * Create marello_return_return table
      *
      * @param Schema $schema
      */
-    protected function addMarelloReturnReturnForeignKeys(Schema $schema)
+    protected function createMarelloReturnReturnTable(Schema $schema)
     {
-        $table = $schema->getTable('marello_return_return');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('oro_workflow_step'),
-            ['workflow_step_id'],
-            ['id'],
-            ['onUpdate' => null, 'onDelete' => 'SET NULL']
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('oro_workflow_item'),
-            ['workflow_item_id'],
-            ['id'],
-            ['onUpdate' => null, 'onDelete' => 'SET NULL']
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_order'),
-            ['order_id'],
-            ['id'],
-            ['onUpdate' => null, 'onDelete' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('oro_organization'),
-            ['organization_id'],
-            ['id'],
-            ['onUpdate' => null, 'onDelete' => null]
-        );
+        $table = $schema->createTable('marello_return_return');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
+        $table->addColumn('order_id', 'integer', ['notnull' => false]);
+        $table->addColumn('returnnumber', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('createdat', 'datetime', []);
+        $table->addColumn('updatedat', 'datetime', []);
+        $table->addColumn('saleschannel_name', 'string', ['length' => 255]);
+        $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['workflow_item_id'], 'uniq_3c549d8d1023c4ee');
+        $table->addIndex(['order_id'], 'idx_3c549d8d8d9f6d38', []);
+        $table->addIndex(['organization_id'], 'IDX_3C549D8D32C8A3DE', []);
+        $table->addIndex(['workflow_step_id'], 'idx_3c549d8d71fe882c', []);
+        $table->addIndex(['salesChannel_id'], 'IDX_3C549D8D4C7A5B2E', []);
     }
 
     /**
@@ -150,13 +119,53 @@ class MarelloReturnBundleInstaller implements
             $schema->getTable('marello_return_return'),
             ['return_id'],
             ['id'],
-            ['onUpdate' => null, 'onDelete' => 'CASCADE']
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_order_order_item'),
             ['orderitem_id'],
             ['id'],
-            ['onUpdate' => null, 'onDelete' => null]
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * Add marello_return_return foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloReturnReturnForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_return_return');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_item'),
+            ['workflow_item_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_sales_sales_channel'),
+            ['salesChannel_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_step'),
+            ['workflow_step_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_order_order'),
+            ['order_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
         );
     }
 

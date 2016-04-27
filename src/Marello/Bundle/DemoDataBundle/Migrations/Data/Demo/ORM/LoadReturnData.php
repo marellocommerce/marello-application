@@ -21,6 +21,7 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $orders = $manager->getRepository('MarelloOrderBundle:Order')->findAll();
+        $channel = $this->getReference('marello_sales_channel_1');
 
         $i = 0;
         foreach ($orders as $order) {
@@ -34,6 +35,7 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
             $return = new ReturnEntity();
 
             $return->setOrder($order);
+            $return->setSalesChannel($channel);
 
             $order->getItems()->map(function (OrderItem $item) use ($return) {
                 $returnItem = new ReturnItem($item);
