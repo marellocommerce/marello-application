@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 class LoadReturnData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -22,6 +23,8 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
     {
         $orders = $manager->getRepository('MarelloOrderBundle:Order')->findAll();
         $channel = $this->getReference('marello_sales_channel_1');
+        $reasonClass = ExtendHelper::buildEnumValueClassName('marello_return_reason');
+        $reasons = $manager->getRepository($reasonClass)->findAll();
 
         $i = 0;
         foreach ($orders as $order) {
@@ -37,9 +40,10 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
             $return->setOrder($order);
             $return->setSalesChannel($channel);
 
-            $order->getItems()->map(function (OrderItem $item) use ($return) {
+            $order->getItems()->map(function (OrderItem $item) use ($return, $reasons) {
                 $returnItem = new ReturnItem($item);
                 $returnItem->setQuantity(rand(1, $item->getQuantity()));
+                $returnItem->setReason($reasons[rand(0, count($reasons) - 1)]);
 
                 $return->addReturnItem($returnItem);
             });
