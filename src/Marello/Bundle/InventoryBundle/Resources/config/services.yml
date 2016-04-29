@@ -30,3 +30,8 @@ services:
         class: Marello\Bundle\InventoryBundle\InventoryAllocation\InventoryAllocator
         arguments:
             - @doctrine
+
+    marello_inventory.listener.doctrine.stock_level_hydration:
+        class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectHydrationSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }

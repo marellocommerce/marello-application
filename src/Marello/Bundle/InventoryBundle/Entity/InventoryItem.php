@@ -28,9 +28,6 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  */
 class InventoryItem
 {
-    const MODIFY_OPERATOR_INCREASE = 'increase';
-    const MODIFY_OPERATOR_DECREASE = 'decrease';
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -79,77 +76,47 @@ class InventoryItem
     protected $warehouse;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "order"=20,
-     *              "header"="Total Stock"
-     *          }
-     *      }
-     * )
-     *
-     * @var int
+     * @var StockLevel
      */
-    protected $quantity = 0;
+    protected $currentLevel = null;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
-     *
-     * @var int
+     * @var StockLevel[]|Collection
      */
-    protected $allocatedQuantity = 0;
-
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLog",
-     *     cascade={"persist", "remove"},
-     *     mappedBy="inventoryItem",
-     *     fetch="EXTRA_LAZY"
-     * )
-     *
-     * @var Collection
-     */
-    protected $inventoryLogs;
-
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryAllocation",
-     *     cascade={"remove"},
-     *     mappedBy="inventoryItem",
-     *     fetch="LAZY"
-     * )
-     *
-     * @var InventoryAllocation[]|Collection
-     */
-    protected $allocations;
+    protected $levels;
 
     /**
      * InventoryItem constructor.
-     */
-    public function __construct()
-    {
-        $this->inventoryLogs = new ArrayCollection();
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
      *
-     * @return InventoryItem
+     * @param Product   $product
+     * @param Warehouse $warehouse
      */
-    public function setId($id)
+    public function __construct(Product $product, Warehouse $warehouse)
     {
-        $this->id = $id;
+        $this->product   = $product;
+        $this->warehouse = $warehouse;
+        $this->levels    = new ArrayCollection();
+    }
+
+    /**
+     * @param StockLevel $newLevel
+     *
+     * @return $this
+     */
+    public function changeCurrentLevel(StockLevel $newLevel)
+    {
+        $this->levels->add($newLevel);
+        $this->currentLevel = $newLevel;
 
         return $this;
+    }
+
+    /**
+     * @return StockLevel
+     */
+    public function getCurrentLevel()
+    {
+        return $this->currentLevel;
     }
 
     /**
@@ -161,146 +128,10 @@ class InventoryItem
     }
 
     /**
-     * @param Product $product
-     *
-     * @return $this
-     */
-    public function setProduct($product = null)
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    /**
      * @return Warehouse
      */
     public function getWarehouse()
     {
         return $this->warehouse;
-    }
-
-    /**
-     * @param Warehouse $warehouse
-     *
-     * @return $this
-     */
-    public function setWarehouse(Warehouse $warehouse = null)
-    {
-        $this->warehouse = $warehouse;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getQuantity()
-    {
-        return $this->quantity;
-    }
-
-    /**
-     * @param int $quantity
-     *
-     * @return $this
-     */
-    public function setQuantity($quantity)
-    {
-        $this->quantity = $quantity;
-
-        return $this;
-    }
-
-    /**
-     * @param int $amount
-     *
-     * @return $this
-     */
-    public function modifyQuantity($amount)
-    {
-        $this->quantity += $amount;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getInventoryLogs()
-    {
-        return $this->inventoryLogs;
-    }
-
-    /**
-     * @param InventoryLog $log
-     *
-     * @return $this
-     */
-    public function addInventoryLog(InventoryLog $log)
-    {
-        $this->inventoryLogs->add($log);
-
-        return $this;
-    }
-
-    /**
-     * @param InventoryLog $log
-     *
-     * @return $this
-     */
-    public function removeInventoryLog(InventoryLog $log)
-    {
-        $this->inventoryLogs->removeElement($log);
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAllocatedQuantity()
-    {
-        return $this->allocatedQuantity;
-    }
-
-    /**
-     * @param mixed $allocatedQuantity
-     *
-     * @return $this
-     */
-    public function setAllocatedQuantity($allocatedQuantity)
-    {
-        $this->allocatedQuantity = $allocatedQuantity;
-
-        return $this;
-    }
-
-    /**
-     * @param mixed $amount
-     *
-     * @return $this
-     */
-    public function modifyAllocatedQuantity($amount)
-    {
-        $this->allocatedQuantity += $amount;
-
-        return $this;
-    }
-
-    /**
-     * @return InventoryAllocation[]|Collection
-     */
-    public function getAllocations()
-    {
-        return $this->allocations;
-    }
-
-    /**
-     * @return int
-     */
-    public function getVirtualQuantity()
-    {
-        return $this->quantity - $this->allocatedQuantity;
     }
 }
