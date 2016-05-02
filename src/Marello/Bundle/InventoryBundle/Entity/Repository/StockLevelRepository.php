@@ -53,17 +53,19 @@ class StockLevelRepository extends EntityRepository
     public function getQuantitiesForProduct(Product $product, \DateTime $from, \DateTime $to)
     {
         $qb = $this->createQueryBuilder('l');
+        $qb
+            ->join('l.inventoryItem', 'i')
+            ->leftJoin('l.previousLevel', 'p');
 
         /*
          * Select sums of changes and group them by date.
          */
         $qb
             ->select(
-                'SUM(l.newQuantity - l.oldQuantity) AS quantity',
-                'SUM(l.newAllocatedQuantity - l.oldAllocatedQuantity) AS allocatedQuantity',
+                'SUM(l.stock - COALESCE(p.stock, 0)) AS quantity',
+                'SUM(l.allocatedStock - COALESCE(p.allocatedStock, 0)) AS allocatedQuantity',
                 'DATE(l.createdAt) AS date'
             )
-            ->join('l.inventoryItem', 'i')
             ->andWhere($qb->expr()->eq('IDENTITY(i.product)', ':product'))
             ->andWhere($qb->expr()->between('l.createdAt', ':from', ':to'))
             ->groupBy('date');
@@ -96,7 +98,10 @@ class StockLevelRepository extends EntityRepository
         $qb = $this->createQueryBuilder('l');
 
         $qb
-            ->select('l.oldQuantity AS quantity', 'l.oldAllocatedQuantity AS allocatedQuantity')
+            ->leftJoin('l.previousLevel', 'p');
+
+        $qb
+            ->select('COALESCE(p.stock, 0) AS quantity', 'COALESCE(p.allocatedStock, 0) AS allocatedQuantity')
             ->join('l.inventoryItem', 'i')
             ->andWhere($qb->expr()->eq('IDENTITY(i.product)', ':product'))
             ->andWhere($qb->expr()->eq('DATE(l.createdAt)', 'DATE(:at)'))
@@ -113,35 +118,6 @@ class StockLevelRepository extends EntityRepository
         if (!empty($result)) {
             return $result[0];
         }
-
-        /*
-         * Second. Find last record before.
-         */
-
-        $qb = $this->createQueryBuilder('l');
-
-        $qb
-            ->select('l.newQuantity AS quantity', 'l.newAllocatedQuantity AS allocatedQuantity')
-            ->join('l.inventoryItem', 'i')
-            ->andWhere($qb->expr()->eq('IDENTITY(i.product)', ':product'))
-            ->andWhere($qb->expr()->lt('l.createdAt', ':at'))
-            ->orderBy('l.createdAt', 'DESC');
-
-        $qb
-            ->setParameters(compact('product', 'at'));
-
-        $result = $qb
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getArrayResult();
-
-        if (!empty($result)) {
-            return $result[0];
-        }
-
-        /*
-         * Third. No record, so sequence starts at zero.
-         */
 
         return [
             'quantity'          => 0,

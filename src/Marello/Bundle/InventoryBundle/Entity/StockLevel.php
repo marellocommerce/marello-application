@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\StockLevelRepository")
  * @ORM\Table(name="marello_inventory_stock_level")
  */
 class StockLevel
@@ -170,6 +170,14 @@ class StockLevel
     public function getAllocatedStockDiff()
     {
         return $this->allocatedStock - ($this->previousLevel ? $this->previousLevel->getAllocatedStock() : 0);
+    }
+
+    /**
+     * @return int
+     */
+    public function getVirtualStock()
+    {
+        return $this->stock - $this->allocatedStock;
     }
 
     /**

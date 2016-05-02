@@ -7,9 +7,9 @@
         <div class="responsive-block">
             {{ UI.renderHtmlProperty('marello.product.desired_stock_level.label'|trans, '<strong>' ~ item.product.desiredStockLevel ~ '</strong>') }}
             {{ UI.renderHtmlProperty('marello.product.purchase_stock_level.label'|trans, '<strong>' ~ item.product.purchaseStockLevel ~ '</strong>') }}
-            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.quantity.label'|trans, '<strong>' ~ item.quantity ~ '</strong>') }}
-            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.allocated_quantity.label'|trans, '<strong>' ~ item.allocatedQuantity ~ '</strong>') }}
-            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.virtual_quantity.label'|trans, '<strong>' ~ item.virtualQuantity ~ '</strong>') }}
+            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.quantity.label'|trans, '<strong>' ~ item.currentLevel.stock ~ '</strong>') }}
+            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.allocated_quantity.label'|trans, '<strong>' ~ item.currentLevel.allocatedStock ~ '</strong>') }}
+            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.virtual_quantity.label'|trans, '<strong>' ~ item.currentLevel.virtualStock ~ '</strong>') }}
         </div>
     </div>
     <div class="row-divider"></div>
