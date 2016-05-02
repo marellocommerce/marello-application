@@ -48,7 +48,7 @@
         {% endif %}
         <td class="inventory-line-item-quantity">
             <div class="fields-row">
-                <strong>{{ form.vars.value.quantity }}</strong>
+                <strong>{{ form.vars.value.inventoryItem.currentLevel.stock|default(0) }}</strong>
             </div>
         </td>
         {{ form_widget(form) }}
@@ -56,11 +56,11 @@
 {% endblock %}
 
 {% block marello_inventory_item_widget %}
-    <td class="inventory-line-item-adjustment {{ form.modifyAmount.vars.errors|length ? 'has-errors' : '' }}">
+    <td class="inventory-line-item-adjustment {{ form.stock.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
-            {{ form_widget(form.modifyOperator) }}
-            {{ form_widget(form.modifyAmount) }}
-            {{ form_errors(form.modifyAmount) }}
+            {{ form_widget(form.stockOperator) }}
+            {{ form_widget(form.stock) }}
+            {{ form_errors(form.stock) }}
         </div>
     </td>
 {% endblock %}

@@ -76,11 +76,20 @@ class InventoryItem
     protected $warehouse;
 
     /**
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     *
      * @var StockLevel
      */
     protected $currentLevel = null;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel",
+     *     mappedBy="inventoryItem",
+     *     cascade={"persist", "remove"}
+     * )
+     *
      * @var StockLevel[]|Collection
      */
     protected $levels;
@@ -96,6 +105,28 @@ class InventoryItem
         $this->product   = $product;
         $this->warehouse = $warehouse;
         $this->levels    = new ArrayCollection();
+    }
+
+    /**
+     * @param Product   $product
+     * @param Warehouse $warehouse
+     * @param int   $stock
+     * @param           $allocatedStock
+     * @param           $trigger
+     *
+     * @return InventoryItem
+     */
+    public static function withStockLevel(
+        Product $product,
+        Warehouse $warehouse,
+        $stock,
+        $allocatedStock,
+        $trigger
+    ) {
+        $inventoryItem = new self($product, $warehouse);
+        new StockLevel($inventoryItem, $stock, $allocatedStock, $trigger);
+
+        return $inventoryItem;
     }
 
     /**

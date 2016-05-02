@@ -14,23 +14,6 @@ services:
             - @oro_dashboard.datetime.helper
             - @translator
 
-    marello_inventory.logging.inventory_logger:
-        class: Marello\Bundle\InventoryBundle\Logging\InventoryLogger
-        arguments:
-            - @doctrine
-            - @security.token_storage
-
-    marello_inventory.event_listener.doctrine.inventory_allocation:
-        class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\InventoryAllocationListener
-        tags:
-            - {name: doctrine.event_listener, event: prePersist, method: prePersist }
-            - {name: doctrine.event_listener, event: preRemove, method: preRemove }
-
-    marello_inventory.allocation.allocator:
-        class: Marello\Bundle\InventoryBundle\InventoryAllocation\InventoryAllocator
-        arguments:
-            - @doctrine
-
     marello_inventory.listener.doctrine.stock_level_hydration:
         class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectHydrationSubscriber
         tags:

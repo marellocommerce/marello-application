@@ -12,13 +12,14 @@ datagrid:
                     - s.label as status
                     - p.createdAt
                     - p.updatedAt
-                    - COALESCE(SUM(i.quantity), 0) AS stockLevel
+                    - COALESCE(SUM(l.stock), 0) AS stockLevel
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
+                        - { join: i.currentLevel, alias: l }
                 groupBy: p.id
         columns:
             sku:
@@ -120,13 +121,14 @@ datagrid:
                     - p.name
                     - p.sku
                     - s.label as status
-                    - SUM(i.quantity) AS stockLevel
+                    - SUM(l.quantity) AS stockLevel
                 from:
                     - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
+                        - { join: i.currentLevel, alias: l }
                 where:
                     and:
                         - p.variant = :variantId
@@ -179,13 +181,14 @@ datagrid:
                     - p.name
                     - p.sku
                     - s.label as status
-                    - SUM(i.quantity) AS stockLevel
+                    - SUM(l.quantity) AS stockLevel
                 from:
                     - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
+                        - { join: i.currentLevel, alias: l }
                 where:
                     and:
                         - p.id != :product

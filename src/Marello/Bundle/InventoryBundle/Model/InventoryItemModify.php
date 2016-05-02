@@ -59,8 +59,96 @@ class InventoryItemModify
      */
     public function toModifiedInventoryItem()
     {
+        /*
+         * If there is nothing modified on the inventory item...
+         * keep the original item and return it without creating new stock level.
+         */
+        if (!$this->allocatedStock && $this->stock) {
+            return $this->inventoryItem;
+        }
+
         return $this->toStockModify()
             ->toStockLevel($this->inventoryItem)
             ->getInventoryItem();
+    }
+
+    /**
+     * @return int
+     */
+    public function getStock()
+    {
+        return $this->stock;
+    }
+
+    /**
+     * @param int $stock
+     *
+     * @return $this
+     */
+    public function setStock($stock)
+    {
+        $this->stock = $stock;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStockOperator()
+    {
+        return $this->stockOperator;
+    }
+
+    /**
+     * @param string $stockOperator
+     *
+     * @return $this
+     */
+    public function setStockOperator($stockOperator)
+    {
+        $this->stockOperator = $stockOperator;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAllocatedStock()
+    {
+        return $this->allocatedStock;
+    }
+
+    /**
+     * @param int $allocatedStock
+     *
+     * @return $this
+     */
+    public function setAllocatedStock($allocatedStock)
+    {
+        $this->allocatedStock = $allocatedStock;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAllocatedStockOperator()
+    {
+        return $this->allocatedStockOperator;
+    }
+
+    /**
+     * @param string $allocatedStockOperator
+     *
+     * @return $this
+     */
+    public function setAllocatedStockOperator($allocatedStockOperator)
+    {
+        $this->allocatedStockOperator = $allocatedStockOperator;
+
+        return $this;
     }
 }

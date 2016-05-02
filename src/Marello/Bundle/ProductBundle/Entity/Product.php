@@ -208,8 +208,7 @@ class Product extends ExtendProduct implements
      *      targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem",
      *      mappedBy="product",
      *      cascade={"remove", "persist"},
-     *      orphanRemoval=true,
-     *      fetch="LAZY"
+     *      orphanRemoval=true
      * )
      * @ORM\OrderBy({"id" = "ASC"})
      */
@@ -638,7 +637,6 @@ class Product extends ExtendProduct implements
      */
     public function addInventoryItem(InventoryItem $item)
     {
-        $item->setProduct($this);
         $this->inventoryItems->add($item);
 
         return $this;

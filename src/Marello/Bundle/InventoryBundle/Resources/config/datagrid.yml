@@ -11,15 +11,16 @@ datagrid:
                     - s.label as status
                     - p.createdAt
                     - p.updatedAt
-                    - COALESCE(SUM(i.quantity), 0) AS quantity
-                    - COALESCE(SUM(i.allocatedQuantity), 0) AS allocatedQuantity
-                    - COALESCE(SUM(i.quantity - i.allocatedQuantity), 0) AS virtualQuantity
+                    - COALESCE(SUM(l.stock), 0) AS quantity
+                    - COALESCE(SUM(l.allocatedStock), 0) AS allocatedQuantity
+                    - COALESCE(SUM(l.stock - l.allocatedStock), 0) AS virtualQuantity
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
+                        - { join: i.currentLevel, alias: l }
                 groupBy: p.id
         columns:
             sku:
@@ -92,12 +93,13 @@ datagrid:
             query:
                 select:
                     - l
-                    - (l.newQuantity - l.oldQuantity) AS changeAmount
-                    - (l.newAllocatedQuantity - l.oldAllocatedQuantity) AS changeAllocatedAmount
+                    - (l.stock - COALESCE(p.stock, 0)) AS changeAmount
+                    - (l.allocatedStock - COALESCE(p.allocatedStock, 0)) AS changeAllocatedAmount
                 from:
-                    - { table: MarelloInventoryBundle:InventoryLog, alias: l }
+                    - { table: MarelloInventoryBundle:StockLevel, alias: l }
                 join:
                     left:
+                        - { join: l.previousLevel, alias: p }
                         - { join: l.inventoryItem, alias: i }
                 where:
                     and:

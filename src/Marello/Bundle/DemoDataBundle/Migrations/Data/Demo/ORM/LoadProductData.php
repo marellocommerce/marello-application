@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
@@ -89,10 +88,13 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setDesiredStockLevel(rand($data['stock_level'], $data['stock_level'] + 10));
         $product->setPurchaseStockLevel(rand(1, $product->getDesiredStockLevel()));
         $product->setOrganization($this->defaultOrganization);
-        $inventoryItem = new InventoryItem();
-        $inventoryItem->setProduct($product);
-        $inventoryItem->setWarehouse($this->defaultWarehouse);
-        $inventoryItem->setQuantity($data['stock_level']);
+        $inventoryItem = InventoryItem::withStockLevel(
+            $product,
+            $this->defaultWarehouse,
+            $data['stock_level'],
+            0,
+            'import'
+        );
         $product->getInventoryItems()->add($inventoryItem);
 
         $status = $this->manager
@@ -126,15 +128,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         }
 
         $this->manager->persist($product);
-
-        /*
-         * Manually create log about first import of data.
-         */
-        $inventoryLog = (new InventoryLog($inventoryItem, 'import'))
-            ->setOldQuantity(0)
-            ->setOldAllocatedQuantity(0);
-
-        $this->manager->persist($inventoryLog);
 
         return $product;
     }

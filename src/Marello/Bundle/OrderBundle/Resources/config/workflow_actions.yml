@@ -4,7 +4,6 @@ services:
         arguments:
             - @oro_workflow.context_accessor
             - @doctrine
-            - @marello_inventory.logging.inventory_logger
         tags:
             - { name: oro_workflow.action, alias: marello_ship_order }
 
@@ -13,6 +12,5 @@ services:
         arguments:
             - @oro_workflow.context_accessor
             - @doctrine
-            - @marello_inventory.logging.inventory_logger
         tags:
             - { name: oro_workflow.action, alias: marello_cancel_order }

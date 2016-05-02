@@ -3,41 +3,65 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\UserBundle\Entity\User;
 
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="marello_inventory_stock_level")
+ */
 class StockLevel
 {
     /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     *
      * @var int
      */
     protected $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem", inversedBy="levels")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     *
      * @var InventoryItem
      */
     protected $inventoryItem;
 
     /**
+     * @ORM\Column(type="integer")
+     *
      * @var int
      */
     protected $stock;
 
     /**
+     * @ORM\Column(type="integer")
+     *
      * @var int
      */
     protected $allocatedStock;
 
     /**
+     * @ORM\Column(type="string")
+     *
      * @var string
      */
     protected $changeTrigger;
 
     /**
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel")
+     * @ORM\JoinColumn(nullable=true)
+     *
      * @var StockLevel
      */
     protected $previousLevel = null;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
+     *
      * @var User
      */
     protected $author = null;
@@ -48,16 +72,22 @@ class StockLevel
     protected $subject = null;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
      * @var string
      */
     protected $subjectType = null;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     *
      * @var int
      */
     protected $subjectId = null;
 
     /**
+     * @ORM\Column(type="datetime")
+     *
      * @var \DateTime
      */
     protected $createdAt;

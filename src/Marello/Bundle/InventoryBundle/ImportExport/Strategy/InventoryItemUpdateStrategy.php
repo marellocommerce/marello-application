@@ -4,30 +4,10 @@ namespace Marello\Bundle\InventoryBundle\ImportExport\Strategy;
 
 use Doctrine\Common\Util\ClassUtils;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
-use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
-use Oro\Bundle\ImportExportBundle\Field\DatabaseHelper;
-use Oro\Bundle\ImportExportBundle\Field\FieldHelper;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
-use Oro\Bundle\ImportExportBundle\Strategy\Import\ImportStrategyHelper;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 {
-    /** @var InventoryLogger */
-    protected $inventoryLogger;
-
-    public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        ImportStrategyHelper $strategyHelper,
-        FieldHelper $fieldHelper,
-        DatabaseHelper $databaseHelper,
-        InventoryLogger $inventoryLogger
-    ) {
-        parent::__construct($eventDispatcher, $strategyHelper, $fieldHelper, $databaseHelper);
-
-        $this->inventoryLogger = $inventoryLogger;
-    }
 
     /**
      * @param object|InventoryItem $entity
@@ -76,15 +56,6 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             }
             $this->databaseHelper->resetIdentifier($entity);
             $this->cachedEntities[$oid] = $entity;
-
-            $this->inventoryLogger->directLog(
-                $entity,
-                'import',
-                function (InventoryLog $log) use ($entity) {
-                    $log->setOldQuantity(0);
-                    $log->setOldAllocatedQuantity(0);
-                }
-            );
         }
 
 
@@ -157,20 +128,8 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             && !$fieldsExcluded
             && !array_intersect([$fieldRelationName, $fieldName], $excludedFields)
         ) {
-            $oldQuantity = $existingEntity->getQuantity();
-            $oldAllocatedQuantity = $existingEntity->getAllocatedQuantity();
-
             //manually handle quantity update
             $existingEntity->modifyQuantity($entity->getQuantity());
-
-            $this->inventoryLogger->directLog(
-                $existingEntity,
-                'import',
-                function (InventoryLog $log) use ($oldQuantity, $oldAllocatedQuantity) {
-                    $log->setOldQuantity($oldQuantity);
-                    $log->setOldAllocatedQuantity($oldAllocatedQuantity);
-                }
-            );
 
             //manually handle product relation
             $entity->setProduct($existingEntity->getProduct());
