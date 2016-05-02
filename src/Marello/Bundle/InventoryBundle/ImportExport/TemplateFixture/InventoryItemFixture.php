@@ -17,7 +17,7 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
      */
     public function getEntityClass()
     {
-        return 'Marello\Bundle\InventoryBundle\Entity\InventoryItem';
+        return InventoryItem::class;
     }
 
     /**
@@ -33,7 +33,11 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
      */
     protected function createEntity($key)
     {
-        return new InventoryItem();
+        $warehouseRepo = $this->templateManager
+            ->getEntityRepository('Marello\Bundle\InventoryBundle\Entity\Warehouse');
+
+        $inventoryItem = new InventoryItem($this->createProduct(), $warehouseRepo->getEntity('main'));
+        $inventoryItem->setStockLevels('import', 25);
     }
 
     /**
@@ -42,16 +46,8 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
      */
     public function fillEntityData($key, $entity)
     {
-        $warehouseRepo = $this->templateManager
-            ->getEntityRepository('Marello\Bundle\InventoryBundle\Entity\Warehouse');
-
         switch ($key) {
             case 'Macbook':
-                $entity
-                    ->setId(1)
-                    ->setProduct($this->createProduct($entity))
-                    ->setQuantity(12)
-                    ->setWarehouse($warehouseRepo->getEntity('main'));
                 return;
         }
 
@@ -61,11 +57,9 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
     /**
      * Create Product
      *
-     * @param $item
-     *
      * @return Product
      */
-    public function createProduct($item)
+    public function createProduct()
     {
         $entity = new Product();
         $entity->setName('Woood Coffee Table');
@@ -78,7 +72,6 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
         $channel = new SalesChannel('magento');
         $entity->addChannel($channel);
 
-        $entity->addInventoryItem($item);
         return $entity;
     }
 }

@@ -106,7 +106,7 @@ class StockModify
      *
      * @return StockLevel
      */
-    public function toStockLevel(InventoryItem $item)
+    public function toCurrentStockLevel(InventoryItem $item)
     {
         $currentLevel   = $item->getCurrentLevel();
         $stock          = $currentLevel ? $currentLevel->getStock() : 0;
@@ -121,6 +121,8 @@ class StockModify
             $this->author,
             $this->subject
         );
+
+        $item->changeCurrentLevel($level);
 
         return $level;
     }

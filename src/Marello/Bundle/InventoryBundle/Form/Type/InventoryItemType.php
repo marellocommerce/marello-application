@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemModifyTransformer;
 use Marello\Bundle\InventoryBundle\Model\InventoryItemModify;
 use Symfony\Component\Form\AbstractType;
@@ -32,7 +31,7 @@ class InventoryItemType extends AbstractType
                 'data'        => 0,
             ]);
 
-        $builder->addModelTransformer(new InventoryItemModifyTransformer());
+        $builder->addViewTransformer(new InventoryItemModifyTransformer());
     }
 
     /**

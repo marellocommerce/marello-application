@@ -4,11 +4,13 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\StockLevelRepository")
  * @ORM\Table(name="marello_inventory_stock_level")
+ * @Oro\Config
  */
 class StockLevel
 {
@@ -16,6 +18,13 @@ class StockLevel
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      *
      * @var int
      */
@@ -24,6 +33,13 @@ class StockLevel
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem", inversedBy="levels")
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      *
      * @var InventoryItem
      */
@@ -31,6 +47,13 @@ class StockLevel
 
     /**
      * @ORM\Column(type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Level"
+     *          }
+     *      }
+     * )
      *
      * @var int
      */
@@ -38,6 +61,13 @@ class StockLevel
 
     /**
      * @ORM\Column(type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      *
      * @var int
      */
@@ -45,6 +75,13 @@ class StockLevel
 
     /**
      * @ORM\Column(type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */
@@ -53,6 +90,13 @@ class StockLevel
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel")
      * @ORM\JoinColumn(nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      *
      * @var StockLevel
      */
@@ -61,6 +105,13 @@ class StockLevel
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      *
      * @var User
      */
@@ -73,6 +124,13 @@ class StockLevel
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */
@@ -80,6 +138,13 @@ class StockLevel
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      *
      * @var int
      */
@@ -87,6 +152,13 @@ class StockLevel
 
     /**
      * @ORM\Column(type="datetime")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      *
      * @var \DateTime
      */
@@ -112,7 +184,7 @@ class StockLevel
         User $author = null,
         $subject = null
     ) {
-        $this->inventoryItem  = $inventoryItem->changeCurrentLevel($this);
+        $this->inventoryItem  = $inventoryItem;
         $this->stock          = $stock;
         $this->allocatedStock = $allocatedStock;
         $this->changeTrigger  = $changeTrigger;
@@ -246,5 +318,17 @@ class StockLevel
     public function getSubjectId()
     {
         return $this->subjectId;
+    }
+
+    /**
+     * @param StockLevel $previousLevel
+     *
+     * @return $this
+     */
+    public function setPreviousLevel($previousLevel)
+    {
+        $this->previousLevel = $previousLevel;
+
+        return $this;
     }
 }

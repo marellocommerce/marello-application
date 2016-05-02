@@ -5,7 +5,7 @@ parameters:
 
 services:
     marello_inventory.importexport.data_converter:
-        parent: oro_importexport.data_converter.configurable
+        class: Marello\Bundle\InventoryBundle\ImportExport\DataConverter\InventoryItemDataConverter
 
     marello_inventory.importexport.template_fixture.data_converter.inventory_item:
         parent: oro_importexport.data_converter.template_fixture.configurable

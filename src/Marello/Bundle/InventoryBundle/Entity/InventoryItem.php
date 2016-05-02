@@ -3,13 +3,12 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
- * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository")
+ * @ORM\Entity
  * @ORM\Table(
  *      name="marello_inventory_item",
  *      uniqueConstraints={
@@ -28,6 +27,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  */
 class InventoryItem
 {
+    use HasStockLevel;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -76,25 +77,6 @@ class InventoryItem
     protected $warehouse;
 
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
-     *
-     * @var StockLevel
-     */
-    protected $currentLevel = null;
-
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel",
-     *     mappedBy="inventoryItem",
-     *     cascade={"persist", "remove"}
-     * )
-     *
-     * @var StockLevel[]|Collection
-     */
-    protected $levels;
-
-    /**
      * InventoryItem constructor.
      *
      * @param Product   $product
@@ -110,9 +92,9 @@ class InventoryItem
     /**
      * @param Product   $product
      * @param Warehouse $warehouse
-     * @param int   $stock
-     * @param           $allocatedStock
-     * @param           $trigger
+     * @param int       $stock
+     * @param int       $allocatedStock
+     * @param string    $trigger
      *
      * @return InventoryItem
      */
@@ -124,30 +106,9 @@ class InventoryItem
         $trigger
     ) {
         $inventoryItem = new self($product, $warehouse);
-        new StockLevel($inventoryItem, $stock, $allocatedStock, $trigger);
+        $inventoryItem->changeCurrentLevel(new StockLevel($inventoryItem, $stock, $allocatedStock, $trigger));
 
         return $inventoryItem;
-    }
-
-    /**
-     * @param StockLevel $newLevel
-     *
-     * @return $this
-     */
-    public function changeCurrentLevel(StockLevel $newLevel)
-    {
-        $this->levels->add($newLevel);
-        $this->currentLevel = $newLevel;
-
-        return $this;
-    }
-
-    /**
-     * @return StockLevel
-     */
-    public function getCurrentLevel()
-    {
-        return $this->currentLevel;
     }
 
     /**
@@ -164,5 +125,13 @@ class InventoryItem
     public function getWarehouse()
     {
         return $this->warehouse;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

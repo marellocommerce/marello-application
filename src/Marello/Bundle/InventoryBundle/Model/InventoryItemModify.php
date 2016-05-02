@@ -63,12 +63,12 @@ class InventoryItemModify
          * If there is nothing modified on the inventory item...
          * keep the original item and return it without creating new stock level.
          */
-        if (!$this->allocatedStock && $this->stock) {
+        if (!$this->allocatedStock && !$this->stock) {
             return $this->inventoryItem;
         }
 
         return $this->toStockModify()
-            ->toStockLevel($this->inventoryItem)
+            ->toCurrentStockLevel($this->inventoryItem)
             ->getInventoryItem();
     }
 
