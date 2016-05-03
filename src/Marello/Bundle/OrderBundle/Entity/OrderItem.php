@@ -349,16 +349,6 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
     }
 
     /**
-     * Returns name of property, that this entity is mapped to InventoryAllocation under.
-     *
-     * @return string
-     */
-    public static function getAllocationPropertyName()
-    {
-        return 'OrderItem';
-    }
-
-    /**
      * Get currency for orderItem from Order
      */
     public function getCurrency()

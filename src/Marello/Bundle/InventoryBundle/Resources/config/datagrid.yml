@@ -109,27 +109,32 @@ datagrid:
         columns:
             changeAmount:
                 data_name:      changeAmount
-                label:          marello.inventory.inventorylog.changeAmount.label
+                label:          marello.inventory.stocklevel.stock_diff.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/InventoryLog/changeAmount.html.twig
+                template:       MarelloInventoryBundle::Datagrid/StockLevel/diff.html.twig
             changeAllocatedAmount:
                 data_name:      changeAllocatedAmount
-                label:          marello.inventory.inventorylog.changeAllocatedAmount.label
+                label:          marello.inventory.stocklevel.allocated_stock_diff.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/InventoryLog/changeAmount.html.twig
-            actionType:
+                template:       MarelloInventoryBundle::Datagrid/StockLevel/diff.html.twig
+            changeTrigger:
                 data_name:      changeTrigger
-                label:          marello.inventory.inventorylog.actionType.label
+                label:          marello.inventory.stocklevel.change_trigger.label
                 type:           translatable
                 domain:         MarelloInventoryLogAction
                 frontend_type:  string
             author:
-                label:          marello.inventory.inventorylog.user.label
+                label:          marello.inventory.stocklevel.author.label
                 frontend_type:  string
+            subject:
+                label:          marello.inventory.stocklevel.subject.label
+                type:           twig
+                frontend_type:  html
+                template:       MarelloInventoryBundle::Datagrid/StockLevel/subject.html.twig
             createdAt:
-                label:          marello.inventory.inventorylog.createdAt.label
+                label:          oro.ui.created_at
                 frontend_type:  datetime
         sorters:
             columns:
@@ -156,9 +161,9 @@ datagrid:
                 changeAllocatedAmount:
                     type:             number
                     data_name:        changeAllocatedAmount
-                actionType:
+                changeTrigger:
                     type:             string
-                    data_name:        l.actionType
+                    data_name:        l.changeTrigger
                 createdAt:
                     type:             datetime
                     data_name:        createdAt

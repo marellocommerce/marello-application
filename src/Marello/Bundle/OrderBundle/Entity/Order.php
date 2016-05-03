@@ -18,6 +18,9 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository")
  * @Oro\Config(
+ *      routeView="marello_order_order_view",
+ *      routeName="marello_order_order_index",
+ *      routeCreate="marello_order_order_create",
  *      defaultValues={
  *          "entity"={
  *              "icon"="icon-list-alt"
@@ -763,5 +766,13 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
         if (!$this->orderNumber) {
             $this->setOrderNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('#%s', $this->orderNumber);
     }
 }

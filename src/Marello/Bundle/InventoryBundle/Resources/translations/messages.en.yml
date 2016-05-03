@@ -36,5 +36,22 @@ marello:
             inventoryItem.label:            Inventory Item
             createdAt.label:                Created At
 
+        stocklevel:
+            entity_label:               Stock Level
+            entity_plural_label:        Stock Levels
+            id.label:                           Id
+            stock.label:                        Real Stock
+            allocated_stock.label:              Allocated Stock
+            virtual_stock.label:                Virtual Stock
+            stock_diff.label:                   Real Stock Change
+            allocated_stock_diff.label:         Allocated Stock Change
+            virtual_stock_diff.label:           Virtual Stock Change
+            author.label:                       Change Author
+            subject.label:                      Related Subject
+            change_trigger.label:               Trigger
+            previous_level.label:               Previous Stock Level
+            subject_id.label:                   Subject Id
+            subject_type.label:                 Subject Type
+
         logaction:
             manual:                 Manual

@@ -6,6 +6,8 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\AddressBundle\Entity\Address;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -23,6 +25,9 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     protected $ordersFileHeader = [];
     protected $itemsFile = null;
     protected $itemsFileHeader = [];
+
+    /** @var Warehouse */
+    protected $defaultWarehouse;
 
     /**
      * {@inheritdoc}
@@ -42,6 +47,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
+        $this->defaultWarehouse = $manager->getRepository(Warehouse::class)->getDefault();
 
         /** @var Order $order */
         $order = null;
@@ -93,6 +99,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             $order->addItem($item);
         }
 
+        $manager->persist($order);
         $manager->flush();
 
         $this->closeFiles();
@@ -215,6 +222,18 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $itemEntity->setPrice($row['price']);
         $itemEntity->setTotalPrice($row['total_price']);
         $itemEntity->setTax($row['tax']);
+
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = $product->getInventoryItems()->first();
+
+        $inventoryItem->adjustStockLevels(
+            'order_workflow.pending',
+            null,
+            $itemEntity->getQuantity(),
+            null,
+            $itemEntity
+        );
+        $this->manager->persist($inventoryItem);
 
         return $itemEntity;
     }

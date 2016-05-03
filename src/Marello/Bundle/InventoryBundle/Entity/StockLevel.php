@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity;
 
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -10,7 +9,13 @@ use Oro\Bundle\UserBundle\Entity\User;
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\StockLevelRepository")
  * @ORM\Table(name="marello_inventory_stock_level")
- * @Oro\Config
+ * @Oro\Config(
+ *      defaultValues={
+ *          "entity"={
+ *              "icon"="icon-list-alt"
+ *          }
+ *      }
+ * )
  */
 class StockLevel
 {
@@ -35,6 +40,9 @@ class StockLevel
      * @ORM\JoinColumn(onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "entity"={
+     *              "label"="marello.inventory.inventoryitem.entity_label"
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -118,6 +126,10 @@ class StockLevel
     protected $author = null;
 
     /**
+     * Subject field is filled using a listener.
+     *
+     * @see Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectHydrationSubscriber
+     *
      * @var mixed
      */
     protected $subject = null;
@@ -154,6 +166,9 @@ class StockLevel
      * @ORM\Column(type="datetime")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.created_at"
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -191,8 +206,6 @@ class StockLevel
         $this->previousLevel  = $previousLevel;
         $this->author         = $author;
         $this->subject        = $subject;
-        $this->subjectType    = $subject !== null ? ClassUtils::getClass($subject) : null;
-        $this->subjectId      = $subject !== null ? $subject->getId() : null;
         $this->createdAt      = new \DateTime();
     }
 
@@ -215,14 +228,6 @@ class StockLevel
     /**
      * @return int
      */
-    public function getStock()
-    {
-        return $this->stock;
-    }
-
-    /**
-     * @return int
-     */
     public function getStockDiff()
     {
         return $this->stock - ($this->previousLevel ? $this->previousLevel->getStock() : 0);
@@ -231,9 +236,9 @@ class StockLevel
     /**
      * @return int
      */
-    public function getAllocatedStock()
+    public function getStock()
     {
-        return $this->allocatedStock;
+        return $this->stock;
     }
 
     /**
@@ -247,9 +252,25 @@ class StockLevel
     /**
      * @return int
      */
+    public function getAllocatedStock()
+    {
+        return $this->allocatedStock;
+    }
+
+    /**
+     * @return int
+     */
     public function getVirtualStock()
     {
         return $this->stock - $this->allocatedStock;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVirtualStockDiff()
+    {
+        return $this->getStockDiff() - $this->getAllocatedStockDiff();
     }
 
     /**
@@ -266,6 +287,18 @@ class StockLevel
     public function getPreviousLevel()
     {
         return $this->previousLevel;
+    }
+
+    /**
+     * @param StockLevel $previousLevel
+     *
+     * @return $this
+     */
+    public function setPreviousLevel($previousLevel)
+    {
+        $this->previousLevel = $previousLevel;
+
+        return $this;
     }
 
     /**
@@ -293,18 +326,6 @@ class StockLevel
     }
 
     /**
-     * @param mixed $subject
-     *
-     * @return $this
-     */
-    public function setSubject($subject)
-    {
-        $this->subject = $subject;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getSubjectType()
@@ -318,17 +339,5 @@ class StockLevel
     public function getSubjectId()
     {
         return $this->subjectId;
-    }
-
-    /**
-     * @param StockLevel $previousLevel
-     *
-     * @return $this
-     */
-    public function setPreviousLevel($previousLevel)
-    {
-        $this->previousLevel = $previousLevel;
-
-        return $this;
     }
 }

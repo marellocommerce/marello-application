@@ -18,3 +18,15 @@ services:
         class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectHydrationSubscriber
         tags:
             - { name: doctrine.event_subscriber }
+
+    marello_inventory.listener.doctrine.stock_level_author_fill:
+        class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelAuthorFillSubscriber
+        arguments:
+            - "@security.token_storage"
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    marello_inventory.listener.doctrine.stock_level_subject_delayed_assign:
+        class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectAssignSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
