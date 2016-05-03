@@ -68,7 +68,7 @@ class OrderShipAction extends OrderTransitionAction
         $inventoryItem = reset($allocations)->getInventoryItem();
 
         foreach ($allocations as $allocation) {
-            $shipAllocation += $allocation->getAllocatedStock();
+            $shipAllocation += $allocation->getAllocatedStockDiff();
         }
 
         $inventoryItem->adjustStockLevels(

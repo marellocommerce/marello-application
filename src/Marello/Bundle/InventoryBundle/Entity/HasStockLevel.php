@@ -50,7 +50,8 @@ trait HasStockLevel
      */
     public function changeCurrentLevel(StockLevel $newLevel)
     {
-        $this->levels->add($newLevel->setPreviousLevel($this->currentLevel));
+        $newLevel->setPreviousLevel($this->currentLevel);
+        $this->levels->add($newLevel);
         $this->currentLevel = $newLevel;
 
         return $this;
@@ -108,7 +109,7 @@ trait HasStockLevel
             $stock === null ? $this->getStock() : $stock,
             $allocatedStock === null ? $this->getAllocatedStock() : $allocatedStock,
             $trigger,
-            $this->getCurrentLevel(),
+            null,
             $user,
             $subject
         ));

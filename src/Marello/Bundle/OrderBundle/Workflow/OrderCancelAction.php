@@ -68,7 +68,7 @@ class OrderCancelAction extends OrderTransitionAction
         $inventoryItem = reset($allocations)->getInventoryItem();
 
         foreach ($allocations as $allocation) {
-            $returnAllocation += $allocation->getAllocatedStock();
+            $returnAllocation += $allocation->getAllocatedStockDiff();
         }
 
         $inventoryItem->adjustStockLevels('order_workflow.cancelled', null, -$returnAllocation, null, $orderItem);
