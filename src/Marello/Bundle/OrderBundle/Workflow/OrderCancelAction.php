@@ -4,6 +4,7 @@ namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\StockLevel;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -54,16 +55,22 @@ class OrderCancelAction extends OrderTransitionAction
      */
     protected function cancelOrderItem(OrderItem $orderItem)
     {
-        $allocations = $orderItem->getInventoryAllocations();
+        $allocations = $this->doctrine
+            ->getRepository(StockLevel::class)
+            ->findBy([
+                'subjectId'     => $orderItem->getId(),
+                'subjectType'   => OrderItem::class,
+                'changeTrigger' => 'order_workflow.pending',
+            ]);
+
+        $returnAllocation = 0;
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = reset($allocations)->getInventoryItem();
 
         foreach ($allocations as $allocation) {
-            $this->changedInventory[] = $inventoryItem = $allocation->getInventoryItem();
-
-            /*
-             * When allocation is removed, the allocated amount on inventory amount will be automatically decreased.
-             */
-            $this->doctrine->getManager()->remove($allocation);
-            $this->doctrine->getManager()->persist($inventoryItem);
+            $returnAllocation += $allocation->getAllocatedStock();
         }
+
+        $inventoryItem->adjustStockLevels('order_workflow.cancelled', null, -$returnAllocation, null, $orderItem);
     }
 }
