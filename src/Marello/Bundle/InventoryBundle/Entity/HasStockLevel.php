@@ -107,6 +107,14 @@ trait HasStockLevel
      */
     public function setStockLevels($trigger, $stock = null, $allocatedStock = null, User $user = null, $subject = null)
     {
+        if (($stock === null) && ($allocatedStock === null)) {
+            return $this;
+        }
+
+        if (($this->getStock() === $stock) && ($this->getAllocatedStock() === $allocatedStock)) {
+            return $this;
+        }
+
         return $this->changeCurrentLevel(new StockLevel(
             $this,
             $stock === null ? $this->getStock() : $stock,

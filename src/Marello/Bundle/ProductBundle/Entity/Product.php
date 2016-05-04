@@ -637,7 +637,7 @@ class Product extends ExtendProduct implements
      */
     public function addInventoryItem(InventoryItem $item)
     {
-        $this->inventoryItems->add($item);
+        $this->inventoryItems->add($item->setProduct($this));
 
         return $this;
     }

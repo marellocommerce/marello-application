@@ -79,10 +79,10 @@ class InventoryItem
     /**
      * InventoryItem constructor.
      *
-     * @param Product   $product
      * @param Warehouse $warehouse
+     * @param Product   $product
      */
-    public function __construct(Product $product, Warehouse $warehouse)
+    public function __construct(Warehouse $warehouse, Product $product = null)
     {
         $this->product   = $product;
         $this->warehouse = $warehouse;
@@ -90,8 +90,8 @@ class InventoryItem
     }
 
     /**
-     * @param Product   $product
      * @param Warehouse $warehouse
+     * @param Product   $product
      * @param int       $stock
      * @param int       $allocatedStock
      * @param string    $trigger
@@ -99,13 +99,13 @@ class InventoryItem
      * @return InventoryItem
      */
     public static function withStockLevel(
-        Product $product,
         Warehouse $warehouse,
+        Product $product,
         $stock,
         $allocatedStock,
         $trigger
     ) {
-        $inventoryItem = new self($product, $warehouse);
+        $inventoryItem = new self($warehouse, $product);
         $inventoryItem->changeCurrentLevel(new StockLevel($inventoryItem, $stock, $allocatedStock, $trigger));
 
         return $inventoryItem;
@@ -133,5 +133,17 @@ class InventoryItem
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return $this
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
+
+        return $this;
     }
 }

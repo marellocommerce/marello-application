@@ -38,6 +38,10 @@ class ReturnApiType extends AbstractType
             ->add('returnNumber', 'text', [
                 'required' => false,
             ])
+            ->add('salesChannel', 'marello_sales_channel_select_api', [
+                'required'    => true,
+                'constraints' => new NotNull(),
+            ])
             ->add('returnItems', 'collection', [
                 'type'         => ReturnItemApiType::NAME,
                 'allow_add'    => true,

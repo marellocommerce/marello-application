@@ -43,7 +43,7 @@ class InventoryItemTypeTest extends WebTestCase
         $product   = $this->prophesize(Product::class);
         $warehouse = $this->prophesize(Warehouse::class);
 
-        $item = new InventoryItem($product->reveal(), $warehouse->reveal());
+        $item = new InventoryItem($warehouse->reveal(), $product->reveal());
 
         $form = $this->createForm($item);
 
@@ -65,8 +65,8 @@ class InventoryItemTypeTest extends WebTestCase
         $warehouse = $this->prophesize(Warehouse::class);
 
         $item = InventoryItem::withStockLevel(
-            $product->reveal(),
             $warehouse->reveal(),
+            $product->reveal(),
             25,
             0,
             'import'
@@ -92,8 +92,8 @@ class InventoryItemTypeTest extends WebTestCase
         $warehouse = $this->prophesize(Warehouse::class);
 
         $item = InventoryItem::withStockLevel(
-            $product->reveal(),
             $warehouse->reveal(),
+            $product->reveal(),
             25,
             0,
             'import'
@@ -119,8 +119,8 @@ class InventoryItemTypeTest extends WebTestCase
         $warehouse = $this->prophesize(Warehouse::class);
 
         $item = InventoryItem::withStockLevel(
-            $product->reveal(),
             $warehouse->reveal(),
+            $product->reveal(),
             10,
             0,
             'import'
@@ -133,6 +133,6 @@ class InventoryItemTypeTest extends WebTestCase
             'stock'   => 20,
         ]);
 
-        $this->assertFalse($form->isValid());
+        $this->assertTrue($form->isValid());
     }
 }

@@ -89,8 +89,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setPurchaseStockLevel(rand(1, $product->getDesiredStockLevel()));
         $product->setOrganization($this->defaultOrganization);
         $inventoryItem = InventoryItem::withStockLevel(
-            $product,
             $this->defaultWarehouse,
+            $product,
             $data['stock_level'],
             0,
             'import'

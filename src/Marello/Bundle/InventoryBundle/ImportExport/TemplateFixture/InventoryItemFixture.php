@@ -36,7 +36,7 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
         $warehouseRepo = $this->templateManager
             ->getEntityRepository('Marello\Bundle\InventoryBundle\Entity\Warehouse');
 
-        $inventoryItem = new InventoryItem($this->createProduct(), $warehouseRepo->getEntity('main'));
+        $inventoryItem = new InventoryItem($warehouseRepo->getEntity('main'), $this->createProduct());
         $inventoryItem->setStockLevels('import', 25);
     }
 

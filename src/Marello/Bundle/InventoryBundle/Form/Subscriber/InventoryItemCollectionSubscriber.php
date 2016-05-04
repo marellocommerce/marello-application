@@ -6,7 +6,6 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -54,13 +53,7 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
             $items = new ArrayCollection();
         }
 
-        $product = $event->getForm()->getParent()->getData();
-
-        if ($product === null) {
-            return;
-        }
-
-        $items = $this->fillItemCollection($items, $product);
+        $items = $this->fillItemCollection($items);
 
         $event->setData($items);
     }
@@ -69,11 +62,10 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
      * Fills item collection so it contains all warehouses.
      *
      * @param Collection $items
-     * @param Product    $product
      *
      * @return Collection
      */
-    protected function fillItemCollection(Collection $items, Product $product)
+    protected function fillItemCollection(Collection $items)
     {
         $indexed = [];
 
@@ -86,7 +78,7 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
 
         foreach ($warehouses as $warehouse) {
             if (!array_key_exists($warehouse->getId(), $indexed)) {
-                $newItem = new InventoryItem($product, $warehouse);
+                $newItem = new InventoryItem($warehouse);
 
                 /*
                  * Add item to collection, collection is not ordered, so any new warehouses will be added to end.
