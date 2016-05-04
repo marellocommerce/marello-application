@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -54,7 +55,7 @@ class InventoryLogControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData',
+            LoadProductData::class,
         ]);
 
         /*
@@ -75,6 +76,6 @@ class InventoryLogControllerTest extends WebTestCase
 
         $result = reset($result['data']);
 
-        $this->assertEquals('Import', $result['actionType']);
+        $this->assertEquals('Import', $result['changeTrigger']);
     }
 }

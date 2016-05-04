@@ -166,7 +166,7 @@ class ProductControllerTest extends WebTestCase
         $this->assertCount(1, $product->getInventoryItems());
         $this->assertEquals(
             reset($data['inventory'])['quantity'],
-            $product->getInventoryItems()->first()->getQuantity()
+            $product->getInventoryItems()->first()->getStock()
         );
         $this->assertEquals(
             reset($data['inventory'])['warehouse'],
@@ -232,7 +232,7 @@ class ProductControllerTest extends WebTestCase
 //            })->toArray(),
             'status'    => $product->getStatus()->getName(),
             'inventory' => $product->getInventoryItems()->map(function (InventoryItem $item) {
-                return ['quantity' => $item->getQuantity(), 'warehouse' => $item->getWarehouse()->getId()];
+                return ['quantity' => $item->getStock(), 'warehouse' => $item->getWarehouse()->getId()];
             })->toArray(),
             'channels'  => $product->getChannels()->map(function (SalesChannel $channel) {
                 return $channel->getId();

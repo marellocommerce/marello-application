@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Tests\Functional\Logging;
 
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\StockLevel;
 use Marello\Bundle\InventoryBundle\Logging\ChartBuilder;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -35,21 +36,19 @@ class ChartBuilderTest extends WebTestCase
         /** @var Product $product */
         $product = $this->getReference('marello-product-1');
 
-        /** @var InventoryItem $log */
+        /** @var InventoryItem $inventoryItem */
         $inventoryItem = $product
             ->getInventoryItems()
             ->first();
 
-        /** @var InventoryLog $log */
-        $log = $inventoryItem
-            ->getInventoryLogs()
-            ->first();
+        /** @var StockLevel $stock */
+        $stock = $inventoryItem->getCurrentLevel();
 
         /*
          * Get start and end points of interval +- 3 days around creation of this single log.
          */
-        $from = clone $log->getCreatedAt();
-        $to   = clone $log->getCreatedAt();
+        $from = clone $stock->getCreatedAt();
+        $to   = clone $stock->getCreatedAt();
 
         $from->modify('- 3 days');
         $to->modify('+ 3 days');
@@ -74,7 +73,7 @@ class ChartBuilderTest extends WebTestCase
 
         $this->assertEquals(0, $first['quantity'], 'First item quantity level should be zero.');
         $this->assertEquals(
-            $inventoryItem->getQuantity(),
+            $inventoryItem->getStock(),
             $last['quantity'],
             'Last item quantity level should be same as the one stored in inventory item.'
         );

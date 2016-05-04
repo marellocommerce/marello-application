@@ -31,6 +31,7 @@ trait HasStockLevel
      *     mappedBy="inventoryItem",
      *     cascade={"persist", "remove"}
      * )
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -95,16 +96,18 @@ trait HasStockLevel
     }
 
     /**
-     * @param string    $trigger        Action that triggered the change
-     * @param int|null  $stock          New stock or null if it should remain unchanged
-     * @param int|null  $allocatedStock New allocated stock or null if it should remain unchanged
-     * @param User|null $user           User who triggered the change, if left null, it is automatically assigned ot
-     *                                  current one
-     * @param null      $subject        Any entity that should be associated to this operation
+     * @param string     $trigger        Action that triggered the change
+     * @param int|null   $stock          New stock or null if it should remain unchanged
+     * @param int|null   $allocatedStock New allocated stock or null if it should remain unchanged
+     * @param User|null  $user           User who triggered the change, if left null, it is automatically assigned ot
+     *                                   current one
+     * @param mixed|null $subject        Any entity that should be associated to this operation
+     *
+     * @return $this
      */
     public function setStockLevels($trigger, $stock = null, $allocatedStock = null, User $user = null, $subject = null)
     {
-        $this->changeCurrentLevel(new StockLevel(
+        return $this->changeCurrentLevel(new StockLevel(
             $this,
             $stock === null ? $this->getStock() : $stock,
             $allocatedStock === null ? $this->getAllocatedStock() : $allocatedStock,
@@ -116,12 +119,14 @@ trait HasStockLevel
     }
 
     /**
-     * @param string    $trigger        Action that triggered the change
-     * @param int|null  $stock          New stock or null if it should remain unchanged
-     * @param int|null  $allocatedStock New allocated stock or null if it should remain unchanged
-     * @param User|null $user           User who triggered the change, if left null, it is automatically assigned ot
-     *                                  current one
-     * @param null      $subject        Any entity that should be associated to this operation
+     * @param string     $trigger        Action that triggered the change
+     * @param int|null   $stock          New stock or null if it should remain unchanged
+     * @param int|null   $allocatedStock New allocated stock or null if it should remain unchanged
+     * @param User|null  $user           User who triggered the change, if left null, it is automatically assigned ot
+     *                                   current one
+     * @param mixed|null $subject        Any entity that should be associated to this operation
+     *
+     * @return $this
      */
     public function adjustStockLevels(
         $trigger,
@@ -130,7 +135,7 @@ trait HasStockLevel
         User $user = null,
         $subject = null
     ) {
-        $this->setStockLevels(
+        return $this->setStockLevels(
             $trigger,
             $stock === null ? $this->getStock() : ($this->getStock() + $stock),
             $allocatedStock === null ? $this->getAllocatedStock() : ($this->getAllocatedStock() + $allocatedStock),

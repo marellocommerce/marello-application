@@ -43,33 +43,17 @@ class InventoryItemModify
     }
 
     /**
-     * @return StockModify
-     */
-    public function toStockModify()
-    {
-        return new StockModify(
-            'manual',
-            $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1),
-            $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1)
-        );
-    }
-
-    /**
      * @return InventoryItem
      */
     public function toModifiedInventoryItem()
     {
-        /*
-         * If there is nothing modified on the inventory item...
-         * keep the original item and return it without creating new stock level.
-         */
-        if (!$this->allocatedStock && !$this->stock) {
-            return $this->inventoryItem;
-        }
-
-        return $this->toStockModify()
-            ->toCurrentStockLevel($this->inventoryItem)
-            ->getInventoryItem();
+        return $this
+            ->inventoryItem
+            ->adjustStockLevels(
+                'manual',
+                $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1),
+                $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1)
+            );
     }
 
     /**

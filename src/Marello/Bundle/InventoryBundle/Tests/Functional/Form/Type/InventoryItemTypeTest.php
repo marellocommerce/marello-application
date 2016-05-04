@@ -3,7 +3,10 @@
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Form\Type;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType;
+use Marello\Bundle\InventoryBundle\Model\InventoryItemModify;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 /**
@@ -37,17 +40,20 @@ class InventoryItemTypeTest extends WebTestCase
      */
     public function testIncreaseFromZero()
     {
-        $item = new InventoryItem();
+        $product   = $this->prophesize(Product::class);
+        $warehouse = $this->prophesize(Warehouse::class);
+
+        $item = new InventoryItem($product->reveal(), $warehouse->reveal());
 
         $form = $this->createForm($item);
 
         $form->submit([
-            'modifyOperator' => InventoryItem::MODIFY_OPERATOR_INCREASE,
-            'modifyAmount'   => 10,
+            'stockOperator' => InventoryItemModify::OPERATOR_INCREASE,
+            'stock'         => 10,
         ]);
 
         $this->assertTrue($form->isValid());
-        $this->assertEquals(10, $item->getQuantity());
+        $this->assertEquals(10, $item->getStock());
     }
 
     /**
@@ -55,18 +61,26 @@ class InventoryItemTypeTest extends WebTestCase
      */
     public function testIncrease()
     {
-        $item = new InventoryItem();
-        $item->setQuantity(25);
+        $product   = $this->prophesize(Product::class);
+        $warehouse = $this->prophesize(Warehouse::class);
+
+        $item = InventoryItem::withStockLevel(
+            $product->reveal(),
+            $warehouse->reveal(),
+            25,
+            0,
+            'import'
+        );
 
         $form = $this->createForm($item);
 
         $form->submit([
-            'modifyOperator' => InventoryItem::MODIFY_OPERATOR_INCREASE,
-            'modifyAmount'   => 10,
+            'stockOperator' => InventoryItemModify::OPERATOR_INCREASE,
+            'stock'   => 10,
         ]);
 
         $this->assertTrue($form->isValid());
-        $this->assertEquals(35, $item->getQuantity());
+        $this->assertEquals(35, $item->getStock());
     }
 
     /**
@@ -74,18 +88,26 @@ class InventoryItemTypeTest extends WebTestCase
      */
     public function testDecrease()
     {
-        $item = new InventoryItem();
-        $item->setQuantity(25);
+        $product   = $this->prophesize(Product::class);
+        $warehouse = $this->prophesize(Warehouse::class);
+
+        $item = InventoryItem::withStockLevel(
+            $product->reveal(),
+            $warehouse->reveal(),
+            25,
+            0,
+            'import'
+        );
 
         $form = $this->createForm($item);
 
         $form->submit([
-            'modifyOperator' => InventoryItem::MODIFY_OPERATOR_DECREASE,
-            'modifyAmount'   => 10,
+            'stockOperator' => InventoryItemModify::OPERATOR_DECREASE,
+            'stock'   => 10,
         ]);
 
         $this->assertTrue($form->isValid());
-        $this->assertEquals(15, $item->getQuantity());
+        $this->assertEquals(15, $item->getStock());
     }
 
     /**
@@ -93,14 +115,22 @@ class InventoryItemTypeTest extends WebTestCase
      */
     public function testDecreaseUnderZero()
     {
-        $item = new InventoryItem();
-        $item->setQuantity(10);
+        $product   = $this->prophesize(Product::class);
+        $warehouse = $this->prophesize(Warehouse::class);
+
+        $item = InventoryItem::withStockLevel(
+            $product->reveal(),
+            $warehouse->reveal(),
+            10,
+            0,
+            'import'
+        );
 
         $form = $this->createForm($item);
 
         $form->submit([
-            'modifyOperator' => InventoryItem::MODIFY_OPERATOR_DECREASE,
-            'modifyAmount'   => 20,
+            'stockOperator' => InventoryItemModify::OPERATOR_DECREASE,
+            'stock'   => 20,
         ]);
 
         $this->assertFalse($form->isValid());
