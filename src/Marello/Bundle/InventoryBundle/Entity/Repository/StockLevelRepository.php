@@ -9,8 +9,7 @@ class StockLevelRepository extends EntityRepository
 {
     
     /**
-     * Returns a sequence of records containing values representing how much were respective quantities changed on each
-     * day between given from and to values.
+     * Returns a set of records containing last stock level on each day in given interval.
      *
      * @param Product   $product
      * @param \DateTime $from
@@ -18,7 +17,7 @@ class StockLevelRepository extends EntityRepository
      *
      * @return array
      */
-    public function getQuantitiesForProduct(Product $product, \DateTime $from, \DateTime $to)
+    public function getStockLevelsForProduct(Product $product, \DateTime $from, \DateTime $to)
     {
         $qb = $this->createQueryBuilder('l');
         $qb
@@ -30,8 +29,8 @@ class StockLevelRepository extends EntityRepository
          */
         $qb
             ->select(
-                'SUM(l.stock - COALESCE(p.stock, 0)) AS quantity',
-                'SUM(l.allocatedStock - COALESCE(p.allocatedStock, 0)) AS allocatedQuantity',
+                'SUM(l.stock - COALESCE(p.stock, 0)) AS stock',
+                'SUM(l.allocatedStock - COALESCE(p.allocatedStock, 0)) AS allocatedStock',
                 'DATE(l.createdAt) AS date'
             )
             ->andWhere($qb->expr()->eq('IDENTITY(i.product)', ':product'))
@@ -55,7 +54,7 @@ class StockLevelRepository extends EntityRepository
      *
      * @return array
      */
-    public function getInitialQuantities(Product $product, \DateTime $at)
+    public function getInitialStock(Product $product, \DateTime $at)
     {
         /*
          * First. Find first record on same day.
@@ -67,7 +66,7 @@ class StockLevelRepository extends EntityRepository
             ->leftJoin('l.previousLevel', 'p');
 
         $qb
-            ->select('COALESCE(p.stock, 0) AS quantity', 'COALESCE(p.allocatedStock, 0) AS allocatedQuantity')
+            ->select('COALESCE(p.stock, 0) AS stock', 'COALESCE(p.allocatedStock, 0) AS allocatedStock')
             ->join('l.inventoryItem', 'i')
             ->andWhere($qb->expr()->eq('IDENTITY(i.product)', ':product'))
             ->andWhere($qb->expr()->eq('DATE(l.createdAt)', 'DATE(:at)'))
@@ -86,8 +85,8 @@ class StockLevelRepository extends EntityRepository
         }
 
         return [
-            'quantity'          => 0,
-            'allocatedQuantity' => 0,
+            'stock'          => 0,
+            'allocatedStock' => 0,
         ];
     }
 }

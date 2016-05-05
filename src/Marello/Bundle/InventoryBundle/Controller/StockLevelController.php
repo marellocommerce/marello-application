@@ -8,19 +8,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Config\Route("/log")
+ * @Config\Route("/stock-level")
  */
-class InventoryLogController extends Controller
+class StockLevelController extends Controller
 {
     /**
-     * @Config\Route("/list/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/{id}", requirements={"id"="\d+"})
      * @Config\Template
      *
      * @param Product $product
      *
      * @return array
      */
-    public function listAction(Product $product)
+    public function indexAction(Product $product)
     {
         return [
             'product' => $product,
@@ -60,8 +60,8 @@ class InventoryLogController extends Controller
                         'label'      => 'Time',
                     ],
                     'value' => [
-                        'field_name' => 'quantity',
-                        'label'      => 'Quantity',
+                        'field_name' => 'stock',
+                        'label'      => 'Stock',
                     ],
                 ],
             ])

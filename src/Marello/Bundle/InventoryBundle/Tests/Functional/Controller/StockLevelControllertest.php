@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @dbIsolation
  */
-class InventoryLogControllerTest extends WebTestCase
+class StockLevelControllerTest extends WebTestCase
 {
 
     /**
@@ -23,7 +23,7 @@ class InventoryLogControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            'Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData',
+            LoadProductData::class,
         ]);
 
         /*
@@ -34,7 +34,7 @@ class InventoryLogControllerTest extends WebTestCase
         $this->client->request(
             'GET',
             $this->getUrl(
-                'marello_inventory_inventorylog_list',
+                'marello_inventory_stocklevel_index',
                 ['id' => $product->getId()]
             )
         );

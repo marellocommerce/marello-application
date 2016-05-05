@@ -91,7 +91,7 @@ datagrid:
                     - p.name
                     - p.desiredStockLevel
                     - p.purchaseStockLevel
-                    - COALESCE(SUM(l.stock - l.allocatedStock), 0) AS virtualQuantity
+                    - COALESCE(SUM(l.stock - l.allocatedStock), 0) AS virtualStock
                     - (p.desiredStockLevel - COALESCE(SUM(l.stock - l.allocatedStock), 0)) AS orderAmount
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
@@ -132,10 +132,10 @@ datagrid:
             purchaseStockLevel:
                 label:              marello.product.purchase_stock_level.label
                 frontend_type:      number
-            virtualQuantity:
-                label:              marello.inventory.inventoryitem.virtualQuantity.label
+            virtualStock:
+                label:              marello.inventory.stocklevel.virtual_stock.label
                 frontend_type:      number
-                data_name:          virtualQuantity
+                data_name:          virtualStock
             orderAmount:
                 label:              marello.purchaseorder.purchaseorderitem.order_amount.label
                 frontend_type:      number

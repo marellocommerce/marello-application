@@ -17,8 +17,8 @@
 
 {% block navButtons %}
     {{ UI.button({
-        'path': path('marello_inventory_inventorylog_list', {'id': entity.id}),
-        'label': 'marello.inventory.inventorylog.entity_label'|trans
+        'path': path('marello_inventory_stocklevel_index', {'id': entity.id}),
+        'label': 'marello.inventory.stocklevel.log.label'|trans
     }) }}
     {% if resource_granted('DELETE', entity) %}
         {{ UI.buttonSeparator() }}
@@ -57,7 +57,7 @@
         <div class="responsive-block">
             {{ oro_widget_render({
                 'widgetType': 'block',
-                'url': path('marello_inventory_inventorylog_chart', {id: entity.id}),
+                'url': path('marello_inventory_stocklevel_chart', {id: entity.id}),
                 'title': ''
             }) }}
         </div>

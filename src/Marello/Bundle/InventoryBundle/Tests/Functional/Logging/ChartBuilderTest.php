@@ -71,11 +71,11 @@ class ChartBuilderTest extends WebTestCase
         $first = reset($data);
         $last  = end($data);
 
-        $this->assertEquals(0, $first['quantity'], 'First item quantity level should be zero.');
+        $this->assertEquals(0, $first['stock'], 'First item stock level should be zero.');
         $this->assertEquals(
             $inventoryItem->getStock(),
-            $last['quantity'],
-            'Last item quantity level should be same as the one stored in inventory item.'
+            $last['stock'],
+            'Last item stock level should be same as the one stored in inventory item.'
         );
     }
 }

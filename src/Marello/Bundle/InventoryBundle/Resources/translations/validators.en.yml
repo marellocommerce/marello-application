@@ -1,4 +1,4 @@
 marello:
     inventory:
         validation:
-            warehouse_inventory:    Resulting quantity has to be greater or equal to zero.
+            warehouse_inventory:    Resulting stock has to be greater or equal to zero.
