@@ -97,7 +97,7 @@ class StockLevel
 
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={

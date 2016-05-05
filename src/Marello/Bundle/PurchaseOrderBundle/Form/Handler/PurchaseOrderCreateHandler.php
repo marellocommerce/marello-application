@@ -103,9 +103,10 @@ class PurchaseOrderCreateHandler
 
         $qb
             ->select('p')
-            ->join('p.inventoryItems', 'i')
+            ->leftJoin('p.inventoryItems', 'i')
+            ->leftJoin('i.currentLevel', 'l')
             ->join('p.status', 's')
-            ->having('SUM(i.quantity - i.allocatedQuantity) < p.purchaseStockLevel')
+            ->having('SUM(l.stock - l.allocatedStock) < p.purchaseStockLevel')
             ->andWhere($qb->expr()->eq('s.name', $qb->expr()->literal('enabled')))
             ->andWhere($qb->expr()->notIn('p.id', $qbs->getDQL()))
             ->groupBy('p.id');

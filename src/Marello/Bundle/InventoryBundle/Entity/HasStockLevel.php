@@ -10,7 +10,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 trait HasStockLevel
 {
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
