@@ -11,9 +11,9 @@ datagrid:
                     - s.label as status
                     - p.createdAt
                     - p.updatedAt
-                    - COALESCE(SUM(l.stock), 0) AS quantity
-                    - COALESCE(SUM(l.allocatedStock), 0) AS allocatedQuantity
-                    - COALESCE(SUM(l.stock - l.allocatedStock), 0) AS virtualQuantity
+                    - COALESCE(SUM(l.stock), 0) AS stock
+                    - COALESCE(SUM(l.allocatedStock), 0) AS allocatedStock
+                    - COALESCE(SUM(l.stock - l.allocatedStock), 0) AS virtualStock
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -27,21 +27,21 @@ datagrid:
                 label:              marello.product.sku.label
                 frontend_type:      string
             product:
-                label:              marello.inventory.inventoryitem.product.label
+                label:              marello.product.entity_label
                 frontend_type:      string
                 data_name:          name
-            quantity:
-                label:              marello.inventory.inventoryitem.quantity.label
+            stock:
+                label:              marello.inventory.stocklevel.stock.label
                 frontend_type:      number
-                data_name:          quantity
-            allocatedQuantity:
-                label:              marello.inventory.inventoryitem.allocated_quantity.label
+                data_name:          stock
+            allocatedStock:
+                label:              marello.inventory.stocklevel.allocated_stock.label
                 frontend_type:      number
-                data_name:          allocatedQuantity
-            virtualQuantity:
-                label:              marello.inventory.inventoryitem.virtual_quantity.label
+                data_name:          allocatedStock
+            virtualStock:
+                label:              marello.inventory.stocklevel.virtual_stock.label
                 frontend_type:      number
-                data_name:          virtualQuantity
+                data_name:          virtualStock
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
@@ -56,15 +56,15 @@ datagrid:
                 product:
                     type:             string
                     data_name:        p.name
-                quantity:
+                stock:
                     type:             number
-                    data_name:        quantity
-                allocatedQuantity:
+                    data_name:        stock
+                allocatedStock:
                     type:             number
-                    data_name:        allocatedQuantity
-                virtualQuantity:
+                    data_name:        allocatedStock
+                virtualStock:
                     type:             number
-                    data_name:        virtualQuantity
+                    data_name:        virtualStock
                 status:
                     type:             entity
                     data_name:        s
@@ -93,8 +93,8 @@ datagrid:
             query:
                 select:
                     - l
-                    - (l.stock - COALESCE(p.stock, 0)) AS changeAmount
-                    - (l.allocatedStock - COALESCE(p.allocatedStock, 0)) AS changeAllocatedAmount
+                    - (l.stock - COALESCE(p.stock, 0)) AS stockDiff
+                    - (l.allocatedStock - COALESCE(p.allocatedStock, 0)) AS allocatedStockDiff
                 from:
                     - { table: MarelloInventoryBundle:StockLevel, alias: l }
                 join:
@@ -107,14 +107,14 @@ datagrid:
             bind_parameters:
                 product_id: productId
         columns:
-            changeAmount:
-                data_name:      changeAmount
+            stockDiff:
+                data_name:      stockDiff
                 label:          marello.inventory.stocklevel.stock_diff.label
                 type:           twig
                 frontend_type:  html
                 template:       MarelloInventoryBundle::Datagrid/StockLevel/diff.html.twig
-            changeAllocatedAmount:
-                data_name:      changeAllocatedAmount
+            allocatedStockDiff:
+                data_name:      allocatedStockDiff
                 label:          marello.inventory.stocklevel.allocated_stock_diff.label
                 type:           twig
                 frontend_type:  html
@@ -123,7 +123,7 @@ datagrid:
                 data_name:      changeTrigger
                 label:          marello.inventory.stocklevel.change_trigger.label
                 type:           translatable
-                domain:         MarelloInventoryLogAction
+                domain:         MarelloStockLevelChangeTrigger
                 frontend_type:  string
             author:
                 label:          marello.inventory.stocklevel.author.label
@@ -140,10 +140,10 @@ datagrid:
             columns:
                 createdAt:
                     data_name:  l.createdAt
-                changeAmount:
-                    data_name:  changeAmount
-                changeAllocatedAmount:
-                    data_name:  changeAllocatedAmount
+                stockDiff:
+                    data_name:  stockDiff
+                allocatedStockDiff:
+                    data_name:  allocatedStockDiff
             default:
                 createdAt:      DESC
         options:
@@ -155,12 +155,12 @@ datagrid:
         extends: marello-inventory-log
         filters:
             columns:
-                changeAmount:
+                stockDiff:
                     type:             number
-                    data_name:        changeAmount
-                changeAllocatedAmount:
+                    data_name:        stockDiff
+                allocatedStockDiff:
                     type:             number
-                    data_name:        changeAllocatedAmount
+                    data_name:        allocatedStockDiff
                 changeTrigger:
                     type:             string
                     data_name:        l.changeTrigger

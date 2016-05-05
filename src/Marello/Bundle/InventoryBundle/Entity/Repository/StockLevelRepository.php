@@ -48,9 +48,7 @@ class StockLevelRepository extends EntityRepository
     }
 
     /**
-     * Returns initial quantities for given day. Quantity values at the start of the day.
-     * This is either old value of first record of the day, or new value of last record before the day.
-     * In case no record is preset, bot quantities are returned as zeroes.
+     * Returns initial stock for given day.
      *
      * @param Product   $product
      * @param \DateTime $at
