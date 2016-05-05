@@ -73,6 +73,7 @@ class ReturnControllerTest extends WebTestCase
 
         $data = [
             'order'       => $returnedOrder->getOrderNumber(),
+            'salesChannel' => $this->getReference('marello_sales_channel_1')->getCode(),
             'returnItems' => $returnedOrder->getItems()->map(function (OrderItem $item) {
                 return [
                     'orderItem' => $item->getId(),
@@ -89,6 +90,7 @@ class ReturnControllerTest extends WebTestCase
         );
 
         $response = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertJsonResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_CREATED);
 
         $this->assertArrayHasKey('id', $response);
 
