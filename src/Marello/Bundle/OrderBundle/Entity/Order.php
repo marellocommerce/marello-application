@@ -160,16 +160,26 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     protected $items;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", cascade={"persist"})
+     * @ORM\JoinColumn
+     *
+     * @var Customer
+     */
+    protected $customer;
+
+    /**
      * @var AbstractAddress
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
+     * @ORM\JoinColumn
      */
     protected $billingAddress;
 
     /**
      * @var AbstractAddress
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
+     * @ORM\JoinColumn
      */
     protected $shippingAddress;
 

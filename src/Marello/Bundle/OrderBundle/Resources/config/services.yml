@@ -41,3 +41,8 @@ services:
             - @oro_locale.formatter.date_time
             - @oro_security.acl_helper
             - @translator.default
+
+    marello_order.provider.customer_email_owner:
+        class: Marello\Bundle\OrderBundle\Provider\CustomerEmailOwnerProvider
+        tags:
+            - { name: oro_email.owner.provider, order: 1 }
