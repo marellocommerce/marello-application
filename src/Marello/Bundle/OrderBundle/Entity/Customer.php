@@ -101,6 +101,8 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
         $this->createdAt = new \DateTime();
     }
 
+    
+
     /**
      * @ORM\PreUpdate
      */
@@ -117,5 +119,45 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @return Collection|\Oro\Bundle\AddressBundle\Entity\AbstractAddress[]
+     */
+    public function getAddresses()
+    {
+        return $this->addresses;
+    }
+
+    /**
+     * @return Address
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 }

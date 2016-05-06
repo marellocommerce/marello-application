@@ -1,0 +1,63 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroAddressBundle::macros.html.twig' as Address %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_order_customer_index'),
+        'indexLabel': 'marello.order.customer.entity_plural_label'|trans,
+        'entityTitle': entity.fullName
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set general %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.customer.name_prefix.label'|trans, entity.namePrefix) }}
+                    {{ UI.renderProperty('marello.order.customer.first_name.label'|trans, entity.firstName) }}
+                    {{ UI.renderProperty('marello.order.customer.middle_name.label'|trans, entity.middleName) }}
+                    {{ UI.renderProperty('marello.order.customer.last_name.label'|trans, entity.lastName) }}
+                    {{ UI.renderProperty('marello.order.customer.name_suffix.label'|trans, entity.nameSuffix) }}
+                    {{ UI.renderProperty('marello.order.customer.email.label'|trans, entity.email) }}
+                    {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
+                    {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date|default('N/A'|trans)) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set address %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ Address.renderAddress(entity.address) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [general] }
+            ]
+        },
+        {
+            'title': 'marello.order.customer.address.label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data': [address] }
+            ]
+        }
+    ] %}
+
+    {% set id = 'vehicleView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

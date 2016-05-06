@@ -140,4 +140,22 @@ trait HasFullName
 
         return $this;
     }
+
+    /**
+     * Returns all names concatenated into full name.
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        $names = array_filter([
+            $this->namePrefix,
+            $this->firstName,
+            $this->middleName,
+            $this->lastName,
+            $this->nameSuffix,
+        ]);
+
+        return implode(' ', $names);
+    }
 }

@@ -54,4 +54,12 @@ trait HasEmailAddresses
     {
         return ['emails'];
     }
+
+    /**
+     * @return Collection|CustomerEmail[]
+     */
+    public function getEmails()
+    {
+        return $this->emails;
+    }
 }

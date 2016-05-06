@@ -6,6 +6,12 @@ oro_menu_config:
             extras:
                 routes: ['marello_order_order_*']
 
+        customers:
+            label: marello.order.customer.entity_plural_label
+            route: marello_order_customer_index
+            extras:
+                routes: ['marello_order_customer_*']
+
         shortcut_new_order:
             label: 'marello.order.menu.shortcut_new_order.label'
             route: 'marello_order_order_create'
@@ -26,6 +32,7 @@ oro_menu_config:
                 sales:
                     children:
                         orders: ~
+                        customers: ~
                     position: 20
         shortcuts:
             children:
@@ -37,3 +44,5 @@ oro_titles:
     marello_order_order_view: 'Order #%%id%%'
     marello_order_order_update: 'Order #%%id%% - Update'
     marello_order_order_create: 'New order'
+    marello_order_customer_index: marello.order.customer.entity_plural_label
+    marello_order_customer_view: 'Customer %%name%%'
