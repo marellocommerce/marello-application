@@ -2,6 +2,8 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroAddressBundle::macros.html.twig' as Address %}
 
+{% oro_title_set({params : {"%name%": entity.fullName }}) %}
+
 {% block pageHeader %}
     {% set breadcrumbs = {
         'entity':      entity,

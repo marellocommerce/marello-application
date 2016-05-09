@@ -45,4 +45,4 @@ oro_titles:
     marello_order_order_update: 'Order #%%id%% - Update'
     marello_order_order_create: 'New order'
     marello_order_customer_index: marello.order.customer.entity_plural_label
-    marello_order_customer_view: 'Customer %%name%%'
+    marello_order_customer_view: 'Customer - %%name%%'

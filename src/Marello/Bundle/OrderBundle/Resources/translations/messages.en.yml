@@ -67,7 +67,7 @@ marello:
         customer:
             entity_label:           Customer
             entity_plural_label:    Customers
-            id.label.label:         Id
+            id.label:               Id
             address.label:          Primary Address
             addresses.label:        Addresses
             email.label:            Primary Email
