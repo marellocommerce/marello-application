@@ -29,7 +29,7 @@ class Address extends AbstractAddress
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", inversedBy="addresses")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=true)
+     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      *
      * @var Customer
      */

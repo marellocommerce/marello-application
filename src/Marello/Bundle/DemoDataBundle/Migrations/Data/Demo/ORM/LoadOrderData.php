@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -154,34 +155,36 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     }
 
     /**
-     * @param array $row
+     * @param array        $row
+     * @param Organization $organization
      *
      * @return Order
      */
     protected function createOrder($row, Organization $organization)
     {
-        $billing = new Address();
-        $billing->setNamePrefix($row['title']);
-        $billing->setFirstName($row['firstname']);
-        $billing->setLastName($row['lastname']);
-        $billing->setStreet($row['street_address']);
-        $billing->setPostalCode($row['zipcode']);
-        $billing->setCity($row['city']);
-        $billing->setCountry(
+        $address = new Address();
+        $address->setNamePrefix($row['title']);
+        $address->setFirstName($row['firstname']);
+        $address->setLastName($row['lastname']);
+        $address->setStreet($row['street_address']);
+        $address->setPostalCode($row['zipcode']);
+        $address->setCity($row['city']);
+        $address->setCountry(
             $this->manager
                 ->getRepository('OroAddressBundle:Country')->find($row['country'])
         );
-        $billing->setRegion(
+        $address->setRegion(
             $this->manager
                 ->getRepository('OroAddressBundle:Region')
                 ->findOneBy(['combinedCode' => $row['country'] . '-' . $row['state']])
         );
-        $billing->setPhone($row['telephone_number']);
-        $billing->setEmail($row['email']);
+        $address->setPhone($row['telephone_number']);
+        $this->manager->persist($address);
 
-        $shipping = clone $billing;
-
-        $orderEntity = new Order($billing, $shipping);
+        $orderEntity = new Order($address, $address);
+        $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $address);
+        $customer->setOrganization($organization);
+        $orderEntity->setCustomer($customer);
 
         $channel = $this->getReference('marello_sales_channel_' . $row['channel']);
         $orderEntity->setSalesChannel($channel);

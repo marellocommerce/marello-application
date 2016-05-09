@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\Address;
@@ -43,15 +44,18 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
      *
      * @var Address
      */
     protected $address;
 
     /**
-     * @ORM\OneToMany(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", mappedBy="customer")
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\AddressBundle\Entity\Address",
+     *     mappedBy="customer",
+     *     cascade={"persist"}
+     * )
      *
      * @var Collection|AbstractAddress[]
      */
@@ -99,6 +103,8 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->addresses = new ArrayCollection();
+        $this->emails = new ArrayCollection();
     }
 
     /**
@@ -212,10 +218,6 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
      */
     public function setAddress(Address $address)
     {
-        if (!$this->addresses->contains($address)) {
-            $this->addAddress($address);
-        }
-
         $this->address = $address;
 
         return $this;

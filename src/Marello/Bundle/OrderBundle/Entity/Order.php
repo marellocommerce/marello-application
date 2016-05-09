@@ -785,4 +785,24 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     {
         return sprintf('#%s', $this->orderNumber);
     }
+
+    /**
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param Customer $customer
+     *
+     * @return $this
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
 }
