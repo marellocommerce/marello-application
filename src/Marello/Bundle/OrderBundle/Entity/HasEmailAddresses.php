@@ -62,4 +62,40 @@ trait HasEmailAddresses
     {
         return $this->emails;
     }
+
+    /**
+     * @param CustomerEmail $email
+     *
+     * @return $this
+     */
+    public function addEmail(CustomerEmail $email)
+    {
+        $this->emails->add($email->setEmailOwner($this));
+
+        return $this;
+    }
+
+    /**
+     * @param CustomerEmail $email
+     *
+     * @return $this
+     */
+    public function removeEmail(CustomerEmail $email)
+    {
+        $this->emails->removeElement($email);
+
+        return $this;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return $this
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
 }

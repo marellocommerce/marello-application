@@ -68,7 +68,7 @@ class Address extends AbstractAddress
      *
      * @return $this
      */
-    public function setCustomer($customer)
+    public function setCustomer(Customer $customer = null)
     {
         $this->customer = $customer;
 

@@ -101,7 +101,27 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
         $this->createdAt = new \DateTime();
     }
 
-    
+    /**
+     * @param string  $firstName
+     * @param string  $lastName
+     * @param string  $email
+     * @param Address $address
+     *
+     * @return Customer
+     */
+    public static function create($firstName, $lastName, $email, Address $address)
+    {
+        $customer = new self();
+
+        $customer
+            ->setFirstName($firstName)
+            ->setLastName($lastName)
+            ->setEmail($email)
+            ->setAddress($address)
+        ;
+
+        return $customer;
+    }
 
     /**
      * @ORM\PreUpdate
@@ -154,10 +174,62 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     }
 
     /**
+     * @param Address $address
+     *
+     * @return $this
+     */
+    public function addAddress(Address $address)
+    {
+        $this->addresses->add($address->setCustomer($this));
+
+        return $this;
+    }
+
+    /**
+     * @param Address $address
+     *
+     * @return $this
+     */
+    public function removeAddress(Address $address)
+    {
+        $this->addresses->removeElement($address->setCustomer(null));
+
+        return $this;
+    }
+
+    /**
      * @return Address
      */
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * @param Address $address
+     *
+     * @return $this
+     */
+    public function setAddress(Address $address)
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addAddress($address);
+        }
+
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @param Organization $organization
+     *
+     * @return $this
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+
+        return $this;
     }
 }
