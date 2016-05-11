@@ -32,7 +32,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  */
 class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInterface
 {
-    use HasFullName, HasEmailAddresses;
+    use HasFullNameTrait, HasEmailAddressesTrait;
 
     /**
      * @ORM\Id
@@ -104,7 +104,6 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     {
         $this->createdAt = new \DateTime();
         $this->addresses = new ArrayCollection();
-        $this->emails = new ArrayCollection();
     }
 
     /**
@@ -233,5 +232,13 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
         $this->organization = $organization;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getFullName();
     }
 }

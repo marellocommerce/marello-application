@@ -27,13 +27,11 @@ class MarelloOrderBundleInstaller implements Installation
     {
         /** Tables generation **/
         $this->createMarelloOrderCustomerTable($schema);
-        $this->createMarelloOrderCustomerEmailTable($schema);
         $this->createMarelloOrderOrderTable($schema);
         $this->createMarelloOrderOrderItemTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloOrderCustomerForeignKeys($schema);
-        $this->addMarelloOrderCustomerEmailForeignKeys($schema);
         $this->addMarelloOrderOrderForeignKeys($schema);
         $this->addMarelloOrderOrderItemForeignKeys($schema);
         $this->addMarelloAddressForeignKeys($schema);
@@ -65,21 +63,6 @@ class MarelloOrderBundleInstaller implements Installation
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['address_id'], 'UNIQ_75C456C9F5B7AF75');
         $table->addIndex(['organization_id'], 'IDX_75C456C932C8A3DE', []);
-    }
-
-    /**
-     * Create marello_order_customer_email table
-     *
-     * @param Schema $schema
-     */
-    protected function createMarelloOrderCustomerEmailTable(Schema $schema)
-    {
-        $table = $schema->createTable('marello_order_customer_email');
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('email', 'text', []);
-        $table->addColumn('emailOwner_id', 'integer', ['notnull' => false]);
-        $table->setPrimaryKey(['id']);
-        $table->addIndex(['emailOwner_id'], 'IDX_470B36154EC28A1D', []);
     }
 
     /**
@@ -172,22 +155,6 @@ class MarelloOrderBundleInstaller implements Installation
             ['address_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
-        );
-    }
-
-    /**
-     * Add marello_order_customer_email foreign keys.
-     *
-     * @param Schema $schema
-     */
-    protected function addMarelloOrderCustomerEmailForeignKeys(Schema $schema)
-    {
-        $table = $schema->getTable('marello_order_customer_email');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_customer'),
-            ['emailOwner_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 

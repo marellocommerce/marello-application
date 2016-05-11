@@ -1,0 +1,9 @@
+Marello\Bundle\OrderBundle\Entity\Customer:
+    alias:                  marello_customers
+    title_fields:           [name]
+    search_template:        MarelloOrderBundle:Customer:searchResult.html.twig
+    fields:
+        -
+            name: name
+            target_type: text
+            target_fields: [namePrefix, firstName, middleName, lastName, nameSuffix]

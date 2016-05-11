@@ -23,22 +23,8 @@ class CustomerEmailOwnerProvider implements EmailOwnerProviderInterface
      */
     public function findEmailOwner(EntityManager $em, $email)
     {
-        $customer = $em
+        return $em
             ->getRepository(Customer::class)
             ->findOneBy(compact('email'));
-
-        if ($customer) {
-            return $customer;
-        }
-
-        $customerEmail = $em
-            ->getRepository(CustomerEmail::class)
-            ->findOneBy(compact('email'));
-
-        if ($customerEmail) {
-            return $customerEmail->getEmailOwner();
-        }
-
-        return null;
     }
 }

@@ -10,6 +10,8 @@ use Symfony\Component\Validator\Constraints as Constraint;
 
 class AddressType extends AbstractType
 {
+    const NAME = 'marello_address';
+
     /**
      * {@inheritdoc}
      */
@@ -46,6 +48,6 @@ class AddressType extends AbstractType
      */
     public function getName()
     {
-        return 'marello_address';
+        return self::NAME;
     }
 }

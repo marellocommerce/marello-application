@@ -4,7 +4,7 @@ namespace Marello\Bundle\OrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-trait HasFullName
+trait HasFullNameTrait
 {
     /**
      * @ORM\Column(type="string", nullable=true)

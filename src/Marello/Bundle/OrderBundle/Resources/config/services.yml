@@ -1,5 +1,7 @@
 parameters:
     marello_order.provider.order_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider
+    marello_order_customer.class: Marello\Bundle\OrderBundle\Entity\Customer
+
 services:
     marello_order.listener.datagrid.order_grid_address_filter_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener
@@ -46,3 +48,11 @@ services:
         class: Marello\Bundle\OrderBundle\Provider\CustomerEmailOwnerProvider
         tags:
             - { name: oro_email.owner.provider, order: 1 }
+
+    marello_order.search_handler.customer:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %marello_order_customer.class%
+            - ["namePrefix", "firstName", "middleName", "lastName", "nameSuffix"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: marello_customers, acl_resource: marello_customer_view }
