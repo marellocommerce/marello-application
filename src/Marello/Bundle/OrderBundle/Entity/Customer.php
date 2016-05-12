@@ -32,7 +32,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  */
 class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInterface
 {
-    use HasFullNameTrait, HasEmailAddressesTrait;
+    use HasFullNameTrait, HasEmailAddressTrait;
 
     /**
      * @ORM\Id
