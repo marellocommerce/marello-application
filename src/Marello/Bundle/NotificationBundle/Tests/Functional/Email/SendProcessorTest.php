@@ -6,7 +6,6 @@ use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\NotificationBundle\Email\SendProcessor;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -53,7 +52,7 @@ class SendProcessorTest extends WebTestCase
 
         $this->sendProcessor->sendNotification(
             'marello_order_accepted_confirmation',
-            [$order->getBillingAddress()->getEmail()],
+            [$order->getCustomer()->getEmail()],
             $order
         );
 
@@ -79,7 +78,7 @@ class SendProcessorTest extends WebTestCase
 
         $this->sendProcessor->sendNotification(
             'this is not a valid template name',
-            [$order->getBillingAddress()->getEmail()],
+            [$order->getCustomer()->getEmail()],
             $order
         );
     }
