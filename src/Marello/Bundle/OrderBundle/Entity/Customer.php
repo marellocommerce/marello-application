@@ -45,10 +45,11 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
 
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      *
      * @var Address
      */
-    protected $address;
+    protected $primaryAddress;
 
     /**
      * @ORM\OneToMany(
@@ -122,7 +123,7 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
             ->setFirstName($firstName)
             ->setLastName($lastName)
             ->setEmail($email)
-            ->setAddress($address)
+            ->setPrimaryAddress($address)
         ;
 
         return $customer;
@@ -205,19 +206,19 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     /**
      * @return Address
      */
-    public function getAddress()
+    public function getPrimaryAddress()
     {
-        return $this->address;
+        return $this->primaryAddress;
     }
 
     /**
-     * @param Address $address
+     * @param Address $primaryAddress
      *
      * @return $this
      */
-    public function setAddress(Address $address)
+    public function setPrimaryAddress(Address $primaryAddress)
     {
-        $this->address = $address;
+        $this->primaryAddress = $primaryAddress;
 
         return $this;
     }

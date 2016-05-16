@@ -34,17 +34,17 @@ class CustomerApiEntityManager extends ApiEntityManager
         $config = [
             'exclusion_policy' => 'all',
             'fields'           => [
-                'id'         => [],
-                'namePrefix' => [],
-                'firstName'  => [],
-                'middleName' => [],
-                'lastName'   => [],
-                'nameSuffix' => [],
-                'email'      => [],
-                'address'    => $addressConfig,
-                'addresses'  => $addressConfig,
-                'createdAt'  => [],
-                'updatedAt'  => [],
+                'id'             => [],
+                'namePrefix'     => [],
+                'firstName'      => [],
+                'middleName'     => [],
+                'lastName'       => [],
+                'nameSuffix'     => [],
+                'email'          => [],
+                'primaryAddress' => $addressConfig,
+                'addresses'      => $addressConfig,
+                'createdAt'      => [],
+                'updatedAt'      => [],
             ],
         ];
 

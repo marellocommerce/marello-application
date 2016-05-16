@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +42,9 @@ class OrderControllerTest extends WebTestCase
      */
     public function testCreate()
     {
+        /** @var Customer $customer */
+        $customer = $this->getReference('marello_customer_1');
+
         $data = [
             'orderReference'  => 333444,
             'salesChannel'    => $this->getReference('marello_sales_channel_3')->getId(),
@@ -53,26 +57,9 @@ class OrderControllerTest extends WebTestCase
             'discountAmount'  => 10,
             'couponCode'      => 'XFZDSFSDFSFSD',
             'shippingAmount'  => 5,
-            'billingAddress'  => [
-                'firstName'  => 'John',
-                'lastName'   => 'Doe',
-                'country'    => 'NL',
-                'street'     => 'Torenallee 20',
-                'city'       => 'Eindhoven',
-                'region'     => 'NL-NB',
-                'postalCode' => '5617 BC',
-                'email'      => 'john.doe@example.com'
-            ],
-            'shippingAddress' => [
-                'firstName'  => 'John',
-                'lastName'   => 'Doe',
-                'country'    => 'NL',
-                'street'     => 'Torenallee 20',
-                'city'       => 'Eindhoven',
-                'region'     => 'NL-NB',
-                'postalCode' => '5617 BC',
-                'email'      => 'john.doe@example.com'
-            ],
+            'customer'        => $customer->getId(),
+            'billingAddress'  => $customer->getPrimaryAddress()->getId(),
+            'shippingAddress' => $customer->getPrimaryAddress()->getId(),
             'items'           => [
                 [
                     'product'    => 'msj002',
@@ -134,7 +121,6 @@ class OrderControllerTest extends WebTestCase
                 'city'       => 'Eindhoven',
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
-                'email'      => 'gi.doe@example.com'
             ],
             'shippingAddress' => [
                 'firstName'  => 'Han',
@@ -144,7 +130,6 @@ class OrderControllerTest extends WebTestCase
                 'city'       => 'Alderaan',
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
-                'email'      => 'gi.doe@example.com'
             ],
         ];
 

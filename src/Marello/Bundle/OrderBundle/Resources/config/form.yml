@@ -43,6 +43,8 @@ services:
 
     marello_roder.form.type.customer_api:
         class: Marello\Bundle\OrderBundle\Form\Type\CustomerApiType
+        arguments:
+            - "@security.token_storage"
         tags:
             - { name: form.type, alias: marello_customer_api }
 
@@ -73,7 +75,7 @@ services:
 
     marello_order.form.customer_api:
             class: Symfony\Component\Form\Form
-            factory: [form.factory, createNamed]
+            factory: ["@form.factory", createNamed]
             arguments:
                 - ~
                 - 'marello_customer_api'

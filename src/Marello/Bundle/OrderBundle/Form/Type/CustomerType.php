@@ -41,7 +41,7 @@ class CustomerType extends AbstractType
                     new Email,
                 ],
             ])
-            ->add('address', AddressType::NAME, [
+            ->add('primaryAddress', AddressType::NAME, [
                 'required' => false,
             ]);
     }

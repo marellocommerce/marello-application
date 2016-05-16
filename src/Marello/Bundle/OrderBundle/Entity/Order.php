@@ -170,7 +170,7 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     /**
      * @var AbstractAddress
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
      * @ORM\JoinColumn
      */
     protected $billingAddress;
@@ -178,7 +178,7 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     /**
      * @var AbstractAddress
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
      * @ORM\JoinColumn
      */
     protected $shippingAddress;

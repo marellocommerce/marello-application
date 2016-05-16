@@ -48,6 +48,21 @@ class CustomerController extends RestController implements ClassResourceInterfac
 
         return $this->handleGetListRequest($page, $limit);
     }
+
+    /**
+     * Create new Customer
+     *
+     * @ApiDoc(
+     *     description="Create a new Customer via the Api",
+     *     resource=true
+     * )
+     *
+     * @return Response
+     */
+    public function postAction()
+    {
+        return $this->handleCreateRequest();
+    }
     
     /**
      * Get entity Manager

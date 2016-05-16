@@ -64,11 +64,12 @@ marello:
             tax_percent.label:      Tax Percent
             return_items.label:     Returned items
 
+        # Customer Entity
         customer:
             entity_label:           Customer
             entity_plural_label:    Customers
             id.label:               Id
-            address.label:          Primary Address
+            primary_address.label:  Primary Address
             addresses.label:        Addresses
             email.label:            Primary Email
             emails.label:           Email Addresses

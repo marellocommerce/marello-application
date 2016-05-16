@@ -30,6 +30,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     /** @var Warehouse */
     protected $defaultWarehouse;
 
+    protected $customers = 0;
+
     /**
      * {@inheritdoc}
      */
@@ -184,6 +186,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $orderEntity = new Order($address, $address);
         $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $address);
         $customer->setOrganization($organization);
+        $this->setReference('marello_customer_' . $this->customers++, $customer);
         $orderEntity->setCustomer($customer);
 
         $channel = $this->getReference('marello_sales_channel_' . $row['channel']);
