@@ -1,0 +1,21 @@
+services:
+    marello_shipping.integration.shipping_service_registry:
+        class: Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry
+        arguments:
+            - '@service_container'
+
+    marello_shipping.workflow.action.create:
+        class: Marello\Bundle\ShippingBundle\Workflow\ShippingCreateAction
+        arguments:
+            - '@oro_workflow.context_accessor'
+            - '@marello_shipping.integration.shipping_service_registry'
+        tags:
+            - { name: oro_workflow.action, alias: marello_shipping_create }
+
+    marello_shipping.workflow.action.confirm:
+        class: Marello\Bundle\ShippingBundle\Workflow\ShippingConfirmAction
+        arguments:
+            - '@oro_workflow.context_accessor'
+            - '@marello_shipping.integration.shipping_service_registry'
+        tags:
+            - { name: oro_workflow.action, alias: marello_shipping_confirm }
