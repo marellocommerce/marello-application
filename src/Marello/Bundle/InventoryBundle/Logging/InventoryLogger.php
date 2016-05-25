@@ -164,8 +164,14 @@ class InventoryLogger
         $log = new InventoryLog($item, $trigger);
 
         if ($quantityChanged) {
+            // fail safe for when a new item got a null value as old qty
+            $oldQuantity = $changeSet['quantity'][0];
+            if (null === $oldQuantity) {
+                $oldQuantity = 0;
+            }
+
             $log
-                ->setOldQuantity($changeSet['quantity'][0])
+                ->setOldQuantity($oldQuantity)
                 ->setNewQuantity($changeSet['quantity'][1]);
         }
 
