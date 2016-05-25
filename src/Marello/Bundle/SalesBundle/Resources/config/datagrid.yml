@@ -8,6 +8,9 @@ datagrid:
                 from:
                     - { table: MarelloSalesBundle:SalesChannel, alias: sc }
         columns:
+            id:
+                label:                marello.sales.saleschannel.id.label
+                frontend_type:        string
             name:
                 label:                marello.sales.saleschannel.name.label
                 frontend_type:        string
@@ -26,6 +29,44 @@ datagrid:
             default:
                 label:                marello.sales.saleschannel.default.label
                 frontend_type:        boolean
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: sc.name
+                code:
+                    type: string
+                    data_name: sc.code
+                channelType:
+                    type: string
+                    data_name: sc.channelType
+                currency:
+                    type: string
+                    data_name: sc.currency
+                active:
+                    type: boolean
+                    data_name: sc.active
+                default:
+                    type: boolean
+                    data_name: sc.default
+        sorters:
+            columns:
+                id:
+                    data_name: sc.id
+                name:
+                    data_name: sc.name
+                code:
+                    data_name: sc.code
+                channelType:
+                    data_name: sc.channelType
+                currency:
+                    data_name: sc.currency
+                active:
+                    data_name: sc.active
+                default:
+                    data_name: sc.default
+            default:
+                id: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         properties:
             id: ~
             delete_link:
