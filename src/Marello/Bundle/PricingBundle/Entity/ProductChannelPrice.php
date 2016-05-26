@@ -3,8 +3,9 @@
 namespace Marello\Bundle\PricingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ProductBundle\Entity\Product;
 
 /**
  * Represents a Marello ProductPrice
@@ -33,6 +34,14 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 class ProductChannelPrice extends BasePrice
 {
     /**
+     * @var Product
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="channelPrices")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     **/
+    protected $product;
+
+    /**
      * @var SalesChannel
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
@@ -56,6 +65,25 @@ class ProductChannelPrice extends BasePrice
     public function setChannel(SalesChannel $channel)
     {
         $this->channel = $channel;
+
+        return $this;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * @param Product $product
+     * @return $this
+     */
+    public function setProduct(Product $product)
+    {
+        $this->product    = $product;
 
         return $this;
     }
