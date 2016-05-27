@@ -1,0 +1,5 @@
+marello:
+    shipping:
+        system_configuration:
+            ups_username:               'API Username'
+            ups_password:               'API Password'

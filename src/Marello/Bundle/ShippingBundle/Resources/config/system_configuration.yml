@@ -1,0 +1,41 @@
+oro_system_configuration:
+    groups:
+        shipping_configuration:
+            title: 'Shipping Configuration'
+            icon: icon-truck
+            priority: 50
+
+        ups_configuration:
+            title: 'UPS Configuration'
+            icon: icon-truck
+            priority: 50
+
+    fields:
+        marello_shipping.ups_username:
+            type: text
+            data_type: string
+            options:
+                label: marello.shipping.system_configuration.ups_username
+                resettable: false
+                required: false
+
+        marello_shipping.ups_password:
+            type: password
+            data_type: string
+            options:
+                label: marello.shipping.system_configuration.ups_password
+                resettable: false
+                required: false
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            shipping_configuration:
+                                children:
+                                    ups_configuration:
+                                        children:
+                                            - marello_shipping.ups_username
+                                            - marello_shipping.ups_password
