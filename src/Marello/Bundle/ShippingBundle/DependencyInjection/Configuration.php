@@ -22,8 +22,9 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             [
-                'ups_username' => ['value' => null],
-                'ups_password' => ['value' => null],
+                'ups_username'           => ['value' => null],
+                'ups_password'           => ['value' => null],
+                'ups_access_license_key' => ['value' => null],
             ]
         );
 

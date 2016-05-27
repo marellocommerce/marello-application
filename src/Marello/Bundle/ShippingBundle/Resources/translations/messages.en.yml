@@ -3,3 +3,4 @@ marello:
         system_configuration:
             ups_username:               'API Username'
             ups_password:               'API Password'
+            ups_access_license_key:     'API Access Key'
