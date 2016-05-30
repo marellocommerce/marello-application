@@ -19,17 +19,21 @@ class ShippingServiceRegistryCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $integrations = $container->findTaggedServiceIds(self::SHIPPING_INTEGRATION_TAG);
+        $integrations  = $container->findTaggedServiceIds(self::SHIPPING_INTEGRATION_TAG);
         $dataFactories = $container->findTaggedServiceIds(self::SHIPPING_DATA_FACTORY_TAG);
 
-        $registry = $container->getDefinition(self::REGISTRY_SERVICE_ID);
+        $registry = $container->findDefinition(self::REGISTRY_SERVICE_ID);
 
-        foreach($integrations as $factory) {
-            $registry->addMethodCall('registerIntegration', [$factory]);
+        foreach ($integrations as $integration => $tags) {
+            foreach ($tags as $tag) {
+                $registry->addMethodCall('registerIntegration', [$tag['alias'], $integration]);
+            }
         }
 
-        foreach($dataFactories as $factory) {
-            $registry->addMethodCall('registerDataFactory', [$factory]);
+        foreach ($dataFactories as $factory => $tags) {
+            foreach ($tags as $tag) {
+                $registry->addMethodCall('registerDataFactory', [$tag['alias'], $factory]);
+            }
         }
     }
 }

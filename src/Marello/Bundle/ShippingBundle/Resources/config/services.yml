@@ -24,3 +24,16 @@ services:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi
         arguments:
             - '@oro_config.manager'
+            - '%kernel.environment% == "dev"'
+
+    marello_shipping.integration.ups.service_integration:
+        class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceIntegration
+        arguments:
+            - '@marello_shipping.integration.ups.api'
+        tags:
+            - { name: marello.shipping.integration, alias: ups }
+
+    marello_shipping.integration.ups.service_data_factory:
+        class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory
+        tags:
+            - { name: marello.shipping.data_factory, alias: ups }

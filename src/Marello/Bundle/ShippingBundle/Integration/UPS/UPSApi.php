@@ -7,7 +7,8 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class UPSApi
 {
-    const API_BASE_URL = '';
+    const API_BASE_URL         = 'https://onlinetools.ups.com/json';
+    const TESTING_API_BASE_URL = 'https://wwwcie.ups.com/json';
 
     /** @var string */
     protected $username;
@@ -25,13 +26,14 @@ class UPSApi
      * UPSApi constructor.
      *
      * @param ConfigManager $cm
+     * @param bool          $useTestingApi
      */
-    public function __construct(ConfigManager $cm)
+    public function __construct(ConfigManager $cm, $useTestingApi = false)
     {
         $this->username         = $cm->get('marello_shipping.ups_username');
         $this->password         = $cm->get('marello_shipping.ups_password');
         $this->accessLicenseKey = $cm->get('marello_shipping.ups_access_license_key');
-        $this->client           = new Client(self::API_BASE_URL);
+        $this->client           = new Client($useTestingApi ? self::TESTING_API_BASE_URL : self::API_BASE_URL);
     }
 
     protected function getCredentials()
@@ -66,6 +68,18 @@ class UPSApi
 
         $response = $request->send();
 
-        return json_decode($response->getBody(true), true);
+        $result = json_decode($response->getBody(true), true);
+
+        if (array_key_exists('Error', $result)) {
+            throw (new UPSApiException($result['Error']['Description'], $result['Error']['Code']))
+                ->setResult($result);
+        }
+
+        if (array_key_exists('Fault', $result)) {
+            throw (new UPSApiException($result['Fault']['faultstring']))
+                ->setResult($result);
+        }
+
+        return $result;
     }
 }
