@@ -51,7 +51,7 @@ class UPSApi
         ];
     }
 
-    protected function post($resource, $data)
+    public function post($resource, $data)
     {
         $credentials = $this->getCredentials();
 
@@ -63,6 +63,8 @@ class UPSApi
         ];
 
         $data = array_merge($data, $credentials);
+
+        dump($data);
 
         $request = $this->client->createRequest('POST', $resource, $headers, json_encode($data));
 
@@ -81,5 +83,11 @@ class UPSApi
         }
 
         return $result;
+    }
+
+
+    public function ship()
+    {
+
     }
 }

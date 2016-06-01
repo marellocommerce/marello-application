@@ -74,4 +74,15 @@ class Address extends AbstractAddress
 
         return $this;
     }
+
+    public function getFullName()
+    {
+        return implode(' ', array_filter([
+            $this->namePrefix,
+            $this->firstName,
+            $this->middleName,
+            $this->lastName,
+            $this->nameSuffix,
+        ]));
+    }
 }
