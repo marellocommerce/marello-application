@@ -53,5 +53,21 @@
             </table>
         </td>
     </tr>
+    <tr class="order-information">
+        <td>
+            <table style="border: 1px solid #99caff;" cellspacing="5" cellpadding="15" border="0">
+                <tbody>
+                <tr>
+                    <td>
+                        {% for item in entity.items %}
+                            <p><span class="no-link">{{ item.name }}</span></p><br/>
+                            <p><span class="no-link">{{ item.sku }}</span></p><br/>
+                        {% endfor %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
     </tbody>
 </table>

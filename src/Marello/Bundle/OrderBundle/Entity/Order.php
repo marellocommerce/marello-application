@@ -153,6 +153,13 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
      *
      * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "email"={
+     *              "available_in_template"=true
+     *          }
+     *      }
+     * )
      */
     protected $items;
 
