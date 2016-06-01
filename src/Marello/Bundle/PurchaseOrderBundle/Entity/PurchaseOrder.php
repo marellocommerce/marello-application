@@ -56,6 +56,13 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      *     cascade={"persist"},
      *     mappedBy="order"
      * )
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "email"={
+     *              "available_in_template"=true
+     *          }
+     *      }
+     * )
      */
     protected $items;
 
