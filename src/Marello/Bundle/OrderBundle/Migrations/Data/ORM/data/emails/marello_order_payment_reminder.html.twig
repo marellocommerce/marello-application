@@ -53,5 +53,45 @@
             </table>
         </td>
     </tr>
+    <tr class="order-information">
+        <td>
+            <table style="border: 1px solid #99caff;" cellspacing="5" cellpadding="15" border="0">
+                <thead>
+                <tr>
+                    <td style="background-color: #e6f2ff;" class="items-details">
+                        <h3 style="font-size: 12px; color: #0066cc;">Product Name:</h3>
+                    </td>
+                    <td style="background-color: #e6f2ff;" class="items-details">
+                        <h3 style="font-size: 12px; color: #0066cc;">Product SKU:</h3>
+                    </td>
+                    <td style="background-color: #e6f2ff;" class="items-details">
+                        <h3 style="font-size: 12px; color: #0066cc;">Quantity:</h3>
+                    </td>
+                    <td style="background-color: #e6f2ff;" class="items-details">
+                        <h3 style="font-size: 12px; color: #0066cc;">Total Price:</h3>
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in entity.items %}
+                    <tr>
+                        <td>
+                            <p><span class="no-link">{{ item.productName }}</span></p>
+                        </td>
+                        <td>
+                            <p><span class="no-link">{{ item.productSku }}</span></p>
+                        </td>
+                        <td>
+                            <p><span class="no-link">{{ item.quantity }}</span></p>
+                        </td>
+                        <td>
+                            <p><span class="no-link">{{ item.totalPrice }}</span></p>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </td>
+    </tr>
     </tbody>
 </table>
