@@ -753,4 +753,9 @@ class Order extends ExtendOrder
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return (string) $this->getOrderNumber();
+    }
 }

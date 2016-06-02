@@ -261,4 +261,9 @@ class ReturnEntity extends ExtendReturnEntity
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return (string) $this->getReturnNumber();
+    }
 }
