@@ -4,6 +4,8 @@ namespace Marello\Bundle\ShippingBundle\Integration\UPS\Model;
 
 class ShipTo implements XMLSerializable
 {
+    const NODE_NAME = 'ShipTo';
+
     use XMLSerializableTrait;
 
     /** @var string */

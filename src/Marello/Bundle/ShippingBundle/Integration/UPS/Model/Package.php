@@ -5,10 +5,9 @@ namespace Marello\Bundle\ShippingBundle\Integration\UPS\Model;
 
 class Package implements XMLSerializable
 {
-    public $packaging;
+    use XMLSerializableTrait;
 
-    public function toXmlNode(\DOMDocument $xml, \DOMElement $parent)
-    {
-        // TODO: Implement toXmlNode() method.
-    }
+    const NODE_NAME = 'Package';
+
+    public $packaging;
 }
