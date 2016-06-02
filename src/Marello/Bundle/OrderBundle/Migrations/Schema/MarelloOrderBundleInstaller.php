@@ -7,15 +7,21 @@ use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloOrderBundleInstaller implements Installation, ActivityExtensionAwareInterface
+class MarelloOrderBundleInstaller implements
+    Installation,
+    ActivityExtensionAwareInterface,
+    NoteExtensionAwareInterface
 {
     /** @var ActivityExtension */
     protected $activityExtension;
+    protected $noteExtension;
 
     /**
      * {@inheritdoc}
@@ -39,6 +45,9 @@ class MarelloOrderBundleInstaller implements Installation, ActivityExtensionAwar
         $this->addMarelloOrderOrderItemForeignKeys($schema);
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_order_order');
+
+        $this->noteExtension->addNoteAssociation($schema, 'marello_order_order');
+        $this->activityExtension->addActivityAssociation($schema, 'oro_email', 'marello_order_order');
     }
 
     /**
@@ -198,5 +207,15 @@ class MarelloOrderBundleInstaller implements Installation, ActivityExtensionAwar
     public function setActivityExtension(ActivityExtension $activityExtension)
     {
         $this->activityExtension = $activityExtension;
+    }
+
+    /**
+     * Sets the NoteExtension
+     *
+     * @param noteExtension $noteExtension
+     */
+    public function setNoteExtension(NoteExtension $noteExtension)
+    {
+        $this->noteExtension = $noteExtension;
     }
 }

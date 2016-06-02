@@ -771,4 +771,9 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
             $this->setOrderNumber(sprintf('%09d', $id));
         }
     }
+
+    public function __toString()
+    {
+        return (string) $this->getOrderNumber();
+    }
 }
