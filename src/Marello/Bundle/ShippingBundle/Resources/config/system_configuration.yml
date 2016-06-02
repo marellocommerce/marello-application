@@ -5,6 +5,11 @@ oro_system_configuration:
             icon: icon-truck
             priority: 50
 
+        shipper_info:
+            title: 'Shipper Information'
+            icon: icon-info
+            priority: 100
+
         ups_configuration:
             title: 'UPS Configuration'
             icon: icon-truck
@@ -35,6 +40,149 @@ oro_system_configuration:
                 resettable: false
                 required: false
 
+        marello_shipping.shipper_name:
+            type: text
+            data_type: string
+            priority: 120
+            options:
+                label: marello.shipping.system_configuration.shipper_name
+                resettable: false
+                required: true
+                constraints:
+                    - NotNull: ~
+                    - Length:
+                        max: 35
+
+        marello_shipping.shipper_attention_name:
+            type: text
+            data_type: string
+            priority: 110
+            options:
+                label: marello.shipping.system_configuration.shipper_attention_name
+                resettable: false
+                required: false
+                constraints:
+                    - Length:
+                        max: 35
+
+        marello_shipping.shipper_tax_id:
+            type: text
+            data_type: string
+            priority: 100
+            options:
+                label: marello.shipping.system_configuration.shipper_tax_id
+                resettable: false
+                required: false
+                constraints:
+                    - Length:
+                        max: 15
+
+        marello_shipping.shipper_phone:
+            type: text
+            data_type: string
+            priority: 90
+            options:
+                label: marello.shipping.system_configuration.shipper_phone
+                resettable: false
+                required: true
+                constraints:
+                    - NotNull: ~
+                    - Length:
+                        max: 15
+
+        marello_shipping.shipper_email:
+            type: email
+            data_type: string
+            priority: 80
+            options:
+                label: marello.shipping.system_configuration.shipper_email
+                resettable: false
+                required: true
+                constraints:
+                    - NotNull: ~
+                    - Length:
+                        max: 50
+
+        marello_shipping.shipper_address_line_1:
+            type: text
+            data_type: string
+            priority: 70
+            options:
+                label: marello.shipping.system_configuration.shipper_address_line_1
+                resettable: false
+                required: true
+                constraints:
+                    - NotNull: ~
+                    - Length:
+                        max: 35
+
+        marello_shipping.shipper_address_line_2:
+            type: text
+            data_type: string
+            priority: 60
+            options:
+                label: marello.shipping.system_configuration.shipper_address_line_2
+                resettable: false
+                constraints:
+                    - Length:
+                        max: 35
+
+        marello_shipping.shipper_address_line_3:
+            type: text
+            data_type: string
+            priority: 50
+            options:
+                label: marello.shipping.system_configuration.shipper_address_line_3
+                resettable: false
+                constraints:
+                    - Length:
+                        max: 35
+
+        marello_shipping.shipper_address_city:
+            type: text
+            data_type: string
+            priority: 40
+            options:
+                label: marello.shipping.system_configuration.shipper_address_city
+                resettable: false
+                required: true
+                constraints:
+                    - NotNull: ~
+                    - Length:
+                        max: 30
+
+        marello_shipping.shipper_address_state:
+            type: text
+            data_type: string
+            priority: 30
+            options:
+                label: marello.shipping.system_configuration.shipper_address_state
+                resettable: false
+
+        marello_shipping.shipper_address_postal_code:
+            type: text
+            data_type: string
+            priority: 20
+            options:
+                label: marello.shipping.system_configuration.shipper_address_postal_code
+                resettable: false
+                required: true
+                constraints:
+                    - NotNull: ~
+                    - Length:
+                        max: 9
+
+        marello_shipping.shipper_address_country_code:
+            type: country
+            data_type: string
+            priority: 10
+            options:
+                label: marello.shipping.system_configuration.shipper_address_country_code
+                resettable: false
+                required: true
+                constraints:
+                    - NotNull: ~
+
     tree:
         system_configuration:
             platform:
@@ -43,6 +191,20 @@ oro_system_configuration:
                         children:
                             shipping_configuration:
                                 children:
+                                    shipper_info:
+                                        children:
+                                            - marello_shipping.shipper_name
+                                            - marello_shipping.shipper_attention_name
+                                            - marello_shipping.shipper_tax_id
+                                            - marello_shipping.shipper_phone
+                                            - marello_shipping.shipper_email
+                                            - marello_shipping.shipper_address_line_1
+                                            - marello_shipping.shipper_address_line_2
+                                            - marello_shipping.shipper_address_line_3
+                                            - marello_shipping.shipper_address_city
+                                            - marello_shipping.shipper_address_state
+                                            - marello_shipping.shipper_address_postal_code
+                                            - marello_shipping.shipper_address_country_code
                                     ups_configuration:
                                         children:
                                             - marello_shipping.ups_username
