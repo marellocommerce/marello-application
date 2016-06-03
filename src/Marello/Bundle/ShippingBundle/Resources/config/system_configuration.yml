@@ -40,6 +40,17 @@ oro_system_configuration:
                 resettable: false
                 required: false
 
+        marello_shipping.ups_account_number:
+            type: text
+            data_type: string
+            options:
+                label: marello.shipping.system_configuration.ups_account_number
+                resettable: false
+                required: false
+                constraints:
+                    - Length:
+                        max: 6
+
         marello_shipping.shipper_name:
             type: text
             data_type: string

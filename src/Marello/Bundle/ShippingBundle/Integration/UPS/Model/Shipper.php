@@ -37,7 +37,7 @@ class Shipper implements XMLSerializable
      *
      * @var string
      */
-    public $number;
+    public $shipperNumber;
 
     /**
      * Shipper’s Tax Identification Number

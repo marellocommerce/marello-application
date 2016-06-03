@@ -11,9 +11,23 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Service;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipper;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\ShipTo;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterface
 {
+
+    /** @var ConfigManager */
+    protected $configManager;
+
+    /**
+     * UPSShippingServiceDataFactory constructor.
+     *
+     * @param ConfigManager $configManager
+     */
+    public function __construct(ConfigManager $configManager)
+    {
+        $this->configManager = $configManager;
+    }
 
     /**
      * @param Order $order
@@ -36,24 +50,23 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     {
         $shipper = new Shipper();
 
-        $shipper->name                    = 'TEMP'; // TODO: Name
-        $shipper->attentionName           = 'Temp Attention Name'; // TODO: Attention Name
-        $shipper->companyDisplayableName  = 'Company Displayable Name'; // TODO: Company Displayable Name
-        $shipper->number                  = '123456789'; // TODO: Number
-        $shipper->taxIdentificationNumber = '123456789';
-        $shipper->phoneNumber             = '+012 345 678 910';
-        $shipper->eMailAddress            = 'shipper@example.com';
+        $shipper->name                    = $this->configManager->get('marello_shipping.shipper_name');
+        $shipper->attentionName           = $this->configManager->get('marello_shipping.shipper_attention_name');
+        $shipper->shipperNumber           = $this->configManager->get('marello_shipping.ups_account_number');
+        $shipper->taxIdentificationNumber = $this->configManager->get('marello_shipping.shipper_tax_id');
+        $shipper->phoneNumber             = $this->configManager->get('marello_shipping.shipper_phone');
+        $shipper->eMailAddress            = $this->configManager->get('marello_shipping.shipper_email');
 
         $shipper->address = new Address();
 
-        $shipper->address->addressLine1 = 'TEMP'; // TODO: Address Line 1
-        $shipper->address->addressLine2 = 'TEMP'; // TODO: Address Line 2
-        $shipper->address->addressLine3 = 'TEMP'; // TODO: Address Line 3
+        $shipper->address->addressLine1 = $this->configManager->get('marello_shipping.shipper_address_line_1');
+        $shipper->address->addressLine2 = $this->configManager->get('marello_shipping.shipper_address_line_2');
+        $shipper->address->addressLine3 = $this->configManager->get('marello_shipping.shipper_address_line_3');
 
-        $shipper->address->city              = 'TEMP'; // TODO: City
-        $shipper->address->stateProvinceCode = 'TEMP'; // TODO: State Province Code
-        $shipper->address->postalCode        = '12345'; // TODO: Postal Code
-        $shipper->address->countryCode       = 'US'; // TODO: Country Code
+        $shipper->address->city              = $this->configManager->get('marello_shipping.shipper_address_city');
+        $shipper->address->stateProvinceCode = $this->configManager->get('marello_shipping.shipper_address_state');
+        $shipper->address->postalCode        = $this->configManager->get('marello_shipping.shipper_address_postal_code');
+        $shipper->address->countryCode       = $this->configManager->get('marello_shipping.shipper_address_city_code');
 
         return $shipper;
     }
