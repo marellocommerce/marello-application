@@ -5,13 +5,18 @@ namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloPurchaseOrderBundleInstaller implements Installation
+class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtensionAwareInterface
 {
+    /** @var  NoteExtension */
+    protected $noteExtension;
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +37,8 @@ class MarelloPurchaseOrderBundleInstaller implements Installation
         /** Foreign keys generation **/
         $this->addMarelloPurchaseOrderForeignKeys($schema);
         $this->addMarelloPurchaseOrderItemForeignKeys($schema);
+
+        $this->noteExtension->addNoteAssociation($schema, 'marello_purchase_order');
     }
 
     /**
@@ -126,5 +133,15 @@ class MarelloPurchaseOrderBundleInstaller implements Installation
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
+    }
+
+    /**
+     * Sets the NoteExtension
+     *
+     * @param noteExtension $noteExtension
+     */
+    public function setNoteExtension(NoteExtension $noteExtension)
+    {
+        $this->noteExtension = $noteExtension;
     }
 }

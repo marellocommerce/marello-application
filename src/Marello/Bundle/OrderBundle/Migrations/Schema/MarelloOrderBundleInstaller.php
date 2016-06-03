@@ -21,6 +21,8 @@ class MarelloOrderBundleInstaller implements
 {
     /** @var ActivityExtension */
     protected $activityExtension;
+    
+    /** @var  NoteExtension */
     protected $noteExtension;
 
     /**
