@@ -221,3 +221,4 @@ oro_system_configuration:
                                             - marello_shipping.ups_username
                                             - marello_shipping.ups_password
                                             - marello_shipping.ups_access_license_key
+                                            - marello_shipping.ups_account_number
