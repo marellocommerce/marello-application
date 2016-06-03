@@ -3,28 +3,30 @@
 namespace Marello\Bundle\ReturnBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
-use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloReturnBundleInstaller implements
-    Installation,
-    ExtendExtensionAwareInterface,
-    ActivityExtensionAwareInterface
+class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAwareInterface, ActivityExtensionAwareInterface, NoteExtensionAwareInterface
 {
     /** @var ActivityExtension */
     protected $activityExtension;
 
     /** @var ExtendExtension */
     protected $extendExtension;
+    
+    /** @var NoteExtension */
+    protected $noteExtension;
 
     /**
      * {@inheritdoc}
@@ -58,6 +60,9 @@ class MarelloReturnBundleInstaller implements
                 'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
             ]
         );
+
+        $this->noteExtension->addNoteAssociation($schema, 'marello_return_return');
+        $this->activityExtension->addActivityAssociation($schema, 'oro_email', 'marello_return_return');
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_return_return');
     }
@@ -187,5 +192,15 @@ class MarelloReturnBundleInstaller implements
     public function setActivityExtension(ActivityExtension $activityExtension)
     {
         $this->activityExtension = $activityExtension;
+    }
+
+    /**
+     * Sets the NoteExtension
+     *
+     * @param noteExtension $noteExtension
+     */
+    public function setNoteExtension(NoteExtension $noteExtension)
+    {
+        $this->noteExtension = $noteExtension;
     }
 }

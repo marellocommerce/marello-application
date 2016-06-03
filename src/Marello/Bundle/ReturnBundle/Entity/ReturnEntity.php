@@ -355,4 +355,9 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
     {
         return $this->salesChannelName;
     }
+
+    public function __toString()
+    {
+        return (string) $this->getReturnNumber();
+    }
 }
