@@ -49,9 +49,9 @@ class Shipper implements XMLSerializable
     /**
      * Shipper’s Phone Number
      *
-     * @var string
+     * @var Phone
      */
-    public $phoneNumber;
+    public $phone;
 
     /**
      * Shipper’s Fax Number.
