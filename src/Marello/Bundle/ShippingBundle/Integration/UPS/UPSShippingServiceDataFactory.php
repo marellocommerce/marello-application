@@ -7,6 +7,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Address;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package;
+use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Packaging;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Service;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipper;
@@ -41,7 +42,7 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $shipment->shipper = $this->createShipper($order);
         $shipment->shipTo  = $this->createShipTo($order);
         $shipment->service = $this->createService($order);
-        $shipment->package = new Package();
+        $shipment->package = $this->createPackage($order);
 
         return compact('shipment');
     }
@@ -66,7 +67,7 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $shipper->address->city              = $this->configManager->get('marello_shipping.shipper_address_city');
         $shipper->address->stateProvinceCode = $this->configManager->get('marello_shipping.shipper_address_state');
         $shipper->address->postalCode        = $this->configManager->get('marello_shipping.shipper_address_postal_code');
-        $shipper->address->countryCode       = $this->configManager->get('marello_shipping.shipper_address_city_code');
+        $shipper->address->countryCode       = $this->configManager->get('marello_shipping.shipper_address_country_code');
 
         return $shipper;
     }
@@ -91,12 +92,19 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     {
         $service = new Service();
 
+        $service->code = '01'; // TODO: Figure out how to determine service
+
         return $service;
     }
 
     protected function createPackage(Order $order)
     {
         $package = new Package();
+
+        $package->packaging = new Packaging();
+
+        $package->packaging->code = '02'; // TODO: Figure out how to determine packaging
+        $package->packaging->description = 'Customer supplied';
 
         return $package;
     }

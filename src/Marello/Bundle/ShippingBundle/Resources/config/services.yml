@@ -39,3 +39,9 @@ services:
             - '@oro_config.manager'
         tags:
             - { name: marello.shipping.data_factory, alias: ups }
+
+    # UPS Request buiders
+    marello_shipping.integration.ups.request_builder.shipment_confirm:
+        class: Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder
+        arguments:
+            - '@oro_config.manager'

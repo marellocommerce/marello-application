@@ -18,9 +18,9 @@ trait XMLSerializableTrait
 
             if ($value instanceof XMLSerializable) {
                 $value->toXmlNode($xml, $node);
+            } else {
+                $node->appendChild($xml->createElement(ucfirst($property), $value));
             }
-
-            $node->appendChild($xml->createElement(ucfirst($property), $value));
         }
     }
 }

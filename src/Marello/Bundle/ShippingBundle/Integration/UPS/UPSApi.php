@@ -7,18 +7,6 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class UPSApi
 {
-    const API_BASE_URL         = 'https://onlinetools.ups.com/json';
-    const TESTING_API_BASE_URL = 'https://wwwcie.ups.com/json';
-
-    /** @var string */
-    protected $username;
-
-    /** @var string */
-    protected $password;
-
-    /** @var string */
-    protected $accessLicenseKey;
-
     /** @var Client */
     protected $client;
 
@@ -30,64 +18,22 @@ class UPSApi
      */
     public function __construct(ConfigManager $cm, $useTestingApi = false)
     {
-        $this->username         = $cm->get('marello_shipping.ups_username');
-        $this->password         = $cm->get('marello_shipping.ups_password');
-        $this->accessLicenseKey = $cm->get('marello_shipping.ups_access_license_key');
-        $this->client           = new Client($useTestingApi ? self::TESTING_API_BASE_URL : self::API_BASE_URL);
+        $this->client = new Client($cm->get('marello_shipping.ups_api_base_url'));
     }
 
-    protected function getCredentials()
+    public function post($resource, $body)
     {
-        return [
-            'UPSSecurity' => [
-                'UsernameToken'      => [
-                    'Username' => $this->username,
-                    'Password' => $this->password,
-                ],
-                'ServiceAccessToken' => [
-                    'AccessLicenseNumber' => $this->accessLicenseKey,
-                ],
-            ],
-        ];
-    }
-
-    public function post($resource, $data)
-    {
-        $credentials = $this->getCredentials();
-
         $headers = [
             'Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept',
             'Access-Control-Allow-Methods' => 'POST',
             'Access-Control-Allow-Origin'  => '*',
-            'Content-Type'                 => 'application/json',
+            'Content-Type'                 => 'Application/x-www-form-urlencoded',
         ];
 
-        $data = array_merge($data, $credentials);
-
-        dump($data);
-
-        $request = $this->client->createRequest('POST', $resource, $headers, json_encode($data));
+        $request = $this->client->createRequest('POST', $resource, $headers, $body);
 
         $response = $request->send();
 
-        $result = json_decode($response->getBody(true), true);
-
-        if (array_key_exists('Error', $result)) {
-            throw (new UPSApiException($result['Error']['Description'], $result['Error']['Code']))
-                ->setResult($result);
-        }
-
-        if (array_key_exists('Fault', $result)) {
-            throw (new UPSApiException($result['Fault']['faultstring']))
-                ->setResult($result);
-        }
-
-        return $result;
-    }
-
-
-    public function ship()
-    {
-
+        return $response->getBody(true);
     }
 }

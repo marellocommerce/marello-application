@@ -3,37 +3,69 @@
 namespace Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder;
 
 use DOMDocument;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
-class RequestBuilder
+abstract class RequestBuilder
 {
-    /**
-     * @var string
-     */
-    protected $customerContext;
+    /** @var ConfigManager */
+    protected $configManager;
 
     /**
-     * @param string $customerContext
+     * RequestBuilder constructor.
      *
-     * @return $this
+     * @param ConfigManager $configManager
      */
-    public function setCustomerContext($customerContext)
+    public function __construct(ConfigManager $configManager)
     {
-        $this->customerContext = $customerContext;
-
-        return $this;
+        $this->configManager = $configManager;
     }
 
-    protected function createTransactionNode()
+    public final function build(array $data)
     {
         $xml               = new DOMDocument();
         $xml->formatOutput = true;
 
-        $transaction = $xml->appendChild($xml->createElement('TransactionReference'));
+        $this->buildAccessRequest($xml);
+        $this->buildFunctionalityRequest($xml, $data);
 
-        if (null !== $this->customerContext) {
-            $transaction->appendChild($xml->createElement('CustomerContext', $this->customerContext));
-        }
-
-        return $transaction->cloneNode(true);
+        return $xml->saveXML();
     }
+
+    protected function createFunctionalityRequestNode(DOMDocument $xml, $name, $action)
+    {
+        $xml->appendChild($fRequest = $xml->createElement($name));
+
+        $fRequest->appendChild($request = $xml->createElement('Request'));
+
+        $request->appendChild($transactionReference = $xml->createElement('TransactionReference'));
+        $transactionReference->appendChild($xml->createElement('CustomerContext', 'Customer Context'));
+        $transactionReference->appendChild($xml->createElement('XpciVersion', '1.0'));
+
+        $request->appendChild($xml->createElement('RequestAction', $action));
+        $request->appendChild($xml->createElement('RequestOption', 'validate'));
+
+        return $fRequest;
+    }
+
+    private function buildAccessRequest(DOMDocument $xml)
+    {
+        $xml->appendChild($accessRequest = $xml->createElement('AccessRequest'));
+
+        $accessRequest->appendChild($xml->createElement(
+            'AccessLicenseNumber',
+            $this->configManager->get('marello_shipping.ups_access_license_key')
+        ));
+
+        $accessRequest->appendChild($xml->createElement(
+            'UserId',
+            $this->configManager->get('marello_shipping.ups_username')
+        ));
+
+        $accessRequest->appendChild($xml->createElement(
+            'Password',
+            $this->configManager->get('marello_shipping.ups_password')
+        ));
+    }
+
+    abstract protected function buildFunctionalityRequest(DOMDocument $xml, array $data);
 }

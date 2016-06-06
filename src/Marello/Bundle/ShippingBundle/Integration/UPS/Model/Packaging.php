@@ -10,4 +10,6 @@ class Packaging implements XMLSerializable
     use XMLSerializableTrait;
 
     public $code;
+
+    public $description;
 }

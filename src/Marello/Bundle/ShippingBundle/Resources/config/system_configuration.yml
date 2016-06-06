@@ -51,6 +51,16 @@ oro_system_configuration:
                     - Length:
                         max: 6
 
+        marello_shipping.ups_api_base_url:
+            type: text
+            data_type: string
+            options:
+                label: marello.shipping.system_configuration.ups_api_base_url
+                resettable: true
+                required: true
+                constraints:
+                    - NotNull: ~
+
         marello_shipping.shipper_name:
             type: text
             data_type: string
@@ -222,3 +232,4 @@ oro_system_configuration:
                                             - marello_shipping.ups_password
                                             - marello_shipping.ups_access_license_key
                                             - marello_shipping.ups_account_number
+                                            - marello_shipping.ups_api_base_url
