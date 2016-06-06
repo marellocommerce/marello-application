@@ -3,11 +3,9 @@
 namespace Marello\Bundle\ShippingBundle\Integration\UPS\Model;
 
 
-class Shipper implements XMLSerializable
+class Shipper extends XmlSerializedModel
 {
     const NODE_NAME = 'Shipper';
-
-    use XMLSerializableTrait;
 
     /**
      * Shipper's company name. For forward Shipment 35 characters are accepted, but only 30 characters will be printed
@@ -33,25 +31,11 @@ class Shipper implements XMLSerializable
     public $companyDisplayableName;
 
     /**
-     * Shipper's six digit account number.
-     *
-     * @var string
-     */
-    public $shipperNumber;
-
-    /**
-     * Shipper’s Tax Identification Number
-     *
-     * @var string
-     */
-    public $taxIdentificationNumber;
-
-    /**
      * Shipper’s Phone Number
      *
-     * @var Phone
+     * @var string
      */
-    public $phone;
+    public $phoneNumber;
 
     /**
      * Shipper’s Fax Number.
@@ -68,7 +52,26 @@ class Shipper implements XMLSerializable
     public $eMailAddress;
 
     /**
+     * Shipper’s Tax Identification Number
+     *
+     * @var string
+     */
+    public $taxIdentificationNumber;
+
+    /**
+     * Shipper's six digit account number.
+     *
+     * @var string
+     */
+    public $shipperNumber;
+
+    /**
      * @var Address
      */
     public $address;
+
+    protected function filterProperties($property, $value)
+    {
+        return $this->$property;
+    }
 }

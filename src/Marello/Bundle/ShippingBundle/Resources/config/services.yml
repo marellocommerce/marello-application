@@ -37,6 +37,7 @@ services:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory
         arguments:
             - '@oro_config.manager'
+            - '@doctrine'
         tags:
             - { name: marello.shipping.data_factory, alias: ups }
 

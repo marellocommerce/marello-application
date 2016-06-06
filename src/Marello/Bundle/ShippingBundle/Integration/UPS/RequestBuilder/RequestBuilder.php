@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder;
 
 use DOMDocument;
+use Marello\Bundle\ShippingBundle\Integration\UPS\Model\AccessRequest;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 abstract class RequestBuilder
@@ -35,11 +36,13 @@ abstract class RequestBuilder
     {
         $xml->appendChild($fRequest = $xml->createElement($name));
 
+        $fRequest->setAttribute('xml:lang', 'en-US');
+
         $fRequest->appendChild($request = $xml->createElement('Request'));
 
         $request->appendChild($transactionReference = $xml->createElement('TransactionReference'));
         $transactionReference->appendChild($xml->createElement('CustomerContext', 'Customer Context'));
-        $transactionReference->appendChild($xml->createElement('XpciVersion', '1.0'));
+        $transactionReference->appendChild($xml->createElement('XpciVersion'));
 
         $request->appendChild($xml->createElement('RequestAction', $action));
         $request->appendChild($xml->createElement('RequestOption', 'validate'));
@@ -49,22 +52,13 @@ abstract class RequestBuilder
 
     private function buildAccessRequest(DOMDocument $xml)
     {
-        $xml->appendChild($accessRequest = $xml->createElement('AccessRequest'));
-
-        $accessRequest->appendChild($xml->createElement(
-            'AccessLicenseNumber',
+        $accessRequest = new AccessRequest(
+            $this->configManager->get('marello_shipping.ups_username'),
+            $this->configManager->get('marello_shipping.ups_password'),
             $this->configManager->get('marello_shipping.ups_access_license_key')
-        ));
+        );
 
-        $accessRequest->appendChild($xml->createElement(
-            'UserId',
-            $this->configManager->get('marello_shipping.ups_username')
-        ));
-
-        $accessRequest->appendChild($xml->createElement(
-            'Password',
-            $this->configManager->get('marello_shipping.ups_password')
-        ));
+        $xml->appendChild($accessRequest->toXmlNode($xml));
     }
 
     abstract protected function buildFunctionalityRequest(DOMDocument $xml, array $data);

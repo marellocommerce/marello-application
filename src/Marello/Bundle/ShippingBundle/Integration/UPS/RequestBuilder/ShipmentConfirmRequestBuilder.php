@@ -3,27 +3,42 @@
 namespace Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder;
 
 use DOMDocument;
-use DOMElement;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipment;
 
 class ShipmentConfirmRequestBuilder extends RequestBuilder
 {
-    protected function buildShipment(array $data, DOMDocument $xml, DOMElement $parent)
+    protected function buildFunctionalityRequest(DOMDocument $xml, array $data)
+    {
+        $request = $this->createFunctionalityRequestNode($xml, 'ShipmentConfirmRequest', 'ShipConfirm');
+
+        $request->appendChild($this->createLabelSpecificationNode($xml));
+        $request->appendChild($this->createShipmentNode($data, $xml));
+    }
+
+    protected function createShipmentNode(array $data, DOMDocument $xml)
     {
         /** @var Shipment $shipment */
         $shipment = $data['shipment'];
 
-        $shipment->toXmlNode($xml, $parent);
+        return $shipment->toXmlNode($xml);
     }
 
-    protected function buildFunctionalityRequest(DOMDocument $xml, array $data)
+    protected function createLabelSpecificationNode(DOMDocument $xml)
     {
-        $request = $this->createFunctionalityRequestNode($xml, 'ShipConfirmRequest', 'ShipConfirm');
+        $labelSpecification = $xml->createElement('LabelSpecification');
 
-        $this->buildShipment($data, $xml, $request);
+        $labelSpecification->appendChild($labelPrintMethod = $xml->createElement('LabelPrintMethod'));
 
-        $request->appendChild($labelSpecification = $xml->createElement('LabelSpecification'));
+        $labelPrintMethod->appendChild($xml->createElement('Code', 'GIF'));
+        $labelPrintMethod->appendChild($xml->createElement('Description', 'gif file'));
+
+        $labelSpecification->appendChild($xml->createElement('HTTPUserAgent', 'Mozilla/4.5'));
+
         $labelSpecification->appendChild($labelImageFormat = $xml->createElement('LabelImageFormat'));
-        $labelImageFormat->appendChild($xml->createElement('Code', 'EPL')); // TODO: Figure out which label should be used
+
+        $labelImageFormat->appendChild($xml->createElement('Code', 'GIF'));
+        $labelImageFormat->appendChild($xml->createElement('Description', 'gif'));
+
+        return $labelSpecification;
     }
 }

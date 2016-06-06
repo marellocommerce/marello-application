@@ -2,11 +2,9 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\UPS\Model;
 
-class ShipTo implements XMLSerializable
+class ShipTo extends XmlSerializedModel
 {
     const NODE_NAME = 'ShipTo';
-
-    use XMLSerializableTrait;
 
     /** @var string */
     public $companyName;
@@ -29,6 +27,8 @@ class ShipTo implements XMLSerializable
     /** @var Address */
     public $address;
 
-    /** @var string */
-    public $locationID;
+    protected function filterProperties($property, $value)
+    {
+        return $this->$property;
+    }
 }

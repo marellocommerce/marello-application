@@ -2,12 +2,25 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\UPS\Model;
 
+use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package\PackagingType;
+use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package\ReferenceNumber;
 
-class Package implements XMLSerializable
+class Package extends XmlSerializedModel
 {
-    use XMLSerializableTrait;
-
     const NODE_NAME = 'Package';
 
-    public $packaging;
+    /** @var PackagingType */
+    public $packagingType;
+
+    /** @var string */
+    public $description;
+
+    /** @var ReferenceNumber */
+    public $referenceNumber;
+
+    /** @var string */
+    public $largePackageIndicator;
+
+    /** @var string */
+    public $additionalHandling = '0';
 }

@@ -4,11 +4,9 @@ namespace Marello\Bundle\ShippingBundle\Integration\UPS\Model;
 
 use Marello\Bundle\AddressBundle\Entity\Address as MarelloAddress;
 
-class Address implements XMLSerializable
+class Address extends XmlSerializedModel
 {
     const NODE_NAME = 'Address';
-
-    use XMLSerializableTrait;
 
     public $addressLine1;
 
@@ -21,6 +19,8 @@ class Address implements XMLSerializable
     public $stateProvinceCode;
 
     public $postalCode;
+
+    public $postcodeExtendedLow;
 
     public $countryCode;
 
@@ -41,5 +41,10 @@ class Address implements XMLSerializable
         $address->countryCode       = $marelloAddress->getCountryIso2();
 
         return $address;
+    }
+
+    protected function filterProperties($property, $value)
+    {
+        return $this->$property;
     }
 }

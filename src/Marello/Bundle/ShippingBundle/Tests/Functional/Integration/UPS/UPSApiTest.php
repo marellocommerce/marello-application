@@ -6,6 +6,7 @@ use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSApiException;
+use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class UPSApiTest extends WebTestCase
@@ -47,6 +48,8 @@ class UPSApiTest extends WebTestCase
         /** @var Order $order */
         $order = $this->getReference('marello_order_1');
 
+        $order->getShippingAddress()->setCountry(new Country('NL'));
+
         $data = $dataFactory->createData($order);
 
         $requestBuilder = $this->client
@@ -55,10 +58,10 @@ class UPSApiTest extends WebTestCase
 
         $request = $requestBuilder->build($data);
 
-        dump($request);
+        echo $request . PHP_EOL;
 
         $result = $this->api->post('ShipConfirm', $request);
 
-        dump($result);
+        echo $result . PHP_EOL;
     }
 }
