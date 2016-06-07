@@ -5,7 +5,7 @@ namespace Marello\Bundle\ShippingBundle\Tests\Functional\Integration\UPS;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi;
-use Marello\Bundle\ShippingBundle\Integration\UPS\UPSApiException;
+use Marello\Bundle\ShippingBundle\Integration\UPS\UPSIntegrationException;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
@@ -30,7 +30,7 @@ class UPSApiTest extends WebTestCase
     public function apiShouldThrowExceptionWhenEmptyRequestIsSent()
     {
 //        $this->setExpectedException(
-//            UPSApiException::class,
+//            UPSIntegrationException::class,
 //            'The request is not well-formed or the operation is not defined. Review for errors before re-submitting.'
 //        );
 
@@ -47,8 +47,6 @@ class UPSApiTest extends WebTestCase
 
         /** @var Order $order */
         $order = $this->getReference('marello_order_1');
-
-        $order->getShippingAddress()->setCountry(new Country('NL'));
 
         $data = $dataFactory->createData($order);
 

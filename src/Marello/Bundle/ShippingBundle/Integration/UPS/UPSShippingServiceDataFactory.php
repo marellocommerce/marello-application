@@ -108,8 +108,8 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     {
         $service = new Service();
 
-        $service->code        = '02'; // TODO: Figure out how to determine service
-        $service->description = '2nd Day Air';
+        $service->code        = '11'; // TODO: Figure out how to determine service
+        $service->description = 'UPS Standard';
 
         return $service;
     }
@@ -120,7 +120,7 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
 
         $package->description     = 'Package Description';
         $package->packagingType   = $packagingType = new PackagingType('02', 'Customer Supplied');
-        $package->referenceNumber = $referenceNumber = new ReferenceNumber('00', 'Package');
+//        $package->referenceNumber = $referenceNumber = new ReferenceNumber('00', 'Package');
 
         return $package;
     }

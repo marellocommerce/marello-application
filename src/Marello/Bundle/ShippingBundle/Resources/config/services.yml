@@ -30,6 +30,7 @@ services:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceIntegration
         arguments:
             - '@marello_shipping.integration.ups.api'
+            - '@marello_shipping.integration.ups.request_builder.shipment_confirm'
         tags:
             - { name: marello.shipping.integration, alias: ups }
 

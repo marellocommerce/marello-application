@@ -16,7 +16,7 @@ class Package extends XmlSerializedModel
     public $description;
 
     /** @var ReferenceNumber */
-    public $referenceNumber;
+//    public $referenceNumber;
 
     /** @var string */
     public $largePackageIndicator;
