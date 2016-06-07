@@ -1,0 +1,8 @@
+parameters:
+    marello_pdf.placeholder.filter.class:            Marello\Bundle\PdfBundle\Placeholder\PlaceholderFilter
+services:
+    marello_pdf.placeholder.filter:
+        class: %marello_pdf.placeholder.filter.class%
+        arguments:
+            - @ibnab_pmanager.provider.configuration
+            - @oro_entity.doctrine_helper
