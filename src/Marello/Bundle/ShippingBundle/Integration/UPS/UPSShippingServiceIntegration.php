@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder;
@@ -15,26 +17,34 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
     /** @var ShipmentConfirmRequestBuilder */
     protected $shipmentConfirmRequestBuilder;
 
+    /** @var Registry */
+    public $doctrine;
+
     /**
      * UPSShippingServiceIntegration constructor.
      *
      * @param UPSApi                        $api
+     * @param Registry                      $doctrine
      * @param ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder
      */
-    public function __construct(UPSApi $api, ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder)
-    {
+    public function __construct(
+        UPSApi $api,
+        Registry $doctrine,
+        ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder
+    ) {
         $this->api                           = $api;
         $this->shipmentConfirmRequestBuilder = $shipmentConfirmRequestBuilder;
+        $this->doctrine                      = $doctrine;
     }
 
     /**
+     * @param Order $order
      * @param array $data
      *
      * @return Shipment
-     *
      * @throws UPSIntegrationException
      */
-    public function requestShipment(array $data)
+    public function requestShipment(Order $order, array $data)
     {
         $request = $this->shipmentConfirmRequestBuilder->build($data);
 
@@ -56,7 +66,15 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
             throw $exception->setRawResponse($response);
         }
 
-        return $this->handleShipmentConfirmResponse($result);
+        $shipment = $this->handleShipmentConfirmResponse($result);
+        $shipment->setOrder($order);
+        $order->setShipment($shipment);
+
+        $manager = $this->doctrine->getManagerForClass(Shipment::class);
+        $manager->persist($shipment);
+        $manager->flush();
+
+        return $shipment;
     }
 
     protected function handleShipmentConfirmResponse(SimpleXMLElement $result)
@@ -80,6 +98,6 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
      */
     public function confirmShipment(Shipment $shipment)
     {
-        // TODO: Implement confirmShipment() method.
+        $this->api->post('ShipConfirm', ''); // TODO: Fill ship confirm request
     }
 }

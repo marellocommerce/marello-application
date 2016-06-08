@@ -30,7 +30,7 @@ class Shipment extends XmlSerializedModel
 
     /** @var Package */
     public $package;
-    
+
     protected function filterProperties($property, $value)
     {
         return ($property !== 'shipFrom' || $this->shipFrom);

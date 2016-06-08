@@ -5,8 +5,6 @@ namespace Marello\Bundle\ShippingBundle\Tests\Functional\Integration\UPS;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi;
-use Marello\Bundle\ShippingBundle\Integration\UPS\UPSIntegrationException;
-use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class UPSApiTest extends WebTestCase

@@ -9,6 +9,7 @@ services:
         arguments:
             - '@oro_workflow.context_accessor'
             - '@marello_shipping.integration.shipping_service_registry'
+            - '@doctrine'
         tags:
             - { name: oro_workflow.action, alias: marello_shipping_create }
 
@@ -30,6 +31,7 @@ services:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceIntegration
         arguments:
             - '@marello_shipping.integration.ups.api'
+            - '@doctrine'
             - '@marello_shipping.integration.ups.request_builder.shipment_confirm'
         tags:
             - { name: marello.shipping.integration, alias: ups }

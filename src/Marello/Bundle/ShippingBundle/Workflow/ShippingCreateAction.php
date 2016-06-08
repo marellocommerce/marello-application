@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Workflow;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
@@ -9,17 +10,34 @@ use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
 use Oro\Bundle\WorkflowBundle\Model\Action\AbstractAction;
 use Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 class ShippingCreateAction extends AbstractAction
 {
     /** @var ShippingServiceRegistry */
     protected $registry;
 
-    public function __construct(ContextAccessor $contextAccessor, ShippingServiceRegistry $registry)
+    protected $order;
+
+    /** @var PropertyPathInterface */
+    protected $service;
+
+    /** @var Registry */
+    protected $doctrine;
+
+    /**
+     * ShippingCreateAction constructor.
+     *
+     * @param ContextAccessor         $contextAccessor
+     * @param ShippingServiceRegistry $registry
+     * @param Registry                $doctrine
+     */
+    public function __construct(ContextAccessor $contextAccessor, ShippingServiceRegistry $registry, Registry $doctrine)
     {
         parent::__construct($contextAccessor);
 
         $this->registry = $registry;
+        $this->doctrine = $doctrine;
     }
 
     /**
@@ -28,9 +46,9 @@ class ShippingCreateAction extends AbstractAction
     protected function executeAction($context)
     {
         /** @var string $service */
-        $service = ''; // TODO: Get service parameter.
+        $service = $this->contextAccessor->getValue($context, $this->service);
         /** @var Order $order */
-        $order = null; // TODO: Get order parameter.
+        $order = $this->contextAccessor->getValue($context, $this->order);
 
         $dataFactory = $this->registry->getDataFactory($service);
         $integration = $this->registry->getIntegration($service);
@@ -38,9 +56,12 @@ class ShippingCreateAction extends AbstractAction
         $data = $dataFactory->createData($order);
 
         /** @var Shipment $shipment */
-        $shipment = $integration->requestShipment($data);
+        $shipment = $integration->requestShipment($order, $data);
+        $shipment->setOrder($order);
 
-        $this->contextAccessor->setValue($context, 'attribute', $shipment);
+        $manager = $this->doctrine->getManagerForClass(Shipment::class);
+        $manager->persist($shipment);
+        $manager->flush();
     }
 
     /**
@@ -53,6 +74,15 @@ class ShippingCreateAction extends AbstractAction
      */
     public function initialize(array $options)
     {
-        // TODO: Implement initialize() method.
+        if (empty($options['order']) || !($options['order'] instanceof PropertyPathInterface)) {
+            throw new InvalidParameterException('Order parameter is required');
+        }
+
+        if (empty($options['service'])) {
+            throw new InvalidParameterException('Service parameter is required');
+        }
+
+        $this->order = $options['order'];
+        $this->service = $options['service'];
     }
 }

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\OrderBundle\Entity\Order;
 
 /**
  * @ORM\Entity
@@ -17,6 +18,14 @@ class Shipment
      * @var int
      */
     protected $id;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order", inversedBy="shipment")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     *
+     * @var Order
+     */
+    protected $order;
 
     /**
      * @ORM\Column(type="string")
@@ -76,6 +85,26 @@ class Shipment
     public function setUpsShipmentDigest($upsShipmentDigest)
     {
         $this->upsShipmentDigest = $upsShipmentDigest;
+
+        return $this;
+    }
+
+    /**
+     * @return Order
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return $this
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
 
         return $this;
     }
