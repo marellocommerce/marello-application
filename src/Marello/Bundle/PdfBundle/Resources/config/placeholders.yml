@@ -1,9 +1,9 @@
 items:
-    ibnab_pmanager_add_button:
+    marello_pmanager_add_button:
         template: IbnabPmanagerBundle:Pmanager:activityButton.html.twig
         applicable: @marello_pdf.placeholder.filter->isApplicable($entity$)
         acl: pmanager_defaut_createview
-    ibnab_pmanager_add_link:
+    marello_pmanager_add_link:
         template: IbnabPmanagerBundle:Pmanager:activityLink.html.twig
         applicable: @marello_pdf.placeholder.filter->isApplicable($entity$)
         acl: pmanager_defaut_createview
