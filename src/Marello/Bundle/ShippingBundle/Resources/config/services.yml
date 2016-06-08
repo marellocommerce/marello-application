@@ -25,7 +25,6 @@ services:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi
         arguments:
             - '@oro_config.manager'
-            - '%kernel.environment% == "dev"'
 
     marello_shipping.integration.ups.service_integration:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceIntegration

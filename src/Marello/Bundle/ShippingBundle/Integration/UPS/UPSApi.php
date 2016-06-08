@@ -14,9 +14,8 @@ class UPSApi
      * UPSApi constructor.
      *
      * @param ConfigManager $cm
-     * @param bool          $useTestingApi
      */
-    public function __construct(ConfigManager $cm, $useTestingApi = false)
+    public function __construct(ConfigManager $cm)
     {
         $this->client = new Client($cm->get('marello_shipping.ups_api_base_url'));
     }
