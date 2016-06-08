@@ -1,12 +1,11 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Migrations\Data\ORM;
+namespace Marello\Bundle\PdfBundle\Migrations\Data\ORM;
 
-use Marello\Bundle\MarelloPdfBundle\Migrations\Data\ORM\AbstractPdfFixture;
+use Marello\Bundle\PdfBundle\Migrations\Data\ORM\AbstractPdfFixture;
 
 class LoadPdfTemplatesData extends AbstractPdfFixture
 {
-
     /**
      * Return path to email templates
      *
