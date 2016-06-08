@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;
+use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentAcceptRequestBuilder;
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder;
 use SimpleXMLElement;
 
@@ -20,21 +21,27 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
     /** @var Registry */
     public $doctrine;
 
+    /** @var ShipmentAcceptRequestBuilder */
+    protected $shipmentAcceptRequestBuilder;
+
     /**
      * UPSShippingServiceIntegration constructor.
      *
      * @param UPSApi                        $api
      * @param Registry                      $doctrine
      * @param ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder
+     * @param ShipmentAcceptRequestBuilder  $shipmentAcceptRequestBuilder
      */
     public function __construct(
         UPSApi $api,
         Registry $doctrine,
-        ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder
+        ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder,
+        ShipmentAcceptRequestBuilder $shipmentAcceptRequestBuilder
     ) {
         $this->api                           = $api;
         $this->shipmentConfirmRequestBuilder = $shipmentConfirmRequestBuilder;
         $this->doctrine                      = $doctrine;
+        $this->shipmentAcceptRequestBuilder  = $shipmentAcceptRequestBuilder;
     }
 
     /**
@@ -52,6 +59,27 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
 
         $result = new SimpleXMLElement($response);
 
+        $this->handelError($result, $response);
+
+        $shipment = $this->handleShipmentConfirmResponse($result);
+        $shipment->setOrder($order);
+        $order->setShipment($shipment);
+
+        $manager = $this->doctrine->getManagerForClass(Shipment::class);
+        $manager->persist($shipment);
+        $manager->flush();
+
+        return $shipment;
+    }
+
+    /**
+     * @param SimpleXMLElement $result
+     * @param string           $response
+     *
+     * @throws UPSIntegrationException
+     */
+    protected function handelError(SimpleXMLElement $result, $response)
+    {
         $error = $result->xpath('/ShipmentConfirmResponse/Response/Error');
 
         if (!empty($error)) {
@@ -65,16 +93,6 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
 
             throw $exception->setRawResponse($response);
         }
-
-        $shipment = $this->handleShipmentConfirmResponse($result);
-        $shipment->setOrder($order);
-        $order->setShipment($shipment);
-
-        $manager = $this->doctrine->getManagerForClass(Shipment::class);
-        $manager->persist($shipment);
-        $manager->flush();
-
-        return $shipment;
     }
 
     protected function handleShipmentConfirmResponse(SimpleXMLElement $result)
@@ -98,6 +116,14 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
      */
     public function confirmShipment(Shipment $shipment)
     {
-        $this->api->post('ShipConfirm', ''); // TODO: Fill ship confirm request
+        $request = $this->shipmentAcceptRequestBuilder->build(compact('shipment'));
+
+        $response = $this->api->post('ShipConfirm', $request);
+
+        $result = new SimpleXMLElement($response);
+
+        $this->handelError($result, $response);
+
+        return $shipment;
     }
 }
