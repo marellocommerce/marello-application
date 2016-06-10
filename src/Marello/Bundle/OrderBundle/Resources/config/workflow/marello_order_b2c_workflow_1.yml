@@ -193,7 +193,12 @@ workflows:
                         entity: $order
                         recipient: $order.billingAddress.email
                         template: marello_order_credited
-            prepare_shipping_definition: []
+            prepare_shipping_definition:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.billingAddress.email
+                        template: marello_order_shipping_prepared
             ship_definition:
                 post_actions:
                     - @marello_ship_order: ~

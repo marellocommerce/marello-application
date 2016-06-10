@@ -51,32 +51,10 @@ abstract class AbstractPdfFixture extends AbstractFixture implements
 
         $pdfTemplates = $this->getPdfTemplatesList($this->getPdfsDir());
 
-        $templateParams = array(
-            'marginleft',
-            'marginright',
-            'margintop',
-            'marginbottom',
-            'autobreak',
-            'unit',
-            'format',
-            'orientation'
-        );
-
         foreach ($pdfTemplates as $fileName => $file) {
             $template = file_get_contents($file['path']);
-            $pdfTemplate = new PDFTemplate($fileName, $template, $file['format']);
+            $pdfTemplate = new PDFTemplate($fileName, $template, $file['format'], false);
 
-            $content = $pdfTemplate->getContent();
-
-            foreach ($templateParams as $templateParam) {
-                if (preg_match('#@' . $templateParam . '\s?=\s?(.*)\n#i', $template, $match)) {
-                    $val = trim($match[1]);
-                    $setterFunc = "set" . ucwords($templateParam);
-                    $pdfTemplate->$setterFunc($val);
-                    $content = trim(str_replace($match[0], '', $content));
-                }
-            }
-            $pdfTemplate->setContent($content);
             $pdfTemplate->setOwner($adminUser);
             $pdfTemplate->setOrganization($organization);
             $manager->persist($pdfTemplate);
