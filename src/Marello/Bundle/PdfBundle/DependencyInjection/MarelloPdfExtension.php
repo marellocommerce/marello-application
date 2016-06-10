@@ -1,13 +1,13 @@
 <?php
 
-namespace Marello\Bundle\PurchaseOrderBundle\DependencyInjection;
+namespace Marello\Bundle\PdfBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class MarelloPurchaseOrderExtension extends Extension
+class MarelloPdfExtension extends Extension
 {
 
     /**
@@ -22,6 +22,5 @@ class MarelloPurchaseOrderExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('form.yml');
     }
 }

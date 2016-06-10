@@ -1,5 +1,7 @@
 parameters:
+    marello_order.entity.order.class: Marello\Bundle\OrderBundle\Entity\Order
     marello_order.provider.order_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider
+
 services:
     marello_order.listener.datagrid.order_grid_address_filter_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener
