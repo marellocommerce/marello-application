@@ -12,13 +12,19 @@
     },
     "repositories": [
         {
-          "type": "composer",
-          "url": "http://packagist.orocrm.com"
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/marellocommerce/oro-pdfmanager.git",
+            "branch": "master"
         }
     ],
     "require": {
         "php": ">=5.5.9",
-        "oro/platform": "1.8.*"
+        "oro/platform": "1.8.*",
+        "marello/oro-pdfmanager": "dev-master"
     },
     "config": {
         "component-dir": "web/bundles/components"
