@@ -121,6 +121,11 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $package->description     = 'Package Description';
         $package->packagingType   = $packagingType = new PackagingType('02', 'Customer Supplied');
 //        $package->referenceNumber = $referenceNumber = new ReferenceNumber('00', 'Package');
+        
+        $package->packageWeight = new Package\PackageWeight();
+        $package->packageWeight->unitOfMeasurement = new Package\UnitOfMeasurement();
+        $package->packageWeight->unitOfMeasurement->code = 'KGS';
+        $package->packageWeight->weight = '1'; // TODO:
 
         return $package;
     }

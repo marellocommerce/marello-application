@@ -34,13 +34,11 @@ class UPSShippingServiceIntegrationTest extends WebTestCase
      */
     public function requestShipmentThrowsException()
     {
-        $this->setExpectedException(UPSIntegrationException::class);
-
         /** @var Order $order */
         $order = $this->getReference('marello_order_1');
 
         $data = $this->dataFactory->createData($order);
 
-        $this->integration->requestShipment($order, $data);
+        $shipment = $this->integration->requestShipment($order, $data);
     }
 }

@@ -86,6 +86,10 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
             /** @var SimpleXMLElement $error */
             $error = reset($error);
 
+            if (((string) $error->ErrorSeverity) === 'Warning') {
+                return;
+            }
+
             $exception = new UPSIntegrationException(
                 (string)$error->ErrorDescription,
                 (string)$error->ErrorCode
@@ -100,7 +104,7 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
         $shipment = new Shipment();
         $shipment->setShippingService('ups');
 
-        $digest = $result->xpath('/ShipConfirmResponse/ShipmentResults/ShipmentDigest');
+        $digest = $result->xpath('/ShipmentConfirmResponse/ShipmentDigest');
         $digest = reset($digest);
         $digest = (string)$digest;
 
