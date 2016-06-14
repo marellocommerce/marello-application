@@ -1,8 +1,16 @@
-@name = marello_order_shipping_prepared
+@name = pdf_marello_order_shipping_prepared
+@description = Pdf that contains the UPS Standard tracking number.
 @entityName = Marello\Bundle\OrderBundle\Entity\Order
-@subject = Your order #{{ entity.orderNumber }} has been prepared to ship.
 @isSystem = 0
 @isEditable = 1
+@unit = mm
+@marginleft = 10
+@marginright = 10
+@margintop = 10
+@marginbottom = 10
+@autobreak = 1
+@format = A4
+@orientation = P
 
 <table>
     <tr>
@@ -32,11 +40,9 @@
     </tr>
 </table>
 
-<br>
-<br>
-<br>
-<br>
 
+
+<p style="page-break-after:always;"></p>
 Beste klant,
 
 Hartelij dank voor deze bestelling. Wij wensen je veel plezier met je aankoop.
