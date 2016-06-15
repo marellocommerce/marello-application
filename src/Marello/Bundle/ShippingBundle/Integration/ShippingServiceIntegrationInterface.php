@@ -14,11 +14,4 @@ interface ShippingServiceIntegrationInterface
      * @return Shipment
      */
     public function createShipment(Order $order, array $data);
-
-    /**
-     * @param Shipment $shipment
-     *
-     * @return mixed
-     */
-    public function confirmShipment(Shipment $shipment);
 }

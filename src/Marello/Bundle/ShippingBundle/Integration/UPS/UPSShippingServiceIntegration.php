@@ -112,22 +112,4 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
 
         return $shipment;
     }
-
-    /**
-     * @param Shipment $shipment
-     *
-     * @return mixed
-     */
-    public function confirmShipment(Shipment $shipment)
-    {
-        $request = $this->shipmentAcceptRequestBuilder->build(compact('shipment'));
-
-        $response = $this->api->post('ShipConfirm', $request);
-
-        $result = new SimpleXMLElement($response);
-
-        $this->handelError($result, $response);
-
-        return $shipment;
-    }
 }
