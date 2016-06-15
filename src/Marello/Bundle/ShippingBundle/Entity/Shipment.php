@@ -4,11 +4,15 @@ namespace Marello\Bundle\ShippingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ShippingBundle\Model\ExtendShipment;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
+ * @ORM\Table(name="marello_shipment")
+ * @Oro\Config
  */
-class Shipment
+class Shipment extends ExtendShipment
 {
     /**
      * @ORM\Id
@@ -47,13 +51,6 @@ class Shipment
      * @var string
      */
     protected $identificationNumber;
-
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @var string
-     */
-    protected $pickupRequestNumber;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -146,26 +143,6 @@ class Shipment
     public function setIdentificationNumber($identificationNumber)
     {
         $this->identificationNumber = $identificationNumber;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPickupRequestNumber()
-    {
-        return $this->pickupRequestNumber;
-    }
-
-    /**
-     * @param string $pickupRequestNumber
-     *
-     * @return $this
-     */
-    public function setPickupRequestNumber($pickupRequestNumber)
-    {
-        $this->pickupRequestNumber = $pickupRequestNumber;
 
         return $this;
     }

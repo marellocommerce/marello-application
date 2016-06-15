@@ -9,7 +9,10 @@ use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentAcceptRequestBuilder;
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder;
+use Oro\Bundle\AttachmentBundle\Entity\File;
+use Oro\Bundle\AttachmentBundle\Manager\AttachmentManager;
 use SimpleXMLElement;
+use Symfony\Component\HttpFoundation\File\File as SFFile;
 
 class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterface
 {
@@ -25,23 +28,29 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
     /** @var ShipmentAcceptRequestBuilder */
     protected $shipmentAcceptRequestBuilder;
 
+    /** @var AttachmentManager */
+    protected $attachmentManager;
+
     /**
      * UPSShippingServiceIntegration constructor.
      *
      * @param UPSApi                        $api
      * @param Registry                      $doctrine
+     * @param AttachmentManager             $attachmentManager
      * @param ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder
      * @param ShipmentAcceptRequestBuilder  $shipmentAcceptRequestBuilder
      */
     public function __construct(
         UPSApi $api,
         Registry $doctrine,
+        AttachmentManager $attachmentManager,
         ShipmentConfirmRequestBuilder $shipmentConfirmRequestBuilder,
         ShipmentAcceptRequestBuilder $shipmentAcceptRequestBuilder
     ) {
         $this->api                           = $api;
         $this->shipmentConfirmRequestBuilder = $shipmentConfirmRequestBuilder;
         $this->doctrine                      = $doctrine;
+        $this->attachmentManager             = $attachmentManager;
         $this->shipmentAcceptRequestBuilder  = $shipmentAcceptRequestBuilder;
     }
 
@@ -75,7 +84,9 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
      */
     protected function handelError(SimpleXMLElement $result, $responseType, $rawResponse)
     {
-        $statusCode = (string)$result->xpath("/{$responseType}/Response/ResponseStatusCode");
+        $statusCode = $result->xpath("/{$responseType}/Response/ResponseStatusCode");
+        $statusCode = reset($statusCode);
+        $statusCode = (string)$statusCode;
 
         /*
          * If response status is "1" do nothing (1 means success).
@@ -164,12 +175,46 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
         $idNo = reset($idNo);
         $idNo = (string)$idNo;
 
-        $pickup = $result->xpath('/ShipmentAcceptResponse/ShipmentResults/PackageResults/PickupRequestNumber');
-        $pickup = reset($pickup);
-        $pickup = (string)$pickup;
-
         $shipment->setUpsPackageTrackingNumber($tracking);
         $shipment->setIdentificationNumber($idNo);
-        $shipment->setPickupRequestNumber($pickup);
+
+        $image = $result->xpath('/ShipmentAcceptResponse/ShipmentResults/PackageResults/LabelImage/GraphicImage');
+        $image = reset($image);
+        $image = (string)$image;
+
+        $file = $this->prepareLabelFile($image);
+
+        $shipment->setShippingLabel($file);
+    }
+
+    /**
+     * @param string   $image
+     *
+     * @return File
+     */
+    private function prepareLabelFile($image)
+    {
+        /*
+         * Create a temporary file and put decoded content in it ...
+         */
+        $tempFile = tempnam(sys_get_temp_dir(), 'ups-shipping-label-');
+        file_put_contents($tempFile, base64_decode($image));
+
+        /*
+         * Prepare symfony file for handling with oro attachment bundle ...
+         */
+        $sfFile = new SFFile($tempFile);
+        $file = new File();
+        $file->setFile($sfFile);
+
+        $this->attachmentManager->preUpload($file);
+        $this->attachmentManager->upload($file);
+
+        /*
+         * Delete temporary file ...
+         */
+        unlink($tempFile);
+
+        return $file;
     }
 }

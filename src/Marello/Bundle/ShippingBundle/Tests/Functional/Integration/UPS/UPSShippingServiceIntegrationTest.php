@@ -40,5 +40,7 @@ class UPSShippingServiceIntegrationTest extends WebTestCase
         $data = $this->dataFactory->createData($order);
 
         $shipment = $this->integration->createShipment($order, $data);
+
+//        dump($shipment);
     }
 }

@@ -31,6 +31,7 @@ services:
         arguments:
             - '@marello_shipping.integration.ups.api'
             - '@doctrine'
+            - '@oro_attachment.manager'
             - '@marello_shipping.integration.ups.request_builder.shipment_confirm'
             - '@marello_shipping.integration.ups.request_builder.shipment_accept'
         tags:

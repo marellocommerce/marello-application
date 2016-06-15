@@ -40,10 +40,10 @@ class UPSApiTest extends WebTestCase
 
         $request = $requestBuilder->build($data);
 
-        echo $request . PHP_EOL;
+//        echo $request . PHP_EOL;
 
         $result = $this->api->post('ShipConfirm', $request);
 
-        echo $result . PHP_EOL;
+//        echo $result . PHP_EOL;
     }
 }
