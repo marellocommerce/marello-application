@@ -51,7 +51,7 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
      * @return Shipment
      * @throws UPSIntegrationException
      */
-    public function requestShipment(Order $order, array $data)
+    public function createShipment(Order $order, array $data)
     {
         $request = $this->shipmentConfirmRequestBuilder->build($data);
 

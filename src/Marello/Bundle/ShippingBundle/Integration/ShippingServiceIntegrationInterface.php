@@ -13,7 +13,7 @@ interface ShippingServiceIntegrationInterface
      *
      * @return Shipment
      */
-    public function requestShipment(Order $order, array $data);
+    public function createShipment(Order $order, array $data);
 
     /**
      * @param Shipment $shipment

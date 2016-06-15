@@ -25,20 +25,6 @@ class UPSApiTest extends WebTestCase
      * @test
      * @covers UPSApi::post
      */
-    public function apiShouldThrowExceptionWhenEmptyRequestIsSent()
-    {
-//        $this->setExpectedException(
-//            UPSIntegrationException::class,
-//            'The request is not well-formed or the operation is not defined. Review for errors before re-submitting.'
-//        );
-
-        $this->api->post('ShipConfirm', '');
-    }
-
-    /**
-     * @test
-     * @covers UPSApi::post
-     */
     public function apiShouldReturnValidResponse()
     {
         $dataFactory = $this->client->getContainer()->get('marello_shipping.integration.ups.service_data_factory');

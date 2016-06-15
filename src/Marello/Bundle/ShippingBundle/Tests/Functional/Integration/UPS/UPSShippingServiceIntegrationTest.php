@@ -30,7 +30,7 @@ class UPSShippingServiceIntegrationTest extends WebTestCase
 
     /**
      * @test
-     * @covers UPSShippingServiceIntegration::requestShipment
+     * @covers UPSShippingServiceIntegration::createShipment
      */
     public function requestShipmentThrowsException()
     {
@@ -39,6 +39,6 @@ class UPSShippingServiceIntegrationTest extends WebTestCase
 
         $data = $this->dataFactory->createData($order);
 
-        $shipment = $this->integration->requestShipment($order, $data);
+        $shipment = $this->integration->createShipment($order, $data);
     }
 }
