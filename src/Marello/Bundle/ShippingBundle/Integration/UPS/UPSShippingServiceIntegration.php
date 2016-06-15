@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;
@@ -53,63 +54,122 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
      */
     public function createShipment(Order $order, array $data)
     {
-        $request = $this->shipmentConfirmRequestBuilder->build($data);
+        $shipment = new Shipment();
 
-        $response = $this->api->post('ShipConfirm', $request);
+        $this->confirmShipment($shipment, $order, $data);
 
-        $result = new SimpleXMLElement($response);
+        $this->acceptShipment($shipment);
 
-        $this->handelError($result, $response);
-
-        $shipment = $this->handleShipmentConfirmResponse($result);
-        $shipment->setOrder($order);
-        $order->setShipment($shipment);
-
-        $manager = $this->doctrine->getManagerForClass(Shipment::class);
-        $manager->persist($shipment);
-        $manager->flush();
+        $this->getShipmentManager()->persist($shipment);
+        $this->getShipmentManager()->flush();
 
         return $shipment;
     }
 
     /**
      * @param SimpleXMLElement $result
-     * @param string           $response
+     * @param string           $responseType
+     * @param string           $rawResponse
      *
      * @throws UPSIntegrationException
      */
-    protected function handelError(SimpleXMLElement $result, $response)
+    protected function handelError(SimpleXMLElement $result, $responseType, $rawResponse)
     {
-        $error = $result->xpath('/ShipmentConfirmResponse/Response/Error');
+        $statusCode = (string)$result->xpath("/{$responseType}/Response/ResponseStatusCode");
 
-        if (!empty($error)) {
-            /** @var SimpleXMLElement $error */
-            $error = reset($error);
+        /*
+         * If response status is "1" do nothing (1 means success).
+         */
+        if ($statusCode === '1') {
+            return;
+        }
 
-            if (((string) $error->ErrorSeverity) === 'Warning') {
-                return;
+        $errors = $result->xpath("/{$responseType}/Response/Error");
+
+        foreach ($errors as $error) {
+            $severity = (string)$error->ErrorSeverity;
+
+            if ($severity === 'Error') {
+                $exception = new UPSIntegrationException(
+                    (string)$error->ErrorDescription,
+                    (string)$error->ErrorCode
+                );
+
+                throw $exception->setRawResponse($rawResponse);
+            } else {
+                /*
+                 * TODO: Log Warning
+                 */
             }
-
-            $exception = new UPSIntegrationException(
-                (string)$error->ErrorDescription,
-                (string)$error->ErrorCode
-            );
-
-            throw $exception->setRawResponse($response);
         }
     }
 
-    protected function handleShipmentConfirmResponse(SimpleXMLElement $result)
+    /**
+     * @return ObjectManager|null|object
+     */
+    private function getShipmentManager()
     {
-        $shipment = new Shipment();
+        return $this->doctrine->getManagerForClass(Shipment::class);
+    }
+
+    /**
+     * @param Shipment $shipment
+     * @param Order    $order
+     * @param array    $data
+     *
+     * @throws UPSIntegrationException
+     */
+    private function confirmShipment(Shipment $shipment, Order $order, array $data)
+    {
+        $request  = $this->shipmentConfirmRequestBuilder->build($data);
+        $response = $this->api->post('ShipConfirm', $request);
+        $result   = new SimpleXMLElement($response);
+
+        /*
+         * Handle any errors returned in response.
+         */
+        $this->handelError($result, 'ShipmentConfirmResponse', $response);
+
         $shipment->setShippingService('ups');
+        $shipment->setOrder($order->setShipment($shipment));
 
         $digest = $result->xpath('/ShipmentConfirmResponse/ShipmentDigest');
         $digest = reset($digest);
         $digest = (string)$digest;
 
         $shipment->setUpsShipmentDigest($digest);
+    }
 
-        return $shipment;
+    /**
+     * @param Shipment $shipment
+     *
+     * @throws UPSIntegrationException
+     */
+    private function acceptShipment(Shipment $shipment)
+    {
+        $request  = $this->shipmentAcceptRequestBuilder->build(compact('shipment'));
+        $response = $this->api->post('ShipAccept', $request);
+        $result   = new SimpleXMLElement($response);
+
+        /*
+         * Handle any errors returned in response.
+         */
+        $this->handelError($result, 'ShipmentAcceptResponse', $response);
+
+        $tracking = $result->xpath('/ShipmentAcceptResponse/ShipmentResults/PackageResults/TrackingNumber');
+        $tracking = reset($tracking);
+        $tracking = (string)$tracking;
+
+        $idNo = $result->xpath('/ShipmentAcceptResponse/ShipmentResults/ShipmentIdentificationNumber');
+        $idNo = reset($idNo);
+        $idNo = (string)$idNo;
+
+        $pickup = $result->xpath('/ShipmentAcceptResponse/ShipmentResults/PackageResults/PickupRequestNumber');
+        $pickup = reset($pickup);
+        $pickup = (string)$pickup;
+
+        $shipment->setUpsPackageTrackingNumber($tracking);
+        $shipment->setIdentificationNumber($idNo);
+        $shipment->setPickupRequestNumber($pickup);
     }
 }

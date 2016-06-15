@@ -42,6 +42,27 @@ class Shipment
     protected $upsShipmentDigest;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $identificationNumber;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $pickupRequestNumber;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $upsPackageTrackingNumber;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -105,6 +126,66 @@ class Shipment
     public function setOrder($order)
     {
         $this->order = $order;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentificationNumber()
+    {
+        return $this->identificationNumber;
+    }
+
+    /**
+     * @param string $identificationNumber
+     *
+     * @return $this
+     */
+    public function setIdentificationNumber($identificationNumber)
+    {
+        $this->identificationNumber = $identificationNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPickupRequestNumber()
+    {
+        return $this->pickupRequestNumber;
+    }
+
+    /**
+     * @param string $pickupRequestNumber
+     *
+     * @return $this
+     */
+    public function setPickupRequestNumber($pickupRequestNumber)
+    {
+        $this->pickupRequestNumber = $pickupRequestNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUpsPackageTrackingNumber()
+    {
+        return $this->upsPackageTrackingNumber;
+    }
+
+    /**
+     * @param string $upsPackageTrackingNumber
+     *
+     * @return $this
+     */
+    public function setUpsPackageTrackingNumber($upsPackageTrackingNumber)
+    {
+        $this->upsPackageTrackingNumber = $upsPackageTrackingNumber;
 
         return $this;
     }
