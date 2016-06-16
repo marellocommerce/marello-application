@@ -12,6 +12,7 @@ marello:
             no_channels_enabled_or_configured: >
                                     No configured channels found for the current product.
                                     Please make sure Sales Channels exist and linked.
+            no_prices_configured:       No prices configured for current product
 
         productchannelprice:
             entity_plural_label:        Product Channel Prices
@@ -29,3 +30,5 @@ marello:
 
             messages:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel
+
+            no_channel_prices_configured: No channel prices configured for current product
