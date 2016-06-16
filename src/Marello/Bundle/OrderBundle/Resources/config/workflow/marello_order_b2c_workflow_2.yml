@@ -195,6 +195,9 @@ workflows:
                         template: marello_order_credited
             ship_definition:
                 post_actions:
+                    - @marello_shipment_create:
+                        order: $order
+                        service: 'ups'
                     - @marello_ship_order: ~
                     - @marello_notification_send:
                         entity: $order
