@@ -180,4 +180,19 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 
         parent::importExistingEntity($entity, $existingEntity, $itemData, $excludedFields);
     }
+    
+    /**
+     * Increment context counters.
+     *
+     * @param $entity
+     */
+    protected function updateContextCounters($entity)
+    {
+        $identifier = $this->databaseHelper->getIdentifier($entity);
+        if ($identifier) {
+            $this->context->incrementUpdateCount();
+        } else {
+            $this->context->incrementAddCount();
+        }
+    }
 }
