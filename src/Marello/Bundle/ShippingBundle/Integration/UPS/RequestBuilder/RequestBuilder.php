@@ -21,6 +21,13 @@ abstract class RequestBuilder
         $this->configManager = $configManager;
     }
 
+    /**
+     * Builds request document.
+     *
+     * @param array $data
+     *
+     * @return string
+     */
     public final function build(array $data)
     {
         $xml               = new DOMDocument();
@@ -32,6 +39,13 @@ abstract class RequestBuilder
         return $xml->saveXML();
     }
 
+    /**
+     * @param DOMDocument $xml
+     * @param string      $name
+     * @param string      $action
+     *
+     * @return \DOMElement
+     */
     protected function createFunctionalityRequestNode(DOMDocument $xml, $name, $action)
     {
         $xml->appendChild($fRequest = $xml->createElement($name));
@@ -50,6 +64,9 @@ abstract class RequestBuilder
         return $fRequest;
     }
 
+    /**
+     * @param DOMDocument $xml
+     */
     private function buildAccessRequest(DOMDocument $xml)
     {
         $accessRequest = new AccessRequest(
@@ -61,5 +78,9 @@ abstract class RequestBuilder
         $xml->appendChild($accessRequest->toXmlNode($xml));
     }
 
+    /**
+     * @param DOMDocument $xml
+     * @param array       $data
+     */
     abstract protected function buildFunctionalityRequest(DOMDocument $xml, array $data);
 }

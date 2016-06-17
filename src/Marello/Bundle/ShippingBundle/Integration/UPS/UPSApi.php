@@ -20,6 +20,12 @@ class UPSApi
         $this->client = new Client($cm->get('marello_shipping.ups_api_base_url'));
     }
 
+    /**
+     * @param string $resource
+     * @param string $body
+     *
+     * @return \Guzzle\Http\EntityBodyInterface|string
+     */
     public function post($resource, $body)
     {
         $headers = [

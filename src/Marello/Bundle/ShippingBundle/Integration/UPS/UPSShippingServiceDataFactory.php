@@ -63,6 +63,11 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return compact('shipment');
     }
 
+    /**
+     * @param Order $order
+     *
+     * @return Shipper
+     */
     protected function createShipper(Order $order)
     {
         $shipper = new Shipper();
@@ -87,6 +92,11 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return $shipper;
     }
 
+    /**
+     * @param Order $order
+     *
+     * @return ShipTo
+     */
     protected function createShipTo(Order $order)
     {
         $shipTo = new ShipTo();
@@ -104,6 +114,11 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return $shipTo;
     }
 
+    /**
+     * @param Order $order
+     *
+     * @return Service
+     */
     protected function createService(Order $order)
     {
         $service = new Service();
@@ -114,6 +129,11 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return $service;
     }
 
+    /**
+     * @param Order $order
+     *
+     * @return Package
+     */
     protected function createPackage(Order $order)
     {
         $package = new Package();
@@ -130,6 +150,11 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return $package;
     }
 
+    /**
+     * @param Order $order
+     *
+     * @return PaymentInformation
+     */
     private function createPaymentInformation(Order $order)
     {
         $paymentInformation = new PaymentInformation();
@@ -143,11 +168,21 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return $paymentInformation;
     }
 
+    /**
+     * @param Order $order
+     *
+     * @return null
+     */
     protected function createDescription(Order $order)
     {
         return null; // TODO: Create description
     }
 
+    /**
+     * @param Order $order
+     *
+     * @return RateInformation
+     */
     private function createRateInformation(Order $order)
     {
         $rateInformation = new RateInformation();
@@ -155,6 +190,11 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return $rateInformation;
     }
 
+    /**
+     * @param Order $order
+     *
+     * @return null
+     */
     private function createShipFrom(Order $order)
     {
         $warehouse = $this->doctrine->getRepository(Warehouse::class)->getDefault();
