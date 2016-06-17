@@ -55,13 +55,7 @@ class ShipmentCreateAction extends AbstractAction
 
         $data = $dataFactory->createData($order);
 
-        /** @var Shipment $shipment */
-        $shipment = $integration->createShipment($order, $data);
-        $shipment->setOrder($order);
-
-        $manager = $this->doctrine->getManagerForClass(Shipment::class);
-        $manager->persist($shipment);
-        $manager->flush();
+        $integration->createShipment($order, $data);
     }
 
     /**

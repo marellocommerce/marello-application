@@ -100,7 +100,7 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
         foreach ($errors as $error) {
             $severity = (string)$error->ErrorSeverity;
 
-            if ($severity === 'Error') {
+            if ($severity !== 'Warning') {
                 $exception = new UPSIntegrationException(
                     (string)$error->ErrorDescription,
                     (string)$error->ErrorCode
