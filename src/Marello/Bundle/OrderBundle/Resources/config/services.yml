@@ -1,6 +1,7 @@
 parameters:
     marello_order.entity.order.class: Marello\Bundle\OrderBundle\Entity\Order
     marello_order.provider.order_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider
+    marello_order_customer.class: Marello\Bundle\OrderBundle\Entity\Customer
 
 services:
     marello_order.listener.datagrid.order_grid_address_filter_listener:
@@ -35,6 +36,13 @@ services:
             - %marello_order.entity.order.class%
             - @doctrine.orm.entity_manager
 
+    marello_order.manager.customer.api:
+        class: Marello\Bundle\OrderBundle\Entity\Manager\CustomerApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %marello_order_customer.class%
+            - @doctrine.orm.entity_manager
+
     marello_order.provider.order_statistic_provider:
         class: %marello_order.provider.order_statistic_provider.class%
         arguments:
@@ -44,10 +52,15 @@ services:
             - @oro_security.acl_helper
             - @translator.default
 
-    marello_order.event_listener.doctrine.order_inventory_allocation_listener:
-        class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderInventoryAllocationListener
-        arguments:
-            - @marello_inventory.allocation.allocator
-            - @marello_inventory.logging.inventory_logger
+    marello_order.provider.customer_email_owner:
+        class: Marello\Bundle\OrderBundle\Provider\CustomerEmailOwnerProvider
         tags:
-            - { name: doctrine.event_listener, event: postPersist, method: postPersist }
+            - { name: oro_email.owner.provider, order: 1 }
+
+    marello_order.search_handler.customer:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %marello_order_customer.class%
+            - ["namePrefix", "firstName", "middleName", "lastName", "nameSuffix"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: marello_customers, acl_resource: marello_customer_view }

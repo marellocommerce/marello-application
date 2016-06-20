@@ -41,9 +41,9 @@ class MarelloAddressBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_address');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('region_code', 'string', ['notnull' => false, 'length' => 16]);
+        $table->addColumn('customer_id', 'integer', ['notnull' => false]);
         $table->addColumn('country_code', 'string', ['notnull' => false, 'length' => 2]);
-        $table->addColumn('email', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('region_code', 'string', ['notnull' => false, 'length' => 16]);
         $table->addColumn('phone', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('label', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('street', 'string', ['notnull' => false, 'length' => 500]);
@@ -57,11 +57,12 @@ class MarelloAddressBundleInstaller implements Installation
         $table->addColumn('middle_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('last_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('name_suffix', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('created', 'datetime', ['comment' => '(DC2Type:datetime)']);
-        $table->addColumn('updated', 'datetime', ['comment' => '(DC2Type:datetime)']);
-        $table->addIndex(['region_code'], 'idx_1c837761aeb327af', []);
+        $table->addColumn('created', 'datetime', []);
+        $table->addColumn('updated', 'datetime', []);
         $table->setPrimaryKey(['id']);
+        $table->addIndex(['region_code'], 'idx_1c837761aeb327af', []);
         $table->addIndex(['country_code'], 'idx_1c837761f026bb7c', []);
+        $table->addIndex(['customer_id'], 'IDX_1C8377619395C3F3', []);
     }
 
     /**
@@ -73,16 +74,16 @@ class MarelloAddressBundleInstaller implements Installation
     {
         $table = $schema->getTable('marello_address');
         $table->addForeignKeyConstraint(
-            $schema->getTable('oro_dictionary_region'),
-            ['region_code'],
-            ['combined_code'],
-            ['onUpdate' => null, 'onDelete' => null]
-        );
-        $table->addForeignKeyConstraint(
             $schema->getTable('oro_dictionary_country'),
             ['country_code'],
             ['iso2_code'],
-            ['onUpdate' => null, 'onDelete' => null]
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_dictionary_region'),
+            ['region_code'],
+            ['combined_code'],
+            ['onDelete' => null, 'onUpdate' => null]
         );
     }
 }

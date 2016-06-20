@@ -1,0 +1,57 @@
+services:
+    marello_shipping.integration.shipping_service_registry:
+        class: Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry
+        arguments:
+            - '@service_container'
+
+    marello_shipping.workflow.action.create:
+        class: Marello\Bundle\ShippingBundle\Workflow\ShippingCreateAction
+        arguments:
+            - '@oro_workflow.context_accessor'
+            - '@marello_shipping.integration.shipping_service_registry'
+            - '@doctrine'
+        tags:
+            - { name: oro_workflow.action, alias: marello_shipping_create }
+
+    marello_shipping.workflow.action.confirm:
+        class: Marello\Bundle\ShippingBundle\Workflow\ShippingConfirmAction
+        arguments:
+            - '@oro_workflow.context_accessor'
+            - '@marello_shipping.integration.shipping_service_registry'
+        tags:
+            - { name: oro_workflow.action, alias: marello_shipping_confirm }
+
+    marello_shipping.integration.ups.api:
+        class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi
+        arguments:
+            - '@oro_config.manager'
+
+    marello_shipping.integration.ups.service_integration:
+        class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceIntegration
+        arguments:
+            - '@marello_shipping.integration.ups.api'
+            - '@doctrine'
+            - '@oro_attachment.manager'
+            - '@marello_shipping.integration.ups.request_builder.shipment_confirm'
+            - '@marello_shipping.integration.ups.request_builder.shipment_accept'
+        tags:
+            - { name: marello.shipping.integration, alias: ups }
+
+    marello_shipping.integration.ups.service_data_factory:
+        class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory
+        arguments:
+            - '@oro_config.manager'
+            - '@doctrine'
+        tags:
+            - { name: marello.shipping.data_factory, alias: ups }
+
+    # UPS Request buiders
+    marello_shipping.integration.ups.request_builder.shipment_confirm:
+        class: Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder
+        arguments:
+            - '@oro_config.manager'
+
+    marello_shipping.integration.ups.request_builder.shipment_accept:
+        class: Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentAcceptRequestBuilder
+        arguments:
+            - '@oro_config.manager'

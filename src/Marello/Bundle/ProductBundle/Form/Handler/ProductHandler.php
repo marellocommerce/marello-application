@@ -3,7 +3,6 @@
 namespace Marello\Bundle\ProductBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Symfony\Component\Form\FormInterface;
@@ -20,25 +19,19 @@ class ProductHandler
     /** @var ObjectManager */
     protected $manager;
 
-    /** @var InventoryLogger */
-    protected $inventoryLogger;
-
     /**
      * @param FormInterface   $form
      * @param Request         $request
      * @param ObjectManager   $manager
-     * @param InventoryLogger $inventoryLogger
      */
     public function __construct(
         FormInterface $form,
         Request $request,
-        ObjectManager $manager,
-        InventoryLogger $inventoryLogger
+        ObjectManager $manager
     ) {
         $this->form            = $form;
         $this->request         = $request;
         $this->manager         = $manager;
-        $this->inventoryLogger = $inventoryLogger;
     }
 
     /**
@@ -88,7 +81,6 @@ class ProductHandler
     {
         $this->addChannels($entity, $addChannels);
         $this->removeChannels($entity, $removeChannels);
-        $this->inventoryLogger->log($entity->getInventoryItems()->toArray(), 'manual');
 
         $this->manager->persist($entity);
         $this->manager->flush();

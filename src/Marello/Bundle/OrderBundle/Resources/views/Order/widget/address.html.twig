@@ -13,7 +13,7 @@
             <address>
                 {{ UI.renderHtmlProperty(label|trans, address.renderAddress(orderAddress)) }}
             </address>
-            {{ UI.renderProperty('marello.order.address.email.label'|trans, orderAddress.email) }}
+            {#{{ UI.renderProperty('marello.order.address.email.label'|trans, orderAddress.email) }}#}
             {{ UI.renderProperty('marello.order.address.phone.label'|trans, orderAddress.phone) }}
             <script type="text/javascript">
                 require(['jquery', 'underscore', 'routing', 'marelloaddress/js/address', 'oroui/js/widget-manager'],

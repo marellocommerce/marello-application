@@ -52,16 +52,17 @@ datagrid:
                     - p.sku
                     - p.price
                     - s.label as status
-                    - SUM(i.quantity) AS stockLevel
+                    - SUM(l.stock) AS stockLevel
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
+                        - { join: i.currentLevel, alias: l }
                 where:
                     and:
-                        - i.quantity < 5
+                        - l.stock < 5
                 groupBy: p.sku
         columns:
             sku:
@@ -103,11 +104,12 @@ datagrid:
                         - oi.productName
                         - oi.productSku
                         - product.createdAt as createdAt
-                        - SUM(oi.quantity) AS quantitySold
+                        - SUM(l.stock) AS quantitySold
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
                     join:
                         left:
+                            - { join: oi.currentLevel, alias: l }
                             - { join: oi.product, alias: product }
                     groupBy: oi.productSku, oi.productName
             columns:
@@ -151,11 +153,12 @@ datagrid:
                         - oi.productName
                         - oi.productSku
                         - product.createdAt as createdAt
-                        - SUM(oi.quantity) AS quantitySold
+                        - SUM(l.stock) AS quantitySold
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
                     join:
                         left:
+                            - { join: oi.currentLevel, alias: l }
                             - { join: oi.product, alias: product }
                     groupBy: oi.productSku, oi.productName
             columns:

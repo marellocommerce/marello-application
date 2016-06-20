@@ -125,7 +125,7 @@ class ProductControllerTest extends WebTestCase
 //                ]
 //            ],
             'inventory' => [
-                ['quantity' => 10, 'warehouse' => $this->getDefaultWarehouse()->getId()],
+                ['stock' => 10, 'warehouse' => $this->getDefaultWarehouse()->getId()],
             ],
             'channels'  => [
                 $this->getReference('marello_sales_channel_1')->getId(),
@@ -165,8 +165,8 @@ class ProductControllerTest extends WebTestCase
 //        );
         $this->assertCount(1, $product->getInventoryItems());
         $this->assertEquals(
-            reset($data['inventory'])['quantity'],
-            $product->getInventoryItems()->first()->getQuantity()
+            reset($data['inventory'])['stock'],
+            $product->getInventoryItems()->first()->getStock()
         );
         $this->assertEquals(
             reset($data['inventory'])['warehouse'],
@@ -195,7 +195,7 @@ class ProductControllerTest extends WebTestCase
 //                ]
 //            ],
             'inventory' => [
-                ['quantity' => 10, 'warehouse' => -5 /* wrong ID */],
+                ['stock' => 10, 'warehouse' => -5 /* wrong ID */],
             ],
             'channels'  => [
                 $this->getReference('marello_sales_channel_1')->getId(),
@@ -232,7 +232,7 @@ class ProductControllerTest extends WebTestCase
 //            })->toArray(),
             'status'    => $product->getStatus()->getName(),
             'inventory' => $product->getInventoryItems()->map(function (InventoryItem $item) {
-                return ['quantity' => $item->getQuantity(), 'warehouse' => $item->getWarehouse()->getId()];
+                return ['stock' => $item->getStock(), 'warehouse' => $item->getWarehouse()->getId()];
             })->toArray(),
             'channels'  => $product->getChannels()->map(function (SalesChannel $channel) {
                 return $channel->getId();

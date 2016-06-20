@@ -78,8 +78,7 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
 
         foreach ($warehouses as $warehouse) {
             if (!array_key_exists($warehouse->getId(), $indexed)) {
-                $newItem = new InventoryItem();
-                $newItem->setWarehouse($warehouse);
+                $newItem = new InventoryItem($warehouse);
 
                 /*
                  * Add item to collection, collection is not ordered, so any new warehouses will be added to end.

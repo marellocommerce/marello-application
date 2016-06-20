@@ -13,7 +13,7 @@
                         <th class="inventory-line-item-sku"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
                         <th class="inventory-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
                     {% endif %}
-                    <th class="inventory-line-item-quantity"><span>{{ 'marello.inventory.inventoryitem.quantity.label'|trans }}</span></th>
+                    <th class="inventory-line-item-quantity"><span>{{ 'marello.inventory.stocklevel.stock.label'|trans }}</span></th>
                     <th class="inventory-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
                 </tr>
                 </thead>
@@ -30,25 +30,25 @@
         {% if form.parent.parent.vars.name == 'marello_product_inventory' or form.parent.parent.vars.name != 'marello_product_form' %}
             <td class="inventory-line-item-sku">
                 <div class="fields-row">
-                    {{ form.vars.value.product.sku  }}
+                    {{ form.vars.value.inventoryItem.product.sku  }}
                 </div>
             </td>
             <td class="inventory-line-item-product">
                 <div class="fields-row">
                     {% set productViewGranted = resource_granted('marello_product_view') %}
                     {%- if productViewGranted -%}
-                        <a href="{{ path('marello_product_view', {'id': form.vars.value.product.id}) }}">
-                            {{ form.vars.value.product.name }}
+                        <a href="{{ path('marello_product_view', {'id': form.vars.value.inventoryItem.product.id}) }}">
+                            {{ form.vars.value.inventoryItem.product.name }}
                         </a>
                     {%- else -%}
-                        {{ form.vars.value.product.name}}
+                        {{ form.vars.value.inventoryItem.product.name}}
                     {%- endif -%}
                 </div>
             </td>
         {% endif %}
         <td class="inventory-line-item-quantity">
             <div class="fields-row">
-                <strong>{{ form.vars.value.quantity }}</strong>
+                <strong>{{ form.vars.value.inventoryItem.currentLevel.stock|default(0) }}</strong>
             </div>
         </td>
         {{ form_widget(form) }}
@@ -56,11 +56,11 @@
 {% endblock %}
 
 {% block marello_inventory_item_widget %}
-    <td class="inventory-line-item-adjustment {{ form.modifyAmount.vars.errors|length ? 'has-errors' : '' }}">
+    <td class="inventory-line-item-adjustment {{ form.stock.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
-            {{ form_widget(form.modifyOperator) }}
-            {{ form_widget(form.modifyAmount) }}
-            {{ form_errors(form.modifyAmount) }}
+            {{ form_widget(form.stockOperator) }}
+            {{ form_widget(form.stock) }}
+            {{ form_errors(form.stock) }}
         </div>
     </td>
 {% endblock %}

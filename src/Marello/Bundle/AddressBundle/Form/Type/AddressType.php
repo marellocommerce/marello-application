@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\AddressBundle\Form\Type;
 
+use Marello\Bundle\AddressBundle\Entity\Address;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -9,6 +10,8 @@ use Symfony\Component\Validator\Constraints as Constraint;
 
 class AddressType extends AbstractType
 {
+    const NAME = 'marello_address';
+
     /**
      * {@inheritdoc}
      */
@@ -17,10 +20,6 @@ class AddressType extends AbstractType
         $builder->remove('label');
 
         $builder
-            ->add('email', 'email', [
-                'constraints' => new Constraint\Email(),
-                'required'    => true,
-            ])
             ->add('phone', 'text', [
                 'required' => false,
             ]);
@@ -32,7 +31,7 @@ class AddressType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\AddressBundle\Entity\Address',
+            'data_class' => Address::class,
         ]);
     }
 
@@ -49,6 +48,6 @@ class AddressType extends AbstractType
      */
     public function getName()
     {
-        return 'marello_address';
+        return self::NAME;
     }
 }

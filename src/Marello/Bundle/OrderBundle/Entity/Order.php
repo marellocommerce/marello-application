@@ -9,6 +9,7 @@ use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -18,6 +19,9 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository")
  * @Oro\Config(
+ *      routeView="marello_order_order_view",
+ *      routeName="marello_order_order_index",
+ *      routeCreate="marello_order_order_create",
  *      defaultValues={
  *          "entity"={
  *              "icon"="icon-list-alt"
@@ -164,16 +168,26 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     protected $items;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", cascade={"persist"})
+     * @ORM\JoinColumn
+     *
+     * @var Customer
+     */
+    protected $customer;
+
+    /**
      * @var AbstractAddress
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
+     * @ORM\JoinColumn
      */
     protected $billingAddress;
 
     /**
      * @var AbstractAddress
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
+     * @ORM\JoinColumn
      */
     protected $shippingAddress;
 
@@ -226,6 +240,13 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
      * @ORM\Column(name="saleschannel_name",type="string", nullable=false)
      */
     protected $salesChannelName;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\ShippingBundle\Entity\Shipment", mappedBy="order")
+     *
+     * @var Shipment
+     */
+    protected $shipment;
 
     /**
      * @var WorkflowItem
@@ -772,8 +793,51 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return (string) $this->getOrderNumber();
+        return sprintf('#%s', $this->orderNumber);
+    }
+
+    /**
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param Customer $customer
+     *
+     * @return $this
+     */
+    public function setCustomer($customer)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * @return Shipment
+     */
+    public function getShipment()
+    {
+        return $this->shipment;
+    }
+
+    /**
+     * @param Shipment $shipment
+     *
+     * @return $this
+     */
+    public function setShipment($shipment)
+    {
+        $this->shipment = $shipment;
+
+        return $this;
     }
 }

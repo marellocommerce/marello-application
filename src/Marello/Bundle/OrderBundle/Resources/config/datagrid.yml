@@ -269,3 +269,77 @@ datagrid:
                 pageSize:
                     items: [5]
                     default_per_page: 5
+
+    marello-customer:
+        source:
+            type: orm
+            query:
+                select:
+                    - c
+                from:
+                    - { table: MarelloOrderBundle:Customer, alias: c }
+        columns:
+            id:
+                label: marello.order.customer.id.label
+            namePrefix:
+                label: marello.order.customer.name_prefix.label
+            firstName:
+                label: marello.order.customer.first_name.label
+            middleName:
+                label: marello.order.customer.middle_name.label
+            lastName:
+                label: marello.order.customer.last_name.label
+            nameSuffix:
+                label: marello.order.customer.name_suffix.label
+            email:
+                label: marello.order.customer.email.label
+        filters:
+            columns:
+                namePrefix:
+                    type: string
+                    data_name: c.namePrefix
+                firstName:
+                    type: string
+                    data_name: c.firstName
+                middleName:
+                    type: string
+                    data_name: c.middleName
+                lastName:
+                    type: string
+                    data_name: c.lastName
+                nameSuffix:
+                    type: string
+                    data_name: c.nameSuffix
+                email:
+                    type: string
+                    data_name: c.email
+        sorters:
+            columns:
+                id:
+                    data_name: c.id
+                namePrefix:
+                    data_name: c.namePrefix
+                firstName:
+                    data_name: c.firstName
+                middleName:
+                    data_name: c.middleName
+                lastName:
+                    data_name: c.lastName
+                nameSuffix:
+                    data_name: c.nameSuffix
+                email:
+                    data_name: c.email
+            default:
+                id: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        properties:
+            view_link:
+                type:   url
+                route:  marello_order_customer_view
+                params:
+                    id: id
+        actions:
+            view:
+                type:       navigate
+                link:       view_link
+                icon:       eye-open
+                rowAction:  true

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 
 /**
@@ -18,12 +19,6 @@ use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
  */
 class Address extends AbstractAddress
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $email;
 
     /**
      * @var string
@@ -33,24 +28,12 @@ class Address extends AbstractAddress
     protected $phone;
 
     /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", inversedBy="addresses")
+     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      *
-     * @return $this
+     * @var Customer
      */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
+    protected $customer;
 
     /**
      * @return string
@@ -70,5 +53,36 @@ class Address extends AbstractAddress
         $this->phone = $phone;
 
         return $this;
+    }
+
+    /**
+     * @return Customer
+     */
+    public function getCustomer()
+    {
+        return $this->customer;
+    }
+
+    /**
+     * @param Customer $customer
+     *
+     * @return $this
+     */
+    public function setCustomer(Customer $customer = null)
+    {
+        $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getFullName()
+    {
+        return implode(' ', array_filter([
+            $this->namePrefix,
+            $this->firstName,
+            $this->middleName,
+            $this->lastName,
+            $this->nameSuffix,
+        ]));
     }
 }

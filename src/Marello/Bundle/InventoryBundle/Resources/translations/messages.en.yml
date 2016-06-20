@@ -19,22 +19,23 @@ marello:
             entity_label:               Inventory Item
             entity_plural_label:        Inventory Items
             id.label:                   Id
-            quantity.label:             Real Stock
-            allocated_quantity.label:   Allocated Stock
-            virtual_quantity.label:     Virtual Stock
             warehouse.label:            Warehouse
             product.label:              Product
 
-        inventorylog:
-            entity_label:                   Inventory Log
-            entity_plural_label:            Inventory Logs
-            id.label:                       Id
-            changeAmount.label:             Real Stock Change
-            changeAllocatedAmount.label:    Allocated Stock Change
-            actionType.label:               Trigger
-            user.label:                     User
-            inventoryItem.label:            Inventory Item
-            createdAt.label:                Created At
-
-        logaction:
-            manual:                 Manual
+        stocklevel:
+            entity_label:               Stock Level
+            entity_plural_label:        Stock Levels
+            id.label:                           Id
+            stock.label:                        Real Stock
+            allocated_stock.label:              Allocated Stock
+            virtual_stock.label:                Virtual Stock
+            stock_diff.label:                   Real Stock Change
+            allocated_stock_diff.label:         Allocated Stock Change
+            virtual_stock_diff.label:           Virtual Stock Change
+            author.label:                       Change Author
+            subject.label:                      Related Subject
+            change_trigger.label:               Trigger
+            previous_level.label:               Previous Stock Level
+            subject_id.label:                   Subject Id
+            subject_type.label:                 Subject Type
+            log.label:                          Stock Level Log

@@ -6,6 +6,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\AddressBundle\Entity\Address;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -23,6 +26,11 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     protected $ordersFileHeader = [];
     protected $itemsFile = null;
     protected $itemsFileHeader = [];
+
+    /** @var Warehouse */
+    protected $defaultWarehouse;
+
+    protected $customers = 0;
 
     /**
      * {@inheritdoc}
@@ -42,6 +50,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
+        $this->defaultWarehouse = $manager->getRepository(Warehouse::class)->getDefault();
 
         /** @var Order $order */
         $order = null;
@@ -93,6 +102,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             $order->addItem($item);
         }
 
+        $manager->persist($order);
         $manager->flush();
 
         $this->closeFiles();
@@ -147,34 +157,37 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     }
 
     /**
-     * @param array $row
+     * @param array        $row
+     * @param Organization $organization
      *
      * @return Order
      */
     protected function createOrder($row, Organization $organization)
     {
-        $billing = new Address();
-        $billing->setNamePrefix($row['title']);
-        $billing->setFirstName($row['firstname']);
-        $billing->setLastName($row['lastname']);
-        $billing->setStreet($row['street_address']);
-        $billing->setPostalCode($row['zipcode']);
-        $billing->setCity($row['city']);
-        $billing->setCountry(
+        $address = new Address();
+        $address->setNamePrefix($row['title']);
+        $address->setFirstName($row['firstname']);
+        $address->setLastName($row['lastname']);
+        $address->setStreet($row['street_address']);
+        $address->setPostalCode($row['zipcode']);
+        $address->setCity($row['city']);
+        $address->setCountry(
             $this->manager
                 ->getRepository('OroAddressBundle:Country')->find($row['country'])
         );
-        $billing->setRegion(
+        $address->setRegion(
             $this->manager
                 ->getRepository('OroAddressBundle:Region')
                 ->findOneBy(['combinedCode' => $row['country'] . '-' . $row['state']])
         );
-        $billing->setPhone($row['telephone_number']);
-        $billing->setEmail($row['email']);
+        $address->setPhone($row['telephone_number']);
+        $this->manager->persist($address);
 
-        $shipping = clone $billing;
-
-        $orderEntity = new Order($billing, $shipping);
+        $orderEntity = new Order($address, $address);
+        $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $address);
+        $customer->setOrganization($organization);
+        $this->setReference('marello_customer_' . $this->customers++, $customer);
+        $orderEntity->setCustomer($customer);
 
         $channel = $this->getReference('marello_sales_channel_' . $row['channel']);
         $orderEntity->setSalesChannel($channel);
@@ -215,6 +228,18 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $itemEntity->setPrice($row['price']);
         $itemEntity->setTotalPrice($row['total_price']);
         $itemEntity->setTax($row['tax']);
+
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = $product->getInventoryItems()->first();
+
+        $inventoryItem->adjustStockLevels(
+            'order_workflow.pending',
+            null,
+            $itemEntity->getQuantity(),
+            null,
+            $itemEntity
+        );
+        $this->manager->persist($inventoryItem);
 
         return $itemEntity;
     }

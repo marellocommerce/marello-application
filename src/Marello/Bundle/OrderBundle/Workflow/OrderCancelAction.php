@@ -4,8 +4,7 @@ namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
-use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
+use Marello\Bundle\InventoryBundle\Entity\StockLevel;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -16,9 +15,6 @@ class OrderCancelAction extends OrderTransitionAction
     /** @var Registry */
     protected $doctrine;
 
-    /** @var InventoryLogger */
-    protected $logger;
-
     /** @var InventoryItem[] */
     protected $changedInventory;
 
@@ -27,14 +23,12 @@ class OrderCancelAction extends OrderTransitionAction
      *
      * @param ContextAccessor $contextAccessor
      * @param Registry        $doctrine
-     * @param InventoryLogger $logger
      */
-    public function __construct(ContextAccessor $contextAccessor, Registry $doctrine, InventoryLogger $logger)
+    public function __construct(ContextAccessor $contextAccessor, Registry $doctrine)
     {
         parent::__construct($contextAccessor);
 
         $this->doctrine = $doctrine;
-        $this->logger   = $logger;
     }
 
     /**
@@ -51,17 +45,6 @@ class OrderCancelAction extends OrderTransitionAction
             $this->cancelOrderItem($orderItem);
         });
 
-        /*
-         * Log all changed inventory.
-         */
-        $this->logger->log(
-            $this->changedInventory,
-            'order_workflow.cancelled',
-            function (InventoryLog $log) use ($order) {
-                $log->setOrder($order);
-            }
-        );
-
         $this->doctrine->getManager()->flush();
     }
 
@@ -72,16 +55,22 @@ class OrderCancelAction extends OrderTransitionAction
      */
     protected function cancelOrderItem(OrderItem $orderItem)
     {
-        $allocations = $orderItem->getInventoryAllocations();
+        $allocations = $this->doctrine
+            ->getRepository(StockLevel::class)
+            ->findBy([
+                'subjectId'     => $orderItem->getId(),
+                'subjectType'   => OrderItem::class,
+                'changeTrigger' => 'order_workflow.pending',
+            ]);
+
+        $returnAllocation = 0;
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = reset($allocations)->getInventoryItem();
 
         foreach ($allocations as $allocation) {
-            $this->changedInventory[] = $inventoryItem = $allocation->getInventoryItem();
-
-            /*
-             * When allocation is removed, the allocated amount on inventory amount will be automatically decreased.
-             */
-            $this->doctrine->getManager()->remove($allocation);
-            $this->doctrine->getManager()->persist($inventoryItem);
+            $returnAllocation += $allocation->getAllocatedStockDiff();
         }
+
+        $inventoryItem->adjustStockLevels('order_workflow.cancelled', null, -$returnAllocation, null, $orderItem);
     }
 }

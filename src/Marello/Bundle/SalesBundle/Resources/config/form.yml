@@ -24,6 +24,13 @@ services:
         tags:
             - { name: form.type, alias: marello_sales_saleschannel_select }
 
+    marello_sales.form.type.sales_channel_select_api:
+        class: Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectApiType
+        arguments:
+            - @marello_sales.form.data_transformer.sales_channel_to_code
+        tags:
+            - { name: form.type, alias: marello_sales_channel_select_api }
+
     #forms
     marello_sales.saleschannel.form:
         class: Symfony\Component\Form\Form
@@ -48,3 +55,8 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - MarelloSalesBundle:SalesChannel
+
+    marello_sales.form.data_transformer.sales_channel_to_code:
+        class: Marello\Bundle\SalesBundle\Form\DataTransformer\SalesChannelToCodeTransformer
+        arguments:
+            - @doctrine.orm.entity_manager

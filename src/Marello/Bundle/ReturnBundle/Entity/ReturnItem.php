@@ -36,7 +36,7 @@ class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
     /**
      * @var OrderItem
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\OrderItem")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\OrderItem", inversedBy="returnItems")
      * @ORM\JoinColumn
      */
     protected $orderItem;

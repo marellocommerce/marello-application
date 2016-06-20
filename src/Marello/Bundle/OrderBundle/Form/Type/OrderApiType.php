@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Marello\Bundle\AddressBundle\Entity\Address;
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,15 +37,22 @@ class OrderApiType extends AbstractType
             ->add('currency', 'text')
             ->add('couponCode', 'text')
             ->add('grandTotal', 'oro_money')
-            ->add('billingAddress', 'marello_address')
-            ->add('shippingAddress', 'marello_address')
+            ->add('customer', 'entity', [
+                'class' => Customer::class,
+            ])
+            ->add('billingAddress', 'entity', [
+                'class' => Address::class,
+            ])
+            ->add('shippingAddress', 'entity', [
+                'class' => Address::class,
+            ])
             ->add('paymentMethod', 'text')
             ->add('paymentDetails', 'text')
             ->add('shippingMethod', 'text')
             ->add('shippingAmount', 'oro_money')
             ->add('items', OrderItemCollectionType::NAME, [
-                'type'         => OrderItemApiType::NAME,
-                'allow_add'    => true,
+                'type'      => OrderItemApiType::NAME,
+                'allow_add' => true,
             ]);
 
         $builder->get('salesChannel')->addModelTransformer($this->salesChannelTransformer);

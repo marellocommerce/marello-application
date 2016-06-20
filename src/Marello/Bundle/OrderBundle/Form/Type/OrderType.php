@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\Listener\OrderTotalsSubscriber;
 use Symfony\Component\Form\AbstractType;
@@ -38,6 +39,9 @@ class OrderType extends AbstractType
                     'required' => false,
                 ]
             )
+            ->add('customer', 'oro_jqueryselect2_hidden', [
+                'autocomplete_alias' => 'marello_customers',
+            ])
             ->add('billingAddress', 'marello_address')
             ->add('shippingAddress', 'marello_address')
             ->add('items', 'marello_order_item_collection');

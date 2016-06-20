@@ -134,7 +134,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
             $virtualStock = array_reduce(
                 $product->getInventoryItems()->toArray(),
                 function ($carry, InventoryItem $item) {
-                    return $carry + $item->getVirtualQuantity();
+                    return $carry + $item->getVirtualStock();
                 },
                 0
             );

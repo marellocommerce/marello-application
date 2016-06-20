@@ -5,17 +5,12 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-
-use Marello\Bundle\InventoryBundle\Entity\InventoryAllocation;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Marello\Bundle\InventoryBundle\InventoryAllocation\AllocationTargetInterface;
-use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity()
@@ -24,7 +19,7 @@ use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")
  */
-class OrderItem extends ExtendOrderItem implements AllocationTargetInterface, CurrencyAwareInterface
+class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
 {
     /**
      * @var int
@@ -137,23 +132,11 @@ class OrderItem extends ExtendOrderItem implements AllocationTargetInterface, Cu
     protected $returnItems;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryAllocation",
-     *     mappedBy="targetOrderItem",
-     *     cascade={}
-     * )
-     *
-     * @var InventoryAllocation[]|Collection
-     */
-    protected $inventoryAllocations;
-
-    /**
      * OrderItem constructor.
      */
     public function __construct()
     {
         $this->returnItems = new ArrayCollection();
-        $this->inventoryAllocations = new ArrayCollection();
     }
 
     /**
@@ -363,24 +346,6 @@ class OrderItem extends ExtendOrderItem implements AllocationTargetInterface, Cu
     public function setDiscountAmount($discountAmount)
     {
         $this->discountAmount = $discountAmount;
-    }
-
-    /**
-     * Returns name of property, that this entity is mapped to InventoryAllocation under.
-     *
-     * @return string
-     */
-    public static function getAllocationPropertyName()
-    {
-        return 'OrderItem';
-    }
-
-    /**
-     * @return Collection|InventoryAllocation[]
-     */
-    public function getInventoryAllocations()
-    {
-        return $this->inventoryAllocations;
     }
 
     /**

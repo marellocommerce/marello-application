@@ -81,7 +81,6 @@ services:
             - @marello_product.product.form
             - @request
             - @doctrine.orm.entity_manager
-            - @marello_inventory.logging.inventory_logger
 
     marello_product.product_form.handler.product_api:
         class: %marello_product.product_form.handler.product_api.class%

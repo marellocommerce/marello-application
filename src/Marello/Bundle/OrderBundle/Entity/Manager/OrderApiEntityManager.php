@@ -27,7 +27,6 @@ class OrderApiEntityManager extends ApiEntityManager
                 'region'       => [],
                 'organization' => [],
                 'postalCode'   => [],
-                'email'        => [],
                 'phone'        => [],
             ],
         ];

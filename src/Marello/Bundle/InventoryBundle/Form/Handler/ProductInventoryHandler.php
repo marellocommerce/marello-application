@@ -3,7 +3,6 @@
 namespace Marello\Bundle\InventoryBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Logging\InventoryLogger;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,25 +18,19 @@ class ProductInventoryHandler
     /** @var ObjectManager */
     protected $manager;
 
-    /** @var InventoryLogger */
-    protected $inventoryLogger;
-
     /**
-     * @param FormInterface   $form
-     * @param Request         $request
-     * @param ObjectManager   $manager
-     * @param InventoryLogger $inventoryLogger
+     * @param FormInterface $form
+     * @param Request       $request
+     * @param ObjectManager $manager
      */
     public function __construct(
         FormInterface $form,
         Request $request,
-        ObjectManager $manager,
-        InventoryLogger $inventoryLogger
+        ObjectManager $manager
     ) {
-        $this->form            = $form;
-        $this->request         = $request;
-        $this->manager         = $manager;
-        $this->inventoryLogger = $inventoryLogger;
+        $this->form    = $form;
+        $this->request = $request;
+        $this->manager = $manager;
     }
 
     /**
@@ -86,8 +79,6 @@ class ProductInventoryHandler
         foreach ($entity->getVariant()->getProducts() as $product) {
             $items = array_merge($items, $product->getInventoryItems()->toArray());
         }
-
-        $this->inventoryLogger->log($items, 'manual');
 
         $this->manager->persist($entity->getVariant());
         $this->manager->flush();
