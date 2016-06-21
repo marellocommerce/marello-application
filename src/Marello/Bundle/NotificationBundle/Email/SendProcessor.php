@@ -11,7 +11,6 @@ use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor;
 
-use Oro\Bundle\EmailBundle\Builder\EmailBodyBuilder;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Tools\EmailAttachmentTransformer;
 use Oro\Bundle\AttachmentBundle\Entity\Attachment;
@@ -20,14 +19,14 @@ use Oro\Bundle\ImportExportBundle\File\FileSystemOperator;
 use Oro\Bundle\EmailBundle\Mailer\Processor;
 use Oro\Bundle\EmailBundle\Builder\EmailModelBuilder;
 use Ibnab\Bundle\PmanagerBundle\Controller\TCPDFController;
-use Swift_Message;
+
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Oro\Bundle\EmailBundle\Form\Model\EmailAttachment as ModelEmailAttachment;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachmentContent;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment;
 
-use Swift_Attachment;
 use Swift_Mailer;
+use Swift_Message;
 
 class SendProcessor
 {
@@ -64,6 +63,8 @@ class SendProcessor
     /** @var EmailAttachmentTransformer */
     protected $emailAttachmentTransformer;
 
+    protected $mailer;
+
     /**
      * EmailSendProcessor constructor.
      *
@@ -84,7 +85,8 @@ class SendProcessor
         Router $router,
         EmailModelBuilder $emailModelBuilder,
         Processor $processor,
-        EmailAttachmentTransformer $emailAttachmentTransformer
+        EmailAttachmentTransformer $emailAttachmentTransformer,
+        \Swift_Mailer $mailer
     ) {
         $this->emailNotificationProcessor = $emailNotificationProcessor;
         $this->manager                    = $manager;
@@ -97,6 +99,7 @@ class SendProcessor
         $this->emailModelBuilder = $emailModelBuilder;
         $this->processor = $processor;
         $this->emailAttachmentTransformer = $emailAttachmentTransformer;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -138,18 +141,21 @@ class SendProcessor
          * Sending of notification emails is deferred, notification can be persisted but not yet sent.
          * This depends on application configuration.
          */
-        $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
         if ($pdfTemplateName) {
             $pdfData = $this->createPdfFile($pdfTemplateName, $entity, $entityName);
-            $this->sendPdf($template, $pdfData, $recipients);
+            $this->sendPdf($subjectRendered, $templateRendered, $pdfData, $recipients, $entity);
+//            $this->swift($template, $pdfData, $recipients);
+        }
+        else {
+            $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
+            $this->emailNotificationProcessor->process($entity, [$notification]);
+
+            $this->activityManager->addActivityTarget($notification, $entity);
+
+            $this->manager->persist($notification);
+            $this->manager->flush();
         }
 
-        $this->emailNotificationProcessor->process($entity, [$notification]);
-
-        $this->activityManager->addActivityTarget($notification, $entity);
-
-        $this->manager->persist($notification);
-        $this->manager->flush();
     }
 
     private function createPdfFile($pdfTemplateName, $entity, $entityName)
@@ -187,6 +193,7 @@ class SendProcessor
         $responseData['renderedPdf'] = $renderedPdf;
         $responseData['attachmentId'] = $attachment->getId();
         $responseData['file'] = $file;
+        $responseData['pdfObj'] = $pdfObj;
 
         return $responseData;
     }
@@ -217,7 +224,7 @@ class SendProcessor
         return $pdfObj;
     }
     
-    protected function sendPdf($emailData, $pdfData, $recipients)
+    protected function sendPdf($subjectRendered, $emailRendered, $pdfData, $recipients, $entity)
     {
         //parse parameters
         $attachmentId = $pdfData['attachmentId'];
@@ -225,6 +232,7 @@ class SendProcessor
 
         //email model: Oro\Bundle\EmailBundle\Form\Model\Email
         $emailModel = $this->emailModelBuilder->createEmailModel();
+        $emailModel->setContexts(array($entity));
 
         //email attachment entity: Oro\Bundle\EmailBundle\Entity\EmailAttachment
         $emailAttachment = new EmailAttachment();
@@ -237,7 +245,8 @@ class SendProcessor
         $emailAttachment->setFileName($attachment->getFile()->getFileName());
 
         $emailAttachmentContent = new EmailAttachmentContent();
-        $emailAttachmentContent->setContent(base64_encode('hellocontent'));
+        $pdfObj = $pdfData['pdfObj'];
+        $emailAttachmentContent->setContent(base64_encode($pdfObj->getPDFData()));
         $emailAttachmentContent->setContentTransferEncoding('base64');
 
         $emailAttachment->setContentType($attachment->getFile()->getMimeType());
@@ -253,9 +262,22 @@ class SendProcessor
         $modelEmailAttachment->setEmailAttachment($emailAttachment);
         $emailModel->addAttachment($modelEmailAttachment);
         $emailModel->setTo($recipients);
-        $emailModel->setSubject($emailData->getSubject());
-        $emailModel->setBody($emailData->getContent());
+        $emailModel->setSubject($subjectRendered);
+        $emailModel->setBody($emailRendered);
         $this->processor->process($emailModel);
+    }
+
+    private function swift($emailData, $pdfData, $recipients)
+    {
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Hello Email')
+            ->setFrom(array('joey@madia.nl' => 'joey'))
+            ->setTo('joey@madia.nl')
+            ->setBody('lalalala')
+            ->attach(\Swift_Attachment::fromPath(APP_PATH. "/temp/5768034b7ef8b.pdf" ))
+        ;
+
+        $this->mailer->send($message);
     }
 
 }
