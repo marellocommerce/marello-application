@@ -200,7 +200,11 @@ workflows:
                         entity: $order
                         recipient: $order.billingAddress.email
                         template: marello_order_shipped_confirmation
-            prepare_shipping_definition: []
+            prepare_shipping_definition:
+                post_actions:
+                    - @marello_shipment_create:
+                        order: $order
+                        service: 'ups'
             payment_reminder_definition:
                 post_actions:
                     - @marello_notification_send:

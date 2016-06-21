@@ -7,6 +7,11 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipment;
 
 class ShipmentConfirmRequestBuilder extends RequestBuilder
 {
+
+    /**
+     * @param DOMDocument $xml
+     * @param array       $data
+     */
     protected function buildFunctionalityRequest(DOMDocument $xml, array $data)
     {
         $request = $this->createFunctionalityRequestNode($xml, 'ShipmentConfirmRequest', 'ShipConfirm');
@@ -15,6 +20,12 @@ class ShipmentConfirmRequestBuilder extends RequestBuilder
         $request->appendChild($this->createShipmentNode($data, $xml));
     }
 
+    /**
+     * @param array       $data
+     * @param DOMDocument $xml
+     *
+     * @return \DOMElement
+     */
     protected function createShipmentNode(array $data, DOMDocument $xml)
     {
         /** @var Shipment $shipment */
@@ -23,6 +34,11 @@ class ShipmentConfirmRequestBuilder extends RequestBuilder
         return $shipment->toXmlNode($xml);
     }
 
+    /**
+     * @param DOMDocument $xml
+     *
+     * @return \DOMElement
+     */
     protected function createLabelSpecificationNode(DOMDocument $xml)
     {
         $labelSpecification = $xml->createElement('LabelSpecification');

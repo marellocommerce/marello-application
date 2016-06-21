@@ -195,6 +195,9 @@ workflows:
                         template: marello_order_credited
             prepare_shipping_definition:
                 post_actions:
+                    - @marello_shipment_create:
+                        order: $order
+                        service: 'ups'
                     - @marello_notification_send:
                         entity: $order
                         recipient: $order.billingAddress.email

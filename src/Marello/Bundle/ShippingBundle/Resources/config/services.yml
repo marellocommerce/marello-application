@@ -5,21 +5,13 @@ services:
             - '@service_container'
 
     marello_shipping.workflow.action.create:
-        class: Marello\Bundle\ShippingBundle\Workflow\ShippingCreateAction
+        class: Marello\Bundle\ShippingBundle\Workflow\ShipmentCreateAction
         arguments:
             - '@oro_workflow.context_accessor'
             - '@marello_shipping.integration.shipping_service_registry'
             - '@doctrine'
         tags:
-            - { name: oro_workflow.action, alias: marello_shipping_create }
-
-    marello_shipping.workflow.action.confirm:
-        class: Marello\Bundle\ShippingBundle\Workflow\ShippingConfirmAction
-        arguments:
-            - '@oro_workflow.context_accessor'
-            - '@marello_shipping.integration.shipping_service_registry'
-        tags:
-            - { name: oro_workflow.action, alias: marello_shipping_confirm }
+            - { name: oro_workflow.action, alias: marello_shipment_create }
 
     marello_shipping.integration.ups.api:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi
