@@ -14,6 +14,8 @@ use Ibnab\Bundle\PmanagerBundle\Entity\PDFTemplate;
 
 use Marello\Bundle\PdfBundle\Processor\EmailProcessor;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class PdfProcessor
 {
@@ -48,8 +50,7 @@ class PdfProcessor
         FileSystemOperator $fileSystemOperator,
         TCPDFController $TCPDFController,
         EmailProcessor $emailProcessor
-    )
-    {
+    ) {
         $this->manager = $manager;
         $this->renderer = $renderer;
         $this->attachmentManager = $attachmentManager;
@@ -57,21 +58,33 @@ class PdfProcessor
         $this->TCPDFController = $TCPDFController;
         $this->emailProcessor = $emailProcessor;
     }
-    
-    
-    public function process($pdfTemplateName, $entity, $subject, $body, $recipients)
+
+    /**
+     * Creates a PDF object and sends it attached in an email
+     *
+     * @param $pdfTemplateName
+     * @param $entity
+     * @param $subject
+     * @param $body
+     * @param $recipients
+     */
+    public function sendPdfAttached($pdfTemplateName, $entity, $subject, $body, $recipients)
     {
         list ($pdfObj, $attachmentId) = $this->createPdfFile($pdfTemplateName, $entity);
         
         $this->emailProcessor->sendPdfAttached($subject, $body, $recipients, $pdfObj, $attachmentId, $entity);
     }
 
+    /**
+     * Creates pdf file and saves it in temporary folder
+     *
+     * @param $pdfTemplateName
+     * @param $entity
+     * @return array|null
+     */
     public function createPdfFile($pdfTemplateName, $entity)
     {
         $templateEntity = $this->findTemplate($pdfTemplateName);
-        
-        if (!$templateEntity)
-            return null;
 
         $renderedPdfBody = $this->renderer->renderWithDefaultFilters($templateEntity->getContent(), array(
             'entity' => $entity
@@ -88,6 +101,12 @@ class PdfProcessor
         
     }
 
+    /**
+     * Creates attachment object
+     *
+     * @param $fileName
+     * @return Attachment
+     */
     protected function createAttachment($fileName)
     {
         $file = $this->attachmentManager->prepareRemoteFile($fileName);
@@ -101,13 +120,25 @@ class PdfProcessor
         $this->manager->flush();
         return $attachment;
     }
-    
+
+    /**
+     * @param $pdfTemplateName
+     * @return mixed
+     */
     protected function findTemplate($pdfTemplateName)
     {
-        return $this->manager->getRepository('\Ibnab\Bundle\PmanagerBundle\Entity\PDFTemplate')->findOneByName($pdfTemplateName);
+        $templateEntity =  $this->manager->getRepository('\Ibnab\Bundle\PmanagerBundle\Entity\PDFTemplate')->findOneByName($pdfTemplateName);
+
+        if (!$templateEntity) {
+            throw new NotFoundHttpException('Template with name '. $pdfTemplateName. ' not found');
+        }
+
+        return $templateEntity;
     }
 
     /**
+     * Creates a TCPDF object
+     *
      * @param PDFTemplate $template
      * @return \Ibnab\Bundle\PmanagerBundle\Controller\TCPDF
      */
@@ -120,15 +151,14 @@ class PdfProcessor
         $top = $template->getMargintop() ? $template->getMargintop() : '2';
         $left = $template->getMarginleft() ? $template->getMarginleft() : '2';
         $bottom = $template->getMarginBottom() ? $template->getMarginBottom() : '2';
-        if($template->getAutobreak() == 1)
-        {
+
+        if ($template->getAutobreak() == 1) {
             $autobreak= true;
-        }
-        else
-        {
+        } else {
             $autobreak= false;
         }
-        $pdfObj = $this->TCPDFController->create($orientation,$unit,$format, true, 'UTF-8', false);
+
+        $pdfObj = $this->TCPDFController->create($orientation, $unit, $format, true, 'UTF-8', false);
 
         $pdfObj->SetCreator($template->getAuteur());
         $pdfObj->SetAuthor($template->getAuteur());

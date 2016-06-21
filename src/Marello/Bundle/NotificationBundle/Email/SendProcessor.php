@@ -92,7 +92,7 @@ class SendProcessor
          * This depends on application configuration.
          */
         if ($pdfTemplateName) {
-            $this->pdfProcessor->process($pdfTemplateName, $entity, $subjectRendered, $templateRendered, $recipients);
+            $this->pdfProcessor->sendPdfAttached($pdfTemplateName, $entity, $subjectRendered, $templateRendered, $recipients);
         }
         else {
             $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());

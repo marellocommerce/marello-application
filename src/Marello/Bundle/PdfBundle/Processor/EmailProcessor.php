@@ -13,6 +13,9 @@ use Oro\Bundle\EmailBundle\Form\Model\EmailAttachment as ModelEmailAttachment;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachmentContent;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+
 class EmailProcessor
 {
     /** @var EntityManager */
@@ -46,12 +49,20 @@ class EmailProcessor
         $this->emailAttachmentTransformer = $emailAttachmentTransformer;
     }
 
+    /**
+     * Creates all the structure of email and sends with pdf attached 
+     * 
+     * @param $subject
+     * @param $body
+     * @param $recipients
+     * @param $pdfObj
+     * @param $attachmentId
+     * @param $entity
+     * @return null
+     */
     public function sendPdfAttached($subject, $body, $recipients, $pdfObj, $attachmentId, $entity)
     {
         $attachment = $this->findAttachment($attachmentId);
-
-        if (!$attachment || !$pdfObj)
-            return null;
 
         // Oro\Bundle\EmailBundle\Form\Model\Email
         $emailModel = $this->emailModelBuilder->createEmailModel();
@@ -92,9 +103,20 @@ class EmailProcessor
     }
 
 
+    /**
+     * @param $attachmentId
+     * @return null|object
+     * @throws NotFoundHttpException
+     */
     protected function findAttachment($attachmentId)
     {
-        return $this->manager->getRepository('OroAttachmentBundle:Attachment')->find($attachmentId);
+        $attachment =  $this->manager->getRepository('OroAttachmentBundle:Attachment')->find($attachmentId);
+
+        if (!$attachment) {
+            throw new NotFoundHttpException('Attachment with id '. $attachmentId. ' not found');
+        }
+
+        return $attachment;
     }
 
 }
