@@ -7,14 +7,7 @@ services:
             - @doctrine.orm.entity_manager
             - @oro_activity.manager
             - @oro_email.email_renderer
-            - @oro_attachment.manager
-            - @oro_importexport.file.file_system_operator
-            - @ibnab_pmanager.tcpdf
-            - @router
-            - @oro_email.email.model.builder
-            - @oro_email.mailer.processor
-            - @oro_email.email_attachment_transformer
-            - @swiftmailer.mailer
+            - @marello_pdf.pdf_processor
 
     marello_notification.workflow.send_notification_action:
         class: Marello\Bundle\NotificationBundle\Workflow\SendNotificationAction

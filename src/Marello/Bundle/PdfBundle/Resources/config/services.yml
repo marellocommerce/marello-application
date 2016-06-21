@@ -1,5 +1,7 @@
 parameters:
-    marello_pdf.placeholder.filter.class:            Marello\Bundle\PdfBundle\Placeholder\MarelloPlaceholderFilter
+    marello_pdf.placeholder.filter.class:           Marello\Bundle\PdfBundle\Placeholder\MarelloPlaceholderFilter
+    marello_pdf.processor.email.class:              Marello\Bundle\PdfBundle\Processor\EmailProcessor
+    marello_pdf.processor.pdf.class:                Marello\Bundle\PdfBundle\Processor\PdfProcessor
 
 services:
     marello_pdf.widget_provider.actions:
@@ -16,3 +18,21 @@ services:
         arguments:
             - @ibnab_pmanager.provider.configuration
             - @oro_entity.doctrine_helper
+
+    marello_pdf.email_processor:
+        class: %marello_pdf.processor.email.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_email.email.model.builder
+            - @oro_email.mailer.processor
+            - @oro_email.email_attachment_transformer
+
+    marello_pdf.pdf_processor:
+        class: %marello_pdf.processor.pdf.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_email.email_renderer
+            - @oro_attachment.manager
+            - @oro_importexport.file.file_system_operator
+            - @ibnab_pmanager.tcpdf
+            - @marello_pdf.email_processor
