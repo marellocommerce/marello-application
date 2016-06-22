@@ -144,6 +144,7 @@ oro_system_configuration:
             options:
                 label: marello.shipping.system_configuration.shipper_address_line_2
                 resettable: false
+                required: false
                 constraints:
                     - Length:
                         max: 35
@@ -155,6 +156,7 @@ oro_system_configuration:
             options:
                 label: marello.shipping.system_configuration.shipper_address_line_3
                 resettable: false
+                required: false
                 constraints:
                     - Length:
                         max: 35
