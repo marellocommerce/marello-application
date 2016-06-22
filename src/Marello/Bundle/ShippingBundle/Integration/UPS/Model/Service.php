@@ -9,4 +9,16 @@ class Service extends XmlSerializedModel
     public $code;
 
     public $description;
+
+    /**
+     * Service constructor.
+     *
+     * @param $code
+     * @param $description
+     */
+    public function __construct($code, $description = null)
+    {
+        $this->code        = $code;
+        $this->description = $description;
+    }
 }
