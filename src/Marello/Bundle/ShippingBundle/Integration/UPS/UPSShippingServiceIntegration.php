@@ -182,6 +182,8 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
         $image = reset($image);
         $image = (string)$image;
 
+        $shipment->setBase64EncodedLabel($image);
+
         $file = $this->prepareLabelFile($image);
 
         $shipment->setShippingLabel($file);

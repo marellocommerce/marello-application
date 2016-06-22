@@ -60,6 +60,13 @@ class Shipment extends ExtendShipment
     protected $upsPackageTrackingNumber;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string
+     */
+    protected $base64EncodedLabel;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -163,6 +170,26 @@ class Shipment extends ExtendShipment
     public function setUpsPackageTrackingNumber($upsPackageTrackingNumber)
     {
         $this->upsPackageTrackingNumber = $upsPackageTrackingNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBase64EncodedLabel()
+    {
+        return $this->base64EncodedLabel;
+    }
+
+    /**
+     * @param string $base64EncodedLabel
+     *
+     * @return $this
+     */
+    public function setBase64EncodedLabel($base64EncodedLabel)
+    {
+        $this->base64EncodedLabel = $base64EncodedLabel;
 
         return $this;
     }
