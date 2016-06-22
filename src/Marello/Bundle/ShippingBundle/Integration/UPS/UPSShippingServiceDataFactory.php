@@ -10,7 +10,6 @@ use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterfac
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Address;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package\PackagingType;
-use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package\ReferenceNumber;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\PaymentInformation;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\PaymentInformation\BillShipper;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\PaymentInformation\Prepaid;
@@ -121,10 +120,7 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
      */
     protected function createService(Order $order)
     {
-        $service = new Service();
-
-        $service->code        = '11'; // TODO: Figure out how to determine service
-        $service->description = 'UPS Standard';
+        $service = new Service('11', 'UPS Standard');
 
         return $service;
     }
@@ -141,7 +137,7 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $package->description     = 'Package Description';
         $package->packagingType   = $packagingType = new PackagingType('02', 'Customer Supplied');
 //        $package->referenceNumber = $referenceNumber = new ReferenceNumber('00', 'Package');
-        
+
         $package->packageWeight = new Package\PackageWeight();
         $package->packageWeight->unitOfMeasurement = new Package\UnitOfMeasurement();
         $package->packageWeight->unitOfMeasurement->code = 'KGS';
