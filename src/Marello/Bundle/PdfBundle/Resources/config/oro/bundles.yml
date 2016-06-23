@@ -1,2 +1,3 @@
 bundles:
+    - { name: Ibnab\Bundle\PmanagerBundle\IbnabPmanagerBundle , priority: 240 }
     - { name: Marello\Bundle\PdfBundle\MarelloPdfBundle, priority: 40 }
