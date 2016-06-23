@@ -50,4 +50,19 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 
         return $this->databaseHelper->findOneBy(InventoryItem::class, ['product' => $product]);
     }
+    
+    /**
+     * Increment context counters.
+     *
+     * @param $entity
+     */
+    protected function updateContextCounters($entity)
+    {
+        $identifier = $this->databaseHelper->getIdentifier($entity);
+        if ($identifier) {
+            $this->context->incrementUpdateCount();
+        } else {
+            $this->context->incrementAddCount();
+        }
+    }
 }

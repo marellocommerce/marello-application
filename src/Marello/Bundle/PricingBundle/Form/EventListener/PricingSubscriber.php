@@ -90,7 +90,7 @@ class PricingSubscriber implements EventSubscriberInterface
             foreach ($data as $sc) {
                 $removedChannelIds[] = $sc->getId();
             }
-            // currencies which should be removed
+            // available currencies
             $currencies = $this->provider->getCurrencies($data);
 
             // unset currency for channels which still holds a currency

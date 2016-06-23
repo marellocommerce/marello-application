@@ -32,6 +32,13 @@ class BasePrice implements CurrencyAwareInterface
      * @var string
      *
      * @ORM\Column(name="currency", type="string", length=3)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true,
+     *          }
+     *      }
+     * )
      */
     protected $currency;
 
