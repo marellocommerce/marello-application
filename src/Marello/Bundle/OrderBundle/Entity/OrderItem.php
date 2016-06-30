@@ -61,6 +61,13 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="Order", inversedBy="items")
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          }
+     *      }
+     * )
      */
     protected $order;
 
