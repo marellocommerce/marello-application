@@ -66,6 +66,13 @@ class OrderItem extends ExtendOrderItem implements AllocationTargetInterface, Cu
      *
      * @ORM\ManyToOne(targetEntity="Order", inversedBy="items")
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          }
+     *      }
+     * )
      */
     protected $order;
 
