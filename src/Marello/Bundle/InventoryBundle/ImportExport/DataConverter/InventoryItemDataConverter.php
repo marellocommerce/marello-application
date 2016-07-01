@@ -37,6 +37,11 @@ class InventoryItemDataConverter extends AbstractTreeDataConverter
      */
     protected function getBackendHeader()
     {
-        return ['product:sku', 'product:desiredStockLevel', 'product:purchaseStockLevel', 'currentLevel:stock'];
+        return [
+            'product:sku',
+            'product:desiredStockLevel',
+            'product:purchaseStockLevel',
+            'currentLevel:stock'
+        ];
     }
 }

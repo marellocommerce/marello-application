@@ -25,7 +25,7 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
      */
     public function getData()
     {
-        return $this->getEntityData('Macbook');
+        return $this->getEntityData('MARELLO_MUG_OWL');
     }
 
     /**
@@ -38,6 +38,8 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
 
         $inventoryItem = new InventoryItem($warehouseRepo->getEntity('main'), $this->createProduct());
         $inventoryItem->setStockLevels('import', 25);
+
+        return $inventoryItem;
     }
 
     /**
@@ -47,7 +49,7 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
     public function fillEntityData($key, $entity)
     {
         switch ($key) {
-            case 'Macbook':
+            case 'MARELLO_MUG_OWL':
                 return;
         }
 
@@ -62,16 +64,9 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
     public function createProduct()
     {
         $entity = new Product();
-        $entity->setName('Woood Coffee Table');
-        $entity->setSku('WCT-1');
-        $entity->setPrice(399.00);
-
-        $status = new ProductStatus('enabled');
-        $entity->setStatus($status);
-
-        $channel = new SalesChannel('magento');
-        $entity->addChannel($channel);
-
+        $entity->setName('Marello Mug');
+        $entity->setSku('MARELLO_MUG_OWL');
+        
         return $entity;
     }
 }

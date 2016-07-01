@@ -169,6 +169,13 @@ class Product extends ExtendProduct implements
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"id" = "ASC"})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $prices;
 
@@ -182,6 +189,13 @@ class Product extends ExtendProduct implements
      *     orphanRemoval=true
      * )
      * @ORM\OrderBy({"id" = "ASC"})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $channelPrices;
 
@@ -190,6 +204,13 @@ class Product extends ExtendProduct implements
      * unidirectional many-to-many
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      * @ORM\JoinTable(name="marello_product_saleschannel")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $channels;
 
@@ -198,6 +219,13 @@ class Product extends ExtendProduct implements
      *
      * @ORM\ManyToOne(targetEntity="Variant", inversedBy="products")
      * @ORM\JoinColumn(name="variant_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $variant;
 
@@ -211,6 +239,13 @@ class Product extends ExtendProduct implements
      *      orphanRemoval=true
      * )
      * @ORM\OrderBy({"id" = "ASC"})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $inventoryItems;
 
