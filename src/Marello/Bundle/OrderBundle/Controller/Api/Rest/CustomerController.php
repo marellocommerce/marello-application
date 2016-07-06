@@ -33,7 +33,7 @@ class CustomerController extends RestController implements ClassResourceInterfac
      *     description="Number of items per page. defaults to 10."
      * )
      * @ApiDoc(
-     *     description="Get a list of all Order Entities",
+     *     description="Get a list of all Customer Entities",
      *     resource=true
      * )
      *

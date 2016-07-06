@@ -15,6 +15,7 @@ class CustomerApiEntityManager extends ApiEntityManager
         $addressConfig = [
             'exclusion_policy' => 'all',
             'fields'           => [
+                'id'           => [],
                 'namePrefix'   => [],
                 'firstName'    => [],
                 'middleName'   => [],
