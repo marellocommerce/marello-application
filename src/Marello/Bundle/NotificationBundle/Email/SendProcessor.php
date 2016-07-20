@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
-use Marello\Bundle\PdfBundle\Processor\PdfProcessor;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
@@ -26,30 +25,24 @@ class SendProcessor
     /** @var EmailRenderer */
     protected $renderer;
 
-    /** @var PdfProcessor  */
-    protected $pdfProcessor;
-
     /**
      * EmailSendProcessor constructor.
      *
      * @param EmailNotificationProcessor $emailNotificationProcessor
-     * @param ObjectManager $manager
-     * @param ActivityManager $activityManager
-     * @param EmailRenderer $renderer
-     * @param PdfProcessor $pdfProcessor
+     * @param ObjectManager              $manager
+     * @param ActivityManager            $activityManager
+     * @param EmailRenderer              $renderer
      */
     public function __construct(
         EmailNotificationProcessor $emailNotificationProcessor,
         ObjectManager $manager,
         ActivityManager $activityManager,
-        EmailRenderer $renderer,
-        PdfProcessor $pdfProcessor
+        EmailRenderer $renderer
     ) {
         $this->emailNotificationProcessor = $emailNotificationProcessor;
         $this->manager                    = $manager;
         $this->activityManager            = $activityManager;
-        $this->renderer = $renderer;
-        $this->pdfProcessor = $pdfProcessor;
+        $this->renderer                   = $renderer;
     }
 
     /**
@@ -58,10 +51,10 @@ class SendProcessor
      * @param string $templateName Name of template to be sent.
      * @param array  $recipients   Array of recipient email addresses.
      * @param object $entity       Entity used to render template.
-     *
+     * @param array  $data         Empty array for possible extending of additional parameters
      * @throws MarelloNotificationException
      */
-    public function sendNotification($templateName, array $recipients, $entity, $pdfTemplateName)
+    public function sendNotification($templateName, array $recipients, $entity, array $data = [])
     {
         $entityName = ClassUtils::getRealClass(get_class($entity));
 
@@ -91,18 +84,12 @@ class SendProcessor
          * Sending of notification emails is deferred, notification can be persisted but not yet sent.
          * This depends on application configuration.
          */
-        if ($pdfTemplateName) {
-            $this->pdfProcessor->sendPdfAttached($pdfTemplateName, $entity, $subjectRendered, $templateRendered, $recipients);
-        }
-        else {
-            $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
-            $this->emailNotificationProcessor->process($entity, [$notification]);
+        $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
+        $this->emailNotificationProcessor->process($entity, [$notification]);
 
-            $this->activityManager->addActivityTarget($notification, $entity);
+        $this->activityManager->addActivityTarget($notification, $entity);
 
-            $this->manager->persist($notification);
-            $this->manager->flush();
-        }
-
+        $this->manager->persist($notification);
+        $this->manager->flush();
     }
 }

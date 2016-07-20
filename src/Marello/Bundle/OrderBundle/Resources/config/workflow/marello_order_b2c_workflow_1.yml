@@ -170,11 +170,6 @@ workflows:
                         entity: $order
                         recipient: $order.billingAddress.email
                         template: marello_order_shipping_prepared
-#                    - @marello_notification_send:
-#                        entity: $order
-#                        recipient: joey@madia.nl
-#                        template: marello_order_shipping_prepared_warehouse
-#                        pdf_template: pdf_marello_order_shipping_prepared_warehouse
             ship_definition:
                 post_actions:
                     - @marello_ship_order: ~

@@ -20,9 +20,6 @@ class SendNotificationAction extends AbstractAction
     /** @var PropertyPathInterface|string */
     protected $recipients;
     
-    /** @var PropertyPathInterface|string */
-    protected $pdfTemplate;
-
     /** @var SendProcessor */
     protected $sendProcessor;
 
@@ -37,8 +34,6 @@ class SendNotificationAction extends AbstractAction
         parent::__construct($contextAccessor);
 
         $this->sendProcessor = $sendProcessor;
-        
-        $this->pdfTemplate = null;
     }
 
     /**
@@ -49,13 +44,12 @@ class SendNotificationAction extends AbstractAction
         $entity     = $this->contextAccessor->getValue($context, $this->entity);
         $template   = $this->contextAccessor->getValue($context, $this->template);
         $recipients = $this->contextAccessor->getValue($context, $this->recipients);
-        $pdfTemplate = $this->contextAccessor->getValue($context, $this->pdfTemplate);
 
         if (!is_array($recipients)) {
             $recipients = [$recipients];
         }
 
-        $this->sendProcessor->sendNotification($template, $recipients, $entity, $pdfTemplate);
+        $this->sendProcessor->sendNotification($template, $recipients, $entity);
     }
 
     /**
@@ -90,8 +84,5 @@ class SendNotificationAction extends AbstractAction
                 ? $this->getOption($options, 'recipients')
                 : $this->getOption($options, 'recipient');
         }
-
-        if (array_key_exists('pdf_template', $options))
-            $this->pdfTemplate = $this->getOption($options, 'pdf_template');
     }
 }

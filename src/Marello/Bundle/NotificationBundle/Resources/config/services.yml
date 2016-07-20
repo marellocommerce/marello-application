@@ -7,7 +7,6 @@ services:
             - @doctrine.orm.entity_manager
             - @oro_activity.manager
             - @oro_email.email_renderer
-            - @marello_pdf.pdf_processor
 
     marello_notification.workflow.send_notification_action:
         class: Marello\Bundle\NotificationBundle\Workflow\SendNotificationAction
