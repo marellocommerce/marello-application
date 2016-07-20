@@ -78,8 +78,9 @@ datagrid:
                     type:             string
                     data_name:        p.name
                 stockLevel:
-                    type:             string
+                    type:             number
                     data_name:        stockLevel
+                    filter_by_having: true
                 status:
                     type: entity
                     data_name: s
