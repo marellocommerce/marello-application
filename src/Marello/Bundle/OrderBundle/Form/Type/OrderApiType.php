@@ -2,11 +2,12 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
-use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderApiType extends AbstractType
@@ -26,6 +27,10 @@ class OrderApiType extends AbstractType
         $this->salesChannelTransformer = $salesChannelTransformer;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -37,15 +42,8 @@ class OrderApiType extends AbstractType
             ->add('currency', 'text')
             ->add('couponCode', 'text')
             ->add('grandTotal', 'oro_money')
-            ->add('customer', 'entity', [
-                'class' => Customer::class,
-            ])
-            ->add('billingAddress', 'entity', [
-                'class' => Address::class,
-            ])
-            ->add('shippingAddress', 'entity', [
-                'class' => Address::class,
-            ])
+            ->add('billingAddress', AddressType::NAME)
+            ->add('shippingAddress', AddressType::NAME)
             ->add('paymentMethod', 'text')
             ->add('paymentDetails', 'text')
             ->add('shippingMethod', 'text')
@@ -56,6 +54,19 @@ class OrderApiType extends AbstractType
             ]);
 
         $builder->get('salesChannel')->addModelTransformer($this->salesChannelTransformer);
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $data = $event->getData();
+            $form = $event->getForm();
+
+            if (is_int($data['customer'])) {
+                $form->add('customer', 'entity', [
+                    'class' => Customer::class
+                ]);
+            } else {
+                $form->add('customer', CustomerApiType::NAME);
+            }
+        });
     }
 
     /**

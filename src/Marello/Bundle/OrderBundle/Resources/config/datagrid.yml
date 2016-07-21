@@ -313,9 +313,18 @@ datagrid:
                 route:  marello_order_customer_view
                 params:
                     id: id
+            update_link:
+                type:   url
+                route:  marello_order_customer_update
+                params:
+                    id: id
         actions:
             view:
                 type:       navigate
                 link:       view_link
                 icon:       eye-open
                 rowAction:  true
+            update:
+                type:       navigate
+                link:       update_link
+                icon:       edit

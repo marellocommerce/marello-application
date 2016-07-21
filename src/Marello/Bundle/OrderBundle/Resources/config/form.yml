@@ -22,6 +22,17 @@ services:
         tags:
             - { name: form.type, alias: marello_order_item_collection }
 
+    marello_order.form.type.customer:
+        class: Marello\Bundle\OrderBundle\Form\Type\CustomerType
+        tags:
+            - { name: form.type, alias: marello_customer }
+
+
+    marello_order.form.type.customer_select:
+        class: Marello\Bundle\OrderBundle\Form\Type\CustomerSelectType
+        tags:
+            - { name: form.type, alias: marello_customer_select }
+
     marello_order.form.type.order_api:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderApiType
         arguments:
@@ -41,7 +52,7 @@ services:
         tags:
             - { name: form.type, alias: marello_order_item_api }
 
-    marello_roder.form.type.customer_api:
+    marello_order.form.type.customer_api:
         class: Marello\Bundle\OrderBundle\Form\Type\CustomerApiType
         arguments:
             - "@security.token_storage"

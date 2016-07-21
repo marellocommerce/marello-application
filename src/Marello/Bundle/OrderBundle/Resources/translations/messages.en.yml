@@ -70,6 +70,7 @@ marello:
             entity_plural_label:    Customers
             id.label:               Id
             primary_address.label:  Primary Address
+            tax_identification_number.label: Tax Identification Number
             addresses.label:        Addresses
             email.label:            Primary Email
             emails.label:           Email Addresses

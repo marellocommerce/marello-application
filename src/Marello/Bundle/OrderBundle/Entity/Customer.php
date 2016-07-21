@@ -52,6 +52,13 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     protected $primaryAddress;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $taxIdentificationNumber;
+
+    /**
      * @ORM\OneToMany(
      *     targetEntity="Marello\Bundle\AddressBundle\Entity\Address",
      *     mappedBy="customer",
@@ -231,6 +238,26 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     public function setOrganization($organization)
     {
         $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTaxIdentificationNumber()
+    {
+        return $this->taxIdentificationNumber;
+    }
+
+    /**
+     * @param string $taxIdentificationNumber
+     *
+     * @return $this
+     */
+    public function setTaxIdentificationNumber($taxIdentificationNumber)
+    {
+        $this->taxIdentificationNumber = $taxIdentificationNumber;
 
         return $this;
     }

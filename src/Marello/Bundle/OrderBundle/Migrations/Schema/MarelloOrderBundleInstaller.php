@@ -76,6 +76,7 @@ class MarelloOrderBundleInstaller implements Installation
         $table->addColumn('lastName', 'string', ['length' => 255]);
         $table->addColumn('nameSuffix', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('email', 'text', []);
+        $table->addColumn('taxIdentificationNumber', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['primaryAddress_id'], 'UNIQ_75C456C9F5B7AF75');
         $table->addIndex(['organization_id'], 'IDX_75C456C932C8A3DE', []);

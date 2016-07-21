@@ -18,6 +18,13 @@ class OrderType extends AbstractType
     {
         $builder
             ->add(
+                'customer',
+                CustomerSelectType::NAME,
+                [
+                    'required' => true,
+                ]
+            )
+            ->add(
                 'salesChannel',
                 'genemu_jqueryselect2_entity',
                 [
