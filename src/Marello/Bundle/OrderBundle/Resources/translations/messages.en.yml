@@ -80,6 +80,9 @@ marello:
             last_name.label:        Last Name
             name_suffix.label:      Name Suffix
 
+            form:
+                choose:             Choose customer
+
         messages:
             success:
                 order:

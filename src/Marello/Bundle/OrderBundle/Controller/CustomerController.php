@@ -56,6 +56,21 @@ class CustomerController extends Controller
     }
 
     /**
+     * @Config\Route("/widget/create")
+     * @Config\Method({"GET", "POST"})
+     * @Config\Template("@MarelloOrder/Customer/widget/update.html.twig")
+     * @Security\AclAncestor("marello_customer_create")
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function createWidgetAction(Request $request)
+    {
+        return $this->update($request);
+    }
+
+    /**
      * @Config\Route("/update/{id}", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
 use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -62,9 +62,9 @@ class OrderApiHandler implements FormAwareInterface
         $form->setData($entity);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            $form->submit($this->request);
+            $form->handleRequest($this->request);
 
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $this->onSuccess($entity);
 
                 return true;

@@ -40,7 +40,7 @@ class OrderControllerTest extends WebTestCase
 
     /**
      */
-    public function testCreate()
+    public function testCreateWithCustomerId()
     {
         /** @var Customer $customer */
         $customer = $this->getReference('marello_customer_1');
@@ -58,8 +58,112 @@ class OrderControllerTest extends WebTestCase
             'couponCode'      => 'XFZDSFSDFSFSD',
             'shippingAmount'  => 5,
             'customer'        => $customer->getId(),
-            'billingAddress'  => $customer->getPrimaryAddress()->getId(),
-            'shippingAddress' => $customer->getPrimaryAddress()->getId(),
+            'billingAddress'  => [
+                'firstName'  => 'John',
+                'lastName'   => 'Doe',
+                'country'    => 'NL',
+                'street'     => 'Torenallee 20',
+                'city'       => 'Eindhoven',
+                'region'     => 'NL-NB',
+                'postalCode' => '5617 BC',
+            ],
+            'shippingAddress' => [
+                'firstName'  => 'John',
+                'lastName'   => 'Doe',
+                'country'    => 'NL',
+                'street'     => 'Torenallee 20',
+                'city'       => 'Eindhoven',
+                'region'     => 'NL-NB',
+                'postalCode' => '5617 BC',
+            ],
+            'items'           => [
+                [
+                    'product'    => 'msj002',
+                    'quantity'   => 1,
+                    'price'      => 190.00,
+                    'tax'        => 39.90,
+                    'totalPrice' => 190.00,
+                ],
+                [
+                    'product'    => 'msj005',
+                    'quantity'   => 1,
+                    'price'      => 175.00,
+                    'tax'        => 36.75,
+                    'totalPrice' => 175.00,
+                ],
+            ],
+        ];
+
+        $this->client->request(
+            'POST',
+            $this->getUrl('marello_order_api_post_order'),
+            $data
+        );
+
+        $response = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('id', $response);
+
+        /** @var Order $order */
+        $order = $this->client->getContainer()
+            ->get('doctrine')
+            ->getRepository('MarelloOrderBundle:Order')
+            ->findOneBy($response);
+
+        $this->assertEquals($data['orderReference'], $order->getOrderReference());
+        $this->assertCount(2, $order->getItems());
+    }
+
+    /**
+     */
+    public function testCreateWithCustomerData()
+    {
+        /** @var Customer $customer */
+        $customer = $this->getReference('marello_customer_1');
+
+        $data = [
+            'orderReference'  => 333444,
+            'salesChannel'    => $this->getReference('marello_sales_channel_3')->getId(),
+            'subtotal'        => 365.00,
+            'totalTax'        => 76.65,
+            'grandTotal'      => 365.00,
+            'paymentMethod'   => 'creditcard',
+            'paymentDetails'  => 'Visa card, ref: xxxxxx-xxxx-xxxx',
+            'shippingMethod'  => 'freeshipping',
+            'discountAmount'  => 10,
+            'couponCode'      => 'XFZDSFSDFSFSD',
+            'shippingAmount'  => 5,
+            'customer'        => [
+                'firstName' => 'John',
+                'lastName'  => 'Doe',
+                'email'     => 'new_customer_2@example.com',
+                'primaryAddress'   => [
+                    'firstName'  => 'John',
+                    'lastName'   => 'Doe',
+                    'country'    => 'NL',
+                    'street'     => 'Torenallee 20',
+                    'city'       => 'Eindhoven',
+                    'region'     => 'NL-NB',
+                    'postalCode' => '5617 BC',
+                ],
+            ],
+            'billingAddress'  => [
+                'firstName'  => 'John',
+                'lastName'   => 'Doe',
+                'country'    => 'NL',
+                'street'     => 'Torenallee 20',
+                'city'       => 'Eindhoven',
+                'region'     => 'NL-NB',
+                'postalCode' => '5617 BC',
+            ],
+            'shippingAddress' => [
+                'firstName'  => 'John',
+                'lastName'   => 'Doe',
+                'country'    => 'NL',
+                'street'     => 'Torenallee 20',
+                'city'       => 'Eindhoven',
+                'region'     => 'NL-NB',
+                'postalCode' => '5617 BC',
+            ],
             'items'           => [
                 [
                     'product'    => 'msj002',
