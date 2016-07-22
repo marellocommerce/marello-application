@@ -121,7 +121,7 @@ class OrderControllerTest extends WebTestCase
         $customer = $this->getReference('marello_customer_1');
 
         $data = [
-            'orderReference'  => 333444,
+            'orderReference'  => 333456,
             'salesChannel'    => $this->getReference('marello_sales_channel_3')->getId(),
             'subtotal'        => 365.00,
             'totalTax'        => 76.65,
