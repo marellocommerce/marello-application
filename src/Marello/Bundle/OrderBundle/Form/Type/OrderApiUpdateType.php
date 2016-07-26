@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,8 +14,8 @@ class OrderApiUpdateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('billingAddress', 'marello_address')
-            ->add('shippingAddress', 'marello_address');
+            ->add('billingAddress', AddressType::NAME)
+            ->add('shippingAddress', AddressType::NAME);
     }
 
     /**

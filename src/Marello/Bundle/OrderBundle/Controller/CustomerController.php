@@ -3,7 +3,6 @@
 namespace Marello\Bundle\OrderBundle\Controller;
 
 use Marello\Bundle\OrderBundle\Entity\Customer;
-use Marello\Bundle\OrderBundle\Form\Type\CustomerType;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -56,21 +55,6 @@ class CustomerController extends Controller
     }
 
     /**
-     * @Config\Route("/widget/create")
-     * @Config\Method({"GET", "POST"})
-     * @Config\Template("@MarelloOrder/Customer/widget/update.html.twig")
-     * @Security\AclAncestor("marello_customer_create")
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
-    public function createWidgetAction(Request $request)
-    {
-        return $this->update($request);
-    }
-
-    /**
      * @Config\Route("/update/{id}", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template
@@ -87,46 +71,35 @@ class CustomerController extends Controller
     }
 
     /**
-     * @param Request       $request
+     * @param Request $request
      * @param Customer|null $customer
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return mixed
      */
     private function update(Request $request, Customer $customer = null)
     {
         if (!$customer) {
             $customer = new Customer();
         }
-        $form = $this->createForm(CustomerType::NAME, $customer);
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManagerForClass(Customer::class);
-
-            $manager->persist($customer);
-            $manager->flush();
-
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'marello_order_customer_update',
-                    'parameters' => [
-                        'id' => $customer->getId(),
-                    ],
-                ],
-                [
-                    'route'      => 'marello_order_customer_view',
-                    'parameters' => [
-                        'id' => $customer->getId(),
-                    ],
-                ],
-                $customer
+        return $this->get('oro_form.model.update_handler')
+            ->handleUpdate(
+                $customer,
+                $this->get('marello_order.form.customer'),
+                function (Customer $entity) {
+                    return [
+                        'route' => 'marello_order_customer_update',
+                        'parameters' => ['id' => $entity->getId()]
+                    ];
+                },
+                function (Customer $entity) {
+                    return [
+                        'route' => 'marello_order_customer_view',
+                        'parameters' => ['id' => $entity->getId()]
+                    ];
+                },
+                $this->get('translator')->trans('marello.order.customer.messages.saved'),
+                $this->get('marello_order.form.handler.customer')
             );
-        }
-
-        return [
-            'entity' => $customer,
-            'form'   => $form->createView(),
-        ];
     }
 }

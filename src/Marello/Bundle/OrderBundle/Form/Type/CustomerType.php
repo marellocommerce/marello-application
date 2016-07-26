@@ -52,7 +52,11 @@ class CustomerType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Customer::class,
+            'data_class'           => Customer::class,
+            'intention'            => 'customer',
+            'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
+            'cascade_validation'   => true,
+            'allow_extra_fields'   => true,
         ]);
     }
 

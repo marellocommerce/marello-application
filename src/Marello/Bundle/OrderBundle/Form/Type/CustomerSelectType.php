@@ -16,7 +16,7 @@ class CustomerSelectType extends AbstractType
         $resolver->setDefaults(
             [
                 'autocomplete_alias' => 'marello_customers',
-                'create_form_route'  => 'marello_order_customer_createwidget',
+                'create_form_route'  => 'marello_order_customer_create',
                 'grid_name'          => 'marello-customer',
                 'create_enabled'     => true,
                 'configs'            => [

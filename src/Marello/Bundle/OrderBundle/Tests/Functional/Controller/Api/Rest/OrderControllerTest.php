@@ -201,8 +201,6 @@ class OrderControllerTest extends WebTestCase
         $this->assertCount(2, $order->getItems());
     }
 
-    /**
-     */
     public function testGet()
     {
         $this->client->request(
@@ -239,7 +237,7 @@ class OrderControllerTest extends WebTestCase
 
         $this->client->request(
             'PUT',
-            $this->getUrl('marello_order_api_put_order', ['id' => $this->getReference('marello_order_0')->getId()]),
+            $this->getUrl('marello_order_api_put_order', ['id' => $this->getReference('marello_order_1')->getId()]),
             $data
         );
 
