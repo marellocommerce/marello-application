@@ -16,17 +16,6 @@ workflows:
                 type: object
                 options:
                     class: \DateTime
-            shipping_reference:
-                label: 'Shipping Reference'
-                type: string
-            track_and_trace_number:
-                label: 'Track & Trace Number'
-                type: string
-            shipped_at:
-                label: 'Shipped At'
-                type: object
-                options:
-                    class: \DateTime
             note:
                 label: 'Note'
                 type: string
@@ -128,27 +117,6 @@ workflows:
                 label:    Ship
                 step_to:  shipped
                 transition_definition: ship_definition
-                form_options:
-                    attribute_fields:
-                        shipping_reference:
-                            form_type: text
-                            options:
-                                required: true
-                                constraints:
-                                  - NotBlank: ~
-                        track_and_trace_number:
-                            form_type: text
-                            options:
-                                required: true
-                                constraints:
-                                  - NotBlank: ~
-                        shipped_at:
-                            form_type: oro_datetime
-                            options:
-                                required: true
-                                constraints:
-                                  - NotBlank: ~
-                                  - DateTime: ~
             credit:
                 label:    Credit
                 step_to:  credit
@@ -200,7 +168,11 @@ workflows:
                         entity: $order
                         recipient: $order.billingAddress.email
                         template: marello_order_shipped_confirmation
-            prepare_shipping_definition: []
+            prepare_shipping_definition:
+                post_actions:
+                    - @marello_shipment_create:
+                        order: $order
+                        service: 'ups'
             payment_reminder_definition:
                 post_actions:
                     - @marello_notification_send:

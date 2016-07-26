@@ -3,15 +3,28 @@
 namespace Marello\Bundle\OrderBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloOrderBundleInstaller implements Installation
+class MarelloOrderBundleInstaller implements
+    Installation,
+    ActivityExtensionAwareInterface,
+    NoteExtensionAwareInterface
 {
+    /** @var ActivityExtension */
+    protected $activityExtension;
+    
+    /** @var  NoteExtension */
+    protected $noteExtension;
+
     /**
      * {@inheritdoc}
      */
@@ -36,6 +49,10 @@ class MarelloOrderBundleInstaller implements Installation
         $this->addMarelloOrderOrderItemForeignKeys($schema);
         $this->addMarelloAddressForeignKeys($schema);
 
+        $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_order_order');
+
+        $this->noteExtension->addNoteAssociation($schema, 'marello_order_order');
+        $this->activityExtension->addActivityAssociation($schema, 'oro_email', 'marello_order_order');
         $table = $schema->getTable('oro_email_address');
         $table->addColumn('owner_marello_customer_id', 'integer', ['notnull' => false]);
         $table->addForeignKeyConstraint('marello_order_customer', ['owner_marello_customer_id'], ['id']);
@@ -81,6 +98,7 @@ class MarelloOrderBundleInstaller implements Installation
         $table->addUniqueIndex(['primaryAddress_id'], 'UNIQ_75C456C9F5B7AF75');
         $table->addIndex(['organization_id'], 'IDX_75C456C932C8A3DE', []);
     }
+
 
     /**
      * Create marello_order_order table
@@ -241,11 +259,31 @@ class MarelloOrderBundleInstaller implements Installation
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_order'),
-            ['order_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
-        );
+            $table->addForeignKeyConstraint(
+                $schema->getTable('marello_order_order'),
+                ['order_id'],
+                ['id'],
+                ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            );
+    }
+
+    /**
+     * Sets the ActivityExtension
+     *
+     * @param ActivityExtension $activityExtension
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
+    }
+
+    /**
+     * Sets the NoteExtension
+     *
+     * @param noteExtension $noteExtension
+     */
+    public function setNoteExtension(NoteExtension $noteExtension)
+    {
+        $this->noteExtension = $noteExtension;
     }
 }

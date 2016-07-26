@@ -1,0 +1,2 @@
+parameters:
+    marello_purchaseorder.entity.purchaseorder.class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder

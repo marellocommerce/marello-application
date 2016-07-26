@@ -19,7 +19,7 @@ class SendNotificationAction extends AbstractAction
 
     /** @var PropertyPathInterface|string */
     protected $recipients;
-
+    
     /** @var SendProcessor */
     protected $sendProcessor;
 

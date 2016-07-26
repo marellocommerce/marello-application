@@ -1,0 +1,20 @@
+marello:
+    shipping:
+        system_configuration:
+            ups_username:               'API Username'
+            ups_password:               'API Password'
+            ups_access_license_key:     'API Access Key'
+            ups_account_number:         'Shipper Account Number'
+            ups_api_base_url:           'API Base URL'
+            shipper_name:               'Name'
+            shipper_attention_name:     'Attention Name'
+            shipper_tax_id:             'Tax Identification Number'
+            shipper_phone:              'Phone'
+            shipper_email:              'E-Mail'
+            shipper_address_line_1:     'Address Line 1'
+            shipper_address_line_2:     'Address Line 2'
+            shipper_address_line_3:     'Address Line 3'
+            shipper_address_city:       'City'
+            shipper_address_state:      'State/Region'
+            shipper_address_postal_code: 'Postal Code'
+            shipper_address_country_code: 'Country'

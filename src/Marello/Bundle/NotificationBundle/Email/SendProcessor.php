@@ -42,7 +42,7 @@ class SendProcessor
         $this->emailNotificationProcessor = $emailNotificationProcessor;
         $this->manager                    = $manager;
         $this->activityManager            = $activityManager;
-        $this->renderer = $renderer;
+        $this->renderer                   = $renderer;
     }
 
     /**
@@ -51,10 +51,10 @@ class SendProcessor
      * @param string $templateName Name of template to be sent.
      * @param array  $recipients   Array of recipient email addresses.
      * @param object $entity       Entity used to render template.
-     *
+     * @param array  $data         Empty array for possible extending of additional parameters
      * @throws MarelloNotificationException
      */
-    public function sendNotification($templateName, array $recipients, $entity)
+    public function sendNotification($templateName, array $recipients, $entity, array $data = [])
     {
         $entityName = ClassUtils::getRealClass(get_class($entity));
 

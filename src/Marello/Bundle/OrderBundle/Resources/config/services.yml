@@ -1,4 +1,5 @@
 parameters:
+    marello_order.entity.order.class: Marello\Bundle\OrderBundle\Entity\Order
     marello_order.provider.order_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider
     marello_order_customer.class: Marello\Bundle\OrderBundle\Entity\Customer
 

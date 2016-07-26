@@ -9,6 +9,7 @@ use Marello\Bundle\AddressBundle\Entity\Address;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -156,6 +157,13 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
      *
      * @ORM\OneToMany(targetEntity="OrderItem", mappedBy="order", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "email"={
+     *              "available_in_template"=true
+     *          }
+     *      }
+     * )
      */
     protected $items;
 
@@ -223,6 +231,13 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          }
+     *      }
+     * )
      */
     protected $salesChannel;
 
@@ -232,6 +247,13 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
      * @ORM\Column(name="saleschannel_name",type="string", nullable=false)
      */
     protected $salesChannelName;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\ShippingBundle\Entity\Shipment", mappedBy="order")
+     *
+     * @var Shipment
+     */
+    protected $shipment;
 
     /**
      * @var WorkflowItem
@@ -802,6 +824,26 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     public function setCustomer($customer)
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * @return Shipment
+     */
+    public function getShipment()
+    {
+        return $this->shipment;
+    }
+
+    /**
+     * @param Shipment $shipment
+     *
+     * @return $this
+     */
+    public function setShipment($shipment)
+    {
+        $this->shipment = $shipment;
 
         return $this;
     }

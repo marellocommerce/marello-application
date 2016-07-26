@@ -59,12 +59,15 @@ datagrid:
                 stock:
                     type:             number
                     data_name:        stock
+                    filter_by_having: true
                 allocatedStock:
                     type:             number
                     data_name:        allocatedStock
+                    filter_by_having: true
                 virtualStock:
                     type:             number
                     data_name:        virtualStock
+                    filter_by_having: true
                 status:
                     type:             entity
                     data_name:        s

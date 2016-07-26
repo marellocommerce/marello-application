@@ -22,14 +22,6 @@ class BasePrice implements CurrencyAwareInterface
     protected $id;
 
     /**
-     * @var Product
-     *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="prices")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
-     **/
-    protected $product;
-
-    /**
      * @var float
      *
      * @ORM\Column(name="value", type="money")
@@ -40,6 +32,13 @@ class BasePrice implements CurrencyAwareInterface
      * @var string
      *
      * @ORM\Column(name="currency", type="string", length=3)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "identity"=true,
+     *          }
+     *      }
+     * )
      */
     protected $currency;
 
@@ -77,25 +76,6 @@ class BasePrice implements CurrencyAwareInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return Product
-     */
-    public function getProduct()
-    {
-        return $this->product;
-    }
-
-    /**
-     * @param Product $product
-     * @return $this
-     */
-    public function setProduct(Product $product)
-    {
-        $this->product    = $product;
-
-        return $this;
     }
 
     /**

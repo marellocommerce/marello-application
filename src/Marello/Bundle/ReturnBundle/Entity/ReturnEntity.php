@@ -67,6 +67,13 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
      *     orphanRemoval=true
      * )
      * @ORM\JoinColumn
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "email"={
+     *              "available_in_template"=true
+     *          }
+     *      }
+     * )
      */
     protected $returnItems;
 
@@ -347,5 +354,10 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
     public function getSalesChannelName()
     {
         return $this->salesChannelName;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getReturnNumber();
     }
 }

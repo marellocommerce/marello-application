@@ -15,9 +15,9 @@
          }
     },
     "repositories": [
-       {
+        {
             "type": "composer",
-            "url": "http://packagist.orocrm.com"
+            "url": "https://packagist.orocrm.com"
         }
     ],
     "require": {

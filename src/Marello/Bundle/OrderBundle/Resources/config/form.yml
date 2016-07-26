@@ -1,6 +1,3 @@
-parameters:
-    marello_order.entity.order.class: Marello\Bundle\OrderBundle\Entity\Order
-
 services:
     marello_order.form.type.order:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderType
