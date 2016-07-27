@@ -5,6 +5,8 @@ namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\PurchaseOrderBundle\Entity\Repository\PurchaseOrderItemRepository")
@@ -104,22 +106,15 @@ class PurchaseOrderItem
      * PurchaseOrderItem constructor.
      *
      * @param Product $product
-     * @param int     $orderedAmount
+     * @param int $orderedAmount
      */
     public function __construct(Product $product, $orderedAmount)
     {
-        $this->product       = $product;
+        $this->product = $product;
         $this->orderedAmount = $orderedAmount;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt   = new \DateTime();
+        $this->createdAt = new \DateTime();
         $this->productName = $this->product->getName();
-        $this->productSku  = $this->product->getSku();
+        $this->productSku = $this->product->getSku();
     }
 
     /**
@@ -128,6 +123,21 @@ class PurchaseOrderItem
     public function preUpdate()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @Assert\Callback
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        if (($this->receivedAmount < 0) || ($this->receivedAmount > $this->orderedAmount)) {
+            $context
+                ->buildViolation('marello.purchase_order.purchaseorderitem.validation.received_amount')
+                ->atPath('receivedAmount')
+                ->addViolation();
+        }
     }
 
     /**
@@ -216,5 +226,13 @@ class PurchaseOrderItem
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @param int $receivedAmount
+     */
+    public function setReceivedAmount($receivedAmount)
+    {
+        $this->receivedAmount = $receivedAmount;
     }
 }

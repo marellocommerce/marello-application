@@ -10,3 +10,6 @@ marello:
             order_amount.label:                 Order Amount
             ordered_amount.label:               Ordered Amount
             received_amount.label:              Received Amount
+
+            validation:
+                received_amount:            Total amount received can only be as many items as ordered amount.

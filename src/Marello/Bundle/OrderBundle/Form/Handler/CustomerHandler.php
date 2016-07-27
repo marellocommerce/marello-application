@@ -7,7 +7,6 @@ use Marello\Bundle\OrderBundle\Entity\Customer;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class CustomerHandler
 {
     /**
