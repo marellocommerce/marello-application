@@ -45,11 +45,6 @@ datagrid:
                 route: marello_purchaseorder_purchaseorder_view
                 params:
                     - id
-            getpdf_link:
-                type:   url
-                route:  pmanager_default_create
-                params:
-                    id: id
         actions:
             view:
                 type:          navigate
@@ -58,25 +53,6 @@ datagrid:
                 icon:          eye-open
                 acl_resource:  marello_purchase_order_view
                 rowAction:     true
-            getpdf:
-                type: getpdf
-                data_identifier: o.id
-                frontend_handle: dialog
-                frontend_options:
-                    dialogOptions:
-                        title: @translator->trans(ibnab.pmanager.dialog.title)
-                        width: 500
-                        autoResize: true
-                        modal: true
-                        minHeight: 100
-                        allowMaximize: true
-                        allowMinimize: true
-                        dblclick: 'maximize'
-                entityName: %marello_purchaseorder.entity.purchaseorder.class%
-                acl_resource: pmanager_defaut_create
-                label: ibnab.pmanager.grid_action.getpdf_label
-                icon: file-alt
-                link: getpdf_link
 
     marello-purchase-order-items:
         source:
