@@ -5,12 +5,12 @@ oro_menu_config:
             route: marello_refund_index
             extras:
                 routes: ['marello_return_*']
-                position: 30
 
     tree:
         application_menu:
             children:
                 refunds:
+                    position: 45
                     children:
                         refunds: ~
 
