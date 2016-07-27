@@ -1,0 +1,4 @@
+marello_refund_bundle:
+    resource: "@MarelloRefundBundle/Controller"
+    type:     annotation
+    prefix:   /marello/refund

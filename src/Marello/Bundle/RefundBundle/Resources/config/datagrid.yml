@@ -1,0 +1,22 @@
+datagrid:
+    marello-refund:
+        source:
+            type: orm
+            query:
+                select:
+                    - r
+                from:
+                    - { table: MarelloRefundBundle:Refund, alias: r }
+        columns:
+            refundNumber:
+                label: marello.refund.refund_number.label
+                frontend_type: string
+            customer:
+                label: marello.order.customer.entity_label
+                frontend_type: string
+            createdAt:
+                label: oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label: oro.ui.updated_at
+                frontend_type: datetime

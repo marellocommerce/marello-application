@@ -1,0 +1,4 @@
+marello:
+    refund:
+        entity_label:           Refund
+        entity_plural_label:    Refunds
