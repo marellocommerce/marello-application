@@ -92,6 +92,24 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
     /**
      * @var int
      *
+     * @ORM\Column(name="original_price",type="money")
+     *
+     * @JMS\Expose
+     */
+    protected $originalPrice;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="purchase_price_incl",type="money")
+     *
+     * @JMS\Expose
+     */
+    protected $purchasePriceIncl;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="tax",type="money")
      *
      * @JMS\Expose
@@ -125,12 +143,12 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
     /**
      * @var int
      *
-     * @ORM\Column(name="total_price",type="money", nullable=false)
+     * @ORM\Column(name="row_total",type="money", nullable=false)
      *
      * @JMS\Expose
      */
-    protected $totalPrice;
-
+    protected $rowTotal;
+    
     /**
      * @var ReturnItem[]|Collection
      *
@@ -246,23 +264,23 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
     /**
      * @return int
      */
-    public function getTotalPrice()
+    public function getRowTotal()
     {
-        return $this->totalPrice;
+        return $this->rowTotal;
     }
 
     /**
-     * @param int $totalPrice
+     * @param int $rowTotal
      *
      * @return $this
      */
-    public function setTotalPrice($totalPrice)
+    public function setRowTotal($rowTotal)
     {
-        $this->totalPrice = $totalPrice;
+        $this->rowTotal = $rowTotal;
 
         return $this;
     }
-
+    
     /**
      * @return Product
      */
@@ -321,6 +339,38 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
     public function setTaxPercent($taxPercent)
     {
         $this->taxPercent = $taxPercent;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOriginalPrice()
+    {
+        return $this->originalPrice;
+    }
+
+    /**
+     * @param int $originalPrice
+     */
+    public function setOriginalPrice($originalPrice)
+    {
+        $this->originalPrice = $originalPrice;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPurchasePriceIncl()
+    {
+        return $this->purchasePriceIncl;
+    }
+
+    /**
+     * @param int $purchasePriceIncl
+     */
+    public function setPurchasePriceIncl($purchasePriceIncl)
+    {
+        $this->purchasePriceIncl = $purchasePriceIncl;
     }
 
     /**
