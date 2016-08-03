@@ -70,7 +70,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 $order->getItems()->map(function (OrderItem $item) use (&$total, &$tax, &$grandTotal) {
                     $total += ($item->getQuantity() * $item->getPrice());
                     $tax += $item->getTax();
-                    $grandTotal += $item->getTotalPrice();
+                    $grandTotal += $item->getRowTotal();
                 });
 
                 $grandTotal += $order->getShippingAmount();
@@ -226,7 +226,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $itemEntity->setProduct($product);
         $itemEntity->setQuantity($row['qty']);
         $itemEntity->setPrice($row['price']);
-        $itemEntity->setTotalPrice($row['total_price']);
+        $itemEntity->setRowTotal($row['total_price']);
         $itemEntity->setTax($row['tax']);
 
         /** @var InventoryItem $inventoryItem */

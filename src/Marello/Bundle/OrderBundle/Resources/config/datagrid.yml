@@ -133,30 +133,40 @@ datagrid:
                 order_id: orderId
         columns:
             productSKU:
-                label: marello.product.sku.label
-                frontend_type: string
-                data_name: product.sku
+                label:            marello.product.sku.label
+                frontend_type:    string
+                data_name:        product.sku
             productName:
-                label: marello.product.name.label
-                frontend_type: string
-                data_name: product.name
+                label:            marello.product.name.label
+                frontend_type:    string
+                data_name:        product.name
             quantity:
-                label: marello.order.orderitem.quantity.label
-                frontend_type: number
+                label:            marello.order.orderitem.quantity.label
+                frontend_type:    number
             price:
-                label: marello.order.orderitem.price.label
+                label:            marello.order.orderitem.price.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            originalPrice:
+                label:            marello.order.orderitem.original_price.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
                 align:            right
             tax:
-                label: marello.order.orderitem.tax.label
+                label:            marello.order.orderitem.tax.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
                 align:            right
-            totalPrice:
-                label: marello.order.orderitem.total_price.label
+            taxPercent:
+                label:            marello.order.orderitem.tax_percent.label
+                frontend_type:    percent
+                align:            right
+            rowTotal:
+                label:            marello.order.orderitem.total_price.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure

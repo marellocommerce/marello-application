@@ -14,5 +14,5 @@ oro_menu_config:
                     children:
                         refunds: ~
 
-oro_titles:
-    marello_return_index: marello.refund.entity_plural_label
+#oro_titles:
+#    marello_return_index: marello.refund.entity_plural_label
