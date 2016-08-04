@@ -2,3 +2,5 @@ marello:
     refund:
         entity_label:           Refund
         entity_plural_label:    Refunds
+        refund_number.label:    Refund Number
+        refund_amount.label:    Refund Amount

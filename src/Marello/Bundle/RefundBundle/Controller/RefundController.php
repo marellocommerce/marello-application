@@ -25,6 +25,20 @@ class RefundController extends Controller
     }
 
     /**
+     * @Config\Route("/view/{id}", name="marello_refund_view")
+     * @Config\Template
+     * @Security\AclAncestor("marello_refund_view")
+     *
+     * @param Refund $entity
+     *
+     * @return array
+     */
+    public function viewAction(Refund $entity)
+    {
+        return compact('entity');
+    }
+
+    /**
      * @Config\Route("/create/{id}", name="marello_refund_create")
      * @Config\Template
      * @Security\AclAncestor("marello_refund_create")
@@ -41,6 +55,33 @@ class RefundController extends Controller
             ->setOrder($order)
             ->setCustomer($order->getCustomer());
 
+        return $this->update($request, $entity);
+    }
+
+
+    /**
+     * @Config\Route("/update/{id}", name="marello_refund_update")
+     * @Config\Template
+     * @Security\AclAncestor("marello_refund_update")
+     *
+     * @param Request $request
+     * @param Refund  $refund
+     *
+     * @return array
+     */
+    public function updateAction(Request $request, Refund $refund)
+    {
+        return $this->update($request, $refund);
+    }
+
+    /**
+     * @param Request     $request
+     * @param Refund|null $entity
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function update(Request $request, Refund $entity = null)
+    {
         $form = $this->createForm(RefundType::NAME, $entity);
 
         $form->handleRequest($request);
