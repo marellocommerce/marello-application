@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 
@@ -54,6 +55,14 @@ class Refund implements DerivedPropertyAwareInterface
      * @var Collection|RefundItem[]
      */
     protected $items;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @var Order
+     */
+    protected $order;
 
     /**
      * @var \DateTime
@@ -216,5 +225,25 @@ class Refund implements DerivedPropertyAwareInterface
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return Order
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param Order $order
+     *
+     * @return $this
+     */
+    public function setOrder($order)
+    {
+        $this->order = $order;
+
+        return $this;
     }
 }

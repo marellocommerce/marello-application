@@ -100,6 +100,11 @@ datagrid:
                 route:  marello_return_return_create
                 params:
                     id: id
+            refund_link:
+                type:   url
+                route:  marello_refund_create
+                params:
+                    id: id
         actions:
             view:
                 type:       navigate
@@ -110,6 +115,10 @@ datagrid:
                 type:       navigate
                 link:       return_link
                 icon:       refresh
+            refund:
+                type:       navigate
+                link:       refund_link
+                icon:       eur
         options:
             export: true
 
