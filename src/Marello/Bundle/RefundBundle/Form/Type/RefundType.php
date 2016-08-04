@@ -55,12 +55,13 @@ class RefundType extends AbstractType
                 }
             )
             ->addEventListener(
-                FormEvents::POST_SUBMIT
+                FormEvents::POST_SUBMIT,
                 function (FormEvent $event) {
                     /** @var Refund $data */
                     $data = $event->getData();
                     $form = $event->getForm();
 
+                    /** @var RefundItem[] $additionalItems */
                     $additionalItems = $form->get('additionalItems')->getData();
 
                     foreach ($additionalItems as $item) {
