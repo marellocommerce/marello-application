@@ -229,18 +229,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $itemEntity->setTotalPrice($row['total_price']);
         $itemEntity->setTax($row['tax']);
 
-        /** @var InventoryItem $inventoryItem */
-        $inventoryItem = $product->getInventoryItems()->first();
-
-        $inventoryItem->adjustStockLevels(
-            'order_workflow.pending',
-            null,
-            $itemEntity->getQuantity(),
-            null,
-            $itemEntity
-        );
-        $this->manager->persist($inventoryItem);
-
         return $itemEntity;
     }
 }
