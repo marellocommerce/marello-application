@@ -37,7 +37,6 @@ class StockLevel
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem", inversedBy="levels")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
