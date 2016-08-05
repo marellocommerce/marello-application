@@ -4,7 +4,7 @@ oro_menu_config:
             label: marello.refund.entity_plural_label
             route: marello_refund_index
             extras:
-                routes: ['marello_return_*']
+                routes: ['marello_refund_*']
 
     tree:
         application_menu:
@@ -14,5 +14,5 @@ oro_menu_config:
                     children:
                         refunds: ~
 
-#oro_titles:
-#    marello_return_index: marello.refund.entity_plural_label
+oro_titles:
+    marello_refund_index: marello.refund.entity_plural_label
