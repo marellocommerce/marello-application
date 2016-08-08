@@ -32,7 +32,7 @@ services:
     marello_order.listener.doctrine.order_inventory_allocation:
         class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderInventoryAllocationListener
         tags:
-            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
 
     marello_order.manager.order.api:
         class: Marello\Bundle\OrderBundle\Entity\Manager\OrderApiEntityManager

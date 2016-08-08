@@ -9,7 +9,7 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
 class OrderInventoryAllocationListener
 {
-    public function prePersist(LifecycleEventArgs $args)
+    public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
 
