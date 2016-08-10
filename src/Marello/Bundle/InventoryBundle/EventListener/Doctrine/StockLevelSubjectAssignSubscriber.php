@@ -65,7 +65,7 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
 
             /*
              * If subject is and entity with no id, it means it has not been persisted...
-             * Therefor, indicate wrong use of subject system.
+             * Therefore, indicate wrong use of subject system.
              */
             if ($id === null) {
                 $args->getEntityManager()->rollback();
@@ -126,11 +126,7 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
                 return false;
             }
 
-            if (($entity->getSubjectId() !== null) && ($entity->getSubjectType() !== null)) {
-                return false;
-            }
-
-            return true;
+            return !(($entity->getSubjectId() !== null) && ($entity->getSubjectType() !== null));
         });
     }
 }
