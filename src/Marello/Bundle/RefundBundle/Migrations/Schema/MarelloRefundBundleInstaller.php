@@ -22,8 +22,6 @@ class MarelloRefundBundleInstaller implements Installation
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     public function up(Schema $schema, QueryBag $queries)
     {
@@ -45,6 +43,7 @@ class MarelloRefundBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_refund');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('order_id', 'integer', []);
         $table->addColumn('customer_id', 'integer', []);
         $table->addColumn('refundNumber', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('refundAmount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
@@ -53,6 +52,7 @@ class MarelloRefundBundleInstaller implements Installation
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['refundNumber'], 'UNIQ_973FA8836E8C706D');
         $table->addIndex(['customer_id'], 'IDX_973FA8839395C3F3', []);
+        $table->addIndex(['order_id'], 'IDX_973FA8838D9F6D38', []);
     }
 
     /**
@@ -81,12 +81,16 @@ class MarelloRefundBundleInstaller implements Installation
      * Add marello_refund foreign keys.
      *
      * @param Schema $schema
-     *
-     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     protected function addMarelloRefundForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_refund');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_order_order'),
+            ['order_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_order_customer'),
             ['customer_id'],
@@ -99,8 +103,6 @@ class MarelloRefundBundleInstaller implements Installation
      * Add marello_refund_item foreign keys.
      *
      * @param Schema $schema
-     *
-     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     protected function addMarelloRefundItemForeignKeys(Schema $schema)
     {

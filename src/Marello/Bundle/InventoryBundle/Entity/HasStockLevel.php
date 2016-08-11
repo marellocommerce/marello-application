@@ -90,6 +90,9 @@ trait HasStockLevel
         return $this->currentLevel ? $this->currentLevel->getAllocatedStock() : 0;
     }
 
+    /**
+     * @return int
+     */
     public function getVirtualStock()
     {
         return $this->getStock() - $this->getAllocatedStock();

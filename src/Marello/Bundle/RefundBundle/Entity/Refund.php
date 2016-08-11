@@ -97,7 +97,7 @@ class Refund implements DerivedPropertyAwareInterface
      */
     public function __construct()
     {
-        $this->updatedAt = new \DateTime();
+        $this->createdAt = new \DateTime();
         $this->items = new ArrayCollection();
     }
 
