@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 
@@ -16,7 +17,7 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *
  * @Oro\Config
  */
-class Refund implements DerivedPropertyAwareInterface
+class Refund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
 {
     /**
      * @ORM\Id
@@ -245,5 +246,10 @@ class Refund implements DerivedPropertyAwareInterface
         $this->order = $order;
 
         return $this;
+    }
+
+    public function getCurrency()
+    {
+        return $this->getOrder()->getCurrency();
     }
 }

@@ -20,3 +20,83 @@ datagrid:
             updatedAt:
                 label: oro.ui.updated_at
                 frontend_type: datetime
+        properties:
+            view_link:
+                type:   url
+                route:  marello_refund_view
+                params:
+                    id: id
+            update_link:
+                type:   url
+                route:  marello_refund_update
+                params:
+                    id: id
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye-open
+                acl_recource:   marello_refund_view
+                rowAction:      true
+            update:
+                type:           navigate
+                acl_resource:   marello_refund_update
+                label:          oro.grid.action.update
+                icon:           edit
+                link:           update_link
+
+    marello-refund-additional-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - i
+                from:
+                    - { table: MarelloRefundBundle:RefundItem, alias: i}
+                where:
+                    and:
+                        - i.refund = :refund_id
+                        - i.orderItem IS NULL
+            bind_parameters:
+                refund_id: refundId
+        columns:
+            refundAmount:
+                label: marello.refund.refund_item.refund_amount.label
+                frontend_type: number
+
+    marello-refund-ordered-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - i
+                from:
+                    - { table: MarelloRefundBundle:RefundItem, alias: i}
+                join:
+                    left:
+                        orderItem:
+                            join: i.orderItem
+                            alias: oi
+                where:
+                    and:
+                        - i.refund = :refund_id
+                        - i.orderItem IS NOT NULL
+            bind_parameters:
+                refund_id: refundId
+        columns:
+            sku:
+                label: marello.product.sku.label
+                data_name: orderItem.productSku
+            product:
+                label: marello.product.name.label
+                data_name: orderItem.productName
+            quantity:
+                label: marello.refund.refund_item.quantity.label
+                frontend_type: number
+            refundAmount:
+                label: marello.refund.refund_item.refund_amount.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+

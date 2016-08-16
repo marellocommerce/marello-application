@@ -4,6 +4,7 @@ namespace Marello\Bundle\RefundBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
@@ -12,7 +13,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *
  * @Oro\Config
  */
-class RefundItem
+class RefundItem implements CurrencyAwareInterface
 {
     /**
      * @ORM\Id
@@ -245,5 +246,10 @@ class RefundItem
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    public function getCurrency()
+    {
+        return $this->getRefund()->getCurrency();
     }
 }

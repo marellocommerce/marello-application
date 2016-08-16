@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block navButtons %}
     {% if resource_granted('EDIT', entity) %}
@@ -25,7 +26,7 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('marello.refund.refund_number_label'|trans, entity.refundNumber) }}
+                    {{ UI.renderProperty('marello.refund.refund_number.label'|trans, entity.refundNumber) }}
                     {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
                     {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date) }}
                     {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
@@ -41,12 +42,44 @@
             {{ UI.renderProperty('marello.refund.refund_amount.label'|trans, entity.refundAmount|oro_format_currency({'currency':entity.order.currency})) }}
         </div>
     {% endset %}
+    {% set items %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-refund-ordered-items', {'refundId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set additionalItems %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-refund-additional-items', {'refundId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
     {% set dataBlocks = [
         {
             'title': 'Data'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data' : [data, totals] }
+            ]
+        },
+        {
+            'title': 'marello.refund.ordered_items.label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [items] }
+            ]
+        },
+        {
+            'title': 'marello.refund.additional_items.label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [additionalItems] }
             ]
         }
     ] %}
