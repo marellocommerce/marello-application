@@ -248,6 +248,9 @@ class Refund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getCurrency()
     {
         return $this->getOrder()->getCurrency();

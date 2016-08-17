@@ -248,6 +248,9 @@ class RefundItem implements CurrencyAwareInterface
         return $this->updatedAt;
     }
 
+    /**
+     * @return string
+     */
     public function getCurrency()
     {
         return $this->getRefund()->getCurrency();

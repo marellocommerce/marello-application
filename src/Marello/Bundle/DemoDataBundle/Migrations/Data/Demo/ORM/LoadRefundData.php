@@ -60,6 +60,13 @@ class LoadRefundData extends AbstractFixture implements DependentFixtureInterfac
                     }
                 );
 
+            $refundItems->add(
+                (new RefundItem())
+                    ->setName('Shipping Costs')
+                    ->setBaseAmount(10)
+                    ->setRefundAmount(10)
+            );
+
             $refundItems->map(
                 function (RefundItem $item) use ($refund) {
                     $refund->addItem($item);
