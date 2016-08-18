@@ -40,7 +40,7 @@ class RefundController extends Controller
 
     /**
      * @Config\Route("/create/{id}", name="marello_refund_create")
-     * @Config\Template
+     * @Config\Template("MarelloRefundBundle:Refund:update.html.twig")
      * @Security\AclAncestor("marello_refund_create")
      *
      * @param Request $request
@@ -60,7 +60,7 @@ class RefundController extends Controller
 
 
     /**
-     * @Config\Route("/update/{id}", name="marello_refund_update")
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_refund_update")
      * @Config\Template
      * @Security\AclAncestor("marello_refund_update")
      *
@@ -69,7 +69,7 @@ class RefundController extends Controller
      *
      * @return array
      */
-    public function updateAction(Request $request, Refund $refund)
+    public function updateAction(Request $request, Refund $refund = null)
     {
         return $this->update($request, $refund);
     }
@@ -89,6 +89,8 @@ class RefundController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             return $this->redirectToRoute('marello_refund_index');
         }
+
+        $form = $form->createView();
 
         return compact('form', 'entity');
     }

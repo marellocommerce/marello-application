@@ -8,5 +8,12 @@ marello:
         additional_items.label: Additional Items
 
         refund_item:
+            quantity_ordered.label: Ordered Quantity
             quantity.label:         Refunded Quantity
             refund_amount.label:    Refunded Amount
+
+        form:
+            price.label:            Price (incl VAT)
+            subtotal.label:         Subtotal (incl VAT)
+            refund.label:           Refund (incl VAT)
+            add_item.label:         Add Item

@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
+use Marello\Bundle\RefundBundle\Model\ExtendRefund;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 
@@ -15,9 +16,25 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  * @ORM\Entity
  * @ORM\Table(name="marello_refund")
  *
- * @Oro\Config
+ * @Oro\Config(
+ *      routeView="marello_refund_view",
+ *      routeName="marello_refund_index",
+ *      defaultValues={
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
+ *          },
+ *          "workflow"={
+ *              "active_workflow"="marello_refund_workflow"
+ *          },
+ *          "ownership"={
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
+ *          }
+ *      }
+ * )
  */
-class Refund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
+class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
 {
     /**
      * @ORM\Id
@@ -92,6 +109,14 @@ class Refund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
      * )
      */
     protected $updatedAt;
+
+    /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", nullable=false)
+     */
+    protected $organization;
 
     /**
      * Refund constructor.
@@ -181,11 +206,23 @@ class Refund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
     }
 
     /**
-     * @return mixed
+     * @return Collection|RefundItem[]
      */
     public function getItems()
     {
         return $this->items;
+    }
+
+    /**
+     * @param Collection|RefundItem[] $items
+     *
+     * @return $this
+     */
+    public function setItems($items)
+    {
+        $this->items = $items;
+
+        return $this;
     }
 
     /**
@@ -254,5 +291,25 @@ class Refund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
     public function getCurrency()
     {
         return $this->getOrder()->getCurrency();
+    }
+
+    /**
+     * @return Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param Organization $organization
+     *
+     * @return Refund
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+
+        return $this;
     }
 }

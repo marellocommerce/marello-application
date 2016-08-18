@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\RefundBundle\Form\Type;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
 use Symfony\Component\Form\AbstractType;
@@ -38,20 +37,20 @@ class RefundType extends AbstractType
                     $data = $event->getData();
                     $form = $event->getForm();
 
-                    $additionalItems = new ArrayCollection();
-
-                    $data->getOrder()->getItems()->map(
-                        function (RefundItem $item) use ($additionalItems, $data) {
-                            if (!$item->getOrderItem()) {
-                                $additionalItems->add($item);
-                                $data->removeItem($item);
-                            }
+                    $orderedItems = $data->getItems()->filter(
+                        function (RefundItem $item) {
+                            return $item->getOrderItem() !== null;
                         }
                     );
 
-                    $form->get('additionalItems')->setData($additionalItems);
+                    $additionalItems = $data->getItems()->filter(
+                        function (RefundItem $item) {
+                            return $item->getOrderItem() === null;
+                        }
+                    );
 
-                    $event->setData($data);
+                    $form->get('items')->setData($orderedItems);
+                    $form->get('additionalItems')->setData($additionalItems);
                 }
             )
             ->addEventListener(
