@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\RefundBundle\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,12 +14,14 @@ class OrderItemRefundCollectionType extends AbstractType
     {
         $resolver->setDefaults([
             'type' => OrderItemRefundType::NAME,
+            'allow_add' => false,
+            'allow_delete' => false,
         ]);
     }
 
     public function getParent()
     {
-        return 'collection';
+        return CollectionType::NAME;
     }
 
     /**

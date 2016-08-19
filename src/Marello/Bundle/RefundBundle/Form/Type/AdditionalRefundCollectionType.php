@@ -17,6 +17,11 @@ class AdditionalRefundCollectionType extends AbstractType
                 'type'         => AdditionalRefundType::NAME,
                 'allow_add'    => true,
                 'allow_remove' => true,
+                'prototype_name'       => '__namerefunditem__',
+                'prototype'            => true,
+                'handle_primary'       => false,
+                'show_form_when_empty' => false,
+                'error_bubbling'       => false,
             ]
         );
     }

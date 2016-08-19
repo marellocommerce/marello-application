@@ -31,6 +31,18 @@
     {% endif %}
 {% endblock pageHeader %}
 
+{% set additionalItems %}
+    <div class="refund-line-items"
+         data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ {
+             view: 'marellolayout/js/app/views/abstract-items-view',
+             prices: prices|default({})
+         }|json_encode }}">
+        {{ form_widget(form.additionalItems) }}
+        {{ form_errors(form.additionalItems) }}
+    </div>
+{% endset %}
+
 {% block content_data %}
     {% set id = 'refund-edit' %}
 
@@ -51,7 +63,7 @@
             'subblocks': [{
                 'title': '',
                 'data': [
-                    form_widget(form.additionalItems),
+                    additionalItems,
                 ]
             }]
         }

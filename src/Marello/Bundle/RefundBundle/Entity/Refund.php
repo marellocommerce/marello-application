@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\RefundBundle\Model\ExtendRefund;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -137,6 +138,29 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
      * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $workflowStep;
+
+    /**
+     * @param Order $order
+     *
+     * @return Refund
+     */
+    public static function fromOrder(Order $order)
+    {
+        $refund = new self();
+
+        $refund
+            ->setOrder($order)
+            ->setCustomer($order->getCustomer())
+            ->setOrganization($order->getOrganization());
+
+        $order->getItems()->map(
+            function (OrderItem $item) use ($refund) {
+                $refund->addItem(RefundItem::fromOrderItem($item));
+            }
+        );
+
+        return $refund;
+    }
 
     /**
      * Refund constructor.

@@ -1,17 +1,17 @@
 {% block marello_order_item_refund_widget %}
     <td>
         <div class="fields-row">
-            {{ form.vars.value.orderItem.product.sku }}
+            {{ form.vars.value.orderItem.product.sku|default('') }}
         </div>
     </td>
     <td>
         <div class="fields-row">
-            {{ form.vars.value.orderItem.product.name }}
+            {{ form.vars.value.orderItem.product.name|default('') }}
         </div>
     </td>
     <td>
         <div class="fields-row">
-            {{ form.vars.value.orderItem.quantity }}
+            {{ form.vars.value.orderItem.quantity|default('') }}
         </div>
     </td>
     <td class="order-line-item-quantity">
@@ -22,12 +22,12 @@
     </td>
     <td>
         <div class="fields-row">
-            {{ form.vars.value.orderItem.price }}
+            {{ form.vars.value.orderItem.price|default('') }}
         </div>
     </td>
     <td>
         <div class="fields-row">
-            {{ form.vars.value.orderItem.totalPrice }}
+            {{ form.vars.value.orderItem.totalPrice|default('') }}
         </div>
     </td>
     <td class="order-line-item-price">
@@ -98,7 +98,9 @@
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
-        class="marello-line-item">
+        class="marello-line-item"
+        data-page-component-module="oroui/js/app/components/view-component"
+        data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}">
         {{ form_widget(form) }}
 
         <td class="order-line-item-notifications">
@@ -160,7 +162,7 @@
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
-        <div class="row-oro" id="{{ id }}">
+        <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
             <div {{ block('widget_container_attributes') }}>
                 <table class="grid table-hover table table-bordered table-condensed">
@@ -174,22 +176,20 @@
                         {% endif %}
                     </tr>
                     </thead>
-                    <tbody data-last-index="{{ form.children|length}}"
-                           data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %}
-                           data-prototype="{{ prototype_html|escape }}"{% endif %}>
-                        {% if form.children|length %}
-                            {% for child in form.children %}
-                                {{ _self.marello_additional_refund_prototype(child) }}
-                            {% endfor %}
-                        {% elseif show_form_when_empty and prototype_html is defined %}
-                            {{ prototype_html|replace({(prototype_name): '0'})|raw }}
-                        {% endif %}
+                    <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
+                    {% if form.children|length %}
+                        {% for child in form.children %}
+                            {{ _self.marello_additional_refund_prototype(child) }}
+                        {% endfor %}
+                    {% elseif show_form_when_empty and prototype_html is defined %}
+                        {{ prototype_html|replace({(prototype_name): '0'})|raw }}
+                    {% endif %}
                     </tbody>
                 </table>
             </div>
 
             {% if allow_add %}
-                <a class="btn marello-add-line-item" data-container="#{{ id }} tbody" href="javascript: void(0);">
+                <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);">
                     <i class="icon-plus"></i>{{ form.vars.add_label|default('marello.refund.form.add_item.label')|trans }}
                 </a>
             {% endif %}

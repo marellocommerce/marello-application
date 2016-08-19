@@ -50,10 +50,7 @@ class RefundController extends Controller
      */
     public function createAction(Request $request, Order $order)
     {
-        $entity = new Refund();
-        $entity
-            ->setOrder($order)
-            ->setCustomer($order->getCustomer());
+        $entity = Refund::fromOrder($order);
 
         return $this->update($request, $entity);
     }

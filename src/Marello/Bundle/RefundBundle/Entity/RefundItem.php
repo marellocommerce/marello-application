@@ -43,14 +43,14 @@ class RefundItem implements CurrencyAwareInterface
      *
      * @var int
      */
-    protected $baseAmount;
+    protected $baseAmount = 0;
 
     /**
      * @ORM\Column(type="money")
      *
      * @var int
      */
-    protected $refundAmount;
+    protected $refundAmount = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="Refund", inversedBy="items")
@@ -102,6 +102,22 @@ class RefundItem implements CurrencyAwareInterface
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * @param $item
+     *
+     * @return RefundItem
+     */
+    public static function fromOrderItem(OrderItem $item)
+    {
+        $refund = new self();
+
+        $refund
+            ->setOrderItem($item)
+            ->setBaseAmount($item->getPrice());
+
+        return $refund;
     }
 
     /**
