@@ -16,6 +16,7 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 /**
  * @ORM\Entity
  * @ORM\Table(name="marello_refund")
+ * @ORM\HasLifecycleCallbacks
  *
  * @Oro\Config(
  *      routeView="marello_refund_view",
@@ -171,6 +172,18 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
 
         $this->createdAt = new \DateTime();
         $this->items = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $sum = array_reduce($this->getItems()->toArray(), function ($carry, RefundItem $item) {
+            return $carry + $item->getRefundAmount();
+        }, 0);
+
+        $this->setRefundAmount($sum);
     }
 
     /**

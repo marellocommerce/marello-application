@@ -15,7 +15,7 @@ class OrderItemRefundType extends AbstractType
     {
         $builder
             ->add('quantity')
-            ->add('refundAmount');
+            ->add('refundAmount', 'oro_money');
     }
 
     public function configureOptions(OptionsResolver $resolver)

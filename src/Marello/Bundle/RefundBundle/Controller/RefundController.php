@@ -84,7 +84,28 @@ class RefundController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('marello_refund_index');
+            $manager = $this
+                ->getDoctrine()
+                ->getManagerForClass(Refund::class);
+
+            $manager->persist($entity = $form->getData());
+            $manager->flush();
+
+            return $this->get('oro_ui.router')->redirectAfterSave(
+                [
+                    'route'      => 'marello_refund_update',
+                    'parameters' => [
+                        'id' => $entity->getId(),
+                    ],
+                ],
+                [
+                    'route'      => 'marello_refund_view',
+                    'parameters' => [
+                        'id' => $entity->getId(),
+                    ],
+                ],
+                $entity
+            );
         }
 
         $form = $form->createView();

@@ -9,6 +9,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class RefundType extends AbstractType
 {
@@ -54,7 +56,7 @@ class RefundType extends AbstractType
                 }
             )
             ->addEventListener(
-                FormEvents::POST_SUBMIT,
+                FormEvents::SUBMIT,
                 function (FormEvent $event) {
                     /** @var Refund $data */
                     $data = $event->getData();
@@ -67,6 +69,12 @@ class RefundType extends AbstractType
                         $data->addItem($item);
                     }
 
+                    $filtered = $data->getItems()->filter(function (RefundItem $item) {
+                        return $item->getRefundAmount();
+                    });
+
+                    $data->setItems($filtered);
+
                     $event->setData($data);
                 }
             );
@@ -77,6 +85,17 @@ class RefundType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Refund::class,
+                'constraints' => [
+                    new Callback(function (Refund $refund, ExecutionContextInterface $context) {
+                        if ($refund->getItems()->count() === 0) {
+                            $context
+                                ->buildViolation('Refund must contain at least one refunded item, or additional custom refunded item.')
+                                ->atPath('items')
+                                ->addViolation()
+                            ;
+                        }
+                    })
+                ]
             ]
         );
     }
