@@ -11,6 +11,7 @@ marello:
             quantity_ordered.label: Ordered Quantity
             quantity.label:         Refunded Quantity
             refund_amount.label:    Refunded Amount
+            name.label:             Item Name
 
         form:
             price.label:            Price (incl VAT)

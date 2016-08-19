@@ -19,7 +19,11 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  * @Oro\Config(
  *      routeView="marello_refund_view",
  *      routeName="marello_refund_index",
+ *      routeCreate="marello_refund_create",
  *      defaultValues={
+ *          "entity"={
+ *              "icon"="icon-eur"
+ *          },
  *          "security"={
  *              "type"="ACL",
  *              "group_name"=""
@@ -119,10 +123,28 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
     protected $organization;
 
     /**
+     * @var WorkflowItem
+     *
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
+     * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowItem;
+
+    /**
+     * @var WorkflowStep
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
+     * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $workflowStep;
+
+    /**
      * Refund constructor.
      */
     public function __construct()
     {
+        parent::__construct();
+
         $this->createdAt = new \DateTime();
         $this->items = new ArrayCollection();
     }
@@ -311,5 +333,43 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
         $this->organization = $organization;
 
         return $this;
+    }
+
+    /**
+     * @param WorkflowItem $workflowItem
+     * @return Opportunity
+     */
+    public function setWorkflowItem($workflowItem)
+    {
+        $this->workflowItem = $workflowItem;
+
+        return $this;
+    }
+
+    /**
+     * @return WorkflowItem
+     */
+    public function getWorkflowItem()
+    {
+        return $this->workflowItem;
+    }
+
+    /**
+     * @param WorkflowItem $workflowStep
+     * @return Opportunity
+     */
+    public function setWorkflowStep($workflowStep)
+    {
+        $this->workflowStep = $workflowStep;
+
+        return $this;
+    }
+
+    /**
+     * @return WorkflowStep
+     */
+    public function getWorkflowStep()
+    {
+        return $this->workflowStep;
     }
 }

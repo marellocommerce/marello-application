@@ -33,12 +33,17 @@ class FormatterContextResolver
      * Return currency from given row
      *
      * @return callable
+     * @throws \Oro\Bundle\DataGridBundle\Exception\LogicException|\LogicException
      */
     public static function getRootResolverCurrencyClosure()
     {
         return function (ResultRecordInterface $record, $value, NumberFormatter $formatter) {
             if ($record->getRootEntity() instanceof CurrencyAwareInterface) {
                 return [$record->getRootEntity()->getCurrency()];
+            }
+
+            if (($currency = $record->getValue('currency')) !== null) {
+                return [$currency];
             }
 
             throw new \LogicException(
