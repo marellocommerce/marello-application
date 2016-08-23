@@ -32,9 +32,12 @@ class OrderItemApiType extends AbstractType
         $builder
             ->add('product', 'text')
             ->add('quantity', 'number')
+            ->add('originalPrice', 'oro_money')
+            ->add('purchasePriceIncl', 'oro_money')
             ->add('price', 'oro_money')
             ->add('tax', 'oro_money')
-            ->add('totalPrice', 'oro_money');
+            ->add('taxPercent', 'number')
+            ->add('rowTotal', 'oro_money');
 
         $builder->get('product')->addModelTransformer($this->productModelTransformer);
     }

@@ -32,14 +32,17 @@ class OrderApiEntityManager extends ApiEntityManager
         ];
 
         $itemConfig = [
-            'exclusion_policy' => 'all',
-            'fields'           => [
-                'productName' => [],
-                'productSku'  => [],
-                'quantity'    => [],
-                'price'       => [],
-                'tax'         => [],
-                'totalPrice'  => [],
+            'exclusion_policy'      => 'all',
+            'fields'                => [
+                'productName'       => [],
+                'productSku'        => [],
+                'quantity'          => [],
+                'price'             => [],
+                'originalPrice'     => [],
+                'purchasePriceIncl' => [],
+                'tax'               => [],
+                'taxPercent'        => [],
+                'rowTotal'          => [],
             ],
         ];
 

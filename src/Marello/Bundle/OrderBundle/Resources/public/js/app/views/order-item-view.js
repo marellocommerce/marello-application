@@ -123,17 +123,17 @@ define(function(require) {
          */
         updateRowTotals: function() {
             var $price = this.getPriceValue();
-            var $totalPrice = '';
+            var $rowTotal = '';
             var $tax = '';
             if($price) {
                 var $quantity = this.fieldsByName.quantity.val();
-                $totalPrice = parseFloat($price * $quantity).toFixed(2);
-                var $priceExcl = (($totalPrice / (this.taxPercentage + 100)) * 100);
-                $tax = parseFloat(Math.round($totalPrice - $priceExcl)).toFixed(2);
+                $rowTotal = parseFloat($price * $quantity).toFixed(2);
+                var $priceExcl = (($rowTotal / (this.taxPercentage + 100)) * 100);
+                $tax = parseFloat(Math.round($rowTotal - $priceExcl)).toFixed(2);
             }
 
             this.fieldsByName.tax.val($tax);
-            this.fieldsByName.totalPrice.val($totalPrice);
+            this.fieldsByName.rowTotal.val($rowTotal);
         },
 
         /**

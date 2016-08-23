@@ -161,11 +161,13 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('product_sku', 'string', ['length' => 255]);
         $table->addColumn('quantity', 'integer', []);
         $table->addColumn('price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('original_price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false]);
+        $table->addColumn('purchase_price_incl', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false]);
         $table->addColumn('tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('tax_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('discount_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('discount_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('total_price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('row_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['product_id'], 'IDX_1118665C4584665A', []);
         $table->addIndex(['order_id'], 'IDX_1118665C8D9F6D38', []);
