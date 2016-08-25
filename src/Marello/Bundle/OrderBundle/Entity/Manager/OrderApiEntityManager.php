@@ -34,6 +34,7 @@ class OrderApiEntityManager extends ApiEntityManager
         $itemConfig = [
             'exclusion_policy'      => 'all',
             'fields'                => [
+                'id'                => [],
                 'productName'       => [],
                 'productSku'        => [],
                 'quantity'          => [],
