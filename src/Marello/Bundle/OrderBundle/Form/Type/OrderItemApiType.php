@@ -31,6 +31,7 @@ class OrderItemApiType extends AbstractType
     {
         $builder
             ->add('product', 'text')
+            ->add('productName', 'text')
             ->add('quantity', 'number')
             ->add('originalPrice', 'oro_money')
             ->add('purchasePriceIncl', 'oro_money')

@@ -169,7 +169,10 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
      */
     public function prePersist()
     {
-        $this->productName = $this->product->getName();
+        // prevent overriding product name if already being set
+        if (is_null($this->productName)) {
+            $this->productName = $this->product->getName();
+        }
         $this->productSku  = $this->product->getSku();
     }
 
