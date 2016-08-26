@@ -144,11 +144,11 @@ datagrid:
             productSKU:
                 label:            marello.product.sku.label
                 frontend_type:    string
-                data_name:        product.sku
+                data_name:        productSku
             productName:
                 label:            marello.product.name.label
                 frontend_type:    string
-                data_name:        product.name
+                data_name:        productName
             quantity:
                 label:            marello.order.orderitem.quantity.label
                 frontend_type:    number
