@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class OrderApiType extends AbstractType
 {
@@ -36,7 +37,10 @@ class OrderApiType extends AbstractType
     {
         $builder
             ->add('orderReference')
-            ->add('salesChannel', 'number')
+            ->add('salesChannel', 'marello_sales_channel_select_api', [
+                'required'    => true,
+                'constraints' => new NotNull(),
+            ])
             ->add('subtotal', 'oro_money')
             ->add('totalTax', 'oro_money')
             ->add('discountAmount', 'oro_money')
