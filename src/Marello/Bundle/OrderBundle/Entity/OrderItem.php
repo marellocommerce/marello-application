@@ -171,7 +171,7 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
     {
         // prevent overriding product name if already being set
         if (is_null($this->productName)) {
-            $this->productName = $this->product->getName();
+            $this->setProductName($this->product->getName());
         }
         $this->productSku  = $this->product->getSku();
     }
@@ -320,6 +320,17 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
         return $this->productName;
     }
 
+    /**
+     * @param $productName
+     * @return $this
+     */
+    public function setProductName($productName)
+    {
+        $this->productName = $productName;
+        
+        return $this;
+    }
+    
     /**
      * @return Collection|ReturnItem[]
      */
