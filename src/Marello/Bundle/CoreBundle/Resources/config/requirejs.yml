@@ -1,0 +1,15 @@
+config:
+    shim:
+        'tinymce/jquery.tinymce.min':
+            deps:
+                - 'tinymce/plugins/image/plugin.min'
+    map:
+        '*':
+            'oroform/js/app/views/wysiwig-editor/wysiwyg-editor-view': 'marellocore/js/app/views/wysiwig-editor/wysiwyg-editor-view'
+        'marellocore/js/app/views/wysiwig-editor/wysiwyg-editor-view':
+            'oroform/js/app/views/wysiwig-editor/wysiwyg-editor-view': 'oroform/js/app/views/wysiwig-editor/wysiwyg-editor-view'
+    paths:
+        'marellocore/js/app/views/wysiwig-editor/wysiwyg-editor-view': 'bundles/marellocore/js/app/views/wysiwig-editor/wysiwyg-editor-view.js'
+build:
+    paths:
+        'tinymce/plugins/image/plugin.min': 'empty:'

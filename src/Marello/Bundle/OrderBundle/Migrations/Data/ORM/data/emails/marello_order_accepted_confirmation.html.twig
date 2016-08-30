@@ -4,6 +4,7 @@
 @isSystem = 0
 @isEditable = 1
 
+{{ include('MarelloCoreBundle:Email/header.html.twig') }}
 <table cellspacing="0" cellpadding="0" border="0">
     <tbody>
     <tr>
@@ -95,3 +96,4 @@
     </tr>
     </tbody>
 </table>
+{% include 'MarelloCoreBundle:Email/footer.html.twig' %}

@@ -1,0 +1,20 @@
+parameters:
+    oro_email.mailer.processor.class:             Marello\Bundle\CoreBundle\Mailer\Processor
+
+    oro_form.provider.html_tag_provider.class:    Marello\Bundle\CoreBundle\Provider\HtmlTagProvider
+    oro_form.type.rich_text.class:                Marello\Bundle\CoreBundle\Form\Type\ExtendedRichTextType
+
+services:
+    oro_email.twig.email_security_policy:
+        class: %oro_email.twig.email_security_policy.class%
+        arguments:
+            # add include as an allowed tag in twig email templates
+            - [ 'app', 'for', 'if', 'spaceless', 'include' ]
+            # filters
+            - [ 'default', 'date', 'escape', 'format', 'length', 'lower', 'nl2br', 'number_format', 'title', 'trim', 'upper' ]
+            # methods
+            - []
+            # properties
+            - []
+            # functions
+            - [ 'date' ]
