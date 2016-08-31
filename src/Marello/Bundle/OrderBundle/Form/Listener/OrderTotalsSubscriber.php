@@ -31,9 +31,9 @@ class OrderTotalsSubscriber implements EventSubscriberInterface
          */
         $total = $tax = $grandTotal = 0;
         $order->getItems()->map(function (OrderItem $item) use (&$total, &$tax, &$grandTotal) {
-            $total += ($item->getQuantity() * $item->getPrice());
+            $total += ($item->getQuantity() * $item->getPurchasePriceIncl());
             $tax += $item->getTax();
-            $grandTotal += $item->getTotalPrice();
+            $grandTotal += $item->getRowTotal();
         });
 
         $grandTotal = $grandTotal - $order->getDiscountAmount();

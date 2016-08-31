@@ -30,7 +30,7 @@ class OrderItemType extends AbstractType
             ->add('tax', 'text', [
                 'read_only' => true,
             ])
-            ->add('totalPrice', 'text', [
+            ->add('rowTotal', 'text', [
                 'read_only' => true,
             ]);
     }

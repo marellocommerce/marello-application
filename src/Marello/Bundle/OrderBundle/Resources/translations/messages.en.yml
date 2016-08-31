@@ -55,6 +55,7 @@ marello:
             order.label:            Order
             price.label:            Price
             quantity.label:         Quantity
+            original_price.label:   Original Price
             total_price.label:      Total Price
             product_name.label:     Product Name
             product_sku.label:      Product SKU

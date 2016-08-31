@@ -59,7 +59,7 @@ class OrderShipAction extends OrderTransitionAction
             ->getRepository(StockLevel::class)
             ->findBy([
                 'subjectId'     => $orderItem->getId(),
-                'subjectType'   => OrderItem::class,
+                'subjectType'   => Order::class,
                 'changeTrigger' => 'order_workflow.pending',
             ]);
 
