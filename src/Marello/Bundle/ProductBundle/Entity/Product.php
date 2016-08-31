@@ -144,6 +144,20 @@ class Product extends ExtendProduct implements
     protected $cost;
 
     /**
+     * @ORM\Column(type="float", nullable=true)
+     *
+     * @var float
+     */
+    protected $weight;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $batteryType;
+
+    /**
      * @var Organization
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
@@ -725,6 +739,46 @@ class Product extends ExtendProduct implements
     public function setPurchaseStockLevel($purchaseStockLevel)
     {
         $this->purchaseStockLevel = $purchaseStockLevel;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getWeight()
+    {
+        return $this->weight;
+    }
+
+    /**
+     * @param float $weight
+     *
+     * @return Product
+     */
+    public function setWeight($weight)
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBatteryType()
+    {
+        return $this->batteryType;
+    }
+
+    /**
+     * @param string $batteryType
+     *
+     * @return Product
+     */
+    public function setBatteryType($batteryType)
+    {
+        $this->batteryType = $batteryType;
 
         return $this;
     }

@@ -62,6 +62,23 @@ class ProductType extends AbstractType
                 ]
             )
             ->add(
+                'weight',
+                'number',
+                [
+                    'required' => false,
+                    'scale' => 2,
+                    'label' => 'marello.product.weight.label'
+                ]
+            )
+            ->add(
+                'batteryType',
+                'text',
+                [
+                    'required' => false,
+                    'label' => 'marello.product.battery_type.label'
+                ]
+            )
+            ->add(
                 'status',
                 'entity',
                 [

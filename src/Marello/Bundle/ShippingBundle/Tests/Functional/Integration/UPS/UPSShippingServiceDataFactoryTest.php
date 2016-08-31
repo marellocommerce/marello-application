@@ -12,6 +12,9 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\Model\ShipTo;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
+/**
+ * @dbIsolation
+ */
 class UPSShippingServiceDataFactoryTest extends WebTestCase
 {
     /** @var UPSShippingServiceDataFactory */

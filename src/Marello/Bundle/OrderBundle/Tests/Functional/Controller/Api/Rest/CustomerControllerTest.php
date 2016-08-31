@@ -6,6 +6,9 @@ use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @dbIsolation
+ */
 class CustomerControllerTest extends WebTestCase
 {
     protected function setUp()

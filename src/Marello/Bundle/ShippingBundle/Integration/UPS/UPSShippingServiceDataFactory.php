@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\AddressBundle\Entity\Address as MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Address;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package;
@@ -125,6 +126,21 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return $service;
     }
 
+    protected function getDescription(Order $order)
+    {
+        $description = '';
+
+        foreach ($order->getItems() as $item) {
+            $description .= sprintf(
+                "%s:\n\tBattery Type: %s\n",
+                $item->getProductName(),
+                $item->getProduct()->getBatteryType()
+            );
+        }
+
+        return $description;
+    }
+
     /**
      * @param Order $order
      *
@@ -134,14 +150,30 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     {
         $package = new Package();
 
-        $package->description     = 'Package Description';
+        $package->description     = $this->getDescription($order);
         $package->packagingType   = $packagingType = new PackagingType('02', 'Customer Supplied');
 //        $package->referenceNumber = $referenceNumber = new ReferenceNumber('00', 'Package');
 
         $package->packageWeight = new Package\PackageWeight();
         $package->packageWeight->unitOfMeasurement = new Package\UnitOfMeasurement();
         $package->packageWeight->unitOfMeasurement->code = 'KGS';
-        $package->packageWeight->weight = '1'; // TODO:
+
+        $weight = array_reduce(
+            $order
+                ->getItems()
+                ->map(function (OrderItem $item) {
+                    $weight = $item->getProduct()->getWeight();
+
+                    return ($weight ?: 0) * $item->getQuantity();
+                })
+                ->toArray(),
+            function ($carry, $value) {
+                return $carry + $value;
+            },
+            0
+        );
+
+        $package->packageWeight->weight = $weight ? (string) $weight : '1'; // Use default weight of 1 if there are no weights specified.
 
         return $package;
     }
