@@ -58,7 +58,7 @@ class OrderShipAction extends OrderTransitionAction
         $allocations = $this->doctrine
             ->getRepository(StockLevel::class)
             ->findBy([
-                'subjectId'     => $orderItem->getId(),
+                'subjectId'     => $orderItem->getOrder()->getId(),
                 'subjectType'   => Order::class,
                 'changeTrigger' => 'order_workflow.pending',
             ]);
