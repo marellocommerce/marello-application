@@ -3,7 +3,9 @@ marello:
         entity_label:           Refund
         entity_plural_label:    Refunds
         refund_number.label:    Refund Number
+        refund_status.label:    Refund Status
         refund_amount.label:    Refund Amount
+        refund_balance.label:   Refund Balance
         ordered_items.label:    Ordered Items
         additional_items.label: Additional Items
 
