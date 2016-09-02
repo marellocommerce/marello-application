@@ -95,7 +95,7 @@ class StockLevel
     protected $changeTrigger;
 
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel")
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -338,5 +338,10 @@ class StockLevel
     public function getSubjectId()
     {
         return $this->subjectId;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->previousLevel->getAllocatedStock();
     }
 }
