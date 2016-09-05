@@ -3,15 +3,41 @@
 namespace Marello\Bundle\RefundBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
+use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloRefundBundleInstaller implements Installation
+class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareInterface, ActivityExtensionAwareInterface
 {
+    /** @var NoteExtension */
+    protected $noteExtension;
+
+    /** @var ActivityExtension */
+    protected $activityExtension;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setNoteExtension(NoteExtension $noteExtension)
+    {
+        $this->noteExtension = $noteExtension;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +58,9 @@ class MarelloRefundBundleInstaller implements Installation
         /** Foreign keys generation **/
         $this->addMarelloRefundForeignKeys($schema);
         $this->addMarelloRefundItemForeignKeys($schema);
+
+        $this->noteExtension->addNoteAssociation($schema, 'marello_refund');
+        $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_refund');
     }
 
     /**

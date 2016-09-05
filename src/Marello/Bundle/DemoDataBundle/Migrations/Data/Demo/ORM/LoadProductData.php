@@ -88,6 +88,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setDesiredStockLevel(rand($data['stock_level'], $data['stock_level'] + 10));
         $product->setPurchaseStockLevel(rand(1, $product->getDesiredStockLevel()));
         $product->setOrganization($this->defaultOrganization);
+        $product->setWeight(mt_rand(50, 300) / 100);
+        $product->setBatteryType(mt_rand(0, 1) === 1 ? 'AA' : 'AAA');
         $inventoryItem = InventoryItem::withStockLevel(
             $this->defaultWarehouse,
             $product,

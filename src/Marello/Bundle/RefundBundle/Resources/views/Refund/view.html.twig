@@ -22,24 +22,26 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
+    {% set totals %}
+        <div class="responsive-block">
+            {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
+            {{ UI.renderProperty('marello.refund.refund_amount.label'|trans, entity.refundAmount|oro_format_currency({'currency':entity.order.currency})) }}
+            {{ UI.renderProperty('marello.refund.refund_balance.label'|trans, (entity.order.grandTotal - entity.refundAmount)|oro_format_currency({'currency':entity.order.currency})) }}
+        </div>
+    {% endset %}
     {% set data %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.refund.refund_number.label'|trans, entity.refundNumber) }}
+                    {{ UI.renderProperty('marello.refund.refund_status.label'|trans, entity.workflowStep) }}
                     {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
                     {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date) }}
                     {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
                     {{ UI.renderProperty('marello.order.payment_reference.label'|trans, entity.order.paymentReference) }}
                 </div>
+                {{ totals }}
             </div>
-        </div>
-    {% endset %}
-    {% set totals %}
-        <div class="responsive-block">
-            {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
-            {{ UI.renderProperty('marello.refund.refund_amount.label'|trans, entity.refundAmount|oro_format_currency({'currency':entity.order.currency})) }}
-            {{ UI.renderProperty('marello.refund.refund_amount.label'|trans, entity.refundAmount|oro_format_currency({'currency':entity.order.currency})) }}
         </div>
     {% endset %}
     {% set items %}
@@ -65,7 +67,7 @@
             'title': 'Data'|trans,
             'class': 'active',
             'subblocks': [
-                { 'data' : [data, totals] }
+                { 'data' : [data] }
             ]
         },
         {
