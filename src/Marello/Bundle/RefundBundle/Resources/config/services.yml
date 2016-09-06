@@ -1,3 +1,11 @@
 services:
     marello_refund.datagrid.order_refundable_checker:
         class: Marello\Bundle\RefundBundle\Datagrid\OrderRefundableChecker
+
+    marello_refund.workflow.create_refund_action:
+        class: Marello\Bundle\RefundBundle\Workflow\Actions\CreateRefundAction
+        arguments:
+            - @oro_workflow.context_accessor
+            - @doctrine
+        tags:
+            - { name: oro_workflow.action, alias: marello_create_refund }

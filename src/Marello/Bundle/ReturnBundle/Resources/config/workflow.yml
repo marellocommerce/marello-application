@@ -99,5 +99,8 @@ workflows:
                         entity: $return
                         recipient: $return.order.billingAddress.email
                         template: marello_return_inspection_not_ok
-            credit_def: ~
+            credit_def:
+                post_actions:
+                    - @marello_create_refund:
+                          entity: $return
             ship_back_def: ~

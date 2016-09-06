@@ -10,6 +10,8 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\RefundBundle\Model\ExtendRefund;
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 
@@ -157,6 +159,29 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
         $order->getItems()->map(
             function (OrderItem $item) use ($refund) {
                 $refund->addItem(RefundItem::fromOrderItem($item));
+            }
+        );
+
+        return $refund;
+    }
+
+    /**
+     * @param ReturnEntity $return
+     *
+     * @return Refund
+     */
+    public static function fromReturn(ReturnEntity $return)
+    {
+        $refund = new self();
+
+        $refund
+            ->setOrder($return->getOrder())
+            ->setCustomer($return->getOrder()->getCustomer())
+            ->setOrganization($return->getOrganization());
+
+        $return->getReturnItems()->map(
+            function (ReturnItem $item) use ($refund) {
+                $refund->addItem(RefundItem::fromReturnItem($item));
             }
         );
 

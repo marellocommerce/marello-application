@@ -5,6 +5,7 @@ namespace Marello\Bundle\RefundBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
@@ -117,6 +118,25 @@ class RefundItem implements CurrencyAwareInterface
             ->setOrderItem($item)
             ->setName($item->getProductName())
             ->setBaseAmount($item->getPrice());
+
+        return $refund;
+    }
+
+    /**
+     * @param ReturnItem $item
+     *
+     * @return RefundItem
+     */
+    public static function fromReturnItem(ReturnItem $item)
+    {
+        $refund = new self();
+
+        $refund
+            ->setOrderItem($item->getOrderItem())
+            ->setName($item->getOrderItem()->getProductName())
+            ->setBaseAmount($item->getOrderItem()->getPrice())
+            ->setRefundAmount($item->getOrderItem()->getPrice() * $item->getQuantity())
+            ->setQuantity($item->getQuantity());
 
         return $refund;
     }
