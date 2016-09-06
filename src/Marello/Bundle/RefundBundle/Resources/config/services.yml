@@ -1,0 +1,3 @@
+services:
+    marello_refund.datagrid.order_refundable_checker:
+        class: Marello\Bundle\RefundBundle\Datagrid\OrderRefundableChecker
