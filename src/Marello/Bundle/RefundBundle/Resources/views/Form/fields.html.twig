@@ -1,15 +1,15 @@
 {% block marello_order_item_refund_widget %}
-    <td>
+    <td class="marello-line-field">
         <div class="fields-row">
             {{ form.vars.value.orderItem.product.sku|default('') }}
         </div>
     </td>
-    <td>
+    <td class="marello-line-field">
         <div class="fields-row">
             {{ form.vars.value.orderItem.product.name|default('') }}
         </div>
     </td>
-    <td>
+    <td class="marello-line-field">
         <div class="fields-row">
             {{ form.vars.value.orderItem.quantity|default('') }}
         </div>
@@ -20,17 +20,17 @@
         </div>
         {{ form_errors(form.quantity) }}
     </td>
-    <td>
+    <td class="marello-line-field">
         <div class="fields-row">
             {{ form.vars.value.orderItem.price|default('') }}
         </div>
     </td>
-    <td>
+    <td class="marello-line-field">
         <div class="fields-row">
             {{ form.vars.value.orderItem.totalPrice|default('') }}
         </div>
     </td>
-    <td class="order-line-item-price">
+    <td class="order-line-item-price marello-line-field">
         <div class="fields-row">
             {{ form_widget(form.refundAmount) }}
         </div>
@@ -39,13 +39,13 @@
 {% endblock %}
 
 {% block marello_additional_refund_widget %}
-    <td>
+    <td class="marello-line-field">
         <div class="fields-row">
             {{ form_widget(form.name) }}
         </div>
         {{ form_errors(form.name) }}
     </td>
-    <td class="order-line-item-price">
+    <td class="order-line-item-price marello-line-field">
         <div class="fields-row">
             {{ form_widget(form.refundAmount) }}
         </div>
