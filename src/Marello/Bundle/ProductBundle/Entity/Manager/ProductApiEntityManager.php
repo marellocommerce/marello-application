@@ -48,6 +48,7 @@ class ProductApiEntityManager extends ApiEntityManager
                     'fields'           => [
                         'id'          => null,
                         'name'        => null,
+                        'code'        => null,
                         'active'      => null,
                         'channelType' => null,
                     ],
