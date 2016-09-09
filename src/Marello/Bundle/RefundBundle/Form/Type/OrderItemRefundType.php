@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\GreaterThan;
 
 class OrderItemRefundType extends AbstractType
 {
@@ -34,10 +33,7 @@ class OrderItemRefundType extends AbstractType
                 $form
                     ->add('refundAmount', 'money', [
                         'empty_data' => 0,
-                        'currency' => $item->getRefund()->getCurrency(),
-                        'constraints' => [
-                            new GreaterThan(0),
-                        ]
+                        'currency' => $item->getRefund()->getCurrency()
                     ]);
             });
     }
