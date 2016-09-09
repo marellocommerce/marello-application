@@ -38,7 +38,7 @@ class Configuration implements ConfigurationInterface
                 'ups_password'                 => ['value' => null],
                 'ups_access_license_key'       => ['value' => null],
                 'ups_account_number'           => ['value' => null],
-                'ups_api_base_url'             => ['value' => 'https://onlinetools.ups.com/ups.app/xml'],
+                'ups_api_base_url'             => ['value' => 'https://wwwcie.ups.com/ups.app/xml'],
             ]
         );
 

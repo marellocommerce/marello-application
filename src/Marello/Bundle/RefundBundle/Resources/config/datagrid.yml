@@ -20,6 +20,10 @@ datagrid:
                 type: twig
                 frontend_type: html
                 template: MarelloOrderBundle:Order:Datagrid/Property/orderNumber.html.twig
+            orderReference:
+                data_name: order.orderReference
+                label: marello.order.order_reference.label
+                frontend_type:    string
             refundAmount:
                 label:            marello.refund.refund_amount.label
                 type:             localized_number
@@ -32,6 +36,37 @@ datagrid:
             updatedAt:
                 label: oro.ui.updated_at
                 frontend_type: datetime
+        sorters:
+            columns:
+                refundNumber:
+                    data_name: r.refundNumber
+                orderNumber:
+                    data_name: order.orderNumber
+                orderReference:
+                    data_name: order.orderReference
+                createdAt:
+                    data_name: r.createdAt
+                updatedAt:
+                    data_name: r.updatedAt
+            default:
+                refundNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        filters:
+            columns:
+                refundNumber:
+                    type: string
+                    data_name: r.refundNumber
+                orderNumber:
+                    type: string
+                    data_name: order.orderNumber
+                orderReference:
+                    type: number
+                    data_name: order.orderReference
+                createdAt:
+                    type: datetime
+                    data_name: r.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: r.updatedAt
         properties:
             view_link:
                 type:   url
