@@ -126,19 +126,23 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return $service;
     }
 
+    /**
+     * @param Order $order
+     * 
+     * @return string
+     */
     protected function getDescription(Order $order)
     {
         $description = '';
 
         foreach ($order->getItems() as $item) {
             $description .= sprintf(
-                "%s:\n\tBattery Type: %s\n",
-                $item->getProductName(),
-                $item->getProduct()->getBatteryType()
+                "%s, ",
+                $item->getProductName()
             );
         }
 
-        return $description;
+        return rtrim($description, ', ');
     }
 
     /**
@@ -198,12 +202,12 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
 
     /**
      * @param Order $order
-     *
-     * @return null
+     * 
+     * @return string
      */
     protected function createDescription(Order $order)
     {
-        return null; // TODO: Create description
+        return $this->getDescription($order);
     }
 
     /**
