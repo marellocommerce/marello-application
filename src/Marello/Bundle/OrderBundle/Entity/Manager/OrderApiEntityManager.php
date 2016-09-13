@@ -73,6 +73,12 @@ class OrderApiEntityManager extends ApiEntityManager
                         'entityId' => [],
                     ],
                 ],
+                'workflowStep'    => [
+                    'exclusion_policy' => 'all',
+                    'fields'           => [
+                        'name' => [],
+                    ],
+                ],
                 'items'           => $itemConfig,
                 'billingAddress'  => $addressConfig,
                 'shippingAddress' => $addressConfig,
