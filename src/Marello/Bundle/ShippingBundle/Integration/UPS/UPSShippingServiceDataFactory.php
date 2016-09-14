@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\AddressBundle\Entity\Address as MarelloAddress;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress as MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;

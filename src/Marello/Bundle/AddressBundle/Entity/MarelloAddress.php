@@ -5,6 +5,7 @@ namespace Marello\Bundle\AddressBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
@@ -16,8 +17,20 @@ use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
  *          }
  *      )
  * })
+ * @Oro\Config(
+ *      defaultValues={
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
+ *          },
+ *          "ownership"={
+ *              "organization_field_name"="organization",
+ *              "organization_column_name"="organization_id"
+ *          }
+ *      }
+ * )
  */
-class Address extends AbstractAddress
+class MarelloAddress extends AbstractAddress
 {
 
     /**

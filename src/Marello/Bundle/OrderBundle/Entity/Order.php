@@ -5,7 +5,7 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\AddressBundle\Entity\Address;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -169,7 +169,7 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", cascade={"persist"})
-     * @ORM\JoinColumn
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
      *
      * @var Customer
      */
@@ -178,16 +178,16 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     /**
      * @var AbstractAddress
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
-     * @ORM\JoinColumn
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
+     * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
      */
     protected $billingAddress;
 
     /**
      * @var AbstractAddress
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
-     * @ORM\JoinColumn
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
+     * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
      */
     protected $shippingAddress;
 
@@ -390,7 +390,7 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @return AbstractAddress
+     * @return MarelloAddress
      */
     public function getShippingAddress()
     {
@@ -398,7 +398,7 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @param AbstractAddress $shippingAddress
+     * @param MarelloAddress $shippingAddress
      *
      * @return $this
      */
@@ -410,7 +410,7 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @return Address
+     * @return MarelloAddress
      */
     public function getBillingAddress()
     {
@@ -418,7 +418,7 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @param Address $billingAddress
+     * @param MarelloAddress $billingAddress
      *
      * @return $this
      */
