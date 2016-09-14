@@ -5,7 +5,7 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\AddressBundle\Entity\Address;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
@@ -44,7 +44,7 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      *
      * @var Address
@@ -60,7 +60,7 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
 
     /**
      * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\AddressBundle\Entity\Address",
+     *     targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress",
      *     mappedBy="customer",
      *     cascade={"persist"}
      * )
@@ -118,11 +118,11 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
      * @param string  $firstName
      * @param string  $lastName
      * @param string  $email
-     * @param Address $address
+     * @param MarelloAddress $address
      *
      * @return Customer
      */
-    public static function create($firstName, $lastName, $email, Address $address)
+    public static function create($firstName, $lastName, $email, MarelloAddress $address)
     {
         $customer = new self();
 
@@ -187,11 +187,11 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     }
 
     /**
-     * @param Address $address
+     * @param MarelloAddress $address
      *
      * @return $this
      */
-    public function addAddress(Address $address)
+    public function addAddress(MarelloAddress $address)
     {
         $this->addresses->add($address->setCustomer($this));
 
@@ -199,11 +199,11 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     }
 
     /**
-     * @param Address $address
+     * @param MarelloAddress $address
      *
      * @return $this
      */
-    public function removeAddress(Address $address)
+    public function removeAddress(MarelloAddress $address)
     {
         $this->addresses->removeElement($address->setCustomer(null));
 
@@ -211,7 +211,7 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     }
 
     /**
-     * @return Address
+     * @return MarelloAddress
      */
     public function getPrimaryAddress()
     {
@@ -219,11 +219,11 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     }
 
     /**
-     * @param Address $primaryAddress
+     * @param MarelloAddress $primaryAddress
      *
      * @return $this
      */
-    public function setPrimaryAddress(Address $primaryAddress)
+    public function setPrimaryAddress(MarelloAddress $primaryAddress)
     {
         $this->primaryAddress = $primaryAddress;
 

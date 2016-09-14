@@ -1,4 +1,4 @@
-Marello\Bundle\AddressBundle\Entity\Address:
+Marello\Bundle\AddressBundle\Entity\MarelloAddress:
     properties:
         street:
             - NotBlank: ~

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\UPS\Model;
 
-use Marello\Bundle\AddressBundle\Entity\Address as MarelloAddress;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 class Address extends XmlSerializedModel
 {

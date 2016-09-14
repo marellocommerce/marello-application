@@ -131,16 +131,16 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('updated_at', 'datetime', []);
         $table->addColumn('invoiced_at', 'datetime', ['notnull' => false]);
         $table->addColumn('saleschannel_name', 'string', ['length' => 255]);
-        $table->addColumn('billingAddress_id', 'integer', ['notnull' => false]);
-        $table->addColumn('shippingAddress_id', 'integer', ['notnull' => false]);
+        $table->addColumn('billing_address_id', 'integer', ['notnull' => false]);
+        $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['order_number'], 'UNIQ_A619DD64551F0F81');
         $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_A619DD641023C4EE');
         $table->addUniqueIndex(['order_reference', 'salesChannel_id'], 'UNIQ_A619DD64122432EB32758FE');
         $table->addIndex(['customer_id'], 'IDX_A619DD649395C3F3', []);
-        $table->addIndex(['billingAddress_id'], 'IDX_A619DD6443656FE6', []);
-        $table->addIndex(['shippingAddress_id'], 'IDX_A619DD64B1835C8F', []);
+        $table->addIndex(['billing_address_id'], 'IDX_A619DD6443656FE6', []);
+        $table->addIndex(['shipping_address_id'], 'IDX_A619DD64B1835C8F', []);
         $table->addIndex(['salesChannel_id'], 'IDX_A619DD644C7A5B2E', []);
         $table->addIndex(['workflow_step_id'], 'IDX_A619DD6471FE882C', []);
         $table->addIndex(['organization_id'], 'IDX_A619DD6432C8A3DE', []);
@@ -217,7 +217,7 @@ class MarelloOrderBundleInstaller implements
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),
-            ['billingAddress_id'],
+            ['billing_address_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
@@ -241,7 +241,7 @@ class MarelloOrderBundleInstaller implements
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),
-            ['shippingAddress_id'],
+            ['shipping_address_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

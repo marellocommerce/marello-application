@@ -3,7 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\AddressBundle\Entity\Address;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
@@ -60,7 +60,7 @@ class Warehouse
     /**
      * @var Address
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\Address", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
      */
     protected $address = null;
@@ -152,7 +152,7 @@ class Warehouse
     }
 
     /**
-     * @return Address
+     * @return MarelloAddress
      */
     public function getAddress()
     {
@@ -160,11 +160,11 @@ class Warehouse
     }
 
     /**
-     * @param Address $address
+     * @param MarelloAddress $address
      *
      * @return $this
      */
-    public function setAddress(Address $address)
+    public function setAddress(MarelloAddress $address)
     {
         $this->address = $address;
 
