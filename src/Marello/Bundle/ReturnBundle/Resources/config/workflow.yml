@@ -55,7 +55,7 @@ workflows:
                 step_to: received_on_hold
                 transition_definition: contents_not_verified_def
             continue_received:
-                label: "Continue Return"
+                label: "Contents verified"
                 step_to: inspection
                 transition_definition: continue_received_def
             inspection_not_ok:
@@ -99,5 +99,8 @@ workflows:
                         entity: $return
                         recipient: $return.order.billingAddress.email
                         template: marello_return_inspection_not_ok
-            credit_def: ~
+            credit_def:
+                post_actions:
+                    - @marello_create_refund:
+                          entity: $return
             ship_back_def: ~

@@ -7,6 +7,9 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
+/**
+ * @dbIsolation
+ */
 class UPSApiTest extends WebTestCase
 {
     /** @var UPSApi */

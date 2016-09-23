@@ -24,6 +24,21 @@ class ProductApiType extends AbstractType
                 'class' => 'Marello\Bundle\ProductBundle\Entity\ProductStatus',
             ])
             ->add(
+                'weight',
+                'number',
+                [
+                    'required' => false,
+                    'scale' => 2,
+                ]
+            )
+            ->add(
+                'batteryType',
+                'text',
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
                 'desiredStockLevel',
                 'number',
                 [

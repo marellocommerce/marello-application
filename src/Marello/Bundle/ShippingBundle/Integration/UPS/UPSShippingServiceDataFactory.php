@@ -3,9 +3,10 @@
 namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\AddressBundle\Entity\Address as MarelloAddress;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress as MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Address;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package;
@@ -127,6 +128,25 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
 
     /**
      * @param Order $order
+     * 
+     * @return string
+     */
+    protected function getDescription(Order $order)
+    {
+        $description = '';
+
+        foreach ($order->getItems() as $item) {
+            $description .= sprintf(
+                "%s, ",
+                $item->getProductName()
+            );
+        }
+
+        return rtrim($description, ', ');
+    }
+
+    /**
+     * @param Order $order
      *
      * @return Package
      */
@@ -134,14 +154,30 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     {
         $package = new Package();
 
-        $package->description     = 'Package Description';
+        $package->description     = $this->getDescription($order);
         $package->packagingType   = $packagingType = new PackagingType('02', 'Customer Supplied');
 //        $package->referenceNumber = $referenceNumber = new ReferenceNumber('00', 'Package');
 
         $package->packageWeight = new Package\PackageWeight();
         $package->packageWeight->unitOfMeasurement = new Package\UnitOfMeasurement();
         $package->packageWeight->unitOfMeasurement->code = 'KGS';
-        $package->packageWeight->weight = '1'; // TODO:
+
+        $weight = array_reduce(
+            $order
+                ->getItems()
+                ->map(function (OrderItem $item) {
+                    $weight = $item->getProduct()->getWeight();
+
+                    return ($weight ?: 0) * $item->getQuantity();
+                })
+                ->toArray(),
+            function ($carry, $value) {
+                return $carry + $value;
+            },
+            0
+        );
+
+        $package->packageWeight->weight = $weight ? (string) $weight : '1'; // Use default weight of 1 if there are no weights specified.
 
         return $package;
     }
@@ -166,12 +202,12 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
 
     /**
      * @param Order $order
-     *
-     * @return null
+     * 
+     * @return string
      */
     protected function createDescription(Order $order)
     {
-        return null; // TODO: Create description
+        return $this->getDescription($order);
     }
 
     /**

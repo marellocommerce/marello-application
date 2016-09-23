@@ -66,6 +66,8 @@ class MarelloProductBundleInstaller implements Installation
             ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
         );
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
+        $table->addColumn('weight', 'float', ['notnull' => false]);
+        $table->addColumn('batteryType', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['sku'], 'marello_product_product_skuidx');
         $table->addIndex(['updated_at'], 'idx_marello_product_updated_at', []);

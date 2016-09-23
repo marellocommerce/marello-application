@@ -104,12 +104,11 @@ datagrid:
                         - oi.productName
                         - oi.productSku
                         - product.createdAt as createdAt
-                        - SUM(l.stock) AS quantitySold
+                        - SUM(oi.quantity) AS quantitySold
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
                     join:
                         left:
-                            - { join: oi.currentLevel, alias: l }
                             - { join: oi.product, alias: product }
                     groupBy: oi.productSku, oi.productName
             columns:
@@ -153,12 +152,11 @@ datagrid:
                         - oi.productName
                         - oi.productSku
                         - product.createdAt as createdAt
-                        - SUM(l.stock) AS quantitySold
+                        - SUM(oi.quantity) AS quantitySold
                     from:
                         - { table: MarelloOrderBundle:OrderItem, alias: oi }
                     join:
                         left:
-                            - { join: oi.currentLevel, alias: l }
                             - { join: oi.product, alias: product }
                     groupBy: oi.productSku, oi.productName
             columns:

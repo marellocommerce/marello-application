@@ -86,36 +86,12 @@ datagrid:
                 route:  marello_return_return_view
                 params:
                     id: id
-            getpdf_link:
-                type:   url
-                route:  pmanager_default_create
-                params:
-                    id: id
         actions:
             view:
                 type:       navigate
                 link:       view_link
                 icon:       eye-open
                 rowAction:  true
-            getpdf:
-                type: getpdf
-                data_identifier: o.id
-                frontend_handle: dialog
-                frontend_options:
-                    dialogOptions:
-                        title: @translator->trans(ibnab.pmanager.dialog.title)
-                        width: 500
-                        autoResize: true
-                        modal: true
-                        minHeight: 100
-                        allowMaximize: true
-                        allowMinimize: true
-                        dblclick: 'maximize'
-                entityName: %marello_return.entity.return.class%
-                acl_resource: pmanager_defaut_create
-                label: ibnab.pmanager.grid_action.getpdf_label
-                icon: file-alt
-                link: getpdf_link
 
     marello-return-items:
         source:

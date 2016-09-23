@@ -16,33 +16,21 @@ oro_system_configuration:
             priority: 50
 
     fields:
-        marello_shipping.ups_username:
+        marello_shipping.ups_api_base_url:
             type: text
             data_type: string
+            priority: 50
             options:
-                label: marello.shipping.system_configuration.ups_username
-                resettable: false
-                required: false
-
-        marello_shipping.ups_password:
-            type: text
-            data_type: string
-            options:
-                label: marello.shipping.system_configuration.ups_password
-                resettable: false
-                required: false
-
-        marello_shipping.ups_access_license_key:
-            type: text
-            data_type: string
-            options:
-                label: marello.shipping.system_configuration.ups_access_license_key
-                resettable: false
-                required: false
+                label: marello.shipping.system_configuration.ups_api_base_url
+                resettable: true
+                required: true
+                constraints:
+                    - NotNull: ~
 
         marello_shipping.ups_account_number:
             type: text
             data_type: string
+            priority: 40
             options:
                 label: marello.shipping.system_configuration.ups_account_number
                 resettable: false
@@ -51,15 +39,32 @@ oro_system_configuration:
                     - Length:
                         max: 6
 
-        marello_shipping.ups_api_base_url:
+        marello_shipping.ups_access_license_key:
             type: text
             data_type: string
+            priority: 30
             options:
-                label: marello.shipping.system_configuration.ups_api_base_url
-                resettable: true
-                required: true
-                constraints:
-                    - NotNull: ~
+                label: marello.shipping.system_configuration.ups_access_license_key
+                resettable: false
+                required: false
+
+        marello_shipping.ups_username:
+            type: text
+            data_type: string
+            priority: 20
+            options:
+                label: marello.shipping.system_configuration.ups_username
+                resettable: false
+                required: false
+
+        marello_shipping.ups_password:
+            type: text
+            data_type: string
+            priority: 10
+            options:
+                label: marello.shipping.system_configuration.ups_password
+                resettable: false
+                required: false
 
         marello_shipping.shipper_name:
             type: text

@@ -1,0 +1,4 @@
+marello:
+    address:
+        # Order entity
+        marelloaddress.entity_label:        Address

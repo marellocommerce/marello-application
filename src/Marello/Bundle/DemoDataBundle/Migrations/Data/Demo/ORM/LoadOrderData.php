@@ -5,7 +5,7 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\AddressBundle\Entity\Address;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\Customer;
@@ -70,7 +70,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 $order->getItems()->map(function (OrderItem $item) use (&$total, &$tax, &$grandTotal) {
                     $total += ($item->getQuantity() * $item->getPrice());
                     $tax += $item->getTax();
-                    $grandTotal += $item->getTotalPrice();
+                    $grandTotal += $item->getRowTotal();
                 });
 
                 $grandTotal += $order->getShippingAmount();
@@ -164,7 +164,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
      */
     protected function createOrder($row, Organization $organization)
     {
-        $address = new Address();
+        $address = new MarelloAddress();
         $address->setNamePrefix($row['title']);
         $address->setFirstName($row['firstname']);
         $address->setLastName($row['lastname']);
@@ -226,20 +226,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $itemEntity->setProduct($product);
         $itemEntity->setQuantity($row['qty']);
         $itemEntity->setPrice($row['price']);
-        $itemEntity->setTotalPrice($row['total_price']);
+        $itemEntity->setRowTotal($row['total_price']);
         $itemEntity->setTax($row['tax']);
-
-        /** @var InventoryItem $inventoryItem */
-        $inventoryItem = $product->getInventoryItems()->first();
-
-        $inventoryItem->adjustStockLevels(
-            'order_workflow.pending',
-            null,
-            $itemEntity->getQuantity(),
-            null,
-            $itemEntity
-        );
-        $this->manager->persist($inventoryItem);
 
         return $itemEntity;
     }

@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-use Marello\Bundle\AddressBundle\Entity\Address;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 class OrderController extends Controller
 {
@@ -142,11 +142,11 @@ class OrderController extends Controller
      * @Security\AclAncestor("marello_order_update")
      *
      * @param Request $request
-     * @param Address $address
+     * @param MarelloAddress $address
      *
      * @return array
      */
-    public function addressAction(Request $request, Address $address)
+    public function addressAction(Request $request, MarelloAddress $address)
     {
         return [
             'orderAddress' => $address,
@@ -162,11 +162,11 @@ class OrderController extends Controller
      * @Security\AclAncestor("marello_order_update")
      *
      * @param Request $request
-     * @param Address $address
+     * @param MarelloAddress $address
      *
      * @return array
      */
-    public function updateAddressAction(Request $request, Address $address)
+    public function updateAddressAction(Request $request, MarelloAddress $address)
     {
         $responseData = array(
             'saved' => false,
