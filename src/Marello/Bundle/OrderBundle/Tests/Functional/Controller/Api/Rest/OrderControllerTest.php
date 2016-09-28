@@ -246,9 +246,9 @@ class OrderControllerTest extends WebTestCase
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
             ],
-            'paymentReference' => 1223456,
-            'invoicedAt' => $time->format('d-m-Y H:i:s'),
-            'invoiceReference' => 666555444
+            'paymentReference'  => 1223456,
+            'invoicedAt'        => $time->format('d-m-Y H:i:s'),
+            'invoiceReference'  => 666555444
         ];
 
         $this->client->request(
