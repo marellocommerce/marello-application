@@ -93,6 +93,13 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
     protected $salesChannelName;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="return_reference",type="string", nullable=true)
+     */
+    protected $returnReference;
+
+    /**
      * @var WorkflowItem
      *
      * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
@@ -359,5 +366,25 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
     public function __toString()
     {
         return (string) $this->getReturnNumber();
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnReference()
+    {
+        return $this->returnReference;
+    }
+
+    /**
+     * @param string $returnReference
+     *
+     * @return $this
+     */
+    public function setReturnReference($returnReference)
+    {
+        $this->returnReference = $returnReference;
+
+        return $this;
     }
 }
