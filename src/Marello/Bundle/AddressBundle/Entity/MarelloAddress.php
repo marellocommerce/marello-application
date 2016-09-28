@@ -41,6 +41,13 @@ class MarelloAddress extends AbstractAddress
     protected $phone;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $company;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", inversedBy="addresses")
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      *
@@ -66,6 +73,22 @@ class MarelloAddress extends AbstractAddress
         $this->phone = $phone;
 
         return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param string $company
+     */
+    public function setCompany($company)
+    {
+        $this->company = $company;
     }
 
     /**

@@ -50,6 +50,7 @@ class MarelloAddressBundleInstaller implements Installation
         $table->addColumn('street2', 'string', ['notnull' => false, 'length' => 500]);
         $table->addColumn('city', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('postal_code', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('company', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('organization', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('region_text', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('name_prefix', 'string', ['notnull' => false, 'length' => 255]);
