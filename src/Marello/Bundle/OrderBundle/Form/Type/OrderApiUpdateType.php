@@ -17,7 +17,6 @@ class OrderApiUpdateType extends AbstractType
             ->add('billingAddress', AddressType::NAME)
             ->add('shippingAddress', AddressType::NAME)
             ->add('paymentReference')
-            ->add('paymentDetails')
             ->add('invoicedAt')
             ->add('invoiceReference');
     }
