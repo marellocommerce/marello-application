@@ -337,6 +337,26 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     }
 
     /**
+     * @return string
+     */
+    public function getInvoiceReference()
+    {
+        return $this->invoiceReference;
+    }
+
+    /**
+     * @param string $invoiceReference
+     *
+     * @return $this
+     */
+    public function setInvoiceReference($invoiceReference)
+    {
+        $this->invoiceReference = $invoiceReference;
+
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function getSubtotal()
