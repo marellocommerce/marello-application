@@ -1,0 +1,23 @@
+@name = marello_refund_credited
+@entityName = Marello\Bundle\RefundBundle\Entity\Refund
+@subject = Your refund #{{ entity.refundNumber }} has been credited
+@isSystem = 0
+@isEditable = 1
+
+<table cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+        <tr>
+            <td>
+                <table cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                        <tr>
+                            <td class="email-heading">
+                                <h1 style="font-size: 16px; color: #0066cc;">Refund #{{ entity.refundNumber }} has been credited.</h1>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

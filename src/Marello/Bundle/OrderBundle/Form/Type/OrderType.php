@@ -4,6 +4,7 @@ namespace Marello\Bundle\OrderBundle\Form\Type;
 
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Form\Listener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\Listener\OrderTotalsSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -54,6 +55,7 @@ class OrderType extends AbstractType
          * Takes care of setting order totals.
          */
         $builder->addEventSubscriber(new OrderTotalsSubscriber());
+        $builder->addEventSubscriber(new CurrencySubscriber());
     }
 
     /**
