@@ -181,6 +181,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 ->findOneBy(['combinedCode' => $row['country'] . '-' . $row['state']])
         );
         $address->setPhone($row['telephone_number']);
+        $address->setCompany($row['company']);
         $this->manager->persist($address);
 
         $orderEntity = new Order($address, $address);
