@@ -21,9 +21,10 @@ marello:
         discount_amount.label:      Discount Amount
         discount_percent.label:     Discount Percent
         invoiced_at.label:          Invoiced At
+        invoic_reference.label:     Invoice Reference
         payment_method.label:       Payment Method
         payment_details.label:      Payment Details
-        payment_reference.label:    Payment Details
+        payment_reference.label:    Payment Reference
         shipping_method.label:      Shippingmethod
         shipping_amount.label:      Shipping costs
         status.label:               Order Status
