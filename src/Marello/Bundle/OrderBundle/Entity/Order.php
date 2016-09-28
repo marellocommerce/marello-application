@@ -66,11 +66,18 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     protected $orderNumber;
 
     /**
-     * @var int
+     * @var string
      *
      * @ORM\Column(name="order_reference",type="string", nullable=true)
      */
     protected $orderReference;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="invoice_reference",type="string", nullable=true)
+     */
+    protected $invoiceReference;
 
     /**
      * @var int
