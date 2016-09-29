@@ -4788,7 +4788,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "OroCRMPro\\Bundle": "src/"
+                    "Oro\\Bundle": "src/"
                 }
             },
             "license": [
