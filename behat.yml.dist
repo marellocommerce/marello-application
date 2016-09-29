@@ -18,8 +18,8 @@ default: &default
                 - OroNavigationBundle
                 - OroCRMContactBundle
                 - OroCRMAccountBundle
-                - OroCRMTaskBundle
-                - OroCRMProOrganizationConfigBundle
+                - OroTaskBundle
+                - OroOrganizationConfigBundle
 
 selenium2:
     <<: *default
