@@ -20,3 +20,7 @@ marello:
             reason.label:               Return Reason
             order_item.label:           Order Item
             return.label:               Return
+
+        system_configuration:
+            ror_period:                 Right of return period
+            warranty_period:            Warranty period
