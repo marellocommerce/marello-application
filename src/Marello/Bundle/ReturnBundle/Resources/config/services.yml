@@ -11,6 +11,8 @@ services:
 
     marello_return.util.return_helper:
         class: Marello\Bundle\ReturnBundle\Util\ReturnHelper
+        arguments:
+            - @doctrine.orm.entity_manager
 
     marello_return.twig.return_extension:
         class: Marello\Bundle\ReturnBundle\Twig\ReturnExtension

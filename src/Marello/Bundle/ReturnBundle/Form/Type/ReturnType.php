@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
+use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnRorWarrantyConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -55,7 +56,8 @@ class ReturnType extends AbstractType
             'data_class'  => ReturnEntity::class,
             'constraints' => [
                 new ReturnEntityConstraint(),
-                new ReturnWarrantyConstraint()
+                new ReturnWarrantyConstraint(),
+                new ReturnRorWarrantyConstraint()
             ],
         ]);
     }

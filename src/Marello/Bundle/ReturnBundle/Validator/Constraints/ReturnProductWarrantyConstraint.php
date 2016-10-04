@@ -1,20 +1,20 @@
 <?php
 namespace Marello\Bundle\ReturnBundle\Validator\Constraints;
 
-use Marello\Bundle\ReturnBundle\Validator\ReturnWarrantyValidator;
+use Marello\Bundle\ReturnBundle\Validator\ReturnProductWarrantyValidator;
 use Symfony\Component\Validator\Constraint;
 
 class ReturnWarrantyConstraint extends Constraint
 {
     /** @var string */
-    public $message = 'Cannot create return, product warranty or right of return has passed';
+    public $message = 'Cannot create return, product warranty has passed';
 
     /**
      * @return string
      */
     public function validatedBy()
     {
-        return ReturnWarrantyValidator::class;
+        return ReturnProductWarrantyValidator::class;
     }
 
     /**
