@@ -158,6 +158,20 @@ class Product extends ExtendProduct implements
     protected $batteryType;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="warranty", type="integer", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $warranty;
+
+    /**
      * @var Organization
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
@@ -779,6 +793,26 @@ class Product extends ExtendProduct implements
     public function setBatteryType($batteryType)
     {
         $this->batteryType = $batteryType;
+
+        return $this;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getWarranty()
+    {
+        return $this->warranty;
+    }
+
+    /**
+     * @param integer $warranty
+     *
+     * @return Product
+     */
+    public function setWarranty($warranty)
+    {
+        $this->warranty = $warranty;
 
         return $this;
     }

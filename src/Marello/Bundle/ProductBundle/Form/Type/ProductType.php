@@ -79,6 +79,14 @@ class ProductType extends AbstractType
                 ]
             )
             ->add(
+                'warranty',
+                'text',
+                [
+                    'required' => false,
+                    'label' => 'marello.product.warranty.label'
+                ]
+            )
+            ->add(
                 'status',
                 'entity',
                 [
