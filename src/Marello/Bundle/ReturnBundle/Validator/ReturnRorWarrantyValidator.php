@@ -4,7 +4,6 @@ namespace Marello\Bundle\ReturnBundle\Validator;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
-use Marello\Bundle\ReturnBundle\Util\ReturnHelper;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -13,7 +12,7 @@ class ReturnRorWarrantyValidator extends ConstraintValidator
 {
     protected $warrantyReason = 'warranty';
 
-    /** @var ReturnHelper $returnHelper */
+    /** @var ConfigManager $configManager */
     protected $configManager;
 
     /**
@@ -57,13 +56,14 @@ class ReturnRorWarrantyValidator extends ConstraintValidator
 
         /** @var Order $order */
         $order          = $value->getOrder();
-        $orderCreatedAt = $order->getCreatedAt();
-        $currentDate    = new \DateTime(date('Y-m-d H:i:s'));
+        $orderCreatedAt = $order->getCreatedAt()->format('Y-m-d');
+        $currentDate    = new \DateTime(date('Y-m-d'));
 
         $interval           = $currentDate->diff($orderCreatedAt);
+        $intervalInDays     = (int) $interval->format('%a');
         $rorPeriodInDays    = $this->configManager->get('marello_return.ror_period');
 
-        if ($interval > $rorPeriodInDays) {
+        if ($intervalInDays > $rorPeriodInDays) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('returnItems')
                 ->addViolation();
