@@ -61,6 +61,18 @@ class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAware
             ]
         );
 
+        $this->extendExtension->addEnumField(
+            $schema,
+            $schema->getTable('marello_return_item'),
+            'status',
+            'marello_return_status',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+            ]
+        );
+
         $this->noteExtension->addNoteAssociation($schema, 'marello_return_return');
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', 'marello_return_return');
 

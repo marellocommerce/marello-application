@@ -11,8 +11,6 @@ services:
 
     marello_return.util.return_helper:
         class: Marello\Bundle\ReturnBundle\Util\ReturnHelper
-        arguments:
-            - @doctrine.orm.entity_manager
 
     marello_return.twig.return_extension:
         class: Marello\Bundle\ReturnBundle\Twig\ReturnExtension
@@ -21,9 +19,7 @@ services:
         tags:
             - { name: twig.extension }
 
-    marello_return.validator.ror_warranty:
-        class: Marello\Bundle\ReturnBundle\Validator\ReturnRorWarrantyValidator
+    marello_return.return_item.form_subscriber:
+        class: Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnItemTypeSubscriber
         arguments:
             - @oro_config.manager
-        tags:
-            - { name: validator.constraint_validator }
