@@ -153,8 +153,6 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
     }
 
     /**
-     * Copies product sku and name to attributes within this return item.
-     *
      * @ORM\PrePersist
      */
     public function prePersist()
