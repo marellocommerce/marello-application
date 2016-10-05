@@ -126,6 +126,10 @@ datagrid:
                 data_name: quantity
                 label: marello.return.returnitem.returned_quantity.label
                 frontend_type: number
+            status:
+                data_name: status
+                label: marello.return.returnitem.status.label
+                frontend_type: string
             reason:
                 data_name: reason
                 label: marello.return.returnitem.reason.label
