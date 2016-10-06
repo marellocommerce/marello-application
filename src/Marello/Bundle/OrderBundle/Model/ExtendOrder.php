@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\OrderBundle\Model;
 
-class ExtendOrder
+use Marello\Bundle\ShippingBundle\Entity\ExtendShipmentAware;
+
+class ExtendOrder extends ExtendShipmentAware
 {
 
 }

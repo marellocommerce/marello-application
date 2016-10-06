@@ -3,8 +3,8 @@
 namespace Marello\Bundle\ShippingBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
 use Oro\Bundle\WorkflowBundle\Model\Action\AbstractAction;
@@ -17,7 +17,7 @@ class ShipmentCreateAction extends AbstractAction
     /** @var ShippingServiceRegistry */
     protected $registry;
 
-    protected $order;
+    protected $entity;
 
     /** @var PropertyPathInterface */
     protected $service;
@@ -47,15 +47,15 @@ class ShipmentCreateAction extends AbstractAction
     {
         /** @var string $service */
         $service = $this->contextAccessor->getValue($context, $this->service);
-        /** @var Order $order */
-        $order = $this->contextAccessor->getValue($context, $this->order);
+        /** @var ShippingAwareInterface $entity */
+        $entity = $this->contextAccessor->getValue($context, $this->entity);
 
         $dataFactory = $this->registry->getDataFactory($service);
         $integration = $this->registry->getIntegration($service);
 
-        $data = $dataFactory->createData($order);
+        $data = $dataFactory->createData($entity);
 
-        $integration->createShipment($order, $data);
+        $integration->createShipment($entity, $data);
     }
 
     /**
@@ -68,15 +68,15 @@ class ShipmentCreateAction extends AbstractAction
      */
     public function initialize(array $options)
     {
-        if (empty($options['order']) || !($options['order'] instanceof PropertyPathInterface)) {
-            throw new InvalidParameterException('Order parameter is required');
+        if (empty($options['entity']) || !($options['entity'] instanceof PropertyPathInterface)) {
+            throw new InvalidParameterException('Entity parameter is required');
         }
 
         if (empty($options['service'])) {
             throw new InvalidParameterException('Service parameter is required');
         }
 
-        $this->order = $options['order'];
+        $this->entity = $options['entity'];
         $this->service = $options['service'];
     }
 }

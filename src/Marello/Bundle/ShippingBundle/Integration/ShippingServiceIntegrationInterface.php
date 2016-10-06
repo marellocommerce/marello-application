@@ -2,16 +2,16 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 
 interface ShippingServiceIntegrationInterface
 {
     /**
-     * @param Order $order
+     * @param ShippingAwareInterface $shippingAwareInterface
      * @param array $data
-     *
+     * 
      * @return Shipment
      */
-    public function createShipment(Order $order, array $data);
+    public function createShipment(ShippingAwareInterface $shippingAwareInterface, array $data);
 }

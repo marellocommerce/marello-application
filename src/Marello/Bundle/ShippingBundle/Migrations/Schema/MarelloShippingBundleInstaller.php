@@ -33,9 +33,6 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         /** Tables generation **/
         $this->createMarelloShipmentTable($schema);
 
-        /** Foreign keys generation **/
-        $this->addMarelloShipmentForeignKeys($schema);
-
         $this->attachmentExtension->addImageRelation(
             $schema,
             'marello_shipment', // entity table, e.g. oro_user, orocrm_contact etc.
@@ -56,30 +53,12 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
     {
         $table = $schema->createTable('marello_shipment');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('order_id', 'integer', []);
         $table->addColumn('shippingService', 'string', ['length' => 255]);
         $table->addColumn('upsShipmentDigest', 'text', ['notnull' => false]);
         $table->addColumn('base64EncodedLabel', 'text', ['notnull' => false]);
         $table->addColumn('identificationNumber', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('upsPackageTrackingNumber', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['order_id'], 'UNIQ_A2D00FBC8D9F6D38');
-    }
-
-    /**
-     * Add marello_shipment foreign keys.
-     *
-     * @param Schema $schema
-     */
-    protected function addMarelloShipmentForeignKeys(Schema $schema)
-    {
-        $table = $schema->getTable('marello_shipment');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_order_order'),
-            ['order_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
-        );
     }
 
     /**

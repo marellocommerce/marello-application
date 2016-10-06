@@ -10,6 +10,7 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -47,7 +48,9 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Order extends ExtendOrder implements DerivedPropertyAwareInterface
+class Order extends ExtendOrder implements
+    DerivedPropertyAwareInterface,
+    ShippingAwareInterface
 {
     /**
      * @var int
@@ -254,13 +257,6 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
      * @ORM\Column(name="saleschannel_name",type="string", nullable=false)
      */
     protected $salesChannelName;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\ShippingBundle\Entity\Shipment", mappedBy="order")
-     *
-     * @var Shipment
-     */
-    protected $shipment;
 
     /**
      * @var WorkflowItem
@@ -855,23 +851,66 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
         return $this;
     }
 
-    /**
-     * @return Shipment
+
+    /***
+     * ==============================
+     * ShippingAwareInterface methods
+     * ==============================
      */
-    public function getShipment()
+
+    /**
+     * @return MarelloAddress
+     */
+    public function getShipTo()
     {
-        return $this->shipment;
+        return $this->getShippingAddress();
     }
 
     /**
-     * @param Shipment $shipment
-     *
-     * @return $this
+     * @return MarelloAddress
      */
-    public function setShipment($shipment)
+    public function getShipFrom()
     {
-        $this->shipment = $shipment;
 
-        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWeight()
+    {
+        $weight = array_reduce(
+            $this
+                ->getItems()
+                ->map(function (OrderItem $item) {
+                    $weight = $item->getProduct()->getWeight();
+
+                    return ($weight ?: 0) * $item->getQuantity();
+                })
+                ->toArray(),
+            function ($carry, $value) {
+                return $carry + $value;
+            },
+            0
+        );
+
+        return $weight;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        $description = '';
+
+        foreach ($this->getItems() as $item) {
+            $description .= sprintf(
+                "%s, ",
+                $item->getProductName()
+            );
+        }
+
+        return rtrim($description, ', ');
     }
 }

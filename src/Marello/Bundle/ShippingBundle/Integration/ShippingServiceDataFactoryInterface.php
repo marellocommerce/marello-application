@@ -2,14 +2,9 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 
 interface ShippingServiceDataFactoryInterface
 {
-    /**
-     * @param Order $order
-     *
-     * @return array
-     */
-    public function createData(Order $order);
+    public function createData(ShippingAwareInterface $shippingAwareInterface);
 }

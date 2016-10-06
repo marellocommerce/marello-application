@@ -18,3 +18,14 @@ services:
             - @marello_return.util.return_helper
         tags:
             - { name: twig.extension }
+
+    marello_return.email_processor_link:
+        tags:
+            - { name: oro_service_link, service: marello_notification.email.send_processor }
+
+    marello_return.listener.return_created_notification_sender:
+        class: Marello\Bundle\ReturnBundle\EventListener\ReturnCreatedNotificationSender
+        arguments:
+            - "@marello_return.email_processor_link"
+        tags:
+            - { name: kernel.event_listener, event: "marello.core.derived_property_set", method: derivedPropertySet }
