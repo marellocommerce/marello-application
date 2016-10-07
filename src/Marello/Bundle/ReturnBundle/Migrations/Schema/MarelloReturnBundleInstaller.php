@@ -17,7 +17,10 @@ use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAwareInterface, ActivityExtensionAwareInterface, NoteExtensionAwareInterface
+class MarelloReturnBundleInstaller implements Installation,
+    ExtendExtensionAwareInterface,
+    ActivityExtensionAwareInterface,
+    NoteExtensionAwareInterface
 {
     /** @var ActivityExtension */
     protected $activityExtension;

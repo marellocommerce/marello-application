@@ -27,6 +27,12 @@ class ReturnItemApiType extends AbstractType
             'required'    => true,
             'constraints' => new NotNull()
         ]);
+
+        $builder->add('status', 'oro_enum_choice', [
+            'enum_code' => 'marello_return_status',
+            'required'  => true,
+            'label'     => 'marello.return.returnitem.status.label',
+        ]);
     }
 
     /**

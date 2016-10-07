@@ -11,8 +11,8 @@ class LoadReturnItemStatusData extends AbstractFixture
 {
     /** @var array */
     protected $data = [
-        'authorized'    => false,
-        'denied'        => false,
+        'Authorized'    => false,
+        'Denied'        => false,
     ];
 
     /**

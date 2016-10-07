@@ -55,7 +55,7 @@ class ReturnType extends AbstractType
             'data_class'  => ReturnEntity::class,
             'constraints' => [
                 new ReturnEntityConstraint(),
-                new ReturnWarrantyEntityConstraint()
+                //new ReturnWarrantyEntityConstraint()
             ],
         ]);
     }

@@ -22,6 +22,8 @@ services:
 
     marello_return.form.type.return_item:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemType
+        arguments:
+            - @marello_return.return_item.form_subscriber
         tags:
             - { name: form.type, alias: marello_return_item }
 
@@ -37,6 +39,12 @@ services:
 
     marello_return.form.subscriber.return_type_subscriber:
         class: Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnTypeSubscriber
+
+    marello_return.return_item.form_subscriber:
+        class: Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnItemTypeSubscriber
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_config.manager
 
     marello_return.form.return_api:
             class: Symfony\Component\Form\Form

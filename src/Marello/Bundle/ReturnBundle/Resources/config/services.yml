@@ -18,8 +18,3 @@ services:
             - @marello_return.util.return_helper
         tags:
             - { name: twig.extension }
-
-    marello_return.return_item.form_subscriber:
-        class: Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnItemTypeSubscriber
-        arguments:
-            - @oro_config.manager
