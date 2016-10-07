@@ -119,7 +119,7 @@ datagrid:
                 type:       navigate
                 link:       refund_link
                 icon:       eur
-        action_configuration: @marello_refund.datagrid.order_refundable_checker->getRefundableCallback
+        action_configuration: [@marello_order.datagrid.action_permission_provider, "getOrderActionPermissions"]
         options:
             export: true
 
