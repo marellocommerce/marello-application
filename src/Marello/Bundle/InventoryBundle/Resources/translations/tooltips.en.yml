@@ -1,0 +1,5 @@
+marello:
+    product:
+        form:
+            tooltip:
+                warranty: Warranty in number of days

@@ -65,25 +65,26 @@ class ProductType extends AbstractType
                 'weight',
                 'number',
                 [
-                    'required' => false,
-                    'scale' => 2,
-                    'label' => 'marello.product.weight.label'
+                    'required'  => false,
+                    'scale'     => 2,
+                    'label'     => 'marello.product.weight.label'
                 ]
             )
             ->add(
                 'batteryType',
                 'text',
                 [
-                    'required' => false,
-                    'label' => 'marello.product.battery_type.label'
+                    'required'  => false,
+                    'label'     => 'marello.product.battery_type.label'
                 ]
             )
             ->add(
                 'warranty',
-                'text',
+                'number',
                 [
-                    'required' => false,
-                    'label' => 'marello.product.warranty.label'
+                    'required'  => false,
+                    'label'     => 'marello.product.warranty.label',
+                    'tooltip'   => 'marello.product.form.tooltip.warranty'
                 ]
             )
             ->add(
@@ -100,18 +101,18 @@ class ProductType extends AbstractType
                 'desiredStockLevel',
                 'number',
                 [
-                    'label' => 'marello.product.desired_stock_level.label',
-                    'required' => true,
-                    'constraints' => new NotNull(),
+                    'label'         => 'marello.product.desired_stock_level.label',
+                    'required'      => true,
+                    'constraints'   => new NotNull(),
                 ]
             )
             ->add(
                 'purchaseStockLevel',
                 'number',
                 [
-                    'label' => 'marello.product.purchase_stock_level.label',
-                    'required' => true,
-                    'constraints' => new NotNull(),
+                    'label'         => 'marello.product.purchase_stock_level.label',
+                    'required'      => true,
+                    'constraints'   => new NotNull(),
                 ]
             )
             ->add(
