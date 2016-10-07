@@ -19,6 +19,7 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\Model\ShipFrom;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipper;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\ShipTo;
+use Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceAddressProvider;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterface
@@ -29,16 +30,21 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     /** @var Registry */
     protected $doctrine;
 
+    /** @var  UPSShippingServiceAddressProvider */
+    protected $addressProvider;
+
     /**
      * UPSShippingServiceDataFactory constructor.
      *
      * @param ConfigManager $configManager
-     * @param Registry      $doctrine
+     * @param Registry $doctrine
+     * @param UPSShippingServiceAddressProvider $addressProvider
      */
-    public function __construct(ConfigManager $configManager, Registry $doctrine)
+    public function __construct(ConfigManager $configManager, Registry $doctrine, UPSShippingServiceAddressProvider $addressProvider)
     {
         $this->configManager = $configManager;
         $this->doctrine      = $doctrine;
+        $this->addressProvider = $addressProvider;
     }
 
     /**
@@ -89,29 +95,6 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     }
 
     /**
-     * @param ShippingAwareInterface $shippingAwareInterface
-     * @return ShipTo
-     *
-     */
-    protected function createShipTo(ShippingAwareInterface $shippingAwareInterface)
-    {
-        $shipTo = new ShipTo();
-
-        /** @var MarelloAddress $shippingAddress */
-        $shippingAddress = $shippingAwareInterface->getShipTo();
-
-        $shipTo->companyName  = $shippingAddress->getFullName();
-        $shipTo->attentionName = $shippingAddress->getFullName();
-        $shipTo->phoneNumber  = $shippingAddress->getPhone();
-        
-        $shipTo->eMailAddress = $shippingAwareInterface->getCustomer()->getEmail();
-
-        $shipTo->address = $address = Address::fromAddress($shippingAddress);
-
-        return $shipTo;
-    }
-
-    /**
      * @return Service
      */
     protected function createService()
@@ -129,7 +112,7 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     {
         $package = new Package();
 
-        $package->description     = $shippingAwareInterface->getDescription();
+        $package->description     = $shippingAwareInterface->getShippingDescription();
         $package->packagingType   = $packagingType = new PackagingType('02', 'Customer Supplied');
 //        $package->referenceNumber = $referenceNumber = new ReferenceNumber('00', 'Package');
 
@@ -137,7 +120,7 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $package->packageWeight->unitOfMeasurement = new Package\UnitOfMeasurement();
         $package->packageWeight->unitOfMeasurement->code = 'KGS';
 
-        $weight = $shippingAwareInterface->getWeight();
+        $weight = $shippingAwareInterface->getShippingWeight();
 
         $package->packageWeight->weight = $weight ? (string) $weight : '1'; // Use default weight of 1 if there are no weights specified.
 
@@ -166,7 +149,7 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
      */
     protected function createDescription(ShippingAwareInterface $shippingAwareInterface)
     {
-        return $shippingAwareInterface->getDescription();
+        return $shippingAwareInterface->getShippingDescription();
     }
 
     /**
@@ -179,7 +162,34 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return $rateInformation;
     }
 
-    //TODO: $shippingAwareInterface->getShipFrom() get the info from the entity
+    /**
+     * @param ShippingAwareInterface $shippingAwareInterface
+     * @return ShipTo
+     *
+     */
+    protected function createShipTo(ShippingAwareInterface $shippingAwareInterface)
+    {
+        $shipToAddress = $this->addressProvider->getShipTo($shippingAwareInterface);
+
+        $shipTo = new ShipTo();
+
+//        /** @var MarelloAddress $shippingAddress */
+//        $shippingAddress = $shippingAwareInterface->getShipTo();
+
+        $shipTo->companyName  = $shipToAddress->getFullName();
+        $shipTo->attentionName = $shipToAddress->getFullName();
+        $shipTo->phoneNumber  = $shipToAddress->getPhone();
+
+        //TODO get address of warehouse in returnEntity
+//        $shipTo->eMailAddress = $shippingAwareInterface->getCustomer()->getEmail();
+        $shipTo->eMailAddress = 'joey@madia.nl';
+
+        $shipTo->address = Address::fromAddress($shipToAddress);
+
+        return $shipTo;
+    }
+
+    //TODO: $shippingAwareInterface->getShipFrom() link info and get from the entity
 
     /**
      * @param ShippingAwareInterface $shippingAwareInterface
@@ -187,17 +197,34 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
      */
     private function createShipFrom(ShippingAwareInterface $shippingAwareInterface)
     {
-        $warehouse = $this->doctrine->getRepository(Warehouse::class)->getDefault();
-
-        if (!$warehouse->getAddress()) {
-            return null;
-        }
+        $shipFromAddress = $this->addressProvider->getShipFrom($shippingAwareInterface);
 
         $shipFrom = new ShipFrom();
 
-        $shipFrom->address       = Address::fromAddress($warehouse->getAddress());
-        $shipFrom->companyName   = $this->configManager->get('marello_shipping.shipper_name');
-        $shipFrom->phoneNumber   = $warehouse->getAddress()->getPhone();
-        $shipFrom->attentionName = $warehouse->getLabel();
+        if ($shippingAwareInterface instanceOf \Marello\Bundle\ReturnBundle\Entity\ReturnEntity) {
+
+//            /** @var MarelloAddress $shipFromAddress */
+//            $shipFromAddress = $shippingAwareInterface->getShipFrom();
+
+            $shipFrom->address       = Address::fromAddress($shipFromAddress);
+            $shipFrom->companyName   = $shipFromAddress->getFullName();
+            $shipFrom->attentionName = $shipFromAddress->getFullName();
+            $shipFrom->phoneNumber   = $shipFromAddress->getPhone();
+
+        } else {
+            $warehouse = $this->doctrine->getRepository(Warehouse::class)->getDefault();
+
+            if (!$warehouse->getAddress()) {
+                return null;
+            }
+
+            $shipFrom->address       = Address::fromAddress($warehouse->getAddress());
+            $shipFrom->companyName   = $this->configManager->get('marello_shipping.shipper_name');
+            $shipFrom->phoneNumber   = $warehouse->getAddress()->getPhone();
+            $shipFrom->attentionName = $warehouse->getLabel();
+        }
+
+
+
     }
 }

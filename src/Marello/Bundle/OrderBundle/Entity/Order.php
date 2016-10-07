@@ -9,6 +9,7 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ShippingBundle\Entity\HasShipment;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
@@ -52,6 +53,9 @@ class Order extends ExtendOrder implements
     DerivedPropertyAwareInterface,
     ShippingAwareInterface
 {
+    
+    use HasShipment;
+    
     /**
      * @var int
      *
@@ -859,25 +863,9 @@ class Order extends ExtendOrder implements
      */
 
     /**
-     * @return MarelloAddress
-     */
-    public function getShipTo()
-    {
-        return $this->getShippingAddress();
-    }
-
-    /**
-     * @return MarelloAddress
-     */
-    public function getShipFrom()
-    {
-
-    }
-
-    /**
      * @return string
      */
-    public function getWeight()
+    public function getShippingWeight()
     {
         $weight = array_reduce(
             $this
@@ -900,7 +888,7 @@ class Order extends ExtendOrder implements
     /**
      * @return string
      */
-    public function getDescription()
+    public function getShippingDescription()
     {
         $description = '';
 

@@ -6,19 +6,10 @@ use Marello\Bundle\ShippingBundle\Entity\Shipment;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class ExtendShipmentAware
- *
- * @package Marello\Bundle\ShippingBundle\Entity
- * @ORM\MappedSuperclass
- */
-abstract class ExtendShipmentAware
+trait HasShipment
 {
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\ShippingBundle\Entity\Shipment")
-     * @ORM\JoinColumn(name="shipment_id", referencedColumnName="id", nullable=true)
-     *
-     * @var Shipment
      */
     protected $shipment;
 

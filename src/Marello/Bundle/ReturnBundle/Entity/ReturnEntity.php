@@ -5,10 +5,13 @@ namespace Marello\Bundle\ReturnBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ShippingBundle\Entity\HasShipment;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -31,9 +34,13 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  *      }
  * )
  */
-class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInterface
+class ReturnEntity extends ExtendReturnEntity implements
+    DerivedPropertyAwareInterface,
+    ShippingAwareInterface
 {
 
+    use HasShipment;
+    
     /**
      * @var int
      *
@@ -359,5 +366,51 @@ class ReturnEntity extends ExtendReturnEntity implements DerivedPropertyAwareInt
     public function __toString()
     {
         return (string) $this->getReturnNumber();
+    }
+
+    /***
+     * ==============================
+     * ShippingAwareInterface methods
+     * ==============================
+     */
+
+    /**
+     * @return string
+     */
+    public function getShippingWeight()
+    {
+        $weight = array_reduce(
+            $this
+                ->getReturnItems()
+                ->map(function (ReturnItem $item) {
+                    $weight = $item->getOrderItem()->getProduct()->getWeight();
+
+                    return ($weight ?: 0) * $item->getOrderItem()->getQuantity();
+                })
+                ->toArray(),
+            function ($carry, $value) {
+                return $carry + $value;
+            },
+            0
+        );
+
+        return $weight;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingDescription()
+    {
+        $description = '';
+
+        foreach ($this->getReturnItems() as $item) {
+            $description .= sprintf(
+                "%s, ",
+                $item->getOrderItem()->getProductName()
+            );
+        }
+
+        return rtrim($description, ', ');
     }
 }

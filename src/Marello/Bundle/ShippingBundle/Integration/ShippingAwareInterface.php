@@ -8,33 +8,12 @@ use Marello\Bundle\ShippingBundle\Entity\Shipment;
 interface ShippingAwareInterface
 {
     /**
-     * @return MarelloAddress
+     * @return string
      */
-    public function getShipTo();
-
-    /**
-     * @return MarelloAddress
-     */
-    public function getShipFrom();
+    public function getShippingWeight();
 
     /**
      * @return string
      */
-    public function getWeight();
-
-    /**
-     * @return string
-     */
-    public function getDescription();
-
-//    /**
-//     * @param Shipment $shipment
-//     * @return ShippingAwareInterface
-//     */
-//    public function setShipment(Shipment $shipment);
-//
-//    /**
-//     * @return Shipment
-//     */
-//    public function getShipment();
+    public function getShippingDescription();
 }
