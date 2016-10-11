@@ -26,19 +26,14 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     /** @var ConfigManager */
     protected $configManager;
 
-    /** @var Registry */
-    protected $doctrine;
-
     /**
      * UPSShippingServiceDataFactory constructor.
      *
      * @param ConfigManager $configManager
-     * @param Registry $doctrine
      */
-    public function __construct(ConfigManager $configManager, Registry $doctrine)
+    public function __construct(ConfigManager $configManager)
     {
         $this->configManager = $configManager;
-        $this->doctrine      = $doctrine;
     }
 
     /**
@@ -156,22 +151,6 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         return $rateInformation;
     }
 
-    private function getWarehouseAddress($model)
-    {
-        $warehouse = $this->doctrine->getRepository(Warehouse::class)->getDefault();
-
-        if (!$warehouse->getAddress()) {
-            return null;
-        }
-
-        $model->address       = Address::fromAddress($warehouse->getAddress());
-        $model->companyName   = $this->configManager->get('marello_shipping.shipper_name');
-        $model->attentionName = $warehouse->getLabel();
-        $model->phoneNumber   = $warehouse->getAddress()->getPhone();
-
-        return $model;
-    }
-
     /**
      * @param ShippingServiceDataProviderInterface $shippingDataProvider
      * @return ShipTo
@@ -185,10 +164,6 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $shipToAddress = $shippingDataProvider->getShippingShipTo();
 
         $shipTo->eMailAddress = $shippingDataProvider->getShippingCustomerEmail();
-
-        if (null === $shipToAddress) {
-            return $this->getWarehouseAddress($shipTo);
-        }
 
         $shipTo->address = Address::fromAddress($shipToAddress);
         $shipTo->companyName  = $shipToAddress->getFullName();
@@ -208,10 +183,6 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
 
         /** @var MarelloAddress $shipFromAddress */
         $shipFromAddress = $shippingDataProvider->getShippingShipFrom();
-
-        if (null === $shipFromAddress) {
-            return $this->getWarehouseAddress($shipFrom);
-        }
 
         $shipFrom->address       = Address::fromAddress($shipFromAddress);
         $shipFrom->companyName   = $shipFromAddress->getFullName();
