@@ -62,11 +62,11 @@ class ActionPermissionProvider
         /** @var ReturnEntity $return */
         $return = $this->objectManager->getRepository(ReturnEntity::class)->findBy(['order' => $orderId]);
 
-        if (is_array($return)) {
-            return false;
-        }
+        //if (count($return) > 0) {
+          //  return false;
+        //}
 
-        if (!$return->getId() && $isAllowedInWorkflow) {
+        if ($isAllowedInWorkflow) {
             return true;
         }
     }

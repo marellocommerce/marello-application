@@ -63,6 +63,10 @@ class ReturnItemTypeSubscriber implements EventSubscriberInterface
             $returnItem->setStatus($returnItemStatusEnum);
         }
 
+        if (!$returnItem->getReason()) {
+            return $this;
+        }
+
         if ($returnItem->getReason()->getId() === $this->warrantyReason) {
             $warrantyValidation = $this->validateProductWarranty($returnItem);
         } else {
@@ -82,7 +86,7 @@ class ReturnItemTypeSubscriber implements EventSubscriberInterface
      * @param ReturnItem $returnItem
      * @return bool
      */
-    private function validateProductRorWarranty(ReturnItem $returnItem)
+    private function validateProductWarranty(ReturnItem $returnItem)
     {
         /** @var Shipment $shipment, tmp use order createdat until we have shipment created at */
 //        $shipment       = $returnItem->getReturn()->getOrder()->getShipment();
@@ -119,7 +123,7 @@ class ReturnItemTypeSubscriber implements EventSubscriberInterface
      * @param ReturnItem $returnItem
      * @return bool
      */
-    private function validateProductWarranty(ReturnItem $returnItem)
+    private function validateProductRorWarranty(ReturnItem $returnItem)
     {
         /** @var Shipment $shipment, tmp use order createdat until we have shipment created at */
 //        $shipment       = $returnItem->getReturn()->getOrder()->getShipment();
