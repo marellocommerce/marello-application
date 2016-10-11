@@ -26,7 +26,7 @@ trait HasShipment
      *
      * @return $this
      */
-    public function setShipment($shipment)
+    public function setShipment(Shipment $shipment)
     {
         $this->shipment = $shipment;
 

@@ -34,7 +34,6 @@ services:
         arguments:
             - '@oro_config.manager'
             - '@doctrine'
-            - '@marello_shipping.integration.ups.service_address_provider'
         tags:
             - { name: marello.shipping.data_factory, alias: ups }
 

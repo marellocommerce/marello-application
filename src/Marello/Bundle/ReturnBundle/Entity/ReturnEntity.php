@@ -375,6 +375,30 @@ class ReturnEntity extends ExtendReturnEntity implements
      */
 
     /**
+     * @return MarelloAddress | null
+     */
+    public function getShippingShipFrom()
+    {
+        return $this->getOrder()->getShippingAddress();
+    }
+
+    /**
+     * @return MarelloAddress | null
+     */
+    public function getShippingShipTo()
+    {
+        return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingCustomerEmail()
+    {
+        return $this->getOrder()->getCustomer()->getEmail();
+    }
+
+    /**
      * @return string
      */
     public function getShippingWeight()

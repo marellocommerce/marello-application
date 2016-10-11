@@ -2,18 +2,11 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 
 interface ShippingAwareInterface
 {
-    /**
-     * @return string
-     */
-    public function getShippingWeight();
+    public function getShipment();
 
-    /**
-     * @return string
-     */
-    public function getShippingDescription();
+    public function setShipment(Shipment $shipment);
 }

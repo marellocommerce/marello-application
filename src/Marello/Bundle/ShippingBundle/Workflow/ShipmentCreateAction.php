@@ -49,11 +49,13 @@ class ShipmentCreateAction extends AbstractAction
         $service = $this->contextAccessor->getValue($context, $this->service);
         /** @var ShippingAwareInterface $entity */
         $entity = $this->contextAccessor->getValue($context, $this->entity);
+        $entityClass = $this->doctrine->getEntityManager()->getClassMetadata(get_class($entity))->getName();
 
         $dataFactory = $this->registry->getDataFactory($service);
         $integration = $this->registry->getIntegration($service);
+        $dataProvider = $this->registry->getDataProvider($entityClass);
 
-        $data = $dataFactory->createData($entity);
+        $data = $dataFactory->createData($dataProvider->setEntity($entity));
 
         $integration->createShipment($entity, $data);
     }

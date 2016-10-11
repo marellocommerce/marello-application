@@ -2,9 +2,9 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration;
 
-use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
+use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
 
 interface ShippingServiceDataFactoryInterface
 {
-    public function createData(ShippingAwareInterface $shippingAwareInterface);
+    public function createData(ShippingServiceDataProviderInterface $shippingAwareInterface);
 }
