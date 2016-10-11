@@ -26,7 +26,8 @@ oro_system_configuration:
                 required: true
                 constraints:
                     - NotNull: ~
-                    - Type: integer
+                    - Range:
+                        min: 1
 
         marello_return.warranty_period:
             type: text
@@ -38,7 +39,8 @@ oro_system_configuration:
                 required: true
                 constraints:
                     - NotNull: ~
-                    - Type: integer
+                    - Range:
+                        min: 1
     tree:
         system_configuration:
             platform:
