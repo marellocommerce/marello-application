@@ -2,10 +2,11 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Oro\Bundle\FormBundle\Form\Type\CollectionType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PurchaseOrderItemReceiveCollectionType
+class PurchaseOrderItemReceiveCollectionType extends AbstractType
 {
     const NAME = 'marello_purchase_order_item_receive_collection';
 

@@ -17,6 +17,20 @@ services:
         tags:
             - { name: form.type, alias: marello_purchase_order_item_collection }
 
+    marello_purchase_order.form.type.partial_receive:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PartialReceiveType
+        tags:
+            - { name: form.type, alias: marello_po_partial_receive }
+
+    marello_purchase_order.form.type.po_item_receive:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemReceiveType
+        tags:
+            - { name: form.type, alias: marello_purchase_order_item_receive }
+    marello_purchase_order.form.type.po_item_receive_collection:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemReceiveCollectionType
+        tags:
+            - { name: form.type, alias: marello_purchase_order_item_receive_collection }
+
     # Forms
 
     marello_purchase_order.form.purchase_order_create:

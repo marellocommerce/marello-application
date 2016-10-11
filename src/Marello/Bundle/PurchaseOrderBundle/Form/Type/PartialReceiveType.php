@@ -7,14 +7,14 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PurchaseOrderCreateType extends AbstractType
+class PartialReceiveType extends AbstractType
 {
-    const NAME = 'marello_purchase_order_create';
+
+    const NAME = 'marello_po_partial_receive';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('items', PurchaseOrderItemCollectionType::NAME);
+        $builder->add('items', PurchaseOrderItemReceiveCollectionType::NAME);
     }
 
     public function configureOptions(OptionsResolver $resolver)

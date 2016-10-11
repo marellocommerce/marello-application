@@ -1,2 +1,12 @@
 parameters:
     marello_purchaseorder.entity.purchaseorder.class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
+
+services:
+    marello_purchaseorder.workflow.receive_purchase_order:
+        class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction
+        arguments:
+            - @oro_workflow.context_accessor
+            - @doctrine
+        tags:
+            - { name: oro_workflow.action, alias: marello_receive_purchase_order }
+

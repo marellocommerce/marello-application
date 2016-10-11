@@ -1,5 +1,6 @@
 manual:             Manual
 import:             Import
+purchase_order:     Purchase Order
 order_workflow:
     pending:            Pending Order
     shipped:            Shipped Order
