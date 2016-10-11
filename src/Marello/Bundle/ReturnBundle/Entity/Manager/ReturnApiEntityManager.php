@@ -28,6 +28,7 @@ class ReturnApiEntityManager extends ApiEntityManager
             'fields'           => [
                 'id'           => [],
                 'returnNumber' => [],
+                'returnReference' => [],
                 'returnItems'  => [
                     'exclusion_policy' => 'all',
                     'fields'           => [

@@ -39,6 +39,7 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
 
             $return->setOrder($order);
             $return->setSalesChannel($channel);
+            $return->setReturnReference(uniqid($order->getOrderNumber()));
 
             $order->getItems()->map(function (OrderItem $item) use ($return, $reasons) {
                 $returnItem = new ReturnItem($item);
