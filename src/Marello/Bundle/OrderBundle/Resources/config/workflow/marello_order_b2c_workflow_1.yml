@@ -164,7 +164,7 @@ workflows:
             prepare_shipping_definition:
                 post_actions:
                     - @marello_shipment_create:
-                        order: $order
+                        entity: $order
                         service: 'ups'
                     - @marello_notification_send:
                         entity: $order
