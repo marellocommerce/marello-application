@@ -39,6 +39,19 @@ class ReturnApiEntityManager extends ApiEntityManager
                         'updatedAt' => [],
                     ],
                 ],
+                'workflowItem'    => [
+                    'exclusion_policy' => 'all',
+                    'fields'           => [
+                        'id' => [],
+                        'entityId' => [],
+                    ],
+                ],
+                'workflowStep'    => [
+                    'exclusion_policy' => 'all',
+                    'fields'           => [
+                        'name' => [],
+                    ],
+                ],
             ],
         ];
 
