@@ -4983,7 +4983,7 @@
         {
             "name": "oro/crm-pro-ldap-bundle",
             "version": "dev-master",
-            "target-dir": "src/OroCRMPro/Bundle/LDAPBundle",
+            "target-dir": "src/Oro/Bundle/LDAPBundle",
             "dist": {
                 "type": "path",
                 "url": "../../package/ldap",
@@ -5003,7 +5003,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "OroCRMPro\\Bundle\\LDAPBundle": "src/"
+                    "Oro\\Bundle\\LDAPBundle": "src/"
                 }
             },
             "license": [
