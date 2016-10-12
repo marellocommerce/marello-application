@@ -3,8 +3,8 @@
 namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress as MarelloAddress;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Address;

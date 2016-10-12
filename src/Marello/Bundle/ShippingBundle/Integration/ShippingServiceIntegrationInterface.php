@@ -10,7 +10,7 @@ interface ShippingServiceIntegrationInterface
     /**
      * @param ShippingAwareInterface $shippingAwareInterface
      * @param array $data
-     * 
+     *
      * @return Shipment
      */
     public function createShipment(ShippingAwareInterface $shippingAwareInterface, array $data);
