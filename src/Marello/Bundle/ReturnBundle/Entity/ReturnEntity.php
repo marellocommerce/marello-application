@@ -5,12 +5,11 @@ namespace Marello\Bundle\ReturnBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\ShippingBundle\Entity\HasShipment;
+use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -38,8 +37,7 @@ class ReturnEntity extends ExtendReturnEntity implements
     DerivedPropertyAwareInterface,
     ShippingAwareInterface
 {
-
-    use HasShipment;
+    use HasShipmentTrait;
     
     /**
      * @var int

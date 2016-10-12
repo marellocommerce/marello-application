@@ -6,7 +6,7 @@ use Marello\Bundle\ShippingBundle\Entity\Shipment;
 
 use Doctrine\ORM\Mapping as ORM;
 
-trait HasShipment
+trait HasShipmentTrait
 {
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\ShippingBundle\Entity\Shipment")

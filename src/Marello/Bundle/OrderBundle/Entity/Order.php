@@ -9,8 +9,7 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\ShippingBundle\Entity\HasShipment;
-use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -54,7 +53,7 @@ class Order extends ExtendOrder implements
     ShippingAwareInterface
 {
     
-    use HasShipment;
+    use HasShipmentTrait;
     
     /**
      * @var int
