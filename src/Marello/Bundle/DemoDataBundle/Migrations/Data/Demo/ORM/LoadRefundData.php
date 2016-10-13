@@ -43,10 +43,10 @@ class LoadRefundData extends AbstractFixture implements DependentFixtureInterfac
             }
 
             $refund = new Refund();
-            $refund
-                ->setOrder($order)
-                ->setCustomer($order->getCustomer())
-                ->setOrganization($order->getOrganization());
+            $refund->setOrder($order);
+            $refund->setCustomer($order->getCustomer());
+            $refund->setOrganization($order->getOrganization());
+            $refund->setCurrency($order->getCurrency());
 
             $refundItems = $order
                 ->getItems()
