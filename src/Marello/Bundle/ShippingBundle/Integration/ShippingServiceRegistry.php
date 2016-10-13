@@ -14,6 +14,9 @@ class ShippingServiceRegistry
 
     /** @var array */
     protected $dataFactories = [];
+    
+    /** @var array */
+    protected $dataProviders = [];
 
     /**
      * ShippingServiceRegistry constructor.
@@ -56,6 +59,22 @@ class ShippingServiceRegistry
 
         return $this->container->get($this->dataFactories[$service]);
     }
+    
+    /**
+     * @param string $entity
+     *
+     * @return ShippingServiceDataProviderInterface
+     *
+     * @throws \Exception
+     */
+    public function getDataProvider($entity)
+    {
+        if (!$this->hasDataProvider($entity)) {
+            throw new \Exception(sprintf('No shipping service data provider for "%s" entity.', $entity));
+        }
+
+        return $this->container->get($this->dataProviders[$entity]);
+    }
 
     /**
      * @param string $service
@@ -73,6 +92,15 @@ class ShippingServiceRegistry
     public function registerDataFactory($service, $id)
     {
         $this->dataFactories[$service] = $id;
+    }
+    
+    /**
+     * @param string $entity
+     * @param string $id
+     */
+    public function registerDataProvider($entity, $id)
+    {
+        $this->dataProviders[$entity] = $id;
     }
 
     /**
@@ -93,5 +121,15 @@ class ShippingServiceRegistry
     protected function hasDataFactory($service)
     {
         return array_key_exists($service, $this->dataFactories);
+    }
+    
+    /**
+     * @param string $entity
+     *
+     * @return bool
+     */
+    protected function hasDataProvider($entity)
+    {
+        return array_key_exists($entity, $this->dataProviders);
     }
 }

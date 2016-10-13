@@ -1,0 +1,7 @@
+services:
+    marello_order.shipping.integration.service_data_provider:
+        class: Marello\Bundle\OrderBundle\Provider\OrderShippingServiceDataProvider
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: marello.shipping.data_provider,  class: %marello_order.entity.order.class% }

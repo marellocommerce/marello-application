@@ -9,7 +9,8 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -47,8 +48,13 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Order extends ExtendOrder implements DerivedPropertyAwareInterface
+class Order extends ExtendOrder implements
+    DerivedPropertyAwareInterface,
+    ShippingAwareInterface
 {
+    
+    use HasShipmentTrait;
+    
     /**
      * @var int
      *
@@ -254,13 +260,6 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
      * @ORM\Column(name="saleschannel_name",type="string", nullable=false)
      */
     protected $salesChannelName;
-
-    /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\ShippingBundle\Entity\Shipment", mappedBy="order")
-     *
-     * @var Shipment
-     */
-    protected $shipment;
 
     /**
      * @var WorkflowItem
@@ -851,26 +850,6 @@ class Order extends ExtendOrder implements DerivedPropertyAwareInterface
     public function setCustomer($customer)
     {
         $this->customer = $customer;
-
-        return $this;
-    }
-
-    /**
-     * @return Shipment
-     */
-    public function getShipment()
-    {
-        return $this->shipment;
-    }
-
-    /**
-     * @param Shipment $shipment
-     *
-     * @return $this
-     */
-    public function setShipment($shipment)
-    {
-        $this->shipment = $shipment;
 
         return $this;
     }

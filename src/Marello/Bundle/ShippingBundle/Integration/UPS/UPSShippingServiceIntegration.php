@@ -4,8 +4,8 @@ namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentAcceptRequestBuilder;
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder;
@@ -55,17 +55,17 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
     }
 
     /**
-     * @param Order $order
+     *
      * @param array $data
      *
      * @return Shipment
      * @throws UPSIntegrationException
      */
-    public function createShipment(Order $order, array $data)
+    public function createShipment(ShippingAwareInterface $shippingAwareInterface, array $data)
     {
         $shipment = new Shipment();
 
-        $this->confirmShipment($shipment, $order, $data);
+        $this->confirmShipment($shipment, $shippingAwareInterface, $data);
 
         $this->acceptShipment($shipment);
 
@@ -125,12 +125,12 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
 
     /**
      * @param Shipment $shipment
-     * @param Order    $order
+     * @param ShippingAwareInterface    $shippingAwareInterface
      * @param array    $data
      *
      * @throws UPSIntegrationException
      */
-    private function confirmShipment(Shipment $shipment, Order $order, array $data)
+    private function confirmShipment(Shipment $shipment, ShippingAwareInterface $shippingAwareInterface, array $data)
     {
         $request  = $this->shipmentConfirmRequestBuilder->build($data);
         $response = $this->api->post('ShipConfirm', $request);
@@ -142,7 +142,7 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
         $this->handelError($result, 'ShipmentConfirmResponse', $response);
 
         $shipment->setShippingService('ups');
-        $shipment->setOrder($order->setShipment($shipment));
+        $shippingAwareInterface->setShipment($shipment);
 
         $digest = $result->xpath('/ShipmentConfirmResponse/ShipmentDigest');
         $digest = reset($digest);

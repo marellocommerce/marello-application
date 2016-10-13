@@ -1,3 +1,6 @@
+parameters:
+    marello_inventory.entity.warehouse.class: Marello\Bundle\InventoryBundle\Entity\Warehouse
+
 services:
     marello_product.widget_provider.actions.variant_mass_inventory:
         parent: oro_ui.widget_provider.action_button.abstract

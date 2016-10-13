@@ -3,10 +3,9 @@
 namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress as MarelloAddress;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+
+use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Address;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package;
@@ -27,48 +26,40 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     /** @var ConfigManager */
     protected $configManager;
 
-    /** @var Registry */
-    protected $doctrine;
-
     /**
      * UPSShippingServiceDataFactory constructor.
      *
      * @param ConfigManager $configManager
-     * @param Registry      $doctrine
      */
-    public function __construct(ConfigManager $configManager, Registry $doctrine)
+    public function __construct(ConfigManager $configManager)
     {
         $this->configManager = $configManager;
-        $this->doctrine      = $doctrine;
     }
 
     /**
-     * @param Order $order
-     *
+     * @param ShippingServiceDataProviderInterface $shippingDataProvider
      * @return array
      */
-    public function createData(Order $order)
+    public function createData(ShippingServiceDataProviderInterface $shippingDataProvider)
     {
         $shipment = new Shipment();
 
-        $shipment->rateInformation    = $this->createRateInformation($order);
-        $shipment->description        = $this->createDescription($order);
-        $shipment->shipper            = $this->createShipper($order);
-        $shipment->shipTo             = $this->createShipTo($order);
-        $shipment->shipFrom           = $this->createShipFrom($order);
-        $shipment->paymentInformation = $this->createPaymentInformation($order);
-        $shipment->service            = $this->createService($order);
-        $shipment->package            = $this->createPackage($order);
+        $shipment->rateInformation    = $this->createRateInformation();
+        $shipment->description        = $this->createDescription($shippingDataProvider);
+        $shipment->shipper            = $this->createShipper();
+        $shipment->shipTo             = $this->createShipTo($shippingDataProvider);
+        $shipment->shipFrom           = $this->createShipFrom($shippingDataProvider);
+        $shipment->paymentInformation = $this->createPaymentInformation();
+        $shipment->service            = $this->createService();
+        $shipment->package            = $this->createPackage($shippingDataProvider);
 
         return compact('shipment');
     }
 
     /**
-     * @param Order $order
-     *
      * @return Shipper
      */
-    protected function createShipper(Order $order)
+    protected function createShipper()
     {
         $shipper = new Shipper();
 
@@ -93,33 +84,9 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     }
 
     /**
-     * @param Order $order
-     *
-     * @return ShipTo
-     */
-    protected function createShipTo(Order $order)
-    {
-        $shipTo = new ShipTo();
-
-        /** @var MarelloAddress $shippingAddress */
-        $shippingAddress = $order->getShippingAddress();
-
-        $shipTo->companyName  = $shippingAddress->getFullName();
-        $shipTo->attentionName = $shippingAddress->getFullName();
-        $shipTo->phoneNumber  = $shippingAddress->getPhone();
-        $shipTo->eMailAddress = $order->getCustomer()->getEmail();
-
-        $shipTo->address = $address = Address::fromAddress($shippingAddress);
-
-        return $shipTo;
-    }
-
-    /**
-     * @param Order $order
-     *
      * @return Service
      */
-    protected function createService(Order $order)
+    protected function createService()
     {
         $service = new Service('11', 'UPS Standard');
 
@@ -127,34 +94,14 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     }
 
     /**
-     * @param Order $order
-     * 
-     * @return string
-     */
-    protected function getDescription(Order $order)
-    {
-        $description = '';
-
-        foreach ($order->getItems() as $item) {
-            $description .= sprintf(
-                "%s, ",
-                $item->getProductName()
-            );
-        }
-
-        return rtrim($description, ', ');
-    }
-
-    /**
-     * @param Order $order
-     *
+     * @param ShippingServiceDataProviderInterface $shippingDataProvider
      * @return Package
      */
-    protected function createPackage(Order $order)
+    protected function createPackage(ShippingServiceDataProviderInterface $shippingDataProvider)
     {
         $package = new Package();
 
-        $package->description     = $this->getDescription($order);
+        $package->description     = $shippingDataProvider->getShippingDescription();
         $package->packagingType   = $packagingType = new PackagingType('02', 'Customer Supplied');
 //        $package->referenceNumber = $referenceNumber = new ReferenceNumber('00', 'Package');
 
@@ -162,20 +109,7 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $package->packageWeight->unitOfMeasurement = new Package\UnitOfMeasurement();
         $package->packageWeight->unitOfMeasurement->code = 'KGS';
 
-        $weight = array_reduce(
-            $order
-                ->getItems()
-                ->map(function (OrderItem $item) {
-                    $weight = $item->getProduct()->getWeight();
-
-                    return ($weight ?: 0) * $item->getQuantity();
-                })
-                ->toArray(),
-            function ($carry, $value) {
-                return $carry + $value;
-            },
-            0
-        );
+        $weight = $shippingDataProvider->getShippingWeight();
 
         $package->packageWeight->weight = $weight ? (string) $weight : '1'; // Use default weight of 1 if there are no weights specified.
 
@@ -183,11 +117,9 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     }
 
     /**
-     * @param Order $order
-     *
      * @return PaymentInformation
      */
-    private function createPaymentInformation(Order $order)
+    private function createPaymentInformation()
     {
         $paymentInformation = new PaymentInformation();
 
@@ -201,21 +133,18 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     }
 
     /**
-     * @param Order $order
-     * 
+     * @param ShippingServiceDataProviderInterface $shippingDataProvider
      * @return string
      */
-    protected function createDescription(Order $order)
+    protected function createDescription(ShippingServiceDataProviderInterface $shippingDataProvider)
     {
-        return $this->getDescription($order);
+        return $shippingDataProvider->getShippingDescription();
     }
 
     /**
-     * @param Order $order
-     *
      * @return RateInformation
      */
-    private function createRateInformation(Order $order)
+    private function createRateInformation()
     {
         $rateInformation = new RateInformation();
 
@@ -223,23 +152,44 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     }
 
     /**
-     * @param Order $order
+     * @param ShippingServiceDataProviderInterface $shippingDataProvider
+     * @return ShipTo
      *
+     */
+    protected function createShipTo(ShippingServiceDataProviderInterface $shippingDataProvider)
+    {
+        $shipTo = new ShipTo();
+
+        /** @var MarelloAddress $shipToAddress */
+        $shipToAddress = $shippingDataProvider->getShippingShipTo();
+
+        $shipTo->eMailAddress = $shippingDataProvider->getShippingCustomerEmail();
+
+        $shipTo->address = Address::fromAddress($shipToAddress);
+        $shipTo->companyName  = $shipToAddress->getFullName();
+        $shipTo->attentionName = $shipToAddress->getFullName();
+        $shipTo->phoneNumber  = $shipToAddress->getPhone();
+
+        return $shipTo;
+    }
+
+    /**
+     * @param ShippingServiceDataProviderInterface $shippingDataProvider
      * @return null
      */
-    private function createShipFrom(Order $order)
+    private function createShipFrom(ShippingServiceDataProviderInterface $shippingDataProvider)
     {
-        $warehouse = $this->doctrine->getRepository(Warehouse::class)->getDefault();
-
-        if (!$warehouse->getAddress()) {
-            return null;
-        }
-
         $shipFrom = new ShipFrom();
 
-        $shipFrom->address       = Address::fromAddress($warehouse->getAddress());
-        $shipFrom->companyName   = $this->configManager->get('marello_shipping.shipper_name');
-        $shipFrom->phoneNumber   = $warehouse->getAddress()->getPhone();
-        $shipFrom->attentionName = $warehouse->getLabel();
+        /** @var MarelloAddress $shipFromAddress */
+        $shipFromAddress = $shippingDataProvider->getShippingShipFrom();
+
+        $shipFrom->address       = Address::fromAddress($shipFromAddress);
+        $shipFrom->companyName   = $shipFromAddress->getFullName();
+        $shipFrom->attentionName = $shipFromAddress->getFullName();
+        $shipFrom->phoneNumber   = $shipFromAddress->getPhone();
+
+        return $shipFrom;
+
     }
 }

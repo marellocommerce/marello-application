@@ -23,5 +23,6 @@ class MarelloOrderExtension extends Extension
         $loader->load('services.yml');
         $loader->load('workflow_actions.yml');
         $loader->load('form.yml');
+        $loader->load('shipping.yml');
     }
 }

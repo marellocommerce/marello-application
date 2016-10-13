@@ -24,14 +24,6 @@ class Shipment extends ExtendShipment
     protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order", inversedBy="shipment")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     *
-     * @var Order
-     */
-    protected $order;
-
-    /**
      * @ORM\Column(type="string")
      *
      * @var string
@@ -110,26 +102,6 @@ class Shipment extends ExtendShipment
     public function setUpsShipmentDigest($upsShipmentDigest)
     {
         $this->upsShipmentDigest = $upsShipmentDigest;
-
-        return $this;
-    }
-
-    /**
-     * @return Order
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    /**
-     * @param Order $order
-     *
-     * @return $this
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
 
         return $this;
     }
