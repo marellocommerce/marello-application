@@ -40,14 +40,28 @@
             </div>
         </div>
     {% endset %}
+
     {% set address %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
+                    <h5>{{ 'marello.order.customer.primary_address.label' | trans }}</h5>
                     {{ Address.renderAddress(entity.primaryAddress) }}
                 </div>
             </div>
         </div>
+    {% endset %}
+
+    {% set order %}
+
+    {% endset %}
+
+    {% set return %}
+
+    {% endset %}
+
+    {% set refund %}
+
     {% endset %}
 
     {% set dataBlocks = [
@@ -55,14 +69,29 @@
             'title': 'General'|trans,
             'class': 'active',
             'subblocks': [
-                { 'data' : [general] }
+                { 'data' : [general] },
+                { 'data' : [address] }
             ]
         },
         {
-            'title': 'marello.order.customer.primary_address.label'|trans,
+            'title': 'marello.order.customer.order.label'|trans,
             'class': 'active',
             'subblocks': [
-                { 'data': [address] }
+                { 'data': [order] }
+            ]
+        },
+        {
+            'title': 'marello.order.customer.return.label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data': [return] }
+            ]
+        },
+        {
+            'title': 'marello.order.customer.refund.label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data': [refund] }
             ]
         }
     ] %}
