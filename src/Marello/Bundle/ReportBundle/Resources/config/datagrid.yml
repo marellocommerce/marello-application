@@ -189,3 +189,55 @@ datagrid:
                     pageSize:
                         items: [5]
                         default_per_page: 5
+
+    marello_report-returns-returned_qty_by_reason:
+            pageTitle: marello.report.title.returned_qty_by_reason
+            source:
+                type: orm
+                acl_resource: oro_report_view
+                query:
+                    select:
+                        - ri
+                        - oi.productSku
+                        - oi.productName
+                        - SUM(ri.quantity) AS quantityReturned
+                    from:
+                        - { table: MarelloReturnBundle:ReturnItem, alias: ri }
+                    join:
+                        left:
+                            - { join: ri.orderItem, alias: oi }
+                    groupBy: oi.productSku, oi.productName
+            columns:
+                productSku:
+                    label:              marello.product.sku.label
+                    frontend_type:      string
+                productName:
+                    label:              marello.product.name.label
+                    frontend_type:      string
+                reason:
+                    data_name:          reason
+                    label:              marello.return.returnitem.reason.label
+                    frontend_type:      string
+                quantityReturned:
+                    label:              marello.report.datagrid.columns.quantity_returned.label
+                    frontend_type:      number
+                    data_name:          quantityReturned
+            sorters:
+                columns:
+                    productSku:            { data_name: oi.productSku }
+                    productName:           { data_name: oi.productName }
+                    quantityReturned:      { data_name: quantityReturned }
+                    reason:                { data_name: ri.reason }
+                default:
+                    productSku: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+            filters:
+                columns:
+                    productSku:
+                        type: string
+                        data_name: oi.productSku
+                    productName:
+                        type: string
+                        data_name: oi.productName
+            options:
+                entityHint: report data
+                export: false
