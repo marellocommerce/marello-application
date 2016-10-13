@@ -26,7 +26,7 @@ class CustomerApiEntityManager extends ApiEntityManager
                 'city'         => [],
                 'country'      => [],
                 'region'       => [],
-                'organization' => [],
+                'company'      => [],
                 'postalCode'   => [],
                 'phone'        => [],
             ],

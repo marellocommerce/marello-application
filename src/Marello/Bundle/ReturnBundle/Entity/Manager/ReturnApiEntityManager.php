@@ -28,6 +28,7 @@ class ReturnApiEntityManager extends ApiEntityManager
             'fields'           => [
                 'id'           => [],
                 'returnNumber' => [],
+                'returnReference' => [],
                 'returnItems'  => [
                     'exclusion_policy' => 'all',
                     'fields'           => [
@@ -36,6 +37,19 @@ class ReturnApiEntityManager extends ApiEntityManager
                         'orderItem' => $itemConfig,
                         'createdAt' => [],
                         'updatedAt' => [],
+                    ],
+                ],
+                'workflowItem'    => [
+                    'exclusion_policy' => 'all',
+                    'fields'           => [
+                        'id' => [],
+                        'entityId' => [],
+                    ],
+                ],
+                'workflowStep'    => [
+                    'exclusion_policy' => 'all',
+                    'fields'           => [
+                        'name' => [],
                     ],
                 ],
             ],

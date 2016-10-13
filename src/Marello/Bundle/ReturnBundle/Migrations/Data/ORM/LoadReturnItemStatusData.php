@@ -7,16 +7,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
-class LoadReturnReasonsData extends AbstractFixture
+class LoadReturnItemStatusData extends AbstractFixture
 {
     /** @var array */
     protected $data = [
-        'Too big'                    => false,
-        'Too small'                  => false,
-        'Does not meet expectations' => false,
-        'Damaged'                    => false,
-        'Warranty'                   => false,
-        'Other'                      => false,
+        'Authorized'    => false,
+        'Denied'        => false,
     ];
 
     /**
@@ -24,7 +20,7 @@ class LoadReturnReasonsData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        $className = ExtendHelper::buildEnumValueClassName('marello_return_reason');
+        $className = ExtendHelper::buildEnumValueClassName('marello_return_status');
 
         /** @var EnumValueRepository $enumRepo */
         $enumRepo = $manager->getRepository($className);

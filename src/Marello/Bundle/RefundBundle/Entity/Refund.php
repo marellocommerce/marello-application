@@ -91,6 +91,12 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
     protected $order;
 
     /**
+     * @var string
+     * @ORM\Column(name="currency", type="string", length=10, nullable=true)
+     */
+    protected $currency;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -154,7 +160,9 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
         $refund
             ->setOrder($order)
             ->setCustomer($order->getCustomer())
-            ->setOrganization($order->getOrganization());
+            ->setOrganization($order->getOrganization())
+            ->setCurrency($order->getCurrency())
+        ;
 
         $order->getItems()->map(
             function (OrderItem $item) use ($refund) {
@@ -177,7 +185,9 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
         $refund
             ->setOrder($return->getOrder())
             ->setCustomer($return->getOrder()->getCustomer())
-            ->setOrganization($return->getOrganization());
+            ->setOrganization($return->getOrganization())
+            ->setCurrency($return->getOrder()->getCurrency())
+        ;
 
         $return->getReturnItems()->map(
             function (ReturnItem $item) use ($refund) {
@@ -374,7 +384,15 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
      */
     public function getCurrency()
     {
-        return $this->getOrder()->getCurrency();
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
     }
 
     /**

@@ -7,9 +7,12 @@ marello:
             return_number.label:      Return Number
             order.label:              Order
             return_items.label:       Returned items
-            workflow_item.label:        Workflow Item
-            workflow_step.label:        Workflow Step
-
+            workflow_item.label:      Workflow Item
+            workflow_step.label:      Workflow Step
+            messages:
+                success:
+                    returnentity:
+                        saved:        Return saved
         returnitem:
             id.label:                   Id
             entity_label:               Returned Item
@@ -18,5 +21,10 @@ marello:
             returned_quantity.label:    Quantity Returned
             quantity.label:             Return Quantity
             reason.label:               Return Reason
+            status.label:               Status
             order_item.label:           Order Item
             return.label:               Return
+
+        system_configuration:
+            ror_period:                 Right of return period
+            warranty_period:            Warranty period

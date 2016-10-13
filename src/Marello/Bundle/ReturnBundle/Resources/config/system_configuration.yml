@@ -1,0 +1,57 @@
+oro_system_configuration:
+    groups:
+        return_configuration:
+            title: 'Return Warranty Configuration'
+            icon: icon-refresh
+            priority: 50
+
+        ror_settings:
+            title: 'Right of Return Settings'
+            icon: icon-info
+            priority: 100
+
+        warranty_settings:
+            title: 'Product Warranty Settings'
+            icon: icon-info
+            priority: 50
+
+    fields:
+        marello_return.ror_period:
+            type: text
+            data_type: integer
+            priority: 120
+            options:
+                label: marello.return.system_configuration.ror_period
+                resettable: true
+                required: true
+                constraints:
+                    - NotNull: ~
+                    - Range:
+                        min: 1
+
+        marello_return.warranty_period:
+            type: text
+            data_type: integer
+            priority: 120
+            options:
+                label: marello.return.system_configuration.warranty_period
+                resettable: true
+                required: true
+                constraints:
+                    - NotNull: ~
+                    - Range:
+                        min: 1
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            return_configuration:
+                                children:
+                                    ror_settings:
+                                        children:
+                                            - marello_return.ror_period
+                                    warranty_settings:
+                                        children:
+                                            - marello_return.warranty_period

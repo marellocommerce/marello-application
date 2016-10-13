@@ -17,7 +17,10 @@ use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAwareInterface, ActivityExtensionAwareInterface, NoteExtensionAwareInterface
+class MarelloReturnBundleInstaller implements Installation,
+    ExtendExtensionAwareInterface,
+    ActivityExtensionAwareInterface,
+    NoteExtensionAwareInterface
 {
     /** @var ActivityExtension */
     protected $activityExtension;
@@ -54,6 +57,18 @@ class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAware
             $schema->getTable('marello_return_item'),
             'reason',
             'marello_return_reason',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+            ]
+        );
+
+        $this->extendExtension->addEnumField(
+            $schema,
+            $schema->getTable('marello_return_item'),
+            'status',
+            'marello_return_status',
             false,
             false,
             [
@@ -104,6 +119,7 @@ class MarelloReturnBundleInstaller implements Installation, ExtendExtensionAware
         $table->addColumn('updatedat', 'datetime', []);
         $table->addColumn('saleschannel_name', 'string', ['length' => 255]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('return_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['workflow_item_id'], 'uniq_3c549d8d1023c4ee');
         $table->addIndex(['order_id'], 'idx_3c549d8d8d9f6d38', []);

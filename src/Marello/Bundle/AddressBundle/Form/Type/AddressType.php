@@ -18,11 +18,16 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->remove('label');
+        $builder->remove('organization');
 
         $builder
             ->add('phone', 'text', [
                 'required' => false,
-            ]);
+            ])
+            ->add('company', 'text', [
+                'required' => false,
+            ])
+        ;
     }
 
     /**

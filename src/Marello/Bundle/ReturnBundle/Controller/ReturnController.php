@@ -46,16 +46,24 @@ class ReturnController extends Controller
 
             $manager->persist($return);
             $manager->flush();
-
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('marello.return.returnentity.messages.success.returnentity.saved')
+            );
             return $this->get('oro_ui.router')->redirectAfterSave(
+                [
+                    'route'      => 'marello_return_return_update',
+                    'parameters' => [
+                        'id'                      => $return->getId(),
+                        '_enableContentProviders' => 'mainMenu'
+                    ]
+                ],
                 [
                     'route'      => 'marello_return_return_view',
                     'parameters' => [
-                        'id' => $return->getId(),
-                    ],
-                ],
-                [
-                    'route' => 'marello_return_return_index',
+                        'id'                      => $return->getId(),
+                        '_enableContentProviders' => 'mainMenu'
+                    ]
                 ],
                 $return
             );
@@ -109,7 +117,11 @@ class ReturnController extends Controller
                     ],
                 ],
                 [
-                    'route' => 'marello_return_return_index',
+                    'route'      => 'marello_return_return_view',
+                    'parameters' => [
+                        'id'                      => $return->getId(),
+                        '_enableContentProviders' => 'mainMenu'
+                    ]
                 ],
                 $return
             );

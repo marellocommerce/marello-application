@@ -115,6 +115,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('customer_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('order_reference', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('invoice_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('subtotal', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('total_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('grand_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);

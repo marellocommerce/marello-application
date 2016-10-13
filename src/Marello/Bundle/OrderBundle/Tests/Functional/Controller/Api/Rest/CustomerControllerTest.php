@@ -56,6 +56,7 @@ class CustomerControllerTest extends WebTestCase
                 'city'       => 'Eindhoven',
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
+                'company'    => 'Madia Inc'
             ],
         ];
 

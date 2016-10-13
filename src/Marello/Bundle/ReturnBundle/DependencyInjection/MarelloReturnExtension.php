@@ -18,5 +18,9 @@ class MarelloReturnExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('form.yml');
+
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $config);
+        $container->prependExtensionConfig($this->getAlias(), array_intersect_key($config, array_flip(['settings'])));
     }
 }

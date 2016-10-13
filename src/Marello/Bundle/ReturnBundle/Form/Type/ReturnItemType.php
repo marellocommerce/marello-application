@@ -3,6 +3,8 @@
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
 use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
+use Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnItemTypeSubscriber;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -11,6 +13,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ReturnItemType extends AbstractType
 {
     const NAME = 'marello_return_item';
+
+    /** @var ReturnItemTypeSubscriber $returnItemTypeSubscriber */
+    protected $returnItemTypeSubscriber;
+
+    /**
+     * ReturnType constructor.
+     *
+     * @param ReturnItemTypeSubscriber $returnItemTypeSubscriber
+     */
+    public function __construct(ReturnItemTypeSubscriber $returnItemTypeSubscriber)
+    {
+        $this->returnItemTypeSubscriber = $returnItemTypeSubscriber;
+    }
 
     /**
      * {@inheritdoc}
@@ -29,6 +44,14 @@ class ReturnItemType extends AbstractType
             'required'  => true,
             'label'     => 'marello.return.returnentity.reason.label',
         ]);
+
+        $builder->add('status', 'oro_enum_choice', [
+            'enum_code' => 'marello_return_status',
+            'required'  => true,
+            'label'     => 'marello.return.returnitem.status.label',
+        ]);
+
+        $builder->addEventSubscriber($this->returnItemTypeSubscriber);
     }
 
     /**
