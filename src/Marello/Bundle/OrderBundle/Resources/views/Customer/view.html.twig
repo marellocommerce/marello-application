@@ -1,6 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroAddressBundle::macros.html.twig' as Address %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% oro_title_set({params : {"%name%": entity.fullName }}) %}
 
@@ -53,15 +54,33 @@
     {% endset %}
 
     {% set order %}
-
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-order-customer', {'customerId': entity.id}) }}
+                </div>
+            </div>
+        </div>
     {% endset %}
 
     {% set return %}
-
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-return-customer', {'customerId': entity.id}) }}
+                </div>
+            </div>
+        </div>
     {% endset %}
 
     {% set refund %}
-
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-refund-customer', {'customerId': entity.id}) }}
+                </div>
+            </div>
+        </div>
     {% endset %}
 
     {% set dataBlocks = [
@@ -74,21 +93,21 @@
             ]
         },
         {
-            'title': 'marello.order.customer.order.label'|trans,
+            'title': 'marello.order.entity_plural_label'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data': [order] }
             ]
         },
         {
-            'title': 'marello.order.customer.return.label'|trans,
+            'title': 'marello.return.entity_plural_label'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data': [return] }
             ]
         },
         {
-            'title': 'marello.order.customer.refund.label'|trans,
+            'title': 'marello.refund.entity_plural_label'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data': [refund] }
