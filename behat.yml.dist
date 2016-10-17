@@ -20,6 +20,10 @@ default: &default
                 - OroCRMAccountBundle
                 - OroCRMTaskBundle
                 - OroCRMProOrganizationConfigBundle
+                - OroHelpBundle
+                - OroSearchBundle
+                - OroDashboardBundle
+                - OroCRMSalesBundle
 
 selenium2:
     <<: *default
