@@ -165,7 +165,7 @@ workflows:
                 post_actions:
                     - @marello_shipment_create:
                         entity: $order
-                        service: 'ups'
+                        service: 'manual'
                     - @marello_notification_send:
                         entity: $order
                         recipient: $order.billingAddress.email
