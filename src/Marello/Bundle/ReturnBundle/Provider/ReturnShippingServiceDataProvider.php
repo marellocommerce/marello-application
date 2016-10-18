@@ -15,6 +15,8 @@ class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderIn
 
     protected $entityManager;
 
+    protected $warehouse;
+
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
@@ -33,9 +35,11 @@ class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderIn
      */
     public function getShippingShipTo()
     {
-        $warehouse = $this->entityManager->getRepository(Warehouse::class)->getDefault();
+        if (!$this->warehouse) {
+            $this->warehouse = $this->setWarehouse($this->entityManager->getRepository(Warehouse::class)->getDefault());
+        }
 
-        return $warehouse->getAddress();
+        return $this->warehouse->getAddress();
     }
 
     /**
@@ -98,5 +102,17 @@ class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderIn
     public function getEntity()
     {
         return $this->entity;
+    }
+
+    public function setWarehouse(Warehouse $warehouse)
+    {
+        $this->warehouse = $warehouse;
+
+        return $this;
+    }
+
+    public function getWarehouse()
+    {
+        return $this->warehouse;
     }
 }
