@@ -7,6 +7,7 @@ use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadReturnData;
 use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseData;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Service;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipment;
@@ -53,7 +54,7 @@ class ManualShippingServiceDataFactoryTest extends WebTestCase
      */
     public function testReturnShipment()
     {
-        /** @var Order $return */
+        /** @var ReturnEntity $return */
         $return = $this->getReference('marello_return_1');
 
         $shippingDataProvider = $this->client->getContainer()->get('marello_order.shipping.integration.service_data_provider');
