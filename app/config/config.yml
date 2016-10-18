@@ -46,6 +46,7 @@ assetic:
     filters:
         cssrewrite: ~
         lessphp:
+            paths: ["%kernel.root_dir%/../web/bundles"]
             file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
             apply_to: "\.less$"
         cssmin:

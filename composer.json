@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "oro/platform": "1.8.*"
+        "oro/platform": "1.10.6"
     },
     "config": {
         "component-dir": "web/bundles/components"
