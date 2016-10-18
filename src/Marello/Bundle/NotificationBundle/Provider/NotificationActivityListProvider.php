@@ -3,16 +3,16 @@
 namespace Marello\Bundle\NotificationBundle\Provider;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Marello\Bundle\NotificationBundle\Entity\Notification;
+use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\ActivityListBundle\Entity\ActivityList;
 use Oro\Bundle\ActivityListBundle\Entity\ActivityOwner;
 use Oro\Bundle\ActivityListBundle\Model\ActivityListProviderInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Component\DependencyInjection\ServiceLink;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Symfony\Component\Translation\TranslatorInterface;
+use Oro\Bundle\ActivityBundle\Tools\ActivityAssociationHelper;
+
+use Marello\Bundle\NotificationBundle\Entity\Notification;
 
 class NotificationActivityListProvider implements ActivityListProviderInterface
 {
@@ -25,38 +25,42 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
     /** @var ServiceLink */
     protected $entityManagerLink;
 
+    /** @var ActivityAssociationHelper $activityAssociationHelper */
+    protected $activityAssociationHelper;
+
     /**
      * NotificationActivityListProvider constructor.
      *
-     * @param DoctrineHelper      $doctrineHelper
-     * @param TranslatorInterface $translator
-     * @param ServiceLink         $entityManagerLink
+     * @param DoctrineHelper            $doctrineHelper
+     * @param TranslatorInterface       $translator
+     * @param ServiceLink               $entityManagerLink
+     * @param ActivityAssociationHelper $activityAssociationHelper
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
         TranslatorInterface $translator,
-        ServiceLink $entityManagerLink
+        ServiceLink $entityManagerLink,
+        ActivityAssociationHelper $activityAssociationHelper
     ) {
-        $this->doctrineHelper    = $doctrineHelper;
-        $this->translator        = $translator;
-        $this->entityManagerLink = $entityManagerLink;
+        $this->doctrineHelper               = $doctrineHelper;
+        $this->translator                   = $translator;
+        $this->entityManagerLink            = $entityManagerLink;
+        $this->activityAssociationHelper    = $activityAssociationHelper;
     }
 
     /**
-     * Returns true if given target $configId is supported by activity
-     *
-     * @param ConfigIdInterface $configId
-     * @param ConfigManager     $configManager
-     *
+     * Returns true if given target $entityClass is supportes nofitication activity
+     * @param string $entityClass
+     * @param bool $accessible
      * @return bool
      */
-    public function isApplicableTarget(ConfigIdInterface $configId, ConfigManager $configManager)
+    public function isApplicableTarget($entityClass, $accessible = true)
     {
-        $provider = $configManager->getProvider('activity');
-
-        return $provider->hasConfigById($configId)
-        && $provider->getConfigById($configId)->has('activities')
-        && in_array(Notification::class, $provider->getConfigById($configId)->get('activities'));
+        return $this->activityAssociationHelper->isActivityAssociationEnabled(
+            $entityClass,
+            Notification::class,
+            $accessible
+        );
     }
 
     /**
@@ -143,6 +147,14 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
     public function getRoutes()
     {
         return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOwner($entity)
+    {
+        return null;
     }
 
     /**

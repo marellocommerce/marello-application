@@ -15,7 +15,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  * @ORM\Table(name="marello_notification")
  * @Oro\Config(
  *  defaultValues={
- *      "grouping"={"groups"={"activity"}},
+ *      "grouping"={
+ *          "groups"={"activity"}
+ *      },
  *      "ownership"={
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"
