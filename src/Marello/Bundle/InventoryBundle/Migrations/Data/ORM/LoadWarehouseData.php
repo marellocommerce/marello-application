@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 
 class LoadWarehouseData implements FixtureInterface
@@ -20,6 +21,12 @@ class LoadWarehouseData implements FixtureInterface
          */
         $defaultWarehouse = new Warehouse('Warehouse', true);
         $defaultWarehouse->setOwner($organization);
+
+        $warehouseAddress = new MarelloAddress();
+
+        $manager->persist($warehouseAddress);
+
+        $defaultWarehouse->setAddress($warehouseAddress);
 
         $manager->persist($defaultWarehouse);
         $manager->flush();

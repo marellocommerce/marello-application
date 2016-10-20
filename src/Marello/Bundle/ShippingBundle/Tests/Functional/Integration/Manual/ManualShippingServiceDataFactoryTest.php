@@ -1,10 +1,11 @@
 <?php
 
-namespace Marello\Bundle\ShippingBundle\Tests\Functional\Integration\UPS;
+namespace Marello\Bundle\ShippingBundle\Tests\Functional\Integration\Manual;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadReturnData;
+use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseData;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package;
@@ -12,15 +13,15 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Service;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipper;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\ShipTo;
-use Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory;
+use Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceDataFactory;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 /**
  * @dbIsolation
  */
-class UPSShippingServiceDataFactoryTest extends WebTestCase
+class ManualShippingServiceDataFactoryTest extends WebTestCase
 {
-    /** @var UPSShippingServiceDataFactory */
+    /** @var ManualShippingServiceDataFactory */
     protected $factory;
 
     protected function setUp()
@@ -29,7 +30,7 @@ class UPSShippingServiceDataFactoryTest extends WebTestCase
 
         $this->loadFixtures([LoadOrderData::class, LoadReturnData::class]);
         
-        $this->factory = $this->client->getContainer()->get('marello_shipping.integration.ups.service_data_factory');
+        $this->factory = $this->client->getContainer()->get('marello_shipping.integration.manual.service_data_factory');
     }
 
     /**
@@ -44,19 +45,10 @@ class UPSShippingServiceDataFactoryTest extends WebTestCase
         $shippingDataProvider = $shippingDataProvider->setEntity($order)->setWarehouse($this->getReference('marello_warehouse_default'));
 
         $data = $this->factory->createData($shippingDataProvider);
-
-        $this->assertArrayHasKey('shipment', $data);
-
-        /** @var Shipment $shipment */
-        $shipment = $data['shipment'];
-
-        $this->assertInstanceOf(Shipment::class, $shipment);
-        $this->assertInstanceOf(Shipper::class, $shipment->shipper);
-        $this->assertInstanceOf(ShipTo::class, $shipment->shipTo);
-        $this->assertInstanceOf(Service::class, $shipment->service);
-        $this->assertInstanceOf(Package::class, $shipment->package);
+        
+        $this->assertSame([], $data);
     }
-
+    
     /**
      * @test
      */
@@ -69,16 +61,7 @@ class UPSShippingServiceDataFactoryTest extends WebTestCase
         $shippingDataProvider = $shippingDataProvider->setEntity($return)->setWarehouse($this->getReference('marello_warehouse_default'));
 
         $data = $this->factory->createData($shippingDataProvider);
-
-        $this->assertArrayHasKey('shipment', $data);
-
-        /** @var Shipment $shipment */
-        $shipment = $data['shipment'];
-
-        $this->assertInstanceOf(Shipment::class, $shipment);
-        $this->assertInstanceOf(Shipper::class, $shipment->shipper);
-        $this->assertInstanceOf(ShipTo::class, $shipment->shipTo);
-        $this->assertInstanceOf(Service::class, $shipment->service);
-        $this->assertInstanceOf(Package::class, $shipment->package);
+        
+        $this->assertSame([], $data);
     }
 }

@@ -55,11 +55,35 @@ class ShippingServiceRegistryTest extends WebTestCase
 
     /**
      * @test
+     * @covers ShippingServiceRegistry::getIntegration
+     */
+    public function getIntegrationReturnsManualIntegration()
+    {
+        $integration = $this->registry->getIntegration('manual');
+
+        $this->assertNotNull($integration);
+        $this->assertInstanceOf(ShippingServiceIntegrationInterface::class, $integration);
+    }
+
+    /**
+     * @test
      * @covers ShippingServiceRegistry::getDataFactory
      */
     public function getDataFactoryReturnsUPSDataFactory()
     {
         $factory = $this->registry->getDataFactory('ups');
+
+        $this->assertNotNull($factory);
+        $this->assertInstanceOf(ShippingServiceDataFactoryInterface::class, $factory);
+    }
+
+    /**
+     * @test
+     * @covers ShippingServiceRegistry::getDataFactory
+     */
+    public function getDataFactoryReturnsManualDataFactory()
+    {
+        $factory = $this->registry->getDataFactory('manual');
 
         $this->assertNotNull($factory);
         $this->assertInstanceOf(ShippingServiceDataFactoryInterface::class, $factory);

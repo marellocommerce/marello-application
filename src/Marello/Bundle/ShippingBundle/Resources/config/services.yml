@@ -37,6 +37,21 @@ services:
         tags:
             - { name: marello.shipping.data_factory, alias: ups }
 
+    marello_shipping.integration.manual.service_integration:
+        class: Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceIntegration
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: marello.shipping.integration, alias: manual }
+
+    marello_shipping.integration.manual.service_data_factory:
+        class: Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceDataFactory
+        arguments:
+            - '@oro_config.manager'
+            - '@doctrine'
+        tags:
+            - { name: marello.shipping.data_factory, alias: manual }
+
     # UPS Request buiders
     marello_shipping.integration.ups.request_builder.shipment_confirm:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder
