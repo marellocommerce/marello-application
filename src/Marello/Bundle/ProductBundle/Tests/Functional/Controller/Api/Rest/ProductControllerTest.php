@@ -10,7 +10,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @dbIsolation
+ * @dbIsolationPerTest
  */
 class ProductControllerTest extends WebTestCase
 {
@@ -118,12 +118,6 @@ class ProductControllerTest extends WebTestCase
             'status'    => 'enabled',
             'desiredStockLevel' => 10,
             'purchaseStockLevel' => 2,
-//            'prices'    => [
-//                [
-//                    'currency' => $this->getReference('marello_sales_channel_1')->getCurrency(),
-//                    'value' => 200.00
-//                ]
-//            ],
             'inventory' => [
                 ['stock' => 10, 'warehouse' => $this->getDefaultWarehouse()->getId()],
             ],
@@ -131,7 +125,6 @@ class ProductControllerTest extends WebTestCase
                 $this->getReference('marello_sales_channel_1')->getId(),
             ],
         ];
-
 
         $this->client->request(
             'POST',
@@ -154,15 +147,6 @@ class ProductControllerTest extends WebTestCase
         $this->assertEquals($data['name'], $product->getName());
         $this->assertEquals($data['sku'], $product->getSku());
         $this->assertEquals($data['status'], $product->getStatus()->getName());
-//        $this->assertCount(1, $product->getPrices());
-//        $this->assertEquals(
-//            reset($data['prices'])['currency'],
-//            $product->getPrices()->first()->getCurrency()
-//        );
-//        $this->assertEquals(
-//            reset($data['prices'])['value'],
-//            $product->getPrices()->first()->getValue()
-//        );
         $this->assertCount(1, $product->getInventoryItems());
         $this->assertEquals(
             reset($data['inventory'])['stock'],
@@ -174,7 +158,6 @@ class ProductControllerTest extends WebTestCase
         );
         $this->assertCount(1, $product->getChannels());
         $this->assertEquals(reset($data['channels']), $product->getChannels()->first()->getId());
-
     }
 
     /**
@@ -188,12 +171,6 @@ class ProductControllerTest extends WebTestCase
             'status'    => 'enabled',
             'desiredStockLevel' => 10,
             'purchaseStockLevel' => 2,
-//            'prices'    => [
-//                [
-//                    'currency' => $this->getReference('marello_sales_channel_1')->getCurrency(),
-//                    'value' => 200.00
-//                ]
-//            ],
             'inventory' => [
                 ['stock' => 10, 'warehouse' => -5 /* wrong ID */],
             ],
@@ -215,6 +192,7 @@ class ProductControllerTest extends WebTestCase
 
     /**
      * Tests updating product. Should return HTTP No Content and update product in database.
+     * @depends testCreate
      */
     public function testUpdate()
     {
@@ -226,10 +204,6 @@ class ProductControllerTest extends WebTestCase
             'sku'       => $product->getSku(),
             'desiredStockLevel' => 10,
             'purchaseStockLevel' => 2,
-//            'price'     => $product->getPrice(),
-//            'prices'    => $product->getPrices()->map(function (ProductPrice $price) {
-//                return ['currency' => $price->getCurrency(), 'value' => $price->getValue()];
-//            })->toArray(),
             'status'    => $product->getStatus()->getName(),
             'inventory' => $product->getInventoryItems()->map(function (InventoryItem $item) {
                 return ['stock' => $item->getStock(), 'warehouse' => $item->getWarehouse()->getId()];
@@ -255,23 +229,6 @@ class ProductControllerTest extends WebTestCase
             ->find($product->getId());
 
         $this->assertEquals($data['name'], $product->getName());
-    }
-
-    /**
-     * Tests deleting Product. This should return HTTP No Content.
-     */
-    public function testDelete()
-    {
-        $productId = $this->getReference('marello-product-0')->getId();
-
-        $this->client->request(
-            'DELETE',
-            $this->getUrl('marello_product_api_delete_product', ['id' => $productId])
-        );
-
-        $response = $this->client->getResponse();
-
-        $this->assertResponseStatusCodeEquals($response, Response::HTTP_NO_CONTENT);
     }
 
     /**

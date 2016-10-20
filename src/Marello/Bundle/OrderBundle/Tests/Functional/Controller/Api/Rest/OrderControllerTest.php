@@ -5,11 +5,13 @@ namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @dbIsolation
+ * @dbIsolationPerTest
  */
 class OrderControllerTest extends WebTestCase
 {
@@ -44,10 +46,9 @@ class OrderControllerTest extends WebTestCase
     {
         /** @var Customer $customer */
         $customer = $this->getReference('marello_customer_1');
-
         $data = [
             'orderReference'  => 333444,
-            'salesChannel'    => $this->getReference('marello_sales_channel_3')->getId(),
+            'salesChannel'    => $this->getReference('marello_sales_channel_3')->getCode(),
             'subtotal'        => 365.00,
             'totalTax'        => 76.65,
             'grandTotal'      => 365.00,
@@ -88,7 +89,7 @@ class OrderControllerTest extends WebTestCase
                     'rowTotal'          => 190.00,
                 ],
                 [
-                    'product'           => 'msj005',
+                    'product'           => 'msj003xs',
                     'quantity'          => 1,
                     'price'             => 138.25,
                     'originalPrice'     => 138.25,
@@ -123,12 +124,16 @@ class OrderControllerTest extends WebTestCase
      */
     public function testCreateWithCustomerData()
     {
-        /** @var Customer $customer */
-        $customer = $this->getReference('marello_customer_1');
+        /** @var SalesChannel $salesChannel */
+        $salesChannel = $this->getReference('marello_sales_channel_3');
+        /** @var Product $product */
+        $product = $this->getReference('marello-product-1');
+        /** @var Product $product2 */
+        $product2 = $this->getReference('marello-product-2');
 
         $data = [
             'orderReference'  => 333456,
-            'salesChannel'    => $this->getReference('marello_sales_channel_3')->getId(),
+            'salesChannel'    => $salesChannel->getCode(),
             'subtotal'        => 365.00,
             'totalTax'        => 76.65,
             'grandTotal'      => 365.00,
@@ -170,9 +175,10 @@ class OrderControllerTest extends WebTestCase
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
             ],
-            'items'           => [
+            'items'          => [
                 [
-                    'product'           => 'msj005',
+                    'product'           => $product->getSku(),
+                    'productName'       => $product->getName(),
                     'quantity'          => 1,
                     'price'             => 150.10,
                     'originalPrice'     => 150.10,
@@ -182,7 +188,8 @@ class OrderControllerTest extends WebTestCase
                     'rowTotal'          => 190.00,
                 ],
                 [
-                    'product'           => 'msj005',
+                    'product'           => $product2->getSku(),
+                    'productName'       => $product2->getName(),
                     'quantity'          => 1,
                     'price'             => 138.25,
                     'originalPrice'     => 138.25,
@@ -194,13 +201,14 @@ class OrderControllerTest extends WebTestCase
             ],
         ];
 
+
         $this->client->request(
             'POST',
             $this->getUrl('marello_order_api_post_order'),
             $data
         );
-
         $response = json_decode($this->client->getResponse()->getContent(), true);
+
         $this->assertArrayHasKey('id', $response);
 
         /** @var Order $order */
@@ -213,6 +221,9 @@ class OrderControllerTest extends WebTestCase
         $this->assertCount(2, $order->getItems());
     }
 
+    /**
+     * @depends testCreateWithCustomerData
+     */
     public function testGet()
     {
         $this->client->request(
@@ -224,6 +235,9 @@ class OrderControllerTest extends WebTestCase
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
     }
 
+    /**
+     * @depends testCreateWithCustomerData
+     */
     public function testUpdate()
     {
         $time = new \DateTime();

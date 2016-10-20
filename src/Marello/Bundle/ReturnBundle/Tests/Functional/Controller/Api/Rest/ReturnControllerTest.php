@@ -11,7 +11,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @dbIsolation
+ * @dbIsolationPerTest
  */
 class ReturnControllerTest extends WebTestCase
 {

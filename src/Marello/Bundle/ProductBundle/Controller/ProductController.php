@@ -70,14 +70,14 @@ class ProductController extends Controller
                     'route'      => 'marello_product_update',
                     'parameters' => [
                         'id'                      => $product->getId(),
-                        '_enableContentProviders' => 'mainMenu'
+//                        '_enableContentProviders' => 'mainMenu'
                     ]
                 ],
                 [
                     'route'      => 'marello_product_view',
                     'parameters' => [
                         'id'                      => $product->getId(),
-                        '_enableContentProviders' => 'mainMenu'
+//                        '_enableContentProviders' => 'mainMenu'
                     ]
                 ],
                 $product

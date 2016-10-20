@@ -118,6 +118,14 @@ class PurchaseOrderItem
     }
 
     /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
      * @ORM\PreUpdate
      */
     public function preUpdate()

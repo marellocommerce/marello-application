@@ -7,7 +7,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @dbIsolation
+ * @dbIsolationPerTest
  */
 class OrderControllerTest extends WebTestCase
 {
@@ -83,7 +83,7 @@ class OrderControllerTest extends WebTestCase
             'GET',
             $this->getUrl('marello_order_order_updateaddress', [
                 'id'               => $this->getReference('marello_order_0')->getBillingAddress()->getId(),
-                '_widgetContainer' => 'block',
+                '_widgetContainer' => 'dialog',
             ])
         );
 
@@ -92,8 +92,10 @@ class OrderControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Save')->form();
         $name = 'Han Solo';
+        $lastName = 'Solo';
 
         $form['marello_address[firstName]'] = $name;
+        $form['marello_address[lastName]'] = $lastName;
 
         $this->client->followRedirects(true);
         $this->client->submit($form);

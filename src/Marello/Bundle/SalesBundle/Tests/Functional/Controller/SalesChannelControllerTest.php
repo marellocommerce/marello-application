@@ -7,7 +7,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @dbIsolation
+ * @dbIsolationPerTest
  */
 class SalesChannelControllerTest extends WebTestCase
 {
