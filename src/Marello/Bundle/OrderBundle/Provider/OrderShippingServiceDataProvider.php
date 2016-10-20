@@ -14,6 +14,8 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
     protected $entity;
 
     protected $entityManager;
+    
+    protected $warehouse;
 
     public function __construct(EntityManager $entityManager)
     {
@@ -25,9 +27,11 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
      */
     public function getShippingShipFrom()
     {
-        $warehouse = $this->entityManager->getRepository(Warehouse::class)->getDefault();
+        if (!$this->warehouse) {
+            $this->warehouse = $this->setWarehouse($this->entityManager->getRepository(Warehouse::class)->getDefault());
+        }
 
-        return $warehouse->getAddress();
+        return $this->warehouse->getAddress();
     }
 
     /**
@@ -98,5 +102,17 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
     public function getEntity()
     {
         return $this->entity;
+    }
+    
+    public function setWarehouse(Warehouse $warehouse)
+    {
+        $this->warehouse = $warehouse;
+        
+        return $this;
+    }
+
+    public function getWarehouse()
+    {
+        return $this->warehouse;
     }
 }
