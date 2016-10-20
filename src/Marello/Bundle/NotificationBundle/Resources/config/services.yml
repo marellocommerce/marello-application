@@ -21,7 +21,11 @@ services:
         arguments:
            - @oro_entity.doctrine_helper
            - @translator
-           - @oro_entity_config.link.entity_manager
+           - @marello_notification.link.entity_manager
            - @oro_activity.association_helper
         tags:
            - { name: oro_activity_list.provider, priority: 80 }
+
+    marello_notification.link.entity_manager:
+        tags:
+            - { name: oro_service_link, service: doctrine.orm.entity_manager }
