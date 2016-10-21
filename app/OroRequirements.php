@@ -13,12 +13,12 @@ use Oro\Bundle\RequireJSBundle\DependencyInjection\Configuration as RequireJSCon
  */
 class OroRequirements extends SymfonyRequirements
 {
-    const REQUIRED_PHP_VERSION  = '5.4.9';
+    const REQUIRED_PHP_VERSION  = '5.5.9';
     const REQUIRED_GD_VERSION   = '2.0';
     const REQUIRED_CURL_VERSION = '7.0';
     const REQUIRED_ICU_VERSION  = '3.8';
 
-    const EXCLUDE_REQUIREMENTS_MASK = '/5\.3\.(3|4|8|16)|5\.4\.(0|8)/';
+    const EXCLUDE_REQUIREMENTS_MASK = '/5\.3\.(3|4|8|16)|5\.4\.(0|8|11)/';
 
     public function __construct()
     {
@@ -77,6 +77,12 @@ class OroRequirements extends SymfonyRequirements
             'Install and enable the <strong>SOAP</strong> extension.'
         );
 
+        $this->addRecommendation(
+            extension_loaded('tidy'),
+            'Tidy extension should be installed to make sure that any HTML is correctly converted into a text representation.',
+            'Install and enable the <strong>Tidy</strong> extension.'
+        );
+
         // Windows specific checks
         if (defined('PHP_WINDOWS_VERSION_BUILD')) {
             $this->addRecommendation(
@@ -96,8 +102,11 @@ class OroRequirements extends SymfonyRequirements
         if (!defined('PHP_WINDOWS_VERSION_BUILD')) {
             $this->addRequirement(
                 $this->checkFileNameLength(),
-                'Cache folder should not be inside encrypted directory',
-                'Move <strong>app/cache</strong> folder outside encrypted directory.'
+                'Maximum supported filename length must be greater or equal 242 characters.' .
+                ' Make sure that the cache folder is not inside the encrypted directory.',
+                'Move <strong>app/cache</strong> folder outside encrypted directory.',
+                'Maximum supported filename length must be greater or equal 242 characters.' .
+                ' Move app/cache folder outside encrypted directory.'
             );
         }
 
@@ -354,7 +363,7 @@ class OroRequirements extends SymfonyRequirements
 
         $fileLength = trim($getConf->getOutput());
 
-        return $fileLength == 255;
+        return $fileLength >= 242;
     }
 
     /**

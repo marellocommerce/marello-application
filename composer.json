@@ -10,15 +10,26 @@
             "": "src/"
         }
     },
-    "repositories": [
-        {
+    "repositories": {
+        "composer": {
             "type": "composer",
             "url": "https://packagist.orocrm.com"
         }
-    ],
+    },
     "require": {
-        "php": ">=5.5.9",
-        "oro/platform": "1.10.6"
+        "oro/platform": "1.10.*"
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "2.5.3",
+        "squizlabs/php_codesniffer": "2.3.3",
+        "behat/behat": "3.1.0",
+        "behat/mink-extension": "^2.0",
+        "behat/mink-selenium2-driver": "1.*",
+        "behat/symfony2-extension": "2.1.1",
+        "nelmio/alice": "^2.1",
+        "phpunit/phpunit": "4.8.*",
+        "johnkary/phpunit-speedtrap": "1.0.*",
+        "mybuilder/phpunit-accelerator": "1.1.*"
     },
     "config": {
         "component-dir": "web/bundles/components"
@@ -31,8 +42,6 @@
         "test-extended": [
             "rm -rf app/cache/*",
             "app/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --force",
-            "app/console doctrine:fixture:load --no-debug --append --no-interaction --env=test --fixtures ./vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Fixtures",
-            "app/console oro:test:schema:update --env test",
             "phpunit -c app --tap --testsuite=\"Unit Tests\"",
             "phpunit -c app --tap --testsuite=\"Functional Tests\""
         ],
@@ -41,14 +50,16 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
-            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets"
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
-            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets"
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
         ]
     },
     "minimum-stability": "dev",
@@ -59,9 +70,5 @@
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
         }
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^4.5.0",
-        "symfony/var-dumper": "3.0.*"
     }
 }

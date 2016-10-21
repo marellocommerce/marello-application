@@ -1,6 +1,7 @@
 imports:
     - { resource: @OroDistributionBundle/Resources/config/security.yml }
     - { resource: ../parameters.yml }
+    - { resource: ../marello.yml }
 
 framework:
     #esi:             ~
