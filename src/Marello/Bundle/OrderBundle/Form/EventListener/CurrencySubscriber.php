@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Form\Listener;
+namespace Marello\Bundle\OrderBundle\Form\EventListener;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

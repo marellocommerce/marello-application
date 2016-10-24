@@ -4,7 +4,7 @@ services:
     marello_return.form.type.return:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnType
         arguments:
-            - @marello_return.form.subscriber.return_type_subscriber
+            - @marello_return.form.event_listener.return_type_subscriber
         tags:
             - { name: form.type, alias: marello_return }
 
@@ -23,7 +23,7 @@ services:
     marello_return.form.type.return_item:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemType
         arguments:
-            - @marello_return.return_item.form_subscriber
+            - @marello_return.form.event_listener.return_item_type_subscriber
         tags:
             - { name: form.type, alias: marello_return_item }
 
@@ -37,11 +37,11 @@ services:
         tags:
             - { name: form.type, alias: marello_return_item_collection }
 
-    marello_return.form.subscriber.return_type_subscriber:
-        class: Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnTypeSubscriber
+    marello_return.form.event_listener.return_type_subscriber:
+        class: Marello\Bundle\ReturnBundle\Form\EventListener\ReturnTypeSubscriber
 
-    marello_return.return_item.form_subscriber:
-        class: Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnItemTypeSubscriber
+    marello_return.form.event_listener.return_item_type_subscriber:
+        class: Marello\Bundle\ReturnBundle\Form\EventListener\ReturnItemTypeSubscriber
         arguments:
             - @doctrine.orm.entity_manager
             - @oro_config.manager

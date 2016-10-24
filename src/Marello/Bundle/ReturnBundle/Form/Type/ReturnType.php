@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
-use Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnTypeSubscriber;
+use Marello\Bundle\ReturnBundle\Form\EventListener\ReturnTypeSubscriber;
 use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnEntityConstraint;
 use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnWarrantyEntityConstraint;
 

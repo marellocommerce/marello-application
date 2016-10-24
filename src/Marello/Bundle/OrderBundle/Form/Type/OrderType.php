@@ -4,8 +4,8 @@ namespace Marello\Bundle\OrderBundle\Form\Type;
 
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Form\Listener\CurrencySubscriber;
-use Marello\Bundle\OrderBundle\Form\Listener\OrderTotalsSubscriber;
+use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
+use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
