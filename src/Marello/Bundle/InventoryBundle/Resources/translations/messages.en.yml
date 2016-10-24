@@ -39,3 +39,6 @@ marello:
             subject_id.label:                   Subject Id
             subject_type.label:                 Subject Type
             log.label:                          Stock Level Log
+
+        information.label:            Inventory information
+        movements.label:              Inventory movements

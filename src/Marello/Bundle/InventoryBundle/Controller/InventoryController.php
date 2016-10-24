@@ -86,4 +86,21 @@ class InventoryController extends Controller
             'item' => $item,
         ];
     }
+
+    /**
+     * @Config\Route("/widget/datagrid/{id}", name="marello_inventory_widget_datagrid", requirements={"id"="\d+"})
+     * @Config\Template
+     *
+     * @param Product $product
+     *
+     * @return array
+     */
+    public function datagridAction(Product $product)
+    {
+        $item = $product->getInventoryItems()->first();
+
+        return [
+            'item' => $item,
+        ];
+    }
 }

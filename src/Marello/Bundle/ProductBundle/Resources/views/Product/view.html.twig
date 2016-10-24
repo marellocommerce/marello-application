@@ -52,6 +52,10 @@
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }]) %}
 
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'subblocks': generalSubblocks
+    }] %}
 
     {% set productInventoryLogChart %}
         <div class="responsive-block">
@@ -63,20 +67,7 @@
         </div>
     {% endset %}
 
-    {% set dataBlocks = [{
-        'title': 'General'|trans,
-        'subblocks': generalSubblocks
-    }] %}
-
-    {% set productChannelPriceWidget %}
-        {{ oro_widget_render({
-            'widgetType': 'block',
-            'url': path('marello_product_widget_price', {id: entity.id}),
-            'title': ''
-        }) }}
-    {% endset %}
-
-    {% set productInventoryWidget %}
+    {% set productInventoryWidgetInfo %}
         <div class="responsive-block">
             {{ oro_widget_render({
                 'widgetType': 'block',
@@ -84,6 +75,24 @@
                 'title': ''
             }) }}
         </div>
+    {% endset %}
+
+    {% set productInventoryWidgetDatagrid %}
+        <div class="responsive-block">
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('marello_inventory_widget_datagrid', {id: entity.id}),
+                'title': ''
+            }) }}
+        </div>
+    {% endset %}
+
+    {% set productChannelPriceWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('marello_product_widget_price', {id: entity.id}),
+            'title': ''
+        }) }}
     {% endset %}
 
     {% set productSalesChannelWidget %}
@@ -97,14 +106,25 @@
     {% endset %}
 
 
-    {% set dataBlocks = dataBlocks|merge([{
-        'title' : 'marello.inventory.label'|trans,
+    {% set dataBlocks = dataBlocks|merge([
+    {
+        'title' : 'marello.inventory.information.label'|trans,
         'subblocks': [{
-            'title' : 'Inventory Movements',
+            'title' : '',
             'useSpan': false,
-            'data' : [ productInventoryLogChart, productInventoryWidget ]
-        }]
-    }]) %}
+            'data' : [ productInventoryWidgetInfo]
+        },]
+    },
+    {
+        'title' : 'marello.inventory.movements.label'|trans,
+        'subblocks': [{
+            'title' : '',
+            'useSpan': false,
+            'data' : [ productInventoryLogChart, productInventoryWidgetDatagrid]
+        },]
+    }
+
+    ]) %}
 
     {% set dataBlocks = dataBlocks|merge([{
         'title' : 'marello.pricing.header.label'|trans,
