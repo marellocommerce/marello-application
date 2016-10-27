@@ -5,7 +5,6 @@ marello:
         name.label:                 Name
         sku.label:                  SKU
         weight.label:               Weight (in Kg)
-        battery_type.label:         Battery Type
         warranty.label:             Product Warranty
         price.label:                Default price
         status.label:               Status

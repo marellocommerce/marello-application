@@ -150,12 +150,12 @@ class Product extends ExtendProduct implements
      */
     protected $weight;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     *
-     * @var string
-     */
-    protected $batteryType;
+//    /**
+//     * @ORM\Column(type="string", nullable=true)
+//     *
+//     * @var string
+//     */
+//    protected $batteryType;
 
     /**
      * @var integer
@@ -777,25 +777,25 @@ class Product extends ExtendProduct implements
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getBatteryType()
-    {
-        return $this->batteryType;
-    }
-
-    /**
-     * @param string $batteryType
-     *
-     * @return Product
-     */
-    public function setBatteryType($batteryType)
-    {
-        $this->batteryType = $batteryType;
-
-        return $this;
-    }
+//    /**
+//     * @return string
+//     */
+//    public function getBatteryType()
+//    {
+//        return $this->batteryType;
+//    }
+//
+//    /**
+//     * @param string $batteryType
+//     *
+//     * @return Product
+//     */
+//    public function setBatteryType($batteryType)
+//    {
+//        $this->batteryType = $batteryType;
+//
+//        return $this;
+//    }
 
     /**
      * @return integer

@@ -31,13 +31,13 @@ class ProductApiType extends AbstractType
                     'scale' => 2,
                 ]
             )
-            ->add(
-                'batteryType',
-                'text',
-                [
-                    'required' => false,
-                ]
-            )
+//            ->add(
+//                'batteryType',
+//                'text',
+//                [
+//                    'required' => false,
+//                ]
+//            )
             ->add(
                 'desiredStockLevel',
                 'number',
