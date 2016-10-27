@@ -1,6 +1,9 @@
 #
-# Marello  Bundles config
+# Marello config
 #
+fos_js_routing:
+    routes_to_expose:         [marello_*]
+
 oro_help:
     defaults:
         link: 'http://www.marello.com/'
