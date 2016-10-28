@@ -14,6 +14,7 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
      * @param bool                 $isPersistNew
      * @param null                 $itemData
      * @param array                $searchContext
+     * @param bool                 $entityIsRelation
      *
      * @return null
      */
@@ -22,7 +23,8 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         $isFullData = false,
         $isPersistNew = false,
         $itemData = null,
-        array $searchContext = []
+        array $searchContext = [],
+        $entityIsRelation = false
     ) {
         $item = $this->findInventoryItem($entity);
 
