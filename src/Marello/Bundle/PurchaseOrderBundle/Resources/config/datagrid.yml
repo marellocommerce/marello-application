@@ -126,30 +126,52 @@ datagrid:
             name:
                 label:              marello.product.name.label
                 frontend_type:      string
-            desiredStockLevel:
-                label:              marello.product.desired_stock_level.label
-                frontend_type:      number
             purchaseStockLevel:
-                label:              marello.product.purchase_stock_level.label
+                label:              marello.purchaseorder.purchaseorderitem.purchase_stock_level.label
+                frontend_type:      number
+            desiredStockLevel:
+                label:              marello.purchaseorder.purchaseorderitem.desired_stock_level.label
                 frontend_type:      number
             virtualStock:
-                label:              marello.inventory.stocklevel.virtual_stock.label
+                label:              marello.purchaseorder.purchaseorderitem.virtual_stock_level.label
                 frontend_type:      number
                 data_name:          virtualStock
             orderAmount:
                 label:              marello.purchaseorder.purchaseorderitem.order_amount.label
                 frontend_type:      number
                 data_name:          orderAmount
-
+        sorters:
+            columns:
+                sku:                    { data_name: p.sku }
+                name:                   { data_name: p.name }
+                purchaseStockLevel:     { data_name: p.purchaseStockLevel }
+                desiredStockLevel:      { data_name: p.desiredStockLevel }
+                virtualStock:           { data_name: virtualStock }
+                orderAmount:            { data_name: orderAmount }
+            default:
+                orderAmount: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 sku:
-                    type: string
-                    data_name: p.sku
+                    type:             string
+                    data_name:        p.sku
                 name:
-                    type: string
-                    data_name: p.name
-
+                    type:             string
+                    data_name:        p.name
+                purchaseStockLevel:
+                    type:             number
+                    data_name:        p.purchaseStockLevel
+                desiredStockLevel:
+                    type:             number
+                    data_name:        p.desiredStockLevel
+                virtualStock:
+                    type:             number
+                    data_name:        virtualStock
+                    filter_by_having: true
+                orderAmount:
+                    type:             number
+                    data_name:        orderAmount
+                    filter_by_having: true
         properties:
             id: ~
             view_link:

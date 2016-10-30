@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\RefundBundle\Form\Listener;
+namespace Marello\Bundle\RefundBundle\Form\EventListener;
 
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

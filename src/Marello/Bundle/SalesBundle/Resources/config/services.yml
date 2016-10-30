@@ -3,12 +3,12 @@ parameters:
     marello_sales.saleschannel.model.channel_aware_interface.class: Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface
 
 services:
-    marello_sales.saleschannel.form_default_channels_subscriber:
+    marello_sales.form.event_listener.default_sales_channel_subscriber:
         class: Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber
         arguments:
             - @doctrine.orm.entity_manager
 
-    marello_sales.saleschannel.form_subscriber:
+    marello_sales.form.event_listener.sales_channel_form_subscriber:
         class: Marello\Bundle\SalesBundle\Form\EventListener\SalesChannelFormSubscriber
         arguments:
             - @oro_locale.settings

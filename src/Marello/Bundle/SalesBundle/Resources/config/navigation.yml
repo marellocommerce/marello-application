@@ -6,11 +6,13 @@ oro_menu_config:
             extras:
                 icon: icon-shopping-cart
                 position: 20
+
         sales_channel:
             label: marello.sales.saleschannel.entity_plural_label
             route: marello_sales_saleschannel_index
             extras:
                 routes: ['marello_sales_saleschannel_*']
+                position: 40
 
         shortcut_new_saleschannel:
             label: 'marello.sales.saleschannel.menu.shortcut_new_saleschannel.label'

@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ReturnBundle\Form\Subscriber;
+namespace Marello\Bundle\ReturnBundle\Form\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
 

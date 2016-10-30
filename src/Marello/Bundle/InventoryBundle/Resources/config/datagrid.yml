@@ -48,6 +48,17 @@ datagrid:
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
+        sorters:
+            columns:
+                sku:            { data_name: p.sku }
+                product:        { data_name: p.name }
+                stock:          { data_name: stock }
+                allocatedStock: { data_name: allocatedStock }
+                virtualStock:   { data_name: virtualStock }
+                status:         { data_name: s.label }
+                createdAt:      { data_name: p.createdAt }
+            default:
+                sku: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 sku:

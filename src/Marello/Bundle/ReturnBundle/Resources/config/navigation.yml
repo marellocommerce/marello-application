@@ -5,13 +5,13 @@ oro_menu_config:
             route: marello_return_return_index
             extras:
                 routes: ['marello_return_return_*']
+                position: 20
     tree:
         application_menu:
             children:
                 sales:
                     children:
                         returns: ~
-                    position: 40
 
 oro_titles:
     marello_return_return_index: marello.return.returnentity.entity_plural_label

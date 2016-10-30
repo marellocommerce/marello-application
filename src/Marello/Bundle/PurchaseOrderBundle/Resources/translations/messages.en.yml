@@ -1,15 +1,27 @@
 marello:
     purchaseorder:
-        entity_label:                       Purchase Order
-        entity_plural_label:                Purchase Orders
-        purchase_order_number.label:        PO Number
-        items.label:                        Purchase Order Items
-        select_products:                    Products to include in new PO
+        entity_label:                                   Purchase Order
+        entity_plural_label:                            Purchase Orders
+        purchase_order_number.label:                    PO Number
+        items.label:                                    Purchase Order Items
+        select_products:                                Products to include in new PO
 
         purchaseorderitem:
-            order_amount.label:                 Order Amount
-            ordered_amount.label:               Ordered Amount
-            received_amount.label:              Received Amount
+            order_amount.label:                         Order Amount
+            ordered_amount.label:                       Ordered Amount
+            received_amount.label:                      Received Amount
+            purchase_stock_level.label:                 Purchase Level
+            desired_stock_level.label:                  Desired Level
+            virtual_stock_level.label:                  Virtual Level
 
             validation:
-                received_amount:            Total amount received can only be as many items as ordered amount.
+                received_amount:                        Total amount received can only be as many items as ordered amount.
+
+        navigation:
+            forecasting_and_purchasing.label:           Forecasting & Purchasing
+
+        menu:
+            shortcut_new_purchase_order.label:          Create new purchase order
+            shortcut_new_purchase_order.description:    Create new purchase order from selected items
+            shortcut_list_purchase_orders.label:        Show list order purchase orders
+            shortcut_list_purchase_orders.description:  List of purchase orders

@@ -41,30 +41,32 @@ class ActionPermissionProvider
         return array(
             'return'    => $this->isReturnApplicable($record),
             'refund'    => $this->isRefundApplicable($record->getValue('workflowStep')),
-            'view'      => true
+            'view'      => true,
+            'delete'    => false
         );
     }
 
+    /**
+     * {@inheritdoc}
+     * @param WorkflowStep $step
+     * @return bool
+     */
     protected function isRefundApplicable(WorkflowStep $step)
     {
         return (!in_array($step->getName(), $this->excludedRefundableSteps));
     }
 
+    /**
+     * {@inheritdoc}
+     * @param $record
+     * @return bool
+     */
     protected function isReturnApplicable($record)
     {
         // workflow step allowed
 
         $workflowStep = $record->getValue('workflowStep');
         $isAllowedInWorkflow = (in_array($workflowStep->getName(), $this->allowedReturnSteps));
-
-        //cannot return if al items have been returned
-        $orderId = $record->getValue('id');
-        /** @var ReturnEntity $return */
-        $return = $this->objectManager->getRepository(ReturnEntity::class)->findBy(['order' => $orderId]);
-
-        //if (count($return) > 0) {
-          //  return false;
-        //}
 
         if ($isAllowedInWorkflow) {
             return true;

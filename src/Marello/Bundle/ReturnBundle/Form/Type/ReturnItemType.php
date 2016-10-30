@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
 use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
-use Marello\Bundle\ReturnBundle\Form\Subscriber\ReturnItemTypeSubscriber;
+use Marello\Bundle\ReturnBundle\Form\EventListener\ReturnItemTypeSubscriber;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -1,16 +1,25 @@
 oro_menu_config:
     items:
-        orders:
-            label: marello.order.entity_plural_label
-            route: marello_order_order_index
+        customer_tab:
+            label: marello.order.navigation.customers.label
+            uri: '#'
             extras:
-                routes: ['marello_order_order_*']
+                icon: icon-group
+                position: 30
 
         customers:
             label: marello.order.customer.entity_plural_label
             route: marello_order_customer_index
             extras:
                 routes: ['marello_order_customer_*']
+                position: 10
+
+        orders:
+            label: marello.order.entity_plural_label
+            route: marello_order_order_index
+            extras:
+                routes: ['marello_order_order_*']
+                position: 10
 
         shortcut_new_order:
             label: 'marello.order.menu.shortcut_new_order.label'
@@ -32,8 +41,9 @@ oro_menu_config:
                 sales:
                     children:
                         orders: ~
+                customer_tab:
+                    children:
                         customers: ~
-                    position: 20
         shortcuts:
             children:
                 shortcut_new_order: ~

@@ -8,7 +8,7 @@ services:
     marello_sales_form_type_saleschannel:
         class: %marello_sales.form_type.saleschannel.class%
         arguments:
-            - @marello_sales.saleschannel.form_subscriber
+            - @marello_sales.form.event_listener.sales_channel_form_subscriber
         tags:
              - { name: form.type, alias: marello_sales_channel }
              

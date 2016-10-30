@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ReturnBundle\Form\Subscriber;
+namespace Marello\Bundle\ReturnBundle\Form\EventListener;
 
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
