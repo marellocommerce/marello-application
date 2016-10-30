@@ -7,9 +7,12 @@ marello:
         select_products:                    Products to include in new PO
 
         purchaseorderitem:
-            order_amount.label:                 Order Amount
-            ordered_amount.label:               Ordered Amount
-            received_amount.label:              Received Amount
+            order_amount.label:             Order Amount
+            ordered_amount.label:           Ordered Amount
+            received_amount.label:          Received Amount
+            purchase_stock_level.label:     Purchase Level
+            desired_stock_level.label:      Desired Level
+            virtual_stock_level.label:      Virtual Level
 
             validation:
                 received_amount:            Total amount received can only be as many items as ordered amount.
