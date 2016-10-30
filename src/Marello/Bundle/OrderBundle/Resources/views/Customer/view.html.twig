@@ -35,6 +35,8 @@
                     {{ UI.renderProperty('marello.order.customer.last_name.label'|trans, entity.lastName) }}
                     {{ UI.renderProperty('marello.order.customer.name_suffix.label'|trans, entity.nameSuffix) }}
                     {{ UI.renderProperty('marello.order.customer.email.label'|trans, entity.email) }}
+                    {{ UI.renderProperty('marello.order.customer.phone.label'|trans, entity.primaryAddress.phone) }}
+                    {{ UI.renderProperty('marello.order.customer.company.label'|trans, entity.primaryAddress.company) }}
                     {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
                     {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date|default('N/A'|trans)) }}
                 </div>
