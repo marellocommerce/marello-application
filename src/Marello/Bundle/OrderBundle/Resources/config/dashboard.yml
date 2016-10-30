@@ -24,25 +24,26 @@ oro_dashboard_config:
             icon:        bundles/orodashboard/img/no_icon.png
             data_items:
                 revenue:
-                    data_provider: @marello_order.provider.order_statistic_provider->getValues($widgetOptions$, getTotalRevenueValues, currency)
+                    data_provider: @oro_dashboard.provider.big_number.processor->getBigNumberValues($widgetOptions$, marello-order, getTotalRevenueValues, currency)
                     label:         marello.order.dashboard.order_statistics.revenue.label
                     acl:           marello_order_view
-                    template:      MarelloOrderBundle:Dashboard:statisticWidgetItem.html.twig
+                    template:      OroDashboardBundle:Dashboard:bigNumberSubwidget.html.twig
                 average_order_value:
-                    data_provider: @marello_order.provider.order_statistic_provider->getValues($widgetOptions$, getAverageOrderValues, currency)
+                    data_provider: @oro_dashboard.provider.big_number.processor->getBigNumberValues($widgetOptions$, marello-order, getAverageOrderValues, currency)
                     label:         marello.order.dashboard.order_statistics.average_order_value.label
                     acl:           marello_order_view
-                    template:      MarelloOrderBundle:Dashboard:statisticWidgetItem.html.twig
+                    template:      OroDashboardBundle:Dashboard:bigNumberSubwidget.html.twig
                 orders_number:
-                    data_provider: @marello_order.provider.order_statistic_provider->getValues($widgetOptions$, getTotalOrdersNumberValues, integer)
+                    data_provider: @oro_dashboard.provider.big_number.processor->getBigNumberValues($widgetOptions$, marello-order, getTotalOrdersNumberValues, integer)
                     label:         marello.order.dashboard.order_statistics.orders_number.label
                     acl:           marello_order_view
-                    template:      MarelloOrderBundle:Dashboard:statisticWidgetItem.html.twig
+                    template:      OroDashboardBundle:Dashboard:bigNumberSubwidget.html.twig
             configuration:
                 dateRange:
                     type: oro_type_widget_date_range
                     options:
                        label: oro.dashboard.date_range.label
+                       value_types: true
                     show_on_widget: true
                 usePreviousInterval:
                     type: oro_type_widget_previous_date_range
@@ -55,10 +56,10 @@ oro_dashboard_config:
                 subWidgets:
                     type: oro_type_widget_items
                     options:
-                        label: marello.order.dashboard.order_statistics.widget_items.label
+                        label: oro.dashboard.widget.big_number.metrics
                         attr:
                             placeholder: oro.dashboard.widget.big_number.choose_metrics_placeholder
-                        item_label: marello.order.dashboard.order_statistics.metric_name
+                        item_label: oro.dashboard.widget.big_number.metricName
                         required: false
                         widget_name: order_statistics_widget
 

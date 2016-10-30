@@ -145,6 +145,13 @@ class Product extends ExtendProduct implements
 
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      *
      * @var float
      */
