@@ -92,6 +92,9 @@ marello:
                 order:
                     saved:          Order saved
 
+        navigation:
+            customers.label: Customers
+
         menu:
             shortcut_new_order.label: Create new order
             shortcut_new_order.description: Create new order instance
