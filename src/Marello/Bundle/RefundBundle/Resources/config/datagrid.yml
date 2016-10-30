@@ -188,6 +188,13 @@ datagrid:
                 label:          oro.grid.action.update
                 icon:           edit
                 link:           update_link
+        options:
+            export: false
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
 
     marello-refund-additional-items:
         source:
