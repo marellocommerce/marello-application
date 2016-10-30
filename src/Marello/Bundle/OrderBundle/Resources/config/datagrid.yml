@@ -224,7 +224,12 @@ datagrid:
                 icon:       eur
         action_configuration: [@marello_order.datagrid.action_permission_provider, "getOrderActionPermissions"]
         options:
-            export: true
+            export: false
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
 
 
     marello-order-items:

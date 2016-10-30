@@ -191,6 +191,13 @@ datagrid:
                 link:       view_link
                 icon:       eye-open
                 rowAction:  true
+        options:
+            export: false
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
 
     marello-return-items:
         source:
