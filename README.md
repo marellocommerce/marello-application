@@ -51,7 +51,7 @@ http://getcomposer.org/ or just run the following command:
 php composer.phar install --prefer-dist --no-dev
 ```
 
-- Create the database with the name specified on previous step (default name is "bap_standard").
+- Create the database with the name specified on previous step (default name is "marello_application").
 
 - Install application and admin user with Installation Wizard by opening install.php in the browser or from CLI:
 
@@ -107,8 +107,8 @@ The Marello application is based on the Symfony standard application so web serv
 ## Package Manager Configuration
 
 Github OAuth token should be configured in package manager settings
-[1]:  http://symfony.com/doc/2.3/book/installation.html
+[1]:  http://symfony.com/doc/2.8/book/installation.html
 [2]:  http://getcomposer.org/
 [3]:  http://dev.mysql.com/doc/refman/5.6/en/optimizing-innodb-diskio.html
 [4]:  https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
-[5]:  http://symfony.com/doc/2.3/cookbook/configuration/web_server_configuration.html
+[5]:  http://symfony.com/doc/2.8/cookbook/configuration/web_server_configuration.html
