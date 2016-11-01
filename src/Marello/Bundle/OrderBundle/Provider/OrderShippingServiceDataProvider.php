@@ -11,30 +11,39 @@ use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterfa
 
 class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInterface
 {
+    /** @var $entity */
     protected $entity;
 
+    /** @var EntityManager $entityManager */
     protected $entityManager;
-    
+
+    /** @var Warehouse $warehouse */
     protected $warehouse;
 
+    /**
+     * OrderShippingServiceDataProvider constructor.
+     * @param EntityManager $entityManager
+     */
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
     /**
+     * {@inheritdoc}
      * @return MarelloAddress | null
      */
     public function getShippingShipFrom()
     {
         if (!$this->warehouse) {
-            $this->warehouse = $this->setWarehouse($this->entityManager->getRepository(Warehouse::class)->getDefault());
+            $this->setWarehouse($this->entityManager->getRepository(Warehouse::class)->getDefault());
         }
 
         return $this->warehouse->getAddress();
     }
 
     /**
+     * {@inheritdoc}
      * @return MarelloAddress | null
      */
     public function getShippingShipTo()
@@ -43,6 +52,7 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
     }
 
     /**
+     * {@inheritdoc}
      * @return string
      */
     public function getShippingCustomerEmail()
@@ -51,6 +61,7 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
     }
 
     /**
+     * {@inheritdoc}
      * @return string
      */
     public function getShippingWeight()
@@ -74,6 +85,7 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
     }
 
     /**
+     * {@inheritdoc}
      * @return string
      */
     public function getShippingDescription()
@@ -90,6 +102,11 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
         return rtrim($description, ', ');
     }
 
+    /**
+     * {@inheritdoc}
+     * @param $entity
+     * @return $this
+     */
     public function setEntity($entity)
     {
         if ($entity instanceof Order) {
@@ -99,11 +116,20 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return mixed
+     */
     public function getEntity()
     {
         return $this->entity;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     * @param Warehouse $warehouse
+     * @return $this
+     */
     public function setWarehouse(Warehouse $warehouse)
     {
         $this->warehouse = $warehouse;
@@ -111,6 +137,10 @@ class OrderShippingServiceDataProvider implements ShippingServiceDataProviderInt
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return Warehouse|null
+     */
     public function getWarehouse()
     {
         return $this->warehouse;

@@ -11,18 +11,26 @@ use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterfa
 
 class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderInterface
 {
+    /** @var $entity */
     protected $entity;
 
+    /** @var EntityManager $entityManager */
     protected $entityManager;
 
+    /** @var Warehouse $warehouse */
     protected $warehouse;
 
+    /**
+     * ReturnShippingServiceDataProvider constructor.
+     * @param EntityManager $entityManager
+     */
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
     /**
+     * {@inheritdoc}
      * @return MarelloAddress | null
      */
     public function getShippingShipFrom()
@@ -31,18 +39,20 @@ class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderIn
     }
 
     /**
+     * {@inheritdoc}
      * @return MarelloAddress | null
      */
     public function getShippingShipTo()
     {
         if (!$this->warehouse) {
-            $this->warehouse = $this->setWarehouse($this->entityManager->getRepository(Warehouse::class)->getDefault());
+            $this->setWarehouse($this->entityManager->getRepository(Warehouse::class)->getDefault());
         }
 
         return $this->warehouse->getAddress();
     }
 
     /**
+     * {@inheritdoc}
      * @return string
      */
     public function getShippingCustomerEmail()
@@ -51,6 +61,7 @@ class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderIn
     }
 
     /**
+     * {@inheritdoc}
      * @return string
      */
     public function getShippingWeight()
@@ -74,6 +85,7 @@ class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderIn
     }
 
     /**
+     * {@inheritdoc}
      * @return string
      */
     public function getShippingDescription()
@@ -90,6 +102,11 @@ class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderIn
         return rtrim($description, ', ');
     }
 
+    /**
+     * {@inheritdoc}
+     * @param $entity
+     * @return $this
+     */
     public function setEntity($entity)
     {
         if ($entity instanceof ReturnEntity) {
@@ -99,11 +116,20 @@ class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderIn
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return mixed
+     */
     public function getEntity()
     {
         return $this->entity;
     }
 
+    /**
+     * {@inheritdoc}
+     * @param Warehouse $warehouse
+     * @return $this
+     */
     public function setWarehouse(Warehouse $warehouse)
     {
         $this->warehouse = $warehouse;
@@ -111,6 +137,10 @@ class ReturnShippingServiceDataProvider implements ShippingServiceDataProviderIn
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return Warehouse
+     */
     public function getWarehouse()
     {
         return $this->warehouse;
