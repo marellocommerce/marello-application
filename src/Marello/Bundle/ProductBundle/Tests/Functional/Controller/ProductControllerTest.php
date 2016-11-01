@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesDataTest;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Form;
 
@@ -22,7 +22,7 @@ class ProductControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadSalesData::class,
+            LoadSalesDataTest::class,
         ]);
     }
 

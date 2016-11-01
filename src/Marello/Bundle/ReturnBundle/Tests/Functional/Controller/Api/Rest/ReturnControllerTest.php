@@ -7,6 +7,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
+use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnDataTest;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +24,7 @@ class ReturnControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadReturnData::class,
+            LoadReturnDataTest::class,
         ]);
     }
 

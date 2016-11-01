@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductDataTest;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +23,7 @@ class StockLevelControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadProductData::class,
+            LoadProductDataTest::class,
         ]);
 
         /*
@@ -55,7 +55,7 @@ class StockLevelControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadProductData::class,
+            LoadProductDataTest::class,
         ]);
 
         /*

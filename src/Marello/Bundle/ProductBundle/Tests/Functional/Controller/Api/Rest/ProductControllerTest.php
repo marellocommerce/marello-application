@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller\Api\Rest;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductChannelPricingData;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingDataTest;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -20,7 +20,7 @@ class ProductControllerTest extends WebTestCase
         $this->initClient([], $this->generateWsseAuthHeader());
 
         $this->loadFixtures([
-            LoadProductChannelPricingData::class,
+            LoadProductChannelPricingDataTest::class,
         ]);
     }
 

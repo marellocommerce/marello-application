@@ -2,12 +2,12 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderDataTest;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @dbIsolationPerTest
+ * @dbIsolation
  */
 class OrderControllerTest extends WebTestCase
 {
@@ -19,7 +19,7 @@ class OrderControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadOrderData::class,
+            LoadOrderDataTest::class,
         ]);
     }
 
