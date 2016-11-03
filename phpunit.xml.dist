@@ -68,7 +68,7 @@
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/U*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/V*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/*/src/*/Component/*/Tests/Functional</directory>
-            <directory suffix="Test.php">vendor/oro/*-bundle/Oro/Bundle/*Bundle/Tests/Functional</directory>
+            <directory suffix="Test.php">vendor/oro/calendar-bundle/Oro/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
         <testsuite name="functional-4-of-6">
             <directory suffix="Test.php">vendor/oro/crm/src/*/Bundle/A*Bundle/Tests/Functional</directory>
