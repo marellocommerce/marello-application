@@ -37,7 +37,10 @@ class WarehouseController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('marello.inventory.warehouse.controller.message.saved')
+            );
             return $this->redirectToRoute('marello_inventory_warehouse_updatedefault');
         }
 

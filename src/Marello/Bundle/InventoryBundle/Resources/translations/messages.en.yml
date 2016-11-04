@@ -11,6 +11,9 @@ marello:
             id.label:               Id
             owner.label:            Owner
 
+            controller:
+                message.saved:      Warehouse saved
+
         model:
             warehouse:
                 adjustment.label:   Adjustment
