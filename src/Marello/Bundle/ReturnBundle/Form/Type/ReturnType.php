@@ -54,8 +54,7 @@ class ReturnType extends AbstractType
         $resolver->setDefaults([
             'data_class'  => ReturnEntity::class,
             'constraints' => [
-                new ReturnEntityConstraint(),
-                //new ReturnWarrantyEntityConstraint()
+                new ReturnEntityConstraint()
             ],
         ]);
     }
