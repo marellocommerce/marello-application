@@ -103,4 +103,6 @@ workflows:
                 post_actions:
                     - @marello_create_refund:
                           entity: $return
+                    - @flash_message:
+                        message: 'A Refund has been created.'
             ship_back_def: ~
