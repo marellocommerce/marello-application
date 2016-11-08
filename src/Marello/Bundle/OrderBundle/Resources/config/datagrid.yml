@@ -122,6 +122,9 @@ datagrid:
         action_configuration: [@marello_order.datagrid.action_permission_provider, "getOrderActionPermissions"]
         options:
             export: true
+            mass_actions:
+                delete:
+                    enabled: false
 
     marello-order-customer:
         source:
