@@ -117,7 +117,7 @@ class RefundItem implements CurrencyAwareInterface
         $refund
             ->setOrderItem($item)
             ->setName($item->getProductName())
-            ->setBaseAmount($item->getPrice());
+            ->setBaseAmount($item->getPurchasePriceIncl());
 
         return $refund;
     }
@@ -134,8 +134,8 @@ class RefundItem implements CurrencyAwareInterface
         $refund
             ->setOrderItem($item->getOrderItem())
             ->setName($item->getOrderItem()->getProductName())
-            ->setBaseAmount($item->getOrderItem()->getPrice())
-            ->setRefundAmount($item->getOrderItem()->getPrice() * $item->getQuantity())
+            ->setBaseAmount($item->getOrderItem()->getPurchasePriceIncl())
+            ->setRefundAmount($item->getOrderItem()->getPurchasePriceIncl() * $item->getQuantity())
             ->setQuantity($item->getQuantity());
 
         return $refund;
