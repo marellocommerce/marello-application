@@ -5,6 +5,7 @@ namespace Marello\Bundle\RefundBundle\Form\Type;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
 use Marello\Bundle\RefundBundle\Form\EventListener\CurrencySubscriber;
+use Marello\Bundle\RefundBundle\Form\EventListener\RefundTotalsSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -84,6 +85,7 @@ class RefundType extends AbstractType
                 }
             )
             ->addEventSubscriber(new CurrencySubscriber())
+            ->addEventSubscriber(new RefundTotalsSubscriber())
         ;
     }
 
