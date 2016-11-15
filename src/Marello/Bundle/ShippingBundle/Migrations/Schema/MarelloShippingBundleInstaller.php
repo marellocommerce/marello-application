@@ -58,6 +58,8 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('base64EncodedLabel', 'text', ['notnull' => false]);
         $table->addColumn('identificationNumber', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('upsPackageTrackingNumber', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('createdAt', 'datetime', []);
+        $table->addColumn('updatedAt', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
     }
 
