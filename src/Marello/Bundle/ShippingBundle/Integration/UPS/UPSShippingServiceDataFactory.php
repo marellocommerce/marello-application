@@ -166,7 +166,7 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $shipTo->eMailAddress = $shippingDataProvider->getShippingCustomerEmail();
 
         $shipTo->address = Address::fromAddress($shipToAddress);
-        $shipTo->companyName  = $shipToAddress->getFullName();
+        $shipTo->companyName  = ($shipToAddress->getCompany()) ? $shipToAddress->getCompany() : $shipToAddress->getFullName();
         $shipTo->attentionName = $shipToAddress->getFullName();
         $shipTo->phoneNumber  = $shipToAddress->getPhone();
 
@@ -185,11 +185,10 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $shipFromAddress = $shippingDataProvider->getShippingShipFrom();
 
         $shipFrom->address       = Address::fromAddress($shipFromAddress);
-        $shipFrom->companyName   = $shipFromAddress->getFullName();
+        $shipFrom->companyName   = ($shipFromAddress->getCompany()) ? $shipFromAddress->getCompany() : $shipFromAddress->getFullName();
         $shipFrom->attentionName = $shipFromAddress->getFullName();
         $shipFrom->phoneNumber   = $shipFromAddress->getPhone();
 
         return $shipFrom;
-
     }
 }

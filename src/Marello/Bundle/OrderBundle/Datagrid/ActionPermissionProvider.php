@@ -40,7 +40,7 @@ class ActionPermissionProvider
     {
         return array(
             'return'    => $this->isReturnApplicable($record),
-            'refund'    => $this->isRefundApplicable($record->getValue('workflowStep')),
+            'refund'    => $this->isRefundApplicable($record),
             'view'      => true,
             'delete'    => false
         );
@@ -48,12 +48,17 @@ class ActionPermissionProvider
 
     /**
      * {@inheritdoc}
-     * @param WorkflowStep $step
+     * @param ResultRecordInterface $record
      * @return bool
      */
-    protected function isRefundApplicable(WorkflowStep $step)
+    protected function isRefundApplicable($record)
     {
-        return (!in_array($step->getName(), $this->excludedRefundableSteps));
+        $workflowStep = $record->getValue('workflowStep');
+        if (!$workflowStep) {
+            return false;
+        }
+
+        return (!in_array($workflowStep->getName(), $this->excludedRefundableSteps));
     }
 
     /**
@@ -64,8 +69,11 @@ class ActionPermissionProvider
     protected function isReturnApplicable($record)
     {
         // workflow step allowed
-
         $workflowStep = $record->getValue('workflowStep');
+        if (!$workflowStep) {
+            return false;
+        }
+
         $isAllowedInWorkflow = (in_array($workflowStep->getName(), $this->allowedReturnSteps));
 
         if ($isAllowedInWorkflow) {
