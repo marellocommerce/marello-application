@@ -166,8 +166,11 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $shipTo->eMailAddress = $shippingDataProvider->getShippingCustomerEmail();
 
         $shipTo->address = Address::fromAddress($shipToAddress);
+
         $shipTo->companyName  = ($shipToAddress->getCompany()) ? $shipToAddress->getCompany() : $shipToAddress->getFullName();
-        $shipTo->attentionName = $shipToAddress->getFullName();
+        $shipTo->attentionName = ($shipToAddress->getFullName()) ? $shipToAddress->getFullName() : $shipToAddress->getCompany();
+        file_put_contents('/Users/hotlander/Development/skil-marello/app/logs/exception.log', $shipTo->companyName ."\r\n", FILE_APPEND);
+        file_put_contents('/Users/hotlander/Development/skil-marello/app/logs/exception.log', $shipTo->attentionName ."\r\n", FILE_APPEND);
         $shipTo->phoneNumber  = $shipToAddress->getPhone();
 
         return $shipTo;
@@ -186,8 +189,10 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
 
         $shipFrom->address       = Address::fromAddress($shipFromAddress);
         $shipFrom->companyName   = ($shipFromAddress->getCompany()) ? $shipFromAddress->getCompany() : $shipFromAddress->getFullName();
-        $shipFrom->attentionName = $shipFromAddress->getFullName();
+        $shipFrom->attentionName = ($shipFromAddress->getFullName()) ? $shipFromAddress->getFullName() : $shipFromAddress->getCompany();
         $shipFrom->phoneNumber   = $shipFromAddress->getPhone();
+        file_put_contents('/Users/hotlander/Development/skil-marello/app/logs/exception.log', $shipFrom->companyName ."\r\n", FILE_APPEND);
+        file_put_contents('/Users/hotlander/Development/skil-marello/app/logs/exception.log', $shipFrom->attentionName ."\r\n", FILE_APPEND);
 
         return $shipFrom;
     }

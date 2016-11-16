@@ -16,8 +16,7 @@ class WarehouseType extends AbstractType
         'firstName',
         'middleName',
         'lastName',
-        'nameSuffix',
-        'company'
+        'nameSuffix'
     ];
 
     /**
