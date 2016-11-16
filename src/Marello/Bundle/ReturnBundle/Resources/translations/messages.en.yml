@@ -23,6 +23,7 @@ marello:
             quantity.label:             Return Quantity
             reason.label:               Return Reason
             status.label:               Status
+            status_n_a.label:           To be decided
             order_item.label:           Order Item
             return.label:               Return
 
