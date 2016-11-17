@@ -22,8 +22,8 @@ services:
 
     marello_return.form.type.return_item:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemType
-        arguments:
-            - @marello_return.form.event_listener.return_item_type_subscriber
+#        arguments:
+#            - @marello_return.form.event_listener.return_item_type_subscriber
         tags:
             - { name: form.type, alias: marello_return_item }
 

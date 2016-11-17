@@ -3,14 +3,15 @@
 namespace Marello\Bundle\ShippingBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
+
+use Oro\Component\Action\Exception\InvalidParameterException;
+use Oro\Component\Action\Action\AbstractAction;
+use Oro\Component\Action\Action\ActionInterface;
+use Oro\Component\Action\Model\ContextAccessor;
+
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
-use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
-use Oro\Bundle\WorkflowBundle\Model\Action\AbstractAction;
-use Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface;
-use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
-use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 class ShipmentCreateAction extends AbstractAction
 {
