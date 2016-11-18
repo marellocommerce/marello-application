@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "21c53478da3d6616804afe09e8ca7b97",
-    "content-hash": "fe7b3950e057a0da5f7d7fdbacfb1007",
+    "hash": "7a474f3c96b4e8a162feb5fc2a4243ed",
+    "content-hash": "75a1904332ebfb0db58d1dfcaffcfa31",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -5925,6 +5925,43 @@
             "homepage": "https://github.com/orocommerce/orocommerce"
         },
         {
+            "name": "oro/commerce-crm",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../package/commerce-crm",
+                "reference": "c9b9a1f2e5c9d097ace7211dc27ff4323e77cf55",
+                "shasum": null
+            },
+            "require": {
+                "oro/commerce": "1.x-dev",
+                "oro/crm": "1.x-dev",
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Oro\\Bridge": "src/"
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocrm.com"
+                }
+            ],
+            "description": "OroCRM Commerce",
+            "homepage": "https://github.com/orocrm/commerce-crm.git"
+        },
+        {
             "name": "oro/commerce-enterprise",
             "version": "dev-master",
             "dist": {
@@ -11464,6 +11501,7 @@
     "stability-flags": {
         "oro/commerce-enterprise": 20,
         "oro/crm-enterprise": 20,
+        "oro/commerce-crm": 20,
         "oro/platform-serialised-fields": 20,
         "oro/crm-hangouts-call-bundle": 20,
         "oro/crm-abandoned-cart": 20,
