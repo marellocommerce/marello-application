@@ -74,14 +74,14 @@ class ReceivePurchaseOrderAction extends AbstractAction
                     FILE_APPEND
                 );
             } else {
-                $this->handleFullyReceived($item, $inventoryItem);
+                $this->handleFullyReceived($item);
             }
 
         }
         $this->doctrine->getManager()->flush();
     }
 
-    private function handleFullyReceived($item, $inventoryItem)
+    private function handleFullyReceived($item)
     {
         $inventoryItem = $item->getProduct()->getInventoryItems()->first();
         $inventoryItem->adjustStockLevels('purchase_order', $item->getOrderedAmount());

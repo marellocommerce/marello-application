@@ -1,10 +1,12 @@
 {% block oro_workflow_transition_row %}
-    <fieldset class="form-horizontal">
-        {{ form_rest(form) }}
-    </fieldset>
+    {{ form_rest(form) }}
 
     <div class="widget-actions">
         <button type="reset" class="btn">{{ 'Cancel'|trans }}</button>
         <button type="submit" class="btn btn-success">{{ 'Submit'|trans }}</button>
     </div>
 {% endblock %}
+
+{# delete logic for label in the workflow form of purchase orders #}
+{% block form_label %}
+{% endblock form_label %}

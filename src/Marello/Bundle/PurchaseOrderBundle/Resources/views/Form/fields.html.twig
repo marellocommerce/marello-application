@@ -20,14 +20,9 @@
         </div>
     </td>
     <td class="purchase-order-line-item-accepted-quantity">
-        {% set receivedAmount = form.vars.value.receivedAmount %}
-        {% set orderedAmount = form.vars.value.orderedAmount %}
-        {% set availableToReceive = orderedAmount - receivedAmount %}
-        {% if availableToReceive > 0 %}
-            <div class="fields-row">
-                {{ form_widget(form.accepted_qty, {'attr': {'style': 'width:110px;'}}) }}
-            </div>
-        {% endif %}
+        <div class="fields-row">
+            {{ form_widget(form.accepted_qty, {'attr': {'style': 'width:110px;'}}) }}
+        </div>
         {{ form_errors(form.accepted_qty) }}
     </td>
 {% endblock %}
@@ -63,14 +58,19 @@
         {% set disabled = widget.parent.vars.disabled %}
     {% endif %}
 
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
-        class="return-line-item display-values">
-        {{ form_widget(form) }}
+    {% set receivedAmount = form.vars.value.receivedAmount %}
+    {% set orderedAmount = form.vars.value.orderedAmount %}
+    {% set availableToReceive = orderedAmount - receivedAmount %}
+    {% if availableToReceive > 0 %}
+        <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+            class="return-line-item display-values">
+            {{ form_widget(form) }}
 
-        <td class="return-line-item-notifications">
-            <span class="error" style="display:none;"><i class="icon-exclamation-sign"></i></span>
-        </td>
-    </tr>
+            <td class="return-line-item-notifications">
+                <span class="error" style="display:none;"><i class="icon-exclamation-sign"></i></span>
+            </td>
+        </tr>
+    {% endif %}
 {% endmacro %}
 
 {% macro marello_purchase_order_item_collection_item_prototype(widget) %}
