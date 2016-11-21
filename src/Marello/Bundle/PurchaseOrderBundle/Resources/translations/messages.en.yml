@@ -9,7 +9,8 @@ marello:
         purchaseorderitem:
             order_amount.label:                         Order Amount
             ordered_amount.label:                       Ordered Amount
-            received_amount.label:                      Received Amount
+            received_amount.label:                      Received Quantity
+            accepted_qty.label:                         Accepted Quantity
             purchase_stock_level.label:                 Purchase Level
             desired_stock_level.label:                  Desired Level
             virtual_stock_level.label:                  Virtual Level

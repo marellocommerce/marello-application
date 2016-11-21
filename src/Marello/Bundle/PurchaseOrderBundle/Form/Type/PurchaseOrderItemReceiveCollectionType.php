@@ -16,15 +16,15 @@ class PurchaseOrderItemReceiveCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type' => PurchaseOrderItemReceiveType::NAME,
-            'show_form_when_empty' => false,
-            'error_bubbling' => false,
-            'cascade_validation' => true,
-            'prototype_name' => '__namepurchaseorderitemrecieve__',
-            'prototype' => true,
-            'handle_primary' => false,
-            'allow_add' => false,
-            'allow_detele' => false,
+            'type'                  => PurchaseOrderItemReceiveType::NAME,
+            'show_form_when_empty'  => false,
+            'error_bubbling'        => true,
+            'cascade_validation'    => true,
+            'prototype_name'        => '__namepurchaseorderitemreceive__',
+            'prototype'             => true,
+            'handle_primary'        => false,
+            'allow_add'             => false,
+            'allow_delete'          => false,
         ]);
     }
 

@@ -7,7 +7,7 @@ workflows:
         attributes:
             received_items:
                 label: 'Received Items'
-                type: object
+                type: entity
                 options:
                     class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
         steps:
@@ -19,6 +19,7 @@ workflows:
             partially_received:
                 label: "Partially received"
                 allowed_transitions:
+                    - partially_receive
                     - fully_receive
             fully_received:
                 label: "Fully received"
@@ -28,11 +29,23 @@ workflows:
                 label:  "Receive partially"
                 step_to: partially_received
                 transition_definition: partially_receive_definition
+                dialog_template: MarelloPurchaseOrderBundle:Workflow:widget/transitionForm.html.twig
+                frontend_options:
+                    dialog:
+                        alias: transaction-dialog
+                        dialogOptions:
+                            width:         900
+                            height:        500
+                            modal:         true
+                            resizable:     true
+                            allowMaximize: true
+                            allowMinimize: false
                 form_options:
                     attribute_fields:
                         received_items:
                             form_type: marello_po_partial_receive
                             options:
+                                label: false
                                 required: true
                                 data: $po
             fully_receive:
