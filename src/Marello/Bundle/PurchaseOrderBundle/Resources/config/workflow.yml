@@ -53,7 +53,11 @@ workflows:
                 step_to: fully_received
                 transition_definition: fully_receive_definition
         transition_definitions:
-            partially_receive_definition: []
+            partially_receive_definition:
+                post_actions:
+                    - @marello_receive_purchase_order:
+                        entity: $po
+                        is_partial: true
             fully_receive_definition:
                 post_actions:
                     - @marello_receive_purchase_order:
