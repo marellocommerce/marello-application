@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Workflow\Action;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
@@ -11,6 +11,7 @@ use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\Action\Action\ActionInterface;
 use Oro\Component\Action\Model\ContextAccessor;
 
+use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
@@ -22,29 +23,37 @@ class ReceivePurchaseOrderAction extends AbstractAction
     /** @var array */
     protected $options;
 
-    /** @var Registry */
-    protected $doctrine;
+    /** @var ObjectManager $manager */
+    protected $manager;
 
-    /** @var PropertyPathInterface */
+    /** @var NoteActivityProcessor $noteActivityProcessor */
+    protected $noteActivityProcessor;
+
+    /** @var PropertyPathInterface $entity */
     protected $entity;
 
-    /** @var PropertyPathInterface|bool */
+    /** @var PropertyPathInterface|bool $isPartial */
     protected $isPartial;
 
     /**
-     * CreateRefundAction constructor.
-     *
+     * ReceivePurchaseOrderAction constructor.
      * @param ContextAccessor $contextAccessor
-     * @param Registry        $doctrine
+     * @param ObjectManager $manager
+     * @param NoteActivityProcessor $noteActivityProcessor
      */
-    public function __construct(ContextAccessor $contextAccessor, Registry $doctrine)
-    {
+    public function __construct(
+        ContextAccessor $contextAccessor,
+        ObjectManager $manager,
+        NoteActivityProcessor $noteActivityProcessor
+    ) {
         parent::__construct($contextAccessor);
 
-        $this->doctrine = $doctrine;
+        $this->manager = $manager;
+        $this->noteActivityProcessor = $noteActivityProcessor;
     }
 
     /**
+     * {@inheritdoc}
      * @param mixed $context
      * @throws \Exception
      */
@@ -62,6 +71,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
 
         $isPartial = $this->contextAccessor->getValue($context, $this->isPartial);
         $items = $purchaseOrder->getItems();
+        $updatedItems = [];
         /** @var PurchaseOrderItem $item */
         foreach ($items as $item) {
             $inventoryUpdateQty = null;
@@ -79,9 +89,15 @@ class ReceivePurchaseOrderAction extends AbstractAction
 
             if ($inventoryUpdateQty) {
                 $this->handleInventoryUpdate($item, $inventoryUpdateQty);
+                $updatedItems[] = ['qty' => $inventoryUpdateQty, 'item' => $item];
             }
         }
-        $this->doctrine->getManager()->flush();
+
+        if (!empty($updatedItems)) {
+            $this->noteActivityProcessor->addNote($purchaseOrder, $updatedItems);
+        }
+
+        $this->manager->flush();
     }
 
     /**
