@@ -68,6 +68,13 @@ class PurchaseOrderItem
     protected $receivedAmount = 0;
 
     /**
+     * @var array $data
+     *
+     * @ORM\Column(name="data", type="json_array", nullable=true)
+     */
+    protected $data;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string")
@@ -210,6 +217,30 @@ class PurchaseOrderItem
     public function getReceivedAmount()
     {
         return $this->receivedAmount;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 
     /**

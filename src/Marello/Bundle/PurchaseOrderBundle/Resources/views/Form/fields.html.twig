@@ -58,18 +58,15 @@
         {% set disabled = widget.parent.vars.disabled %}
     {% endif %}
 
-    {% set receivedAmount = form.vars.value.receivedAmount %}
-    {% set orderedAmount = form.vars.value.orderedAmount %}
-    {% set availableToReceive = orderedAmount - receivedAmount %}
-    {% if availableToReceive > 0 %}
-        <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
-            class="return-line-item display-values">
-            {{ form_widget(form) }}
+    {% if form.vars.value.status != 'complete' %}
+    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+        class="return-line-item display-values">
+        {{ form_widget(form) }}
 
-            <td class="return-line-item-notifications">
-                <span class="error" style="display:none;"><i class="icon-exclamation-sign"></i></span>
-            </td>
-        </tr>
+        <td class="return-line-item-notifications">
+            <span class="error" style="display:none;"><i class="icon-exclamation-sign"></i></span>
+        </td>
+    </tr>
     {% endif %}
 {% endmacro %}
 
@@ -139,27 +136,51 @@
         <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
             <div {{ block('widget_container_attributes') }}>
-                <table class="grid table-hover table table-bordered table-condensed">
-                    <thead>
-                    <tr>
-                        <th class="purchase-order-line-item-product-sku"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
-                        <th class="purchase-order-line-item-product-name"><span>{{ 'marello.product.name.label'|trans }}</span></th>
-                        <th class="purchase-order-line-item-ordered-quantity"><span>{{ 'marello.purchaseorder.purchaseorderitem.order_amount.label'|trans }}</span></th>
-                        <th class="purchase-order-line-item-received-quantity"><span>{{ 'marello.purchaseorder.purchaseorderitem.received_amount.label'|trans }}</span></th>
-                        <th class="purchase-order-line-item-accepted-quantity"><span>{{ 'marello.purchaseorder.purchaseorderitem.accepted_qty.label'|trans }}</span></th>
-                        <th class="purchase-order-line-item-notifications"></th>
-                    </tr>
-                    </thead>
-                    <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
-                    {% if form.children|length %}
-                        {% for child in form.children %}
-                            {{ _self.marello_purchase_order_item_receive_collection_item_prototype(child) }}
-                        {% endfor %}
-                    {% elseif show_form_when_empty and prototype_html is defined %}
-                        {{ prototype_html|replace({(prototype_name): '0'})|raw }}
-                    {% endif %}
-                    </tbody>
-                </table>
+                {% set completedItems = 0 %}
+                {% if form.children|length %}
+                    {% for child in form.children %}
+                        {%  if child.vars.value.status == 'complete' %}
+                            {% set completedItems = completedItems + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if completedItems != form.children|length %}
+                    <table class="grid table-hover table table-bordered table-condensed">
+                        <thead>
+                        <tr>
+                            <th class="purchase-order-line-item-product-sku"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-product-name"><span>{{ 'marello.product.name.label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-ordered-quantity"><span>{{ 'marello.purchaseorder.purchaseorderitem.order_amount.label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-received-quantity"><span>{{ 'marello.purchaseorder.purchaseorderitem.received_amount.label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-accepted-quantity"><span>{{ 'marello.purchaseorder.purchaseorderitem.accepted_qty.label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-notifications"></th>
+                        </tr>
+                        </thead>
+                        <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
+                        {% if form.children|length %}
+                            {% for child in form.children %}
+                                {{ _self.marello_purchase_order_item_receive_collection_item_prototype(child) }}
+                            {% endfor %}
+                        {% elseif show_form_when_empty and prototype_html is defined %}
+                            {{ prototype_html|replace({(prototype_name): '0'})|raw }}
+                        {% endif %}
+                        </tbody>
+                    </table>
+
+                    <div class="widget-actions">
+                        <button type="reset" class="btn">{{ 'Cancel'|trans }}</button>
+                        <button type="submit" class="btn btn-success">{{ 'Submit'|trans }}</button>
+                    </div>
+                {% else %}
+                    <div class="container-fluid accordion">
+                        <div class="no-data">
+                            <span>{{ 'marello.purchaseorder.all_items_have_been_received'|trans }}</span>
+                        </div>
+                    </div>
+                    <div class="widget-actions">
+                        <button type="reset" class="btn">{{ 'Close'|trans }}</button>
+                    </div>
+                {% endif %}
             </div>
         </div>
     {% endspaceless %}

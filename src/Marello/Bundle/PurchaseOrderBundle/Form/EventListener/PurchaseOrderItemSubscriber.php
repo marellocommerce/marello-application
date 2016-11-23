@@ -10,6 +10,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class PurchaseOrderItemSubscriber implements EventSubscriberInterface
 {
+    const LAST_PARTIALLY_RECEIVED_QTY = 'last_partially_received_qty';
+
     /** @var string */
     public $message = 'Received amount cannot be greater than Ordered amount.';
 
@@ -37,24 +39,34 @@ class PurchaseOrderItemSubscriber implements EventSubscriberInterface
      */
     public function postSubmitValidation(FormEvent $event)
     {
-        /** @var Collection|PurchaseOrderItem $data */
-        $data = $event->getData();
+        /** @var Collection|PurchaseOrderItem $purchaseOrderItem */
+        $purchaseOrderItem = $event->getData();
         if ($acceptedQtyAttribute = $event->getForm()->get('accepted_qty')) {
             /** @var int */
-            $receiveAmount = $acceptedQtyAttribute->getData();
-            if ($receiveAmount < 0) {
+            $lastReceivedAmount = $acceptedQtyAttribute->getData();
+            if ($lastReceivedAmount < 0) {
                 return;
             }
 
-            $newReceiveAmount = $data->getReceivedAmount() + $receiveAmount;
+            $newReceiveAmount = $purchaseOrderItem->getReceivedAmount() + $lastReceivedAmount;
 
-            if ($newReceiveAmount > $data->getOrderedAmount()) {
+            if ($newReceiveAmount > $purchaseOrderItem->getOrderedAmount()) {
                 $acceptedQtyAttribute->addError($this->getError());
                 return;
             }
 
-            $data->setReceivedAmount($data->getReceivedAmount() + $receiveAmount);
-            $event->setData($data);
+            $data = $purchaseOrderItem->getData();
+            if (!$data) {
+                $data = [];
+            }
+
+            if ($lastReceivedAmount) {
+                $data[self::LAST_PARTIALLY_RECEIVED_QTY] = $lastReceivedAmount;
+                $purchaseOrderItem->setData($data);
+            }
+
+            $purchaseOrderItem->setReceivedAmount($newReceiveAmount);
+            $event->setData($purchaseOrderItem);
         }
     }
 

@@ -5,6 +5,7 @@ marello:
         purchase_order_number.label:                    PO Number
         items.label:                                    Purchase Order Items
         select_products:                                Products to include in new PO
+        all_items_have_been_received:                   All items have been received, please proceed to click "Fully received"
 
         purchaseorderitem:
             order_amount.label:                         Order Amount

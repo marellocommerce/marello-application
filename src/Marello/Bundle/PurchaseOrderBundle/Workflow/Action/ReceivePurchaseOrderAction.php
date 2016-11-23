@@ -13,9 +13,12 @@ use Oro\Component\Action\Model\ContextAccessor;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 
 class ReceivePurchaseOrderAction extends AbstractAction
 {
+    const LAST_PARTIALLY_RECEIVED_QTY = 'last_partially_received_qty';
+
     /** @var array */
     protected $options;
 
@@ -59,33 +62,37 @@ class ReceivePurchaseOrderAction extends AbstractAction
 
         $isPartial = $this->contextAccessor->getValue($context, $this->isPartial);
         $items = $purchaseOrder->getItems();
+        /** @var PurchaseOrderItem $item */
         foreach ($items as $item) {
+            $inventoryUpdateQty = null;
             /** @var InventoryItem $inventoryItem */
             if ($isPartial) {
-                file_put_contents(
-                    '/Users/hotlander/Development/marello-application-dev/app/logs/receiving.log',
-                    $item->getOrderedAmount() . "\r\n",
-                    FILE_APPEND
-                );
-
-                file_put_contents(
-                    '/Users/hotlander/Development/marello-application-dev/app/logs/receiving.log',
-                    $item->getReceivedAmount() . "\r\n",
-                    FILE_APPEND
-                );
+                $data = (array)$item->getData();
+                if (array_key_exists(self::LAST_PARTIALLY_RECEIVED_QTY, $data)) {
+                    $inventoryUpdateQty = $data[self::LAST_PARTIALLY_RECEIVED_QTY];
+                }
             } else {
-                $this->handleFullyReceived($item);
+                $item->setReceivedAmount($item->getOrderedAmount());
+                $item->setStatus('complete');
+                $inventoryUpdateQty = $item->getReceivedAmount();
             }
 
+            if ($inventoryUpdateQty) {
+                $this->handleInventoryUpdate($item, $inventoryUpdateQty);
+            }
         }
         $this->doctrine->getManager()->flush();
     }
 
-    private function handleFullyReceived($item)
+    /**
+     * handle the inventory update for items which have been received
+     * @param $item
+     * @param $inventoryUpdateQty
+     */
+    private function handleInventoryUpdate($item, $inventoryUpdateQty)
     {
         $inventoryItem = $item->getProduct()->getInventoryItems()->first();
-        $inventoryItem->adjustStockLevels('purchase_order', $item->getOrderedAmount());
-        $item->setReceivedAmount($item->getOrderedAmount());
+        $inventoryItem->adjustStockLevels('purchase_order', $inventoryUpdateQty);
     }
 
     /**
