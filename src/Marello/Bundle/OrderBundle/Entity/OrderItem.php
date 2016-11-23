@@ -92,11 +92,20 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
     /**
      * @var int
      *
-     * @ORM\Column(name="original_price",type="money")
+     * @ORM\Column(name="original_price_incl_tax",type="money")
      *
      * @JMS\Expose
      */
-    protected $originalPrice;
+    protected $originalPriceInclTax;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="original_price_excl_tax",type="money")
+     *
+     * @JMS\Expose
+     */
+    protected $originalPriceExclTax;
 
     /**
      * @var int
@@ -143,11 +152,20 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
     /**
      * @var int
      *
-     * @ORM\Column(name="row_total",type="money", nullable=false)
+     * @ORM\Column(name="row_total_incl_tax",type="money", nullable=false)
      *
      * @JMS\Expose
      */
-    protected $rowTotal;
+    protected $rowTotalInclTax;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="row_total_excl_tax",type="money", nullable=false)
+     *
+     * @JMS\Expose
+     */
+    protected $rowTotalExclTax;
     
     /**
      * @var ReturnItem[]|Collection
@@ -267,19 +285,39 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
     /**
      * @return int
      */
-    public function getRowTotal()
+    public function getRowTotalInclTax()
     {
-        return $this->rowTotal;
+        return $this->rowTotalInclTax;
     }
 
     /**
-     * @param int $rowTotal
+     * @param int $rowTotalInclTax
      *
      * @return $this
      */
-    public function setRowTotal($rowTotal)
+    public function setRowTotalInclTax($rowTotalInclTax)
     {
-        $this->rowTotal = $rowTotal;
+        $this->rowTotalInclTax = $rowTotalInclTax;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRowTotalExclTax()
+    {
+        return $this->rowTotalExclTax;
+    }
+
+    /**
+     * @param int $rowTotalExclTax
+     *
+     * @return $this
+     */
+    public function setRowTotalExclTax($rowTotalExclTax)
+    {
+        $this->rowTotalExclTax = $rowTotalExclTax;
 
         return $this;
     }
@@ -358,17 +396,32 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
     /**
      * @return int
      */
-    public function getOriginalPrice()
+    public function getOriginalPriceInclTax()
     {
-        return $this->originalPrice;
+        return $this->originalPriceInclTax;
     }
 
     /**
-     * @param int $originalPrice
+     * @param int $originalPriceInclTax
      */
-    public function setOriginalPrice($originalPrice)
+    public function setOriginalPriceInclTax($originalPriceInclTax)
     {
-        $this->originalPrice = $originalPrice;
+        $this->originalPriceInclTax = $originalPriceInclTax;
+    }
+    /**
+     * @return int
+     */
+    public function getOriginalPriceExclTax()
+    {
+        return $this->originalPriceExclTax;
+    }
+
+    /**
+     * @param int $originalPriceExclTax
+     */
+    public function setOriginalPriceExclTax($originalPriceExclTax)
+    {
+        $this->originalPriceExclTax = $originalPriceExclTax;
     }
 
     /**

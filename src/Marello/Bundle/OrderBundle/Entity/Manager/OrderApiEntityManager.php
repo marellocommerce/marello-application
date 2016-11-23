@@ -39,11 +39,13 @@ class OrderApiEntityManager extends ApiEntityManager
                 'productSku'        => [],
                 'quantity'          => [],
                 'price'             => [],
-                'originalPrice'     => [],
+                'originalPriceExclTax'     => [],
+                'originalPriceInclTax'     => [],
                 'purchasePriceIncl' => [],
                 'tax'               => [],
                 'taxPercent'        => [],
-                'rowTotal'          => [],
+                'rowTotalExclTax'          => [],
+                'rowTotalInclTax'          => [],
             ],
         ];
 
@@ -59,7 +61,8 @@ class OrderApiEntityManager extends ApiEntityManager
                 'paymentMethod'   => [],
                 'paymentDetails'  => [],
                 'shippingMethod'  => [],
-                'shippingAmount'  => [],
+                'shippingAmountInclTax'  => [],
+                'shippingAmountExclTax'  => [],
                 'salesChannel'    => [
                     'exclusion_policy' => 'all',
                     'fields'           => [

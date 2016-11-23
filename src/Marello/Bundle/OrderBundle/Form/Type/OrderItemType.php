@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Marello\Bundle\OrderBundle\Form\EventListener\OrderItemPurchasePriceSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,9 +31,15 @@ class OrderItemType extends AbstractType
             ->add('tax', 'text', [
                 'read_only' => true,
             ])
-            ->add('rowTotal', 'text', [
+            ->add('rowTotalExclTax', 'text', [
                 'read_only' => true,
-            ]);
+            ])
+            ->add('rowTotalInclTax', 'text', [
+                'read_only' => true,
+            ])
+        ;
+
+        $builder->addEventSubscriber(new OrderItemPurchasePriceSubscriber());
     }
 
     /**

@@ -52,7 +52,8 @@ class OrderApiType extends AbstractType
             ->add('paymentMethod', 'text')
             ->add('paymentDetails', 'text')
             ->add('shippingMethod', 'text')
-            ->add('shippingAmount', 'oro_money')
+            ->add('shippingAmountInclTax', 'oro_money')
+            ->add('shippingAmountExclTax', 'oro_money')
             ->add('items', OrderItemCollectionType::NAME, [
                 'type'      => OrderItemApiType::NAME,
                 'allow_add' => true,

@@ -134,9 +134,16 @@ class Order extends ExtendOrder implements
     /**
      * @var double
      *
-     * @ORM\Column(name="shipping_amount", type="money", nullable=true)
+     * @ORM\Column(name="shipping_amount_incl_tax", type="money", nullable=false)
      */
-    protected $shippingAmount;
+    protected $shippingAmountInclTax;
+
+    /**
+     * @var double
+     *
+     * @ORM\Column(name="shipping_amount_excl_tax", type="money", nullable=false)
+     */
+    protected $shippingAmountExclTax;
 
     /**
      * @var float
@@ -663,26 +670,6 @@ class Order extends ExtendOrder implements
     /**
      * @return float
      */
-    public function getShippingAmount()
-    {
-        return $this->shippingAmount;
-    }
-
-    /**
-     * @param float $shippingAmount
-     *
-     * @return $this
-     */
-    public function setShippingAmount($shippingAmount)
-    {
-        $this->shippingAmount = $shippingAmount;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
     public function getShippingMethod()
     {
         return $this->shippingMethod;
@@ -850,6 +837,96 @@ class Order extends ExtendOrder implements
     public function setCustomer($customer)
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Set shippingAmountInclTax
+     *
+     * @param float $shippingAmountInclTax
+     *
+     * @return Order
+     */
+    public function setShippingAmountInclTax($shippingAmountInclTax)
+    {
+        $this->shippingAmountInclTax = $shippingAmountInclTax;
+
+        return $this;
+    }
+
+    /**
+     * Get shippingAmountInclTax
+     *
+     * @return float
+     */
+    public function getShippingAmountInclTax()
+    {
+        return $this->shippingAmountInclTax;
+    }
+
+    /**
+     * Set shippingAmountExclTax
+     *
+     * @param float $shippingAmountExclTax
+     *
+     * @return Order
+     */
+    public function setShippingAmountExclTax($shippingAmountExclTax)
+    {
+        $this->shippingAmountExclTax = $shippingAmountExclTax;
+
+        return $this;
+    }
+
+    /**
+     * Get shippingAmountExclTax
+     *
+     * @return float
+     */
+    public function getShippingAmountExclTax()
+    {
+        return $this->shippingAmountExclTax;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Order
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Order
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Set salesChannelName
+     *
+     * @param string $salesChannelName
+     *
+     * @return Order
+     */
+    public function setSalesChannelName($salesChannelName)
+    {
+        $this->salesChannelName = $salesChannelName;
 
         return $this;
     }

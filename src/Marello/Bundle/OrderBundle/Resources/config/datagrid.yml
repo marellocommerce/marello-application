@@ -271,8 +271,14 @@ datagrid:
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
                 align:            right
-            originalPrice:
-                label:            marello.order.orderitem.original_price.label
+            originalPriceInclTax:
+                label:            marello.order.orderitem.original_price_incl_tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            originalPriceExclTax:
+                label:            marello.order.orderitem.original_price_excl_tax.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
@@ -287,8 +293,14 @@ datagrid:
                 label:            marello.order.orderitem.tax_percent.label
                 frontend_type:    percent
                 align:            right
-            rowTotal:
-                label:            marello.order.orderitem.total_price.label
+            rowTotalInclTax:
+                label:            marello.order.orderitem.total_price_incl_tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            rowTotalExclTax:
+                label:            marello.order.orderitem.total_price_excl_tax.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
