@@ -74,6 +74,9 @@ datagrid:
             productName:
                 label: marello.product.name.label
                 frontend_type: string
+            status:
+                label: marello.purchaseorder.purchaseorderitem.status.label
+                frontend_type: string
             orderedAmount:
                 label: marello.purchaseorder.purchaseorderitem.ordered_amount.label
                 frontend_type: number
