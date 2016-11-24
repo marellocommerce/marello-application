@@ -85,8 +85,8 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', []);
         $table->addColumn('primaryAddress_id', 'integer', []);
-        $table->addColumn('createdAt', 'datetime', []);
-        $table->addColumn('updatedAt', 'datetime', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('namePrefix', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('firstName', 'string', ['length' => 255]);
         $table->addColumn('middleName', 'string', ['notnull' => false, 'length' => 255]);

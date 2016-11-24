@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ReturnBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
@@ -16,6 +17,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  */
 class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
 {
+
+    use EntityCreatedUpdatedAtTrait;
+
     /**
      * @var int
      *
@@ -49,32 +53,14 @@ class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
     protected $quantity;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
+     * @var string
      */
-    protected $createdAt;
+    protected $reason;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
+     * @var string
      */
-    protected $updatedAt;
+    protected $status;
 
     /**
      * ReturnItem constructor.
@@ -87,45 +73,11 @@ class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
     }
 
     /**
-     * Copies product sku and name to attributes within this return item.
-     *
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt = $this->updatedAt = new \DateTime();
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime();
-    }
-
-    /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
@@ -194,5 +146,45 @@ class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
     public function getCurrency()
     {
         return $this->orderItem->getCurrency();
+    }
+
+    /**
+     * @return string
+     */
+    public function getReason()
+    {
+        return $this->reason;
+    }
+
+    /**
+     * @param string $reason
+     *
+     * @return $this
+     */
+    public function setReason($reason)
+    {
+        $this->reason = $reason;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     *
+     * @return $this
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
     }
 }

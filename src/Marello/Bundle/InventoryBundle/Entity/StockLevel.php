@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -19,6 +20,8 @@ use Oro\Bundle\UserBundle\Entity\User;
  */
 class StockLevel
 {
+    use EntityCreatedUpdatedAtTrait;
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -162,23 +165,6 @@ class StockLevel
     protected $subjectId = null;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          },
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var \DateTime
-     */
-    protected $createdAt;
-
-    /**
      * StockLevel constructor.
      *
      * @param InventoryItem $inventoryItem
@@ -205,7 +191,6 @@ class StockLevel
         $this->previousLevel  = $previousLevel;
         $this->author         = $author;
         $this->subject        = $subject;
-        $this->createdAt      = new \DateTime();
     }
 
     /**
@@ -314,14 +299,6 @@ class StockLevel
     public function getSubject()
     {
         return $this->subject;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
     }
 
     /**

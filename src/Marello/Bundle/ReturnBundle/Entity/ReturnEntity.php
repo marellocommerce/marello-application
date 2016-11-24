@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -38,6 +39,7 @@ class ReturnEntity extends ExtendReturnEntity implements
     ShippingAwareInterface
 {
     use HasShipmentTrait;
+    use EntityCreatedUpdatedAtTrait;
     
     /**
      * @var int
@@ -129,34 +131,6 @@ class ReturnEntity extends ExtendReturnEntity implements
     protected $organization;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
-
-    /**
      * ReturnEntity constructor.
      */
     public function __construct()
@@ -165,43 +139,11 @@ class ReturnEntity extends ExtendReturnEntity implements
     }
 
     /**
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt = $this->updatedAt = new \DateTime();
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime();
-    }
-
-    /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

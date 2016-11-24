@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
@@ -52,8 +53,8 @@ class Order extends ExtendOrder implements
     DerivedPropertyAwareInterface,
     ShippingAwareInterface
 {
-    
     use HasShipmentTrait;
+    use EntityCreatedUpdatedAtTrait;
     
     /**
      * @var int
@@ -214,34 +215,6 @@ class Order extends ExtendOrder implements
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
-
-    /**
-     * @var \DateTime
-     *
      * @ORM\Column(name="invoiced_at", type="datetime", nullable=true)
      */
     protected $invoicedAt;
@@ -306,19 +279,10 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-    }
-
-    /**
      * @ORM\PrePersist
      */
     public function prePersist()
     {
-        $this->createdAt        = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->salesChannelName = $this->salesChannel->getName();
     }
 
@@ -501,22 +465,6 @@ class Order extends ExtendOrder implements
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return \Datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \Datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
@@ -887,34 +835,6 @@ class Order extends ExtendOrder implements
     public function getShippingAmountExclTax()
     {
         return $this->shippingAmountExclTax;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Order
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Order
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
     }
 
     /**

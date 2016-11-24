@@ -70,7 +70,7 @@ class MarelloInventoryBundleInstaller implements Installation
         $table->addColumn('changeTrigger', 'string', ['length' => 255]);
         $table->addColumn('subjectType', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('subjectId', 'integer', ['notnull' => false]);
-        $table->addColumn('createdAt', 'datetime', []);
+        $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('inventoryItem_id', 'integer', ['notnull' => false]);
         $table->addColumn('previousLevel_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);

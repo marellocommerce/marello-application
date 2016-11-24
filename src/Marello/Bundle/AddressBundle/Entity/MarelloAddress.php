@@ -9,6 +9,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_address")
  * @ORM\AssociationOverrides({
  *      @ORM\AssociationOverride(name="region",

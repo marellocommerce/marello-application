@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PricingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -12,6 +13,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  */
 class BasePrice implements CurrencyAwareInterface
 {
+    use EntityCreatedUpdatedAtTrait;
+
     /**
      * @var integer
      *
@@ -41,34 +44,6 @@ class BasePrice implements CurrencyAwareInterface
      * )
      */
     protected $currency;
-
-    /**
-     * @var \DateTime $createdAt
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime $updatedAt
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
 
     /**
      * @return int
@@ -116,41 +91,4 @@ class BasePrice implements CurrencyAwareInterface
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTime $createdAt
-     * @return $this
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTime $updatedAt
-     * @return $this
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
 }

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\RefundBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
@@ -16,6 +17,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  */
 class RefundItem implements CurrencyAwareInterface
 {
+    use EntityCreatedUpdatedAtTrait;
+    
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -70,39 +73,10 @@ class RefundItem implements CurrencyAwareInterface
     protected $orderItem;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
-
-    /**
      * RefundItem constructor.
      */
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -267,22 +241,6 @@ class RefundItem implements CurrencyAwareInterface
         $this->orderItem = $orderItem;
 
         return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
@@ -33,6 +34,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInterface
 {
     use HasFullNameTrait, HasEmailAddressTrait;
+    use EntityCreatedUpdatedAtTrait;
 
     /**
      * @ORM\Id
@@ -78,39 +80,10 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     protected $organization;
 
     /**
-     * @ORM\Column(type="datetime", nullable=false)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     *
-     * @var \DateTime
-     */
-    protected $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     *
-     * @var \DateTime
-     */
-    protected $updatedAt;
-
-    /**
      * Customer constructor.
      */
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
         $this->addresses = new ArrayCollection();
     }
 
@@ -137,14 +110,6 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     }
 
     /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime();
-    }
-
-    /**
      * Get entity unique id
      *
      * @return integer
@@ -152,22 +117,6 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
