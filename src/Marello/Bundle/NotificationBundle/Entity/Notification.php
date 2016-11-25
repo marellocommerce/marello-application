@@ -3,7 +3,6 @@
 namespace Marello\Bundle\NotificationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\NotificationBundle\Model\ExtendNotification;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -32,8 +31,6 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  */
 class Notification extends ExtendNotification implements EmailNotificationInterface
 {
-    use EntityCreatedUpdatedAtTrait;
-    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -66,6 +63,13 @@ class Notification extends ExtendNotification implements EmailNotificationInterf
     protected $body;
 
     /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var \DateTime
+     */
+    protected $createdAt;
+
+    /**
      * @var Organization
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
@@ -92,6 +96,14 @@ class Notification extends ExtendNotification implements EmailNotificationInterf
     }
 
     /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+    /**
      * Gets a template can be used to prepare a notification message
      *
      * @return EmailTemplate
@@ -109,6 +121,14 @@ class Notification extends ExtendNotification implements EmailNotificationInterf
     public function getRecipientEmails()
     {
         return $this->recipients;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 
     /**

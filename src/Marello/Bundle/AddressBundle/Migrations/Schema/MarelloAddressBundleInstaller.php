@@ -58,10 +58,8 @@ class MarelloAddressBundleInstaller implements Installation
         $table->addColumn('middle_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('last_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('name_suffix', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('created', 'datetime', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('updated', 'datetime', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('created_at', 'datetime', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('updated_at', 'datetime', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('created', 'datetime');
+        $table->addColumn('updated', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['region_code'], 'idx_1c837761aeb327af', []);
         $table->addIndex(['country_code'], 'idx_1c837761f026bb7c', []);

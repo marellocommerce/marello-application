@@ -11,7 +11,7 @@ trait EntityCreatedUpdatedAtTrait
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     * @ORM\Column(name="created_at", type="datetime")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -93,6 +93,6 @@ trait EntityCreatedUpdatedAtTrait
      */
     public function prePersistTimestamp()
     {
-        $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

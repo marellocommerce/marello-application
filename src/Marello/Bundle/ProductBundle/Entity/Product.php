@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
@@ -55,8 +54,6 @@ class Product extends ExtendProduct implements
     SalesChannelAwareInterface,
     PricingAwareInterface
 {
-//    use EntityCreatedUpdatedAtTrait;
-
     /**
      * @var integer
      *
@@ -723,6 +720,6 @@ class Product extends ExtendProduct implements
      */
     public function prePersistTimestamp()
     {
-        $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

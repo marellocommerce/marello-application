@@ -5,11 +5,11 @@ namespace Marello\Bundle\PricingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\MappedSuperclass
+ * @ORM\HasLifecycleCallbacks
  */
 class BasePrice implements CurrencyAwareInterface
 {
@@ -90,5 +90,4 @@ class BasePrice implements CurrencyAwareInterface
 
         return $this;
     }
-
 }

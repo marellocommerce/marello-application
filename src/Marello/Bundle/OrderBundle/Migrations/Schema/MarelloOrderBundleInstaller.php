@@ -85,7 +85,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', []);
         $table->addColumn('primaryAddress_id', 'integer', []);
-        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('namePrefix', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('firstName', 'string', ['length' => 255]);
@@ -129,8 +129,8 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('discount_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('discount_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('coupon_code', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('created_at', 'datetime', []);
-        $table->addColumn('updated_at', 'datetime', []);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('invoiced_at', 'datetime', ['notnull' => false]);
         $table->addColumn('saleschannel_name', 'string', ['length' => 255]);
         $table->addColumn('billing_address_id', 'integer', ['notnull' => false]);

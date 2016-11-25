@@ -118,4 +118,21 @@ class MarelloAddress extends ExtendAddress
             $this->nameSuffix,
         ]));
     }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdateTimestamp()
+    {
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistTimestamp()
+    {
+        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updated = null;
+    }
 }

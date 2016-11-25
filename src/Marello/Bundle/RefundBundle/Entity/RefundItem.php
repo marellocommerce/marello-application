@@ -12,7 +12,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 /**
  * @ORM\Entity
  * @ORM\Table(name="marello_refund_item")
- *
+ * @ORM\HasLifecycleCallbacks
+
  * @Oro\Config
  */
 class RefundItem implements CurrencyAwareInterface

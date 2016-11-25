@@ -16,6 +16,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_order_customer")
  * @Oro\Config(
  *      routeView="marello_order_customer_view",

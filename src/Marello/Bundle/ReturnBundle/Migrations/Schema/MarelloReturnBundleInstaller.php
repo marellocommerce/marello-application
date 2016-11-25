@@ -95,7 +95,7 @@ class MarelloReturnBundleInstaller implements Installation,
         $table->addColumn('orderitem_id', 'integer', ['notnull' => false]);
         $table->addColumn('quantity', 'integer', []);
         $table->addColumn('created_at', 'datetime', []);
-        $table->addColumn('updated_at', 'datetime', []);
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['orderitem_id'], 'idx_ae43aff6e76e9c94', []);
         $table->addIndex(['return_id'], 'idx_ae43aff6227416d5', []);

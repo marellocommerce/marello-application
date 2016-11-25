@@ -54,7 +54,7 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
         $table->addColumn('organization_id', 'integer', []);
         $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('purchaseOrderNumber', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_34E72AC31023C4EE');
@@ -78,7 +78,7 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
         $table->addColumn('orderedAmount', 'integer', []);
         $table->addColumn('receivedAmount', 'integer', []);
         $table->addColumn('status', 'string', ['length' => 255]);
-        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['product_id'], 'IDX_3483BD864584665A', []);
