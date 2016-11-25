@@ -48,7 +48,6 @@ class WorkflowTransitAction extends AbstractAction
     {
         /** @var WorkflowItem $workflowItem */
         $workflowItem = $this->contextAccessor->getValue($context, $this->workflowItem);
-
         if (!$workflowItem instanceof WorkflowItem) {
             return;
         }
