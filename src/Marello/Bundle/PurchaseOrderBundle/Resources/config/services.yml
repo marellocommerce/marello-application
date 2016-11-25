@@ -15,3 +15,9 @@ services:
             - '@marello_purchaseorder.processor.note_activity_processor'
         tags:
             - { name: oro_workflow.action, alias: marello_receive_purchase_order }
+
+    marello_purchaseorder.workflow.action.transit_complete_action:
+        class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\TransitCompleteAction
+        parent: marello_core.workflow.action.workflow_transit_action
+        tags:
+            - { name: oro_workflow.action, alias: marello_purchase_order_transit_complete_action }

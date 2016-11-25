@@ -20,10 +20,14 @@ workflows:
                 label: "Partially received"
                 allowed_transitions:
                     - partially_receive
-                    - fully_receive
+                    - complete_purchase_order
             fully_received:
                 label: "Fully received"
-                allowed_transitions: []
+                allowed_transitions:
+                    - complete_purchase_order
+            complete_purchase_order:
+                label: "Complete"
+                is_final: true
         transitions:
             partially_receive:
                 label:  "Receive partially"
@@ -48,19 +52,31 @@ workflows:
                                 label: false
                                 required: true
                                 data: $po
-
             fully_receive:
                 label:  "Receive fully"
                 step_to: fully_received
                 transition_definition: fully_receive_definition
+            complete_purchase_order:
+                label: "Complete"
+                step_to: complete_purchase_order
+                transition_definition: complete_purchase_order_definition
         transition_definitions:
             partially_receive_definition:
                 post_actions:
                     - @marello_receive_purchase_order:
                         entity: $received_items
                         is_partial: true
+                    - @marello_purchase_order_transit_complete_action:
+                        workflowItem: $.
+                        transitionName: 'complete_purchase_order'
+                        entity: $received_items
             fully_receive_definition:
                 post_actions:
                     - @marello_receive_purchase_order:
                         entity: $po
+                    - @marello_purchase_order_transit_complete_action:
+                        workflowItem: $.
+                        transitionName: 'complete_purchase_order'
+                        entity: $po
+            complete_purchase_order_definition: ~
 

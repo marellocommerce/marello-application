@@ -58,7 +58,7 @@
         {% set disabled = widget.parent.vars.disabled %}
     {% endif %}
 
-    {% if form.vars.value.status != 'complete' %}
+    {% if form.vars.value.status != 'complete' and form.vars.value.status != 'closed' %}
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
         class="return-line-item display-values">
         {{ form_widget(form) }}

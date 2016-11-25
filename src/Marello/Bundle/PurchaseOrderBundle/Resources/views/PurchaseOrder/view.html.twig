@@ -22,6 +22,8 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.purchaseorder.purchase_order_number.label'|trans, entity.purchaseOrderNumber) }}
+                    {{ UI.renderProperty('marello.purchaseorder.purchase_order_date.label'|trans, entity.createdAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('marello.purchaseorder.status.label'|trans, entity.workflowStep ? entity.workflowStep.label : null) }}
                 </div>
             </div>
         </div>
