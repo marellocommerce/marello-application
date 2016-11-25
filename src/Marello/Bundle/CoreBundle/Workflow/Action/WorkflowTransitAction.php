@@ -3,6 +3,8 @@
 namespace Marello\Bundle\CoreBundle\Workflow\Action;
 
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use JMS\JobQueueBundle\Entity\Job;
 
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\Action\Action\AbstractAction;
@@ -10,15 +12,18 @@ use Oro\Component\Action\Action\ActionInterface;
 use Oro\Component\Action\Model\ContextAccessor;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 class WorkflowTransitAction extends AbstractAction
 {
+    const WORKFLOW_TRANSIT_COMMAND      = 'oro:workflow:transit';
+    const WORKFLOW_WORKFLOWITEM_OPTION  = '--workflow-item';
+    const WORKFLOW_TRANSITION_OPTION    = '--transition';
+
+    /** @var ObjectManager $om */
+    protected $om;
+
     /** @var array */
     protected $options;
-
-    /** @var WorkflowManager $workflowManager */
-    protected $workflowManager;
 
     /** @var PropertyPathInterface $workflowItem */
     protected $workflowItem;
@@ -26,18 +31,12 @@ class WorkflowTransitAction extends AbstractAction
     /** @var PropertyPathInterface|bool $transitionName */
     protected $transitionName;
 
-    /**
-     * ReceivePurchaseOrderAction constructor.
-     * @param ContextAccessor $contextAccessor
-     * @param WorkflowManager $workflowManager
-     */
     public function __construct(
         ContextAccessor $contextAccessor,
-        WorkflowManager $workflowManager
+        ObjectManager $om
     ) {
         parent::__construct($contextAccessor);
-
-        $this->workflowManager  = $workflowManager;
+        $this->om = $om;
     }
 
     /**
@@ -59,10 +58,7 @@ class WorkflowTransitAction extends AbstractAction
             throw new \Exception('Invalid configuration of workflow action, expected transactionName, null given');
         }
 
-        $workflow = $this->workflowManager->getWorkflow($workflowItem);
-        $transaction = $workflow->getTransitionManager()->getTransition($transitionName);
-
-        $this->workflowManager->transit($workflowItem, $transaction);
+        $this->createNewTransactionJob($workflowItem, $transitionName);
     }
 
     /**
@@ -86,5 +82,42 @@ class WorkflowTransitAction extends AbstractAction
         } else {
             $this->transitionName = $this->getOption($options, 'transitionName');
         }
+    }
+
+    /**
+     * Create new Job for transitioning a workflow item
+     * @param WorkflowItem $workflowItem
+     * @param $transitionName
+     */
+    private function createNewTransactionJob(WorkflowItem $workflowItem, $transitionName)
+    {
+        if (!$workflowItem->getId()) {
+            return;
+        }
+
+        $job = new Job(
+            self::WORKFLOW_TRANSIT_COMMAND,
+            $this->getFormattedArguments($workflowItem->getId(), $transitionName),
+            true,
+            Job::DEFAULT_QUEUE,
+            Job::PRIORITY_HIGH
+        );
+
+        $this->om->persist($job);
+        $this->om->flush();
+    }
+
+    /**
+     * Format Job arguments into array
+     * @param $itemId
+     * @param $transitionName
+     * @return array
+     */
+    private function getFormattedArguments($itemId, $transitionName)
+    {
+        $workflowItemOption = sprintf('%s=%s',self::WORKFLOW_WORKFLOWITEM_OPTION, $itemId);
+        $workflowTransitionOption = sprintf('%s=%s',self::WORKFLOW_TRANSITION_OPTION, $transitionName);
+
+        return [$workflowItemOption, $workflowTransitionOption];
     }
 }

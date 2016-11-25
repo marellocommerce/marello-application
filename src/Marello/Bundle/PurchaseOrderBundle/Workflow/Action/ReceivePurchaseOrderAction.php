@@ -80,12 +80,16 @@ class ReceivePurchaseOrderAction extends AbstractAction
                 $data = (array)$item->getData();
                 if (array_key_exists(self::LAST_PARTIALLY_RECEIVED_QTY, $data)) {
                     $inventoryUpdateQty = $data[self::LAST_PARTIALLY_RECEIVED_QTY];
+                    $item->setData(null);
                 }
             } else {
-                if ($item->getOrderedAmount() !== $item->getReceivedAmount()) {
+                if (!$this->isItemFullyReceived($item)) {
                     $item->setReceivedAmount($item->getOrderedAmount());
                     $inventoryUpdateQty = $item->getReceivedAmount();
                 }
+            }
+
+            if ($this->isItemFullyReceived($item)) {
                 $item->setStatus('complete');
             }
 
@@ -132,5 +136,15 @@ class ReceivePurchaseOrderAction extends AbstractAction
         if (array_key_exists('is_partial', $options)) {
             $this->isPartial = $this->getOption($options, 'is_partial');
         }
+    }
+
+    /**
+     * Check if item is fully received
+     * @param $item
+     * @return bool
+     */
+    private function isItemFullyReceived($item)
+    {
+        return ($item->getOrderedAmount() === $item->getReceivedAmount());
     }
 }
