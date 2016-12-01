@@ -63,9 +63,16 @@ class Notification extends ExtendNotification implements EmailNotificationInterf
     protected $body;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.created_at"
+     *          }
+     *      }
+     * )
      */
     protected $createdAt;
 
@@ -100,7 +107,7 @@ class Notification extends ExtendNotification implements EmailNotificationInterf
      */
     public function prePersist()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**
