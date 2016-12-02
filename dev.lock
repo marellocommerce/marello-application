@@ -6164,7 +6164,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/crm-enterprise",
-                "reference": "31864738bfebd6166b577fc07b02dc67b210e539",
+                "reference": "a10d8328143e6213e37998269675918c9f0417a9",
                 "shasum": null
             },
             "require": {
@@ -6180,7 +6180,7 @@
             },
             "autoload": {
                 "psr-0": {
-                    "Oro\\Bundle": "src/"
+                    "Oro": "src/"
                 }
             },
             "license": [
