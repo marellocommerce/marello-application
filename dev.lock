@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d1c20a0b9774b55529278be546288f36",
-    "content-hash": "a83c243e220b8daee57354530358c58f",
+    "hash": "aa7a3cc7889c4bcad2060301bff31b03",
+    "content-hash": "fafb02ce8eb6b501cad7ea4b7a6aa6fc",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -443,12 +443,12 @@
             "version": "0.3.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wyuenho/backgrid.git",
+                "url": "https://github.com/cloudflare/backgrid.git",
                 "reference": "9a45dbc4a2af4a555e8274b7cc1a966a7586cfea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wyuenho/backgrid/zipball/9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
+                "url": "https://api.github.com/repos/cloudflare/backgrid/zipball/9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
                 "reference": "9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
                 "shasum": ""
             },
@@ -485,12 +485,12 @@
             "version": "v0.3.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wyuenho/backgrid-paginator.git",
+                "url": "https://github.com/cloudflare/backgrid-paginator.git",
                 "reference": "77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wyuenho/backgrid-paginator/zipball/77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
+                "url": "https://api.github.com/repos/cloudflare/backgrid-paginator/zipball/77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
                 "reference": "77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
                 "shasum": ""
             },
@@ -1872,16 +1872,16 @@
         },
         {
             "name": "composer/composer",
-            "version": "1.2.2",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/composer.git",
-                "reference": "5465af955800fa884a36f66ff65280584988efd0"
+                "reference": "e7f19286a7e7f940950c9069a0f549d483c30ba7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/composer/zipball/5465af955800fa884a36f66ff65280584988efd0",
-                "reference": "5465af955800fa884a36f66ff65280584988efd0",
+                "url": "https://api.github.com/repos/composer/composer/zipball/e7f19286a7e7f940950c9069a0f549d483c30ba7",
+                "reference": "e7f19286a7e7f940950c9069a0f549d483c30ba7",
                 "shasum": ""
             },
             "require": {
@@ -1945,7 +1945,7 @@
                 "dependency",
                 "package"
             ],
-            "time": "2016-11-03 16:43:15"
+            "time": "2016-12-01 13:33:53"
         },
         {
             "name": "composer/semver",
@@ -6561,82 +6561,6 @@
             "homepage": "https://github.com/orocrm/marketing.git"
         },
         {
-            "name": "oro/marketing-commerce-bridge",
-            "version": "dev-master",
-            "target-dir": "Oro/Bridge/MarketingCommerce",
-            "dist": {
-                "type": "path",
-                "url": "../../package/marketing-commerce-bridge",
-                "reference": "1ca476db6f61c5222b2208173a3c35cae0e4aa35",
-                "shasum": null
-            },
-            "require": {
-                "oro/commerce": "1.x-dev",
-                "oro/marketing": "1.x-dev",
-                "php": ">=5.5.9"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bridge\\MarketingCommerce": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "B2B marketing-related bridge",
-            "homepage": "https://github.com/orocrm/marketing-commerce-bridge.git"
-        },
-        {
-            "name": "oro/marketing-crm-bridge",
-            "version": "dev-master",
-            "target-dir": "Oro/Bridge/MarketingCRM",
-            "dist": {
-                "type": "path",
-                "url": "../../package/marketing-crm-bridge",
-                "reference": "f08eb593ed1c83aca7c4f712da2bddfd57b5df07",
-                "shasum": null
-            },
-            "require": {
-                "oro/crm": "1.x-dev",
-                "oro/marketing": "1.x-dev",
-                "php": ">=5.5.9"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro\\Bridge\\MarketingCRM": ""
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "CRM marketing-related bridge",
-            "homepage": "https://github.com/orocrm/marketing-crm-bridge.git"
-        },
-        {
             "name": "oro/platform",
             "version": "dev-master",
             "dist": {
@@ -10943,16 +10867,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.29",
+            "version": "4.8.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "f19d481b468b76a7fb55eb2b772ed487e484891e"
+                "reference": "a534e04d0bd39c557c2881c341efd06fa6f1292a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f19d481b468b76a7fb55eb2b772ed487e484891e",
-                "reference": "f19d481b468b76a7fb55eb2b772ed487e484891e",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a534e04d0bd39c557c2881c341efd06fa6f1292a",
+                "reference": "a534e04d0bd39c557c2881c341efd06fa6f1292a",
                 "shasum": ""
             },
             "require": {
@@ -11011,7 +10935,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2016-11-20 10:35:28"
+            "time": "2016-12-01 17:05:48"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -11629,8 +11553,7 @@
         "oro/crm-zendesk": 20,
         "oro/crm-pro-ldap-bundle": 20,
         "oro/crm-pro-demo-data-bundle": 20,
-        "oro/marketing-commerce-bridge": 20,
-        "oro/marketing-crm-bridge": 20
+        "oro/marketing": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
