@@ -78,11 +78,11 @@ class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareIn
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('refundNumber', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('refundAmount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
+        $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['refundNumber'], 'UNIQ_973FA8836E8C706D');
         $table->addIndex(['customer_id'], 'IDX_973FA8839395C3F3', []);

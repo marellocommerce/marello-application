@@ -129,7 +129,6 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('discount_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('discount_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('coupon_code', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('invoiced_at', 'datetime', ['notnull' => false]);
@@ -137,6 +136,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('billing_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['order_number'], 'UNIQ_A619DD64551F0F81');

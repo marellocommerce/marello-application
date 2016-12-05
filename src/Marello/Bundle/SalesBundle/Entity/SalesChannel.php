@@ -104,7 +104,7 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
      * @ORM\Column(type="string")
      */
     protected $channelType = self::DEFAULT_TYPE;
-
+    
     /**
      * @param string|null $name
      */
