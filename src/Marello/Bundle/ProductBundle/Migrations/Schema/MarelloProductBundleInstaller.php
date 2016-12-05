@@ -57,7 +57,7 @@ class MarelloProductBundleInstaller implements Installation
             'money',
             ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
         );
-        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn(
@@ -70,10 +70,10 @@ class MarelloProductBundleInstaller implements Installation
         $table->addColumn('warranty', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['sku'], 'marello_product_product_skuidx');
-        $table->addIndex(['updated_at'], 'idx_marello_product_updated_at', []);
         $table->addIndex(['organization_id'], 'idx_25845b8d32c8a3de', []);
         $table->addIndex(['variant_id'], 'idx_25845b8d3b69a9af', []);
         $table->addIndex(['created_at'], 'idx_marello_product_created_at', []);
+        $table->addIndex(['updated_at'], 'idx_marello_product_updated_at', []);
         $table->addIndex(['product_status'], 'IDX_25845B8D197C24B8', []);
     }
 
@@ -117,7 +117,7 @@ class MarelloProductBundleInstaller implements Installation
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('variant_code', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('created_at', 'datetime', []);
-        $table->addColumn('updated_at', 'datetime', []);
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['variant_code'], 'uniq_78de08d98eda60d');
     }

@@ -9,6 +9,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_address")
  * @ORM\AssociationOverrides({
  *      @ORM\AssociationOverride(name="region",
@@ -116,5 +117,22 @@ class MarelloAddress extends ExtendAddress
             $this->lastName,
             $this->nameSuffix,
         ]));
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdateTimestamp()
+    {
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistTimestamp()
+    {
+        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updated = null;
     }
 }

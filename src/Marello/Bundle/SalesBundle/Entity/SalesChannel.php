@@ -3,6 +3,7 @@
 namespace Marello\Bundle\SalesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
@@ -39,6 +40,8 @@ use Marello\Bundle\SalesBundle\Model\ExtendSalesChannel;
  */
 class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
 {
+    use EntityCreatedUpdatedAtTrait;
+    
     const DEFAULT_TYPE = 'marello';
 
     /**
@@ -103,59 +106,11 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
     protected $channelType = self::DEFAULT_TYPE;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
-
-    /**
      * @param string|null $name
      */
     public function __construct($name = null)
     {
         $this->name = $name;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
-        if (!$this->getCreatedAt()) {
-            $this->setCreatedAt($now);
-        }
-        $this->setUpdatedAt($now);
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**
@@ -193,47 +148,7 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
     {
         return $this->name;
     }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTime $createdAt
-     *
-     * @return $this
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTime $updatedAt
-     *
-     * @return $this
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
+    
     /**
      * @return string
      */

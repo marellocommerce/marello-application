@@ -162,7 +162,7 @@ class StockLevel
     protected $subjectId = null;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -307,6 +307,14 @@ class StockLevel
     {
         return $this->author;
     }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
 
     /**
      * @return mixed
@@ -314,14 +322,6 @@ class StockLevel
     public function getSubject()
     {
         return $this->subject;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
     }
 
     /**

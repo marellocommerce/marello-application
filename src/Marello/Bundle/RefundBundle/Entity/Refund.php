@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\LocaleTrait;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -46,7 +47,8 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
 {
     use LocaleTrait;
-
+    use EntityCreatedUpdatedAtTrait;
+        
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -99,33 +101,6 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
      */
     protected $currency;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
 
     /**
      * @var Organization
@@ -210,7 +185,6 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
     {
         parent::__construct();
 
-        $this->createdAt = new \DateTime();
         $this->items = new ArrayCollection();
     }
 
@@ -346,22 +320,6 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
         $this->items->removeElement($item);
 
         return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**

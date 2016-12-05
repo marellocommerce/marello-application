@@ -64,7 +64,7 @@
                     <span class="widget-title">{{ 'marello.order.datablock.order_totals'|trans }}</span>
                 </div>
                 {{ UI.renderProperty('marello.order.subtotal.label'|trans, entity.subtotal|oro_format_currency({'currency':entity.currency})) }}
-                {{ UI.renderProperty('marello.order.shipping_amount.label'|trans, entity.shippingAmount|oro_format_currency({'currency':entity.currency})) }}
+                {{ UI.renderProperty('marello.order.shipping_amount_incl_tax.label'|trans, entity.shippingAmountInclTax|oro_format_currency({'currency':entity.currency})) }}
                 {{ UI.renderProperty('marello.order.total_tax.label'|trans, entity.totalTax|oro_format_currency({'currency':entity.currency})) }}
                 {{ UI.renderProperty('marello.order.discount_amount.label'|trans, entity.discountAmount|oro_format_currency({'currency':entity.currency})) }}
                 {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.grandTotal|oro_format_currency({'currency':entity.currency})) }}
@@ -112,7 +112,7 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.order.shipping_method.label'|trans, entity.shippingMethod) }}
-                    {{ UI.renderProperty('marello.order.shipping_amount.label'|trans, entity.shippingAmount|oro_format_currency({'currency':entity.currency})) }}
+                    {{ UI.renderProperty('marello.order.shipping_amount_incl_tax.label'|trans, entity.shippingAmountInclTax|oro_format_currency({'currency':entity.currency})) }}
                 </div>
             </div>
         </div>
