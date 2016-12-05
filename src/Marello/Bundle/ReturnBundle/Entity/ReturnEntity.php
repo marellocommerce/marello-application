@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\CoreBundle\Model\LocaleTrait;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -38,6 +39,7 @@ class ReturnEntity extends ExtendReturnEntity implements
     ShippingAwareInterface
 {
     use HasShipmentTrait;
+    use LocaleTrait;
     
     /**
      * @var int
@@ -221,6 +223,7 @@ class ReturnEntity extends ExtendReturnEntity implements
     {
         $this->order = $order;
         $this->organization = $order->getOrganization();
+        $this->locale = $order->getLocale();
 
         return $this;
     }

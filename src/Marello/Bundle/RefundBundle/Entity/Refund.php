@@ -5,6 +5,7 @@ namespace Marello\Bundle\RefundBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\Model\LocaleTrait;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -44,6 +45,8 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  */
 class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
 {
+    use LocaleTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -162,6 +165,7 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
             ->setCustomer($order->getCustomer())
             ->setOrganization($order->getOrganization())
             ->setCurrency($order->getCurrency())
+            ->setLocale($order->getLocale())
         ;
 
         $order->getItems()->map(
@@ -187,6 +191,7 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
             ->setCustomer($return->getOrder()->getCustomer())
             ->setOrganization($return->getOrganization())
             ->setCurrency($return->getOrder()->getCurrency())
+            ->setLocale($return->getOrder()->getLocale())
         ;
 
         $return->getReturnItems()->map(
@@ -389,10 +394,14 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
 
     /**
      * @param string $currency
+     *
+     * @return Refund
      */
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+
+        return $this;
     }
 
     /**

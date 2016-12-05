@@ -115,6 +115,7 @@ class MarelloReturnBundleInstaller implements Installation,
         $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_id', 'integer', ['notnull' => false]);
         $table->addColumn('returnnumber', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('createdat', 'datetime', []);
         $table->addColumn('updatedat', 'datetime', []);
         $table->addColumn('saleschannel_name', 'string', ['length' => 255]);
