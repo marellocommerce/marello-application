@@ -6,7 +6,6 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 
 class ProductTest extends \PHPUnit_Framework_TestCase
 {
-
     /** @var Product $entity */
     protected $entity;
 

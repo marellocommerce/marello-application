@@ -76,7 +76,9 @@ class WorkflowTransitAction extends AbstractAction
             $this->workflowItem = $this->getOption($options, 'workflowItem');
         }
 
-        if (!array_key_exists('transitionName', $options) && !$options['transitionName'] instanceof PropertyPathInterface) {
+        if (!array_key_exists('transitionName', $options) &&
+            !$options['transitionName'] instanceof PropertyPathInterface
+        ) {
             throw new InvalidParameterException('Parameter "transitionName" is required.');
         } else {
             $this->transitionName = $this->getOption($options, 'transitionName');
@@ -114,8 +116,8 @@ class WorkflowTransitAction extends AbstractAction
      */
     private function getFormattedArguments($itemId, $transitionName)
     {
-        $workflowItemOption = sprintf('%s=%s',self::WORKFLOW_WORKFLOWITEM_OPTION, $itemId);
-        $workflowTransitionOption = sprintf('%s=%s',self::WORKFLOW_TRANSITION_OPTION, $transitionName);
+        $workflowItemOption = sprintf('%s=%s', self::WORKFLOW_WORKFLOWITEM_OPTION, $itemId);
+        $workflowTransitionOption = sprintf('%s=%s', self::WORKFLOW_TRANSITION_OPTION, $transitionName);
 
         return [$workflowItemOption, $workflowTransitionOption];
     }

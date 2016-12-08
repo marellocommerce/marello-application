@@ -23,30 +23,52 @@ class NoteActivityProcessor
      * @param $entity
      * @param $updatedItems
      * @param array $data
+     * @throws \Exception
      */
     public function addNote($entity, $updatedItems, array $data = [])
     {
-        $note = new Note();
+        if (!is_object($entity)) {
+            throw new \Exception(sprintf('Invalid entity, expected entity but got %s instead', gettype($entity)));
+        }
         $message = $this->getMessage($updatedItems);
-        $note->setMessage($message);
-        $note->setTarget($entity);
-        $this->manager->persist($note);
-        $this->manager->flush();
+
+        if ($message) {
+            $note = $this->createNewNote();
+            $note->setMessage($message);
+            $note->setTarget($entity);
+            $this->manager->persist($note);
+            $this->manager->flush();
+        }
     }
 
     /**
      * @param $updatedItems
      * @return string
      */
-    protected function getMessage($updatedItems)
+    public function getMessage($updatedItems)
     {
         $message = null;
         foreach ($updatedItems as $k => $item) {
-            $message .= sprintf('Product name: %s<br/>', $item['item']->getProductName());
-            $message .= sprintf('Quantity Received: %s<br/>', $item['qty']);
-            $message .= sprintf('<br/>');
+            if (isset($item['item']) && !empty($item['item'])) {
+                $message .= sprintf('Product name: %s<br/>', $item['item']->getProductName());
+                $message .= sprintf('Quantity Received: %s<br/>', $item['qty']);
+                $message .= sprintf('<br/>');
+            }
         }
 
-        return sprintf('<b>Quantities received for: </b><br/> %s', $message);
+        if ($message) {
+            return sprintf('<b>Quantities received for: </b><br/> %s', $message);
+        }
+
+        return $message;
+    }
+
+    /**
+     * Create new note entity
+     * @return Note
+     */
+    private function createNewNote()
+    {
+        return new Note();
     }
 }
