@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\SalesBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
@@ -104,13 +106,33 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
      * @ORM\Column(type="string")
      */
     protected $channelType = self::DEFAULT_TYPE;
-    
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\LocaleBundle\Entity\Localization")
+     * @ORM\JoinColumn(name="default_language_id", referencedColumnName="id")
+     *
+     * @var Localization
+     */
+    protected $defaultLanguage;
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Oro\Bundle\LocaleBundle\Entity\Localization")
+     * @ORM\JoinTable(name="marello_sales_channel_lang",
+     *     joinColumns={@ORM\JoinColumn(name="sales_channel_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="localization_id", referencedColumnName="id", unique=true)}
+     * )
+     * @var ArrayCollection
+     */
+    protected $supportedLanguages;
+
     /**
      * @param string|null $name
      */
     public function __construct($name = null)
     {
         $this->name = $name;
+        $this->supportedLanguages = new ArrayCollection();
     }
 
     /**
@@ -265,5 +287,73 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
         $this->owner = $owner;
 
         return $this;
+    }
+
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    /**
+     * Set defaultLanguage
+     *
+     * @param Localization $defaultLanguage
+     *
+     * @return SalesChannel
+     */
+    public function setDefaultLanguage(Localization $defaultLanguage = null)
+    {
+        $this->defaultLanguage = $defaultLanguage;
+
+        return $this;
+    }
+
+    /**
+     * Get defaultLanguage
+     *
+     * @return Localization
+     */
+    public function getDefaultLanguage()
+    {
+        return $this->defaultLanguage;
+    }
+
+    /**
+     * Add supportedLanguage
+     *
+     * @param Localization $supportedLanguage
+     *
+     * @return SalesChannel
+     */
+    public function addSupportedLanguage(Localization $supportedLanguage)
+    {
+        $this->supportedLanguages[] = $supportedLanguage;
+
+        return $this;
+    }
+
+    /**
+     * Remove supportedLanguage
+     *
+     * @param Localization $supportedLanguage
+     */
+    public function removeSupportedLanguage(Localization $supportedLanguage)
+    {
+        $this->supportedLanguages->removeElement($supportedLanguage);
+    }
+
+    /**
+     * Get supportedLanguages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSupportedLanguages()
+    {
+        return $this->supportedLanguages;
     }
 }
