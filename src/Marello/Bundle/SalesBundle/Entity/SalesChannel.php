@@ -12,6 +12,9 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\SalesBundle\Model\ExtendSalesChannel;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository")
  * @ORM\HasLifecycleCallbacks()
@@ -114,7 +117,6 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
      * @var Localization
      */
     protected $defaultLanguage;
-
 
     /**
      * @ORM\ManyToMany(targetEntity="Oro\Bundle\LocaleBundle\Entity\Localization")
@@ -355,5 +357,24 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
     public function getSupportedLanguages()
     {
         return $this->supportedLanguages;
+    }
+
+    /**
+     * @Assert\Callback
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function validateSupportedLanguages(ExecutionContextInterface $context)
+    {
+        $found = false;
+        foreach ($this->getSupportedLanguages() as $lang) {
+            if ($lang === $this->getDefaultLanguage()) {
+                $found = true;
+                break;
+            }
+        }
+        if (!$found) {
+            $this->addSupportedLanguage($this->getDefaultLanguage());
+        }
     }
 }

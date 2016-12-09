@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\CoreBundle\Model;
+namespace Marello\Bundle\LocaleBundle\Model;
 
 use Oro\Bundle\LocaleBundle\Entity\Localization;
 

@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Marello\Bundle\SalesBundle\Form\EventListener\SalesChannelFormSubscriber;
+use Symfony\Component\Validator\Constraints\Count;
 
 class SalesChannelType extends AbstractType
 {
@@ -50,7 +51,8 @@ class SalesChannelType extends AbstractType
                     return $er->createQueryBuilder('l')
                         ->orderBy('l.name', 'ASC');
                 },
-                'choice_label' => 'name',
+                'choice_label' => 'name'
+
             ])
             ->add('defaultLanguage', 'entity', [
                 'required' => true,
@@ -60,7 +62,7 @@ class SalesChannelType extends AbstractType
                     return $er->createQueryBuilder('l')
                         ->orderBy('l.name', 'ASC');
                 },
-                'choice_label' => 'name',
+                'choice_label' => 'name'
             ])
         ;
     }

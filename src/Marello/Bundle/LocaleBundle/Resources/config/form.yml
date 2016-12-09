@@ -1,0 +1,8 @@
+parameters:
+    marello_locale.form.type.locale.class:   Marello\Bundle\LocaleBundle\Form\Type\LocaleType
+
+services:
+    marello_locale.form.type.locale:
+        class: '%marello_locale.form.type.locale.class%'
+        tags:
+            - { name: form.type, alias: marello_locale }

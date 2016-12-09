@@ -12,3 +12,7 @@ Marello\Bundle\SalesBundle\Entity\SalesChannel:
             - NotBlank: ~
         channelType:
             - NotBlank: ~
+        supportedLanguages:
+            - NotBlank: ~
+        defaultLanguage:
+            - NotBlank: ~
