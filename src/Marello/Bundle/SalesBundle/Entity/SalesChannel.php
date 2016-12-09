@@ -119,22 +119,11 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
     protected $defaultLanguage;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\LocaleBundle\Entity\Localization")
-     * @ORM\JoinTable(name="marello_sales_channel_lang",
-     *     joinColumns={@ORM\JoinColumn(name="sales_channel_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="localization_id", referencedColumnName="id", unique=true)}
-     * )
-     * @var ArrayCollection
-     */
-    protected $supportedLanguages;
-
-    /**
      * @param string|null $name
      */
     public function __construct($name = null)
     {
         $this->name = $name;
-        $this->supportedLanguages = new ArrayCollection();
     }
 
     /**
@@ -323,58 +312,5 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
     public function getDefaultLanguage()
     {
         return $this->defaultLanguage;
-    }
-
-    /**
-     * Add supportedLanguage
-     *
-     * @param Localization $supportedLanguage
-     *
-     * @return SalesChannel
-     */
-    public function addSupportedLanguage(Localization $supportedLanguage)
-    {
-        $this->supportedLanguages[] = $supportedLanguage;
-
-        return $this;
-    }
-
-    /**
-     * Remove supportedLanguage
-     *
-     * @param Localization $supportedLanguage
-     */
-    public function removeSupportedLanguage(Localization $supportedLanguage)
-    {
-        $this->supportedLanguages->removeElement($supportedLanguage);
-    }
-
-    /**
-     * Get supportedLanguages
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSupportedLanguages()
-    {
-        return $this->supportedLanguages;
-    }
-
-    /**
-     * @Assert\Callback
-     *
-     * @param ExecutionContextInterface $context
-     */
-    public function validateSupportedLanguages(ExecutionContextInterface $context)
-    {
-        $found = false;
-        foreach ($this->getSupportedLanguages() as $lang) {
-            if ($lang === $this->getDefaultLanguage()) {
-                $found = true;
-                break;
-            }
-        }
-        if (!$found) {
-            $this->addSupportedLanguage($this->getDefaultLanguage());
-        }
     }
 }

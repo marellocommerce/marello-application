@@ -27,11 +27,9 @@ class MarelloSalesBundleInstaller implements Installation
     {
         /** Tables generation **/
         $this->createMarelloSalesSalesChannelTable($schema);
-        $this->createMarelloSalesChannelSupportedLanguagesTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloSalesSalesChannelForeignKeys($schema);
-        $this->addMarelloSalesSalesChannelLangForeignKeys($schema);
     }
 
     /**
@@ -56,21 +54,7 @@ class MarelloSalesBundleInstaller implements Installation
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'marello_sales_sales_channel_codeidx');
         $table->addIndex(['owner_id'], 'idx_37c71d17e3c61f9', []);
-    }
-
-    /**
-     * Create marello_product_saleschannel table
-     *
-     * @param Schema $schema
-     */
-    protected function createMarelloSalesChannelSupportedLanguagesTable(Schema $schema)
-    {
-        $table = $schema->createTable('marello_sales_channel_lang');
-        $table->addColumn('sales_channel_id', 'integer', []);
-        $table->addColumn('localization_id', 'integer', []);
-        $table->setPrimaryKey(['sales_channel_id', 'localization_id']);
-        $table->addIndex(['sales_channel_id'], '', []);
-        $table->addIndex(['localization_id'], '', []);
+        $table->addIndex(['default_language_id'], '', []);
     }
 
     /**
@@ -87,25 +71,9 @@ class MarelloSalesBundleInstaller implements Installation
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
-    }
-
-    /**
-     * Add marello_sales_channel_lang foreign keys.
-     *
-     * @param Schema $schema
-     */
-    protected function addMarelloSalesSalesChannelLangForeignKeys(Schema $schema)
-    {
-        $table = $schema->getTable('marello_sales_channel_lang');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_sales_sales_channel'),
-            ['sales_channel_id'],
-            ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
-        );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_localization'),
-            ['localization_id'],
+            ['default_language_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

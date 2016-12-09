@@ -42,7 +42,6 @@ class LoadSalesChannelData extends AbstractFixture
             $channel->setCode($values['code']);
             $channel->setCurrency($values['currency']);
             $channel->setOwner($organization);
-            $channel->addSupportedLanguage($localization);
             $channel->setDefaultLanguage($localization);
 
             $this->manager->persist($channel);
