@@ -62,7 +62,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
         /** @var PurchaseOrder $purchaseOrder */
         $purchaseOrder = $this->contextAccessor->getValue($context, $this->entity);
         if (!$purchaseOrder) {
-            throw new \Exception('Invalid configuration of workflow action, expected entity, null given');
+            throw new \Exception('Invalid configuration of workflow action, expected entity, none given');
         }
 
         if (!$purchaseOrder instanceof PurchaseOrder) {
@@ -86,11 +86,9 @@ class ReceivePurchaseOrderAction extends AbstractAction
                 if (!$this->isItemFullyReceived($item)) {
                     $item->setReceivedAmount($item->getOrderedAmount());
                     $inventoryUpdateQty = $item->getReceivedAmount();
+                } else {
+                    $item->setStatus('complete');
                 }
-            }
-
-            if ($this->isItemFullyReceived($item)) {
-                $item->setStatus('complete');
             }
 
             if ($inventoryUpdateQty) {
@@ -113,6 +111,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
      */
     private function handleInventoryUpdate($item, $inventoryUpdateQty)
     {
+        /** @var InventoryItem $inventoryItem */
         $inventoryItem = $item->getProduct()->getInventoryItems()->first();
         $inventoryItem->adjustStockLevels('purchase_order', $inventoryUpdateQty);
     }
@@ -127,8 +126,10 @@ class ReceivePurchaseOrderAction extends AbstractAction
      */
     public function initialize(array $options)
     {
-        if (!array_key_exists('entity', $options) && !$options['entity'] instanceof PropertyPathInterface) {
+        if (!array_key_exists('entity', $options)) {
             throw new InvalidParameterException('Parameter "entity" is required.');
+        } elseif (!$options['entity'] instanceof PropertyPathInterface) {
+            throw new InvalidParameterException('Entity must be valid property definition.');
         } else {
             $this->entity = $this->getOption($options, 'entity');
         }
@@ -136,6 +137,10 @@ class ReceivePurchaseOrderAction extends AbstractAction
         if (array_key_exists('is_partial', $options)) {
             $this->isPartial = $this->getOption($options, 'is_partial');
         }
+
+        $this->options = $options;
+
+        return $this;
     }
 
     /**
