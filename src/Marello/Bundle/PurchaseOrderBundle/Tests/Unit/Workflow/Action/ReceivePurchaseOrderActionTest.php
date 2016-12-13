@@ -26,8 +26,10 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
     /** @var ObjectManager $entityManager */
     protected $entityManager;
 
+    /** @var ContextAccessor $contextAccessor */
     protected $contextAccessor;
 
+    /** @var NoteActivityProcessor $noteActivityProcessor */
     protected $noteActivityProcessor;
 
     public function setUp()
