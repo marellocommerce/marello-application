@@ -35,7 +35,7 @@ marello:
             stock_diff.label:                   Real Stock Change
             allocated_stock_diff.label:         Allocated Stock Change
             virtual_stock_diff.label:           Virtual Stock Change
-            author.label:                       Change Author
+            user.label:                         User
             subject.label:                      Related Subject
             change_trigger.label:               Trigger
             previous_level.label:               Previous Stock Level

@@ -139,8 +139,8 @@ datagrid:
                 type:           translatable
                 domain:         MarelloStockLevelChangeTrigger
                 frontend_type:  string
-            author:
-                label:          marello.inventory.stocklevel.author.label
+            user:
+                label:          marello.inventory.stocklevel.user.label
                 frontend_type:  string
             subject:
                 label:          marello.inventory.stocklevel.subject.label

@@ -8,7 +8,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\StockLevelRepository")
- * @ORM\Table(name="marello_inventory_stock_level")
+ * @ORM\Table(name="marello_inventory_level")
  * @Oro\Config(
  *      defaultValues={
  *          "entity"={
@@ -22,7 +22,7 @@ class StockLevel
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="id", type="integer")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -37,6 +37,7 @@ class StockLevel
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem", inversedBy="levels")
+     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -53,7 +54,7 @@ class StockLevel
     protected $inventoryItem;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="stock", type="integer")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -67,7 +68,7 @@ class StockLevel
     protected $stock;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="allocated_stock", type="integer")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -81,7 +82,7 @@ class StockLevel
     protected $allocatedStock;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="change_trigger", type="string")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -96,7 +97,7 @@ class StockLevel
 
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     * @ORM\JoinColumn(name="previous_level_id", nullable=true, onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -111,7 +112,7 @@ class StockLevel
 
     /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(name="user_id", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -122,7 +123,7 @@ class StockLevel
      *
      * @var User
      */
-    protected $author = null;
+    protected $user = null;
 
     /**
      * Subject field is filled using a listener.
@@ -134,7 +135,7 @@ class StockLevel
     protected $subject = null;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(name="subject_type", type="string", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -148,7 +149,7 @@ class StockLevel
     protected $subjectType = null;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="subject_id", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -162,7 +163,7 @@ class StockLevel
     protected $subjectId = null;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="created_at", type="datetime")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -186,7 +187,7 @@ class StockLevel
      * @param int           $allocatedStock
      * @param string        $changeTrigger
      * @param StockLevel    $previousLevel
-     * @param User          $author
+     * @param User          $user
      * @param mixed|null    $subject
      */
     public function __construct(
@@ -195,7 +196,7 @@ class StockLevel
         $allocatedStock,
         $changeTrigger,
         StockLevel $previousLevel = null,
-        User $author = null,
+        User $user = null,
         $subject = null
     ) {
         $this->inventoryItem  = $inventoryItem;
@@ -203,7 +204,7 @@ class StockLevel
         $this->allocatedStock = $allocatedStock;
         $this->changeTrigger  = $changeTrigger;
         $this->previousLevel  = $previousLevel;
-        $this->author         = $author;
+        $this->user         = $user;
         $this->subject        = $subject;
         $this->createdAt      = new \DateTime();
     }
@@ -303,9 +304,9 @@ class StockLevel
     /**
      * @return User
      */
-    public function getAuthor()
+    public function getUser()
     {
-        return $this->author;
+        return $this->user;
     }
 
     /**
