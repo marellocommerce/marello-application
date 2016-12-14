@@ -48,13 +48,18 @@ class WorkflowTransitAction extends AbstractAction
     {
         /** @var WorkflowItem $workflowItem */
         $workflowItem = $this->contextAccessor->getValue($context, $this->workflowItem);
+
+        if (!$workflowItem) {
+            throw new \Exception('Invalid configuration of workflow action, expected workflowItem, none given.');
+        }
+
         if (!$workflowItem instanceof WorkflowItem) {
             return;
         }
 
         $transitionName = $this->contextAccessor->getValue($context, $this->transitionName);
         if (!$transitionName) {
-            throw new \Exception('Invalid configuration of workflow action, expected transactionName, null given');
+            throw new \Exception('Invalid configuration of workflow action, expected transitionName, none given.');
         }
 
         $this->createNewTransactionJob($workflowItem, $transitionName);
@@ -70,19 +75,23 @@ class WorkflowTransitAction extends AbstractAction
      */
     public function initialize(array $options)
     {
-        if (!array_key_exists('workflowItem', $options) && !$options['workflowItem'] instanceof PropertyPathInterface) {
+        if (!array_key_exists('workflowItem', $options)) {
             throw new InvalidParameterException('Parameter "workflowItem" is required.');
+        } elseif (!$options['workflowItem'] instanceof PropertyPathInterface) {
+            throw new InvalidParameterException('workflowItem must be valid property definition.');
         } else {
             $this->workflowItem = $this->getOption($options, 'workflowItem');
         }
 
-        if (!array_key_exists('transitionName', $options) &&
-            !$options['transitionName'] instanceof PropertyPathInterface
-        ) {
+        if (!array_key_exists('transitionName', $options)) {
             throw new InvalidParameterException('Parameter "transitionName" is required.');
         } else {
             $this->transitionName = $this->getOption($options, 'transitionName');
         }
+
+        $this->options = $options;
+
+        return $this;
     }
 
     /**

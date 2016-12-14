@@ -338,7 +338,7 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Invalid configuration of workflow action, expected entity, none given
+     * @expectedExceptionMessage Invalid configuration of workflow action, expected entity, none given.
      */
     public function testExecuteActionNoEntityGiven()
     {

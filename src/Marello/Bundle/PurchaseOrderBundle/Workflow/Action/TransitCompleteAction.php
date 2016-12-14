@@ -25,8 +25,9 @@ class TransitCompleteAction extends WorkflowTransitAction
     {
         /** @var PurchaseOrder $purchaseOrder */
         $purchaseOrder = $this->contextAccessor->getValue($context, $this->entity);
+
         if (!$purchaseOrder) {
-            throw new \Exception('Invalid configuration of workflow action, expected entity, null given');
+            throw new \Exception('Invalid configuration of workflow action, expected entity, none given.');
         }
 
         if (!$purchaseOrder instanceof PurchaseOrder) {
@@ -57,8 +58,10 @@ class TransitCompleteAction extends WorkflowTransitAction
      */
     public function initialize(array $options)
     {
-        if (!array_key_exists('entity', $options) && !$options['entity'] instanceof PropertyPathInterface) {
+        if (!array_key_exists('entity', $options)) {
             throw new InvalidParameterException('Parameter "entity" is required.');
+        } elseif (!$options['entity'] instanceof PropertyPathInterface) {
+            throw new InvalidParameterException('Entity must be valid property definition.');
         } else {
             $this->entity = $this->getOption($options, 'entity');
         }

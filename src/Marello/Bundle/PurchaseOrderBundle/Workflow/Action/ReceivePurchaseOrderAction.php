@@ -62,7 +62,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
         /** @var PurchaseOrder $purchaseOrder */
         $purchaseOrder = $this->contextAccessor->getValue($context, $this->entity);
         if (!$purchaseOrder) {
-            throw new \Exception('Invalid configuration of workflow action, expected entity, none given');
+            throw new \Exception('Invalid configuration of workflow action, expected entity, none given.');
         }
 
         if (!$purchaseOrder instanceof PurchaseOrder) {
