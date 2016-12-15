@@ -6,6 +6,7 @@ use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -47,6 +48,21 @@ class OrderType extends AbstractType
                     'required' => false,
                 ]
             )
+            ->add(
+                'locale',
+                'text',
+                [
+                    'required' => false,
+                ]
+            )
+//            ->add(
+//                'localization',
+//                EntityType::class,
+//                [
+//                    'class' => 'OroLocaleBundle:Localization',
+//                    'required' => false,
+//                ]
+//            )
             ->add('billingAddress', 'marello_address')
             ->add('shippingAddress', 'marello_address')
             ->add('items', 'marello_order_item_collection');

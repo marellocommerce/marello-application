@@ -165,6 +165,7 @@ class ReturnEntity extends ExtendReturnEntity implements
     {
         $this->order = $order;
         $this->organization = $order->getOrganization();
+        $this->locale= $order->getLocale();
         $this->localization = $order->getLocalization();
 
         return $this;

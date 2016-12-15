@@ -137,6 +137,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['order_number'], 'UNIQ_A619DD64551F0F81');

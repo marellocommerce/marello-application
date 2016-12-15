@@ -140,6 +140,7 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
             ->setCustomer($order->getCustomer())
             ->setOrganization($order->getOrganization())
             ->setCurrency($order->getCurrency())
+            ->setLocale($order->getLocale())
             ->setLocalization($order->getLocalization())
         ;
 
@@ -166,6 +167,7 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
             ->setCustomer($return->getOrder()->getCustomer())
             ->setOrganization($return->getOrganization())
             ->setCurrency($return->getOrder()->getCurrency())
+            ->setLocale($return->getOrder()->getLocale())
             ->setLocalization($return->getOrder()->getLocalization())
         ;
 

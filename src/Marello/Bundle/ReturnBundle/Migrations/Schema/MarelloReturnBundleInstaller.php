@@ -119,6 +119,7 @@ class MarelloReturnBundleInstaller implements Installation,
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('saleschannel_name', 'string', ['length' => 255]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->addColumn('return_reference', 'string', ['notnull' => false, 'length' => 255]);

@@ -1,4 +1,5 @@
 parameters:
+
 services:
     marello_notification.email.send_processor:
         class: Marello\Bundle\NotificationBundle\Email\SendProcessor
@@ -7,6 +8,9 @@ services:
             - @doctrine.orm.entity_manager
             - @oro_activity.manager
             - @oro_email.email_renderer
+            - @oro_config.user
+        calls:
+            - [setEmailTemplateTranslatableRepository, ['@marello_locale.repository.email_template_translatable_repository']]
 
     marello_notification.workflow.send_notification_action:
         class: Marello\Bundle\NotificationBundle\Workflow\SendNotificationAction
