@@ -72,9 +72,9 @@ class MarelloInventoryBundleInstaller implements Installation
         $table->addColumn('subject_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
-        $table->addColumn('previous_level_id', 'integer', ['notnull' => false]);
+//        $table->addColumn('previous_level_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['previous_level_id'], 'UNIQ_32D13BA4E314A25F');
+//        $table->addUniqueIndex(['previous_level_id'], 'UNIQ_32D13BA4E314A25F');
         $table->addIndex(['inventory_item_id'], 'IDX_32D13BA4243D10EA', []);
         $table->addIndex(['user_id'], 'IDX_32D13BA4F675F31B', []);
     }
@@ -121,7 +121,7 @@ class MarelloInventoryBundleInstaller implements Installation
             $schema->getTable('marello_inventory_level'),
             ['current_level_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 
@@ -139,12 +139,12 @@ class MarelloInventoryBundleInstaller implements Installation
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_inventory_level'),
-            ['previous_level_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
+//        $table->addForeignKeyConstraint(
+//            $schema->getTable('marello_inventory_level'),
+//            ['previous_level_id'],
+//            ['id'],
+//            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+//        );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
             ['user_id'],

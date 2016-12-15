@@ -96,21 +96,6 @@ class StockLevel
     protected $changeTrigger;
 
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel", cascade={"persist"})
-     * @ORM\JoinColumn(name="previous_level_id", nullable=true, onDelete="SET NULL")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var StockLevel
-     */
-    protected $previousLevel = null;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", nullable=true)
      * @Oro\ConfigField(
@@ -186,7 +171,6 @@ class StockLevel
      * @param int           $stock
      * @param int           $allocatedStock
      * @param string        $changeTrigger
-     * @param StockLevel    $previousLevel
      * @param User          $user
      * @param mixed|null    $subject
      */
@@ -195,7 +179,6 @@ class StockLevel
         $stock,
         $allocatedStock,
         $changeTrigger,
-        StockLevel $previousLevel = null,
         User $user = null,
         $subject = null
     ) {
@@ -203,7 +186,6 @@ class StockLevel
         $this->stock          = $stock;
         $this->allocatedStock = $allocatedStock;
         $this->changeTrigger  = $changeTrigger;
-        $this->previousLevel  = $previousLevel;
         $this->user         = $user;
         $this->subject        = $subject;
         $this->createdAt      = new \DateTime();
@@ -282,26 +264,6 @@ class StockLevel
     }
 
     /**
-     * @return StockLevel
-     */
-    public function getPreviousLevel()
-    {
-        return $this->previousLevel;
-    }
-
-    /**
-     * @param StockLevel $previousLevel
-     *
-     * @return $this
-     */
-    public function setPreviousLevel($previousLevel)
-    {
-        $this->previousLevel = $previousLevel;
-
-        return $this;
-    }
-
-    /**
      * @return User
      */
     public function getUser()
@@ -343,6 +305,6 @@ class StockLevel
 
     public function __toString()
     {
-        return (string) $this->previousLevel->getAllocatedStock();
+        return (string) $this->getAllocatedStock();
     }
 }

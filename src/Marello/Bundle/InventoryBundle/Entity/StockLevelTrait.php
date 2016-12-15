@@ -51,7 +51,6 @@ trait StockLevelTrait
      */
     public function changeCurrentLevel(StockLevel $newLevel)
     {
-        $newLevel->setPreviousLevel($this->currentLevel);
         $this->levels->add($newLevel);
         $this->currentLevel = $newLevel;
 
@@ -123,7 +122,6 @@ trait StockLevelTrait
             $stock === null ? $this->getStock() : $stock,
             $allocatedStock === null ? $this->getAllocatedStock() : $allocatedStock,
             $trigger,
-            null,
             $user,
             $subject
         ));

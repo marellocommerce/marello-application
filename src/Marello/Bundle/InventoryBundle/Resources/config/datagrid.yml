@@ -107,13 +107,13 @@ datagrid:
             query:
                 select:
                     - l
-                    - (l.stock - COALESCE(p.stock, 0)) AS stockDiff
-                    - (l.allocatedStock - COALESCE(p.allocatedStock, 0)) AS allocatedStockDiff
+                    - (l.stock) AS stockDiff
+                    - (l.allocatedStock) AS allocatedStockDiff
                 from:
                     - { table: MarelloInventoryBundle:StockLevel, alias: l }
                 join:
                     left:
-                        - { join: l.previousLevel, alias: p }
+#                        - { join: l.previousLevel, alias: p }
                         - { join: l.inventoryItem, alias: i }
                 where:
                     and:
