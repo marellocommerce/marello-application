@@ -2,12 +2,10 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Event;
 
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 
-class InventoryUpdateEventTest extends WebTestCase
+class InventoryUpdateEventTest extends \PHPUnit_Framework_TestCase
 {
     /** @var InventoryUpdateContext $inventoryUpdateContext */
     protected $inventoryUpdateContext;

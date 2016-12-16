@@ -13,9 +13,9 @@ services:
     marello_inventory.logging.chart_builder:
         class: Marello\Bundle\InventoryBundle\Logging\ChartBuilder
         arguments:
-            - @doctrine
-            - @oro_dashboard.datetime.helper
-            - @translator
+            - '@doctrine'
+            - '@oro_dashboard.datetime.helper'
+            - '@translator'
 
     marello_inventory.listener.doctrine.stock_level_hydration:
         class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectHydrationSubscriber
@@ -25,7 +25,7 @@ services:
     marello_inventory.listener.doctrine.stock_level_author_fill:
         class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelAuthorFillSubscriber
         arguments:
-            - "@security.token_storage"
+            - '@security.token_storage'
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -33,3 +33,23 @@ services:
         class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectAssignSubscriber
         tags:
             - { name: doctrine.event_subscriber }
+
+    # Inventory Balancers and related services
+    marello_inventory.manager.marello_inventory_balancer_registry:
+        class: Marello\Bundle\InventoryBundle\Manager\InventoryBalancerRegistry
+        arguments:
+            - '@service_container'
+
+    marello_inventory.manager.inventory_balance_manager:
+        class: Marello\Bundle\InventoryBundle\Manager\InventoryBalancerManager
+        arguments:
+            - '@marello_inventory.manager.marello_inventory_balancer_registry'
+            - '@oro_config.manager'
+
+    marello_inventory.manager.balancer.single_warehouse_balancer:
+        class: Marello\Bundle\InventoryBundle\Manager\Balancer\SingleWarehouseBalancer
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@oro_config.manager'
+        tags:
+            - { name: marello_inventory.manager.balancer.inventory_balancer, alias: single_warehouse_balancer }

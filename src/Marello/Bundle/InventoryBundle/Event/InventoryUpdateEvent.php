@@ -16,11 +16,6 @@ class InventoryUpdateEvent extends Event
     protected $context;
 
     /**
-     * @var bool
-     */
-    protected $forceOption;
-
-    /**
      * @param InventoryUpdateContext $context
      */
     public function __construct(InventoryUpdateContext $context)

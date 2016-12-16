@@ -2,15 +2,14 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Model;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Oro\Bundle\UserBundle\Entity\User;
 
-class InventoryUpdateContextTest extends WebTestCase
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+
+class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
 {
     /** @var InventoryUpdateContext $inventoryUpdateContext */
     protected $inventoryUpdateContext;
