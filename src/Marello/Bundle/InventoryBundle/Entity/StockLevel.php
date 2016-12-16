@@ -212,7 +212,7 @@ class StockLevel
      */
     public function getStockDiff()
     {
-        return $this->stock - ($this->previousLevel ? $this->previousLevel->getStock() : 0);
+        return $this->stock;
     }
 
     /**
@@ -228,7 +228,7 @@ class StockLevel
      */
     public function getAllocatedStockDiff()
     {
-        return $this->allocatedStock - ($this->previousLevel ? $this->previousLevel->getAllocatedStock() : 0);
+        return $this->allocatedStock;
     }
 
     /**

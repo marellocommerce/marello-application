@@ -8,23 +8,29 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager\Balancer;
 
-
 use Marello\Bundle\ProductBundle\Entity\Product;
 
 class SingleWarehouseBalancer extends AbstractInventoryBalancer
 {
     protected function balanceInventory($context)
     {
-        $itemsToUpdate = $this->getInventoryItem($context);
+
+        $this->items = $this->getInventoryItems($context);
     }
 
-    private function getInventoryItem($context)
+    /**
+     * @param $context
+     * @return mixed
+     * @throws \Exception
+     */
+    private function getInventoryItems($context)
     {
         $product = $context->getValue('product');
+
         if (!$product instanceof Product) {
             throw new \Exception(sprintf('Cannot get inventory items, value for product is not an instance of %s', Product::class));
         }
 
-        return $product->getInventoryItems()->first();
+        return $product->getInventoryItems();
     }
 }

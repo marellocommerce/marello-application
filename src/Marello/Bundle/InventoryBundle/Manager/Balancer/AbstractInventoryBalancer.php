@@ -16,12 +16,25 @@ abstract class AbstractInventoryBalancer implements InventoryBalancerInterface, 
      */
     protected $eventDispatcher;
 
+    protected $inventoryManager;
+
+    /** @var array */
+    protected $items = [];
+
     /**
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function setDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
+    }
+
+    /**
+     * @param InventoryManagerInterface $inventoryManager
+     */
+    public function setInventoryManager(InventoryManagerInterface $inventoryManager)
+    {
+        $this->inventoryManager = $inventoryManager;
     }
 
     public function process(InventoryUpdateContext $context)
@@ -43,11 +56,6 @@ abstract class AbstractInventoryBalancer implements InventoryBalancerInterface, 
 //                new ExecuteActionEvent($context, $this)
 //            );
 //
-            // 4) dispatch inventoryUpdateEvent
-//            $this->eventDispatcher->dispatch(
-//                ExecuteActionEvents::HANDLE_AFTER,
-//                new ExecuteActionEvent($context, $this)
-//            );
         }
     }
 
@@ -62,6 +70,22 @@ abstract class AbstractInventoryBalancer implements InventoryBalancerInterface, 
     }
 
     /**
+     * Check if we can update the inventory, by checking if there are items to update
+     * @return bool
+     */
+    protected function canUpdateInventory()
+    {
+        // put logger here so we can log that there are in fact no items to update...
+        return (count($this->items) > 0) ? true : false;
+    }
+
+    protected function getInventoryManager()
+    {
+        return $this->inventoryManager;
+    }
+
+    /**
+     * balanceInventory needs to return the updated context with new
      * @param mixed $context
      */
     abstract protected function balanceInventory($context);
