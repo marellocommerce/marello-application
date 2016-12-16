@@ -43,7 +43,7 @@ class SalesChannelType extends AbstractType
             ->add('active', 'checkbox', [
                 'required' => false,
             ])
-            ->add('defaultLanguage', 'entity', [
+            ->add('localization', 'entity', [
                 'required' => true,
                 'multiple' => false,
                 'class' => 'OroLocaleBundle:Localization',
@@ -53,6 +53,7 @@ class SalesChannelType extends AbstractType
                 },
                 'choice_label' => 'name'
             ])
+            ->add('locale')
         ;
     }
 

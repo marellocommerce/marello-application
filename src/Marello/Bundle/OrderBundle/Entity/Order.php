@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
@@ -52,7 +53,8 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  */
 class Order extends ExtendOrder implements
     DerivedPropertyAwareInterface,
-    ShippingAwareInterface
+    ShippingAwareInterface,
+    LocaleAwareInterface
 {
     use HasShipmentTrait;
     use LocalizationTrait;

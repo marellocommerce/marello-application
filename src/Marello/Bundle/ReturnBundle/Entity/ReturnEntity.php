@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -37,7 +38,8 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  */
 class ReturnEntity extends ExtendReturnEntity implements
     DerivedPropertyAwareInterface,
-    ShippingAwareInterface
+    ShippingAwareInterface,
+    LocaleAwareInterface
 {
     use HasShipmentTrait;
     use LocalizationTrait;

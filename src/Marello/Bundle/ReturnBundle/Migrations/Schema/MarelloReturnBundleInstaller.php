@@ -191,6 +191,12 @@ class MarelloReturnBundleInstaller implements Installation,
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_localization'),
+            ['localization_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
     }
 
     /**

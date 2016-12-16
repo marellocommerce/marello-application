@@ -3,15 +3,12 @@
 namespace Marello\Bundle\NotificationBundle\Email;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Util\ClassUtils;
-use Marello\Bundle\LocaleBundle\Repository\EmailTemplateTranslatableRepository;
+use Marello\Bundle\LocaleBundle\Manager\EmailTemplateManager;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
-use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor;
 
 class SendProcessor
@@ -28,11 +25,8 @@ class SendProcessor
     /** @var EmailRenderer */
     protected $renderer;
     
-    /** @var  EmailTemplateTranslatableRepository */
-    protected $emailTemplateTranslatableRepository;
-    
-    /** @var  ConfigManager */
-    protected $configManager;
+    /** @var EmailTemplateManager  */
+    protected $emailTemplateManager;
 
     /**
      * EmailSendProcessor constructor.
@@ -41,27 +35,20 @@ class SendProcessor
      * @param ObjectManager              $manager
      * @param ActivityManager            $activityManager
      * @param EmailRenderer              $renderer
+     * @param EmailTemplateManager       $emailTeplateManager
      */
     public function __construct(
         EmailNotificationProcessor $emailNotificationProcessor,
         ObjectManager $manager,
         ActivityManager $activityManager,
         EmailRenderer $renderer,
-        ConfigManager $configManager
+        EmailTemplateManager $emailTeplateManager
     ) {
         $this->emailNotificationProcessor = $emailNotificationProcessor;
         $this->manager                    = $manager;
         $this->activityManager            = $activityManager;
         $this->renderer                   = $renderer;
-        $this->configManager              = $configManager;
-    }
-
-    /**
-     * @param $emailTemplateTranslatableRepository
-     */
-    public function setEmailTemplateTranslatableRepository($emailTemplateTranslatableRepository)
-    {
-        $this->emailTemplateTranslatableRepository = $emailTemplateTranslatableRepository;
+        $this->emailTemplateManager       = $emailTeplateManager;
     }
 
     /**
@@ -77,25 +64,7 @@ class SendProcessor
     {
         $entityName = ClassUtils::getRealClass(get_class($entity));
 
-        /*
-         * Try to get translated version.
-         */
-        $template = null;
-        if (method_exists($entity, 'getLocale') && $entity->getLocale() != null) {
-            $template = $this->emailTemplateTranslatableRepository->findOneByNameAndLocale(
-                $templateName,
-                $entity->getLocale());
-        }
-
-        /*
-         * If translation not found, try to get default one.
-         */
-        if ($template == null) {
-            $template = $this->manager
-                ->getRepository(EmailTemplate::class)
-                ->findOneBy(['name' => $templateName, 'entityName' => $entityName]);
-        }
-
+        $template = $this->emailTemplateManager->findTemplate($templateName, $entity);
 
         /*
          * If template is not found, throw an exception.

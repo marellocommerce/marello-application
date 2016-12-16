@@ -5,6 +5,7 @@ namespace Marello\Bundle\RefundBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Customer;
@@ -44,10 +45,13 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *      }
  * )
  */
-class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
+class Refund extends ExtendRefund implements 
+    DerivedPropertyAwareInterface, 
+    CurrencyAwareInterface,
+    LocaleAwareInterface
 {
-    use LocalizationTrait;
     use EntityCreatedUpdatedAtTrait;
+    use LocalizationTrait;
         
     /**
      * @ORM\Id

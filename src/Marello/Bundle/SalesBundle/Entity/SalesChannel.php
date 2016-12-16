@@ -5,6 +5,8 @@ namespace Marello\Bundle\SalesBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
@@ -43,9 +45,12 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *  }
  * )
  */
-class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
+class SalesChannel extends ExtendSalesChannel implements 
+    CurrencyAwareInterface, 
+    LocaleAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use LocalizationTrait;
     
     const DEFAULT_TYPE = 'marello';
 
@@ -109,14 +114,6 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
      * @ORM\Column(type="string")
      */
     protected $channelType = self::DEFAULT_TYPE;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\LocaleBundle\Entity\Localization")
-     * @ORM\JoinColumn(name="default_language_id", referencedColumnName="id")
-     *
-     * @var Localization
-     */
-    protected $defaultLanguage;
 
     /**
      * @param string|null $name
@@ -288,29 +285,5 @@ class SalesChannel extends ExtendSalesChannel implements CurrencyAwareInterface
     public function getActive()
     {
         return $this->active;
-    }
-
-    /**
-     * Set defaultLanguage
-     *
-     * @param Localization $defaultLanguage
-     *
-     * @return SalesChannel
-     */
-    public function setDefaultLanguage(Localization $defaultLanguage = null)
-    {
-        $this->defaultLanguage = $defaultLanguage;
-
-        return $this;
-    }
-
-    /**
-     * Get defaultLanguage
-     *
-     * @return Localization
-     */
-    public function getDefaultLanguage()
-    {
-        return $this->defaultLanguage;
     }
 }

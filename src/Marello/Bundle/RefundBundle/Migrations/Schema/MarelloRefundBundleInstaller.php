@@ -153,6 +153,12 @@ class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareIn
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_localization'),
+            ['localization_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
     }
 
     /**
