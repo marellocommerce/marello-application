@@ -2,12 +2,14 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Manager;
 
+use Marello\Bundle\InventoryBundle\Manager\InventoryManagerInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Manager\InventoryBalancerManager;
 use Marello\Bundle\InventoryBundle\Manager\InventoryBalancerRegistry;
 use Marello\Bundle\InventoryBundle\Manager\InventoryBalancerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InventoryBalancerManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,6 +25,12 @@ class InventoryBalancerManagerTest extends \PHPUnit_Framework_TestCase
     /** @var ConfigManager $configManager */
     protected $configManager;
 
+    /** @var EventDispatcherInterface $dispatcher */
+    protected $dispatcher;
+
+    /** @var InventoryManagerInterface $inventoryManager */
+    protected $inventoryManager;
+
     public function setUp()
     {
         $this->inventoryUpdateContext = $this->getMock(InventoryUpdateContext::class);
@@ -36,7 +44,15 @@ class InventoryBalancerManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->manager = new InventoryBalancerManager($this->registry, $this->configManager);
+        $this->dispatcher = $this->getMock(EventDispatcherInterface::class);
+        $this->inventoryManager = $this->getMock(InventoryManagerInterface::class);
+
+        $this->manager = new InventoryBalancerManager(
+            $this->registry,
+            $this->configManager,
+            $this->dispatcher,
+            $this->inventoryManager
+        );
     }
 
     /**
