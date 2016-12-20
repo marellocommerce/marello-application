@@ -26,7 +26,7 @@ class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
      * @param mixed  $value
      * @param mixed  $expected
      */
-    public function testSetGet($name, $value = null, $expected = null)
+    public function testSetGetValue($name, $value = null, $expected = null)
     {
         if ($value !== null) {
             call_user_func_array([$this->inventoryUpdateContext, 'setValue'], [$name, $value]);
@@ -41,6 +41,42 @@ class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
     public function testSetGetNonExistingValue()
     {
         $this->assertNull($this->inventoryUpdateContext->getValue('no_name'));
+    }
+
+    /**
+     * @return array
+     */
+    public function getSetValueDataProvider()
+    {
+        $object     = $this->getMock(Product::class);
+        $integer    = 10;
+        $string     = 'manual';
+        $rand       = uniqid();
+        $array      =['array'];
+
+        return [
+            'object'    => ['object', $object, $object],
+            'rand'      => ['rand', $rand, $rand],
+            'array'     => ['array', $array, $array],
+            'string'    => ['string', $string, $string],
+            'integer'   => ['string', $integer, $integer]
+        ];
+    }
+
+    /**
+     * @dataProvider  getSetDataProvider
+     *
+     * @param string $property
+     * @param mixed  $value
+     * @param mixed  $expected
+     */
+    public function testSetGet($property, $value = null, $expected = null)
+    {
+        if ($value !== null) {
+            call_user_func_array([$this->inventoryUpdateContext, 'set' . ucfirst($property)], [$value]);
+        }
+
+        $this->assertEquals($expected, call_user_func_array([$this->inventoryUpdateContext, 'get' . ucfirst($property)], []));
     }
 
     /**
@@ -67,11 +103,11 @@ class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
         return [
             'product'           => ['product', $product, $product],
             'stock'             => ['stock', $stock, $stock],
-            'allocated_stock'   => ['allocated_stock', $allocatedStock, $allocatedStock],
-            'change_trigger'    => ['change_trigger', $changeTrigger, $changeTrigger],
+            'allocated_stock'   => ['allocatedStock', $allocatedStock, $allocatedStock],
+            'change_trigger'    => ['changeTrigger', $changeTrigger, $changeTrigger],
             'user'              => ['user', $user, $user],
-            'related_entity'    => ['related_entity', $relatedEntity, $relatedEntity],
-            'updated_items'     => ['updated_items', [$inventoryItem], [$inventoryItem]]
+            'related_entity'    => ['relatedEntity', $relatedEntity, $relatedEntity],
+            'items'             => ['items', [$inventoryItem], [$inventoryItem]]
         ];
     }
 }

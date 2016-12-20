@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\Model;
 
+use Oro\Bundle\UserBundle\Entity\UserInterface;
+
 class InventoryUpdateContext
 {
     /** @var array $values */
@@ -27,5 +29,75 @@ class InventoryUpdateContext
         return isset($this->values[$name])
             ? $this->values[$name]
             : null;
+    }
+
+    public function getItems()
+    {
+        return $this->getValue('items');
+    }
+
+    public function setItems($items)
+    {
+        $this->setValue('items', $items);
+    }
+
+    public function setRelatedEntity($entity)
+    {
+        $this->setValue('related_entity', $entity);
+    }
+
+    public function getRelatedEntity()
+    {
+        return $this->getValue('related_entity');
+    }
+
+    public function setUser(UserInterface $user)
+    {
+        $this->setValue('user', $user);
+    }
+
+    public function getUser()
+    {
+        return $this->getValue('user');
+    }
+
+    public function setChangeTrigger($trigger)
+    {
+        $this->setValue('change_trigger', $trigger);
+    }
+
+    public function getChangeTrigger()
+    {
+        return $this->getValue('change_trigger');
+    }
+
+    public function setAllocatedStock($allocatedStock)
+    {
+        $this->setValue('allocated_stock', $allocatedStock);
+    }
+
+    public function getAllocatedStock()
+    {
+        return $this->getValue('allocated_stock');
+    }
+
+    public function setStock($stock)
+    {
+        $this->setValue('stock', $stock);
+    }
+
+    public function getStock()
+    {
+        return $this->getValue('stock');
+    }
+
+    public function setProduct($product)
+    {
+        $this->setValue('product', $product);
+    }
+
+    public function getProduct()
+    {
+        return $this->getValue('product');
     }
 }

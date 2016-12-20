@@ -27,7 +27,7 @@ class InventoryBalancerRegistry
     /**
      * {@inheritdoc}
      * @param $serviceAlias
-     * @return object
+     * @return InventoryBalancerInterface
      * @throws \Exception
      */
     public function getInventoryBalancer($serviceAlias)

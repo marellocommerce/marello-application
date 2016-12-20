@@ -6,20 +6,21 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Component\Action\Action\EventDispatcherAwareActionInterface;
 
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Marello\Bundle\InventoryBundle\Manager\InventoryManagerInterface;
 use Marello\Bundle\InventoryBundle\Manager\InventoryBalancerInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
 abstract class AbstractInventoryBalancer implements InventoryBalancerInterface, EventDispatcherAwareActionInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var InventoryManager $inventoryManager */
     protected $inventoryManager;
 
-    /** @var array */
-    protected $items = [];
+    /** @var InventoryUpdateContext $context */
+    protected $context;
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
@@ -37,36 +38,37 @@ abstract class AbstractInventoryBalancer implements InventoryBalancerInterface, 
         $this->inventoryManager = $inventoryManager;
     }
 
-    public function process(InventoryUpdateContext $context)
+    /**
+     * Set context
+     * @param InventoryUpdateContext $context
+     */
+    public function setInventoryUpdateContext(InventoryUpdateContext $context)
     {
-        if ($this->canBalance($context)) {
-            // dispatch oro_action.action.handle_before event
-            // 1) dispatch before event
-//            $this->eventDispatcher->dispatch(
-//                ExecuteActionEvents::HANDLE_BEFORE,
-//                new ExecuteActionEvent($context, $this)
-//            );
+        $this->context = $context;
+    }
 
-            $this->balanceInventory($context);
+    public function process()
+    {
+        if (!$this->context) {
+            throw new \Exception('Cannot process without a context being set, please call setInventoryUpdateContext before calling process');
+        }
 
-            // dispatch oro_action.action.handle_after event
-            // 3) dispatch after event
-//            $this->eventDispatcher->dispatch(
-//                ExecuteActionEvents::HANDLE_AFTER,
-//                new ExecuteActionEvent($context, $this)
-//            );
-//
+        if ($this->canBalance()) {
+            $this->balanceInventory($this->context);
+
+            if ($this->canUpdateInventory()) {
+                $this->getInventoryManager()->updateInventoryItems($this->context);
+            }
         }
     }
 
     /**
      * Check if we can balance the inventory, by checking if there is a product
-     * @param $context
-     * @return mixed
+     * @return bool
      */
-    protected function canBalance($context)
+    protected function canBalance()
     {
-        return $context->getValue('product');
+        return ($this->context->getProduct()) ? true : false;
     }
 
     /**
@@ -76,17 +78,19 @@ abstract class AbstractInventoryBalancer implements InventoryBalancerInterface, 
     protected function canUpdateInventory()
     {
         // put logger here so we can log that there are in fact no items to update...
-        return (count($this->items) > 0) ? true : false;
+        return (count($this->context->getItems()) > 0) ? true : false;
     }
 
+    /**
+     * @return InventoryManagerInterface
+     */
     protected function getInventoryManager()
     {
         return $this->inventoryManager;
     }
 
     /**
-     * balanceInventory needs to return the updated context with new
-     * @param mixed $context
+     * @param InventoryUpdateContext $context
      */
     abstract protected function balanceInventory($context);
 }

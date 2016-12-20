@@ -2,54 +2,55 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
-use Oro\Bundle\IntegrationBundle\Exception\InvalidConfigurationException;
-
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Entity\StockLevel;
 
-class InventoryManager
+class InventoryManager implements InventoryManagerInterface
 {
-    const SELECTED_BALANCER_CONFIG = 'marello_inventory.selected_balancer';
-
-    /** @var InventoryBalancerRegistry $registry */
-    protected $registry;
-
-    /** @var ConfigManager $configManager */
-    protected $configManager;
-
-    /**
-     * InventoryBalancerManager constructor.
-     * @param InventoryBalancerRegistry $registry
-     * @param ConfigManager $configManager
-     */
-    public function __construct(
-        InventoryBalancerRegistry $registry,
-        ConfigManager $configManager
-    ) {
-        $this->registry = $registry;
-        $this->configManager = $configManager;
-    }
-
-    public function updateInventoryItems($items, InventoryUpdateContext $context)
+    public function updateInventoryItems(InventoryUpdateContext $context)
     {
-//        [
-//            [
-//                'item' => $invItem,
-//                'qty' => 10
-//            ],
-//            [
-//                'item' => $inveIem,
-//                'qty' => $irem
-//            ]
-//        ]
-        foreach ($items as $k=> $item) {
-
+        $items = $context->getItems();
+        foreach ($items as $item) {
+            $this->setInventoryLevel(
+                $item,
+                $context->getChangeTrigger(),
+                $context->getStock(),
+                $context->getAllocatedStock(),
+                $context->getUser(),
+                $context->getRelatedEntity()
+            );
         }
     }
 
-    protected function getSelectedInventoryBalancer()
+    /**
+     * @param InventoryItem $item        InventoryItem to be updated
+     * @param string     $trigger        Action that triggered the change
+     * @param int|null   $stock          New stock or null if it should remain unchanged
+     * @param int|null   $allocatedStock New allocated stock or null if it should remain unchanged
+     * @param User|null  $user           User who triggered the change, if left null, it is automatically assigned ot
+     *                                   current one
+     * @param mixed|null $subject        Any entity that should be associated to this operation
+     *
+     * @return $this
+     */
+    protected function setInventoryLevel(InventoryItem $item, $trigger, $stock = null, $allocatedStock = null, User $user = null, $subject = null)
     {
-        $selectedBalancerAlias = $this->configManager->get(self::SELECTED_BALANCER_CONFIG);
-        return $this->registry->getInventoryBalancer($selectedBalancerAlias);
+        if (($stock === null) && ($allocatedStock === null)) {
+            return $this;
+        }
+
+        if (($item->getStock() === $stock) && ($item->getAllocatedStock() === $allocatedStock)) {
+            return $this;
+        }
+
+        return $this->changeCurrentLevel(new StockLevel(
+            $item,
+            $stock === null ? $item->getStock() : $stock,
+            $allocatedStock === null ? $item->getAllocatedStock() : $allocatedStock,
+            $trigger,
+            $user,
+            $subject
+        ));
     }
 }
