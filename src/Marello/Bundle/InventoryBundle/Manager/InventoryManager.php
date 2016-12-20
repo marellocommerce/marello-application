@@ -10,6 +10,10 @@ class InventoryManager implements InventoryManagerInterface
 {
     public function updateInventoryItems(InventoryUpdateContext $context)
     {
+        if (!$this->validateItems($context)) {
+            throw new \Exception('Item structure not valid.');
+        }
+
         $items = $context->getItems();
         foreach ($items as $item) {
             $this->setInventoryLevel(
@@ -52,5 +56,27 @@ class InventoryManager implements InventoryManagerInterface
             $user,
             $subject
         ));
+    }
+
+    private function validateItems($context)
+    {
+        $items = $context->getItems();
+        if (!is_array($items)) {
+            return false;
+        }
+
+        if (!in_array('item', $items)) {
+            return false;
+        }
+
+        if (!in_array('qty', $items)) {
+            return false;
+        }
+
+        if (!in_array('allocatedQty', $items)) {
+            return false;
+        }
+
+        return true;
     }
 }
