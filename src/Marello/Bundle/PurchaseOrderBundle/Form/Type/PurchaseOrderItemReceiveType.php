@@ -2,41 +2,56 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
-use Doctrine\Common\Collections\Collection;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\PurchaseOrderBundle\Form\EventListener\PurchaseOrderItemSubscriber;
 
 class PurchaseOrderItemReceiveType extends AbstractType
 {
     const NAME = 'marello_purchase_order_item_receive';
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /** @var PurchaseOrderItemSubscriber $purchaseOrderItemSubscriber */
+    protected $purchaseOrderItemSubscriber;
+
+    /**
+     * PurchaseOrderItemReceiveType constructor.
+     *
+     * @param PurchaseOrderItemSubscriber $purchaseOrderItemSubscriber
+     */
+    public function __construct(PurchaseOrderItemSubscriber $purchaseOrderItemSubscriber)
     {
-        $builder->add('receive_amount', 'integer', [
-            'mapped' => false,
-        ]);
-
-        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
-            /** @var Collection|PurchaseOrderItem $data */
-            $data = $event->getData();
-            /** @var int */
-            $receiveAmount = $event->getForm()->get('receive_amount')->getData();
-
-            $data->setReceivedAmount($data->getReceivedAmount() + $receiveAmount);
-
-            $event->setData($data);
-        });
+        $this->purchaseOrderItemSubscriber = $purchaseOrderItemSubscriber;
     }
 
+    /**
+     * {@inheritdoc}
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('accepted_qty', 'integer', [
+            'mapped' => false,
+            'required'  => true,
+            'constraints'   => new GreaterThan(['value' => 0]),
+        ]);
+
+        $builder->addEventSubscriber($this->purchaseOrderItemSubscriber);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => PurchaseOrderItem::class,
-            'error_bubbling' => true,
+            'data_class'        => PurchaseOrderItem::class,
+            'error_bubbling'    => true,
         ]);
     }
 

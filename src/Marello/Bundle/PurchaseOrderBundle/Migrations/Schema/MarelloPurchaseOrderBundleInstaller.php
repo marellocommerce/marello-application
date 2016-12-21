@@ -77,6 +77,7 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
         $table->addColumn('productName', 'string', ['length' => 255]);
         $table->addColumn('orderedAmount', 'integer', []);
         $table->addColumn('receivedAmount', 'integer', []);
+        $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('status', 'string', ['length' => 255]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
