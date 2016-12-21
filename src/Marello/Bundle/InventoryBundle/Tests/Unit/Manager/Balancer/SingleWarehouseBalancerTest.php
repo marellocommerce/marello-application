@@ -5,6 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Tests\Unit\Manager\Balancer;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Marello\Bundle\InventoryBundle\Manager\InventoryBalancerInterface;
+use Marello\Bundle\InventoryBundle\Manager\InventoryManagerInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Manager\Balancer\SingleWarehouseBalancer;
 
@@ -21,7 +22,10 @@ class SingleWarehouseBalancerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->inventoryUpdateContext = $this->getMock(InventoryUpdateContext::class);
-        $this->balancer = new SingleWarehouseBalancer();
+        $inventoryManager = $this->getMockBuilder(InventoryManagerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->balancer = new SingleWarehouseBalancer($inventoryManager);
         $this->balancer->setInventoryUpdateContext($this->inventoryUpdateContext);
     }
 

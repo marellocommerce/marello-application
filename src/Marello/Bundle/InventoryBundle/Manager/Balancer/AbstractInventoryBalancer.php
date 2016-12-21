@@ -2,20 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager\Balancer;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
-use Oro\Component\Action\Action\EventDispatcherAwareActionInterface;
-
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManagerInterface;
 use Marello\Bundle\InventoryBundle\Manager\InventoryBalancerInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
-abstract class AbstractInventoryBalancer implements InventoryBalancerInterface, EventDispatcherAwareActionInterface
+abstract class AbstractInventoryBalancer implements InventoryBalancerInterface
 {
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /** @var InventoryManager $inventoryManager */
     protected $inventoryManager;
 
@@ -23,17 +16,9 @@ abstract class AbstractInventoryBalancer implements InventoryBalancerInterface, 
     protected $context;
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function setDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
      * @param InventoryManagerInterface $inventoryManager
      */
-    public function setInventoryManager(InventoryManagerInterface $inventoryManager)
+    public function __construct(InventoryManagerInterface $inventoryManager)
     {
         $this->inventoryManager = $inventoryManager;
     }
@@ -47,6 +32,10 @@ abstract class AbstractInventoryBalancer implements InventoryBalancerInterface, 
         $this->context = $context;
     }
 
+    /**
+     * Process balancing inventory and send items for update
+     * @throws \Exception
+     */
     public function process()
     {
         if (!$this->context) {
@@ -78,6 +67,7 @@ abstract class AbstractInventoryBalancer implements InventoryBalancerInterface, 
     protected function canUpdateInventory()
     {
         // put logger here so we can log that there are in fact no items to update...
+        var_dump('hi');
         return (count($this->context->getItems()) > 0) ? true : false;
     }
 

@@ -10,8 +10,4 @@ interface InventoryBalancerInterface
     public function process();
 
     public function setInventoryUpdateContext(InventoryUpdateContext $context);
-
-    public function setInventoryManager(InventoryManagerInterface $manager);
-
-    public function setDispatcher(EventDispatcherInterface $dispatcher);
 }
