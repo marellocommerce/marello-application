@@ -59,18 +59,15 @@ class StockLevelRepository extends EntityRepository
         /*
          * First. Find first record on same day.
          */
-
+        
         $qb = $this->createQueryBuilder('l');
 
         $qb
-            ->leftJoin('l.previousLevel', 'p');
-
-        $qb
-            ->select('COALESCE(p.stock, 0) AS stock', 'COALESCE(p.allocatedStock, 0) AS allocatedStock')
+            ->select('COALESCE(l.stock, 0) AS stock', 'COALESCE(l.allocatedStock, 0) AS allocatedStock')
             ->join('l.inventoryItem', 'i')
             ->andWhere($qb->expr()->eq('IDENTITY(i.product)', ':product'))
-            ->andWhere($qb->expr()->eq('DATE(l.createdAt)', 'DATE(:at)'))
-            ->orderBy('l.createdAt', 'ASC');
+            ->andWhere('DATE(l.createdAt) <= DATE(:at)')
+            ->orderBy('l.createdAt', 'DESC');
 
         $qb
             ->setParameters(compact('product', 'at'));
