@@ -55,9 +55,6 @@ services:
     marello_inventory.manager.balancer.single_warehouse_balancer:
         class: Marello\Bundle\InventoryBundle\Manager\Balancer\SingleWarehouseBalancer
         parent: marello_inventory.manager.balancer.abstract_balancer
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@oro_config.manager'
         tags:
             - { name: marello_inventory.manager.balancer.inventory_balancer, alias: single_warehouse_balancer }
 
