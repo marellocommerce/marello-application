@@ -45,11 +45,25 @@ services:
         arguments:
             - '@marello_inventory.manager.marello_inventory_balancer_registry'
             - '@oro_config.manager'
+            - '@event_dispatcher'
+            - '@marello_inventory.manager.inventory_manager'
+
+    marello_inventory.manager.balancer.abstract_balancer:
+        class: Marello\Bundle\InventoryBundle\Manager\Balancer\AbstractInventoryBalancer
+        abstract: true
+        arguments:
+            - '@marello_inventory.manager.inventory_manager'
 
     marello_inventory.manager.balancer.single_warehouse_balancer:
         class: Marello\Bundle\InventoryBundle\Manager\Balancer\SingleWarehouseBalancer
+        parent: marello_inventory.manager.balancer.abstract_balancer
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@oro_config.manager'
         tags:
             - { name: marello_inventory.manager.balancer.inventory_balancer, alias: single_warehouse_balancer }
+
+    marello_inventory.manager.inventory_manager:
+        class: Marello\Bundle\InventoryBundle\Manager\InventoryManager
+        arguments:
+            - '@doctrine.orm.entity_manager'

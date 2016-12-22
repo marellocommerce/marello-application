@@ -67,7 +67,6 @@ abstract class AbstractInventoryBalancer implements InventoryBalancerInterface
     protected function canUpdateInventory()
     {
         // put logger here so we can log that there are in fact no items to update...
-        var_dump('hi');
         return (count($this->context->getItems()) > 0) ? true : false;
     }
 
