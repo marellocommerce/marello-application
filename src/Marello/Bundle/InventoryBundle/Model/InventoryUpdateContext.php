@@ -100,4 +100,31 @@ class InventoryUpdateContext
     {
         return $this->getValue('product');
     }
+
+    public static function createUpdateContext(array $data)
+    {
+        if (!array_key_exists('stock', $data)) {
+            return null;
+        }
+
+        if (!array_key_exists('allocatedStock', $data)) {
+            return null;
+        }
+
+        if (!array_key_exists('trigger', $data)) {
+            return null;
+        }
+
+        if (!array_key_exists('item', $data)) {
+            return null;
+        }
+
+        $context = new self();
+        $context->setStock($data['stock']);
+        $context->setAllocatedStock($data['allocatedStock']);
+        $context->setChangeTrigger($data['trigger']);
+        $context->setProduct($data['item']->getProduct());
+
+        return $context;
+    }
 }

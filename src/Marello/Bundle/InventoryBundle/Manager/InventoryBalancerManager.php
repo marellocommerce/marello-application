@@ -50,7 +50,7 @@ class InventoryBalancerManager
      */
     protected function getSelectedInventoryBalancer()
     {
-        $selectedBalancerAlias = $this->configManager->get(self::SELECTED_BALANCER_CONFIG);
+        $selectedBalancerAlias = 'single_warehouse_balancer'; //$this->configManager->get(self::SELECTED_BALANCER_CONFIG);
         return $this->registry->getInventoryBalancer($selectedBalancerAlias);
     }
 }

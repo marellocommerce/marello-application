@@ -13,6 +13,7 @@ class SingleWarehouseBalancer extends AbstractInventoryBalancer
     protected function balanceInventory($context)
     {
         $items = $this->getInventoryItems($context);
+        file_put_contents('/Users/jaimy/Development/marello-application-dev/app/logs/debug-inv.log', $items->first()->getId() . "\r\n", FILE_APPEND);
         $formattedItems[] = [
             'item'          => $items->first(),
             'qty'           => $context->getStock(),

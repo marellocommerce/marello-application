@@ -4,6 +4,8 @@ namespace Marello\Bundle\InventoryBundle\Model;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InventoryItemUpdateApi
 {
@@ -21,11 +23,15 @@ class InventoryItemUpdateApi
      *
      * @param InventoryItem|null $inventoryItem
      */
-    public function __construct(InventoryItem $inventoryItem = null)
+    public function __construct(
+        InventoryItem $inventoryItem = null,
+        EventDispatcherInterface $eventDispatcher
+    )
     {
-        $this->inventoryItem = $inventoryItem;
-        $this->stock         = $inventoryItem ? $inventoryItem->getStock() : 0;
-        $this->warehouse     = $inventoryItem ? $inventoryItem->getWarehouse() : null;
+        $this->inventoryItem    = $inventoryItem;
+        $this->stock            = $inventoryItem ? $inventoryItem->getStock() : 0;
+        $this->warehouse        = $inventoryItem ? $inventoryItem->getWarehouse() : null;
+        $this->eventDispatcher  = $eventDispatcher;
     }
 
     /**
@@ -41,8 +47,19 @@ class InventoryItemUpdateApi
             $this->inventoryItem = new InventoryItem($this->warehouse);
         }
 
-        return $this
-            ->inventoryItem
+//
+//
+//
+//        $context = new InventoryUpdateContext();
+//        $context->setStock($this->stock);
+//        $context->setChangeTrigger('import');
+//        $context->setProduct()
+//        $this->eventDispatcher->dispatch(
+//            InventoryUpdateEvent::NAME,
+//            new InventoryUpdateEvent($context)
+//        );
+
+        return $this->inventoryItem
             ->adjustStockLevels(
                 'import',
                 $this->stock

@@ -41,9 +41,11 @@ abstract class AbstractInventoryBalancer implements InventoryBalancerInterface
         if (!$this->context) {
             throw new \Exception('Cannot process without a context being set, please call setInventoryUpdateContext before calling process');
         }
+        file_put_contents('/Users/jaimy/Development/marello-application-dev/app/logs/debug-inv.log', 'can balance? : ' . $this->canBalance() . "\r\n", FILE_APPEND);
 
         if ($this->canBalance()) {
             $this->balanceInventory($this->context);
+            file_put_contents('/Users/jaimy/Development/marello-application-dev/app/logs/debug-inv.log', 'can update? : ' . $this->canUpdateInventory() . "\r\n", FILE_APPEND);
 
             if ($this->canUpdateInventory()) {
                 $this->getInventoryManager()->updateInventoryItems($this->context);

@@ -34,6 +34,13 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    marello_inventory.event_listener.inventory_update_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryUpdateEventListener'
+        arguments:
+            - '@marello_inventory.manager.inventory_balance_manager'
+        tags:
+            - { name: kernel.event_listener, event: marello_inventory.inventory.update, method: handleUpdateInventoryEvent }
+
     # Inventory Balancers and related services
     marello_inventory.manager.marello_inventory_balancer_registry:
         class: Marello\Bundle\InventoryBundle\Manager\InventoryBalancerRegistry

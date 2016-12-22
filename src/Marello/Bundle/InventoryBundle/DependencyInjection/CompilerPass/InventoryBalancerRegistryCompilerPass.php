@@ -18,14 +18,13 @@ class InventoryBalancerRegistryCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $validationRules  = $container->findTaggedServiceIds(self::INVENTORY_BALANCER_TAG);
+        $inventoryBalancers  = $container->findTaggedServiceIds(self::INVENTORY_BALANCER_TAG);
 
         $registry = $container->findDefinition(self::REGISTRY_SERVICE_ID);
 
-        foreach ($validationRules as $serviceId => $tags) {
-            $ref = new Reference($serviceId);
+        foreach ($inventoryBalancers as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                $registry->addMethodCall('registerInventoryBalancer', [$tag['alias'], $ref]);
+                $registry->addMethodCall('registerInventoryBalancer', [$tag['alias'], $serviceId]);
             }
         }
     }

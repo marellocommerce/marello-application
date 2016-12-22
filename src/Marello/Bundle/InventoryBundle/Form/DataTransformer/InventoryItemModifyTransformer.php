@@ -2,13 +2,22 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\DataTransformer;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Model\InventoryItemModify;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Model\InventoryItemModify;
+
 class InventoryItemModifyTransformer implements DataTransformerInterface
 {
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * {@inheritdoc}
@@ -29,7 +38,7 @@ class InventoryItemModifyTransformer implements DataTransformerInterface
             throw new TransformationFailedException();
         }
 
-        return new InventoryItemModify($value);
+        return new InventoryItemModify($value, $this->eventDispatcher);
     }
 
     /**

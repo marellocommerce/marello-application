@@ -3,6 +3,8 @@
 namespace Marello\Bundle\InventoryBundle\Model;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 
 class InventoryItemModify
 {
@@ -29,9 +31,12 @@ class InventoryItemModify
      *
      * @param $inventoryItem
      */
-    public function __construct($inventoryItem)
-    {
+    public function __construct(
+        $inventoryItem,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->inventoryItem = $inventoryItem;
+        $this->eventDispatcher  = $eventDispatcher;
     }
 
     /**
@@ -47,13 +52,27 @@ class InventoryItemModify
      */
     public function toModifiedInventoryItem()
     {
-        return $this
-            ->inventoryItem
-            ->adjustStockLevels(
-                'manual',
-                $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1),
-                $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1)
-            );
+        $array = [
+            'stock' => $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1),
+            'allocatedStock' => $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1),
+            'trigger' => 'manual',
+            'item'  => $this->inventoryItem
+        ];
+        $context = InventoryUpdateContext::createUpdateContext($array);
+
+        file_put_contents('/Users/jaimy/Development/marello-application-dev/app/logs/debug-inv.log', $this->inventoryItem->getProduct()->getSku() . "\r\n", FILE_APPEND);
+
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
+        );
+
+        return $this->inventoryItem;
+//            ->adjustStockLevels(
+//                'manual',
+//                $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1),
+//                $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1)
+//            );
     }
 
     /**
