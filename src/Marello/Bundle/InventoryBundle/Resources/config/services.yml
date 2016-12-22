@@ -45,8 +45,6 @@ services:
         arguments:
             - '@marello_inventory.manager.marello_inventory_balancer_registry'
             - '@oro_config.manager'
-            - '@event_dispatcher'
-            - '@marello_inventory.manager.inventory_manager'
 
     marello_inventory.manager.balancer.abstract_balancer:
         class: Marello\Bundle\InventoryBundle\Manager\Balancer\AbstractInventoryBalancer

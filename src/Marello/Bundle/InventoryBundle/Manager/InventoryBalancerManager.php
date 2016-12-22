@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\IntegrationBundle\Exception\InvalidConfigurationException;
 
@@ -19,29 +17,17 @@ class InventoryBalancerManager
     /** @var ConfigManager $configManager */
     protected $configManager;
 
-    /** @var EventDispatcherInterface $eventDispatcher */
-    protected $eventDispatcher;
-
-    /** @var InventoryManagerInterface $inventoryManager */
-    protected $inventoryManager;
-
     /**
      * InventoryBalancerManager constructor.
      * @param InventoryBalancerRegistry $registry
      * @param ConfigManager             $configManager
-     * @param EventDispatcherInterface  $dispatcher
-     * @param InventoryManagerInterface $inventoryManager
      */
     public function __construct(
         InventoryBalancerRegistry   $registry,
-        ConfigManager               $configManager,
-        EventDispatcherInterface    $dispatcher,
-        InventoryManagerInterface   $inventoryManager
+        ConfigManager               $configManager
     ) {
         $this->registry             = $registry;
         $this->configManager        = $configManager;
-        $this->eventDispatcher      = $dispatcher;
-        $this->inventoryManager     = $inventoryManager;
     }
 
     /**
@@ -56,8 +42,6 @@ class InventoryBalancerManager
         }
 
         $inventoryBalancer->setInventoryUpdateContext($context);
-        $inventoryBalancer->setDispatcher($this->eventDispatcher);
-        $inventoryBalancer->setInventoryManager($this->inventoryManager);
         $inventoryBalancer->process();
     }
 
