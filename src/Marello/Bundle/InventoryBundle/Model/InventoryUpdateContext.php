@@ -115,7 +115,7 @@ class InventoryUpdateContext
             return null;
         }
 
-        if (!array_key_exists('item', $data)) {
+        if (!array_key_exists('items', $data)) {
             return null;
         }
 
@@ -123,7 +123,7 @@ class InventoryUpdateContext
         $context->setStock($data['stock']);
         $context->setAllocatedStock($data['allocatedStock']);
         $context->setChangeTrigger($data['trigger']);
-        $context->setProduct($data['item']->getProduct());
+        $context->setItems($data['items']);
 
         return $context;
     }

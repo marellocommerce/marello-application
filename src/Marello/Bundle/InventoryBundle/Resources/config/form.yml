@@ -26,12 +26,24 @@ services:
         arguments:
             - '@event_dispatcher'
 
+    marello_inventory.form.inventory_item_update_api_transformer:
+        class: Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemUpdateApiTransformer
+        arguments:
+            - '@event_dispatcher'
+
     marello_inventory.form.type.inventory_item:
         class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType
         arguments:
             - '@marello_inventory.form.inventory_item_modify_transformer'
         tags:
             - { name: form.type, alias: marello_inventory_item }
+
+    marello_inventory.form.type.inventory_item_api:
+        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemApiType
+        arguments:
+            - '@marello_inventory.form.inventory_item_update_api_transformer'
+        tags:
+            - { name: form.type, alias: marello_inventory_item_api }
 
     marello_inventory.form.event_listener.inventory_item_collection:
         class: Marello\Bundle\InventoryBundle\Form\EventListener\InventoryItemCollectionSubscriber

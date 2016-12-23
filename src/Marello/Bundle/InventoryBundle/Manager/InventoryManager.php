@@ -34,19 +34,19 @@ class InventoryManager implements InventoryManagerInterface
 
         $items = $context->getItems();
         /** @var InventoryItem $item */
-        foreach ($items as $item) {
+        foreach ($items as $data) {
             $stock = null;
             $allocatedStock = null;
             if ($context->getStock()) {
-                $stock = ($item->getStock() + $context->getStock());
+                $stock = ($data['item']->getStock() + $context->getStock());
             }
 
             if ($context->getAllocatedStock()) {
-                $allocatedStock = ($item->getAllocatedStock() + $context->getAllocatedStock());
+                $allocatedStock = ($data['item']->getAllocatedStock() + $context->getAllocatedStock());
             }
 
             $success = $this->updateInventoryLevel(
-                $item,
+                $data['item'],
                 $context->getChangeTrigger(),
                 $stock,
                 $allocatedStock,
@@ -55,11 +55,11 @@ class InventoryManager implements InventoryManagerInterface
             );
 
             if ($success) {
-                $this->entityManager->persist($item);
+                //$this->entityManager->persist($data['item']);
             }
         }
 
-        $this->entityManager->flush();
+        //$this->entityManager->flush();
     }
 
     /**

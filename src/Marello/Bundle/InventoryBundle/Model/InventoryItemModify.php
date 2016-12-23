@@ -52,27 +52,14 @@ class InventoryItemModify
      */
     public function toModifiedInventoryItem()
     {
-        $array = [
-            'stock' => $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1),
-            'allocatedStock' => $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1),
-            'trigger' => 'manual',
-            'item'  => $this->inventoryItem
-        ];
-        $context = InventoryUpdateContext::createUpdateContext($array);
-
-        file_put_contents('/Users/jaimy/Development/marello-application-dev/app/logs/debug-inv.log', $this->inventoryItem->getProduct()->getSku() . "\r\n", FILE_APPEND);
-
+        $data = $this->getContextData();
+        $context = InventoryUpdateContext::createUpdateContext($data);
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)
         );
 
         return $this->inventoryItem;
-//            ->adjustStockLevels(
-//                'manual',
-//                $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1),
-//                $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1)
-//            );
     }
 
     /**
@@ -153,5 +140,29 @@ class InventoryItemModify
         $this->allocatedStockOperator = $allocatedStockOperator;
 
         return $this;
+    }
+
+    /**
+     * Get Inventory Update context data
+     * @return array
+     */
+    protected function getContextData()
+    {
+        $stock = $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1);
+        $allocatedStock = $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1);
+        $data = [
+            'stock'             => $stock,
+            'allocatedStock'    => $allocatedStock,
+            'trigger'           => 'manual',
+            'items'             => [
+                [
+                    'item'          => $this->inventoryItem,
+                    'qty'           => $stock,
+                    'allocatedQty'  => $allocatedStock
+                ]
+            ]
+        ];
+
+        return $data;
     }
 }

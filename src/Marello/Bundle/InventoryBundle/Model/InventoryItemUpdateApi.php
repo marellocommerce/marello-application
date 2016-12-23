@@ -2,10 +2,11 @@
 
 namespace Marello\Bundle\InventoryBundle\Model;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class InventoryItemUpdateApi
 {
@@ -26,8 +27,7 @@ class InventoryItemUpdateApi
     public function __construct(
         InventoryItem $inventoryItem = null,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->inventoryItem    = $inventoryItem;
         $this->stock            = $inventoryItem ? $inventoryItem->getStock() : 0;
         $this->warehouse        = $inventoryItem ? $inventoryItem->getWarehouse() : null;
@@ -47,23 +47,14 @@ class InventoryItemUpdateApi
             $this->inventoryItem = new InventoryItem($this->warehouse);
         }
 
-//
-//
-//
-//        $context = new InventoryUpdateContext();
-//        $context->setStock($this->stock);
-//        $context->setChangeTrigger('import');
-//        $context->setProduct()
-//        $this->eventDispatcher->dispatch(
-//            InventoryUpdateEvent::NAME,
-//            new InventoryUpdateEvent($context)
-//        );
+        $data = $this->getContextData();
+        $context = InventoryUpdateContext::createUpdateContext($data);
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
+        );
 
-        return $this->inventoryItem
-            ->adjustStockLevels(
-                'import',
-                $this->stock
-            );
+        return $this->inventoryItem;
     }
 
     /**
@@ -104,5 +95,28 @@ class InventoryItemUpdateApi
         $this->warehouse = $warehouse;
 
         return $this;
+    }
+
+    /**
+     * Get Inventory Update context data
+     * @return array
+     */
+    protected function getContextData()
+    {
+        $stock = $this->stock;
+        $data = [
+            'stock'             => $stock,
+            'allocatedStock'    => null,
+            'trigger'           => 'import',
+            'items'             => [
+                [
+                    'item'          => $this->inventoryItem,
+                    'qty'           => $stock,
+                    'allocatedQty'  => null
+                ]
+            ]
+        ];
+
+        return $data;
     }
 }

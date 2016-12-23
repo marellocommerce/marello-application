@@ -5,7 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Tests\Unit\EventListener;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\EventListener\InventoryUpdateEventListener;
-use Marello\Bundle\InventoryBundle\Manager\InventoryBalancerManager;
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 
 class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,8 +15,8 @@ class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
     /** @var InventoryUpdateEventListener $listener */
     protected $listener;
 
-    /** @var InventoryBalancerManager $inventoryBalancerManager */
-    protected $inventoryBalancerManager;
+    /** @var InventoryManager $inventoryManager */
+    protected $inventoryManager;
 
     /**
      * {@inheritdoc}
@@ -24,12 +24,12 @@ class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->inventoryUpdateContext = $this->getMock(InventoryUpdateContext::class);
-        $this->inventoryBalancerManager = $this
-            ->getMockBuilder(InventoryBalancerManager::class)
+        $this->inventoryManager = $this
+            ->getMockBuilder(InventoryManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->listener = new InventoryUpdateEventListener($this->inventoryBalancerManager);
+        $this->listener = new InventoryUpdateEventListener($this->inventoryManager);
     }
 
     /**
@@ -38,8 +38,8 @@ class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
     public function testHandleUpdateInventoryEvent()
     {
         $event = $this->prepareEvent();
-        $this->inventoryBalancerManager->expects($this->once())
-            ->method('balanceInventory')
+        $this->inventoryManager->expects($this->once())
+            ->method('updateInventoryItems')
             ->with($this->inventoryUpdateContext);
 
         $this->listener->handleUpdateInventoryEvent($event);
