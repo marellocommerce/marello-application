@@ -111,9 +111,9 @@ class StockLevel
     protected $user = null;
 
     /**
-     * Subject field is filled using a listener.
+     * Subject field could be filled by a listener.
      *
-     * @see Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectHydrationSubscriber
+     * @see \Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectHydrationSubscriber
      *
      * @var mixed
      */
@@ -186,7 +186,7 @@ class StockLevel
         $this->stock          = $stock;
         $this->allocatedStock = $allocatedStock;
         $this->changeTrigger  = $changeTrigger;
-        $this->user         = $user;
+        $this->user           = $user;
         $this->subject        = $subject;
         $this->createdAt      = new \DateTime();
     }

@@ -5,6 +5,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Workflow\Action;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\Action\Action\AbstractAction;
@@ -15,6 +16,8 @@ use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
 class ReceivePurchaseOrderAction extends AbstractAction
 {
@@ -29,6 +32,9 @@ class ReceivePurchaseOrderAction extends AbstractAction
     /** @var NoteActivityProcessor $noteActivityProcessor */
     protected $noteActivityProcessor;
 
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
+
     /** @var PropertyPathInterface $entity */
     protected $entity;
 
@@ -40,16 +46,19 @@ class ReceivePurchaseOrderAction extends AbstractAction
      * @param ContextAccessor $contextAccessor
      * @param ObjectManager $manager
      * @param NoteActivityProcessor $noteActivityProcessor
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ContextAccessor $contextAccessor,
         ObjectManager $manager,
-        NoteActivityProcessor $noteActivityProcessor
+        NoteActivityProcessor $noteActivityProcessor,
+        EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct($contextAccessor);
 
         $this->manager = $manager;
         $this->noteActivityProcessor = $noteActivityProcessor;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -92,7 +101,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
             }
 
             if ($inventoryUpdateQty) {
-                $this->handleInventoryUpdate($item, $inventoryUpdateQty);
+                $this->handleInventoryUpdate($item, $inventoryUpdateQty, $purchaseOrder);
                 $updatedItems[] = ['qty' => $inventoryUpdateQty, 'item' => $item];
             }
         }
@@ -106,14 +115,35 @@ class ReceivePurchaseOrderAction extends AbstractAction
 
     /**
      * handle the inventory update for items which have been received
-     * @param $item
+     * @param PurchaseOrderItem $item
      * @param $inventoryUpdateQty
+     * @param PurchaseOrder $purchaseOrder
      */
-    private function handleInventoryUpdate($item, $inventoryUpdateQty)
+    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $purchaseOrder)
     {
-        /** @var InventoryItem $inventoryItem */
-        $inventoryItem = $item->getProduct()->getInventoryItems()->first();
-        $inventoryItem->adjustStockLevels('purchase_order', $inventoryUpdateQty);
+        $inventoryItems = $item->getProduct()->getInventoryItems();
+        $inventoryItemData = [];
+        foreach ($inventoryItems as $inventoryItem) {
+            $inventoryItemData[] = [
+                'item'          => $inventoryItem,
+                'qty'           => $inventoryUpdateQty,
+                'allocatedQty'  => null
+            ];
+        }
+
+        $data = [
+            'stock'             => $inventoryUpdateQty,
+            'allocatedStock'    => null,
+            'trigger'           => 'purchase_order',
+            'items'             => $inventoryItemData,
+            'relatedEntity'     => $purchaseOrder
+        ];
+
+        $context = InventoryUpdateContext::createUpdateContext($data);
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
+        );
     }
 
     /**

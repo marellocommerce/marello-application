@@ -2,25 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class InventoryManager implements InventoryManagerInterface
 {
-    /** @var ObjectManager $entityManager */
-    protected $entityManager;
-
-    /**
-     * InventoryManager constructor.
-     * @param ObjectManager $om
-     */
-    public function __construct(ObjectManager $om)
-    {
-        $this->entityManager = $om;
-    }
-
     /**
      * Update inventory items based of context and calculate new inventory level
      * @param InventoryUpdateContext $context
@@ -45,7 +33,7 @@ class InventoryManager implements InventoryManagerInterface
                 $allocatedStock = ($data['item']->getAllocatedStock() + $context->getAllocatedStock());
             }
 
-            $success = $this->updateInventoryLevel(
+            $this->updateInventoryLevel(
                 $data['item'],
                 $context->getChangeTrigger(),
                 $stock,
@@ -54,12 +42,7 @@ class InventoryManager implements InventoryManagerInterface
                 $context->getRelatedEntity()
             );
 
-            if ($success) {
-                //$this->entityManager->persist($data['item']);
-            }
         }
-
-        //$this->entityManager->flush();
     }
 
     /**
@@ -116,7 +99,7 @@ class InventoryManager implements InventoryManagerInterface
 
     /**
      * Validate the data structure of the items to be updated
-     * @param $context
+     * @param InventoryUpdateContext $context
      * @return bool
      */
     private function validateItems($context)

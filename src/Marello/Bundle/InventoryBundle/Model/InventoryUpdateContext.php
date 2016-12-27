@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Model;
 
 use Oro\Bundle\UserBundle\Entity\UserInterface;
+use Doctrine\Common\Util\ClassUtils;
 
 class InventoryUpdateContext
 {
@@ -124,6 +125,10 @@ class InventoryUpdateContext
         $context->setAllocatedStock($data['allocatedStock']);
         $context->setChangeTrigger($data['trigger']);
         $context->setItems($data['items']);
+
+        if (array_key_exists('relatedEntity', $data)) {
+            $context->setRelatedEntity($data['relatedEntity']);
+        }
 
         return $context;
     }

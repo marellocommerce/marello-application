@@ -43,5 +43,3 @@ services:
 
     marello_inventory.manager.inventory_manager:
         class: Marello\Bundle\InventoryBundle\Manager\InventoryManager
-        arguments:
-            - '@doctrine.orm.entity_manager'
