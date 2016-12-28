@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "71089c41e1f5f3d777dbbc2c22847076",
-    "content-hash": "43cd9e8daa0cff316fae715dd7be4f8e",
+    "hash": "db9801ad14b1a1a7957d8d12c1f2210b",
+    "content-hash": "0d599fc91caba487877762a1993b26a9",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -6271,12 +6271,12 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/marketing",
-                "reference": "82f6f070b010a252bb6b247a07faf20b94bbf32e",
+                "reference": "3d9ea12e684c73f4e51d8d912a7cb49b20485505",
                 "shasum": null
             },
             "require": {
                 "oro/platform": "1.x-dev",
-                "php": ">=5.5.9"
+                "php": ">=5.6"
             },
             "type": "library",
             "extra": {
@@ -6290,7 +6290,7 @@
                 }
             },
             "license": [
-                "MIT"
+                "OSL-3.0"
             ],
             "authors": [
                 {
@@ -6298,8 +6298,14 @@
                     "homepage": "http://www.orocrm.com"
                 }
             ],
-            "description": "BAP marketing-related bundles",
-            "homepage": "https://github.com/orocrm/marketing.git"
+            "description": "Oro Marketing Bundles",
+            "homepage": "https://github.com/orocrm/OroCRMMarketingBundle.git",
+            "keywords": [
+                "Campaign",
+                "Marketing",
+                "Oro",
+                "Tracking"
+            ]
         },
         {
             "name": "oro/platform",
@@ -10801,6 +10807,70 @@
                 "xunit"
             ],
             "time": "2016-12-08 20:27:08"
+        },
+        {
+            "name": "phpunit/phpunit-selenium",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/giorgiosironi/phpunit-selenium.git",
+                "reference": "d3aa8984c31efcff7c8829b9bd9ad7ab4c94709c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/giorgiosironi/phpunit-selenium/zipball/d3aa8984c31efcff7c8829b9bd9ad7ab4c94709c",
+                "reference": "d3aa8984c31efcff7c8829b9bd9ad7ab4c94709c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-dom": "*",
+                "php": ">=5.6",
+                "phpunit/phpunit": "~5.0",
+                "sebastian/comparator": "~1.0"
+            },
+            "require-dev": {
+                "phing/phing": "2.*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "PHPUnit/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "include-path": [
+                ""
+            ],
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Giorgio Sironi",
+                    "email": "info@giorgiosironi.com",
+                    "role": "developer"
+                },
+                {
+                    "name": "Ivan Kurnosov",
+                    "email": "zerkms@zerkms.com",
+                    "role": "developer"
+                },
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sb@sebastian-bergmann.de",
+                    "role": "original developer"
+                }
+            ],
+            "description": "Selenium Server integration for PHPUnit",
+            "homepage": "http://www.phpunit.de/",
+            "keywords": [
+                "phpunit",
+                "selenium",
+                "testing",
+                "xunit"
+            ],
+            "time": "2016-04-22 10:41:33"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
