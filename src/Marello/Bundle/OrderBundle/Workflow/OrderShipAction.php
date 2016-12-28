@@ -25,8 +25,9 @@ class OrderShipAction extends OrderTransitionAction
     /**
      * OrderShipAction constructor.
      *
-     * @param ContextAccessor $contextAccessor
-     * @param Registry        $doctrine
+     * @param ContextAccessor           $contextAccessor
+     * @param Registry                  $doctrine
+     * @param EventDispatcherInterface  $eventDispatcher
      */
     public function __construct(
         ContextAccessor $contextAccessor,
