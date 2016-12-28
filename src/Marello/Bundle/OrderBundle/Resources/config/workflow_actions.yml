@@ -2,8 +2,9 @@ services:
     marello_order.workflow.order_ship_action:
         class: Marello\Bundle\OrderBundle\Workflow\OrderShipAction
         arguments:
-            - @oro_workflow.context_accessor
-            - @doctrine
+            - '@oro_action.context_accessor'
+            - '@doctrine'
+            - '@event_dispatcher'
         tags:
             - { name: oro_workflow.action, alias: marello_ship_order }
     marello_order.workflow.order_cancel_action:

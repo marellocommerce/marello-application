@@ -3,20 +3,24 @@
 namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Component\Action\Model\ContextAccessor;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
 class OrderShipAction extends OrderTransitionAction
 {
     /** @var Registry */
     protected $doctrine;
 
-    /** @var InventoryItem[] */
-    protected $changedInventory;
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
 
     /**
      * OrderShipAction constructor.
@@ -24,11 +28,15 @@ class OrderShipAction extends OrderTransitionAction
      * @param ContextAccessor $contextAccessor
      * @param Registry        $doctrine
      */
-    public function __construct(ContextAccessor $contextAccessor, Registry $doctrine)
-    {
+    public function __construct(
+        ContextAccessor $contextAccessor,
+        Registry $doctrine,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         parent::__construct($contextAccessor);
 
         $this->doctrine = $doctrine;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -39,44 +47,42 @@ class OrderShipAction extends OrderTransitionAction
         /** @var Order $order */
         $order = $context->getEntity();
 
-        $this->changedInventory = [];
-
-        $order->getItems()->map(function (OrderItem $orderItem) {
-            $this->shipOrderItem($orderItem);
+        $order->getItems()->map(function (OrderItem $item) use ($order) {
+            $this->handleInventoryUpdate($item, -$item->getQuantity(), -$item->getQuantity(), $order);
         });
-
-        $this->doctrine->getManager()->flush();
     }
 
     /**
-     * Deallocates all items allocated to this item and reduces real stock, indicating that item has been shipped.
-     *
-     * @param OrderItem $orderItem
+     * handle the inventory update for items which have been shipped
+     * @param OrderItem $item
+     * @param $inventoryUpdateQty
+     * @param $allocatedInventoryQty
+     * @param OrderItem $entity
      */
-    protected function shipOrderItem(OrderItem $orderItem)
+    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
-        $allocations = $this->doctrine
-            ->getRepository(StockLevel::class)
-            ->findBy([
-                'subjectId'     => $orderItem->getOrder()->getId(),
-                'subjectType'   => Order::class,
-                'changeTrigger' => 'order_workflow.pending',
-            ]);
-
-        $shipAllocation = 0;
-        /** @var InventoryItem $inventoryItem */
-        $inventoryItem = reset($allocations)->getInventoryItem();
-
-        foreach ($allocations as $allocation) {
-            $shipAllocation += $allocation->getAllocatedStockDiff();
+        $inventoryItems = $item->getProduct()->getInventoryItems();
+        $inventoryItemData = [];
+        foreach ($inventoryItems as $inventoryItem) {
+            $inventoryItemData[] = [
+                'item'          => $inventoryItem,
+                'qty'           => $inventoryUpdateQty,
+                'allocatedQty'  => $allocatedInventoryQty
+            ];
         }
 
-        $inventoryItem->adjustStockLevels(
-            'order_workflow.shipped',
-            -$shipAllocation,
-            -$shipAllocation,
-            null,
-            $orderItem
+        $data = [
+            'stock'             => $inventoryUpdateQty,
+            'allocatedStock'    => $allocatedInventoryQty,
+            'trigger'           => 'order_workflow.shipped',
+            'items'             => $inventoryItemData,
+            'relatedEntity'     => $entity
+        ];
+
+        $context = InventoryUpdateContext::createUpdateContext($data);
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
         );
     }
 }
