@@ -31,6 +31,8 @@ services:
 
     marello_order.listener.doctrine.order_inventory_allocation:
         class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderInventoryAllocationListener
+        arguments:
+            - '@event_dispatcher'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 

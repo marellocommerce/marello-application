@@ -3,12 +3,23 @@
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
 class OrderInventoryAllocationListener
 {
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
+
+    public function __construct(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     public function postPersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
