@@ -21,6 +21,9 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  * @ORM\Table(name="marello_return_return")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Config(
+ *      routeView="marello_return_return_view",
+ *      routeName="marello_return_return_index",
+ *      routeCreate="marello_return_return_create",
  *      defaultValues={
  *          "workflow"={
  *              "active_workflow"="marello_return_workflow",

@@ -84,7 +84,9 @@ workflows:
                         entity: $return
                         recipient: $return.order.customer.email
                         template: marello_return_received
-            contents_verified_def: ~
+            contents_verified_def:
+                post_actions:
+                    - @return_inspection_ok: ~
             contents_not_verified_def:
                 post_actions:
                     - @marello_notification_send:
@@ -92,7 +94,6 @@ workflows:
                         recipient: $return.order.customer.email
                         template: marello_return_not_verified
             continue_received_def: ~
-            inspection_ok_def: ~
             inspection_not_ok_def:
                 post_actions:
                     - @marello_notification_send:

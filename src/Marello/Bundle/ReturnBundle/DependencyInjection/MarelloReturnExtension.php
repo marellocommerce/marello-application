@@ -19,6 +19,7 @@ class MarelloReturnExtension extends Extension
         $loader->load('services.yml');
         $loader->load('form.yml');
         $loader->load('shipping.yml');
+        $loader->load('workflow_actions.yml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $config);
