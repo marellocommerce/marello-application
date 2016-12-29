@@ -2,12 +2,9 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\Strategy;
 
-use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
-
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 
 class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 {
@@ -29,69 +26,33 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         array $searchContext = [],
         $entityIsRelation = false
     ) {
-        file_put_contents(
-            '/Users/hotlander/Development/marello-application-dev/app/logs/inventory-import.log',
-            print_r($itemData, true) . "\r\n",
-            FILE_APPEND
-        );
-        $sku = array_shift($itemData);
-        $item = $this->findProductBySku($sku);
+        $item = $this->findInventoryItem($entity);
 
         if (!$item) {
             return null;
         }
 
-        $this->handleInventoryUpdate($item, $entity->getStock(), null, null);
+        $item->adjustStockLevels('import', $entity->getStock());
 
         return $item;
     }
 
-    protected function findProductBySku($sku)
+    /**
+     * @param InventoryItem $entity
+     *
+     * @return null|InventoryItem
+     */
+    protected function findInventoryItem($entity)
     {
-        $product = $this->databaseHelper->findOneBy(Product::class, ['sku' => $sku]);
+        $product = $this->databaseHelper->findOneBy(Product::class, ['sku' => $entity->getProduct()->getSku()]);
 
         if (!$product) {
-            $errorMessages = [$this->translator->trans(
-                'oro.importexport.import.errors.not_found_entity',
-                ['%entity_name%' => Product::class]
-            )];
-            $this->strategyHelper->addValidationErrors($errorMessages, $this->context);
-        }
-    }
-    /**
-     * handle the inventory update for items which have been shipped
-     * @param Product $item
-     * @param $inventoryUpdateQty
-     * @param $allocatedInventoryQty
-     * @param $entity
-     */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
-    {
-        $inventoryItems = $item->getInventoryItems();
-        $inventoryItemData = [];
-        foreach ($inventoryItems as $inventoryItem) {
-            $inventoryItemData[] = [
-                'item'          => $inventoryItem,
-                'qty'           => $inventoryUpdateQty,
-                'allocatedQty'  => $allocatedInventoryQty
-            ];
+            return null;
         }
 
-        $data = [
-            'stock'             => $inventoryUpdateQty,
-            'allocatedStock'    => $allocatedInventoryQty,
-            'trigger'           => 'import',
-            'items'             => $inventoryItemData,
-            'relatedEntity'     => $entity
-        ];
-
-        $context = InventoryUpdateContext::createUpdateContext($data);
-        $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::NAME,
-            new InventoryUpdateEvent($context)
-        );
+        return $this->databaseHelper->findOneBy(InventoryItem::class, ['product' => $product]);
     }
-
+    
     /**
      * Increment context counters.
      *

@@ -16,6 +16,8 @@ class InventoryItemDataConverter extends AbstractTreeDataConverter
      *         self::BACKEND_TO_FRONTEND => array('userGroup:(\d+)', 'User Group $1'),
      *     )
      * )
+     *
+     *              "header"="Level"
      * @return array
      */
     protected function getHeaderConversionRules()
@@ -24,7 +26,7 @@ class InventoryItemDataConverter extends AbstractTreeDataConverter
             'SKU'                  => 'product:sku',
             'Desired Stock Level'  => 'product:desiredStockLevel',
             'Purchase Stock Level' => 'product:purchaseStockLevel',
-            'Current'              => 'currentLevel:stock',
+            'Stock Level'          => 'currentLevel:stock',
         ];
     }
 

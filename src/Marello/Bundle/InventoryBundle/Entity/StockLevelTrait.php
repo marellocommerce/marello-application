@@ -16,7 +16,6 @@ trait StockLevelTrait
      *      defaultValues={
      *          "importexport"={
      *              "order"=30,
-     *              "header"="Current Level",
      *              "full"=true
      *          }
      *      }
