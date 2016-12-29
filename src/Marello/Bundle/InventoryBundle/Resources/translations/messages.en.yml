@@ -24,7 +24,7 @@ marello:
             id.label:                   Id
             warehouse.label:            Warehouse
             product.label:              Product
-
+            current_level.label:        Stock
         stocklevel:
             entity_label:               Stock Level
             entity_plural_label:        Stock Levels
