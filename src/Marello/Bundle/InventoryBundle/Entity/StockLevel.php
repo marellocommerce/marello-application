@@ -54,7 +54,7 @@ class StockLevel
     protected $inventoryItem;
 
     /**
-     * @ORM\Column(name="stock", type="integer")
+     * @ORM\Column(name="inventory", type="integer")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -65,10 +65,10 @@ class StockLevel
      *
      * @var int
      */
-    protected $stock;
+    protected $inventory;
 
     /**
-     * @ORM\Column(name="allocated_stock", type="integer")
+     * @ORM\Column(name="inventory_alteration", type="integer")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -79,7 +79,35 @@ class StockLevel
      *
      * @var int
      */
-    protected $allocatedStock;
+    protected $inventoryAlteration;
+
+    /**
+     * @ORM\Column(name="allocated_inventory", type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var int
+     */
+    protected $allocatedInventory;
+
+    /**
+     * @ORM\Column(name="allocated_inventory_alteration", type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var int
+     */
+    protected $allocatedInventoryAlteration;
 
     /**
      * @ORM\Column(name="change_trigger", type="string")
@@ -168,27 +196,33 @@ class StockLevel
      * StockLevel constructor.
      *
      * @param InventoryItem $inventoryItem
-     * @param int           $stock
-     * @param int           $allocatedStock
+     * @param int           $inventory
+     * @param int           $inventoryAlt
+     * @param int           $allocatedInventory
+     * @param int           $allocatedInventoryAlt
      * @param string        $changeTrigger
      * @param User          $user
      * @param mixed|null    $subject
      */
     public function __construct(
         InventoryItem $inventoryItem,
-        $stock,
-        $allocatedStock,
+        $inventory,
+        $inventoryAlt,
+        $allocatedInventory,
+        $allocatedInventoryAlt,
         $changeTrigger,
         User $user = null,
         $subject = null
     ) {
-        $this->inventoryItem  = $inventoryItem;
-        $this->stock          = $stock;
-        $this->allocatedStock = $allocatedStock;
-        $this->changeTrigger  = $changeTrigger;
-        $this->user           = $user;
-        $this->subject        = $subject;
-        $this->createdAt      = new \DateTime();
+        $this->inventoryItem                = $inventoryItem;
+        $this->inventory                    = $inventory;
+        $this->inventoryAlteration          = $inventoryAlt;
+        $this->allocatedInventory           = $allocatedInventory;
+        $this->allocatedInventoryAlteration = $allocatedInventoryAlt;
+        $this->changeTrigger                = $changeTrigger;
+        $this->user                         = $user;
+        $this->subject                      = $subject;
+        $this->createdAt                    = new \DateTime();
     }
 
     /**
@@ -212,7 +246,7 @@ class StockLevel
      */
     public function getStockDiff()
     {
-        return $this->stock;
+        return $this->inventoryAlteration;
     }
 
     /**
@@ -220,7 +254,7 @@ class StockLevel
      */
     public function getStock()
     {
-        return $this->stock;
+        return $this->inventory;
     }
 
     /**
@@ -228,7 +262,7 @@ class StockLevel
      */
     public function getAllocatedStockDiff()
     {
-        return $this->allocatedStock;
+        return $this->allocatedInventoryAlteration;
     }
 
     /**
@@ -236,7 +270,7 @@ class StockLevel
      */
     public function getAllocatedStock()
     {
-        return $this->allocatedStock;
+        return $this->allocatedInventory;
     }
 
     /**
@@ -244,7 +278,7 @@ class StockLevel
      */
     public function getVirtualStock()
     {
-        return $this->stock - $this->allocatedStock;
+        return $this->inventory - $this->allocatedInventory;
     }
 
     /**

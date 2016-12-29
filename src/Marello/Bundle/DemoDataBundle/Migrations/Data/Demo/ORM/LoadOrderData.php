@@ -53,11 +53,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $this->defaultWarehouse = $manager->getRepository(Warehouse::class)->getDefault();
         $this->setReference('marello_warehouse_default', $this->defaultWarehouse);
 
-//        $address = new MarelloAddress();
-//        $address->setStreet('Straaten');
-//        $this->manager->persist($address);
-//        $this->defaultWarehouse->setAddress($address);
-
         /** @var Order $order */
         $order = null;
 

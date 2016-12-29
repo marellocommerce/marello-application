@@ -37,7 +37,9 @@ class InventoryManager implements InventoryManagerInterface
                 $data['item'],
                 $context->getChangeTrigger(),
                 $stock,
+                $context->getStock(),
                 $allocatedStock,
+                $context->getAllocatedStock(),
                 $context->getUser(),
                 $context->getRelatedEntity()
             );
@@ -46,13 +48,15 @@ class InventoryManager implements InventoryManagerInterface
     }
 
     /**
-     * @param InventoryItem     $item           InventoryItem to be updated
-     * @param string            $trigger        Action that triggered the change
-     * @param int|null          $stock          New stock or null if it should remain unchanged
-     * @param int|null          $allocatedStock New allocated stock or null if it should remain unchanged
-     * @param User|null         $user           User who triggered the change, if left null,
-     *                                          it is automatically assigned to current one
-     * @param mixed|null        $subject        Any entity that should be associated to this operation
+     * @param InventoryItem     $item                   InventoryItem to be updated
+     * @param string            $trigger                Action that triggered the change
+     * @param int|null          $inventory              New inventory or null if it should remain unchanged
+     * @param int|null          $inventoryAlt           Inventory Change qty, qty that represents the actual change
+     * @param int|null          $allocatedInventory     New allocated inventory or null if it should remain unchanged
+     * @param int|null          $allocatedInventoryAlt  Alloced Inventory Change qty, qty that represents the actual change
+     * @param User|null         $user                   User who triggered the change, if left null,
+     *                                                  it is automatically assigned to current one
+     * @param mixed|null        $subject                Any entity that should be associated to this operation
      *
      * @throws \Exception
      * @return bool
@@ -60,32 +64,44 @@ class InventoryManager implements InventoryManagerInterface
     protected function updateInventoryLevel(
         InventoryItem $item,
         $trigger,
-        $stock = null,
-        $allocatedStock = null,
+        $inventory = null,
+        $inventoryAlt = null,
+        $allocatedInventory = null,
+        $allocatedInventoryAlt = null,
         User $user = null,
         $subject = null
     ) {
-        if (($stock === null) && ($allocatedStock === null)) {
+        if (($inventory === null) && ($allocatedInventory === null)) {
             return false;
         }
 
-        if (($item->getStock() === $stock) && ($item->getAllocatedStock() === $allocatedStock)) {
+        if (($item->getStock() === $inventory) && ($item->getAllocatedStock() === $allocatedInventory)) {
             return false;
         }
 
-        if ($stock === null) {
-            $stock = $item->getStock();
+        if ($inventory === null) {
+            $inventory = $item->getStock();
         }
 
-        if ($allocatedStock === null) {
-            $allocatedStock = $item->getAllocatedStock();
+        if ($inventoryAlt === null) {
+            $inventoryAlt = 0;
+        }
+
+        if ($allocatedInventory === null) {
+            $allocatedInventory = $item->getAllocatedStock();
+        }
+
+        if ($allocatedInventoryAlt === null) {
+            $allocatedInventoryAlt = 0;
         }
 
         try {
             $item->changeCurrentLevel(new StockLevel(
                 $item,
-                $stock,
-                $allocatedStock,
+                $inventory,
+                $inventoryAlt,
+                $allocatedInventory,
+                $allocatedInventoryAlt,
                 $trigger,
                 $user,
                 $subject

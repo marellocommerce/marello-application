@@ -65,16 +65,16 @@ class MarelloInventoryBundleInstaller implements Installation
         $table = $schema->createTable('marello_inventory_level');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('user_id', 'integer', ['notnull' => false]);
-        $table->addColumn('stock', 'integer', []);
-        $table->addColumn('allocated_stock', 'integer', []);
+        $table->addColumn('inventory', 'integer', []);
+        $table->addColumn('inventory_alteration', 'integer', []);
+        $table->addColumn('allocated_inventory', 'integer', []);
+        $table->addColumn('allocated_inventory_alteration', 'integer', []);
         $table->addColumn('change_trigger', 'string', ['length' => 255]);
         $table->addColumn('subject_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('subject_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
-//        $table->addColumn('previous_level_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-//        $table->addUniqueIndex(['previous_level_id'], 'UNIQ_32D13BA4E314A25F');
         $table->addIndex(['inventory_item_id'], 'IDX_32D13BA4243D10EA', []);
         $table->addIndex(['user_id'], 'IDX_32D13BA4F675F31B', []);
     }

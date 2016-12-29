@@ -117,7 +117,6 @@ class ReceivePurchaseOrderAction extends AbstractAction
      * handle the inventory update for items which have been received
      * @param PurchaseOrderItem $item
      * @param $inventoryUpdateQty
-     * @param PurchaseOrder $purchaseOrder
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $purchaseOrder)
     {

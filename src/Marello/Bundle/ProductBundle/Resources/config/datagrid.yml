@@ -12,7 +12,7 @@ datagrid:
                     - s.label as status
                     - p.createdAt
                     - p.updatedAt
-                    - COALESCE(SUM(l.stock), 0) AS stockLevel
+                    - COALESCE(SUM(l.inventory), 0) AS stockLevel
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
