@@ -28,8 +28,8 @@ class StockLevelRepository extends EntityRepository
          */
         $qb
             ->select(
-                'SUM(l.inventoryAlteration) AS stock',
-                'SUM(l.allocatedInventoryAlteration) AS allocatedStock',
+                'SUM(l.inventoryAlteration) AS inventory',
+                'SUM(l.allocatedInventoryAlteration) AS allocatedInventory',
                 'DATE(l.createdAt) AS date'
             )
             ->andWhere($qb->expr()->eq('IDENTITY(i.product)', ':product'))
@@ -62,8 +62,8 @@ class StockLevelRepository extends EntityRepository
         $qb = $this->createQueryBuilder('l');
         $qb
             ->select(
-                'COALESCE(l.inventoryAlteration, 0) AS stock',
-                'COALESCE(l.allocatedInventoryAlteration, 0) AS allocatedStock'
+                'COALESCE(l.inventoryAlteration, 0) AS inventory',
+                'COALESCE(l.allocatedInventoryAlteration, 0) AS allocatedInventory'
             )
             ->join('l.inventoryItem', 'i')
             ->andWhere($qb->expr()->eq('IDENTITY(i.product)', ':product'))
@@ -83,8 +83,8 @@ class StockLevelRepository extends EntityRepository
         }
 
         return [
-            'stock'          => 0,
-            'allocatedStock' => 0,
+            'inventory'          => 0,
+            'allocatedInventory' => 0,
         ];
     }
 }

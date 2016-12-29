@@ -48,40 +48,40 @@ class ChartBuilder
         $repository = $this->doctrine
             ->getRepository(StockLevel::class);
 
-        $records        = $repository->getStockLevelsForProduct($product, $from, $to);
-        $initialRecord  = $repository->getInitialStock($product, $from);
-        $stock          = $initialRecord['stock'];
-        $allocatedStock = $initialRecord['allocatedStock'];
+        $records            = $repository->getStockLevelsForProduct($product, $from, $to);
+        $initialRecord      = $repository->getInitialStock($product, $from);
+        $inventory          = $initialRecord['inventory'];
+        $allocatedInventory = $initialRecord['allocatedInventory'];
 
         $dates  = $this->dateHelper->getDatePeriod($from, $to);
         $record = reset($records);
 
         foreach ($dates as &$date) {
             if ($record !== false && $record['date'] === $date['date']) {
-                $stock += $record['stock'];
-                $allocatedStock += $record['allocatedStock'];
+                $inventory += $record['inventory'];
+                $allocatedInventory += $record['allocatedInventory'];
 
                 $record = next($records);
             }
 
-            $date['stock']          = $stock;
-            $date['allocatedStock'] = $allocatedStock;
+            $date['inventory']          = $inventory;
+            $date['allocatedInventory'] = $allocatedInventory;
         }
 
         $data = [
             $this->translator->trans('marello.inventory.stocklevel.stock.label')           => array_values(
                 array_map(function ($value) {
-                    return ['time' => $value['date'], 'stock' => $value['stock']];
+                    return ['time' => $value['date'], 'inventory' => $value['inventory']];
                 }, $dates)
             ),
             $this->translator->trans('marello.inventory.stocklevel.allocated_stock.label') => array_values(
                 array_map(function ($value) {
-                    return ['time' => $value['date'], 'stock' => $value['allocatedStock']];
+                    return ['time' => $value['date'], 'inventory' => $value['allocatedInventory']];
                 }, $dates)
             ),
             $this->translator->trans('marello.inventory.stocklevel.virtual_stock.label')   => array_values(
                 array_map(function ($value) {
-                    return ['time' => $value['date'], 'stock' => $value['stock'] - $value['allocatedStock']];
+                    return ['time' => $value['date'], 'inventory' => $value['inventory'] - $value['allocatedInventory']];
                 }, $dates)
             ),
         ];

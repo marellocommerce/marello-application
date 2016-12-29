@@ -26,8 +26,8 @@ marello:
             product.label:              Product
 
         stocklevel:
-            entity_label:               Stock Level
-            entity_plural_label:        Stock Levels
+            entity_label:               Inventory Level
+            entity_plural_label:        Inventory Levels
             id.label:                           Id
             stock.label:                        Real Stock
             allocated_stock.label:              Allocated Stock
