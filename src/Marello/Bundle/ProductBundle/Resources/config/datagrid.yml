@@ -32,6 +32,7 @@ datagrid:
                 label:              marello.product.stock_level.label
                 frontend_type:      number
                 data_name:          stockLevel
+                align:              left
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
