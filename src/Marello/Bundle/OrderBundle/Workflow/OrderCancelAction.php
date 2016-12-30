@@ -49,7 +49,7 @@ class OrderCancelAction extends OrderTransitionAction
         $order = $context->getEntity();
 
         $order->getItems()->map(function (OrderItem $item) use ($order) {
-            $this->handleInventoryUpdate($item, null, $item->getQuantity(), $order);
+            $this->handleInventoryUpdate($item, null, -$item->getQuantity(), $order);
         });
     }
 
