@@ -7,7 +7,7 @@ services:
     marello_order.listener.datagrid.order_grid_address_filter_listener:
         class: Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener
         arguments:
-            - @oro_locale.dql.formatter.name
+            - '@oro_locale.dql.formatter.name'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order, method: onBuildBefore }
 
@@ -18,7 +18,7 @@ services:
     marello_order.listener.order_created_notification_sender:
         class: Marello\Bundle\OrderBundle\EventListener\OrderCreatedNotificationSender
         arguments:
-            - "@marello_order.email_processor_link"
+            - '@marello_order.email_processor_link'
         tags:
             - { name: kernel.event_listener, event: "marello.core.derived_property_set", method: derivedPropertySet }
 
@@ -48,14 +48,14 @@ services:
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - %marello_order_customer.class%
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
 
     marello_order.provider.order_statistic_provider:
         class: %marello_order.provider.order_statistic_provider.class%
         arguments:
-            - @doctrine
-            - @oro_security.acl_helper
-            - @oro_dashboard.provider.big_number.date_helper
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - '@oro_dashboard.provider.big_number.date_helper'
         tags:
             - { name: oro_dashboard.big_number.provider, alias: marello-order }
 
@@ -75,4 +75,4 @@ services:
     marello_order.datagrid.action_permission_provider:
         class: Marello\Bundle\OrderBundle\Datagrid\ActionPermissionProvider
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
