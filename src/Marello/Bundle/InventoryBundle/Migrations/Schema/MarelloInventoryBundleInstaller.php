@@ -140,12 +140,6 @@ class MarelloInventoryBundleInstaller implements Installation
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_inventory_stock_level'),
-            ['previousLevel_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
             ['user_id'],
             ['id'],
