@@ -41,7 +41,7 @@ services:
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - %marello_order.entity.order.class%
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
 
     marello_order.manager.customer.api:
         class: Marello\Bundle\OrderBundle\Entity\Manager\CustomerApiEntityManager
