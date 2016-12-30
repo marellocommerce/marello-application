@@ -41,14 +41,14 @@ class ChartBuilderTest extends WebTestCase
             ->getInventoryItems()
             ->first();
 
-        /** @var StockLevel $stock */
-        $stock = $inventoryItem->getCurrentLevel();
+        /** @var StockLevel $inventory */
+        $inventory = $inventoryItem->getCurrentLevel();
 
         /*
          * Get start and end points of interval +- 3 days around creation of this single log.
          */
-        $from = clone $stock->getCreatedAt();
-        $to   = clone $stock->getCreatedAt();
+        $from = clone $inventory->getCreatedAt();
+        $to   = clone $inventory->getCreatedAt();
 
         $from->modify('- 3 days');
         $to->modify('+ 3 days');
@@ -71,10 +71,10 @@ class ChartBuilderTest extends WebTestCase
         $first = reset($data);
         $last  = end($data);
 
-        $this->assertEquals(0, $first['stock'], 'First item stock level should be zero.');
+        $this->assertEquals(0, $first['inventory'], 'First item stock level should be zero.');
         $this->assertEquals(
             $inventoryItem->getStock(),
-            $last['stock'],
+            $last['inventory'],
             'Last item stock level should be same as the one stored in inventory item.'
         );
     }

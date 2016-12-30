@@ -60,8 +60,8 @@ class StockLevelController extends Controller
                         'label'      => 'Time',
                     ],
                     'value' => [
-                        'field_name' => 'stock',
-                        'label'      => 'Stock',
+                        'field_name' => 'inventory',
+                        'label'      => 'Inventory Level',
                     ],
                 ],
             ])

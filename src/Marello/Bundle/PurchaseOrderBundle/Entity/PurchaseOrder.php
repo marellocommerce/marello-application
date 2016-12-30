@@ -19,6 +19,9 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_purchase_order")
  * @Oro\Config(
+ *      routeView="marello_purchaseorder_purchaseorder_view",
+ *      routeName="marello_purchaseorder_purchaseorder_index",
+ *      routeCreate="marello_purchaseorder_purchaseorder_create",
  *      defaultValues={
  *          "workflow"={
  *              "active_workflow"="marello_purchase_order_workflow"
@@ -262,5 +265,13 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
         if (!$this->purchaseOrderNumber) {
             $this->setPurchaseOrderNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('#%s', $this->purchaseOrderNumber);
     }
 }

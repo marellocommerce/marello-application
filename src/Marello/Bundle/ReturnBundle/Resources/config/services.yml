@@ -7,7 +7,7 @@ services:
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - %marello_return.entity.return.class%
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
 
     marello_return.util.return_helper:
         class: Marello\Bundle\ReturnBundle\Util\ReturnHelper
@@ -15,7 +15,7 @@ services:
     marello_return.twig.return_extension:
         class: Marello\Bundle\ReturnBundle\Twig\ReturnExtension
         arguments:
-            - @marello_return.util.return_helper
+            - '@marello_return.util.return_helper'
         tags:
             - { name: twig.extension }
 
@@ -38,20 +38,20 @@ services:
     marello_return.manager.businessrule_manager:
         class: Marello\Bundle\ReturnBundle\Manager\BusinessRuleManager
         arguments:
-            - @marello_return.manager.return_businessrule_registry
+            - '@marello_return.manager.return_businessrule_registry'
 
     marello_return.manager.rules.businessrule.marello_ror_warranty:
         class: Marello\Bundle\ReturnBundle\Manager\Rules\MarelloRorWarranty
         arguments:
-            - @doctrine.orm.entity_manager
-            - @oro_config.manager
+            - '@doctrine.orm.entity_manager'
+            - '@oro_config.manager'
         tags:
             - { name: marello_return.manager.rules.businessrule, alias: marello_ror_warranty }
 
     marello_return.manager.rules.businessrule.marello_product_warranty:
         class: Marello\Bundle\ReturnBundle\Manager\Rules\MarelloProductWarranty
         arguments:
-            - @doctrine.orm.entity_manager
-            - @oro_config.manager
+            - '@doctrine.orm.entity_manager'
+            - '@oro_config.manager'
         tags:
             - { name: marello_return.manager.rules.businessrule, alias: marello_product_warranty }

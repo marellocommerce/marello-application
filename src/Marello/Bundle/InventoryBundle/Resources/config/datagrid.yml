@@ -11,9 +11,9 @@ datagrid:
                     - s.label as status
                     - p.createdAt
                     - p.updatedAt
-                    - COALESCE(SUM(l.stock), 0) AS stock
-                    - COALESCE(SUM(l.allocatedStock), 0) AS allocatedStock
-                    - COALESCE(SUM(l.stock - l.allocatedStock), 0) AS virtualStock
+                    - COALESCE(SUM(l.inventory), 0) AS inventory
+                    - COALESCE(SUM(l.allocatedInventory), 0) AS allocatedInventory
+                    - COALESCE(SUM(l.inventory - l.allocatedInventory), 0) AS virtualStock
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -30,14 +30,14 @@ datagrid:
                 label:              marello.product.entity_label
                 frontend_type:      string
                 data_name:          name
-            stock:
+            inventory:
                 label:              marello.inventory.stocklevel.stock.label
                 frontend_type:      number
-                data_name:          stock
-            allocatedStock:
+                data_name:          inventory
+            allocatedInventory:
                 label:              marello.inventory.stocklevel.allocated_stock.label
                 frontend_type:      number
-                data_name:          allocatedStock
+                data_name:          allocatedInventory
             virtualStock:
                 label:              marello.inventory.stocklevel.virtual_stock.label
                 frontend_type:      number
@@ -52,8 +52,8 @@ datagrid:
             columns:
                 sku:            { data_name: p.sku }
                 product:        { data_name: p.name }
-                stock:          { data_name: stock }
-                allocatedStock: { data_name: allocatedStock }
+                inventory:          { data_name: inventory }
+                allocatedInventory: { data_name: allocatedInventory }
                 virtualStock:   { data_name: virtualStock }
                 status:         { data_name: s.label }
                 createdAt:      { data_name: p.createdAt }
@@ -69,11 +69,11 @@ datagrid:
                     data_name:        p.name
                 stock:
                     type:             number
-                    data_name:        stock
+                    data_name:        inventory
                     filter_by_having: true
                 allocatedStock:
                     type:             number
-                    data_name:        allocatedStock
+                    data_name:        allocatedInventory
                     filter_by_having: true
                 virtualStock:
                     type:             number
@@ -107,13 +107,12 @@ datagrid:
             query:
                 select:
                     - l
-                    - (l.stock - COALESCE(p.stock, 0)) AS stockDiff
-                    - (l.allocatedStock - COALESCE(p.allocatedStock, 0)) AS allocatedStockDiff
+                    - (l.inventoryAlteration) AS stockDiff
+                    - (l.allocatedInventoryAlteration) AS allocatedStockDiff
                 from:
                     - { table: MarelloInventoryBundle:StockLevel, alias: l }
                 join:
                     left:
-                        - { join: l.previousLevel, alias: p }
                         - { join: l.inventoryItem, alias: i }
                 where:
                     and:
@@ -139,8 +138,8 @@ datagrid:
                 type:           translatable
                 domain:         MarelloStockLevelChangeTrigger
                 frontend_type:  string
-            author:
-                label:          marello.inventory.stocklevel.author.label
+            user:
+                label:          marello.inventory.stocklevel.user.label
                 frontend_type:  string
             subject:
                 label:          marello.inventory.stocklevel.subject.label

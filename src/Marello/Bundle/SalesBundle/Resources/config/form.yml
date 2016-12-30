@@ -8,14 +8,14 @@ services:
     marello_sales_form_type_saleschannel:
         class: %marello_sales.form_type.saleschannel.class%
         arguments:
-            - @marello_sales.form.event_listener.sales_channel_form_subscriber
+            - '@marello_sales.form.event_listener.sales_channel_form_subscriber'
         tags:
              - { name: form.type, alias: marello_sales_channel }
              
     marello_sales_form_type_saleschannel_multi_select:
         class: Marello\Bundle\SalesBundle\Form\Type\SalesChannelMultiSelectType
         arguments:
-            - @marello_sales.form.data_transformer.sales_channel
+            - '@marello_sales.form.data_transformer.sales_channel'
         tags:
             - { name: form.type, alias: marello_sales_saleschannel_multi_select }
 
@@ -27,7 +27,7 @@ services:
     marello_sales.form.type.sales_channel_select_api:
         class: Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectApiType
         arguments:
-            - @marello_sales.form.data_transformer.sales_channel_to_code
+            - '@marello_sales.form.data_transformer.sales_channel_to_code'
         tags:
             - { name: form.type, alias: marello_sales_channel_select_api }
 
@@ -45,18 +45,18 @@ services:
         class: %marello_sales.sales_form.handler.class%
         scope: request
         arguments:
-            - @marello_sales.saleschannel.form
-            - @request
-            - @doctrine.orm.entity_manager
+            - '@marello_sales.saleschannel.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
 
     #data transformer
     marello_sales.form.data_transformer.sales_channel:
         class: Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
             - MarelloSalesBundle:SalesChannel
 
     marello_sales.form.data_transformer.sales_channel_to_code:
         class: Marello\Bundle\SalesBundle\Form\DataTransformer\SalesChannelToCodeTransformer
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'

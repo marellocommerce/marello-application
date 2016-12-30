@@ -12,7 +12,8 @@ class ActionPermissionProvider
 {
     protected $excludedRefundableSteps = [
         'payment_reminder',
-        'pending'
+        'pending',
+        'cancelled'
     ];
 
     protected $allowedReturnSteps = [
@@ -74,10 +75,6 @@ class ActionPermissionProvider
             return false;
         }
 
-        $isAllowedInWorkflow = (in_array($workflowStep->getName(), $this->allowedReturnSteps));
-
-        if ($isAllowedInWorkflow) {
-            return true;
-        }
+        return (in_array($workflowStep->getName(), $this->allowedReturnSteps));
     }
 }

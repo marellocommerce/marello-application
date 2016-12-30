@@ -2,7 +2,7 @@ services:
     marello_productprice.form.type.productprice:
         class: Marello\Bundle\PricingBundle\Form\Type\ProductPriceType
         arguments:
-            - @oro_locale.settings
+            - '@oro_locale.settings'
         tags:
             - { name: form.type, alias: marello_product_price }
 

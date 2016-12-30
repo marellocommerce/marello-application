@@ -7,11 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\UserBundle\Entity\User;
 
-trait HasStockLevel
+trait StockLevelTrait
 {
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(name="current_level_id", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -51,7 +51,6 @@ trait HasStockLevel
      */
     public function changeCurrentLevel(StockLevel $newLevel)
     {
-        $newLevel->setPreviousLevel($this->currentLevel);
         $this->levels->add($newLevel);
         $this->currentLevel = $newLevel;
 
@@ -123,7 +122,6 @@ trait HasStockLevel
             $stock === null ? $this->getStock() : $stock,
             $allocatedStock === null ? $this->getAllocatedStock() : $allocatedStock,
             $trigger,
-            null,
             $user,
             $subject
         ));

@@ -1,42 +1,40 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Workflow;
-
-use Doctrine\Bundle\DoctrineBundle\Registry;
+namespace Marello\Bundle\ReturnBundle\Workflow;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Component\Action\Model\ContextAccessor;
+use Oro\Component\Action\Action\AbstractAction;
+use Oro\Component\Action\Action\ActionInterface;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
-class OrderCancelAction extends OrderTransitionAction
+class InspectionAction extends AbstractAction
 {
-    /** @var Registry */
-    protected $doctrine;
+    /** @var array $options */
+    protected $options = [];
 
     /** @var EventDispatcherInterface $eventDispatcher */
     protected $eventDispatcher;
 
     /**
-     * OrderShipAction constructor.
+     * ReturnInSpectionOkAction constructor.
      *
      * @param ContextAccessor           $contextAccessor
-     * @param Registry                  $doctrine
      * @param EventDispatcherInterface  $eventDispatcher
      */
     public function __construct(
         ContextAccessor $contextAccessor,
-        Registry $doctrine,
         EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct($contextAccessor);
 
-        $this->doctrine = $doctrine;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -45,11 +43,13 @@ class OrderCancelAction extends OrderTransitionAction
      */
     protected function executeAction($context)
     {
-        /** @var Order $order */
-        $order = $context->getEntity();
+        /** @var ReturnEntity $return */
+        $return = $context->getEntity();
 
-        $order->getItems()->map(function (OrderItem $item) use ($order) {
-            $this->handleInventoryUpdate($item, null, -$item->getQuantity(), $order);
+        $return->getReturnItems()->map(function (ReturnItem $item) use ($return) {
+            if (($item->getReason()->getId() !== 'damaged') && ($item->getStatus()->getId() !== 'denied')) {
+                $this->handleInventoryUpdate($item->getOrderItem(), $item->getQuantity(), null, $return);
+            }
         });
     }
 
@@ -58,7 +58,7 @@ class OrderCancelAction extends OrderTransitionAction
      * @param OrderItem $item
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
-     * @param OrderItem $entity
+     * @param ReturnEntity $entity
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
@@ -75,7 +75,7 @@ class OrderCancelAction extends OrderTransitionAction
         $data = [
             'stock'             => $inventoryUpdateQty,
             'allocatedStock'    => $allocatedInventoryQty,
-            'trigger'           => 'order_workflow.cancelled',
+            'trigger'           => 'return_workflow.inspection_ok',
             'items'             => $inventoryItemData,
             'relatedEntity'     => $entity
         ];
@@ -85,5 +85,19 @@ class OrderCancelAction extends OrderTransitionAction
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)
         );
+    }
+
+    /**
+     * Initialize action based on passed options.
+     *
+     * @param array $options
+     *
+     * @return ActionInterface
+     */
+    public function initialize(array $options)
+    {
+        $this->options = $options;
+
+        return $this;
     }
 }

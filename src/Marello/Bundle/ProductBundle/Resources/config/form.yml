@@ -20,16 +20,16 @@ services:
         tags:
             - { name: form.type, alias: marello_product_form }
         arguments:
-            - @marello_sales.form.event_listener.default_sales_channel_subscriber
-            - @marello_productprice.pricing.form.event_listener.pricing_subscriber
-            - @marello_productprice.pricing.form.event_listener.channel_pricing_subscriber
+            - '@marello_sales.form.event_listener.default_sales_channel_subscriber'
+            - '@marello_productprice.pricing.form.event_listener.pricing_subscriber'
+            - '@marello_productprice.pricing.form.event_listener.channel_pricing_subscriber'
 
     marello_product.product_form.type.product_api:
         class: %marello_product.product_form.type.product_api.class%
         tags:
             - { name: form.type, alias: marello_product_api_form }
         arguments:
-            - @marello_sales.form.event_listener.default_sales_channel_subscriber
+            - '@marello_sales.form.event_listener.default_sales_channel_subscriber'
 
     marello_product.product_form.type.product_select:
         class: %marello_product.product_form.type.product_select.class%
@@ -78,31 +78,31 @@ services:
         class: %marello_product.product_form.handler.class%
         scope: request
         arguments:
-            - @marello_product.product.form
-            - @request
-            - @doctrine.orm.entity_manager
+            - '@marello_product.product.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
 
     marello_product.product_form.handler.product_api:
         class: %marello_product.product_form.handler.product_api.class%
         scope: request
         arguments:
-            - @marello_product.product_api.form
-            - @request
-            - @doctrine.orm.entity_manager
-            - @oro_entity.routing_helper
+            - '@marello_product.product_api.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_entity.routing_helper'
 
     marello_product.product_variant_form.handler:
         class: %marello_product.product_variant_form.handler.class%
         scope: request
         arguments:
-            - @marello_product.product_variant.form
-            - @request
-            - @doctrine.orm.entity_manager
-            - @event_dispatcher
+            - '@marello_product.product_variant.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
 
     marello_product.manager.api:
         class: %marello_product.manager.api.class%
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - %marello_product.entity.class%
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'

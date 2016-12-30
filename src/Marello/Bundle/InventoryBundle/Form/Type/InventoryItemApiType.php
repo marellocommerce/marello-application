@@ -2,18 +2,26 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemUpdateApiTransformer;
 use Marello\Bundle\InventoryBundle\Model\InventoryItemUpdateApi;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InventoryItemApiType extends AbstractType
 {
     const NAME = 'marello_inventory_item_api';
+
+
+    /** @var InventoryItemUpdateApiTransformer $transformer */
+    protected $transformer;
+
+    public function __construct(InventoryItemUpdateApiTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -23,7 +31,7 @@ class InventoryItemApiType extends AbstractType
                 'class' => Warehouse::class,
             ]);
 
-        $builder->addModelTransformer(new InventoryItemUpdateApiTransformer());
+        $builder->addModelTransformer($this->transformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)

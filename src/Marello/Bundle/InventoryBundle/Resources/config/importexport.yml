@@ -1,6 +1,5 @@
 parameters:
     marello_inventory.importexport.template_fixture.inventory_item.class: Marello\Bundle\InventoryBundle\ImportExport\TemplateFixture\InventoryItemFixture
-
     marello_inventory.inventoryitem.entity.class: Marello\Bundle\InventoryBundle\Entity\InventoryItem
 
 services:
@@ -36,7 +35,7 @@ services:
     marello_inventory.importexport.processor.export_template:
         parent: oro_importexport.processor.export_abstract
         calls:
-            - [setDataConverter, [@marello_inventory.importexport.template_fixture.data_converter.inventory_item]]
+            - [setDataConverter, [@marello_inventory.importexport.data_converter]]
         tags:
             - { name: oro_importexport.processor, type: export_template, entity: %marello_inventory.inventoryitem.entity.class%, alias: marello_inventory_item }
 

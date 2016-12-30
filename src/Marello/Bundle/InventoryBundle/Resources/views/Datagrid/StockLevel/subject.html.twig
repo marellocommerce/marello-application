@@ -1,7 +1,7 @@
 {% if value is not null %}
     {% set className = oro_class_name(value) %}
 
-    {# If subject is order item, diaplay order, it is more convinient #}
+    {# If subject is order item, display order, it is more convenient #}
     {% if className == 'Marello\\Bundle\\OrderBundle\\Entity\\OrderItem' %}
         {% set subject = value.order %}
         {% set className = oro_class_name(subject) %}
@@ -17,7 +17,7 @@
     {% endset %}
 
     {% if route and resource_granted('VIEW', subject) %}
-        <a href="{{ path(route, {id: subject.id}) }}">{{ label }}</a>
+        <a href="{{ oro_entity_view_link(className, subject.id) }}">{{ label }}</a>
     {% else %}
         {{ label }}
     {% endif %}

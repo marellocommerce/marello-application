@@ -1,5 +1,3 @@
-parameters:
-
 services:
     marello_notification.email.send_processor:
         class: Marello\Bundle\NotificationBundle\Email\SendProcessor
@@ -13,18 +11,18 @@ services:
     marello_notification.workflow.send_notification_action:
         class: Marello\Bundle\NotificationBundle\Workflow\SendNotificationAction
         arguments:
-            - @oro_workflow.context_accessor
-            - @marello_notification.email.send_processor
+            - '@oro_workflow.context_accessor'
+            - '@marello_notification.email.send_processor'
         tags:
             - { name: oro_workflow.action, alias: marello_notification_send }
 
     marello_notification.provider.activity_list:
         class: Marello\Bundle\NotificationBundle\Provider\NotificationActivityListProvider
         arguments:
-           - @oro_entity.doctrine_helper
-           - @translator
-           - @marello_notification.link.entity_manager
-           - @oro_activity.association_helper
+           - '@oro_entity.doctrine_helper'
+           - '@translator'
+           - '@marello_notification.link.entity_manager'
+           - '@oro_activity.association_helper'
         tags:
            - { name: oro_activity_list.provider, priority: 80 }
 

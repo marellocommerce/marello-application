@@ -13,6 +13,14 @@ class InventoryItemType extends AbstractType
 {
     const NAME = 'marello_inventory_item';
 
+    /** @var InventoryItemModifyTransformer $transformer */
+    protected $transformer;
+
+    public function __construct(InventoryItemModifyTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,7 +39,7 @@ class InventoryItemType extends AbstractType
                 'data'        => 0,
             ]);
 
-        $builder->addViewTransformer(new InventoryItemModifyTransformer());
+        $builder->addViewTransformer($this->transformer);
     }
 
     /**

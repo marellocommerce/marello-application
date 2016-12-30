@@ -6,17 +6,17 @@ services:
     marello_sales.form.event_listener.default_sales_channel_subscriber:
         class: Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
 
     marello_sales.form.event_listener.sales_channel_form_subscriber:
         class: Marello\Bundle\SalesBundle\Form\EventListener\SalesChannelFormSubscriber
         arguments:
-            - @oro_locale.settings
+            - '@oro_locale.settings'
 
     marello_sales.saleschannel.provider.channel_provider:
         class: Marello\Bundle\SalesBundle\Provider\ChannelProvider
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
 
     # Autocomplete search handler
     marello_sales.saleschannel.form.autocomplete.search_handler:

@@ -3,6 +3,8 @@
 namespace Marello\Bundle\InventoryBundle\Model;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 
 class InventoryItemModify
 {
@@ -29,9 +31,12 @@ class InventoryItemModify
      *
      * @param $inventoryItem
      */
-    public function __construct($inventoryItem)
-    {
+    public function __construct(
+        $inventoryItem,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->inventoryItem = $inventoryItem;
+        $this->eventDispatcher  = $eventDispatcher;
     }
 
     /**
@@ -47,13 +52,14 @@ class InventoryItemModify
      */
     public function toModifiedInventoryItem()
     {
-        return $this
-            ->inventoryItem
-            ->adjustStockLevels(
-                'manual',
-                $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1),
-                $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1)
-            );
+        $data = $this->getContextData();
+        $context = InventoryUpdateContext::createUpdateContext($data);
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
+        );
+
+        return $this->inventoryItem;
     }
 
     /**
@@ -134,5 +140,29 @@ class InventoryItemModify
         $this->allocatedStockOperator = $allocatedStockOperator;
 
         return $this;
+    }
+
+    /**
+     * Get Inventory Update context data
+     * @return array
+     */
+    protected function getContextData()
+    {
+        $stock = $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1);
+        $allocatedStock = $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1);
+        $data = [
+            'stock'             => $stock,
+            'allocatedStock'    => $allocatedStock,
+            'trigger'           => 'manual',
+            'items'             => [
+                [
+                    'item'          => $this->inventoryItem,
+                    'qty'           => $stock,
+                    'allocatedQty'  => $allocatedStock
+                ]
+            ]
+        ];
+
+        return $data;
     }
 }

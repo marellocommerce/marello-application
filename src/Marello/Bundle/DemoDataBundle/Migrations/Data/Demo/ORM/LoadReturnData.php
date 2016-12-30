@@ -25,6 +25,8 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
         $channel = $this->getReference('marello_sales_channel_1');
         $reasonClass = ExtendHelper::buildEnumValueClassName('marello_return_reason');
         $reasons = $manager->getRepository($reasonClass)->findAll();
+        $statusClass = ExtendHelper::buildEnumValueClassName('marello_return_status');
+        $statuses = $manager->getRepository($statusClass)->findAll();
 
         $i = 0;
         foreach ($orders as $order) {
@@ -41,10 +43,11 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
             $return->setSalesChannel($channel);
             $return->setReturnReference(uniqid($order->getOrderNumber()));
 
-            $order->getItems()->map(function (OrderItem $item) use ($return, $reasons) {
+            $order->getItems()->map(function (OrderItem $item) use ($return, $reasons, $statuses) {
                 $returnItem = new ReturnItem($item);
                 $returnItem->setQuantity(rand(1, $item->getQuantity()));
                 $returnItem->setReason($reasons[rand(0, count($reasons) - 1)]);
+                $returnItem->setStatus($statuses[rand(0, count($statuses) - 1)]);
 
                 $return->addReturnItem($returnItem);
             });
