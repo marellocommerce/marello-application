@@ -2,31 +2,31 @@ services:
     marello_productprice.pricing.provider.currency_provider:
         class: Marello\Bundle\PricingBundle\Provider\CurrencyProvider
         arguments:
-            - @doctrine
-            - @oro_locale.settings
+            - '@doctrine'
+            - '@oro_locale.settings'
 
     marello_productprice.pricing.provider.channelprice_provider:
         class: Marello\Bundle\PricingBundle\Provider\ChannelPriceProvider
         arguments:
-            - @doctrine
-            - @translator
+            - '@doctrine'
+            - '@translator'
 
     marello_productprice.pricing.form.event_listener.pricing_subscriber:
         class: Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber
         arguments:
-            - @marello_productprice.pricing.provider.currency_provider
+            - '@marello_productprice.pricing.provider.currency_provider'
 
     marello_productprice.pricing.form.event_listener.channel_pricing_subscriber:
         class: Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber
         arguments:
-            - @doctrine.orm.entity_manager
+            - '@doctrine.orm.entity_manager'
             - Marello\Bundle\PricingBundle\Model\PricingAwareInterface
-            - @marello_sales.saleschannel.provider.channel_provider
+            - '@marello_sales.saleschannel.provider.channel_provider'
 
     marello_productprice.pricing.twig.pricing_extension:
         class: Marello\Bundle\PricingBundle\Twig\PricingExtension
         arguments:
-            - @marello_productprice.pricing.provider.currency_provider
+            - '@marello_productprice.pricing.provider.currency_provider'
         tags:
             - { name: twig.extension }
 
@@ -34,6 +34,6 @@ services:
     marello_productprice.validator.unique.unique_entity_collection:
         class: Marello\Bundle\PricingBundle\Validator\UniqueEntityCollectionValidator
         arguments:
-            - @doctrine
+            - '@doctrine'
         tags:
             - { name: validator.constraint_validator, alias: unique_entity_collection }
