@@ -2,11 +2,23 @@ parameters:
     marello_purchaseorder.entity.purchaseorder.class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
 
 services:
+    marello_purchaseorder.processor.note_activity_processor:
+        class: Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
     marello_purchaseorder.workflow.receive_purchase_order:
         class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction
         arguments:
-            - @oro_workflow.context_accessor
-            - @doctrine
+            - '@oro_action.context_accessor'
+            - '@doctrine.orm.entity_manager'
+            - '@marello_purchaseorder.processor.note_activity_processor'
+            - '@event_dispatcher'
         tags:
             - { name: oro_workflow.action, alias: marello_receive_purchase_order }
 
+    marello_purchaseorder.workflow.action.transit_complete_action:
+        class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\TransitCompleteAction
+        parent: marello_core.workflow.action.workflow_transit_action
+        tags:
+            - { name: oro_workflow.action, alias: marello_purchase_order_transit_complete_action }

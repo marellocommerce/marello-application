@@ -85,8 +85,8 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', []);
         $table->addColumn('primaryAddress_id', 'integer', []);
-        $table->addColumn('createdAt', 'datetime', []);
-        $table->addColumn('updatedAt', 'datetime', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('namePrefix', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('firstName', 'string', ['length' => 255]);
         $table->addColumn('middleName', 'string', ['notnull' => false, 'length' => 255]);
@@ -123,18 +123,21 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('payment_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_details', 'text', ['notnull' => false]);
-        $table->addColumn('shipping_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('shipping_amount_incl_tax', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('shipping_amount_excl_tax', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('discount_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('discount_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('coupon_code', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('created_at', 'datetime', []);
-        $table->addColumn('updated_at', 'datetime', []);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('invoiced_at', 'datetime', ['notnull' => false]);
         $table->addColumn('saleschannel_name', 'string', ['length' => 255]);
         $table->addColumn('billing_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('localization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['order_number'], 'UNIQ_A619DD64551F0F81');
@@ -163,13 +166,15 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('product_sku', 'string', ['length' => 255]);
         $table->addColumn('quantity', 'integer', []);
         $table->addColumn('price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('original_price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false]);
+        $table->addColumn('original_price_incl_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false]);
+        $table->addColumn('original_price_excl_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false]);
         $table->addColumn('purchase_price_incl', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false]);
         $table->addColumn('tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('tax_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('discount_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('discount_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('row_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('row_total_incl_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('row_total_excl_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['product_id'], 'IDX_1118665C4584665A', []);
         $table->addIndex(['order_id'], 'IDX_1118665C8D9F6D38', []);
@@ -244,6 +249,12 @@ class MarelloOrderBundleInstaller implements
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),
             ['shipping_address_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_localization'),
+            ['localization_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

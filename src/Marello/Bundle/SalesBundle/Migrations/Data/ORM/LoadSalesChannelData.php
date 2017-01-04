@@ -33,6 +33,7 @@ class LoadSalesChannelData extends AbstractFixture
     protected function loadSalesChannels()
     {
         $organization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
+        $localization = $this->manager->getRepository('OroLocaleBundle:Localization')->find(1);
         $i            = 1;
 
         foreach ($this->data as $values) {
@@ -41,6 +42,8 @@ class LoadSalesChannelData extends AbstractFixture
             $channel->setCode($values['code']);
             $channel->setCurrency($values['currency']);
             $channel->setOwner($organization);
+            $channel->setLocalization($localization);
+            $channel->setLocale('nl_NL');
 
             $this->manager->persist($channel);
             $i++;

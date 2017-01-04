@@ -94,8 +94,8 @@ class MarelloReturnBundleInstaller implements Installation,
         $table->addColumn('return_id', 'integer', ['notnull' => false]);
         $table->addColumn('orderitem_id', 'integer', ['notnull' => false]);
         $table->addColumn('quantity', 'integer', []);
-        $table->addColumn('createdat', 'datetime', []);
-        $table->addColumn('updatedat', 'datetime', []);
+        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['orderitem_id'], 'idx_ae43aff6e76e9c94', []);
         $table->addIndex(['return_id'], 'idx_ae43aff6227416d5', []);
@@ -115,10 +115,12 @@ class MarelloReturnBundleInstaller implements Installation,
         $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_id', 'integer', ['notnull' => false]);
         $table->addColumn('returnnumber', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('createdat', 'datetime', []);
-        $table->addColumn('updatedat', 'datetime', []);
+        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('saleschannel_name', 'string', ['length' => 255]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
+        $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->addColumn('return_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
@@ -186,6 +188,12 @@ class MarelloReturnBundleInstaller implements Installation,
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_order_order'),
             ['order_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_localization'),
+            ['localization_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

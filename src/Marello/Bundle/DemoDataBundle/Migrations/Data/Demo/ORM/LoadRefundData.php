@@ -55,7 +55,7 @@ class LoadRefundData extends AbstractFixture implements DependentFixtureInterfac
                         return (new RefundItem())
                             ->setOrderItem($item)
                             ->setQuantity($item->getQuantity())
-                            ->setRefundAmount($item->getRowTotal())
+                            ->setRefundAmount($item->getRowTotalInclTax())
                             ->setBaseAmount($item->getPrice())
                             ->setName($item->getProductName());
                     }

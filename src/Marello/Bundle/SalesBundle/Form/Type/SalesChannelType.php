@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\SalesBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Marello\Bundle\SalesBundle\Form\EventListener\SalesChannelFormSubscriber;
+use Symfony\Component\Validator\Constraints\Count;
 
 class SalesChannelType extends AbstractType
 {
@@ -40,7 +42,19 @@ class SalesChannelType extends AbstractType
             ])
             ->add('active', 'checkbox', [
                 'required' => false,
-            ]);
+            ])
+            ->add('localization', 'entity', [
+                'required' => true,
+                'multiple' => false,
+                'class' => 'OroLocaleBundle:Localization',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('l')
+                        ->orderBy('l.name', 'ASC');
+                },
+                'choice_label' => 'name'
+            ])
+            ->add('locale')
+        ;
     }
 
     /**

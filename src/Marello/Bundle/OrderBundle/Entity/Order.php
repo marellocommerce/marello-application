@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
@@ -50,10 +53,12 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  */
 class Order extends ExtendOrder implements
     DerivedPropertyAwareInterface,
-    ShippingAwareInterface
+    ShippingAwareInterface,
+    LocaleAwareInterface
 {
-    
     use HasShipmentTrait;
+    use LocalizationTrait;
+    use EntityCreatedUpdatedAtTrait;
     
     /**
      * @var int
@@ -134,9 +139,16 @@ class Order extends ExtendOrder implements
     /**
      * @var double
      *
-     * @ORM\Column(name="shipping_amount", type="money", nullable=true)
+     * @ORM\Column(name="shipping_amount_incl_tax", type="money", nullable=false)
      */
-    protected $shippingAmount;
+    protected $shippingAmountInclTax;
+
+    /**
+     * @var double
+     *
+     * @ORM\Column(name="shipping_amount_excl_tax", type="money", nullable=false)
+     */
+    protected $shippingAmountExclTax;
 
     /**
      * @var float
@@ -207,34 +219,6 @@ class Order extends ExtendOrder implements
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
-
-    /**
-     * @var \DateTime
-     *
      * @ORM\Column(name="invoiced_at", type="datetime", nullable=true)
      */
     protected $invoicedAt;
@@ -299,19 +283,10 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-    }
-
-    /**
      * @ORM\PrePersist
      */
     public function prePersist()
     {
-        $this->createdAt        = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
         $this->salesChannelName = $this->salesChannel->getName();
     }
 
@@ -497,22 +472,6 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @return \Datetime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \Datetime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
      * @return SalesChannel
      */
     public function getSalesChannel()
@@ -656,26 +615,6 @@ class Order extends ExtendOrder implements
     public function setPaymentDetails($paymentDetails)
     {
         $this->paymentDetails = $paymentDetails;
-
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getShippingAmount()
-    {
-        return $this->shippingAmount;
-    }
-
-    /**
-     * @param float $shippingAmount
-     *
-     * @return $this
-     */
-    public function setShippingAmount($shippingAmount)
-    {
-        $this->shippingAmount = $shippingAmount;
 
         return $this;
     }
@@ -850,6 +789,68 @@ class Order extends ExtendOrder implements
     public function setCustomer($customer)
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    /**
+     * Set shippingAmountInclTax
+     *
+     * @param float $shippingAmountInclTax
+     *
+     * @return Order
+     */
+    public function setShippingAmountInclTax($shippingAmountInclTax)
+    {
+        $this->shippingAmountInclTax = $shippingAmountInclTax;
+
+        return $this;
+    }
+
+    /**
+     * Get shippingAmountInclTax
+     *
+     * @return float
+     */
+    public function getShippingAmountInclTax()
+    {
+        return $this->shippingAmountInclTax;
+    }
+
+    /**
+     * Set shippingAmountExclTax
+     *
+     * @param float $shippingAmountExclTax
+     *
+     * @return Order
+     */
+    public function setShippingAmountExclTax($shippingAmountExclTax)
+    {
+        $this->shippingAmountExclTax = $shippingAmountExclTax;
+
+        return $this;
+    }
+
+    /**
+     * Get shippingAmountExclTax
+     *
+     * @return float
+     */
+    public function getShippingAmountExclTax()
+    {
+        return $this->shippingAmountExclTax;
+    }
+
+    /**
+     * Set salesChannelName
+     *
+     * @param string $salesChannelName
+     *
+     * @return Order
+     */
+    public function setSalesChannelName($salesChannelName)
+    {
+        $this->salesChannelName = $salesChannelName;
 
         return $this;
     }

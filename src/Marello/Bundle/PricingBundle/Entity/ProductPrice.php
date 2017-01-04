@@ -19,7 +19,6 @@ use Marello\Bundle\ProductBundle\Entity\Product;
  *          )
  *      }
  * )
- * @ORM\HasLifecycleCallbacks()
  * @Oro\Config(
  *  defaultValues={
  *      "entity"={"icon"="icon-usd"},
@@ -64,21 +63,5 @@ class ProductPrice extends BasePrice
         $this->product    = $product;
 
         return $this;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt = new \DateTime();
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime();
     }
 }

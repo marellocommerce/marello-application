@@ -11,6 +11,9 @@ marello:
             id.label:               Id
             owner.label:            Owner
 
+            controller:
+                message.saved:      Warehouse saved
+
         model:
             warehouse:
                 adjustment.label:   Adjustment
@@ -23,8 +26,8 @@ marello:
             product.label:              Product
 
         stocklevel:
-            entity_label:               Stock Level
-            entity_plural_label:        Stock Levels
+            entity_label:               Inventory Level
+            entity_plural_label:        Inventory Levels
             id.label:                           Id
             stock.label:                        Real Stock
             allocated_stock.label:              Allocated Stock
@@ -32,7 +35,7 @@ marello:
             stock_diff.label:                   Real Stock Change
             allocated_stock_diff.label:         Allocated Stock Change
             virtual_stock_diff.label:           Virtual Stock Change
-            author.label:                       Change Author
+            user.label:                         User
             subject.label:                      Related Subject
             change_trigger.label:               Trigger
             previous_level.label:               Previous Stock Level

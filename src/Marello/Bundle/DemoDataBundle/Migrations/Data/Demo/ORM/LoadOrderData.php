@@ -53,11 +53,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $this->defaultWarehouse = $manager->getRepository(Warehouse::class)->getDefault();
         $this->setReference('marello_warehouse_default', $this->defaultWarehouse);
 
-//        $address = new MarelloAddress();
-//        $address->setStreet('Straaten');
-//        $this->manager->persist($address);
-//        $this->defaultWarehouse->setAddress($address);
-
         /** @var Order $order */
         $order = null;
 
@@ -76,15 +71,17 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 $order->getItems()->map(function (OrderItem $item) use (&$total, &$tax, &$grandTotal) {
                     $total += ($item->getQuantity() * $item->getPrice());
                     $tax += $item->getTax();
-                    $grandTotal += $item->getRowTotal();
+                    $grandTotal += $item->getRowTotalInclTax();
                 });
 
-                $grandTotal += $order->getShippingAmount();
+//                $grandTotal += $order->getShippingAmount();
+                $grandTotal += $order->getShippingAmountInclTax();
 
                 $order
                     ->setSubtotal($total)
                     ->setTotalTax($tax)
-                    ->setGrandTotal($grandTotal);
+                    ->setGrandTotal($grandTotal)
+                ;
 
                 $manager->persist($order);
                 $this->setReference('marello_order_' . $createdOrders, $order);
@@ -209,8 +206,9 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             $orderEntity->setPaymentDetails($row['payment_details']);
         }
 
-        $orderEntity->setShippingMethod($row['shipping_method']);
-        $orderEntity->setShippingAmount($row['shipping_amount']);
+//        $orderEntity->setShippingMethod($row['shipping_method']);
+        $orderEntity->setShippingAmountExclTax($row['shipping_amount']);
+        $orderEntity->setShippingAmountInclTax($row['shipping_amount']);
 
         $orderEntity->setOrganization($organization);
 
@@ -233,7 +231,11 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $itemEntity->setProduct($product);
         $itemEntity->setQuantity($row['qty']);
         $itemEntity->setPrice($row['price']);
-        $itemEntity->setRowTotal($row['total_price']);
+        $itemEntity->setOriginalPriceInclTax($row['price']);
+        $itemEntity->setOriginalPriceExclTax($row['price']);
+        $itemEntity->setPurchasePriceIncl($row['price']);
+        $itemEntity->setRowTotalInclTax($row['total_price']);
+        $itemEntity->setRowTotalExclTax($row['total_price']);
         $itemEntity->setTax($row['tax']);
 
         return $itemEntity;

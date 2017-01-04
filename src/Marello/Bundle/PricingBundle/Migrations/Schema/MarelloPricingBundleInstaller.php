@@ -47,7 +47,7 @@ class MarelloPricingBundleInstaller implements Installation
         $table->addColumn('channel_id', 'integer', []);
         $table->addColumn('value', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('currency', 'string', ['length' => 3]);
-        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['product_id', 'channel_id', 'currency'], 'marello_product_channel_price_uidx');
@@ -67,7 +67,7 @@ class MarelloPricingBundleInstaller implements Installation
         $table->addColumn('product_id', 'integer', []);
         $table->addColumn('value', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('currency', 'string', ['length' => 3]);
-        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['product_id', 'currency'], 'marello_product_price_uidx');

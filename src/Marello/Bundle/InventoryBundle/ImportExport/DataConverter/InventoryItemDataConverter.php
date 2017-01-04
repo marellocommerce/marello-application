@@ -26,7 +26,7 @@ class InventoryItemDataConverter extends AbstractTreeDataConverter
             'SKU'                  => 'product:sku',
             'Desired Stock Level'  => 'product:desiredStockLevel',
             'Purchase Stock Level' => 'product:purchaseStockLevel',
-            'Stock Level'          => 'currentLevel:stock',
+            'Stock Level'          => 'currentLevel:inventory',
         ];
     }
 
@@ -41,7 +41,7 @@ class InventoryItemDataConverter extends AbstractTreeDataConverter
             'product:sku',
             'product:desiredStockLevel',
             'product:purchaseStockLevel',
-            'currentLevel:stock'
+            'currentLevel:inventory'
         ];
     }
 }

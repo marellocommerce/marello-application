@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * Class StockLevelAuthorFillSubscriber
  *
- * When StockLevel is created without author, fills author with currently logged in user if possible.
+ * When StockLevel is created without user, fills user with currently logged in user if possible.
  *
  * @package Marello\Bundle\InventoryBundle\EventListener\Doctrine
  */
@@ -37,7 +37,7 @@ class StockLevelAuthorFillSubscriber implements EventSubscriber
     }
 
     /**
-     * Fills in stock level change author if no author is specified upon creation.
+     * Fills in stock level change user if no user is specified upon creation.
      *
      * @param LifecycleEventArgs $args
      */
@@ -50,16 +50,16 @@ class StockLevelAuthorFillSubscriber implements EventSubscriber
         }
 
         /*
-         * If stock level author is already set, do nothing.
+         * If stock level user is already set, do nothing.
          */
-        if ($entity->getAuthor()) {
+        if ($entity->getUser()) {
             return;
         }
 
         /*
-         * Set author to currently logged in user.
+         * Set user to currently logged in user.
          */
-        $this->setPropertyValue($entity, 'author', $this->getLoggedInUser());
+        $this->setPropertyValue($entity, 'user', $this->getLoggedInUser());
     }
 
     /**

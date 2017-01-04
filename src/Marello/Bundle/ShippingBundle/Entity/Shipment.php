@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Model\ExtendShipment;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -10,10 +11,13 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 /**
  * @ORM\Entity
  * @ORM\Table(name="marello_shipment")
+ * @ORM\HasLifecycleCallbacks()
  * @Oro\Config
  */
 class Shipment extends ExtendShipment
 {
+    use EntityCreatedUpdatedAtTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -165,4 +169,5 @@ class Shipment extends ExtendShipment
 
         return $this;
     }
+
 }

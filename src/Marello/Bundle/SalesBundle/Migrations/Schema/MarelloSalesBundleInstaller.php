@@ -45,11 +45,13 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('active', 'boolean', []);
         $table->addColumn('channeltype', 'string', ['length' => 255]);
-        $table->addColumn('createdat', 'datetime', []);
-        $table->addColumn('updatedat', 'datetime', []);
+        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('is_default', 'boolean', []);
         $table->addColumn('code', 'string', ['length' => 255]);
         $table->addColumn('currency', 'string', ['length' => 5]);
+        $table->addColumn('localization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'marello_sales_sales_channel_codeidx');
         $table->addIndex(['owner_id'], 'idx_37c71d17e3c61f9', []);
@@ -69,5 +71,12 @@ class MarelloSalesBundleInstaller implements Installation
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_localization'),
+            ['localization_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
     }
+
 }

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -18,6 +19,9 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_purchase_order")
  * @Oro\Config(
+ *      routeView="marello_purchaseorder_purchaseorder_view",
+ *      routeName="marello_purchaseorder_purchaseorder_index",
+ *      routeCreate="marello_purchaseorder_purchaseorder_create",
  *      defaultValues={
  *          "workflow"={
  *              "active_workflow"="marello_purchase_order_workflow"
@@ -31,6 +35,8 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  */
 class PurchaseOrder implements DerivedPropertyAwareInterface
 {
+    use EntityCreatedUpdatedAtTrait;
+    
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -64,34 +70,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      * )
      */
     protected $items;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
 
     /**
      * @var WorkflowItem
@@ -160,22 +138,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt = new \DateTime();
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime();
-    }
-
-    /**
      * @return int
      */
     public function getId()
@@ -197,22 +159,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     public function getItems()
     {
         return $this->items;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
@@ -319,5 +265,13 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
         if (!$this->purchaseOrderNumber) {
             $this->setPurchaseOrderNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('#%s', $this->purchaseOrderNumber);
     }
 }

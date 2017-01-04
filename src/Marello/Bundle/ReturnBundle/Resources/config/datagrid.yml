@@ -240,9 +240,9 @@ datagrid:
                 data_name: reason
                 label: marello.return.returnitem.reason.label
                 frontend_type: string
-            price:
-                data_name: orderItem.price
-                label: marello.order.orderitem.price.label
+            rowTotal:
+                data_name:        orderItem.rowTotalInclTax
+                label:            marello.order.orderitem.total_price_incl_tax.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure

@@ -1,7 +1,11 @@
 services:
+    # Form Event Listeners / Subscribers
+    marello_purchase_order.form.event_listener.purchase_order_item_subscriber:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\EventListener\PurchaseOrderItemSubscriber
+        arguments:
+            - '@translator'
 
     # Form Types
-
     marello_purchase_order.form.type.purchase_order_create:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateType
         tags:
@@ -24,15 +28,17 @@ services:
 
     marello_purchase_order.form.type.po_item_receive:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemReceiveType
+        arguments:
+            - '@marello_purchase_order.form.event_listener.purchase_order_item_subscriber'
         tags:
             - { name: form.type, alias: marello_purchase_order_item_receive }
+
     marello_purchase_order.form.type.po_item_receive_collection:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemReceiveCollectionType
         tags:
             - { name: form.type, alias: marello_purchase_order_item_receive_collection }
 
     # Forms
-
     marello_purchase_order.form.purchase_order_create:
         class: Symfony\Component\Form\FormInterface
         factory: ["@form.factory", create]
@@ -41,7 +47,6 @@ services:
             - "marello_purchase_order_create"
 
     # Handlers
-
     marello_purchase_order.form.handler.purchase_order_create:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateHandler
         scope: request

@@ -6,11 +6,17 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
-class LoadProductData extends AbstractFixture implements DependentFixtureInterface
+class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
     /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
     protected $defaultOrganization;
@@ -20,6 +26,19 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
     /** @var ObjectManager $manager */
     protected $manager;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 
     public function getDependencies()
     {
@@ -89,13 +108,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setPurchaseStockLevel(rand(1, $product->getDesiredStockLevel()));
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight(mt_rand(50, 300) / 100);
-        $inventoryItem = InventoryItem::withStockLevel(
-            $this->defaultWarehouse,
-            $product,
-            $data['stock_level'],
-            0,
-            'import'
-        );
+        $inventoryItem = new InventoryItem($this->defaultWarehouse, $product);
+        $this->handleInventoryUpdate($inventoryItem, $data['stock_level'], 0, null);
         $product->getInventoryItems()->add($inventoryItem);
 
         $status = $this->manager
@@ -131,6 +145,39 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $this->manager->persist($product);
 
         return $product;
+    }
+
+    /**
+     * handle the inventory update for items which have been shipped
+     * @param InventoryItem $item
+     * @param $inventoryUpdateQty
+     * @param $allocatedInventoryQty
+     * @param $entity
+     */
+    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
+    {
+        $inventoryItems[] = $item;
+        $inventoryItemData = [];
+        foreach ($inventoryItems as $inventoryItem) {
+            $inventoryItemData[] = [
+                'item'          => $inventoryItem,
+                'qty'           => $inventoryUpdateQty,
+                'allocatedQty'  => $allocatedInventoryQty
+            ];
+        }
+
+        $data = [
+            'stock'             => $inventoryUpdateQty,
+            'allocatedStock'    => $allocatedInventoryQty,
+            'trigger'           => 'import',
+            'items'             => $inventoryItemData,
+            'relatedEntity'     => $entity
+        ];
+
+        $context = InventoryUpdateContext::createUpdateContext($data);
+        /** @var InventoryManager $inventoryManager */
+        $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
+        $inventoryManager->updateInventoryItems($context);
     }
 
     /**

@@ -21,16 +21,15 @@ class StockLevelRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('l');
         $qb
-            ->join('l.inventoryItem', 'i')
-            ->leftJoin('l.previousLevel', 'p');
+            ->join('l.inventoryItem', 'i');
 
         /*
          * Select sums of changes and group them by date.
          */
         $qb
             ->select(
-                'SUM(l.stock - COALESCE(p.stock, 0)) AS stock',
-                'SUM(l.allocatedStock - COALESCE(p.allocatedStock, 0)) AS allocatedStock',
+                'SUM(l.inventoryAlteration) AS inventory',
+                'SUM(l.allocatedInventoryAlteration) AS allocatedInventory',
                 'DATE(l.createdAt) AS date'
             )
             ->andWhere($qb->expr()->eq('IDENTITY(i.product)', ':product'))
@@ -63,14 +62,14 @@ class StockLevelRepository extends EntityRepository
         $qb = $this->createQueryBuilder('l');
 
         $qb
-            ->leftJoin('l.previousLevel', 'p');
-
-        $qb
-            ->select('COALESCE(p.stock, 0) AS stock', 'COALESCE(p.allocatedStock, 0) AS allocatedStock')
+            ->select(
+                'COALESCE(l.inventoryAlteration, 0) AS inventory',
+                'COALESCE(l.allocatedInventoryAlteration, 0) AS allocatedInventory'
+            )
             ->join('l.inventoryItem', 'i')
             ->andWhere($qb->expr()->eq('IDENTITY(i.product)', ':product'))
-            ->andWhere($qb->expr()->eq('DATE(l.createdAt)', 'DATE(:at)'))
-            ->orderBy('l.createdAt', 'ASC');
+            ->andWhere('DATE(l.createdAt) <= DATE(:at)')
+            ->orderBy('l.createdAt', 'DESC');
 
         $qb
             ->setParameters(compact('product', 'at'));
@@ -85,8 +84,8 @@ class StockLevelRepository extends EntityRepository
         }
 
         return [
-            'stock'          => 0,
-            'allocatedStock' => 0,
+            'inventory'          => 0,
+            'allocatedInventory' => 0,
         ];
     }
 }

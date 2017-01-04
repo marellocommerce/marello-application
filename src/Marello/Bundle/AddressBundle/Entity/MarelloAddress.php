@@ -4,11 +4,12 @@ namespace Marello\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\OrderBundle\Entity\Customer;
-use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
+use Oro\Bundle\AddressBundle\Model\ExtendAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_address")
  * @ORM\AssociationOverrides({
  *      @ORM\AssociationOverride(name="region",
@@ -22,15 +23,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *          "security"={
  *              "type"="ACL",
  *              "group_name"=""
- *          },
- *          "ownership"={
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
  *          }
  *      }
  * )
  */
-class MarelloAddress extends AbstractAddress
+class MarelloAddress extends ExtendAddress
 {
 
     /**
@@ -120,5 +117,22 @@ class MarelloAddress extends AbstractAddress
             $this->lastName,
             $this->nameSuffix,
         ]));
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdateTimestamp()
+    {
+        $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistTimestamp()
+    {
+        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updated = null;
     }
 }

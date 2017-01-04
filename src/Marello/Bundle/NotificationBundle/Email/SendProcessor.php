@@ -4,10 +4,10 @@ namespace Marello\Bundle\NotificationBundle\Email;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Marello\Bundle\LocaleBundle\Manager\EmailTemplateManager;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
-use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor;
 
@@ -24,6 +24,9 @@ class SendProcessor
 
     /** @var EmailRenderer */
     protected $renderer;
+    
+    /** @var EmailTemplateManager  */
+    protected $emailTemplateManager;
 
     /**
      * EmailSendProcessor constructor.
@@ -32,17 +35,20 @@ class SendProcessor
      * @param ObjectManager              $manager
      * @param ActivityManager            $activityManager
      * @param EmailRenderer              $renderer
+     * @param EmailTemplateManager       $emailTeplateManager
      */
     public function __construct(
         EmailNotificationProcessor $emailNotificationProcessor,
         ObjectManager $manager,
         ActivityManager $activityManager,
-        EmailRenderer $renderer
+        EmailRenderer $renderer,
+        EmailTemplateManager $emailTeplateManager
     ) {
         $this->emailNotificationProcessor = $emailNotificationProcessor;
         $this->manager                    = $manager;
         $this->activityManager            = $activityManager;
         $this->renderer                   = $renderer;
+        $this->emailTemplateManager       = $emailTeplateManager;
     }
 
     /**
@@ -58,9 +64,7 @@ class SendProcessor
     {
         $entityName = ClassUtils::getRealClass(get_class($entity));
 
-        $template = $this->manager
-            ->getRepository(EmailTemplate::class)
-            ->findOneBy(['name' => $templateName, 'entityName' => $entityName]);
+        $template = $this->emailTemplateManager->findTemplate($templateName, $entity);
 
         /*
          * If template is not found, throw an exception.

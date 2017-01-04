@@ -2,9 +2,17 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
-use Oro\Bundle\FormBundle\Form\Type\CollectionType;
+use Doctrine\ORM\PersistentCollection;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+
+use Oro\Bundle\FormBundle\Form\Type\CollectionType;
+
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 
 class PurchaseOrderItemReceiveCollectionType extends AbstractType
 {
@@ -12,19 +20,39 @@ class PurchaseOrderItemReceiveCollectionType extends AbstractType
 
     /**
      * {@inheritdoc}
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            /** @var PersistentCollection $collection */
+            $collection = $event->getData();
+            $collection->map(
+                function (PurchaseOrderItem $item) {
+                    if ($item->getReceivedAmount() === $item->getOrderedAmount()) {
+                        $item->setStatus('complete');
+                    }
+                }
+            );
+        });
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type' => PurchaseOrderItemReceiveType::NAME,
-            'show_form_when_empty' => false,
-            'error_bubbling' => false,
-            'cascade_validation' => true,
-            'prototype_name' => '__namepurchaseorderitemrecieve__',
-            'prototype' => true,
-            'handle_primary' => false,
-            'allow_add' => false,
-            'allow_detele' => false,
+            'type'                  => PurchaseOrderItemReceiveType::NAME,
+            'show_form_when_empty'  => false,
+            'error_bubbling'        => true,
+            'cascade_validation'    => true,
+            'prototype_name'        => '__namepurchaseorderitemreceive__',
+            'prototype'             => true,
+            'handle_primary'        => false,
+            'allow_add'             => false,
+            'allow_delete'          => false,
         ]);
     }
 

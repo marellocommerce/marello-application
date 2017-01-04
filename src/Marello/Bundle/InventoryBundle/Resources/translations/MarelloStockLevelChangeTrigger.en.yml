@@ -2,6 +2,8 @@ manual:             Manual
 import:             Import
 purchase_order:     Purchase Order
 order_workflow:
-    pending:            Pending Order
-    shipped:            Shipped Order
-    cancelled:          Cancelled Order
+    pending:        Pending Order
+    shipped:        Shipped Order
+    cancelled:      Cancelled Order
+return_workflow:
+    inspection_ok: Inspected Return

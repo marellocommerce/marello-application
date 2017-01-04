@@ -3,13 +3,18 @@ marello:
         entity_label:                                   Purchase Order
         entity_plural_label:                            Purchase Orders
         purchase_order_number.label:                    PO Number
+        status.label:                                   Purchase Order Status
+        purchase_order_date.label:                      Purchase Order Date
         items.label:                                    Purchase Order Items
         select_products:                                Products to include in new PO
+        all_items_have_been_received:                   All items have been received, please proceed to click "Fully received"
 
         purchaseorderitem:
             order_amount.label:                         Order Amount
             ordered_amount.label:                       Ordered Amount
-            received_amount.label:                      Received Amount
+            received_amount.label:                      Received Quantity
+            status.label:                               Status
+            accepted_qty.label:                         Accepted Quantity
             purchase_stock_level.label:                 Purchase Level
             desired_stock_level.label:                  Desired Level
             virtual_stock_level.label:                  Virtual Level

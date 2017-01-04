@@ -5,6 +5,9 @@ namespace Marello\Bundle\RefundBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -42,8 +45,14 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *      }
  * )
  */
-class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, CurrencyAwareInterface
+class Refund extends ExtendRefund implements 
+    DerivedPropertyAwareInterface, 
+    CurrencyAwareInterface,
+    LocaleAwareInterface
 {
+    use EntityCreatedUpdatedAtTrait;
+    use LocalizationTrait;
+        
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -96,33 +105,6 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
      */
     protected $currency;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
 
     /**
      * @var Organization
@@ -162,6 +144,8 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
             ->setCustomer($order->getCustomer())
             ->setOrganization($order->getOrganization())
             ->setCurrency($order->getCurrency())
+            ->setLocale($order->getLocale())
+            ->setLocalization($order->getLocalization())
         ;
 
         $order->getItems()->map(
@@ -187,6 +171,8 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
             ->setCustomer($return->getOrder()->getCustomer())
             ->setOrganization($return->getOrganization())
             ->setCurrency($return->getOrder()->getCurrency())
+            ->setLocale($return->getOrder()->getLocale())
+            ->setLocalization($return->getOrder()->getLocalization())
         ;
 
         $return->getReturnItems()->map(
@@ -205,7 +191,6 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
     {
         parent::__construct();
 
-        $this->createdAt = new \DateTime();
         $this->items = new ArrayCollection();
     }
 
@@ -344,22 +329,6 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
      * @return Order
      */
     public function getOrder()
@@ -389,10 +358,14 @@ class Refund extends ExtendRefund implements DerivedPropertyAwareInterface, Curr
 
     /**
      * @param string $currency
+     *
+     * @return Refund
      */
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+
+        return $this;
     }
 
     /**

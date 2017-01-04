@@ -12,7 +12,7 @@ datagrid:
                     - s.label as status
                     - p.createdAt
                     - p.updatedAt
-                    - COALESCE(SUM(l.stock), 0) AS stockLevel
+                    - COALESCE(SUM(l.inventory), 0) AS stockLevel
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -32,6 +32,7 @@ datagrid:
                 label:              marello.product.stock_level.label
                 frontend_type:      number
                 data_name:          stockLevel
+                align:              left
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
@@ -122,7 +123,7 @@ datagrid:
                     - p.name
                     - p.sku
                     - s.label as status
-                    - SUM(l.stock) AS stockLevel
+                    - SUM(l.inventory) AS stockLevel
                 from:
                     - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
                 join:
@@ -182,7 +183,7 @@ datagrid:
                     - p.name
                     - p.sku
                     - s.label as status
-                    - SUM(l.stock) AS stockLevel
+                    - SUM(l.inventory) AS stockLevel
                 from:
                     - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
                 join:

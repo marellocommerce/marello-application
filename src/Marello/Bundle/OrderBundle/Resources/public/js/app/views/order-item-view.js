@@ -123,17 +123,20 @@ define(function(require) {
          */
         updateRowTotals: function() {
             var $price = this.getPriceValue();
-            var $rowTotal = '';
+            var $rowTotalExclTax = '';
+            var $rowTotalInclTax = '';
             var $tax = '';
             if($price) {
                 var $quantity = this.fieldsByName.quantity.val();
-                $rowTotal = parseFloat($price * $quantity).toFixed(2);
-                var $priceExcl = (($rowTotal / (this.taxPercentage + 100)) * 100);
-                $tax = parseFloat(Math.round($rowTotal - $priceExcl)).toFixed(2);
+                $rowTotalInclTax = parseFloat($price * $quantity).toFixed(2);
+                var $priceExcl = (($rowTotalInclTax / (this.taxPercentage + 100)) * 100);
+                $tax = parseFloat(Math.round($rowTotalInclTax - $priceExcl)).toFixed(2);
+                $rowTotalExclTax = ($rowTotalInclTax - $tax).toFixed(2);
             }
 
             this.fieldsByName.tax.val($tax);
-            this.fieldsByName.rowTotal.val($rowTotal);
+            this.fieldsByName.rowTotalExclTax.val($rowTotalExclTax);
+            this.fieldsByName.rowTotalInclTax.val($rowTotalInclTax);
         },
 
         /**

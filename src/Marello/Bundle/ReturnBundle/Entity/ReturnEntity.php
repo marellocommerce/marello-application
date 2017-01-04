@@ -6,6 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -21,6 +24,9 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  * @ORM\Table(name="marello_return_return")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Config(
+ *      routeView="marello_return_return_view",
+ *      routeName="marello_return_return_index",
+ *      routeCreate="marello_return_return_create",
  *      defaultValues={
  *          "workflow"={
  *              "active_workflow"="marello_return_workflow",
@@ -35,10 +41,13 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  */
 class ReturnEntity extends ExtendReturnEntity implements
     DerivedPropertyAwareInterface,
-    ShippingAwareInterface
+    ShippingAwareInterface,
+    LocaleAwareInterface
 {
     use HasShipmentTrait;
-    
+    use LocalizationTrait;
+    use EntityCreatedUpdatedAtTrait;
+
     /**
      * @var int
      *
@@ -129,34 +138,6 @@ class ReturnEntity extends ExtendReturnEntity implements
     protected $organization;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
-
-    /**
      * ReturnEntity constructor.
      */
     public function __construct()
@@ -165,43 +146,11 @@ class ReturnEntity extends ExtendReturnEntity implements
     }
 
     /**
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt = $this->updatedAt = new \DateTime();
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime();
-    }
-
-    /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
     }
 
     /**
@@ -217,10 +166,12 @@ class ReturnEntity extends ExtendReturnEntity implements
      *
      * @return $this
      */
-    public function setOrder($order)
+    public function setOrder(Order $order)
     {
         $this->order = $order;
         $this->organization = $order->getOrganization();
+        $this->locale= $order->getLocale();
+        $this->localization = $order->getLocalization();
 
         return $this;
     }

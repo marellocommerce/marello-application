@@ -75,6 +75,7 @@ class ReturnControllerTest extends WebTestCase
         $data = [
             'order'       => $returnedOrder->getOrderNumber(),
             'salesChannel' => $this->getReference('marello_sales_channel_1')->getCode(),
+            'returnReference' => uniqid() . 'TEST',
             'returnItems' => $returnedOrder->getItems()->map(function (OrderItem $item) {
                 return [
                     'orderItem' => $item->getId(),

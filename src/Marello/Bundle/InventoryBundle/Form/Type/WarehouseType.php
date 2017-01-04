@@ -11,15 +11,32 @@ class WarehouseType extends AbstractType
 {
     const NAME = 'marello_warehouse';
 
+    public static $nonStreetAttributes = [
+        'namePrefix',
+        'firstName',
+        'middleName',
+        'lastName',
+        'nameSuffix'
+    ];
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('label', 'text', [
-                'constraints' => new NotNull(),
-            ])->add('address', 'marello_address', ['required' => false]);
+            ->add(
+                'label',
+                'text',
+                ['constraints' => new NotNull()]
+            )
+            ->add(
+                'address',
+                'marello_address',
+                ['required' => true]
+            );
+
+        $this->removeNonStreetFieldsFromAddress($builder, 'address');
     }
 
     /**
@@ -39,5 +56,18 @@ class WarehouseType extends AbstractType
     public function getName()
     {
         return self::NAME;
+    }
+
+    /**
+     * Remove all non street attributes from address in warehouse
+     * @param FormBuilderInterface $builder
+     * @param $childName
+     */
+    protected function removeNonStreetFieldsFromAddress(FormBuilderInterface $builder, $childName)
+    {
+        $address = $builder->get($childName);
+        foreach (self::$nonStreetAttributes as $attribute) {
+            $address->remove($attribute);
+        }
     }
 }

@@ -82,6 +82,8 @@ class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareIn
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
+        $table->addColumn('localization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['refundNumber'], 'UNIQ_973FA8836E8C706D');
         $table->addIndex(['customer_id'], 'IDX_973FA8839395C3F3', []);
@@ -148,6 +150,12 @@ class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareIn
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_order_order'),
             ['order_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_localization'),
+            ['localization_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

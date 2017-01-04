@@ -23,11 +23,17 @@
         </div>
         {{ form_errors(form.tax) }}
     </td>
-    <td class="order-line-item-total-price">
+    <td class="order-line-item-total-price-excl-tax">
         <div class="fields-row">
-            {{ form_widget(form.rowTotal) }}
+            {{ form_widget(form.rowTotalExclTax) }}
         </div>
-        {{ form_errors(form.rowTotal) }}
+        {{ form_errors(form.rowTotalExclTax) }}
+    </td>
+    <td class="order-line-item-total-price-incl-tax">
+        <div class="fields-row">
+            {{ form_widget(form.rowTotalInclTax) }}
+        </div>
+        {{ form_errors(form.rowTotalInclTax) }}
     </td>
 {% endblock %}
 
@@ -88,7 +94,8 @@
                             <th class="order-line-item-quantity"><span>{{ 'marello.order.orderitem.quantity.label'|trans }}</span></th>
                             <th class="order-line-item-price"><span>{{ 'marello.order.orderitem.price.label'|trans }}</span></th>
                             <th class="order-line-item-tax"><span>{{ 'marello.order.orderitem.tax.label'|trans }}</span></th>
-                            <th class="order-line-item-total-price"><span>{{ 'marello.order.orderitem.total_price.label'|trans }}</span></th>
+                            <th class="order-line-item-total-price-excl-tax"><span>{{ 'marello.order.orderitem.total_price_excl_tax.label'|trans }}</span></th>
+                            <th class="order-line-item-total-price-incl-tax"><span>{{ 'marello.order.orderitem.total_price_incl_tax.label'|trans }}</span></th>
                             <th class="order-line-item-notifications"></th>
                             {% if form.vars.allow_delete %}
                                 <th class="order-row-item-actions"></th>

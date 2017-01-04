@@ -3,32 +3,41 @@
 namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Component\Action\Model\ContextAccessor;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
 class OrderCancelAction extends OrderTransitionAction
 {
     /** @var Registry */
     protected $doctrine;
 
-    /** @var InventoryItem[] */
-    protected $changedInventory;
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
 
     /**
      * OrderShipAction constructor.
      *
-     * @param ContextAccessor $contextAccessor
-     * @param Registry        $doctrine
+     * @param ContextAccessor           $contextAccessor
+     * @param Registry                  $doctrine
+     * @param EventDispatcherInterface  $eventDispatcher
      */
-    public function __construct(ContextAccessor $contextAccessor, Registry $doctrine)
-    {
+    public function __construct(
+        ContextAccessor $contextAccessor,
+        Registry $doctrine,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         parent::__construct($contextAccessor);
 
         $this->doctrine = $doctrine;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -39,38 +48,42 @@ class OrderCancelAction extends OrderTransitionAction
         /** @var Order $order */
         $order = $context->getEntity();
 
-        $this->changedInventory = [];
-
-        $order->getItems()->map(function (OrderItem $orderItem) {
-            $this->cancelOrderItem($orderItem);
+        $order->getItems()->map(function (OrderItem $item) use ($order) {
+            $this->handleInventoryUpdate($item, null, -$item->getQuantity(), $order);
         });
-
-        $this->doctrine->getManager()->flush();
     }
 
     /**
-     * Deallocates all inventory allocated towards item (items have not been shipped and allocation was released).
-     *
-     * @param OrderItem $orderItem
+     * handle the inventory update for items which have been shipped
+     * @param OrderItem $item
+     * @param $inventoryUpdateQty
+     * @param $allocatedInventoryQty
+     * @param OrderItem $entity
      */
-    protected function cancelOrderItem(OrderItem $orderItem)
+    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
-        $allocations = $this->doctrine
-            ->getRepository(StockLevel::class)
-            ->findBy([
-                'subjectId'     => $orderItem->getOrder()->getId(),
-                'subjectType'   => Order::class,
-                'changeTrigger' => 'order_workflow.pending',
-            ]);
-
-        $returnAllocation = 0;
-        /** @var InventoryItem $inventoryItem */
-        $inventoryItem = reset($allocations)->getInventoryItem();
-
-        foreach ($allocations as $allocation) {
-            $returnAllocation += $allocation->getAllocatedStockDiff();
+        $inventoryItems = $item->getProduct()->getInventoryItems();
+        $inventoryItemData = [];
+        foreach ($inventoryItems as $inventoryItem) {
+            $inventoryItemData[] = [
+                'item'          => $inventoryItem,
+                'qty'           => $inventoryUpdateQty,
+                'allocatedQty'  => $allocatedInventoryQty
+            ];
         }
 
-        $inventoryItem->adjustStockLevels('order_workflow.cancelled', null, -$returnAllocation, null, $orderItem);
+        $data = [
+            'stock'             => $inventoryUpdateQty,
+            'allocatedStock'    => $allocatedInventoryQty,
+            'trigger'           => 'order_workflow.cancelled',
+            'items'             => $inventoryItemData,
+            'relatedEntity'     => $entity
+        ];
+
+        $context = InventoryUpdateContext::createUpdateContext($data);
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
+        );
     }
 }

@@ -3,7 +3,6 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Marello\Bundle\PurchaseOrderBundle\Model\ReceiveOrderModel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

@@ -26,7 +26,8 @@ marello:
         payment_details.label:      Payment Details
         payment_reference.label:    Payment Reference
         shipping_method.label:      Shippingmethod
-        shipping_amount.label:      Shipping costs
+        shipping_amount_incl_tax.label:      Shipping Costs Incl. tax
+        shipping_amount_excl_tax.label:      Shipping Costs Excl. tax
         status.label:               Order Status
         billing_address:
             label:                  Billing Address
@@ -44,6 +45,8 @@ marello:
             delivery:               Delivery
             order_items:            Order Items
             activity:               Activity
+            order_information:      Order Information
+            order_totals:           Order Totals
 
         # OrderItem entity
         orderitem:
@@ -56,8 +59,10 @@ marello:
             order.label:            Order
             price.label:            Price
             quantity.label:         Quantity
-            original_price.label:   Original Price
-            total_price.label:      Total Price
+            original_price_excl_tax.label:   Original Price Excl. Tax
+            original_price_incl_tax.label:   Original Price Incl. Tax
+            total_price_excl_tax.label:      Total Price Excl. Tax
+            total_price_incl_tax.label:      Total Price Incl. Tax
             product_name.label:     Product Name
             product_sku.label:      Product SKU
             product.label:          Product

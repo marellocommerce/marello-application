@@ -16,6 +16,8 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
             - NotBlank: ~
         tax:
             - NotBlank: ~
-        rowTotal:
+        rowTotalInclTax:
+            - NotBlank: ~
+        rowTotalExclTax:
             - NotBlank: ~
     constraints: ~

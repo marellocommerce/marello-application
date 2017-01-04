@@ -1,0 +1,8 @@
+services:
+    marello_core.workflow.action.workflow_transit_action:
+        class: Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction
+        arguments:
+            - '@oro_action.context_accessor'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_workflow.action, alias: marello_core_transit_complete_action }

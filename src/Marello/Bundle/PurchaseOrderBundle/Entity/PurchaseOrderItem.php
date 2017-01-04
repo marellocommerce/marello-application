@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -15,6 +16,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class PurchaseOrderItem
 {
+    use EntityCreatedUpdatedAtTrait;
+    
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -68,39 +71,18 @@ class PurchaseOrderItem
     protected $receivedAmount = 0;
 
     /**
+     * @var array $data
+     *
+     * @ORM\Column(name="data", type="json_array", nullable=true)
+     */
+    protected $data;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string")
      */
     protected $status = 'pending';
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.created_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $createdAt;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "entity"={
-     *              "label"="oro.ui.updated_at"
-     *          }
-     *      }
-     * )
-     */
-    protected $updatedAt;
 
     /**
      * PurchaseOrderItem constructor.
@@ -112,7 +94,6 @@ class PurchaseOrderItem
     {
         $this->product = $product;
         $this->orderedAmount = $orderedAmount;
-        $this->createdAt = new \DateTime();
         $this->productName = $this->product->getName();
         $this->productSku = $this->product->getSku();
     }
@@ -123,14 +104,6 @@ class PurchaseOrderItem
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime();
     }
 
     /**
@@ -213,27 +186,35 @@ class PurchaseOrderItem
     }
 
     /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
      * @return string
      */
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
     }
 
     /**

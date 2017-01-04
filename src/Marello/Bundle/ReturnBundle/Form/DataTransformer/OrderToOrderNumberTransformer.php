@@ -9,7 +9,7 @@ use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 class OrderToOrderNumberTransformer extends EntityToIdTransformer
 {
     /**
-     * ProductToSkuTransformer constructor.
+     * OrderToOrderNumberTransformer constructor.
      *
      * @param EntityManager $em
      */
@@ -18,7 +18,7 @@ class OrderToOrderNumberTransformer extends EntityToIdTransformer
         parent::__construct(
             $em,
             'MarelloOrderBundle:Order',
-            'sku',
+            null,
             function (EntityRepository $repository, $orderNumber) {
                 $qb = $repository->createQueryBuilder('o');
 

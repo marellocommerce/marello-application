@@ -30,7 +30,6 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
     public function onFlush(OnFlushEventArgs $args)
     {
         $insertions = $args->getEntityManager()->getUnitOfWork()->getScheduledEntityInsertions();
-
         $this->assignSubjects = $this->getLevelsToAssign($insertions);
 
         /*
