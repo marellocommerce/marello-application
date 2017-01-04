@@ -123,7 +123,7 @@ datagrid:
                     - p.name
                     - p.sku
                     - s.label as status
-                    - SUM(l.stock) AS stockLevel
+                    - SUM(l.inventory) AS stockLevel
                 from:
                     - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
                 join:
@@ -183,7 +183,7 @@ datagrid:
                     - p.name
                     - p.sku
                     - s.label as status
-                    - SUM(l.stock) AS stockLevel
+                    - SUM(l.inventory) AS stockLevel
                 from:
                     - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
                 join:

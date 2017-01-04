@@ -52,7 +52,7 @@ datagrid:
                     - p.sku
                     - p.price
                     - s.label as status
-                    - SUM(l.stock) AS stockLevel
+                    - SUM(l.inventory) AS stockLevel
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -62,7 +62,7 @@ datagrid:
                         - { join: i.currentLevel, alias: l }
                 where:
                     and:
-                        - l.stock < 5
+                        - l.inventory < 5
                 groupBy: p.sku
         columns:
             sku:

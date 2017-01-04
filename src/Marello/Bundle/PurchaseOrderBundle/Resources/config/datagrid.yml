@@ -94,8 +94,8 @@ datagrid:
                     - p.name
                     - p.desiredStockLevel
                     - p.purchaseStockLevel
-                    - COALESCE(SUM(l.stock - l.allocatedStock), 0) AS virtualStock
-                    - (p.desiredStockLevel - COALESCE(SUM(l.stock - l.allocatedStock), 0)) AS orderAmount
+                    - COALESCE(SUM(l.inventory - l.allocatedInventory), 0) AS virtualStock
+                    - (p.desiredStockLevel - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -119,7 +119,7 @@ datagrid:
                                 WHERE
                                     ws.name = 'pending'
                             )
-                having: SUM(l.stock - l.allocatedStock) < p.purchaseStockLevel  # Only products with virtual stock lower than required purchase stock level
+                having: SUM(l.inventory - l.allocatedInventory) < p.purchaseStockLevel  # Only products with virtual stock lower than required purchase stock level
                 groupBy: p.id
 
         columns:
