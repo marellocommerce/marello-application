@@ -5,6 +5,7 @@ namespace Marello\Bundle\ProductBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
@@ -305,12 +306,26 @@ class Product extends ExtendProduct implements
      */
     protected $purchaseStockLevel;
 
+    /**
+     * @var ArrayCollection|ProductSupplierRelation[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation",
+     *     mappedBy="product",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
+     */
+    protected $suppliers;
+
+
     public function __construct()
     {
         $this->prices         = new ArrayCollection();
         $this->channelPrices  = new ArrayCollection();
         $this->channels       = new ArrayCollection();
         $this->inventoryItems = new ArrayCollection();
+        $this->suppliers      = new ArrayCollection();
     }
 
     /**
@@ -721,5 +736,50 @@ class Product extends ExtendProduct implements
     public function prePersistTimestamp()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSuppliers()
+    {
+        return $this->suppliers;
+    }
+
+    /**
+     * Add item
+     *
+     * @param ProductSupplierRelation $supplier
+     *
+     * @return Product
+     */
+    public function addSupplier(ProductSupplierRelation $supplier)
+    {
+        $this->suppliers->add($supplier);
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSuppliers()
+    {
+        return count($this->suppliers) > 0;
+    }
+
+    /**
+     * Remove item
+     *
+     * @param ProductSupplierRelation $supplier
+     *
+     * @return Product
+     */
+    public function removeSupplier(ProductSupplierRelation $supplier)
+    {
+        $this->suppliers->removeElement($supplier);
+
+        return $this;
     }
 }
