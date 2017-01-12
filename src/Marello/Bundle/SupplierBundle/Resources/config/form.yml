@@ -1,0 +1,5 @@
+services:
+    marello_supplier.form.type.supplier:
+        class: Marello\Bundle\SupplierBundle\Form\Type\SupplierType
+        tags:
+            - { name: form.type, alias: marello_supplier }

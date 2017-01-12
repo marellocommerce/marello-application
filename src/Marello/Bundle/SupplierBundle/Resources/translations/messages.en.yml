@@ -1,20 +1,19 @@
 marello:
-    shipping:
-        system_configuration:
-            ups_username:               'API Username'
-            ups_password:               'API Password'
-            ups_access_license_key:     'API Access Key'
-            ups_account_number:         'Shipper Account Number'
-            ups_api_base_url:           'API Base URL'
-            shipper_name:               'Name'
-            shipper_attention_name:     'Attention Name'
-            shipper_tax_id:             'Tax Identification Number'
-            shipper_phone:              'Phone'
-            shipper_email:              'E-Mail'
-            shipper_address_line_1:     'Address Line 1'
-            shipper_address_line_2:     'Address Line 2'
-            shipper_address_line_3:     'Address Line 3'
-            shipper_address_city:       'City'
-            shipper_address_state:      'State/Region'
-            shipper_address_postal_code: 'Postal Code'
-            shipper_address_country_code: 'Country'
+    supplier:
+        entity_plural_label:        Suppliers
+        entity_label:               Supplier
+        id.label:                   Id
+        name.label:                 Name
+        priority.label:             Priority
+        can_dropship.label:         Can Dropship
+        is_active.label:            Active
+        address.label:              Address
+        messages.supplier_has_associations: This supplier has entities associated and cannot be deleted.
+        datablock.general:          General
+        datablock.supplier_information:          Supplier Information
+        datablock.address:          Address
+        supplier_name.label:        Name
+        supplier_priority.label:             Priority
+        supplier_can_dropship.label:         Can Dropship
+        supplier_is_active.label:            Active
+        supplier_address.label:        Address

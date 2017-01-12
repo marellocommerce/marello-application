@@ -28,35 +28,35 @@ class Shipment extends ExtendShipment
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="shipping_service", type="string", length=255)
      *
      * @var string
      */
     protected $shippingService;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(name="ups_shipment_digest", type="text", nullable=true)
      *
      * @var string
      */
     protected $upsShipmentDigest;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(name="identification_number", type="string", length=255, nullable=true)
      *
      * @var string
      */
     protected $identificationNumber;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(name="ups_package_tracking_number", type="string", length=255, nullable=true)
      *
      * @var string
      */
     protected $upsPackageTrackingNumber;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(name="base64_encoded_label", type="text", nullable=true)
      *
      * @var string
      */

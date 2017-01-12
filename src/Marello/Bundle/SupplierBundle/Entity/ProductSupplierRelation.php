@@ -71,7 +71,7 @@ class ProductSupplierRelation
     /**
      * @var boolean
      *
-     * @ORM\Column(name="can_drop_ship", type="boolean", nullable=false)
+     * @ORM\Column(name="can_dropship", type="boolean", nullable=false)
      */
     private $canDropship;
 

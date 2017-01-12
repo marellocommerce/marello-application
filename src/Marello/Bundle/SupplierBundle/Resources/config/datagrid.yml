@@ -1,0 +1,92 @@
+datagrid:
+    marello-supplier:
+        source:
+            type: orm
+            query:
+                select:
+                    - s
+                from:
+                    - { table: MarelloSupplierBundle:Supplier, alias: s }
+        columns:
+            name:
+                label:            marello.supplier.name.label
+                frontend_type:    string
+            priority:
+                label:            marello.supplier.priority.label
+                frontend_type:    string
+                data_name:        priority
+            canDropship:
+                label:            marello.supplier.can_dropship.label
+                frontend_type:    string
+                data_name:        canDropship
+            isActive:
+                label:            marello.supplier.is_active.label
+                frontend_type:    boolean
+                data_name:        isActive
+#            createdAt:
+#                label:            oro.ui.created_at
+#                frontend_type:    datetime
+#            updatedAt:
+#                label:            oro.ui.updated_at
+#                frontend_type:    datetime
+        sorters:
+            columns:
+                name:
+                    data_name: s.name
+                priority:
+                    data_name: s.priority
+                canDropship:
+                    data_name: s.canDropship
+                isActive:
+                    data_name: s.isActive
+            default:
+                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: s.name
+                priority:
+                    type: string
+                    data_name: s.priority
+                canDropship:
+                    type: string
+                    data_name: s.canDropship
+                isActive:
+                    type: string
+                    data_name: s.isActive
+#                createdAt:
+#                    type: datetime
+#                    data_name: s.createdAt
+#                updatedAt:
+#                    type: datetime
+#                    data_name: s.updatedAt
+        properties:
+            view_link:
+                type:   url
+                route:  marello_supplier_supplier_view
+                params:
+                    id: id
+            update_link:
+                type:   url
+                route:  marello_supplier_supplier_update
+                params:
+                    id: id
+        actions:
+            view:
+                type:       navigate
+                link:       view_link
+                icon:       eye-open
+                rowAction:  true
+            update:
+                type:           navigate
+#                acl_resource:   marello_supplier_update
+                label:          marello.supplier.update
+                icon:           edit
+                link:           update_link
+#        action_configuration: [@marello_supplier.datagrid.action_permission_provider, "getSupplierActionPermissions"]
+        options:
+            export: true
+            mass_actions:
+                delete:
+                    enabled: false
