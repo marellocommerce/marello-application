@@ -2,4 +2,37 @@ services:
     marello_supplier.form.type.supplier:
         class: Marello\Bundle\SupplierBundle\Form\Type\SupplierType
         tags:
-            - { name: form.type, alias: marello_supplier }
+            - { name: form.type, alias: marello_supplier_form }
+
+    marello_supplier.form.type.supplier_select:
+        class: Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType
+        tags:
+            - { name: form.type, alias: marello_supplier_select_form }
+
+    marello_supplier.form.type.product_supplier_relation:
+        class: Marello\Bundle\SupplierBundle\Form\Type\ProductSupplierRelationType
+        tags:
+            - { name: form.type, alias: marello_product_supplier_relation_form }
+
+    marello_supplier.form.type.product_supplier_relation_collection:
+        class: Marello\Bundle\SupplierBundle\Form\Type\ProductSupplierRelationCollectionType
+        tags:
+            - { name: form.type, alias: marello_product_supplier_relation_collection_form }
+
+    ## forms
+    marello_supplier.supplier.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - 'marello_supplier_form'
+            - 'marello_supplier_form'
+
+    ## handlers
+    marello_supplier.form.handler.supplier:
+        class: Marello\Bundle\SupplierBundle\Form\Handler\SupplierHandler
+        scope: request
+        arguments:
+            - '@marello_supplier.supplier.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'

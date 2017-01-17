@@ -14,6 +14,27 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
+{% block navButtons %}
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.buttonSeparator() }}
+        {{ UI.deleteButton({
+            'dataUrl': path('marello_supplier_supplier_delete', {'id': entity.id}),
+            'dataRedirect': path('marello_supplier_supplier_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-channel',
+            'dataId': entity.id,
+            'entity_label': 'marello.supplier.entity_label'|trans,
+        }) }}
+    {% endif %}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.buttonSeparator() }}
+        {{ UI.editButton({
+            'path': path('marello_supplier_supplier_update', {'id': entity.id}),
+            'entity_label': 'marello.supplier.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}
+
 {% block content_data %}
     {% set generalSubblocks = [] %}
     {% set generalInformation %}

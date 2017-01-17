@@ -1,0 +1,9 @@
+Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation:
+    uniqueConstraints:
+        uniqueConstraints:
+            columns: [supplier, quantityOfUnit]
+    properties:
+        supplier:
+            - NotBlank: ~
+        quantityOfUnit:
+            - NotBlank: ~

@@ -42,4 +42,3 @@ oro_menu_config:
 
 oro_titles:
     marello_supplier_supplier_index: 'marello.supplier.entity_plural_label'
-    marello_supplier_supplier_selectproducts: 'Create Supplier'

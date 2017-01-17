@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class SupplierType extends AbstractType
 {
-    const NAME = 'marello_supplier';
+    const NAME = 'marello_supplier_form';
 
     public static $nonStreetAttributes = [
         'namePrefix',

@@ -6,14 +6,20 @@ marello:
         name.label:                 Name
         priority.label:             Priority
         can_dropship.label:         Can Dropship
+        quantity_of_unit.label:     Quantity of Unit
+        cost.label:                 Cost
         is_active.label:            Active
         address.label:              Address
-        messages.supplier_has_associations: This supplier has entities associated and cannot be deleted.
         datablock.general:          General
-        datablock.supplier_information:          Supplier Information
+        datablock.supplier_information: Supplier Information
         datablock.address:          Address
         supplier_name.label:        Name
-        supplier_priority.label:             Priority
-        supplier_can_dropship.label:         Can Dropship
-        supplier_is_active.label:            Active
-        supplier_address.label:        Address
+        supplier_priority.label:    Priority
+        supplier_can_dropship.label: Can Dropship
+        supplier_is_active.label:   Active
+        supplier_address.label:     Address
+        form.choose_supplier:       Choose supplier
+        address.edit_action:        Edit address
+
+        messages.supplier_has_associations: This supplier has entities associated and cannot be deleted.
+        messages.success.supplier.saved:  Supplier saved succesfully

@@ -350,3 +350,43 @@ datagrid:
                 pageSize:
                     items: [10]
                     default_per_page: 10
+
+    marello-product-supplier-grid:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select: [ psr, supplier.name ]
+                from:
+                    - { table: MarelloSupplierBundle:ProductSupplierRelation, alias: psr }
+                join:
+                    left:
+                        supplier:
+                            join: psr.supplier
+                            alias: supplier
+                where:
+                    and:
+                        - psr.id IN(:suppliers)
+            bind_parameters:
+                - suppliers
+        columns:
+            name:
+                label:                marello.supplier.name.label
+                frontend_type:        string
+                data_name:            supplier.name
+            quantityOfUnit:
+                label:                marello.supplier.quantity_of_unit.label
+                frontend_type:        string
+            priority:
+                label:                marello.supplier.priority.label
+                frontend_type:        string
+            cost:
+                label:                marello.supplier.cost.label
+                frontend_type:        string
+            canDropship:
+                label:                marello.supplier.can_dropship.label
+                frontend_type:        boolean
+        properties:
+            id: ~
+        options:
+            entityHint: psr

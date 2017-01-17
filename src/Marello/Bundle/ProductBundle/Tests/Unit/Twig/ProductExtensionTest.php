@@ -5,13 +5,14 @@ namespace Marello\Bundle\ProductBundle\Tests\Unit\Twig;
 use Marello\Bundle\ProductBundle\Twig\ProductExtension;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
 
 class ProductExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $provider;
+    protected $channelProvider;
 
     /**
      * @var ProductExtension
@@ -20,16 +21,19 @@ class ProductExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->provider = $this->getMockBuilder(ChannelProvider::class)
+        $this->channelProvider = $this->getMockBuilder(ChannelProvider::class)
+            ->disableOriginalConstructor()
+            ->getMock();        
+        $this->supplierProvider = $this->getMockBuilder(SupplierProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->extension = new ProductExtension($this->provider);
+        $this->extension = new ProductExtension($this->channelProvider, $this->supplierProvider);
     }
 
     protected function tearDown()
     {
         unset($this->extension);
-        unset($this->provider);
+        unset($this->channelProvider);
     }
 
     public function testGetName()

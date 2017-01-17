@@ -1,5 +1,5 @@
 datagrid:
-    marello-supplier:
+    marello-supplier-grid:
         source:
             type: orm
             query:
@@ -17,18 +17,12 @@ datagrid:
                 data_name:        priority
             canDropship:
                 label:            marello.supplier.can_dropship.label
-                frontend_type:    string
+                frontend_type:    boolean
                 data_name:        canDropship
             isActive:
                 label:            marello.supplier.is_active.label
                 frontend_type:    boolean
                 data_name:        isActive
-#            createdAt:
-#                label:            oro.ui.created_at
-#                frontend_type:    datetime
-#            updatedAt:
-#                label:            oro.ui.updated_at
-#                frontend_type:    datetime
         sorters:
             columns:
                 name:
@@ -40,7 +34,7 @@ datagrid:
                 isActive:
                     data_name: s.isActive
             default:
-                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 name:
@@ -55,13 +49,8 @@ datagrid:
                 isActive:
                     type: string
                     data_name: s.isActive
-#                createdAt:
-#                    type: datetime
-#                    data_name: s.createdAt
-#                updatedAt:
-#                    type: datetime
-#                    data_name: s.updatedAt
         properties:
+            id: ~
             view_link:
                 type:   url
                 route:  marello_supplier_supplier_view
@@ -80,11 +69,9 @@ datagrid:
                 rowAction:  true
             update:
                 type:           navigate
-#                acl_resource:   marello_supplier_update
                 label:          marello.supplier.update
                 icon:           edit
                 link:           update_link
-#        action_configuration: [@marello_supplier.datagrid.action_permission_provider, "getSupplierActionPermissions"]
         options:
             export: true
             mass_actions:

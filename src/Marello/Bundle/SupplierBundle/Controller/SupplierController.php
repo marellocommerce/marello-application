@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SupplierController extends Controller
 {
     /**
-     * @Config\Route("/")
+     * @Config\Route("/", name="marello_supplier_supplier_index")
      * @Config\Template
      * @Security\AclAncestor("marello_supplier_view")
      */
@@ -52,7 +52,7 @@ class SupplierController extends Controller
      */
     public function createAction(Request $request)
     {
-        return $this->update($request);
+        return $this->update(new Supplier());
     }
 
     /**
@@ -68,7 +68,7 @@ class SupplierController extends Controller
      */
     public function updateAction(Request $request, Supplier $supplier)
     {
-        return $this->update($request, $supplier);
+        return $this->update($supplier);
     }
 
     /**
@@ -76,7 +76,7 @@ class SupplierController extends Controller
      * @Config\Method("DELETE")
      * @Security\AclAncestor("marello_supplier_delete")
      *
-     * @param Supplier $channel
+     * @param Supplier $supplier
      *
      * @return RedirectResponse
      */
@@ -110,32 +110,20 @@ class SupplierController extends Controller
     /**
      * Handles supplier updates and creation.
      *
-     * @param Request $request
      * @param Supplier   $supplier
      *
      * @return array
      */
-    protected function update(Request $request, Supplier $supplier = null)
+    protected function update(Supplier $supplier = null)
     {
-        $formName = 'marello_supplier';
-
-        if ($supplier === null) {
-            $supplier = new Supplier();
-        }
-
-        $form = $this->createForm($formName, $supplier);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        $handler = $this->get('marello_supplier.form.handler.supplier');
+        
+        if ($handler->process($supplier)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('marello.supplier.messages.success.supplier.saved')
             );
-            $manager = $this->getDoctrine()->getManager();
-
-            $manager->persist($supplier);
-            $manager->flush();
-
+            
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route'      => 'marello_supplier_supplier_update',
@@ -155,7 +143,7 @@ class SupplierController extends Controller
 
         return [
             'entity' => $supplier,
-            'form'   => $form->createView(),
+            'form'   => $handler->getFormView(),
         ];
     }
 
@@ -204,5 +192,24 @@ class SupplierController extends Controller
 
         $responseData['form'] = $form->createView();
         return $responseData;
+    }
+
+    /**
+     * @Config\Route("/get-suppliers-by-product", name="marello_supplier_supplier_data")
+     * @Config\Method({"GET"})
+     * @Security\AclAncestor("marello_product_view")
+     *
+     * {@inheritdoc}
+     */
+    public function getSupplierDataAction(Request $request)
+    {
+        //todo
+        return new JsonResponse();
+//        return new JsonResponse(
+//            $this->get('marello_productprice.pricing.provider.channelprice_provider')->getPrices(
+//                $request->query->get('salesChannel'),
+//                $request->query->get('product_ids', [])
+//            )
+//        );
     }
 }
