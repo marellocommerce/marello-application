@@ -3,7 +3,7 @@ Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation:
         - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
             fields: [supplier, quantityOfUnit]
             errorPath: channel
-            message: 'marello.productsupplierrelation.messages.error.unique_product_supplier_relation'
+            message: 'marello.supplier.productsupplierrelation.messages.error.unique_product_supplier_relation'
     properties:
         supplier:
             - NotBlank: ~

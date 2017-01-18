@@ -22,10 +22,4 @@ marello:
         form.choose_supplier:       Choose supplier
         address.edit_action:        Edit address
 
-        messages:
-            error.supplier_has_associations:  This supplier has entities associated and cannot be deleted.
-            success.supplier.saved:     Supplier saved succesfully
-
-    productsupplierrelation:
-        messages:
-            error.unique_product_supplier_relation: Supplier and quantity
+        messages.success.supplier.saved:     Supplier saved succesfully
