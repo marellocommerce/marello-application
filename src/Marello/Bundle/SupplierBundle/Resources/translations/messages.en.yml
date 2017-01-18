@@ -10,9 +10,10 @@ marello:
         cost.label:                 Cost
         is_active.label:            Active
         address.label:              Address
-        datablock.general:          General
-        datablock.supplier_information: Supplier Information
-        datablock.address:          Address
+        datablock:
+            general:                General
+            supplier_information:   Supplier Information
+            address:                Address
         supplier_name.label:        Name
         supplier_priority.label:    Priority
         supplier_can_dropship.label: Can Dropship
@@ -21,5 +22,10 @@ marello:
         form.choose_supplier:       Choose supplier
         address.edit_action:        Edit address
 
-        messages.supplier_has_associations: This supplier has entities associated and cannot be deleted.
-        messages.success.supplier.saved:  Supplier saved succesfully
+        messages:
+            error.supplier_has_associations:  This supplier has entities associated and cannot be deleted.
+            success.supplier.saved:     Supplier saved succesfully
+
+    productsupplierrelation:
+        messages:
+            error.unique_product_supplier_relation: Supplier and quantity

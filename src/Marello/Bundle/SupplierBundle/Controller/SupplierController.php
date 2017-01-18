@@ -99,7 +99,7 @@ class SupplierController extends Controller
              *       one. Code 500 is the correct one that should be returned, so probably a modification in js will be
              *       needed.
              */
-            $this->addFlash('error', 'marello.supplier.messages.supplier_has_associations');
+            $this->addFlash('error', 'marello.supplier.messages.error.supplier_has_associations');
 
             return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
         }

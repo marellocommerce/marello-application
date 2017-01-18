@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\PricingBundle\Validator\Exception;
+namespace Marello\Bundle\CoreBundle\Validator\Exception;
 
 use Symfony\Component\Validator\Exception\ValidatorException;
 

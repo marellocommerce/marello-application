@@ -5,7 +5,6 @@ define(function(require) {
         $ = require('jquery'),
         _ = require('underscore'),
         __ = require('orotranslation/js/translator'),
-        DeleteConfirmation = require('oroui/js/delete-confirmation'),
         routing = require('routing'),
         mediator = require('oroui/js/mediator'),
         layout = require('oroui/js/layout'),

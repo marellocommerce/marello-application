@@ -29,11 +29,3 @@ services:
             - '@marello_productprice.pricing.provider.currency_provider'
         tags:
             - { name: twig.extension }
-
-
-    marello_productprice.validator.unique.unique_entity_collection:
-        class: Marello\Bundle\PricingBundle\Validator\UniqueEntityCollectionValidator
-        arguments:
-            - '@doctrine'
-        tags:
-            - { name: validator.constraint_validator, alias: unique_entity_collection }

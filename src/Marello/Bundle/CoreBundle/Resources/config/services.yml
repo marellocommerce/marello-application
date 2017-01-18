@@ -6,3 +6,10 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_workflow.action, alias: marello_core_transit_complete_action }
+
+    marello_productprice.validator.unique.unique_entity_collection:
+        class: Marello\Bundle\CoreBundle\Validator\UniqueEntityCollectionValidator
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: validator.constraint_validator, alias: unique_entity_collection }
