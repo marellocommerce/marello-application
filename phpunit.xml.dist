@@ -318,6 +318,7 @@
         <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PATH_LOGS" value="app/log"/>
         <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN" value="admin"/>
         <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS" value="admin"/>
+        <server name="KERNEL_DIR" value="app/"/>
     </php>
     <listeners>
         <listener class="TestListener"
@@ -328,7 +329,4 @@
         </listener>
         <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener"/>
     </listeners>
-    <php>
-        <server name="KERNEL_DIR" value="app/"/>
-    </php>
 </phpunit>
