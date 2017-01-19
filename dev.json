@@ -9,9 +9,8 @@
     }
   ],
   "autoload": {
-    "psr-0": {
-      "": "src/"
-    }
+    "psr-4": {"": "src/"},
+    "exclude-from-classmap": ["**/Tests/"]
   },
   "require": {
     "oro/commerce-enterprise": "1.x-dev",
