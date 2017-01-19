@@ -45,8 +45,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
-            LoadSalesData::class,
-            LoadSupplierData::class,
+            LoadSalesData::class
         ];
     }
 
@@ -168,7 +167,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
         return $product;
     }
-
+    
     private function getRandomFloat ($min,$max) {
         return ($min + lcg_value()*(abs($max - $min)));
     }

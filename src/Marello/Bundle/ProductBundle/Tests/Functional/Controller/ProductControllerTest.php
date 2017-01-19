@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData;
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSupplierData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Form;
 
@@ -23,6 +25,8 @@ class ProductControllerTest extends WebTestCase
 
         $this->loadFixtures([
             LoadSalesData::class,
+            LoadProductData::class,
+            LoadSupplierData::class,
         ]);
     }
 
@@ -40,13 +44,18 @@ class ProductControllerTest extends WebTestCase
         $sku     = 'SKU-1234';
         $form    = $crawler->selectButton('Save and Close')->form();
 
-
         $form['marello_product_form[name]']               = $name;
         $form['marello_product_form[sku]']                = $sku;
         $form['marello_product_form[status]']             = 'enabled';
         $form['marello_product_form[desiredStockLevel]']  = 10;
         $form['marello_product_form[purchaseStockLevel]'] = 2;
         $form['marello_product_form[addSalesChannels]']   = $this->getReference('marello_sales_channel_1')->getId();
+
+//        $formSupplier = $crawler->selectButton('Add Supplier');
+//        $form['marello_product_form[suppliers][0][supplier]'] = $this->getReference('marello_supplier_0')->getId();
+//        $form['marello_product_form[suppliers][0][quantityOfUnit]'] = 150;
+//        $form['marello_product_form[suppliers][0][priority]'] = 1;
+//        $form['marello_product_form[suppliers][0][cost]'] = 435.25;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -57,6 +66,57 @@ class ProductControllerTest extends WebTestCase
 //        $this->assertContains($name, $crawler->html());
 
         return $name;
+    }
+
+    public function testUpdateProductSuppliers()
+    {
+        $productId = $this->getReference('marello-product-0')->getId();
+        $crawler = $this->client->request('GET', $this->getUrl('marello_product_update', ['id' => $productId]));
+
+        $result  = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+
+        /** @var Form $form */
+        $form = $crawler->selectButton('Save and Close')->form();
+
+        $productSupplierRelation = [
+            [
+                'supplier' => $this->getReference('marello_supplier_0')->getId(),
+                'quantityOfUnit' => 24,
+                'priority' => 2,
+                'cost' => 33.55,
+                'canDropship' => true
+            ],
+            [
+                'supplier' => $this->getReference('marello_supplier_0')->getId(),
+                'quantityOfUnit' => 48,
+                'priority' => 3,
+                'cost' => 42.50,
+                'canDropship' => true
+            ],
+            [
+                'supplier' => $this->getReference('marello_supplier_1')->getId(),
+                'quantityOfUnit' => 100,
+                'priority' => 1,
+                'cost' => 60.99,
+                'canDropship' => false
+            ]
+        ];
+
+        $submittedData = [
+            'input_action' => 'save_and_stay',
+            'marello_product_type' => [
+                '_token' => $form['marello_product_form[_token]']->getValue(),
+                'suppliers' => $productSupplierRelation,
+            ]
+        ];
+
+        $this->client->followRedirects(true);
+
+        // Submit form
+        $result = $this->client->getResponse();
+        $this->client->request($form->getMethod(), $form->getUri(), $submittedData);
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
     }
 
     /**

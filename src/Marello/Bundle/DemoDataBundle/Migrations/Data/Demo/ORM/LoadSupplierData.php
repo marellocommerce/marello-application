@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\DemoDataBundle\Migrations\Data\ORM;
+namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -17,7 +17,8 @@ class LoadSupplierData extends AbstractFixture
      */
     protected $data = [
         ['name' => 'Supplier1', 'priority' => 1, 'can_dropship' => true, 'is_active' => true, 'address'=> ['street_address' => 'Street name 1', 'zipcode' => 12345, 'city'=> 'Eindhoven', 'country'=> 'NL', 'state' => 'NB']],
-        ['name' => 'Supplier2', 'priority' => 1, 'can_dropship' => true, 'is_active' => true, 'address'=> ['street_address' => 'Street name 2', 'zipcode' => 67890, 'city'=> 'Eindhoven', 'country'=> 'NL', 'state'=> 'NB']],
+        ['name' => 'Supplier2', 'priority' => 2, 'can_dropship' => true, 'is_active' => true, 'address'=> ['street_address' => 'Street name 2', 'zipcode' => 67890, 'city'=> 'Eindhoven', 'country'=> 'NL', 'state'=> 'NB']],
+        ['name' => 'Supplier3', 'priority' => 9, 'can_dropship' => false, 'is_active' => true, 'address'=> ['street_address' => 'Street name 3', 'zipcode' => 454545, 'city'=> 'Eindhoven', 'country'=> 'NL', 'state'=> 'NB']],
     ];
 
     /**
@@ -34,6 +35,8 @@ class LoadSupplierData extends AbstractFixture
      */
     protected function loadSuppliers()
     {
+        $i = 0;
+
         foreach ($this->data as $values) {
             $supplier = new Supplier();
             $supplier->setName($values['name']);
@@ -57,6 +60,8 @@ class LoadSupplierData extends AbstractFixture
             
             $supplier->setAddress($address);
             $this->manager->persist($supplier);
+            $this->setReference('marello_supplier_' . $i, $supplier);
+            $i++;
         }
 
         $this->manager->flush();
