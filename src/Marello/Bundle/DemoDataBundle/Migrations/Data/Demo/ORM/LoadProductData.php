@@ -6,7 +6,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Marello\Bundle\DemoDataBundle\Migrations\Data\ORM\LoadSupplierData;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -44,6 +46,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     {
         return [
             LoadSalesData::class,
+            LoadSupplierData::class,
         ];
     }
 
@@ -142,9 +145,32 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $product->addPrice($price);
         }
 
+        $suppliers = $this->manager
+            ->getRepository('MarelloSupplierBundle:Supplier')
+            ->findAll();
+
+        foreach ($suppliers as $supplier) {
+            $productSupplierRelation = new ProductSupplierRelation();
+            $productSupplierRelation
+                ->setProduct($product)
+                ->setSupplier($supplier)
+                ->setQuantityOfUnit(rand(50,600))
+                ->setCanDropship(true)
+                ->setPriority(rand(1,6))
+                ->setCost($this->getRandomFloat(20,450))
+            ;
+            $this->manager->persist($productSupplierRelation);
+
+            $product->addSupplier($productSupplierRelation);
+        }
+
         $this->manager->persist($product);
 
         return $product;
+    }
+
+    private function getRandomFloat ($min,$max) {
+        return ($min + lcg_value()*(abs($max - $min)));
     }
 
     /**
