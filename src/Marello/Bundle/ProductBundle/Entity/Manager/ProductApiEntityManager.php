@@ -59,7 +59,7 @@ class ProductApiEntityManager extends ApiEntityManager
                     'fields'           => [
                         'currentLevel'  => [
                             'exclusion_policy' => 'all',
-                            'fields' => ['stock' => null, 'allocatedStock' => null]
+                            'fields' => ['inventory' => null, 'allocatedInventory' => null]
                         ],
                         'warehouse' => [
                             'exclusion_policy' => 'all',
