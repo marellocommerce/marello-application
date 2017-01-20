@@ -318,6 +318,21 @@ class Product extends ExtendProduct implements
      */
     protected $suppliers;
 
+    /**
+     * add overriding of ORM Column and ConfigField since updatedAt can be null
+     * and by default the updatedAt is not nullable as ORM Column.
+     * This will prevent from having errors on oro:entity-extend:update-schema command
+     * @var \DateTime $updatedAt
+     * @ORM\Column(type="datetime", name="updated_at", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.updated_at"
+     *          }
+     *      }
+     * )
+     */
+    protected $updatedAt;
 
     public function __construct()
     {
