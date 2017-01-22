@@ -17,7 +17,7 @@ use Marello\Bundle\SupplierBundle\Entity\Supplier;
  *              columns={"product_id", "supplier_id", "quantity_of_unit"}
  *          )
  *      }
- * )    
+ * )
  * @ORM\Entity
  */
 class ProductSupplierRelation

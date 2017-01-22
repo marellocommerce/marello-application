@@ -6,16 +6,14 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\ORM\LoadSupplierData;
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
@@ -144,6 +142,19 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $product->addPrice($price);
         }
 
+        $this->addProductSuppliers($product);
+
+        $this->manager->persist($product);
+
+        return $product;
+    }
+
+    /**
+     * Add product suppliers to product
+     * @param Product $product
+     */
+    protected function addProductSuppliers(Product $product)
+    {
         $suppliers = $this->manager
             ->getRepository('MarelloSupplierBundle:Supplier')
             ->findAll();
@@ -153,22 +164,25 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $productSupplierRelation
                 ->setProduct($product)
                 ->setSupplier($supplier)
-                ->setQuantityOfUnit(rand(50,600))
+                ->setQuantityOfUnit(rand(50, 600))
                 ->setCanDropship(true)
-                ->setPriority(rand(1,6))
-                ->setCost($this->getRandomFloat(20,450))
+                ->setPriority(rand(1, 6))
+                ->setCost($this->getRandomFloat(20, 450))
             ;
             $this->manager->persist($productSupplierRelation);
 
             $product->addSupplier($productSupplierRelation);
         }
-
-        $this->manager->persist($product);
-
-        return $product;
     }
-    
-    private function getRandomFloat ($min,$max) {
+
+    /**
+     * Get random float
+     * @param $min
+     * @param $max
+     * @return mixed
+     */
+    private function getRandomFloat($min, $max)
+    {
         return ($min + lcg_value()*(abs($max - $min)));
     }
 
