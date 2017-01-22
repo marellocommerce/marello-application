@@ -35,7 +35,11 @@ class SupplierType extends AbstractType
                 'marello_address',
                 ['required' => true]
             )
-            ->add('priority')
+            ->add(
+                'priority',
+                'text',
+                ['constraints' => new NotNull()]
+            )
             ->add('canDropship')
             ->add('isActive')
         ;

@@ -22,4 +22,4 @@ marello:
         form.choose_supplier:       Choose supplier
         address.edit_action:        Edit address
 
-        messages.success.supplier.saved:     Supplier saved succesfully
+        messages.success.supplier.saved:     Supplier saved

@@ -72,42 +72,6 @@ class SupplierController extends Controller
     }
 
     /**
-     * @Config\Route("/delete/{id}", requirements={"id":"\d+"})
-     * @Config\Method("DELETE")
-     * @Security\AclAncestor("marello_supplier_delete")
-     *
-     * @param Supplier $supplier
-     *
-     * @return RedirectResponse
-     */
-    public function deleteAction(Supplier $supplier)
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($supplier);
-
-        try {
-            $entityManager->flush();
-        } catch (ForeignKeyConstraintViolationException $e) {
-            /*
-             * In case a foreign constraint would be violated when supplier is removed,
-             * keep it and display message.
-             *
-             * Foreign constraint violation in this case means that there are still entities in marello,
-             * which are associated to this particular supplier. These should be deleted before supplier itself.
-             *
-             * TODO: Display this message. When delete action returns code 500, it is overridden in js with a different
-             *       one. Code 500 is the correct one that should be returned, so probably a modification in js will be
-             *       needed.
-             */
-            $this->addFlash('error', 'marello.supplier.messages.error.supplier_has_associations');
-
-            return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-
-        return new Response('', Response::HTTP_NO_CONTENT);
-    }
-
-    /**
      * Handles supplier updates and creation.
      *
      * @param Supplier   $supplier

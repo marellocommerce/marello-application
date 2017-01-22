@@ -2,10 +2,10 @@
 {% import 'OroAddressBundle::macros.html.twig' as address %}
 {% set label = 'marello.order.'~ addressType ~'_address.label' %}
 <div class="widget-content">
-    <div class="order-address-block">
+    <div class="address-block order-address">
         <div id="order-address-{{ orderAddress.id }}">
             {% if marello_order_order_address is not defined or resource_granted(marello_order_order_address) %}
-                <div class="order-address-edit">
+                <div class="address-edit">
                     <button class="btn address-edit-button" id="edit-address-{{ orderAddress.id }}" title="{{ 'marello.order.address.edit_action'|trans }}"><i class="icon-edit hide-text">{{ 'marello.order.address.edit_action'|trans }}</i></button>
                 </div>
             {% endif %}

@@ -18,7 +18,7 @@
     {% if resource_granted('DELETE', entity) %}
         {{ UI.buttonSeparator() }}
         {{ UI.deleteButton({
-            'dataUrl': path('marello_supplier_supplier_delete', {'id': entity.id}),
+            'dataUrl': path('marello_supplier_api_delete_supplier', {'id': entity.id}),
             'dataRedirect': path('marello_supplier_supplier_index'),
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-channel',
@@ -29,7 +29,7 @@
     {% if resource_granted('EDIT', entity) %}
         {{ UI.buttonSeparator() }}
         {{ UI.editButton({
-            'path': path('marello_supplier_supplier_update', {'id': entity.id}),
+            'path': path('marello_supplier_api_delete_supplier', {'id': entity.id}),
             'entity_label': 'marello.supplier.entity_label'|trans
         }) }}
     {% endif %}

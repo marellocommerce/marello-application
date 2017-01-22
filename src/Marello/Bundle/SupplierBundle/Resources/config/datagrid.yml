@@ -52,15 +52,17 @@ datagrid:
         properties:
             id: ~
             view_link:
-                type:   url
-                route:  marello_supplier_supplier_view
-                params:
-                    id: id
+                type:       url
+                route:      marello_supplier_supplier_view
+                params:     [ id ]
             update_link:
-                type:   url
-                route:  marello_supplier_supplier_update
-                params:
-                    id: id
+                type:       url
+                route:      marello_supplier_supplier_update
+                params:     [ id ]
+            delete_link:
+                type:       url
+                route:      marello_supplier_api_delete_supplier
+                params:     [ id ]
         actions:
             view:
                 type:       navigate
@@ -68,10 +70,16 @@ datagrid:
                 icon:       eye-open
                 rowAction:  true
             update:
-                type:           navigate
-                label:          marello.supplier.update
-                icon:           edit
-                link:           update_link
+                type:       navigate
+                label:      marello.supplier.update
+                icon:       edit
+                link:       update_link
+            delete:
+                type:           delete
+                link:           delete_link
+                acl_resource:   marello_supplier_delete
+                icon:           trash
+                label:          oro.grid.action.delete
         options:
             export: true
             mass_actions:
