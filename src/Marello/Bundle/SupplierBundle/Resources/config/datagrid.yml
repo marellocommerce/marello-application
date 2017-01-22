@@ -80,6 +80,8 @@ datagrid:
                 acl_resource:   marello_supplier_delete
                 icon:           trash
                 label:          oro.grid.action.delete
+                defaultMessages:
+                    confirm_content: marello.supplier.action.delete.content
         options:
             export: true
 
