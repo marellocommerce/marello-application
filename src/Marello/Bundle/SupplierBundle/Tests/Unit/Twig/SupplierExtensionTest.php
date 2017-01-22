@@ -1,41 +1,40 @@
 <?php
 
-namespace Marello\Bundle\ProductBundle\Tests\Unit\Twig;
+namespace Marello\Bundle\SupplierBundle\Tests\Unit\Twig;
 
-use Marello\Bundle\ProductBundle\Twig\ProductExtension;
-use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SupplierBundle\Twig\SupplierExtension;
 use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
 
-class ProductExtensionTest extends \PHPUnit_Framework_TestCase
+class SupplierExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $channelProvider;
+    protected $supplierProvider;
 
     /**
-     * @var ProductExtension
+     * @var SupplierExtension
      */
     protected $extension;
 
     protected function setUp()
     {
-        $this->channelProvider = $this->getMockBuilder(ChannelProvider::class)
+        $this->supplierProvider = $this->getMockBuilder(SupplierProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->extension = new ProductExtension($this->channelProvider);
+        $this->extension = new SupplierExtension($this->supplierProvider);
     }
 
     protected function tearDown()
     {
         unset($this->extension);
-        unset($this->channelProvider);
+        unset($this->supplierProvider);
     }
 
     public function testGetName()
     {
-        $this->assertEquals(ProductExtension::NAME, $this->extension->getName());
+        $this->assertEquals(SupplierExtension::NAME, $this->extension->getName());
     }
 
     public function testGetFunctions()
@@ -44,7 +43,7 @@ class ProductExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $functions);
 
         $expectedFunctions = array(
-            'marello_sales_get_saleschannel_ids'
+            'marello_supplier_get_supplier_ids'
         );
 
         /** @var \Twig_SimpleFunction $function */
@@ -59,6 +58,6 @@ class ProductExtensionTest extends \PHPUnit_Framework_TestCase
         $product = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->assertEquals(0, $this->extension->getSalesChannelsIds($product));
+        $this->assertEquals(0, $this->extension->getSuppliersIds($product));
     }
 }

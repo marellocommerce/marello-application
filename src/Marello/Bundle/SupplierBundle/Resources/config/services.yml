@@ -15,3 +15,10 @@ services:
         class: Marello\Bundle\SupplierBundle\Provider\SupplierProvider
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    marello_supplier.twig.supplier_extension:
+        class: Marello\Bundle\SupplierBundle\Twig\SupplierExtension
+        arguments:
+            - '@marello_supplier.provider.supplier'
+        tags:
+            - { name: twig.extension }

@@ -4,7 +4,6 @@ namespace Marello\Bundle\ProductBundle\Twig;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
-use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
 
 class ProductExtension extends \Twig_Extension
 {
@@ -13,19 +12,14 @@ class ProductExtension extends \Twig_Extension
     /** @var ChannelProvider */
     protected $channelProvider;
 
-    /** @var SupplierProvider */
-    protected $supplierProvider;
-
     /**
      * ProductExtension constructor.
      *
      * @param ChannelProvider $channelProvider
-     * @param SupplierProvider $supplierProvider
      */
-    public function __construct(ChannelProvider $channelProvider, SupplierProvider $supplierProvider)
+    public function __construct(ChannelProvider $channelProvider)
     {
         $this->channelProvider = $channelProvider;
-        $this->supplierProvider = $supplierProvider;
     }
 
     /**
@@ -49,11 +43,7 @@ class ProductExtension extends \Twig_Extension
             new \Twig_SimpleFunction(
                 'marello_sales_get_saleschannel_ids',
                 [$this, 'getSalesChannelsIds']
-            ),
-            new \Twig_SimpleFunction(
-                'marello_supplier_get_supplier_ids',
-                [$this, 'getSuppliersIds']
-            ),
+            )
         ];
     }
 
@@ -65,15 +55,5 @@ class ProductExtension extends \Twig_Extension
     public function getSalesChannelsIds(Product $product)
     {
         return $this->channelProvider->getSalesChannelsIds($product);
-    }
-    
-    /**
-     * @param Product $product
-     *
-     * @return array
-     */
-    public function getSuppliersIds(Product $product)
-    {
-        return $this->supplierProvider->getProductSuppliersIds($product);
     }
 }
