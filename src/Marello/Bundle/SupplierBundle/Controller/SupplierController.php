@@ -88,7 +88,7 @@ class SupplierController extends Controller
                 $this->get('translator')->trans('marello.supplier.messages.success.supplier.saved')
             );
             
-            return $this->get('oro_ui.router')->redirectAfterSave(
+            return $this->get('oro_ui.router')->redirect(
                 [
                     'route'      => 'marello_supplier_supplier_update',
                     'parameters' => [

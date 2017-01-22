@@ -61,8 +61,8 @@ class MarelloSupplierBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_supplier_prod_supp_rel');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('product_id', 'integer', ['notnull' => true]);
-        $table->addColumn('supplier_id', 'integer', ['notnull' => true]);
+        $table->addColumn('product_id', 'integer', ['notnull' => false]);
+        $table->addColumn('supplier_id', 'integer', ['notnull' => false]);
         $table->addColumn('quantity_of_unit', 'integer', ['notnull' => true]);
         $table->addColumn('priority', 'integer', []);
         $table->addColumn(

@@ -34,16 +34,16 @@ class ProductSupplierRelation
     /**
      * @var Product
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $product;
 
     /**
      * @var Supplier
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $supplier;
 
@@ -230,4 +230,3 @@ class ProductSupplierRelation
         return $this->canDropship;
     }
 }
-
