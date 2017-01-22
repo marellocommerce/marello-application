@@ -61,9 +61,9 @@ class ProductControllerTest extends WebTestCase
         $crawler = $this->client->submit($form);
         $result  = $this->client->getResponse();
 
-//        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $this->assertContains('Product saved', $crawler->html());
-//        $this->assertContains($name, $crawler->html());
+        $this->assertContains($name, $crawler->html());
 
         return $name;
     }
@@ -136,7 +136,7 @@ class ProductControllerTest extends WebTestCase
         $result = $this->getJsonResponseContent($response, 200);
         $result = reset($result['data']);
 
-        $returnValue = $result;
+        $resultData = $result;
         $crawler     = $this->client->request(
             'GET',
             $this->getUrl('marello_product_update', ['id' => $result['id']])
@@ -160,50 +160,50 @@ class ProductControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $this->assertContains("Product saved", $crawler->html());
 
-        $returnValue['name'] = $name;
+        $resultData['name'] = $name;
 
-        return $returnValue;
+        return $resultData;
     }
 
     /**
-     * @param array $returnValue
+     * @param array $resultData
      *
      * @depends testUpdateProduct
      *
      * @return string
      */
-    public function testProductView($returnValue)
+    public function testProductView($resultData)
     {
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('marello_product_view', ['id' => $returnValue['id']])
+            $this->getUrl('marello_product_view', ['id' => $resultData['id']])
         );
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
         $this->assertContains("{$this->getReference('marello_sales_channel_2')->getName()}", $crawler->html());
-        $this->assertContains("{$returnValue['name']}", $crawler->html());
+        $this->assertContains("{$resultData['name']}", $crawler->html());
     }
 
     /**
-     * @param array $returnValue
+     * @param array $resultData
      *
      * @depends testUpdateProduct
      *
      * @return string
      */
-    public function testProductInfo($returnValue)
+    public function testProductInfo($resultData)
     {
         $crawler = $this->client->request(
             'GET',
             $this->getUrl(
                 'marello_product_widget_info',
-                ['id' => $returnValue['id'], '_widgetContainer' => 'block']
+                ['id' => $resultData['id'], '_widgetContainer' => 'block']
             )
         );
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains($returnValue['name'], $crawler->html());
+        $this->assertContains($resultData['name'], $crawler->html());
     }
 }
