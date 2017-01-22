@@ -119,11 +119,6 @@ class SupplierControllerTest extends WebTestCase
                 'marello-supplier-products-grid[_filter][name][value]' => $product->getName()
             ]
         );
-        file_put_contents(
-            '/Users/hotlander/Development/marello-application-dev/app/logs/supcontr-test.log',
-            print_r($response, true) . "\r\n",
-            FILE_APPEND
-        );
 
         $result = $this->getJsonResponseContent($response, Response::HTTP_OK);
         $result = reset($result['data']);

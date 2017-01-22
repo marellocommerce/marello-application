@@ -10,7 +10,7 @@ define(function(require) {
     /**
      * @export marellosupplier/js/app/views/product-supplier-view
      * @extends marellolayout.app.views.AbstractItemView
-     * @class marelloorder.app.views.ProductSupplierView
+     * @class marellosupplier.app.views.ProductSupplierView
      */
     ProductSupplierView = AbstractItemView.extend({
         options: {},
