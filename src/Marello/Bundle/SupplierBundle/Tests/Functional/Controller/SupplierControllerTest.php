@@ -218,4 +218,30 @@ class SupplierControllerTest extends WebTestCase
         $this->assertContains($countryName, $crawler->html());
         $this->assertContains($postalCode, $crawler->html());
     }
+
+    public function testGetSupplierDefaultDataById()
+    {
+        /** @var Supplier $supplier */
+        $supplier   = $this->getReference('marello_supplier_2');
+
+        $this->client->request(
+            'GET',
+            $this->getUrl(
+                'marello_supplier_supplier_get_default_data',
+                [
+                    'supplier_id'    => $supplier->getId(),
+                ]
+            )
+        );
+
+        $response = $this->client->getResponse();
+        $this->getJsonResponseContent($response, Response::HTTP_OK);
+
+        $responseData = json_decode($response->getContent(), true);
+        $this->assertArrayHasKey('priority', $responseData);
+        $this->assertArrayHasKey('canDropship', $responseData);
+
+        $this->assertEquals($responseData['priority'], $supplier->getPriority());
+        $this->assertEquals($responseData['canDropship'], $supplier->getCanDropship());
+    }
 }

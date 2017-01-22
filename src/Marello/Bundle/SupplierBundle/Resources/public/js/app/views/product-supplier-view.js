@@ -13,7 +13,10 @@ define(function(require) {
      * @class marellosupplier.app.views.ProductSupplierView
      */
     ProductSupplierView = AbstractItemView.extend({
-        options: {},
+        options: {
+            priority: 0,
+            canDropship: false
+        },
 
         /**
          * @inheritDoc
@@ -28,6 +31,66 @@ define(function(require) {
          */
         handleLayoutInit: function() {
             ProductSupplierView.__super__.handleLayoutInit.apply(this, arguments);
+            this.initSupplierDataTriggers();
+        },
+
+        /**
+         * initialize supplier data triggers and field events
+         */
+        initSupplierDataTriggers: function() {
+            this.addFieldEvents('supplier', this.loadSupplierDefaultData);
+        },
+
+        /**
+         * Load supplier default data
+         * fetch the supplier id from the row
+         * trigger mediator to get the data
+         */
+        loadSupplierDefaultData: function() {
+            var supplierId = this._getSupplierId();
+            if (supplierId.length === 0) {
+                return;
+            }
+
+            mediator.trigger(
+                'supplier:load:line-items-supplier',
+                {'supplier_id': supplierId},
+                _.bind(this.setSupplierDefaultData, this)
+            );
+
+        },
+
+        /**
+         * Set default for suppliers
+         * @param data
+         */
+        setSupplierDefaultData: function (data)
+        {
+            if (data === undefined) {
+                return;
+            }
+
+            if (data.priority.length !== 0) {
+                this.options.priority = data.priority;
+            }
+
+            if (data.canDropship.length !== 0) {
+                this.options.canDropship = data.canDropship;
+            }
+
+            this.fieldsByName.priority
+                .val(this.options.priority);
+
+            this.fieldsByName.canDropship
+                .prop('checked', this.options.canDropship);
+        },
+
+        /**
+         * @returns {String}
+         * @private
+         */
+        _getSupplierId: function() {
+            return this.fieldsByName.hasOwnProperty('supplier') ? this.fieldsByName.supplier.val() : '';
         },
 
         /**

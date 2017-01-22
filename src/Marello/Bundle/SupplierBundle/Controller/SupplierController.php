@@ -2,17 +2,16 @@
 
 namespace Marello\Bundle\SupplierBundle\Controller;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Marello\Bundle\SupplierBundle\Entity\Supplier;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use Oro\Bundle\SecurityBundle\Annotation as Security;
+
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Symfony\Component\HttpFoundation\Response;
 
 class SupplierController extends Controller
 {
@@ -88,7 +87,7 @@ class SupplierController extends Controller
                 $this->get('translator')->trans('marello.supplier.messages.success.supplier.saved')
             );
             
-            return $this->get('oro_ui.router')->redirect(
+            return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route'      => 'marello_supplier_supplier_update',
                     'parameters' => [
@@ -159,21 +158,18 @@ class SupplierController extends Controller
     }
 
     /**
-     * @Config\Route("/get-suppliers-by-product", name="marello_supplier_supplier_data")
+     * @Config\Route("/get-supplier-default-data", name="marello_supplier_supplier_get_default_data")
      * @Config\Method({"GET"})
-     * @Security\AclAncestor("marello_product_view")
+     * @Security\AclAncestor("marello_supplier_view")
      *
      * {@inheritdoc}
      */
-    public function getSupplierDataAction(Request $request)
+    public function getSupplierDefaultDataAction(Request $request)
     {
-        //todo
-        return new JsonResponse();
-//        return new JsonResponse(
-//            $this->get('marello_productprice.pricing.provider.channelprice_provider')->getPrices(
-//                $request->query->get('salesChannel'),
-//                $request->query->get('product_ids', [])
-//            )
-//        );
+        return new JsonResponse(
+            $this->get('marello_supplier.provider.supplier')->getSupplierDefaultDataById(
+                $request->query->get('supplier_id')
+            )
+        );
     }
 }
