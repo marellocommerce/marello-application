@@ -382,7 +382,7 @@ datagrid:
                 frontend_type:        string
             cost:
                 label:                marello.supplier.cost.label
-                frontend_type:        string
+                frontend_type:        currency
             canDropship:
                 label:                marello.supplier.can_dropship.label
                 frontend_type:        boolean
