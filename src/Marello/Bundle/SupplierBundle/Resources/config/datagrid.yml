@@ -38,17 +38,17 @@ datagrid:
         filters:
             columns:
                 name:
-                    type: string
-                    data_name: s.name
+                    type:       string
+                    data_name:  s.name
                 priority:
-                    type: string
-                    data_name: s.priority
+                    type:       number
+                    data_name:  s.priority
                 canDropship:
-                    type: string
-                    data_name: s.canDropship
+                    type:       boolean
+                    data_name:  s.canDropship
                 isActive:
-                    type: string
-                    data_name: s.isActive
+                    type:       boolean
+                    data_name:  s.isActive
         properties:
             id: ~
             view_link:
@@ -84,6 +84,20 @@ datagrid:
                     confirm_content: marello.supplier.action.delete.content
         options:
             export: true
+
+    marello-supplier-extended-grid:
+        extends: marello-supplier-grid
+        source:
+            type: orm
+            query:
+                where:
+                    and:
+                        - s.isActive = :isActive
+            bind_parameters:
+                -
+                    name: isActive
+                    default: 0
+                    type: integer
 
     marello-supplier-products-grid:
         source:

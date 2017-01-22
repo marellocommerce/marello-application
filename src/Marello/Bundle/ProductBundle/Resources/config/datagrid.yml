@@ -379,7 +379,7 @@ datagrid:
                 frontend_type:        string
             priority:
                 label:                marello.supplier.priority.label
-                frontend_type:        string
+                frontend_type:        number
             cost:
                 label:                marello.supplier.cost.label
                 frontend_type:        currency
