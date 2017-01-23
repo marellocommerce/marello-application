@@ -2,14 +2,14 @@
 
 namespace Marello\Bundle\SupplierBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSupplierData;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
+use Marello\Bundle\SupplierBundle\Tests\Functional\Datafixtures\LoadSupplierData;
+use Marello\Bundle\ProductBundle\Tests\Functional\Datafixtures\LoadProductData;
 
 /**
  * @dbIsolation
@@ -75,7 +75,7 @@ class SupplierControllerTest extends WebTestCase
 
     public function testSupplierView()
     {
-        $supplier = $this->getReference('marello_supplier_0');
+        $supplier = $this->getReference(LoadSupplierData::SUPPLIER_1_REF);
         $response = $this->client->requestGrid(
             'marello-supplier-grid',
             ['marello-supplier-grid[_filter][name][value]' => $supplier->getName()]
@@ -97,7 +97,7 @@ class SupplierControllerTest extends WebTestCase
     public function testSupplierViewHasLinkedProducts()
     {
         /** @var Supplier $supplier */
-        $supplier = $this->getReference('marello_supplier_0');
+        $supplier = $this->getReference(LoadSupplierData::SUPPLIER_1_REF);
         $crawler = $this->client->request(
             'GET',
             $this->getUrl('marello_supplier_supplier_view', ['id' => $supplier->getId()])
@@ -110,8 +110,8 @@ class SupplierControllerTest extends WebTestCase
     public function testLinkedProductToSupplier()
     {
         /** @var Supplier $supplier */
-        $supplier = $this->getReference('marello_supplier_0');
-        $product  = $this->getReference('marello-product-0');
+        $supplier = $this->getReference(LoadSupplierData::SUPPLIER_1_REF);
+        $product  = $this->getReference(LoadProductData::PRODUCT_1_REF);
         $response = $this->client->requestGrid(
             'marello-supplier-products-grid',
             [
@@ -122,6 +122,7 @@ class SupplierControllerTest extends WebTestCase
 
         $result = $this->getJsonResponseContent($response, Response::HTTP_OK);
         $result = reset($result['data']);
+
         $this->assertContains($product->getName(), $result['name']);
         $this->assertContains($product->getSku(), $result['sku']);
     }
@@ -168,7 +169,7 @@ class SupplierControllerTest extends WebTestCase
     public function testGetAddress()
     {
         /** @var MarelloAddress $address */
-        $address = $this->getReference('marello_supplier_1')->getAddress();
+        $address = $this->getReference(LoadSupplierData::SUPPLIER_3_REF)->getAddress();
         $this->client->request(
             'GET',
             $this->getUrl('marello_supplier_supplier_address', [
@@ -185,7 +186,7 @@ class SupplierControllerTest extends WebTestCase
 
     public function testUpdateAddress()
     {
-        $supplier   = $this->getReference('marello_supplier_2');
+        $supplier   = $this->getReference(LoadSupplierData::SUPPLIER_3_REF);
         $address    = $supplier->getAddress();
         $crawler = $this->client->request(
             'GET',
@@ -222,7 +223,7 @@ class SupplierControllerTest extends WebTestCase
     public function testGetSupplierDefaultDataById()
     {
         /** @var Supplier $supplier */
-        $supplier   = $this->getReference('marello_supplier_2');
+        $supplier   = $this->getReference(LoadSupplierData::SUPPLIER_1_REF);
 
         $this->client->request(
             'GET',

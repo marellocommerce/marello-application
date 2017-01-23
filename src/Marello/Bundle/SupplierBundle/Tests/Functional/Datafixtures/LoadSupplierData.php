@@ -9,6 +9,10 @@ use Marello\Bundle\SupplierBundle\Entity\Supplier;
 
 class LoadSupplierData extends AbstractFixture
 {
+    const SUPPLIER_1_REF = 'supplier1';
+    const SUPPLIER_2_REF = 'supplier2';
+    const SUPPLIER_3_REF = 'supplier3';
+
     /** @var ObjectManager $manager */
     protected $manager;
 
@@ -16,7 +20,7 @@ class LoadSupplierData extends AbstractFixture
      * @var array
      */
     protected $data = [
-        'supplier1' => [
+        self::SUPPLIER_1_REF => [
             'name' => 'ActiveAndDropshipSupplier',
             'priority' => 1,
             'can_dropship' => true,
@@ -29,7 +33,7 @@ class LoadSupplierData extends AbstractFixture
                 'state' => 'NB'
             ]
         ],
-        'supplier2' => [
+        self::SUPPLIER_2_REF => [
             'name' => 'ActiveFalseSupplier',
             'priority' => 2,
             'can_dropship' => true,
@@ -42,7 +46,7 @@ class LoadSupplierData extends AbstractFixture
                 'state'=> 'NB'
             ]
         ],
-        'supplier3' => [
+        self::SUPPLIER_3_REF => [
             'name' => 'ActiveNoDropshipSupplier',
             'priority' => 9,
             'can_dropship' => false,

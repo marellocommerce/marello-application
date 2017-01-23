@@ -9,6 +9,10 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class LoadSalesData extends AbstractFixture
 {
+    const CHANNEL_1_REF = 'channel1';
+    const CHANNEL_2_REF = 'channel2';
+    const CHANNEL_3_REF = 'channel3';
+
     /** @var ObjectManager $manager */
     protected $manager;
 
@@ -16,9 +20,9 @@ class LoadSalesData extends AbstractFixture
      * @var array
      */
     protected $data = [
-        'channel1' => ['name' => 'Channel-EUR', 'code' => 'chan_eur', 'type' => 'magento', 'currency' => 'EUR'],
-        'channel2' => ['name' => 'Channel-USD', 'code' => 'chan_usd', 'type' => 'pos', 'currency' => 'USD'],
-        'channel3' => ['name' => 'Channel-GBP', 'code' => 'chan_gbp', 'type' => 'pos', 'currency' => 'GBP'],
+        self::CHANNEL_1_REF => ['name' => 'Channel-EUR', 'code' => 'chan_eur', 'type' => 'magento', 'currency' => 'EUR'],
+        self::CHANNEL_2_REF => ['name' => 'Channel-USD', 'code' => 'chan_usd', 'type' => 'pos', 'currency' => 'USD'],
+        self::CHANNEL_3_REF => ['name' => 'Channel-GBP', 'code' => 'chan_gbp', 'type' => 'pos', 'currency' => 'GBP'],
     ];
 
     /**

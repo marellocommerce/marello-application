@@ -21,6 +21,11 @@ use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
+    const PRODUCT_1_REF = 'product1';
+    const PRODUCT_2_REF = 'product2';
+    const PRODUCT_3_REF = 'product3';
+    const PRODUCT_4_REF = 'product4';
+
     /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
     protected $defaultOrganization;
 
@@ -35,7 +40,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
     /** @var array $data */
     protected $data = [
-        'product1' => [
+        self::PRODUCT_1_REF => [
             'name'          => 'product1',
             'sku'           => 'p1',
             'price'         => 10,
@@ -55,7 +60,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
                 ]
             ]
         ],
-        'product2' => [
+        self::PRODUCT_2_REF => [
             'name'          => 'product 2',
             'sku'           => 'p2',
             'price'         => 25,
@@ -82,7 +87,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
                 ]
             ]
         ],
-        'product3' => [
+        self::PRODUCT_3_REF => [
             'name'          => 'product 3',
             'sku'           => 'p3',
             'price'         => 50,
@@ -109,7 +114,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
                 ]
             ]
         ],
-        'product4' => [
+        self::PRODUCT_4_REF => [
             'name'          => 'product 4',
             'sku'           => 'p4',
             'price'         => 100,

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSupplierData;
+use Marello\Bundle\SupplierBundle\Tests\Functional\Datafixtures\LoadSupplierData;
 
 /**
  * @dbIsolation
@@ -27,7 +27,7 @@ class SupplierControllerTest extends WebTestCase
     public function testDelete()
     {
         /** @var Supplier $supplier */
-        $supplier = $this->getReference('marello_supplier_2');
+        $supplier = $this->getReference(LoadSupplierData::SUPPLIER_2_REF);
         $supplierId = $supplier->getId();
         $this->client->request(
             'DELETE',

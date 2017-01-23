@@ -3,12 +3,14 @@
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
 use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\Datafixtures\LoadProductData;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData;
+use Marello\Bundle\SalesBundle\Tests\Functional\Datafixtures\LoadSalesData;
 use Marello\Bundle\SupplierBundle\Tests\Functional\Datafixtures\LoadSupplierData;
 
 /**
@@ -37,7 +39,7 @@ class ProductControllerTest extends WebTestCase
     {
         $this->client->request('GET', $this->getUrl('marello_product_index'));
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
     }
 
     public function testCreateProduct()
@@ -52,13 +54,13 @@ class ProductControllerTest extends WebTestCase
         $form['marello_product_form[status]']             = 'enabled';
         $form['marello_product_form[desiredStockLevel]']  = 10;
         $form['marello_product_form[purchaseStockLevel]'] = 2;
-        $form['marello_product_form[addSalesChannels]']   = $this->getReference('marello_sales_channel_1')->getId();
+        $form['marello_product_form[addSalesChannels]']   = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
         $result  = $this->client->getResponse();
 
-        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
         $this->assertContains('Product saved', $crawler->html());
         $this->assertContains($name, $crawler->html());
 
@@ -68,46 +70,46 @@ class ProductControllerTest extends WebTestCase
     public function testUpdateProductSuppliers()
     {
         /** @var Product $product */
-        $product = $this->getReference('marello-product-0');
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
         $crawler = $this->client->request('GET', $this->getUrl('marello_product_update', ['id' => $product->getId()]));
 
         $result  = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         /** @var Form $form */
-        $form = $crawler->selectButton('Save and Close')->form();
+        $form = $crawler->selectButton('Save')->form();
 
         $this->assertTrue($product->hasSuppliers());
 
-        $productSupplierRelation = [
+        $productSuppliers = [
             [
-                'supplier' => $this->getReference('marello_supplier_0')->getId(),
+                'supplier' => $this->getReference(LoadSupplierData::SUPPLIER_1_REF)->getId(),
                 'quantityOfUnit' => 24,
                 'priority' => 2,
                 'cost' => 33.55,
-                'canDropship' => true
+//                'canDropship' => true
             ],
             [
-                'supplier' => $this->getReference('marello_supplier_0')->getId(),
+                'supplier' => $this->getReference(LoadSupplierData::SUPPLIER_1_REF)->getId(),
                 'quantityOfUnit' => 48,
                 'priority' => 3,
                 'cost' => 42.50,
-                'canDropship' => true
+//                'canDropship' => true
             ],
             [
-                'supplier' => $this->getReference('marello_supplier_1')->getId(),
+                'supplier' => $this->getReference(LoadSupplierData::SUPPLIER_2_REF)->getId(),
                 'quantityOfUnit' => 100,
                 'priority' => 1,
                 'cost' => 60.99,
-                'canDropship' => false
+//                'canDropship' => false
             ]
         ];
 
         $submittedData = [
             'input_action' => 'save_and_stay',
-            'marello_product_type' => [
+            'marello_product_form' => [
                 '_token' => $form['marello_product_form[_token]']->getValue(),
-                'suppliers' => $productSupplierRelation,
+                'suppliers' => $productSuppliers,
             ]
         ];
 
@@ -115,11 +117,41 @@ class ProductControllerTest extends WebTestCase
 
         // Submit form
         $result = $this->client->getResponse();
-        $this->client->request($form->getMethod(), $form->getUri(), $submittedData);
-        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $crawler = $this->client->request($form->getMethod(), $form->getUri(), $submittedData);
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+//        $this->assertCount(3, $product->getSuppliers());
+        $actualSuppliers = $this->getActualSuppliers($crawler, count($productSuppliers));
+        $this->assertEquals($productSuppliers, $actualSuppliers);
+    }
 
-        $this->assertTrue($product->hasSuppliers());
-        $this->assertCount(3, $product->getSuppliers());
+    /**
+     * @param Crawler $crawler
+     * @param int $count
+     * @return array
+     */
+    protected function getActualSuppliers(Crawler $crawler, $count)
+    {
+        $result = [];
+
+        for ($i = 0; $i < $count; $i++) {
+            var_dump($crawler->filter('input[name="marello_product_form[suppliers]"]'));
+//            var_dump($crawler->filter('input[name="marello_product_form[suppliers]['. $i .'][priority]"]')
+//                ->extract('value')[0]);
+            die();
+            $result[] = [
+                'supplier' => $crawler->filter('input[name="marello_product_form[suppliers]['. $i .'][supplier]"]')
+                    ->extract('value')[0],
+                'quantityOfUnit' => $crawler
+                    ->filter('input[name="marello_product_form[suppliers]['. $i .'][quantityOfUnit]"]')
+                    ->extract('value')[0],
+                'cost' => $crawler->filter('input[name="marello_product_form[suppliers]['. $i .'][cost]"]')
+                    ->extract('value')[0],
+                'priority' => $crawler->filter('input[name="marello_product_form[suppliers]['. $i .'][priority]"]')
+                    ->extract('value')[0],
+            ];
+        }
+
+        return $result;
     }
 
     /**
@@ -136,7 +168,7 @@ class ProductControllerTest extends WebTestCase
             ['marello-products-grid[_filter][name][value]' => $name]
         );
 
-        $result = $this->getJsonResponseContent($response, 200);
+        $result = $this->getJsonResponseContent($response, Response::HTTP_OK);
         $result = reset($result['data']);
 
         $resultData = $result;
@@ -145,7 +177,7 @@ class ProductControllerTest extends WebTestCase
             $this->getUrl('marello_product_update', ['id' => $result['id']])
         );
         $result      = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         /** @var Form $form */
         $form                                              = $crawler->selectButton('Save and Close')->form();
@@ -153,14 +185,14 @@ class ProductControllerTest extends WebTestCase
         $form['marello_product_form[name]']                = $name;
         $form['marello_product_form[desiredStockLevel]']   = 20;
         $form['marello_product_form[purchaseStockLevel]']  = 10;
-        $form['marello_product_form[removeSalesChannels]'] = $this->getReference('marello_sales_channel_1')->getId();
-        $form['marello_product_form[addSalesChannels]']    = $this->getReference('marello_sales_channel_2')->getId();
+        $form['marello_product_form[removeSalesChannels]'] = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
+        $form['marello_product_form[addSalesChannels]']    = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
 
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
         $this->assertContains("Product saved", $crawler->html());
 
         $resultData['name'] = $name;
@@ -183,8 +215,8 @@ class ProductControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, 200);
-        $this->assertContains("{$this->getReference('marello_sales_channel_2')->getName()}", $crawler->html());
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        $this->assertContains("{$this->getReference(LoadSalesData::CHANNEL_2_REF)->getName()}", $crawler->html());
         $this->assertContains("{$resultData['name']}", $crawler->html());
     }
 
@@ -206,7 +238,7 @@ class ProductControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, 200);
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
         $this->assertContains($resultData['name'], $crawler->html());
     }
 }

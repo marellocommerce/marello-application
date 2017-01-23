@@ -11,17 +11,17 @@
         </div>
         {{ form_errors(form.quantityOfUnit) }}
     </td>
-    <td class="supplier-line-item-priority">
-        <div class="fields-row">
-            {{ form_widget(form.priority) }}
-        </div>
-        {{ form_errors(form.priority) }}
-    </td>
     <td class="supplier-line-item-cost">
         <div class="fields-row">
             {{ form_widget(form.cost) }}
         </div>
         {{ form_errors(form.cost) }}
+    </td>
+    <td class="supplier-line-item-priority">
+        <div class="fields-row">
+            {{ form_widget(form.priority) }}
+        </div>
+        {{ form_errors(form.priority) }}
     </td>
     <td class="supplier-line-item-can-dropship">
         <div class="fields-row">
@@ -80,8 +80,8 @@
                         <tr>
                             <th class="supplier-line-item-supplier"><span>{{ 'marello.supplier.entity_label'|trans }}</span></th>
                             <th class="supplier-line-item-quantity-of-unit"><span>{{ 'marello.supplier.quantity_of_unit.label'|trans }}</span></th>
-                            <th class="supplier-line-item-priority"><span>{{ 'marello.supplier.priority.label'|trans }}</span></th>
                             <th class="supplier-line-item-cost"><span>{{ 'marello.supplier.cost.label'|trans }}</span></th>
+                            <th class="supplier-line-item-priority"><span>{{ 'marello.supplier.priority.label'|trans }}</span></th>
                             <th class="supplier-line-item-can-dropship"><span>{{ 'marello.supplier.can_dropship.label'|trans }}</span></th>
                             {% if form.vars.allow_delete %}
                                 <th class="supplier-row-item-actions"></th>
