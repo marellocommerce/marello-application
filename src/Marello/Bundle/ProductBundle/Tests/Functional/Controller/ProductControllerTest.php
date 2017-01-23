@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSupplierData;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Form;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Tests\Functional\Datafixtures\LoadProductData;
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData;
+use Marello\Bundle\SupplierBundle\Tests\Functional\Datafixtures\LoadSupplierData;
 
 /**
  * @outputBuffering enabled
@@ -51,12 +54,6 @@ class ProductControllerTest extends WebTestCase
         $form['marello_product_form[purchaseStockLevel]'] = 2;
         $form['marello_product_form[addSalesChannels]']   = $this->getReference('marello_sales_channel_1')->getId();
 
-//        $formSupplier = $crawler->selectButton('Add Supplier');
-//        $form['marello_product_form[suppliers][0][supplier]'] = $this->getReference('marello_supplier_0')->getId();
-//        $form['marello_product_form[suppliers][0][quantityOfUnit]'] = 150;
-//        $form['marello_product_form[suppliers][0][priority]'] = 1;
-//        $form['marello_product_form[suppliers][0][cost]'] = 435.25;
-
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
         $result  = $this->client->getResponse();
@@ -70,14 +67,17 @@ class ProductControllerTest extends WebTestCase
 
     public function testUpdateProductSuppliers()
     {
-        $productId = $this->getReference('marello-product-0')->getId();
-        $crawler = $this->client->request('GET', $this->getUrl('marello_product_update', ['id' => $productId]));
+        /** @var Product $product */
+        $product = $this->getReference('marello-product-0');
+        $crawler = $this->client->request('GET', $this->getUrl('marello_product_update', ['id' => $product->getId()]));
 
         $result  = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
+
+        $this->assertTrue($product->hasSuppliers());
 
         $productSupplierRelation = [
             [
@@ -117,6 +117,9 @@ class ProductControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->client->request($form->getMethod(), $form->getUri(), $submittedData);
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
+
+        $this->assertTrue($product->hasSuppliers());
+        $this->assertCount(3, $product->getSuppliers());
     }
 
     /**
