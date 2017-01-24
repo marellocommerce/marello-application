@@ -3,19 +3,20 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\Controller;
 
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadPurchaseOrderData;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadPurchaseOrderDataTest;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @dbIsolationPerTest
+ * @dbIsolation
  */
 class PurchaseOrderControllerTest extends WebTestCase
 {
     protected function setUp()
     {
         $this->initClient([], $this->generateBasicAuthHeader());
-        $this->loadFixtures([LoadPurchaseOrderData::class]);
+        $this->loadFixtures([LoadPurchaseOrderDataTest::class]);
     }
 
     /** @test */

@@ -185,7 +185,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
      * @param $name
      * @return string
      */
-    private function getDictionary($name)
+    protected function getDictionary($name)
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'dictionaries' . DIRECTORY_SEPARATOR . $name;
     }

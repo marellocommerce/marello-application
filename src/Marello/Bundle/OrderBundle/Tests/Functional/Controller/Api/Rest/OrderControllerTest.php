@@ -2,16 +2,16 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderDataTest;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @dbIsolationPerTest
+ * @dbIsolation
  */
 class OrderControllerTest extends WebTestCase
 {
@@ -22,7 +22,7 @@ class OrderControllerTest extends WebTestCase
             $this->generateWsseAuthHeader()
         );
         $this->loadFixtures([
-            LoadOrderData::class,
+            LoadOrderDataTest::class,
         ]);
     }
 
@@ -277,7 +277,7 @@ class OrderControllerTest extends WebTestCase
 
         $this->client->request(
             'PUT',
-            $this->getUrl('marello_order_api_put_order', ['id' => $this->getReference('marello_order_1')->getId()]),
+            $this->getUrl('marello_order_api_put_order', ['id' => $this->getReference('marello_order_0')->getId()]),
             $data
         );
 
