@@ -13,6 +13,5 @@ class ExtendProduct extends BaseProduct
 {
     public function __construct()
     {
-
     }
 }

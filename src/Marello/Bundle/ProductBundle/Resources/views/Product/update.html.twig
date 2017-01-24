@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'MarelloPricingBundle:Form:fields.html.twig' %}
+{% form_theme form 'MarelloPricingBundle:Form:fields.html.twig' 'MarelloSupplierBundle:Form:fields.html.twig' %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% set gridName = 'marello-product-saleschannel-extended-grid' %}
 
@@ -90,6 +90,18 @@
         <div class="row-divider"></div>
     {% endset %}
 
+    {% set suppliers %}
+        <div class="product-suppliers"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellosupplier/js/app/views/product-suppliers-view',
+                 suppliers: suppliers|default({})
+             }|json_encode }}">
+            {{ form_widget(form.suppliers) }}
+            {{ form_errors(form.suppliers) }}
+        </div>
+    {% endset %}
+
     {% set channelIds = marello_sales_get_saleschannel_ids(entity)|length > 0 ? marello_sales_get_saleschannel_ids(entity) : 0 %}
     {% set dataBlocks = [
         {
@@ -137,6 +149,16 @@
                     form_widget(form.addSalesChannels, {'id': 'addSalesChannels'}),
                     form_widget(form.removeSalesChannels, {'id': 'removeSalesChannels'}),
                     dataGrid.renderGrid(gridName, { product: form.vars.value.id ? : null, channels: channelIds })
+                ]
+            }]
+        },
+        {
+            'title': 'marello.supplier.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    suppliers
                 ]
             }]
         }

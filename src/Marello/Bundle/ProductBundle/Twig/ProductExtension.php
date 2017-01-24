@@ -10,16 +10,16 @@ class ProductExtension extends \Twig_Extension
     const NAME = 'marello_product';
     
     /** @var ChannelProvider */
-    protected $provider;
+    protected $channelProvider;
 
     /**
      * ProductExtension constructor.
      *
-     * @param ChannelProvider $provider
+     * @param ChannelProvider $channelProvider
      */
-    public function __construct(ChannelProvider $provider)
+    public function __construct(ChannelProvider $channelProvider)
     {
-        $this->provider = $provider;
+        $this->channelProvider = $channelProvider;
     }
 
     /**
@@ -43,7 +43,7 @@ class ProductExtension extends \Twig_Extension
             new \Twig_SimpleFunction(
                 'marello_sales_get_saleschannel_ids',
                 [$this, 'getSalesChannelsIds']
-            ),
+            )
         ];
     }
 
@@ -54,6 +54,6 @@ class ProductExtension extends \Twig_Extension
      */
     public function getSalesChannelsIds(Product $product)
     {
-        return $this->provider->getSalesChannelsIds($product);
+        return $this->channelProvider->getSalesChannelsIds($product);
     }
 }

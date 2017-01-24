@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
 use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemApiType;
+use Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemUpdateApiTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -11,6 +12,14 @@ use Symfony\Component\Validator\Constraints\NotNull;
 class ProductApiType extends AbstractType
 {
     const NAME = 'marello_product_api_form';
+
+    /** @var InventoryItemUpdateApiTransformer $transformer */
+    protected $transformer;
+
+    public function __construct(InventoryItemUpdateApiTransformer $transformer)
+    {
+        $this->transformer = $transformer;
+    }
 
     /**
      * {@inheritdoc}
@@ -49,7 +58,7 @@ class ProductApiType extends AbstractType
             ->add('channels')
             ->add('inventory', 'collection', [
                 'property_path' => 'inventoryItems',
-                'type'          => new InventoryItemApiType(),
+                'type'          => new InventoryItemApiType($this->transformer),
                 'allow_add'     => true,
                 'allow_delete'  => true,
                 'by_reference'  => false,

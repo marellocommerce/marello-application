@@ -134,7 +134,16 @@ class ProductType extends AbstractType
                     'mapped'   => false,
                     'multiple' => true,
                 ]
-            );
+            )
+            ->add(
+                'suppliers',
+                'marello_product_supplier_relation_collection_form',
+                [
+                    'label'              => 'marello.supplier.label',
+                    'cascade_validation' => true,
+                ]
+            )
+        ;
 
         $builder->addEventSubscriber($this->defaultSalesChannelSubscriber);
         $builder->addEventSubscriber($this->pricingSubscriber);

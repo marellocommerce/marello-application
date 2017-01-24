@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends Controller
 {

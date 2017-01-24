@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
+use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
@@ -15,6 +16,7 @@ use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * Represents a Marello Product
@@ -54,6 +56,7 @@ class Product extends ExtendProduct implements
     SalesChannelAwareInterface,
     PricingAwareInterface
 {
+    use EntityCreatedUpdatedAtTrait;
     /**
      * @var integer
      *
@@ -305,12 +308,25 @@ class Product extends ExtendProduct implements
      */
     protected $purchaseStockLevel;
 
+    /**
+     * @var ArrayCollection|ProductSupplierRelation[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation",
+     *     mappedBy="product",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    protected $suppliers;
+
     public function __construct()
     {
         $this->prices         = new ArrayCollection();
         $this->channelPrices  = new ArrayCollection();
         $this->channels       = new ArrayCollection();
         $this->inventoryItems = new ArrayCollection();
+        $this->suppliers      = new ArrayCollection();
     }
 
     /**
@@ -708,18 +724,46 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @ORM\PreUpdate
+     * @return ArrayCollection
      */
-    public function preUpdateTimestamp()
+    public function getSuppliers()
     {
-        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        return $this->suppliers;
     }
 
     /**
-     * @ORM\PrePersist
+     * Add item
+     *
+     * @param ProductSupplierRelation $supplier
+     *
+     * @return Product
      */
-    public function prePersistTimestamp()
+    public function addSupplier(ProductSupplierRelation $supplier)
     {
-        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->suppliers->add($supplier);
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSuppliers()
+    {
+        return count($this->suppliers) > 0;
+    }
+
+    /**
+     * Remove item
+     *
+     * @param ProductSupplierRelation $supplier
+     *
+     * @return Product
+     */
+    public function removeSupplier(ProductSupplierRelation $supplier)
+    {
+        $this->suppliers->removeElement($supplier);
+
+        return $this;
     }
 }

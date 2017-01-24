@@ -16,33 +16,33 @@ parameters:
 services:
     ## form types
     marello_product.product_form.type:
-        class: %marello_product.product_form.type.class%
-        tags:
-            - { name: form.type, alias: marello_product_form }
+        class: '%marello_product.product_form.type.class%'
         arguments:
             - '@marello_sales.form.event_listener.default_sales_channel_subscriber'
             - '@marello_productprice.pricing.form.event_listener.pricing_subscriber'
             - '@marello_productprice.pricing.form.event_listener.channel_pricing_subscriber'
+        tags:
+            - { name: form.type, alias: marello_product_form }
 
     marello_product.product_form.type.product_api:
-        class: %marello_product.product_form.type.product_api.class%
+        class: '%marello_product.product_form.type.product_api.class%'
+        arguments:
+            - '@marello_inventory.form.inventory_item_update_api_transformer'
         tags:
             - { name: form.type, alias: marello_product_api_form }
-        arguments:
-            - '@marello_sales.form.event_listener.default_sales_channel_subscriber'
 
     marello_product.product_form.type.product_select:
-        class: %marello_product.product_form.type.product_select.class%
+        class: '%marello_product.product_form.type.product_select.class%'
         tags:
             - { name: form.type, alias: marello_product_select }
 
     marello_product.form.type.product_collection:
-        class: %marello_product.form.type.product_collection.class%
+        class: '%marello_product.form.type.product_collection.class%'
         tags:
              - { name: form.type, alias: marello_product_collection }
 
     marello_product.product_variant_form.type:
-        class: %marello_product.product_variant_form.type.class%
+        class: '%marello_product.product_variant_form.type.class%'
         tags:
              - { name: form.type, alias: marello_product_variant_form }
 

@@ -10,7 +10,7 @@
  * Project: Symfony (https://symfony.com)
  * Copyright (c) 2004-2015 Fabien Potencier. All right reserved.
  */
-namespace Marello\Bundle\PricingBundle\Validator\Constraints;
+namespace Marello\Bundle\CoreBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 

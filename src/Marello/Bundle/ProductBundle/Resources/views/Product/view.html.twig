@@ -105,6 +105,16 @@
         </div>
     {% endset %}
 
+    {% set productSupplierWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-product-supplier-grid', {'suppliers': marello_supplier_get_supplier_ids(entity)}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
 
     {% set dataBlocks = dataBlocks|merge([
     {
@@ -164,6 +174,18 @@
             ]
         }]
     }]) %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.supplier.entity_plural_label'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                productSupplierWidget
+            ]
+        }]
+    }]) %}
+
     {% set data = {
         'dataBlocks': dataBlocks,
     } %}

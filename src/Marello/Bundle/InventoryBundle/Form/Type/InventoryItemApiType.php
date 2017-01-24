@@ -14,7 +14,6 @@ class InventoryItemApiType extends AbstractType
 {
     const NAME = 'marello_inventory_item_api';
 
-
     /** @var InventoryItemUpdateApiTransformer $transformer */
     protected $transformer;
 
