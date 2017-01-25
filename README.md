@@ -159,6 +159,22 @@ Log into the database and run sql query:
 CREATE EXTENSION "uuid-ossp";
 ```
 
+### Opcache
+
+Recommended configuration
+
+```
+;512Mb for php5
+opcache.memory_consumption=512
+
+;256Mb for php7
+opcache.memory_consumption=256
+opcache.max_accelerated_files=32531
+opcache.interned_strings_buffer=32
+```
+
+See [Symfony Performance](http://symfony.com/doc/current/performance.html)
+
 ### Web Server Configuration
 
 The OroCommerce sample application is based on the Symfony standard application, so the web server configuration recommendations are the [same][9].
