@@ -39,7 +39,10 @@ class ProductApiEntityManager extends ApiEntityManager
                         'value'    => null,
                         'channel'  => [
                             'exclusion_policy' => 'all',
-                            'fields'           => ['id' => null],
+                            'fields'           => [
+                                'id' => null,
+                                'code' => null
+                            ],
                         ],
                     ],
                 ],
