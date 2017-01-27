@@ -5,15 +5,15 @@ namespace Marello\Bundle\PurchaseOrderBundle\Tests\Unit\Workflow\Action;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Component\Action\Model\ContextAccessor;
 use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
 
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
+use Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
@@ -57,6 +57,7 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
         $dispatcher = $this->getMockBuilder(EventDispatcher::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->action->setDispatcher($dispatcher);
     }
 
@@ -244,10 +245,6 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
             ->method('getInventoryItems')
             ->willReturn(new ArrayCollection([$inventoryItemMock]));
 
-        $inventoryItemMock->expects($this->atLeastOnce())
-            ->method('adjustStockLevels')
-            ->with('purchase_order', 10);
-
         $items[] = ['qty' => 10, 'item' => $purchaseOrderItemMock];
         $items[] = ['qty' => 10, 'item' => $purchaseOrderItemMock2];
 
@@ -317,10 +314,6 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
         $productMock->expects($this->once())
             ->method('getInventoryItems')
             ->willReturn(new ArrayCollection([$inventoryItemMock]));
-
-        $inventoryItemMock->expects($this->once())
-            ->method('adjustStockLevels')
-            ->with('purchase_order', 10);
 
         $items[] = ['qty' => 10, 'item' => $purchaseOrderItemMock];
 
