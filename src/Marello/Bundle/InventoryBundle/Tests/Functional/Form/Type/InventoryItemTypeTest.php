@@ -14,6 +14,8 @@ use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 
 /**
  * @dbIsolation
+ *
+ * todo:: actually fire the InventoryUpdateEvent to verify the workings of the updating through the GUI
  */
 class InventoryItemTypeTest extends WebTestCase
 {

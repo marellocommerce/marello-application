@@ -27,7 +27,7 @@ class RefundControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_refund_refund_index')
+            $this->getUrl('marello_refund_index')
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
