@@ -82,9 +82,9 @@ class InventoryItemTest extends WebTestCase
     /**
      * Get Inventory Update context data
      * @param $item                 InventoryItem
-     * @param $trigger              change trigger
-     * @param $inventory            inventory to update
-     * @param $allocatedInventory   allocated inventory to update
+     * @param $trigger              //change trigger
+     * @param $inventory            //inventory to update
+     * @param $allocatedInventory   //allocated inventory to update
      * @return array
      */
     protected function getContextData($item, $trigger, $inventory, $allocatedInventory)
