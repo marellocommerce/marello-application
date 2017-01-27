@@ -32,9 +32,6 @@ class ReceivePurchaseOrderAction extends AbstractAction
     /** @var NoteActivityProcessor $noteActivityProcessor */
     protected $noteActivityProcessor;
 
-    /** @var EventDispatcherInterface $eventDispatcher */
-    protected $eventDispatcher;
-
     /** @var PropertyPathInterface $entity */
     protected $entity;
 
@@ -46,19 +43,16 @@ class ReceivePurchaseOrderAction extends AbstractAction
      * @param ContextAccessor $contextAccessor
      * @param ObjectManager $manager
      * @param NoteActivityProcessor $noteActivityProcessor
-     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ContextAccessor $contextAccessor,
         ObjectManager $manager,
-        NoteActivityProcessor $noteActivityProcessor,
-        EventDispatcherInterface $eventDispatcher
+        NoteActivityProcessor $noteActivityProcessor
     ) {
         parent::__construct($contextAccessor);
 
         $this->manager = $manager;
         $this->noteActivityProcessor = $noteActivityProcessor;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

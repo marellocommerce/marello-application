@@ -3,6 +3,9 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Unit\Processor;
 
 use Doctrine\Common\Persistence\ObjectManager;
+
+use Oro\Bundle\NoteBundle\Entity\Note;
+
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
@@ -11,6 +14,9 @@ class NoteActivityProcessorTest extends \PHPUnit_Framework_TestCase
 {
     /** @var NoteActivityProcessor $processor */
     protected $processor;
+
+    /** @var Note $noteMock */
+    protected $noteMock;
 
     /** @var ObjectManager $entityManager */
     protected $entityManager;
@@ -25,8 +31,8 @@ class NoteActivityProcessorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $name               = NoteActivityProcessor::class;
-        $this->processor    = new $name($this->entityManager);
+        $this->noteMock = $this->getMock(Note::class);
+        $this->processor = new NoteActivityProcessor($this->noteMock, $this->entityManager);
     }
 
     /**
@@ -49,6 +55,15 @@ class NoteActivityProcessorTest extends \PHPUnit_Framework_TestCase
 
         $items = $this->createPurchaseItems();
 
+        $this->noteMock
+            ->expects($this->once())
+            ->method('setMessage');
+
+        $this->noteMock
+            ->expects($this->once())
+            ->method('setTarget')
+            ->with($purchaseOrder);
+
         $this->entityManager
             ->expects($this->once())
             ->method('persist');
@@ -56,7 +71,6 @@ class NoteActivityProcessorTest extends \PHPUnit_Framework_TestCase
         $this->entityManager
             ->expects($this->once())
             ->method('flush');
-
 
         $this->processor->addNote($purchaseOrder, $items);
     }

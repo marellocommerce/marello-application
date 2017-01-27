@@ -10,13 +10,20 @@ class NoteActivityProcessor
     /** @var ObjectManager $manager */
     protected $manager;
 
+    /** @var Note $note */
+    protected $note;
+
     /**
      * NoteActivityProcessor constructor.
+     * @param Note $note
      * @param ObjectManager $manager
      */
-    public function __construct(ObjectManager $manager)
-    {
-        $this->manager = $manager;
+    public function __construct(
+        Note $note,
+        ObjectManager $manager
+    ) {
+        $this->note     = $note;
+        $this->manager  = $manager;
     }
 
     /**
@@ -33,10 +40,9 @@ class NoteActivityProcessor
         $message = $this->getMessage($updatedItems);
 
         if ($message) {
-            $note = $this->createNewNote();
-            $note->setMessage($message);
-            $note->setTarget($entity);
-            $this->manager->persist($note);
+            $this->note->setMessage($message);
+            $this->note->setTarget($entity);
+            $this->manager->persist($this->note);
             $this->manager->flush();
         }
     }
@@ -61,14 +67,5 @@ class NoteActivityProcessor
         }
 
         return $message;
-    }
-
-    /**
-     * Create new note entity
-     * @return Note
-     */
-    private function createNewNote()
-    {
-        return new Note();
     }
 }

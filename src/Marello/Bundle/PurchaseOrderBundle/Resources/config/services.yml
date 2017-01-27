@@ -5,7 +5,11 @@ services:
     marello_purchaseorder.processor.note_activity_processor:
         class: Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor
         arguments:
+            - '@marello_purchaseorder.oro_note_entity_service'
             - '@doctrine.orm.entity_manager'
+
+    marello_purchaseorder.oro_note_entity_service:
+        class: '%oro_note.entity.class%'
 
     marello_purchaseorder.workflow.receive_purchase_order:
         class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction
@@ -13,7 +17,6 @@ services:
             - '@oro_action.context_accessor'
             - '@doctrine.orm.entity_manager'
             - '@marello_purchaseorder.processor.note_activity_processor'
-            - '@event_dispatcher'
         tags:
             - { name: oro_workflow.action, alias: marello_receive_purchase_order }
 
