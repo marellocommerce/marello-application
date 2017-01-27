@@ -76,7 +76,10 @@ class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
             call_user_func_array([$this->inventoryUpdateContext, 'set' . ucfirst($property)], [$value]);
         }
 
-        $this->assertEquals($expected, call_user_func_array([$this->inventoryUpdateContext, 'get' . ucfirst($property)], []));
+        $this->assertEquals(
+            $expected,
+            call_user_func_array([$this->inventoryUpdateContext, 'get' . ucfirst($property)], [])
+        );
     }
 
     /**

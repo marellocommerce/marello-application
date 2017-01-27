@@ -90,28 +90,6 @@ class InventoryItem
     }
 
     /**
-     * @param Warehouse $warehouse
-     * @param Product   $product
-     * @param int       $stock
-     * @param int       $allocatedStock
-     * @param string    $trigger
-     *
-     * @return InventoryItem
-     */
-    public static function withStockLevel(
-        Warehouse $warehouse,
-        Product $product,
-        $stock,
-        $allocatedStock,
-        $trigger
-    ) {
-        $inventoryItem = new self($warehouse, $product);
-        $inventoryItem->changeCurrentLevel(new StockLevel($inventoryItem, $stock, $allocatedStock, $trigger));
-
-        return $inventoryItem;
-    }
-
-    /**
      * @return Product
      */
     public function getProduct()

@@ -53,7 +53,8 @@ class InventoryManager implements InventoryManagerInterface
      * @param int|null          $inventory              New inventory or null if it should remain unchanged
      * @param int|null          $inventoryAlt           Inventory Change qty, qty that represents the actual change
      * @param int|null          $allocatedInventory     New allocated inventory or null if it should remain unchanged
-     * @param int|null          $allocatedInventoryAlt  Alloced Inventory Change qty, qty that represents the actual change
+     * @param int|null          $allocatedInventoryAlt  Alloced Inventory Change qty, qty that represents the
+     *                                                  actual change
      * @param User|null         $user                   User who triggered the change, if left null,
      *                                                  it is automatically assigned to current one
      * @param mixed|null        $subject                Any entity that should be associated to this operation
@@ -61,7 +62,7 @@ class InventoryManager implements InventoryManagerInterface
      * @throws \Exception
      * @return bool
      */
-    protected function updateInventoryLevel(
+    public function updateInventoryLevel(
         InventoryItem $item,
         $trigger,
         $inventory = null,
