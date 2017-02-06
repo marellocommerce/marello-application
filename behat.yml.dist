@@ -12,12 +12,21 @@ default: &default
         Oro\Bundle\TestFrameworkBundle\Behat\ServiceContainer\OroTestFrameworkExtension:
             reference_initializer_class: Oro\Bundle\ApplicationBundle\Tests\Behat\ReferenceRepositoryInitializer
             shared_contexts:
-                - Oro\Bundle\ApplicationBundle\Tests\Behat\Context\CommerceMainContext
-                - Oro\Bundle\CustomerBundle\Tests\Behat\Context\CustomerUserContext
-                - Oro\Bundle\OrderBundle\Tests\Behat\Context\OrderContext
-                - Oro\Bundle\SalesBundle\Tests\Behat\Context\SalesContext
+                - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+                - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\FixturesContext
+                - OroActivityListBundle::ActivityContext
+                - OroDataGridBundle::GridContext
+                - OroSecurityBundle::ACLContext
+                - OroSearchBundle::SearchContext
+                - OroImportExportBundle::ImportExportContext:
+                    - '@oro_entity.entity_alias_resolver'
+                    - '@oro_importexport.processor.registry'
+                - OroApplicationBundle::CommerceMainContext
+                - OroCustomerBundle::CustomerUserContext
+                - OroOrderBundle::OrderContext
+                - OroSalesBundle::SalesContext
                 - Oro\Bundle\ShippingProBundle\Tests\Behat\Context\MultiplyCurrencyContext
-                - Oro\Bundle\ShoppingListBundle\Tests\Behat\Context\ShoppingListContext
+                - OroShoppingListBundle::ShoppingListContext
             application_suites:
                 - OroApplicationBundle
                 - OroCheckoutBundle
