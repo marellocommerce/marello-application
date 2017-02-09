@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ProductBundle\Tests\Functional\Datafixtures;
+namespace Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,13 +11,13 @@ use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Marello\Bundle\SalesBundle\Tests\Functional\Datafixtures\LoadSalesData;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
@@ -153,6 +153,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             LoadSalesData::class
         ];
     }
+
     /**
      * {@inheritDoc}
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)

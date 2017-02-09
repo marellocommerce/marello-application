@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\SalesBundle\Tests\Functional\Datafixtures;
+namespace Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;

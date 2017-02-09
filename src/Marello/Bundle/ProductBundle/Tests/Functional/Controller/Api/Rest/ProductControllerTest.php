@@ -2,12 +2,16 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller\Api\Rest;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingDataTest;
+use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
 
 /**
  * @dbIsolation
@@ -20,7 +24,9 @@ class ProductControllerTest extends WebTestCase
         $this->initClient([], $this->generateWsseAuthHeader());
 
         $this->loadFixtures([
-            LoadProductChannelPricingDataTest::class,
+            LoadSalesData::class,
+            LoadProductData::class,
+            LoadSupplierData::class,
         ]);
     }
 
@@ -58,7 +64,7 @@ class ProductControllerTest extends WebTestCase
         $this->assertArrayHasKey('organization', $data);
         $this->assertArrayHasKey('prices', $data);
         $this->assertArrayHasKey('channels', $data);
-        $this->assertArrayHasKey('inventory', $data);
+        $this->assertArrayHasKey('inventoryItems', $data);
     }
 
     /**
@@ -77,7 +83,7 @@ class ProductControllerTest extends WebTestCase
 
         $content = json_decode($response->getContent(), true);
 
-        $this->assertCount(10, $content, '10 products should be returned.');
+        $this->assertCount(4, $content, '4 products should be returned.');
 
         foreach ($content as $item) {
             $product = $this->getContainer()
@@ -94,7 +100,7 @@ class ProductControllerTest extends WebTestCase
     public function testGet()
     {
         /** @var Product $product */
-        $product = $this->getReference('marello-product-0');
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
         $this->client->request(
             'GET',
@@ -102,11 +108,9 @@ class ProductControllerTest extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
 
         $content = json_decode($response->getContent(), true);
-
         $this->assertProductApiResult($product, $content);
     }
 
@@ -118,11 +122,11 @@ class ProductControllerTest extends WebTestCase
             'status'    => 'enabled',
             'desiredStockLevel' => 10,
             'purchaseStockLevel' => 2,
-            'inventory' => [
-                ['inventory' => 10, 'warehouse' => $this->getDefaultWarehouse()->getId()],
+            'inventoryItems' => [
+                ['stock' => 10, 'warehouse' => $this->getDefaultWarehouse()->getId()],
             ],
             'channels'  => [
-                $this->getReference('marello_sales_channel_1')->getId(),
+                $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId(),
             ],
         ];
 
@@ -149,11 +153,11 @@ class ProductControllerTest extends WebTestCase
         $this->assertEquals($data['status'], $product->getStatus()->getName());
         $this->assertCount(1, $product->getInventoryItems());
         $this->assertEquals(
-            reset($data['inventory'])['inventory'],
+            reset($data['inventoryItems'])['stock'],
             $product->getInventoryItems()->first()->getStock()
         );
         $this->assertEquals(
-            reset($data['inventory'])['warehouse'],
+            reset($data['inventoryItems'])['warehouse'],
             $product->getInventoryItems()->first()->getWarehouse()->getId()
         );
         $this->assertCount(1, $product->getChannels());
@@ -171,11 +175,11 @@ class ProductControllerTest extends WebTestCase
             'status'    => 'enabled',
             'desiredStockLevel' => 10,
             'purchaseStockLevel' => 2,
-            'inventory' => [
-                ['inventory' => 10, 'warehouse' => -5 /* wrong ID */],
+            'inventoryItems' => [
+                ['stock' => 10, 'warehouse' => -5 /* wrong ID */],
             ],
             'channels'  => [
-                $this->getReference('marello_sales_channel_1')->getId(),
+                $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId(),
             ],
         ];
 
@@ -197,7 +201,7 @@ class ProductControllerTest extends WebTestCase
     public function testUpdate()
     {
         /** @var Product $product */
-        $product = $this->getReference('marello-product-0');
+        $product = $this->getReference(LoadProductData::PRODUCT_2_REF);
 
         $data = [
             'name'      => 'New name of product',
@@ -205,8 +209,8 @@ class ProductControllerTest extends WebTestCase
             'desiredStockLevel' => 10,
             'purchaseStockLevel' => 2,
             'status'    => $product->getStatus()->getName(),
-            'inventory' => $product->getInventoryItems()->map(function (InventoryItem $item) {
-                return ['inventory' => $item->getStock(), 'warehouse' => $item->getWarehouse()->getId()];
+            'inventoryItems' => $product->getInventoryItems()->map(function (InventoryItem $item) {
+                return ['stock' => $item->getStock(), 'warehouse' => $item->getWarehouse()->getId()];
             })->toArray(),
             'channels'  => $product->getChannels()->map(function (SalesChannel $channel) {
                 return $channel->getId();
@@ -236,7 +240,7 @@ class ProductControllerTest extends WebTestCase
      */
     public function testDeleteNonExistent()
     {
-        $productId = $this->getReference('marello-product-0')->getId() - 1;
+        $productId = $this->getReference(LoadProductData::PRODUCT_1_REF)->getId() - 1;
 
         $this->client->request(
             'DELETE',

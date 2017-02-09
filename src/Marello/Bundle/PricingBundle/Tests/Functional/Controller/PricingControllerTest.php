@@ -2,11 +2,15 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingDataTest;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingData;
+use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
+ * @outputBuffering enabled
  * @dbIsolation
  */
 class PricingControllerTest extends WebTestCase
@@ -15,24 +19,26 @@ class PricingControllerTest extends WebTestCase
     {
         $this->initClient(
             [],
-            $this->generateBasicAuthHeader()
+            array_merge($this->generateBasicAuthHeader(), ['HTTP_X-CSRF-Header' => 1])
         );
 
         $this->loadFixtures([
-            LoadProductChannelPricingDataTest::class,
+            LoadSalesData::class,
+            LoadProductData::class,
+            LoadSupplierData::class,
+            LoadProductChannelPricingData::class,
         ]);
     }
 
     public function testGetProductPriceByChannelAvailable()
     {
         $queryData = [
-            'salesChannel' => $this->getReference('marello_sales_channel_1')->getId(),
+            'salesChannel' => $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId(),
             'product_ids'  => [
-                ['product' => $this->getReference('marello-product-0')->getId()],
-                ['product' => $this->getReference('marello-product-1')->getId()],
-                ['product' => $this->getReference('marello-product-2')->getId()],
-                ['product' => $this->getReference('marello-product-3')->getId()],
-                ['product' => $this->getReference('marello-product-4')->getId()],
+                ['product' => $this->getReference(LoadProductData::PRODUCT_1_REF)->getId()],
+                ['product' => $this->getReference(LoadProductData::PRODUCT_2_REF)->getId()],
+                ['product' => $this->getReference(LoadProductData::PRODUCT_3_REF)->getId()],
+                ['product' => $this->getReference(LoadProductData::PRODUCT_4_REF)->getId()],
             ],
         ];
 
@@ -44,6 +50,6 @@ class PricingControllerTest extends WebTestCase
         $responseData = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertCount(5, $responseData, 'Response should contain 5 results, one for each product requested.');
+        $this->assertCount(4, $responseData, 'Response should contain 4 results, one for each product requested.');
     }
 }

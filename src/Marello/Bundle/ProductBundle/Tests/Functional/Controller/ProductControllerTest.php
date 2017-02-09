@@ -9,9 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Tests\Functional\Datafixtures\LoadProductData;
-use Marello\Bundle\SalesBundle\Tests\Functional\Datafixtures\LoadSalesData;
-use Marello\Bundle\SupplierBundle\Tests\Functional\Datafixtures\LoadSupplierData;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
 
 /**
  * @outputBuffering enabled

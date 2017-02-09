@@ -2,9 +2,9 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadSalesData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 
 /**
  * @dbIsolation
@@ -47,7 +47,7 @@ class SalesChannelControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_sales_saleschannel_update', ['id' => $this->getReference('marello_sales_channel_1')])
+            $this->getUrl('marello_sales_saleschannel_update', ['id' => $this->getReference(LoadSalesData::CHANNEL_1_REF)])
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);

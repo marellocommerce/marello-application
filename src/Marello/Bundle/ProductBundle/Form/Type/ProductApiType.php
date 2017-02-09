@@ -56,8 +56,7 @@ class ProductApiType extends AbstractType
             )
             ->add('prices')
             ->add('channels')
-            ->add('inventory', 'collection', [
-                'property_path' => 'inventoryItems',
+            ->add('inventoryItems', 'collection', [
                 'type'          => new InventoryItemApiType($this->transformer),
                 'allow_add'     => true,
                 'allow_delete'  => true,

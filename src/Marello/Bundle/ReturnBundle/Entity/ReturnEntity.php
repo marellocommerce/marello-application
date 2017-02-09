@@ -277,6 +277,17 @@ class ReturnEntity extends ExtendReturnEntity implements
     }
 
     /**
+     * @param Organization $organization
+     * @return $this
+     */
+    public function setOrganization(Organization $organization)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
      * @param $id
      */
     public function setDerivedProperty($id)
