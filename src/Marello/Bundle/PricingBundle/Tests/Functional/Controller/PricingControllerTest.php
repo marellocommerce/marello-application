@@ -2,12 +2,13 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Functional\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingData;
-use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @outputBuffering enabled
@@ -23,10 +24,7 @@ class PricingControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadSalesData::class,
-            LoadProductData::class,
-            LoadSupplierData::class,
-            LoadProductChannelPricingData::class,
+            LoadProductChannelPricingData::class
         ]);
     }
 

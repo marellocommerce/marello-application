@@ -11,7 +11,6 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
-use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
 
 /**
  * @dbIsolation
@@ -24,9 +23,7 @@ class ProductControllerTest extends WebTestCase
         $this->initClient([], $this->generateWsseAuthHeader());
 
         $this->loadFixtures([
-            LoadSalesData::class,
-            LoadProductData::class,
-            LoadSupplierData::class,
+            LoadProductData::class
         ]);
     }
 

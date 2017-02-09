@@ -6,11 +6,11 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
@@ -18,6 +18,7 @@ use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
@@ -150,7 +151,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
-            LoadSalesData::class
+            LoadSalesData::class,
+            LoadSupplierData::class
         ];
     }
 
@@ -223,6 +225,12 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         return $product;
     }
 
+    /**
+     * Add sales channels to product
+     * @param Product $product
+     * @param array $data
+     * @return array
+     */
     protected function addSalesChannels(Product $product, array $data)
     {
         $channels = explode(';', $data['channel']);
@@ -237,6 +245,12 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         return $currencies;
     }
 
+    /**
+     * Add default prices based on the available saleschannel currencies
+     * @param Product $product
+     * @param array $currencies
+     * @param $defaultPrice
+     */
     protected function addDefaultPricesForCurrencies(Product $product, array $currencies, $defaultPrice)
     {
         /**

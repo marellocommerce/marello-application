@@ -2,12 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Logging;
 
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\StockLevel;
 use Marello\Bundle\InventoryBundle\Logging\ChartBuilder;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductDataTest;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
 /**
  * @dbIsolation
@@ -24,7 +25,7 @@ class ChartBuilderTest extends WebTestCase
         $this->chartBuilder = $this->client->getContainer()->get('marello_inventory.logging.chart_builder');
 
         $this->loadFixtures([
-            LoadProductDataTest::class
+            LoadProductData::class
         ]);
     }
 
@@ -34,7 +35,7 @@ class ChartBuilderTest extends WebTestCase
     public function testGetChartData()
     {
         /** @var Product $product */
-        $product = $this->getReference('marello-product-1');
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $product

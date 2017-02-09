@@ -2,11 +2,12 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductDataTest;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
 /**
  * @dbIsolation
@@ -21,14 +22,14 @@ class VariantControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadProductDataTest::class,
+            LoadProductData::class,
         ]);
     }
 
     public function testCreateVariantAvailable()
     {
         /** @var Product $product */
-        $product = $this->getReference('marello-product-0');
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
         $this->client->request(
             'GET',

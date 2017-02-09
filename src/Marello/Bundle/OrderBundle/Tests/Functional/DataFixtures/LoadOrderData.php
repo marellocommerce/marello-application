@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
+namespace Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -14,6 +14,9 @@ use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingData;
 
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -53,7 +56,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $this->manager = $manager;
 
         $this->defaultWarehouse = $manager->getRepository(Warehouse::class)->getDefault();
-        $this->setReference('marello_warehouse_default', $this->defaultWarehouse);
+//        $this->setReference('marello_warehouse_default', $this->defaultWarehouse);
 
         /** @var Order $order */
         $order = null;
@@ -76,7 +79,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                     $grandTotal += $item->getRowTotalInclTax();
                 });
 
-//                $grandTotal += $order->getShippingAmount();
                 $grandTotal += $order->getShippingAmountInclTax();
 
                 $order
@@ -86,7 +88,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 ;
 
                 $manager->persist($order);
-                $this->setReference('marello_order_' . $createdOrders, $order);
+                $this->setReference('order' . $createdOrders, $order);
                 $createdOrders++;
 
                 if (!($createdOrders % self::FLUSH_MAX)) {
@@ -192,10 +194,10 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $orderEntity = new Order($address, $address);
         $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $address);
         $customer->setOrganization($organization);
-        $this->setReference('marello_customer_' . $this->customers++, $customer);
+        $this->setReference('customer' . $this->customers++, $customer);
         $orderEntity->setCustomer($customer);
 
-        $channel = $this->getReference('marello_sales_channel_' . $row['channel']);
+        $channel = $this->getReference($row['channel']);
         $orderEntity->setSalesChannel($channel);
         $orderEntity->setCurrency($channel->getCurrency());
 
@@ -208,7 +210,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             $orderEntity->setPaymentDetails($row['payment_details']);
         }
 
-//        $orderEntity->setShippingMethod($row['shipping_method']);
         $orderEntity->setShippingAmountExclTax($row['shipping_amount']);
         $orderEntity->setShippingAmountInclTax($row['shipping_amount']);
 
@@ -239,7 +240,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $itemEntity->setRowTotalInclTax($row['total_price']);
         $itemEntity->setRowTotalExclTax($row['total_price']);
         $itemEntity->setTax($row['tax']);
-
+        
         return $itemEntity;
     }
 }

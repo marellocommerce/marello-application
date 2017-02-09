@@ -2,22 +2,18 @@
 
 namespace Marello\Bundle\NotificationBundle\Tests\Functional\Email;
 
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\NotificationBundle\Email\SendProcessor;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderDataTest;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 
 /**
  * @dbIsolation
  */
 class SendProcessorTest extends WebTestCase
 {
-    /** @var ObjectProphecy */
-    protected $oroProcessorMock;
-
     /** @var SendProcessor */
     protected $sendProcessor;
 
@@ -27,7 +23,7 @@ class SendProcessorTest extends WebTestCase
 
         $this->loadFixtures(
             [
-                LoadOrderDataTest::class,
+                LoadOrderData::class,
             ]
         );
 
@@ -41,7 +37,7 @@ class SendProcessorTest extends WebTestCase
     public function sendsNotifications()
     {
         /** @var Order $order */
-        $order = $this->getReference('marello_order_0');
+        $order = $this->getReference('order0');
 
         $notificationsBefore = count(
             $this->getContainer()
@@ -74,7 +70,7 @@ class SendProcessorTest extends WebTestCase
     public function throwsExceptionWhenTemplateIsNotFound()
     {
         /** @var Order $order */
-        $order = $this->getReference('marello_order_0');
+        $order = $this->getReference('order1');
 
         $this->sendProcessor->sendNotification(
             'this is not a valid template name',

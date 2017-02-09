@@ -29,9 +29,7 @@ class ProductControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadSalesData::class,
-            LoadProductData::class,
-            LoadSupplierData::class,
+            LoadProductData::class
         ]);
     }
 
