@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\ReturnBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnDataTest;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
+use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
 /**
  * @dbIsolation
@@ -19,7 +21,7 @@ class ReturnControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadReturnDataTest::class,
+            LoadReturnData::class,
         ]);
     }
 

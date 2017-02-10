@@ -49,8 +49,6 @@ class ReturnApiHandler implements FormAwareInterface
         $this->form->setData($entity);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            var_dump($this->request->all());
-            die(__METHOD__);
             $this->form->submit($this->request);
             if ($this->form->isValid()) {
                 $this->onSuccess($entity);

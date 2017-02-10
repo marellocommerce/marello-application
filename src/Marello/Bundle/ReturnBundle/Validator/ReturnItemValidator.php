@@ -39,13 +39,12 @@ class ReturnItemValidator extends ConstraintValidator
                 if ((!$constraint->includeSelf) && ($item === $returnItem)) {
                     return $carry;
                 }
-
                 return $carry + $item->getQuantity();
             },
             0
         );
-
-        $returnedQuantity += $returnItem->getQuantity();
+        // no sure why this is here? disabled until we know why this is here
+//        $returnedQuantity += $returnItem->getQuantity();
 
         /*
          * If returned quantity is greater than ordered, create a constraint violation.

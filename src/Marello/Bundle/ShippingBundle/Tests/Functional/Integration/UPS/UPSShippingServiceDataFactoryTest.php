@@ -2,9 +2,8 @@
 
 namespace Marello\Bundle\ShippingBundle\Tests\Functional\Integration\UPS;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadReturnData;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package;
@@ -13,7 +12,9 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipper;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\ShipTo;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
+use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
 /**
  * @dbIsolation
@@ -27,7 +28,12 @@ class UPSShippingServiceDataFactoryTest extends WebTestCase
     {
         $this->initClient();
 
-        $this->loadFixtures([LoadOrderData::class, LoadReturnData::class]);
+        $this->loadFixtures(
+            [
+                LoadOrderData::class,
+                LoadReturnData::class
+            ]
+        );
         
         $this->factory = $this->client->getContainer()->get('marello_shipping.integration.ups.service_data_factory');
     }
@@ -38,10 +44,14 @@ class UPSShippingServiceDataFactoryTest extends WebTestCase
     public function testOrderShipment()
     {
         /** @var Order $order */
-        $order = $this->getReference('marello_order_1');
+        $order = $this->getReference('order1');
 
-        $shippingDataProvider = $this->client->getContainer()->get('marello_order.shipping.integration.service_data_provider');
-        $shippingDataProvider = $shippingDataProvider->setEntity($order)->setWarehouse($this->getReference('marello_warehouse_default'));
+        $shippingDataProvider = $this->client
+            ->getContainer()
+            ->get('marello_order.shipping.integration.service_data_provider');
+        $shippingDataProvider = $shippingDataProvider
+            ->setEntity($order)
+            ->setWarehouse($this->getReference(LoadOrderData::DEFAULT_WAREHOUSE_REF));
 
         $data = $this->factory->createData($shippingDataProvider);
 
@@ -63,10 +73,14 @@ class UPSShippingServiceDataFactoryTest extends WebTestCase
     public function testReturnShipment()
     {
         /** @var ReturnEntity $return */
-        $return = $this->getReference('marello_return_1');
+        $return = $this->getReference('return1');
 
-        $shippingDataProvider = $this->client->getContainer()->get('marello_order.shipping.integration.service_data_provider');
-        $shippingDataProvider = $shippingDataProvider->setEntity($return)->setWarehouse($this->getReference('marello_warehouse_default'));
+        $shippingDataProvider = $this->client
+            ->getContainer()
+            ->get('marello_order.shipping.integration.service_data_provider');
+        $shippingDataProvider = $shippingDataProvider
+            ->setEntity($return)
+            ->setWarehouse($this->getReference(LoadOrderData::DEFAULT_WAREHOUSE_REF));
 
         $data = $this->factory->createData($shippingDataProvider);
 

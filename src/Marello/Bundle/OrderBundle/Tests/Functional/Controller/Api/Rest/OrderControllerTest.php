@@ -2,13 +2,17 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
+use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderDataTest;
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
 /**
  * @dbIsolation
@@ -22,7 +26,7 @@ class OrderControllerTest extends WebTestCase
             $this->generateWsseAuthHeader()
         );
         $this->loadFixtures([
-            LoadOrderDataTest::class,
+            LoadOrderData::class,
         ]);
     }
 
@@ -45,10 +49,10 @@ class OrderControllerTest extends WebTestCase
     public function testCreateWithCustomerId()
     {
         /** @var Customer $customer */
-        $customer = $this->getReference('marello_customer_1');
+        $customer = $this->getReference('customer1');
         $data = [
             'orderReference'  => 333444,
-            'salesChannel'    => $this->getReference('marello_sales_channel_3')->getCode(),
+            'salesChannel'    => $this->getReference(LoadSalesData::CHANNEL_1_REF)->getCode(),
             'subtotal'        => 365.00,
             'totalTax'        => 76.65,
             'grandTotal'      => 365.00,
@@ -80,28 +84,28 @@ class OrderControllerTest extends WebTestCase
             ],
             'items'           => [
                 [
-                    'product'           => 'msj005',
-                    'quantity'          => 1,
-                    'price'             => 150.10,
-                    'originalPriceInclTax'     => 150.10,
-                    'originalPriceExclTax'     => 140.10,
-                    'purchasePriceIncl' => 190.00,
-                    'tax'               => 39.90,
-                    'taxPercent'        => 0.21,
-                    'rowTotalInclTax'          => 190.00,
-                    'rowTotalExclTax'          => 180.00,
+                    'product'               => 'p1',
+                    'quantity'              => 1,
+                    'price'                 => 150.10,
+                    'originalPriceInclTax'  => 150.10,
+                    'originalPriceExclTax'  => 140.10,
+                    'purchasePriceIncl'     => 190.00,
+                    'tax'                   => 39.90,
+                    'taxPercent'            => 0.21,
+                    'rowTotalInclTax'       => 190.00,
+                    'rowTotalExclTax'       => 180.00,
                 ],
                 [
-                    'product'           => 'msj003xs',
-                    'quantity'          => 1,
-                    'price'             => 138.25,
-                    'originalPriceInclTax'     => 138.25,
-                    'originalPriceExclTax'     => 128.25,
-                    'purchasePriceIncl' => 175.00,
-                    'tax'               => 36.75,
-                    'taxPercent'        => 0.21,
-                    'rowTotalInclTax'          => 175.00,
-                    'rowTotalExclTax'          => 165.00,
+                    'product'               => 'p2',
+                    'quantity'              => 1,
+                    'price'                 => 138.25,
+                    'originalPriceInclTax'  => 138.25,
+                    'originalPriceExclTax'  => 128.25,
+                    'purchasePriceIncl'     => 175.00,
+                    'tax'                   => 36.75,
+                    'taxPercent'            => 0.21,
+                    'rowTotalInclTax'       => 175.00,
+                    'rowTotalExclTax'       => 165.00,
                 ],
             ],
         ];
@@ -130,11 +134,11 @@ class OrderControllerTest extends WebTestCase
     public function testCreateWithCustomerData()
     {
         /** @var SalesChannel $salesChannel */
-        $salesChannel = $this->getReference('marello_sales_channel_3');
+        $salesChannel = $this->getReference(LoadSalesData::CHANNEL_1_REF);
         /** @var Product $product */
-        $product = $this->getReference('marello-product-1');
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
         /** @var Product $product2 */
-        $product2 = $this->getReference('marello-product-2');
+        $product2 = $this->getReference(LoadProductData::PRODUCT_2_REF);
 
         $data = [
             'orderReference'  => 333456,
@@ -183,30 +187,30 @@ class OrderControllerTest extends WebTestCase
             ],
             'items'          => [
                 [
-                    'product'           => $product->getSku(),
-                    'productName'       => $product->getName(),
-                    'quantity'          => 1,
-                    'price'             => 150.10,
-                    'originalPriceInclTax'     => 150.10,
-                    'originalPriceExclTax'     => 140.10,
-                    'purchasePriceIncl' => 190.00,
-                    'tax'               => 39.90,
-                    'taxPercent'        => 0.21,
-                    'rowTotalInclTax'          => 190.00,
-                    'rowTotalExclTax'          => 180.00,
+                    'product'               => $product->getSku(),
+                    'productName'           => $product->getName(),
+                    'quantity'              => 1,
+                    'price'                 => 150.10,
+                    'originalPriceInclTax'  => 150.10,
+                    'originalPriceExclTax'  => 140.10,
+                    'purchasePriceIncl'     => 190.00,
+                    'tax'                   => 39.90,
+                    'taxPercent'            => 0.21,
+                    'rowTotalInclTax'       => 190.00,
+                    'rowTotalExclTax'       => 180.00,
                 ],
                 [
-                    'product'           => $product2->getSku(),
-                    'productName'       => $product2->getName(),
-                    'quantity'          => 1,
-                    'price'             => 138.25,
-                    'originalPriceInclTax'     => 138.25,
-                    'originalPriceExclTax'     => 128.25,
-                    'purchasePriceIncl' => 175.00,
-                    'tax'               => 36.75,
-                    'taxPercent'        => 0.21,
-                    'rowTotalInclTax'          => 175.00,
-                    'rowTotalExclTax'          => 165.00,
+                    'product'               => $product2->getSku(),
+                    'productName'           => $product2->getName(),
+                    'quantity'              => 1,
+                    'price'                 => 138.25,
+                    'originalPriceInclTax'  => 138.25,
+                    'originalPriceExclTax'  => 128.25,
+                    'purchasePriceIncl'     => 175.00,
+                    'tax'                   => 36.75,
+                    'taxPercent'            => 0.21,
+                    'rowTotalInclTax'       => 175.00,
+                    'rowTotalExclTax'       => 165.00,
                 ],
             ],
         ];
@@ -238,7 +242,7 @@ class OrderControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('marello_order_0')->getId()])
+            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('order0')->getId()])
         );
 
         $response = $this->client->getResponse();
@@ -277,7 +281,7 @@ class OrderControllerTest extends WebTestCase
 
         $this->client->request(
             'PUT',
-            $this->getUrl('marello_order_api_put_order', ['id' => $this->getReference('marello_order_0')->getId()]),
+            $this->getUrl('marello_order_api_put_order', ['id' => $this->getReference('order0')->getId()]),
             $data
         );
 

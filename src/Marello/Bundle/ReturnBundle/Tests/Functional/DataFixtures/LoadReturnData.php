@@ -2,27 +2,31 @@
 
 namespace Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures;
 
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadReturnData;
-use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderDataTest;
+
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 
-class LoadReturnDataTest extends LoadReturnData
+class LoadReturnData extends AbstractFixture implements DependentFixtureInterface
 {
     public function getDependencies()
     {
         return [
-            LoadOrderDataTest::class,
+            LoadOrderData::class,
         ];
     }
 
     public function load(ObjectManager $manager)
     {
         $orders = $manager->getRepository('MarelloOrderBundle:Order')->findAll();
-        $channel = $this->getReference('marello_sales_channel_1');
+        $channel = $this->getReference(LoadSalesData::CHANNEL_1_REF);
         $reasonClass = ExtendHelper::buildEnumValueClassName('marello_return_reason');
         $reasons = $manager->getRepository($reasonClass)->findAll();
 
@@ -46,7 +50,7 @@ class LoadReturnDataTest extends LoadReturnData
             });
 
             $manager->persist($return);
-            $this->setReference('marello_return_' . $i++, $return);
+            $this->setReference('return' . $i++, $return);
         }
 
         $manager->flush();

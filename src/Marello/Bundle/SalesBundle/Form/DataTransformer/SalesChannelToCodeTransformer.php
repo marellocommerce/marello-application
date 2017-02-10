@@ -9,7 +9,6 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 class SalesChannelToCodeTransformer implements DataTransformerInterface
 {
-
     /** @var ObjectManager */
     protected $om;
 

@@ -2,17 +2,19 @@
 
 namespace Marello\Bundle\ReturnBundle\Tests\Functional\Controller\Api\Rest;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadReturnData;
+use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnDataTest;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpFoundation\Response;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
 /**
- * @dbIsolationPerTest
+ * @dbIsolation
  */
 class ReturnControllerTest extends WebTestCase
 {
@@ -24,7 +26,7 @@ class ReturnControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadReturnDataTest::class,
+            LoadReturnData::class
         ]);
     }
 
@@ -36,12 +38,12 @@ class ReturnControllerTest extends WebTestCase
 
         $data = [
             'order'       => $returnedOrder->getOrderNumber(),
-            'salesChannel' => $this->getReference('marello_sales_channel_1')->getCode(),
+            'salesChannel' => $returnedOrder->getSalesChannel()->getCode(),
             'returnReference' => uniqid() . 'TEST',
             'returnItems' => $returnedOrder->getItems()->map(function (OrderItem $item) {
                 return [
                     'orderItem' => $item->getId(),
-                    'quantity'  => $item->getQuantity(),
+                    'quantity'  => 1,
                     'reason'    => 'damaged',
                 ];
             })->toArray(),

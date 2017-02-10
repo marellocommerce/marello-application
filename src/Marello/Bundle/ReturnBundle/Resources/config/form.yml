@@ -15,6 +15,7 @@ services:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnApiType
         arguments:
             - '@marello_return.form.data_transformer.order_to_order_number'
+            - '@marello_order.form.data_transformer.sales_channel_to_id'
         tags:
             - { name: form.type, alias: marello_return_api }
 
@@ -37,10 +38,11 @@ services:
         class: Marello\Bundle\ReturnBundle\Form\EventListener\ReturnTypeSubscriber
 
     marello_return.form.return_api:
-        class: Symfony\Component\Form\FormInterface
-        factory: ["@form.factory", create]
+        class: Symfony\Component\Form\Form
+        factory: ["@form.factory", createNamed]
         scope: request
         arguments:
+            - ~
             - 'marello_return_api'
 
     marello_return.form.handler.return_api:

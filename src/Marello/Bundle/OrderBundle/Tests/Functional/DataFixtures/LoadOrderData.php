@@ -20,6 +20,7 @@ use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChanne
 
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
+    const DEFAULT_WAREHOUSE_REF = 'marello_warehouse_default';
     /** flush manager count */
     const FLUSH_MAX = 25;
 
@@ -56,7 +57,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $this->manager = $manager;
 
         $this->defaultWarehouse = $manager->getRepository(Warehouse::class)->getDefault();
-//        $this->setReference('marello_warehouse_default', $this->defaultWarehouse);
+        $this->setReference(self::DEFAULT_WAREHOUSE_REF, $this->defaultWarehouse);
 
         /** @var Order $order */
         $order = null;

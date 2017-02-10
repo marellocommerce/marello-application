@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
-use Marello\Bundle\ReturnBundle\Form\DataTransformer\OrderToOrderNumberTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
+use Marello\Bundle\ReturnBundle\Form\DataTransformer\OrderToOrderNumberTransformer;
 
 class ReturnApiType extends AbstractType
 {
@@ -15,14 +17,20 @@ class ReturnApiType extends AbstractType
     /** @var OrderToOrderNumberTransformer */
     protected $orderToOrderNumberTransformer;
 
+    protected $salesChannelTransformer;
+
     /**
      * ReturnApiType constructor.
      *
      * @param OrderToOrderNumberTransformer $orderToOrderNumberTransformer
+     * @param EntityToIdTransformer         $salesChannelTransformer
      */
-    public function __construct(OrderToOrderNumberTransformer $orderToOrderNumberTransformer)
-    {
-        $this->orderToOrderNumberTransformer = $orderToOrderNumberTransformer;
+    public function __construct(
+        OrderToOrderNumberTransformer $orderToOrderNumberTransformer,
+        EntityToIdTransformer $salesChannelTransformer
+    ) {
+        $this->orderToOrderNumberTransformer    = $orderToOrderNumberTransformer;
+        $this->salesChannelTransformer          = $salesChannelTransformer;
     }
 
     /**
@@ -52,6 +60,7 @@ class ReturnApiType extends AbstractType
             ]);
 
         $builder->get('order')->addModelTransformer($this->orderToOrderNumberTransformer);
+//        $builder->get('salesChannel')->addModelTransformer($this->salesChannelTransformer);
     }
 
     /**
