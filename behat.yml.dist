@@ -5,7 +5,7 @@ default: &default
     gherkin:
         filters:
             tags: ~@not-automated&&~@skip
-    extensions:
+    extensions: &default_extensions
         Behat\MinkExtension:
             base_url: 'http://dev2-commerce-crm-ee.local/'
         Behat\Symfony2Extension: ~
@@ -28,18 +28,18 @@ default: &default
                 - OroSalesBundle::SalesContext
                 - Oro\Bundle\ShippingProBundle\Tests\Behat\Context\MultiplyCurrencyContext
                 - OroShoppingListBundle::ShoppingListContext
+                - OroRedirectBundle::SlugPrototypesContext
             application_suites:
                 - OroApplicationBundle
-                - OroCheckoutBundle
-                - OroShippingBundle
                 - OroUserBundle
-                - OroCRMBundle
                 - OroNavigationBundle
+                - OroEmailBundle
+                - OroHelpBundle
+                - OroCRMBundle
                 - OroContactBundle
                 - OroAccountBundle
                 - OroTaskBundle
                 - OroOrganizationConfigCRMProBundle
-                - OroHelpBundle
                 - OroSearchBundle
                 - OroDashboardBundle
                 - OroSalesBundle
@@ -48,6 +48,7 @@ selenium2:
     <<: *default
 #    Uncomment this in your behat.yml for run tests with Chrome browser
 #    extensions:
+#        <<: *default_extensions
 #        Behat\MinkExtension:
 #            browser_name: chrome
 #            base_url: 'http://dev-commerce-crm-ee.local/'
