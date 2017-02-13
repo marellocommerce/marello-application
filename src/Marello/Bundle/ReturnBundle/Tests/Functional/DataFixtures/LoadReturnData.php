@@ -34,6 +34,7 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
         foreach ($orders as $order) {
             if (!$this->hasReference('marello_order_unreturned')) {
                 $this->setReference('marello_order_unreturned', $order);
+                continue;
             }
 
             $return = new ReturnEntity();

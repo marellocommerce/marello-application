@@ -32,6 +32,7 @@ class ReturnItemValidator extends ConstraintValidator
 
         /*
          * Reduce all return items into a sum of their quantities and add validated item quantity.
+         * Get previous returned items and get the quantity of all and reduce them to a single value
          */
         $returnedQuantity = array_reduce(
             $orderItem->getReturnItems()->toArray(),
@@ -43,8 +44,9 @@ class ReturnItemValidator extends ConstraintValidator
             },
             0
         );
-        // no sure why this is here? disabled until we know why this is here
-//        $returnedQuantity += $returnItem->getQuantity();
+
+        // total returned quantity (previous returned quantity + currently returned quantity)
+        $returnedQuantity += $returnItem->getQuantity();
 
         /*
          * If returned quantity is greater than ordered, create a constraint violation.
