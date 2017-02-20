@@ -32,7 +32,6 @@
             <group>commerce</group>
             <group>crm</group>
             <group>soap</group>
-            <group>segfault</group>
             <group>dist</group>
         </exclude>
     </groups>
