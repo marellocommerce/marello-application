@@ -56,7 +56,6 @@ class Product extends ExtendProduct implements
     SalesChannelAwareInterface,
     PricingAwareInterface
 {
-    use EntityCreatedUpdatedAtTrait;
     /**
      * @var integer
      *
