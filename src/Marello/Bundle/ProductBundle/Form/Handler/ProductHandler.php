@@ -87,6 +87,7 @@ class ProductHandler
         $this->addChannels($entity, $addChannels);
         $this->removeChannels($entity, $removeChannels);
         $this->setProductSupplierRelationProduct($entity, $suppliers);
+        $this->setPreferredSupplier($entity);
 
         $this->manager->persist($entity);
         $this->manager->flush();
@@ -126,11 +127,33 @@ class ProductHandler
      */
     protected function setProductSupplierRelationProduct(Product $product, $suppliers)
     {
-        //todo sets Product NULL when edit
-
         /** @var $supplier ProductSupplierRelation */
         foreach ($suppliers as $supplier) {
             $supplier->setProduct($product);
+        }
+    }
+
+    /**
+     * @param Product $product
+     */
+    protected function setPreferredSupplier(Product $product)
+    {
+        $preferredSupplier = null;
+        $preferredPriority = 0;
+        foreach ($product->getSuppliers() as $productSupplierRelation) {
+            if (null == $preferredSupplier) {
+                $preferredSupplier = $productSupplierRelation->getSupplier();
+                $preferredPriority = $productSupplierRelation->getPriority();
+                continue;
+            }
+            if ($productSupplierRelation->getPriority() < $preferredPriority) {
+                $preferredSupplier = $productSupplierRelation->getSupplier();
+                $preferredPriority = $productSupplierRelation->getPriority();
+            }
+        }
+
+        if ($preferredSupplier) {
+            $product->setPreferredSupplier($preferredSupplier);
         }
     }
 }

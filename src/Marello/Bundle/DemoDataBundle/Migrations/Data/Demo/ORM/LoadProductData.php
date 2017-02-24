@@ -173,6 +173,24 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
             $product->addSupplier($productSupplierRelation);
         }
+
+        $preferredSupplier = null;
+        $preferredPriority = 0;
+        foreach ($product->getSuppliers() as $productSupplierRelation) {
+            if (null == $preferredSupplier) {
+                $preferredSupplier = $productSupplierRelation->getSupplier();
+                $preferredPriority = $productSupplierRelation->getPriority();
+                continue;
+            }
+            if ($productSupplierRelation->getPriority() < $preferredPriority) {
+                $preferredSupplier = $productSupplierRelation->getSupplier();
+                $preferredPriority = $productSupplierRelation->getPriority();
+            }
+        }
+
+        if ($preferredSupplier) {
+            $product->setPreferredSupplier($preferredSupplier);
+        }
     }
 
     /**

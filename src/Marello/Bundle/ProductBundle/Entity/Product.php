@@ -5,6 +5,7 @@ namespace Marello\Bundle\ProductBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
@@ -318,6 +319,14 @@ class Product extends ExtendProduct implements
      * )
      */
     protected $suppliers;
+
+    /**
+     * @var Supplier
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
+     * @ORM\JoinColumn(name="preferred_supplier_id", referencedColumnName="id")
+     */
+    protected $preferredSupplier;
+
 
     public function __construct()
     {
@@ -764,5 +773,42 @@ class Product extends ExtendProduct implements
         $this->suppliers->removeElement($supplier);
 
         return $this;
+    }
+
+
+    /**
+     * @return Supplier
+     */
+    public function getPreferredSupplier()
+    {
+        return $this->preferredSupplier;
+    }
+
+    /**
+     * @param Supplier $preferredSupplier
+     *
+     * @return Product
+     */
+    public function setPreferredSupplier(Supplier $preferredSupplier)
+    {
+        $this->preferredSupplier = $preferredSupplier;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdateTimestamp()
+    {
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistTimestamp()
+    {
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

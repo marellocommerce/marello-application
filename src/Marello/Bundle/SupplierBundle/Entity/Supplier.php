@@ -4,12 +4,14 @@ namespace Marello\Bundle\SupplierBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * Supplier
  *
+ * @ORM\Entity(repositoryClass="Marello\Bundle\SupplierBundle\Entity\Repository\SupplierRepository")
  * @ORM\Table(name="marello_supplier_supplier")
- * @ORM\Entity
+ * @Oro\Config()
  */
 class Supplier
 {

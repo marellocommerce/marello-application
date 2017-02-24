@@ -68,6 +68,7 @@ class MarelloProductBundleInstaller implements Installation
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('weight', 'float', ['notnull' => false]);
         $table->addColumn('warranty', 'integer', ['notnull' => false]);
+        $table->addColumn('preferred_supplier_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['sku'], 'marello_product_product_skuidx');
         $table->addIndex(['organization_id'], 'idx_25845b8d32c8a3de', []);
@@ -75,6 +76,7 @@ class MarelloProductBundleInstaller implements Installation
         $table->addIndex(['created_at'], 'idx_marello_product_created_at', []);
         $table->addIndex(['updated_at'], 'idx_marello_product_updated_at', []);
         $table->addIndex(['product_status'], 'IDX_25845B8D197C24B8', []);
+        $table->addIndex(['preferred_supplier_id']);
     }
 
     /**

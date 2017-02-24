@@ -9,6 +9,8 @@ use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
 use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
+use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtension;
+use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -17,13 +19,17 @@ use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 class MarelloOrderBundleInstaller implements
     Installation,
     ActivityExtensionAwareInterface,
-    NoteExtensionAwareInterface
+    NoteExtensionAwareInterface,
+    AttachmentExtensionAwareInterface
 {
     /** @var ActivityExtension */
     protected $activityExtension;
     
     /** @var  NoteExtension */
     protected $noteExtension;
+
+    /** @var  AttachmentExtension */
+    protected $attachmentExtension;
 
     /**
      * {@inheritdoc}
@@ -48,14 +54,7 @@ class MarelloOrderBundleInstaller implements
         $this->addMarelloOrderOrderForeignKeys($schema);
         $this->addMarelloOrderOrderItemForeignKeys($schema);
         $this->addMarelloAddressForeignKeys($schema);
-
-        $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_order_order');
-
-        $this->noteExtension->addNoteAssociation($schema, 'marello_order_order');
-        $this->activityExtension->addActivityAssociation($schema, 'oro_email', 'marello_order_order');
-        $table = $schema->getTable('oro_email_address');
-        $table->addColumn('owner_marello_customer_id', 'integer', ['notnull' => false]);
-        $table->addForeignKeyConstraint('marello_order_customer', ['owner_marello_customer_id'], ['id']);
+        $this->addMarelloOrderCustomerOwnerToOroEmailAddress($schema);
     }
 
     /**
@@ -97,6 +96,8 @@ class MarelloOrderBundleInstaller implements
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['primaryAddress_id'], 'UNIQ_75C456C9F5B7AF75');
         $table->addIndex(['organization_id'], 'IDX_75C456C932C8A3DE', []);
+
+        $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
     }
 
 
@@ -149,6 +150,10 @@ class MarelloOrderBundleInstaller implements
         $table->addIndex(['salesChannel_id'], 'IDX_A619DD644C7A5B2E', []);
         $table->addIndex(['workflow_step_id'], 'IDX_A619DD6471FE882C', []);
         $table->addIndex(['organization_id'], 'IDX_A619DD6432C8A3DE', []);
+
+        $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
+        $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
+        $this->noteExtension->addNoteAssociation($schema, $table->getName());
     }
 
     /**
@@ -283,6 +288,18 @@ class MarelloOrderBundleInstaller implements
     }
 
     /**
+     * Add owner_marello_customer_id to oro_email_address table.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloOrderCustomerOwnerToOroEmailAddress(Schema $schema)
+    {
+        $table = $schema->getTable('oro_email_address');
+        $table->addColumn('owner_marello_customer_id', 'integer', ['notnull' => false]);
+        $table->addForeignKeyConstraint('marello_order_customer', ['owner_marello_customer_id'], ['id']);
+    }
+
+    /**
      * Sets the ActivityExtension
      *
      * @param ActivityExtension $activityExtension
@@ -300,5 +317,15 @@ class MarelloOrderBundleInstaller implements
     public function setNoteExtension(NoteExtension $noteExtension)
     {
         $this->noteExtension = $noteExtension;
+    }
+
+    /**
+     * Sets the AttachmentExtension
+     *
+     * @param AttachmentExtension $attachmentExtension
+     */
+    public function setAttachmentExtension(AttachmentExtension $attachmentExtension)
+    {
+        $this->attachmentExtension = $attachmentExtension;
     }
 }

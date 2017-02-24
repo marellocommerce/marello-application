@@ -3,6 +3,8 @@
 namespace Marello\Bundle\SupplierBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtension;
+use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -10,8 +12,13 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloSupplierBundleInstaller implements Installation
+class MarelloSupplierBundleInstaller implements
+    Installation,
+    AttachmentExtensionAwareInterface
 {
+    /** @var  AttachmentExtension */
+    protected $attachmentExtension;
+
     /**
      * {@inheritdoc}
      */
@@ -50,6 +57,8 @@ class MarelloSupplierBundleInstaller implements Installation
         $table->addColumn('address_id', 'integer', ['notnull' => true]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['address_id'], '', []);
+
+        $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
     }
 
     /**
@@ -113,5 +122,15 @@ class MarelloSupplierBundleInstaller implements Installation
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
+    }
+
+    /**
+     * Sets the AttachmentExtension
+     *
+     * @param AttachmentExtension $attachmentExtension
+     */
+    public function setAttachmentExtension(AttachmentExtension $attachmentExtension)
+    {
+        $this->attachmentExtension = $attachmentExtension;
     }
 }
