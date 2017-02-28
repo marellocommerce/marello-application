@@ -60,6 +60,13 @@ class Supplier
      */
     private $isActive = true;
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     /**
      * Get id
