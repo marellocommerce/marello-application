@@ -47,7 +47,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(name="purchase_order_number", type="string", nullable=true)
      *
      * @var string
      */

@@ -53,7 +53,7 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
         $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', []);
         $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
-        $table->addColumn('purchaseOrderNumber', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('purchase_order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
@@ -73,10 +73,11 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('product_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_id', 'integer', ['notnull' => false]);
-        $table->addColumn('productSku', 'string', ['length' => 255]);
-        $table->addColumn('productName', 'string', ['length' => 255]);
-        $table->addColumn('orderedAmount', 'integer', []);
-        $table->addColumn('receivedAmount', 'integer', []);
+        $table->addColumn('product_sku', 'string', ['length' => 255]);
+        $table->addColumn('product_name', 'string', ['length' => 255]);
+        $table->addColumn('supplier', 'string', ['length' => 255]);
+        $table->addColumn('ordered_amount', 'integer', []);
+        $table->addColumn('received_amount', 'integer', []);
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('status', 'string', ['length' => 255]);
         $table->addColumn('created_at', 'datetime');

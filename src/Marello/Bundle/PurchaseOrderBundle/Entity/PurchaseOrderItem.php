@@ -45,28 +45,35 @@ class PurchaseOrderItem
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="product_sku", type="string")
      */
     protected $productSku;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="product_name", type="string")
      */
     protected $productName;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="supplier", type="string")
+     */
+    protected $supplier;
+
+    /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="ordered_amount", type="integer")
      */
     protected $orderedAmount;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="received_amount", type="integer")
      */
     protected $receivedAmount = 0;
 
@@ -80,7 +87,7 @@ class PurchaseOrderItem
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="status", type="string")
      */
     protected $status = 'pending';
 
@@ -96,6 +103,7 @@ class PurchaseOrderItem
         $this->orderedAmount = $orderedAmount;
         $this->productName = $this->product->getName();
         $this->productSku = $this->product->getSku();
+        $this->supplier = $this->product->getPreferredSupplier()->getName();
     }
 
     /**
@@ -175,6 +183,14 @@ class PurchaseOrderItem
     public function getProductName()
     {
         return $this->productName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSupplier()
+    {
+        return $this->supplier;
     }
 
     /**
