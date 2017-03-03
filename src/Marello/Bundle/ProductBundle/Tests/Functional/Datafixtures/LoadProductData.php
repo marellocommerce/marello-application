@@ -277,6 +277,9 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
      */
     protected function addProductSuppliers(Product $product, array $data)
     {
+        $preferredSupplier = null;
+        $preferredPriority = 0;
+
         foreach ($data['supplier'] as $supplierData) {
             /** @var Supplier $supplier */
             $supplier = $this->getReference($supplierData['ref']);
@@ -297,8 +300,19 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
                 ->setCost($cost)
             ;
             $this->manager->persist($productSupplierRelation);
-
             $product->addSupplier($productSupplierRelation);
+
+            if (null == $preferredSupplier) {
+                $preferredSupplier = $supplier;
+                $preferredPriority = $priority;
+                continue;
+            }
+            if ($priority < $preferredPriority) {
+                $preferredSupplier = $supplier;
+                $preferredPriority = $priority;
+            }
+
+            $product->setPreferredSupplier($preferredSupplier);
         }
     }
 

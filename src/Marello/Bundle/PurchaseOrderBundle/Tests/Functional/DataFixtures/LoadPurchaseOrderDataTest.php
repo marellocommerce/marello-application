@@ -1,8 +1,9 @@
 <?php
 
-namespace Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures;
+namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\DataFixtures;
 
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadPurchaseOrderData;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductDataTest;
 
 class LoadPurchaseOrderDataTest extends LoadPurchaseOrderData
 {

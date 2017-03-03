@@ -111,6 +111,7 @@ datagrid:
                 where:
                     and:
                         - s.name = 'enabled'                                          # Only select product with enabled status
+                        - sup.name <> ''
                         - >
                             p.id NOT IN (
                                 SELECT

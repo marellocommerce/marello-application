@@ -3,7 +3,7 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\Controller;
 
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadPurchaseOrderData;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadPurchaseOrderDataTest;
+use Marello\Bundle\PurchaseOrderBundle\Tests\Functional\DataFixtures\LoadPurchaseOrderDataTest;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;

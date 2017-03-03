@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Entity;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 
 class ProductTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,6 +47,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $createdAt    = new \DateTime('now');
         $updatedAt    = new \DateTime('now');
         $organization = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
+        $supplier     = $this->getMock(Supplier::class);
 
         return [
             'name'         => ['name', $name, $name],
@@ -53,6 +55,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             'createdAt'    => ['createdAt', $createdAt, $createdAt],
             'updatedAt'    => ['updatedAt', $updatedAt, $updatedAt],
             'organization' => ['organization', $organization, $organization],
+            'preferredSupplier' => ['preferredSupplier', $supplier, $supplier]
         ];
     }
 }
