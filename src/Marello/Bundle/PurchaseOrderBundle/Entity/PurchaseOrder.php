@@ -58,8 +58,9 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      *
      * @ORM\OneToMany(
      *     targetEntity="PurchaseOrderItem",
+     *     mappedBy="order",
      *     cascade={"persist"},
-     *     mappedBy="order"
+     *     orphanRemoval=true
      * )
      * @Oro\ConfigField(
      *      defaultValues={

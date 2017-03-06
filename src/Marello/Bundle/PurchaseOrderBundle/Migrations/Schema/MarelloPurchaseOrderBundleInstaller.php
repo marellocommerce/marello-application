@@ -133,7 +133,7 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
             $schema->getTable('marello_purchase_order'),
             ['order_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 

@@ -279,12 +279,12 @@ class MarelloOrderBundleInstaller implements
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
-            $table->addForeignKeyConstraint(
-                $schema->getTable('marello_order_order'),
-                ['order_id'],
-                ['id'],
-                ['onDelete' => 'CASCADE', 'onUpdate' => null]
-            );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_order_order'),
+            ['order_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
     }
 
     /**
