@@ -55,6 +55,8 @@ class MarelloSupplierBundleInstaller implements
         $table->addColumn('can_dropship', 'boolean', []);
         $table->addColumn('is_active', 'boolean', []);
         $table->addColumn('address_id', 'integer', ['notnull' => true]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['address_id'], '', []);
         $table->addUniqueIndex(['name']);

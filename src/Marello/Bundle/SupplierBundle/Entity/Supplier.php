@@ -4,6 +4,7 @@ namespace Marello\Bundle\SupplierBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
@@ -12,9 +13,12 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @ORM\Entity(repositoryClass="Marello\Bundle\SupplierBundle\Entity\Repository\SupplierRepository")
  * @ORM\Table(name="marello_supplier_supplier")
  * @Oro\Config()
+ * @ORM\HasLifecycleCallbacks()
  */
 class Supplier
 {
+    use EntityCreatedUpdatedAtTrait;
+
     /**
      * @var integer
      *
