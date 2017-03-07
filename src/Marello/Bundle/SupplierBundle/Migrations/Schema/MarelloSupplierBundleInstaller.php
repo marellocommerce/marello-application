@@ -57,6 +57,7 @@ class MarelloSupplierBundleInstaller implements
         $table->addColumn('address_id', 'integer', ['notnull' => true]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['address_id'], '', []);
+        $table->addUniqueIndex(['name']);
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
     }

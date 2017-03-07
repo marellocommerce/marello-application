@@ -9,3 +9,12 @@ Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation:
             - NotBlank: ~
         quantityOfUnit:
             - NotBlank: ~
+
+Marello\Bundle\SupplierBundle\Entity\Supplier:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: name
+            message: 'marello.supplier.supplier.messages.error.unique_name'
+    properties:
+        name:
+            - NotBlank: ~
