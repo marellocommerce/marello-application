@@ -7,35 +7,35 @@ use Doctrine\ORM\Mapping as ORM;
 trait HasFullNameTrait
 {
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(name="name_prefix", type="string", nullable=true)
      *
      * @var string
      */
     protected $namePrefix;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(name="first_name", type="string", nullable=false)
      *
      * @var string
      */
     protected $firstName;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(name="middle_name", type="string", nullable=true)
      *
      * @var string
      */
     protected $middleName;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(name="last_name", type="string", nullable=false)
      *
      * @var string
      */
     protected $lastName;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(name="name_suffix", type="string", nullable=true)
      *
      * @var string
      */

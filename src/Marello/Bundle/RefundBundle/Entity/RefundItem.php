@@ -30,28 +30,28 @@ class RefundItem implements CurrencyAwareInterface
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="name", type="string")
      *
      * @var string
      */
     protected $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="quantity", type="integer")
      *
      * @var int
      */
     protected $quantity = 1;
 
     /**
-     * @ORM\Column(type="money")
+     * @ORM\Column(name="base_amount", type="money")
      *
      * @var int
      */
     protected $baseAmount = 0;
 
     /**
-     * @ORM\Column(type="money")
+     * @ORM\Column(name="refund_amount", type="money")
      *
      * @var int
      */
@@ -59,7 +59,7 @@ class RefundItem implements CurrencyAwareInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Refund", inversedBy="items")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="refund_id", nullable=false, onDelete="CASCADE")
      *
      * @var Refund
      */
@@ -67,7 +67,7 @@ class RefundItem implements CurrencyAwareInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\OrderItem")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\JoinColumn(name="order_item_id", nullable=true)
      *
      * @var OrderItem
      */

@@ -63,14 +63,14 @@ class Refund extends ExtendRefund implements
     protected $id;
 
     /**
-     * @ORM\Column(type="string", unique=true, nullable=true)
+     * @ORM\Column(name="refund_number", type="string", unique=true, nullable=true)
      *
      * @var string
      */
     protected $refundNumber;
 
     /**
-     * @ORM\Column(type="money")
+     * @ORM\Column(name="refund_amount", type="money")
      *
      * @var int
      */

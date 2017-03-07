@@ -44,7 +44,7 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('owner_id', 'integer', []);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('active', 'boolean', []);
-        $table->addColumn('channeltype', 'string', ['length' => 255]);
+        $table->addColumn('channel_type', 'string', ['length' => 255]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('is_default', 'boolean', []);

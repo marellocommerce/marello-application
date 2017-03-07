@@ -76,8 +76,8 @@ class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareIn
         $table->addColumn('customer_id', 'integer', []);
         $table->addColumn('order_id', 'integer', []);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
-        $table->addColumn('refundNumber', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('refundAmount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('refund_number', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('refund_amount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
@@ -85,7 +85,7 @@ class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareIn
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['refundNumber'], 'UNIQ_973FA8836E8C706D');
+        $table->addUniqueIndex(['refund_number'], 'UNIQ_973FA8836E8C706D');
         $table->addIndex(['customer_id'], 'IDX_973FA8839395C3F3', []);
         $table->addIndex(['order_id'], 'IDX_973FA8838D9F6D38', []);
         $table->addIndex(['organization_id'], 'IDX_A619DD6432C8A3DE', []);
@@ -105,14 +105,14 @@ class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareIn
         $table->addColumn('refund_id', 'integer', []);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('quantity', 'integer', []);
-        $table->addColumn('baseAmount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('refundAmount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('base_amount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn('refund_amount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
-        $table->addColumn('orderItem_id', 'integer', ['notnull' => false]);
+        $table->addColumn('order_item_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['refund_id'], 'IDX_2D9010DD189801D5', []);
-        $table->addIndex(['orderItem_id'], 'IDX_2D9010DDE76E9C94', []);
+        $table->addIndex(['order_item_id'], 'IDX_2D9010DDE76E9C94', []);
     }
 
     /**
@@ -177,7 +177,7 @@ class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareIn
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_order_order_item'),
-            ['orderItem_id'],
+            ['order_item_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

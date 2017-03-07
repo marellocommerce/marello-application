@@ -20,7 +20,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 /**
- * @ORM\Entity(repositoryClass="ReturnEntityRepository")
+ * @ORM\Entity(repositoryClass="Marello\Bundle\ReturnBundle\Entity\Repository\ReturnEntityRepository")
  * @ORM\Table(name="marello_return_return")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Config(
@@ -67,7 +67,7 @@ class ReturnEntity extends ExtendReturnEntity implements
     /**
      * @var string
      *
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(name="return_number", type="string", nullable=true)
      */
     protected $returnNumber;
 
@@ -95,14 +95,14 @@ class ReturnEntity extends ExtendReturnEntity implements
      * @var SalesChannel
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
-     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     * @ORM\JoinColumn(name="sales_channel_id", onDelete="SET NULL", nullable=true)
      */
     protected $salesChannel;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="saleschannel_name",type="string", nullable=false)
+     * @ORM\Column(name="sales_channel_name",type="string", nullable=false)
      */
     protected $salesChannelName;
 

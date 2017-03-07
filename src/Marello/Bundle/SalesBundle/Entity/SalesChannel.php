@@ -111,7 +111,7 @@ class SalesChannel extends ExtendSalesChannel implements
      *
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="channel_type", type="string")
      */
     protected $channelType = self::DEFAULT_TYPE;
 

@@ -92,12 +92,12 @@ class MarelloReturnBundleInstaller implements Installation,
         $table = $schema->createTable('marello_return_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('return_id', 'integer', ['notnull' => false]);
-        $table->addColumn('orderitem_id', 'integer', ['notnull' => false]);
+        $table->addColumn('order_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('quantity', 'integer', []);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['orderitem_id'], 'idx_ae43aff6e76e9c94', []);
+        $table->addIndex(['order_item_id'], 'idx_ae43aff6e76e9c94', []);
         $table->addIndex(['return_id'], 'idx_ae43aff6227416d5', []);
     }
 
@@ -114,11 +114,11 @@ class MarelloReturnBundleInstaller implements Installation,
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_id', 'integer', ['notnull' => false]);
-        $table->addColumn('returnnumber', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('return_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
-        $table->addColumn('saleschannel_name', 'string', ['length' => 255]);
-        $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('sales_channel_name', 'string', ['length' => 255]);
+        $table->addColumn('sales_channel_id', 'integer', ['notnull' => false]);
         $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
@@ -128,7 +128,7 @@ class MarelloReturnBundleInstaller implements Installation,
         $table->addIndex(['order_id'], 'idx_3c549d8d8d9f6d38', []);
         $table->addIndex(['organization_id'], 'IDX_3C549D8D32C8A3DE', []);
         $table->addIndex(['workflow_step_id'], 'idx_3c549d8d71fe882c', []);
-        $table->addIndex(['salesChannel_id'], 'IDX_3C549D8D4C7A5B2E', []);
+        $table->addIndex(['sales_channel_id'], 'IDX_3C549D8D4C7A5B2E', []);
     }
 
     /**
@@ -147,7 +147,7 @@ class MarelloReturnBundleInstaller implements Installation,
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_order_order_item'),
-            ['orderitem_id'],
+            ['order_item_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
@@ -175,7 +175,7 @@ class MarelloReturnBundleInstaller implements Installation,
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_sales_sales_channel'),
-            ['salesChannel_id'],
+            ['sales_channel_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );

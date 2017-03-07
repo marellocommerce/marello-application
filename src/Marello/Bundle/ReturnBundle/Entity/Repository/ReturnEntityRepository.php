@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ReturnBundle\Entity;
+namespace Marello\Bundle\ReturnBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

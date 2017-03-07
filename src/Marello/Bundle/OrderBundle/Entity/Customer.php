@@ -48,14 +48,14 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
 
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="primary_address_id", nullable=false)
      *
      * @var MarelloAddress
      */
     protected $primaryAddress;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(name="tax_identification_number", type="string", nullable=true)
      *
      * @var string
      */

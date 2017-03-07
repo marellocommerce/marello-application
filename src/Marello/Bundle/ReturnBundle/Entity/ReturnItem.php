@@ -33,7 +33,7 @@ class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
      * @var ReturnEntity
      *
      * @ORM\ManyToOne(targetEntity="ReturnEntity", inversedBy="returnItems")
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\JoinColumn(name="return_id", onDelete="CASCADE")
      */
     protected $return;
 
@@ -41,14 +41,14 @@ class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
      * @var OrderItem
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\OrderItem", inversedBy="returnItems")
-     * @ORM\JoinColumn
+     * @ORM\JoinColumn(name="order_item_id")
      */
     protected $orderItem;
 
     /**
      * @var int
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="quantity", type="integer")
      */
     protected $quantity;
 

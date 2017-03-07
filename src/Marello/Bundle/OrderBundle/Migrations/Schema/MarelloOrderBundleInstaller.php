@@ -83,18 +83,18 @@ class MarelloOrderBundleInstaller implements
         $table = $schema->createTable('marello_order_customer');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', []);
-        $table->addColumn('primaryAddress_id', 'integer', []);
+        $table->addColumn('primary_address_id', 'integer', []);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
-        $table->addColumn('namePrefix', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('firstName', 'string', ['length' => 255]);
-        $table->addColumn('middleName', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('lastName', 'string', ['length' => 255]);
-        $table->addColumn('nameSuffix', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('name_prefix', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('first_name', 'string', ['length' => 255]);
+        $table->addColumn('middle_name', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('last_name', 'string', ['length' => 255]);
+        $table->addColumn('name_suffix', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('email', 'text', []);
-        $table->addColumn('taxIdentificationNumber', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('tax_identification_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['primaryAddress_id'], 'UNIQ_75C456C9F5B7AF75');
+        $table->addUniqueIndex(['primary_address_id'], 'UNIQ_75C456C9F5B7AF75');
         $table->addIndex(['organization_id'], 'IDX_75C456C932C8A3DE', []);
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
@@ -201,7 +201,7 @@ class MarelloOrderBundleInstaller implements
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),
-            ['primaryAddress_id'],
+            ['primary_address_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
