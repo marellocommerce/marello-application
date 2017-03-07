@@ -16,9 +16,9 @@ class LoadSupplierData extends AbstractFixture
      * @var array
      */
     protected $data = [
-        ['name' => 'Supplier1', 'priority' => 1, 'can_dropship' => true, 'is_active' => true, 'address'=> ['street_address' => 'Street name 1', 'zipcode' => 12345, 'city'=> 'Eindhoven', 'country'=> 'NL', 'state' => 'NB']],
-        ['name' => 'Supplier2', 'priority' => 2, 'can_dropship' => true, 'is_active' => true, 'address'=> ['street_address' => 'Street name 2', 'zipcode' => 67890, 'city'=> 'Eindhoven', 'country'=> 'NL', 'state'=> 'NB']],
-        ['name' => 'Supplier3', 'priority' => 9, 'can_dropship' => false, 'is_active' => true, 'address'=> ['street_address' => 'Street name 3', 'zipcode' => 454545, 'city'=> 'Eindhoven', 'country'=> 'NL', 'state'=> 'NB']],
+        ['name' => 'Supplier 1', 'priority' => 1, 'can_dropship' => true, 'is_active' => true, 'address'=> ['street_address' => 'Street name 1', 'zipcode' => 12345, 'city'=> 'Amsterdam', 'country'=> 'NL', 'state' => 'NB']],
+        ['name' => 'Supplier 2', 'priority' => 2, 'can_dropship' => true, 'is_active' => true, 'address'=> ['street_address' => 'Street name 2', 'zipcode' => 67890, 'city'=> 'Eindhoven', 'country'=> 'NL', 'state'=> 'NB']],
+        ['name' => 'Supplier 3', 'priority' => 9, 'can_dropship' => false, 'is_active' => true, 'address'=> ['street_address' => 'Street name 3', 'zipcode' => 454545, 'city'=> 'London', 'country'=> 'GB']],
     ];
 
     /**
@@ -31,7 +31,7 @@ class LoadSupplierData extends AbstractFixture
     }
 
     /**
-     * load and create SalesChannels
+     * load and create Suppliers
      */
     protected function loadSuppliers()
     {
@@ -47,6 +47,7 @@ class LoadSupplierData extends AbstractFixture
             $address = new MarelloAddress();
             $address->setStreet($values['address']['street_address']);
             $address->setPostalCode($values['address']['zipcode']);
+            $address->setCity($values['address']['city']);
             $address->setCountry(
                 $this->manager
                     ->getRepository('OroAddressBundle:Country')->find($values['address']['country'])
