@@ -151,19 +151,19 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
             ->method('getItems')
             ->willReturn($collection);
 
-        $purchaseOrderItemMock->expects($this->atLeastOnce())
+        $purchaseOrderItemMock->expects($this->atMost(2))
             ->method('getOrderedAmount')
             ->willReturn(10);
 
-        $purchaseOrderItemMock->expects($this->atLeastOnce())
+        $purchaseOrderItemMock->expects($this->atMost(2))
             ->method('getReceivedAmount')
             ->willReturn(10);
 
-        $purchaseOrderItemMock2->expects($this->atLeastOnce())
+        $purchaseOrderItemMock2->expects($this->atMost(2))
             ->method('getOrderedAmount')
             ->willReturn(10);
 
-        $purchaseOrderItemMock2->expects($this->atLeastOnce())
+        $purchaseOrderItemMock2->expects($this->atMost(2))
             ->method('getReceivedAmount')
             ->willReturn(10);
 
