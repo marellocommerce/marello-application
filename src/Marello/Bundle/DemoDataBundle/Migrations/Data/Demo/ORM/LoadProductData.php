@@ -160,18 +160,41 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ->findAll();
 
         foreach ($suppliers as $supplier) {
-            $productSupplierRelation = new ProductSupplierRelation();
-            $productSupplierRelation
+            $productSupplierRelation1 = new ProductSupplierRelation();
+            $productSupplierRelation1
                 ->setProduct($product)
                 ->setSupplier($supplier)
-                ->setQuantityOfUnit(rand(50, 600))
+                ->setQuantityOfUnit(100)
                 ->setCanDropship(true)
                 ->setPriority(rand(1, 6))
-                ->setCost($this->getRandomFloat(20, 450))
+                ->setCost($this->getRandomFloat(45, 60))
             ;
-            $this->manager->persist($productSupplierRelation);
+            $this->manager->persist($productSupplierRelation1);
+            $product->addSupplier($productSupplierRelation1);
 
-            $product->addSupplier($productSupplierRelation);
+            $productSupplierRelation2 = new ProductSupplierRelation();
+            $productSupplierRelation2
+                ->setProduct($product)
+                ->setSupplier($supplier)
+                ->setQuantityOfUnit(400)
+                ->setCanDropship(true)
+                ->setPriority(rand(1, 6))
+                ->setCost($this->getRandomFloat(20, 40))
+            ;
+            $this->manager->persist($productSupplierRelation2);
+            $product->addSupplier($productSupplierRelation2);
+
+            $productSupplierRelation3 = new ProductSupplierRelation();
+            $productSupplierRelation3
+                ->setProduct($product)
+                ->setSupplier($supplier)
+                ->setQuantityOfUnit(750)
+                ->setCanDropship(true)
+                ->setPriority(rand(1, 6))
+                ->setCost($this->getRandomFloat(10, 15))
+            ;
+            $this->manager->persist($productSupplierRelation3);
+            $product->addSupplier($productSupplierRelation3);
         }
 
         $preferredSupplier = null;
