@@ -107,6 +107,8 @@ datagrid:
                     - p.id
                     - p.name
                     - p.sku
+                    - psr.quantityOfUnit
+                    - psr.cost
                 from:
                     - { table: MarelloSupplierBundle:ProductSupplierRelation, alias: psr }
                 join:
@@ -127,12 +129,24 @@ datagrid:
                 data_name:        name
                 label:            marello.product.name.label
                 frontend_type:    string
+            quantityOfUnit:
+                data_name:        quantityOfUnit
+                label:            marello.supplier.quantity_of_unit.label
+                frontend_type:    string
+            cost:
+                data_name:        cost
+                label:            marello.supplier.cost.label
+                frontend_type:    currency
         sorters:
             columns:
                 sku:
                     data_name:    p.sku
                 name:
                     data_name:    p.name
+                quantityOfUnit:
+                    data_name:    psr.quantityOfUnit
+                cost:
+                    data_name:    psr.cost
             default:
                 priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
@@ -143,6 +157,12 @@ datagrid:
                 name:
                     type:       string
                     data_name:  p.name
+                quantityOfUnit:
+                    type:       string
+                    data_name:  psr.quantityOfUnit
+                cost:
+                    type:       currency
+                    data_name:  psr.cost
         properties:
             id:                 [ p.id ]
             view_link:
