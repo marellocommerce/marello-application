@@ -7,7 +7,7 @@ default: &default
             tags: ~@not-automated&&~@skip
     extensions:
         Behat\MinkExtension:
-            base_url: 'http://dev-commerce-crm-ee.local/'
+            base_url: 'http://dev2-commerce-crm-ee.local/'
         Behat\Symfony2Extension: ~
         Oro\Bundle\TestFrameworkBundle\Behat\ServiceContainer\OroTestFrameworkExtension:
             reference_initializer_class: Oro\Bundle\ApplicationBundle\Tests\Behat\ReferenceRepositoryInitializer
