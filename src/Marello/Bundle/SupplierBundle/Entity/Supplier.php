@@ -26,14 +26,14 @@ class Supplier
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true, nullable=false)
      */
-    private $name;
+    protected $name;
     
     /**
      * @var MarelloAddress
@@ -48,21 +48,21 @@ class Supplier
      *
      * @ORM\Column(name="priority", type="integer", nullable=false)
      */
-    private $priority;
+    protected $priority;
     
     /**
      * @var boolean
      *
      * @ORM\Column(name="can_dropship", type="boolean", nullable=false)
      */
-    private $canDropship = true;
+    protected $canDropship = true;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
-    private $isActive = true;
+    protected $isActive = true;
 
     /**
      * @return string

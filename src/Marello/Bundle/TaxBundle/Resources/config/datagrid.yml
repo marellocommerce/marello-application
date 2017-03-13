@@ -1,0 +1,58 @@
+datagrid:
+    marello-taxcode-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - t
+                from:
+                    - { table: MarelloTaxBundle:TaxCode, alias: t }
+        columns:
+            code:
+                label:            marello.taxcode.code.label
+                frontend_type:    string
+        sorters:
+            columns:
+                code:
+                    data_name: t.code
+            default:
+                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        filters:
+            columns:
+                name:
+                    type:       string
+                    data_name:  t.code
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      marello_tax_taxcode_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      marello_tax_taxcode_update
+                params:     [ id ]
+#            delete_link:
+#                type:       url
+#                route:      marello_tax_api_delete_taxcode
+        actions:
+            view:
+                type:           navigate
+                link:           view_link
+                icon:           eye-open
+                rowAction:      true
+            update:
+                type:           navigate
+                label:          marello.taxcode.update
+                icon:           edit
+                link:           update_link
+            delete:
+                type:           delete
+                link:           delete_link
+                acl_resource:   marello_tax_taxcode_delete
+                icon:           trash
+                label:          oro.grid.action.delete
+                defaultMessages:
+                    confirm_content: marello.tax.action.delete.content
+        options:
+            export: true

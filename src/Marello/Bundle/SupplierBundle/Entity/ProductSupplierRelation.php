@@ -29,7 +29,7 @@ class ProductSupplierRelation
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Product
@@ -37,7 +37,7 @@ class ProductSupplierRelation
      * @ORM\OneToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $product;
+    protected $product;
 
     /**
      * @var Supplier
@@ -45,35 +45,35 @@ class ProductSupplierRelation
      * @ORM\OneToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $supplier;
+    protected $supplier;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="quantity_of_unit", type="integer", nullable=false)
      */
-    private $quantityOfUnit;
+    protected $quantityOfUnit;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="priority", type="integer")
      */
-    private $priority;
+    protected $priority;
 
     /**
      * @var double
      *
      * @ORM\Column(name="cost", type="money", nullable=true)
      */
-    private $cost;
+    protected $cost;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="can_dropship", type="boolean", nullable=false)
      */
-    private $canDropship;
+    protected $canDropship;
 
 
     /**

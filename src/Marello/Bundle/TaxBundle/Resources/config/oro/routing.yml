@@ -1,0 +1,4 @@
+marello_tax_bundle:
+    resource: "@MarelloTaxBundle/Controller"
+    type:     annotation
+    prefix:   /marello/taxes
