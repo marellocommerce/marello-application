@@ -13,6 +13,20 @@ oro_menu_config:
                 routes: ['marello_tax_taxcode_*']
                 position: 20
 
+        tax_rate_list:
+            label: 'marello.tax.taxrate.entity_plural_label'
+            route: 'marello_tax_taxrate_index'
+            extras:
+                routes: ['marello_tax_taxrate_*']
+                position: 30
+
+        tax_rule_list:
+            label: 'marello.tax.taxrule.entity_plural_label'
+            route: 'marello_tax_taxrule_index'
+            extras:
+                routes: ['marello_tax_taxrule_*']
+                position: 10
+
 #        shortcut_new_supplier:
 #            label: 'marello.supplier.menu.shortcut_new_supplier.label'
 #            route: 'marello_supplier_supplier_create'
@@ -33,7 +47,9 @@ oro_menu_config:
             children:
                 taxes:
                     children:
+                        tax_rule_list: ~
                         tax_code_list: ~
+                        tax_rate_list: ~
 #
 #        shortcuts:
 #            children:
@@ -42,3 +58,5 @@ oro_menu_config:
 
 oro_titles:
     marello_tax_taxcode_index: 'marello.tax.taxcode.entity_plural_label'
+    marello_tax_taxrate_index: 'marello.tax.taxrate.entity_plural_label'
+    marello_tax_taxrule_index: 'marello.tax.taxrule.entity_plural_label'

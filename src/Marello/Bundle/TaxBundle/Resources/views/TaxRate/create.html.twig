@@ -1,14 +1,14 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 {% if form.vars.value.id %}
-    {% set formAction = path('marello_supplier_supplier_update', { 'id': form.vars.value.id }) %}
+    {% set formAction = path('marello_tax_taxrate_update', { 'id': form.vars.value.id }) %}
     {% oro_title_set({params : {"%id%": entity.id }}) %}
 {% else %}
-    {% set formAction = path('marello_supplier_supplier_create') %}
+    {% set formAction = path('marello_tax_taxrate_create') %}
 {% endif %}
 
 {% block navButtons %}
-    {{ UI.cancelButton(path('marello_supplier_supplier_index')) }}
+    {{ UI.cancelButton(path('marello_tax_taxrate_index')) }}
     {% set html = UI.saveAndCloseButton() %}
     {{ UI.dropdownSaveButton({ 'html': html }) }}
 {% endblock navButtons %}
@@ -17,21 +17,20 @@
     {% if form.vars.value.id %}
         {% set breadcrumbs = {
         'entity':      form.vars.value,
-        'indexPath':   path('marello_supplier_supplier_index'),
-        'indexLabel': 'marello.supplier.entity_plural_label'|trans,
-        'entityTitle': form.vars.value.name
+        'indexPath':   path('marello_tax_taxrate_index'),
+        'indexLabel': 'marello.tax.taxrate.entity_plural_label'|trans,
+        'entityTitle': form.vars.value.id
         } %}
         {{ parent() }}
     {% else %}
-        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.supplier.entity_label'|trans}) %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.tax.taxrate.entity_label'|trans}) %}
         {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
     {% endif %}
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'supplier-create' %}
+    {% set id = 'taxrate-create' %}
 
-    {% set address = form_widget(form.address) %}
     {% set dataBlocks = [
         {
             'title': 'General'|trans,
@@ -42,17 +41,7 @@
                     form_rest(form)
                 ]
             }]
-        },
-        {
-            'title': 'marello.supplier.address.label'|trans,
-            'class': 'active',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    address
-                ]
-            }]
-        },
+        }
     ] %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

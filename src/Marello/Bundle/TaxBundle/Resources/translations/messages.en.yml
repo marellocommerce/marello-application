@@ -1,0 +1,37 @@
+marello:
+    tax:
+        navigation:
+            taxes.label:                        Taxes
+        taxcode:
+            id.label:                           Id
+            entity_label:                       Tax Code
+            entity_plural_label:                Tax Codes
+            code.label:                         Code
+            description.label:                  Description
+            datablock.general:                  General
+            datablock.taxcode_information:      Tax Code Information
+        taxrate:
+            id.label:                           Id
+            entity_label:                       Tax Rate
+            entity_plural_label:                Tax Rates
+            code.label:                         Code
+            rate.label:                         Rate
+            datablock.general:                  General
+            datablock.taxrate_information:      Tax Rate Information
+        taxrule:
+            id.label:                           Id
+            entity_label:                       Tax Rule
+            entity_plural_label:                Tax Rules
+            tax_code.label:                     Tax Code
+            tax_rate.label:                     Tax Rate
+            includes_vat:
+                label:                          Includes Vat
+                value:
+                    yes:                        Yes
+                    no:                         No
+            datablock.general:                  General
+            datablock.taxrule_information:      Tax Rule Information
+
+        messages.success.taxcode.saved:         Tax Code saved
+        messages.success.taxrate.saved:         Tax Rate saved
+        messages.success.taxrule.saved:         Tax Rule saved

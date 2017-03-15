@@ -10,44 +10,44 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\TaxBundle\Entity\TaxRate;
 
 /**
- * Class TaxCodeController
+ * Class TaxRateController
  * @package Marello\Bundle\TaxBundle\Controller
- * @Config\Route("/code")
+ * @Config\Route("/rate")
  */
-class TaxCodeController extends Controller
+class TaxRateController extends Controller
 {
     /**
-     * @Config\Route("/", name="marello_tax_taxcode_index")
+     * @Config\Route("/", name="marello_tax_taxrate_index")
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxcode_view")
+     * @Security\AclAncestor("marello_tax_taxrate_view")
      */
     public function indexAction()
     {
-        return ['entity_class' => 'MarelloTaxBundle:TaxCode'];
+        return ['entity_class' => 'MarelloTaxBundle:TaxRate'];
     }
 
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxcode_view")
+     * @Security\AclAncestor("marello_tax_taxrate_view")
      *
-     * @param TaxCode $taxCode
+     * @param TaxRate $taxRate
      *
      * @return array
      */
-    public function viewAction(TaxCode $taxCode)
+    public function viewAction(TaxRate $taxRate)
     {
-        return ['entity' => $taxCode];
+        return ['entity' => $taxRate];
     }
 
     /**
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxcode_create")
+     * @Security\AclAncestor("marello_tax_taxrate_create")
      *
      * @param Request $request
      *
@@ -55,61 +55,61 @@ class TaxCodeController extends Controller
      */
     public function createAction(Request $request)
     {
-        return $this->update(new TaxCode());
+        return $this->update(new TaxRate());
     }
 
     /**
      * @Config\Route("/update/{id}", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxcode_update")
+     * @Security\AclAncestor("marello_tax_taxrate_update")
      *
      * @param Request $request
-     * @param TaxCode   $taxCode
+     * @param TaxRate   $taxRate
      *
      * @return array
      */
-    public function updateAction(Request $request, TaxCode $taxCode)
+    public function updateAction(Request $request, TaxRate $taxRate)
     {
-        return $this->update($taxCode);
+        return $this->update($taxRate);
     }
 
     /**
      * Handles supplier updates and creation.
      *
-     * @param TaxCode   $taxCode
+     * @param TaxRate   $taxRate
      *
      * @return array
      */
-    protected function update(TaxCode $taxCode = null)
+    protected function update(TaxRate $taxRate = null)
     {
-        $handler = $this->get('marello_tax.form.handler.taxcode');
+        $handler = $this->get('marello_tax.form.handler.taxrate');
         
-        if ($handler->process($taxCode)) {
+        if ($handler->process($taxRate)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.tax.messages.success.taxcode.saved')
+                $this->get('translator')->trans('marello.tax.messages.success.taxrate.saved')
             );
             
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
-                    'route'      => 'marello_tax_taxcode_update',
+                    'route'      => 'marello_tax_taxrate_update',
                     'parameters' => [
-                        'id' => $taxCode->getId(),
+                        'id' => $taxRate->getId(),
                     ],
                 ],
                 [
-                    'route'      => 'marello_tax_taxcode_view',
+                    'route'      => 'marello_tax_taxrate_view',
                     'parameters' => [
-                        'id' => $taxCode->getId(),
+                        'id' => $taxRate->getId(),
                     ],
                 ],
-                $taxCode
+                $taxRate
             );
         }
 
         return [
-            'entity' => $taxCode,
+            'entity' => $taxRate,
             'form'   => $handler->getFormView(),
         ];
     }

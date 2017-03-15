@@ -51,6 +51,14 @@ class TaxRule
     protected $taxRate;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->taxCode. ' '. $this->taxRate;
+    }
+
+    /**
      * Get id
      *
      * @return integer

@@ -5,11 +5,11 @@ namespace Marello\Bundle\TaxBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class TaxRateType extends AbstractType
+class TaxRuleType extends AbstractType
 {
-    const NAME = 'marello_taxrate_form';
+    const NAME = 'marello_taxrule_form';
 
     /**
      * {@inheritdoc}
@@ -17,22 +17,14 @@ class TaxRateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(
-                'code',
-                'text',
-                [
-                    'required' => true,
-                    'constraints' => new NotNull()
-                ]
-            )
-            ->add(
-                'rate',
-                'number',
-                [
-                    'required' => true,
-                    'constraints' => new NotNull()
-                ]
-            )
+            ->add('taxCode', EntityType::class, array(
+                'class' => 'MarelloTaxBundle:TaxCode',
+                'choice_label' => 'code',
+            ))
+            ->add('taxRate', EntityType::class, array(
+                'class' => 'MarelloTaxBundle:TaxRate'
+            ))
+            ->add('includesVat')
         ;
     }
 
@@ -42,7 +34,7 @@ class TaxRateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\TaxBundle\Entity\TaxRate',
+            'data_class'         => 'Marello\Bundle\TaxBundle\Entity\TaxRule',
             'cascade_validation' => true,
         ]);
     }

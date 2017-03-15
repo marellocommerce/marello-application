@@ -9,19 +9,27 @@ datagrid:
                     - { table: MarelloTaxBundle:TaxCode, alias: t }
         columns:
             code:
-                label:            marello.taxcode.code.label
+                label:            marello.tax.taxcode.code.label
+                frontend_type:    string
+            description:
+                label:            marello.tax.taxcode.description.label
                 frontend_type:    string
         sorters:
             columns:
                 code:
                     data_name: t.code
+                description:
+                    data_name: t.description
             default:
                 priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
-                name:
+                code:
                     type:       string
                     data_name:  t.code
+                description:
+                    type:       string
+                    data_name:  t.description
         properties:
             id: ~
             view_link:
@@ -32,9 +40,10 @@ datagrid:
                 type:       url
                 route:      marello_tax_taxcode_update
                 params:     [ id ]
-#            delete_link:
-#                type:       url
-#                route:      marello_tax_api_delete_taxcode
+            delete_link:
+                type:       url
+                route:      marello_tax_api_delete_taxcode
+                params:     [ id ]
         actions:
             view:
                 type:           navigate
@@ -53,6 +62,158 @@ datagrid:
                 icon:           trash
                 label:          oro.grid.action.delete
                 defaultMessages:
-                    confirm_content: marello.tax.action.delete.content
+                    confirm_content: marello.tax.taxcode.action.delete.content
+        options:
+            export: true
+
+    marello-taxrate-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - t
+                from:
+                    - { table: MarelloTaxBundle:TaxRate, alias: t }
+        columns:
+            code:
+                label:            marello.tax.taxrate.code.label
+                frontend_type:    string
+            rate:
+                label:            marello.tax.taxrate.rate.label
+                frontend_type:    string
+        sorters:
+            columns:
+                code:
+                    data_name: t.code
+                rate:
+                    data_name: t.rate
+            default:
+                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        filters:
+            columns:
+                code:
+                    type:       string
+                    data_name:  t.code
+                rate:
+                    type:       string
+                    data_name:  t.rate
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      marello_tax_taxrate_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      marello_tax_taxrate_update
+                params:     [ id ]
+            delete_link:
+                type:       url
+                route:      marello_tax_api_delete_taxrate
+                params:     [ id ]
+        actions:
+            view:
+                type:           navigate
+                link:           view_link
+                icon:           eye-open
+                rowAction:      true
+            update:
+                type:           navigate
+                label:          marello.taxrate.update
+                icon:           edit
+                link:           update_link
+            delete:
+                type:           delete
+                link:           delete_link
+                acl_resource:   marello_tax_taxrate_delete
+                icon:           trash
+                label:          oro.grid.action.delete
+                defaultMessages:
+                    confirm_content: marello.tax.taxrate.action.delete.content
+        options:
+            export: true
+
+    marello-taxrule-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - t
+                    - tc.code as code
+                    - tr.rate as rate
+                from:
+                    - { table: MarelloTaxBundle:TaxRule, alias: t }
+                join:
+                    left:
+                        taxCode:
+                            join: t.taxCode
+                            alias: tc
+                        taxRate:
+                            join: t.taxRate
+                            alias: tr
+        columns:
+            code:
+                label:            marello.tax.taxrule.tax_code.label
+                frontend_type:    string
+            rate:
+                label:            marello.tax.taxrule.tax_rate.label
+                frontend_type:    string
+            includesVat:
+                label:            marello.tax.taxrule.includes_vat.label
+                frontend_type:    boolean
+        sorters:
+            columns:
+                code:
+                    data_name: code
+                rate:
+                    data_name: rate
+                includesVat:
+                    data_name: t.includesVat
+            default:
+                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        filters:
+            columns:
+                code:
+                    type:       string
+                    data_name:  code
+                rate:
+                    type:       string
+                    data_name:  rate
+                includesVat:
+                    type:       string
+                    data_name:  t.includesVat
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      marello_tax_taxrule_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      marello_tax_taxrule_update
+                params:     [ id ]
+            delete_link:
+                type:       url
+                route:      marello_tax_api_delete_taxrule
+                params:     [ id ]
+        actions:
+            view:
+                type:           navigate
+                link:           view_link
+                icon:           eye-open
+                rowAction:      true
+            update:
+                type:           navigate
+                label:          marello.taxrule.update
+                icon:           edit
+                link:           update_link
+            delete:
+                type:           delete
+                link:           delete_link
+                acl_resource:   marello_tax_taxrule_delete
+                icon:           trash
+                label:          oro.grid.action.delete
+                defaultMessages:
+                    confirm_content: marello.tax.taxrule.action.delete.content
         options:
             export: true

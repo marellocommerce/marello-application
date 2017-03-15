@@ -1,0 +1,11 @@
+marello_tax_taxcode_api:
+    resource:     "@MarelloTaxBundle/Controller/Api/Rest/TaxCodeController.php"
+    type:         rest
+
+marello_tax_taxrate_api:
+    resource:     "@MarelloTaxBundle/Controller/Api/Rest/TaxRateController.php"
+    type:         rest
+
+marello_tax_taxrule_api:
+    resource:     "@MarelloTaxBundle/Controller/Api/Rest/TaxRuleController.php"
+    type:         rest

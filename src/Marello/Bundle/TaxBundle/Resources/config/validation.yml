@@ -2,7 +2,7 @@ Marello\Bundle\TaxBundle\Entity\TaxCode:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: code
-            message: 'marello.tax.tax_code.messages.error.unique_code'
+            message: 'marello.tax.taxcode.messages.error.unique_code'
     properties:
         code:
             - NotBlank: ~
@@ -11,7 +11,7 @@ Marello\Bundle\TaxBundle\Entity\TaxRate:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: code
-            message: 'marello.tax.tax_rate.messages.error.unique_code'
+            message: 'marello.tax.taxrate.messages.error.unique_code'
     properties:
         code:
             - NotBlank: ~

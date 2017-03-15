@@ -39,6 +39,14 @@ class TaxRate
     protected $rate;
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->code. ' '. $this->rate. '%';
+    }
+
+    /**
      * Get id
      *
      * @return integer

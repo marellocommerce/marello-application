@@ -1,0 +1,93 @@
+parameters:
+    marello_tax.taxcode.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxCode
+    marello_tax.taxrate.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxRate
+    marello_tax.taxrule.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxRule
+
+services:
+    ## forms
+    marello_tax.form.type.taxcode:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxCodeType
+        tags:
+            - { name: form.type, alias: marello_taxcode_form }
+
+    marello_tax.form.type.taxrate:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxRateType
+        tags:
+            - { name: form.type, alias: marello_taxrate_form }
+
+    marello_tax.form.type.taxrule:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxRuleType
+        tags:
+            - { name: form.type, alias: marello_taxrule_form }
+
+    ## factory
+    marello_tax.taxcode.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - 'marello_taxcode_form'
+            - 'marello_taxcode_form'
+
+    marello_tax.taxrate.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - 'marello_taxrate_form'
+            - 'marello_taxrate_form'
+
+    marello_tax.taxrule.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - 'marello_taxrule_form'
+            - 'marello_taxrule_form'
+
+    ## handlers
+    marello_tax.form.handler.taxcode:
+        class: Marello\Bundle\TaxBundle\Form\Handler\TaxCodeHandler
+        scope: request
+        arguments:
+            - '@marello_tax.taxcode.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    marello_tax.form.handler.taxrate:
+        class: Marello\Bundle\TaxBundle\Form\Handler\TaxRateHandler
+        scope: request
+        arguments:
+            - '@marello_tax.taxrate.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    marello_tax.form.handler.taxrule:
+        class: Marello\Bundle\TaxBundle\Form\Handler\TaxRuleHandler
+        scope: request
+        arguments:
+            - '@marello_tax.taxrule.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    ## manager
+    marello_tax.taxcode.manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - '%marello_tax.taxcode.entity.class%'
+            - "@doctrine.orm.entity_manager"
+
+    marello_tax.taxrate.manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - '%marello_tax.taxrate.entity.class%'
+            - "@doctrine.orm.entity_manager"
+
+    marello_tax.taxrule.manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - '%marello_tax.taxrule.entity.class%'
+            - "@doctrine.orm.entity_manager"
