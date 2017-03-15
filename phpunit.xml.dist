@@ -99,8 +99,8 @@
         <testsuite name="functional-1-of-6">
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/A*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/B*Bundle/Tests/Functional</directory>
-            <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/C*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/customer-portal/src/*/Bundle/C*Bundle/Tests/Functional</directory>
+            <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/C*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/D*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/E*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/commerce/src/*/Bundle/F*Bundle/Tests/Functional</directory>
