@@ -29,20 +29,6 @@ default: &default
                 - Oro\Bundle\ShippingProBundle\Tests\Behat\Context\MultiplyCurrencyContext
                 - OroShoppingListBundle::ShoppingListContext
                 - OroRedirectBundle::SlugPrototypesContext
-            application_suites:
-                - OroApplicationBundle
-                - OroUserBundle
-                - OroNavigationBundle
-                - OroEmailBundle
-                - OroHelpBundle
-                - OroCRMBundle
-                - OroContactBundle
-                - OroAccountBundle
-                - OroTaskBundle
-                - OroOrganizationConfigCRMProBundle
-                - OroSearchBundle
-                - OroDashboardBundle
-                - OroSalesBundle
 
 selenium2:
     <<: *default
