@@ -12,6 +12,44 @@
     "psr-4": {"": "src/"},
     "exclude-from-classmap": ["**/Tests/"]
   },
+  "repositories": {
+    "ldap-bundle": {
+      "type": "vcs",
+      "url": "https://github.com/orocrm/OroCRMProLDAPBundle.git"
+    },
+    "platform-enterprise": {
+      "type": "vcs",
+      "url": "https://github.com/orocrm/platform-enterprise.git"
+    },
+    "crm-enterprise": {
+      "type": "vcs",
+      "url": "https://github.com/orocrm/crm-enterprise.git"
+    },
+    "crm": {
+      "type": "vcs",
+      "url": "https://github.com/orocrm/crm-er.git"
+    },
+    "platform": {
+      "type": "vcs",
+      "url": "https://github.com/orocrm/platform-er.git"
+    },
+    "commerce-enterprise": {
+      "type": "vcs",
+      "url": "https://github.com/orocrm/commerce-enterprise.git"
+    },
+    "commerce": {
+      "type": "vcs",
+      "url": "https://github.com/orocrm/commerce-er.git"
+    },
+    "commerce-crm": {
+      "type": "vcs",
+      "url": "https://github.com/orocrm/commerce-crm-er.git"
+    },
+    "composer": {
+      "type": "composer",
+      "url": "https://packagist.orocrm.com"
+    }
+  },
   "require": {
     "oro/commerce-enterprise": "1.x-dev",
     "oro/crm-enterprise": "1.x-dev",
@@ -82,44 +120,6 @@
     "asset-installer-paths": {
       "npm-asset-library": "web/bundles/npmassets",
       "bower-asset-library": "web/bundles/bowerassets"
-    }
-  },
-  "repositories": {
-    "ldap-bundle": {
-      "type": "vcs",
-      "url": "https://github.com/orocrm/OroCRMProLDAPBundle.git"
-    },
-    "platform-enterprise": {
-      "type": "vcs",
-      "url": "https://github.com/orocrm/platform-enterprise.git"
-    },
-    "crm-enterprise": {
-      "type": "vcs",
-      "url": "https://github.com/orocrm/crm-enterprise.git"
-    },
-    "crm": {
-      "type": "vcs",
-      "url": "https://github.com/orocrm/crm-er.git"
-    },
-    "platform": {
-      "type": "vcs",
-      "url": "https://github.com/orocrm/platform-er.git"
-    },
-    "commerce-enterprise": {
-      "type": "vcs",
-      "url": "https://github.com/orocrm/commerce-enterprise.git"
-    },
-    "commerce": {
-      "type": "vcs",
-      "url": "https://github.com/orocrm/commerce-er.git"
-    },
-    "commerce-crm": {
-      "type": "vcs",
-      "url": "https://github.com/orocrm/commerce-crm-er.git"
-    },
-    "composer": {
-      "type": "composer",
-      "url": "https://packagist.orocrm.com"
     }
   }
 }
