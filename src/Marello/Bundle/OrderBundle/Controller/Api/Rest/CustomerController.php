@@ -3,13 +3,18 @@
 namespace Marello\Bundle\OrderBundle\Controller\Api\Rest;
 
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Util\Codes;
 use FOS\RestBundle\Routing\ClassResourceInterface;
+
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
 
 /**
  * @Rest\RouteResource("customer")
@@ -47,6 +52,63 @@ class CustomerController extends RestController implements ClassResourceInterfac
         $limit = (int)$request->get('limit', self::ITEMS_PER_PAGE);
 
         return $this->handleGetListRequest($page, $limit);
+    }
+
+    /**
+     * REST GET Customer
+     *
+     * @param string $email
+     *
+     * @ApiDoc(
+     *     description="Get Customer by email if one exists",
+     *     resource=true
+     * )
+     * @Rest\Get("/customers/getcustomerbyemail/{email}")
+     *
+     * @return Response
+     */
+    public function getByEmailAction($email)
+    {
+        //todo:: prevent any kind of malicious code execution once the email is decoded...
+        $email = base64_decode($email);
+
+        var_dump($email);
+        die(__METHOD__);
+        if (!$email) {
+            return $this->handleView(
+                $this->view(
+                    [
+                        'message' => 'Customer email should be provided as parameter in request'
+                    ],
+                    Codes::HTTP_BAD_REQUEST
+                )
+            );
+        }
+
+        $entity = $this->getDoctrine()
+            ->getRepository('MarelloOrderBundle:Customer')
+            ->findOneBy(['email' => $email]);
+
+        if (!$entity) {
+            return $this->handleView(
+                $this->view(
+                    [
+                        'message' => sprintf(
+                            'Customer with email %s not found',
+                            $email
+                        )
+                    ],
+                    Codes::HTTP_NOT_FOUND
+                )
+            );
+        }
+
+        $data['customer'] = $entity;
+
+
+        return $this->handleView(
+            $this->view($data, Codes::HTTP_OK)
+        );
     }
 
     /**

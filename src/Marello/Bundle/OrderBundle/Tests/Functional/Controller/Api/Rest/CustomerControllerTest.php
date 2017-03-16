@@ -69,4 +69,53 @@ class CustomerControllerTest extends WebTestCase
         $response = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('id', $response);
     }
+
+    /**
+     * @test
+     *
+     * @depends testCreate
+     */
+    public function getCustomerByEmailFromApi()
+    {
+        $email = base64_encode('new_customer@example.com');
+
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_customer_api_get_customer_by_email', [
+                'email' => $email
+            ])
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+
+        $decodedResponse = json_decode($response->getContent(), true);
+
+        $this->assertArrayHasKey('customer', $decodedResponse);
+        $this->assertEquals('new_customer@example.com', $decodedResponse['customer']['email']);
+    }
+
+    /**
+     * @test
+     */
+    public function testGetNonExistingCustomerShouldReturnNotFound()
+    {
+        $email = base64_encode('notexisting@customer.com');
+
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_customer_api_get_customer_by_email', [
+                'email' => $email
+            ])
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_NOT_FOUND);
+
+        $decodedResponse = json_decode($response->getContent(), true);
+
+        $this->assertArrayNotHasKey('customer', $decodedResponse);
+        $this->assertArrayHasKey('message', $decodedResponse);
+        $this->assertEquals('Customer with email notexisting@customer.com not found', $decodedResponse['message']);
+    }
 }
