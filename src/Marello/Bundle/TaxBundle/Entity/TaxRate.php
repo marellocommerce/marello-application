@@ -11,7 +11,6 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @ORM\Entity(repositoryClass="Marello\Bundle\TaxBundle\Entity\Repository\TaxRateRepository")
  * @ORM\Table(name="marello_tax_tax_rate")
  * @Oro\Config()
- * @ORM\HasLifecycleCallbacks()
  */
 class TaxRate
 {

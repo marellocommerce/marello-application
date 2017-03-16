@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation;
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
@@ -326,6 +328,26 @@ class Product extends ExtendProduct implements
      * @ORM\JoinColumn(name="preferred_supplier_id", referencedColumnName="id")
      */
     protected $preferredSupplier;
+
+    /**
+     * @var TaxCode
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
+     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id")
+     */
+    protected $taxCode;
+
+    /**
+     * @var ArrayCollection|ProductChannelTaxRelation[]
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation",
+     *     mappedBy="product",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    protected $salesChannelTaxCodes;
 
 
     public function __construct()
@@ -810,5 +832,63 @@ class Product extends ExtendProduct implements
     public function prePersistTimestamp()
     {
         $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * Set taxCode
+     *
+     * @param \Marello\Bundle\TaxBundle\Entity\TaxCode $taxCode
+     *
+     * @return Product
+     */
+    public function setTaxCode(\Marello\Bundle\TaxBundle\Entity\TaxCode $taxCode = null)
+    {
+        $this->taxCode = $taxCode;
+
+        return $this;
+    }
+
+    /**
+     * Get taxCode
+     *
+     * @return \Marello\Bundle\TaxBundle\Entity\TaxCode
+     */
+    public function getTaxCode()
+    {
+        return $this->taxCode;
+    }
+
+    /**
+     * Add salesChannelTaxCode
+     *
+     * @param \Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode
+     *
+     * @return Product
+     */
+    public function addSalesChannelTaxCode(\Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode)
+    {
+        $this->salesChannelTaxCodes[] = $salesChannelTaxCode;
+
+        return $this;
+    }
+
+    /**
+     * Remove salesChannelTaxCode
+     *
+     * @param \Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode
+     */
+    public function removeSalesChannelTaxCode(\Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode)
+    {
+        $this->salesChannelTaxCodes->removeElement($salesChannelTaxCode);
+    }
+
+    /**
+     * Get salesChannelTaxCodes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSalesChannelTaxCodes()
+    {
+        return $this->salesChannelTaxCodes;
     }
 }

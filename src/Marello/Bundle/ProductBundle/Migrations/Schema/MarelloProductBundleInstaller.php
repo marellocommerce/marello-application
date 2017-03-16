@@ -69,6 +69,7 @@ class MarelloProductBundleInstaller implements Installation
         $table->addColumn('weight', 'float', ['notnull' => false]);
         $table->addColumn('warranty', 'integer', ['notnull' => false]);
         $table->addColumn('preferred_supplier_id', 'integer', ['notnull' => false]);
+        $table->addColumn('tax_code_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['sku'], 'marello_product_product_skuidx');
         $table->addIndex(['organization_id'], 'idx_25845b8d32c8a3de', []);

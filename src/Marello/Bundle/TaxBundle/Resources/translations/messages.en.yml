@@ -5,6 +5,7 @@ marello:
         taxcode:
             id.label:                           Id
             entity_label:                       Tax Code
+            entity_label_default:               Default Tax Code
             entity_plural_label:                Tax Codes
             code.label:                         Code
             description.label:                  Description

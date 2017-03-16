@@ -5,6 +5,7 @@ namespace Marello\Bundle\ProductBundle\Form\Type;
 use Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber;
 use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -141,6 +142,14 @@ class ProductType extends AbstractType
                 [
                     'label'              => 'marello.supplier.label',
                     'cascade_validation' => true,
+                ]
+            )
+            ->add(
+                'taxCode',
+                EntityType::class,
+                [
+                    'class' => 'MarelloTaxBundle:TaxCode',
+                    'required' => false
                 ]
             )
         ;
