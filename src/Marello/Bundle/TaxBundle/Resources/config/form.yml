@@ -5,20 +5,44 @@ parameters:
 
 services:
     ## forms
-    marello_tax.form.type.taxcode:
+    marello_tax.form.type.tax_code:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxCodeType
         tags:
-            - { name: form.type, alias: marello_taxcode_form }
+            - { name: form.type, alias: marello_tax_code_form }
 
-    marello_tax.form.type.taxrate:
+    marello_tax.form.type.tax_rate:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxRateType
         tags:
-            - { name: form.type, alias: marello_taxrate_form }
+            - { name: form.type, alias: marello_tax_rate_form }
 
-    marello_tax.form.type.taxrule:
+    marello_tax.form.type.tax_rule:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxRuleType
         tags:
-            - { name: form.type, alias: marello_taxrule_form }
+            - { name: form.type, alias: marello_tax_rule_form }
+
+    marello_tax.form.type.product_channel_tax_relation:
+        class: Marello\Bundle\TaxBundle\Form\Type\ProductChannelTaxRelationType
+        tags:
+            - { name: form.type, alias: marello_product_channel_tax_relation_form }
+
+    marello_tax.form.type.product_channel_tax_relation_collection:
+        class: Marello\Bundle\TaxBundle\Form\Type\ProductChannelTaxRelationCollectionType
+        tags:
+            - { name: form.type, alias: marello_product_channel_tax_relation_collection_form }
+
+    marello_tax.form.type.tax_code_select:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxCodeSelectType
+        tags:
+            - { name: form.type, alias: marello_tax_taxcode_select }
+
+    # Autocomplete search handler
+    marello_tax.taxcode.form.autocomplete.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - %marello_tax.taxcode.entity.class%
+            - ["code"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: taxcodes, acl_resource: marello_product_view }
 
     ## factory
     marello_tax.taxcode.form:
@@ -26,24 +50,24 @@ services:
         factory_method: createNamed
         factory_service: form.factory
         arguments:
-            - 'marello_taxcode_form'
-            - 'marello_taxcode_form'
+            - 'marello_tax_code_form'
+            - 'marello_tax_code_form'
 
     marello_tax.taxrate.form:
         class: Symfony\Component\Form\Form
         factory_method: createNamed
         factory_service: form.factory
         arguments:
-            - 'marello_taxrate_form'
-            - 'marello_taxrate_form'
+            - 'marello_tax_rate_form'
+            - 'marello_tax_rate_form'
 
     marello_tax.taxrule.form:
         class: Symfony\Component\Form\Form
         factory_method: createNamed
         factory_service: form.factory
         arguments:
-            - 'marello_taxrule_form'
-            - 'marello_taxrule_form'
+            - 'marello_tax_rule_form'
+            - 'marello_tax_rule_form'
 
     ## handlers
     marello_tax.form.handler.taxcode:

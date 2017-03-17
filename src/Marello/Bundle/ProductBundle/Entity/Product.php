@@ -332,7 +332,7 @@ class Product extends ExtendProduct implements
     /**
      * @var TaxCode
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id")
      */
     protected $taxCode;

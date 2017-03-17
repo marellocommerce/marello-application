@@ -7,9 +7,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-class TaxRuleType extends AbstractType
+class ProductChannelTaxRelationType extends AbstractType
 {
-    const NAME = 'marello_tax_rule_form';
+    const NAME = 'marello_product_channel_tax_relation_form';
 
     /**
      * {@inheritdoc}
@@ -17,14 +17,12 @@ class TaxRuleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('salesChannel', 'marello_sales_saleschannel_select')
+//            ->add('taxCode', 'marello_tax_taxcode_select')
             ->add('taxCode', EntityType::class, array(
                 'class' => 'MarelloTaxBundle:TaxCode',
                 'choice_label' => 'code',
             ))
-            ->add('taxRate', EntityType::class, array(
-                'class' => 'MarelloTaxBundle:TaxRate'
-            ))
-            ->add('includesVat')
         ;
     }
 
@@ -34,7 +32,7 @@ class TaxRuleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\TaxBundle\Entity\TaxRule',
+            'data_class'         => 'Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation',
             'cascade_validation' => true,
         ]);
     }

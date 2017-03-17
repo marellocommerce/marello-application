@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation;
 use Oro\Component\Layout\ArrayCollection;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,9 +54,10 @@ class ProductHandler
             if ($this->form->isValid()) {
                 $addChannels = $this->form->get('addSalesChannels')->getData();
                 $removeChannels = $this->form->get('removeSalesChannels')->getData();
+                $salesChannelTaxCodes = $this->form->get('salesChannelTaxCodes')->getData();
                 $suppliers = $this->form->get('suppliers')->getData();
 
-                $this->onSuccess($entity, $addChannels, $removeChannels, $suppliers);
+                $this->onSuccess($entity, $addChannels, $removeChannels, $salesChannelTaxCodes, $suppliers);
 
                 return true;
             }
@@ -80,12 +82,14 @@ class ProductHandler
      * @param Product $entity
      * @param array $addChannels
      * @param array $removeChannels
+     * @param ArrayCollection $salesChannelTaxCodes
      * @param ArrayCollection $suppliers
      */
-    protected function onSuccess(Product $entity, array $addChannels, array $removeChannels, $suppliers)
+    protected function onSuccess(Product $entity, array $addChannels, array $removeChannels, $salesChannelTaxCodes, $suppliers)
     {
         $this->addChannels($entity, $addChannels);
         $this->removeChannels($entity, $removeChannels);
+        $this->setSalesChannelTaxRelationProduct($entity, $salesChannelTaxCodes);
         $this->setProductSupplierRelationProduct($entity, $suppliers);
         $this->setPreferredSupplier($entity);
 
@@ -130,6 +134,18 @@ class ProductHandler
         /** @var $supplier ProductSupplierRelation */
         foreach ($suppliers as $supplier) {
             $supplier->setProduct($product);
+        }
+    }
+
+    /**
+     * @param Product $product
+     * @param ArrayCollection $salesChannelTaxCodes
+     */
+    protected function setSalesChannelTaxRelationProduct(Product $product, $salesChannelTaxCodes)
+    {
+        /** @var $supplier ProductChannelTaxRelation */
+        foreach ($salesChannelTaxCodes as $salesChannelTaxCode) {
+            $salesChannelTaxCode->setProduct($product);
         }
     }
 

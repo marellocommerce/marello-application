@@ -101,13 +101,16 @@
                 <div class="responsive-block">
                     <div class="box-type1">
                         <div class="title">
-                            <span class="widget-title">{{ 'marello.tax.taxcode.entity_label_default'|trans }}</span>
+                            <span class="widget-title">{{ 'marello.tax.taxcode.widget_title'|trans }}</span>
                         </div>
                         {{ UI.renderProperty('marello.tax.taxcode.entity_label'|trans, entity.taxCode) }}
                     </div>
-                </div>
-                <div class="responsive-block">
-                    {#{{ dataGrid.renderGrid('marello-product-saleschannel-grid', {'channels': marello_sales_get_saleschannel_ids(entity)}) }}#}
+                    <div class="box-type1">
+                        <div class="title">
+                            <span class="widget-title">{{ 'marello.tax.productchanneltaxrelation.widget_title'|trans }}</span>
+                        </div>
+                        {{ dataGrid.renderGrid('marello-product-saleschannel-tax-grid', {'productId': entity.id }) }}
+                    </div>
                 </div>
             </div>
         </div>

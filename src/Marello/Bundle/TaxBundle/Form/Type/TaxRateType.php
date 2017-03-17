@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class TaxRateType extends AbstractType
 {
-    const NAME = 'marello_taxrate_form';
+    const NAME = 'marello_tax_rate_form';
 
     /**
      * {@inheritdoc}

@@ -78,6 +78,7 @@ class MarelloProductBundleInstaller implements Installation
         $table->addIndex(['updated_at'], 'idx_marello_product_updated_at', []);
         $table->addIndex(['product_status'], 'IDX_25845B8D197C24B8', []);
         $table->addIndex(['preferred_supplier_id']);
+        $table->addIndex(['tax_code_id']);
     }
 
     /**

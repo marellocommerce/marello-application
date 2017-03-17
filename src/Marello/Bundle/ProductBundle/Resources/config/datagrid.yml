@@ -294,6 +294,42 @@ datagrid:
         options:
             entityHint: sc
 
+    marello-product-saleschannel-tax-grid:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - pctr
+                    - salesChannel.name as salesChannelName
+                    - taxCode.code as taxCodeCode
+                from:
+                    - { table: MarelloTaxBundle:ProductChannelTaxRelation, alias: pctr }
+                join:
+                    left:
+                        salesChannel:
+                            join: pctr.salesChannel
+                            alias: salesChannel
+                        taxCode:
+                            join: pctr.taxCode
+                            alias: taxCode
+                where:
+                    and:
+                        - pctr.product = :product_id
+            bind_parameters:
+                product_id: productId
+        columns:
+            salesChannelName:
+                label:                marello.sales.saleschannel.name.label
+                frontend_type:        string
+            taxCodeCode:
+                label:                marello.tax.taxcode.code.label
+                frontend_type:        string
+        properties:
+            id: ~
+        options:
+            entityHint: pctr
+
     marello-product-saleschannel-extended-grid:
         extends: marello-product-saleschannel-grid
         source:
