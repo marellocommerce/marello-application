@@ -33,6 +33,7 @@
             <group>crm</group>
             <group>soap</group>
             <group>dist</group>
+            <group>DuplicateQueries</group>
         </exclude>
     </groups>
     <testsuites>
@@ -297,6 +298,9 @@
             <directory suffix="Test.php">vendor/oro/crm/src/*/Bundle/Y*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/crm/src/*/Bundle/Z*Bundle/Tests/Functional</directory>
             <directory suffix="Test.php">vendor/oro/crm-*/src/*/Bundle/*Bundle/Tests/Functional</directory>
+        </testsuite>
+        <testsuite name="duplicate-queries">
+            <directory suffix="Test.php">vendor/oro/commerce-crm-ee/src/*/Bundle/*/Tests/Functional</directory>
         </testsuite>
     </testsuites>
     <php>
