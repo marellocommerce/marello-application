@@ -1,21 +1,22 @@
 <?php
 
-namespace Marello\Bundle\TaxBundle\Entity;
+namespace Marello\Bundle\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * TaxCode
  *
- * @ORM\Entity(repositoryClass="Marello\Bundle\TaxBundle\Entity\Repository\ProductChannelTaxRelationRepository")
+ * @ORM\Entity(repositoryClass="Marello\Bundle\ProductBundle\Entity\Repository\ProductChannelTaxRelationRepository")
  * @ORM\Table(
- *     name="marello_tax_prod_chann_tax_rel",
+ *     name="marello_prod_prod_chan_tax_rel",
  *     uniqueConstraints={
  *          @ORM\UniqueConstraint(
- *              name="marello_prod_channel_tax_rel_uidx",
+ *              name="marello_prod_prod_chan_tax_rel_uidx",
  *              columns={"product_id", "sales_channel_id", "tax_code_id"}
  *          )
  *      }

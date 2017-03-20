@@ -304,7 +304,7 @@ datagrid:
                     - salesChannel.name as salesChannelName
                     - taxCode.code as taxCodeCode
                 from:
-                    - { table: MarelloTaxBundle:ProductChannelTaxRelation, alias: pctr }
+                    - { table: MarelloProductBundle:ProductChannelTaxRelation, alias: pctr }
                 join:
                     left:
                         salesChannel:

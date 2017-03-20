@@ -30,10 +30,12 @@ class MarelloProductBundleInstaller implements Installation
         $this->createMarelloProductProductStatusTable($schema);
         $this->createMarelloProductSaleschannelTable($schema);
         $this->createMarelloProductVariantTable($schema);
+        $this->createMarelloProductSalesChannelTaxRelationTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloProductProductForeignKeys($schema);
         $this->addMarelloProductSaleschannelForeignKeys($schema);
+        $this->addMarelloProductSalesChannelTaxRelationForeignKeys($schema);
     }
 
     /**
@@ -127,6 +129,25 @@ class MarelloProductBundleInstaller implements Installation
     }
 
     /**
+     * Create marello_prod_prod_chan_tax_rel table
+     *
+     * @param Schema $schema
+     */
+    protected function createMarelloProductSalesChannelTaxRelationTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_prod_prod_chan_tax_rel');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('product_id', 'integer', ['notnull' => true]);
+        $table->addColumn('sales_channel_id', 'integer', ['notnull' => true]);
+        $table->addColumn('tax_code_id', 'integer', ['notnull' => true]);
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['product_id', 'sales_channel_id', 'tax_code_id'], 'marello_prod_prod_chan_tax_rel_uidx');
+        $table->addIndex(['product_id'], '', []);
+        $table->addIndex(['sales_channel_id'], '', []);
+        $table->addIndex(['tax_code_id'], '', []);
+    }
+
+    /**
      * Add marello_product_product foreign keys.
      *
      * @param Schema $schema
@@ -152,6 +173,12 @@ class MarelloProductBundleInstaller implements Installation
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_tax_tax_code'),
+            ['tax_code_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
     }
 
     /**
@@ -171,6 +198,35 @@ class MarelloProductBundleInstaller implements Installation
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_sales_sales_channel'),
             ['saleschannel_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+    }
+
+
+    /**
+     * Add marello_prod_prod_chan_tax_rel foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloProductSalesChannelTaxRelationForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_prod_prod_chan_tax_rel');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_product'),
+            ['product_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_sales_sales_channel'),
+            ['sales_channel_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_tax_tax_code'),
+            ['tax_code_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );

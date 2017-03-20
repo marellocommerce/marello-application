@@ -144,16 +144,7 @@ class ProductType extends AbstractType
                     'cascade_validation' => true,
                 ]
             )
-
-//            ->add('taxCode', 'marello_tax_taxcode_select')
-            ->add(
-                'taxCode',
-                EntityType::class,
-                [
-                    'class' => 'MarelloTaxBundle:TaxCode',
-                    'required' => false
-                ]
-            )
+            ->add('taxCode', 'marello_tax_taxcode_select')
             ->add(
                 'salesChannelTaxCodes',
                 'marello_product_channel_tax_relation_collection_form',

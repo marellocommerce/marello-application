@@ -33,15 +33,6 @@ marello:
                     no:                         No
             datablock.general:                  General
             datablock.taxrule_information:      Tax Rule Information
-        productchanneltaxrelation:
-            id.label:                           Id
-            entity_label:                       Product Channel Tax Code Relation
-            entity_plural_label:                Product Channel Tax Code Relations
-            widget_title:                       Sales Channel Tax Codes
-            product.label:                      Product
-            saleschannel.label:                 Sales Channel
-            taxcode.label:                      Tax Code
-            form.add_productchanneltaxrelation: Add Sales Channel Tax Code
 
         messages.success.taxcode.saved:         Tax Code saved
         messages.success.taxrate.saved:         Tax Rate saved

@@ -46,6 +46,16 @@ services:
         tags:
              - { name: form.type, alias: marello_product_variant_form }
 
+    marello_product.form.type.product_channel_tax_relation:
+        class: Marello\Bundle\ProductBundle\Form\Type\ProductChannelTaxRelationType
+        tags:
+            - { name: form.type, alias: marello_product_channel_tax_relation_form }
+
+    marello_product.form.type.product_channel_tax_relation_collection:
+        class: Marello\Bundle\ProductBundle\Form\Type\ProductChannelTaxRelationCollectionType
+        tags:
+            - { name: form.type, alias: marello_product_channel_tax_relation_collection_form }
+
     ## forms
     marello_product.product.form:
         class: Symfony\Component\Form\Form

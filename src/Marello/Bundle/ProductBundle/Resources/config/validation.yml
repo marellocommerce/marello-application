@@ -12,3 +12,15 @@ Marello\Bundle\ProductBundle\Entity\Product:
             - NotBlank: ~
         prices:
             - NotBlank: ~
+
+Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation:
+    constraints:
+        - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
+            fields: [salesChannel, taxCode]
+            errorPath: channel
+            message: 'marello.productchanneltaxrelation.messages.error.unique_product_channel_tax_relation'
+    properties:
+        salesChannel:
+            - NotBlank: ~
+        taxCode:
+            - NotBlank: ~

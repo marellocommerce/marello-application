@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\TaxBundle\Entity\Repository;
+namespace Marello\Bundle\ProductBundle\Entity\Repository;
 
 /**
  * ProductChannelTaxRelationRepository

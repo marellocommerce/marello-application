@@ -20,16 +20,6 @@ services:
         tags:
             - { name: form.type, alias: marello_tax_rule_form }
 
-    marello_tax.form.type.product_channel_tax_relation:
-        class: Marello\Bundle\TaxBundle\Form\Type\ProductChannelTaxRelationType
-        tags:
-            - { name: form.type, alias: marello_product_channel_tax_relation_form }
-
-    marello_tax.form.type.product_channel_tax_relation_collection:
-        class: Marello\Bundle\TaxBundle\Form\Type\ProductChannelTaxRelationCollectionType
-        tags:
-            - { name: form.type, alias: marello_product_channel_tax_relation_collection_form }
-
     marello_tax.form.type.tax_code_select:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxCodeSelectType
         tags:

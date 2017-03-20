@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\TaxBundle\Form\Type;
+namespace Marello\Bundle\ProductBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,11 +18,7 @@ class ProductChannelTaxRelationType extends AbstractType
     {
         $builder
             ->add('salesChannel', 'marello_sales_saleschannel_select')
-//            ->add('taxCode', 'marello_tax_taxcode_select')
-            ->add('taxCode', EntityType::class, array(
-                'class' => 'MarelloTaxBundle:TaxCode',
-                'choice_label' => 'code',
-            ))
+            ->add('taxCode', 'marello_tax_taxcode_select')
         ;
     }
 
@@ -32,7 +28,7 @@ class ProductChannelTaxRelationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation',
+            'data_class'         => 'Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation',
             'cascade_validation' => true,
         ]);
     }

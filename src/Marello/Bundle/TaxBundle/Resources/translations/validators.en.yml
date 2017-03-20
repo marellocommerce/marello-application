@@ -6,6 +6,3 @@ marello:
         taxrate:
             messages:
                 error.unique_code: This code already exists, please provide a unique code.
-        productchanneltaxrelation:
-            messages:
-                error.unique_product_channel_tax_relation: Sales Channel and Tax Code fields cannot be the same for more than one entry.

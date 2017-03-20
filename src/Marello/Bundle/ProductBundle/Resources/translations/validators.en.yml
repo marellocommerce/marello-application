@@ -4,3 +4,7 @@ marello:
             error:
                 sku:                SKU already exists, please provide a unique SKU
                 channels:           Please select a Sales Channel. There should be at least one Sales Channel per product.
+
+    productchanneltaxrelation:
+        messages:
+            error.unique_product_channel_tax_relation: Sales Channel and Tax Code fields cannot be the same for more than one entry.

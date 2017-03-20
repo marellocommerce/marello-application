@@ -2,7 +2,7 @@ Marello\Bundle\TaxBundle\Entity\TaxCode:
     alias:                          marello_taxcodes
     title_fields:                   [code]
     route:
-        name:                       marello_tax_taxcode_view
+        name:                       marello_tax_taxcode_index
         parameters:
             id:                     id
     search_template: MarelloTaxBundle:TaxCode:searchResult.html.twig

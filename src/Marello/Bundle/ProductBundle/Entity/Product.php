@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
-use Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation;
+use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -341,7 +341,7 @@ class Product extends ExtendProduct implements
      * @var ArrayCollection|ProductChannelTaxRelation[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation",
+     *     targetEntity="Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation",
      *     mappedBy="product",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
@@ -861,11 +861,11 @@ class Product extends ExtendProduct implements
     /**
      * Add salesChannelTaxCode
      *
-     * @param \Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode
+     * @param \Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode
      *
      * @return Product
      */
-    public function addSalesChannelTaxCode(\Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode)
+    public function addSalesChannelTaxCode(\Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode)
     {
         $this->salesChannelTaxCodes[] = $salesChannelTaxCode;
 
@@ -875,9 +875,9 @@ class Product extends ExtendProduct implements
     /**
      * Remove salesChannelTaxCode
      *
-     * @param \Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode
+     * @param \Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode
      */
-    public function removeSalesChannelTaxCode(\Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode)
+    public function removeSalesChannelTaxCode(\Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode)
     {
         $this->salesChannelTaxCodes->removeElement($salesChannelTaxCode);
     }

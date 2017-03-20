@@ -60,8 +60,8 @@
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                         <tr>
-                            <th class="productchanneltax-line-item-sales-channel"><span>{{ 'marello.tax.productchanneltaxrelation.saleschannel.label'|trans }}</span></th>
-                            <th class="productchanneltax-line-item-tax-code"><span>{{ 'marello.tax.productchanneltaxrelation.taxcode.label'|trans }}</span></th>
+                            <th class="productchanneltax-line-item-sales-channel"><span>{{ 'marello.product.productchanneltaxrelation.saleschannel.label'|trans }}</span></th>
+                            <th class="productchanneltax-line-item-tax-code"><span>{{ 'marello.product.productchanneltaxrelation.taxcode.label'|trans }}</span></th>
                             {% if form.vars.allow_delete %}
                                 <th class="productchanneltax-row-item-actions"></th>
                             {% endif %}
@@ -80,7 +80,7 @@
             </div>
 
             {% if allow_add %}
-                <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="icon-plus"></i>{{ form.vars.add_label|default('marello.tax.productchanneltaxrelation.form.add_productchanneltaxrelation')|trans }}</a>
+                <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="icon-plus"></i>{{ form.vars.add_label|default('marello.product.productchanneltaxrelation.form.add_productchanneltaxrelation')|trans }}</a>
             {% endif %}
         </div>
     {% endspaceless %}
