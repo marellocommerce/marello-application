@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd26082336aedc9c181d8f9527477ca3",
+    "content-hash": "94d237790e9286525d8750b6f099fa64",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -6437,42 +6437,6 @@
             "homepage": "https://github.com/orocrm/customer-portal"
         },
         {
-            "name": "oro/customer-portal-crm-enterprise",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "../../package/customer-portal-crm-enterprise",
-                "reference": "d0b00c2c75cb69f98b8bb8d7c3fb946094e01442",
-                "shasum": null
-            },
-            "require": {
-                "oro/customer-portal": "1.x-dev"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "Commercial"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ]
-        },
-        {
             "name": "oro/doctrine-extensions",
             "version": "1.1.1",
             "source": {
@@ -12141,7 +12105,6 @@
         "oro/crm-zendesk": 20,
         "oro/crm-pro-ldap-bundle": 20,
         "oro/crm-pro-demo-data-bundle": 20,
-        "oro/customer-portal-crm-enterprise": 20,
         "oro/commerce-crm-ee": 20
     },
     "prefer-stable": true,
