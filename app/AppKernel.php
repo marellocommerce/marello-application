@@ -25,6 +25,7 @@ class AppKernel extends OroKernel
             $bundles[] = new Oro\Bundle\TestFrameworkBundle\OroTestFrameworkBundle();
             $bundles[] = new Oro\Bundle\TestFrameworkCRMBundle\OroTestFrameworkCRMBundle();
             $bundles[] = new Oro\Bundle\FrontendTestFrameworkBundle\OroFrontendTestFrameworkBundle();
+            $bundles[] = new Oro\Bundle\CommerceCrmEnterpriseTestBundle\CommerceCrmEnterpriseTestBundle();
         }
 
         return array_merge(parent::registerBundles(), $bundles);

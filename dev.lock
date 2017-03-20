@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e641fec69a0666a18b4bf6913042b212",
+    "content-hash": "cd26082336aedc9c181d8f9527477ca3",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -5818,6 +5818,46 @@
             "homepage": "https://github.com/orocommerce/orocommerce-orocrm"
         },
         {
+            "name": "oro/commerce-crm-ee",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../package/commerce-crm-ee",
+                "reference": "5a39f8bb708d5cbac0535e21c7e705bbff87a10e",
+                "shasum": null
+            },
+            "require": {
+                "oro/commerce-crm": "1.x-dev",
+                "oro/commerce-enterprise": "1.x-dev",
+                "oro/crm-enterprise": "1.x-dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "license": [
+                "Commercial"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocommerce.com"
+                }
+            ],
+            "description": "OroCommerce CRM Enterprise",
+            "homepage": "https://github.com/orocommerce/orocommerce"
+        },
+        {
             "name": "oro/commerce-enterprise",
             "version": "dev-master",
             "dist": {
@@ -6395,6 +6435,42 @@
                 }
             ],
             "homepage": "https://github.com/orocrm/customer-portal"
+        },
+        {
+            "name": "oro/customer-portal-crm-enterprise",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../package/customer-portal-crm-enterprise",
+                "reference": "d0b00c2c75cb69f98b8bb8d7c3fb946094e01442",
+                "shasum": null
+            },
+            "require": {
+                "oro/customer-portal": "1.x-dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "license": [
+                "Commercial"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocrm.com"
+                }
+            ]
         },
         {
             "name": "oro/doctrine-extensions",
@@ -12064,7 +12140,9 @@
         "oro/crm-dotmailer": 20,
         "oro/crm-zendesk": 20,
         "oro/crm-pro-ldap-bundle": 20,
-        "oro/crm-pro-demo-data-bundle": 20
+        "oro/crm-pro-demo-data-bundle": 20,
+        "oro/customer-portal-crm-enterprise": 20,
+        "oro/commerce-crm-ee": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
