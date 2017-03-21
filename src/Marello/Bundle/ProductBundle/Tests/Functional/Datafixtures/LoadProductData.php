@@ -6,6 +6,8 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -152,7 +154,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     {
         return [
             LoadSalesData::class,
-            LoadSupplierData::class
+            LoadSupplierData::class,
+            LoadTaxCodeData::class
         ];
     }
 
@@ -218,6 +221,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $channelCurrencies = array_unique($currencies);
         $this->addDefaultPricesForCurrencies($product, $channelCurrencies, $data['price']);
 
+        $this->addProductTaxes($product);
+
         $this->addProductSuppliers($product, $data);
 
         $this->manager->persist($product);
@@ -269,6 +274,25 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $product->addPrice($price);
         }
     }
+
+    /**
+     * Add taxcodes for product and it's sales channels
+     *
+     * @param Product $product
+     */
+    protected function addProductTaxes(Product $product)
+    {
+        $product->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_2_REF));
+//        foreach ($product->getChannels() as $channel) {
+//            $productChannelTaxRelation = new ProductChannelTaxRelation();
+//            $productChannelTaxRelation
+//                ->setSalesChannel($channel)
+//                ->setProduct($product)
+//                ->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_3_REF))
+//            ;
+//        }
+    }
+
 
     /**
      * Add product suppliers to product

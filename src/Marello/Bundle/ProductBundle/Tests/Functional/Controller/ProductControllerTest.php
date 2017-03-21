@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,6 +70,7 @@ class ProductControllerTest extends WebTestCase
     {
         /** @var Product $product */
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
+
         $crawler = $this->client->request('GET', $this->getUrl('marello_product_update', ['id' => $product->getId()]));
 
         $result  = $this->client->getResponse();
@@ -119,6 +121,46 @@ class ProductControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
     }
 
+    public function testUpdateProductTaxCodes()
+    {
+        /** @var Product $product */
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
+
+        $crawler = $this->client->request('GET', $this->getUrl('marello_product_update', ['id' => $product->getId()]));
+
+        $result  = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+
+        /** @var Form $form */
+        $form = $crawler->selectButton('Save')->form();
+
+        $this->assertTrue($product->hasChannels());
+
+        $taxCode = $this->getReference(LoadTaxCodeData::TAXCODE_1_REF)->getId();
+        $salesChannelTaxCodes = [
+            [
+                'taxCode' => $this->getReference(LoadTaxCodeData::TAXCODE_2_REF)->getId(),
+                'salesChannel' => $product->getChannels()->first()->getId(),
+            ]
+        ];
+
+        $submittedData = [
+            'input_action' => 'save_and_stay',
+            'marello_product_form' => [
+                '_token' => $form['marello_product_form[_token]']->getValue(),
+                'taxCode' => $taxCode,
+                'salesChannelTaxCodes' => $salesChannelTaxCodes,
+            ]
+        ];
+
+        $this->client->followRedirects(true);
+
+        // Submit form
+        $result = $this->client->getResponse();
+        $this->client->request($form->getMethod(), $form->getUri(), $submittedData);
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+    }
+
     /**
      * @param string $name
      *
@@ -152,6 +194,7 @@ class ProductControllerTest extends WebTestCase
         $form['marello_product_form[purchaseStockLevel]']  = 10;
         $form['marello_product_form[removeSalesChannels]'] = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
         $form['marello_product_form[addSalesChannels]']    = $this->getReference(LoadSalesData::CHANNEL_2_REF)->getId();
+        $form['marello_product_form[taxCode]']             = $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);

@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -43,7 +44,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     public function getDependencies()
     {
         return [
-            LoadSalesData::class
+            LoadSalesData::class,
+            LoadTaxCodeData::class
         ];
     }
 
@@ -142,6 +144,26 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $product->addPrice($price);
         }
 
+        /**
+        * set default taxCode and taxcodes per saleschannel
+        */
+        $product->setTaxCode($this->getReference('marello_taxcode_'. rand(0, 2)));
+        foreach ($channels as $channelId) {
+            $channel = $this->getReference('marello_sales_channel_'. (int)$channelId);
+
+            $productSalesChannelRelation = new ProductChannelTaxRelation();
+            $productSalesChannelRelation
+                ->setProduct($product)
+                ->setSalesChannel($channel)
+                ->setTaxCode($this->getReference('marello_taxcode_'. rand(0, 2)))
+            ;
+            $this->manager->persist($productSalesChannelRelation);
+            $product->addSalesChannelTaxCode($productSalesChannelRelation);
+        }
+
+        /**
+         * add suppliers per product
+         */
         $this->addProductSuppliers($product);
 
         $this->manager->persist($product);

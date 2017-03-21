@@ -71,7 +71,7 @@ class LoadSupplierData extends AbstractFixture
     }
 
     /**
-     * load and create SalesChannels
+     * load and create Suppliers
      */
     protected function loadSuppliers()
     {
