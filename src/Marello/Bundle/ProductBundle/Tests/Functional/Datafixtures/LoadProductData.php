@@ -283,14 +283,14 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     protected function addProductTaxes(Product $product)
     {
         $product->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_2_REF));
-//        foreach ($product->getChannels() as $channel) {
-//            $productChannelTaxRelation = new ProductChannelTaxRelation();
-//            $productChannelTaxRelation
-//                ->setSalesChannel($channel)
-//                ->setProduct($product)
-//                ->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_3_REF))
-//            ;
-//        }
+        foreach ($product->getChannels() as $channel) {
+            $productChannelTaxRelation = new ProductChannelTaxRelation();
+            $productChannelTaxRelation
+                ->setSalesChannel($channel)
+                ->setProduct($product)
+                ->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_3_REF))
+            ;
+        }
     }
 
 

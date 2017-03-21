@@ -5,6 +5,7 @@ namespace Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures;
 use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesDataTest;
 use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 
 class LoadProductDataTest extends LoadProductData
 {
@@ -12,7 +13,8 @@ class LoadProductDataTest extends LoadProductData
     {
         return [
             LoadSalesDataTest::class,
-            LoadSupplierData::class
+            LoadSupplierData::class,
+            LoadTaxCodeData::class
         ];
     }
 

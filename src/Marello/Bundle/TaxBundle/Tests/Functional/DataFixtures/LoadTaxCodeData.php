@@ -8,9 +8,10 @@ use Marello\Bundle\TaxBundle\Entity\TaxCode;
 
 class LoadTaxCodeData extends AbstractFixture
 {
-    const TAXCODE_1_REF = 'taxCode1';
-    const TAXCODE_2_REF = 'taxCode2';
-    const TAXCODE_3_REF = 'taxCode3';
+    const TAXCODE_0_REF = 'marello_taxcode_0';
+    const TAXCODE_1_REF = 'marello_taxcode_1';
+    const TAXCODE_2_REF = 'marello_taxcode_2';
+    const TAXCODE_3_REF = 'marello_taxcode_3';
 
     /** @var ObjectManager $manager */
     protected $manager;
@@ -19,6 +20,10 @@ class LoadTaxCodeData extends AbstractFixture
      * @var array
      */
     protected $data = [
+        self::TAXCODE_0_REF => [
+            'code' => 'TAX_VERY_HIGH',
+            'description' => 'Very high tax',
+        ],
         self::TAXCODE_1_REF => [
             'code' => 'TAX_EXEMPT',
             'description' => 'No tax applied',
