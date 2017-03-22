@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a594f4ee0d404a5997bf33fd9731929e",
+    "content-hash": "637fbbef769cec2d75ade621ecc2b0c1",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -5816,6 +5816,46 @@
             ],
             "description": "OroCRM integration for OroCommerce",
             "homepage": "https://github.com/orocommerce/orocommerce-orocrm"
+        },
+        {
+            "name": "oro/commerce-crm-ee",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../package/commerce-crm-ee",
+                "reference": "ebf132330087352551229fc3d8823ad4fa8c2d42",
+                "shasum": null
+            },
+            "require": {
+                "oro/commerce-crm": "1.x-dev",
+                "oro/commerce-enterprise": "1.x-dev",
+                "oro/crm-enterprise": "2.x-dev"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "license": [
+                "Commercial"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocommerce.com"
+                }
+            ],
+            "description": "OroCommerce CRM Enterprise",
+            "homepage": "https://github.com/orocommerce/orocommerce"
         },
         {
             "name": "oro/commerce-enterprise",
@@ -12072,7 +12112,8 @@
         "oro/crm-zendesk": 20,
         "oro/crm-pro-ldap-bundle": 20,
         "oro/crm-pro-demo-data-bundle": 20,
-        "oro/customer-portal": 20
+        "oro/customer-portal": 20,
+        "oro/commerce-crm-ee": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
