@@ -25,7 +25,7 @@
     "oro/crm-zendesk": "1.x-dev",
     "oro/crm-pro-ldap-bundle": "1.x-dev",
     "oro/crm-pro-demo-data-bundle": "1.x-dev",
-    "oro/customer-portal-crm-enterprise": "1.x-dev"
+    "oro/commerce-crm-ee": "1.x-dev"
   },
   "require-dev": {
     "sensio/generator-bundle": "3.1.2",
