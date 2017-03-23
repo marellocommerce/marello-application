@@ -1,0 +1,5 @@
+marello:
+    order:
+        discount_amount:
+            validation:
+                discount_lower_than_subtotal: Discount amount cannot be greater than total order amount.

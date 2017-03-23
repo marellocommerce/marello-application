@@ -87,7 +87,7 @@ define(function(require) {
          * @param {Object} prices
          */
         setPrice: function(prices) {
-            if (prices === undefined) {
+            if (prices === undefined || typeof(prices) == 'undefined' || prices.length == 0) {
                 return;
             }
             var identifier = this._getPriceIdentifier();
