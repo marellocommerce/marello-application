@@ -12,7 +12,7 @@ Requirements
 
 OroCommerce is a Symfony-based application with the following requirements:
 
-* PHP 5.6 or above
+* PHP 7.0 or above
 * Command line interface
 * PHP Extensions
     * GD
