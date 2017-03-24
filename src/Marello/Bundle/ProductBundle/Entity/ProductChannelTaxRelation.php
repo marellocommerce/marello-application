@@ -3,7 +3,6 @@
 namespace Marello\Bundle\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -74,11 +73,11 @@ class ProductChannelTaxRelation
     /**
      * Set product
      *
-     * @param \Marello\Bundle\ProductBundle\Entity\Product $product
+     * @param Product $product
      *
      * @return ProductChannelTaxRelation
      */
-    public function setProduct(\Marello\Bundle\ProductBundle\Entity\Product $product)
+    public function setProduct(Product $product)
     {
         $this->product = $product;
 
@@ -88,7 +87,7 @@ class ProductChannelTaxRelation
     /**
      * Get product
      *
-     * @return \Marello\Bundle\ProductBundle\Entity\Product
+     * @return Product
      */
     public function getProduct()
     {
@@ -98,11 +97,11 @@ class ProductChannelTaxRelation
     /**
      * Set salesChannel
      *
-     * @param \Marello\Bundle\SalesBundle\Entity\SalesChannel $salesChannel
+     * @param SalesChannel $salesChannel
      *
      * @return ProductChannelTaxRelation
      */
-    public function setSalesChannel(\Marello\Bundle\SalesBundle\Entity\SalesChannel $salesChannel)
+    public function setSalesChannel(SalesChannel $salesChannel)
     {
         $this->salesChannel = $salesChannel;
 
@@ -112,7 +111,7 @@ class ProductChannelTaxRelation
     /**
      * Get salesChannel
      *
-     * @return \Marello\Bundle\SalesBundle\Entity\SalesChannel
+     * @return SalesChannel
      */
     public function getSalesChannel()
     {
@@ -122,11 +121,11 @@ class ProductChannelTaxRelation
     /**
      * Set taxCode
      *
-     * @param \Marello\Bundle\TaxBundle\Entity\TaxCode $taxCode
+     * @param TaxCode $taxCode
      *
      * @return ProductChannelTaxRelation
      */
-    public function setTaxCode(\Marello\Bundle\TaxBundle\Entity\TaxCode $taxCode)
+    public function setTaxCode(TaxCode $taxCode)
     {
         $this->taxCode = $taxCode;
 
@@ -136,7 +135,7 @@ class ProductChannelTaxRelation
     /**
      * Get taxCode
      *
-     * @return \Marello\Bundle\TaxBundle\Entity\TaxCode
+     * @return TaxCode
      */
     public function getTaxCode()
     {

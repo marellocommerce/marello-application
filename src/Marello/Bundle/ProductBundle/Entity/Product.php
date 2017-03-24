@@ -5,9 +5,6 @@ namespace Marello\Bundle\ProductBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
-use Marello\Bundle\SupplierBundle\Entity\Supplier;
-use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
@@ -15,11 +12,12 @@ use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
-use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * Represents a Marello Product
@@ -352,11 +350,12 @@ class Product extends ExtendProduct implements
 
     public function __construct()
     {
-        $this->prices         = new ArrayCollection();
-        $this->channelPrices  = new ArrayCollection();
-        $this->channels       = new ArrayCollection();
-        $this->inventoryItems = new ArrayCollection();
-        $this->suppliers      = new ArrayCollection();
+        $this->prices               = new ArrayCollection();
+        $this->channelPrices        = new ArrayCollection();
+        $this->channels             = new ArrayCollection();
+        $this->inventoryItems       = new ArrayCollection();
+        $this->suppliers            = new ArrayCollection();
+        $this->salesChannelTaxCodes = new ArrayCollection();
     }
 
     /**
@@ -837,11 +836,11 @@ class Product extends ExtendProduct implements
     /**
      * Set taxCode
      *
-     * @param \Marello\Bundle\TaxBundle\Entity\TaxCode $taxCode
+     * @param TaxCode $taxCode
      *
      * @return Product
      */
-    public function setTaxCode(\Marello\Bundle\TaxBundle\Entity\TaxCode $taxCode = null)
+    public function setTaxCode(TaxCode $taxCode = null)
     {
         $this->taxCode = $taxCode;
 
@@ -851,7 +850,7 @@ class Product extends ExtendProduct implements
     /**
      * Get taxCode
      *
-     * @return \Marello\Bundle\TaxBundle\Entity\TaxCode
+     * @return TaxCode
      */
     public function getTaxCode()
     {
@@ -861,11 +860,11 @@ class Product extends ExtendProduct implements
     /**
      * Add salesChannelTaxCode
      *
-     * @param \Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode
+     * @param ProductChannelTaxRelation $salesChannelTaxCode
      *
      * @return Product
      */
-    public function addSalesChannelTaxCode(\Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode)
+    public function addSalesChannelTaxCode(ProductChannelTaxRelation $salesChannelTaxCode)
     {
         $this->salesChannelTaxCodes[] = $salesChannelTaxCode;
 
@@ -875,9 +874,9 @@ class Product extends ExtendProduct implements
     /**
      * Remove salesChannelTaxCode
      *
-     * @param \Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode
+     * @param ProductChannelTaxRelation $salesChannelTaxCode
      */
-    public function removeSalesChannelTaxCode(\Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation $salesChannelTaxCode)
+    public function removeSalesChannelTaxCode(ProductChannelTaxRelation $salesChannelTaxCode)
     {
         $this->salesChannelTaxCodes->removeElement($salesChannelTaxCode);
     }
