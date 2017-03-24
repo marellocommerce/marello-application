@@ -113,5 +113,4 @@ class TaxRuleController extends Controller
             'form'   => $handler->getFormView(),
         ];
     }
-    
 }

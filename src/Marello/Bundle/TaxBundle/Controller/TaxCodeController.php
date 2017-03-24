@@ -113,5 +113,4 @@ class TaxCodeController extends Controller
             'form'   => $handler->getFormView(),
         ];
     }
-    
 }
