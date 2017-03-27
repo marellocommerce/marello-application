@@ -4,7 +4,7 @@ imports:
 default: &default
     gherkin:
         filters:
-            tags: ~@not-automated&&~@skip
+            tags: ~@not-automated&&~@skip&&~@community-edition-only
     extensions: &default_extensions
         Behat\MinkExtension:
             base_url: 'http://dev2-commerce-crm-ee.local/'
