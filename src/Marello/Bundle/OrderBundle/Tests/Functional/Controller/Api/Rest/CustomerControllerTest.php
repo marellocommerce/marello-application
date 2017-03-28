@@ -77,7 +77,7 @@ class CustomerControllerTest extends WebTestCase
      */
     public function getCustomerByEmailFromApi()
     {
-        $email = base64_encode('new_customer@example.com');
+        $email = 'new_customer@example.com';
 
         $this->client->request(
             'GET',
@@ -100,7 +100,7 @@ class CustomerControllerTest extends WebTestCase
      */
     public function testGetNonExistingCustomerShouldReturnNotFound()
     {
-        $email = base64_encode('notexisting@customer.com');
+        $email = 'notexisting@customer.com';
 
         $this->client->request(
             'GET',

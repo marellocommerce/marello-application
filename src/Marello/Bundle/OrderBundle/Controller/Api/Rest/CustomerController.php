@@ -55,39 +55,50 @@ class CustomerController extends RestController implements ClassResourceInterfac
     }
 
     /**
-     * REST GET Customer
+     * REST GET Customer by email
      *
-     * @param string $email
+     * @Rest\QueryParam(
+     *      name="email",
+     *      requirements="[a-zA-Z0-9\-_\.@]+",
+     *      nullable=false,
+     *      description="Email to filter"
+     * )
      *
      * @ApiDoc(
-     *     description="Get Customer by email if one exists",
-     *     resource=true
+     *      description="Get user by email",
+     *      resource=true,
+     *      filters={
+     *          {"name"="email", "dataType"="string"}
+     *      }
      * )
-     * @Rest\Get("/customers/getcustomerbyemail/{email}")
+     * @Rest\Get("/customers/getcustomerbyemail")
+     *
+     * @param Request $request
      *
      * @return Response
      */
-    public function getByEmailAction($email)
+    public function getByEmailAction(Request $request)
     {
-        //todo:: prevent any kind of malicious code execution once the email is decoded...
-        $email = base64_decode($email);
+        $params = array_intersect_key(
+            $request->query->all(),
+            array_flip($this->getSupportedQueryParameters(__FUNCTION__))
+        );
 
-        var_dump($email);
-        die(__METHOD__);
-        if (!$email) {
+        if (empty($params)) {
             return $this->handleView(
                 $this->view(
                     [
-                        'message' => 'Customer email should be provided as parameter in request'
+                        'message' => 'Customer not found'
                     ],
-                    Codes::HTTP_BAD_REQUEST
+                    Codes::HTTP_NOT_FOUND
                 )
             );
         }
 
+
         $entity = $this->getDoctrine()
             ->getRepository('MarelloOrderBundle:Customer')
-            ->findOneBy(['email' => $email]);
+            ->findOneBy($params);
 
         if (!$entity) {
             return $this->handleView(
@@ -95,7 +106,7 @@ class CustomerController extends RestController implements ClassResourceInterfac
                     [
                         'message' => sprintf(
                             'Customer with email %s not found',
-                            $email
+                            $params['email']
                         )
                     ],
                     Codes::HTTP_NOT_FOUND
