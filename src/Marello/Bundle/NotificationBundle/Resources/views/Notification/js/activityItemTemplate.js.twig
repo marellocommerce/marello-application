@@ -17,8 +17,6 @@
 
 {% block activityContent %}
     <div class="marello-notification-activity-body">
-        <%= data.body %>
+        {{ parent() }}
     </div>
-
-    {{ parent() }}
 {% endblock %}
