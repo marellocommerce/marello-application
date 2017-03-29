@@ -54,7 +54,10 @@ class MarelloProductBundle implements Migration
         $table->addColumn('sales_channel_id', 'integer', ['notnull' => true]);
         $table->addColumn('tax_code_id', 'integer', ['notnull' => true]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['product_id', 'sales_channel_id', 'tax_code_id'], 'marello_prod_prod_chan_tax_rel_uidx');
+        $table->addUniqueIndex(
+            ['product_id', 'sales_channel_id', 'tax_code_id'],
+            'marello_prod_prod_chan_tax_rel_uidx'
+        );
         $table->addIndex(['product_id'], '', []);
         $table->addIndex(['sales_channel_id'], '', []);
         $table->addIndex(['tax_code_id'], '', []);
