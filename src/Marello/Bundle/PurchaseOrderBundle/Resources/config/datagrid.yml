@@ -53,6 +53,9 @@ datagrid:
                 icon:          eye-open
                 acl_resource:  marello_purchase_order_view
                 rowAction:     true
+        action_configuration:
+            view: true
+            delete: false
 
     marello-purchase-order-items:
         source:
