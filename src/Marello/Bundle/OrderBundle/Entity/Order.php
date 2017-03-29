@@ -19,6 +19,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository")
@@ -853,5 +855,19 @@ class Order extends ExtendOrder implements
         $this->salesChannelName = $salesChannelName;
 
         return $this;
+    }
+
+    /**
+     * @Assert\Callback
+     *
+     * @param ExecutionContextInterface $context
+     */
+    public function checkDiscountLowerThanSubTotal(ExecutionContextInterface $context)
+    {
+        if ($this->getDiscountAmount() > $this->getSubtotal()) {
+            $context->buildViolation('marello.order.discount_amount.validation.discount_lower_than_subtotal')
+                ->atPath('discountAmount')
+                ->addViolation();
+        }
     }
 }

@@ -47,7 +47,6 @@ marello:
             activity:               Activity
             order_information:      Order Information
             order_totals:           Order Totals
-
         # OrderItem entity
         orderitem:
             entity_label:           Ordered Item
