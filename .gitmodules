@@ -1,6 +1,6 @@
 [submodule "src/Marello"]
 	path = src/Marello
-	url = git@github.com:marellocommerce/marello-dev.git
+	url = https://github.com/marellocommerce/marello-dev.git
 [submodule "src/MarelloEnterprise"]
 	path = src/MarelloEnterprise
-	url = git@github.com:marellocommerce/marello-dev-enterprise.git
+	url = https://github.com/marellocommerce/marello-dev-enterprise.git
