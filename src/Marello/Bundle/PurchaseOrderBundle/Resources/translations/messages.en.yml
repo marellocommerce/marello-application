@@ -23,7 +23,7 @@ marello:
                 received_amount:                        Total amount received can only be as many items as ordered amount.
 
         navigation:
-            forecasting_and_purchasing.label:           Forecasting & Purchasing
+            purchasing.label:                           Purchasing
 
         menu:
             shortcut_new_purchase_order.label:          Create new purchase order

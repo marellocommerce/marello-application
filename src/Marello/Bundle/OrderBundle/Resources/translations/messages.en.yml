@@ -13,6 +13,7 @@ marello:
         sales_channel.label:        Sales Channel
         sales_channel_name.label:   Sales Channel
         order_reference.label:      Order Reference
+        locale.label:               Order Locale
         workflow_item.label:        Workflow Item
         workflow_step.label:        Workflow Step
         organization.label:         Organization
