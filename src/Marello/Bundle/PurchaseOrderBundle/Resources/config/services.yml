@@ -14,7 +14,7 @@ services:
     marello_purchaseorder.workflow.receive_purchase_order:
         class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction
         arguments:
-            - '@oro_action.context_accessor'
+            - '@oro_action.expression.context_accessor'
             - '@doctrine.orm.entity_manager'
             - '@marello_purchaseorder.processor.note_activity_processor'
         tags:

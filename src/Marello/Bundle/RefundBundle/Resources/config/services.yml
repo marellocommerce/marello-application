@@ -5,7 +5,7 @@ services:
     marello_refund.workflow.create_refund_action:
         class: Marello\Bundle\RefundBundle\Workflow\Actions\CreateRefundAction
         arguments:
-            - '@oro_workflow.context_accessor'
+            - '@oro_action.expression.context_accessor'
             - '@doctrine'
         tags:
             - { name: oro_workflow.action, alias: marello_create_refund }

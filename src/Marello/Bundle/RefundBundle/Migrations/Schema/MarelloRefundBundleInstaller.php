@@ -7,28 +7,17 @@ use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareInterface, ActivityExtensionAwareInterface
+class MarelloRefundBundleInstaller implements
+    Installation,
+    ActivityExtensionAwareInterface
 {
-    /** @var NoteExtension */
-    protected $noteExtension;
-
     /** @var ActivityExtension */
     protected $activityExtension;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setNoteExtension(NoteExtension $noteExtension)
-    {
-        $this->noteExtension = $noteExtension;
-    }
 
     /**
      * {@inheritdoc}
@@ -59,8 +48,9 @@ class MarelloRefundBundleInstaller implements Installation, NoteExtensionAwareIn
         $this->addMarelloRefundForeignKeys($schema);
         $this->addMarelloRefundItemForeignKeys($schema);
 
-        $this->noteExtension->addNoteAssociation($schema, 'marello_refund');
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_refund');
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_refund');
+
     }
 
     /**

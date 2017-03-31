@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\NotificationBundle\Model\ExtendNotification;
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\NotificationBundle\Processor\EmailNotificationInterface;
+use Oro\Bundle\NotificationBundle\Model\EmailNotificationInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**

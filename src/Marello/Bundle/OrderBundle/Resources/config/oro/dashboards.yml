@@ -1,4 +1,4 @@
-oro_dashboard_config:
+dashboards:
     widgets:
         quick_launchpad:
             items:

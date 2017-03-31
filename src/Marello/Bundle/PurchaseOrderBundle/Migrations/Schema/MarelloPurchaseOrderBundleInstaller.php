@@ -5,17 +5,19 @@ namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtensionAwareInterface
+class MarelloPurchaseOrderBundleInstaller implements
+    Installation,
+    ActivityExtensionAwareInterface
 {
-    /** @var  NoteExtension */
-    protected $noteExtension;
+    /** @var ActivityExtension */
+    protected $activityExtension;
 
     /**
      * {@inheritdoc}
@@ -38,7 +40,7 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
         $this->addMarelloPurchaseOrderForeignKeys($schema);
         $this->addMarelloPurchaseOrderItemForeignKeys($schema);
 
-        $this->noteExtension->addNoteAssociation($schema, 'marello_purchase_order');
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_purchase_order');
     }
 
     /**
@@ -138,12 +140,12 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
     }
 
     /**
-     * Sets the NoteExtension
+     * Sets the ActivityExtension
      *
-     * @param noteExtension $noteExtension
+     * @param ActivityExtension $activityExtension
      */
-    public function setNoteExtension(NoteExtension $noteExtension)
+    public function setActivityExtension(ActivityExtension $activityExtension)
     {
-        $this->noteExtension = $noteExtension;
+        $this->activityExtension = $activityExtension;
     }
 }

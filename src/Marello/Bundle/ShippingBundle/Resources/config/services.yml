@@ -7,7 +7,7 @@ services:
     marello_shipping.workflow.action.create:
         class: Marello\Bundle\ShippingBundle\Workflow\ShipmentCreateAction
         arguments:
-            - '@oro_action.context_accessor'
+            - '@oro_action.expression.context_accessor'
             - '@marello_shipping.integration.shipping_service_registry'
             - '@doctrine'
         tags:

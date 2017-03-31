@@ -10,8 +10,6 @@ use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -19,8 +17,7 @@ use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
  */
 class MarelloReturnBundleInstaller implements Installation,
     ExtendExtensionAwareInterface,
-    ActivityExtensionAwareInterface,
-    NoteExtensionAwareInterface
+    ActivityExtensionAwareInterface
 {
     /** @var ActivityExtension */
     protected $activityExtension;
@@ -28,9 +25,6 @@ class MarelloReturnBundleInstaller implements Installation,
     /** @var ExtendExtension */
     protected $extendExtension;
     
-    /** @var NoteExtension */
-    protected $noteExtension;
-
     /**
      * {@inheritdoc}
      */
@@ -76,9 +70,8 @@ class MarelloReturnBundleInstaller implements Installation,
             ]
         );
 
-        $this->noteExtension->addNoteAssociation($schema, 'marello_return_return');
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', 'marello_return_return');
-
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_return_return');
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_return_return');
     }
 
@@ -217,15 +210,5 @@ class MarelloReturnBundleInstaller implements Installation,
     public function setActivityExtension(ActivityExtension $activityExtension)
     {
         $this->activityExtension = $activityExtension;
-    }
-
-    /**
-     * Sets the NoteExtension
-     *
-     * @param noteExtension $noteExtension
-     */
-    public function setNoteExtension(NoteExtension $noteExtension)
-    {
-        $this->noteExtension = $noteExtension;
     }
 }

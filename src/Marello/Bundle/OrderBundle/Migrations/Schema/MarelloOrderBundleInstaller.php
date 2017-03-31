@@ -7,8 +7,6 @@ use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtension;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
 
@@ -19,14 +17,10 @@ use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInte
 class MarelloOrderBundleInstaller implements
     Installation,
     ActivityExtensionAwareInterface,
-    NoteExtensionAwareInterface,
     AttachmentExtensionAwareInterface
 {
     /** @var ActivityExtension */
     protected $activityExtension;
-    
-    /** @var  NoteExtension */
-    protected $noteExtension;
 
     /** @var  AttachmentExtension */
     protected $attachmentExtension;
@@ -55,6 +49,8 @@ class MarelloOrderBundleInstaller implements
         $this->addMarelloOrderOrderItemForeignKeys($schema);
         $this->addMarelloAddressForeignKeys($schema);
         $this->addMarelloOrderCustomerOwnerToOroEmailAddress($schema);
+
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_order_order');
     }
 
     /**
@@ -153,7 +149,6 @@ class MarelloOrderBundleInstaller implements
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
-        $this->noteExtension->addNoteAssociation($schema, $table->getName());
     }
 
     /**
@@ -307,16 +302,6 @@ class MarelloOrderBundleInstaller implements
     public function setActivityExtension(ActivityExtension $activityExtension)
     {
         $this->activityExtension = $activityExtension;
-    }
-
-    /**
-     * Sets the NoteExtension
-     *
-     * @param noteExtension $noteExtension
-     */
-    public function setNoteExtension(NoteExtension $noteExtension)
-    {
-        $this->noteExtension = $noteExtension;
     }
 
     /**

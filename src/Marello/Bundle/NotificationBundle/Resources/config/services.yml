@@ -2,7 +2,7 @@ services:
     marello_notification.email.send_processor:
         class: Marello\Bundle\NotificationBundle\Email\SendProcessor
         arguments:
-            - '@oro_notification.email_processor'
+            - '@oro_notification.async.send_email_message_processor'
             - '@doctrine.orm.entity_manager'
             - '@oro_activity.manager'
             - '@oro_email.email_renderer'
@@ -11,7 +11,7 @@ services:
     marello_notification.workflow.send_notification_action:
         class: Marello\Bundle\NotificationBundle\Workflow\SendNotificationAction
         arguments:
-            - '@oro_workflow.context_accessor'
+            - '@oro_action.expression.context_accessor'
             - '@marello_notification.email.send_processor'
         tags:
             - { name: oro_workflow.action, alias: marello_notification_send }
