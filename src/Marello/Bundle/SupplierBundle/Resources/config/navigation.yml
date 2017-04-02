@@ -1,7 +1,7 @@
 oro_menu_config:
     items:
-        forecasting_and_purchasing:
-            label: 'marello.supplier.navigation.forecasting_and_purchasing.label'
+        purchasing:
+            label: 'marello.supplier.navigation.purchasing.label'
             uri: '#'
             extras:
                 position: 50
@@ -31,7 +31,7 @@ oro_menu_config:
     tree:
         application_menu:
             children:
-                forecasting_and_purchasing:
+                purchasing:
                     children:
                         suppliers_list: ~
 
