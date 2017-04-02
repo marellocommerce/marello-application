@@ -1,0 +1,4 @@
+marello_notification_bundle:
+    resource: "@MarelloNotificationBundle/Controller"
+    type:     annotation
+    prefix:   /marello/notification

@@ -139,14 +139,16 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
      * e.g. [
      *      'itemView'  => 'item_view_route',
      *      'itemEdit'  => 'item_edit_route',
-     *      'itemDelete => 'item_delete_route'
+     *      'itemDelete' => 'item_delete_route'
      * ]
      *
      * @return array
      */
     public function getRoutes()
     {
-        return [];
+        return [
+            'itemView'  => 'marello_notification_thread_view'
+        ];
     }
 
     /**
