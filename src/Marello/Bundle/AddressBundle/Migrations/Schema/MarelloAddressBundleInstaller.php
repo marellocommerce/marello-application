@@ -60,6 +60,7 @@ class MarelloAddressBundleInstaller implements Installation
         $table->addColumn('name_suffix', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('created', 'datetime');
         $table->addColumn('updated', 'datetime', ['notnull' => false]);
+        $table->addColumn('serialized_data', 'string');
         $table->setPrimaryKey(['id']);
         $table->addIndex(['region_code'], 'idx_1c837761aeb327af', []);
         $table->addIndex(['country_code'], 'idx_1c837761f026bb7c', []);

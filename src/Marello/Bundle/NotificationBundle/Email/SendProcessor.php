@@ -9,12 +9,12 @@ use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
-use Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor;
+use Oro\Bundle\NotificationBundle\Manager\EmailNotificationManager;
 
 class SendProcessor
 {
-    /** @var EmailNotificationProcessor */
-    protected $emailNotificationProcessor;
+    /** @var EmailNotificationManager */
+    protected $emailNotificationManager;
 
     /** @var ObjectManager */
     protected $manager;
@@ -31,20 +31,20 @@ class SendProcessor
     /**
      * EmailSendProcessor constructor.
      *
-     * @param EmailNotificationProcessor $emailNotificationProcessor
+     * @param EmailNotificationManager $emailNotificationManager
      * @param ObjectManager              $manager
      * @param ActivityManager            $activityManager
      * @param EmailRenderer              $renderer
      * @param EmailTemplateManager       $emailTeplateManager
      */
     public function __construct(
-        EmailNotificationProcessor $emailNotificationProcessor,
+        EmailNotificationManager $emailNotificationManager,
         ObjectManager $manager,
         ActivityManager $activityManager,
         EmailRenderer $renderer,
         EmailTemplateManager $emailTeplateManager
     ) {
-        $this->emailNotificationProcessor = $emailNotificationProcessor;
+        $this->emailNotificationManager = $emailNotificationManager;
         $this->manager                    = $manager;
         $this->activityManager            = $activityManager;
         $this->renderer                   = $renderer;
@@ -89,7 +89,7 @@ class SendProcessor
          * This depends on application configuration.
          */
         $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
-        $this->emailNotificationProcessor->process($entity, [$notification]);
+        $this->emailNotificationManager->process($entity, [$notification]);
 
         $this->activityManager->addActivityTarget($notification, $entity);
 
