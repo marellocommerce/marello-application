@@ -3,10 +3,10 @@
 namespace Marello\Bundle\NotificationBundle\Workflow;
 
 use Marello\Bundle\NotificationBundle\Email\SendProcessor;
-use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
-use Oro\Bundle\WorkflowBundle\Model\Action\AbstractAction;
-use Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface;
-use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
+use Oro\Component\Action\Exception\InvalidParameterException;
+use Oro\Component\Action\Action\AbstractAction;
+use Oro\Component\Action\Action\ActionInterface;
+use Oro\Component\ConfigExpression\ContextAccessor;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 class SendNotificationAction extends AbstractAction

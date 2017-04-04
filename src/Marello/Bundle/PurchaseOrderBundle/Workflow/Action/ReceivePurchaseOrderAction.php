@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\Action\Action\ActionInterface;
-use Oro\Component\Action\Model\ContextAccessor;
+use Oro\Component\ConfigExpression\ContextAccessor;
 
 use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;

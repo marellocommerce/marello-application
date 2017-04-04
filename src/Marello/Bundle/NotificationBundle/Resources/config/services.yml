@@ -14,7 +14,7 @@ services:
             - '@oro_action.expression.context_accessor'
             - '@marello_notification.email.send_processor'
         tags:
-            - { name: oro_workflow.action, alias: marello_notification_send }
+            - { name: oro_action.action, alias: marello_notification_send }
 
     marello_notification.provider.activity_list:
         class: Marello\Bundle\NotificationBundle\Provider\NotificationActivityListProvider

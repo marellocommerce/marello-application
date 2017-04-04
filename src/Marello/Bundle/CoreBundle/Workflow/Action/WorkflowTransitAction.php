@@ -9,7 +9,7 @@ use JMS\JobQueueBundle\Entity\Job;
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\Action\Action\ActionInterface;
-use Oro\Component\Action\Model\ContextAccessor;
+use Oro\Component\ConfigExpression\ContextAccessor;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 

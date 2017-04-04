@@ -5,10 +5,10 @@ namespace Marello\Bundle\RefundBundle\Workflow\Actions;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
-use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
-use Oro\Bundle\WorkflowBundle\Model\Action\AbstractAction;
-use Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface;
-use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
+use Oro\Component\Action\Exception\InvalidParameterException;
+use Oro\Component\Action\Action\AbstractAction;
+use Oro\Component\Action\Action\ActionInterface;
+use Oro\Component\ConfigExpression\ContextAccessor;
 
 class CreateRefundAction extends AbstractAction
 {

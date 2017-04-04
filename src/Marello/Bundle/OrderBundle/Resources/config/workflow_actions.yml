@@ -6,7 +6,7 @@ services:
             - '@doctrine'
             - '@event_dispatcher'
         tags:
-            - { name: oro_workflow.action, alias: marello_ship_order }
+            - { name: oro_action.action, alias: marello_ship_order }
 
     marello_order.workflow.order_cancel_action:
         class: Marello\Bundle\OrderBundle\Workflow\OrderCancelAction
@@ -15,4 +15,4 @@ services:
             - '@doctrine'
             - '@event_dispatcher'
         tags:
-            - { name: oro_workflow.action, alias: marello_cancel_order }
+            - { name: oro_action.action, alias: marello_cancel_order }

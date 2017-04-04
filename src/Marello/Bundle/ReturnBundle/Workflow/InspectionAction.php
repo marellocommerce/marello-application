@@ -5,7 +5,7 @@ namespace Marello\Bundle\ReturnBundle\Workflow;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Component\Action\Model\ContextAccessor;
+use Oro\Component\ConfigExpression\ContextAccessor;
 use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\Action\Action\ActionInterface;
 

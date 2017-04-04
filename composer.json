@@ -23,7 +23,8 @@
     "require": {
         "php": ">=5.5.9",
         "oro/platform": "2.0.*",
-        "oro/platform-serialised-fields": "2.0.*"
+        "oro/platform-serialised-fields": "2.0.*",
+        "jms/job-queue-bundle": "1.4.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

@@ -15,14 +15,14 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    {% if entity.workflowStep.name matches '/shipped$/' %}
-        {{ UI.addButton({
-            'path': path('marello_return_return_create', {'id': entity.id}),
-            'entity_label': 'marello.return.returnentity.entity_label'|trans,
-            'aCss': 'pull-left'
-        }) }}
-        {{ UI.buttonSeparator() }}
-    {% endif %}
+    {#{% if entity.workflowStep.name matches '/shipped$/' %}#}
+        {#{{ UI.addButton({#}
+            {#'path': path('marello_return_return_create', {'id': entity.id}),#}
+            {#'entity_label': 'marello.return.returnentity.entity_label'|trans,#}
+            {#'aCss': 'pull-left'#}
+        {#}) }}#}
+        {#{{ UI.buttonSeparator() }}#}
+    {#{% endif %}#}
 {% endblock navButtons %}
 
 {% block content_data %}
@@ -37,7 +37,7 @@
                         </div>
                         {{ UI.renderProperty('marello.order.order_number.label'|trans, entity.orderNumber) }}
                         {{ UI.renderProperty('marello.order.order_date.label'|trans, entity.createdAt|oro_format_datetime) }}
-                        {{ UI.renderProperty('marello.order.status.label'|trans, entity.workflowStep ? entity.workflowStep.label : null) }}
+                        {#{{ UI.renderProperty('marello.order.status.label'|trans, entity.workflowStep ? entity.workflowStep.label : null) }}#}
                         {% set channelViewGranted = resource_granted('marello_saleschannel_update') %}
                         {%- if channelViewGranted -%}
                             {%- set channelData -%}

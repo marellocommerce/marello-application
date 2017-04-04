@@ -1,0 +1,101 @@
+oro:
+    workflow:
+        marello_order_b2c_workflow_1:
+            label: 'Order B2C Workflow #1'
+            attribute:
+                payment_reference:
+                    label: 'Payment Reference'
+                payment_details:
+                    label: 'Payment Details'
+                invoiced_at:
+                    label: 'Invoiced At'
+                note:
+                    label: 'Note'
+            step:
+                pending:
+                    label:  'Pending Order'
+                cancelled:
+                    label:  'Cancelled'
+                pending_on_hold:
+                    label:  'On Hold'
+                invoice_on_hold:
+                    label:  'On Hold'
+                invoice:
+                    label:  'Order Payed'
+                credit:
+                    label:  'Closed'
+                pick_and_pack:
+                    label: 'Pick and Pack'
+                shipped:
+                    label:  'Complete'
+            transition:
+                cancel:
+                    label:    'Cancel'
+                hold_pending:
+                    label:    'Hold'
+                un_hold_pending:
+                    label:    'Un-Hold'
+                hold_invoice:
+                    label:    'Hold'
+                un_hold_invoice:
+                    label:    'Un-Hold'
+                invoice:
+                    label:    'Invoice'
+                ship:
+                    label:    'Ship'
+                credit:
+                    label:    'Credit'
+                prepare_shipping:
+                    label:    'Prepare Shipping'
+                payment_reminder:
+                    label:    'Payment Reminder'
+
+        marello_order_b2c_workflow_2:
+            label: 'Order B2C Workflow #2'
+            attribute:
+                payment_reference:
+                    label: 'Payment Reference'
+                payment_details:
+                    label: 'Payment Details'
+                invoiced_at:
+                    label: 'Invoiced At'
+                note:
+                    label: 'Note'
+            step:
+                pending:
+                    label:  'Pending Order'
+                cancelled:
+                    label:  'Cancelled'
+                pending_on_hold:
+                    label:  'On Hold'
+                shipped_on_hold:
+                    label:  'On Hold'
+                invoice:
+                    label:  'Complete'
+                credit:
+                    label:  'Closed'
+                pick_and_pack:
+                    label: 'Pick and Pack'
+                shipped:
+                    label:  'Shipped'
+            transition:
+                cancel:
+                    label:    'Cancel'
+                hold_pending:
+                    label:    'Hold'
+                un_hold_pending:
+                    label:    'Un-Hold'
+                hold_shipped:
+                    label:    'Hold'
+                un_hold_shipped:
+                    label:    'Un-Hold'
+                invoice:
+                    label:    'Invoice'
+                ship:
+                    label:    'Ship'
+                credit:
+                    label:    'Credit'
+                prepare_shipping:
+                    label:    'Prepare Shipping'
+                payment_reminder:
+                    label:    'Payment Reminder'

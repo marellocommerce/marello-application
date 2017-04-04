@@ -12,7 +12,7 @@ navigation:
         tree:
             application_menu:
                 children:
-                    sales:
+                    sales_tab:
                         children:
                             refunds: ~
 

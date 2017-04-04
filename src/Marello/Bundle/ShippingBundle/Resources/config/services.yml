@@ -11,7 +11,7 @@ services:
             - '@marello_shipping.integration.shipping_service_registry'
             - '@doctrine'
         tags:
-            - { name: oro_workflow.action, alias: marello_shipment_create }
+            - { name: oro_action.action, alias: marello_shipment_create }
 
     marello_shipping.integration.ups.api:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi

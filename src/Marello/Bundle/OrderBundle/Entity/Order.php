@@ -36,9 +36,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *              "type"="ACL",
  *              "group_name"=""
  *          },
- *          "workflow"={
- *              "active_workflow"="marello_order_b2c_workflow_1"
- *          },
  *          "ownership"={
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"

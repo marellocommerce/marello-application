@@ -1,3 +1,0 @@
-imports:
-    - { resource: 'workflow/marello_order_b2c_workflow_1.yml' }
-    - { resource: 'workflow/marello_order_b2c_workflow_2.yml' }
