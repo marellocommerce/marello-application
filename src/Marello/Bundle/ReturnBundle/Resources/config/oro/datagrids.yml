@@ -5,8 +5,8 @@ datagrids:
             query:
                 select:
                     - r
-                    - ws.label AS wsLabel
-                    - ws.name AS wsName
+#                    - ws.label AS wsLabel
+#                    - ws.name AS wsName
                     - COALESCE(SUM(ri.quantity), 0) AS returnItemCount
                     - (SELECT SUM(oi.quantity) FROM MarelloOrderBundle:OrderItem oi WHERE oi.order = r.order ) AS orderItemCount
                 from:
@@ -15,7 +15,7 @@ datagrids:
                     left:
                         - { join: r.returnItems, alias: ri }
                         - { join: r.order, alias: o }
-                        - { join: r.workflowStep, alias: ws }
+#                        - { join: r.workflowStep, alias: ws }
                 groupBy: r.id, o.id
         columns:
             returnNumber:
@@ -42,9 +42,9 @@ datagrids:
             updatedAt:
                 label: oro.ui.updated_at
                 frontend_type: datetime
-            workflowStep:
-                label: oro.workflow.workflowstep.grid.label
-                data_name: wsLabel
+#            workflowStep:
+#                label: oro.workflow.workflowstep.grid.label
+#                data_name: wsLabel
         filters:
             columns:
                 returnNumber:
@@ -59,13 +59,13 @@ datagrids:
                 updatedAt:
                     type: datetime
                     data_name: r.updatedAt
-                workflowStep:
-                    type: entity
-                    data_name: r.workflowStep
-                    options:
-                        field_type: oro_workflow_step_select
-                        field_options:
-                            workflow_entity_class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
+#                workflowStep:
+#                    type: entity
+#                    data_name: r.workflowStep
+#                    options:
+#                        field_type: oro_workflow_step_select
+#                        field_options:
+#                            workflow_entity_class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
         sorters:
             columns:
                 returnNumber:

@@ -1,6 +1,5 @@
 workflows:
     marello_order_b2c_workflow_1:
-#        label:        'Order B2C Workflow #1'
         entity:       Marello\Bundle\OrderBundle\Entity\Order
         entity_attribute: order
         start_step:   pending
@@ -10,62 +9,48 @@ workflows:
 
         attributes:
             payment_reference:
-#                label: 'Payment Reference'
                 type: string
             payment_details:
-#                label: 'Payment Details'
                 type: string
             invoiced_at:
-#                label: 'Invoiced At'
                 type: object
                 options:
                     class: \DateTime
             note:
-#                label: 'Note'
                 type: string
         steps:
             pending:
-#                label:  Pending Order
                 allowed_transitions:
                     - payment_reminder
                     - invoice
                     - hold_pending
                     - cancel
             cancelled:
-#                label:  Cancelled
                 allowed_transitions: []
             pending_on_hold:
-#                label:  On Hold
                 allowed_transitions:
                     - un_hold_pending
             invoice_on_hold:
-#                label:  On Hold
                 allowed_transitions:
                     - un_hold_invoice
             invoice:
-#                label:  Order Payed
                 allowed_transitions:
                     - hold_invoice
                     - credit
                     - prepare_shipping
             credit:
-#                label:  Closed
                 allowed_transitions: []
             pick_and_pack:
-#                label: Pick and Pack
                 allowed_transitions:
                     - ship
             shipped:
-#                label:  Complete
                 allowed_transitions: []
 
         transitions:
             cancel:
-#                label:    Cancel
                 step_to:  cancelled
                 transition_definition: cancel_definition
             hold_pending:
-#                label:    Hold
                 step_to:  pending_on_hold
                 transition_definition: hold_definition
                 form_options:
@@ -75,11 +60,9 @@ workflows:
                             options:
                                 required: false
             un_hold_pending:
-#                label:    Un-Hold
                 step_to:  pending
                 transition_definition: un_hold_definition
             hold_invoice:
-#                label:    Hold
                 step_to:  invoice_on_hold
                 transition_definition: hold_definition
                 form_options:
@@ -89,11 +72,9 @@ workflows:
                             options:
                                 required: false
             un_hold_invoice:
-#                label:    Un-Hold
                 step_to:  invoice
                 transition_definition: un_hold_definition
             invoice:
-#                label:    Invoice
                 step_to:  invoice
                 transition_definition: invoice_definition
                 form_options:
@@ -118,19 +99,15 @@ workflows:
                                   - NotBlank: ~
                                   - DateTime: ~
             ship:
-#                label:    Ship
                 step_to:  shipped
                 transition_definition: ship_definition
             credit:
-#                label:    Credit
                 step_to:  credit
                 transition_definition: credit_definition
             prepare_shipping:
-#                label:    Prepare Shipping
                 step_to:  pick_and_pack
                 transition_definition: prepare_shipping_definition
             payment_reminder:
-#                label:    Payment Reminder
                 step_to:  pending
                 transition_definition: payment_reminder_definition
 
@@ -191,68 +168,53 @@ workflows:
                         message: 'Reminder has been sent.'
 
     marello_order_b2c_workflow_2:
-#        label:        'Order B2C Workflow #2'
         entity:       Marello\Bundle\OrderBundle\Entity\Order
         entity_attribute: order
         start_step:   pending
         attributes:
             payment_reference:
-#                label: 'Payment Reference'
                 type: string
             payment_details:
-#                label: 'Payment Details'
                 type: string
             invoiced_at:
-#                label: 'Invoiced At'
                 type: object
                 options:
                     class: \DateTime
             note:
-#                label: 'Note'
                 type: string
         steps:
             pending:
-#                label:  Pending Order
                 allowed_transitions:
                     - payment_reminder
                     - prepare_shipping
                     - hold_pending
                     - cancel
             cancelled:
-#                label:  Cancelled
                 allowed_transitions: []
             pending_on_hold:
-#                label:  On Hold
                 allowed_transitions:
                     - un_hold_pending
             shipped_on_hold:
-#                label:  On Hold
                 allowed_transitions:
                     - un_hold_shipped
             invoice:
-#                label:  Complete
                 allowed_transitions:
                     - credit
             credit:
-#                label:  Closed
                 allowed_transitions: []
             pick_and_pack:
-#                label: Pick and Pack
                 allowed_transitions:
                     - ship
             shipped:
-#                label:  Shipped
                 allowed_transitions:
                     - invoice
                     - hold_shipped
 
         transitions:
             cancel:
-#                label:    Cancel
                 step_to:  cancelled
                 transition_definition: cancel_definition
             hold_pending:
-#                label:    Hold
                 step_to:  pending_on_hold
                 transition_definition: hold_definition
                 form_options:
@@ -262,11 +224,9 @@ workflows:
                             options:
                                 required: false
             un_hold_pending:
-#                label:    Un-Hold
                 step_to:  pending
                 transition_definition: un_hold_definition
             hold_shipped:
-#                label:    Hold
                 step_to:  shipped_on_hold
                 transition_definition: hold_definition
                 form_options:
@@ -276,11 +236,9 @@ workflows:
                             options:
                                 required: false
             un_hold_shipped:
-#                label:    Un-Hold
                 step_to:  shipped
                 transition_definition: un_hold_definition
             invoice:
-#                label:    Invoice
                 step_to:  invoice
                 transition_definition: invoice_definition
                 form_options:
@@ -305,19 +263,15 @@ workflows:
                                   - NotBlank: ~
                                   - DateTime: ~
             ship:
-#                label:    Ship
                 step_to:  shipped
                 transition_definition: ship_definition
             credit:
-#                label:    Credit
                 step_to:  credit
                 transition_definition: credit_definition
             prepare_shipping:
-#                label:    Prepare Shipping
                 step_to:  pick_and_pack
                 transition_definition: prepare_shipping_definition
             payment_reminder:
-#                label:    Payment Reminder
                 step_to:  pending
                 transition_definition: payment_reminder_definition
 

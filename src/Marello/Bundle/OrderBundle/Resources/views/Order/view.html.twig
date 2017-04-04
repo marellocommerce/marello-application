@@ -16,12 +16,12 @@
 
 {% block navButtons %}
     {#{% if entity.workflowStep.name matches '/shipped$/' %}#}
-        {#{{ UI.addButton({#}
-            {#'path': path('marello_return_return_create', {'id': entity.id}),#}
-            {#'entity_label': 'marello.return.returnentity.entity_label'|trans,#}
-            {#'aCss': 'pull-left'#}
-        {#}) }}#}
-        {#{{ UI.buttonSeparator() }}#}
+        {{ UI.addButton({
+            'path': path('marello_return_return_create', {'id': entity.id}),
+            'entity_label': 'marello.return.returnentity.entity_label'|trans,
+            'aCss': 'pull-left'
+        }) }}
+        {{ UI.buttonSeparator() }}
     {#{% endif %}#}
 {% endblock navButtons %}
 

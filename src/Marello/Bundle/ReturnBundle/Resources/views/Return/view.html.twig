@@ -16,13 +16,13 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    {% if resource_granted('EDIT', entity) and entity.workflowStep.name matches '/_on_hold$/' %}
+    {#{% if resource_granted('EDIT', entity) and entity.workflowStep.name matches '/_on_hold$/' %}#}
         {{ UI.buttonSeparator() }}
         {{ UI.editButton({
             'path': path('marello_return_return_update', {'id': entity.id}),
             'entity_label': 'marello.return.returnentity.entity_label'|trans
         }) }}
-    {% endif %}
+    {#{% endif %}#}
 {% endblock navButtons %}
 
 {% block content_data %}
