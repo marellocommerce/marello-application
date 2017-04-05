@@ -11,8 +11,6 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 /**
  * @ORM\Entity
@@ -23,9 +21,6 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  *      routeName="marello_purchaseorder_purchaseorder_index",
  *      routeCreate="marello_purchaseorder_purchaseorder_create",
  *      defaultValues={
- *          "workflow"={
- *              "active_workflow"="marello_purchase_order_workflow"
- *          },
  *          "ownership"={
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"
@@ -71,22 +66,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      * )
      */
     protected $items;
-
-    /**
-     * @var WorkflowItem
-     *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
-     * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $workflowItem;
-
-    /**
-     * @var WorkflowStep
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
-     * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $workflowStep;
 
     /**
      * @var Organization
@@ -163,22 +142,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @return WorkflowItem
-     */
-    public function getWorkflowItem()
-    {
-        return $this->workflowItem;
-    }
-
-    /**
-     * @return WorkflowStep
-     */
-    public function getWorkflowStep()
-    {
-        return $this->workflowStep;
-    }
-
-    /**
      * @param string $purchaseOrderNumber
      *
      * @return $this
@@ -186,30 +149,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     public function setPurchaseOrderNumber($purchaseOrderNumber)
     {
         $this->purchaseOrderNumber = $purchaseOrderNumber;
-
-        return $this;
-    }
-
-    /**
-     * @param WorkflowItem $workflowItem
-     *
-     * @return $this
-     */
-    public function setWorkflowItem($workflowItem)
-    {
-        $this->workflowItem = $workflowItem;
-
-        return $this;
-    }
-
-    /**
-     * @param WorkflowStep $workflowStep
-     *
-     * @return $this
-     */
-    public function setWorkflowStep($workflowStep)
-    {
-        $this->workflowStep = $workflowStep;
 
         return $this;
     }

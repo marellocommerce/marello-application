@@ -16,8 +16,6 @@ use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\ReturnBundle\Entity\Repository\ReturnEntityRepository")

@@ -1,45 +1,41 @@
 workflows:
     marello_purchase_order_workflow:
-        label: "Purchase Order Workflow"
         entity: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
         entity_attribute: po
 #        steps_display_ordered: true
         start_step: pending
+
+        defaults:
+            active: true
+
         attributes:
             received_items:
-                label: 'Received Items'
                 type: entity
                 options:
                     class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
         steps:
             pending:
-                label: "Pending"
 #                order: 10
                 allowed_transitions:
                     - partially_receive
                     - fully_receive
                     - cancel_purchase_order
             partially_received:
-                label: "Partially received"
 #                order: 20
                 allowed_transitions:
                     - partially_receive
                     - complete_purchase_order
             fully_received:
-                label: "Fully received"
 #                order: 30
                 allowed_transitions:
                     - complete_purchase_order
             complete_purchase_order:
-                label: "Complete"
 #                order: 40
                 is_final: true
             cancelled_purchase_order:
-                label: "Cancelled"
                 is_final: true
         transitions:
             partially_receive:
-                label:  "Receive partially"
                 step_to: partially_received
                 transition_definition: partially_receive_definition
                 dialog_template: MarelloPurchaseOrderBundle:Workflow:widget/transitionForm.html.twig
@@ -62,15 +58,12 @@ workflows:
                                 required: true
                                 data: $po
             fully_receive:
-                label:  "Receive fully"
                 step_to: fully_received
                 transition_definition: fully_receive_definition
             complete_purchase_order:
-                label: "Complete"
                 step_to: complete_purchase_order
                 transition_definition: complete_purchase_order_definition
             cancel_purchase_order:
-                label: "Cancel"
                 step_to: cancelled_purchase_order
                 transition_definition: cancel_purchase_order_definition
         transition_definitions:

@@ -1,29 +1,27 @@
 workflows:
     marello_refund_workflow:
-        label:  "Marello refund workflow"
         entity: Marello\Bundle\RefundBundle\Entity\Refund
         entity_attribute: refund
         start_step: pending
+
+        defaults:
+            active: true
+
         steps:
             pending:
-                label: Pending Refund
                 allowed_transitions:
                     - approve
             approved:
-                label: Approved Refund
                 allowed_transitions:
                     - complete
             completed:
-                label: Complete Refund
                 allowed_transitions: []
 
         transitions:
             approve:
-                label: Approve
                 step_to: approved
                 transition_definition: approve_definition
             complete:
-                label: Complete
                 step_to: completed
                 transition_definition: complete_definition
 
