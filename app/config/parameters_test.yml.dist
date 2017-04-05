@@ -49,3 +49,4 @@ parameters:
     message_queue_transport: 'null'
     message_queue_transport_config: {}
     profiler.enabled: false
+    enable_price_sharding: false
