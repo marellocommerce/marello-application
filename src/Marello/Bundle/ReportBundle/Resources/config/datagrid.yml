@@ -201,7 +201,7 @@ datagrid:
                 acl_resource: oro_report_view
                 query:
                     select:
-                        - rre.name as returnReason
+                        - IDENTITY(ri.reason) as returnReason
                         - oi.productSku
                         - oi.productName
                         - SUM(ri.quantity) AS quantityReturned
@@ -225,9 +225,10 @@ datagrid:
                     label:              marello.product.name.label
                     frontend_type:      string
                 returnReason:
-                    data_name:          returnReason
+                    context:
+                        enum_code:      marello_return_reason
+                        frontend_type:  enum
                     label:              marello.return.returnitem.reason.label
-                    frontend_type:      string
                 totalOrders:
                     data_name:          totalOrders
                     label:              marello.report.datagrid.columns.total_orders.label
@@ -250,11 +251,15 @@ datagrid:
             filters:
                 columns:
                     productSku:
-                        type: string
-                        data_name: oi.productSku
+                        type:           string
+                        data_name:      oi.productSku
                     productName:
-                        type: string
-                        data_name: oi.productName
+                        type:           string
+                        data_name:      oi.productName
+                    returnReason:
+                        type: enum
+                        enum_code: marello_return_reason
+                        data_name: returnReason
             options:
                 entityHint: report data
                 export: false
