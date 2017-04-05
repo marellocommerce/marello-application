@@ -1,7 +1,7 @@
 navigation:
     menu_config:
         items:
-            taxes:
+            taxes_tab:
                 label: 'marello.tax.navigation.taxes.label'
                 uri: '#'
                 extras:
@@ -31,7 +31,7 @@ navigation:
         tree:
             application_menu:
                 children:
-                    taxes:
+                    taxes_tab:
                         children:
                             tax_code_list: ~
     #                        tax_rule_list: ~
