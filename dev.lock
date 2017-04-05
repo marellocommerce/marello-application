@@ -66,7 +66,7 @@
                 "translatable",
                 "translation"
             ],
-            "time": "2016-08-05T18:11:57+00:00"
+            "time": "2016-08-05 18:11:57"
         },
         {
             "name": "akeneo/batch-bundle",
@@ -182,25 +182,29 @@
         },
         {
             "name": "behat/transliterator",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Behat/Transliterator.git",
-                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003"
+                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/868e05be3a9f25ba6424c2dd4849567f50715003",
-                "reference": "868e05be3a9f25ba6424c2dd4849567f50715003",
+                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
+                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
+            "require-dev": {
+                "chuyskywalker/rolling-curl": "^3.1",
+                "php-yaoi/php-yaoi": "^1.0"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -218,7 +222,7 @@
                 "slug",
                 "transliterator"
             ],
-            "time": "2015-09-28T16:26:35+00:00"
+            "time": "2017-04-04T11:38:05+00:00"
         },
         {
             "name": "bower-asset/Autolinker.js",
@@ -679,7 +683,8 @@
                 "reference": "df0ddedcab1a8fdb3a7abafc5fe97819931e7bd5",
                 "shasum": ""
             },
-            "type": "bower-asset-library"
+            "type": "bower-asset-library",
+            "time": "2014-07-21 18:45:41"
         },
         {
             "name": "bower-asset/font-awesome",
@@ -1054,7 +1059,8 @@
                 "reference": "e25ba46913160617935f837836016ea7ed2be08c",
                 "shasum": ""
             },
-            "type": "bower-asset-library"
+            "type": "bower-asset-library",
+            "time": "2017-02-08 18:28:50"
         },
         {
             "name": "bower-asset/jsplumb",
@@ -1277,24 +1283,24 @@
         },
         {
             "name": "bower-asset/moment-timezone",
-            "version": "0.5.12",
+            "version": "0.5.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moment/moment-timezone.git",
-                "reference": "78eb6bef64d5c046f18751566c5b8ff3a0ca1185"
+                "reference": "2b8da8f103f019949d45dc86fd6763960c8474d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment-timezone/zipball/78eb6bef64d5c046f18751566c5b8ff3a0ca1185",
-                "reference": "78eb6bef64d5c046f18751566c5b8ff3a0ca1185",
+                "url": "https://api.github.com/repos/moment/moment-timezone/zipball/2b8da8f103f019949d45dc86fd6763960c8474d8",
+                "reference": "2b8da8f103f019949d45dc86fd6763960c8474d8",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/moment": ">=2.6.0"
+                "bower-asset/moment": ">=2.9.0"
             },
             "type": "bower-asset-library",
             "extra": {
-                "bower-asset-main": "builds/moment-timezone-with-data-2010-2020.js",
+                "bower-asset-main": "builds/moment-timezone-with-data-2012-2022.js",
                 "bower-asset-ignore": [
                     "**/.*",
                     "tests",
@@ -2000,16 +2006,16 @@
         },
         {
             "name": "composer/spdx-licenses",
-            "version": "1.1.5",
+            "version": "1.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/spdx-licenses.git",
-                "reference": "96c6a07b05b716e89a44529d060bc7f5c263cb13"
+                "reference": "2603a0d7ddc00a015deb576fa5297ca43dee6b1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/spdx-licenses/zipball/96c6a07b05b716e89a44529d060bc7f5c263cb13",
-                "reference": "96c6a07b05b716e89a44529d060bc7f5c263cb13",
+                "url": "https://api.github.com/repos/composer/spdx-licenses/zipball/2603a0d7ddc00a015deb576fa5297ca43dee6b1c",
+                "reference": "2603a0d7ddc00a015deb576fa5297ca43dee6b1c",
                 "shasum": ""
             },
             "require": {
@@ -2057,7 +2063,7 @@
                 "spdx",
                 "validator"
             ],
-            "time": "2016-09-28T07:17:45+00:00"
+            "time": "2017-04-03T19:08:52+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -6135,7 +6141,7 @@
             "version": "dev-master",
             "dist": {
                 "type": "path",
-                "url": "../../package/wirecard",
+                "url": "../../package/commerce-wirecard",
                 "reference": "d84545826d2a30ba04bd3ebef3718fc3bc751862",
                 "shasum": null
             },
@@ -7357,16 +7363,16 @@
         },
         {
             "name": "piwik/device-detector",
-            "version": "3.7.6",
+            "version": "3.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/piwik/device-detector.git",
-                "reference": "f5b6ffc44e4092b1964d32f21142dc721f5a0899"
+                "reference": "f0e5d6bc159241fdfc2e02f7abd4ab5d519d2c30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/piwik/device-detector/zipball/f5b6ffc44e4092b1964d32f21142dc721f5a0899",
-                "reference": "f5b6ffc44e4092b1964d32f21142dc721f5a0899",
+                "url": "https://api.github.com/repos/piwik/device-detector/zipball/f0e5d6bc159241fdfc2e02f7abd4ab5d519d2c30",
+                "reference": "f0e5d6bc159241fdfc2e02f7abd4ab5d519d2c30",
                 "shasum": ""
             },
             "require": {
@@ -7404,7 +7410,7 @@
                 "parser",
                 "useragent"
             ],
-            "time": "2017-02-27T17:14:38+00:00"
+            "time": "2017-04-02T17:25:50+00:00"
         },
         {
             "name": "predis/predis",
@@ -9533,7 +9539,7 @@
             ],
             "authors": [
                 {
-                    "name": "William DURAND",
+                    "name": "William Durand",
                     "email": "william.durand1@gmail.com"
                 }
             ],
