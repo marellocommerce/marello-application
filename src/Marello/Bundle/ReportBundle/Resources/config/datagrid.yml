@@ -190,6 +190,10 @@ datagrid:
                         items: [5]
                         default_per_page: 5
 
+    # All non aggregated columns are being added to the group by,
+    # meaning that they will be added by default if no aggregated columns
+    # are specifically grouped by
+    #see https://github.com/orocrm/platform/issues/241#issuecomment-83146700
     marello_report-returns-returned_qty_by_reason:
             pageTitle: marello.report.title.returned_qty_by_reason
             source:
@@ -197,16 +201,22 @@ datagrid:
                 acl_resource: oro_report_view
                 query:
                     select:
-                        - ri
+                        - rre.name as returnReason
                         - oi.productSku
                         - oi.productName
                         - SUM(ri.quantity) AS quantityReturned
+                        - COUNT(o.id) as totalOrders
                     from:
                         - { table: MarelloReturnBundle:ReturnItem, alias: ri }
                     join:
                         left:
                             - { join: ri.orderItem, alias: oi }
-                    groupBy: oi.productSku, oi.productName
+                            - { join: ri.reason, alias: rre }
+                            - { join: oi.order, alias: o }
+                            - { join: o.workflowStep, alias: wfs }
+                    where:
+                        and:
+                            - wfs.name = 'shipped'
             columns:
                 productSku:
                     label:              marello.product.sku.label
@@ -214,20 +224,27 @@ datagrid:
                 productName:
                     label:              marello.product.name.label
                     frontend_type:      string
-                reason:
-                    data_name:          reason
+                returnReason:
+                    data_name:          returnReason
                     label:              marello.return.returnitem.reason.label
                     frontend_type:      string
+                totalOrders:
+                    data_name:          totalOrders
+                    label:              marello.report.datagrid.columns.total_orders.label
+                    frontend_type:      number
+                    align:              center
                 quantityReturned:
+                    data_name:          quantityReturned
                     label:              marello.report.datagrid.columns.quantity_returned.label
                     frontend_type:      number
-                    data_name:          quantityReturned
+                    align:              center
             sorters:
                 columns:
-                    productSku:            { data_name: oi.productSku }
-                    productName:           { data_name: oi.productName }
-                    quantityReturned:      { data_name: quantityReturned }
-                    reason:                { data_name: ri.reason }
+                    productSku:             { data_name: oi.productSku }
+                    productName:            { data_name: oi.productName }
+                    quantityReturned:       { data_name: quantityReturned }
+                    totalOrders:            { data_name: totalOrders }
+                    returnReason:           { data_name: returnReason }
                 default:
                     productSku: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
             filters:
