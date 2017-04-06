@@ -77,7 +77,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
-
     marello_order.twig.order_extension:
         class: Marello\Bundle\OrderBundle\Twig\OrderExtension
         arguments:
