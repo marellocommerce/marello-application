@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Oro\Component\Action\Model\ContextAccessor;
+use Oro\Component\ConfigExpression\ContextAccessor;
 use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 

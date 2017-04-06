@@ -114,8 +114,8 @@ workflows:
         transition_definitions:
             cancel_definition:
                 post_actions:
-                    - '@marello_cancel_order': ~
-                    - '@marello_notification_send':
+                    - @marello_cancel_order: ~
+                    - @marello_notification_send:
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_cancelled
@@ -132,7 +132,7 @@ workflows:
                     - @assign_value:
                         attribute: $order.invoicedAt
                         value: $invoiced_at
-                    - '@marello_notification_send':
+                    - @marello_notification_send:
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_invoiced
