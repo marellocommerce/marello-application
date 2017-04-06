@@ -77,6 +77,16 @@ oro_menu_config:
                 description: 'marello.report.menu.returned_qty_by_reason.description'
                 skipBreadcrumbs: true
 
+        returned_qty:
+            label: 'marello.report.menu.returned_qty.label'
+            route: 'marello_report_index'
+            routeParameters:
+                reportGroupName: 'returns'
+                reportName:      'returned_qty'
+            extras:
+                description: 'marello.report.menu.returned_qty.description'
+                skipBreadcrumbs: true
+
     tree:
         application_menu:
             children:
@@ -94,6 +104,7 @@ oro_menu_config:
                                         worst_selling_items: ~
                                 returns_report_tab:
                                     children:
+                                        returned_qty: ~
                                         returned_qty_by_reason: ~
 
 oro_titles:
