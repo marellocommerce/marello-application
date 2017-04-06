@@ -41,7 +41,8 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
 
             $return->setOrder($order);
             $return->setSalesChannel($channel);
-            $return->setReturnReference(uniqid($order->getOrderNumber()));
+            $returnReferenceNumber = $this->createReturnReferenceNumber($order, $i);
+            $return->setReturnReference($returnReferenceNumber);
 
             $order->getItems()->map(function (OrderItem $item) use ($return, $reasons, $statuses) {
                 $returnItem = new ReturnItem($item);
@@ -57,5 +58,19 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
         }
 
         $manager->flush();
+    }
+
+    /**
+     * Create the return reference number based on order number
+     * @param $order
+     * @param $number
+     * @return string
+     */
+    private function createReturnReferenceNumber($order, $number)
+    {
+        $calculatedRefNumber = ($order->getOrderNumber() - $number);
+        $referenceNumber = sprintf('%09d', $calculatedRefNumber);
+
+        return $referenceNumber;
     }
 }
