@@ -61,7 +61,7 @@ class NoteActivityProcessorTest extends \PHPUnit_Framework_TestCase
 
         $this->noteMock
             ->expects($this->once())
-            ->method('setTarget')
+            ->method('addActivityTarget')
             ->with($purchaseOrder);
 
         $this->entityManager
