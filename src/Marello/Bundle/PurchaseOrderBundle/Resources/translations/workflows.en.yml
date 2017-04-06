@@ -19,6 +19,7 @@ oro:
             transition:
                 partially_receive:
                     label:  'Receive partially'
+                    warning_message: 'Quantities must be greater than 0'
                 fully_receive:
                     label:  'Receive fully'
                 complete_purchase_order:

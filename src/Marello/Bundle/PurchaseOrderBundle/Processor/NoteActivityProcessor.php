@@ -41,7 +41,7 @@ class NoteActivityProcessor
 
         if ($message) {
             $this->note->setMessage($message);
-            $this->note->setTarget($entity);
+            $this->note->addActivityTarget($entity);
             $this->manager->persist($this->note);
             $this->manager->flush();
         }
