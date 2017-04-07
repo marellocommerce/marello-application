@@ -1,11 +1,11 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Migrations\Schema;
+namespace Marello\Bundle\OrderBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
-use Oro\Bundle\MigrationBundle\Migration\Installation;
+use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtension;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
@@ -14,8 +14,8 @@ use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInte
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloOrderBundleInstaller implements
-    Installation,
+class MarelloOrderBundle implements
+    Migration,
     ActivityExtensionAwareInterface,
     AttachmentExtensionAwareInterface
 {
@@ -24,14 +24,6 @@ class MarelloOrderBundleInstaller implements
 
     /** @var  AttachmentExtension */
     protected $attachmentExtension;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMigrationVersion()
-    {
-        return 'v1_1';
-    }
 
     /**
      * {@inheritdoc}
@@ -106,7 +98,9 @@ class MarelloOrderBundleInstaller implements
     {
         $table = $schema->createTable('marello_order_order');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', []);
+        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('customer_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('order_reference', 'string', ['notnull' => false, 'length' => 255]);
@@ -136,11 +130,13 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['order_number'], 'UNIQ_A619DD64551F0F81');
+        $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_A619DD641023C4EE');
         $table->addUniqueIndex(['order_reference', 'salesChannel_id'], 'UNIQ_A619DD64122432EB32758FE');
         $table->addIndex(['customer_id'], 'IDX_A619DD649395C3F3', []);
         $table->addIndex(['billing_address_id'], 'IDX_A619DD6443656FE6', []);
         $table->addIndex(['shipping_address_id'], 'IDX_A619DD64B1835C8F', []);
         $table->addIndex(['salesChannel_id'], 'IDX_A619DD644C7A5B2E', []);
+        $table->addIndex(['workflow_step_id'], 'IDX_A619DD6471FE882C', []);
         $table->addIndex(['organization_id'], 'IDX_A619DD6432C8A3DE', []);
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
@@ -207,6 +203,12 @@ class MarelloOrderBundleInstaller implements
     {
         $table = $schema->getTable('marello_order_order');
         $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_item'),
+            ['workflow_item_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
             ['id'],
@@ -221,6 +223,12 @@ class MarelloOrderBundleInstaller implements
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_sales_sales_channel'),
             ['salesChannel_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_step'),
+            ['workflow_step_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );

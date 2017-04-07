@@ -23,7 +23,8 @@
     "require": {
         "php": ">=5.5.9",
         "oro/platform": "2.0.*",
-        "oro/platform-serialised-fields": "2.0.*"
+        "oro/platform-serialised-fields": "2.0.*",
+        "oro/calendar-bundle": "2.0.0"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

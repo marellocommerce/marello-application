@@ -24,7 +24,7 @@ class MarelloRefundBundle implements Migration
     }
 
     /**
-     * Create marello_refund table
+     * Drop columns from marello_refund table
      *
      * @param Schema $schema
      */

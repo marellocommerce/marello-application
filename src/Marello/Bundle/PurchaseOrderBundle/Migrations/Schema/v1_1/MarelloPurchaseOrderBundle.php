@@ -23,7 +23,7 @@ class MarelloPurchaseOrderBundle implements Migration
     }
 
     /**
-     * Create marello_purchase_order table
+     * Drop columns from marello_purchase_order table
      *
      * @param Schema $schema
      */
