@@ -7,10 +7,22 @@ default: &default
             tags: ~@not-automated&&~@skip&&~@community-edition-only
     extensions: &default_extensions
         Behat\MinkExtension:
-            base_url: 'http://dev2-commerce-crm-ee.local/'
+            base_url: 'http://dev2-commerce-crm-ee.local'
         Behat\Symfony2Extension: ~
         Oro\Bundle\TestFrameworkBundle\Behat\ServiceContainer\OroTestFrameworkExtension:
             reference_initializer_class: Oro\Bundle\ApplicationBundle\Tests\Behat\ReferenceRepositoryInitializer
+            artifacts:
+                handlers:
+                    local:
+                        directory: '%paths.base%/web/uploads/behat'
+                        base_url: '%mink.base_url%/uploads/behat'
+                        auto_clear: true
+                    ftp:
+                        host: '45.55.154.212'
+                        username: 'travis-ci'
+                        password: 'JuqeKtUtCHEah4bhZngNL5xN'
+                        directory: '/var/www/html/'
+                        base_url: 'http://45.55.154.212'
             shared_contexts:
                 - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
                 - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\FixturesContext
