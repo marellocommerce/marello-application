@@ -1,31 +1,23 @@
 <?php
 
-namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema;
+namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
+use Oro\Bundle\MigrationBundle\Migration\Migration;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloPurchaseOrderBundleInstaller implements
-    Installation,
+class MarelloPurchaseOrderBundle implements
+    Migration,
     ActivityExtensionAwareInterface
 {
     /** @var ActivityExtension */
     protected $activityExtension;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMigrationVersion()
-    {
-        return 'v1_1';
-    }
 
     /**
      * {@inheritdoc}
@@ -52,11 +44,15 @@ class MarelloPurchaseOrderBundleInstaller implements
     {
         $table = $schema->createTable('marello_purchase_order');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', []);
+        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('purchase_order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_34E72AC31023C4EE');
+        $table->addIndex(['workflow_step_id'], 'IDX_34E72AC371FE882C', []);
         $table->addIndex(['organization_id'], 'IDX_34E72AC332C8A3DE', []);
     }
 
@@ -94,10 +90,22 @@ class MarelloPurchaseOrderBundleInstaller implements
     {
         $table = $schema->getTable('marello_purchase_order');
         $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_item'),
+            ['workflow_item_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_step'),
+            ['workflow_step_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 
