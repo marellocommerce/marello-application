@@ -1,19 +1,20 @@
 <?php
 
-namespace Marello\Bundle\RefundBundle\Migrations\Schema;
+namespace Marello\Bundle\RefundBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
-use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\MigrationBundle\Migration\Migration;
+
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloRefundBundleInstaller implements
-    Installation,
+class MarelloRefundBundle implements
+    Migration,
     ActivityExtensionAwareInterface
 {
     /** @var ActivityExtension */
@@ -25,14 +26,6 @@ class MarelloRefundBundleInstaller implements
     public function setActivityExtension(ActivityExtension $activityExtension)
     {
         $this->activityExtension = $activityExtension;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMigrationVersion()
-    {
-        return 'v1_1';
     }
 
     /**
@@ -70,6 +63,8 @@ class MarelloRefundBundleInstaller implements
         $table->addColumn('refund_amount', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
+        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->setPrimaryKey(['id']);
@@ -77,6 +72,8 @@ class MarelloRefundBundleInstaller implements
         $table->addIndex(['customer_id'], 'IDX_973FA8839395C3F3', []);
         $table->addIndex(['order_id'], 'IDX_973FA8838D9F6D38', []);
         $table->addIndex(['organization_id'], 'IDX_A619DD6432C8A3DE', []);
+        $table->addIndex(['workflow_item_id'], 'IDX_973FA8835E43682', []);
+        $table->addIndex(['workflow_step_id'], 'IDX_973FA88364397A40', []);
     }
 
     /**
@@ -114,6 +111,18 @@ class MarelloRefundBundleInstaller implements
             ['organization_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_item'),
+            ['workflow_item_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_workflow_step'),
+            ['workflow_step_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_order_customer'),

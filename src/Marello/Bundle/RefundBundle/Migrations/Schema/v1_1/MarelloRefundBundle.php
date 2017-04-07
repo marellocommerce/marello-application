@@ -1,18 +1,19 @@
 <?php
 
-namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema\v1_1;
+namespace Marello\Bundle\RefundBundle\Migrations\Schema\v1_1;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
+use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
+
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloPurchaseOrderBundle implements Migration
+class MarelloRefundBundle implements Migration
 {
     /**
      * {@inheritdoc}
@@ -23,24 +24,24 @@ class MarelloPurchaseOrderBundle implements Migration
     }
 
     /**
-     * Create marello_purchase_order table
+     * Create marello_refund table
      *
      * @param Schema $schema
      */
     protected function dropWorkflowColumns(Schema $schema)
     {
-        $table = $schema->getTable('marello_purchase_order');
+        $table = $schema->getTable('marello_refund');
 
-        if ($table->hasIndex('UNIQ_34E72AC31023C4EE')) {
-            $table->removeForeignKey('FK_34E72AC31023C4EE');
-            $table->dropIndex('UNIQ_34E72AC31023C4EE');
+        if ($table->hasIndex('IDX_973FA8835E43682')) {
+            $table->removeForeignKey('FK_973FA8831023C4EE');
+            $table->dropIndex('IDX_973FA8835E43682');
         }
         $table->dropColumn('workflow_item_id');
 
 
-        if ($table->hasIndex('IDX_34E72AC371FE882C')) {
-            $table->removeForeignKey('FK_34E72AC371FE882C');
-            $table->dropIndex('IDX_34E72AC371FE882C');
+        if ($table->hasIndex('IDX_973FA88364397A40')) {
+            $table->removeForeignKey('FK_973FA88371FE882C');
+            $table->dropIndex('IDX_973FA88364397A40');
         }
         $table->dropColumn('workflow_step_id');
     }
