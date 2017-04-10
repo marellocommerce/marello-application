@@ -2,9 +2,9 @@
 
 namespace Marello\Bundle\CoreBundle\Workflow\Action;
 
+use Oro\Bundle\CronBundle\Entity\Schedule;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use JMS\JobQueueBundle\Entity\Job;
 
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\Action\Action\AbstractAction;
@@ -105,13 +105,8 @@ class WorkflowTransitAction extends AbstractAction
             return;
         }
 
-        $job = new Job(
-            self::WORKFLOW_TRANSIT_COMMAND,
-            $this->getFormattedArguments($workflowItem->getId(), $transitionName),
-            true,
-            Job::DEFAULT_QUEUE,
-            Job::PRIORITY_HIGH
-        );
+        $job = new Schedule();
+        $job->setArguments($this->getFormattedArguments($workflowItem->getId(), $transitionName));
 
         $this->om->persist($job);
         $this->om->flush();
