@@ -113,21 +113,9 @@ datagrids:
                         - { join: p.preferredSupplier, alias: sup }
                 where:
                     and:
-                        - s.name = 'enabled'                                          # Only select product with enabled status
                         - sup.name <> ''
-                        - >
-                            p.id NOT IN (
-                                SELECT
-                                    IDENTITY(poi.product)
-                                FROM
-                                    MarelloPurchaseOrderBundle:PurchaseOrderItem poi
-                                LEFT JOIN
-                                    poi.order po
-                                LEFT JOIN
-                                    po.workflowStep ws
-                                WHERE
-                                    ws.name = 'pending'
-                            )
+                        - s.name = 'enabled'                                          # Only select product with enabled status
+
                 having: SUM(l.inventory - l.allocatedInventory) < p.purchaseStockLevel  # Only products with virtual stock lower than required purchase stock level
                 groupBy: p.id
 
