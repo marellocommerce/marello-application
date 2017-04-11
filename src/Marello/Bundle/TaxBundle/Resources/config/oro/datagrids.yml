@@ -21,7 +21,7 @@ datagrids:
                 description:
                     data_name: t.description
             default:
-                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                code: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 code:
@@ -48,7 +48,7 @@ datagrids:
             view:
                 type:           navigate
                 link:           view_link
-                icon:           eye-open
+                icon:           eye
                 rowAction:      true
             update:
                 type:           navigate
@@ -88,7 +88,7 @@ datagrids:
                 rate:
                     data_name: t.rate
             default:
-                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                code: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 code:
@@ -115,7 +115,7 @@ datagrids:
             view:
                 type:           navigate
                 link:           view_link
-                icon:           eye-open
+                icon:           eye
                 rowAction:      true
             update:
                 type:           navigate
@@ -170,7 +170,7 @@ datagrids:
                 includesVat:
                     data_name: t.includesVat
             default:
-                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                code: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 code:
@@ -200,7 +200,7 @@ datagrids:
             view:
                 type:           navigate
                 link:           view_link
-                icon:           eye-open
+                icon:           eye
                 rowAction:      true
             update:
                 type:           navigate

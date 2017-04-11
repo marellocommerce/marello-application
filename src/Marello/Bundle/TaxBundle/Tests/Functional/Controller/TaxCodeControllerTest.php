@@ -27,14 +27,16 @@ class TaxCodeControllerTest extends WebTestCase
         ]);
     }
 
+    /** @test */
     public function testIndex()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_tax_taxcode_index'));
         $result = $this->client->getResponse();
-        $this->assertContains('taxcode-grid', $crawler->html());
+        $this->assertContains('marello-taxcode-grid', $crawler->html());
         $this->assertResponseStatusCodeEquals($result, Response::HTTP_OK);
     }
 
+    /** @test */
     public function testCreateNewTaxCode()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_tax_taxcode_create'));
@@ -66,6 +68,7 @@ class TaxCodeControllerTest extends WebTestCase
         return $code;
     }
 
+    /** @test */
     public function testTaxCodeView()
     {
         $taxCode = $this->getReference(LoadTaxCodeData::TAXCODE_1_REF);

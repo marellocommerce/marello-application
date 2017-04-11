@@ -67,7 +67,7 @@ datagrids:
             view:
                 type:           navigate
                 link:           view_link
-                icon:           eye-open
+                icon:           eye
                 rowAction:      true
             update:
                 type:           navigate
@@ -174,7 +174,7 @@ datagrids:
                 type:           navigate
                 link:           view_link
                 acl_resource:   marello_product_view
-                icon:           eye-open
+                icon:           eye
                 rowAction:      true
         options:
             export: true

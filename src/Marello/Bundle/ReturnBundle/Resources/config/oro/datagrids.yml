@@ -90,7 +90,7 @@ datagrids:
             view:
                 type:       navigate
                 link:       view_link
-                icon:       eye-open
+                icon:       eye
                 rowAction:  true
 
     marello-return-customer:
@@ -189,7 +189,7 @@ datagrids:
             view:
                 type:       navigate
                 link:       view_link
-                icon:       eye-open
+                icon:       eye
                 rowAction:  true
         options:
             export: false

@@ -109,7 +109,7 @@ datagrids:
             view:
                 type:       navigate
                 link:       view_link
-                icon:       eye-open
+                icon:       eye
                 rowAction:  true
             return:
                 type:       navigate
@@ -215,7 +215,7 @@ datagrids:
             view:
                 type:       navigate
                 link:       view_link
-                icon:       eye-open
+                icon:       eye
                 rowAction:  true
             return:
                 type:       navigate
@@ -466,7 +466,7 @@ datagrids:
             view:
                 type:       navigate
                 link:       view_link
-                icon:       eye-open
+                icon:       eye
                 rowAction:  true
             update:
                 type:       navigate

@@ -23,7 +23,7 @@ class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->inventoryUpdateContext = $this->getMock(InventoryUpdateContext::class);
+        $this->inventoryUpdateContext = $this->createMock(InventoryUpdateContext::class);
         $this->inventoryManager = $this
             ->getMockBuilder(InventoryManager::class)
             ->disableOriginalConstructor()

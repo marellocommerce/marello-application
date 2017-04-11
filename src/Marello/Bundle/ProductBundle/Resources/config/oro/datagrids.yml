@@ -93,7 +93,7 @@ datagrids:
                 type:           navigate
                 label:          oro.grid.action.view
                 link:           view_link
-                icon:           eye-open
+                icon:           eye
                 acl_recource:   marello_product_view
                 rowAction:      true
             update:

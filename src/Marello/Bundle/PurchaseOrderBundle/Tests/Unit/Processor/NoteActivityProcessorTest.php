@@ -31,7 +31,7 @@ class NoteActivityProcessorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->noteMock = $this->getMock(Note::class);
+        $this->noteMock = $this->createMock(Note::class);
         $this->processor = new NoteActivityProcessor($this->noteMock, $this->entityManager);
     }
 

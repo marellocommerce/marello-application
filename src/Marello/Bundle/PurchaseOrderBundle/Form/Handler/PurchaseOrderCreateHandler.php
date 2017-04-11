@@ -98,8 +98,8 @@ class PurchaseOrderCreateHandler
         $qbs
             ->select('IDENTITY(poi.product)')
             ->join('poi.order', 'po')
-            ->join('po.workflowStep', 'ws')
-            ->where($qbs->expr()->eq('ws.name', $qbs->expr()->literal('pending')))
+//            ->join('po.workflowStep', 'ws')
+//            ->where($qbs->expr()->eq('ws.name', $qbs->expr()->literal('pending')))
             ;
 
         $qb
