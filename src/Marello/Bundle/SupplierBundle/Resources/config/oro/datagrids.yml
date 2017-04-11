@@ -148,7 +148,7 @@ datagrids:
                 cost:
                     data_name:    psr.cost
             default:
-                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                sku: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
             columns:
                 sku:

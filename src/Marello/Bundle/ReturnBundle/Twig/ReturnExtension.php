@@ -68,7 +68,10 @@ class ReturnExtension extends \Twig_Extension
         return $this->returnHelper->getOrderItemReturnedQuantity($orderItem);
     }
 
-
+    /**
+     * @param ReturnEntity $returnEntity
+     * @return bool
+     */
     public function isOnHold(ReturnEntity $returnEntity)
     {
         $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($returnEntity);
