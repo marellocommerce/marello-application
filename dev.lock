@@ -66,7 +66,7 @@
                 "translatable",
                 "translation"
             ],
-            "time": "2016-08-05T18:11:57+00:00"
+            "time": "2016-08-05 18:11:57"
         },
         {
             "name": "akeneo/batch-bundle",
@@ -179,6 +179,52 @@
                 "xml"
             ],
             "time": "2015-05-31T10:10:35+00:00"
+        },
+        {
+            "name": "authorizenet/authorizenet",
+            "version": "1.9.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AuthorizeNet/sdk-php.git",
+                "reference": "7a7a2145b82bb8c181e18d292512061e908af72a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AuthorizeNet/sdk-php/zipball/7a7a2145b82bb8c181e18d292512061e908af72a",
+                "reference": "7a7a2145b82bb8c181e18d292512061e908af72a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "ext-simplexml": "*",
+                "ext-xmlwriter": "*",
+                "goetas-webservices/xsd2php-runtime": "^0.2.2",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "phpmd/phpmd": "~2.0",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "description": "Official PHP SDK for Authorize.Net",
+            "homepage": "http://developer.authorize.net",
+            "keywords": [
+                "authorize.net",
+                "authorizenet",
+                "ecommerce",
+                "payment"
+            ],
+            "time": "2016-12-03T15:45:27+00:00"
         },
         {
             "name": "behat/transliterator",
@@ -376,12 +422,12 @@
             "version": "0.3.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wyuenho/backgrid.git",
+                "url": "https://github.com/cloudflare/backgrid.git",
                 "reference": "9a45dbc4a2af4a555e8274b7cc1a966a7586cfea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wyuenho/backgrid/zipball/9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
+                "url": "https://api.github.com/repos/cloudflare/backgrid/zipball/9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
                 "reference": "9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
                 "shasum": ""
             },
@@ -418,12 +464,12 @@
             "version": "v0.3.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wyuenho/backgrid-paginator.git",
+                "url": "https://github.com/cloudflare/backgrid-paginator.git",
                 "reference": "77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wyuenho/backgrid-paginator/zipball/77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
+                "url": "https://api.github.com/repos/cloudflare/backgrid-paginator/zipball/77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
                 "reference": "77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
                 "shasum": ""
             },
@@ -684,7 +730,7 @@
                 "shasum": ""
             },
             "type": "bower-asset-library",
-            "time": "2014-07-21T18:45:41+00:00"
+            "time": "2014-07-21 18:45:41"
         },
         {
             "name": "bower-asset/font-awesome",
@@ -926,12 +972,12 @@
             "version": "3.37.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/malsup/form.git",
+                "url": "https://github.com/jquery-form/form.git",
                 "reference": "5e7391bca903586137b75304a6352cb2e60fbb22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/malsup/form/zipball/5e7391bca903586137b75304a6352cb2e60fbb22",
+                "url": "https://api.github.com/repos/jquery-form/form/zipball/5e7391bca903586137b75304a6352cb2e60fbb22",
                 "reference": "5e7391bca903586137b75304a6352cb2e60fbb22",
                 "shasum": ""
             },
@@ -1001,12 +1047,12 @@
             "version": "1.11.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jzaefferer/jquery-validation.git",
+                "url": "https://github.com/jquery-validation/jquery-validation.git",
                 "reference": "3b39aec630e2ecd336bc36d457d1a645bd91660f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jzaefferer/jquery-validation/zipball/3b39aec630e2ecd336bc36d457d1a645bd91660f",
+                "url": "https://api.github.com/repos/jquery-validation/jquery-validation/zipball/3b39aec630e2ecd336bc36d457d1a645bd91660f",
                 "reference": "3b39aec630e2ecd336bc36d457d1a645bd91660f",
                 "shasum": ""
             },
@@ -1060,7 +1106,7 @@
                 "shasum": ""
             },
             "type": "bower-asset-library",
-            "time": "2017-02-08T18:28:50+00:00"
+            "time": "2017-02-08 18:28:50"
         },
         {
             "name": "bower-asset/jsplumb",
@@ -1283,16 +1329,16 @@
         },
         {
             "name": "bower-asset/moment-timezone",
-            "version": "0.5.12",
+            "version": "0.5.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moment/moment-timezone.git",
-                "reference": "73941fd0250a7e8fad5fe9ba282e1b8377c944fc"
+                "reference": "2b8da8f103f019949d45dc86fd6763960c8474d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moment/moment-timezone/zipball/73941fd0250a7e8fad5fe9ba282e1b8377c944fc",
-                "reference": "73941fd0250a7e8fad5fe9ba282e1b8377c944fc",
+                "url": "https://api.github.com/repos/moment/moment-timezone/zipball/2b8da8f103f019949d45dc86fd6763960c8474d8",
+                "reference": "2b8da8f103f019949d45dc86fd6763960c8474d8",
                 "shasum": ""
             },
             "require": {
@@ -3438,6 +3484,59 @@
                 "form"
             ],
             "time": "2016-01-27T16:52:41+00:00"
+        },
+        {
+            "name": "goetas-webservices/xsd2php-runtime",
+            "version": "v0.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/goetas-webservices/xsd2php-runtime.git",
+                "reference": "0e65c4b1412ccc826d0bebc81867864d16433fb4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/goetas-webservices/xsd2php-runtime/zipball/0e65c4b1412ccc826d0bebc81867864d16433fb4",
+                "reference": "0e65c4b1412ccc826d0bebc81867864d16433fb4",
+                "shasum": ""
+            },
+            "require": {
+                "jms/serializer": "^1.2",
+                "php": ">=5.5",
+                "symfony/yaml": "^2.2|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GoetasWebservices\\Xsd\\XsdToPhpRuntime\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Asmir Mustafic"
+                }
+            ],
+            "description": "Convert XSD  (XML Schema) definitions into PHP classes",
+            "keywords": [
+                "converter",
+                "jms",
+                "php",
+                "serializer",
+                "xml",
+                "xsd"
+            ],
+            "time": "2017-03-10T14:00:59+00:00"
         },
         {
             "name": "guzzle/guzzle",
@@ -5743,10 +5842,11 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/commerce",
-                "reference": "1dcf3669af70bc4d08ad172e0bee3913b4f34697",
+                "reference": "ed5d48c4358caddb0a9fb6b1dd7b1e5806b8e025",
                 "shasum": null
             },
             "require": {
+                "authorizenet/authorizenet": "~1.9.2",
                 "bower-asset/elevatezoom3": "3.0.8.1",
                 "bower-asset/jquery-creditcardvalidator": "1.0",
                 "bower-asset/jquery-validate": "1.11.1",
@@ -9085,16 +9185,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.3",
+            "version": "3.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "9770c6711f0a155ec494f635aaf0add9b3cfb45c"
+                "reference": "a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/9770c6711f0a155ec494f635aaf0add9b3cfb45c",
-                "reference": "9770c6711f0a155ec494f635aaf0add9b3cfb45c",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16",
+                "reference": "a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16",
                 "shasum": ""
             },
             "require": {
@@ -9138,7 +9238,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2016-10-31T09:49:21+00:00"
+            "time": "2017-04-06T14:23:09+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
@@ -12009,7 +12109,7 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v3.2.6",
+            "version": "v3.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
