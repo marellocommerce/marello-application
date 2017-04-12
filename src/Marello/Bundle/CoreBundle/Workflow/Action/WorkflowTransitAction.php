@@ -2,27 +2,17 @@
 
 namespace Marello\Bundle\CoreBundle\Workflow\Action;
 
-use Oro\Bundle\CronBundle\Entity\Schedule;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\Action\Action\ActionInterface;
 use Oro\Component\ConfigExpression\ContextAccessor;
-
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 
 class WorkflowTransitAction extends AbstractAction
 {
-    const WORKFLOW_TRANSIT_COMMAND      = 'oro:workflow:transit';
-    const WORKFLOW_WORKFLOWITEM_OPTION  = '--workflow-item';
-    const WORKFLOW_TRANSITION_OPTION    = '--transition';
-
-    /** @var ObjectManager $om */
-    protected $om;
-
     /** @var array */
     protected $options;
 
@@ -38,16 +28,13 @@ class WorkflowTransitAction extends AbstractAction
     /**
      * WorkflowTransitAction constructor.
      * @param ContextAccessor $contextAccessor
-     * @param ObjectManager $om
      * @param WorkflowManager $workflowManager
      */
     public function __construct(
         ContextAccessor $contextAccessor,
-        ObjectManager $om,
         WorkflowManager $workflowManager
     ) {
         parent::__construct($contextAccessor);
-        $this->om = $om;
         $this->workflowManager = $workflowManager;
     }
 
@@ -59,7 +46,6 @@ class WorkflowTransitAction extends AbstractAction
     protected function executeAction($context)
     {
         /** @var WorkflowItem $workflowItem */
-//        $workflowItem = $this->contextAccessor->getValue($context, $this->workflowItem);
         $workflowItem = $context;
 
         if (!$workflowItem) {
@@ -76,7 +62,6 @@ class WorkflowTransitAction extends AbstractAction
         }
 
         $this->workflowManager->transit($workflowItem, $transitionName);
-//        $this->createNewTransactionJob($workflowItem, $transitionName);
     }
 
     /**
@@ -106,41 +91,5 @@ class WorkflowTransitAction extends AbstractAction
         $this->options = $options;
 
         return $this;
-    }
-
-    /**
-     * Create new Job for transitioning a workflow item
-     * @param WorkflowItem $workflowItem
-     * @param $transitionName
-     */
-    private function createNewTransactionJob(WorkflowItem $workflowItem, $transitionName)
-    {
-        if (!$workflowItem->getId()) {
-            return;
-        }
-
-        $job = new Schedule();
-        $job
-            ->setArguments($this->getFormattedArguments($workflowItem->getId(), $transitionName))
-            ->setCommand(self::WORKFLOW_TRANSIT_COMMAND)
-            ->setDefinition('0 * * * *')
-        ;
-
-        $this->om->persist($job);
-        $this->om->flush();
-    }
-
-    /**
-     * Format Job arguments into array
-     * @param $itemId
-     * @param $transitionName
-     * @return array
-     */
-    private function getFormattedArguments($itemId, $transitionName)
-    {
-        $workflowItemOption = sprintf('%s=%s', self::WORKFLOW_WORKFLOWITEM_OPTION, $itemId);
-        $workflowTransitionOption = sprintf('%s=%s', self::WORKFLOW_TRANSITION_OPTION, $transitionName);
-
-        return [$workflowItemOption, $workflowTransitionOption];
     }
 }

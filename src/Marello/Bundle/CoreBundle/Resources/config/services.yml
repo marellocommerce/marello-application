@@ -3,7 +3,6 @@ services:
         class: Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction
         arguments:
             - '@oro_action.expression.context_accessor'
-            - '@doctrine.orm.entity_manager'
             - '@oro_workflow.manager'
         tags:
             - { name: oro_action.action, alias: marello_core_transit_complete_action }
