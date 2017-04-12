@@ -78,20 +78,11 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage Parameter "workflowItem" is required.
+     * @expectedExceptionMessage Parameter "transitionName" is required.
      */
     public function testInitializeExceptionNoWorkflowItem()
     {
         $this->action->initialize([]);
-    }
-
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage workflowItem must be valid property definition.
-     */
-    public function testInitializeExceptionWorkflowItemNotValidProperty()
-    {
-        $this->action->initialize(['workflowItem' => 1]);
     }
 
     /**
@@ -101,7 +92,7 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
     public function testInitializeExceptionNoTransitionName()
     {
         $options = [
-            'workflowItem'      => $this->getPropertyPath(),
+            'transitionNameInvalidArrayKey'      => $this->getPropertyPath(),
         ];
 
         $this->action->initialize($options);
@@ -110,7 +101,6 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
     public function testInitialize()
     {
         $options = [
-            'workflowItem' => $this->getPropertyPath(),
             'transitionName' => 'test_transition'
         ];
 
@@ -126,7 +116,6 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $options = [
-            'workflowItem'      => new PropertyPath('test_item'),
             'transitionName'    => 'go_to_next_definition'
         ];
 

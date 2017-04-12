@@ -16,9 +16,6 @@ class WorkflowTransitAction extends AbstractAction
     /** @var array */
     protected $options;
 
-    /** @var PropertyPathInterface $workflowItem */
-    protected $workflowItem;
-
     /** @var PropertyPathInterface|bool $transitionName */
     protected $transitionName;
 
@@ -74,14 +71,6 @@ class WorkflowTransitAction extends AbstractAction
      */
     public function initialize(array $options)
     {
-        if (!array_key_exists('workflowItem', $options)) {
-            throw new InvalidParameterException('Parameter "workflowItem" is required.');
-        } elseif (!$options['workflowItem'] instanceof PropertyPathInterface) {
-            throw new InvalidParameterException('workflowItem must be valid property definition.');
-        } else {
-            $this->workflowItem = $this->getOption($options, 'workflowItem');
-        }
-
         if (!array_key_exists('transitionName', $options)) {
             throw new InvalidParameterException('Parameter "transitionName" is required.');
         } else {

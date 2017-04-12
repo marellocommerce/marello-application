@@ -73,7 +73,6 @@ workflows:
                         entity: $received_items
                         is_partial: true
                     - @marello_purchase_order_transit_complete_action:
-                        workflowItem: $received_items.workflowItem
                         transitionName: 'complete_purchase_order'
                         entity: $received_items
             fully_receive_definition:
@@ -81,7 +80,6 @@ workflows:
                     - @marello_receive_purchase_order:
                         entity: $po
                     - @marello_purchase_order_transit_complete_action:
-                        workflowItem: $po.workflowItem
                         transitionName: 'complete_purchase_order'
                         entity: $po
             complete_purchase_order_definition: ~
