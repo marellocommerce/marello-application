@@ -3,6 +3,7 @@
 namespace Marello\Bundle\CoreBundle\Workflow\Action;
 
 use Oro\Bundle\CronBundle\Entity\Schedule;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -31,12 +32,23 @@ class WorkflowTransitAction extends AbstractAction
     /** @var PropertyPathInterface|bool $transitionName */
     protected $transitionName;
 
+    /** @var  WorkflowManager */
+    protected $workflowManager;
+
+    /**
+     * WorkflowTransitAction constructor.
+     * @param ContextAccessor $contextAccessor
+     * @param ObjectManager $om
+     * @param WorkflowManager $workflowManager
+     */
     public function __construct(
         ContextAccessor $contextAccessor,
-        ObjectManager $om
+        ObjectManager $om,
+        WorkflowManager $workflowManager
     ) {
         parent::__construct($contextAccessor);
         $this->om = $om;
+        $this->workflowManager = $workflowManager;
     }
 
     /**
@@ -47,7 +59,8 @@ class WorkflowTransitAction extends AbstractAction
     protected function executeAction($context)
     {
         /** @var WorkflowItem $workflowItem */
-        $workflowItem = $this->contextAccessor->getValue($context, $this->workflowItem);
+//        $workflowItem = $this->contextAccessor->getValue($context, $this->workflowItem);
+        $workflowItem = $context;
 
         if (!$workflowItem) {
             throw new \Exception('Invalid configuration of workflow action, expected workflowItem, none given.');
@@ -62,7 +75,8 @@ class WorkflowTransitAction extends AbstractAction
             throw new \Exception('Invalid configuration of workflow action, expected transitionName, none given.');
         }
 
-        $this->createNewTransactionJob($workflowItem, $transitionName);
+        $this->workflowManager->transit($workflowItem, $transitionName);
+//        $this->createNewTransactionJob($workflowItem, $transitionName);
     }
 
     /**
@@ -106,7 +120,11 @@ class WorkflowTransitAction extends AbstractAction
         }
 
         $job = new Schedule();
-        $job->setArguments($this->getFormattedArguments($workflowItem->getId(), $transitionName));
+        $job
+            ->setArguments($this->getFormattedArguments($workflowItem->getId(), $transitionName))
+            ->setCommand(self::WORKFLOW_TRANSIT_COMMAND)
+            ->setDefinition('0 * * * *')
+        ;
 
         $this->om->persist($job);
         $this->om->flush();
