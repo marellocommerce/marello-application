@@ -169,5 +169,4 @@ class Shipment extends ExtendShipment
 
         return $this;
     }
-
 }

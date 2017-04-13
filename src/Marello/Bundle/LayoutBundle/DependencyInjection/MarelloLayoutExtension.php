@@ -18,6 +18,5 @@ class MarelloLayoutExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-
     }
 }

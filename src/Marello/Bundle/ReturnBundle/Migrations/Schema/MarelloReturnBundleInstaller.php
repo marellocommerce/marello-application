@@ -15,7 +15,8 @@ use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterfac
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloReturnBundleInstaller implements Installation,
+class MarelloReturnBundleInstaller implements
+    Installation,
     ExtendExtensionAwareInterface,
     ActivityExtensionAwareInterface
 {

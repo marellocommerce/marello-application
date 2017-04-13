@@ -85,8 +85,13 @@ class ProductHandler
      * @param ArrayCollection $salesChannelTaxCodes
      * @param ArrayCollection $suppliers
      */
-    protected function onSuccess(Product $entity, array $addChannels, array $removeChannels, $salesChannelTaxCodes, $suppliers)
-    {
+    protected function onSuccess(
+        Product $entity,
+        array $addChannels,
+        array $removeChannels,
+        $salesChannelTaxCodes,
+        $suppliers
+    ) {
         $this->addChannels($entity, $addChannels);
         $this->removeChannels($entity, $removeChannels);
         $this->setSalesChannelTaxRelationProduct($entity, $salesChannelTaxCodes);

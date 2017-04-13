@@ -53,11 +53,16 @@ class WorkflowExtension extends \Twig_Extension
      */
     public function getCurrentWorkflowSteps($entity)
     {
-        $steps = [];
-
         $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($entity);
+
+        if (empty($workflowItems)) {
+            return [];
+        }
+
+        $steps = [];
         foreach ($workflowItems as $workflowItem) {
-            $steps[$workflowItem->getCurrentStep()->getDefinition()->getLabel()] = $workflowItem->getCurrentStep()->getLabel();
+            $currentStep = $workflowItem->getCurrentStep();
+            $steps[$currentStep->getDefinition()->getLabel()] = $currentStep->getLabel();
         }
 
         return $steps;

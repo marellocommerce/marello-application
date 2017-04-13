@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class RefundType extends AbstractType
 {
     const NAME = 'marello_refund';
+    const VALIDATION_MESSAGE = 'Refund must contain at least one refunded item, or additional custom refunded item.';
 
     /**
      * @param FormBuilderInterface $builder
@@ -98,7 +99,7 @@ class RefundType extends AbstractType
                     new Callback(function (Refund $refund, ExecutionContextInterface $context) {
                         if ($refund->getItems()->count() === 0) {
                             $context
-                                ->buildViolation('Refund must contain at least one refunded item, or additional custom refunded item.')
+                                ->buildViolation(self::VALIDATION_MESSAGE)
                                 ->atPath('items')
                                 ->addViolation()
                             ;

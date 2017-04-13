@@ -5,6 +5,7 @@ namespace Marello\Bundle\ProductBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
 /**
  * Class ProductStatus
  * @package Marello\Bundle\ProductBundle\Entity

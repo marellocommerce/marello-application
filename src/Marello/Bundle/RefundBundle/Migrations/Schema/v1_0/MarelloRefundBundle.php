@@ -8,7 +8,6 @@ use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterfac
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 
-
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
@@ -43,7 +42,6 @@ class MarelloRefundBundle implements
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_refund');
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_refund');
-
     }
 
     /**

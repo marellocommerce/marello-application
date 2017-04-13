@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\ReturnBundle\Manager;
 
-
 interface BusinessRuleInterface
 {
     public function isApplicable();
