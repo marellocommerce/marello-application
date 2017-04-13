@@ -1,0 +1,30 @@
+acls:
+    marello_product_create:
+        type: entity
+        class: MarelloProductBundle:Product
+        permission: CREATE
+
+    marello_product_view:
+        type: entity
+        class: MarelloProductBundle:Product
+        permission: VIEW
+
+    marello_product_update:
+        type: entity
+        class: MarelloProductBundle:Product
+        permission: EDIT
+
+    marello_product_delete:
+        type: entity
+        class: MarelloProductBundle:Product
+        permission: DELETE
+
+    marello_product_create_variant:
+        type: entity
+        class: MarelloProductBundle:Variant
+        permission: CREATE
+
+    marello_product_add_variant:
+        type: entity
+        class: MarelloProductBundle:Variant
+        permission: EDIT

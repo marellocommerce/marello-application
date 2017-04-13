@@ -1,0 +1,46 @@
+navigation:
+    menu_config:
+        items:
+            purchasing:
+                label: marello.purchaseorder.navigation.purchasing.label
+                uri: '#'
+                extras:
+                    position: 40
+
+            purchase_orders_list:
+                label: marello.purchaseorder.entity_plural_label
+                route: marello_purchaseorder_purchaseorder_index
+                extras:
+                    routes: ['marello_purchaseorder_purchaseorder_*']
+                    position: 10
+
+            shortcut_new_purchase_order:
+                label: 'marello.purchaseorder.menu.shortcut_new_purchase_order.label'
+                route: 'marello_purchaseorder_purchaseorder_selectproducts'
+                extras:
+                    description: 'marello.purchaseorder.menu.shortcut_new_purchase_order.description'
+                    isCustomAction: true
+
+            shortcut_list_purchase_orders:
+                label: 'marello.purchaseorder.menu.shortcut_list_purchase_orders.label'
+                route: 'marello_purchaseorder_purchaseorder_index'
+                extras:
+                    description: 'marello.purchaseorder.menu.shortcut_list_purchase_orders.description'
+                    isCustomAction: true
+
+
+        tree:
+            application_menu:
+                children:
+                    purchasing:
+                        children:
+                            purchase_orders_list: ~
+
+            shortcuts:
+                children:
+                    shortcut_new_purchase_order: ~
+                    shortcut_list_purchase_orders: ~
+
+    titles:
+        marello_purchaseorder_purchaseorder_index: 'marello.purchaseorder.entity_plural_label'
+        marello_purchaseorder_purchaseorder_selectproducts: 'Create Purchase Order - Select Products'

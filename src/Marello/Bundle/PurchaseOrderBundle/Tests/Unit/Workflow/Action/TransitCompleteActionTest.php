@@ -5,10 +5,11 @@ namespace Marello\Bundle\PurchaseOrderBundle\Tests\Unit\Workflow\Action;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Oro\Component\Action\Model\ContextAccessor;
+use Oro\Component\ConfigExpression\ContextAccessor;
 use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 
@@ -21,8 +22,8 @@ class TransitCompleteActionTest extends \PHPUnit_Framework_TestCase
     /** @var TransitCompleteAction $action */
     protected $action;
 
-    /** @var ObjectManager $entityManager */
-    protected $entityManager;
+    /** @var WorkflowManager $workflowManager */
+    protected $workflowManager;
 
     /** @var ContextAccessor $contextAccessor */
     protected $contextAccessor;
@@ -31,15 +32,15 @@ class TransitCompleteActionTest extends \PHPUnit_Framework_TestCase
     {
         $this->contextAccessor = new ContextAccessor();
 
-        $this->entityManager = $this
-            ->getMockBuilder(ObjectManager::class)
+        $this->workflowManager = $this
+            ->getMockBuilder(WorkflowManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var TransitCompleteAction action */
         $this->action = new TransitCompleteAction(
             $this->contextAccessor,
-            $this->entityManager
+            $this->workflowManager
         );
 
         /** @var EventDispatcher $dispatcher */

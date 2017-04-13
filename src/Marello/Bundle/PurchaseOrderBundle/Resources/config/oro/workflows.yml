@@ -1,0 +1,86 @@
+workflows:
+    marello_purchase_order_workflow:
+        entity: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
+        entity_attribute: po
+#        steps_display_ordered: true
+        start_step: pending
+
+        defaults:
+            active: true
+
+        attributes:
+            received_items:
+                type: entity
+                options:
+                    class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
+        steps:
+            pending:
+#                order: 10
+                allowed_transitions:
+                    - partially_receive
+                    - fully_receive
+                    - cancel_purchase_order
+            partially_received:
+#                order: 20
+                allowed_transitions:
+                    - partially_receive
+                    - complete_purchase_order
+            fully_received:
+#                order: 30
+                allowed_transitions:
+                    - complete_purchase_order
+            complete_purchase_order:
+#                order: 40
+                is_final: true
+            cancelled_purchase_order:
+                is_final: true
+        transitions:
+            partially_receive:
+                step_to: partially_received
+                transition_definition: partially_receive_definition
+                dialog_template: MarelloPurchaseOrderBundle:Workflow:widget/transitionForm.html.twig
+                frontend_options:
+                    dialog:
+                        alias: transaction-dialog
+                        dialogOptions:
+                            width:         900
+                            height:        500
+                            modal:         true
+                            resizable:     true
+                            allowMaximize: true
+                            allowMinimize: false
+                form_options:
+                    attribute_fields:
+                        received_items:
+                            form_type: marello_po_partial_receive
+                            options:
+                                label: false
+                                required: true
+                                data: $po
+            fully_receive:
+                step_to: fully_received
+                transition_definition: fully_receive_definition
+            complete_purchase_order:
+                step_to: complete_purchase_order
+                transition_definition: complete_purchase_order_definition
+            cancel_purchase_order:
+                step_to: cancelled_purchase_order
+                transition_definition: cancel_purchase_order_definition
+        transition_definitions:
+            partially_receive_definition:
+                post_actions:
+                    - @marello_receive_purchase_order:
+                        entity: $received_items
+                        is_partial: true
+                    - @marello_purchase_order_transit_complete_action:
+                        transitionName: 'complete_purchase_order'
+                        entity: $received_items
+            fully_receive_definition:
+                post_actions:
+                    - @marello_receive_purchase_order:
+                        entity: $po
+                    - @marello_purchase_order_transit_complete_action:
+                        transitionName: 'complete_purchase_order'
+                        entity: $po
+            complete_purchase_order_definition: ~
+            cancel_purchase_order_definition: ~

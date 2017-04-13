@@ -1,0 +1,96 @@
+workflows:
+    marello_return_workflow:
+        entity: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
+        entity_attribute: return
+        start_step: pending
+
+        defaults:
+            active: true
+
+        steps:
+            pending:
+                allowed_transitions:
+                    - receive
+                    - send_reminder
+            received:
+                allowed_transitions:
+                    - contents_verified
+                    - contents_not_verified
+            inspection:
+                allowed_transitions:
+                    - credit
+                    - inspection_not_ok
+            received_on_hold:
+                allowed_transitions:
+                    - continue_received
+            inspection_on_hold:
+                allowed_transitions:
+                    - credit
+                    - ship_back
+            credited:
+                allowed_transitions: []
+            shipped:
+                allowed_transitions: []
+
+        transitions:
+            send_reminder:
+                step_to: pending
+                transition_definition: send_reminder_def
+            receive:
+                step_to: received
+                transition_definition: receive_def
+            contents_verified:
+                step_to: inspection
+                transition_definition: contents_verified_def
+            contents_not_verified:
+                step_to: received_on_hold
+                transition_definition: contents_not_verified_def
+            continue_received:
+                step_to: inspection
+                transition_definition: continue_received_def
+            inspection_not_ok:
+                step_to: inspection_on_hold
+                transition_definition: inspection_not_ok_def
+            credit:
+                step_to: credited
+                transition_definition: credit_def
+            ship_back:
+                step_to: shipped
+                transition_definition: ship_back_def
+
+        transition_definitions:
+            send_reminder_def:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $return
+                        recipient: $return.order.customer.email
+                        template: marello_return_reminder
+            receive_def:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $return
+                        recipient: $return.order.customer.email
+                        template: marello_return_received
+            contents_verified_def:
+                post_actions:
+                    - @return_inspection_ok: ~
+            contents_not_verified_def:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $return
+                        recipient: $return.order.customer.email
+                        template: marello_return_not_verified
+            continue_received_def: ~
+            inspection_not_ok_def:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $return
+                        recipient: $return.order.customer.email
+                        template: marello_return_inspection_not_ok
+            credit_def:
+                post_actions:
+                    - @marello_create_refund:
+                          entity: $return
+                    - @flash_message:
+                        message: 'A Refund has been created.'
+            ship_back_def: ~

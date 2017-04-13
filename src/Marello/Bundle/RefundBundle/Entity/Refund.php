@@ -15,8 +15,9 @@ use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\RefundBundle\Model\ExtendRefund;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * @ORM\Entity
@@ -35,9 +36,6 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *              "type"="ACL",
  *              "group_name"=""
  *          },
- *          "workflow"={
- *              "active_workflow"="marello_refund_workflow"
- *          },
  *          "ownership"={
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"
@@ -45,8 +43,8 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *      }
  * )
  */
-class Refund extends ExtendRefund implements 
-    DerivedPropertyAwareInterface, 
+class Refund extends ExtendRefund implements
+    DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
     LocaleAwareInterface
 {
@@ -113,22 +111,6 @@ class Refund extends ExtendRefund implements
      * @ORM\JoinColumn(name="organization_id", nullable=false)
      */
     protected $organization;
-
-    /**
-     * @var WorkflowItem
-     *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
-     * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $workflowItem;
-
-    /**
-     * @var WorkflowStep
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
-     * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $workflowStep;
 
     /**
      * @param Order $order
@@ -386,43 +368,5 @@ class Refund extends ExtendRefund implements
         $this->organization = $organization;
 
         return $this;
-    }
-
-    /**
-     * @param WorkflowItem $workflowItem
-     * @return Opportunity
-     */
-    public function setWorkflowItem($workflowItem)
-    {
-        $this->workflowItem = $workflowItem;
-
-        return $this;
-    }
-
-    /**
-     * @return WorkflowItem
-     */
-    public function getWorkflowItem()
-    {
-        return $this->workflowItem;
-    }
-
-    /**
-     * @param WorkflowItem $workflowStep
-     * @return Opportunity
-     */
-    public function setWorkflowStep($workflowStep)
-    {
-        $this->workflowStep = $workflowStep;
-
-        return $this;
-    }
-
-    /**
-     * @return WorkflowStep
-     */
-    public function getWorkflowStep()
-    {
-        return $this->workflowStep;
     }
 }

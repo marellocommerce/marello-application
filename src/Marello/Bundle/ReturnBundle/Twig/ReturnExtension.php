@@ -3,7 +3,9 @@
 namespace Marello\Bundle\ReturnBundle\Twig;
 
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Util\ReturnHelper;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 class ReturnExtension extends \Twig_Extension
 {
@@ -12,14 +14,19 @@ class ReturnExtension extends \Twig_Extension
     /** @var ReturnHelper */
     protected $returnHelper;
 
+    /** @var WorkflowManager */
+    protected $workflowManager;
+
     /**
      * ReturnExtension constructor.
      *
      * @param ReturnHelper $returnHelper
+     * @param WorkflowManager $workflowManager
      */
-    public function __construct(ReturnHelper $returnHelper)
+    public function __construct(ReturnHelper $returnHelper, WorkflowManager $workflowManager)
     {
         $this->returnHelper = $returnHelper;
+        $this->workflowManager = $workflowManager;
     }
 
     /**
@@ -44,6 +51,10 @@ class ReturnExtension extends \Twig_Extension
                 'marello_return_get_order_item_returned_quantity',
                 [$this, 'getOrderItemReturnedQuantity']
             ),
+            new \Twig_SimpleFunction(
+                'marello_return_is_on_hold',
+                [$this, 'isOnHold']
+            ),
         ];
     }
 
@@ -55,5 +66,21 @@ class ReturnExtension extends \Twig_Extension
     public function getOrderItemReturnedQuantity(OrderItem $orderItem)
     {
         return $this->returnHelper->getOrderItemReturnedQuantity($orderItem);
+    }
+
+    /**
+     * @param ReturnEntity $returnEntity
+     * @return bool
+     */
+    public function isOnHold(ReturnEntity $returnEntity)
+    {
+        $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($returnEntity);
+        foreach ($workflowItems as $workflowItem) {
+            if (strpos($workflowItem->getCurrentStep()->getName(), '_on_hold')) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

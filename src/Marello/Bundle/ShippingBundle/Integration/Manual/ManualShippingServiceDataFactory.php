@@ -31,5 +31,4 @@ class ManualShippingServiceDataFactory implements ShippingServiceDataFactoryInte
     {
         return [];
     }
-
 }

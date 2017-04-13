@@ -3,7 +3,7 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block navButtons %}
-    {% if resource_granted('marello_refund_update') and entity.workflowStep.name == 'pending' %}
+    {% if resource_granted('marello_refund_update') and marello_refund_is_pending(entity) %}
         {{ UI.editButton({
             'path' : path('marello_refund_update', { id: entity.id }),
             'entity_label': 'marello.refund.entity_label'|trans
@@ -57,7 +57,12 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.refund.refund_number.label'|trans, entity.refundNumber) }}
-                    {{ UI.renderProperty('marello.refund.refund_status.label'|trans, entity.workflowStep) }}
+
+                    {% set steps = marello_core_get_current_workflow_steps(entity) %}
+                    {% for stepLabel, stepName in steps %}
+                        {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
+                    {% endfor %}
+
                     {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
                     {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date) }}
                     {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}

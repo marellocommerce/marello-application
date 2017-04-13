@@ -1,0 +1,16 @@
+oro:
+    workflow:
+        marello_refund_workflow:
+            label: 'Marello refund workflow'
+            step:
+                pending:
+                    label: 'Pending Refund'
+                approved:
+                    label: 'Approved Refund'
+                completed:
+                    label: 'Complete Refund'
+            transition:
+                approve:
+                    label: 'Approve'
+                complete:
+                    label: 'Complete'

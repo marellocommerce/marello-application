@@ -1,0 +1,10 @@
+acls:
+    marello_purchase_order_create:
+        type:       entity
+        class:      MarelloPurchaseOrderBundle:PurchaseOrder
+        permission: CREATE
+
+    marello_purchase_order_view:
+        type:       entity
+        class:      MarelloPurchaseOrderBundle:PurchaseOrder
+        permission: VIEW

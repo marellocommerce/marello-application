@@ -5,24 +5,26 @@ namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtensionAwareInterface
+class MarelloPurchaseOrderBundleInstaller implements
+    Installation,
+    ActivityExtensionAwareInterface
 {
-    /** @var  NoteExtension */
-    protected $noteExtension;
+    /** @var ActivityExtension */
+    protected $activityExtension;
 
     /**
      * {@inheritdoc}
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -38,7 +40,7 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
         $this->addMarelloPurchaseOrderForeignKeys($schema);
         $this->addMarelloPurchaseOrderItemForeignKeys($schema);
 
-        $this->noteExtension->addNoteAssociation($schema, 'marello_purchase_order');
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_purchase_order');
     }
 
     /**
@@ -50,15 +52,11 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
     {
         $table = $schema->createTable('marello_purchase_order');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', []);
-        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('purchase_order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['workflow_item_id'], 'UNIQ_34E72AC31023C4EE');
-        $table->addIndex(['workflow_step_id'], 'IDX_34E72AC371FE882C', []);
         $table->addIndex(['organization_id'], 'IDX_34E72AC332C8A3DE', []);
     }
 
@@ -96,22 +94,10 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
     {
         $table = $schema->getTable('marello_purchase_order');
         $table->addForeignKeyConstraint(
-            $schema->getTable('oro_workflow_item'),
-            ['workflow_item_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('oro_workflow_step'),
-            ['workflow_step_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 
@@ -138,12 +124,12 @@ class MarelloPurchaseOrderBundleInstaller implements Installation, NoteExtension
     }
 
     /**
-     * Sets the NoteExtension
+     * Sets the ActivityExtension
      *
-     * @param noteExtension $noteExtension
+     * @param ActivityExtension $activityExtension
      */
-    public function setNoteExtension(NoteExtension $noteExtension)
+    public function setActivityExtension(ActivityExtension $activityExtension)
     {
-        $this->noteExtension = $noteExtension;
+        $this->activityExtension = $activityExtension;
     }
 }

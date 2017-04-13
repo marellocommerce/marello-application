@@ -1,9 +1,0 @@
-marello_supplier_create:
-    type:       entity
-    class:      MarelloSupplierBundle:Supplier
-    permission: CREATE
-
-marello_supplier_view:
-    type:       entity
-    class:      MarelloSupplierBundle:Supplier
-    permission: VIEW

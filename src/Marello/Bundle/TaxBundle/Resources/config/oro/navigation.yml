@@ -1,0 +1,43 @@
+navigation:
+    menu_config:
+        items:
+            taxes_tab:
+                label: 'marello.tax.navigation.taxes.label'
+                uri: '#'
+                extras:
+                    position: 30
+
+            tax_code_list:
+                label: 'marello.tax.taxcode.entity_plural_label'
+                route: 'marello_tax_taxcode_index'
+                extras:
+                    routes: ['marello_tax_taxcode_*']
+                    position: 20
+
+    #        tax_rate_list:
+    #            label: 'marello.tax.taxrate.entity_plural_label'
+    #            route: 'marello_tax_taxrate_index'
+    #            extras:
+    #                routes: ['marello_tax_taxrate_*']
+    #                position: 30
+
+    #        tax_rule_list:
+    #            label: 'marello.tax.taxrule.entity_plural_label'
+    #            route: 'marello_tax_taxrule_index'
+    #            extras:
+    #                routes: ['marello_tax_taxrule_*']
+    #                position: 10
+
+        tree:
+            application_menu:
+                children:
+                    taxes_tab:
+                        children:
+                            tax_code_list: ~
+    #                        tax_rule_list: ~
+    #                        tax_rate_list: ~
+
+    titles:
+        marello_tax_taxcode_index: 'marello.tax.taxcode.entity_plural_label'
+    #    marello_tax_taxrate_index: 'marello.tax.taxrate.entity_plural_label'
+    #    marello_tax_taxrule_index: 'marello.tax.taxrule.entity_plural_label'

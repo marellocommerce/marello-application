@@ -133,7 +133,6 @@ class ProductController extends RestController implements ClassResourceInterface
     public function getForm()
     {
         return $this->get('marello_product.product_api.form');
-
     }
 
     /**
@@ -158,7 +157,6 @@ class ProductController extends RestController implements ClassResourceInterface
                 }
                 break;
             default:
-
                 parent::transformEntityField($field, $value);
         }
     }

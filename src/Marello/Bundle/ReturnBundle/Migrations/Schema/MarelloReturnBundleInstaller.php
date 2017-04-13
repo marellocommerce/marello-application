@@ -10,17 +10,15 @@ use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtension;
-use Oro\Bundle\NoteBundle\Migration\Extension\NoteExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloReturnBundleInstaller implements Installation,
+class MarelloReturnBundleInstaller implements
+    Installation,
     ExtendExtensionAwareInterface,
-    ActivityExtensionAwareInterface,
-    NoteExtensionAwareInterface
+    ActivityExtensionAwareInterface
 {
     /** @var ActivityExtension */
     protected $activityExtension;
@@ -28,15 +26,12 @@ class MarelloReturnBundleInstaller implements Installation,
     /** @var ExtendExtension */
     protected $extendExtension;
     
-    /** @var NoteExtension */
-    protected $noteExtension;
-
     /**
      * {@inheritdoc}
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -76,9 +71,8 @@ class MarelloReturnBundleInstaller implements Installation,
             ]
         );
 
-        $this->noteExtension->addNoteAssociation($schema, 'marello_return_return');
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', 'marello_return_return');
-
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_return_return');
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_return_return');
     }
 
@@ -110,9 +104,7 @@ class MarelloReturnBundleInstaller implements Installation,
     {
         $table = $schema->createTable('marello_return_return');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('workflow_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
-        $table->addColumn('workflow_step_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_id', 'integer', ['notnull' => false]);
         $table->addColumn('return_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('created_at', 'datetime', []);
@@ -124,10 +116,8 @@ class MarelloReturnBundleInstaller implements Installation,
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->addColumn('return_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['workflow_item_id'], 'uniq_3c549d8d1023c4ee');
         $table->addIndex(['order_id'], 'idx_3c549d8d8d9f6d38', []);
         $table->addIndex(['organization_id'], 'IDX_3C549D8D32C8A3DE', []);
-        $table->addIndex(['workflow_step_id'], 'idx_3c549d8d71fe882c', []);
         $table->addIndex(['sales_channel_id'], 'IDX_3C549D8D4C7A5B2E', []);
     }
 
@@ -162,12 +152,6 @@ class MarelloReturnBundleInstaller implements Installation,
     {
         $table = $schema->getTable('marello_return_return');
         $table->addForeignKeyConstraint(
-            $schema->getTable('oro_workflow_item'),
-            ['workflow_item_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
             ['id'],
@@ -176,12 +160,6 @@ class MarelloReturnBundleInstaller implements Installation,
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_sales_sales_channel'),
             ['sales_channel_id'],
-            ['id'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('oro_workflow_step'),
-            ['workflow_step_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
@@ -217,15 +195,5 @@ class MarelloReturnBundleInstaller implements Installation,
     public function setActivityExtension(ActivityExtension $activityExtension)
     {
         $this->activityExtension = $activityExtension;
-    }
-
-    /**
-     * Sets the NoteExtension
-     *
-     * @param noteExtension $noteExtension
-     */
-    public function setNoteExtension(NoteExtension $noteExtension)
-    {
-        $this->noteExtension = $noteExtension;
     }
 }

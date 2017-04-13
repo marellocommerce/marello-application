@@ -1,0 +1,35 @@
+workflows:
+    marello_refund_workflow:
+        entity: Marello\Bundle\RefundBundle\Entity\Refund
+        entity_attribute: refund
+        start_step: pending
+
+        defaults:
+            active: true
+
+        steps:
+            pending:
+                allowed_transitions:
+                    - approve
+            approved:
+                allowed_transitions:
+                    - complete
+            completed:
+                allowed_transitions: []
+
+        transitions:
+            approve:
+                step_to: approved
+                transition_definition: approve_definition
+            complete:
+                step_to: completed
+                transition_definition: complete_definition
+
+        transition_definitions:
+            approve_definition: []
+            complete_definition:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $refund
+                        recipient: $refund.order.customer.email
+                        template: marello_refund_credited

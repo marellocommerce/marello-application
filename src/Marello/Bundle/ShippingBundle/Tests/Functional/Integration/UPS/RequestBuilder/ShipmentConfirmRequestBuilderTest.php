@@ -31,7 +31,6 @@ class ShipmentConfirmRequestBuilderTest extends WebTestCase
             ->get('marello_shipping.integration.ups.request_builder.shipment_confirm');
 
         $this->factory = $this->client->getContainer()->get('marello_shipping.integration.ups.service_data_factory');
-
     }
 
     /**
@@ -42,13 +41,13 @@ class ShipmentConfirmRequestBuilderTest extends WebTestCase
         /** @var Order $order */
         $order = $this->getReference('marello_order_1');
         
-        $shippingDataProvider = $this->client->getContainer()->get('marello_order.shipping.integration.service_data_provider');
+        $shippingDataProvider = $this->client
+            ->getContainer()
+            ->get('marello_order.shipping.integration.service_data_provider');
         $shippingDataProvider->setEntity($order)->setWarehouse($this->getReference('marello_warehouse_default'));
 
         $data = $this->factory->createData($shippingDataProvider);
 
         $request = $this->requestBuilder->build($data);
-
-//        echo $request . PHP_EOL;
     }
 }

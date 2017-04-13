@@ -5,7 +5,6 @@ namespace Marello\Bundle\CoreBundle\Model;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
-
 trait EntityCreatedUpdatedAtTrait
 {
     /**

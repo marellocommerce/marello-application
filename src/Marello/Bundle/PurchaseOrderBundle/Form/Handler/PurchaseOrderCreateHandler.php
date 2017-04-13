@@ -98,8 +98,7 @@ class PurchaseOrderCreateHandler
         $qbs
             ->select('IDENTITY(poi.product)')
             ->join('poi.order', 'po')
-            ->join('po.workflowStep', 'ws')
-            ->where($qbs->expr()->eq('ws.name', $qbs->expr()->literal('pending')));
+            ;
 
         $qb
             ->select('p')
@@ -108,7 +107,6 @@ class PurchaseOrderCreateHandler
             ->join('p.status', 's')
             ->having('SUM(l.inventory - l.allocatedInventory) < p.purchaseStockLevel')
             ->andWhere($qb->expr()->eq('s.name', $qb->expr()->literal('enabled')))
-            ->andWhere($qb->expr()->notIn('p.id', $qbs->getDQL()))
             ->groupBy('p.id');
 
         if ($productIds) {

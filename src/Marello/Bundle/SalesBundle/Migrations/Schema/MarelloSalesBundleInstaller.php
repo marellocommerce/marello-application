@@ -78,5 +78,4 @@ class MarelloSalesBundleInstaller implements Installation
             ['onDelete' => null, 'onUpdate' => null]
         );
     }
-
 }

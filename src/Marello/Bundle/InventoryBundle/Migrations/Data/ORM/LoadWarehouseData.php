@@ -23,7 +23,7 @@ class LoadWarehouseData implements FixtureInterface
         $defaultWarehouse->setOwner($organization);
 
         $warehouseAddress = new MarelloAddress();
-        
+
         $manager->persist($warehouseAddress);
 
         $defaultWarehouse->setAddress($warehouseAddress);

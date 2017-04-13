@@ -76,3 +76,10 @@ services:
         class: Marello\Bundle\OrderBundle\Datagrid\ActionPermissionProvider
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    marello_order.twig.order_extension:
+        class: Marello\Bundle\OrderBundle\Twig\OrderExtension
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: twig.extension }

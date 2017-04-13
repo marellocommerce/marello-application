@@ -28,7 +28,7 @@ abstract class RequestBuilder
      *
      * @return string
      */
-    public final function build(array $data)
+    final public function build(array $data)
     {
         $xml               = new DOMDocument();
         $xml->formatOutput = true;

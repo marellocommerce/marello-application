@@ -16,8 +16,6 @@ use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\ReturnBundle\Entity\Repository\ReturnEntityRepository")
@@ -28,10 +26,6 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
  *      routeName="marello_return_return_index",
  *      routeCreate="marello_return_return_create",
  *      defaultValues={
- *          "workflow"={
- *              "active_workflow"="marello_return_workflow",
- *              "show_step_in_grid"=true
- *          },
  *          "ownership"={
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"
@@ -112,22 +106,6 @@ class ReturnEntity extends ExtendReturnEntity implements
      * @ORM\Column(name="return_reference",type="string", nullable=true)
      */
     protected $returnReference;
-
-    /**
-     * @var WorkflowItem
-     *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowItem")
-     * @ORM\JoinColumn(name="workflow_item_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $workflowItem;
-
-    /**
-     * @var WorkflowStep
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\WorkflowBundle\Entity\WorkflowStep")
-     * @ORM\JoinColumn(name="workflow_step_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $workflowStep;
 
     /**
      * @var Organization
@@ -224,46 +202,6 @@ class ReturnEntity extends ExtendReturnEntity implements
     public function removeReturnItem(ReturnItem $item)
     {
         $this->returnItems->removeElement($item);
-
-        return $this;
-    }
-
-    /**
-     * @return WorkflowItem
-     */
-    public function getWorkflowItem()
-    {
-        return $this->workflowItem;
-    }
-
-    /**
-     * @param WorkflowItem $workflowItem
-     *
-     * @return $this
-     */
-    public function setWorkflowItem($workflowItem)
-    {
-        $this->workflowItem = $workflowItem;
-
-        return $this;
-    }
-
-    /**
-     * @return WorkflowStep
-     */
-    public function getWorkflowStep()
-    {
-        return $this->workflowStep;
-    }
-
-    /**
-     * @param WorkflowStep $workflowStep
-     *
-     * @return $this
-     */
-    public function setWorkflowStep($workflowStep)
-    {
-        $this->workflowStep = $workflowStep;
 
         return $this;
     }

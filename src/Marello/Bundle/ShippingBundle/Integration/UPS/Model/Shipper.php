@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\UPS\Model;
 
-
 class Shipper extends XmlSerializedModel
 {
     const NODE_NAME = 'Shipper';

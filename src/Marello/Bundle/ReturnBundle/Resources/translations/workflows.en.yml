@@ -1,0 +1,36 @@
+oro:
+    workflow:
+        marello_return_workflow:
+            label: 'Return Workflow'
+            step:
+                pending:
+                    label: 'Pending'
+                received:
+                    label: 'Received'
+                inspection:
+                    label: 'Inspection'
+                received_on_hold:
+                    label: 'On Hold (Verification)'
+                inspection_on_hold:
+                    label: 'On Hold (Inspection)'
+                credited:
+                    label: 'Credited'
+                shipped:
+                    label: 'Shipped'
+            transition:
+                send_reminder:
+                    label: 'Send Reminder'
+                receive:
+                    label: 'Receive Return'
+                contents_verified:
+                    label: 'Contents verified'
+                contents_not_verified:
+                    label: 'Contents not verified'
+                continue_received:
+                    label: 'Contents verified'
+                inspection_not_ok:
+                    label: 'Inspection not OK'
+                credit:
+                    label: 'Credit (Inspection OK)'
+                ship_back:
+                    label: 'Ship back to customer'

@@ -43,7 +43,6 @@ class InventoryManager implements InventoryManagerInterface
                 $context->getUser(),
                 $context->getRelatedEntity()
             );
-
         }
     }
 

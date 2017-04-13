@@ -1,0 +1,15 @@
+search:
+    Marello\Bundle\SupplierBundle\Entity\Supplier:
+        alias: marello_supplier
+        label: marello.supplier.entity_plural_label
+        title_fields: [name]
+        route:
+            name: marello_supplier_supplier_index
+            parameters:
+                id: id
+        search_template: MarelloSupplierBundle:Supplier:searchResult.html.twig
+        fields:
+            -
+                name: name
+                target_type: text
+                target_fields: [name]

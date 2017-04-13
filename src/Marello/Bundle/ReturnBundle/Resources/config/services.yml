@@ -16,6 +16,7 @@ services:
         class: Marello\Bundle\ReturnBundle\Twig\ReturnExtension
         arguments:
             - '@marello_return.util.return_helper'
+            - '@oro_workflow.manager'
         tags:
             - { name: twig.extension }
 

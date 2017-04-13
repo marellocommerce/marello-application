@@ -2,13 +2,11 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder;
 
-
 use DOMDocument;
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
 
 class ShipmentAcceptRequestBuilder extends RequestBuilder
 {
-
     /**
      * @param DOMDocument $xml
      * @param array       $data

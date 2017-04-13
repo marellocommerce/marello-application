@@ -5,11 +5,10 @@ namespace Marello\Bundle\CoreBundle\Tests\Functional\Workflow;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Component\Action\Model\ContextAccessor;
+use Oro\Component\ConfigExpression\ContextAccessor;
 use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction;
 
@@ -22,6 +21,8 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
 
     protected $contextAccessor;
 
+    protected $workflowManager;
+
     /**
      * @var WorkflowTransitAction
      */
@@ -31,15 +32,15 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
     {
         $this->contextAccessor = new ContextAccessor();
 
-        $this->entityManager = $this
-            ->getMockBuilder(ObjectManager::class)
+        $this->workflowManager = $this
+            ->getMockBuilder(WorkflowManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         /** @var WorkflowTransitAction action */
         $this->action = new WorkflowTransitAction(
             $this->contextAccessor,
-            $this->entityManager
+            $this->workflowManager
         );
 
         /** @var EventDispatcher $dispatcher */
@@ -77,20 +78,11 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage Parameter "workflowItem" is required.
+     * @expectedExceptionMessage Parameter "transitionName" is required.
      */
     public function testInitializeExceptionNoWorkflowItem()
     {
         $this->action->initialize([]);
-    }
-
-    /**
-     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage workflowItem must be valid property definition.
-     */
-    public function testInitializeExceptionWorkflowItemNotValidProperty()
-    {
-        $this->action->initialize(['workflowItem' => 1]);
     }
 
     /**
@@ -100,7 +92,7 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
     public function testInitializeExceptionNoTransitionName()
     {
         $options = [
-            'workflowItem'      => $this->getPropertyPath(),
+            'transitionNameInvalidArrayKey'      => $this->getPropertyPath(),
         ];
 
         $this->action->initialize($options);
@@ -109,7 +101,6 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
     public function testInitialize()
     {
         $options = [
-            'workflowItem' => $this->getPropertyPath(),
             'transitionName' => 'test_transition'
         ];
 
@@ -124,12 +115,7 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $workflowItemMock->expects($this->atLeastOnce())
-            ->method('getId')
-            ->willReturn(1);
-
         $options = [
-            'workflowItem'      => new PropertyPath('test_item'),
             'transitionName'    => 'go_to_next_definition'
         ];
 

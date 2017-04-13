@@ -17,7 +17,10 @@ class ProductSupplierRelationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('supplier', 'marello_supplier_select_form', [
+            ->add(
+                'supplier',
+                'marello_supplier_select_form',
+                [
                     'required'       => true,
                     'label'          => 'marello.supplier.entity_label',
                     'create_enabled' => false,

@@ -63,24 +63,38 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
     {
         $shipper = new Shipper();
 
-        $shipper->name                    = $this->configManager->get('marello_shipping.shipper_name');
-        $shipper->attentionName           = $this->configManager->get('marello_shipping.shipper_attention_name');
-        $shipper->phoneNumber             = $this->configManager->get('marello_shipping.shipper_phone');
-        $shipper->taxIdentificationNumber = $this->configManager->get('marello_shipping.shipper_tax_id');
-        $shipper->eMailAddress            = $this->configManager->get('marello_shipping.shipper_email');
-        $shipper->shipperNumber           = $this->configManager->get('marello_shipping.ups_account_number');
+        $shipper->name                    = $this->getConfigValue('marello_shipping.shipper_name');
+        $shipper->attentionName           = $this->getConfigValue('marello_shipping.shipper_attention_name');
+        $shipper->phoneNumber             = $this->getConfigValue('marello_shipping.shipper_phone');
+        $shipper->taxIdentificationNumber = $this->getConfigValue('marello_shipping.shipper_tax_id');
+        $shipper->eMailAddress            = $this->getConfigValue('marello_shipping.shipper_email');
+        $shipper->shipperNumber           = $this->getConfigValue('marello_shipping.ups_account_number');
 
         $shipper->address = new Address();
 
-        $shipper->address->addressLine1      = $this->configManager->get('marello_shipping.shipper_address_line_1');
-        $shipper->address->addressLine2      = $this->configManager->get('marello_shipping.shipper_address_line_2');
-        $shipper->address->addressLine3      = $this->configManager->get('marello_shipping.shipper_address_line_3');
-        $shipper->address->city              = $this->configManager->get('marello_shipping.shipper_address_city');
-        $shipper->address->stateProvinceCode = $this->configManager->get('marello_shipping.shipper_address_state');
-        $shipper->address->postalCode        = $this->configManager->get('marello_shipping.shipper_address_postal_code');
-        $shipper->address->countryCode       = $this->configManager->get('marello_shipping.shipper_address_country_code');
+        $shipper->address->addressLine1      = $this->getConfigValue('marello_shipping.shipper_address_line_1');
+        $shipper->address->addressLine2      = $this->getConfigValue('marello_shipping.shipper_address_line_2');
+        $shipper->address->addressLine3      = $this->getConfigValue('marello_shipping.shipper_address_line_3');
+        $shipper->address->city              = $this->getConfigValue('marello_shipping.shipper_address_city');
+        $shipper->address->stateProvinceCode = $this->getConfigValue('marello_shipping.shipper_address_state');
+        $shipper->address->postalCode        = $this->getConfigValue('marello_shipping.shipper_address_postal_code');
+        $shipper->address->countryCode       = $this->getConfigValue('marello_shipping.shipper_address_country_code');
 
         return $shipper;
+    }
+
+    /**
+     * Get config value from manager
+     * @param $value
+     * @return mixed|null
+     */
+    protected function getConfigValue($value)
+    {
+        if (!$value) {
+            return null;
+        }
+
+        return $this->configManager->get($value);
     }
 
     /**
@@ -103,15 +117,14 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
 
         $package->description     = $shippingDataProvider->getShippingDescription();
         $package->packagingType   = $packagingType = new PackagingType('02', 'Customer Supplied');
-//        $package->referenceNumber = $referenceNumber = new ReferenceNumber('00', 'Package');
-
         $package->packageWeight = new Package\PackageWeight();
         $package->packageWeight->unitOfMeasurement = new Package\UnitOfMeasurement();
         $package->packageWeight->unitOfMeasurement->code = 'KGS';
 
         $weight = $shippingDataProvider->getShippingWeight();
 
-        $package->packageWeight->weight = $weight ? (string) $weight : '1'; // Use default weight of 1 if there are no weights specified.
+        // Use default weight of 1 if there are no weights specified.
+        $package->packageWeight->weight = $weight ? (string) $weight : '1';
 
         return $package;
     }
@@ -167,8 +180,10 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
 
         $shipTo->address = Address::fromAddress($shipToAddress);
 
-        $shipTo->companyName  = ($shipToAddress->getCompany()) ? $shipToAddress->getCompany() : $shipToAddress->getFullName();
-        $shipTo->attentionName = ($shipToAddress->getFullName()) ? $shipToAddress->getFullName() : $shipToAddress->getCompany();
+        $shipTo->companyName  = ($shipToAddress->getCompany()) ?
+            $shipToAddress->getCompany() : $shipToAddress->getFullName();
+        $shipTo->attentionName = ($shipToAddress->getFullName()) ?
+            $shipToAddress->getFullName() : $shipToAddress->getCompany();
         $shipTo->phoneNumber  = $shipToAddress->getPhone();
 
         return $shipTo;
@@ -186,8 +201,10 @@ class UPSShippingServiceDataFactory implements ShippingServiceDataFactoryInterfa
         $shipFromAddress = $shippingDataProvider->getShippingShipFrom();
 
         $shipFrom->address       = Address::fromAddress($shipFromAddress);
-        $shipFrom->companyName   = ($shipFromAddress->getCompany()) ? $shipFromAddress->getCompany() : $shipFromAddress->getFullName();
-        $shipFrom->attentionName = ($shipFromAddress->getFullName()) ? $shipFromAddress->getFullName() : $shipFromAddress->getCompany();
+        $shipFrom->companyName   = ($shipFromAddress->getCompany()) ?
+            $shipFromAddress->getCompany() : $shipFromAddress->getFullName();
+        $shipFrom->attentionName = ($shipFromAddress->getFullName()) ?
+            $shipFromAddress->getFullName() : $shipFromAddress->getCompany();
         $shipFrom->phoneNumber   = $shipFromAddress->getPhone();
 
         return $shipFrom;
