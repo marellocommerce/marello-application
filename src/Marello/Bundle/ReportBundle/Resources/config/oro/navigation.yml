@@ -71,7 +71,7 @@ navigation:
             returned_qty_by_reason:
                 label: 'marello.report.menu.returned_qty_by_reason.label'
                 route: 'marello_report_index'
-                routeParameters:
+                route_parameters:
                     reportGroupName: 'returns'
                     reportName:      'returned_qty_by_reason'
                 extras:
@@ -81,7 +81,7 @@ navigation:
             returned_qty:
                 label: 'marello.report.menu.returned_qty.label'
                 route: 'marello_report_index'
-                routeParameters:
+                route_parameters:
                     reportGroupName: 'returns'
                     reportName:      'returned_qty'
                 extras:
