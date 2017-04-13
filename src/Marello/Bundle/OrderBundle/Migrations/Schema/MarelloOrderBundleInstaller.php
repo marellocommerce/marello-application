@@ -118,10 +118,28 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('payment_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_details', 'text', ['notnull' => false]);
-        $table->addColumn('shipping_amount_incl_tax', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('shipping_amount_excl_tax', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn(
+            'shipping_amount_incl_tax',
+            'money',
+            [
+                'notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)'
+            ]
+        );
+        $table->addColumn(
+            'shipping_amount_excl_tax',
+            'money',
+            [
+                'notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)'
+            ]
+        );
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('discount_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn(
+            'discount_amount',
+            'money',
+            [
+                'notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)'
+            ]
+        );
         $table->addColumn('discount_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('coupon_code', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('created_at', 'datetime');
@@ -162,15 +180,51 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('product_sku', 'string', ['length' => 255]);
         $table->addColumn('quantity', 'integer', []);
         $table->addColumn('price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('original_price_incl_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false]);
-        $table->addColumn('original_price_excl_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false]);
-        $table->addColumn('purchase_price_incl', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false]);
+        $table->addColumn(
+            'original_price_incl_tax',
+            'money',
+            [
+                'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false
+            ]
+        );
+        $table->addColumn(
+            'original_price_excl_tax',
+            'money',
+            [
+                'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false
+            ]
+        );
+        $table->addColumn(
+            'purchase_price_incl',
+            'money',
+            [
+                'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)', 'notnull' => false
+            ]
+        );
         $table->addColumn('tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('tax_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('discount_percent', 'percent', ['notnull' => false, 'comment' => '(DC2Type:percent)']);
-        $table->addColumn('discount_amount', 'money', ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('row_total_incl_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
-        $table->addColumn('row_total_excl_tax', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn(
+            'discount_amount',
+            'money',
+            [
+                'notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)'
+            ]
+        );
+        $table->addColumn(
+            'row_total_incl_tax',
+            'money',
+            [
+                'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)'
+            ]
+        );
+        $table->addColumn(
+            'row_total_excl_tax',
+            'money',
+            [
+                'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)'
+            ]
+        );
         $table->setPrimaryKey(['id']);
         $table->addIndex(['product_id'], 'IDX_1118665C4584665A', []);
         $table->addIndex(['order_id'], 'IDX_1118665C8D9F6D38', []);

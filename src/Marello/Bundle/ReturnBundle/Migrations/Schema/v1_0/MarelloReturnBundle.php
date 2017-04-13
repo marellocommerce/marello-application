@@ -15,9 +15,7 @@ use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterfac
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloReturnBundle implements Migration,
-    ExtendExtensionAwareInterface,
-    ActivityExtensionAwareInterface
+class MarelloReturnBundle implements Migration, ExtendExtensionAwareInterface, ActivityExtensionAwareInterface
 {
     /** @var ActivityExtension */
     protected $activityExtension;

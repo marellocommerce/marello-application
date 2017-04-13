@@ -58,7 +58,6 @@ class ProductToSkuTransformerTest extends WebTestCase
             $result->getId(),
             'Transformer should retrieve correct product based on SKU.'
         );
-
     }
 
     /**

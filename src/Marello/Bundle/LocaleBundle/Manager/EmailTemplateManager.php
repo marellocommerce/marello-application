@@ -69,15 +69,10 @@ class EmailTemplateManager
     protected function findEntityLocaleTemplate($templateName, $entity)
     {
         if ($entity instanceof LocaleAwareInterface && $entity->getLocale() !== null) {
-
             if ($this->isSupportedLocale($entity->getLocale())) {
-
-                return $this->emailTemplateTranslatableRepository->findOneByNameAndLocale(
-                    $templateName,
-                    $entity->getLocale());
-
+                return $this->emailTemplateTranslatableRepository
+                    ->findOneByNameAndLocale($templateName, $entity->getLocale());
             }
-
         }
 
         return null;
@@ -91,15 +86,11 @@ class EmailTemplateManager
     protected function findSalesChannelDefaultLocaleTemplate($templateName, $entity)
     {
         if (method_exists($entity, 'getSalesChannel')) {
-
             $salesChannel = $entity->getSalesChannel();
 
             if ($salesChannel instanceof LocaleAwareInterface && $salesChannel->getLocale() !== null) {
-
-                return $this->emailTemplateTranslatableRepository->findOneByNameAndLocale(
-                    $templateName,
-                    $salesChannel->getLocale());
-
+                return $this->emailTemplateTranslatableRepository
+                    ->findOneByNameAndLocale($templateName, $salesChannel->getLocale());
             }
         }
 
@@ -140,8 +131,4 @@ class EmailTemplateManager
 
         return false;
     }
-
-
-    
 }
-

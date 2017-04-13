@@ -23,5 +23,6 @@ class PackagingType extends XmlSerializedModel
     public function __construct($code, $description)
     {
         $this->code        = $code;
-        $this->description = $description;}
+        $this->description = $description;
+    }
 }

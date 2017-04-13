@@ -45,8 +45,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *  }
  * )
  */
-class SalesChannel extends ExtendSalesChannel implements 
-    CurrencyAwareInterface, 
+class SalesChannel extends ExtendSalesChannel implements
+    CurrencyAwareInterface,
     LocaleAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;

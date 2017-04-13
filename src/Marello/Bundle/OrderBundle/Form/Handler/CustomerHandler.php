@@ -65,5 +65,4 @@ class CustomerHandler
         $this->manager->persist($entity);
         $this->manager->flush();
     }
-
 }

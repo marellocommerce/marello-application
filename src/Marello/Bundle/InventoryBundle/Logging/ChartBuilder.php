@@ -71,17 +71,26 @@ class ChartBuilder
         $data = [
             $this->translator->trans('marello.inventory.stocklevel.stock.label')           => array_values(
                 array_map(function ($value) {
-                    return ['time' => $value['date'], 'inventory' => $value['inventory']];
+                    return [
+                        'time' => $value['date'],
+                        'inventory' => $value['inventory']
+                    ];
                 }, $dates)
             ),
             $this->translator->trans('marello.inventory.stocklevel.allocated_stock.label') => array_values(
                 array_map(function ($value) {
-                    return ['time' => $value['date'], 'inventory' => $value['allocatedInventory']];
+                    return [
+                        'time' => $value['date'],
+                        'inventory' => $value['allocatedInventory']
+                    ];
                 }, $dates)
             ),
             $this->translator->trans('marello.inventory.stocklevel.virtual_stock.label')   => array_values(
                 array_map(function ($value) {
-                    return ['time' => $value['date'], 'inventory' => $value['inventory'] - $value['allocatedInventory']];
+                    return [
+                        'time' => $value['date'],
+                        'inventory' => $value['inventory'] - $value['allocatedInventory']
+                    ];
                 }, $dates)
             ),
         ];

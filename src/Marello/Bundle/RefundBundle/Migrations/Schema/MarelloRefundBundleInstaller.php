@@ -50,7 +50,6 @@ class MarelloRefundBundleInstaller implements
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', 'marello_refund');
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_refund');
-
     }
 
     /**

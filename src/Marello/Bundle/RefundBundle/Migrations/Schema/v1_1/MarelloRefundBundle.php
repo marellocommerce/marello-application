@@ -8,7 +8,6 @@ use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterfac
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 
-
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)

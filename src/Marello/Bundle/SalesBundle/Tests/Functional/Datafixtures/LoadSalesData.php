@@ -20,9 +20,24 @@ class LoadSalesData extends AbstractFixture
      * @var array
      */
     protected $data = [
-        self::CHANNEL_1_REF => ['name' => 'Channel-EUR', 'code' => 'chan_eur', 'type' => 'magento', 'currency' => 'EUR'],
-        self::CHANNEL_2_REF => ['name' => 'Channel-USD', 'code' => 'chan_usd', 'type' => 'pos', 'currency' => 'USD'],
-        self::CHANNEL_3_REF => ['name' => 'Channel-GBP', 'code' => 'chan_gbp', 'type' => 'pos', 'currency' => 'GBP'],
+        self::CHANNEL_1_REF => [
+            'name' => 'Channel-EUR',
+            'code' => 'chan_eur',
+            'type' => 'magento',
+            'currency' => 'EUR'
+        ],
+        self::CHANNEL_2_REF => [
+            'name' => 'Channel-USD',
+            'code' => 'chan_usd',
+            'type' => 'pos',
+            'currency' => 'USD'
+        ],
+        self::CHANNEL_3_REF => [
+            'name' => 'Channel-GBP',
+            'code' => 'chan_gbp',
+            'type' => 'pos',
+            'currency' => 'GBP'
+        ],
     ];
 
     /**

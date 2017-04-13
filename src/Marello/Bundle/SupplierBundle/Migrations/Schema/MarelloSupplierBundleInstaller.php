@@ -84,7 +84,14 @@ class MarelloSupplierBundleInstaller implements
         );
         $table->addColumn('can_dropship', 'boolean', []);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['product_id', 'supplier_id', 'quantity_of_unit'], 'marello_supplier_prod_supp_rel_uidx');
+        $table->addUniqueIndex(
+            [
+                'product_id',
+                'supplier_id',
+                'quantity_of_unit'
+            ],
+            'marello_supplier_prod_supp_rel_uidx'
+        );
         $table->addIndex(['product_id'], '', []);
         $table->addIndex(['supplier_id'], '', []);
     }

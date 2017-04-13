@@ -43,8 +43,8 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      }
  * )
  */
-class Refund extends ExtendRefund implements 
-    DerivedPropertyAwareInterface, 
+class Refund extends ExtendRefund implements
+    DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
     LocaleAwareInterface
 {
