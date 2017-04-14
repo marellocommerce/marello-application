@@ -1,0 +1,5 @@
+services:
+    marello_report.listener.datagrid.workflow_grid_listener:
+        class: '%marello_datagrid.event_listener.datagrid.workflow_grid_listener.class%'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello_report-orders-revenue_per_sales_channel, method: removeWorkflow }

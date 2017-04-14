@@ -1,0 +1,2 @@
+parameters:
+    marello_datagrid.event_listener.datagrid.workflow_grid_listener.class: Marello\Bundle\DataGridBundle\EventListener\Datagrid\WorkflowGridListener

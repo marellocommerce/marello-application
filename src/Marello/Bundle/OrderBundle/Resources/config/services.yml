@@ -83,3 +83,8 @@ services:
             - '@oro_workflow.manager'
         tags:
             - { name: twig.extension }
+
+    marello_order.listener.datagrid.workflow_grid_listener:
+        class: '%marello_datagrid.event_listener.datagrid.workflow_grid_listener.class%'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.dashboard-order-revenue-saleschannels-grid, method: removeWorkflow }
