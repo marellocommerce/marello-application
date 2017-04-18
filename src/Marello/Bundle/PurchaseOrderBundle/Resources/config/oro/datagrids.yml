@@ -115,6 +115,7 @@ datagrids:
                     and:
                         - sup.name <> ''
                         - s.name = 'enabled'                                          # Only select product with enabled status
+                        - p.replenishment = 'never_out_of_stock'
 
                 having: SUM(l.inventory - l.allocatedInventory) < p.purchaseStockLevel  # Only products with virtual stock lower than required purchase stock level
                 groupBy: p.id
