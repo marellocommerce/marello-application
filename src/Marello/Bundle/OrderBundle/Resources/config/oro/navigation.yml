@@ -5,7 +5,7 @@ navigation:
                 label: marello.order.navigation.customers.label
                 uri: '#'
                 extras:
-                    icon: icon-group
+                    icon: fa-users
                     position: 40
 
             customers:

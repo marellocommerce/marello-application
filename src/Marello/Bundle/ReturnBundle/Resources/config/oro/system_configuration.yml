@@ -2,17 +2,17 @@ system_configuration:
     groups:
         return_configuration:
             title: 'Return Warranty Configuration'
-            icon: icon-refresh
+            icon: fa-refresh
             priority: 50
 
         ror_settings:
             title: 'Right of Return Settings'
-            icon: icon-info
+            icon: fa-info
             priority: 100
 
         warranty_settings:
             title: 'Product Warranty Settings'
-            icon: icon-info
+            icon: fa-info
             priority: 50
 
     fields:

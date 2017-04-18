@@ -2,17 +2,17 @@ system_configuration:
     groups:
         shipping_configuration:
             title: 'Shipping Configuration'
-            icon: icon-truck
+            icon: fa-truck
             priority: 50
 
         shipper_info:
             title: 'Shipper Information'
-            icon: icon-info
+            icon: fa-info
             priority: 100
 
         ups_configuration:
             title: 'UPS Configuration'
-            icon: icon-truck
+            icon: fa-truck
             priority: 50
 
     fields:

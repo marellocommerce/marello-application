@@ -2,10 +2,10 @@ navigation:
     menu_config:
         items:
             sales_tab:
-                label: marello.sales.navigation.sales.label
+                label: 'marello.sales.navigation.sales.label'
                 uri: '#'
                 extras:
-                    icon: icon-shopping-cart
+                    icon: fa-shopping-cart
                     position: 20
 
             sales_channel:

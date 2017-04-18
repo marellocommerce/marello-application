@@ -4,6 +4,9 @@ navigation:
             products:
                 label: marello.product.navigation.product.label
                 uri: '#'
+                extras:
+                    position: 50
+                    icon: fa-barcode
 
             products_list:
                 label: marello.product.entity_plural_label
