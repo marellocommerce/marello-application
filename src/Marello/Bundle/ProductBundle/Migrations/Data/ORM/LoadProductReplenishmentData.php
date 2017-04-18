@@ -9,6 +9,9 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 class LoadProductReplenishmentData extends AbstractFixture
 {
+    const NOS = 'never_out_of_stock';
+    const EOL = 'end_of_life';
+
     /** @var array */
     protected $data = [
         'Never out of stock'    => true,

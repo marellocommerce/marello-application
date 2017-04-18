@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller\Api\Rest;
 
+use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadProductReplenishmentData;
 use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -125,6 +126,7 @@ class ProductControllerTest extends WebTestCase
             'channels'  => [
                 $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId(),
             ],
+            'replenishment' => LoadProductReplenishmentData::NOS
         ];
 
         $this->client->request(
@@ -212,6 +214,7 @@ class ProductControllerTest extends WebTestCase
             'channels'  => $product->getChannels()->map(function (SalesChannel $channel) {
                 return $channel->getId();
             })->toArray(),
+            'replenishment' => LoadProductReplenishmentData::NOS
         ];
 
         $this->client->request(
