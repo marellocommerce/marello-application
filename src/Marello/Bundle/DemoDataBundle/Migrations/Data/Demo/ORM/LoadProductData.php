@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -27,6 +28,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
     /** @var ObjectManager $manager */
     protected $manager;
+
+    protected $replenishments;
 
     /**
      * @var ContainerInterface
@@ -67,6 +70,9 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $this->defaultWarehouse = $this->manager
             ->getRepository('MarelloInventoryBundle:Warehouse')
             ->getDefault();
+
+        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_product_reple');
+        $this->replenishments = $this->manager->getRepository($replenishmentClass)->findAll();
 
         $this->loadProducts();
     }
@@ -165,6 +171,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
          * add suppliers per product
          */
         $this->addProductSuppliers($product);
+
+        $product->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
 
         $this->manager->persist($product);
 

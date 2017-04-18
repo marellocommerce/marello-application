@@ -9,6 +9,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -37,6 +38,9 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
 
         $handle = fopen(__DIR__ . '/dictionaries/purchase_orders.csv', 'r');
 
+        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_product_reple');
+        $replenishmentNOS = $manager->getRepository($replenishmentClass)->find('never_out_of_stock');
+
         if ($handle) {
             $headers = [];
             if (($data = fgetcsv($handle, 1000, ",")) !== false) {
@@ -63,12 +67,16 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
                 $product = $manager->getRepository(Product::class)
                     ->findOneBy(['sku' => $data['product']]);
 
+                //set replenishment to product to make sure it follows PO logic
+                $product->setReplenishment($replenishmentNOS);
+
                 $order->addItem(
                     (new PurchaseOrderItem($product, $data['ordered_amount']))
                 );
             }
 
             $this->setReference('marello-purchase-order-' . $orderNo, $order);
+            $manager->persist($product);
             $manager->persist($order);
 
             $manager->flush();
