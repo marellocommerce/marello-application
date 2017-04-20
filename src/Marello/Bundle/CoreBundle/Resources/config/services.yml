@@ -20,3 +20,9 @@ services:
             - '@oro_workflow.manager'
         tags:
             - { name: twig.extension }
+
+
+    marello_core.extension.translation_packages_provider:
+        class: Marello\Bundle\CoreBundle\Provider\TranslationPackagesProviderExtension
+        tags:
+            - { name: oro_translation.extension.packages_provider }
