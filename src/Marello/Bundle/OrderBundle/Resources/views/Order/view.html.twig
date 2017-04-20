@@ -81,6 +81,22 @@
     {% endset %}
     {% set generalSubblocks = generalSubblocks|merge([{'data' : [totalsWidget] }]) %}
 
+    {% set customerInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        <div class="title">
+                            <span class="widget-title">{{ 'marello.order.datablock.customer_information'|trans }}</span>
+                        </div>
+                        {{ UI.renderProperty('marello.order.customer.email.label'|trans, entity.customer.email) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [customerInformation] }]) %}
+
     {% set paymentSubblocks = [] %}
     {% set billingAddressWidget %}
         {{ oro_widget_render({
