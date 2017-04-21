@@ -156,6 +156,7 @@ datagrids:
             columns:
                 name:           { data_name: p.name }
                 sku:            { data_name: p.sku }
+                stockLevel:     { data_name: stockLevel }
             default:
                 stockLevel:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         options:
