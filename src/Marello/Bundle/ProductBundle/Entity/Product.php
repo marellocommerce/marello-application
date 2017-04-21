@@ -41,7 +41,7 @@ use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
  *  routeName="marello_product_index",
  *  routeView="marello_product_view",
  *  defaultValues={
- *      "entity"={"icon"="icon-barcode"},
+ *      "entity"={"icon"="fa-barcode"},
  *      "ownership"={
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"

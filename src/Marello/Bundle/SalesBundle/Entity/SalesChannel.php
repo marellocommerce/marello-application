@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *  routeName="marello_sales_saleschannel_index",
  *  routeView="marello_sales_saleschannel_view",
  *  defaultValues={
- *      "entity"={"icon"="icon-sitemap"},
+ *      "entity"={"icon"="fa-sitemap"},
  *      "ownership"={
  *          "owner_type"="ORGANIZATION",
  *          "owner_field_name"="owner",

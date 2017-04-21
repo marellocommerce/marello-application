@@ -22,7 +22,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
  * )
  * @Oro\Config(
  *  defaultValues={
- *      "entity"={"icon"="icon-usd"},
+ *      "entity"={"icon"="fa-usd"},
  *      "security"={
  *          "type"="ACL",
  *          "group_name"=""
