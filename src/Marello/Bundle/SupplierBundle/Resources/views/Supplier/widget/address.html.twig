@@ -6,7 +6,7 @@
         <div id="supplier-address-{{ supplierAddress.id }}">
             {% if marello_supplier_supplier_address is not defined or resource_granted(marello_supplier_supplier_address) %}
                 <div class="address-edit">
-                    <button class="btn address-edit-button" id="edit-address-{{ supplierAddress.id }}" title="{{ 'marello.supplier.address.edit_action'|trans }}"><i class="icon-edit hide-text">{{ 'marello.supplier.address.edit_action'|trans }}</i></button>
+                    <button class="btn address-edit-button" id="edit-address-{{ supplierAddress.id }}" title="{{ 'marello.supplier.address.edit_action'|trans }}"><i class="fa-edit hide-text">{{ 'marello.supplier.address.edit_action'|trans }}</i></button>
                 </div>
             {% endif %}
 

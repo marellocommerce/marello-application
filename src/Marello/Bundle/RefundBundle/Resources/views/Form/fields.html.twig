@@ -110,7 +110,7 @@
         </td>
         {% if allow_delete %}
             <td class="order-line-item-remove">
-                <button type="button" class="marello-remove-line-item btn icons-holder"><i class="icon-remove"></i></button>
+                <button type="button" class="marello-remove-line-item btn icons-holder"><i class="fa-remove"></i></button>
             </td>
         {% elseif widget.parent.vars.allow_delete %}
             <td></td>
@@ -190,7 +190,7 @@
 
             {% if allow_add %}
                 <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);">
-                    <i class="icon-plus"></i>{{ form.vars.add_label|default('marello.refund.form.add_item.label')|trans }}
+                    <i class="fa-plus"></i>{{ form.vars.add_label|default('marello.refund.form.add_item.label')|trans }}
                 </a>
             {% endif %}
         </div>
