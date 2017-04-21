@@ -37,7 +37,7 @@
 
         {% block transition_form %}
             {% if transition.message %}
-                <div class="alert">{{ transition.message|trans }}</div>
+                <div class="alert">{{ transition.message|trans({}, 'workflows') }}</div>
             {% endif %}
             <form method="post"
                   data-nohash="true"
