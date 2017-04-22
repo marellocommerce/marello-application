@@ -50,13 +50,13 @@ datagrids:
                 frontend_type:      datetime
         sorters:
             columns:
-                sku:            { data_name: p.sku }
-                product:        { data_name: p.name }
+                sku:                { data_name: p.sku }
+                product:            { data_name: p.name }
                 inventory:          { data_name: inventory }
                 allocatedInventory: { data_name: allocatedInventory }
-                virtualStock:   { data_name: virtualStock }
-                status:         { data_name: s.label }
-                createdAt:      { data_name: p.createdAt }
+                virtualStock:       { data_name: virtualStock }
+                status:             { data_name: s.label }
+                createdAt:          { data_name: p.createdAt }
             default:
                 sku: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
@@ -67,11 +67,11 @@ datagrids:
                 product:
                     type:             string
                     data_name:        p.name
-                stock:
+                inventory:
                     type:             number
                     data_name:        inventory
                     filter_by_having: true
-                allocatedStock:
+                allocatedInventory:
                     type:             number
                     data_name:        allocatedInventory
                     filter_by_having: true
