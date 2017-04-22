@@ -17,6 +17,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * )
  * @Oro\Config(
  *      defaultValues={
+ *          "entity"={
+ *              "icon"="fa-cubes"
+ *          },
  *          "security"={
  *              "type"="ACL",
  *              "permissions"="VIEW;EDIT",

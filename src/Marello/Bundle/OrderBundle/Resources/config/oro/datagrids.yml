@@ -114,7 +114,7 @@ datagrids:
             return:
                 type:       navigate
                 link:       return_link
-                icon:       refresh
+                icon:       history
             refund:
                 type:       navigate
                 link:       refund_link
@@ -220,7 +220,7 @@ datagrids:
             return:
                 type:       navigate
                 link:       return_link
-                icon:       refresh
+                icon:       history
             refund:
                 type:       navigate
                 link:       refund_link

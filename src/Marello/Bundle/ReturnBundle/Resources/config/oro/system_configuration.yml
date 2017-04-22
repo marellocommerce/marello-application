@@ -2,7 +2,7 @@ system_configuration:
     groups:
         return_configuration:
             title: 'Return Warranty Configuration'
-            icon: fa-refresh
+            icon: fa-history
             priority: 50
 
         ror_settings:

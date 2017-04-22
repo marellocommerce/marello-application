@@ -26,6 +26,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      routeName="marello_return_return_index",
  *      routeCreate="marello_return_return_create",
  *      defaultValues={
+ *          "entity"={
+ *              "icon"="fa-history"
+ *          },
  *          "ownership"={
  *              "organization_field_name"="organization",
  *              "organization_column_name"="organization_id"
