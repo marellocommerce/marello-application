@@ -347,6 +347,10 @@ class Product extends ExtendProduct implements
      */
     protected $salesChannelTaxCodes;
 
+    /**
+     * @var string
+     */
+    protected $replenishment;
 
     public function __construct()
     {
@@ -889,5 +893,25 @@ class Product extends ExtendProduct implements
     public function getSalesChannelTaxCodes()
     {
         return $this->salesChannelTaxCodes;
+    }
+
+    /**
+    * @return string
+    */
+    public function getReplenishment()
+    {
+        return $this->replenishment;
+    }
+
+    /**
+     * @param string $replenishment
+     *
+     * @return $this
+     */
+    public function setReplenishment($replenishment)
+    {
+        $this->replenishment = $replenishment;
+
+        return $this;
     }
 }

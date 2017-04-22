@@ -153,6 +153,13 @@ class ProductType extends AbstractType
                     'cascade_validation' => true,
                 ]
             )
+            ->add('replenishment', 'oro_enum_choice',
+                [
+                    'enum_code' => 'marello_product_reple',
+                    'required'  => true,
+                    'label'     => 'marello.product.replenishment.label',
+                ]
+            )
         ;
 
         $builder->addEventSubscriber($this->defaultSalesChannelSubscriber);

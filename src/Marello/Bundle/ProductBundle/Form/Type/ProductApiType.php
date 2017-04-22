@@ -62,6 +62,7 @@ class ProductApiType extends AbstractType
                 'allow_delete'  => true,
                 'by_reference'  => false,
             ])
+            ->add('replenishment')
         ;
     }
 

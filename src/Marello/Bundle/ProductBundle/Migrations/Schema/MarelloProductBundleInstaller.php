@@ -3,6 +3,9 @@
 namespace Marello\Bundle\ProductBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -10,14 +13,17 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloProductBundleInstaller implements Installation
+class MarelloProductBundleInstaller implements Installation, ExtendExtensionAwareInterface
 {
+    /** @var ExtendExtension */
+    protected $extendExtension;
+
     /**
      * {@inheritdoc}
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -81,6 +87,18 @@ class MarelloProductBundleInstaller implements Installation
         $table->addIndex(['product_status'], 'IDX_25845B8D197C24B8', []);
         $table->addIndex(['preferred_supplier_id']);
         $table->addIndex(['tax_code_id']);
+
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'replenishment',
+            'marello_product_reple',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+            ]
+        );
     }
 
     /**
@@ -233,5 +251,15 @@ class MarelloProductBundleInstaller implements Installation
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
+    }
+
+    /**
+     * Sets the ExtendExtension
+     *
+     * @param ExtendExtension $extendExtension
+     */
+    public function setExtendExtension(ExtendExtension $extendExtension)
+    {
+        $this->extendExtension = $extendExtension;
     }
 }

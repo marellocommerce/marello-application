@@ -12,6 +12,8 @@ Marello\Bundle\ProductBundle\Entity\Product:
             - NotBlank: ~
         prices:
             - NotBlank: ~
+        replenishment:
+            - NotNull: ~
 
 Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation:
     constraints:
