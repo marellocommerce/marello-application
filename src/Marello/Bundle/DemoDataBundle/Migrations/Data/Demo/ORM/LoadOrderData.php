@@ -169,28 +169,31 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
      */
     protected function createOrder($row, Organization $organization)
     {
-        $address = new MarelloAddress();
-        $address->setNamePrefix($row['title']);
-        $address->setFirstName($row['firstname']);
-        $address->setLastName($row['lastname']);
-        $address->setStreet($row['street_address']);
-        $address->setPostalCode($row['zipcode']);
-        $address->setCity($row['city']);
-        $address->setCountry(
+        $billingAddress = new MarelloAddress();
+        $billingAddress->setNamePrefix($row['title']);
+        $billingAddress->setFirstName($row['firstname']);
+        $billingAddress->setLastName($row['lastname']);
+        $billingAddress->setStreet($row['street_address']);
+        $billingAddress->setPostalCode($row['zipcode']);
+        $billingAddress->setCity($row['city']);
+        $billingAddress->setCountry(
             $this->manager
                 ->getRepository('OroAddressBundle:Country')->find($row['country'])
         );
-        $address->setRegion(
+        $billingAddress->setRegion(
             $this->manager
                 ->getRepository('OroAddressBundle:Region')
                 ->findOneBy(['combinedCode' => $row['country'] . '-' . $row['state']])
         );
-        $address->setPhone($row['telephone_number']);
-        $address->setCompany($row['company']);
-        $this->manager->persist($address);
+        $billingAddress->setPhone($row['telephone_number']);
+        $billingAddress->setCompany($row['company']);
+        $this->manager->persist($billingAddress);
 
-        $orderEntity = new Order($address, $address);
-        $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $address);
+        $shippingAddress = clone $billingAddress;
+        $this->manager->persist($shippingAddress);
+
+        $orderEntity = new Order($billingAddress, $shippingAddress);
+        $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $billingAddress);
         $customer->setOrganization($organization);
         $this->setReference('marello_customer_' . $this->customers++, $customer);
         $orderEntity->setCustomer($customer);
@@ -208,7 +211,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             $orderEntity->setPaymentDetails($row['payment_details']);
         }
 
-//        $orderEntity->setShippingMethod($row['shipping_method']);
+        $orderEntity->setShippingMethod($row['shipping_method']);
         $orderEntity->setShippingAmountExclTax($row['shipping_amount']);
         $orderEntity->setShippingAmountInclTax($row['shipping_amount']);
 
