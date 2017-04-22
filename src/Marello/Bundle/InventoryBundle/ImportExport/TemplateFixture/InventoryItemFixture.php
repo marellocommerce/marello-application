@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\TemplateFixture;
 
+use Marello\Bundle\InventoryBundle\Entity\StockLevel;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\AbstractTemplateRepository;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
 
@@ -36,8 +37,18 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
         $warehouseRepo = $this->templateManager
             ->getEntityRepository('Marello\Bundle\InventoryBundle\Entity\Warehouse');
 
-        $inventoryItem = new InventoryItem($warehouseRepo->getEntity('main'), $this->createProduct());
-        $inventoryItem->setStockLevels('import', 25);
+        $product = $this->createProduct();
+        $inventoryItem = new InventoryItem($warehouseRepo->getEntity('main'), $product);
+        $stockLevel = new StockLevel(
+            $inventoryItem,
+            25,
+            0,
+            25,
+            0,
+            'import'
+        );
+
+        $inventoryItem->changeCurrentLevel($stockLevel);
 
         return $inventoryItem;
     }
@@ -66,7 +77,9 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
         $entity = new Product();
         $entity->setName('Marello Mug');
         $entity->setSku('MARELLO_MUG_OWL');
-        
+        $entity->setDesiredStockLevel(0);
+        $entity->setPurchaseStockLevel(0);
+
         return $entity;
     }
 }
