@@ -6,7 +6,7 @@
         <div id="order-address-{{ orderAddress.id }}">
             {% if marello_order_order_address is not defined or resource_granted(marello_order_order_address) %}
                 <div class="address-edit">
-                    <button class="btn address-edit-button" id="edit-address-{{ orderAddress.id }}" title="{{ 'marello.order.address.edit_action'|trans }}"><i class="icon-edit hide-text">{{ 'marello.order.address.edit_action'|trans }}</i></button>
+                    <button class="btn address-edit-button" id="edit-address-{{ orderAddress.id }}" title="{{ 'marello.order.address.edit_action'|trans }}"><i class="fa-edit hide-text">{{ 'marello.order.address.edit_action'|trans }}</i></button>
                 </div>
             {% endif %}
 

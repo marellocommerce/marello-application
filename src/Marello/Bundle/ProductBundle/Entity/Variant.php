@@ -18,7 +18,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *  routeName="marello_product_index",
  *  routeView="marello_product_view",
  *  defaultValues={
- *      "entity"={"icon"="icon-barcode"},
+ *      "entity"={"icon"="fa-barcode"},
  *      "security"={
  *          "type"="ACL",
  *          "group_name"=""

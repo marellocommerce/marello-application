@@ -96,7 +96,7 @@ datagrids:
         actions:
             inventory:
                 type:           navigate
-                icon:           list-alt
+                icon:           cubes
                 link:           inventory_link
         options:
             export: true

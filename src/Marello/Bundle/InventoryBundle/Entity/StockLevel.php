@@ -12,7 +12,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  * @Oro\Config(
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-list-alt"
+ *              "icon"="fa-list-alt"
  *          }
  *      }
  * )

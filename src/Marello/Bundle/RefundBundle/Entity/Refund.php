@@ -30,7 +30,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      routeCreate="marello_refund_create",
  *      defaultValues={
  *          "entity"={
- *              "icon"="icon-eur"
+ *              "icon"="fa-eur"
  *          },
  *          "security"={
  *              "type"="ACL",
