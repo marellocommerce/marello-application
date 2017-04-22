@@ -7,12 +7,27 @@ use Marello\Bundle\ReturnBundle\Form\EventListener\ReturnItemTypeSubscriber;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReturnItemType extends AbstractType
 {
     const NAME = 'marello_return_item';
+
+    /** @var ReturnItemTypeSubscriber $returnItemTypeSubscriber */
+    protected $returnItemTypeSubscriber;
+
+    /**
+     * ReturnType constructor.
+     *
+     * @param ReturnItemTypeSubscriber $returnItemTypeSubscriber
+     */
+    public function __construct(ReturnItemTypeSubscriber $returnItemTypeSubscriber)
+    {
+        $this->returnItemTypeSubscriber = $returnItemTypeSubscriber;
+    }
 
     /**
      * {@inheritdoc}
@@ -31,6 +46,8 @@ class ReturnItemType extends AbstractType
             'required'  => true,
             'label'     => 'marello.return.returnentity.reason.label',
         ]);
+
+        $builder->addEventSubscriber($this->returnItemTypeSubscriber);
     }
 
     /**

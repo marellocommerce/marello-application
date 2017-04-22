@@ -16,7 +16,7 @@ class LoadReturnReasonsData extends AbstractFixture
         'Does not meet expectations' => false,
         'Damaged'                    => false,
         'Warranty'                   => false,
-        'Other'                      => false,
+        'Other'                      => true,
     ];
 
     /**
