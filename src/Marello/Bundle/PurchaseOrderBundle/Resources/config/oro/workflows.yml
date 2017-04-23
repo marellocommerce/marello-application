@@ -2,7 +2,6 @@ workflows:
     marello_purchase_order_workflow:
         entity: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
         entity_attribute: po
-#        steps_display_ordered: true
         start_step: pending
 
         defaults:
@@ -15,22 +14,18 @@ workflows:
                     class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
         steps:
             pending:
-#                order: 10
                 allowed_transitions:
                     - partially_receive
                     - fully_receive
                     - cancel_purchase_order
             partially_received:
-#                order: 20
                 allowed_transitions:
                     - partially_receive
                     - complete_purchase_order
             fully_received:
-#                order: 30
                 allowed_transitions:
                     - complete_purchase_order
             complete_purchase_order:
-#                order: 40
                 is_final: true
             cancelled_purchase_order:
                 is_final: true
@@ -41,14 +36,11 @@ workflows:
                 dialog_template: MarelloPurchaseOrderBundle:Workflow:widget/transitionForm.html.twig
                 frontend_options:
                     dialog:
-                        alias: transaction-dialog
                         dialogOptions:
                             width:         900
                             height:        500
-                            modal:         true
-                            resizable:     true
                             allowMaximize: true
-                            allowMinimize: false
+                            allowMinimize: true
                 form_options:
                     attribute_fields:
                         received_items:
