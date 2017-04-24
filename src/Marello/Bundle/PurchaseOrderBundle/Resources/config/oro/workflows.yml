@@ -37,10 +37,13 @@ workflows:
                 frontend_options:
                     dialog:
                         dialogOptions:
-                            width:         900
-                            height:        500
-                            allowMaximize: true
-                            allowMinimize: true
+                            width:                      800
+                            allowMaximize:              true
+                            allowMinimize:              true
+                            dblclick:                   maximize
+                            maximizedHeightDecreaseBy:  minimize-bar
+                            # class option only usable with MarelloPurchaseOrderBundle:Workflow:widget/transitionForm.html.twig
+                            class:                      'partially_received_dialog'
                 form_options:
                     attribute_fields:
                         received_items:
