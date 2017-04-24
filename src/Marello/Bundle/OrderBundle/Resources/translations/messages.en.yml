@@ -96,6 +96,8 @@ marello:
             success:
                 order:
                     saved:          Order saved
+                customer:
+                    saved:          Customer saved
 
         navigation:
             customers.label: Customers
@@ -113,6 +115,7 @@ marello:
                 orders_number.label: Total Orders
                 revenue.label: Total Order Revenue
                 average_order_value.label: Average Order Value
+                no_available_metrics: No metrics available
 
             latest_orders:
                 title: Latest orders

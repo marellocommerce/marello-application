@@ -98,7 +98,7 @@ class CustomerController extends Controller
                         'parameters' => ['id' => $entity->getId()]
                     ];
                 },
-                $this->get('translator')->trans('marello.order.customer.messages.saved'),
+                $this->get('translator')->trans('marello.order.messages.success.customer.saved'),
                 $this->get('marello_order.form.handler.customer')
             );
     }

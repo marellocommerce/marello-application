@@ -58,7 +58,7 @@ class SalesChannelController extends Controller
              *       one. Code 500 is the correct one that should be returned, so probably a modification in js will be
              *       needed.
              */
-            $this->addFlash('error', 'marello.sales.messages.sales_channel_has_associations');
+            $this->addFlash('error', 'marello.sales.saleschannel.messages.sales_channel_has_associations');
 
             return new Response('', Response::HTTP_INTERNAL_SERVER_ERROR);
         }

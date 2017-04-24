@@ -51,7 +51,7 @@ class ChannelPriceProvider
                 if (!array_key_exists(self::PRICE_IDENTIFIER . $product['product'], $result)) {
                     $result[self::PRICE_IDENTIFIER . $product['product']] = [
                         'message' => $this->translator
-                            ->trans('marello.pricing.productprice.messages.product_not_salable'),
+                            ->trans('marello.pricing.productchannelprice.messages.product_not_salable'),
                     ];
                 }
             }
