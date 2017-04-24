@@ -140,7 +140,7 @@ class ProductType extends AbstractType
                 'suppliers',
                 'marello_product_supplier_relation_collection_form',
                 [
-                    'label'              => 'marello.supplier.label',
+                    'label'              => 'marello.supplier.entity_label',
                     'cascade_validation' => true,
                 ]
             )
@@ -149,7 +149,7 @@ class ProductType extends AbstractType
                 'salesChannelTaxCodes',
                 'marello_product_channel_tax_relation_collection_form',
                 [
-                    'label'              => 'marello.tax.label',
+                    'label'              => 'marello.tax.taxcode.entity_label',
                     'cascade_validation' => true,
                 ]
             )
