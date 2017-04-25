@@ -66,7 +66,7 @@ class MarelloProductBundleInstaller implements Installation, ExtendExtensionAwar
             ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
         );
         $table->addColumn('created_at', 'datetime');
-        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->addColumn('updated_at', 'datetime');
         $table->addColumn('type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn(
             'cost',

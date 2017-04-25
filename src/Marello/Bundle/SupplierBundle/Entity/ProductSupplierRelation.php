@@ -34,7 +34,7 @@ class ProductSupplierRelation
     /**
      * @var Product
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="suppliers", cascade={"persist"})
      * @ORM\JoinColumn(name="product_id", nullable=false)
      */
     protected $product;
@@ -42,7 +42,7 @@ class ProductSupplierRelation
     /**
      * @var Supplier
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier", cascade={"persist"})
      * @ORM\JoinColumn(name="supplier_id", nullable=false)
      */
     protected $supplier;
