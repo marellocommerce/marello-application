@@ -23,7 +23,7 @@ class MarelloProductBundleInstaller implements Installation, ExtendExtensionAwar
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
