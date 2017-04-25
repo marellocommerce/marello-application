@@ -24,13 +24,13 @@ class MarelloProductBundle implements Migration
     }
 
     /**
-     * Update marello_address table
+     * Update marello_product_product table
      *
      * @param Schema $schema
      */
     protected function updateDatetimeMarelloProductTable(Schema $schema, QueryBag $queries)
     {
-        $queries->addPreQuery('UPDATE marello_product_product SET updated=NOW()');
+        $queries->addPreQuery('UPDATE marello_product_product SET updated_at=NOW()');
         $table = $schema->getTable('marello_product_product');
         $table->getColumn('updated_at')->setNotnull(true);
     }
