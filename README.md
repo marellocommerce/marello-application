@@ -10,7 +10,7 @@ using Marello.
 
 Marello is a Symfony 2 based application with the following requirements:
 
-* PHP 5.5.9 or above with command line interface
+* PHP 5.6 or above with command line interface
 * PHP Extensions
     * GD
     * Mcrypt
@@ -44,7 +44,7 @@ http://getcomposer.org/ or just run the following command:
 
 - Make sure that you have [NodeJS][4] installed
 
-- Install Marello dependencies with composer. If installation process seems too slow you can use "--prefer-dist" option.
+- Install Marello dependencies with composer. If installation process seems too slow you can use `--prefer-dist` option.
   Go to marello-application folder and run composer installation:
 
 ```bash
@@ -53,11 +53,20 @@ php composer.phar install --prefer-dist --no-dev
 
 - Create the database with the name specified on previous step (default name is "marello_application").
 
+- On some systems it might be necessary to temporarily increase memory_limit setting to 1 GB in php.ini configuration file for the duration of the installation process:
+```bash
+memory_limit=1024M
+```
+
+**Note:** After the installation is finished the memory_limit configuration can be changed back to the recommended value (512 MB or more).
+
 - Install application and admin user with Installation Wizard by opening install.php in the browser or from CLI:
 
 ```bash  
 php app/console oro:install --env prod
 ```
+
+**Note** If the installation process times out, add the `--timeout=0` argument to the oro:install command.
 
 - Enable WebSockets messaging
 
@@ -69,7 +78,18 @@ php app/console clank:server --env prod
 
 ```bash
 php app/console oro:cron --env prod
+
 ```
+- Launch the message queue processing:
+```bash
+php app/console oro:message-queue:consume --env=prod
+```
+**Note** We do recommend to use a supervisor for running the ``oro:message-queue:consume`` command. This will make sure that the command and
+the consumer will run all the time. This has become important for every Oro Platform based application since a lot of background tasks depend
+ on the consumer to run. For more information about configuration and what supervisor can do for you can either through the [Oro(CRM) docs][6] or the
+ [site of Supervisord][7].
+
+ 
  
 **Note:** ``app/console`` is a path from project root folder. Please make sure you are using full path for crontab configuration or if you running console command from other location.
 
@@ -112,3 +132,5 @@ Github OAuth token should be configured in package manager settings
 [3]:  http://dev.mysql.com/doc/refman/5.6/en/optimizing-innodb-diskio.html
 [4]:  https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
 [5]:  http://symfony.com/doc/2.8/cookbook/configuration/web_server_configuration.html
+[6]:  https://www.orocrm.com/documentation/2.0/book/installation#activating-background-tasks
+[7]:  http://supervisord.org/
