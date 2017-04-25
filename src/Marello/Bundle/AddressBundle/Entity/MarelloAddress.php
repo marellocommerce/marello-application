@@ -132,7 +132,6 @@ class MarelloAddress extends ExtendAddress
      */
     public function prePersistTimestamp()
     {
-        $this->created = new \DateTime('now', new \DateTimeZone('UTC'));
-        $this->updated = null;
+        $this->created = $this->updated = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

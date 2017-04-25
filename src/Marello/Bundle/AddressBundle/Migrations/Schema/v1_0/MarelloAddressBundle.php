@@ -1,25 +1,17 @@
 <?php
 
-namespace Marello\Bundle\AddressBundle\Migrations\Schema;
+namespace Marello\Bundle\AddressBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\MigrationBundle\Migration\Installation;
+
+use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
- * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloAddressBundleInstaller implements Installation
+class MarelloAddressBundle implements Migration
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getMigrationVersion()
-    {
-        return 'v1_1';
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -58,8 +50,8 @@ class MarelloAddressBundleInstaller implements Installation
         $table->addColumn('middle_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('last_name', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('name_suffix', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('created', 'datetime', []);
-        $table->addColumn('updated', 'datetime', []);
+        $table->addColumn('created', 'datetime');
+        $table->addColumn('updated', 'datetime', ['notnull' => false]);
         $table->addColumn('serialized_data', 'string');
         $table->setPrimaryKey(['id']);
         $table->addIndex(['region_code'], 'idx_1c837761aeb327af', []);
