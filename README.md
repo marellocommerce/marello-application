@@ -25,30 +25,33 @@ Marello is a Symfony 2 based application with the following requirements:
 
 ## Installation instructions
 
-### Using Composer
-
 As both Symfony and Marello use [Composer][2] to manage their dependencies, this is the recommended way to install Marello.
 
-If you don't have Composer yet, download it and follow the instructions on
-http://getcomposer.org/ or just run the following command:
+- Clone Marello application repository:
 
 ```bash
-    curl -s https://getcomposer.org/installer | php
+git clone -b x.y.z https://github.com/marellocommerce/marello-application.git
 ```
 
-- Clone https://github.com/marellocommerce/marello-application.git Marello Application project with
+where x.y.z is the latest [release tag](https://github.com/marellocommerce/marello-application/releases) or use the latest master:
 
 ```bash
-    git clone https://github.com/marellocommerce/marello-application.git
+git clone https://github.com/marellocommerce/marello-application.git
+```
+
+- Install [Composer][3] globally following the official Composer [installation documentation][4]
+and install [fxpio/composer-asset-plugin][5] plugin for it:
+
+```bash
+composer global require "fxp/composer-asset-plugin:~1.2"
 ```
 
 - Make sure that you have [NodeJS][4] installed
 
-- Install Marello dependencies with composer. If installation process seems too slow you can use `--prefer-dist` option.
-  Go to marello-application folder and run composer installation:
+- Install Marello dependencies with composer. If installation process seems too slow you can use `--prefer-dist` option. Go to marello-application folder and run composer installation:
 
 ```bash
-php composer.phar install --prefer-dist --no-dev
+composer install --prefer-dist --no-dev
 ```
 
 - Create the database with the name specified on previous step (default name is "marello_application").
@@ -84,12 +87,7 @@ php app/console oro:cron --env prod
 ```bash
 php app/console oro:message-queue:consume --env=prod
 ```
-**Note** We do recommend to use a supervisor for running the ``oro:message-queue:consume`` command. This will make sure that the command and
-the consumer will run all the time. This has become important for every Oro Platform based application since a lot of background tasks depend
- on the consumer to run. For more information about configuration and what supervisor can do for you can either through the [Oro(CRM) docs][6] or the
- [site of Supervisord][7].
-
- 
+**Note** We do recommend to use a supervisor for running the ``oro:message-queue:consume`` command. This will make sure that the command and the consumer will run all the time. This has become important for every Oro Platform based application since a lot of background tasks depend on the consumer to run. For more information about configuration and what supervisor can do for you can either through the [Oro(CRM) docs][6] or the [site of Supervisord][7].
  
 **Note:** ``app/console`` is a path from project root folder. Please make sure you are using full path for crontab configuration or if you running console command from other location.
 
@@ -116,7 +114,7 @@ See [Optimizing InnoDB Disk I/O][3] for more
 You need to load `uuid-ossp` extension for proper doctrine's `guid` type handling.
 Log into database and run sql query:
 
-```
+```bash
 CREATE EXTENSION "uuid-ossp";
 ```
 
@@ -127,6 +125,7 @@ The Marello application is based on the Symfony standard application so web serv
 ## Package Manager Configuration
 
 Github OAuth token should be configured in package manager settings
+
 [1]:  http://symfony.com/doc/2.8/book/installation.html
 [2]:  http://getcomposer.org/
 [3]:  http://dev.mysql.com/doc/refman/5.6/en/optimizing-innodb-diskio.html
