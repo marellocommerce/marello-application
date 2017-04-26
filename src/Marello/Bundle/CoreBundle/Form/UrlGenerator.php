@@ -41,6 +41,7 @@ class UrlGenerator
     }
 
     /**
+     * {@inheritdoc}
      * @return string
      */
     public function getUrl()
@@ -66,6 +67,7 @@ class UrlGenerator
     }
 
     /**
+     * {@inheritdoc}
      * @return array
      */
     private function findEditionAndVersionInPackage()
@@ -97,17 +99,26 @@ class UrlGenerator
         return $data;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return string
+     */
     private function getSchemeAndHost()
     {
-        return 'marello.com';//$this->getCurrentRequest()->getSchemeAndHttpHost();
-    }
-
-    private function getServerIpAddress()
-    {
-        return '80.113.202.101';//$this->getCurrentRequest()->server->get('SERVER_ADDR', '');
+        return $this->getCurrentRequest()->getSchemeAndHttpHost();
     }
 
     /**
+     * {@inheritdoc}
+     * @return mixed
+     */
+    private function getServerIpAddress()
+    {
+        return $this->getCurrentRequest()->server->get('SERVER_ADDR', '');
+    }
+
+    /**
+     * {@inheritdoc}
      * @return null|\Symfony\Component\HttpFoundation\Request
      */
     private function getCurrentRequest()
