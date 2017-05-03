@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2b14d29653be4a6dfc6a6adcae6408e1",
+    "content-hash": "1cdbb920bc5e0197f67ca9c5b3518062",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -66,7 +66,7 @@
                 "translatable",
                 "translation"
             ],
-            "time": "2016-08-05 18:11:57"
+            "time": "2016-08-05T18:11:57+00:00"
         },
         {
             "name": "akeneo/batch-bundle",
@@ -643,8 +643,7 @@
                 "reference": "df0ddedcab1a8fdb3a7abafc5fe97819931e7bd5",
                 "shasum": ""
             },
-            "type": "bower-asset-library",
-            "time": "2014-07-21 18:45:41"
+            "type": "bower-asset-library"
         },
         {
             "name": "bower-asset/font-awesome",
@@ -969,8 +968,7 @@
                 "reference": "e25ba46913160617935f837836016ea7ed2be08c",
                 "shasum": ""
             },
-            "type": "bower-asset-library",
-            "time": "2017-02-08 18:28:50"
+            "type": "bower-asset-library"
         },
         {
             "name": "bower-asset/jsplumb",
@@ -4612,16 +4610,16 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "1.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "577eb3d45ef5c635ad8d6ccbcc8932de62a7d9ce"
+                "reference": "5e99b013fbf03b7497fad552771951f478f46a3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/577eb3d45ef5c635ad8d6ccbcc8932de62a7d9ce",
-                "reference": "577eb3d45ef5c635ad8d6ccbcc8932de62a7d9ce",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/5e99b013fbf03b7497fad552771951f478f46a3e",
+                "reference": "5e99b013fbf03b7497fad552771951f478f46a3e",
                 "shasum": ""
             },
             "require": {
@@ -4653,10 +4651,10 @@
             "description": "Marello",
             "homepage": "https://github.com/marellocommerce/marello.git",
             "support": {
-                "source": "https://github.com/marellocommerce/marello/tree/1.0.0",
+                "source": "https://github.com/marellocommerce/marello/tree/dist-master",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2017-04-25T14:18:48+00:00"
+            "time": "2017-05-03T10:11:55+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -8310,7 +8308,9 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "marellocommerce/marello": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
