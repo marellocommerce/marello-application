@@ -40,14 +40,16 @@ services:
         class: Marello\Bundle\OrderBundle\Entity\Manager\OrderApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
-            - %marello_order.entity.order.class%
+            - '%marello_order.entity.order.class%'
             - '@doctrine.orm.entity_manager'
+        calls:
+            - [setEntitySerializer, ['@marello_core.entity_serializer']]
 
     marello_order.manager.customer.api:
         class: Marello\Bundle\OrderBundle\Entity\Manager\CustomerApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
-            - %marello_order_customer.class%
+            - '%marello_order_customer.class%'
             - '@doctrine.orm.entity_manager'
 
     marello_order.provider.order_statistic_provider:

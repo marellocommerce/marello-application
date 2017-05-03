@@ -30,7 +30,25 @@ class OrderControllerTest extends WebTestCase
         ]);
     }
 
-    public function testIndex()
+    /**
+     * {@inheritdoc}
+     */
+    public function testGetOrderById()
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('order1')->getId()])
+        );
+
+        $response = $this->client->getResponse();
+        $this->hasArrayKeysInResponse($response);
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testGetOrderList()
     {
         $this->client->request(
             'GET',
@@ -38,13 +56,12 @@ class OrderControllerTest extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
-
         $this->assertCount(10, json_decode($response->getContent(), true));
     }
 
     /**
+     * {@inheritdoc}
      */
     public function testCreateWithCustomerId()
     {
@@ -233,29 +250,32 @@ class OrderControllerTest extends WebTestCase
 
         $this->assertEquals($data['orderReference'], $order->getOrderReference());
         $this->assertCount(2, $order->getItems());
+
+        return $response;
     }
 
     /**
      * @depends testCreateWithCustomerData
      */
-    public function testGet()
+    public function testGetNewlyCreatedOrderById($response)
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('order0')->getId()])
+            $this->getUrl('marello_order_api_get_order', ['id' => $response['id']])
         );
 
         $response = $this->client->getResponse();
+        $this->hasArrayKeysInResponse($response);
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
     }
 
     /**
      * @depends testCreateWithCustomerData
      */
-    public function testUpdate()
+    public function testUpdateOrderAddressAndInvoiceData($orderCreateResponse)
     {
         $time = new \DateTime();
-        $data = [
+        $newBillingAddress = [
             'billingAddress'  => [
                 'firstName'  => 'Han',
                 'lastName'   => 'Solo',
@@ -264,7 +284,10 @@ class OrderControllerTest extends WebTestCase
                 'city'       => 'Eindhoven',
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
-            ],
+            ]
+        ];
+
+        $newShippingAddress = [
             'shippingAddress' => [
                 'firstName'  => 'Han',
                 'lastName'   => 'Solo',
@@ -273,24 +296,42 @@ class OrderControllerTest extends WebTestCase
                 'city'       => 'Alderaan',
                 'region'     => 'NL-NB',
                 'postalCode' => '5617 BC',
-            ],
+            ]
+        ];
+        $data = [
             'paymentReference'  => 1223456,
             'invoicedAt'        => $time->format('d-m-Y H:i:s'),
             'invoiceReference'  => 666555444
         ];
-
+        $data = array_merge($newBillingAddress, $newShippingAddress, $data);
         $this->client->request(
             'PUT',
-            $this->getUrl('marello_order_api_put_order', ['id' => $this->getReference('order0')->getId()]),
+            $this->getUrl('marello_order_api_put_order', ['id' => $orderCreateResponse['id']]),
             $data
         );
 
         $response = $this->client->getResponse();
-
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_NO_CONTENT);
+
+        // check if order data is updated
+        /** @var Order $order */
+        $order = $this->client->getContainer()
+            ->get('doctrine')
+            ->getRepository('MarelloOrderBundle:Order')
+            ->find($orderCreateResponse['id']);
+
+
+        $this->assertEquals(333456, $order->getOrderReference());
+
+        $this->assertEquals($data['paymentReference'], $order->getPaymentReference());
+        $this->assertEquals($time, $order->getInvoicedAt());
+        $this->assertEquals($data['invoiceReference'], $order->getInvoiceReference());
+
+        $this->assertNotEquals($order->getBillingAddress()->getCity(), $order->getShippingAddress()->getCity());
     }
 
     /**
+     * Test order not found
      */
     public function testGetNotFound()
     {
@@ -301,5 +342,80 @@ class OrderControllerTest extends WebTestCase
 
         $response = $this->client->getResponse();
         $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * Test if response has the correct fields for Order API repsonse
+     * @param Response $response
+     */
+    protected function hasArrayKeysInResponse($response)
+    {
+        $jsonDecoded = json_decode($response->getContent(), true);
+        foreach ($this->getFields() as $index => $fields) {
+            foreach (array_keys($fields) as $field) {
+                $this->assertArrayHasKey($field, $jsonDecoded);
+            }
+        }
+    }
+
+    public function getFields()
+    {
+        $addressConfig = [
+            'fields'           => [
+                'namePrefix'   => [],
+                'firstName'    => [],
+                'middleName'   => [],
+                'lastName'     => [],
+                'nameSuffix'   => [],
+                'street'       => [],
+                'street2'      => [],
+                'city'         => [],
+                'country'      => [],
+                'region'       => [],
+                'organization' => [],
+                'postalCode'   => [],
+                'phone'        => [],
+            ],
+        ];
+
+        $itemConfig = [
+            'fields'                => [
+                'id'                => [],
+                'productName'       => [],
+                'productSku'        => [],
+                'quantity'          => [],
+                'price'             => [],
+                'originalPriceExclTax'     => [],
+                'originalPriceInclTax'     => [],
+                'purchasePriceIncl' => [],
+                'tax'               => [],
+                'taxPercent'        => [],
+                'rowTotalExclTax'          => [],
+                'rowTotalInclTax'          => [],
+            ],
+        ];
+
+        $config = [
+            'fields'            => [
+                'id'              => [],
+                'orderNumber'     => [],
+                'orderReference'  => [],
+                'subtotal'        => [],
+                'totalTax'        => [],
+                'grandTotal'      => [],
+                'paymentMethod'   => [],
+                'paymentDetails'  => [],
+                'shippingMethod'  => [],
+                'shippingAmountInclTax'  => [],
+                'shippingAmountExclTax'  => [],
+                'salesChannel'    => [],
+                'workflowItems'   => [],
+                'items'           => $itemConfig,
+                'billingAddress'  => $addressConfig,
+                'shippingAddress' => $addressConfig,
+            ],
+        ];
+
+        return $config;
     }
 }

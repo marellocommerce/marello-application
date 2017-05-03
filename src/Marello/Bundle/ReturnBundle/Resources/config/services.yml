@@ -8,6 +8,8 @@ services:
         arguments:
             - %marello_return.entity.return.class%
             - '@doctrine.orm.entity_manager'
+        calls:
+            - [setEntitySerializer, ['@marello_core.entity_serializer']]
 
     marello_return.util.return_helper:
         class: Marello\Bundle\ReturnBundle\Util\ReturnHelper
