@@ -4,9 +4,10 @@ namespace Marello\Bundle\OrderBundle\Entity\Manager;
 
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 
-class OrderApiEntityManager extends ApiEntityManager
-{
+use Marello\Bundle\ExtendWorkflowBundle\Model\WorkflowItemApiAwareInterface;
 
+class OrderApiEntityManager extends ApiEntityManager implements WorkflowItemApiAwareInterface
+{
     /**
      * {@inheritdoc}
      */
@@ -69,22 +70,33 @@ class OrderApiEntityManager extends ApiEntityManager
                         'code' => [],
                     ],
                 ],
-                'workflowItem'    => [
-                    'exclusion_policy' => 'all',
-                    'fields'           => [
-                        'id' => [],
-                        'entityId' => [],
-                    ],
-                ],
-                'workflowStep'    => [
+                'workflowItems'   => $this->getWorkflowSerializationConfig(),
+                'items'           => $itemConfig,
+                'billingAddress'  => $addressConfig,
+                'shippingAddress' => $addressConfig,
+            ],
+        ];
+
+        return $config;
+    }
+
+    /**
+     * Get Serialization config for Workflow Item
+     * @return array
+     */
+    public function getWorkflowSerializationConfig()
+    {
+        $config = [
+            'exclusion_policy' => 'all',
+            'fields'           => [
+                'id' => [],
+                'entityId' => [],
+                'currentStep'    => [
                     'exclusion_policy' => 'all',
                     'fields'           => [
                         'name' => [],
                     ],
                 ],
-                'items'           => $itemConfig,
-                'billingAddress'  => $addressConfig,
-                'shippingAddress' => $addressConfig,
             ],
         ];
 

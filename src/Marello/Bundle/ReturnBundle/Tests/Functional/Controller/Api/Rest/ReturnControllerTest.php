@@ -30,8 +30,10 @@ class ReturnControllerTest extends WebTestCase
         ]);
     }
 
-
-    public function testCreate()
+    /**
+     * {@inheritdoc}
+     */
+    public function testCreateNewReturn()
     {
         /** @var Order $returnedOrder */
         $returnedOrder = $this->getReference('marello_order_unreturned');
@@ -89,5 +91,105 @@ class ReturnControllerTest extends WebTestCase
                 $returnItem->getQuantity()
             );
         });
+
+        return $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $returnCreatedResponse
+     * @depends testCreateNewReturn
+     */
+    public function testGetReturnById($returnCreatedResponse)
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_return_api_get_return', ['id' => $returnCreatedResponse['id']])
+        );
+
+        $response = $this->client->getResponse();
+        $this->hasArrayKeysInResponse($response);
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testGetReturnList()
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_return_api_get_returns')
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+        $this->assertCount(10, json_decode($response->getContent(), true));
+    }
+
+    /**
+     * Test return not found
+     */
+    public function testGetNotFound()
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_return_api_get_return', ['id' => 0])
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * Test if response has the correct fields for Order API repsonse
+     * @param Response $response
+     */
+    protected function hasArrayKeysInResponse($response)
+    {
+        $jsonDecoded = json_decode($response->getContent(), true);
+        foreach ($this->getFields() as $index => $fields) {
+            foreach (array_keys($fields) as $field) {
+                $this->assertArrayHasKey($field, $jsonDecoded);
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
+    public function getFields()
+    {
+        $itemConfig = [
+            'fields'           => [
+                'productName' => [],
+                'productSku'  => [],
+                'quantity'    => [],
+                'price'       => [],
+                'tax'         => [],
+                'totalPrice'  => [],
+            ],
+        ];
+
+        $config = [
+            'fields'           => [
+                'id'           => [],
+                'returnNumber' => [],
+                'returnReference' => [],
+                'returnItems'  => [
+                    'fields'           => [
+                        'id'        => [],
+                        'quantity'  => [],
+                        'orderItem' => $itemConfig,
+                        'createdAt' => [],
+                        'updatedAt' => [],
+                    ],
+                ],
+                'workflowItems'   => [],
+            ],
+        ];
+
+        return $config;
     }
 }

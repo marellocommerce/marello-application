@@ -4,7 +4,9 @@ namespace Marello\Bundle\ReturnBundle\Entity\Manager;
 
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 
-class ReturnApiEntityManager extends ApiEntityManager
+use Marello\Bundle\ExtendWorkflowBundle\Model\WorkflowItemApiAwareInterface;
+
+class ReturnApiEntityManager extends ApiEntityManager implements  WorkflowItemApiAwareInterface
 {
     /**
      * {@inheritdoc}
@@ -39,14 +41,25 @@ class ReturnApiEntityManager extends ApiEntityManager
                         'updatedAt' => [],
                     ],
                 ],
-                'workflowItem'    => [
-                    'exclusion_policy' => 'all',
-                    'fields'           => [
-                        'id' => [],
-                        'entityId' => [],
-                    ],
-                ],
-                'workflowStep'    => [
+                'workflowItems'    => $this->getWorkflowSerializationConfig()
+            ],
+        ];
+
+        return $config;
+    }
+
+    /**
+     * Get Serialization config for Workflow Item
+     * @return array
+     */
+    public function getWorkflowSerializationConfig()
+    {
+        $config = [
+            'exclusion_policy' => 'all',
+            'fields'           => [
+                'id' => [],
+                'entityId' => [],
+                'currentStep'    => [
                     'exclusion_policy' => 'all',
                     'fields'           => [
                         'name' => [],
