@@ -11,6 +11,31 @@ default: &default
         Behat\Symfony2Extension: ~
         Oro\Bundle\TestFrameworkBundle\Behat\ServiceContainer\OroTestFrameworkExtension:
             reference_initializer_class: Oro\Bundle\ApplicationBundle\Tests\Behat\ReferenceRepositoryInitializer
+            suite_groups:
+                First:
+                  - OroDataGridBundle
+                  - OroLocaleBundle
+                  - OroEntityExtendBundle
+                  - OroCommerceOrganizationBundle
+                  - OroConfigBundle
+                  - OroInstallerBundle
+                  - OroReportBundle
+                  - OroSearchBundle
+                  - OroWebsiteBundle
+                  - OroMultiWebsiteBundle
+                  - OroCustomerBundle
+                  - OroPricingBundle
+                  - OroSalesBundle
+                  - OroMagentoBundle
+                  - OroOrganizationConfigCRMProBundle
+                  - OroQuoteSalesBridgeBundle
+                  - OroCustomerAccountBridgeBundle
+                  - OroWarehouseBundle
+                  - OroUIBundle
+                  - OroOrganizationBundle
+                  - OroUserBundle
+                  - OroTranslationBundle
+
             shared_contexts:
                 - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
                 - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\FixturesContext
