@@ -33,6 +33,7 @@
             <group>crm</group>
             <group>soap</group>
             <group>dist</group>
+            <group>segfault</group>
             <group>DuplicateQueries</group>
         </exclude>
     </groups>
