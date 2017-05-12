@@ -33,7 +33,7 @@ parameters:
     search_engine_ssl_cert_password: ~
     search_engine_ssl_key: ~
     search_engine_ssl_key_password: ~
-
+    
     # website search engine configuration
     website_search_engine_index_name: oro_website_search
 
