@@ -1,31 +1,23 @@
 <?php
 
-namespace Marello\Bundle\SupplierBundle\Migrations\Schema;
+namespace Marello\Bundle\SupplierBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtension;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
-use Oro\Bundle\MigrationBundle\Migration\Installation;
+use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloSupplierBundleInstaller implements
-    Installation,
+class MarelloSupplierBundle implements
+    Migration,
     AttachmentExtensionAwareInterface
 {
     /** @var  AttachmentExtension */
     protected $attachmentExtension;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMigrationVersion()
-    {
-        return 'v1_1';
-    }
 
     /**
      * {@inheritdoc}
@@ -51,7 +43,6 @@ class MarelloSupplierBundleInstaller implements
         $table = $schema->createTable('marello_supplier_supplier');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('name', 'string', ['notnull' => true, 'length' => 255]);
-        $table->addColumn('email', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('priority', 'integer', []);
         $table->addColumn('can_dropship', 'boolean', []);
         $table->addColumn('is_active', 'boolean', []);
@@ -61,7 +52,6 @@ class MarelloSupplierBundleInstaller implements
         $table->setPrimaryKey(['id']);
         $table->addIndex(['address_id'], '', []);
         $table->addUniqueIndex(['name']);
-        $table->addUniqueIndex(['email']);
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
     }
