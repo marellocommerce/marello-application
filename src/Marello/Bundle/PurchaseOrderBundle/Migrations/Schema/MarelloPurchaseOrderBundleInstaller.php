@@ -39,8 +39,6 @@ class MarelloPurchaseOrderBundleInstaller implements
         /** Foreign keys generation **/
         $this->addMarelloPurchaseOrderForeignKeys($schema);
         $this->addMarelloPurchaseOrderItemForeignKeys($schema);
-
-        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_purchase_order');
     }
 
     /**
@@ -60,6 +58,9 @@ class MarelloPurchaseOrderBundleInstaller implements
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id'], 'IDX_34E72AC332C8A3DE', []);
         $table->addIndex(['supplier_id'], '', []);
+
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', $table->getName());
+        $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
     }
 
     /**

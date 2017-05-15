@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Entity(repositoryClass="Marello\Bundle\PurchaseOrderBundle\Entity\Repository\PurchaseOrderItemRepository")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_purchase_order_item")
+ * @Oro\Config()
  */
 class PurchaseOrderItem
 {

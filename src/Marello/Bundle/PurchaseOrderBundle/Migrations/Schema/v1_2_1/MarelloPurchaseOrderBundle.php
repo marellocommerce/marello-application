@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema\v1_2;
+namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema\v1_2_1;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
@@ -12,8 +12,13 @@ use Oro\Bundle\MigrationBundle\Migration\Migration;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloPurchaseOrderBundle implements Migration
+class MarelloPurchaseOrderBundle implements
+    Migration,
+    ActivityExtensionAwareInterface
 {
+    /** @var ActivityExtension */
+    protected $activityExtension;
+
     /**
      * {@inheritdoc}
      */
@@ -48,5 +53,17 @@ class MarelloPurchaseOrderBundle implements Migration
                 ))
         ";
         $queries->addQuery($query);
+
+        $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
+    }
+
+    /**
+     * Sets the ActivityExtension
+     *
+     * @param ActivityExtension $activityExtension
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema\v1_3;
+namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Schema\v1_2_2;
 
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
