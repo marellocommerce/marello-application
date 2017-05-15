@@ -1,5 +1,5 @@
-datagrid:
-    marello-enterprise-inventory-warehouse-gird:
+datagrids:
+    marello-enterprise-inventory-warehouse-grid:
         source:
             type: orm
             query:
@@ -35,4 +35,8 @@ datagrid:
                 link: update_link
                 icon: edit
                 rowAction: true
-        action_configuration: @marello_enterprise.datagird.warehouse_grid_delete_action_checker->getCheckCallback
+        action_configuration: [@marello_enterprise.datagrid.action_permission_provider, "getActionPermissions"]
+        options:
+            mass_actions:
+                delete:
+                    enabled: false
