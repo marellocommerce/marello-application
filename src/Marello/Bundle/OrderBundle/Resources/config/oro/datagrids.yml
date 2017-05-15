@@ -119,7 +119,7 @@ datagrids:
                 type:       navigate
                 link:       refund_link
                 icon:       eur
-        action_configuration: [@marello_order.datagrid.action_permission_provider, "getOrderActionPermissions"]
+        action_configuration: [@marello_order.datagrid.action_permission_provider, "getActionPermissions"]
         options:
             export: true
             mass_actions:
@@ -225,7 +225,7 @@ datagrids:
                 type:       navigate
                 link:       refund_link
                 icon:       eur
-        action_configuration: [@marello_order.datagrid.action_permission_provider, "getOrderActionPermissions"]
+        action_configuration: [@marello_order.datagrid.action_permission_provider, "getActionPermissions"]
         options:
             export: false
             toolbarOptions:

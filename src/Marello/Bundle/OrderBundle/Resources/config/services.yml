@@ -75,7 +75,7 @@ services:
             - { name: oro_form.autocomplete.search_handler, alias: marello_customers, acl_resource: marello_customer_view }
 
     marello_order.datagrid.action_permission_provider:
-        class: Marello\Bundle\OrderBundle\Datagrid\ActionPermissionProvider
+        class: Marello\Bundle\OrderBundle\Datagrid\OrderActionPermissionProvider
         arguments:
             - '@doctrine.orm.entity_manager'
 

@@ -6,9 +6,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
-use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 
-class ActionPermissionProvider
+use Marello\Bundle\DataGridBundle\Action\ActionPermissionInterface;
+
+class OrderActionPermissionProvider implements ActionPermissionInterface
 {
     protected $excludedRefundableSteps = [
         'payment_reminder',
@@ -37,7 +38,7 @@ class ActionPermissionProvider
      * @param ResultRecordInterface $record
      * @return array
      */
-    public function getOrderActionPermissions(ResultRecordInterface $record)
+    public function getActionPermissions(ResultRecordInterface $record)
     {
         return array(
             'return'    => $this->isReturnApplicable($record),
@@ -54,10 +55,11 @@ class ActionPermissionProvider
      */
     protected function isRefundApplicable($record)
     {
-        $workflowStep = $record->getValue('workflowStep');
-        if (!$workflowStep) {
+        if (!$this->hasWorkflowStep($record)) {
             return false;
         }
+
+        $workflowStep = $this->getWorkflowStep($record);
 
         return (!in_array($workflowStep->getName(), $this->excludedRefundableSteps));
     }
@@ -69,12 +71,32 @@ class ActionPermissionProvider
      */
     protected function isReturnApplicable($record)
     {
-        // workflow step allowed
-        $workflowStep = $record->getValue('workflowStep');
-        if (!$workflowStep) {
+        if (!$this->hasWorkflowStep($record)) {
             return false;
         }
 
+        $workflowStep = $this->getWorkflowStep($record);
+
         return (in_array($workflowStep->getName(), $this->allowedReturnSteps));
+    }
+
+    /**
+     * check if record has a workflow step
+     * @param ResultRecordInterface $record
+     * @return bool
+     */
+    protected function hasWorkflowStep(ResultRecordInterface $record)
+    {
+        return (bool) ($record->getValue('workflowStep'));
+    }
+
+    /**
+     * Get workflowstep
+     * @param ResultRecordInterface $record
+     * @return mixed
+     */
+    protected function getWorkflowStep(ResultRecordInterface $record)
+    {
+        return $record->getValue('workflowStep');
     }
 }
