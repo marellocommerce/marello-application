@@ -24,7 +24,7 @@ class MarelloPurchaseOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_3';
     }
 
     /**
@@ -52,12 +52,14 @@ class MarelloPurchaseOrderBundleInstaller implements
     {
         $table = $schema->createTable('marello_purchase_order');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('supplier_id', 'integer', ['notnull' => true]);
         $table->addColumn('organization_id', 'integer', []);
         $table->addColumn('purchase_order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id'], 'IDX_34E72AC332C8A3DE', []);
+        $table->addIndex(['supplier_id'], '', []);
     }
 
     /**
@@ -98,6 +100,12 @@ class MarelloPurchaseOrderBundleInstaller implements
             ['organization_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_supplier_supplier'),
+            ['supplier_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 

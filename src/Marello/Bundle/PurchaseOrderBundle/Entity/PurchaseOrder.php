@@ -9,6 +9,7 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
@@ -31,7 +32,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 class PurchaseOrder implements DerivedPropertyAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -66,6 +67,15 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      * )
      */
     protected $items;
+
+
+    /**
+     * @var Supplier
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
+     * @ORM\JoinColumn(name="supplier_id", nullable=false)
+     */
+    protected $supplier;
 
     /**
      * @var Organization
@@ -173,6 +183,26 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     public function removeItem(PurchaseOrderItem $item)
     {
         $this->items->removeElement($item);
+
+        return $this;
+    }
+
+    /**
+     * @return Supplier
+     */
+    public function getSupplier()
+    {
+        return $this->supplier;
+    }
+
+    /**
+     * @param Supplier $supplier
+     *
+     * @return $this
+     */
+    public function setSupplier(Supplier $supplier)
+    {
+        $this->supplier = $supplier;
 
         return $this;
     }

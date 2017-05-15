@@ -103,7 +103,6 @@ class PurchaseOrderItem
         $this->orderedAmount = $orderedAmount;
         $this->productName = $this->product->getName();
         $this->productSku = $this->product->getSku();
-        $this->supplier = $this->product->getPreferredSupplier()->getName();
     }
 
     /**
@@ -134,7 +133,7 @@ class PurchaseOrderItem
      *
      * @return $this
      */
-    public function setOrder($order)
+    public function setOrder(PurchaseOrder $order)
     {
         $this->order = $order;
 
@@ -183,6 +182,18 @@ class PurchaseOrderItem
     public function getProductName()
     {
         return $this->productName;
+    }
+
+    /**
+     * @param String $supplier
+     *
+     * @return string
+     */
+    public function setSupplier($supplier)
+    {
+        $this->supplier = $supplier;
+
+        return $this;
     }
 
     /**
@@ -239,5 +250,14 @@ class PurchaseOrderItem
     public function setReceivedAmount($receivedAmount)
     {
         $this->receivedAmount = $receivedAmount;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     * @ORM\PrePersist
+     */
+    public function preSaveSetSupplier()
+    {
+        $this->setSupplier($this->order->getSupplier()->getName());
     }
 }
