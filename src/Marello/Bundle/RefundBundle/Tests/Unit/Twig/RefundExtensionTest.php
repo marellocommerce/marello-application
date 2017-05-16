@@ -2,14 +2,15 @@
 
 namespace Marello\Bundle\RefundBundle\Tests\Unit\Twig;
 
-use Marello\Bundle\RefundBundle\Twig\RefundExtension;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+
+use Marello\Bundle\RefundBundle\Twig\RefundExtension;
 
 class RefundExtensionTest extends WebTestCase
 {
     /**
-     * @var WorkflowManager
+     * @var WorkflowManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $workflowManager;
 
@@ -18,29 +19,38 @@ class RefundExtensionTest extends WebTestCase
      */
     protected $extension;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
-        $this->initClient(
-            [],
-            $this->generateBasicAuthHeader()
-        );
-
-        $this->workflowManager = $this->client->getKernel()->getContainer()->get('oro_workflow.manager');
+        $this->workflowManager = $this->getMockBuilder(WorkflowManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->extension = new RefundExtension($this->workflowManager);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function tearDown()
     {
         unset($this->extension);
         unset($this->workflowManager);
     }
 
-    public function testGetName()
+    /**
+     * {@inheritdoc}
+     */
+    public function testNameIsCorrectlySetAndReturnedFromConstant()
     {
         $this->assertEquals(RefundExtension::NAME, $this->extension->getName());
     }
 
-    public function testGetFunctions()
+    /**
+     * {@inheritdoc}
+     */
+    public function testGetFunctionsAreRegisteredInExtension()
     {
         $functions = $this->extension->getFunctions();
         $this->assertCount(1, $functions);
