@@ -1,0 +1,6 @@
+marelloenterprise:
+    inventory:
+        messages:
+            success:
+                warehouse:
+                    saved:          Warehouse saved

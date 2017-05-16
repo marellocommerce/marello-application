@@ -115,6 +115,11 @@ class WarehouseController extends Controller
             $em->persist($warehouse);
             $em->flush();
 
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('marelloenterprise.inventory.messages.success.warehouse.saved')
+            );
+
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route'      => 'marelloenterprise_inventory_warehouse_update',

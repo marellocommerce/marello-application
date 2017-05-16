@@ -15,7 +15,7 @@ use Oro\Bundle\SecurityBundle\Annotation as Security;
 
 /**
  * @Rest\RouteResource("warehouse")
- * @Rest\NamePrefix("marello_enterprise_inventory_api_")
+ * @Rest\NamePrefix("marelloenterprise_inventory_api_")
  */
 class WarehouseController extends RestController implements ClassResourceInterface
 {
