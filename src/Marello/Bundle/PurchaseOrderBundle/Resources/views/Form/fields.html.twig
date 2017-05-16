@@ -39,7 +39,7 @@
         </div>
         {{ form_errors(form.product) }}
     </td>
-    <td class="order-line-item-total-price">
+    <td class="purchase=order-line-item-ordered-amount">
         <div class="fields-row">
             {{ form_widget(form.orderedAmount) }}
         </div>
@@ -84,7 +84,9 @@
     {% endif %}
 
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
-        class="purchase-order-line-item display-values">
+        class="purchase-order-line-item display-values marello-line-item"
+        data-page-component-module="oroui/js/app/components/view-component"
+        data-page-component-options="{{ {view: 'marellopurchaseorder/js/app/views/purchaseorder-item-view'}|json_encode }}">
         {{ form_widget(form) }}
 
         <td class="purchase-order-line-item-notifications">

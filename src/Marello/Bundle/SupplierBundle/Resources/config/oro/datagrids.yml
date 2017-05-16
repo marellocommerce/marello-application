@@ -101,7 +101,7 @@ datagrids:
 
     marello-supplier-extended-no-actions-grid:
         extends: marello-supplier-extended-grid
-        actions:
+        actions: ~
 
     marello-supplier-products-grid:
         source:

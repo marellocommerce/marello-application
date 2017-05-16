@@ -14,8 +14,7 @@ define(function(require) {
      */
     PurchaseOrderItemView = AbstractItemView.extend({
         options: {
-            priority: 0,
-            canDropship: false
+            orderedAmount: 666,
         },
 
         /**

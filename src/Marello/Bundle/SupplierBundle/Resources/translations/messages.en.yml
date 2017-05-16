@@ -28,6 +28,7 @@ marello:
                 yes:                  Yes
                 no:                   No
 
+        supplier_email.label:       Email
         supplier_address.label:     Address
         form.choose_supplier:       Choose supplier
         address.edit_action:        Edit address

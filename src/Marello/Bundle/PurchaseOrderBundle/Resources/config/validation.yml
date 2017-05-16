@@ -1,0 +1,21 @@
+Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
+    properties:
+        supplier:
+            - NotBlank: ~
+#        items:
+#            - Count:
+#                  min: 1
+#                  minMessage: 'You must add at least one product'
+    constraints: ~
+
+Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem:
+    properties:
+        product:
+            - NotBlank: ~
+        orderedAmount:
+            - GreaterThan: 0
+#    constraints:
+#            - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
+#                fields: [product]
+#                errorPath: product
+#                message: 'marello.purchaseorder.messages.error.unique_product_ordered_quantity'

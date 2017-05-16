@@ -23,7 +23,11 @@ class PurchaseOrderCreateType extends AbstractType
                     'create_enabled' => false,
                 ]
             )
-            ->add('items', PurchaseOrderItemCollectionType::NAME);
+            ->add('items', PurchaseOrderItemCollectionType::NAME,
+                [
+                    'required'       => true,
+                ]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
