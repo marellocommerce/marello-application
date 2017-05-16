@@ -94,16 +94,9 @@ class PurchaseOrderItem
 
     /**
      * PurchaseOrderItem constructor.
-     *
-     * @param Product $product
-     * @param int $orderedAmount
      */
-    public function __construct(Product $product, $orderedAmount)
+    public function __construct()
     {
-        $this->product = $product;
-        $this->orderedAmount = $orderedAmount;
-        $this->productName = $this->product->getName();
-        $this->productSku = $this->product->getSku();
     }
 
     /**
@@ -142,11 +135,33 @@ class PurchaseOrderItem
     }
 
     /**
-     * @return int
+     * @return PurchaseOrder
      */
-    public function getOrderedAmount()
+    public function getOrder()
     {
-        return $this->orderedAmount;
+        return $this->order;
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return $this
+     */
+    public function setProduct(Product $product)
+    {
+        $this->product = $product;
+        $this->productName = $this->product->getName();
+        $this->productSku = $this->product->getSku();
+
+        return $this;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 
     /**
@@ -162,11 +177,11 @@ class PurchaseOrderItem
     }
 
     /**
-     * @return Product
+     * @return int
      */
-    public function getProduct()
+    public function getOrderedAmount()
     {
-        return $this->product;
+        return $this->orderedAmount;
     }
 
     /**

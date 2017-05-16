@@ -113,6 +113,10 @@ datagrids:
             export: true
             entity_pagination: true
 
+    marello-products-extended-no-actions-grid:
+        extends: marello-products-grid
+        actions:
+
     marello-product-variant-grid:
         extended_entity_name: Marello\Bundle\ProductBundle\Entity\Product
         source:

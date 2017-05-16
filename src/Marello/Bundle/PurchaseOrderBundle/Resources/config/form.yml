@@ -63,7 +63,7 @@ services:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateHandler
         scope: request
         arguments:
-            - "@marello_purchase_order.form.purchase_order_supplier"
+            - "@marello_purchase_order.form.purchase_order_create"
             - "@request"
             - "@doctrine"
             - "@security.token_storage"

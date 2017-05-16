@@ -46,48 +46,6 @@ class PurchaseOrderController extends Controller
         return [];
     }
 
-//    /**
-//     * @Config\Route("/create")
-//     * @Config\Template
-//     * @Security\AclAncestor("marello_purchase_order_create")
-//     *
-//     * @param Request $request
-//     *
-//     * @return array
-//     */
-//    public function createAction(Request $request)
-//    {
-//        $products = $request->query->get('values', '');
-//        $products = array_map('intval', explode(',', $products));
-//
-//        $inset = $request->query->get('inset', '1');
-//        $inset = $inset === '0';
-//
-//        $handler = $this->get("marello_purchase_order.form.handler.purchase_order_create");
-//
-//        $form = $handler->getForm();
-//
-//        if ($handler->handle($products, $inset)) {
-//            return $this->get('oro_ui.router')->redirectAfterSave(
-//                [
-//                    'route'      => 'marello_purchaseorder_purchaseorder_view',
-//                    'parameters' => [
-//                        'id' => $form->getData()->getId(),
-//                    ],
-//                ],
-//                [
-//                    'route'      => 'marello_purchaseorder_purchaseorder_index',
-//                    'parameters' => [],
-//                ]
-//            );
-//        }
-//
-//        return [
-//            'products' => $products,
-//            'form'     => $form->createView(),
-//        ];
-//    }
-
     /**
      * @Config\Route("/create")
      * @Config\Template
@@ -99,12 +57,6 @@ class PurchaseOrderController extends Controller
      */
     public function createAction(Request $request)
     {
-//        $products = $request->query->get('values', '');
-//        $products = array_map('intval', explode(',', $products));
-//
-//        $inset = $request->query->get('inset', '1');
-//        $inset = $inset === '0';
-//
         $handler = $this->get("marello_purchase_order.form.handler.purchase_order_create");
 
         $form = $handler->getForm();

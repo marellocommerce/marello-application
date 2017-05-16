@@ -107,9 +107,12 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
             );
 
             $amount = $product->getDesiredStockLevel() - $virtualStock;
-            $order->addItem(
-                new PurchaseOrderItem($product, $amount)
-            );
+            $purchaseOrderItem = new PurchaseOrderItem();
+            $purchaseOrderItem
+                ->setProduct($product)
+                ->setOrderedAmount($amount)
+                ;
+            $order->addItem($purchaseOrderItem);
         }
 
         return $order;

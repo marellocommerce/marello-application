@@ -33,20 +33,11 @@
 {% endblock %}
 
 {% block marello_purchase_order_item_widget %}
-    <td class="purchase-order-line-item-product-sku">
+    <td class="purchase-order-line-item-product">
         <div class="fields-row">
-            {{ form.vars.value.product.sku|default('') }}
+            {{ form_widget(form.product) }}
         </div>
-    </td>
-    <td class="purchase-order-line-item-product-name">
-        <div class="fields-row">
-            {{ form.vars.value.product.name|default('') }}
-        </div>
-    </td>
-    <td class="purchase-order-line-item-product-supplier">
-        <div class="fields-row">
-            {{ form.vars.value.product.preferredSupplier|default('') }}
-        </div>
+        {{ form_errors(form.product) }}
     </td>
     <td class="order-line-item-total-price">
         <div class="fields-row">
@@ -93,12 +84,21 @@
     {% endif %}
 
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
-        class="return-line-item display-values">
+        class="purchase-order-line-item display-values">
         {{ form_widget(form) }}
 
-        <td class="return-line-item-notifications">
-            <span class="error" style="display:none;"><i class="fa-exclamation-triangle"></i></span>
+        <td class="purchase-order-line-item-notifications">
+            <span class="error" style="display:none;">
+                <i class="fa-exclamation-triangle"></i>
+            </span>
         </td>
+        {% if allow_delete %}
+            <td class="purchase-order-line-item-remove">
+                <button type="button" class="marello-remove-line-item btn icons-holder"><i class="fa-remove"></i></button>
+            </td>
+        {% elseif widget.parent.vars.allow_delete %}
+            <td></td>
+        {% endif %}
     </tr>
 {% endmacro %}
 
@@ -114,13 +114,14 @@
             <div {{ block('widget_container_attributes') }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
-                    <tr>
-                        <th class="purchase-order-line-item-product-sku"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
-                        <th class="purchase-order-line-item-product-name"><span>{{ 'marello.product.name.label'|trans }}</span></th>
-                        <th class="purchase-order-line-item-product-supplier"><span>{{ 'marello.supplier.entity_label'|trans }}</span></th>
-                        <th class="purchase-order-line-item-ordered-quantity"><span>{{ 'marello.purchaseorder.purchaseorderitem.order_amount.label'|trans }}</span></th>
-                        <th class="purchase-order-line-item-notifications"></th>
-                    </tr>
+                        <tr>
+                            <th class="purchase-order-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-ordered-quantity"><span>{{ 'marello.purchaseorder.purchaseorderitem.order_amount.label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-notifications"></th>
+                            {% if form.vars.allow_delete %}
+                                <th class="purchase-order-row-item-actions"></th>
+                            {% endif %}
+                        </tr>
                     </thead>
 
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
@@ -134,6 +135,10 @@
                     </tbody>
                 </table>
             </div>
+
+            {% if allow_add %}
+                <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ form.vars.add_label|default('marello.purchaseorder.form.add_product')|trans }}</a>
+            {% endif %}
         </div>
     {% endspaceless %}
 {% endblock %}

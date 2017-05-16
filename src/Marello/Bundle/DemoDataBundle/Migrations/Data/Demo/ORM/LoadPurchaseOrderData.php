@@ -71,8 +71,9 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
                 //set replenishment to product to make sure it follows PO logic
                 $product->setReplenishment($replenishmentNOS);
 
+                $purchaseOrderItem = new PurchaseOrderItem();
                 $order->addItem(
-                    (new PurchaseOrderItem($product, $data['ordered_amount']))
+                    $purchaseOrderItem->setProduct($product)->setOrderedAmount($data['ordered_amount'])
                 );
 
                 if (!$order->getSupplier()) {

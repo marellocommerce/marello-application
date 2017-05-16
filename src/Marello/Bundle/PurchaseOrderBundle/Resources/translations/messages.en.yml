@@ -10,6 +10,9 @@ marello:
         select_supplier:                                Choose a supplier
         all_items_have_been_received:                   All items have been received, please proceed to click "Fully received"
 
+        form:
+            add_product:                                Add Product
+
         purchaseorderitem:
             order_amount.label:                         Order Amount
             ordered_amount.label:                       Ordered Amount
