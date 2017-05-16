@@ -45,20 +45,50 @@ class PurchaseOrderCreateHandler
         $this->request      = $request;
     }
 
+//    /**
+//     * @param array|int[] $products       Array of product ids.
+//     * @param bool        $invertProducts Whether the selection ofr products should be inverted.
+//     *
+//     * @return bool
+//     */
+//    public function handle(array $products, $invertProducts)
+//    {
+//        $qb = $this->createProductsQueryBuilder($products, $invertProducts);
+//
+//        $products = $qb->getQuery()->getResult();
+//
+//        $organization = null;
+//
+//        /*
+//         * Get organization of currently logged in user, or use first one.
+//         */
+//        if ($token = $this->tokenStorage->getToken()) {
+//            $organization = $token->getOrganizationContext();
+//        } else {
+//            $organization = $this->doctrine->getRepository(Organization::class)->getFirst();
+//        }
+//
+//        $data = PurchaseOrder::usingProducts($products, $organization);
+//
+//        $this->form->setData($data);
+//
+//        $this->form->handleRequest($this->request);
+//
+//        if ($this->form->isSubmitted() && $this->form->isValid()) {
+//            $this->onSuccess();
+//
+//            return true;
+//        }
+//
+//        return false;
+//    }
+
     /**
-     * @param array|int[] $products       Array of product ids.
-     * @param bool        $invertProducts Whether the selection ofr products should be inverted.
      *
      * @return bool
      */
-    public function handle(array $products, $invertProducts)
+    public function handle()
     {
-        $qb = $this->createProductsQueryBuilder($products, $invertProducts);
-
-        $products = $qb->getQuery()->getResult();
-
-        $organization = null;
-
         /*
          * Get organization of currently logged in user, or use first one.
          */
@@ -68,7 +98,7 @@ class PurchaseOrderCreateHandler
             $organization = $this->doctrine->getRepository(Organization::class)->getFirst();
         }
 
-        $data = PurchaseOrder::usingProducts($products, $organization);
+        $data = new PurchaseOrder($organization);
 
         $this->form->setData($data);
 

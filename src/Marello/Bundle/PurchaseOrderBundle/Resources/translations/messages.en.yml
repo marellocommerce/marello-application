@@ -7,6 +7,7 @@ marello:
         purchase_order_date.label:                      Purchase Order Date
         items.label:                                    Purchase Order Items
         select_products:                                Products to include in new PO
+        select_supplier:                                Choose a supplier
         all_items_have_been_received:                   All items have been received, please proceed to click "Fully received"
 
         purchaseorderitem:

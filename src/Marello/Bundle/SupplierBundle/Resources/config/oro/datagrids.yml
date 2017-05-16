@@ -99,6 +99,10 @@ datagrids:
                     default: 0
                     type: integer
 
+    marello-supplier-extended-no-actions-grid:
+        extends: marello-supplier-extended-grid
+        actions:
+
     marello-supplier-products-grid:
         source:
             type: orm

@@ -11,6 +11,11 @@ services:
         tags:
             - { name: form.type, alias: marello_purchase_order_create }
 
+    marello_purchase_order.form.type.purchase_order_supplier:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderSupplierType
+        tags:
+            - { name: form.type, alias: marello_purchase_order_supplier }
+
     marello_purchase_order.form.type.purchase_order_item:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemType
         tags:
@@ -46,12 +51,19 @@ services:
         arguments:
             - "marello_purchase_order_create"
 
+    marello_purchase_order.form.purchase_order_supplier:
+        class: Symfony\Component\Form\FormInterface
+        factory: ["@form.factory", create]
+        scope: request
+        arguments:
+            - "marello_purchase_order_supplier"
+
     # Handlers
     marello_purchase_order.form.handler.purchase_order_create:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateHandler
         scope: request
         arguments:
-            - "@marello_purchase_order.form.purchase_order_create"
+            - "@marello_purchase_order.form.purchase_order_supplier"
             - "@request"
             - "@doctrine"
             - "@security.token_storage"
