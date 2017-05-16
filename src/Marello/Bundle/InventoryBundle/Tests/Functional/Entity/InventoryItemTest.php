@@ -16,6 +16,9 @@ class InventoryItemTest extends WebTestCase
     /** @var InventoryManager $manager */
     protected $manager;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->initClient();
@@ -23,8 +26,10 @@ class InventoryItemTest extends WebTestCase
         $this->manager = $this->client->getContainer()->get('marello_inventory.manager.inventory_manager');
     }
 
-    /** @test */
-    public function testInventorySet()
+    /**
+     * {@inheritdoc}
+     */
+    public function testCreateAndUpdateNewInventoryItem()
     {
         $product   = $this->prophesize(Product::class);
         $warehouse = $this->prophesize(Warehouse::class);
@@ -47,8 +52,10 @@ class InventoryItemTest extends WebTestCase
         $this->assertInstanceOf(StockLevel::class, $inventoryItem->getLevels()->first());
     }
 
-    /** @test */
-    public function testInventoryAdjust()
+    /**
+     * {@inheritdoc}
+     */
+    public function testIfInventoryItemIsUpdatedCorrectlyWithMultipleChanges()
     {
         $product   = $this->prophesize(Product::class);
         $warehouse = $this->prophesize(Warehouse::class);
