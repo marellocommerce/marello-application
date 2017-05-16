@@ -1,48 +1,48 @@
 {
-    "name": "marellocommerce/marello-application-dev",
+    "name": "marellocommerce\/marello-application-dev",
     "description": "Marello ERP for Commerce dev",
-    "homepage": "https://github.com/marellocommerce/marello-application-dev.git",
+    "homepage": "https:\/\/github.com\/marellocommerce\/marello-application-dev.git",
     "license": "OSL-3.0",
     "autoload": {
         "psr-0": {
-            "Marello\\Bundle\\": "src/Marello/src",
-            "MarelloEnterprise\\Bundle\\": "src/MarelloEnterprise/src",
-            "": "src/"
+            "Marello\\Bundle\\": "src\/Marello\/src",
+            "MarelloEnterprise\\Bundle\\": "src\/MarelloEnterprise\/src",
+            "": "src\/"
         }
     },
     "repositories": {
         "composer": {
             "type": "composer",
-            "url": "https://packagist.orocrm.com"
+            "url": "https:\/\/packagist.orocrm.com"
         }
     },
     "require": {
-        "oro/platform": "2.0.*",
-        "oro/platform-serialised-fields": "2.0.*",
-        "oro/calendar-bundle": "2.0.0"
+        "oro\/platform": "2.0.*",
+        "oro\/platform-serialised-fields": "2.0.*",
+        "oro\/calendar-bundle": "2.0.0"
     },
     "require-dev": {
-        "sensio/generator-bundle": "3.1.2",
-        "behat/behat": "3.2.2",
-        "behat/mink-extension": "2.2.*",
-        "behat/mink-selenium2-driver": "1.*",
-        "behat/symfony2-extension": "2.1.1",
-        "nelmio/alice": "2.2.*",
-        "phpunit/phpunit": "5.7.*",
-        "phpunit/phpunit-selenium": "3.0.*",
-        "johnkary/phpunit-speedtrap": "1.0.*",
-        "mybuilder/phpunit-accelerator": "1.2.*",
-        "squizlabs/php_codesniffer": "2.7.*",
-        "phpmd/phpmd": "2.5.*",
-        "sebastian/phpcpd": "2.0.*"
+        "sensio\/generator-bundle": "3.1.2",
+        "behat\/behat": "3.2.2",
+        "behat\/mink-extension": "2.2.*",
+        "behat\/mink-selenium2-driver": "1.*",
+        "behat\/symfony2-extension": "2.1.1",
+        "nelmio\/alice": "2.2.*",
+        "phpunit\/phpunit": "5.7.*",
+        "phpunit\/phpunit-selenium": "3.0.*",
+        "johnkary\/phpunit-speedtrap": "1.0.*",
+        "mybuilder\/phpunit-accelerator": "1.2.*",
+        "squizlabs\/php_codesniffer": "2.7.*",
+        "phpmd\/phpmd": "2.5.*",
+        "sebastian\/phpcpd": "2.0.*"
     },
     "config": {
-        "component-dir": "web/bundles/components",
+        "component-dir": "web\/bundles\/components",
         "bin-dir": "bin",
         "fxp-asset": {
             "asset-installer-paths": {
-                "npm-asset-library": "web/bundles/npmassets",
-                "bower-asset-library": "web/bundles/bowerassets"
+                "npm-asset-library": "web\/bundles\/npmassets",
+                "bower-asset-library": "web\/bundles\/bowerassets"
             }
         }
     },
@@ -52,9 +52,9 @@
             "phpunit -c app --tap --testsuite=\"Functional Tests\""
         ],
         "test-extended": [
-            "rm -rf app/cache/*",
-            "rm -rf app/logs/*",
-            "app/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --force --drop-database --timeout 3600",
+            "rm -rf app\/cache\/*",
+            "rm -rf app\/logs\/*",
+            "app\/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http:\/\/localhost --force --drop-database --timeout 3600",
             "phpunit -c app --tap --testsuite=\"Unit Tests\"",
             "phpunit -c app --tap --testsuite=\"Functional Tests\""
         ],
@@ -83,11 +83,30 @@
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
+            "file": "app\/config\/parameters.yml",
+            "env-map": {
+                "database_driver": "APP_DB_DRIVER",
+                "database_host": "APP_DB_HOST",
+                "database_port": "APP_DB_PORT",
+                "database_name": "APP_DB_NAME",
+                "database_user": "APP_DB_USER",
+                "database_password": "APP_DB_PASSWORD",
+                "mailer_transport": "APP_MAILER_TRANSPORT",
+                "mailer_host": "APP_MAILER_HOST",
+                "mailer_port": "APP_MAILER_PORT",
+                "mailer_encryption": "APP_MAILER_ENCRYPTION",
+                "mailer_user": "APP_MAILER_USER",
+                "mailer_password": "APP_MAILER_PASSWORD",
+                "websocket_bind_port": "APP_WEBSOCKET_BACKEND_PORT",
+                "websocket_backend_port": "APP_WEBSOCKET_BACKEND_PORT",
+                "websocket_frontend_port": "APP_WEBSOCKET_FRONTEND_PORT",
+                "installed": "APP_IS_INSTALLED",
+                "secret": "APP_SECRET"
+            }
         },
         "asset-installer-paths": {
-            "npm-asset-library": "web/bundles/npmassets",
-            "bower-asset-library": "web/bundles/bowerassets"
+            "npm-asset-library": "web\/bundles\/npmassets",
+            "bower-asset-library": "web\/bundles\/bowerassets"
         }
     }
 }
