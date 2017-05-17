@@ -14,8 +14,12 @@
         bootstrap                   = "vendor/autoload.php">
 
     <testsuites>
-        <testsuite name="Project Unit Tests">
-            <directory suffix="Test.php">src/Marello/Bundle/*Bundle/Tests/Unit</directory>
+        <testsuite name="Enterprise Unit Tests">
+            <directory suffix="Test.php">src/MarelloEnterprise/Bundle/*Bundle/Tests/Unit</directory>
+        </testsuite>
+
+        <testsuite name="Enterprise Functional Tests">
+            <directory suffix="Test.php">src/MarelloEnterprise/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
     </testsuites>
 
@@ -29,10 +33,10 @@
             <directory>src</directory>
             <exclude>
                 <directory>vendor</directory>
-                <directory>src/Marello/Bundle/*Bundle/DataFixtures</directory>
-                <directory>src/Marello/Bundle/*Bundle/Resources</directory>
-                <directory>src/Marello/Bundle/*Bundle/Tests</directory>
-                <directory>src/Marello/Bundle/*Bundle/vendor</directory>
+                <directory>src/MarelloEnterprise/Bundle/*Bundle/DataFixtures</directory>
+                <directory>src/MarelloEnterprise/Bundle/*Bundle/Resources</directory>
+                <directory>src/MarelloEnterprise/Bundle/*Bundle/Tests</directory>
+                <directory>src/MarelloEnterprise/Bundle/*Bundle/vendor</directory>
             </exclude>
         </whitelist>
     </filter>

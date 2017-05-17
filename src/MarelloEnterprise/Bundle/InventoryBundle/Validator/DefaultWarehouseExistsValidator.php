@@ -1,13 +1,16 @@
 <?php
 
-namespace MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints;
+namespace MarelloEnterprise\Bundle\InventoryBundle\Validator;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\ORM\EntityManagerInterface;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 
 class DefaultWarehouseExistsValidator extends ConstraintValidator
 {

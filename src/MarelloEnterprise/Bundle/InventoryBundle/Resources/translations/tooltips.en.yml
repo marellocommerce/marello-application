@@ -1,4 +1,4 @@
-marello_enterprise:
+marelloenterprise:
     inventory:
         warehouse:
             delete:                 You have to select a different default warehouse before deleting.

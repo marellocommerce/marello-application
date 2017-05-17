@@ -64,32 +64,6 @@ class WarehouseController extends Controller
     }
 
     /**
-     * @Config\Route("/delete/{id}")
-     * @Config\Method("DELETE")
-     * @AclAncestor("marello_inventory_warehouse_delete")
-     *
-     * @param Warehouse $warehouse
-     *
-     * @return Response
-     */
-    public function deleteAction(Warehouse $warehouse)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        if ($warehouse->isDefault()) {
-            // TODO: Cannot remove default warehouse.
-            $this->addFlash('error', 'Cannot delete default warehouse.');
-
-            return new Response('Cannot delete default warehouse.', Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-
-        $em->remove($warehouse);
-        $em->flush();
-
-        return new Response();
-    }
-
-    /**
      * @param Request        $request
      * @param Warehouse|null $warehouse
      *
@@ -114,6 +88,11 @@ class WarehouseController extends Controller
 
             $em->persist($warehouse);
             $em->flush();
+
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('marelloenterprise.inventory.messages.success.warehouse.saved')
+            );
 
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [

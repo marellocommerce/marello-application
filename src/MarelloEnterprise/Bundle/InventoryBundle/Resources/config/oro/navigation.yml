@@ -1,0 +1,19 @@
+navigation:
+    menu_config:
+        items:
+            warehouses:
+                label: marello.inventory.warehouse.entity_plural_label
+                route: marelloenterprise_inventory_warehouse_index
+                extras:
+                    routes: ['marello_inventory_warehouse_*', 'marelloenterprise_inventory_warehouse_*']
+        tree:
+            application_menu:
+                children:
+                    system_tab:
+                        children:
+                            warehouses: ~
+
+    titles:
+        marelloenterprise_inventory_warehouse_index:  marello.inventory.warehouse.entity_plural_label
+        marelloenterprise_inventory_warehouse_create: marelloenterprise.inventory.navigation.warehouse.create_label
+        marelloenterprise_inventory_warehouse_update: '%%warehouse.label%% - Edit'

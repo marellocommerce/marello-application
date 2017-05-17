@@ -1,0 +1,10 @@
+marelloenterprise:
+    inventory:
+        messages:
+            success:
+                warehouse:
+                    saved:          Warehouse saved
+
+        navigation:
+            warehouse:
+                create_label:       Create new warehouse
