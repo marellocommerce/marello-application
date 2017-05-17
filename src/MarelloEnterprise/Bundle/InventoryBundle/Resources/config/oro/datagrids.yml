@@ -2,8 +2,10 @@ datagrids:
     marello-enterprise-inventory-warehouse-grid:
         source:
             type: orm
+            acl_resource: marello_inventory_warehouse_view
             query:
                 select:
+                    - w.id
                     - w
                 from:
                     - { table: MarelloInventoryBundle:Warehouse, alias: w }
@@ -13,7 +15,22 @@ datagrids:
             default:
                 label: marello.inventory.warehouse.default.label
                 frontend_type: boolean
+        sorters:
+            columns:
+                label:            { data_name: w.label }
+                default:          { data_name: w.default }
+            default:
+                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                label:
+                    type:             string
+                    data_name:        w.label
+                default:
+                    type:             boolean
+                    data_name:        w.default
         properties:
+            id: ~
             update_link:
                 type:   url
                 route:  marelloenterprise_inventory_warehouse_update
@@ -21,7 +38,7 @@ datagrids:
                     id: id
             delete_link:
                 type:   url
-                route:  marelloenterprise_inventory_warehouse_delete
+                route:  marelloenterprise_inventory_api_delete_warehouse
                 params:
                     id: id
         actions:
@@ -35,7 +52,7 @@ datagrids:
                 link: update_link
                 icon: edit
                 rowAction: true
-        action_configuration: [@marello_enterprise.datagrid.action_permission_provider, "getActionPermissions"]
+        action_configuration: [@marelloenterprise_inventory.datagrid.action_permission_provider, "getActionPermissions"]
         options:
             mass_actions:
                 delete:

@@ -13,5 +13,7 @@ navigation:
                         children:
                             warehouses: ~
 
-oro_titles:
-    marelloenterprise_inventory_warehouse_index: marello.inventory.warehouse.entity_plural_label
+    titles:
+        marelloenterprise_inventory_warehouse_index:  marello.inventory.warehouse.entity_plural_label
+        marelloenterprise_inventory_warehouse_create: marelloenterprise.inventory.navigation.warehouse.create_label
+        marelloenterprise_inventory_warehouse_update: '%%warehouse.label%% - Edit'

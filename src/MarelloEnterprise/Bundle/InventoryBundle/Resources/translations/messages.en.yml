@@ -4,3 +4,7 @@ marelloenterprise:
             success:
                 warehouse:
                     saved:          Warehouse saved
+
+        navigation:
+            warehouse:
+                create_label:       Create new warehouse

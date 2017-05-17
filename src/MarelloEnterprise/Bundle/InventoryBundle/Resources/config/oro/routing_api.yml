@@ -1,4 +1,3 @@
 marelloenterprise_inventory_warehouse_api:
     resource:     "@MarelloEnterpriseInventoryBundle/Controller/Api/Rest/WarehouseController.php"
     type:         rest
-

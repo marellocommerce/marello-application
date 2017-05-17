@@ -7,7 +7,7 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
@@ -20,20 +20,25 @@ use Oro\Bundle\SecurityBundle\Annotation as Security;
 class WarehouseController extends RestController implements ClassResourceInterface
 {
     /**
-     * REST DELETE
+     * Delete entity Warehouse
      *
      * @param int $id
      *
      * @ApiDoc(
-     *     description="Delete Supplier from application",
-     *     resource=true
+     *      description="Delete warehouse from application"
      * )
-     * @Security\AclAncestor("marello_supplier_delete")
+     * @Security\AclAncestor("marello_inventory_warehouse_delete")
      * @return Response
      */
     public function deleteAction($id)
     {
-        return $this->handleDeleteRequest($id);
+        try {
+            $this->getDeleteHandler()->handleDelete($id, $this->getManager());
+
+            return new JsonResponse(["id" => ""]);
+        } catch (\Exception $e) {
+            return new JsonResponse(["code" => $e->getCode(), "message" => $e->getMessage()], $e->getCode());
+        }
     }
 
     /**
@@ -41,7 +46,7 @@ class WarehouseController extends RestController implements ClassResourceInterfa
      */
     public function getManager()
     {
-        return $this->get('marello_supplier.manager.api');
+        return $this->get('marelloenterprise.manager.api');
     }
 
     /**
@@ -49,7 +54,7 @@ class WarehouseController extends RestController implements ClassResourceInterfa
      */
     public function getForm()
     {
-        throw new \LogicException('This method should not be called');
+        throw new \BadMethodCallException('Form is not available.');
     }
 
     /**
@@ -57,6 +62,14 @@ class WarehouseController extends RestController implements ClassResourceInterfa
      */
     public function getFormHandler()
     {
-        throw new \LogicException('This method should not be called');
+        throw new \BadMethodCallException('FormHandler is not available.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDeleteHandler()
+    {
+        return $this->get('marelloenterprise_inventory.form.type.warehouse_delete.handler');
     }
 }

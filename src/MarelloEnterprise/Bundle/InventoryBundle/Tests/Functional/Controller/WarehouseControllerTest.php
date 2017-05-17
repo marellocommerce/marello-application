@@ -91,24 +91,21 @@ class WarehouseControllerTest extends WebTestCase
     {
         $response = $this->client->requestGrid(
             'marello-enterprise-inventory-warehouse-grid',
-            ['marello-enterprise-inventory-warehouse-grid[_column][label][value]' => $label]
+            ['marello-enterprise-inventory-warehouse-grid[_filter][label][value]' => $label]
         );
 
         $result = $this->getJsonResponseContent($response, Response::HTTP_OK);
         $result = reset($result['data']);
-
-        $updateLink = $result['update_link'];
-        $id = str_replace('/marello/inventory/warehouse/update/', '', $updateLink);
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('marelloenterprise_inventory_warehouse_update', ['id' => $id])
+            $this->getUrl('marelloenterprise_inventory_warehouse_update', ['id' => $result['id']])
         );
         $this->assertHtmlResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
 
         /** @var Form $form */
-        $form                                           = $crawler->selectButton('Save and Close')->form();
-        $name                                           = 'name' . $this->generateRandomString();
-        $form['marello_warehouse[label]']                = $name;
+        $form                             = $crawler->selectButton('Save and Close')->form();
+        $name                             = 'name' . $this->generateRandomString();
+        $form['marello_warehouse[label]'] = $name;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);

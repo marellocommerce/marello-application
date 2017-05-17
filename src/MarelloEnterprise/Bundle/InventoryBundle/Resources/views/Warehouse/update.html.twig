@@ -1,25 +1,31 @@
-{# src/InventoryBundle/Resources/views/Vehicle/update.html.twig #}
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
-{% if form.vars.value.id %}
+{% set entity = form.vars.value %}
+
+{% if entity.id %}
     {% set formAction = path('marelloenterprise_inventory_warehouse_update', { 'id': form.vars.value.id }) %}
 {% else %}
     {% set formAction = path('marelloenterprise_inventory_warehouse_create') %}
 {% endif %}
 
+{% if entity.id %}
+    {% oro_title_set({params : {"%warehouse.label%": entity.label } }) %}
+{% endif %}
+
 {% block navButtons %}
-    {% if form.vars.value.id and not form.vars.value.default and resource_granted('DELETE', form.vars.value) %}
+    {% if entity.id and not entity.default and resource_granted('DELETE', entity) %}
         {{ UI.deleteButton({
-            'dataUrl': path('marelloenterprise_inventory_warehouse_delete', {'id': form.vars.value.id}),
+            'dataUrl': path('marelloenterprise_inventory_api_delete_warehouse', {'id': entity.id}),
             'dataRedirect': path('marelloenterprise_inventory_warehouse_index'),
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-tag',
-            'dataId': form.vars.value.id,
+            'dataId': entity.id,
             'entity_label': 'marello.inventory.warehouse.entity_label'|trans
         }) }}
         {{ UI.buttonSeparator() }}
     {% endif %}
+
     {{ UI.cancelButton(path('marelloenterprise_inventory_warehouse_index')) }}
     {% set html = UI.saveAndCloseButton() %}
     {% if resource_granted('marello_inventory_warehouse_update') %}
@@ -31,10 +37,10 @@
 {% block pageHeader %}
     {% if form.vars.value.id %}
         {% set breadcrumbs = {
-        'entity':      form.vars.value,
+        'entity':      entity,
         'indexPath':   path('marelloenterprise_inventory_warehouse_index'),
         'indexLabel': 'marello.inventory.warehouse.entity_plural_label'|trans,
-        'entityTitle': form.vars.value.label
+        'entityTitle': entity.label
         } %}
         {{ parent() }}
     {% else %}
@@ -44,7 +50,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'vehicle-edit' %}
+    {% set id = 'warehouse-edit' %}
     {% set addressField = form_widget(form.address) %}
 
     {% set dataBlocks = [{
