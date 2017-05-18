@@ -2,7 +2,7 @@ datagrids:
     marello-enterprise-inventory-warehouse-grid:
         source:
             type: orm
-            acl_resource: marello_inventory_warehouse_view
+            acl_resource: marelloenterprise_inventory_warehouse_view
             query:
                 select:
                     - w.id

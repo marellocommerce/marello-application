@@ -23,7 +23,7 @@ class WarehouseController extends Controller
      * @Config\Route("/")
      * @Config\Method("GET")
      * @Config\Template
-     * @AclAncestor("marello_inventory_warehouse_view")
+     * @AclAncestor("marelloenterprise_inventory_warehouse_view")
      */
     public function indexAction()
     {
@@ -36,7 +36,7 @@ class WarehouseController extends Controller
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template("@MarelloEnterpriseInventory/Warehouse/update.html.twig")
-     * @AclAncestor("marello_inventory_warehouse_create")
+     * @AclAncestor("marelloenterprise_inventory_warehouse_create")
      *
      * @param Request $request
      *

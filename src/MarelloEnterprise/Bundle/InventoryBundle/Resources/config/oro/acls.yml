@@ -1,15 +1,15 @@
 acls:
-    marello_inventory_warehouse_view:
+    marelloenterprise_inventory_warehouse_view:
         type:       entity
         class:      MarelloInventoryBundle:Warehouse
         permission: VIEW
 
-    marello_inventory_warehouse_create:
+    marelloenterprise_inventory_warehouse_create:
         type:       entity
         class:      MarelloInventoryBundle:Warehouse
         permission: CREATE
 
-    marello_inventory_warehouse_delete:
+    marelloenterprise_inventory_warehouse_delete:
         type:       entity
         class:      MarelloInventoryBundle:Warehouse
         permission: DELETE
