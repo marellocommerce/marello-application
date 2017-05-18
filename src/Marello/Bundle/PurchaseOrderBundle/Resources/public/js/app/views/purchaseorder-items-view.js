@@ -18,8 +18,6 @@ define(function(require) {
          * @property {Object}
          */
         options: {
-            // suppliers: {},
-            // supplierDataRoute: 'marello_supplier_supplier_get_default_data',
         },
 
         /**

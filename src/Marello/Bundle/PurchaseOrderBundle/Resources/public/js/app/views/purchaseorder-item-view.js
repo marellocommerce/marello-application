@@ -13,8 +13,10 @@ define(function(require) {
      * @class marellopurchaseorder.app.views.PurchaseOrderItemView
      */
     PurchaseOrderItemView = AbstractItemView.extend({
+        /**
+         * @property {Object}
+         */
         options: {
-            orderedAmount: 666,
         },
 
         /**

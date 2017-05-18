@@ -10,6 +10,7 @@ marello:
         cost.label:                   Cost
         is_active.label:              Active
         address.label:                Address
+        email.label:                  Email
         datablock:
             general:                  General
             supplier_information:     Supplier Information

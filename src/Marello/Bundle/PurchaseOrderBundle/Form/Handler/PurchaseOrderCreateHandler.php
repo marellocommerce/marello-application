@@ -60,7 +60,8 @@ class PurchaseOrderCreateHandler
             $organization = $this->doctrine->getRepository(Organization::class)->getFirst();
         }
 
-        $data = new PurchaseOrder($organization);
+        $data = new PurchaseOrder();
+        $data->setOrganization($organization);
 
         $this->form->setData($data);
 

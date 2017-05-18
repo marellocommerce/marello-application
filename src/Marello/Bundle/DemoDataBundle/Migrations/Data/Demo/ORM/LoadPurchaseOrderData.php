@@ -60,7 +60,8 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
                 }
 
                 if (!array_key_exists($data['po'], $orders)) {
-                    $order   = $orders[$data['po']] = new PurchaseOrder($organization);
+                    $order   = $orders[$data['po']] = new PurchaseOrder();
+                    $order = $order->setOrganization($organization);
                     $orderNo = $data['po'];
                 }
 

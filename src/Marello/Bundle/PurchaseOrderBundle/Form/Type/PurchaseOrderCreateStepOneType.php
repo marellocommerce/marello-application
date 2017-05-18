@@ -7,9 +7,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PurchaseOrderCreateType extends AbstractType
+class PurchaseOrderCreateStepOneType extends AbstractType
 {
-    const NAME = 'marello_purchase_order_create';
+    const NAME = 'marello_purchase_order_create_step_one';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -18,17 +18,12 @@ class PurchaseOrderCreateType extends AbstractType
                 'supplier',
                 'marello_supplier_select_form',
                 [
-                    'read_only'      => true,
                     'required'       => true,
                     'label'          => 'marello.supplier.entity_label',
                     'create_enabled' => false,
                 ]
             )
-            ->add('items', PurchaseOrderItemCollectionType::NAME,
-                [
-//                    'cascade_validation' => true,
-                ]
-            );
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

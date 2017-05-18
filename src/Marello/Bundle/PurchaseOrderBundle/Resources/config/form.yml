@@ -67,3 +67,11 @@ services:
             - "@request"
             - "@doctrine"
             - "@security.token_storage"
+
+    marello_purchase_order.form.handler.purchase_order_update:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderUpdateHandler
+        scope: request
+        arguments:
+            - '@marello_purchase_order.form.purchase_order_create'
+            - '@request'
+            - '@doctrine.orm.entity_manager'

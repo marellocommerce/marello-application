@@ -121,12 +121,9 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
 
     /**
      * PurchaseOrder constructor.
-     *
-     * @param Organization $organization
      */
-    public function __construct(Organization $organization)
+    public function __construct()
     {
-        $this->organization = $organization;
         $this->items = new ArrayCollection();
     }
 

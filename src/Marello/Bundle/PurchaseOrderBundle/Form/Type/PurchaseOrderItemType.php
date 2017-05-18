@@ -18,15 +18,12 @@ class PurchaseOrderItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('product', 'marello_product_select', [
-                'required'       => true,
+            ->add('product', 'marello_product_supplier_select', [
                 'label'          => 'marello.product.entity_label',
                 'create_enabled' => false,
             ])
             ->add('orderedAmount', 'number', [
                 'label' => 'Ordered Amount',
-                'required'  => true,
-                'constraints'   => new GreaterThan(['value' => 0]),
             ]);
     }
 
