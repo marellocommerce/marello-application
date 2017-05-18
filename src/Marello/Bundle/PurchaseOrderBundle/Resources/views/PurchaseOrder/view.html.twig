@@ -3,12 +3,16 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
 {% block navButtons %}
-    {% if resource_granted('EDIT', entity) %}
-        {{ UI.editButton({
-            'path': path('marello_purchaseorder_purchaseorder_update', {'id': entity.id}),
-            'entity_label': 'marello.purchaseorder.entity_label'|trans
-        }) }}
-        {{ UI.buttonSeparator() }}
+    {% if marello_purchaseorder_can_edit(entity)  %}
+
+        {% if resource_granted('EDIT', entity) %}
+            {{ UI.editButton({
+                'path': path('marello_purchaseorder_purchaseorder_update', {'id': entity.id}),
+                'entity_label': 'marello.purchaseorder.entity_label'|trans
+            }) }}
+            {{ UI.buttonSeparator() }}
+        {% endif %}
+
     {% endif %}
 {% endblock navButtons %}
 

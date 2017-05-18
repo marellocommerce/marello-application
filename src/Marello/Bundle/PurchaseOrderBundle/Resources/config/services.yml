@@ -33,3 +33,10 @@ services:
             - '@oro_workflow.manager'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBefore }
+
+    marello_purchaseorder.twig.purchaseorder_extension:
+        class: Marello\Bundle\PurchaseOrderBundle\Twig\PurchaseOrderExtension
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: twig.extension }
