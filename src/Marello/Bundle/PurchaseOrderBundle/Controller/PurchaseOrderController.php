@@ -5,7 +5,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Controller;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateStepOneHandler;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepOneType;
-use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateType;
+use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderType;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -121,7 +121,7 @@ class PurchaseOrderController extends Controller
             $formData = $form->all();
 
             if (!empty($formData)) {
-                $form = $this->createForm(PurchaseOrderCreateType::NAME, $purchaseOrder);
+                $form = $this->createForm(PurchaseOrderType::NAME, $purchaseOrder);
                 foreach ($formData as $key => $item) {
                     $data = $item->getData();
                     $form->get($key)->setData($data);

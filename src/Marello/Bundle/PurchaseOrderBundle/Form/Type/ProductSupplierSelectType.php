@@ -1,5 +1,5 @@
 <?php
-namespace Marello\Bundle\ProductBundle\Form\Type;
+namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

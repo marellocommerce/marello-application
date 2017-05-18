@@ -7,9 +7,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PurchaseOrderCreateType extends AbstractType
+class PurchaseOrderType extends AbstractType
 {
-    const NAME = 'marello_purchase_order_create';
+    const NAME = 'marello_purchase_order';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
