@@ -11,6 +11,8 @@ services:
     # Form Types
     marello_purchase_order.form.type.purchase_order:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderType
+        arguments:
+            - "@router"
         tags:
             - { name: form.type, alias: marello_purchase_order }
 

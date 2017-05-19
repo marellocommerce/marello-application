@@ -56,8 +56,18 @@
             }]
         },
         {
-            'title': 'Products'|trans,
-            'class': 'active',
+            'title': 'marello.purchaseorder.items_advice'|trans,
+            'class': '',
+            'subblocks': [{
+                'title': 'marello.purchaseorder.select_products_advice'|trans,
+                'data': [
+                    form_widget(form.itemsAdvice),
+                ]
+            }]
+        },
+        {
+            'title': 'marello.product.entity_label'|trans,
+            'class': '',
             'subblocks': [{
                 'title': 'marello.purchaseorder.select_products'|trans,
                 'data': [

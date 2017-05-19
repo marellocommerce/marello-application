@@ -2,11 +2,14 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductSupplierSelectType extends AbstractType
 {
     const NAME = 'marello_product_supplier_select';
+
     /**
      * {@inheritdoc}
      */
@@ -16,7 +19,8 @@ class ProductSupplierSelectType extends AbstractType
             [
                 'autocomplete_alias' => 'products',
                 'create_form_route'  => 'marello_product_create',
-                'grid_name' => 'marello-purchase-order-item-candidates',
+                'grid_name' => 'marello-purchase-order-product-supplier',
+                'grid_parameters' => [],
                 'configs'            => [
                     'placeholder' => 'marello.product.form.choose_product',
                     'result_template_twig' => 'MarelloProductBundle:Product:Autocomplete/result.html.twig',
@@ -24,6 +28,16 @@ class ProductSupplierSelectType extends AbstractType
                 ],
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $supplierId = $form->getParent()->getParent()->getParent()->get('supplier')->getData()->getId();
+
+        $view->vars['grid_parameters'] = ['supplierId' => $supplierId];
     }
 
     /**

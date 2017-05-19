@@ -205,3 +205,27 @@ datagrids:
                 icon: edit
                 data_identifier: p.id
 
+
+    marello-purchase-order-product-supplier:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - p.id
+                    - p.sku
+                    - p.name
+                from:
+                    - { table: MarelloProductBundle:Product, alias: p }
+                where:
+                    and:
+                        - p.id = :supplier_id
+            bind_parameters:
+                supplier_id: supplierId
+        columns:
+            sku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string

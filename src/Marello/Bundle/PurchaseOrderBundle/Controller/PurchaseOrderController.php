@@ -193,5 +193,22 @@ class PurchaseOrderController extends Controller
         ];
     }
 
+    /**
+     * @Config\Route(
+     *      "/widget/products/{id}",
+     *      name="marello_purchase_order_widget_products_by_supplier",
+     *      requirements={"id"="\d+"},
+     *      defaults={"id"=0}
+     * )
+     * @Security\AclAncestor("marello_product_view")
+     * @Config\Template()
+     */
+    public function productsBySupplierAction(PurchaseOrder $purchaseOrder = null)
+    {
+        return [
+            'purchaseOrder' => $purchaseOrder
+        ];
+    }
+
 
 }
