@@ -1,5 +1,5 @@
 <?php
-namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
+namespace Marello\Bundle\ProductBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
@@ -19,7 +19,7 @@ class ProductSupplierSelectType extends AbstractType
             [
                 'autocomplete_alias' => 'products',
                 'create_form_route'  => 'marello_product_create',
-                'grid_name' => 'marello-purchase-order-product-supplier',
+                'grid_name' => 'marello-product-supplier-grid',
                 'grid_parameters' => [],
                 'configs'            => [
                     'placeholder' => 'marello.product.form.choose_product',

@@ -1,6 +1,3 @@
-parameters:
-    marello_purchase_order.form.type.product_supplier_select.class:  Marello\Bundle\PurchaseOrderBundle\Form\Type\ProductSupplierSelectType
-
 services:
     # Form Event Listeners / Subscribers
     marello_purchase_order.form.event_listener.purchase_order_item_subscriber:
@@ -47,11 +44,6 @@ services:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemReceiveCollectionType
         tags:
             - { name: form.type, alias: marello_purchase_order_item_receive_collection }
-
-    marello_purchase_order.form.type.product_supplier_select:
-        class: '%marello_purchase_order.form.type.product_supplier_select.class%'
-        tags:
-            - { name: form.type, alias: marello_product_supplier_select }
 
     # Forms
     marello_purchase_order.form.purchase_order:
