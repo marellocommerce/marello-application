@@ -205,7 +205,8 @@ class PurchaseOrderController extends Controller
     public function productsBySupplierAction(PurchaseOrder $purchaseOrder = null)
     {
         return [
-            'purchaseOrder' => $purchaseOrder
+            'purchaseOrder' => $purchaseOrder,
+            'supplierId' => $this->get('request')->get('supplierId')
         ];
     }
 

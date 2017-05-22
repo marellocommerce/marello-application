@@ -103,6 +103,9 @@ datagrids:
                     - p.purchaseStockLevel
                     - COALESCE(SUM(l.inventory - l.allocatedInventory), 0) AS virtualStock
                     - (p.desiredStockLevel - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount
+                    - >
+                      (CASE WHEN p.id IN (:data_in) AND p.id NOT IN (:data_not_in)
+                        THEN true ELSE false END) as hasProduct
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -120,7 +123,14 @@ datagrids:
                 having: SUM(l.inventory - l.allocatedInventory) < p.purchaseStockLevel  # Only products with virtual stock lower than required purchase stock level
                 groupBy: p.id
 
+            bind_parameters:
+                - supplierId
+
         columns:
+            hasProduct:
+                label:              marello.purchaseorder.has_item.label
+                editable:           true
+                frontend_type:      boolean
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
@@ -146,6 +156,7 @@ datagrids:
                 data_name:          orderAmount
         sorters:
             columns:
+                hasProduct:             { data_name: hasProduct }
                 sku:                    { data_name: p.sku }
                 name:                   { data_name: p.name }
                 preferredSupplier:      { data_name: preferredSupplier }
@@ -157,6 +168,9 @@ datagrids:
                 orderAmount: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
+                hasProduct:
+                    data_name:        hasProduct
+                    type:             boolean
                 sku:
                     type:             string
                     data_name:        p.sku
@@ -180,6 +194,11 @@ datagrids:
                     type:             number
                     data_name:        orderAmount
                     filter_by_having: true
+#            default:
+#                preferredSupplier:
+#                    value: 'abc'
+#                    type: %oro_filter.form.type.filter.text.class%::TYPE_CONTAINS
+
         properties:
             id: ~
             view_link:
@@ -187,20 +206,28 @@ datagrids:
                 route: marello_product_view
                 params:
                     - id
+        options:
+            entityHint: p
+            rowSelection:
+                dataField: id
+                columnName: hasProduct
+                selectors:
+                    included: '#appendProducts'
+                    excluded: '#removeProducts'
 
-        actions:
-            view:
-                type:          navigate
-                label:         oro.grid.action.view
-                link:          view_link
-                icon:          eye
-                acl_resource:  marello_product_view
-                rowAction:     true
-
-        mass_actions:
-            create_po:
-                type: redirect
-                route: marello_purchaseorder_purchaseorder_create
-                label: Create PO
-                icon: edit
-                data_identifier: p.id
+#        actions:
+#            view:
+#                type:          navigate
+#                label:         oro.grid.action.view
+#                link:          view_link
+#                icon:          eye
+#                acl_resource:  marello_product_view
+#                rowAction:     true
+#
+#        mass_actions:
+#            create_po:
+#                type: redirect
+#                route: marello_purchaseorder_purchaseorder_create
+#                label: Create PO
+#                icon: edit
+#                data_identifier: p.id

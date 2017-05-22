@@ -60,9 +60,10 @@ class PurchaseOrderType extends AbstractType
                 ]
             )
             ->add(
-                'items',
+                'itemsAdditional',
                 PurchaseOrderItemCollectionType::NAME,
                 [
+                    'mapped'                => false,
                     'cascade_validation' => true,
                 ]
             )
@@ -77,7 +78,10 @@ class PurchaseOrderType extends AbstractType
         /** @var PurchaseOrder $purchaseOrder */
         $purchaseOrder = $form->getData();
 
-        $view->children['itemsAdvice']->vars['grid_url'] = $this->router->generate('marello_purchase_order_widget_products_by_supplier', array('id' => $purchaseOrder->getId()));
+        $view->children['itemsAdvice']->vars['grid_url'] = $this->router->generate('marello_purchase_order_widget_products_by_supplier', array(
+            'id' => $purchaseOrder->getId(),
+            'supplierId' => $purchaseOrder->getSupplier()->getId()
+        ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -34,6 +34,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBefore }
 
+    marello_purchaseorder.listener.datagrid.product_supplier_grid_listener:
+        class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSupplierGridListener
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBefore }
+
     marello_purchaseorder.twig.purchaseorder_extension:
         class: Marello\Bundle\PurchaseOrderBundle\Twig\PurchaseOrderExtension
         arguments:

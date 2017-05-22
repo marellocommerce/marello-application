@@ -456,3 +456,23 @@ datagrids:
             name:
                 label:              marello.product.name.label
                 frontend_type:      string
+        filters:
+            columns:
+                sku:
+                    label:            marello.product.sku.label
+                    type:             string
+                    data_name:        p.sku
+                name:
+                    label:            marello.product.name.label
+                    type:             string
+                    data_name:        p.name
+        sorters:
+            columns:
+                sku:            { data_name: p.sku }
+                name:           { data_name: p.name }
+            default:
+                sku:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        properties:
+            id: ~
+        options:
+            entityHint: p
