@@ -7,6 +7,12 @@ use Marello\Bundle\SupplierBundle\Entity\Supplier;
 
 class ProductSupplierRelationRepository extends EntityRepository
 {
+    /**
+     * Returns the product ids related to a given supplier id
+     *
+     * @param $supplierId
+     * @return string
+     */
     public function getProductIdsRelatedToSupplier($supplierId)
     {
         $qb = $this->createQueryBuilder('psr');
