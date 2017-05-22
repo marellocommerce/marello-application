@@ -436,35 +436,6 @@ datagrids:
         options:
             entityHint: psr
 
-#    marello-product-supplier-grid:
-#        source:
-#            type: orm
-#            acl_resource: marello_product_view
-#            query:
-#                select:
-#                    - p.id
-#                    - p.sku
-#                    - p.name
-#                    - psr.supplier
-#                    - psr.product
-#                from:
-#                    - { table: MarelloProductBundle:Product, alias: p }
-#                join:
-#                    left:
-#                        - { join: MarelloSupplierBundle:ProductSupplierRelation, alias: psr, conditionType: ON, condition: "psr.product_id = p.id" }
-#                where:
-#                    and:
-#                        - supplier = :supplierId
-#            bind_parameters:
-#                - supplierId
-#        columns:
-#            sku:
-#                label:              marello.product.sku.label
-#                frontend_type:      string
-#            name:
-#                label:              marello.product.name.label
-#                frontend_type:      string
-
     marello-product-supplier-grid:
         source:
             type: orm
@@ -476,9 +447,6 @@ datagrids:
                     - p.name
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
-                where:
-                    and:
-                        - p.preferredSupplier = :supplierId
             bind_parameters:
                 - supplierId
         columns:
@@ -488,35 +456,3 @@ datagrids:
             name:
                 label:              marello.product.name.label
                 frontend_type:      string
-
-#    marello-product-supplier-grid:
-#        source:
-#            type: orm
-#            acl_resource: marello_product_view
-#            query:
-#                select:
-#                    - p.id
-#                    - p.sku
-#                    - p.name
-#                from:
-#                    - { table: MarelloSupplierBundle:ProductSupplierRelation, alias: psr }
-#                join:
-#                    left:
-#                        product:
-#                            join: psr.product
-#                            alias: p
-#                        supplier:
-#                            join: psr.supplier
-#                            alias: s
-##                where:
-##                    and:
-##                        - s.id = supplierId
-#            bind_parameters:
-#                - supplierId
-#        columns:
-#            sku:
-#                label:              marello.product.sku.label
-#                frontend_type:      string
-#            name:
-#                label:              marello.product.name.label
-#                frontend_type:      string
