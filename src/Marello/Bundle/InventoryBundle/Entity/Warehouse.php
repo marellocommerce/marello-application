@@ -3,9 +3,12 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+
+use Marello\Bundle\InventoryBundle\Model\ExtendWarehouse;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository")
@@ -24,7 +27,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *      }
  * )
  */
-class Warehouse
+class Warehouse extends ExtendWarehouse
 {
     /**
      * @ORM\Id
