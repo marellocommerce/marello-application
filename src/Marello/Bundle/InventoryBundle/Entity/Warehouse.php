@@ -69,6 +69,21 @@ class Warehouse extends ExtendWarehouse
     protected $address = null;
 
     /**
+     * @var Warehouse
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\WarehouseType")
+     * @ORM\JoinColumn(name="warehouseType", referencedColumnName="name")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $warehouseType;
+
+    /**
      * @param string $label
      * @param bool   $default
      */
@@ -170,6 +185,26 @@ class Warehouse extends ExtendWarehouse
     public function setAddress(MarelloAddress $address)
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return WarehouseType
+     */
+    public function getWarehouseType()
+    {
+        return $this->warehouseType;
+    }
+
+    /**
+     * @param WarehouseType $warehouseType
+     *
+     * @return $this
+     */
+    public function setWarehouseType(WarehouseType $warehouseType)
+    {
+        $this->warehouseType = $warehouseType;
 
         return $this;
     }
