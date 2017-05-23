@@ -1,8 +1,8 @@
 {
-    "name": "marellocommerce/marello",
+    "name": "marellocommerce/marello-enterprise",
     "description": "Marello",
-    "homepage": "https://github.com/marellocommerce/marello.git",
-    "license": "OSL-3.0",
+    "homepage": "https://github.com/marellocommerce/marello-ee.git",
+    "license": "Commercial",
     "authors": [
         {
             "name": "Madia B.V.",
@@ -21,8 +21,9 @@
         }
     ],
     "require": {
-        "php": ">=5.4.9",
-        "oro/platform": "1.8.*"
+        "php": ">=5.5.9",
+        "oro/platform-enterprise": "2.x-dev",
+        "marellocommerce/marello": "1.x-dev"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
