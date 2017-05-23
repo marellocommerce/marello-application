@@ -1,7 +1,7 @@
 {
-    "name": "marellocommerce\/marello-application-dev",
+    "name": "marellocommerce\/marello-application-ee-dev",
     "description": "Marello ERP for Commerce dev",
-    "homepage": "https:\/\/github.com\/marellocommerce\/marello-application-dev.git",
+    "homepage": "https:\/\/github.com\/marellocommerce\/marello-application-ee-dev.git",
     "license": "OSL-3.0",
     "autoload": {
         "psr-0": {
@@ -17,7 +17,7 @@
         }
     },
     "require": {
-        "oro\/platform": "2.0.*",
+        "oro\/platform-enterprise": "2.x-dev",
         "oro\/platform-serialised-fields": "2.0.*",
         "oro\/calendar-bundle": "2.0.0"
     },
@@ -47,16 +47,12 @@
         }
     },
     "scripts": {
-        "test": [
-            "phpunit -c app --tap --testsuite=\"Unit Tests\"",
-            "phpunit -c app --tap --testsuite=\"Functional Tests\""
-        ],
         "test-extended": [
             "rm -rf app\/cache\/*",
             "rm -rf app\/logs\/*",
             "app\/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http:\/\/localhost --force --drop-database --timeout 3600",
-            "phpunit -c app --tap --testsuite=\"Unit Tests\"",
-            "phpunit -c app --tap --testsuite=\"Functional Tests\""
+            "phpunit -c app --tap --testsuite=\"Enterprise Unit Tests\"",
+            "phpunit -c app --tap --testsuite=\"Enterprise Functional Tests\""
         ],
         "post-install-cmd": [
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::checkComposerPlugin",

@@ -14,13 +14,6 @@
         bootstrap                   = "autoload.php">
 
     <testsuites>
-        <testsuite name="Unit Tests">
-            <directory suffix="Test.php">../src/Marello/src/Marello*/Bundle/*Bundle/Tests/Unit</directory>
-        </testsuite>
-        <testsuite name="Functional Tests">
-            <directory suffix="Test.php">../src/Marello/src/Marello*/Bundle/*Bundle/Tests/Functional</directory>
-        </testsuite>
-
         <testsuite name="Enterprise Unit Tests">
             <directory suffix="Test.php">../src/MarelloEnterprise/src/Marello*/Bundle/*Bundle/Tests/Unit</directory>
         </testsuite>
