@@ -6,7 +6,6 @@
     "autoload": {
         "psr-0": {
             "Marello\\Bundle\\": "src\/Marello\/src",
-            "MarelloEnterprise\\Bundle\\": "src\/MarelloEnterprise\/src",
             "": "src\/"
         }
     },
