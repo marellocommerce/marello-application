@@ -21,7 +21,7 @@ class ProductSupplierGridListener
     /**
      * @param BuildBefore $event
      */
-    public function buildBefore(BuildBefore $event)
+    public function buildBeforeProductsBySupplier(BuildBefore $event)
     {
         $config = $event->getConfig();
 

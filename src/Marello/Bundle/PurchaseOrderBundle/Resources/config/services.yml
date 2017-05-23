@@ -32,16 +32,16 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@oro_workflow.manager'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforePendingOrders }
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeDataIn }
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeFilter }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeFilterSupplier }
 
     marello_purchaseorder.listener.datagrid.product_supplier_grid_listener:
         class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSupplierGridListener
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeProductsBySupplier }
 
     marello_purchaseorder.twig.purchaseorder_extension:
         class: Marello\Bundle\PurchaseOrderBundle\Twig\PurchaseOrderExtension

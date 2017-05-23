@@ -25,7 +25,7 @@ class PurchaseOrderGridListener
     /**
      * @param BuildBefore $event
      */
-    public function buildBefore(BuildBefore $event)
+    public function buildBeforePendingOrders(BuildBefore $event)
     {
         $config = $event->getConfig();
 
@@ -43,19 +43,23 @@ class PurchaseOrderGridListener
     {
         $config = $event->getConfig();
 
-//        $dataIn = $event->getDatagrid()->getParameters()->get('data_in');
-//        $dataInStr = implode(array_map('current', $dataIn), ',');
-//        $dataInStr = "1,2,3";
+        $dataIn = $event->getDatagrid()->getParameters()->get('data_in');
+        $dataNotIn = $event->getDatagrid()->getParameters()->get('data_not_in');
+
+
+        if (is_array($dataIn) && is_array($dataNotIn)) {
+            $dataInStr = implode($dataIn, ',');
+            $dataNotInStr = implode($dataNotIn, ',');
+
+            $config->offsetAddToArrayByPath('source.query.select', [
+            "(CASE WHEN p.id IN (".$dataInStr.") AND p.id NOT IN (".$dataNotInStr.") THEN true ELSE false END) AS hasProduct
+                "
+            ]);
+        }
+
 //
-//        $dataNotIn = $event->getDatagrid()->getParameters()->get('data_not_in');
-//        $dataNotInStr = implode(array_map('current', $dataNotIn), ',');
-//        $dataNotInStr = "4,5,6";
 //
 //
-//        $config->offsetAddToArrayByPath('source.query.select', [
-//            "CASE WHEN p.id IN (".$dataInStr.") AND p.id NOT IN (".$dataNotInStr.") THEN true ELSE false END AS hasProduct
-//            "
-//        ]);
 //
 //        $config->offsetSetByPath('source.bind_parameters',null);
     }
@@ -63,7 +67,7 @@ class PurchaseOrderGridListener
     /**
      * @param BuildBefore $event
      */
-    public function buildBeforeFilter(BuildBefore $event)
+    public function buildBeforeFilterSupplier(BuildBefore $event)
     {
         $config = $event->getConfig();
 

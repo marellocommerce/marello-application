@@ -137,7 +137,7 @@ datagrids:
                 label:              marello.product.name.label
                 frontend_type:      string
             preferredSupplier:
-                label:              marello.supplier.entity_label
+                label:              marello.product.preferred_supplier.label
                 frontend_type:      string
                 data_name:          preferredSupplier
             purchaseStockLevel:
@@ -206,7 +206,7 @@ datagrids:
             entityHint: p
             rowSelection:
                 dataField: id
-                columnName: hasItem
+                columnName: hasProduct
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'

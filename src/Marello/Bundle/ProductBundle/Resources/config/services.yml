@@ -41,4 +41,4 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-supplier-grid, method: buildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-supplier-grid, method: buildBeforeProductsBySupplier }
