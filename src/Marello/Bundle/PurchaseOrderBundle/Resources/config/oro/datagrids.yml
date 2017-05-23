@@ -98,6 +98,7 @@ datagrids:
                     - p.id
                     - p.sku
                     - p.name
+                    - sup.id AS preferredSupplierId
                     - sup.name AS preferredSupplier
                     - p.desiredStockLevel
                     - p.purchaseStockLevel
@@ -105,7 +106,8 @@ datagrids:
                     - (p.desiredStockLevel - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount
                     - >
                       (CASE WHEN p.id IN (:data_in) AND p.id NOT IN (:data_not_in)
-                        THEN true ELSE false END) as hasProduct
+                        THEN true ELSE false
+                      END) as hasProduct
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -123,9 +125,6 @@ datagrids:
                 having: SUM(l.inventory - l.allocatedInventory) < p.purchaseStockLevel  # Only products with virtual stock lower than required purchase stock level
                 groupBy: p.id
 
-            bind_parameters:
-                - supplierId
-
         columns:
             hasProduct:
                 label:              marello.purchaseorder.has_item.label
@@ -140,6 +139,7 @@ datagrids:
             preferredSupplier:
                 label:              marello.supplier.entity_label
                 frontend_type:      string
+                data_name:          preferredSupplier
             purchaseStockLevel:
                 label:              marello.purchaseorder.purchaseorderitem.purchase_stock_level.label
                 frontend_type:      number
@@ -194,10 +194,6 @@ datagrids:
                     type:             number
                     data_name:        orderAmount
                     filter_by_having: true
-#            default:
-#                preferredSupplier:
-#                    value: 'abc'
-#                    type: %oro_filter.form.type.filter.text.class%::TYPE_CONTAINS
 
         properties:
             id: ~
@@ -210,7 +206,7 @@ datagrids:
             entityHint: p
             rowSelection:
                 dataField: id
-                columnName: hasProduct
+                columnName: hasItem
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'

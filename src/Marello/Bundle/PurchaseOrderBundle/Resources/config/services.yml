@@ -33,6 +33,8 @@ services:
             - '@oro_workflow.manager'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeDataIn }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeFilter }
 
     marello_purchaseorder.listener.datagrid.product_supplier_grid_listener:
         class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSupplierGridListener

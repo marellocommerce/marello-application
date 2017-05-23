@@ -447,8 +447,6 @@ datagrids:
                     - p.name
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
-            bind_parameters:
-                - supplierId
         columns:
             sku:
                 label:              marello.product.sku.label

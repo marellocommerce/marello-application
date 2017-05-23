@@ -3,6 +3,7 @@
 namespace Marello\Bundle\ProductBundle\EventListener\Datagrid;
 
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Doctrine\ORM\EntityManager;
@@ -23,21 +24,35 @@ class ProductSupplierGridListener
     public function buildBefore(BuildBefore $event)
     {
         $config = $event->getConfig();
-        $supplierId = $event->getDatagrid()->getParameters()->get('supplierId');
 
-        $productIdsToInclude = $this->getProductsRelatedToSupplier($supplierId);
+        $supplier = $event->getDatagrid()->getParameters()->get('supplier');
 
-        $config->offsetAddToArrayByPath('source.query.where.and', [
-            "p.id IN (". $productIdsToInclude .")"
-        ]);
+        if (!$supplier) {
 
-        //set null the parameter binding as it's not used in the query
-        $config->offsetSetByPath('source.bind_parameters',null);
+            $supplierId = $event->getDatagrid()->getParameters()->get('supplierId');
+
+            if ($supplierId) {
+                /** @var Supplier $supplier */
+                $supplier = $this->entityManager->getRepository('MarelloSupplierBundle:Supplier')->find($supplierId);
+            }
+        }
+
+        if ($supplier) {
+            $productIdsToInclude = $this->getProductsRelatedToSupplier($supplier);
+
+            $config->offsetAddToArrayByPath('source.query.where.and', [
+                "p.id IN (". $productIdsToInclude .")"
+            ]);
+        }
     }
 
-    private function getProductsRelatedToSupplier($supplierId)
+    /**
+     * @param Supplier $supplier
+     * @return mixed
+     */
+    private function getProductsRelatedToSupplier(Supplier $supplier)
     {
-        $productsIds = $this->entityManager->getRepository('MarelloSupplierBundle:ProductSupplierRelation')->getProductIdsRelatedToSupplier($supplierId);
+        $productsIds = $this->entityManager->getRepository('MarelloSupplierBundle:ProductSupplierRelation')->getProductIdsRelatedToSupplier($supplier);
         return $productsIds;
     }
 }

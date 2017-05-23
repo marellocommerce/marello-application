@@ -8,18 +8,18 @@ use Marello\Bundle\SupplierBundle\Entity\Supplier;
 class ProductSupplierRelationRepository extends EntityRepository
 {
     /**
-     * Returns the product ids related to a given supplier id
+     * Returns the product ids related to a given Supplier
      *
-     * @param $supplierId
+     * @param Supplier $supplier
      * @return string
      */
-    public function getProductIdsRelatedToSupplier($supplierId)
+    public function getProductIdsRelatedToSupplier(Supplier $supplier)
     {
         $qb = $this->createQueryBuilder('psr');
         $qb->select('p.id')
             ->leftJoin('psr.product','p')
             ->where('psr.supplier = :supplierId')
-            ->setParameter('supplierId', $supplierId)
+            ->setParameter('supplierId', $supplier->getId())
             ->groupBy('p.id')
             ;
 
