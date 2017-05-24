@@ -21,6 +21,8 @@ monolog:
         chromephp:
             type:  chromephp
             level: info
+twig:
+    base_template_class: Oro\Bundle\UIBundle\Twig\Template
 
 oro_assetic:
     css_debug:      ~

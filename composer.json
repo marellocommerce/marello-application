@@ -14,12 +14,16 @@
         "composer": {
             "type": "composer",
             "url": "https:\/\/packagist.orocrm.com"
+        },
+        "platform-enterprise": {
+            "type": "vcs",
+            "url": "https://github.com/orocrm/platform-enterprise.git"
         }
     },
     "require": {
-        "oro\/platform-enterprise": "2.x-dev",
+        "oro\/platform-enterprise": "2.0.*",
         "oro\/platform-serialised-fields": "2.0.*",
-        "oro\/calendar-bundle": "2.0.0"
+        "oro\/calendar-bundle": "2.0.*"
     },
     "require-dev": {
         "sensio\/generator-bundle": "3.1.2",
