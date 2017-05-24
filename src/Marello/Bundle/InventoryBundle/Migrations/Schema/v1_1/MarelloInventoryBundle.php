@@ -52,6 +52,7 @@ class MarelloInventoryBundle implements Migration
      */
     protected function addMarelloInventoryWarehouseTypeForeignKeys(Schema $schema)
     {
+        $table = $schema->createTable('marello_inventory_wh_type');
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_inventory_wh_type'),
             ['warehouse_type'],
