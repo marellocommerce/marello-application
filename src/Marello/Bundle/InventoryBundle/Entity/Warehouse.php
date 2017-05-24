@@ -69,10 +69,10 @@ class Warehouse extends ExtendWarehouse
     protected $address = null;
 
     /**
-     * @var Warehouse
+     * @var WarehouseType
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\WarehouseType")
-     * @ORM\JoinColumn(name="warehouseType", referencedColumnName="name")
+     * @ORM\JoinColumn(name="warehouse_type", referencedColumnName="name")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={

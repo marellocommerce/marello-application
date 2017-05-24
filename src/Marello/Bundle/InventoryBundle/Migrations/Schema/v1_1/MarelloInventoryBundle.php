@@ -18,14 +18,14 @@ class MarelloInventoryBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        /** Tables generation **/
+        /** Table generation **/
         $this->createMarelloInventoryWarehouseTypeTable($schema);
 
         /** Update existing table */
-        $this->createMarelloInventoryWarehouseTypeTable($schema);
+        $this->updateMarelloInventoryWarehouseTable($schema);
 
-        /** update  */
-        $this->createMarelloInventoryWarehouseTypeTable($schema);
+        /** update foreign key for warehouse table */
+        $this->addMarelloInventoryWarehouseTypeForeignKeys($schema);
 
     }
 
@@ -46,22 +46,6 @@ class MarelloInventoryBundle implements Migration
     }
 
     /**
-     * Add marello_inventory_wh_type foreign keys.
-     *
-     * @param Schema $schema
-     */
-    protected function addMarelloInventoryWarehouseTypeForeignKeys(Schema $schema)
-    {
-        $table = $schema->createTable('marello_inventory_wh_type');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_inventory_wh_type'),
-            ['warehouse_type'],
-            ['name'],
-            ['onDelete' => null, 'onUpdate' => null]
-        );
-    }
-
-    /**
      * Update existing Warehouse table
      * @param Schema $schema
      */
@@ -70,5 +54,21 @@ class MarelloInventoryBundle implements Migration
         $table = $schema->getTable('marello_inventory_warehouse');
         $table->addColumn('warehouse_type', 'string', ['notnull' => false, 'length' => 32]);
         $table->addIndex(['warehouse_type']);
+    }
+
+    /**
+     * Add marello_inventory_wh_type foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryWarehouseTypeForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_warehouse');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_wh_type'),
+            ['warehouse_type'],
+            ['name'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
     }
 }

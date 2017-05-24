@@ -46,13 +46,13 @@ class LoadWarehouseTypeData extends AbstractFixture implements DependentFixtureI
      */
     public function loadWarehouseTypes()
     {
-//        foreach ($this->data as $name => $label) {
-//            $type = new WarehouseType($name);
-//            $type->setLabel($label);
-//            $this->manager->persist($type);
-//            $this->setReference('warehouse_type_'.$name, $type);
-//        }
-//
-//        $this->manager->flush();
+        foreach ($this->data as $name => $label) {
+            $type = new WarehouseType($name);
+            $type->setLabel($label);
+            $this->manager->persist($type);
+            $this->setReference('warehouse_type_'.$name, $type);
+        }
+
+        $this->manager->flush();
     }
 }

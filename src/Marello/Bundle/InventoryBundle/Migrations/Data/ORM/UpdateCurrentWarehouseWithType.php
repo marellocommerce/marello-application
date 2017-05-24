@@ -37,10 +37,10 @@ class UpdateCurrentWarehouseWithType extends AbstractFixture implements Dependen
      */
     public function updateCurrentWarehouse()
     {
-//        $defaultWarehouse = $this->manager->getRepository(Warehouse::class)->getDefault();
-//        $warehouseType = $this->getReference('warehouse_type_global');
-//        $defaultWarehouse->setWarehouseType($warehouseType);
-//        $this->manager->persist();
-//        $this->manager->flush();
+        $defaultWarehouse = $this->manager->getRepository(Warehouse::class)->getDefault();
+        $warehouseType = $this->getReference('warehouse_type_global');
+        $defaultWarehouse->setWarehouseType($warehouseType);
+        $this->manager->persist($defaultWarehouse);
+        $this->manager->flush();
     }
 }

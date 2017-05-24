@@ -29,11 +29,16 @@ class MarelloInventoryBundleInstaller implements Installation
         $this->createMarelloInventoryItemTable($schema);
         $this->createMarelloInventoryStockLevelTable($schema);
         $this->createMarelloInventoryWarehouseTable($schema);
+        $this->createMarelloInventoryWarehouseTypeTable($schema);
+
+        /** Update existing table */
+        $this->updateMarelloInventoryWarehouseTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloInventoryItemForeignKeys($schema);
         $this->addMarelloInventoryStockLevelForeignKeys($schema);
         $this->addMarelloInventoryWarehouseForeignKeys($schema);
+        $this->addMarelloInventoryWarehouseTypeForeignKeys($schema);
     }
 
     /**
@@ -95,6 +100,22 @@ class MarelloInventoryBundleInstaller implements Installation
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['address_id'], 'uniq_15597d1f5b7af75');
         $table->addIndex(['owner_id'], 'idx_15597d17e3c61f9', []);
+    }
+
+    /**
+     * Create marello_inventory_wh_type table
+     *
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryWarehouseTypeTable(Schema $schema)
+    {
+        if (!$schema->hasTable('marello_inventory_wh_type')) {
+            $table = $schema->createTable('marello_inventory_wh_type');
+            $table->addColumn('name', 'string', ['length' => 32]);
+            $table->addColumn('label', 'string', ['length' => 255]);
+            $table->setPrimaryKey(['name']);
+            $table->addUniqueIndex(['label'], '');
+        }
     }
 
     /**
@@ -165,6 +186,33 @@ class MarelloInventoryBundleInstaller implements Installation
             $schema->getTable('marello_address'),
             ['address_id'],
             ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * Update existing Warehouse table
+     * @param Schema $schema
+     */
+    protected function updateMarelloInventoryWarehouseTable(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_warehouse');
+        $table->addColumn('warehouse_type', 'string', ['notnull' => false, 'length' => 32]);
+        $table->addIndex(['warehouse_type']);
+    }
+
+    /**
+     * Add marello_inventory_wh_type foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryWarehouseTypeForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_warehouse');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_wh_type'),
+            ['warehouse_type'],
+            ['name'],
             ['onDelete' => null, 'onUpdate' => null]
         );
     }
