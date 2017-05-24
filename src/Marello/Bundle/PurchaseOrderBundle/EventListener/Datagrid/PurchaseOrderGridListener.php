@@ -43,23 +43,24 @@ class PurchaseOrderGridListener
     {
         $config = $event->getConfig();
 
-        $dataIn = $event->getDatagrid()->getParameters()->get('data_in');
-        $dataNotIn = $event->getDatagrid()->getParameters()->get('data_not_in');
+        $params = $event->getDatagrid()->getParameters()->get('_parameters');
 
+        $dataIn = $params['data_in'];
+        $dataNotIn = $params['data_not_in'];
 
         if (is_array($dataIn) && is_array($dataNotIn)) {
             $dataInStr = implode($dataIn, ',');
             $dataNotInStr = implode($dataNotIn, ',');
 
-            $config->offsetAddToArrayByPath('source.query.select', [
-            "(CASE WHEN p.id IN (".$dataInStr.") AND p.id NOT IN (".$dataNotInStr.") THEN true ELSE false END) AS hasProduct
-                "
-            ]);
-        }
+            if ($dataInStr != '' || $dataNotInStr != '') {
 
-//
-//
-//
+                $config->offsetAddToArrayByPath('source.query.select', [
+                    "(CASE WHEN p.id IN (".$dataInStr.") AND p.id NOT IN (".$dataNotInStr.") THEN true ELSE false END) AS hasProduct
+                "
+                ]);
+
+            }
+        }
 //
 //        $config->offsetSetByPath('source.bind_parameters',null);
     }

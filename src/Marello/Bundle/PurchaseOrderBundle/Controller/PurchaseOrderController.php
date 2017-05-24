@@ -153,7 +153,8 @@ class PurchaseOrderController extends Controller
             );
         }
 
-        return $this->redirectToRoute('marello_purchaseorder_purchaseorder_create');
+        $this->addFlash('error', $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.not_saved'));
+        return $this->redirectToRoute('marello_purchaseorder_purchaseorder_index');
     }
 
     /**

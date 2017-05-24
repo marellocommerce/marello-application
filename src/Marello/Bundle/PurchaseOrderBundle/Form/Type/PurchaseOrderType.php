@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -63,11 +64,30 @@ class PurchaseOrderType extends AbstractType
                 'itemsAdditional',
                 PurchaseOrderItemCollectionType::NAME,
                 [
-                    'mapped'                => false,
+                    'mapped'             => false,
                     'cascade_validation' => true,
                 ]
             )
         ;
+
+        /**
+         * Add purchase order items that are not mapped in the form
+         */
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+
+            $form = $event->getForm();
+            $purchaseOrder = $event->getData();
+
+            /** @var PurchaseOrderItem $item */
+            foreach ($form->get('itemsAdvice')->getData() as $item) {
+                $purchaseOrder->addItem($item);
+            }
+
+            /** @var PurchaseOrderItem $item */
+            foreach ($form->get('itemsAdditional')->getData() as $item) {
+                $purchaseOrder->addItem($item);
+            }
+        });
     }
 
     /**

@@ -100,6 +100,14 @@ class PurchaseOrderItem
     }
 
     /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('#%s', $this->productName);
+    }
+
+    /**
      * @return int
      */
     public function getId()
