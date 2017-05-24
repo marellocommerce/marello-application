@@ -8,12 +8,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseData as BaseWarehouseData;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 
 class LoadWarehouseData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -33,15 +33,13 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Warehouse 13',
             'default'       => false,
             'address'       => [
-                [
-                    'country' => 'US',
-                    'street' => '2875 Hartway Street',
-                    'city' => 'Univille',
-                    'state' => 'SD',
-                    'postalCode' => '57078',
-                    'phone' => '605-857-1824',
-                    'company' => 'Marello'
-                ]
+                'country' => 'US',
+                'street' => '2875 Hartway Street',
+                'city' => 'Univille',
+                'state' => 'SD',
+                'postalCode' => '57078',
+                'phone' => '605-857-1824',
+                'company' => 'Marello'
             ],
             'type'          => 'global'
         ],
@@ -49,15 +47,13 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'name'          => 'Flagship Store',
             'default'       => false,
             'address'       => [
-                [
-                    'country' => 'US',
-                    'street' => '475 5th Avenue',
-                    'city' => 'New York',
-                    'state' => 'NY',
-                    'postalCode' => '10017',
-                    'phone' => '917-536-4267',
-                    'company' => 'Marello'
-                ]
+                'country' => 'US',
+                'street' => '475 5th Avenue',
+                'city' => 'New York',
+                'state' => 'NY',
+                'postalCode' => '10017',
+                'phone' => '917-536-4267',
+                'company' => 'Marello'
             ],
             'type'          => 'fixed'
         ],
@@ -127,7 +123,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
         }
 
         $type = $this->getWarehouseType($data['type']);
-        $warehouse->setType($type);
+        $warehouse->setWarehouseType($type);
         
         return $warehouse;
     }
@@ -139,8 +135,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
      */
     private function getWarehouseType($type)
     {
-        $warehouseTypeClass = ExtendHelper::buildEnumValueClassName('marelloenterprise_warehouse_type');
-        return $this->manager->getRepository($warehouseTypeClass)->find($type);
+        return $this->manager->getRepository(WarehouseType::class)->find($type);
     }
 
     /**
