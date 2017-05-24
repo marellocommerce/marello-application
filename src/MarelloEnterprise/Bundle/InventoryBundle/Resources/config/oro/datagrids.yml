@@ -7,18 +7,26 @@ datagrids:
                 select:
                     - w.id
                     - w
+                    - wt.label as warehouseType
                 from:
                     - { table: MarelloInventoryBundle:Warehouse, alias: w }
+                join:
+                    left:
+                        - { join: w.warehouseType, alias: wt }
         columns:
             label:
-                label: marello.inventory.warehouse.label.label
+                label:              marello.inventory.warehouse.label.label
+            warehouseType:
+                label:              marello.inventory.warehouse.warehousetype.entity_label
+                frontend_type:      string
             default:
-                label: marello.inventory.warehouse.default.label
-                frontend_type: boolean
+                label:              marello.inventory.warehouse.default.label
+                frontend_type:      boolean
         sorters:
             columns:
-                label:            { data_name: w.label }
-                default:          { data_name: w.default }
+                label:              { data_name: w.label }
+                warehouseType:      { data_name: wt.label }
+                default:            { data_name: w.default }
             default:
                 label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
@@ -26,6 +34,12 @@ datagrids:
                 label:
                     type:             string
                     data_name:        w.label
+                warehouseType:
+                    type: entity
+                    data_name: wt
+                    options:
+                        field_options:
+                            class: Marello\Bundle\InventoryBundle\Entity\WarehouseType
                 default:
                     type:             boolean
                     data_name:        w.default
