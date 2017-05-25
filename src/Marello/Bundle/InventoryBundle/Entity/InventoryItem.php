@@ -70,7 +70,8 @@ class InventoryItem
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "excluded"=true
+     *              "order"=20,
+     *              "full"=true,
      *          }
      *      }
      * )

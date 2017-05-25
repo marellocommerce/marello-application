@@ -33,7 +33,6 @@ class Warehouse extends ExtendWarehouse
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
-     *
      * @var int
      */
     protected $id;
@@ -47,7 +46,13 @@ class Warehouse extends ExtendWarehouse
 
     /**
      * @ORM\Column(type="boolean", nullable=false, name="is_default")
-     *
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      * @var bool
      */
     protected $default;
@@ -57,6 +62,13 @@ class Warehouse extends ExtendWarehouse
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $owner;
 
@@ -65,6 +77,14 @@ class Warehouse extends ExtendWarehouse
      *
      * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=40,
+     *              "full"=true,
+     *          }
+     *      }
+     * )
      */
     protected $address = null;
 
@@ -76,7 +96,8 @@ class Warehouse extends ExtendWarehouse
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "excluded"=true
+     *              "order"=50,
+     *              "full"=true,
      *          }
      *      }
      * )
