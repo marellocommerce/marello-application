@@ -11,6 +11,11 @@ marello:
             id.label:               Id
             owner.label:            Owner
 
+            warehousetype:
+                entity_label:       Warehouse Type
+                label.label:        Label
+                name.label:         Name
+
             controller:
                 message.saved:      Warehouse saved
 
