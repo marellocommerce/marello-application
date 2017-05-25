@@ -1,5 +1,5 @@
-marelloenterprise_inventory_bundle:
-    resource: @MarelloEnterpriseInventoryBundle/Controller
+marelloenterprise_inventory_warehouse:
+    resource: "@MarelloEnterpriseInventoryBundle/Controller/WarehouseController.php"
     type:     annotation
     prefix:   /marello/inventory
 

@@ -23,6 +23,10 @@ class DefaultWarehouseSubscriber implements EventSubscriber
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     * @param PreUpdateEventArgs $args
+     */
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -37,6 +41,10 @@ class DefaultWarehouseSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * {@inheritdoc}
+     * @param LifecycleEventArgs $args
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
@@ -48,6 +56,10 @@ class DefaultWarehouseSubscriber implements EventSubscriber
         $this->resetDefault($args->getEntityManager());
     }
 
+    /**
+     * reset default Warehouse
+     * @param EntityManager $em
+     */
     protected function resetDefault(EntityManager $em)
     {
         $qb = $em->createQueryBuilder();

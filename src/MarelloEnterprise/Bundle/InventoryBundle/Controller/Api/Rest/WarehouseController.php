@@ -27,7 +27,7 @@ class WarehouseController extends RestController implements ClassResourceInterfa
      * @ApiDoc(
      *      description="Delete warehouse from application"
      * )
-     * @Security\AclAncestor("marello_inventory_warehouse_delete")
+     * @Security\AclAncestor("marelloenterprise_inventory_warehouse_delete")
      * @return Response
      */
     public function deleteAction($id)

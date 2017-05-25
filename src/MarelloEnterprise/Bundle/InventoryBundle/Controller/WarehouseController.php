@@ -4,26 +4,25 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Controller\WarehouseController as BaseController;
 
 /**
  * @Config\Route("/warehouse")
  */
-class WarehouseController extends Controller
+class WarehouseController extends BaseController
 {
     /**
-     * @Config\Route("/")
+     * @Config\Route("/", name="marelloenterprise_inventory_warehouse_index")
      * @Config\Method("GET")
      * @Config\Template
-     * @AclAncestor("marello_inventory_warehouse_view")
+     * @AclAncestor("marelloenterprise_inventory_warehouse_view")
      */
     public function indexAction()
     {
@@ -36,7 +35,7 @@ class WarehouseController extends Controller
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template("@MarelloEnterpriseInventory/Warehouse/update.html.twig")
-     * @AclAncestor("marello_inventory_warehouse_create")
+     * @AclAncestor("marelloenterprise_inventory_warehouse_create")
      *
      * @param Request $request
      *
