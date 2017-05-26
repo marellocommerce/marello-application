@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce0560c2cf039348d2f697baf900322e",
+    "content-hash": "50fe52568687a4c1d5cbbc8e90c69ead",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -6475,6 +6475,51 @@
             "homepage": "https://github.com/orocommerce/orocommerce"
         },
         {
+            "name": "oro/commerce-infinitepay",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../package/infinitepay",
+                "reference": "a2e50c345d48202a1a9f57d34dc8ea87b41d5c0b",
+                "shasum": null
+            },
+            "require": {
+                "besimple/soap-client": "^0.2.6",
+                "oro/commerce": "1.x-dev",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Oro\\Bundle\\InfinitePayBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocommerce.com"
+                }
+            ],
+            "description": "Oro InfinitePay Integration",
+            "homepage": "https://github.com/orocrm/OroInfinitePayBundle.git",
+            "keywords": [
+                "InfinitePay",
+                "Integration",
+                "Oro"
+            ]
+        },
+        {
             "name": "oro/commerce-wirecard",
             "version": "dev-master",
             "dist": {
@@ -7125,51 +7170,6 @@
                 "type"
             ],
             "time": "2017-02-17T16:39:21+00:00"
-        },
-        {
-            "name": "oro/infinitepay",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "../../package/infinitepay",
-                "reference": "cf7310574de624ee3a38015d0da08ef02251c752",
-                "shasum": null
-            },
-            "require": {
-                "besimple/soap-client": "^0.2.6",
-                "oro/commerce": "1.x-dev",
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\InfinitePayBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocommerce.com"
-                }
-            ],
-            "description": "Oro InfinitePay Integration",
-            "homepage": "https://github.com/orocrm/OroInfinitePayBundle.git",
-            "keywords": [
-                "InfinitePay",
-                "Integration",
-                "Oro"
-            ]
         },
         {
             "name": "oro/marketing",
@@ -12972,7 +12972,7 @@
         "oro/commerce-crm-ee": 20,
         "oro/commerce-wirecard": 20,
         "oro/commerce-apruve": 20,
-        "oro/infinitepay": 20,
+        "oro/commerce-infinitepay": 20,
         "sebastian/phpcpd": 20
     },
     "prefer-stable": true,
