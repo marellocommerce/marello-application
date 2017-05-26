@@ -7,7 +7,7 @@ navigation:
                 extras:
                     routes: ['marello_inventory_warehouse_*']
             inventory:
-                label: marello.inventory.label
+                label: marello.inventory.management.label
                 route: marello_inventory_inventory_index
                 extras:
                     routes: ['marello_inventory_inventory_*', 'marello_inventory_stocklevel_*']

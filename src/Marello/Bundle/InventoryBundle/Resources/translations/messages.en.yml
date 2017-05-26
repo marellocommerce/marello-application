@@ -1,27 +1,27 @@
 marello:
     inventory:
-        label:                      Inventory
-        variant_inventory_label:    Variant Inventory
+        label:                          Inventory
+        variant_inventory_label:        Variant Inventory
         warehouse:
-            entity_label:           Warehouse
-            entity_plural_label:    Warehouses
-            label.label:            Label
-            default.label:          Default
-            address.label:          Address
-            id.label:               Id
-            owner.label:            Owner
+            entity_label:               Warehouse
+            entity_plural_label:        Warehouses
+            label.label:                Label
+            default.label:              Default
+            address.label:              Address
+            id.label:                   Id
+            owner.label:                Owner
 
             warehousetype:
-                entity_label:       Warehouse Type
-                label.label:        Label
-                name.label:         Name
+                entity_label:           Warehouse Type
+                label.label:            Label
+                name.label:             Name
 
             controller:
-                message.saved:      Warehouse saved
+                message.saved:          Warehouse saved
 
         model:
             warehouse:
-                adjustment.label:   Adjustment
+                adjustment.label:       Adjustment
 
         inventoryitem:
             entity_label:               Inventory Item
@@ -33,20 +33,21 @@ marello:
         stocklevel:
             entity_label:               Inventory Level
             entity_plural_label:        Inventory Levels
-            id.label:                           Id
-            stock.label:                        Real Stock
-            allocated_stock.label:              Allocated Stock
-            virtual_stock.label:                Virtual Stock
-            stock_diff.label:                   Real Stock Change
-            allocated_stock_diff.label:         Allocated Stock Change
-            virtual_stock_diff.label:           Virtual Stock Change
-            user.label:                         User
-            subject.label:                      Related Subject
-            change_trigger.label:               Trigger
-            previous_level.label:               Previous Stock Level
-            subject_id.label:                   Subject Id
-            subject_type.label:                 Subject Type
-            log.label:                          Stock Level Log
+            id.label:                   Id
+            stock.label:                Real Stock
+            allocated_stock.label:      Allocated Stock
+            virtual_stock.label:        Virtual Stock
+            stock_diff.label:           Real Stock Change
+            allocated_stock_diff.label: Allocated Stock Change
+            virtual_stock_diff.label:   Virtual Stock Change
+            user.label:                 User
+            subject.label:              Related Subject
+            change_trigger.label:       Trigger
+            previous_level.label:       Previous Stock Level
+            subject_id.label:           Subject Id
+            subject_type.label:         Subject Type
+            log.label:                  Stock Level Log
 
-        information.label:            Inventory information
-        movements.label:              Inventory movements
+        information.label:              Inventory Information
+        movements.label:                Inventory Movements
+        management.label:               Inventory Management
