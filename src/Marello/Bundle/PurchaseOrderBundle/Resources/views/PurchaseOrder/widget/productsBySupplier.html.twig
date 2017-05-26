@@ -63,12 +63,9 @@
                                 'label': nameFormatter.format(model.toJSON()),
                                 'extraData': [
                                     {
-                                        'label': 'Name',
-                                        'value': model.get('name')
-                                    },
-                                    {
-                                        'label': 'Sku',
-                                        'value': model.get('sku')
+                                        'id': model.get('id'),
+                                        'label': 'product',
+                                        'value': model.get('sku') + ' - ' + model.get('name')
                                     }
                                 ]
                             });

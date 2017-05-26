@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% form_theme form with 'MarelloPurchaseOrderBundle:Form:fields.html.twig' %}
 
 {% oro_title_set({params : {"%sku%": entity.sku|default('N/A'|trans) , "%name%": (entity.id ? entity.defaultName.string : '')|default('N/A'|trans) } }) %}
 
@@ -32,12 +32,24 @@
 {% block content_data %}
     {% set id = 'purchase-order-create-step-two' %}
 
-    {% set products %}
-        <div class="purchaseorder-items"
+    {% set itemsAdvice %}
+        <div class="purchaseorder-items-advice"
              data-page-component-module="oroui/js/app/components/view-component"
              data-page-component-options="{{ {
                  view: 'marellopurchaseorder/js/app/views/purchaseorder-items-view',
-                 items: items|default({})
+                 items: itemsAdvice|default({})
+             }|json_encode }}">
+            {{ form_widget(form.itemsAdvice) }}
+            {{ form_errors(form.itemsAdvice) }}
+        </div>
+    {% endset %}
+
+    {% set itemsAdditional %}
+        <div class="purchaseorder-items-additional"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellopurchaseorder/js/app/views/purchaseorder-items-view',
+                 items: itemsAdditional|default({})
              }|json_encode }}">
             {{ form_widget(form.itemsAdditional) }}
             {{ form_errors(form.itemsAdditional) }}
@@ -61,7 +73,7 @@
             'subblocks': [{
                 'title': 'marello.purchaseorder.select_products_advice'|trans,
                 'data': [
-                    form_widget(form.itemsAdvice),
+                    itemsAdvice,
                 ]
             }]
         },
@@ -71,7 +83,7 @@
             'subblocks': [{
                 'title': 'marello.purchaseorder.select_products_additional'|trans,
                 'data': [
-                    products
+                    itemsAdditional
                 ]
             }]
         }

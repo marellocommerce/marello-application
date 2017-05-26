@@ -8,10 +8,15 @@ services:
     # Form Types
     marello_purchase_order.form.type.purchase_order:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderType
+        tags:
+            - { name: form.type, alias: marello_purchase_order }
+
+    marello_purchase_order.form.type.purchase_order_create_step_two:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType
         arguments:
             - "@router"
         tags:
-            - { name: form.type, alias: marello_purchase_order }
+            - { name: form.type, alias: marello_purchase_order_create_step_two }
 
     marello_purchase_order.form.type.purchase_order_supplier:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderSupplierType
@@ -23,10 +28,20 @@ services:
         tags:
             - { name: form.type, alias: marello_purchase_order_item }
 
+    marello_purchase_order.form.type.purchase_order_item_advice:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemAdviceType
+        tags:
+            - { name: form.type, alias: marello_purchase_order_item_advice }
+
     marello_purchase_order.form.type.purchase_order_item_collection:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemCollectionType
         tags:
             - { name: form.type, alias: marello_purchase_order_item_collection }
+
+    marello_purchase_order.form.type.purchase_order_item_advice_collection:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemAdviceCollectionType
+        tags:
+            - { name: form.type, alias: marello_purchase_order_item_advice_collection }
 
     marello_purchase_order.form.type.partial_receive:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PartialReceiveType
@@ -53,6 +68,13 @@ services:
         arguments:
             - "marello_purchase_order"
 
+    marello_purchase_order.form.purchase_order_create_step_two:
+        class: Symfony\Component\Form\FormInterface
+        factory: ["@form.factory", create]
+        scope: request
+        arguments:
+            - "marello_purchase_order_create_step_two"
+
     marello_purchase_order.form.purchase_order_supplier:
         class: Symfony\Component\Form\FormInterface
         factory: ["@form.factory", create]
@@ -65,7 +87,7 @@ services:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateHandler
         scope: request
         arguments:
-            - "@marello_purchase_order.form.purchase_order"
+            - "@marello_purchase_order.form.purchase_order_create_step_two"
             - "@request"
             - "@doctrine"
             - "@security.token_storage"
