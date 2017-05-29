@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a90f25d5134a4a5eb681826a79f14d8",
+    "content-hash": "ce6a91eeb041869272100211c4a518ee",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -418,12 +418,12 @@
             "version": "0.3.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cloudflare/backgrid.git",
+                "url": "https://github.com/wyuenho/backgrid.git",
                 "reference": "9a45dbc4a2af4a555e8274b7cc1a966a7586cfea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/backgrid/zipball/9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
+                "url": "https://api.github.com/repos/wyuenho/backgrid/zipball/9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
                 "reference": "9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
                 "shasum": ""
             },
@@ -460,12 +460,12 @@
             "version": "v0.3.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cloudflare/backgrid-paginator.git",
+                "url": "https://github.com/wyuenho/backgrid-paginator.git",
                 "reference": "77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/backgrid-paginator/zipball/77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
+                "url": "https://api.github.com/repos/wyuenho/backgrid-paginator/zipball/77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
                 "reference": "77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
                 "shasum": ""
             },
@@ -968,12 +968,12 @@
             "version": "3.37.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery-form/form.git",
+                "url": "https://github.com/malsup/form.git",
                 "reference": "5e7391bca903586137b75304a6352cb2e60fbb22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery-form/form/zipball/5e7391bca903586137b75304a6352cb2e60fbb22",
+                "url": "https://api.github.com/repos/malsup/form/zipball/5e7391bca903586137b75304a6352cb2e60fbb22",
                 "reference": "5e7391bca903586137b75304a6352cb2e60fbb22",
                 "shasum": ""
             },
@@ -1043,12 +1043,12 @@
             "version": "1.11.1",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jquery-validation/jquery-validation.git",
+                "url": "https://github.com/jzaefferer/jquery-validation.git",
                 "reference": "3b39aec630e2ecd336bc36d457d1a645bd91660f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery-validation/jquery-validation/zipball/3b39aec630e2ecd336bc36d457d1a645bd91660f",
+                "url": "https://api.github.com/repos/jzaefferer/jquery-validation/zipball/3b39aec630e2ecd336bc36d457d1a645bd91660f",
                 "reference": "3b39aec630e2ecd336bc36d457d1a645bd91660f",
                 "shasum": ""
             },
@@ -4901,7 +4901,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -4960,7 +4960,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -6190,6 +6190,50 @@
             "homepage": "https://github.com/orocommerce/orocommerce"
         },
         {
+            "name": "oro/commerce-apruve",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../package/apruve",
+                "reference": "71e8cc38cc3c040cc8464b7964434d0ce5f13047",
+                "shasum": null
+            },
+            "require": {
+                "oro/commerce": "1.x-dev",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Oro\\Bundle\\ApruveBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "https://www.orocommerce.com/"
+                }
+            ],
+            "description": "OroCommerce Apruve Integration",
+            "homepage": "https://github.com/orocommerce/OroApruveBundle.git",
+            "keywords": [
+                "Apruve",
+                "Integration",
+                "Oro"
+            ]
+        },
+        {
             "name": "oro/commerce-crm",
             "version": "dev-master",
             "dist": {
@@ -6310,7 +6354,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/wirecard",
-                "reference": "d84545826d2a30ba04bd3ebef3718fc3bc751862",
+                "reference": "ef794da0800993708c0f946d991ce06b1ecf443f",
                 "shasum": null
             },
             "require": {
@@ -6339,10 +6383,11 @@
             "authors": [
                 {
                     "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
+                    "homepage": "http://www.orocommerce.com"
                 }
             ],
-            "description": "OroCommerce Wirecard integration"
+            "description": "OroCommerce Wirecard integration",
+            "homepage": "https://github.com/orocommerce/OroWirecardBundle.git"
         },
         {
             "name": "oro/crm",
@@ -10844,7 +10889,7 @@
                 {
                     "name": "Anthon Pang",
                     "email": "apang@softwaredevelopment.ca",
-                    "role": "Fork maintainer"
+                    "role": "Fork Maintainer"
                 }
             ],
             "description": "PHP WebDriver for Selenium 2",
@@ -12755,6 +12800,7 @@
         "oro/customer-portal": 20,
         "oro/commerce-crm-ee": 20,
         "oro/commerce-wirecard": 20,
+        "oro/commerce-apruve": 20,
         "sebastian/phpcpd": 20
     },
     "prefer-stable": true,
