@@ -13,6 +13,9 @@ define(['backbone'],
                 link: null,
                 label: null,
                 isDefault: false,
+                sku: null,
+                name: null,
+                orderAmount: null,
                 extraData: []
             }
         });

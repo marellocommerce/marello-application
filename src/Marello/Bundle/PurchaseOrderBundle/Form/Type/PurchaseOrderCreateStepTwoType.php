@@ -47,14 +47,6 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                     'create_enabled' => false,
                 ]
             )
-//            ->add(
-//                'itemsAdvice',
-//                PurchaseOrderItemAdviceCollectionType::NAME,
-//                [
-//                    'mapped'             => false,
-//                    'cascade_validation' => true,
-//                ]
-//            )
             ->add(
                 'itemsAdvice',
                 'oro_multiple_entity',
@@ -75,18 +67,33 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                     'cascade_validation' => true,
                 ]
             )
+            ->add(
+                'items',
+                PurchaseOrderItemCollectionType::NAME,
+                [
+                    'mapped'             => false,
+                    'cascade_validation' => true,
+                ]
+            )
         ;
+
+        /**
+         * Removes key for validation
+         */
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $form = $event->getForm();
+            $form->remove('itemsAdvice');
+        });
 
         /**
          * Add purchase order items that are not mapped in the form
          */
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-
             $form = $event->getForm();
             $purchaseOrder = $event->getData();
 
             /** @var PurchaseOrderItem $item */
-            foreach ($form->get('itemsAdvice')->getData() as $item) {
+            foreach ($form->get('items')->getData() as $item) {
                 $purchaseOrder->addItem($item);
             }
 
@@ -115,6 +122,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => PurchaseOrder::class,
+            'allow_extra_fields' => true
         ]);
     }
 

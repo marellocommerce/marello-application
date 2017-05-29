@@ -61,11 +61,15 @@
                                 'id': model.get('id'),
                                 'link': routing.generate('marello_product_view', {id: model.get('id')}),
                                 'label': nameFormatter.format(model.toJSON()),
+                                'isDefault': false,
                                 'extraData': [
                                     {
                                         'id': model.get('id'),
                                         'label': 'product',
-                                        'value': model.get('sku') + ' - ' + model.get('name')
+                                        'value': model.get('sku') + ' - ' + model.get('name'),
+                                        'name': model.get('name'),
+                                        'sku': model.get('sku'),
+                                        'orderAmount': model.get('orderAmount'),
                                     }
                                 ]
                             });

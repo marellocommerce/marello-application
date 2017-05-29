@@ -74,7 +74,7 @@ define(['underscore', 'backbone', 'oro/dialog-widget'
             var data = this.model.toJSON();
             data.hasDefault = this.options.hasDefault;
             data.name = this.options.name;
-            this.$el = $('.entities');
+            // this.$el = $('.entities');
             this.$el.append(this.template(data));
             this.$el.find('a.entity-info').click(_.bind(this.viewDetails, this));
             this.toggleDefault();
