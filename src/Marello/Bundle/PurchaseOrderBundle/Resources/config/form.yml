@@ -28,20 +28,10 @@ services:
         tags:
             - { name: form.type, alias: marello_purchase_order_item }
 
-    marello_purchase_order.form.type.purchase_order_item_advice:
-        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemAdviceType
-        tags:
-            - { name: form.type, alias: marello_purchase_order_item_advice }
-
     marello_purchase_order.form.type.purchase_order_item_collection:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemCollectionType
         tags:
             - { name: form.type, alias: marello_purchase_order_item_collection }
-
-    marello_purchase_order.form.type.purchase_order_item_advice_collection:
-        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemAdviceCollectionType
-        tags:
-            - { name: form.type, alias: marello_purchase_order_item_advice_collection }
 
     marello_purchase_order.form.type.partial_receive:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PartialReceiveType
