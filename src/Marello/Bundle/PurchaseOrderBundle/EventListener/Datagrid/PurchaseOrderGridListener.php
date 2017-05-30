@@ -47,7 +47,7 @@ class PurchaseOrderGridListener
 
         $params = $event->getDatagrid()->getParameters()->get('_parameters');
 
-        if ($params && is_array($params) && key_exists('data_in', $params) && key_exists('data_out', $params)) {
+        if ($params && is_array($params) && key_exists('data_in', $params) && key_exists('data_not_in', $params)) {
             $dataIn = $params['data_in'];
             $dataNotIn = $params['data_not_in'];
 
@@ -55,13 +55,16 @@ class PurchaseOrderGridListener
                 $dataInStr = implode($dataIn, ',');
                 $dataNotInStr = implode($dataNotIn, ',');
 
-                if ($dataInStr != '' || $dataNotInStr != '') {
-
-                    $config->offsetAddToArrayByPath('source.query.select', [
-                        "(CASE WHEN p.id IN (".$dataInStr.") AND p.id NOT IN (".$dataNotInStr.") THEN true ELSE false END) AS hasProduct
-                "
+                if ($dataInStr != '') {
+                    $config->offsetAddToArrayByPath('source.query.where.and', [
+                        "p.id NOT IN (". $dataInStr .")"
                     ]);
+                }
 
+                if ($dataNotInStr != '') {
+                    $config->offsetAddToArrayByPath('source.query.where.and', [
+                        "p.id IN (". $dataNotInStr .")"
+                    ]);
                 }
             }
         }
@@ -74,18 +77,22 @@ class PurchaseOrderGridListener
     {
         $config = $event->getConfig();
 
-        $supplier = $event->getDatagrid()->getParameters()->get('supplier');
+        $supplierId = $event->getDatagrid()->getParameters()->get('supplierId');
 
-        if ($supplier) {
+        if ($supplierId) {
 
-            $config->offsetAddToArrayByPath('filters', [
-                'default' => [
-                    'preferredSupplier' => [
-                        'value' => $supplier->getName(),
-                        'type' => TextFilterType::TYPE_CONTAINS
+            $supplier = $this->entityManager->getRepository('MarelloSupplierBundle:Supplier')->find($supplierId);
+
+            if ($supplier) {
+                $config->offsetAddToArrayByPath('filters', [
+                    'default' => [
+                        'preferredSupplier' => [
+                            'value' => $supplier->getName(),
+                            'type' => TextFilterType::TYPE_CONTAINS
+                        ]
                     ]
-                ]
-            ]);
+                ]);
+            }
 
         }
     }

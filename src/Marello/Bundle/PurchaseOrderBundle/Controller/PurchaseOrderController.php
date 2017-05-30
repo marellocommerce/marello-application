@@ -207,7 +207,7 @@ class PurchaseOrderController extends Controller
     {
         return [
             'purchaseOrder' => $purchaseOrder,
-            'supplier' => $this->getDoctrine()->getRepository('MarelloSupplierBundle:Supplier')->find($this->get('request')->get('supplierId'))
+            'supplierId' => $this->get('request')->get('supplierId')
         ];
     }
 

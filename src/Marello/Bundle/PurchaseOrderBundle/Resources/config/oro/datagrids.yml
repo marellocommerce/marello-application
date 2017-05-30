@@ -119,11 +119,15 @@ datagrids:
                 where:
                     and:
                         - sup.name <> ''
+                        - 0 <> :supplierId
                         - s.name = 'enabled'                                          # Only select product with enabled status
                         - p.replenishment = 'never_out_of_stock'
 
                 having: SUM(l.inventory - l.allocatedInventory) < p.purchaseStockLevel  # Only products with virtual stock lower than required purchase stock level
                 groupBy: p.id
+
+            bind_parameters:
+                - supplierId
 
         columns:
             hasProduct:
@@ -210,20 +214,3 @@ datagrids:
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
-
-#        actions:
-#            view:
-#                type:          navigate
-#                label:         oro.grid.action.view
-#                link:          view_link
-#                icon:          eye
-#                acl_resource:  marello_product_view
-#                rowAction:     true
-#
-#        mass_actions:
-#            create_po:
-#                type: redirect
-#                route: marello_purchaseorder_purchaseorder_create
-#                label: Create PO
-#                icon: edit
-#                data_identifier: p.id

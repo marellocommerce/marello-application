@@ -5,8 +5,7 @@
     {% set params = {} %}
 
     {% set params = {
-        'purchaseOrder': purchaseOrder ? purchaseOrder.id : null,
-        'supplier':     supplier,
+        'supplierId':       supplierId,
         '_parameters': {
             'data_in':     app.request.get('added') ? app.request.get('added')|split(',') : [],
             'data_not_in': app.request.get('removed') ? app.request.get('removed')|split(','): []
