@@ -31,9 +31,11 @@ class PurchaseOrderGridListener
 
         $productIdsToExclude = $this->getProductsIdsInPendingPurchaseOrders();
 
-        $config->offsetAddToArrayByPath('source.query.where.and', [
-            "p.id NOT IN (". $productIdsToExclude .")"
-        ]);
+        if ($productIdsToExclude != '') {
+            $config->offsetAddToArrayByPath('source.query.where.and', [
+                "p.id NOT IN (". $productIdsToExclude .")"
+            ]);
+        }
     }
 
     /**
@@ -45,24 +47,24 @@ class PurchaseOrderGridListener
 
         $params = $event->getDatagrid()->getParameters()->get('_parameters');
 
-        $dataIn = $params['data_in'];
-        $dataNotIn = $params['data_not_in'];
+        if ($params && is_array($params) && key_exists('data_in', $params) && key_exists('data_out', $params)) {
+            $dataIn = $params['data_in'];
+            $dataNotIn = $params['data_not_in'];
 
-        if (is_array($dataIn) && is_array($dataNotIn)) {
-            $dataInStr = implode($dataIn, ',');
-            $dataNotInStr = implode($dataNotIn, ',');
+            if (is_array($dataIn) && is_array($dataNotIn)) {
+                $dataInStr = implode($dataIn, ',');
+                $dataNotInStr = implode($dataNotIn, ',');
 
-            if ($dataInStr != '' || $dataNotInStr != '') {
+                if ($dataInStr != '' || $dataNotInStr != '') {
 
-                $config->offsetAddToArrayByPath('source.query.select', [
-                    "(CASE WHEN p.id IN (".$dataInStr.") AND p.id NOT IN (".$dataNotInStr.") THEN true ELSE false END) AS hasProduct
+                    $config->offsetAddToArrayByPath('source.query.select', [
+                        "(CASE WHEN p.id IN (".$dataInStr.") AND p.id NOT IN (".$dataNotInStr.") THEN true ELSE false END) AS hasProduct
                 "
-                ]);
+                    ]);
 
+                }
             }
         }
-//
-//        $config->offsetSetByPath('source.bind_parameters',null);
     }
 
     /**
