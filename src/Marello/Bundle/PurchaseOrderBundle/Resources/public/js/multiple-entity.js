@@ -17,7 +17,7 @@ define(['underscore', 'routing', 'backbone', './multiple-entity/view', './multip
             defaultElement:            null,
             elementTemplate:           null,
             entitiesContainerSelector: '.entities',
-            itemsPerRow:               4,
+            itemsPerRow:               1,
             name:                      null,
             removedElement:            null,
             selectionUrl:              null,
