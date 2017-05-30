@@ -36,6 +36,7 @@
     "oro/commerce-crm-ee": "1.x-dev",
     "oro/commerce-wirecard": "1.x-dev",
     "oro/commerce-apruve": "1.x-dev",
+    "oro/commerce-dpd": "1.x-dev",
     "oro/commerce-infinitepay": "1.x-dev"
   },
   "require-dev": {
