@@ -16,10 +16,13 @@ use Symfony\Component\Form\FormView;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class PurchaseOrderCreateStepTwoType extends AbstractType
 {
     const NAME = 'marello_purchase_order_create_step_two';
+    const VALIDATION_MESSAGE = 'Purchase Order must contain at least one item';
 
     /**
      * @var Router
@@ -88,7 +91,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
         /**
          * Add purchase order items that are not mapped in the form
          */
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
             $purchaseOrder = $event->getData();
 
@@ -122,7 +125,18 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => PurchaseOrder::class,
-            'allow_extra_fields' => true
+            'allow_extra_fields' => true,
+            'constraints' => [
+                new Callback(function (PurchaseOrder $purchaseOrder, ExecutionContextInterface $context) {
+                    if ($purchaseOrder->getItems()->count() === 0) {
+                        $context
+                            ->buildViolation(self::VALIDATION_MESSAGE)
+                            ->atPath('items')
+                            ->addViolation()
+                        ;
+                    }
+                })
+            ]
         ]);
     }
 

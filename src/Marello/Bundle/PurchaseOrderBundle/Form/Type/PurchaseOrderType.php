@@ -8,10 +8,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class PurchaseOrderType extends AbstractType
 {
     const NAME = 'marello_purchase_order';
+    const VALIDATION_MESSAGE = 'Purchase Order must contain at least one item';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -40,6 +43,17 @@ class PurchaseOrderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => PurchaseOrder::class,
+            'constraints' => [
+                new Callback(function (PurchaseOrder $purchaseOrder, ExecutionContextInterface $context) {
+                    if ($purchaseOrder->getItems()->count() === 0) {
+                        $context
+                            ->buildViolation(self::VALIDATION_MESSAGE)
+                            ->atPath('items')
+                            ->addViolation()
+                        ;
+                    }
+                })
+            ]
         ]);
     }
 

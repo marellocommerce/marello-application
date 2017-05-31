@@ -128,6 +128,8 @@ datagrids:
 
             bind_parameters:
                 - supplierId
+#                - data_in
+#                - data_out
 
         columns:
             hasProduct:

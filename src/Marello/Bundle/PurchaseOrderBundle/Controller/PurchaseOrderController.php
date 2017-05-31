@@ -154,6 +154,9 @@ class PurchaseOrderController extends Controller
         }
 
         $this->addFlash('error', $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.not_saved'));
+        if (($e = $form->getErrorsAsString()) != '') {
+            $this->addFlash('error', $e);
+        }
         return $this->redirectToRoute('marello_purchaseorder_purchaseorder_index');
     }
 
@@ -186,6 +189,10 @@ class PurchaseOrderController extends Controller
                 $purchaseOrder
             );
         }
+
+//        if (($e = $handler->getForm()->getErrorsAsString()) != '') {
+//            $this->addFlash('error', $e);
+//        }
 
         return [
             'entity' => $purchaseOrder,
