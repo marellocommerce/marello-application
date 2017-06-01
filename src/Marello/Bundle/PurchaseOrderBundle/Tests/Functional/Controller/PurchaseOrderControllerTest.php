@@ -32,7 +32,7 @@ class PurchaseOrderControllerTest extends WebTestCase
     public function testViewAction()
     {
         /** @var PurchaseOrder $po */
-        $po = $this->getReference('marello-purchase-order-1');
+        $po = $this->getReference(LoadPurchaseOrderData::PURCHASE_ORDER_1_REF);
 
         $this->client->request(
             'GET',
@@ -46,7 +46,7 @@ class PurchaseOrderControllerTest extends WebTestCase
     public function testUpdateAction()
     {
         /** @var PurchaseOrder $po */
-        $po = $this->getReference('marello-purchase-order-1');
+        $po = $this->getReference(LoadPurchaseOrderData::PURCHASE_ORDER_2_REF);
 
         $this->client->request(
             'GET',
