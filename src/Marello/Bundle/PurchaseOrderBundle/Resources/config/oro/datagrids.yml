@@ -128,8 +128,6 @@ datagrids:
 
             bind_parameters:
                 - supplierId
-#                - data_in
-#                - data_out
 
         columns:
             hasProduct:
@@ -171,7 +169,7 @@ datagrids:
                 virtualStock:           { data_name: virtualStock }
                 orderAmount:            { data_name: orderAmount }
             default:
-                orderAmount: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                hasProduct: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 hasProduct:
@@ -200,7 +198,6 @@ datagrids:
                     type:             number
                     data_name:        orderAmount
                     filter_by_having: true
-
         properties:
             id: ~
             view_link:
@@ -216,3 +213,5 @@ datagrids:
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'
+            requireJSModules:
+                - marellopurchaseorder/js/datagrid/marello-purchase-order-item-candidates-builder

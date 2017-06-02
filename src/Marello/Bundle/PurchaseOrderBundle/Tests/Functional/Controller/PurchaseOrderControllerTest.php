@@ -73,10 +73,9 @@ class PurchaseOrderControllerTest extends WebTestCase
     }
 
     /** @test */
-    public function testCreateStepOneAction()
+    public function testCreateAllStepsAction()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_purchaseorder_purchaseorder_create'));
-
 
         $form    = $crawler->selectButton('Continue')->form();
         $formValues = $form->getPhpValues();
