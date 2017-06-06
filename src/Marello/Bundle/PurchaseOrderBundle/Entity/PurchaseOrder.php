@@ -85,6 +85,14 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      */
     protected $organization;
 
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="due_date", type="datetime", nullable=true)
+     */
+    protected $dueDate;
+
     /**
      * Creates order using products
      *
@@ -235,6 +243,28 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
         if (!$this->purchaseOrderNumber) {
             $this->setPurchaseOrderNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $dueDate
+     *
+     * @return mixed
+     */
+    public function setDueDate($dueDate)
+    {
+        $this->dueDate = $dueDate;
+
+        return $this;
+    }
+
+    /**
+     * @return \Datetime
+     */
+    public function getDueDate()
+    {
+        return $this->dueDate;
     }
 
     /**

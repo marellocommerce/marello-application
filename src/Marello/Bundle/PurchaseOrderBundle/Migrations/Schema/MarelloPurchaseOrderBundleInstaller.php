@@ -24,7 +24,7 @@ class MarelloPurchaseOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_3';
+        return 'v1_2_3';
     }
 
     /**
@@ -53,6 +53,7 @@ class MarelloPurchaseOrderBundleInstaller implements
         $table->addColumn('supplier_id', 'integer', ['notnull' => true]);
         $table->addColumn('organization_id', 'integer', []);
         $table->addColumn('purchase_order_number', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('due_date', 'datetime', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
