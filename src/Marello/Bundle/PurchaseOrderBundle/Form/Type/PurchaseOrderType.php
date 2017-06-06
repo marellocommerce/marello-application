@@ -36,6 +36,12 @@ class PurchaseOrderType extends AbstractType
                     'cascade_validation' => true,
                 ]
             )
+            ->add(
+                'dueDate', 'oro_date', [
+                    'required' => false,
+                    'label' => 'marello.purchaseorder.due_date.label',
+                ]
+            )
         ;
     }
 

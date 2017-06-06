@@ -32,18 +32,6 @@
 {% block content_data %}
     {% set id = 'purchase-order-create-step-two' %}
 
-    {#{% set itemsAdvice %}#}
-        {#<div class="purchaseorder-items-advice"#}
-             {#data-page-component-module="oroui/js/app/components/view-component"#}
-             {#data-page-component-options="{{ {#}
-                 {#view: 'marellopurchaseorder/js/app/views/purchaseorder-items-view',#}
-                 {#items: itemsAdvice|default({})#}
-             {#}|json_encode }}">#}
-            {#{{ form_widget(form.itemsAdvice) }}#}
-            {#{{ form_errors(form.itemsAdvice) }}#}
-        {#</div>#}
-    {#{% endset %}#}
-
     {% set itemsAdditional %}
         <div class="purchaseorder-items-additional"
              data-page-component-module="oroui/js/app/components/view-component"
@@ -63,7 +51,7 @@
             'subblocks': [{
                 'title': 'marello.purchaseorder.select_supplier'|trans,
                 'data': [
-                    form_widget(form.supplier),
+                    form_row(form.supplier),
                 ]
             }]
         },
@@ -84,6 +72,16 @@
                 'title': 'marello.purchaseorder.select_products_additional'|trans,
                 'data': [
                     itemsAdditional
+                ]
+            }]
+        },
+        {
+            'title': 'marello.purchaseorder.due_date.label'|trans,
+            'class': '',
+            'subblocks': [{
+                'title': 'marello.purchaseorder.due_date.label'|trans,
+                'data': [
+                    form_row(form.dueDate),
                 ]
             }]
         }

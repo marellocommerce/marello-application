@@ -6,7 +6,9 @@ marello:
         purchase_order_supplier.label:                  Supplier
         status.label:                                   Purchase Order Status
         purchase_order_date.label:                      Purchase Order Date
+        purchase_order_due_date.label:                  Purchase Order Due Date
         items.label:                                    Purchase Order Items
+        due_date.label:                                 Due date
         select_products:                                Products to include in new PO
         select_supplier:                                Choose a supplier
         items_advice:                                   Products from Advice

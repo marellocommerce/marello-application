@@ -23,6 +23,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
 {
     const NAME = 'marello_purchase_order_create_step_two';
     const VALIDATION_MESSAGE = 'Purchase Order must contain at least one item';
+    const VALIDATION_MESSAGE_DUE_DATE = 'Purchase Order due date must be today or greater';
 
     /**
      * @var Router
@@ -76,6 +77,12 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                 [
                     'mapped'             => false,
                     'cascade_validation' => true,
+                ]
+            )
+            ->add(
+                'dueDate', 'oro_date', [
+                    'required' => false,
+                    'label' => 'marello.purchaseorder.due_date.label',
                 ]
             )
         ;
@@ -132,6 +139,15 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                         $context
                             ->buildViolation(self::VALIDATION_MESSAGE)
                             ->atPath('items')
+                            ->addViolation()
+                        ;
+                    }
+                }),
+                new Callback(function (PurchaseOrder $purchaseOrder, ExecutionContextInterface $context) {
+                    if ($purchaseOrder->getDueDate() && $purchaseOrder->getDueDate() < new \DateTime('today')) {
+                        $context
+                            ->buildViolation(self::VALIDATION_MESSAGE_DUE_DATE)
+                            ->atPath('dueDate')
                             ->addViolation()
                         ;
                     }

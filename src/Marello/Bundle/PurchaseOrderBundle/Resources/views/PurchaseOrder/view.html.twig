@@ -34,6 +34,7 @@
                     {{ UI.renderProperty('marello.purchaseorder.purchase_order_number.label'|trans, entity.purchaseOrderNumber) }}
                     {{ UI.renderProperty('marello.purchaseorder.purchase_order_date.label'|trans, entity.createdAt|oro_format_datetime) }}
                     {{ UI.renderProperty('marello.purchaseorder.purchase_order_supplier.label'|trans, entity.supplier.name) }}
+                    {{ UI.renderProperty('marello.purchaseorder.purchase_order_due_date.label'|trans, entity.dueDate|oro_format_date) }}
 
                     {% set steps = marello_core_get_current_workflow_steps(entity) %}
                     {% for stepLabel, stepName in steps %}
