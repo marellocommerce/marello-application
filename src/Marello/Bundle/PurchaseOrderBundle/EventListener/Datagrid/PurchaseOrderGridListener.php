@@ -41,11 +41,11 @@ class PurchaseOrderGridListener
 
 
     /**
-     * @param BuildAfter $event
+     * @param BuildBefore $event
      */
-    public function buildBeforeFilterSupplier(BuildAfter $event)
+    public function buildBeforeFilterSupplier(BuildBefore $event)
     {
-        $config = $event->getDatagrid()->getConfig();
+        $config = $event->getConfig();
 
         $supplierId = $event->getDatagrid()->getParameters()->get('supplierId');
 

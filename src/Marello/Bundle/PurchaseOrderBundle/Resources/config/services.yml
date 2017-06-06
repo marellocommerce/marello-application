@@ -40,7 +40,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@oro_workflow.manager'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-purchase-order-item-candidates, method: buildBeforeFilterSupplier }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeFilterSupplier }
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforePendingOrders }
 
     marello_purchaseorder.twig.purchaseorder_extension:
