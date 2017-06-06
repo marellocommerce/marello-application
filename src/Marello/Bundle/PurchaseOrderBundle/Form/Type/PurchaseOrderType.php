@@ -15,6 +15,7 @@ class PurchaseOrderType extends AbstractType
 {
     const NAME = 'marello_purchase_order';
     const VALIDATION_MESSAGE = 'Purchase Order must contain at least one item';
+    const VALIDATION_MESSAGE_DUE_DATE = 'Purchase Order due date must be today or greater';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -55,6 +56,15 @@ class PurchaseOrderType extends AbstractType
                         $context
                             ->buildViolation(self::VALIDATION_MESSAGE)
                             ->atPath('items')
+                            ->addViolation()
+                        ;
+                    }
+                }),
+                new Callback(function (PurchaseOrder $purchaseOrder, ExecutionContextInterface $context) {
+                    if ($purchaseOrder->getDueDate() && $purchaseOrder->getDueDate() < new \DateTime('today')) {
+                        $context
+                            ->buildViolation(self::VALIDATION_MESSAGE_DUE_DATE)
+                            ->atPath('dueDate')
                             ->addViolation()
                         ;
                     }
