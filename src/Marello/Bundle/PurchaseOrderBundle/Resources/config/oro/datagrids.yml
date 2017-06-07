@@ -17,6 +17,11 @@ datagrids:
             updatedAt:
                 label:              oro.ui.updated_at
                 frontend_type:      datetime
+            dueDate:
+                label:              marello.purchaseorder.due_date.label
+                type:               twig
+                template:           MarelloPurchaseOrderBundle:Datagrid:Column/dueDate.html.twig
+                frontend_type:      html
         sorters:
             columns:
                 purchaseOrderNumber:
@@ -25,6 +30,8 @@ datagrids:
                     data_name:      po.createdAt
                 updatedAt:
                     data_name:      po.updatedAt
+                dueDate:
+                    data_name:      po.dueDate
             default:
                 purchaseOrderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         filters:
@@ -38,6 +45,9 @@ datagrids:
                 updatedAt:
                     type: datetime
                     data_name: po.updatedAt
+                dueDate:
+                    type: datetime
+                    data_name: po.dueDate
         properties:
             id: ~
             view_link:
