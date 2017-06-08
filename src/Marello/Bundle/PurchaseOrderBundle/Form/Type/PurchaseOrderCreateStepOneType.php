@@ -7,20 +7,29 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PurchaseOrderCreateType extends AbstractType
+class PurchaseOrderCreateStepOneType extends AbstractType
 {
-    const NAME = 'marello_purchase_order_create';
+    const NAME = 'marello_purchase_order_create_step_one';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('items', PurchaseOrderItemCollectionType::NAME);
+            ->add(
+                'supplier',
+                'marello_supplier_select_form',
+                [
+                    'required'       => true,
+                    'label'          => 'marello.supplier.entity_label',
+                    'create_enabled' => false,
+                ]
+            )
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => PurchaseOrder::class,
+            'data_class' => PurchaseOrder::class
         ]);
     }
 

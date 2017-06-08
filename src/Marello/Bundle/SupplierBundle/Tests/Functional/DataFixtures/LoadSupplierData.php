@@ -31,7 +31,8 @@ class LoadSupplierData extends AbstractFixture
                 'city'=> 'Eindhoven',
                 'country'=> 'NL',
                 'state' => 'NB'
-            ]
+            ],
+            'email' => 'supplier1@email.com'
         ],
         self::SUPPLIER_2_REF => [
             'name' => 'ActiveFalseSupplier',
@@ -44,7 +45,8 @@ class LoadSupplierData extends AbstractFixture
                 'city'=> 'Eindhoven',
                 'country'=> 'NL',
                 'state'=> 'NB'
-            ]
+            ],
+            'email' => 'supplier2@email.com'
         ],
         self::SUPPLIER_3_REF => [
             'name' => 'ActiveNoDropshipSupplier',
@@ -57,7 +59,8 @@ class LoadSupplierData extends AbstractFixture
                 'city'=> 'Eindhoven',
                 'country'=> 'NL',
                 'state'=> 'NB'
-            ]
+            ],
+            'email' => 'supplier3@email.com'
         ],
     ];
 
@@ -81,6 +84,7 @@ class LoadSupplierData extends AbstractFixture
             $supplier->setPriority($values['priority']);
             $supplier->setCanDropship($values['can_dropship']);
             $supplier->setIsActive($values['is_active']);
+            $supplier->setEmail($values['email']);
 
             $address = new MarelloAddress();
             $address->setStreet($values['address']['street_address']);

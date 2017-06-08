@@ -190,6 +190,12 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ->findAll();
 
         foreach ($suppliers as $supplier) {
+
+            //Add a bit of randomness to product suppliers
+            if (rand(1, 4) === 4) {
+                continue;
+            }
+
             $productSupplierRelation1 = new ProductSupplierRelation();
             $productSupplierRelation1
                 ->setProduct($product)

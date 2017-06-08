@@ -1,0 +1,14 @@
+Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
+    properties:
+        supplier:
+            - NotBlank: ~
+        items:
+            - Valid: ~
+    constraints: ~
+
+Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem:
+    properties:
+        product:
+            - NotBlank: ~
+        orderedAmount:
+            - NotBlank: ~

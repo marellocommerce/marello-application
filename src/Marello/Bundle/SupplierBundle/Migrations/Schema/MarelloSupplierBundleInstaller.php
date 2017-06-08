@@ -24,7 +24,7 @@ class MarelloSupplierBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -51,6 +51,7 @@ class MarelloSupplierBundleInstaller implements
         $table = $schema->createTable('marello_supplier_supplier');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('name', 'string', ['notnull' => true, 'length' => 255]);
+        $table->addColumn('email', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('priority', 'integer', []);
         $table->addColumn('can_dropship', 'boolean', []);
         $table->addColumn('is_active', 'boolean', []);
@@ -60,6 +61,7 @@ class MarelloSupplierBundleInstaller implements
         $table->setPrimaryKey(['id']);
         $table->addIndex(['address_id'], '', []);
         $table->addUniqueIndex(['name']);
+        $table->addUniqueIndex(['email']);
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
     }

@@ -3,7 +3,9 @@
 namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Datagrid;
 
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Doctrine\ORM\EntityManager;
 
@@ -24,15 +26,45 @@ class PurchaseOrderGridListener
     /**
      * @param BuildBefore $event
      */
-    public function buildBefore(BuildBefore $event)
+    public function buildBeforePendingOrders(BuildBefore $event)
     {
         $config = $event->getConfig();
 
         $productIdsToExclude = $this->getProductsIdsInPendingPurchaseOrders();
 
-        $config->offsetAddToArrayByPath('source.query.where.and', [
-            "p.id NOT IN (". $productIdsToExclude .")"
-        ]);
+        if ($productIdsToExclude != '') {
+            $config->offsetAddToArrayByPath('source.query.where.and', [
+                "p.id NOT IN (". $productIdsToExclude .")"
+            ]);
+        }
+    }
+
+
+    /**
+     * @param BuildBefore $event
+     */
+    public function buildBeforeFilterSupplier(BuildBefore $event)
+    {
+        $config = $event->getConfig();
+
+        $supplierId = $event->getDatagrid()->getParameters()->get('supplierId');
+
+        if ($supplierId) {
+
+            $supplier = $this->entityManager->getRepository('MarelloSupplierBundle:Supplier')->find($supplierId);
+
+            if ($supplier) {
+                $config->offsetAddToArrayByPath('filters', [
+                    'default' => [
+                        'preferredSupplier' => [
+                            'value' => $supplier->getName(),
+                            'type' => TextFilterType::TYPE_CONTAINS
+                        ]
+                    ]
+                ]);
+            }
+
+        }
     }
 
     private function getProductsIdsInPendingPurchaseOrders()

@@ -46,19 +46,11 @@ class PurchaseOrderCreateHandler
     }
 
     /**
-     * @param array|int[] $products       Array of product ids.
-     * @param bool        $invertProducts Whether the selection ofr products should be inverted.
      *
      * @return bool
      */
-    public function handle(array $products, $invertProducts)
+    public function handle()
     {
-        $qb = $this->createProductsQueryBuilder($products, $invertProducts);
-
-        $products = $qb->getQuery()->getResult();
-
-        $organization = null;
-
         /*
          * Get organization of currently logged in user, or use first one.
          */
@@ -68,7 +60,8 @@ class PurchaseOrderCreateHandler
             $organization = $this->doctrine->getRepository(Organization::class)->getFirst();
         }
 
-        $data = PurchaseOrder::usingProducts($products, $organization);
+        $data = new PurchaseOrder();
+        $data->setOrganization($organization);
 
         $this->form->setData($data);
 
@@ -81,43 +74,6 @@ class PurchaseOrderCreateHandler
         }
 
         return false;
-    }
-
-    /**
-     * @param array $productIds
-     * @param bool  $invertSelection
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function createProductsQueryBuilder(array $productIds, $invertSelection)
-    {
-        $qb = $this->doctrine->getRepository(Product::class)->createQueryBuilder('p');
-
-        $qbs = $this->doctrine->getRepository(PurchaseOrderItem::class)->createQueryBuilder('poi');
-
-        $qbs
-            ->select('IDENTITY(poi.product)')
-            ->join('poi.order', 'po')
-            ;
-
-        $qb
-            ->select('p')
-            ->leftJoin('p.inventoryItems', 'i')
-            ->leftJoin('i.currentLevel', 'l')
-            ->join('p.status', 's')
-            ->having('SUM(l.inventory - l.allocatedInventory) < p.purchaseStockLevel')
-            ->andWhere($qb->expr()->eq('s.name', $qb->expr()->literal('enabled')))
-            ->groupBy('p.id');
-
-        if ($productIds) {
-            $qb->andWhere(
-                $invertSelection
-                    ? $qb->expr()->notIn('p.id', $productIds)
-                    : $qb->expr()->in('p.id', $productIds)
-            );
-        }
-
-        return $qb;
     }
 
     /**

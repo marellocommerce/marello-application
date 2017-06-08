@@ -42,6 +42,7 @@ class SupplierType extends AbstractType
             )
             ->add('canDropship')
             ->add('isActive')
+            ->add('email')
         ;
 
         $this->removeNonStreetFieldsFromAddress($builder, 'address');
