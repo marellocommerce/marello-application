@@ -5,6 +5,7 @@ namespace Marello\Bundle\ProductBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
@@ -55,7 +56,8 @@ use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
  */
 class Product extends ExtendProduct implements
     SalesChannelAwareInterface,
-    PricingAwareInterface
+    PricingAwareInterface,
+    InventoryItemAwareInterface
 {
     /**
      * @var integer

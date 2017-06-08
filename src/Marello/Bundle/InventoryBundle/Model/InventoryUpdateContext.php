@@ -32,19 +32,23 @@ class InventoryUpdateContext
             : null;
     }
 
+    public function setItems($items)
+    {
+        $this->setValue('items', $items);
+
+        return $this;
+    }
+
     public function getItems()
     {
         return $this->getValue('items');
     }
 
-    public function setItems($items)
-    {
-        $this->setValue('items', $items);
-    }
-
     public function setRelatedEntity($entity)
     {
         $this->setValue('related_entity', $entity);
+
+        return $this;
     }
 
     public function getRelatedEntity()
@@ -55,6 +59,8 @@ class InventoryUpdateContext
     public function setUser(UserInterface $user)
     {
         $this->setValue('user', $user);
+
+        return $this;
     }
 
     public function getUser()
@@ -65,6 +71,8 @@ class InventoryUpdateContext
     public function setChangeTrigger($trigger)
     {
         $this->setValue('change_trigger', $trigger);
+
+        return $this;
     }
 
     public function getChangeTrigger()
@@ -75,6 +83,8 @@ class InventoryUpdateContext
     public function setAllocatedStock($allocatedStock)
     {
         $this->setValue('allocated_stock', $allocatedStock);
+
+        return $this;
     }
 
     public function getAllocatedStock()
@@ -85,6 +95,8 @@ class InventoryUpdateContext
     public function setStock($stock)
     {
         $this->setValue('stock', $stock);
+
+        return $this;
     }
 
     public function getStock()
@@ -95,6 +107,8 @@ class InventoryUpdateContext
     public function setProduct($product)
     {
         $this->setValue('product', $product);
+
+        return $this;
     }
 
     public function getProduct()

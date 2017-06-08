@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -19,7 +20,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")
  */
-class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
+class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface, InventoryItemAwareInterface
 {
     /**
      * @var int
@@ -192,6 +193,11 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface
             $this->setProductName($this->product->getName());
         }
         $this->productSku  = $this->product->getSku();
+    }
+
+    public function getInventoryItems()
+    {
+        $this->getProduct()->getInventoryItems();
     }
 
     /**
