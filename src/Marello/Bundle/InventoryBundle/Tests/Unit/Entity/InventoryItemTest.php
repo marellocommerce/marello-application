@@ -27,10 +27,7 @@ class InventoryItemTest extends WebTestCase
     /** @test */
     public function testInventorySet()
     {
-        $product   = $this->prophesize(Product::class);
-        $warehouse = $this->prophesize(Warehouse::class);
-
-        $inventoryItem = new InventoryItem($warehouse->reveal(), $product->reveal());
+        $inventoryItem = new InventoryItem(new Warehouse(), new Product());
 
         $this->assertEquals(0, $inventoryItem->getStock());
         $this->assertEquals(0, $inventoryItem->getAllocatedStock());
@@ -55,10 +52,7 @@ class InventoryItemTest extends WebTestCase
     /** @test */
     public function testInventoryAdjust()
     {
-        $product   = $this->prophesize(Product::class);
-        $warehouse = $this->prophesize(Warehouse::class);
-
-        $inventoryItem = new InventoryItem($warehouse->reveal(), $product->reveal());
+        $inventoryItem = new InventoryItem(new Warehouse(), new Product());
 
         $this->assertEquals(0, $inventoryItem->getStock());
         $this->assertEquals(0, $inventoryItem->getAllocatedStock());

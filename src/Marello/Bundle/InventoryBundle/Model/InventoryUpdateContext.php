@@ -8,7 +8,12 @@ use Doctrine\Common\Util\ClassUtils;
 class InventoryUpdateContext
 {
     /** @var array $values */
-    private $values = [];
+    private $values;
+
+    public function __construct()
+    {
+        $this->values = [];
+    }
 
     /**
      * {@inheritdoc}

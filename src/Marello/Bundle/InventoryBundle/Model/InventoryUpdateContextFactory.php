@@ -37,9 +37,9 @@ class InventoryUpdateContextFactory
         $context = new InventoryUpdateContext();
         $context
             ->setStock($inventoryUpdateQty)
-            ->setAllocatedStock($$allocatedInventoryQty)
+            ->setAllocatedStock($allocatedInventoryQty)
             ->setChangeTrigger($trigger)
-            ->setItems($inventoryItemData)
+            ->setItems([$inventoryItemData])
             ->setRelatedEntity($relatedEntity)
         ;
 
@@ -52,7 +52,7 @@ class InventoryUpdateContextFactory
      * @param $allocatedInventoryQty
      * @return array
      */
-    protected function getInventoryItemDataFromInterface(
+    protected static function getInventoryItemDataFromInterface(
         InventoryItemAwareInterface $entity,
         $inventoryUpdateQty,
         $allocatedInventoryQty
@@ -63,7 +63,7 @@ class InventoryUpdateContextFactory
         $inventoryItemData = [];
         /** @var InventoryItem $inventoryItem */
         foreach ($inventoryItems as $inventoryItem) {
-            $inventoryItemData[] = $this->getInventoryItemData($inventoryItem, $inventoryUpdateQty, $allocatedInventoryQty);
+            $inventoryItemData[] = self::getInventoryItemData($inventoryItem, $inventoryUpdateQty, $allocatedInventoryQty);
         }
 
         return $inventoryItemData;
@@ -75,7 +75,7 @@ class InventoryUpdateContextFactory
      * @param $allocatedInventoryQty
      * @return array
      */
-    protected function getInventoryItemData(
+    protected static function getInventoryItemData(
         InventoryItem $inventoryItem,
         $inventoryUpdateQty,
         $allocatedInventoryQty
