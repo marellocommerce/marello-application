@@ -4,6 +4,8 @@ Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
             - NotBlank: ~
         items:
             - Valid: ~
+        dueDate:
+            - Date: ~
     constraints: ~
 
 Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem:

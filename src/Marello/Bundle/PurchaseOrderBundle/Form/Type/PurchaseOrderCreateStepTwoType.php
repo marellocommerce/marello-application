@@ -2,11 +2,6 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -18,6 +13,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 
 class PurchaseOrderCreateStepTwoType extends AbstractType
 {
@@ -45,15 +46,21 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                 'supplier',
                 'marello_supplier_select_form',
                 [
-                    'read_only'      => true,
+                    'attr'           => ['readonly' => true],
                     'required'       => true,
                     'label'          => 'marello.supplier.entity_label',
                     'create_enabled' => false,
                 ]
             )
             ->add(
+                'dueDate', OroDateType::NAME, [
+                    'required' => false,
+                    'label' => 'marello.purchaseorder.due_date.label',
+                ]
+            )
+            ->add(
                 'itemsAdvice',
-                'oro_multiple_entity',
+                MultipleEntityType::class,
                 [
                     'mapped'                => false,
                     'add_acl_resource'      => 'marello_purchase_order_view',
@@ -77,12 +84,6 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                 [
                     'mapped'             => false,
                     'cascade_validation' => true,
-                ]
-            )
-            ->add(
-                'dueDate', 'oro_date', [
-                    'required' => false,
-                    'label' => 'marello.purchaseorder.due_date.label',
                 ]
             )
         ;

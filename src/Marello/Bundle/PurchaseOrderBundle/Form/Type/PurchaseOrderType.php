@@ -2,14 +2,15 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 
 class PurchaseOrderType extends AbstractType
 {
@@ -24,7 +25,7 @@ class PurchaseOrderType extends AbstractType
                 'supplier',
                 'marello_supplier_select_form',
                 [
-                    'read_only'      => true,
+                    'attr'           => ['readonly' => true],
                     'required'       => true,
                     'label'          => 'marello.supplier.entity_label',
                     'create_enabled' => false,
@@ -38,7 +39,7 @@ class PurchaseOrderType extends AbstractType
                 ]
             )
             ->add(
-                'dueDate', 'oro_date', [
+                'dueDate', OroDateType::NAME, [
                     'required' => false,
                     'label' => 'marello.purchaseorder.due_date.label',
                 ]
