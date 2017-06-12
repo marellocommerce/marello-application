@@ -65,7 +65,7 @@ class PurchaseOrderCreateHandler
 
         $this->form->setData($data);
 
-        /**
+        /*
          *  Unset any product key that do not need to be processed
          */
         $keys = $this->request->request->get('marello_purchase_order_create_step_two');

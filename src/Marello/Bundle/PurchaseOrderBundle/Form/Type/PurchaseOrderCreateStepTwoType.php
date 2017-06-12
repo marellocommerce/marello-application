@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
+use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -24,7 +25,6 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
 {
     const NAME = 'marello_purchase_order_create_step_two';
     const VALIDATION_MESSAGE = 'Purchase Order must contain at least one item';
-    const VALIDATION_MESSAGE_DUE_DATE = 'Purchase Order due date must be today or greater';
 
     /**
      * @var Router
@@ -88,17 +88,6 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
             )
         ;
 
-//        /**
-//         * Add purchase order items that are not mapped in the form
-//         */
-//        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-//            $form = $event->getForm();
-//            $purchaseOrder = $event->getData();
-//
-//            /** @var PurchaseOrderItem $item */
-//            $form->get('itemsAdvice')->setData([])
-//        });
-
         /**
          * Add purchase order items that are not mapped in the form
          */
@@ -138,15 +127,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
             'data_class' => PurchaseOrder::class,
             'allow_extra_fields' => true,
             'constraints' => [
-                new Callback(function (PurchaseOrder $purchaseOrder, ExecutionContextInterface $context) {
-                    if ($purchaseOrder->getItems()->count() === 0) {
-                        $context
-                            ->buildViolation(self::VALIDATION_MESSAGE)
-                            ->atPath('items')
-                            ->addViolation()
-                        ;
-                    }
-                })
+                new PurchaseOrderConstraint()
             ],
         ]);
     }
