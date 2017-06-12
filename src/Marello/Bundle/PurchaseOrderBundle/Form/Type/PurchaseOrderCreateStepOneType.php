@@ -29,7 +29,8 @@ class PurchaseOrderCreateStepOneType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => PurchaseOrder::class
+            'data_class' => PurchaseOrder::class,
+            'validation_groups' => array('step_one'),
         ]);
     }
 

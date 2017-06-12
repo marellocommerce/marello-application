@@ -61,15 +61,6 @@ class PurchaseOrderType extends AbstractType
                         ;
                     }
                 }),
-                new Callback(function (PurchaseOrder $purchaseOrder, ExecutionContextInterface $context) {
-                    if ($purchaseOrder->getDueDate() && $purchaseOrder->getDueDate() < new \DateTime('today')) {
-                        $context
-                            ->buildViolation(self::VALIDATION_MESSAGE_DUE_DATE)
-                            ->atPath('dueDate')
-                            ->addViolation()
-                        ;
-                    }
-                })
             ]
         ]);
     }

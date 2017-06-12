@@ -88,13 +88,16 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
             )
         ;
 
-        /**
-         * Removes key for validation
-         */
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $form = $event->getForm();
-            $form->remove('itemsAdvice');
-        });
+//        /**
+//         * Add purchase order items that are not mapped in the form
+//         */
+//        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+//            $form = $event->getForm();
+//            $purchaseOrder = $event->getData();
+//
+//            /** @var PurchaseOrderItem $item */
+//            $form->get('itemsAdvice')->setData([])
+//        });
 
         /**
          * Add purchase order items that are not mapped in the form
@@ -125,7 +128,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
 
         $view->children['itemsAdvice']->vars['grid_url'] = $this->router->generate('marello_purchase_order_widget_products_by_supplier', array(
             'id' => $purchaseOrder->getId(),
-            'supplierId' => $purchaseOrder->getSupplier()->getId()
+            'supplierId' => $form->get('supplier')->getData()->getId()
         ));
     }
 
@@ -143,17 +146,8 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                             ->addViolation()
                         ;
                     }
-                }),
-                new Callback(function (PurchaseOrder $purchaseOrder, ExecutionContextInterface $context) {
-                    if ($purchaseOrder->getDueDate() && $purchaseOrder->getDueDate() < new \DateTime('today')) {
-                        $context
-                            ->buildViolation(self::VALIDATION_MESSAGE_DUE_DATE)
-                            ->atPath('dueDate')
-                            ->addViolation()
-                        ;
-                    }
                 })
-            ]
+            ],
         ]);
     }
 

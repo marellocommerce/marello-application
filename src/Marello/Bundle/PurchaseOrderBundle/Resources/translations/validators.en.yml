@@ -1,0 +1,6 @@
+marello:
+    purchaseorder:
+        due_date:
+            messages:
+                error:
+                    greater_than_today: Due date must be greater than today
