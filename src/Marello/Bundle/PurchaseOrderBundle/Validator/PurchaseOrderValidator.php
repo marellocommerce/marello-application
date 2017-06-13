@@ -8,7 +8,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class PurchaseOrderValidator extends ConstraintValidator
 {
-
     /**
      * Checks if the passed value is valid.
      *

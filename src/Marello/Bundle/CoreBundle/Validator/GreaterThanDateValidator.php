@@ -100,9 +100,9 @@ class GreaterThanDateValidator extends ConstraintValidator
             return;
         }
 
-        $errorPath = null !== $constraint->errorPath ? $constraint->errorPath : $fields[0];
-        if ($fieldValue && $fieldValue < new \DateTime($greaterThan)) {
-            $this->context->buildViolation($constraint->message)
+        $errorPath = null !== $constraint->errorPath ? $constraint->errorPath : $field;
+        if ($fieldValue && $fieldValue <= new \DateTime($greaterThan)) {
+            $this->context->buildViolation($constraint->message, ['%date%' => $greaterThan])
                 ->atPath($errorPath)
                 ->addViolation();
         }

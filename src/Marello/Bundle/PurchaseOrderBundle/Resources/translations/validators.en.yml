@@ -3,4 +3,4 @@ marello:
         due_date:
             messages:
                 error:
-                    greater_than_today: Due date must be greater than today
+                    greater_than_date: Due date must be greater than %date%
