@@ -24,7 +24,6 @@ use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 class PurchaseOrderCreateStepTwoType extends AbstractType
 {
     const NAME = 'marello_purchase_order_create_step_two';
-    const VALIDATION_MESSAGE = 'Purchase Order must contain at least one item';
 
     /**
      * @var Router

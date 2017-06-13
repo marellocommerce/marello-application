@@ -16,7 +16,6 @@ use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 class PurchaseOrderType extends AbstractType
 {
     const NAME = 'marello_purchase_order';
-    const VALIDATION_MESSAGE = 'Purchase Order must contain at least one item';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
