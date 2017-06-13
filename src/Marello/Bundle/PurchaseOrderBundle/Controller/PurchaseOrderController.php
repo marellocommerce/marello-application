@@ -194,10 +194,6 @@ class PurchaseOrderController extends Controller
             );
         }
 
-//        if (($e = $handler->getForm()->getErrorsAsString()) != '') {
-//            $this->addFlash('error', $e);
-//        }
-
         return [
             'entity' => $purchaseOrder,
             'form'   => $handler->getForm()->createView(),
