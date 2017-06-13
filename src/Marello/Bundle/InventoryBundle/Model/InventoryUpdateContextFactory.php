@@ -23,6 +23,10 @@ class InventoryUpdateContextFactory
         $trigger,
         $relatedEntity = null
     ) {
+
+        /*
+         * Decides how to format data depending on type of parameter
+         */
         $inventoryItemData = null;
         if ($entity instanceof InventoryItemAwareInterface) {
             $inventoryItemData = self::getInventoryItemDataFromInterface($entity, $inventoryUpdateQty, $allocatedInventoryQty);
