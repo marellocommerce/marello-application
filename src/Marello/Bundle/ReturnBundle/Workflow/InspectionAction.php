@@ -63,26 +63,6 @@ class InspectionAction extends AbstractAction
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
-//        $inventoryItems = $item->getProduct()->getInventoryItems();
-//        $inventoryItemData = [];
-//        foreach ($inventoryItems as $inventoryItem) {
-//            $inventoryItemData[] = [
-//                'item'          => $inventoryItem,
-//                'qty'           => $inventoryUpdateQty,
-//                'allocatedQty'  => $allocatedInventoryQty
-//            ];
-//        }
-//
-//        $data = [
-//            'stock'             => $inventoryUpdateQty,
-//            'allocatedStock'    => $allocatedInventoryQty,
-//            'trigger'           => 'return_workflow.inspection_ok',
-//            'items'             => $inventoryItemData,
-//            'relatedEntity'     => $entity
-//        ];
-//
-//        $context = InventoryUpdateContext::createUpdateContext($data);
-
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             $inventoryUpdateQty,

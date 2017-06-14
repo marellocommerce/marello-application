@@ -43,26 +43,6 @@ class OrderInventoryAllocationListener
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $order)
     {
-//        $inventoryItems = $item->getProduct()->getInventoryItems();
-//        $inventoryItemData = [];
-//        foreach ($inventoryItems as $inventoryItem) {
-//            $inventoryItemData[] = [
-//                'item'          => $inventoryItem,
-//                'qty'           => null,
-//                'allocatedQty'  => $inventoryUpdateQty
-//            ];
-//        }
-//
-//        $data = [
-//            'stock'             => null,
-//            'allocatedStock'    => $inventoryUpdateQty,
-//            'trigger'           => 'order_workflow.pending',
-//            'items'             => $inventoryItemData,
-//            'relatedEntity'     => $order
-//        ];
-
-//        $context = InventoryUpdateContext::createUpdateContext($data);
-
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             null,

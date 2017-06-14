@@ -117,25 +117,6 @@ class ReceivePurchaseOrderAction extends AbstractAction
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $purchaseOrder)
     {
-//        $inventoryItems = $item->getProduct()->getInventoryItems();
-//        $inventoryItemData = [];
-//        foreach ($inventoryItems as $inventoryItem) {
-//            $inventoryItemData[] = [
-//                'item'          => $inventoryItem,
-//                'qty'           => $inventoryUpdateQty,
-//                'allocatedQty'  => null
-//            ];
-//        }
-//
-//        $data = [
-//            'stock'             => $inventoryUpdateQty,
-//            'allocatedStock'    => null,
-//            'trigger'           => 'purchase_order',
-//            'items'             => $inventoryItemData,
-//            'relatedEntity'     => $purchaseOrder
-//        ];
-//
-//        $context = InventoryUpdateContext::createUpdateContext($data);
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             $inventoryUpdateQty,

@@ -53,7 +53,6 @@ class InventoryItemModify
     public function toModifiedInventoryItem()
     {
         list($stock, $allocatedStock) = $this->getContextData();
-//        $context = InventoryUpdateContext::createUpdateContext($data);
 
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $this->inventoryItem,
