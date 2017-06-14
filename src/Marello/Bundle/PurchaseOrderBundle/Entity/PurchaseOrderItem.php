@@ -4,6 +4,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -14,7 +15,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_purchase_order_item")
  */
-class PurchaseOrderItem
+class PurchaseOrderItem implements
+    InventoryItemAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     
@@ -104,6 +106,11 @@ class PurchaseOrderItem
         $this->productName = $this->product->getName();
         $this->productSku = $this->product->getSku();
         $this->supplier = $this->product->getPreferredSupplier()->getName();
+    }
+
+    public function getInventoryItems()
+    {
+        return $this->getProduct()->getInventoryItems();
     }
 
     /**

@@ -233,15 +233,11 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
             ->method('setData')
             ->with(null);
 
-        $purchaseOrderItemMock->expects($this->once())
-            ->method('getProduct')
-            ->willReturn($productMock);
+        $purchaseOrderItemMock->expects($this->atLeastOnce())
+            ->method('getInventoryItems')
+            ->willReturn(new ArrayCollection([$inventoryItemMock]));
 
-        $purchaseOrderItemMock2->expects($this->once())
-            ->method('getProduct')
-            ->willReturn($productMock);
-
-        $productMock->expects($this->atLeastOnce())
+        $purchaseOrderItemMock2->expects($this->atLeastOnce())
             ->method('getInventoryItems')
             ->willReturn(new ArrayCollection([$inventoryItemMock]));
 
@@ -308,10 +304,6 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
             ->willReturn([]);
 
         $purchaseOrderItemMock->expects($this->once())
-            ->method('getProduct')
-            ->willReturn($productMock);
-
-        $productMock->expects($this->once())
             ->method('getInventoryItems')
             ->willReturn(new ArrayCollection([$inventoryItemMock]));
 

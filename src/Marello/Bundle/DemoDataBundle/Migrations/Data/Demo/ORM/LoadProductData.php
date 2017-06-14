@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -266,25 +267,33 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
-        $inventoryItems[] = $item;
-        $inventoryItemData = [];
-        foreach ($inventoryItems as $inventoryItem) {
-            $inventoryItemData[] = [
-                'item'          => $inventoryItem,
-                'qty'           => $inventoryUpdateQty,
-                'allocatedQty'  => $allocatedInventoryQty
-            ];
-        }
+//        $inventoryItems[] = $item;
+//        $inventoryItemData = [];
+//        foreach ($inventoryItems as $inventoryItem) {
+//            $inventoryItemData[] = [
+//                'item'          => $inventoryItem,
+//                'qty'           => $inventoryUpdateQty,
+//                'allocatedQty'  => $allocatedInventoryQty
+//            ];
+//        }
+//
+//        $data = [
+//            'stock'             => $inventoryUpdateQty,
+//            'allocatedStock'    => $allocatedInventoryQty,
+//            'trigger'           => 'import',
+//            'items'             => $inventoryItemData,
+//            'relatedEntity'     => $entity
+//        ];
 
-        $data = [
-            'stock'             => $inventoryUpdateQty,
-            'allocatedStock'    => $allocatedInventoryQty,
-            'trigger'           => 'import',
-            'items'             => $inventoryItemData,
-            'relatedEntity'     => $entity
-        ];
+//        $context = InventoryUpdateContext::createUpdateContext($data);
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $item,
+            $inventoryUpdateQty,
+            $allocatedInventoryQty,
+            'import',
+            $entity
+        );
 
-        $context = InventoryUpdateContext::createUpdateContext($data);
         /** @var InventoryManager $inventoryManager */
         $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
         $inventoryManager->updateInventoryItems($context);

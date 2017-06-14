@@ -4,6 +4,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Workflow\Action;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -116,25 +117,33 @@ class ReceivePurchaseOrderAction extends AbstractAction
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $purchaseOrder)
     {
-        $inventoryItems = $item->getProduct()->getInventoryItems();
-        $inventoryItemData = [];
-        foreach ($inventoryItems as $inventoryItem) {
-            $inventoryItemData[] = [
-                'item'          => $inventoryItem,
-                'qty'           => $inventoryUpdateQty,
-                'allocatedQty'  => null
-            ];
-        }
+//        $inventoryItems = $item->getProduct()->getInventoryItems();
+//        $inventoryItemData = [];
+//        foreach ($inventoryItems as $inventoryItem) {
+//            $inventoryItemData[] = [
+//                'item'          => $inventoryItem,
+//                'qty'           => $inventoryUpdateQty,
+//                'allocatedQty'  => null
+//            ];
+//        }
+//
+//        $data = [
+//            'stock'             => $inventoryUpdateQty,
+//            'allocatedStock'    => null,
+//            'trigger'           => 'purchase_order',
+//            'items'             => $inventoryItemData,
+//            'relatedEntity'     => $purchaseOrder
+//        ];
+//
+//        $context = InventoryUpdateContext::createUpdateContext($data);
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $item,
+            $inventoryUpdateQty,
+            null,
+            'purchase_order',
+            $purchaseOrder
+        );
 
-        $data = [
-            'stock'             => $inventoryUpdateQty,
-            'allocatedStock'    => null,
-            'trigger'           => 'purchase_order',
-            'items'             => $inventoryItemData,
-            'relatedEntity'     => $purchaseOrder
-        ];
-
-        $context = InventoryUpdateContext::createUpdateContext($data);
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)

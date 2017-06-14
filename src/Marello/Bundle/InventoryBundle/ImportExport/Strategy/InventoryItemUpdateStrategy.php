@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\Strategy;
 
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
@@ -49,25 +50,34 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
-        $inventoryItems[] = $item;
-        $inventoryItemData = [];
-        foreach ($inventoryItems as $inventoryItem) {
-            $inventoryItemData[] = [
-                'item'          => $inventoryItem,
-                'qty'           => $inventoryUpdateQty,
-                'allocatedQty'  => $allocatedInventoryQty
-            ];
-        }
+//        $inventoryItems[] = $item;
+//        $inventoryItemData = [];
+//        foreach ($inventoryItems as $inventoryItem) {
+//            $inventoryItemData[] = [
+//                'item'          => $inventoryItem,
+//                'qty'           => $inventoryUpdateQty,
+//                'allocatedQty'  => $allocatedInventoryQty
+//            ];
+//        }
+//
+//        $data = [
+//            'stock'             => $inventoryUpdateQty,
+//            'allocatedStock'    => $allocatedInventoryQty,
+//            'trigger'           => 'import',
+//            'items'             => $inventoryItemData,
+//            'relatedEntity'     => $entity
+//        ];
+//
+//        $context = InventoryUpdateContext::createUpdateContext($data);
 
-        $data = [
-            'stock'             => $inventoryUpdateQty,
-            'allocatedStock'    => $allocatedInventoryQty,
-            'trigger'           => 'import',
-            'items'             => $inventoryItemData,
-            'relatedEntity'     => $entity
-        ];
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $item,
+            $inventoryUpdateQty,
+            $allocatedInventoryQty,
+            'import',
+            $entity
+        );
 
-        $context = InventoryUpdateContext::createUpdateContext($data);
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)

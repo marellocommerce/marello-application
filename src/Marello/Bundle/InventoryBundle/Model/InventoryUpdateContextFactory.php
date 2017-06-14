@@ -31,7 +31,8 @@ class InventoryUpdateContextFactory
         if ($entity instanceof InventoryItemAwareInterface) {
             $inventoryItemData = self::getInventoryItemDataFromInterface($entity, $inventoryUpdateQty, $allocatedInventoryQty);
         } elseif ($entity instanceof InventoryItem) {
-            $inventoryItemData = self::getInventoryItemData($entity, $inventoryUpdateQty, $allocatedInventoryQty);
+            $inventoryItemData = [];
+            $inventoryItemData[] = self::getInventoryItemData($entity, $inventoryUpdateQty, $allocatedInventoryQty);
         }
 
         if (!$inventoryItemData) {
@@ -43,7 +44,7 @@ class InventoryUpdateContextFactory
             ->setStock($inventoryUpdateQty)
             ->setAllocatedStock($allocatedInventoryQty)
             ->setChangeTrigger($trigger)
-            ->setItems([$inventoryItemData])
+            ->setItems($inventoryItemData)
             ->setRelatedEntity($relatedEntity)
         ;
 

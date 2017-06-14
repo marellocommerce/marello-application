@@ -20,7 +20,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")
  */
-class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface, InventoryItemAwareInterface
+class OrderItem extends ExtendOrderItem implements
+    CurrencyAwareInterface,
+    InventoryItemAwareInterface
 {
     /**
      * @var int
@@ -197,7 +199,7 @@ class OrderItem extends ExtendOrderItem implements CurrencyAwareInterface, Inven
 
     public function getInventoryItems()
     {
-        $this->getProduct()->getInventoryItems();
+        return $this->getProduct()->getInventoryItems();
     }
 
     /**

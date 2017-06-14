@@ -4,6 +4,7 @@ namespace Marello\Bundle\ReturnBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
@@ -15,9 +16,10 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Config()
  */
-class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
+class ReturnItem extends ExtendReturnItem implements
+    CurrencyAwareInterface,
+    InventoryItemAwareInterface
 {
-
     use EntityCreatedUpdatedAtTrait;
 
     /**
@@ -70,6 +72,11 @@ class ReturnItem extends ExtendReturnItem implements CurrencyAwareInterface
     public function __construct(OrderItem $orderItem = null)
     {
         $this->orderItem = $orderItem;
+    }
+
+    public function getInventoryItems()
+    {
+        return $this->getorderItem()->getInventoryItems();
     }
 
     /**

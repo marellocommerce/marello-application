@@ -47,8 +47,16 @@ class InventoryItemUpdateApi
             $this->inventoryItem = new InventoryItem($this->warehouse);
         }
 
-        $data = $this->getContextData();
-        $context = InventoryUpdateContext::createUpdateContext($data);
+//        $data = $this->getContextData();
+//        $context = InventoryUpdateContext::createUpdateContext($data);
+
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $this->inventoryItem,
+            $this->stock,
+            null,
+            'import'
+        );
+
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)
