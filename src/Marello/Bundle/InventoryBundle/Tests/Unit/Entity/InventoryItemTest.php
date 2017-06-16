@@ -34,6 +34,7 @@ class InventoryItemTest extends WebTestCase
         $this->assertEquals(0, $inventoryItem->getVirtualStock());
         $this->assertNull($inventoryItem->getCurrentLevel());
 
+        /** @var InventoryUpdateContext $context */
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $inventoryItem,
             10,
@@ -59,6 +60,7 @@ class InventoryItemTest extends WebTestCase
         $this->assertEquals(0, $inventoryItem->getVirtualStock());
         $this->assertNull($inventoryItem->getCurrentLevel());
 
+        /** @var InventoryUpdateContext $context */
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $inventoryItem,
             10,
@@ -73,6 +75,7 @@ class InventoryItemTest extends WebTestCase
         $this->assertInstanceOf(StockLevel::class, $inventoryItem->getCurrentLevel());
         $this->assertInstanceOf(StockLevel::class, $inventoryItem->getLevels()->first());
 
+        /** @var InventoryUpdateContext $context */
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $inventoryItem,
             -5,

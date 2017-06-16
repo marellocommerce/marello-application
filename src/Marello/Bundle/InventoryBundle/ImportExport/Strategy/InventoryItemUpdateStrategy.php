@@ -50,6 +50,7 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
+        /** @var InventoryUpdateContext $context */
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             $inventoryUpdateQty,

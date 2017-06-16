@@ -8,8 +8,6 @@ use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\ProductStatus;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class InventoryItemFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
 {

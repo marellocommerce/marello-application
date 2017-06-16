@@ -23,6 +23,7 @@ class InventoryItemUpdateApi
      * InventoryItemUpdateApi constructor.
      *
      * @param InventoryItem|null $inventoryItem
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         InventoryItem $inventoryItem = null,

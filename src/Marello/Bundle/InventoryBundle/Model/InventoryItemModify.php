@@ -30,6 +30,7 @@ class InventoryItemModify
      * InventoryItemModify constructor.
      *
      * @param $inventoryItem
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         $inventoryItem,
