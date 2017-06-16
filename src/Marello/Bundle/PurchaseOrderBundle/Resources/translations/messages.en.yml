@@ -14,9 +14,10 @@ marello:
         items_advice:                                   Products from Advice
         select_products_advice:                         Add products from Purchase Order Advice for this supplier
         items_additional:                               Additional products
-        select_products_additional:                     Add additional products from these supplier
+        select_products_additional:                     Add additional products from this supplier
         all_items_have_been_received:                   All items have been received, please proceed to click "Fully received"
         has_item.label:                                 Product added
+        billing_and_shipping.label:                     Billing & Shipping Info
 
         ui:
             continue:                                   Continue

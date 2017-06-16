@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderItemConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -14,10 +15,6 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class PurchaseOrderItemType extends AbstractType
 {
     const NAME = 'marello_purchase_order_item';
-
-    const VALIDATION_MESSAGE_PRODUCT = 'Product can not be null';
-    const VALIDATION_MESSAGE_ORDERED_AMOUNT = 'Ordered Amount must be higher than 0';
-
 
     /**
      * {@inheritdoc}
@@ -42,24 +39,8 @@ class PurchaseOrderItemType extends AbstractType
         $resolver->setDefaults([
             'data_class' => PurchaseOrderItem::class,
             'constraints' => [
-                new Callback(function (PurchaseOrderItem $purchaseOrderItem, ExecutionContextInterface $context) {
-                    if ($purchaseOrderItem->getProduct() == null) {
-                        $context
-                            ->buildViolation(self::VALIDATION_MESSAGE_PRODUCT)
-                            ->atPath('product')
-                            ->addViolation()
-                        ;
-                    }
-
-                    if ($purchaseOrderItem->getOrderedAmount() == null || $purchaseOrderItem->getOrderedAmount() <= 0 ) {
-                        $context
-                            ->buildViolation(self::VALIDATION_MESSAGE_ORDERED_AMOUNT)
-                            ->atPath('orderedAmount')
-                            ->addViolation()
-                        ;
-                    }
-                })
-            ]
+                new PurchaseOrderItemConstraint()
+            ],
         ]);
     }
 

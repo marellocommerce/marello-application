@@ -2,11 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -19,11 +15,15 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
+
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+
 class PurchaseOrderCreateStepTwoType extends AbstractType
 {
     const NAME = 'marello_purchase_order_create_step_two';
-    const VALIDATION_MESSAGE = 'Purchase Order must contain at least one item';
-    const VALIDATION_MESSAGE_DUE_DATE = 'Purchase Order due date must be today or greater';
 
     /**
      * @var Router
@@ -45,15 +45,21 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                 'supplier',
                 'marello_supplier_select_form',
                 [
-                    'read_only'      => true,
+                    'attr'           => ['readonly' => true],
                     'required'       => true,
                     'label'          => 'marello.supplier.entity_label',
                     'create_enabled' => false,
                 ]
             )
             ->add(
+                'dueDate', OroDateType::NAME, [
+                    'required' => false,
+                    'label' => 'marello.purchaseorder.due_date.label',
+                ]
+            )
+            ->add(
                 'itemsAdvice',
-                'oro_multiple_entity',
+                MultipleEntityType::class,
                 [
                     'mapped'                => false,
                     'add_acl_resource'      => 'marello_purchase_order_view',
@@ -79,21 +85,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                     'cascade_validation' => true,
                 ]
             )
-            ->add(
-                'dueDate', 'oro_date', [
-                    'required' => false,
-                    'label' => 'marello.purchaseorder.due_date.label',
-                ]
-            )
         ;
-
-        /**
-         * Removes key for validation
-         */
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $form = $event->getForm();
-            $form->remove('itemsAdvice');
-        });
 
         /**
          * Add purchase order items that are not mapped in the form
@@ -124,7 +116,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
 
         $view->children['itemsAdvice']->vars['grid_url'] = $this->router->generate('marello_purchase_order_widget_products_by_supplier', array(
             'id' => $purchaseOrder->getId(),
-            'supplierId' => $purchaseOrder->getSupplier()->getId()
+            'supplierId' => $form->get('supplier')->getData()->getId()
         ));
     }
 
@@ -134,25 +126,8 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
             'data_class' => PurchaseOrder::class,
             'allow_extra_fields' => true,
             'constraints' => [
-                new Callback(function (PurchaseOrder $purchaseOrder, ExecutionContextInterface $context) {
-                    if ($purchaseOrder->getItems()->count() === 0) {
-                        $context
-                            ->buildViolation(self::VALIDATION_MESSAGE)
-                            ->atPath('items')
-                            ->addViolation()
-                        ;
-                    }
-                }),
-                new Callback(function (PurchaseOrder $purchaseOrder, ExecutionContextInterface $context) {
-                    if ($purchaseOrder->getDueDate() && $purchaseOrder->getDueDate() < new \DateTime('today')) {
-                        $context
-                            ->buildViolation(self::VALIDATION_MESSAGE_DUE_DATE)
-                            ->atPath('dueDate')
-                            ->addViolation()
-                        ;
-                    }
-                })
-            ]
+                new PurchaseOrderConstraint()
+            ],
         ]);
     }
 

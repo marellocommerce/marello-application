@@ -157,7 +157,11 @@ class PurchaseOrderController extends Controller
         if (($e = $form->getErrorsAsString()) != '') {
             $this->addFlash('error', $e);
         }
-        return $this->redirectToRoute('marello_purchaseorder_purchaseorder_index');
+
+        return [
+            'form' => $form->createView(),
+            'entity' => $purchaseOrder
+        ];
     }
 
     /**
@@ -190,10 +194,6 @@ class PurchaseOrderController extends Controller
             );
         }
 
-//        if (($e = $handler->getForm()->getErrorsAsString()) != '') {
-//            $this->addFlash('error', $e);
-//        }
-
         return [
             'entity' => $purchaseOrder,
             'form'   => $handler->getForm()->createView(),
@@ -217,6 +217,4 @@ class PurchaseOrderController extends Controller
             'supplierId' => $this->get('request')->get('supplierId')
         ];
     }
-
-
 }
