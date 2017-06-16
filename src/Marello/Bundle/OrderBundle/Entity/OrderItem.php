@@ -197,6 +197,9 @@ class OrderItem extends ExtendOrderItem implements
         $this->productSku  = $this->product->getSku();
     }
 
+    /**
+     * @return ArrayCollection|\Marello\Bundle\InventoryBundle\Entity\InventoryItem[]
+     */
     public function getInventoryItems()
     {
         return $this->getProduct()->getInventoryItems();

@@ -74,9 +74,12 @@ class ReturnItem extends ExtendReturnItem implements
         $this->orderItem = $orderItem;
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection|\Marello\Bundle\InventoryBundle\Entity\InventoryItem[]
+     */
     public function getInventoryItems()
     {
-        return $this->getorderItem()->getInventoryItems();
+        return $this->getOrderItem()->getInventoryItems();
     }
 
     /**

@@ -108,6 +108,9 @@ class PurchaseOrderItem implements
         $this->supplier = $this->product->getPreferredSupplier()->getName();
     }
 
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection|\Marello\Bundle\InventoryBundle\Entity\InventoryItem[]
+     */
     public function getInventoryItems()
     {
         return $this->getProduct()->getInventoryItems();
