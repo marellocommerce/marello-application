@@ -217,6 +217,4 @@ class PurchaseOrderController extends Controller
             'supplierId' => $this->get('request')->get('supplierId')
         ];
     }
-
-
 }
