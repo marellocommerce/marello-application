@@ -4,6 +4,7 @@ namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -62,25 +63,14 @@ class OrderShipAction extends OrderTransitionAction
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
-        $inventoryItems = $item->getProduct()->getInventoryItems();
-        $inventoryItemData = [];
-        foreach ($inventoryItems as $inventoryItem) {
-            $inventoryItemData[] = [
-                'item'          => $inventoryItem,
-                'qty'           => $inventoryUpdateQty,
-                'allocatedQty'  => $allocatedInventoryQty
-            ];
-        }
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $item,
+            $inventoryUpdateQty,
+            $allocatedInventoryQty,
+            'order_workflow.shipped',
+            $entity
+        );
 
-        $data = [
-            'stock'             => $inventoryUpdateQty,
-            'allocatedStock'    => $allocatedInventoryQty,
-            'trigger'           => 'order_workflow.shipped',
-            'items'             => $inventoryItemData,
-            'relatedEntity'     => $entity
-        ];
-
-        $context = InventoryUpdateContext::createUpdateContext($data);
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)

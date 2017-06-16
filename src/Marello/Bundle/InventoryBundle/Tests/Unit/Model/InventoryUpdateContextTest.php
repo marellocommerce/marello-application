@@ -52,7 +52,7 @@ class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
         $integer    = 10;
         $string     = 'manual';
         $rand       = uniqid();
-        $array      =['array'];
+        $array      = ['array'];
 
         return [
             'object'    => ['object', $object, $object],

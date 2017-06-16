@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ReturnBundle\Workflow;
 
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -62,25 +63,14 @@ class InspectionAction extends AbstractAction
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
-        $inventoryItems = $item->getProduct()->getInventoryItems();
-        $inventoryItemData = [];
-        foreach ($inventoryItems as $inventoryItem) {
-            $inventoryItemData[] = [
-                'item'          => $inventoryItem,
-                'qty'           => $inventoryUpdateQty,
-                'allocatedQty'  => $allocatedInventoryQty
-            ];
-        }
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $item,
+            $inventoryUpdateQty,
+            $allocatedInventoryQty,
+            'return_workflow.inspection_ok',
+            $entity
+        );
 
-        $data = [
-            'stock'             => $inventoryUpdateQty,
-            'allocatedStock'    => $allocatedInventoryQty,
-            'trigger'           => 'return_workflow.inspection_ok',
-            'items'             => $inventoryItemData,
-            'relatedEntity'     => $entity
-        ];
-
-        $context = InventoryUpdateContext::createUpdateContext($data);
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)

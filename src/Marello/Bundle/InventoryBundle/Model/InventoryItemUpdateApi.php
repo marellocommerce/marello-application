@@ -23,6 +23,7 @@ class InventoryItemUpdateApi
      * InventoryItemUpdateApi constructor.
      *
      * @param InventoryItem|null $inventoryItem
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         InventoryItem $inventoryItem = null,
@@ -47,8 +48,13 @@ class InventoryItemUpdateApi
             $this->inventoryItem = new InventoryItem($this->warehouse);
         }
 
-        $data = $this->getContextData();
-        $context = InventoryUpdateContext::createUpdateContext($data);
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $this->inventoryItem,
+            $this->stock,
+            null,
+            'import'
+        );
+
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)

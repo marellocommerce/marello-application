@@ -3,7 +3,6 @@
 namespace Marello\Bundle\InventoryBundle\Logging;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLog;
 use Marello\Bundle\InventoryBundle\Entity\StockLevel;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\DashboardBundle\Helper\DateHelper;

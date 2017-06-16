@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Form\Type;
 
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -74,8 +75,13 @@ class InventoryItemTypeTest extends WebTestCase
         $warehouse = $this->prophesize(Warehouse::class);
 
         $inventoryItem = new InventoryItem($warehouse->reveal(), $product->reveal());
-        $data = $this->getContextData($inventoryItem, 'import', 25, 0);
-        $context = InventoryUpdateContext::createUpdateContext($data);
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $inventoryItem,
+            25,
+            0,
+            'import'
+        );
+
         $this->manager->updateInventoryItems($context);
 
         $form = $this->createForm($inventoryItem);
@@ -97,8 +103,13 @@ class InventoryItemTypeTest extends WebTestCase
         $product   = $this->prophesize(Product::class);
         $warehouse = $this->prophesize(Warehouse::class);
         $inventoryItem = new InventoryItem($warehouse->reveal(), $product->reveal());
-        $data = $this->getContextData($inventoryItem, 'import', 25, 0);
-        $context = InventoryUpdateContext::createUpdateContext($data);
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $inventoryItem,
+            25,
+            0,
+            'import'
+        );
+
         $this->manager->updateInventoryItems($context);
 
         $form = $this->createForm($inventoryItem);
@@ -120,8 +131,13 @@ class InventoryItemTypeTest extends WebTestCase
         $product   = $this->prophesize(Product::class);
         $warehouse = $this->prophesize(Warehouse::class);
         $inventoryItem = new InventoryItem($warehouse->reveal(), $product->reveal());
-        $data = $this->getContextData($inventoryItem, 'import', 10, 0);
-        $context = InventoryUpdateContext::createUpdateContext($data);
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $inventoryItem,
+            10,
+            0,
+            'import'
+        );
+
         $this->manager->updateInventoryItems($context);
 
         $form = $this->createForm($inventoryItem);
@@ -133,31 +149,5 @@ class InventoryItemTypeTest extends WebTestCase
 
         $this->assertTrue($form->isValid());
         $this->assertEquals(-10, (int)$inventoryItem->getStock());
-    }
-
-    /**
-     * Get Inventory Update context data
-     * @param $item                 InventoryItem
-     * @param $trigger              // change trigger
-     * @param $inventory            // inventory to update
-     * @param $allocatedInventory   // allocated inventory to update
-     * @return array
-     */
-    protected function getContextData($item, $trigger, $inventory, $allocatedInventory)
-    {
-        $data = [
-            'stock'             => $inventory,
-            'allocatedStock'    => $allocatedInventory,
-            'trigger'           => $trigger,
-            'items'             => [
-                [
-                    'item'          => $item,
-                    'qty'           => $inventory,
-                    'allocatedQty'  => $allocatedInventory
-                ]
-            ]
-        ];
-
-        return $data;
     }
 }
