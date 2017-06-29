@@ -547,12 +547,12 @@
             "version": "0.3.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cloudflare/backgrid.git",
+                "url": "https://github.com/wyuenho/backgrid.git",
                 "reference": "9a45dbc4a2af4a555e8274b7cc1a966a7586cfea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/backgrid/zipball/9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
+                "url": "https://api.github.com/repos/wyuenho/backgrid/zipball/9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
                 "reference": "9a45dbc4a2af4a555e8274b7cc1a966a7586cfea",
                 "shasum": ""
             },
@@ -589,12 +589,12 @@
             "version": "v0.3.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/cloudflare/backgrid-paginator.git",
+                "url": "https://github.com/wyuenho/backgrid-paginator.git",
                 "reference": "77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/backgrid-paginator/zipball/77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
+                "url": "https://api.github.com/repos/wyuenho/backgrid-paginator/zipball/77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
                 "reference": "77ec7004d0dd0e72d81a11a797bd19e69aa8dfb7",
                 "shasum": ""
             },
@@ -896,21 +896,30 @@
         },
         {
             "name": "bower-asset/fullcalendar",
-            "version": "v3.4.0",
+            "version": "v2.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fullcalendar/fullcalendar.git",
-                "reference": "447ab267528a211b253058dfb5d898b7a2296492"
+                "reference": "e89b3256062d763eb144f1146dd2db9be1b639a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fullcalendar/fullcalendar/zipball/447ab267528a211b253058dfb5d898b7a2296492",
-                "reference": "447ab267528a211b253058dfb5d898b7a2296492",
+                "url": "https://api.github.com/repos/fullcalendar/fullcalendar/zipball/e89b3256062d763eb144f1146dd2db9be1b639a6",
+                "reference": "e89b3256062d763eb144f1146dd2db9be1b639a6",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/jquery": ">=2,<4.0",
-                "bower-asset/moment": ">=2.9.0,<3.0.0"
+                "bower-asset/jquery": ">=1.7.1",
+                "bower-asset/moment": ">=2.5.0"
+            },
+            "require-dev": {
+                "bower-asset/bootstrap": "~3.2.0",
+                "bower-asset/jasmine-fixture": "~1.2.0",
+                "bower-asset/jasmine-jquery": "~2.0.3",
+                "bower-asset/jquery-mockjax": "~1.5.4",
+                "bower-asset/jquery-simulate-ext": "~1.3.0",
+                "bower-asset/jquery-ui": ">=1.11.1",
+                "bower-asset/moment-timezone": "~0.2.1"
             },
             "type": "bower-asset-library",
             "extra": {
@@ -922,21 +931,17 @@
                     "*",
                     "**/.*",
                     "!/dist/**",
-                    "!/README.*",
-                    "!/LICENSE.*",
-                    "!/CHANGELOG.*",
-                    "!/CONTRIBUTING.*"
+                    "!/bower.json",
+                    "!/changelog.*",
+                    "!/license.*",
+                    "!/readme.*"
                 ]
             },
-            "license": [
-                "MIT"
-            ],
             "description": "Full-sized drag & drop event calendar",
             "keywords": [
                 "calendar",
                 "event",
-                "full-sized",
-                "jquery-plugin"
+                "full-sized"
             ]
         },
         {
@@ -1177,19 +1182,42 @@
         },
         {
             "name": "bower-asset/jquery-validate",
-            "version": "1.11.1",
+            "version": "1.16.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jquery-validation/jquery-validation.git",
-                "reference": "3b39aec630e2ecd336bc36d457d1a645bd91660f"
+                "reference": "29b9c702b9c831419f9f774d2acb86f42f803e11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jquery-validation/jquery-validation/zipball/3b39aec630e2ecd336bc36d457d1a645bd91660f",
-                "reference": "3b39aec630e2ecd336bc36d457d1a645bd91660f",
+                "url": "https://api.github.com/repos/jquery-validation/jquery-validation/zipball/29b9c702b9c831419f9f774d2acb86f42f803e11",
+                "reference": "29b9c702b9c831419f9f774d2acb86f42f803e11",
                 "shasum": ""
             },
-            "type": "bower-asset-library"
+            "require": {
+                "bower-asset/jquery": ">=1.7.2"
+            },
+            "type": "bower-asset-library",
+            "extra": {
+                "bower-asset-main": "dist/jquery.validate.js",
+                "bower-asset-ignore": [
+                    "**/.*",
+                    "node_modules",
+                    "bower_components",
+                    "test",
+                    "demo",
+                    "lib"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Form validation made easy",
+            "keywords": [
+                "forms",
+                "validate",
+                "validation"
+            ]
         },
         {
             "name": "bower-asset/jquery.numeric",
@@ -3781,16 +3809,16 @@
         },
         {
             "name": "guzzlehttp/guzzle",
-            "version": "6.2.3",
+            "version": "6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "8d6c6cc55186db87b7dc5009827429ba4e9dc006"
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/8d6c6cc55186db87b7dc5009827429ba4e9dc006",
-                "reference": "8d6c6cc55186db87b7dc5009827429ba4e9dc006",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
                 "shasum": ""
             },
             "require": {
@@ -3800,8 +3828,11 @@
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0",
+                "phpunit/phpunit": "^4.0 || ^5.0",
                 "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Required for using the Log middleware"
             },
             "type": "library",
             "extra": {
@@ -3839,7 +3870,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2017-02-28T22:50:30+00:00"
+            "time": "2017-06-22T18:50:49+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -5052,7 +5083,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -5111,7 +5142,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -6235,13 +6266,13 @@
             "name": "oro/calendar-bundle",
             "version": "dev-master",
             "dist": {
-                "type": "path",
-                "url": "../../package/calendar",
-                "reference": "8e7cb1a4c05b9187eec7446d7c27a0ba188d532b",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/orocrm/OroCalendarBundle/zipball/c81746dc221deeb694beaa7ae8e35f4d8187aa2e",
+                "reference": "c81746dc221deeb694beaa7ae8e35f4d8187aa2e",
+                "shasum": ""
             },
             "require": {
-                "bower-asset/fullcalendar": "3.4.0",
+                "bower-asset/fullcalendar": "2.2.3",
                 "oro/platform": "2.x-dev",
                 "php": ">=7.0"
             },
@@ -6259,6 +6290,7 @@
                     "/Tests/"
                 ]
             },
+            "notification-url": "https://packagist.orocrm.com/downloads/",
             "license": [
                 "OSL-3.0"
             ],
@@ -6273,7 +6305,8 @@
             "keywords": [
                 "Calendar",
                 "Oro"
-            ]
+            ],
+            "time": "2017-06-17T00:10:06+00:00"
         },
         {
             "name": "oro/commerce",
@@ -6281,14 +6314,13 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/commerce",
-                "reference": "3888f64aef662e7b19fa19e74282710b586358ad",
+                "reference": "389bcc9e56b6b602c6868267487ae298c3eaf1bc",
                 "shasum": null
             },
             "require": {
                 "besimple/soap-client": "^0.2.6",
                 "bower-asset/elevatezoom3": "3.0.8.1",
                 "bower-asset/jquery-creditcardvalidator": "1.0",
-                "bower-asset/jquery-validate": "1.11.1",
                 "box/spout": "2.3.*",
                 "myclabs/deep-copy": "1.5.*",
                 "oro/calendar-bundle": "2.x-dev",
@@ -7187,11 +7219,10 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/customer-portal",
-                "reference": "c95a425252632010ff5f959f0d772682d1a6a02b",
+                "reference": "0ccc8d923755614385ab5bc926a1f1f8b4f69e23",
                 "shasum": null
             },
             "require": {
-                "bower-asset/jquery-validate": "1.11.1",
                 "bower-asset/prism": "1.6.0",
                 "leafo/scssphp": "0.6.3",
                 "oro/calendar-bundle": "2.x-dev",
@@ -7327,7 +7358,7 @@
             "dist": {
                 "type": "path",
                 "url": "../../package/platform",
-                "reference": "449dd31cbad225101c24d424c6ec13730ecd6853",
+                "reference": "a97d5f065d3e6ef91cd04f35b6da093a24bab1a7",
                 "shasum": null
             },
             "require": {
@@ -7354,7 +7385,7 @@
                 "bower-asset/jquery-form": "4.2.1",
                 "bower-asset/jquery-mousewheel": "3.1.13",
                 "bower-asset/jquery-ui-multiselect-widget": "1.14",
-                "bower-asset/jquery-validate": "1.11.1",
+                "bower-asset/jquery-validate": "1.16.0",
                 "bower-asset/jquery.numeric": "1.5.0",
                 "bower-asset/json2": "dev-master",
                 "bower-asset/jsplumb": "1.7.*",
@@ -12026,16 +12057,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.20",
+            "version": "5.7.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3cb94a5f8c07a03c8b7527ed7468a2926203f58b"
+                "reference": "3b91adfb64264ddec5a2dee9851f354aa66327db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3cb94a5f8c07a03c8b7527ed7468a2926203f58b",
-                "reference": "3cb94a5f8c07a03c8b7527ed7468a2926203f58b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3b91adfb64264ddec5a2dee9851f354aa66327db",
+                "reference": "3b91adfb64264ddec5a2dee9851f354aa66327db",
                 "shasum": ""
             },
             "require": {
@@ -12104,7 +12135,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-05-22T07:42:55+00:00"
+            "time": "2017-06-21T08:11:54+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -12695,7 +12726,7 @@
             ],
             "description": "Copy/Paste Detector (CPD) for PHP code.",
             "homepage": "https://github.com/sebastianbergmann/phpcpd",
-            "time": "2017-02-27 06:12:50"
+            "time": "2017-02-27T06:12:50+00:00"
         },
         {
             "name": "sebastian/recursion-context",
