@@ -1,0 +1,72 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'MarelloEnterpriseInventoryBundle:Form:fields.html.twig' %}
+
+{% set formAction = path('marello_inventory_inventory_update', { 'id': entity.id }) %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_inventory_inventory_index')) }}
+    {% set html = UI.saveAndCloseButton() %}
+    {% set html = html ~ UI.saveAndStayButton() %}
+    {{ UI.dropdownSaveButton({ 'html': html }) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('marello_inventory_inventory_index'),
+        'indexLabel': 'marello.inventory.label'|trans,
+        'entityTitle': product.sku
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'inventory-edit' %}
+
+    {% set inventoryLevelFormWidget %}
+        <div class="inventoryitem"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellolayout/js/app/views/abstract-items-view'
+             }|json_encode }}">
+            {{ form_widget(form.inventoryLevels) }}
+            {{ form_errors(form.inventoryLevels) }}
+        </div>
+    {% endset %}
+
+    {% set currentInventoryWidget %}
+        <h5>{{ 'marello.inventory.inventorylevel.current_inventory_level.label'|trans }}</h5>
+        {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.inventory_qty.label'|trans, entity.stock) }}
+        {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.virtual_inventory_qty.label'|trans, entity.virtualStock) }}
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.inventory.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    currentInventoryWidget,
+                    inventoryLevelFormWidget
+                ]
+            }]
+        },
+        {
+            'title': 'marello.product.replenishment.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_widget(form.replenishment)
+                ]
+            }]
+        }
+    ] %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

@@ -8,3 +8,6 @@ marelloenterprise:
         navigation:
             warehouse:
                 create_label:       Create new warehouse
+
+        warehouse:
+            form.select_warehouse: Select Warehouse

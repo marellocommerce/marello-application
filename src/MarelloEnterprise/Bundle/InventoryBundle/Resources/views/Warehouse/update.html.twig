@@ -37,10 +37,10 @@
 {% block pageHeader %}
     {% if form.vars.value.id %}
         {% set breadcrumbs = {
-        'entity':      entity,
-        'indexPath':   path('marelloenterprise_inventory_warehouse_index'),
-        'indexLabel': 'marello.inventory.warehouse.entity_plural_label'|trans,
-        'entityTitle': entity.label
+            'entity':      entity,
+            'indexPath':   path('marelloenterprise_inventory_warehouse_index'),
+            'indexLabel': 'marello.inventory.warehouse.entity_plural_label'|trans,
+            'entityTitle': entity.label
         } %}
         {{ parent() }}
     {% else %}
