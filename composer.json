@@ -52,6 +52,10 @@
     "composer": {
       "type": "composer",
       "url": "https://packagist.orocrm.com"
+    },
+    "asset-packagist": {
+      "type": "composer",
+      "url": "https://asset-packagist.orocrm.com"
     }
   },
   "require": {
@@ -87,17 +91,10 @@
   },
   "config": {
     "component-dir": "web/bundles/components",
-    "bin-dir": "bin",
-    "fxp-asset": {
-      "asset-installer-paths": {
-        "npm-asset-library": "web/bundles/npmassets",
-        "bower-asset-library": "web/bundles/bowerassets"
-      }
-    }
+    "bin-dir": "bin"
   },
   "scripts": {
     "post-install-cmd": [
-      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::checkComposerPlugin",
       "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
@@ -106,7 +103,6 @@
       "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
     ],
     "post-update-cmd": [
-      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::checkComposerPlugin",
       "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
@@ -122,10 +118,6 @@
     "symfony-web-dir": "web",
     "incenteev-parameters": {
       "file": "app/config/parameters.yml"
-    },
-    "asset-installer-paths": {
-      "npm-asset-library": "web/bundles/npmassets",
-      "bower-asset-library": "web/bundles/bowerassets"
     }
   }
 }
