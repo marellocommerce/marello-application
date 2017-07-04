@@ -39,34 +39,6 @@ class PurchaseOrderGridListener
         }
     }
 
-
-    /**
-     * @param BuildBefore $event
-     */
-    public function buildBeforeFilterSupplier(BuildBefore $event)
-    {
-        $config = $event->getConfig();
-
-        $supplierId = $event->getDatagrid()->getParameters()->get('supplierId');
-
-        if ($supplierId) {
-
-            $supplier = $this->entityManager->getRepository('MarelloSupplierBundle:Supplier')->find($supplierId);
-
-            if ($supplier) {
-                $config->offsetAddToArrayByPath('filters', [
-                    'default' => [
-                        'preferredSupplier' => [
-                            'value' => $supplier->getName(),
-                            'type' => TextFilterType::TYPE_CONTAINS
-                        ]
-                    ]
-                ]);
-            }
-
-        }
-    }
-
     private function getProductsIdsInPendingPurchaseOrders()
     {
         $purchaseOrders = $this->entityManager->getRepository('MarelloPurchaseOrderBundle:PurchaseOrder')->findAll();

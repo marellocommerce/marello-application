@@ -26,7 +26,6 @@ services:
         tags:
             - { name: oro_action.action, alias: marello_purchase_order_transit_complete_action }
 
-
     marello_purchaseorder.listener.datagrid.product_supplier_grid_listener:
         class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSupplierGridListener
         arguments:
@@ -40,7 +39,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@oro_workflow.manager'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforeFilterSupplier }
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-purchase-order-item-candidates, method: buildBeforePendingOrders }
 
     marello_purchaseorder.twig.purchaseorder_extension:
