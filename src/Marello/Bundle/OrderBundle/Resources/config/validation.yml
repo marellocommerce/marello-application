@@ -21,3 +21,8 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
         rowTotalExclTax:
             - NotBlank: ~
     constraints: ~
+
+Marello\Bundle\OrderBundle\Entity\Order:
+    properties:
+        salesChannel:
+            - NotBlank: ~
