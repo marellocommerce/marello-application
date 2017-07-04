@@ -191,9 +191,6 @@ datagrids:
                 name:
                     type:             string
                     data_name:        p.name
-                preferredSupplier:
-                    type:             string
-                    data_name:        preferredSupplier
                 purchaseStockLevel:
                     type:             number
                     data_name:        p.purchaseStockLevel
