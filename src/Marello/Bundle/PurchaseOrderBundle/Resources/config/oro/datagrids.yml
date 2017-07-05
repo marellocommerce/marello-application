@@ -129,7 +129,7 @@ datagrids:
                 where:
                     and:
                         - sup.name <> ''
-                        - 0 <> :supplierId
+                        - sup.id = :supplierId
                         - s.name = 'enabled'                                          # Only select product with enabled status
                         - p.replenishment = 'never_out_of_stock'
 
