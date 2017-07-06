@@ -23,6 +23,8 @@ class PurchaseOrderItemCollectionType extends AbstractType
             'prototype_name'       => '__namepurchaseorderitem__',
             'prototype'            => true,
             'handle_primary'       => false,
+            'allow_add'            => true,
+            'allow_delete'         => true
         ]);
     }
 

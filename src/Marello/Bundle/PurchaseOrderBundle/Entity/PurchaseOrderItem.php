@@ -4,6 +4,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,8 +14,10 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @ORM\Entity(repositoryClass="Marello\Bundle\PurchaseOrderBundle\Entity\Repository\PurchaseOrderItemRepository")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_purchase_order_item")
+ * @Oro\Config()
  */
-class PurchaseOrderItem
+class PurchaseOrderItem implements
+    InventoryItemAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     
@@ -93,17 +96,25 @@ class PurchaseOrderItem
 
     /**
      * PurchaseOrderItem constructor.
-     *
-     * @param Product $product
-     * @param int $orderedAmount
      */
-    public function __construct(Product $product, $orderedAmount)
+    public function __construct()
     {
-        $this->product = $product;
-        $this->orderedAmount = $orderedAmount;
-        $this->productName = $this->product->getName();
-        $this->productSku = $this->product->getSku();
-        $this->supplier = $this->product->getPreferredSupplier()->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('#%s', $this->productName);
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection|\Marello\Bundle\InventoryBundle\Entity\InventoryItem[]
+     */
+    public function getInventoryItems()
+    {
+        return $this->getProduct()->getInventoryItems();
     }
 
     /**
@@ -134,7 +145,7 @@ class PurchaseOrderItem
      *
      * @return $this
      */
-    public function setOrder($order)
+    public function setOrder(PurchaseOrder $order)
     {
         $this->order = $order;
 
@@ -142,11 +153,33 @@ class PurchaseOrderItem
     }
 
     /**
-     * @return int
+     * @return PurchaseOrder
      */
-    public function getOrderedAmount()
+    public function getOrder()
     {
-        return $this->orderedAmount;
+        return $this->order;
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return $this
+     */
+    public function setProduct(Product $product)
+    {
+        $this->product = $product;
+        $this->productName = $this->product->getName();
+        $this->productSku = $this->product->getSku();
+
+        return $this;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
     }
 
     /**
@@ -162,11 +195,11 @@ class PurchaseOrderItem
     }
 
     /**
-     * @return Product
+     * @return int
      */
-    public function getProduct()
+    public function getOrderedAmount()
     {
-        return $this->product;
+        return $this->orderedAmount;
     }
 
     /**
@@ -183,6 +216,18 @@ class PurchaseOrderItem
     public function getProductName()
     {
         return $this->productName;
+    }
+
+    /**
+     * @param String $supplier
+     *
+     * @return string
+     */
+    public function setSupplier($supplier)
+    {
+        $this->supplier = $supplier;
+
+        return $this;
     }
 
     /**
@@ -239,5 +284,14 @@ class PurchaseOrderItem
     public function setReceivedAmount($receivedAmount)
     {
         $this->receivedAmount = $receivedAmount;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     * @ORM\PrePersist
+     */
+    public function preSaveSetSupplier()
+    {
+        $this->setSupplier($this->order->getSupplier()->getName());
     }
 }

@@ -3,12 +3,16 @@
 namespace Marello\Bundle\InventoryBundle\Model;
 
 use Oro\Bundle\UserBundle\Entity\UserInterface;
-use Doctrine\Common\Util\ClassUtils;
 
 class InventoryUpdateContext
 {
     /** @var array $values */
-    private $values = [];
+    private $values;
+
+    public function __construct()
+    {
+        $this->values = [];
+    }
 
     /**
      * {@inheritdoc}
@@ -32,104 +36,150 @@ class InventoryUpdateContext
             : null;
     }
 
+    /**
+     * {@inheritdoc}
+     * @param $items
+     * @return $this
+     */
+    public function setItems($items)
+    {
+        $this->setValue('items', $items);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
     public function getItems()
     {
         return $this->getValue('items');
     }
 
-    public function setItems($items)
-    {
-        $this->setValue('items', $items);
-    }
-
+    /**
+     * {@inheritdoc}
+     * @param $entity
+     * @return $this
+     */
     public function setRelatedEntity($entity)
     {
         $this->setValue('related_entity', $entity);
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
     public function getRelatedEntity()
     {
         return $this->getValue('related_entity');
     }
 
+    /**
+     * {@inheritdoc}
+     * @param UserInterface $user
+     * @return $this
+     */
     public function setUser(UserInterface $user)
     {
         $this->setValue('user', $user);
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
     public function getUser()
     {
         return $this->getValue('user');
     }
 
+    /**
+     * {@inheritdoc}
+     * @param $trigger
+     * @return $this
+     */
     public function setChangeTrigger($trigger)
     {
         $this->setValue('change_trigger', $trigger);
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
     public function getChangeTrigger()
     {
         return $this->getValue('change_trigger');
     }
 
+    /**
+     * {@inheritdoc}
+     * @param $allocatedStock
+     * @return $this
+     */
     public function setAllocatedStock($allocatedStock)
     {
         $this->setValue('allocated_stock', $allocatedStock);
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
     public function getAllocatedStock()
     {
         return $this->getValue('allocated_stock');
     }
 
+    /**
+     * {@inheritdoc}
+     * @param $stock
+     * @return $this
+     */
     public function setStock($stock)
     {
         $this->setValue('stock', $stock);
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
     public function getStock()
     {
         return $this->getValue('stock');
     }
 
+    /**
+     * {@inheritdoc}
+     * @param $product
+     * @return $this
+     */
     public function setProduct($product)
     {
         $this->setValue('product', $product);
+
+        return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
     public function getProduct()
     {
         return $this->getValue('product');
-    }
-
-    public static function createUpdateContext(array $data)
-    {
-        if (!array_key_exists('stock', $data)) {
-            return null;
-        }
-
-        if (!array_key_exists('allocatedStock', $data)) {
-            return null;
-        }
-
-        if (!array_key_exists('trigger', $data)) {
-            return null;
-        }
-
-        if (!array_key_exists('items', $data)) {
-            return null;
-        }
-
-        $context = new self();
-        $context->setStock($data['stock']);
-        $context->setAllocatedStock($data['allocatedStock']);
-        $context->setChangeTrigger($data['trigger']);
-        $context->setItems($data['items']);
-
-        if (array_key_exists('relatedEntity', $data)) {
-            $context->setRelatedEntity($data['relatedEntity']);
-        }
-
-        return $context;
     }
 }

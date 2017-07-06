@@ -13,9 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class WarehouseController extends Controller
 {
-
     /**
-     * @Config\Route("/update-default", requirements={"id"="\d+"})
+     * @Config\Route("/update-default", requirements={"id"="\d+"}, name="marello_inventory_warehouse_updatedefault")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @AclAncestor("marello_inventory_warehouse_update")

@@ -1,5 +1,6 @@
 parameters:
     marello_inventory.importexport.template_fixture.inventory_item.class: Marello\Bundle\InventoryBundle\ImportExport\TemplateFixture\InventoryItemFixture
+    marello_inventory.importexport.template_fixture.warehouse.class: Marello\Bundle\InventoryBundle\ImportExport\TemplateFixture\WarehouseFixture
     marello_inventory.inventoryitem.entity.class: Marello\Bundle\InventoryBundle\Entity\InventoryItem
 
 services:
@@ -41,5 +42,10 @@ services:
 
     marello_inventory.importexport.template_fixture.inventory_item:
         class: %marello_inventory.importexport.template_fixture.inventory_item.class%
+        tags:
+            - { name: oro_importexport.template_fixture }
+
+    marello_inventory.importexport.template_fixture.warehouse:
+        class: %marello_inventory.importexport.template_fixture.warehouse.class%
         tags:
             - { name: oro_importexport.template_fixture }

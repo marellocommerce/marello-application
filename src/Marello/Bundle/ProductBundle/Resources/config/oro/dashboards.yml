@@ -7,4 +7,4 @@ dashboards:
                     icon:       barcode
                     route:      marello_product_index
                     acl:        marello_product_view
-                    position:   20
+                    position:   15

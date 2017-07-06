@@ -48,8 +48,8 @@ class OrderExtension extends \Twig_Extension
     }
 
     /**
+     * {@inheritdoc}
      * @param Order $order
-     *
      * @return boolean
      */
     public function canReturn(Order $order)
@@ -60,7 +60,6 @@ class OrderExtension extends \Twig_Extension
                 return true;
             }
         }
-
         return false;
     }
 }

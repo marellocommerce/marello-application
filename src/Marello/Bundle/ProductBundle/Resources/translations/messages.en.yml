@@ -12,6 +12,7 @@ marello:
         data.label:                 Data
         id.label:                   Id
         type.label:                 Product Type
+        preferred_supplier.label:   Preferred Supplier
         stock_level.label:          Total Stock
         channel_prices.label:       Product Channel Prices
         desired_stock_level.label:  Desired Stock Level

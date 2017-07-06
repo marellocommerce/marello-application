@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class InventoryController extends Controller
 {
     /**
-     * @Config\Route("/")
+     * @Config\Route("/", name="marello_inventory_inventory_index")
      * @Config\Template
      */
     public function indexAction()
@@ -24,7 +24,7 @@ class InventoryController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_view")
      * @Config\Template
      *
      * @param Product $product
@@ -39,7 +39,7 @@ class InventoryController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_update")
      * @Config\Template
      *
      * @param Product $product

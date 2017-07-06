@@ -6,6 +6,8 @@ oro:
                 received_items:
                     label: 'Received Items'
             step:
+                not_sent:
+                    label: 'Ready to be sent'
                 pending:
                     label: 'Pending'
                 partially_received:
@@ -17,10 +19,12 @@ oro:
                 cancelled_purchase_order:
                     label: 'Cancelled'
             transition:
+                send:
+                    label: 'Send to supplier'
                 partially_receive:
-                    label:  'Receive partially'
+                    label: 'Receive partially'
                 fully_receive:
-                    label:  'Receive fully'
+                    label: 'Receive fully'
                 complete_purchase_order:
                     label: 'Complete'
                 cancel_purchase_order:

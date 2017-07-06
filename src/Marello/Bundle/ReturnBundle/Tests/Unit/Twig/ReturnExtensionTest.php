@@ -2,21 +2,22 @@
 
 namespace Marello\Bundle\ReturnBundle\Tests\Unit\Twig;
 
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+
 use Marello\Bundle\ReturnBundle\Twig\ReturnExtension;
 use Marello\Bundle\ReturnBundle\Util\ReturnHelper;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 class ReturnExtensionTest extends WebTestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var ReturnHelper|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $helper;
 
     /**
-     * @var WorkflowManager
+     * @var WorkflowManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $workflowManager;
 
@@ -25,21 +26,25 @@ class ReturnExtensionTest extends WebTestCase
      */
     protected $extension;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->helper = $this->getMockBuilder(ReturnHelper::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->initClient(
-            [],
-            $this->generateBasicAuthHeader()
-        );
+        $this->workflowManager = $this->getMockBuilder(WorkflowManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
 
-        $this->workflowManager = $this->client->getKernel()->getContainer()->get('oro_workflow.manager');
         $this->extension = new ReturnExtension($this->helper, $this->workflowManager);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function tearDown()
     {
         unset($this->extension);
@@ -47,12 +52,18 @@ class ReturnExtensionTest extends WebTestCase
         unset($this->workflowManager);
     }
 
-    public function testGetName()
+    /**
+     * {@inheritdoc}
+     */
+    public function testNameIsCorrectlySetAndReturnedFromConstant()
     {
         $this->assertEquals(ReturnExtension::NAME, $this->extension->getName());
     }
 
-    public function testGetFunctions()
+    /**
+     * {@inheritdoc}
+     */
+    public function testGetFunctionsAreRegisteredInExtension()
     {
         $functions = $this->extension->getFunctions();
         $this->assertCount(2, $functions);
@@ -69,11 +80,20 @@ class ReturnExtensionTest extends WebTestCase
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testGetOrderItemReturnedQuantity()
     {
+        /** @var OrderItem $orderItem */
         $orderItem = $this->getMockBuilder(OrderItem::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $this->helper->expects($this->once())
+            ->method('getOrderItemReturnedQuantity')
+            ->with($orderItem);
+
         $this->assertEquals(0, $this->extension->getOrderItemReturnedQuantity($orderItem));
     }
 }

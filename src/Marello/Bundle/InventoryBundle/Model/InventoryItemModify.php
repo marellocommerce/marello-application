@@ -30,6 +30,7 @@ class InventoryItemModify
      * InventoryItemModify constructor.
      *
      * @param $inventoryItem
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         $inventoryItem,
@@ -52,8 +53,15 @@ class InventoryItemModify
      */
     public function toModifiedInventoryItem()
     {
-        $data = $this->getContextData();
-        $context = InventoryUpdateContext::createUpdateContext($data);
+        list($stock, $allocatedStock) = $this->getContextData();
+
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $this->inventoryItem,
+            $stock,
+            $allocatedStock,
+            'manual'
+        );
+
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)
@@ -150,19 +158,20 @@ class InventoryItemModify
     {
         $stock = $this->stock * ($this->stockOperator === self::OPERATOR_INCREASE ? 1 : -1);
         $allocatedStock = $this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1);
-        $data = [
-            'stock'             => $stock,
-            'allocatedStock'    => $allocatedStock,
-            'trigger'           => 'manual',
-            'items'             => [
-                [
-                    'item'          => $this->inventoryItem,
-                    'qty'           => $stock,
-                    'allocatedQty'  => $allocatedStock
-                ]
-            ]
-        ];
+//        $data = [
+//            'stock'             => $stock,
+//            'allocatedStock'    => $allocatedStock,
+//            'trigger'           => 'manual',
+//            'items'             => [
+//                [
+//                    'item'          => $this->inventoryItem,
+//                    'qty'           => $stock,
+//                    'allocatedQty'  => $allocatedStock
+//                ]
+//            ]
+//        ];
 
-        return $data;
+//        return $data;
+        return [$stock, $allocatedStock];
     }
 }

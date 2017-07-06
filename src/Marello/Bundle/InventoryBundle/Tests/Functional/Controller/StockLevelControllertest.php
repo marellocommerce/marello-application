@@ -57,7 +57,7 @@ class StockLevelControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadProductDataTest::class,
+            LoadProductData::class,
         ]);
 
         /*

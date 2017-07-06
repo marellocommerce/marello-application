@@ -48,7 +48,10 @@ class RefundExtension extends \Twig_Extension
         ];
     }
 
-
+    /**
+     * @param Refund $refund
+     * @return bool
+     */
     public function isPending(Refund $refund)
     {
         $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($refund);

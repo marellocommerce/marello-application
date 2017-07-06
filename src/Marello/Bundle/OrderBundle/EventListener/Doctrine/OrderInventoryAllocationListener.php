@@ -4,6 +4,7 @@ namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -42,25 +43,14 @@ class OrderInventoryAllocationListener
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $order)
     {
-        $inventoryItems = $item->getProduct()->getInventoryItems();
-        $inventoryItemData = [];
-        foreach ($inventoryItems as $inventoryItem) {
-            $inventoryItemData[] = [
-                'item'          => $inventoryItem,
-                'qty'           => null,
-                'allocatedQty'  => $inventoryUpdateQty
-            ];
-        }
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $item,
+            null,
+            $inventoryUpdateQty,
+            'order_workflow.pending',
+            $order
+        );
 
-        $data = [
-            'stock'             => null,
-            'allocatedStock'    => $inventoryUpdateQty,
-            'trigger'           => 'order_workflow.pending',
-            'items'             => $inventoryItemData,
-            'relatedEntity'     => $order
-        ];
-
-        $context = InventoryUpdateContext::createUpdateContext($data);
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)

@@ -3,9 +3,12 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+
+use Marello\Bundle\InventoryBundle\Model\ExtendWarehouse;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository")
@@ -24,13 +27,12 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *      }
  * )
  */
-class Warehouse
+class Warehouse extends ExtendWarehouse
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
-     *
      * @var int
      */
     protected $id;
@@ -44,7 +46,13 @@ class Warehouse
 
     /**
      * @ORM\Column(type="boolean", nullable=false, name="is_default")
-     *
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      * @var bool
      */
     protected $default;
@@ -54,6 +62,13 @@ class Warehouse
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $owner;
 
@@ -62,8 +77,32 @@ class Warehouse
      *
      * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=40,
+     *              "full"=true,
+     *          }
+     *      }
+     * )
      */
     protected $address = null;
+
+    /**
+     * @var WarehouseType
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\WarehouseType")
+     * @ORM\JoinColumn(name="warehouse_type", referencedColumnName="name")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=50,
+     *              "full"=true,
+     *          }
+     *      }
+     * )
+     */
+    protected $warehouseType;
 
     /**
      * @param string $label
@@ -167,6 +206,26 @@ class Warehouse
     public function setAddress(MarelloAddress $address)
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return WarehouseType
+     */
+    public function getWarehouseType()
+    {
+        return $this->warehouseType;
+    }
+
+    /**
+     * @param WarehouseType $warehouseType
+     *
+     * @return $this
+     */
+    public function setWarehouseType(WarehouseType $warehouseType)
+    {
+        $this->warehouseType = $warehouseType;
 
         return $this;
     }
