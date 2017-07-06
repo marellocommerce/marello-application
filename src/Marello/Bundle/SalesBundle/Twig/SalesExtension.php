@@ -28,7 +28,7 @@ class SalesExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction(
-                'git',
+                'marello_sales_has_active_channels',
                 [$this, 'checkActiveChannels']
             )
         ];
