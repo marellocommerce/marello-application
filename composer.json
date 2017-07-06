@@ -23,7 +23,7 @@
         "oro/platform": "2.0.*",
         "oro/platform-serialised-fields": "2.0.*",
         "oro/calendar-bundle": "2.0.0",
-        "marellocommerce/marello": "dev-master"
+        "marellocommerce/marello": "1.1.*"
     },
     "config": {
         "component-dir": "web/bundles/components",

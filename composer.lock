@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1cdbb920bc5e0197f67ca9c5b3518062",
+    "content-hash": "c4e2775b810e992ea4d4bba4af5ef343",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -4610,16 +4610,16 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "dev-master",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "5e99b013fbf03b7497fad552771951f478f46a3e"
+                "reference": "be5866e285c9befa110283a03d99494021e9b243"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/5e99b013fbf03b7497fad552771951f478f46a3e",
-                "reference": "5e99b013fbf03b7497fad552771951f478f46a3e",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/be5866e285c9befa110283a03d99494021e9b243",
+                "reference": "be5866e285c9befa110283a03d99494021e9b243",
                 "shasum": ""
             },
             "require": {
@@ -4651,10 +4651,10 @@
             "description": "Marello",
             "homepage": "https://github.com/marellocommerce/marello.git",
             "support": {
-                "source": "https://github.com/marellocommerce/marello/tree/dist-master",
+                "source": "https://github.com/marellocommerce/marello/tree/1.1.0",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2017-05-03T10:11:55+00:00"
+            "time": "2017-07-06T12:14:30+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -8308,9 +8308,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "marellocommerce/marello": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
