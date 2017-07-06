@@ -3,7 +3,9 @@
 namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Datagrid;
 
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Doctrine\ORM\EntityManager;
 
@@ -24,15 +26,17 @@ class PurchaseOrderGridListener
     /**
      * @param BuildBefore $event
      */
-    public function buildBefore(BuildBefore $event)
+    public function buildBeforePendingOrders(BuildBefore $event)
     {
         $config = $event->getConfig();
 
         $productIdsToExclude = $this->getProductsIdsInPendingPurchaseOrders();
 
-        $config->offsetAddToArrayByPath('source.query.where.and', [
-            "p.id NOT IN (". $productIdsToExclude .")"
-        ]);
+        if ($productIdsToExclude != '') {
+            $config->offsetAddToArrayByPath('source.query.where.and', [
+                "p.id NOT IN (". $productIdsToExclude .")"
+            ]);
+        }
     }
 
     private function getProductsIdsInPendingPurchaseOrders()

@@ -2,14 +2,12 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\TemplateFixture;
 
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\AbstractTemplateRepository;
 use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\StockLevel;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\ProductStatus;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class InventoryItemFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
 {
@@ -38,7 +36,7 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
             ->getEntityRepository('Marello\Bundle\InventoryBundle\Entity\Warehouse');
 
         $product = $this->createProduct();
-        $inventoryItem = new InventoryItem($warehouseRepo->getEntity('main'), $product);
+        $inventoryItem = new InventoryItem($warehouseRepo->getEntity('default'), $product);
         $stockLevel = new StockLevel(
             $inventoryItem,
             25,

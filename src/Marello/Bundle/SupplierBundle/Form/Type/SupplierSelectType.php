@@ -16,7 +16,7 @@ class SupplierSelectType extends AbstractType
             [
                 'autocomplete_alias'    => 'suppliers',
                 'create_enabled'        => false,
-                'grid_name'             => 'marello-supplier-extended-grid',
+                'grid_name'             => 'marello-supplier-extended-no-actions-grid',
                 'grid_parameters'       => [ 'isActive' => 1],
                 'configs'               => [
                     'placeholder'               => 'marello.supplier.form.choose_supplier',

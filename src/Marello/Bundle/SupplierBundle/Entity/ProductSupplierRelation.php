@@ -18,7 +18,7 @@ use Marello\Bundle\SupplierBundle\Entity\Supplier;
  *          )
  *      }
  * )
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\SupplierBundle\Entity\Repository\ProductSupplierRelationRepository")
  */
 class ProductSupplierRelation
 {

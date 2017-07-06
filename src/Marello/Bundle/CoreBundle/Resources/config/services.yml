@@ -10,12 +10,19 @@ services:
         tags:
             - { name: oro_action.action, alias: marello_core_transit_complete_action }
 
-    marello_productprice.validator.unique.unique_entity_collection:
+    marello_core.validator.unique.unique_entity_collection:
         class: Marello\Bundle\CoreBundle\Validator\UniqueEntityCollectionValidator
         arguments:
             - '@doctrine'
         tags:
             - { name: validator.constraint_validator, alias: unique_entity_collection }
+
+    marello_core.validator.greater_than_date:
+        class: Marello\Bundle\CoreBundle\Validator\GreaterThanDateValidator
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: validator.constraint_validator, alias: greater_than_date }
 
     marello_core.twig.workflow_extension:
         class: Marello\Bundle\CoreBundle\Twig\WorkflowExtension

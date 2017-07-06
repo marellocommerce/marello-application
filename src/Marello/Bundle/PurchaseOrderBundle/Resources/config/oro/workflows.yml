@@ -2,7 +2,7 @@ workflows:
     marello_purchase_order_workflow:
         entity: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
         entity_attribute: po
-        start_step: pending
+        start_step: not_sent
 
         defaults:
             active: true
@@ -13,6 +13,9 @@ workflows:
                 options:
                     class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
         steps:
+            not_sent:
+                allowed_transitions:
+                    - send
             pending:
                 allowed_transitions:
                     - partially_receive
@@ -30,6 +33,9 @@ workflows:
             cancelled_purchase_order:
                 is_final: true
         transitions:
+            send:
+                step_to: pending
+                transition_definition: send_definition
             partially_receive:
                 step_to: partially_received
                 transition_definition: partially_receive_definition
@@ -62,6 +68,12 @@ workflows:
                 step_to: cancelled_purchase_order
                 transition_definition: cancel_purchase_order_definition
         transition_definitions:
+            send_definition:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $po
+                        recipient: $po.supplier.email
+                        template: marello_purchase_order_supplier
             partially_receive_definition:
                 post_actions:
                     - @marello_receive_purchase_order:

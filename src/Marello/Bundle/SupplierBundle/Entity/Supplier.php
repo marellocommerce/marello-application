@@ -44,6 +44,13 @@ class Supplier
     protected $address = null;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, unique=true, nullable=true)
+     */
+    protected $email;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="priority", type="integer", nullable=false)
@@ -128,6 +135,30 @@ class Supplier
     public function getAddress()
     {
         return $this->address;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Supplier
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**

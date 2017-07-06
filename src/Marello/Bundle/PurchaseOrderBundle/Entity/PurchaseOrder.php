@@ -9,6 +9,7 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
@@ -31,7 +32,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 class PurchaseOrder implements DerivedPropertyAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
-    
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -67,6 +68,15 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      */
     protected $items;
 
+
+    /**
+     * @var Supplier
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
+     * @ORM\JoinColumn(name="supplier_id", nullable=false)
+     */
+    protected $supplier;
+
     /**
      * @var Organization
      *
@@ -74,6 +84,14 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      * @ORM\JoinColumn(name="organization_id", nullable=false)
      */
     protected $organization;
+
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="due_date", type="datetime", nullable=true)
+     */
+    protected $dueDate;
 
     /**
      * Creates order using products
@@ -97,9 +115,12 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
             );
 
             $amount = $product->getDesiredStockLevel() - $virtualStock;
-            $order->addItem(
-                new PurchaseOrderItem($product, $amount)
-            );
+            $purchaseOrderItem = new PurchaseOrderItem();
+            $purchaseOrderItem
+                ->setProduct($product)
+                ->setOrderedAmount($amount)
+                ;
+            $order->addItem($purchaseOrderItem);
         }
 
         return $order;
@@ -108,12 +129,9 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
 
     /**
      * PurchaseOrder constructor.
-     *
-     * @param Organization $organization
      */
-    public function __construct(Organization $organization)
+    public function __construct()
     {
-        $this->organization = $organization;
         $this->items = new ArrayCollection();
     }
 
@@ -178,6 +196,26 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     }
 
     /**
+     * @return Supplier
+     */
+    public function getSupplier()
+    {
+        return $this->supplier;
+    }
+
+    /**
+     * @param Supplier $supplier
+     *
+     * @return $this
+     */
+    public function setSupplier(Supplier $supplier)
+    {
+        $this->supplier = $supplier;
+
+        return $this;
+    }
+
+    /**
      * @return Organization
      */
     public function getOrganization()
@@ -205,6 +243,28 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
         if (!$this->purchaseOrderNumber) {
             $this->setPurchaseOrderNumber(sprintf('%09d', $id));
         }
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $dueDate
+     *
+     * @return mixed
+     */
+    public function setDueDate($dueDate)
+    {
+        $this->dueDate = $dueDate;
+
+        return $this;
+    }
+
+    /**
+     * @return \Datetime
+     */
+    public function getDueDate()
+    {
+        return $this->dueDate;
     }
 
     /**

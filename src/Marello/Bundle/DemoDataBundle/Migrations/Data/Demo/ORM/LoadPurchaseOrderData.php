@@ -24,6 +24,7 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
     {
         return [
             LoadProductData::class,
+            LoadSupplierData::class
         ];
     }
 
@@ -59,7 +60,8 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
                 }
 
                 if (!array_key_exists($data['po'], $orders)) {
-                    $order   = $orders[$data['po']] = new PurchaseOrder($organization);
+                    $order   = $orders[$data['po']] = new PurchaseOrder();
+                    $order = $order->setOrganization($organization);
                     $orderNo = $data['po'];
                 }
 
@@ -70,11 +72,15 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
                 //set replenishment to product to make sure it follows PO logic
                 $product->setReplenishment($replenishmentNOS);
 
+                $purchaseOrderItem = new PurchaseOrderItem();
                 $order->addItem(
-                    (new PurchaseOrderItem($product, $data['ordered_amount']))
+                    $purchaseOrderItem->setProduct($product)->setOrderedAmount($data['ordered_amount'])
                 );
-            }
 
+                if (!$order->getSupplier()) {
+                    $order->setSupplier($order->getItems()->first()->getProduct()->getPreferredSupplier());
+                }
+            }
             $this->setReference('marello-purchase-order-' . $orderNo, $order);
             $manager->persist($product);
             $manager->persist($order);

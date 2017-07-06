@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Entity;
 
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
@@ -16,6 +17,9 @@ class InventoryItemTest extends WebTestCase
     /** @var InventoryManager $manager */
     protected $manager;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->initClient();
@@ -23,21 +27,25 @@ class InventoryItemTest extends WebTestCase
         $this->manager = $this->client->getContainer()->get('marello_inventory.manager.inventory_manager');
     }
 
-    /** @test */
-    public function testInventorySet()
+    /**
+     * {@inheritdoc}
+     */
+    public function testCreateAndUpdateNewInventoryItem()
     {
-        $product   = $this->prophesize(Product::class);
-        $warehouse = $this->prophesize(Warehouse::class);
-
-        $inventoryItem = new InventoryItem($warehouse->reveal(), $product->reveal());
+        $inventoryItem = new InventoryItem(new Warehouse(), new Product());
 
         $this->assertEquals(0, $inventoryItem->getStock());
         $this->assertEquals(0, $inventoryItem->getAllocatedStock());
         $this->assertEquals(0, $inventoryItem->getVirtualStock());
         $this->assertNull($inventoryItem->getCurrentLevel());
 
-        $data = $this->getContextData($inventoryItem, 'manual', 10, 20);
-        $context = InventoryUpdateContext::createUpdateContext($data);
+        /** @var InventoryUpdateContext $context */
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $inventoryItem,
+            10,
+            20,
+            'manual'
+        );
         $this->manager->updateInventoryItems($context);
 
         $this->assertEquals(10, $inventoryItem->getStock());
@@ -47,21 +55,25 @@ class InventoryItemTest extends WebTestCase
         $this->assertInstanceOf(StockLevel::class, $inventoryItem->getLevels()->first());
     }
 
-    /** @test */
-    public function testInventoryAdjust()
+    /**
+     * {@inheritdoc}
+     */
+    public function testIfInventoryItemIsUpdatedCorrectlyWithMultipleChanges()
     {
-        $product   = $this->prophesize(Product::class);
-        $warehouse = $this->prophesize(Warehouse::class);
-
-        $inventoryItem = new InventoryItem($warehouse->reveal(), $product->reveal());
+        $inventoryItem = new InventoryItem(new Warehouse(), new Product());
 
         $this->assertEquals(0, $inventoryItem->getStock());
         $this->assertEquals(0, $inventoryItem->getAllocatedStock());
         $this->assertEquals(0, $inventoryItem->getVirtualStock());
         $this->assertNull($inventoryItem->getCurrentLevel());
 
-        $data = $this->getContextData($inventoryItem, 'manual', 10, 20);
-        $context = InventoryUpdateContext::createUpdateContext($data);
+        /** @var InventoryUpdateContext $context */
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $inventoryItem,
+            10,
+            20,
+            'manual'
+        );
         $this->manager->updateInventoryItems($context);
 
         $this->assertEquals(10, $inventoryItem->getStock());
@@ -70,38 +82,17 @@ class InventoryItemTest extends WebTestCase
         $this->assertInstanceOf(StockLevel::class, $inventoryItem->getCurrentLevel());
         $this->assertInstanceOf(StockLevel::class, $inventoryItem->getLevels()->first());
 
-        $data = $this->getContextData($inventoryItem, 'manual', -5, -10);
-        $context = InventoryUpdateContext::createUpdateContext($data);
+        /** @var InventoryUpdateContext $context */
+        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $inventoryItem,
+            -5,
+            -10,
+            'manual'
+        );
         $this->manager->updateInventoryItems($context);
 
         $this->assertEquals(5, $inventoryItem->getStock());
         $this->assertEquals(10, $inventoryItem->getAllocatedStock());
         $this->assertEquals(-5, $inventoryItem->getVirtualStock());
-    }
-
-    /**
-     * Get Inventory Update context data
-     * @param $item                 InventoryItem
-     * @param $trigger              //change trigger
-     * @param $inventory            //inventory to update
-     * @param $allocatedInventory   //allocated inventory to update
-     * @return array
-     */
-    protected function getContextData($item, $trigger, $inventory, $allocatedInventory)
-    {
-        $data = [
-            'stock'             => $inventory,
-            'allocatedStock'    => $allocatedInventory,
-            'trigger'           => $trigger,
-            'items'             => [
-                [
-                    'item'          => $item,
-                    'qty'           => $inventory,
-                    'allocatedQty'  => $allocatedInventory
-                ]
-            ]
-        ];
-
-        return $data;
     }
 }

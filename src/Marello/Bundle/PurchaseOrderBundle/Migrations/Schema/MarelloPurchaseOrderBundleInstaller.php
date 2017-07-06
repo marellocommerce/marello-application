@@ -24,7 +24,7 @@ class MarelloPurchaseOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2_3';
     }
 
     /**
@@ -39,8 +39,6 @@ class MarelloPurchaseOrderBundleInstaller implements
         /** Foreign keys generation **/
         $this->addMarelloPurchaseOrderForeignKeys($schema);
         $this->addMarelloPurchaseOrderItemForeignKeys($schema);
-
-        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_purchase_order');
     }
 
     /**
@@ -52,12 +50,18 @@ class MarelloPurchaseOrderBundleInstaller implements
     {
         $table = $schema->createTable('marello_purchase_order');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('supplier_id', 'integer', ['notnull' => true]);
         $table->addColumn('organization_id', 'integer', []);
         $table->addColumn('purchase_order_number', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('due_date', 'datetime', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id'], 'IDX_34E72AC332C8A3DE', []);
+        $table->addIndex(['supplier_id'], '', []);
+
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', $table->getName());
+        $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
     }
 
     /**
@@ -98,6 +102,12 @@ class MarelloPurchaseOrderBundleInstaller implements
             ['organization_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_supplier_supplier'),
+            ['supplier_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 
