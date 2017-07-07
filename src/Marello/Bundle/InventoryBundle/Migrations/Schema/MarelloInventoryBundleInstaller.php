@@ -17,7 +17,7 @@ class MarelloInventoryBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2_1';
     }
 
     /**
@@ -51,12 +51,7 @@ class MarelloInventoryBundleInstaller implements Installation
         $table = $schema->createTable('marello_inventory_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('product_id', 'integer', []);
-        $table->addColumn('warehouse_id', 'integer', []);
-        $table->addColumn('current_level_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['product_id', 'warehouse_id'], 'uniq_40b8d0414584665a5080ecde');
-        $table->addUniqueIndex(['current_level_id'], 'UNIQ_40B8D04178824D09');
-        $table->addIndex(['warehouse_id'], 'idx_40b8d0415080ecde', []);
         $table->addIndex(['product_id'], 'idx_40b8d0414584665a', []);
     }
 
@@ -129,18 +124,6 @@ class MarelloInventoryBundleInstaller implements Installation
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_product_product'),
             ['product_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_inventory_warehouse'),
-            ['warehouse_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_inventory_level'),
-            ['current_level_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );

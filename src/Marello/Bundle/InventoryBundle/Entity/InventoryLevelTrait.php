@@ -10,17 +10,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 trait InventoryLevelTrait
 {
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="current_level_id", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "order"=30,
-     *              "full"=true
-     *          }
-     *      }
-     * )
-     *
      * @var InventoryLevel
      */
     protected $currentLevel = null;

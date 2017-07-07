@@ -65,17 +65,6 @@ class InventoryItem
     protected $product;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "order"=20,
-     *              "full"=true,
-     *          }
-     *      }
-     * )
-     *
      * @var Warehouse
      */
     protected $warehouse;
