@@ -30,7 +30,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  */
 class InventoryItem
 {
-    use StockLevelTrait;
+    use InventoryLevelTrait;
 
     /**
      * @ORM\Id

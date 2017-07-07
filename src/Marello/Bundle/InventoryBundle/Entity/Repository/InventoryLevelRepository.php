@@ -5,7 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
-class StockLevelRepository extends EntityRepository
+class InventoryLevelRepository extends EntityRepository
 {
     
     /**

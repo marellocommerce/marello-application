@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\UserBundle\Entity\User;
 
-trait StockLevelTrait
+trait InventoryLevelTrait
 {
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel", cascade={"persist", "remove"})

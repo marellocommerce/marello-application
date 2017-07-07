@@ -7,7 +7,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\StockLevelRepository")
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository")
  * @ORM\Table(name="marello_inventory_level")
  * @Oro\Config(
  *      defaultValues={
