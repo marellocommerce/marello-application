@@ -11,6 +11,9 @@ datagrids:
             purchaseOrderNumber:
                 label:              marello.purchaseorder.purchase_order_number.label
                 frontend_type:      string
+            supplier:
+                label:              marello.supplier.entity_label
+                frontend_type:      string
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
@@ -26,6 +29,8 @@ datagrids:
             columns:
                 purchaseOrderNumber:
                     data_name:      po.purchaseOrderNumber
+                supplier:
+                    data_name:      po.supplier
                 createdAt:
                     data_name:      po.createdAt
                 updatedAt:
@@ -39,6 +44,9 @@ datagrids:
                 purchaseOrderNumber:
                     type: string
                     data_name: po.purchaseOrderNumber
+                supplier:
+                    type: string
+                    data_name: po.supplier
                 createdAt:
                     type: datetime
                     data_name: po.createdAt
@@ -129,7 +137,7 @@ datagrids:
                 where:
                     and:
                         - sup.name <> ''
-                        - 0 <> :supplierId
+                        - sup.id = :supplierId
                         - s.name = 'enabled'                                          # Only select product with enabled status
                         - p.replenishment = 'never_out_of_stock'
 
@@ -191,9 +199,6 @@ datagrids:
                 name:
                     type:             string
                     data_name:        p.name
-                preferredSupplier:
-                    type:             string
-                    data_name:        preferredSupplier
                 purchaseStockLevel:
                     type:             number
                     data_name:        p.purchaseStockLevel
