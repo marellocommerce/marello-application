@@ -6,7 +6,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Logging\ChartBuilder;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
@@ -42,7 +42,7 @@ class ChartBuilderTest extends WebTestCase
             ->getInventoryItems()
             ->first();
 
-        /** @var StockLevel $inventory */
+        /** @var InventoryLevel $inventory */
         $inventory = $inventoryItem->getCurrentLevel();
 
         /*

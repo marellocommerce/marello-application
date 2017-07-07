@@ -17,7 +17,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *      }
  * )
  */
-class StockLevel
+class InventoryLevel
 {
     /**
      * @ORM\Id
@@ -193,7 +193,7 @@ class StockLevel
     protected $createdAt;
 
     /**
-     * StockLevel constructor.
+     * InventoryLevel constructor.
      *
      * @param InventoryItem $inventoryItem
      * @param int           $inventory

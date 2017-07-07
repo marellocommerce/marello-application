@@ -110,7 +110,7 @@ datagrids:
                     - (l.inventoryAlteration) AS stockDiff
                     - (l.allocatedInventoryAlteration) AS allocatedStockDiff
                 from:
-                    - { table: MarelloInventoryBundle:StockLevel, alias: l }
+                    - { table: MarelloInventoryBundle:InventoryLevel, alias: l }
                 join:
                     left:
                         - { join: l.inventoryItem, alias: i }
@@ -125,13 +125,13 @@ datagrids:
                 label:          marello.inventory.stocklevel.stock_diff.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/StockLevel/diff.html.twig
+                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
             allocatedStockDiff:
                 data_name:      allocatedStockDiff
                 label:          marello.inventory.stocklevel.allocated_stock_diff.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/StockLevel/diff.html.twig
+                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
             changeTrigger:
                 data_name:      changeTrigger
                 label:          marello.inventory.stocklevel.change_trigger.label
@@ -145,7 +145,7 @@ datagrids:
                 label:          marello.inventory.stocklevel.subject.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/StockLevel/subject.html.twig
+                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/subject.html.twig
             createdAt:
                 label:          oro.ui.created_at
                 frontend_type:  datetime

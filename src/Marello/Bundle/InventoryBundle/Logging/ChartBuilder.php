@@ -3,7 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Logging;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\DashboardBundle\Helper\DateHelper;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -45,7 +45,7 @@ class ChartBuilder
     public function getChartData(Product $product, \DateTime $from, \DateTime $to)
     {
         $repository = $this->doctrine
-            ->getRepository(StockLevel::class);
+            ->getRepository(InventoryLevel::class);
 
         $records            = $repository->getStockLevelsForProduct($product, $from, $to);
         $initialRecord      = $repository->getInitialStock($product, $from);

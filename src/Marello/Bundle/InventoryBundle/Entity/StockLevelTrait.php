@@ -10,7 +10,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 trait StockLevelTrait
 {
     /**
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="current_level_id", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
@@ -21,13 +21,13 @@ trait StockLevelTrait
      *      }
      * )
      *
-     * @var StockLevel
+     * @var InventoryLevel
      */
     protected $currentLevel = null;
 
     /**
      * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel",
+     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel",
      *     mappedBy="inventoryItem",
      *     cascade={"persist", "remove"}
      * )
@@ -40,16 +40,16 @@ trait StockLevelTrait
      *      }
      * )
      *
-     * @var StockLevel[]|Collection
+     * @var InventoryLevel[]|Collection
      */
     protected $levels;
 
     /**
-     * @param StockLevel $newLevel
+     * @param InventoryLevel $newLevel
      *
      * @return $this
      */
-    public function changeCurrentLevel(StockLevel $newLevel)
+    public function changeCurrentLevel(InventoryLevel $newLevel)
     {
         $this->levels->add($newLevel);
         $this->currentLevel = $newLevel;
@@ -58,7 +58,7 @@ trait StockLevelTrait
     }
 
     /**
-     * @return StockLevel
+     * @return InventoryLevel
      */
     public function getCurrentLevel()
     {
@@ -66,7 +66,7 @@ trait StockLevelTrait
     }
 
     /**
-     * @return Collection|StockLevel[]
+     * @return Collection|InventoryLevel[]
      */
     public function getLevels()
     {

@@ -4,7 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Manager;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class InventoryManager implements InventoryManagerInterface
@@ -96,7 +96,7 @@ class InventoryManager implements InventoryManagerInterface
         }
 
         try {
-            $item->changeCurrentLevel(new StockLevel(
+            $item->changeCurrentLevel(new InventoryLevel(
                 $item,
                 $inventory,
                 $inventoryAlt,

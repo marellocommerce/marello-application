@@ -27,7 +27,7 @@ class MarelloInventoryBundleInstaller implements Installation
     {
         /** Tables generation **/
         $this->createMarelloInventoryItemTable($schema);
-        $this->createMarelloInventoryStockLevelTable($schema);
+        $this->createMarelloInventoryInventoryLevelTable($schema);
         $this->createMarelloInventoryWarehouseTable($schema);
         $this->createMarelloInventoryWarehouseTypeTable($schema);
 
@@ -36,7 +36,7 @@ class MarelloInventoryBundleInstaller implements Installation
 
         /** Foreign keys generation **/
         $this->addMarelloInventoryItemForeignKeys($schema);
-        $this->addMarelloInventoryStockLevelForeignKeys($schema);
+        $this->addMarelloInventoryInventoryLevelForeignKeys($schema);
         $this->addMarelloInventoryWarehouseForeignKeys($schema);
         $this->addMarelloInventoryWarehouseTypeForeignKeys($schema);
     }
@@ -65,7 +65,7 @@ class MarelloInventoryBundleInstaller implements Installation
      *
      * @param Schema $schema
      */
-    protected function createMarelloInventoryStockLevelTable(Schema $schema)
+    protected function createMarelloInventoryInventoryLevelTable(Schema $schema)
     {
         $table = $schema->createTable('marello_inventory_level');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
@@ -151,7 +151,7 @@ class MarelloInventoryBundleInstaller implements Installation
      *
      * @param Schema $schema
      */
-    protected function addMarelloInventoryStockLevelForeignKeys(Schema $schema)
+    protected function addMarelloInventoryInventoryLevelForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_inventory_level');
         $table->addForeignKeyConstraint(

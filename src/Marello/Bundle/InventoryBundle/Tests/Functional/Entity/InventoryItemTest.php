@@ -8,7 +8,7 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
@@ -51,8 +51,8 @@ class InventoryItemTest extends WebTestCase
         $this->assertEquals(10, $inventoryItem->getStock());
         $this->assertEquals(20, $inventoryItem->getAllocatedStock());
         $this->assertEquals(-10, $inventoryItem->getVirtualStock());
-        $this->assertInstanceOf(StockLevel::class, $inventoryItem->getCurrentLevel());
-        $this->assertInstanceOf(StockLevel::class, $inventoryItem->getLevels()->first());
+        $this->assertInstanceOf(InventoryLevel::class, $inventoryItem->getCurrentLevel());
+        $this->assertInstanceOf(InventoryLevel::class, $inventoryItem->getLevels()->first());
     }
 
     /**
@@ -79,8 +79,8 @@ class InventoryItemTest extends WebTestCase
         $this->assertEquals(10, $inventoryItem->getStock());
         $this->assertEquals(20, $inventoryItem->getAllocatedStock());
         $this->assertEquals(-10, $inventoryItem->getVirtualStock());
-        $this->assertInstanceOf(StockLevel::class, $inventoryItem->getCurrentLevel());
-        $this->assertInstanceOf(StockLevel::class, $inventoryItem->getLevels()->first());
+        $this->assertInstanceOf(InventoryLevel::class, $inventoryItem->getCurrentLevel());
+        $this->assertInstanceOf(InventoryLevel::class, $inventoryItem->getLevels()->first());
 
         /** @var InventoryUpdateContext $context */
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
