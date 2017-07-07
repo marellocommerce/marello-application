@@ -8,12 +8,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Config\Route("/stock-level")
+ * @Config\Route("/inventory-level")
  */
-class StockLevelController extends Controller
+class InventoryLevelController extends Controller
 {
     /**
-     * @Config\Route("/{id}", requirements={"id"="\d+"}, name="marello_inventory_stocklevel_index")
+     * @Config\Route("/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_index")
      * @Config\Template
      *
      * @param Product $product
@@ -28,7 +28,7 @@ class StockLevelController extends Controller
     }
 
     /**
-     * @Config\Route("/chart/{id}", requirements={"id"="\d+"}, name="marello_inventory_stocklevel_chart")
+     * @Config\Route("/chart/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_chart")
      * @Config\Template
      *
      * @param Product $product

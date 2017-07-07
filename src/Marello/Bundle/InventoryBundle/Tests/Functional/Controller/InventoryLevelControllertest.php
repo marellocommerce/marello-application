@@ -11,7 +11,7 @@ use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 /**
  * @dbIsolation
  */
-class StockLevelControllerTest extends WebTestCase
+class InventoryLevelControllerTest extends WebTestCase
 {
 
     /**
@@ -36,7 +36,7 @@ class StockLevelControllerTest extends WebTestCase
         $this->client->request(
             'GET',
             $this->getUrl(
-                'marello_inventory_stocklevel_index',
+                'marello_inventory_inventorylevel_index',
                 ['id' => $product->getId()]
             )
         );
