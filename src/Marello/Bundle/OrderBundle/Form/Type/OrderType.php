@@ -39,9 +39,9 @@ class OrderType extends AbstractType
             )
             ->add(
                 'salesChannel',
-                ChoiceType::class,
+                'marello_sales_saleschannel_select',
                 [
-                    'choices' => $this->getSalesChannelsChoices()
+                    'autocomplete_alias' => 'active_saleschannels',
                 ]
             )
             ->add(
