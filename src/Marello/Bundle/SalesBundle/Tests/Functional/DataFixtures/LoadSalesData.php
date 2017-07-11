@@ -13,7 +13,9 @@ class LoadSalesData extends AbstractFixture
     const CHANNEL_2_REF = 'channel2';
     const CHANNEL_3_REF = 'channel3';
 
-    /** @var ObjectManager $manager */
+    /**
+     * @var ObjectManager $manager
+     */
     protected $manager;
 
     /**
@@ -24,19 +26,25 @@ class LoadSalesData extends AbstractFixture
             'name' => 'Channel-EUR',
             'code' => 'chan_eur',
             'type' => 'magento',
-            'currency' => 'EUR'
+            'currency' => 'EUR',
+            'active' => true,
+            'default' => true,
         ],
         self::CHANNEL_2_REF => [
             'name' => 'Channel-USD',
             'code' => 'chan_usd',
             'type' => 'pos',
-            'currency' => 'USD'
+            'currency' => 'USD',
+            'active' => true,
+            'default' => false,
         ],
         self::CHANNEL_3_REF => [
             'name' => 'Channel-GBP',
             'code' => 'chan_gbp',
             'type' => 'pos',
-            'currency' => 'GBP'
+            'currency' => 'GBP',
+            'active' => false,
+            'default' => false,
         ],
     ];
 
@@ -57,10 +65,7 @@ class LoadSalesData extends AbstractFixture
         $organization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
 
         foreach ($this->data as $ref => $values) {
-            $channel = new SalesChannel($values['name']);
-            $channel->setChannelType($values['type']);
-            $channel->setCode($values['code']);
-            $channel->setCurrency($values['currency']);
+            $channel = $this->buildChannel($ref, $values);
             $channel->setOwner($organization);
 
             $this->manager->persist($channel);
@@ -68,5 +73,22 @@ class LoadSalesData extends AbstractFixture
         }
 
         $this->manager->flush();
+    }
+
+    /**
+     * @param string $reference
+     * @param array  $data
+     *
+     * @return SalesChannel
+     */
+    private function buildChannel($reference, $data)
+    {
+        $channel = new SalesChannel($reference);
+
+        return $channel->setChannelType($data['type'])
+            ->setCode($data['code'])
+            ->setCurrency($data['currency'])
+            ->setActive($data['active'])
+            ->setDefault($data['default']);
     }
 }
