@@ -174,4 +174,12 @@ class InventoryItem implements ProductInventoryAwareInterface
     {
         return $this->inventoryLevels;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasInventoryLevels()
+    {
+        return ($this->inventoryLevels->count() > 0);
+    }
 }

@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
@@ -125,23 +124,28 @@ class InventoryManager implements InventoryManagerInterface
             $allocatedInventoryAlt = 0;
         }
 
-
-
         try {
-            $item->changeCurrentLevel(new InventoryLevel(
-                $item,
-                $inventory,
-                $inventoryAlt,
-                $allocatedInventory,
-                $allocatedInventoryAlt,
-                $trigger,
-                $user,
-                $subject
-            ));
+            // find inventory level based on the warehouse
+            /** @var InventoryLevel $level */
+            $level = $this->getInventoryLevel($item);
+
+            if (!$level) {
+                $level = new InventoryLevel(
+                    $item,
+                    $inventory,
+                    $inventoryAlt,
+                    $allocatedInventory,
+                    $allocatedInventoryAlt,
+                    $trigger,
+                    $user,
+                    $subject
+                );
+            }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
+        $item->addInventoryLevel($level);
         return true;
     }
 
@@ -156,12 +160,18 @@ class InventoryManager implements InventoryManagerInterface
     }
 
     /**
+     * @param InventoryItem $inventoryItem
      * @return null|object
      */
-    private function getWarehouse()
+    private function getInventoryLevel(InventoryItem $inventoryItem)
     {
-        $repo = $this->doctrineHelper->getEntityRepositoryForClass(Warehouse::class);
-        return $repo->getDefault();
+        $repo = $this->doctrineHelper->getEntityRepositoryForClass(InventoryLevel::class);
+        $level = $repo->findOneBy(['inventoryItem' => $inventoryItem]);
+        if (!$level && $inventoryItem->hasInventoryLevels()) {
+            $level = $inventoryItem->getInventoryLevels()->first();
+        }
+
+        return $level;
     }
 
     /**

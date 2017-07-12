@@ -21,14 +21,7 @@ trait InventoryLevelTrait
      */
     public function changeCurrentLevel(InventoryLevel $newLevel)
     {
-        return $this->updateInventoryLevel($newLevel);
-    }
-
-    public function updateInventoryLevel($level)
-    {
-        $this->addInventoryLevel($level);
-
-        return $this;
+        return $this->addInventoryLevel($newLevel);
     }
 
     /**

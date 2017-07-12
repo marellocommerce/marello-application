@@ -33,9 +33,6 @@ class InventoryUpdateContextFactory
         }
 
         if ($entity instanceof ProductInterface) {
-            if ($entity->getSku() === 'abl005') {
-                var_dump($inventoryUpdateQty);
-            }
             $inventoryItemData[] = self::getInventoryItemData($entity, $inventoryUpdateQty, $allocatedInventoryQty);
         }
 
