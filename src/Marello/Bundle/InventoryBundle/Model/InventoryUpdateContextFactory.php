@@ -33,7 +33,7 @@ class InventoryUpdateContextFactory
          * Decides how to format data depending on type of parameter
          */
         $inventoryItemData = null;
-        if ($entity instanceof InventoryItemAwareInterface) {
+        if ($entity instanceof ProductInventoryAwareInterface) {
             $inventoryItemData = self::getInventoryItemDataFromInterface($entity, $inventoryUpdateQty, $allocatedInventoryQty);
         } elseif ($entity instanceof InventoryItem) {
             $inventoryItemData = [];
@@ -58,13 +58,13 @@ class InventoryUpdateContextFactory
     }
 
     /**
-     * @param InventoryItemAwareInterface $entity
+     * @param ProductInventoryAwareInterface $entity
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
      * @return array
      */
     protected static function getInventoryItemDataFromInterface(
-        InventoryItemAwareInterface $entity,
+        ProductInventoryAwareInterface $entity,
         $inventoryUpdateQty,
         $allocatedInventoryQty
     ) {
