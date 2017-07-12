@@ -11,6 +11,7 @@ use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
@@ -178,6 +179,16 @@ class OrderItem extends ExtendOrderItem implements
     protected $returnItems;
 
     /**
+     * @var Product
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
+     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="SET NULL")
+     *
+     * @JMS\Expose
+     */
+    protected $taxCode;
+
+    /**
      * OrderItem constructor.
      */
     public function __construct()
@@ -289,6 +300,26 @@ class OrderItem extends ExtendOrderItem implements
     public function setTax($tax)
     {
         $this->tax = $tax;
+
+        return $this;
+    }
+
+    /**
+     * @return TaxCode
+     */
+    public function getTaxCode()
+    {
+        return $this->taxCode;
+    }
+
+    /**
+     * @param TaxCode $taxCode
+     *
+     * @return $this
+     */
+    public function setTaxCode(TaxCode $taxCode)
+    {
+        $this->taxCode = $taxCode;
 
         return $this;
     }

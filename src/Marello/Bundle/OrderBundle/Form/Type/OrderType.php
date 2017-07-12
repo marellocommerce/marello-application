@@ -39,10 +39,7 @@ class OrderType extends AbstractType
             )
             ->add(
                 'salesChannel',
-                ChoiceType::class,
-                [
-                    'choices' => $this->getSalesChannelsChoices()
-                ]
+                'marello_sales_saleschannel_select'
             )
             ->add(
                 'discountAmount',
@@ -101,18 +98,5 @@ class OrderType extends AbstractType
     public function getName()
     {
         return 'marello_order_order';
-    }
-
-    /**
-     * @return SalesChannel[]
-     */
-    private function getSalesChannelsChoices()
-    {
-        $choices = [];
-        foreach ($this->salesChannelRepository->getActiveChannels() as $value) {
-            $choices[$value->getId()] = $value;
-        }
-
-        return $choices;
     }
 }

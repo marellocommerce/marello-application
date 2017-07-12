@@ -90,3 +90,8 @@ services:
         class: '%marello_datagrid.event_listener.datagrid.workflow_grid_listener.class%'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.dashboard-order-revenue-saleschannels-grid, method: removeWorkflow }
+
+    marello_order.provider.order_item_data.composite:
+        class: 'Marello\Bundle\OrderBundle\Provider\OrderItem\CompositeOrderItemDataProvider'
+        arguments:
+            - '@translator'

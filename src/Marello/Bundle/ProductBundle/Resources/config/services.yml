@@ -42,3 +42,10 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-supplier-grid, method: buildBeforeProductsBySupplier }
+
+    marello_product.provider.tax_code_provider:
+        class: Marello\Bundle\ProductBundle\Provider\ProductTaxCodeProvider
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: marello_order.order_item_data_provider, type: tax_code }

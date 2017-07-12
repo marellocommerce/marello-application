@@ -898,6 +898,29 @@ class Product extends ExtendProduct implements
     }
 
     /**
+     * Get salesChannelTaxCode
+     *
+     * @param SalesChannel $salesChannel
+     * @return TaxCode|null
+     */
+    public function getSalesChannelTaxCode(SalesChannel $salesChannel)
+    {
+        /** @var ProductChannelTaxRelation $productChannelTaxRelation */
+        $productChannelTaxRelation = $this->getSalesChannelTaxCodes()
+            ->filter(function ($productChannelTaxRelation) use ($salesChannel) {
+                /** @var ProductChannelTaxRelation $productChannelTaxRelation */
+                return $productChannelTaxRelation->getSalesChannel() === $salesChannel;
+            })
+            ->first();
+        
+        if ($productChannelTaxRelation) {
+            return $productChannelTaxRelation->getTaxCode();
+        }
+        
+        return null;
+    }
+
+    /**
     * @return string
     */
     public function getReplenishment()
