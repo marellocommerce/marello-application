@@ -6,10 +6,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
+use Marello\Bundle\InventoryBundle\Entity\ProductInventoryAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
@@ -21,8 +21,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @JMS\ExclusionPolicy("ALL")
  */
 class OrderItem extends ExtendOrderItem implements
-    CurrencyAwareInterface
-//    InventoryItemAwareInterface
+    CurrencyAwareInterface,
+    ProductInventoryAwareInterface
 {
     /**
      * @var int
@@ -36,7 +36,7 @@ class OrderItem extends ExtendOrderItem implements
     protected $id;
 
     /**
-     * @var Product
+     * @var ProductInterface
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
      * @ORM\JoinColumn(onDelete="SET NULL")
@@ -334,7 +334,7 @@ class OrderItem extends ExtendOrderItem implements
     }
     
     /**
-     * @return Product
+     * @return ProductInterface
      */
     public function getProduct()
     {
@@ -342,11 +342,11 @@ class OrderItem extends ExtendOrderItem implements
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return $this
      */
-    public function setProduct($product)
+    public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
 

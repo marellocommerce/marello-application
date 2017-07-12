@@ -55,9 +55,9 @@ use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
  * )
  */
 class Product extends ExtendProduct implements
+    ProductInterface,
     SalesChannelAwareInterface,
     PricingAwareInterface
-//    InventoryItemAwareInterface
 {
     /**
      * @var integer

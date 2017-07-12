@@ -6,18 +6,14 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
@@ -104,7 +100,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     }
 
     /**
-     * create new products and inventory items
+     * create new products
      * @param array $data
      * @return Product $product
      */
@@ -117,12 +113,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setPurchaseStockLevel(rand(1, $product->getDesiredStockLevel()));
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight(mt_rand(50, 300) / 100);
-
-
-        $inventoryItem = new InventoryItem($this->defaultWarehouse, $product);
-        $this->manager->persist($inventoryItem);
-        $this->handleInventoryUpdate($inventoryItem, $data['stock_level'], 0, null);
-
 
         $status = $this->manager
             ->getRepository('MarelloProductBundle:ProductStatus')
@@ -265,28 +255,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     private function getRandomFloat($min, $max)
     {
         return ($min + lcg_value()*(abs($max - $min)));
-    }
-
-    /**
-     * handle the inventory update for items which have been shipped
-     * @param InventoryItem $item
-     * @param $inventoryUpdateQty
-     * @param $allocatedInventoryQty
-     * @param $entity
-     */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
-    {
-        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
-            $item,
-            $inventoryUpdateQty,
-            $allocatedInventoryQty,
-            'import',
-            $entity
-        );
-
-        /** @var InventoryManager $inventoryManager */
-        $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
-        $inventoryManager->updateInventoryLevels($context);
     }
 
     /**

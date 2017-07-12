@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+
 /**
  * @ORM\Entity
  * @ORM\Table(
@@ -30,7 +31,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
  *      }
  * )
  */
-class InventoryItem
+class InventoryItem implements ProductInventoryAwareInterface
 {
     use InventoryLevelTrait;
 
@@ -82,7 +83,7 @@ class InventoryItem
      *      }
      * )
      *
-     * @var Product
+     * @var ProductInterface
      */
     protected $product;
 
@@ -95,9 +96,9 @@ class InventoryItem
      * InventoryItem constructor.
      *
      * @param Warehouse $warehouse
-     * @param Product   $product
+     * @param ProductInterface   $product
      */
-    public function __construct(Warehouse $warehouse, Product $product = null)
+    public function __construct(Warehouse $warehouse, ProductInterface $product = null)
     {
         $this->product   = $product;
         $this->warehouse = $warehouse;
@@ -121,11 +122,11 @@ class InventoryItem
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return $this
      */
-    public function setProduct($product)
+    public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
 
@@ -133,7 +134,7 @@ class InventoryItem
     }
 
     /**
-     * @return Product
+     * @return ProductInterface
      */
     public function getProduct()
     {
