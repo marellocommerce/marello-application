@@ -13,7 +13,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 
 class LoadProductInventoryData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
@@ -103,22 +103,22 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
         if ($product) {
             $inventoryItem = new InventoryItem($this->defaultWarehouse, $product);
             $this->manager->persist($inventoryItem);
-            $this->handleInventoryUpdate($inventoryItem, $data['inventory_qty'], 0, null);
-
-            $this->manager->persist($product);
+            $this->handleInventoryUpdate($product, $inventoryItem, $data['inventory_qty'], 0, null);
         }
     }
 
     /**
      * handle the inventory update for items which have been shipped
+     * @param ProductInterface $product
      * @param InventoryItem $item
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
      * @param $entity
      */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
+    protected function handleInventoryUpdate($product, $item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $product,
             $item,
             $inventoryUpdateQty,
             $allocatedInventoryQty,

@@ -53,6 +53,7 @@ class InventoryItemUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         /** @var InventoryUpdateContext $context */
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
+            null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
             'import',

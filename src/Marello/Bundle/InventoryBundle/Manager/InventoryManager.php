@@ -2,13 +2,24 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Oro\Bundle\UserBundle\Entity\User;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 
 class InventoryManager implements InventoryManagerInterface
 {
+    /** @var DoctrineHelper */
+    protected $doctrineHelper;
+
+    /** @var InventoryUpdateContextValidator $contextValidator */
+    private $contextValidator;
+
     /**
      * @deprecated use updateInventoryLevels instead
      * Update inventory items based of context and calculate new inventory level
@@ -27,30 +38,38 @@ class InventoryManager implements InventoryManagerInterface
      */
     public function updateInventoryLevels(InventoryUpdateContext $context)
     {
-        if (!$this->validateItems($context)) {
+        if (!$this->contextValidator->validateItems($context)) {
             throw new \Exception('Item structure not valid.');
         }
 
         $items = $context->getItems();
-        /** @var InventoryLevel $item */
         foreach ($items as $data) {
-            $stock = null;
-            $allocatedStock = null;
-            if ($context->getStock()) {
-                $stock = ($data['item']->getStock() + $context->getStock());
+
+            /** @var ProductInterface $product */
+            $product = $data['item'];
+            $inventoryItem = $context->getInventoryItem() ? $context->getInventoryItem() : $this->getInventoryItem($product);
+
+            if (!$inventoryItem) {
+                continue;
             }
 
-            if ($context->getAllocatedStock()) {
-                $allocatedStock = ($data['item']->getAllocatedStock() + $context->getAllocatedStock());
+            $inventory = null;
+            $allocatedStock = null;
+            if ($context->getInventory()) {
+                $inventory = ($inventoryItem->getStock() + $context->getInventory());
+            }
+
+            if ($context->getAllocatedInventory()) {
+                $allocatedStock = ($inventoryItem->getAllocatedStock() + $context->getAllocatedInventory());
             }
 
             $this->updateInventoryLevel(
-                $data['item'],
+                $inventoryItem,
                 $context->getChangeTrigger(),
-                $stock,
-                $context->getStock(),
+                $inventory,
+                $context->getInventory(),
                 $allocatedStock,
-                $context->getAllocatedStock(),
+                $context->getAllocatedInventory(),
                 $context->getUser(),
                 $context->getRelatedEntity()
             );
@@ -106,6 +125,8 @@ class InventoryManager implements InventoryManagerInterface
             $allocatedInventoryAlt = 0;
         }
 
+
+
         try {
             $item->changeCurrentLevel(new InventoryLevel(
                 $item,
@@ -125,31 +146,40 @@ class InventoryManager implements InventoryManagerInterface
     }
 
     /**
-     * Validate the data structure of the items to be updated
-     * @param InventoryUpdateContext $context
-     * @return bool
+     * @param ProductInterface $product
+     * @return null|object
      */
-    private function validateItems($context)
+    private function getInventoryItem(ProductInterface $product)
     {
-        $items = $context->getItems();
-        foreach ($items as $item) {
-            if (!is_array($item)) {
-                return false;
-            }
+        $repo = $this->doctrineHelper->getEntityRepositoryForClass(InventoryItem::class);
+        return $repo->findOneBy(['product' => $product]);
+    }
 
-            if (!array_key_exists('item', $item)) {
-                return false;
-            }
+    /**
+     * @return null|object
+     */
+    private function getWarehouse()
+    {
+        $repo = $this->doctrineHelper->getEntityRepositoryForClass(Warehouse::class);
+        return $repo->getDefault();
+    }
 
-            if (!array_key_exists('qty', $item)) {
-                return false;
-            }
+    /**
+     * Sets the context validator
+     * @param InventoryUpdateContextValidator $validator
+     */
+    public function setContextValidator(InventoryUpdateContextValidator $validator)
+    {
+        $this->contextValidator = $validator;
+    }
 
-            if (!array_key_exists('allocatedQty', $item)) {
-                return false;
-            }
-        }
-
-        return true;
+    /**
+     * Sets the doctrine helper
+     *
+     * @param DoctrineHelper $doctrineHelper
+     */
+    public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
+    {
+        $this->doctrineHelper = $doctrineHelper;
     }
 }

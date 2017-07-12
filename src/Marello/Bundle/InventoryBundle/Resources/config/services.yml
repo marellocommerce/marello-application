@@ -43,3 +43,9 @@ services:
 
     marello_inventory.manager.inventory_manager:
         class: Marello\Bundle\InventoryBundle\Manager\InventoryManager
+        calls:
+            - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
+            - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
+
+    marello_inventory.validator.inventory_update_context:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator'

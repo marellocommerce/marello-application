@@ -46,14 +46,15 @@ class OrderInventoryAllocationListener
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             null,
+            null,
             $inventoryUpdateQty,
             'order_workflow.pending',
             $order
         );
 
-//        $this->eventDispatcher->dispatch(
-//            InventoryUpdateEvent::NAME,
-//            new InventoryUpdateEvent($context)
-//        );
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
+        );
     }
 }

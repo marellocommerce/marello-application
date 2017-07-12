@@ -59,12 +59,12 @@ class InventoryUpdateContext
 
     /**
      * {@inheritdoc}
-     * @param $items
+     * @param $item
      * @return $this
      */
-    public function setInventoryItem($items)
+    public function setInventoryItem($item)
     {
-        $this->setValue('inventory_items', $items);
+        $this->setValue('inventory_item', $item);
 
         return $this;
     }
@@ -75,7 +75,7 @@ class InventoryUpdateContext
      */
     public function getInventoryItem()
     {
-        return $this->getValue('items');
+        return $this->getValue('inventory_item');
     }
 
     /**
