@@ -110,11 +110,11 @@ class PurchaseOrderItem implements
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Marello\Bundle\InventoryBundle\Entity\InventoryItem[]
+     * @return \Marello\Bundle\ProductBundle\Entity\Product
      */
     public function getInventoryItems()
     {
-        return $this->getProduct()->getInventoryItems();
+        return $this->getProduct();
     }
 
     /**

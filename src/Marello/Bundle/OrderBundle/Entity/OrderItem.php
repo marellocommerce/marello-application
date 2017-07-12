@@ -21,8 +21,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @JMS\ExclusionPolicy("ALL")
  */
 class OrderItem extends ExtendOrderItem implements
-    CurrencyAwareInterface,
-    InventoryItemAwareInterface
+    CurrencyAwareInterface
+//    InventoryItemAwareInterface
 {
     /**
      * @var int

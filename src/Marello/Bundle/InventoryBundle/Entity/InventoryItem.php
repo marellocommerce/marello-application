@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\ProductBundle\Entity\Product;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
+use Marello\Bundle\ProductBundle\Entity\Product;
 /**
  * @ORM\Entity
  * @ORM\Table(
@@ -49,8 +51,28 @@ class InventoryItem
     protected $id;
 
     /**
+     * @ORM\OneToMany(
+     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel",
+     *     mappedBy="inventoryItem",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
+     * @ORM\OrderBy({"createdAt" = "DESC"})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var InventoryLevel[]|Collection
+     */
+    protected $inventoryLevels;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="inventoryItems")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -79,15 +101,7 @@ class InventoryItem
     {
         $this->product   = $product;
         $this->warehouse = $warehouse;
-        $this->levels    = new ArrayCollection();
-    }
-
-    /**
-     * @return Product
-     */
-    public function getProduct()
-    {
-        return $this->product;
+        $this->inventoryLevels    = new ArrayCollection();
     }
 
     /**
@@ -116,5 +130,47 @@ class InventoryItem
         $this->product = $product;
 
         return $this;
+    }
+
+    /**
+     * @return Product
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * @param InventoryLevel $inventoryLevel
+     * @return $this
+     */
+    public function addInventoryLevel(InventoryLevel $inventoryLevel)
+    {
+        if (!$this->inventoryLevels->contains($inventoryLevel)) {
+            $this->inventoryLevels->add($inventoryLevel);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param InventoryLevel $inventoryLevel
+     * @return $this
+     */
+    public function removeInventoryLevel(InventoryLevel $inventoryLevel)
+    {
+        if ($this->inventoryLevels->contains($inventoryLevel)) {
+            $this->inventoryLevels->removeElement($inventoryLevel);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return InventoryLevel[]|Collection
+     */
+    public function getInventoryLevels()
+    {
+        return $this->inventoryLevels;
     }
 }

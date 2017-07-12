@@ -17,8 +17,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @Oro\Config()
  */
 class ReturnItem extends ExtendReturnItem implements
-    CurrencyAwareInterface,
-    InventoryItemAwareInterface
+    CurrencyAwareInterface
+//    InventoryItemAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
 

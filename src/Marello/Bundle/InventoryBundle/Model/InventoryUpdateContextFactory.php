@@ -41,10 +41,11 @@ class InventoryUpdateContextFactory
 
         $context = new InventoryUpdateContext();
         $context
-            ->setStock($inventoryUpdateQty)
-            ->setAllocatedStock($allocatedInventoryQty)
+            ->setInventory($inventoryUpdateQty)
+            ->setAllocatedInventory($allocatedInventoryQty)
             ->setChangeTrigger($trigger)
             ->setItems($inventoryItemData)
+            ->setInventoryItem($inventoryItemData)
             ->setRelatedEntity($relatedEntity)
         ;
 

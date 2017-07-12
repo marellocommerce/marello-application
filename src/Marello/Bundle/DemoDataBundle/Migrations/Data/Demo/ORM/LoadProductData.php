@@ -117,9 +117,12 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setPurchaseStockLevel(rand(1, $product->getDesiredStockLevel()));
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight(mt_rand(50, 300) / 100);
+
+
         $inventoryItem = new InventoryItem($this->defaultWarehouse, $product);
+        $this->manager->persist($inventoryItem);
         $this->handleInventoryUpdate($inventoryItem, $data['stock_level'], 0, null);
-        $product->getInventoryItems()->add($inventoryItem);
+
 
         $status = $this->manager
             ->getRepository('MarelloProductBundle:ProductStatus')
@@ -283,7 +286,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
         /** @var InventoryManager $inventoryManager */
         $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
-        $inventoryManager->updateInventoryItems($context);
+        $inventoryManager->updateInventoryLevels($context);
     }
 
     /**

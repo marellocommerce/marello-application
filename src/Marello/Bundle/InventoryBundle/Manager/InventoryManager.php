@@ -10,18 +10,29 @@ use Oro\Bundle\UserBundle\Entity\User;
 class InventoryManager implements InventoryManagerInterface
 {
     /**
+     * @deprecated use updateInventoryLevels instead
      * Update inventory items based of context and calculate new inventory level
      * @param InventoryUpdateContext $context
      * @throws \Exception
      */
     public function updateInventoryItems(InventoryUpdateContext $context)
     {
+        $this->updateInventoryLevels($context);
+    }
+
+    /**
+     * Update inventory items based of context and calculate new inventory level
+     * @param InventoryUpdateContext $context
+     * @throws \Exception
+     */
+    public function updateInventoryLevels(InventoryUpdateContext $context)
+    {
         if (!$this->validateItems($context)) {
             throw new \Exception('Item structure not valid.');
         }
 
         $items = $context->getItems();
-        /** @var InventoryItem $item */
+        /** @var InventoryLevel $item */
         foreach ($items as $data) {
             $stock = null;
             $allocatedStock = null;

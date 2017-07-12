@@ -59,6 +59,27 @@ class InventoryUpdateContext
 
     /**
      * {@inheritdoc}
+     * @param $items
+     * @return $this
+     */
+    public function setInventoryItem($items)
+    {
+        $this->setValue('inventory_items', $items);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
+    public function getInventoryItem()
+    {
+        return $this->getValue('items');
+    }
+
+    /**
+     * {@inheritdoc}
      * @param $entity
      * @return $this
      */
@@ -121,34 +142,67 @@ class InventoryUpdateContext
     }
 
     /**
-     * {@inheritdoc}
-     * @param $allocatedStock
+     * @deprecated use setAllocatedInventoryQty instead
+     * @param $allocatedQty
      * @return $this
      */
-    public function setAllocatedStock($allocatedStock)
+    public function setAllocatedStock($allocatedQty)
     {
-        $this->setValue('allocated_stock', $allocatedStock);
+        return $this->setAllocatedInventory($allocatedQty);
+    }
+
+    /**
+     * @param $allocatedQty
+     * @return $this
+     */
+    public function setAllocatedInventory($allocatedQty)
+    {
+        $this->setValue('allocated_inventory_qty', $allocatedQty);
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated use getAllocatedInventory instead
      * @return mixed|null
      */
     public function getAllocatedStock()
     {
-        return $this->getValue('allocated_stock');
+        return $this->getAllocatedInventory();
+    }
+
+    public function getAllocatedInventory()
+    {
+        return $this->getValue('allocated_inventory_qty');
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated use setInventory($qty) instead
      * @param $stock
      * @return $this
      */
     public function setStock($stock)
     {
-        $this->setValue('stock', $stock);
+        return $this->setInventory($stock);
+    }
+
+    /**
+     * @deprecated use getInventory() instead
+     * @return mixed|null
+     */
+    public function getStock()
+    {
+        return $this->getInventory();
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $qty
+     * @return $this
+     */
+    public function setInventory($qty)
+    {
+        $this->setValue('quantity', $qty);
 
         return $this;
     }
@@ -157,9 +211,9 @@ class InventoryUpdateContext
      * {@inheritdoc}
      * @return mixed|null
      */
-    public function getStock()
+    public function getInventory()
     {
-        return $this->getValue('stock');
+        return $this->getValue('quantity');
     }
 
     /**

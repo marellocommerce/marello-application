@@ -4,8 +4,8 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\UserBundle\Entity\User;
 
 trait InventoryLevelTrait
 {
@@ -15,33 +15,18 @@ trait InventoryLevelTrait
     protected $currentLevel = null;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel",
-     *     mappedBy="inventoryItem",
-     *     cascade={"persist", "remove"}
-     * )
-     * @ORM\OrderBy({"createdAt" = "DESC"})
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var InventoryLevel[]|Collection
-     */
-    protected $levels;
-
-    /**
      * @param InventoryLevel $newLevel
      *
      * @return $this
      */
     public function changeCurrentLevel(InventoryLevel $newLevel)
     {
-        $this->levels->add($newLevel);
-        $this->currentLevel = $newLevel;
+        return $this->updateInventoryLevel($newLevel);
+    }
+
+    public function updateInventoryLevel($level)
+    {
+        $this->addInventoryLevel($level);
 
         return $this;
     }
@@ -59,7 +44,7 @@ trait InventoryLevelTrait
      */
     public function getLevels()
     {
-        return $this->levels;
+        return $this->inventoryLevels;
     }
 
     /**
