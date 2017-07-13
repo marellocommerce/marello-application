@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
+use Marello\Bundle\InventoryBundle\Model\ExtendInventoryItem;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 
 /**
@@ -31,7 +32,7 @@ use Marello\Bundle\ProductBundle\Entity\ProductInterface;
  *      }
  * )
  */
-class InventoryItem implements ProductInventoryAwareInterface
+class InventoryItem extends ExtendInventoryItem implements ProductInventoryAwareInterface
 {
     use InventoryLevelTrait;
 
@@ -88,6 +89,18 @@ class InventoryItem implements ProductInventoryAwareInterface
     protected $product;
 
     /**
+     * @var string
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $replenishment;
+
+    /**
      * @var Warehouse
      */
     protected $warehouse;
@@ -139,6 +152,25 @@ class InventoryItem implements ProductInventoryAwareInterface
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReplenishment()
+    {
+        return $this->replenishment;
+    }
+
+    /**
+     * @param string $replenishment
+     *
+     * @return $this
+     */
+    public function setReplenishment($replenishment)
+    {
+        $this->replenishment = $replenishment;
+        return $this;
     }
 
     /**

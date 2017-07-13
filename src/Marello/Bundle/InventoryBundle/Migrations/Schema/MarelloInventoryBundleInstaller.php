@@ -73,10 +73,16 @@ class MarelloInventoryBundleInstaller implements Installation
         $table->addColumn('subject_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('subject_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime');
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['inventory_item_id'], 'IDX_32D13BA4243D10EA', []);
         $table->addIndex(['user_id'], 'IDX_32D13BA4F675F31B', []);
+
+
+        $table->addColumn('warehouse_id', 'integer', []);
+        $table->addUniqueIndex(['inventory_item_id', 'warehouse_id'], 'uniq_40b8d0414584665a5080ecde');
+        $table->addIndex(['warehouse_id'], 'idx_40b8d0415080ecde', []);
     }
 
     /**
@@ -146,6 +152,12 @@ class MarelloInventoryBundleInstaller implements Installation
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
             ['user_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_warehouse'),
+            ['warehouse_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

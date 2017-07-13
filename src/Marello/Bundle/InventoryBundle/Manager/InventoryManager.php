@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
@@ -62,7 +64,7 @@ class InventoryManager implements InventoryManagerInterface
                 $allocatedStock = ($inventoryItem->getAllocatedStock() + $context->getAllocatedInventory());
             }
 
-            $this->updateInventoryLevel(
+            $this->addOrUpdateInventoryLevel(
                 $inventoryItem,
                 $context->getChangeTrigger(),
                 $inventory,
@@ -90,7 +92,7 @@ class InventoryManager implements InventoryManagerInterface
      * @throws \Exception
      * @return bool
      */
-    public function updateInventoryLevel(
+    public function addOrUpdateInventoryLevel(
         InventoryItem $item,
         $trigger,
         $inventory = null,
@@ -125,7 +127,6 @@ class InventoryManager implements InventoryManagerInterface
         }
 
         try {
-            // find inventory level based on the warehouse
             /** @var InventoryLevel $level */
             $level = $this->getInventoryLevel($item);
 
@@ -140,6 +141,7 @@ class InventoryManager implements InventoryManagerInterface
                     $user,
                     $subject
                 );
+                $level->setWarehouse($this->getWarehouse());
             }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
@@ -172,6 +174,17 @@ class InventoryManager implements InventoryManagerInterface
         }
 
         return $level;
+    }
+
+    /**
+     * Get default warehouse
+     * @return Warehouse
+     */
+    private function getWarehouse()
+    {
+        /** @var WarehouseRepository $repo */
+        $repo = $this->doctrineHelper->getEntityRepositoryForClass(Warehouse::class);
+        return $repo->getDefault();
     }
 
     /**

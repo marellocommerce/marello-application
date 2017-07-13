@@ -8,7 +8,11 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository")
- * @ORM\Table(name="marello_inventory_level")
+ * @ORM\Table(name="marello_inventory_level",
+ *       uniqueConstraints={
+ *          @ORM\UniqueConstraint(columns={"inventory_item_id", "warehouse_id"})
+ *      }
+ * )
  * @Oro\Config(
  *      defaultValues={
  *          "entity"={
@@ -16,6 +20,7 @@ use Oro\Bundle\UserBundle\Entity\User;
  *          }
  *      }
  * )
+ * @ORM\HasLifecycleCallbacks()
  */
 class InventoryLevel
 {
@@ -52,6 +57,22 @@ class InventoryLevel
      * @var InventoryItem
      */
     protected $inventoryItem;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=20,
+     *              "full"=true,
+     *          }
+     *      }
+     * )
+     *
+     * @var Warehouse
+     */
+    protected $warehouse;
 
     /**
      * @ORM\Column(name="inventory", type="integer")
@@ -193,6 +214,20 @@ class InventoryLevel
     protected $createdAt;
 
     /**
+     * @var \DateTime $updatedAt
+     *
+     * @ORM\Column(type="datetime", name="updated_at")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.updated_at"
+     *          }
+     *      }
+     * )
+     */
+    protected $updatedAt;
+
+    /**
      * InventoryLevel constructor.
      *
      * @param InventoryItem $inventoryItem
@@ -304,14 +339,6 @@ class InventoryLevel
     {
         return $this->user;
     }
-    
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
 
     /**
      * @return mixed
@@ -340,5 +367,54 @@ class InventoryLevel
     public function __toString()
     {
         return (string) $this->getAllocatedStock();
+    }
+
+    /**
+     * @param Warehouse $warehouse
+     * @return void
+     */
+    public function setWarehouse(Warehouse $warehouse)
+    {
+        $this->warehouse = $warehouse;
+    }
+
+    /**
+     * @return Warehouse
+     */
+    public function getWarehouse()
+    {
+        return $this->warehouse;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdateTimestamp()
+    {
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistTimestamp()
+    {
+        $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

@@ -78,7 +78,9 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
                 );
 
                 if (!$order->getSupplier()) {
-                    $order->setSupplier($order->getItems()->first()->getProduct()->getPreferredSupplier());
+                    if ($supplier = $order->getItems()->first()->getProduct()->getPreferredSupplier()) {
+                        $order->setSupplier($supplier);
+                    }
                 }
             }
             $this->setReference('marello-purchase-order-' . $orderNo, $order);
