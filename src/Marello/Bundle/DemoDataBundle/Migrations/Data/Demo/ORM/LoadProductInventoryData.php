@@ -83,7 +83,7 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
             while (($data = fgetcsv($handle, 1000, ",")) !== false) {
                 $data = array_combine($headers, array_values($data));
 
-                $this->createProduct($data);
+                $this->createProductInventory($data);
             }
             fclose($handle);
         }
@@ -94,7 +94,7 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
      * create new products and inventory items
      * @param array $data
      */
-    private function createProduct(array $data)
+    private function createProductInventory(array $data)
     {
         $product = $this->manager
             ->getRepository('MarelloProductBundle:Product')
