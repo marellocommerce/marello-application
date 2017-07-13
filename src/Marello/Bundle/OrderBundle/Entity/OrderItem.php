@@ -420,6 +420,46 @@ class OrderItem extends ExtendOrderItem implements
     }
 
     /**
+     * @param Collection|ReturnItem[] $items
+     *
+     * @return $this
+     */
+    public function setReturnItems($items)
+    {
+        $this->returnItems = $items;
+
+        return $this;
+    }
+
+    /**
+     * @param ReturnItem $item
+     *
+     * @return $this
+     */
+    public function addReturnItem(ReturnItem $item)
+    {
+        if (!$this->returnItems->contains($item)) {
+            $this->returnItems->add($item->setOrderItem($this));
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param ReturnItem $item
+     *
+     * @return $this
+     */
+    public function removeReturnItem(ReturnItem $item)
+    {
+        if ($this->returnItems->contains($item)) {
+            $this->returnItems->removeElement($item);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return float
      */
     public function getTaxPercent()

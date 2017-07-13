@@ -155,6 +155,10 @@ define(function(require) {
          * @param {Function} callback
          */
         loadLineItemsData: function(items, callback) {
+            if (items.length === 0) {
+                return;
+            }
+            
             var params = {
                 product_ids: items
             };

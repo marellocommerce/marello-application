@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\OrderBundle\Provider\OrderItem;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
 class CompositeOrderItemDataProvider implements OrderItemDataProviderInterface
 {
     /**
@@ -10,14 +12,14 @@ class CompositeOrderItemDataProvider implements OrderItemDataProviderInterface
     protected $providers = [];
 
     /**
-     * @var $translator
+     * @var TranslatorInterface $translator
      */
     protected $translator;
 
     /**
-     * @param $translator
+     * @param TranslatorInterface $translator
      */
-    public function __construct($translator)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
@@ -45,11 +47,12 @@ class CompositeOrderItemDataProvider implements OrderItemDataProviderInterface
             foreach ($providerData as $identifier => $data) {
                 $result[$identifier][$type] = $data;
             }
-            $resultCount = count($result);
+            $resultCount = count($providerData);
 
             if ($productCount !== $resultCount) {
                 foreach ($products as $product) {
-                    if (!array_key_exists(self::IDENTIFIER_PREFIX . $product['product'], $result)) {
+                    if (!array_key_exists(self::IDENTIFIER_PREFIX . $product['product'], $result) ||
+                    !array_key_exists($type, $result[self::IDENTIFIER_PREFIX . $product['product']])) {
                         $result[self::IDENTIFIER_PREFIX . $product['product']] = [
                             'message' => $this->translator
                                 ->trans('marello.order.orderitem.messages.product_not_salable'),

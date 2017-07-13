@@ -5,6 +5,7 @@ namespace Marello\Bundle\PricingBundle\Provider;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDataProviderInterface;
+use Marello\Bundle\PricingBundle\Entity\BasePrice;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -83,7 +84,7 @@ class ChannelPriceProvider implements OrderItemDataProviderInterface
             ['product' => $product->getId(), 'currency' => $currency]
         );
 
-        return (is_object($price)) ? (float)$price->getValue() : null;
+        return $price instanceof BasePrice ? (float)$price->getValue() : null;
     }
 
     /**
