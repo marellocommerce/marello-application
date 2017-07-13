@@ -5,6 +5,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Tests\Unit\Workflow\Action;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -200,7 +201,7 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $productMock = $this
-            ->getMockBuilder(Product::class)
+            ->getMockBuilder(ProductInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -234,12 +235,12 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
             ->with(null);
 
         $purchaseOrderItemMock->expects($this->atLeastOnce())
-            ->method('getInventoryItems')
-            ->willReturn(new ArrayCollection([$inventoryItemMock]));
+            ->method('getProduct')
+            ->willReturn($productMock);
 
         $purchaseOrderItemMock2->expects($this->atLeastOnce())
-            ->method('getInventoryItems')
-            ->willReturn(new ArrayCollection([$inventoryItemMock]));
+            ->method('getProduct')
+            ->willReturn($productMock);
 
         $items[] = ['qty' => 10, 'item' => $purchaseOrderItemMock];
         $items[] = ['qty' => 10, 'item' => $purchaseOrderItemMock2];
@@ -274,12 +275,7 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $productMock = $this
-            ->getMockBuilder(Product::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $inventoryItemMock = $this
-            ->getMockBuilder(InventoryItem::class)
+            ->getMockBuilder(ProductInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -304,8 +300,8 @@ class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
             ->willReturn([]);
 
         $purchaseOrderItemMock->expects($this->once())
-            ->method('getInventoryItems')
-            ->willReturn(new ArrayCollection([$inventoryItemMock]));
+            ->method('getProduct')
+            ->willReturn($productMock);
 
         $items[] = ['qty' => 10, 'item' => $purchaseOrderItemMock];
 
