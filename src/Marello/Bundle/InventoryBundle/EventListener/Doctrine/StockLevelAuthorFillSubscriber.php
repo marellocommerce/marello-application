@@ -6,7 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -45,7 +45,7 @@ class StockLevelAuthorFillSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if (!$entity instanceof InventoryLevel) {
+        if (!$entity instanceof InventoryLevelLogRecord) {
             return;
         }
 

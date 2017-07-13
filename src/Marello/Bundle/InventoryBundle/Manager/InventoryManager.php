@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -134,12 +135,7 @@ class InventoryManager implements InventoryManagerInterface
                 $level = new InventoryLevel(
                     $item,
                     $inventory,
-                    $inventoryAlt,
-                    $allocatedInventory,
-                    $allocatedInventoryAlt,
-                    $trigger,
-                    $user,
-                    $subject
+                    $allocatedInventory
                 );
                 $level->setWarehouse($this->getWarehouse());
             }
@@ -148,7 +144,37 @@ class InventoryManager implements InventoryManagerInterface
         }
 
         $item->addInventoryLevel($level);
+        $this->createLogRecord(
+            $level,
+            $inventoryAlt,
+            $allocatedInventoryAlt,
+            $trigger,
+            $user,
+            $subject
+        );
         return true;
+    }
+
+    protected function createLogRecord(
+        InventoryLevel $level,
+        $inventoryAlt,
+        $allocatedInventoryAlt,
+        $trigger,
+        $user,
+        $subject
+    ) {
+        $record = new InventoryLevelLogRecord(
+            $level,
+            $inventoryAlt,
+            $allocatedInventoryAlt,
+            $trigger,
+            $user,
+            $subject
+        );
+
+        $em = $this->doctrineHelper->getEntityManager($record);
+        $em->persist($level);
+        $em->persist($record);
     }
 
     /**

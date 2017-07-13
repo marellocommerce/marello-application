@@ -5,7 +5,7 @@ namespace Marello\Bundle\InventoryBundle\EventListener\Doctrine;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 
 /**
  * Class StockLevelSubjectHydrationSubscriber
@@ -28,7 +28,7 @@ class StockLevelSubjectHydrationSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if (!$entity instanceof InventoryLevel) {
+        if (!$entity instanceof InventoryLevelLogRecord) {
             return;
         }
 

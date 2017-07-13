@@ -8,11 +8,12 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 
 /**
  * Class StockLevelSubjectAssignSubscriber
  *
- * Responsible for setting subjectType and subjectId fields on InventoryLevel.
+ * Responsible for setting subjectType and subjectId fields on InventoryLevelLogRecord.
  * It stores class and id on entity so it can be later retrieved as a reference to subject.
  *
  * @package Marello\Bundle\InventoryBundle\EventListener\Doctrine
@@ -59,8 +60,8 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
         /*
          * Assign type and id values for each InventoryLevel with subject present.
          */
-        foreach ($this->assignSubjects as $inventoryLevel) {
-            $id = $inventoryLevel->getSubject()->getId();
+        foreach ($this->assignSubjects as $inventoryLevelLogRecord) {
+            $id = $inventoryLevelLogRecord->getSubject()->getId();
 
             /*
              * If subject is and entity with no id, it means it has not been persisted...
@@ -76,9 +77,9 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
             /*
              * Set appropriate values and persist changes.
              */
-            $this->setPropertyValue($inventoryLevel, 'subjectId', $id);
-            $this->setPropertyValue($inventoryLevel, 'subjectType', ClassUtils::getClass($inventoryLevel->getSubject()));
-            $args->getEntityManager()->persist($inventoryLevel);
+            $this->setPropertyValue($inventoryLevelLogRecord, 'subjectId', $id);
+            $this->setPropertyValue($inventoryLevelLogRecord, 'subjectType', ClassUtils::getClass($inventoryLevelLogRecord->getSubject()));
+            $args->getEntityManager()->persist($inventoryLevelLogRecord);
         }
 
         /*
@@ -117,7 +118,7 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
     protected function getLevelsToAssign(array $insertions)
     {
         return array_filter($insertions, function ($entity) {
-            if (!$entity instanceof InventoryLevel) {
+            if (!$entity instanceof InventoryLevelLogRecord) {
                 return false;
             }
 

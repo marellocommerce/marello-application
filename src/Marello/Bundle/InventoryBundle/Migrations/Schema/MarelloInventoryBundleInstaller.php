@@ -28,6 +28,7 @@ class MarelloInventoryBundleInstaller implements Installation
         /** Tables generation **/
         $this->createMarelloInventoryItemTable($schema);
         $this->createMarelloInventoryInventoryLevelTable($schema);
+        $this->createMarelloInventoryInventoryLogLevelTable($schema);
         $this->createMarelloInventoryWarehouseTable($schema);
         $this->createMarelloInventoryWarehouseTypeTable($schema);
 
@@ -39,6 +40,7 @@ class MarelloInventoryBundleInstaller implements Installation
         $this->addMarelloInventoryInventoryLevelForeignKeys($schema);
         $this->addMarelloInventoryWarehouseForeignKeys($schema);
         $this->addMarelloInventoryWarehouseTypeForeignKeys($schema);
+        $this->addMarelloInventoryInventoryLevelLogForeignKeys($schema);
     }
 
     /**
@@ -64,25 +66,35 @@ class MarelloInventoryBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_inventory_level');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('user_id', 'integer', ['notnull' => false]);
         $table->addColumn('inventory', 'integer', []);
-        $table->addColumn('inventory_alteration', 'integer', []);
         $table->addColumn('allocated_inventory', 'integer', []);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime');
+        $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
+
+        $table->setPrimaryKey(['id']);
+        $table->addIndex(['inventory_item_id'], 'IDX_32D13BA4243D10EA', []);
+        $table->addColumn('warehouse_id', 'integer', []);
+        $table->addUniqueIndex(['inventory_item_id', 'warehouse_id'], 'uniq_40b8d0414584665a5080ecde');
+        $table->addIndex(['warehouse_id'], 'idx_40b8d0415080ecde', []);
+    }
+
+    protected function createMarelloInventoryInventoryLogLevelTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_level_log');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('user_id', 'integer', ['notnull' => false]);
+        $table->addColumn('inventory_alteration', 'integer', []);
         $table->addColumn('allocated_inventory_alteration', 'integer', []);
         $table->addColumn('change_trigger', 'string', ['length' => 255]);
         $table->addColumn('subject_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('subject_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime');
-        $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
+        $table->addColumn('inventory_level_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['inventory_item_id'], 'IDX_32D13BA4243D10EA', []);
+        $table->addIndex(['inventory_level_id'], 'IDX_32D13BA4243D10EA', []);
         $table->addIndex(['user_id'], 'IDX_32D13BA4F675F31B', []);
-
-
-        $table->addColumn('warehouse_id', 'integer', []);
-        $table->addUniqueIndex(['inventory_item_id', 'warehouse_id'], 'uniq_40b8d0414584665a5080ecde');
-        $table->addIndex(['warehouse_id'], 'idx_40b8d0415080ecde', []);
     }
 
     /**
@@ -150,14 +162,30 @@ class MarelloInventoryBundleInstaller implements Installation
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('oro_user'),
-            ['user_id'],
+            $schema->getTable('marello_inventory_warehouse'),
+            ['warehouse_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
+    }
+
+    /**
+     * Add marello_inventory_level foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryInventoryLevelLogForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_level_log');
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_inventory_warehouse'),
-            ['warehouse_id'],
+            $schema->getTable('marello_inventory_level'),
+            ['inventory_level_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_user'),
+            ['user_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
