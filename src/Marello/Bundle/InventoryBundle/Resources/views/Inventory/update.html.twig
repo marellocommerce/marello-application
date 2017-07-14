@@ -15,13 +15,13 @@
         'entity':      form.vars.value,
         'indexPath':   path('marello_inventory_inventory_index'),
         'indexLabel': 'marello.inventory.label'|trans,
-        'entityTitle': entity.sku
+        'entityTitle': product.sku
     } %}
     {{ parent() }}
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'product-inventory-edit' %}
+    {% set id = 'inventory-edit' %}
 
     {% set dataBlocks = [
         {
@@ -30,27 +30,21 @@
             'subblocks': [{
                 'title': '',
                 'data': [
-                    form_row(form.inventoryItems),
+                    form_row(form.inventoryLevels)
+                ]
+            }]
+        },
+        {
+            'title': 'marello.product.replenishment.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_widget(form.replenishment)
                 ]
             }]
         }
     ] %}
-
-    {% if form.variant.products|length > 0 %}
-        {% set dataBlocks = dataBlocks|merge([
-            {
-                'title': 'marello.product.variant.entity_plural_label'|trans,
-                'class': 'active',
-                'subblocks': [{
-                    'title': '',
-                    'data': [
-                        form_widget(form.variant),
-                    ]
-                }]
-            }
-            ])
-        %}
-    {% endif %}
 
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

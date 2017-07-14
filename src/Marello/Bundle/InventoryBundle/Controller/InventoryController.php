@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Controller;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -42,33 +43,33 @@ class InventoryController extends Controller
      * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_update")
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array|RedirectResponse
      */
-    public function updateAction(Product $product)
+    public function updateAction(InventoryItem $inventoryItem)
     {
         $handler = $this->get('marello_inventory.form.handler.product_inventory');
 
-        if ($handler->process($product)) {
+        if ($handler->process($inventoryItem)) {
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route'      => 'marello_inventory_inventory_update',
-                    'parameters' => ['id' => $product->getId()],
+                    'parameters' => ['id' => $inventoryItem->getId()],
                 ],
                 [
-                    'route'      => 'marello_product_view',
-                    'parameters' => ['id' => $product->getId()],
+                    'route'      => 'marello_inventory_inventory_index',
                 ],
-                $product
+                $inventoryItem
             );
         }
-
         return [
             'form'   => $handler->getFormView(),
-            'entity' => $product,
+            'entity' => $inventoryItem,
+            'product' => $inventoryItem->getProduct()
         ];
     }
+
 
     /**
      * @Config\Route("/widget/info/{id}", name="marello_inventory_widget_info", requirements={"id"="\d+"})

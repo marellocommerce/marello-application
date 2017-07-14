@@ -2,14 +2,14 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\DataTransformer;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Model\InventoryLevelModifier;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Model\InventoryItemModify;
 
-class InventoryItemModifyTransformer implements DataTransformerInterface
+class InventoryLevelModifierTransformer implements DataTransformerInterface
 {
     /** @var EventDispatcherInterface $eventDispatcher */
     protected $eventDispatcher;
@@ -34,11 +34,13 @@ class InventoryItemModifyTransformer implements DataTransformerInterface
             return null;
         }
 
-        if (!$value instanceof InventoryItem) {
+        if (!$value instanceof InventoryLevel) {
             throw new TransformationFailedException();
         }
+        $modifier = new InventoryLevelModifier($value);
+        $modifier->setEventDispatcher($this->eventDispatcher);
 
-        return new InventoryItemModify($value, $this->eventDispatcher);
+        return $modifier;
     }
 
     /**
@@ -56,10 +58,10 @@ class InventoryItemModifyTransformer implements DataTransformerInterface
             return null;
         }
 
-        if (!$value instanceof InventoryItemModify) {
+        if (!$value instanceof InventoryLevelModifier) {
             throw new TransformationFailedException();
         }
 
-        return $value->toModifiedInventoryItem();
+        return $value->toModifiedInventoryLevel();
     }
 }

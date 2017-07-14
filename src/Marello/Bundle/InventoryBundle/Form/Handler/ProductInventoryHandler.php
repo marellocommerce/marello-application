@@ -3,9 +3,11 @@
 namespace Marello\Bundle\InventoryBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\ProductBundle\Entity\Product;
+
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
 class ProductInventoryHandler
 {
@@ -36,11 +38,11 @@ class ProductInventoryHandler
     /**
      * Process form
      *
-     * @param  Product $entity
+     * @param  InventoryItem $entity
      *
      * @return bool True on successful processing, false otherwise
      */
-    public function process(Product $entity)
+    public function process(InventoryItem $entity)
     {
         $this->form->setData($entity);
 
@@ -70,17 +72,17 @@ class ProductInventoryHandler
     /**
      * "Success" form handler
      *
-     * @param Product $entity
+     * @param InventoryItem $entity
      */
-    protected function onSuccess(Product $entity)
+    protected function onSuccess(InventoryItem $entity)
     {
-        $items = $entity->getInventoryItems()->toArray();
+//        $items = $entity->getInventoryItems()->toArray();
 
-        foreach ($entity->getVariant()->getProducts() as $product) {
-            $items = array_merge($items, $product->getInventoryItems()->toArray());
-        }
+//        foreach ($entity->getVariant()->getProducts() as $product) {
+//            $items = array_merge($items, $product->getInventoryItems()->toArray());
+//        }
 
-        $this->manager->persist($entity->getVariant());
+        $this->manager->persist($entity);
         $this->manager->flush();
     }
 }

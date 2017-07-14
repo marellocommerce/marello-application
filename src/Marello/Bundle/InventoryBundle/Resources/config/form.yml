@@ -14,15 +14,13 @@ services:
         tags:
              - { name: form.type, alias: marello_variant_inventory }
 
-    marello_inventory.form.type.inventory_item_collection:
-        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemCollectionType
-        arguments:
-            - '@marello_inventory.form.event_listener.inventory_item_collection'
+    marello_inventory.form.type.inventory_inventorylevel_collection:
+        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelCollectionType
         tags:
-            - { name: form.type, alias: marello_inventory_item_collection }
+            - { name: form.type, alias: marello_inventory_inventorylevel_collection }
 
-    marello_inventory.form.inventory_item_modify_transformer:
-        class: Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemModifyTransformer
+    marello_inventory.form.inventory_inventorylevel_modify_transformer:
+        class: Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryLevelModifierTransformer
         arguments:
             - '@event_dispatcher'
 
@@ -31,12 +29,12 @@ services:
         arguments:
             - '@event_dispatcher'
 
-    marello_inventory.form.type.inventory_item:
-        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType
+    marello_inventory.form.type.inventory_inventorylevel:
+        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelType
         arguments:
-            - '@marello_inventory.form.inventory_item_modify_transformer'
+            - '@marello_inventory.form.inventory_inventorylevel_modify_transformer'
         tags:
-            - { name: form.type, alias: marello_inventory_item }
+            - { name: form.type, alias: marello_inventory_inventorylevel }
 
     marello_inventory.form.type.inventory_item_api:
         class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemApiType
@@ -53,11 +51,10 @@ services:
     ## forms
     marello_inventory.form.product_inventory:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', createNamed]
         arguments:
-            - 'marello_product_inventory'
-            - 'marello_product_inventory'
+            - 'marello_inventory_inventorylevel'
+            - 'marello_inventory_inventorylevel'
 
     ## form handlers
     marello_inventory.form.handler.product_inventory:
