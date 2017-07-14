@@ -58,11 +58,11 @@ class InventoryManager implements InventoryManagerInterface
             $inventory = null;
             $allocatedStock = null;
             if ($context->getInventory()) {
-                $inventory = ($inventoryItem->getStock() + $context->getInventory());
+                $inventory = $context->getInventory();
             }
 
             if ($context->getAllocatedInventory()) {
-                $allocatedStock = ($inventoryItem->getAllocatedStock() + $context->getAllocatedInventory());
+                $allocatedStock = $context->getAllocatedInventory();
             }
 
             $this->addOrUpdateInventoryLevel(
@@ -77,6 +77,7 @@ class InventoryManager implements InventoryManagerInterface
             );
         }
     }
+
 
     /**
      * @param InventoryItem     $item                   InventoryItem to be updated
@@ -93,7 +94,7 @@ class InventoryManager implements InventoryManagerInterface
      * @throws \Exception
      * @return bool
      */
-    public function addOrUpdateInventoryLevel(
+    protected function addOrUpdateInventoryLevel(
         InventoryItem $item,
         $trigger,
         $inventory = null,
@@ -103,16 +104,25 @@ class InventoryManager implements InventoryManagerInterface
         User $user = null,
         $subject = null
     ) {
+        /** @var InventoryLevel $level */
+        $level = $this->getInventoryLevel($item);
+        if (!$level) {
+            $level = new InventoryLevel();
+        }
+
         if (($inventory === null) && ($allocatedInventory === null)) {
             return false;
         }
 
-        if (($item->getStock() === $inventory) && ($item->getAllocatedStock() === $allocatedInventory)) {
+
+        if (($level->getInventoryQty() === $inventory) && ($level->getAllocatedInventoryQty() === $allocatedInventory)) {
             return false;
         }
 
         if ($inventory === null) {
-            $inventory = $item->getStock();
+            $inventory = $level->getInventoryQty();
+        } else {
+            $inventory = ($inventory + $level->getInventoryQty());
         }
 
         if ($inventoryAlt === null) {
@@ -120,7 +130,9 @@ class InventoryManager implements InventoryManagerInterface
         }
 
         if ($allocatedInventory === null) {
-            $allocatedInventory = $item->getAllocatedStock();
+            $allocatedInventory = $level->getAllocatedInventoryQty();
+        } else {
+            $allocatedInventory = ($allocatedInventory + $level->getAllocatedInventoryQty());
         }
 
         if ($allocatedInventoryAlt === null) {
@@ -128,17 +140,11 @@ class InventoryManager implements InventoryManagerInterface
         }
 
         try {
-            /** @var InventoryLevel $level */
-            $level = $this->getInventoryLevel($item);
-
-            if (!$level) {
-                $level = new InventoryLevel(
-                    $item,
-                    $inventory,
-                    $allocatedInventory
-                );
-                $level->setWarehouse($this->getWarehouse());
-            }
+            $level
+                ->setInventoryItem($item)
+                ->setInventoryQty($inventory)
+                ->setAllocatedInventoryQty($allocatedInventory)
+                ->setWarehouse($this->getWarehouse());
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

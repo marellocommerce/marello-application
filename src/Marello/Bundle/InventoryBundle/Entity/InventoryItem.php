@@ -34,8 +34,6 @@ use Marello\Bundle\ProductBundle\Entity\ProductInterface;
  */
 class InventoryItem extends ExtendInventoryItem implements ProductInventoryAwareInterface
 {
-    use InventoryLevelTrait;
-
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -200,7 +198,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
     }
 
     /**
-     * @return InventoryLevel[]|Collection
+     * @return ArrayCollection
      */
     public function getInventoryLevels()
     {

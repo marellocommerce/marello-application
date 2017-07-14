@@ -86,7 +86,7 @@ class InventoryLevel
      *
      * @var int
      */
-    protected $inventory;
+    protected $inventory = 0;
 
     /**
      * @ORM\Column(name="allocated_inventory", type="integer")
@@ -100,7 +100,7 @@ class InventoryLevel
      *
      * @var int
      */
-    protected $allocatedInventory;
+    protected $allocatedInventory = 0;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -134,28 +134,22 @@ class InventoryLevel
     protected $updatedAt;
 
     /**
-     * InventoryLevel constructor.
-     *
-     * @param InventoryItem $inventoryItem
-     * @param int           $inventory
-     * @param int           $allocatedInventory
-     */
-    public function __construct(
-        InventoryItem $inventoryItem,
-        $inventory,
-        $allocatedInventory
-    ) {
-        $this->inventoryItem                = $inventoryItem;
-        $this->inventory                    = $inventory;
-        $this->allocatedInventory           = $allocatedInventory;
-    }
-
-    /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param InventoryItem $inventoryItem
+     * @return $this
+     */
+    public function setInventoryItem(InventoryItem $inventoryItem)
+    {
+        $this->inventoryItem = $inventoryItem;
+
+        return $this;
     }
 
     /**
@@ -167,17 +161,39 @@ class InventoryLevel
     }
 
     /**
-     * @return int
+     * @param int $quantity
+     * @return $this
      */
-    public function getStock()
+    public function setInventoryQty($quantity)
     {
-        return $this->inventory;
+        $this->inventory = $quantity;
+
+        return $this;
     }
 
     /**
      * @return int
      */
-    public function getAllocatedStock()
+    public function getInventoryQty()
+    {
+        return $this->inventory;
+    }
+
+    /**
+     * @param int $allocatedInventory
+     * @return $this
+     */
+    public function setAllocatedInventoryQty($allocatedInventory)
+    {
+        $this->allocatedInventory = $allocatedInventory;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAllocatedInventoryQty()
     {
         return $this->allocatedInventory;
     }
@@ -192,11 +208,13 @@ class InventoryLevel
 
     /**
      * @param Warehouse $warehouse
-     * @return void
+     * @return $this
      */
     public function setWarehouse(Warehouse $warehouse)
     {
         $this->warehouse = $warehouse;
+
+        return $this;
     }
 
     /**
