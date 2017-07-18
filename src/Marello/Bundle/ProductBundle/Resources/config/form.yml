@@ -1,11 +1,12 @@
 parameters:
     ## form types
-    marello_product.product_form.type.class:                          Marello\Bundle\ProductBundle\Form\Type\ProductType
-    marello_product.product_form.type.product_api.class:              Marello\Bundle\ProductBundle\Form\Type\ProductApiType
-    marello_product.product_form.type.product_select.class:           Marello\Bundle\ProductBundle\Form\Type\ProductSelectType
-    marello_product.form.type.product_collection.class:               Marello\Bundle\ProductBundle\Form\Type\ProductCollectionType
-    marello_product.product_variant_form.type.class:                  Marello\Bundle\ProductBundle\Form\Type\ProductVariantType
-    marello_product.form.type.product_supplier_select.class:          Marello\Bundle\ProductBundle\Form\Type\ProductSupplierSelectType
+    marello_product.product_form.type.class:                                    Marello\Bundle\ProductBundle\Form\Type\ProductType
+    marello_product.product_form.type.product_api.class:                        Marello\Bundle\ProductBundle\Form\Type\ProductApiType
+    marello_product.product_form.type.product_select.class:                     Marello\Bundle\ProductBundle\Form\Type\ProductSelectType
+    marello_product.product_form.type.product_sales_channel_aware_select.class: Marello\Bundle\ProductBundle\Form\Type\ProductSalesChannelAwareSelectType
+    marello_product.form.type.product_collection.class:                         Marello\Bundle\ProductBundle\Form\Type\ProductCollectionType
+    marello_product.product_variant_form.type.class:                            Marello\Bundle\ProductBundle\Form\Type\ProductVariantType
+    marello_product.form.type.product_supplier_select.class:                    Marello\Bundle\ProductBundle\Form\Type\ProductSupplierSelectType
 
     ## form handlers
     marello_product.product_form.handler.class:               Marello\Bundle\ProductBundle\Form\Handler\ProductHandler
@@ -36,6 +37,11 @@ services:
         class: '%marello_product.product_form.type.product_select.class%'
         tags:
             - { name: form.type, alias: marello_product_select }
+
+    marello_product.product_form.type.product_sales_channel_aware_select:
+        class: '%marello_product.product_form.type.product_sales_channel_aware_select.class%'
+        tags:
+            - { name: form.type, alias: marello_product_sales_channel_aware_select }
 
     marello_product.form.type.product_supplier_select:
         class: '%marello_product.form.type.product_supplier_select.class%'

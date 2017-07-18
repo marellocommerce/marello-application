@@ -6,9 +6,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -39,7 +37,10 @@ class OrderType extends AbstractType
             )
             ->add(
                 'salesChannel',
-                'marello_sales_saleschannel_select'
+                'marello_sales_saleschannel_select',
+                [
+                    'autocomplete_alias' => 'active_saleschannels',
+                ]
             )
             ->add(
                 'discountAmount',
