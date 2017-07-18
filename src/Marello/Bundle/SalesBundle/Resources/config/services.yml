@@ -22,7 +22,31 @@ services:
     marello_sales.saleschannel.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - %marello_sales.saleschannel.entity.class%
+            - "%marello_sales.saleschannel.entity.class%"
             - ["name"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: saleschannels, acl_resource: marello_product_view }
+
+    marello_sales.active_saleschannels.form.autocomplete.search_handler:
+        class: 'Marello\Bundle\SalesBundle\Autocomplete\ActiveSalesChannelHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - "%marello_sales.saleschannel.entity.class%"
+            - ["name", "code", "channelType"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: active_saleschannels, acl_resource: marello_product_view }
+
+    marello_sales.repository.sales_channel:
+        class: 'Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_sales.twig.sales_extension:
+        class: Marello\Bundle\SalesBundle\Twig\SalesExtension
+        arguments:
+            - '@marello_sales.repository.sales_channel'
+        tags:
+            - { name: twig.extension }

@@ -2,17 +2,28 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderType extends AbstractType
 {
+    /**
+     * @var SalesChannelRepository
+     */
+    private $salesChannelRepository;
+
+    public function __construct(SalesChannelRepository $salesChannelRepository)
+    {
+        $this->salesChannelRepository = $salesChannelRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -28,9 +39,9 @@ class OrderType extends AbstractType
             )
             ->add(
                 'salesChannel',
-                'genemu_jqueryselect2_entity',
+                'marello_sales_saleschannel_select',
                 [
-                    'class' => 'MarelloSalesBundle:SalesChannel',
+                    'autocomplete_alias' => 'active_saleschannels',
                 ]
             )
             ->add(
@@ -90,5 +101,18 @@ class OrderType extends AbstractType
     public function getName()
     {
         return 'marello_order_order';
+    }
+
+    /**
+     * @return SalesChannel[]
+     */
+    private function getSalesChannelsChoices()
+    {
+        $choices = [];
+        foreach ($this->salesChannelRepository->getActiveChannels() as $value) {
+            $choices[$value->getId()] = $value;
+        }
+
+        return $choices;
     }
 }

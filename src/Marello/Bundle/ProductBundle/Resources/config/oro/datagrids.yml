@@ -110,6 +110,23 @@ datagrids:
         extends: marello-products-grid
         actions: ~
 
+    marello-products-sales-channel-aware-grid:
+        extends: marello-products-extended-no-actions-grid
+        source:
+            query:
+                join:
+                    left:
+                        - { join: p.channels, alias: ch }
+                where:
+                    and:
+                        - ch.id = :channelId
+            bind_parameters:
+                - channelId
+        sorters:
+            default:
+                name: ASC
+                sku: ASC
+
     marello-products-supplier-no-actions-grid:
         extends: marello-products-grid
         actions: ~
