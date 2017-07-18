@@ -28,14 +28,15 @@ class InventoryController extends Controller
      * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_view")
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function viewAction(Product $product)
+    public function viewAction(InventoryItem $inventoryItem)
     {
         return [
-            'entity' => $product,
+            'entity' => $inventoryItem,
+            'product' => $inventoryItem->getProduct()
         ];
     }
 
@@ -75,16 +76,15 @@ class InventoryController extends Controller
      * @Config\Route("/widget/info/{id}", name="marello_inventory_widget_info", requirements={"id"="\d+"})
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function infoAction(Product $product)
+    public function infoAction(InventoryItem $inventoryItem)
     {
-        $item = $product->getInventoryItems()->first();
-
         return [
-            'item' => $item,
+            'item' => $inventoryItem,
+            'product' => $inventoryItem->getProduct()
         ];
     }
 

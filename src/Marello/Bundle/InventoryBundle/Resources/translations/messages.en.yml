@@ -30,24 +30,27 @@ marello:
             warehouse.label:            Warehouse
             product.label:              Product
 
-        stocklevel:
-            entity_label:               Inventory Level
-            entity_plural_label:        Inventory Levels
-            id.label:                   Id
-            stock.label:                Real Stock
-            allocated_stock.label:      Allocated Stock
-            virtual_stock.label:        Virtual Stock
-            stock_diff.label:           Real Stock Change
-            allocated_stock_diff.label: Allocated Stock Change
-            virtual_stock_diff.label:   Virtual Stock Change
-            user.label:                 User
-            subject.label:              Related Subject
-            change_trigger.label:       Trigger
-            previous_level.label:       Previous Stock Level
-            subject_id.label:           Subject Id
-            subject_type.label:         Subject Type
-            log.label:                  Stock Level Log
+        inventorylevel:
+            entity_label:                   Inventory Level
+            entity_plural_label:            Inventory Levels
+            id.label:                       Id
+            inventory.label:                Inventory Qty
+            allocated_inventory.label:      Allocated Inventory Qty
+            virtual_inventory.label:        Virtual Inventory Qty
+            inventory_diff.label:           Inventory Qty Change
+            allocated_inventory_diff.label: Allocated Inventory Qty Change
+            virtual_inventory_diff.label:   Virtual Inventory Qty Change
+            current_inventory_level.label:  Current Inventory Level
+            user.label:                     User
+            subject.label:                  Related Subject
+            change_trigger.label:           Trigger
+            previous_level.label:           Previous Stock Level
+            subject_id.label:               Subject Id
+            subject_type.label:             Subject Type
+            log.label:                      Inventory Level Log
 
         information.label:              Inventory Information
         movements.label:                Inventory Movements
-        management.label:               Inventory Management
+        management:
+            label:                      Inventory Management
+            add_to_warehouse.label:     Add to Warehouse
