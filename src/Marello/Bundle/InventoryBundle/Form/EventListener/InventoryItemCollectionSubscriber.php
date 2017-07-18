@@ -6,6 +6,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -46,7 +47,7 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
      */
     public function initializeCollection(FormEvent $event)
     {
-        /** @var Collection|InventoryItem[]|null $items */
+        /** @var Collection|InventoryLevel[]|null $items */
         $items = $event->getData();
 
         if (!$items) {
@@ -74,7 +75,7 @@ class InventoryItemCollectionSubscriber implements EventSubscriberInterface
             $indexed[$item->getWarehouse()->getId()] = $item;
         }
 
-        $warehouses = $this->doctrine->getRepository('MarelloInventoryBundle:Warehouse')->findAll();
+        $warehouse = $this->doctrine->getRepository('MarelloInventoryBundle:Warehouse')->getDefault();
 
         foreach ($warehouses as $warehouse) {
             if (!array_key_exists($warehouse->getId(), $indexed)) {

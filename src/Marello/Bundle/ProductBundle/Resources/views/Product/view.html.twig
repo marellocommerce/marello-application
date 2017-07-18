@@ -17,8 +17,8 @@
 
 {% block navButtons %}
     {{ UI.button({
-        'path': path('marello_inventory_inventorylevel_index', {'id': entity.id}),
-        'label': 'marello.inventory.stocklevel.log.label'|trans
+        'path': path('marello_inventory_inventory_update', {'id': entity.id}),
+        'label': 'marello.inventory.management.label'|trans
     }) }}
     {% if resource_granted('DELETE', entity) %}
         {{ UI.buttonSeparator() }}

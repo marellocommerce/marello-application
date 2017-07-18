@@ -29,6 +29,8 @@ class InventoryLevelModifierTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
+        var_dump(get_class($value));
+        die(__METHOD__);
         if (!$value) {
             return null;
         }
@@ -53,6 +55,8 @@ class InventoryLevelModifierTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
+        var_dump(get_class($value));
+        die(__METHOD__);
         if (!$value) {
             return null;
         }
