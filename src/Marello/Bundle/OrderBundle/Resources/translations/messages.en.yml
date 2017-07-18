@@ -126,3 +126,9 @@ marello:
             top_revenue_channels:
                 title: Order revenue per sales channel
                 description: Order revenue per sales channel
+
+        form:
+            address:
+                choose: Select an address
+                choose_or_create: Select an existing address or enter a new address below
+                manual: Enter address manually

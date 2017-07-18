@@ -28,11 +28,58 @@
     {% endif %}
 {% endblock pageHeader %}
 
+{% set pageComponent = {
+    module: 'marellolayout/js/app/components/form-changes-component',
+    options: {
+        route: 'marello_order_form_changes',
+        prefix: 'order',
+        routeParams: {id: entity.id|default(0)}
+    }
+} %}
+
 {% block content_data %}
     {% set id = 'order-create' %}
-
-    {% set billingAddress = form_widget(form.billingAddress) %}
-    {% set shippingAddress = form_widget(form.shippingAddress) %}
+    {% set customerSelector %}
+        <div data-page-component-module="marelloorder/js/app/components/customer-selection-component">
+            {{ form_row(form.customer) }}
+        </div>
+    {% endset %}
+    {% set billingAddress %}
+        {% if form.billingAddress.customerAddress is defined %}
+            {% set idAddressBlock = '#' ~ form.billingAddress.customerAddress.vars.id %}
+        {% else %}
+            {% set idAddressBlock = null %}
+        {% endif %}
+        <div
+                data-page-component-module="oroui/js/app/components/view-component"
+                data-page-component-options="{{ {
+                    view: 'marelloorder/js/app/views/order-address-view',
+                    type: 'billing',
+                    selectors: {
+                        address: idAddressBlock
+                    }
+                }|json_encode }}">
+            {{ form_widget(form.billingAddress) }}
+        </div>
+    {% endset %}
+    {% set shippingAddress %}
+        {% if form.shippingAddress.customerAddress is defined %}
+            {% set idAddressBlock = '#' ~ form.shippingAddress.customerAddress.vars.id %}
+        {% else %}
+            {% set idAddressBlock = null %}
+        {% endif %}
+        <div
+                data-page-component-module="oroui/js/app/components/view-component"
+                data-page-component-options="{{ {
+                    view: 'marelloorder/js/app/views/order-address-view',
+                    type: 'shipping',
+                    selectors: {
+                        address: idAddressBlock
+                    }
+                }|json_encode }}">
+            {{ form_widget(form.shippingAddress) }}
+        </div>
+    {% endset %}
     {% set orderItems %}
         <div class="order-line-items"
              data-page-component-module="oroui/js/app/components/view-component"
@@ -52,6 +99,7 @@
             'subblocks': [{
                 'title': '',
                 'data': [
+                    customerSelector,
                     form_rest(form)
                 ]
             }]

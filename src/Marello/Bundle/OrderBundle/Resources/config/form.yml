@@ -26,6 +26,14 @@ services:
         tags:
             - { name: form.type, alias: marello_customer }
 
+    marello_order.form.type.address:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderAddressType
+        arguments:
+            - '@oro_locale.formatter.address'
+            - '@marello_order.provider.customer_address'
+            - '@oro_importexport.serializer'
+        tags:
+            - { name: form.type, alias: marello_order_address }
 
     marello_order.form.type.customer_select:
         class: Marello\Bundle\OrderBundle\Form\Type\CustomerSelectType
