@@ -86,47 +86,8 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block oro_entity_create_or_select_inline_js_autocomplete_sales_channel_aware %}
-    {{ block('oro_entity_create_or_select_inline_js_sales_channel_aware') }}
-{% endblock %}
-
-{% block oro_entity_create_or_select_inline_js_grid_sales_channel_aware %}
-    {{ block('oro_entity_create_or_select_inline_js_sales_channel_aware') }}
-{% endblock %}
-
-{% block oro_entity_create_or_select_inline_js_sales_channel_aware %}
-    {% import 'OroUIBundle::macros.html.twig' as UI %}
-    {% if form.vars.configs.async_dialogs|default(false) is sameas(true) %}
-        {% set asyncNameSegment = 'async-' %}
-    {% endif %}
-    {% set urlParts = {
-    grid: {
-    route: 'oro_datagrid_widget',
-    parameters: {
-    gridName     : form.vars.grid_name,
-    params       : form.vars.grid_parameters,
-    renderParams : form.vars.grid_render_parameters
-    }
-    }
-    } %}
-
-    {% if form.vars.create_enabled|default(false) is sameas(true) %}
-        {% set urlParts = urlParts|merge({
-        create: {
-        route:      form.vars.create_form_route,
-        parameters: form.vars.create_form_route_parameters
-        }
-        }) %}
-    {% endif %}
-    <div {{ UI.renderPageComponentAttributes({
-        module: 'marelloproduct/js/app/components/select-create-inline-type-' ~ asyncNameSegment|default('') ~ 'component',
-        options: {
-            _sourceElement: '#'~id~'-el',
-            inputSelector: '#'~id,
-            entityLabel: label|trans,
-            urlParts: urlParts,
-            existingEntityGridId: form.vars.existing_entity_grid_id|default('id'),
-            createEnabled: form.vars.create_enabled|default(false),
-        }
-    }) }} style="display: none"></div>
+{% block marello_sales_saleschannel_select_widget %}
+    <div class="marello-sales-channel-select-container" data-page-component-module="marellosales/js/app/components/sales-channel-select-component">
+        {{ form_widget(form) }}
+    </div>
 {% endblock %}

@@ -1,0 +1,3 @@
+config:
+    paths:
+        'marellosales/js/app/components/sales-channel-select-component': 'bundles/marellosales/js/app/components/sales-channel-select-component.js'
