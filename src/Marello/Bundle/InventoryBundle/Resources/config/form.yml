@@ -4,10 +4,10 @@ services:
         tags:
             - { name: form.type, alias: marello_warehouse }
 
-    marello_inventory.form.type.product_inventory:
-        class: Marello\Bundle\InventoryBundle\Form\Type\ProductInventoryType
+    marello_inventory.form.type.inventory_item:
+        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType
         tags:
-             - { name: form.type, alias: marello_product_inventory }
+             - { name: form.type, alias: marello_inventory_item }
 
     marello_inventory.form.type.variant_inventory:
         class: Marello\Bundle\InventoryBundle\Form\Type\VariantInventoryType
@@ -49,18 +49,18 @@ services:
             - '@doctrine'
 
     ## forms
-    marello_inventory.form.product_inventory:
+    marello_inventory.form.inventory_item:
         class: Symfony\Component\Form\Form
         factory: ['@form.factory', createNamed]
         arguments:
-            - 'marello_inventory_inventorylevel'
-            - 'marello_inventory_inventorylevel'
+            - 'marello_inventory_item'
+            - 'marello_inventory_item'
 
     ## form handlers
-    marello_inventory.form.handler.product_inventory:
-        class: Marello\Bundle\InventoryBundle\Form\Handler\ProductInventoryHandler
+    marello_inventory.form.handler.inventory_item:
+        class: Marello\Bundle\InventoryBundle\Form\Handler\InventoryItemHandler
         scope: request
         arguments:
-            - '@marello_inventory.form.product_inventory'
+            - '@marello_inventory.form.inventory_item'
             - '@request'
             - '@doctrine.orm.entity_manager'

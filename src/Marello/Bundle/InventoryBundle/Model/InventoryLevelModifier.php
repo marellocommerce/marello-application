@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Model;
 
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
@@ -15,17 +16,17 @@ class InventoryLevelModifier
     /** @var InventoryLevel $inventoryLevel */
     protected $inventoryLevel;
 
-    /** @var int */
+    /** @var int $quantity */
     protected $quantity = 0;
 
-    /** @var string */
+    /** @var string $adjustmentOperator */
     protected $adjustmentOperator = self::OPERATOR_INCREASE;
 
-    /** @var int */
-    protected $allocatedStock = 0;
+    /** @var int $allocatedInventory */
+    protected $allocatedInventory = 0;
 
-    /** @var string */
-    protected $allocatedStockOperator = self::OPERATOR_INCREASE;
+    /** @var Warehouse $warehouse */
+    protected $warehouse;
 
     /** @var EventDispatcherInterface $eventDispatcher */
     private $eventDispatcher;
@@ -58,12 +59,12 @@ class InventoryLevelModifier
             throw new \Exception();
         }
 
-        list($stock, $allocatedStock) = $this->getContextData();
-
+        $inventoryQty = $this->quantity * ($this->adjustmentOperator === self::OPERATOR_INCREASE ? 1 : -1);
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
-            $this->inventoryLevel,
-            $stock,
-            $allocatedStock,
+            $this->inventoryLevel->getInventoryItem()->getProduct(),
+            $this->inventoryLevel->getInventoryItem(),
+            $inventoryQty,
+            $this->allocatedInventory,
             'manual'
         );
 
@@ -96,6 +97,26 @@ class InventoryLevelModifier
     }
 
     /**
+     * @return Warehouse
+     */
+    public function getWarehouse()
+    {
+        return $this->warehouse;
+    }
+
+    /**
+     * @param Warehouse $warehouse
+     *
+     * @return $this
+     */
+    public function setWarehouse($warehouse)
+    {
+        $this->warehouse = $warehouse;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getAdjustmentOperator()
@@ -113,17 +134,6 @@ class InventoryLevelModifier
         $this->adjustmentOperator = $operator;
 
         return $this;
-    }
-
-    /**
-     * Get Inventory Update context data
-     * @return array
-     */
-    protected function getContextData()
-    {
-        $stock = $this->quantity * ($this->adjustmentOperator === self::OPERATOR_INCREASE ? 1 : -1);
-        $allocatedStock = 1;//$this->allocatedStock * ($this->allocatedStockOperator === self::OPERATOR_INCREASE ? 1 : -1);
-        return [$stock, $allocatedStock];
     }
 
     /**

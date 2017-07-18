@@ -5,11 +5,12 @@ namespace Marello\Bundle\InventoryBundle\Form\Handler;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
-class ProductInventoryHandler
+class InventoryItemHandler
 {
     /** @var FormInterface */
     protected $form;
@@ -46,23 +47,20 @@ class ProductInventoryHandler
     {
         $this->form->setData($entity);
 
-        if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
+        if ($this->request->isMethod('POST')) {
             $this->form->submit($this->request);
-
             if ($this->form->isValid()) {
                 $this->onSuccess($entity);
-
                 return true;
             }
         }
-
         return false;
     }
 
     /**
      * Returns form instance
      *
-     * @return FormInterface
+     * @return FormView
      */
     public function getFormView()
     {
@@ -76,12 +74,6 @@ class ProductInventoryHandler
      */
     protected function onSuccess(InventoryItem $entity)
     {
-//        $items = $entity->getInventoryItems()->toArray();
-
-//        foreach ($entity->getVariant()->getProducts() as $product) {
-//            $items = array_merge($items, $product->getInventoryItems()->toArray());
-//        }
-
         $this->manager->persist($entity);
         $this->manager->flush();
     }

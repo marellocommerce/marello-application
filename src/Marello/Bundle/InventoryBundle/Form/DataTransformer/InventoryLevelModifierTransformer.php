@@ -8,7 +8,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-
 class InventoryLevelModifierTransformer implements DataTransformerInterface
 {
     /** @var EventDispatcherInterface $eventDispatcher */

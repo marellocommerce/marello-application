@@ -50,7 +50,7 @@ class InventoryController extends Controller
      */
     public function updateAction(InventoryItem $inventoryItem)
     {
-        $handler = $this->get('marello_inventory.form.handler.product_inventory');
+        $handler = $this->get('marello_inventory.form.handler.inventory_item');
 
         if ($handler->process($inventoryItem)) {
             return $this->get('oro_ui.router')->redirectAfterSave(
@@ -59,7 +59,8 @@ class InventoryController extends Controller
                     'parameters' => ['id' => $inventoryItem->getId()],
                 ],
                 [
-                    'route'      => 'marello_inventory_inventory_index',
+                    'route'      => 'marello_inventory_inventory_view',
+                    'parameters' => ['id' => $inventoryItem->getId()],
                 ],
                 $inventoryItem
             );
@@ -92,16 +93,14 @@ class InventoryController extends Controller
      * @Config\Route("/widget/datagrid/{id}", name="marello_inventory_widget_datagrid", requirements={"id"="\d+"})
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function datagridAction(Product $product)
+    public function datagridAction(InventoryItem $inventoryItem)
     {
-        $item = $product->getInventoryItems()->first();
-
         return [
-            'item' => $item,
+            'item' => $inventoryItem,
         ];
     }
 }

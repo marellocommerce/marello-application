@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

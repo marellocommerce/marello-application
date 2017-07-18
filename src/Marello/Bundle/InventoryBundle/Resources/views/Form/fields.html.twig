@@ -1,9 +1,9 @@
 
-{% block marello_inventory_item_collection_widget %}
+{% block marello_inventory_inventorylevel_collection_widget %}
     {{ form_rest(form) }}
 {% endblock %}
 
-{% block marello_inventory_item_collection_row %}
+{% block marello_inventory_inventorylevel_collection_row %}
     <div class="row-oro">
         <div class="marello-item-collection grid-container">
             <table class="grid table-hover table table-bordered table-condensed">
@@ -13,7 +13,8 @@
                         <th class="inventory-line-item-sku"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
                         <th class="inventory-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
                     {% endif %}
-                    <th class="inventory-line-item-quantity"><span>{{ 'marello.inventory.stocklevel.stock.label'|trans }}</span></th>
+                    <th class="inventory-line-item-quantity"><span>{{ 'marello.inventory.inventorylevel.inventory.label'|trans }}</span></th>
+                    <th class="inventory-line-item-warehouse"><span>{{ 'marello.inventory.warehouse.entity_label'|trans }}</span></th>
                     <th class="inventory-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
                 </tr>
                 </thead>
@@ -25,42 +26,47 @@
     </div>
 {% endblock %}
 
-{% block marello_inventory_item_row %}
+{% block marello_inventory_inventorylevel_row %}
     <tr class="marello-line-item display-values">
         {% if form.parent.parent.vars.name == 'marello_product_inventory' or form.parent.parent.vars.name != 'marello_product_form' %}
             <td class="inventory-line-item-sku">
                 <div class="fields-row">
-                    {{ form.vars.value.inventoryItem.product.sku  }}
+                    {{ form.vars.value.inventoryLevel.inventoryItem.product.sku  }}
                 </div>
             </td>
             <td class="inventory-line-item-product">
                 <div class="fields-row">
                     {% set productViewGranted = resource_granted('marello_product_view') %}
                     {%- if productViewGranted -%}
-                        <a href="{{ path('marello_product_view', {'id': form.vars.value.inventoryItem.product.id}) }}">
-                            {{ form.vars.value.inventoryItem.product.name }}
+                        <a href="{{ path('marello_product_view', {'id': form.vars.value.inventoryLevel.inventoryItem.product.id}) }}">
+                            {{ form.vars.value.inventoryLevel.inventoryItem.product.name }}
                         </a>
                     {%- else -%}
-                        {{ form.vars.value.inventoryItem.product.name}}
+                        {{ form.vars.value.inventoryLevel.inventoryItem.product.name}}
                     {%- endif -%}
                 </div>
             </td>
         {% endif %}
         <td class="inventory-line-item-quantity">
             <div class="fields-row">
-                <strong>{{ form.vars.value.inventoryItem.currentLevel.stock|default(0) }}</strong>
+                <strong>{{ form.vars.value.inventoryLevel.inventoryQty|default(0) }}</strong>
+            </div>
+        </td>
+        <td class="inventory-line-item-warehouse">
+            <div class="fields-row">
+                <strong>{{ form.vars.value.inventoryLevel.warehouse }}</strong>
             </div>
         </td>
         {{ form_widget(form) }}
     </tr>
 {% endblock %}
 
-{% block marello_inventory_item_widget %}
-    <td class="inventory-line-item-adjustment {{ form.stock.vars.errors|length ? 'has-errors' : '' }}">
+{% block marello_inventory_inventorylevel_widget %}
+    <td class="inventory-line-item-adjustment {{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
-            {{ form_widget(form.stockOperator) }}
-            {{ form_widget(form.stock) }}
-            {{ form_errors(form.stock) }}
+            {{ form_widget(form.adjustmentOperator) }}
+            {{ form_widget(form.quantity) }}
+            {{ form_errors(form.quantity) }}
         </div>
     </td>
 {% endblock %}
