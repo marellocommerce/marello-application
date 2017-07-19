@@ -4,7 +4,6 @@ namespace Marello\Bundle\InventoryBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,20 +13,21 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
-use Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryLevelModifierTransformer;
-use Marello\Bundle\InventoryBundle\Model\InventoryLevelModifier;
+use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+
 
 class InventoryLevelType extends AbstractType
 {
     const NAME = 'marello_inventory_inventorylevel';
 
-    /** @var InventoryLevelModifierTransformer $transformer */
-    protected $transformer;
+    /** @var EventSubscriberInterface $subscriber */
+    protected $subscriber;
 
-    public function __construct(InventoryLevelModifierTransformer $transformer)
+    public function __construct(EventSubscriberInterface $subscriber)
     {
-        $this->transformer = $transformer;
+        $this->subscriber = $subscriber;
     }
 
     /**
@@ -47,17 +47,19 @@ class InventoryLevelType extends AbstractType
             )
             ->add('adjustmentOperator', ChoiceType::class, [
                 'choices'            => [
-                    InventoryLevelModifier::OPERATOR_INCREASE => 'increase',
-                    InventoryLevelModifier::OPERATOR_DECREASE => 'decrease',
+                    InventoryLevelCalculator::OPERATOR_INCREASE => 'increase',
+                    InventoryLevelCalculator::OPERATOR_DECREASE => 'decrease',
                 ],
                 'translation_domain' => 'MarelloInventoryChangeDirection',
+                'mapped' => false
             ])
             ->add('quantity', NumberType::class, [
                 'constraints' => new GreaterThanOrEqual(0),
                 'data'        => 0,
+                'mapped' => false
             ]);
 
-        $builder->addViewTransformer($this->transformer);
+        $builder->addEventSubscriber($this->subscriber);
     }
 
     /**
@@ -66,7 +68,7 @@ class InventoryLevelType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => InventoryLevelModifier::class,
+            'data_class' => InventoryLevel::class,
             'cascade_validation' => true,
         ]);
     }

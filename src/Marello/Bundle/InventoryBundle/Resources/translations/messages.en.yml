@@ -41,6 +41,7 @@ marello:
             allocated_inventory_diff.label: Allocated Inventory Qty Change
             virtual_inventory_diff.label:   Virtual Inventory Qty Change
             current_inventory_level.label:  Current Inventory Level
+            totals.label:                   Inventory Level Totals
             user.label:                     User
             subject.label:                  Related Subject
             change_trigger.label:           Trigger

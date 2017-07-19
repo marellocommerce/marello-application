@@ -1,63 +1,10 @@
-
-{% block marello_inventory_inventorylevel_collection_widget %}
-    {{ form_rest(form) }}
-{% endblock %}
-
-{% block marello_inventory_inventorylevel_collection_row %}
-    <div class="row-oro">
-        <div class="marello-item-collection grid-container">
-            <table class="grid table-hover table table-bordered table-condensed">
-                <thead>
-                <tr>
-                    <th class="inventory-line-item-sku"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
-                    <th class="inventory-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
-                    <th class="inventory-line-item-quantity"><span>{{ 'marello.inventory.inventorylevel.inventory.label'|trans }}</span></th>
-                    <th class="inventory-line-item-warehouse"><span>{{ 'marello.inventory.warehouse.entity_label'|trans }}</span></th>
-                    <th class="inventory-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
-                </tr>
-                </thead>
-                <tbody>
-                    {{ form_widget(form) }}
-                </tbody>
-            </table>
-        </div>
-    </div>
-{% endblock %}
-
-{% block marello_inventory_inventorylevel_row %}
-    <tr class="marello-line-item display-values">
-        <td class="inventory-line-item-sku">
-            <div class="fields-row">
-                {{ form.vars.value.inventoryLevel.inventoryItem.product.sku  }}
-            </div>
-        </td>
-        <td class="inventory-line-item-product">
-            <div class="fields-row">
-                {% set productViewGranted = resource_granted('marello_product_view') %}
-                {%- if productViewGranted -%}
-                    <a href="{{ path('marello_product_view', {'id': form.vars.value.inventoryLevel.inventoryItem.product.id}) }}">
-                        {{ form.vars.value.inventoryLevel.inventoryItem.product.name }}
-                    </a>
-                {%- else -%}
-                    {{ form.vars.value.inventoryLevel.inventoryItem.product.name}}
-                {%- endif -%}
-            </div>
-        </td>
-        <td class="inventory-line-item-quantity">
-            <div class="fields-row">
-                <strong>{{ form.vars.value.inventoryLevel.inventoryQty|default(0) }}</strong>
-            </div>
-        </td>
-        <td class="inventory-line-item-warehouse">
-            <div class="fields-row">
-                <strong>{{ form.vars.value.inventoryLevel.warehouse }}</strong>
-            </div>
-        </td>
-        {{ form_widget(form) }}
-    </tr>
-{% endblock %}
-
 {% block marello_inventory_inventorylevel_widget %}
+    <td class="inventory-line-item-warehouse {{ form.warehouse.vars.errors|length ? 'has-errors' : '' }}">
+        <div class="fields-row">
+            {{ form_widget(form.warehouse) }}
+        </div>
+        {{ form_errors(form.warehouse) }}
+    </td>
     <td class="inventory-line-item-adjustment {{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
             {{ form_widget(form.adjustmentOperator) }}
@@ -67,11 +14,53 @@
     </td>
 {% endblock %}
 
-{% block marello_variant_inventory_widget %}
-    {{ form_widget(form.products) }}
-{% endblock %}
+{% macro marello_inventory_inventorylevel_collection_item_prototype(widget) %}
+    {% if 'collection' in widget.vars.block_prefixes %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
+        {% set disabled = widget.vars.disabled %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+        {% set disabled = widget.parent.vars.disabled %}
+    {% endif %}
 
-{% block marello_product_inventory_row %}
-    {{ form_widget(form) }}
-    <hr/>
+    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+        class="marello-line-item"
+        data-page-component-module="oroui/js/app/components/view-component"
+        data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}">
+        {{ form_widget(form) }}
+    </tr>
+{% endmacro %}
+
+{% block marello_inventory_inventorylevel_collection_widget %}
+    {% spaceless %}
+        {% if prototype is defined %}
+            {% set prototype_html = _self.marello_inventory_inventorylevel_collection_item_prototype(form) %}
+        {% endif %}
+        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
+        {% set id = id ~ '_collection' %}
+        <div class="row-oro">
+            {% set prototype_name = form.vars.prototype_name %}
+            <div {{ block('widget_container_attributes') }}>
+                <table class="grid table-hover table table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="inventorylevel-line-item-warehouse"><span>{{ 'marello.inventory.inventoryitem.warehouse.label'|trans }}</span></th>
+                        <th class="inventorylevel-line-item-inventory-qty"><span>{{ 'marello.inventory.inventorylevel.inventory.label'|trans }}</span></th>
+                    </tr>
+                    </thead>
+                    <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
+                    {% if form.children|length %}
+                        {% for child in form.children %}
+                            {{ _self.marello_inventory_inventorylevel_collection_item_prototype(child) }}
+                        {% endfor %}
+                    {% elseif show_form_when_empty and prototype_html is defined %}
+                        {{ prototype_html|replace({(prototype_name): '0'})|raw }}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endspaceless %}
 {% endblock %}

@@ -22,6 +22,33 @@
 
 {% block content_data %}
     {% set id = 'inventory-edit' %}
+    {% set inventoryQuantityWidget %}
+        <div class="responsive-block">
+            <div class="box-type1">
+                <div class="inventoryitem"
+                     data-page-component-module="oroui/js/app/components/view-component"
+                     data-page-component-options="{{ {
+                         view: 'marellolayout/js/app/views/abstract-items-view'
+                     }|json_encode }}">
+                    {{ form_widget(form.inventoryLevels) }}
+                    {{ form_errors(form.inventoryLevels) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set currentInventoryWidget %}
+    <div class="responsive-block">
+        <div class="box-type1">
+            <div class="title">
+                <span class="widget-title">{{ 'marello.inventory.inventorylevel.totals.label'|trans }}</span>
+            </div>
+            {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.inventory.label'|trans, marello_inventory_get_inventorylevel_total_inventory(entity)) }}
+            {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.allocated_inventory.label'|trans, marello_inventory_get_inventorylevel_total_allocatedinventory(entity)) }}
+            {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.virtual_inventory.label'|trans, marello_inventory_get_inventorylevel_total_virtualinventory(entity)) }}
+        </div>
+    </div>
+    {% endset %}
 
     {% set dataBlocks = [
         {
@@ -30,7 +57,8 @@
             'subblocks': [{
                 'title': '',
                 'data': [
-                    form_row(form.inventoryLevels)
+                    currentInventoryWidget,
+                    inventoryQuantityWidget
                 ]
             }]
         },

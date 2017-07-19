@@ -17,11 +17,13 @@ class InventoryLevelCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'allow_add'             => false,
-            'allow_delete'          => false,
-            'type'                  => InventoryLevelType::NAME,
-            'cascade_validation'    => true,
-            'by_reference'          => false,
+            'type'                 => InventoryLevelType::NAME,
+            'show_form_when_empty' => true,
+            'error_bubbling'       => false,
+            'cascade_validation'   => true,
+            'prototype_name'       => '__nameinventorylevelcollection__',
+            'prototype'            => true,
+            'handle_primary'       => false,
         ]);
     }
 
