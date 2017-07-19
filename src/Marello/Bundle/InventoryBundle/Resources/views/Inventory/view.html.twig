@@ -50,15 +50,15 @@
         }])
     %}
 
-    {#{% set productInventoryLogChart %}#}
-        {#<div class="responsive-block">#}
-            {#{{ oro_widget_render({#}
-                {#'widgetType': 'block',#}
-                {#'url': path('marello_inventory_stocklevel_chart', {id: entity.id}),#}
-                {#'title': ''#}
-            {#}) }}#}
-        {#</div>#}
-    {#{% endset %}#}
+    {% set productInventoryLogChart %}
+        <div class="responsive-block">
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('marello_inventory_inventorylevel_chart', {id: entity.id}),
+                'title': ''
+            }) }}
+        </div>
+    {% endset %}
 
     {% set productInventoryWidgetDatagrid %}
         <div class="responsive-block">
@@ -72,9 +72,9 @@
 
     {% set dataBlocks = dataBlocks|merge([{
             'title': 'marello.inventory.movements.label'|trans,
-            'class': 'active',
+            'useSpan': false,
             'subblocks': [
-                { 'data' : [productInventoryWidgetDatagrid] }
+                { 'data' : [productInventoryLogChart, productInventoryWidgetDatagrid] }
             ]
         }])
     %}

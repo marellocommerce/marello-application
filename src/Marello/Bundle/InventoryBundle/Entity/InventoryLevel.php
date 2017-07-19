@@ -7,7 +7,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository")
+ * @ORM\Entity()
  * @ORM\Table(name="marello_inventory_level",
  *       uniqueConstraints={
  *          @ORM\UniqueConstraint(columns={"inventory_item_id", "warehouse_id"})

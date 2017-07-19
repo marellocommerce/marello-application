@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Controller;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,12 +32,12 @@ class InventoryLevelController extends Controller
      * @Config\Route("/chart/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_chart")
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      * @param Request $request
      *
      * @return array
      */
-    public function chartAction(Product $product, Request $request)
+    public function chartAction(InventoryItem $inventoryItem, Request $request)
     {
         /*
          * Create parameters required for chart.
@@ -46,7 +47,7 @@ class InventoryLevelController extends Controller
 
         $items = $this
             ->get('marello_inventory.logging.chart_builder')
-            ->getChartData($product, $from, $to);
+            ->getChartData($inventoryItem, $from, $to);
 
         $viewBuilder = $this->container->get('oro_chart.view_builder');
 
@@ -67,6 +68,6 @@ class InventoryLevelController extends Controller
             ])
             ->getView();
 
-        return compact('chartView', 'product');
+        return compact('chartView', 'inventoryItem');
     }
 }
