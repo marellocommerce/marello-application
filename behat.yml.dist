@@ -11,6 +11,26 @@ default: &default
         Behat\Symfony2Extension: ~
         Oro\Bundle\TestFrameworkBundle\Behat\ServiceContainer\OroTestFrameworkExtension:
             reference_initializer_class: Oro\Bundle\ApplicationBundle\Tests\Behat\ReferenceRepositoryInitializer
+            shared_contexts:
+                - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+                - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\FixturesContext
+                - OroActivityListBundle::ActivityContext
+                - OroDataGridBundle::GridContext
+                - OroFormBundle::FormContext
+                - OroSecurityBundle::ACLContext
+                - OroSecurityBundle::PermissionContext
+                - OroSearchBundle::SearchContext
+                - OroImportExportBundle::ImportExportContext:
+                    - '@oro_entity.entity_alias_resolver'
+                    - '@oro_importexport.processor.registry'
+                - OroAddressBundle::AddressContext
+                - OroApplicationBundle::CommerceMainContext
+                - OroCustomerBundle::CustomerUserContext
+                - OroOrderBundle::OrderContext
+                - OroSalesBundle::SalesContext
+                - Oro\Bundle\ShippingProBundle\Tests\Behat\Context\MultiplyCurrencyContext
+                - OroShoppingListBundle::ShoppingListContext
+                - OroRedirectBundle::SlugPrototypesContext
 
 selenium2:
     <<: *default
