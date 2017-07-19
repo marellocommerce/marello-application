@@ -28,6 +28,15 @@
     {% endif %}
 {% endblock pageHeader %}
 
+{% set pageComponent = {
+    module: 'marellolayout/js/app/components/form-changes-component',
+    options: {
+        route: 'marello_order_form_changes',
+        prefix: 'order',
+        routeParams: {id: entity.id|default(0)}
+    }
+} %}
+
 {% block content_data %}
     {% set id = 'order-create' %}
 

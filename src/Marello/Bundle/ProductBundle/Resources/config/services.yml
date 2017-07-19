@@ -1,15 +1,24 @@
 parameters:
-    marello_product.entity.class:                 Marello\Bundle\ProductBundle\Entity\Product
+    marello_product.entity.class: Marello\Bundle\ProductBundle\Entity\Product
 
 services:
     # Autocomplete search handler
     marello_product.form.autocomplete.product.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - %marello_product.entity.class%
+            - '%marello_product.entity.class%'
             - ["name", "sku"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: products, acl_resource: marello_product_view }
+
+    marello_product.form.autocomplete.sales_channel_product.search_handler:
+        class: 'Marello\Bundle\ProductBundle\Autocomplete\SalesChannelProductHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_product.entity.class%'
+            - ["name", "sku"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: sales_channel_products, acl_resource: marello_product_view }
 
     marello_product.widget_provider.actions.add_variant:
         parent: oro_ui.widget_provider.action_button.abstract

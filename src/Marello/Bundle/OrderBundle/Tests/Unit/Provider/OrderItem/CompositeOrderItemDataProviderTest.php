@@ -34,11 +34,7 @@ class CompositeOrderItemDataProviderTest extends \PHPUnit_Framework_TestCase
     public function testGetData(array $provider1Data, array $provider2Data, array $expectedData)
     {
         $channelId = 1;
-        $products = [
-            ['product' => 1],
-            ['product' => 2],
-            ['product' => 3]
-        ];
+        $products = [1, 2, 3];
 
         $this->translator->expects(static::any())
             ->method('trans')

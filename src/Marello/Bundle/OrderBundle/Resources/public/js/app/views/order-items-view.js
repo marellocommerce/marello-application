@@ -61,14 +61,15 @@ define(function(require) {
             this.$salesChannel = this.$form.find(':input[data-ftid="' + this.$form.attr('name') + '_salesChannel"]');
 
             mediator.on('order:get:line-items-data', this.getLineItemsData, this);
-            mediator.on('order:load:line-items-data', this.loadLineItemsData, this);
+            mediator.on('order:form-changes:load', this.loadLineItemsData, this);
             mediator.on('order:update:line-items', this.updateLineItems, this);
 
             this.$salesChannel.change(_.bind(function() {
-                this.loadLineItemsData(this.getItems(), function(response) {
-                    mediator.trigger('order:refresh:line-items', response);
-                });
                 this.setChannelHistory(this._getSalesChannel());
+                if (this.getItems().length === 0 || this._getSalesChannel().length ===0 ) {
+                    return;
+                }
+                mediator.trigger('order:form-changes:trigger', {updateFields: ['items']});
             }, this));
 
             this.initChannelHistory();
@@ -151,35 +152,13 @@ define(function(require) {
         },
 
         /**
-         * @param {Array} items
-         * @param {Function} callback
+         * @param {Array} response
          */
-        loadLineItemsData: function(items, callback) {
-            if (items.length === 0) {
+        loadLineItemsData: function(response) {
+            if (response === undefined || response['items'] === undefined || response['items'].length == 0) {
                 return;
             }
-            
-            var params = {
-                product_ids: items
-            };
-
-            var salesChannel = this._getSalesChannel();
-            if (salesChannel.length === 0) {
-                return;
-            }
-
-            params = _.extend(params, {salesChannel: salesChannel});
-
-            $.ajax({
-                url: routing.generate(this.options.route, params),
-                type: 'GET',
-                success: function(response) {
-                    callback(response);
-                },
-                error: function(response) {
-                    callback();
-                }
-            });
+            mediator.trigger('order:refresh:line-items', response['items']);
         },
 
         /**
@@ -222,7 +201,7 @@ define(function(require) {
             }
 
             mediator.off('order:get:line-items-data', this.getLineItemsData, this);
-            mediator.off('order:load:line-items-data', this.loadLineItemsData, this);
+            mediator.off('order:form-changes:load', this.loadLineItemsData, this);
             mediator.off('order:update:line-items', this.updateLineItems, this);
 
             OrderItemsView.__super__.dispose.call(this);

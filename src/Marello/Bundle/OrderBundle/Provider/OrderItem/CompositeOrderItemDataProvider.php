@@ -51,9 +51,9 @@ class CompositeOrderItemDataProvider implements OrderItemDataProviderInterface
 
             if ($productCount !== $resultCount) {
                 foreach ($products as $product) {
-                    if (!array_key_exists(self::IDENTIFIER_PREFIX . $product['product'], $result) ||
-                    !array_key_exists($type, $result[self::IDENTIFIER_PREFIX . $product['product']])) {
-                        $result[self::IDENTIFIER_PREFIX . $product['product']] = [
+                    if (!array_key_exists(self::IDENTIFIER_PREFIX . $product, $result) ||
+                    !array_key_exists($type, $result[self::IDENTIFIER_PREFIX . $product])) {
+                        $result[self::IDENTIFIER_PREFIX . $product] = [
                             'message' => $this->translator
                                 ->trans('marello.order.orderitem.messages.product_not_salable'),
                         ];

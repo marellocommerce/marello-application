@@ -4,7 +4,7 @@ namespace Marello\Bundle\OrderBundle\Form\Type;
 
 use Marello\Bundle\OrderBundle\Form\DataTransformer\TaxCodeToCodeTransformer;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderItemPurchasePriceSubscriber;
-use Marello\Bundle\ProductBundle\Form\Type\ProductSelectType;
+use Marello\Bundle\ProductBundle\Form\Type\ProductSalesChannelAwareSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,7 +32,7 @@ class OrderItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('product', ProductSelectType::class, [
+            ->add('product', ProductSalesChannelAwareSelectType::class, [
                 'required'       => true,
                 'label'          => 'marello.product.entity_label',
                 'create_enabled' => false,

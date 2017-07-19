@@ -2,30 +2,52 @@
 
 namespace Marello\Bundle\OrderBundle\Controller;
 
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Form\Type\OrderType;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-
-use Oro\Bundle\SecurityBundle\Annotation as Security;
 
 class OrderAjaxController extends Controller
 {
     /**
-     * @Config\Route("/get-order-item-data", name="marello_order_item_data")
-     * @Config\Method({"GET"})
+     * @Config\Route("/form-changes/{id}", name="marello_order_form_changes", defaults={"id" = 0})
+     * @Config\Method({"POST"})
      * @Security\AclAncestor("marello_order_create")
      *
-     * {@inheritdoc}
+     * @param Request $request
+     * @param Order|null $order
+     * @return JsonResponse
      */
-    public function getOrderItemDataAction(Request $request)
+    public function formChangesAction(Request $request, Order $order = null)
     {
-        return new JsonResponse(
-            $this->get('marello_order.provider.order_item_data.composite')->getData(
-                $request->query->get('salesChannel'),
-                $request->query->get('product_ids', [])
-            )
-        );
+        if (!$order) {
+            $order = new Order();
+        }
+
+        $form = $this->getType($order);
+
+        $submittedData = $request->get($form->getName());
+
+        $form->submit($submittedData);
+       
+        $formChangesProvider = $this->get('marello_layout.provider.form_changes_data.composite');
+        $formChangesProvider
+            ->setRequiredDataClass(Order::class)
+            ->setRequiredFields($request->get('updateFields'));
+
+        return new JsonResponse($formChangesProvider->getFormChangesData($form, $submittedData));
+    }
+
+    /**
+     * @param Order $order
+     * @return Form
+     */
+    protected function getType(Order $order)
+    {
+        return $this->createForm(OrderType::class, $order);
     }
 }

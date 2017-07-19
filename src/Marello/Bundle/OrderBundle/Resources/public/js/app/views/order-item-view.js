@@ -70,16 +70,11 @@ define(function(require) {
                 return;
             }
             var productId = this._getProductId();
-            var quantity = this.fieldsByName.quantity.val();
 
             if (productId.length === 0) {
                 this.setOrderItemData({});
             } else {
-                mediator.trigger(
-                    'order:load:line-items-data',
-                    [{'product': productId, 'qty': quantity}],
-                    _.bind(this.setOrderItemData, this)
-                );
+                mediator.trigger('order:form-changes:trigger', {updateFields: ['items']});
             }
         },
 
@@ -87,8 +82,9 @@ define(function(require) {
             if (data === undefined || typeof(data) == 'undefined' || data.length == 0) {
                 return;
             }
+
             var identifier = this._getItemIdentifier();
-            if (identifier) {
+            if (identifier && data[identifier] !== undefined) {
                 if(data[identifier].message !== undefined) {
                     this.data = {};
                     this.updateRowTotals();
@@ -166,7 +162,7 @@ define(function(require) {
                 return;
             }
 
-            mediator.off('order:refresh:line-items-price', this.setPrice, this);
+            mediator.off('order:refresh:line-items', this.setOrderItemData, this);
 
             OrderItemView.__super__.dispose.call(this);
         }
