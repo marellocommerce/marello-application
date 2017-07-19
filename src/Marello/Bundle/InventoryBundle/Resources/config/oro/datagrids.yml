@@ -112,28 +112,29 @@ datagrids:
             type: orm
             query:
                 select:
-                    - l
-                    - (l.inventoryAlteration) AS stockDiff
-                    - (l.allocatedInventoryAlteration) AS allocatedStockDiff
+                    - lr
+                    - (lr.inventoryAlteration) AS inventoryDiff
+                    - (lr.allocatedInventoryAlteration) AS allocatedInventoryDiff
                 from:
-                    - { table: MarelloInventoryBundle:InventoryLevel, alias: l }
+                    - { table: MarelloInventoryBundle:InventoryLevelLogRecord, alias: lr }
                 join:
                     left:
-                        - { join: l.inventoryItem, alias: i }
+                        - { join: lr.inventoryLevel, alias: il }
+                        - { join: il.inventoryItem, alias: i }
                 where:
                     and:
-                        - IDENTITY(i.product) = :product_id
+                        - IDENTITY(i.inventoryItem) = :inventoryItemId
             bind_parameters:
-                product_id: productId
+                inventoryItemId: inventoryItemId
         columns:
-            stockDiff:
-                data_name:      stockDiff
+            inventoryDiff:
+                data_name:      inventoryDiff
                 label:          marello.inventory.stocklevel.stock_diff.label
                 type:           twig
                 frontend_type:  html
                 template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
-            allocatedStockDiff:
-                data_name:      allocatedStockDiff
+            allocatedInventoryDiff:
+                data_name:      allocatedInventoryDiff
                 label:          marello.inventory.stocklevel.allocated_stock_diff.label
                 type:           twig
                 frontend_type:  html
@@ -158,11 +159,11 @@ datagrids:
         sorters:
             columns:
                 createdAt:
-                    data_name:  l.createdAt
-                stockDiff:
-                    data_name:  stockDiff
-                allocatedStockDiff:
-                    data_name:  allocatedStockDiff
+                    data_name:  lr.createdAt
+                inventoryDiff:
+                    data_name:  inventoryDiff
+                allocatedInventoryDiff:
+                    data_name:  allocatedInventoryDiff
             default:
                 createdAt:      DESC
         options:

@@ -29,6 +29,7 @@
             'title': ''
         }) }}
     {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'General Information'|trans,
@@ -39,14 +40,44 @@
         }
     ] %}
     {% set dataBlocks = dataBlocks|merge([{
-        'title' : 'marello.inventory.inventorylevel.entity_plural_label'|trans,
-        'subblocks': [{
-            'title' : null,
-            'data' : [
-                dataGrid.renderGrid('marello-inventory-levels', {'inventoryItemId': entity.id})
-        ]
-        }]
-    }]) %}
+            'title' : 'marello.inventory.inventorylevel.entity_plural_label'|trans,
+            'subblocks': [{
+                'title' : null,
+                'data' : [
+                    dataGrid.renderGrid('marello-inventory-levels', {'inventoryItemId': entity.id})
+            ]
+            }]
+        }])
+    %}
+
+    {#{% set productInventoryLogChart %}#}
+        {#<div class="responsive-block">#}
+            {#{{ oro_widget_render({#}
+                {#'widgetType': 'block',#}
+                {#'url': path('marello_inventory_stocklevel_chart', {id: entity.id}),#}
+                {#'title': ''#}
+            {#}) }}#}
+        {#</div>#}
+    {#{% endset %}#}
+
+    {% set productInventoryWidgetDatagrid %}
+        <div class="responsive-block">
+            {{ oro_widget_render({
+                'widgetType': 'block',
+                'url': path('marello_inventory_widget_datagrid', {'id': entity.id}),
+                'title': ''
+            }) }}
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+            'title': 'marello.inventory.movements.label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [productInventoryWidgetDatagrid] }
+            ]
+        }])
+    %}
 
     {% set id = 'inventoryView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
