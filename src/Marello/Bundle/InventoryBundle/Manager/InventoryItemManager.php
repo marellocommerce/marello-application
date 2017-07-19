@@ -53,6 +53,17 @@ class InventoryItemManager implements InventoryItemManagerInterface
     }
 
     /**
+     * get inventory item by product
+     * @param $product
+     * @return bool
+     */
+    public function getInventoryItem($product)
+    {
+        $repo = $this->doctrineHelper->getEntityRepository(InventoryItem::class);
+        return $repo->findOneBy(['product' => $product->getId()]);
+    }
+
+    /**
      * Get default replenishment for InventoryItem
      * @return null|object
      */

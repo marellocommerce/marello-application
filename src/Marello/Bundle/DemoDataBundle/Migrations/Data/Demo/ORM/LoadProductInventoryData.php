@@ -101,8 +101,12 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
             ->findOneBy(['sku' => $data['sku']]);
 
         if ($product) {
-            $inventoryItem = new InventoryItem($this->defaultWarehouse, $product);
-            $this->manager->persist($inventoryItem);
+            $inventoryItemManager = $this->container->get('marello_inventory.manager.inventory_item_manager');
+            $inventoryItem = $inventoryItemManager->getInventoryItem($product);
+            if (!$inventoryItem) {
+                return;
+            }
+
             $this->handleInventoryUpdate($product, $inventoryItem, $data['inventory_qty'], 0, null);
         }
     }
