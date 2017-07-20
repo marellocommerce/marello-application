@@ -49,6 +49,10 @@
       "type": "vcs",
       "url": "https://github.com/orocrm/commerce-crm-er.git"
     },
+    "commerce-crm-enterprise": {
+      "type": "vcs",
+      "url": "https://github.com/orocrm/commerce-crm-enterprise.git"
+    },
     "composer": {
       "type": "composer",
       "url": "https://packagist.orocrm.com"
@@ -70,6 +74,7 @@
     "oro/crm-pro-ldap-bundle": "2.x-dev",
     "oro/commerce-enterprise": "1.x-dev",
     "oro/commerce-crm": "1.x-dev",
+    "oro/commerce-crm-ee": "1.x-dev",
     "oro/customer-portal": "2.x-dev"
   },
   "require-dev": {
