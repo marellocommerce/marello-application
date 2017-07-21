@@ -561,7 +561,7 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @return float
+     * @return string
      */
     public function getShippingMethod()
     {
@@ -569,7 +569,7 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @param float $shippingMethod
+     * @param string $shippingMethod
      *
      * @return $this
      */

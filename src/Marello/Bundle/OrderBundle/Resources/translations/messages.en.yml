@@ -126,3 +126,7 @@ marello:
             top_revenue_channels:
                 title: Order revenue per sales channel
                 description: Order revenue per sales channel
+
+        sections:
+            general: General
+            shipping_information: Shipping Information

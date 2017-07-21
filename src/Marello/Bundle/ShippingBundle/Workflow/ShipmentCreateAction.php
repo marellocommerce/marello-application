@@ -3,18 +3,18 @@
 namespace Marello\Bundle\ShippingBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Symfony\Component\PropertyAccess\PropertyPathInterface;
-
-use Oro\Component\Action\Exception\InvalidParameterException;
-use Oro\Component\Action\Action\AbstractAction;
-use Oro\Component\Action\Action\ActionInterface;
-use Oro\Component\ConfigExpression\ContextAccessor;
-
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
+use Oro\Component\Action\Action\AbstractAction;
+use Oro\Component\Action\Action\ActionInterface;
+use Oro\Component\Action\Exception\InvalidParameterException;
+use Oro\Component\ConfigExpression\ContextAccessor;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 class ShipmentCreateAction extends AbstractAction
 {
+    const DEFAULT_SHIPPING_SERVICE = 'manual';
+
     /** @var ShippingServiceRegistry */
     protected $registry;
 
@@ -47,10 +47,14 @@ class ShipmentCreateAction extends AbstractAction
     protected function executeAction($context)
     {
         /** @var string $service */
-        $service = $this->contextAccessor->getValue($context, $this->service);
+        $service = strtolower($this->contextAccessor->getValue($context, $this->service));
         /** @var ShippingAwareInterface $entity */
         $entity = $this->contextAccessor->getValue($context, $this->entity);
         $entityClass = $this->doctrine->getEntityManager()->getClassMetadata(get_class($entity))->getName();
+
+        if (!$service || !$this->registry->hasIntegration($service) || !$this->registry->hasDataFactory($service)) {
+            $service = self::DEFAULT_SHIPPING_SERVICE;
+        }
 
         $dataFactory = $this->registry->getDataFactory($service);
         $integration = $this->registry->getIntegration($service);
@@ -81,5 +85,7 @@ class ShipmentCreateAction extends AbstractAction
 
         $this->entity = $options['entity'];
         $this->service = $options['service'];
+
+        return $this;
     }
 }

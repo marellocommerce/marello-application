@@ -44,10 +44,11 @@
             {{ form_errors(form.items) }}
         </div>
     {% endset %}
+    {% set shippingInformation = form_row(form.shippingMethod) %}
 
     {% set dataBlocks = [
         {
-            'title': 'General'|trans,
+            'title': 'marello.order.sections.general'|trans,
             'class': 'active',
             'subblocks': [{
                 'title': '',
@@ -83,6 +84,15 @@
                 'title': '',
                 'data': [
                     shippingAddress
+                ]
+            }]
+        },
+        {
+            'title': 'marello.order.sections.shipping_information'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'data': [
+                    shippingInformation
                 ]
             }]
         },
