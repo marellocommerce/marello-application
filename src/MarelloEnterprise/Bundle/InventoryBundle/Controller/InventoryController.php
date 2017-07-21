@@ -37,6 +37,7 @@ class InventoryController extends BaseController
     {
         return [
             'entity' => $inventoryItem,
+            'product' => $inventoryItem->getProduct()
         ];
     }
 
@@ -64,7 +65,6 @@ class InventoryController extends BaseController
                 $inventoryItem
             );
         }
-
         return [
             'form'   => $handler->getFormView(),
             'entity' => $inventoryItem,
@@ -84,6 +84,7 @@ class InventoryController extends BaseController
     {
         return [
             'item' => $inventoryItem,
+            'product' => $inventoryItem->getProduct()
         ];
     }
 
@@ -91,16 +92,14 @@ class InventoryController extends BaseController
      * @Config\Route("/widget/datagrid/{id}", name="marello_inventory_widget_datagrid", requirements={"id"="\d+"})
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function datagridAction(Product $product)
+    public function datagridAction(InventoryItem $inventoryItem)
     {
-        $item = $product->getInventoryItems()->first();
-
         return [
-            'item' => $item,
+            'item' => $inventoryItem,
         ];
     }
 }
