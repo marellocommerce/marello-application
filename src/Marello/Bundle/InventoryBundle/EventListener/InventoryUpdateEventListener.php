@@ -27,6 +27,6 @@ class InventoryUpdateEventListener
      */
     public function handleUpdateInventoryEvent(InventoryUpdateEvent $event)
     {
-        $this->manager->updateInventoryItems($event->getInventoryUpdateContext());
+        $this->manager->updateInventoryLevels($event->getInventoryUpdateContext());
     }
 }

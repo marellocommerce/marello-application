@@ -178,6 +178,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
     public function addInventoryLevel(InventoryLevel $inventoryLevel)
     {
         if (!$this->inventoryLevels->contains($inventoryLevel)) {
+            $inventoryLevel->setInventoryItem($this);
             $this->inventoryLevels->add($inventoryLevel);
         }
 

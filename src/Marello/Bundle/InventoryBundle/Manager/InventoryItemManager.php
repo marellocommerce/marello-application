@@ -55,7 +55,7 @@ class InventoryItemManager implements InventoryItemManagerInterface
     /**
      * get inventory item by product
      * @param $product
-     * @return bool
+     * @return InventoryItem
      */
     public function getInventoryItem($product)
     {

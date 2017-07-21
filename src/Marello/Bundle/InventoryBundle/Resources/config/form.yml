@@ -60,3 +60,4 @@ services:
         class: Marello\Bundle\InventoryBundle\Form\EventListener\InventoryLevelSubscriber
         arguments:
             - '@marello_inventory.model.inventory_level_calculator'
+            - '@event_dispatcher'

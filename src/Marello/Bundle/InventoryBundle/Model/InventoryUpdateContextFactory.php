@@ -5,6 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\ProductInventoryAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 
@@ -14,7 +15,7 @@ class InventoryUpdateContextFactory
      * @param ProductInventoryAwareInterface||ProductInterface $entity
      * @param InventoryItem $inventoryItem
      * @param $inventoryUpdateQty
-     * @param $allocatedInventoryQty
+     * @param $allocatedInventoryUpdateQty
      * @param $trigger
      * @param $relatedEntity
      * @return InventoryUpdateContext|null
@@ -23,30 +24,20 @@ class InventoryUpdateContextFactory
         $entity,
         $inventoryItem = null,
         $inventoryUpdateQty,
-        $allocatedInventoryQty,
+        $allocatedInventoryUpdateQty,
         $trigger,
         $relatedEntity = null
     ) {
-        $inventoryItemData = [];
-        if ($entity instanceof ProductInventoryAwareInterface) {
-            $inventoryItemData[] = self::getInventoryItemDataFromInterface($entity, $inventoryUpdateQty, $allocatedInventoryQty);
+        if (!$entity instanceof ProductInterface && $entity instanceof ProductInventoryAwareInterface) {
+            $entity = $entity->getProduct();
         }
 
-        if ($entity instanceof ProductInterface) {
-            $inventoryItemData[] = self::getInventoryItemData($entity, $inventoryUpdateQty, $allocatedInventoryQty);
-        }
-
-
-        if (!$inventoryItemData) {
-            return null;
-        }
-
-        $context = new InventoryUpdateContext();
+        $context = self::create();
         $context
-            ->setInventory($inventoryUpdateQty)
-            ->setAllocatedInventory($allocatedInventoryQty)
+            ->setInventory((int)$inventoryUpdateQty)
+            ->setAllocatedInventory((int)$allocatedInventoryUpdateQty)
             ->setChangeTrigger($trigger)
-            ->setItems($inventoryItemData)
+            ->setProduct($entity)
             ->setInventoryItem($inventoryItem)
             ->setRelatedEntity($relatedEntity)
         ;
@@ -56,35 +47,40 @@ class InventoryUpdateContextFactory
     }
 
     /**
-     * @param ProductInventoryAwareInterface $entity
+     * @param InventoryLevel $inventoryLevel
+     * @param null $inventoryItem
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
-     * @return array
+     * @param $trigger
+     * @param null $relatedEntity
+     * @return InventoryUpdateContext
      */
-    protected static function getInventoryItemDataFromInterface(
-        ProductInventoryAwareInterface $entity,
+    public static function createInventoryLevelUpdateContext(
+        InventoryLevel $inventoryLevel,
+        $inventoryItem = null,
         $inventoryUpdateQty,
-        $allocatedInventoryQty
+        $allocatedInventoryQty,
+        $trigger,
+        $relatedEntity = null
     ) {
-        $product = $entity->getProduct();
-        return self::getInventoryItemData($product, $inventoryUpdateQty, $allocatedInventoryQty);
+        $context = self::create();
+        $context
+            ->setInventory((int)$inventoryUpdateQty)
+            ->setAllocatedInventory((int)$allocatedInventoryQty)
+            ->setChangeTrigger($trigger)
+            ->setInventoryLevel($inventoryLevel)
+            ->setInventoryItem($inventoryItem)
+            ->setRelatedEntity($relatedEntity)
+        ;
+
+        return $context;
     }
 
     /**
-     * @param ProductInterface $product
-     * @param $inventoryUpdateQty
-     * @param $allocatedInventoryQty
-     * @return array
+     * @return InventoryUpdateContext
      */
-    protected static function getInventoryItemData(
-        ProductInterface $product,
-        $inventoryUpdateQty,
-        $allocatedInventoryQty
-    ) {
-        return [
-            'item'          => $product,
-            'qty'           => $inventoryUpdateQty,
-            'allocatedQty'  => $allocatedInventoryQty
-        ];
+    private static function create()
+    {
+        return new InventoryUpdateContext();
     }
 }

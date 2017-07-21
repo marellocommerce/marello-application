@@ -20,8 +20,7 @@ class InventoryLevelCalculator
         $inventoryQuantity,
         $operator
     ) {
-        $adjustmentOperator = $this->getAdjustmentOperator($operator);
-        $adjustment = $this->getAdjustment($adjustmentOperator, $inventoryQuantity);
+        $adjustment = $this->calculateAdjustment($operator, $inventoryQuantity);
         return $inventoryLevel->getInventoryQty() + $adjustment;
     }
 
@@ -36,9 +35,20 @@ class InventoryLevelCalculator
         $inventoryAllocatedQuantity,
         $operator
     ) {
-        $adjustmentOperator = $this->getAdjustmentOperator($operator);
-        $adjustment = $this->getAdjustment($adjustmentOperator, $inventoryAllocatedQuantity);
+        $adjustment = $this->calculateAdjustment($operator, $inventoryAllocatedQuantity);
         return $inventoryLevel->getAllocatedInventoryQty() + $adjustment;
+    }
+
+    /**
+     * @param string $operator
+     * @param int $quantity
+     * @return int
+     */
+    public function calculateAdjustment($operator, $quantity)
+    {
+        $adjustmentOperator = $this->getAdjustmentOperator($operator);
+        $adjustment = $this->getAdjustment($adjustmentOperator, $quantity);
+        return $adjustment;
     }
 
     /**

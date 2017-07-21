@@ -2,26 +2,36 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\EventListener;
 
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class InventoryLevelSubscriber implements EventSubscriberInterface
 {
     /** @var InventoryLevelCalculator $levelCalculator */
     protected $levelCalculator;
 
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
+
     /**
      * InventoryLevelSubscriber constructor.
      * @param InventoryLevelCalculator $levelCalculator
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(InventoryLevelCalculator $levelCalculator)
-    {
+    public function __construct(
+        InventoryLevelCalculator $levelCalculator,
+        EventDispatcherInterface $eventDispatcher
+    ){
         $this->levelCalculator = $levelCalculator;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -57,6 +67,20 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
             $this->levelCalculator->calculateInventoryQuantity($inventoryLevel, $quantity, $operator);
         $inventoryLevel->setInventoryQty($totalInventoryQuantity);
         $event->setData($inventoryLevel);
+
+        $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
+            $inventoryLevel,
+            $inventoryLevel->getInventoryItem(),
+            $this->levelCalculator->calculateAdjustment($operator, $quantity),
+            0,
+            'manual',
+            null
+        );
+
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
+        );
     }
 
     /**

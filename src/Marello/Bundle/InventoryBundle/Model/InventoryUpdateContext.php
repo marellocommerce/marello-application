@@ -37,7 +37,7 @@ class InventoryUpdateContext
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated
      * @param $items
      * @return $this
      */
@@ -49,7 +49,7 @@ class InventoryUpdateContext
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated
      * @return mixed|null
      */
     public function getItems()
@@ -76,6 +76,27 @@ class InventoryUpdateContext
     public function getInventoryItem()
     {
         return $this->getValue('inventory_item');
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $item
+     * @return $this
+     */
+    public function setInventoryLevel($inventoryLevel)
+    {
+        $this->setValue('inventory_level', $inventoryLevel);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
+    public function getInventoryLevel()
+    {
+        return $this->getValue('inventory_level');
     }
 
     /**

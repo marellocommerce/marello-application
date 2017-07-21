@@ -40,52 +40,50 @@ class InventoryManager implements InventoryManagerInterface
      */
     public function updateInventoryLevels(InventoryUpdateContext $context)
     {
-        if (!$this->contextValidator->validateItems($context)) {
-            throw new \Exception('Item structure not valid.');
+        if (!$this->contextValidator->validateContext($context)) {
+            throw new \Exception('Context structure not valid.');
         }
 
-        $items = $context->getItems();
-        foreach ($items as $data) {
-
-            /** @var ProductInterface $product */
-            $product = $data['item'];
-            $inventoryItem = $context->getInventoryItem() ? $context->getInventoryItem() : $this->getInventoryItem($product);
-
-            if (!$inventoryItem) {
-                continue;
-            }
-
-            $inventory = null;
-            $allocatedStock = null;
-            if ($context->getInventory()) {
-                $inventory = $context->getInventory();
-            }
-
-            if ($context->getAllocatedInventory()) {
-                $allocatedStock = $context->getAllocatedInventory();
-            }
-
-            $this->addOrUpdateInventoryLevel(
-                $inventoryItem,
-                $context->getChangeTrigger(),
-                $inventory,
-                $context->getInventory(),
-                $allocatedStock,
-                $context->getAllocatedInventory(),
-                $context->getUser(),
-                $context->getRelatedEntity()
-            );
+        $inventory = null;
+        $allocatedStock = null;
+        if ($context->getInventory()) {
+            $inventory = $context->getInventory();
         }
+
+        if ($context->getAllocatedInventory()) {
+            $allocatedStock = $context->getAllocatedInventory();
+        }
+
+        /** @var InventoryLevel $level */
+        $level = $this->getInventoryLevel($context);
+        if (!$level) {
+            $level = new InventoryLevel();
+            $level->setWarehouse($this->getWarehouse());
+            /** @var InventoryItem $item */
+            $item = $this->getInventoryItem($context);
+            $item->addInventoryLevel($level);
+        }
+
+        $this->updateInventoryLevel(
+            $level,
+            $context->getChangeTrigger(),
+            $inventory,
+            $context->getInventory(),
+            $allocatedStock,
+            $context->getAllocatedInventory(),
+            $context->getUser(),
+            $context->getRelatedEntity()
+        );
     }
 
 
     /**
-     * @param InventoryItem     $item                   InventoryItem to be updated
+     * @param InventoryLevel    $level                  InventoryLevel to be updated
      * @param string            $trigger                Action that triggered the change
      * @param int|null          $inventory              New inventory or null if it should remain unchanged
      * @param int|null          $inventoryAlt           Inventory Change qty, qty that represents the actual change
      * @param int|null          $allocatedInventory     New allocated inventory or null if it should remain unchanged
-     * @param int|null          $allocatedInventoryAlt  Alloced Inventory Change qty, qty that represents the
+     * @param int|null          $allocatedInventoryAlt  Allocated Inventory Change qty, qty that represents the
      *                                                  actual change
      * @param User|null         $user                   User who triggered the change, if left null,
      *                                                  it is automatically assigned to current one
@@ -94,8 +92,8 @@ class InventoryManager implements InventoryManagerInterface
      * @throws \Exception
      * @return bool
      */
-    protected function addOrUpdateInventoryLevel(
-        InventoryItem $item,
+    protected function updateInventoryLevel(
+        InventoryLevel $level,
         $trigger,
         $inventory = null,
         $inventoryAlt = null,
@@ -104,16 +102,9 @@ class InventoryManager implements InventoryManagerInterface
         User $user = null,
         $subject = null
     ) {
-        /** @var InventoryLevel $level */
-        $level = $this->getInventoryLevel($item);
-        if (!$level) {
-            $level = new InventoryLevel();
-        }
-
         if (($inventory === null) && ($allocatedInventory === null)) {
             return false;
         }
-
 
         if (($level->getInventoryQty() === $inventory) && ($level->getAllocatedInventoryQty() === $allocatedInventory)) {
             return false;
@@ -141,15 +132,12 @@ class InventoryManager implements InventoryManagerInterface
 
         try {
             $level
-                ->setInventoryItem($item)
                 ->setInventoryQty($inventory)
-                ->setAllocatedInventoryQty($allocatedInventory)
-                ->setWarehouse($this->getWarehouse());
+                ->setAllocatedInventoryQty($allocatedInventory);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
-        $item->addInventoryLevel($level);
         $this->createLogRecord(
             $level,
             $inventoryAlt,
@@ -161,6 +149,14 @@ class InventoryManager implements InventoryManagerInterface
         return true;
     }
 
+    /**
+     * @param InventoryLevel $level
+     * @param $inventoryAlt
+     * @param $allocatedInventoryAlt
+     * @param $trigger
+     * @param $user
+     * @param $subject
+     */
     protected function createLogRecord(
         InventoryLevel $level,
         $inventoryAlt,
@@ -184,23 +180,35 @@ class InventoryManager implements InventoryManagerInterface
     }
 
     /**
-     * @param ProductInterface $product
+     * @param InventoryUpdateContext $context
      * @return null|object
      */
-    private function getInventoryItem(ProductInterface $product)
+    private function getInventoryItem(InventoryUpdateContext $context)
     {
+        if ($inventoryItem = $context->getInventoryItem()) {
+            return $inventoryItem;
+        }
+
+        /** @var ProductInterface $product */
+        $product = $context->getProduct();
         $repo = $this->doctrineHelper->getEntityRepositoryForClass(InventoryItem::class);
         return $repo->findOneBy(['product' => $product]);
     }
 
     /**
-     * @param InventoryItem $inventoryItem
+     * @param InventoryUpdateContext $context
      * @return null|object
      */
-    private function getInventoryLevel(InventoryItem $inventoryItem)
+    private function getInventoryLevel(InventoryUpdateContext $context)
     {
+        if ($context->getInventoryLevel()) {
+            return $context->getInventoryLevel();
+        }
+
+        $inventoryItem = $this->getInventoryItem($context);
         $repo = $this->doctrineHelper->getEntityRepositoryForClass(InventoryLevel::class);
         $level = $repo->findOneBy(['inventoryItem' => $inventoryItem]);
+
         if (!$level && $inventoryItem->hasInventoryLevels()) {
             $level = $inventoryItem->getInventoryLevels()->first();
         }

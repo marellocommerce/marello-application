@@ -5,29 +5,37 @@ namespace Marello\Bundle\InventoryBundle\Model;
 class InventoryUpdateContextValidator
 {
     /**
-     * Validate the data structure of the items to be updated
+     * @deprecated use validateContext(InventoryUpdateContext $context) instead
      * @param InventoryUpdateContext $context
      * @return bool
      */
     public function validateItems(InventoryUpdateContext $context)
     {
-        $items = $context->getItems();
-        foreach ($items as $item) {
-            if (!is_array($item)) {
-                return false;
-            }
+        return $this->validateContext($context);
+    }
 
-            if (!array_key_exists('item', $item)) {
-                return false;
-            }
+    /**
+     * Validate the data structure of the items to be updated
+     * @param InventoryUpdateContext $context
+     * @return bool
+     */
+    public function validateContext(InventoryUpdateContext $context)
+    {
+        $product = $context->getProduct();
+        $inventoryItem = $context->getInventoryItem();
+        $inventoryLevel = $context->getInventoryLevel();
+        if (!$inventoryLevel && !$inventoryItem && !$product) {
+            return false;
+        }
 
-            if (!array_key_exists('qty', $item)) {
-                return false;
-            }
+        $inventory = $context->getInventory();
+        if (!is_int($inventory)) {
+            return false;
+        }
 
-            if (!array_key_exists('allocatedQty', $item)) {
-                return false;
-            }
+        $allocatedInventory = $context->getAllocatedInventory();
+        if (!is_int($allocatedInventory)) {
+            return false;
         }
 
         return true;
