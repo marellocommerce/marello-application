@@ -2,9 +2,6 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Manager;
 
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
