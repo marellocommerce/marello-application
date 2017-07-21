@@ -20,7 +20,7 @@ class InventoryManager implements InventoryManagerInterface
     protected $doctrineHelper;
 
     /** @var InventoryUpdateContextValidator $contextValidator */
-    private $contextValidator;
+    protected $contextValidator;
 
     /**
      * @deprecated use updateInventoryLevels instead
@@ -183,7 +183,7 @@ class InventoryManager implements InventoryManagerInterface
      * @param InventoryUpdateContext $context
      * @return null|object
      */
-    private function getInventoryItem(InventoryUpdateContext $context)
+    protected function getInventoryItem(InventoryUpdateContext $context)
     {
         if ($inventoryItem = $context->getInventoryItem()) {
             return $inventoryItem;
@@ -199,7 +199,7 @@ class InventoryManager implements InventoryManagerInterface
      * @param InventoryUpdateContext $context
      * @return null|object
      */
-    private function getInventoryLevel(InventoryUpdateContext $context)
+    protected function getInventoryLevel(InventoryUpdateContext $context)
     {
         if ($context->getInventoryLevel()) {
             return $context->getInventoryLevel();
