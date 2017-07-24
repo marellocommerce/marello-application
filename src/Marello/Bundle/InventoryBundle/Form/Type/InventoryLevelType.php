@@ -57,6 +57,9 @@ class InventoryLevelType extends AbstractType
                 'constraints' => new GreaterThanOrEqual(0),
                 'data'        => 0,
                 'mapped' => false
+            ])
+            ->add('inventoryQty', NumberType::class, [
+                'disabled' => true
             ]);
 
         $builder->addEventSubscriber($this->subscriber);
