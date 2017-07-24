@@ -31,6 +31,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
         ],
         'additional1' => [
             'name'          => 'Warehouse 13',
+            'code'          => 'warehouse_13',
             'default'       => false,
             'address'       => [
                 'country' => 'US',
@@ -45,6 +46,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
         ],
         'additional2' => [
             'name'          => 'Flagship Store',
+            'code'          => 'flagship_store',
             'default'       => false,
             'address'       => [
                 'country' => 'US',
@@ -115,6 +117,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
         } else {
             $warehouse = new Warehouse($data['name'], false);
             $warehouse->setOwner($this->organization);
+            $warehouse->setCode($data['code']);
 
             $address = $this->createAddress($data['address']);
             $warehouse->setAddress($address);
@@ -124,7 +127,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
 
         $type = $this->getWarehouseType($data['type']);
         $warehouse->setWarehouseType($type);
-        
+
         return $warehouse;
     }
 
