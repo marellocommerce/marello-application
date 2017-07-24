@@ -5,7 +5,6 @@ namespace Marello\Bundle\InventoryBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 class WarehouseType extends AbstractType
 {
@@ -28,7 +27,12 @@ class WarehouseType extends AbstractType
             ->add(
                 'label',
                 'text',
-                ['constraints' => new NotNull()]
+                ['required' => true]
+            )
+            ->add(
+                'code',
+                'text',
+                ['required' => true]
             )
             ->add(
                 'address',

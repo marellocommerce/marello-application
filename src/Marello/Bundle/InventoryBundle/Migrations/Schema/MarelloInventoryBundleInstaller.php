@@ -17,7 +17,7 @@ class MarelloInventoryBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_2_1';
+        return 'v1_2_2';
     }
 
     /**
@@ -109,9 +109,11 @@ class MarelloInventoryBundleInstaller implements Installation
         $table->addColumn('owner_id', 'integer', []);
         $table->addColumn('address_id', 'integer', ['notnull' => false]);
         $table->addColumn('label', 'string', ['length' => 255]);
+        $table->addColumn('code', 'string', ['length' => 255]);
         $table->addColumn('is_default', 'boolean', []);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['address_id'], 'uniq_15597d1f5b7af75');
+        $table->addUniqueIndex(['code'], 'UNIQ_15597D177153098');
         $table->addIndex(['owner_id'], 'idx_15597d17e3c61f9', []);
     }
 
@@ -127,7 +129,7 @@ class MarelloInventoryBundleInstaller implements Installation
             $table->addColumn('name', 'string', ['length' => 32]);
             $table->addColumn('label', 'string', ['length' => 255]);
             $table->setPrimaryKey(['name']);
-            $table->addUniqueIndex(['label'], '');
+            $table->addUniqueIndex(['label'], 'UNIQ_629E2BBEA750E8');
         }
     }
 

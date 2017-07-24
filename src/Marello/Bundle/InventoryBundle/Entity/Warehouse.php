@@ -12,7 +12,11 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository")
- * @ORM\Table(name="marello_inventory_warehouse")
+ * @ORM\Table(name="marello_inventory_warehouse",
+ *       uniqueConstraints={
+ *          @ORM\UniqueConstraint(columns={"code"})
+ *      }
+ * )
  * @Oro\Config(
  *      defaultValues={
  *          "security"={
@@ -38,11 +42,18 @@ class Warehouse extends ExtendWarehouse
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", name="label", nullable=false)
      *
      * @var string
      */
     protected $label;
+
+    /**
+     * @ORM\Column(type="string", name="code", nullable=false)
+     *
+     * @var string
+     */
+    protected $code;
 
     /**
      * @ORM\Column(type="boolean", nullable=false, name="is_default")
@@ -138,6 +149,25 @@ class Warehouse extends ExtendWarehouse
     public function setLabel($label)
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param $code
+     * @return $this
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
 
         return $this;
     }

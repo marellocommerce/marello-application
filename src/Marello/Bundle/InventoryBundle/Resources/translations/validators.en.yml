@@ -1,4 +1,6 @@
 marello:
     inventory:
         validation:
-            warehouse_inventory:    Resulting stock has to be greater or equal to zero.
+            messages:
+                error:
+                    unique_warehouse_code:  Warehouse code should be unique
