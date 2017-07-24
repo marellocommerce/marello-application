@@ -44,16 +44,6 @@ class InventoryManager implements InventoryManagerInterface
             throw new \Exception('Context structure not valid.');
         }
 
-        $inventory = null;
-        $allocatedStock = null;
-        if ($context->getInventory()) {
-            $inventory = $context->getInventory();
-        }
-
-        if ($context->getAllocatedInventory()) {
-            $allocatedStock = $context->getAllocatedInventory();
-        }
-
         /** @var InventoryLevel $level */
         $level = $this->getInventoryLevel($context);
         if (!$level) {
@@ -64,12 +54,22 @@ class InventoryManager implements InventoryManagerInterface
             $item->addInventoryLevel($level);
         }
 
+        $inventory = null;
+        $allocatedInventory = null;
+        if ($context->getInventory()) {
+            $inventory = ($level->getInventoryQty() + $context->getInventory());
+        }
+
+        if ($context->getAllocatedInventory()) {
+            $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
+        }
+
         $this->updateInventoryLevel(
             $level,
             $context->getChangeTrigger(),
             $inventory,
             $context->getInventory(),
-            $allocatedStock,
+            $allocatedInventory,
             $context->getAllocatedInventory(),
             $context->getUser(),
             $context->getRelatedEntity()
@@ -112,8 +112,6 @@ class InventoryManager implements InventoryManagerInterface
 
         if ($inventory === null) {
             $inventory = $level->getInventoryQty();
-        } else {
-            $inventory = ($inventory + $level->getInventoryQty());
         }
 
         if ($inventoryAlt === null) {
@@ -122,8 +120,6 @@ class InventoryManager implements InventoryManagerInterface
 
         if ($allocatedInventory === null) {
             $allocatedInventory = $level->getAllocatedInventoryQty();
-        } else {
-            $allocatedInventory = ($allocatedInventory + $level->getAllocatedInventoryQty());
         }
 
         if ($allocatedInventoryAlt === null) {

@@ -63,18 +63,12 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
 
         $operator = $this->getAdjustmentOperator($form);
         $quantity = $this->getAdjustmentQuantity($form);
-        $totalInventoryQuantity =
-            $this->levelCalculator->calculateInventoryQuantity($inventoryLevel, $quantity, $operator);
-        $inventoryLevel->setInventoryQty($totalInventoryQuantity);
-        $event->setData($inventoryLevel);
-
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryLevel->getInventoryItem(),
             $this->levelCalculator->calculateAdjustment($operator, $quantity),
             0,
-            'manual',
-            null
+            'manual'
         );
 
         $this->eventDispatcher->dispatch(
