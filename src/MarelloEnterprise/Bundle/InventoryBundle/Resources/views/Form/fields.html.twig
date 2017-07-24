@@ -5,14 +5,20 @@
         </div>
         {{ form_errors(form.warehouse) }}
     </td>
+    <td class="inventory-line-item-quantity ">
+        <div class="fields-row">
+            {{ form.inventoryQty.vars.value|default(0) }}
+        </div>
+    </td>
     <td class="inventory-line-item-adjustment {{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
             {{ form_widget(form.adjustmentOperator) }}
             {{ form_widget(form.quantity) }}
-            {{ form_errors(form.quantity) }}
         </div>
+        {{ form_errors(form.quantity) }}
     </td>
-    {#<td class="inventorylevel-line-item-purchaselevelqty">#}
+
+        {#<td class="inventorylevel-line-item-purchaselevelqty">#}
         {#<div class="fields-row">#}
             {#{{ form_widget(form.purchaseInventoryQty) }}#}
         {#</div>#}
@@ -46,7 +52,7 @@
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
-        class="marello-line-item"
+        class="marello-line-item display-values"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}">
         {{ form_widget(form) }}
@@ -75,6 +81,7 @@
                         <tr>
                             <th class="inventorylevel-line-item-warehouse"><span>{{ 'marello.inventory.inventoryitem.warehouse.label'|trans }}</span></th>
                             <th class="inventorylevel-line-item-inventory-qty"><span>{{ 'marello.inventory.inventorylevel.inventory.label'|trans }}</span></th>
+                            <th class="inventorylevel-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
                             {#<th class="inventorylevel-line-item-purchase-inventory-qty"><span>{{ 'marello.product.purchase_stock_level.label'|trans }}</span></th>#}
                             {#<th class="inventorylevel-line-item-desired-inventory-qty"><span>{{ 'marello.product.desired_stock_level.label'|trans }}</span></th>#}
                             {% if form.vars.allow_delete %}

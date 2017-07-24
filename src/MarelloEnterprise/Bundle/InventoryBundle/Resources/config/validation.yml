@@ -6,7 +6,7 @@ Marello\Bundle\InventoryBundle\Entity\InventoryLevel:
         - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
             fields: [warehouse, inventoryItem]
             errorPath: warehouse
-            message: 'marello.inventory.validation.messages.error.unique_warehouse_inventory_level'
+            message: 'marelloenterprise.inventory.validation.messages.error.unique_warehouse_inventory_level'
     properties:
         warehouse:
             - NotBlank: ~
