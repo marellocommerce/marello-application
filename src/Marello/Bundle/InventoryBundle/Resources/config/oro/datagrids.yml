@@ -139,10 +139,7 @@ datagrids:
                 type:           twig
                 frontend_type:  html
                 template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
-            warehouseName:
-                label:          marello.inventory.warehouse.label.label
-                frontend_type:  string
-                data_name:      warehouseName
+
             changeTrigger:
                 data_name:      changeTrigger
                 label:          marello.inventory.inventorylevel.change_trigger.label
