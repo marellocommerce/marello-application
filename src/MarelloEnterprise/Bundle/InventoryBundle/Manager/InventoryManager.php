@@ -22,16 +22,6 @@ class InventoryManager extends BaseInventoryManager
             throw new \Exception('Context structure not valid.');
         }
 
-        $inventory = null;
-        $allocatedStock = null;
-        if ($context->getInventory()) {
-            $inventory = $context->getInventory();
-        }
-
-        if ($context->getAllocatedInventory()) {
-            $allocatedStock = $context->getAllocatedInventory();
-        }
-
         /** @var InventoryLevel $level */
         $level = $this->getInventoryLevel($context);
         if (!$level) {
@@ -42,12 +32,22 @@ class InventoryManager extends BaseInventoryManager
             $item->addInventoryLevel($level);
         }
 
+        $inventory = null;
+        $allocatedInventory = null;
+        if ($context->getInventory()) {
+            $inventory = ($level->getInventoryQty() + $context->getInventory());
+        }
+
+        if ($context->getAllocatedInventory()) {
+            $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
+        }
+
         $this->updateInventoryLevel(
             $level,
             $context->getChangeTrigger(),
             $inventory,
             $context->getInventory(),
-            $allocatedStock,
+            $allocatedInventory,
             $context->getAllocatedInventory(),
             $context->getUser(),
             $context->getRelatedEntity()

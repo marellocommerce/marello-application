@@ -31,18 +31,12 @@ class InventoryLevelSubscriber extends BaseInventoryLevelSubscriber
 
         $operator = $this->getAdjustmentOperator($form);
         $quantity = $this->getAdjustmentQuantity($form);
-        $totalInventoryQuantity =
-            $this->levelCalculator->calculateInventoryQuantity($inventoryLevel, $quantity, $operator);
-        $inventoryLevel->setInventoryQty($totalInventoryQuantity);
-
-
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryLevel->getInventoryItem(),
             $this->levelCalculator->calculateAdjustment($operator, $quantity),
             0,
-            'manual',
-            null
+            'manual'
         );
 
         if (!$inventoryLevel->getId()) {
