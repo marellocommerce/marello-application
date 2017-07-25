@@ -11,7 +11,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *
  * @ORM\Entity(repositoryClass="Marello\Bundle\TaxBundle\Entity\Repository\TaxRuleRepository")
  * @ORM\Table(name="marello_tax_tax_rule")
- * @Oro\Config()
+ * @Oro\Config(
+ *      routeName="marello_tax_taxrule_index",
+ *      routeView="marello_tax_taxrule_view",
+ *      routeUpdate="marello_tax_taxrule_update",
+ * )
  * @ORM\HasLifecycleCallbacks()
  */
 class TaxRule
@@ -49,6 +53,14 @@ class TaxRule
      * @ORM\JoinColumn(name="tax_rate_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $taxRate;
+
+    /**
+     * @var TaxJurisdiction
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxJurisdiction")
+     * @ORM\JoinColumn(name="tax_jurisdiction_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $taxJurisdiction;
 
     /**
      * @return string
@@ -123,7 +135,7 @@ class TaxRule
      *
      * @return TaxRule
      */
-    public function setTaxRate(\Marello\Bundle\TaxBundle\Entity\TaxRate $taxRate)
+    public function setTaxRate(TaxRate $taxRate)
     {
         $this->taxRate = $taxRate;
 
@@ -138,5 +150,25 @@ class TaxRule
     public function getTaxRate()
     {
         return $this->taxRate;
+    }
+
+    /**
+     * @param TaxJurisdiction $taxJurisdiction
+     *
+     * @return $this
+     */
+    public function setTaxJurisdiction(TaxJurisdiction $taxJurisdiction = null)
+    {
+        $this->taxJurisdiction = $taxJurisdiction;
+
+        return $this;
+    }
+
+    /**
+     * @return TaxJurisdiction
+     */
+    public function getTaxJurisdiction()
+    {
+        return $this->taxJurisdiction;
     }
 }
