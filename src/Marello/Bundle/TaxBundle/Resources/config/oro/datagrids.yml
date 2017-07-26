@@ -121,7 +121,9 @@ datagrids:
                 frontend_type:    string
             rate:
                 label:            marello.tax.taxrule.tax_rate.label
-                frontend_type:    string
+                type:             twig
+                frontend_type:    html
+                template:         MarelloTaxBundle:TaxRate/DataGrid:rate.html.twig
             jurisdiction:
                 label:            marello.tax.taxrule.tax_jurisdiction.label
                 frontend_type:    string
