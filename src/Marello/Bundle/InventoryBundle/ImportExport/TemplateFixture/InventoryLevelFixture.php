@@ -9,14 +9,14 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
-class InventoryItemFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
+class InventoryLevelFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
 {
     /**
      * {@inheritdoc}
      */
     public function getEntityClass()
     {
-        return InventoryItem::class;
+        return InventoryLevel::class;
     }
 
     /**
@@ -24,7 +24,7 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
      */
     public function getData()
     {
-        return $this->getEntityData('MARELLO_MUG_OWL');
+        return $this->getEntityData('sku_001');
     }
 
     /**
@@ -36,19 +36,15 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
             ->getEntityRepository('Marello\Bundle\InventoryBundle\Entity\Warehouse');
 
         $product = $this->createProduct();
-        $inventoryItem = new InventoryItem($warehouseRepo->getEntity('default'), $product);
-        $inventoryLevel = new InventoryLevel(
-            $inventoryItem,
-            25,
-            0,
-            25,
-            0,
-            'import'
-        );
+        $warehouse = $warehouseRepo->getEntity('default');
+        $inventoryItem = new InventoryItem($warehouse, $product);
 
-        $inventoryItem->changeCurrentLevel($inventoryLevel);
+        $inventoryLevel = new InventoryLevel();
+        $inventoryLevel->setInventoryItem($inventoryItem);
+        $inventoryLevel->setWarehouse($warehouse);
+        $inventoryLevel->setInventoryQty(5);
 
-        return $inventoryItem;
+        return $inventoryLevel;
     }
 
     /**
@@ -58,7 +54,7 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
     public function fillEntityData($key, $entity)
     {
         switch ($key) {
-            case 'MARELLO_MUG_OWL':
+            case 'sku_001':
                 return;
         }
 
@@ -73,8 +69,8 @@ class InventoryItemFixture extends AbstractTemplateRepository implements Templat
     public function createProduct()
     {
         $entity = new Product();
-        $entity->setName('Marello Mug');
-        $entity->setSku('MARELLO_MUG_OWL');
+        $entity->setName('SKU 1');
+        $entity->setSku('sku_001');
         $entity->setDesiredStockLevel(0);
         $entity->setPurchaseStockLevel(0);
 

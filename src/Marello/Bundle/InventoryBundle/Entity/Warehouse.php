@@ -14,7 +14,7 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository")
  * @ORM\Table(name="marello_inventory_warehouse",
  *       uniqueConstraints={
- *          @ORM\UniqueConstraint(columns={"code"})
+ *          @ORM\UniqueConstraint(columns={"warehouse_id"})
  *      }
  * )
  * @Oro\Config(

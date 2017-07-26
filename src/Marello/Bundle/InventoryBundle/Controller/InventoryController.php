@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,7 +21,8 @@ class InventoryController extends Controller
     public function indexAction()
     {
         return [
-            'entity_class' => 'Marello\Bundle\InventoryBundle\Entity\InventoryItem',
+            'entity_class' => InventoryItem::class,
+//            'invlev_class' => InventoryLevel::class
         ];
     }
 

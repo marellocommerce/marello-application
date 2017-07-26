@@ -49,7 +49,7 @@ class InventoryLevel
      *              "label"="marello.inventory.inventoryitem.entity_label"
      *          },
      *          "importexport"={
-     *              "excluded"=true
+     *              "full"=true
      *          }
      *      }
      * )
@@ -79,7 +79,7 @@ class InventoryLevel
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
-     *              "header"="Level"
+     *              "header"="Inventory Qty"
      *          }
      *      }
      * )

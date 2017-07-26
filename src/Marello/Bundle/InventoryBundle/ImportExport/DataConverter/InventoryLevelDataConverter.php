@@ -4,7 +4,7 @@ namespace Marello\Bundle\InventoryBundle\ImportExport\DataConverter;
 
 use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\AbstractTreeDataConverter;
 
-class InventoryItemDataConverter extends AbstractTreeDataConverter
+class InventoryLevelDataConverter extends AbstractTreeDataConverter
 {
     /**
      * Get list of rules that should be user to convert,
@@ -17,17 +17,14 @@ class InventoryItemDataConverter extends AbstractTreeDataConverter
      *     )
      * )
      *
-     *              "header"="Level"
      * @return array
      */
     protected function getHeaderConversionRules()
     {
         return [
-            'SKU'                  => 'product:sku',
-            'Desired Stock Level'  => 'product:desiredStockLevel',
-            'Purchase Stock Level' => 'product:purchaseStockLevel',
-            'Stock Level'          => 'currentLevel:inventory',
-            'Warehouse'            => 'warehouse:label'
+            'SKU'                  => 'inventoryItem:product:sku',
+            'Stock Level'          => 'inventory',
+            'Warehouse'            => 'warehouse:code'
         ];
     }
 
@@ -39,11 +36,12 @@ class InventoryItemDataConverter extends AbstractTreeDataConverter
     protected function getBackendHeader()
     {
         return [
-            'product:sku',
-            'product:desiredStockLevel',
-            'product:purchaseStockLevel',
-            'currentLevel:inventory',
-            'warehouse:label'
+            'inventoryItem:product:sku',
+            'inventory',
+            'warehouse:label',
+            'warehouse:code',
+            'inventoryItem:product:desiredStockLevel',
+            'inventoryItem:product:purchaseStockLevel'
         ];
     }
 }
