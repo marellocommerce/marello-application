@@ -32,13 +32,6 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         array $searchContext = [],
         $entityIsRelation = false
     ) {
-
-        file_put_contents(
-            '/var/www/app/logs/prod.log',
-            $entity->getInventoryQty() . "\r\n",
-            FILE_APPEND
-        );
-
         $inventoryLevel = $this->findInventoryLevel($entity);
 
         if (!$inventoryLevel) {
@@ -99,8 +92,6 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
      */
     protected function updateContextCounters($entity)
     {
-
-        die(__METHOD__);
         $identifier = $this->databaseHelper->getIdentifier($entity);
         if ($identifier) {
             $this->context->incrementUpdateCount();
