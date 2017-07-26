@@ -4,9 +4,9 @@ namespace Marello\Bundle\TaxBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class TaxCodeSelectType extends AbstractType
+class TaxRateSelectType extends AbstractType
 {
-    const NAME = 'marello_tax_taxcode_select';
+    const NAME = 'marello_tax_rate_select';
 
     /**
      * {@inheritdoc}
@@ -15,11 +15,9 @@ class TaxCodeSelectType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'autocomplete_alias' => 'taxcodes',
+                'autocomplete_alias' => 'taxrates',
                 'configs'            => [
-                    'placeholder' => 'marello.tax.form.select_taxcode',
-                    'result_template_twig' => 'MarelloTaxBundle:TaxCode:Autocomplete/result.html.twig',
-                    'selection_template_twig' => 'MarelloTaxBundle:TaxCode:Autocomplete/selection.html.twig',
+                    'placeholder' => 'marello.tax.form.select_taxrate',
                 ],
             ]
         );
@@ -32,6 +30,7 @@ class TaxCodeSelectType extends AbstractType
     {
         return 'oro_jqueryselect2_hidden';
     }
+    
     /**
      * {@inheritdoc}
      */

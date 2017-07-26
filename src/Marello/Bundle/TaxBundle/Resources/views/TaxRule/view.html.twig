@@ -14,27 +14,6 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
-{% block navButtons %}
-    {% if resource_granted('DELETE', entity) %}
-        {{ UI.buttonSeparator() }}
-        {{ UI.deleteButton({
-            'dataUrl': path('marello_tax_api_delete_taxrule', {'id': entity.id}),
-            'dataRedirect': path('marello_tax_taxrule_index'),
-            'aCss': 'no-hash remove-button',
-            'id': 'btn-remove-channel',
-            'dataId': entity.id,
-            'entity_label': 'marello.tax.taxrule.entity_label'|trans,
-        }) }}
-    {% endif %}
-    {% if resource_granted('EDIT', entity) %}
-        {{ UI.buttonSeparator() }}
-        {{ UI.editButton({
-            'path': path('marello_tax_taxrule_update', {'id': entity.id}),
-            'entity_label': 'marello.tax.taxrule.entity_label'|trans
-        }) }}
-    {% endif %}
-{% endblock %}
-
 {% block content_data %}
     {% set generalSubblocks = [] %}
     {% set generalInformation %}
@@ -47,6 +26,7 @@
                         </div>
                         {{ UI.renderProperty('marello.tax.taxrule.tax_code.label'|trans, entity.taxCode) }}
                         {{ UI.renderProperty('marello.tax.taxrule.tax_rate.label'|trans, entity.taxRate) }}
+                        {{ UI.renderProperty('marello.tax.taxrule.tax_jurisdiction.label'|trans, entity.taxJurisdiction) }}
                         {{ UI.renderProperty('marello.tax.taxrule.includes_vat.label'|trans, entity.includesVat ? 'marello.tax.taxrule.includes_vat.value.yes'|trans : 'marello.tax.taxrule.includes_vat.value.no'|trans) }}
                         {% set taxRateViewGranted = resource_granted('marello_tax_taxrule_update') %}
                         {%- if taxRateViewGranted -%}
