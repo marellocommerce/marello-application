@@ -2,10 +2,12 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\Strategy;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Doctrine\Common\Util\ClassUtils;
+
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
@@ -40,7 +42,7 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             return null;
         }
 
-        $operator = $this->getAdjustmentOperator($inventoryLevel->getInventoryQty());
+        $operator = $this->getAdjustmentOperator($entity->getInventoryQty());
         $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
             $inventoryLevel,
             $inventoryLevel->getInventoryItem(),
@@ -54,7 +56,9 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             new InventoryUpdateEvent($context)
         );
 
-        return $inventoryLevel;
+        // deliberately return a different entity than the initial imported entity during errors with multiple
+        $product = $this->databaseHelper->findOneBy(Product::class, ['sku' => $entity->getInventoryItem()->getProduct()->getSku()]);
+        return $this->databaseHelper->findOneBy(InventoryItem::class, ['product' => $product->getId()]);
     }
 
     /**
@@ -79,14 +83,17 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     protected function findInventoryLevel($entity)
     {
         $product = $this->databaseHelper->findOneBy(Product::class, ['sku' => $entity->getInventoryItem()->getProduct()->getSku()]);
-        $inventoryItem = $this->databaseHelper->findOneBy(InventoryItem::class, ['product' => $product]);
+        $inventoryItem = $this->databaseHelper->findOneBy(InventoryItem::class, ['product' => $product->getId()]);
+
         if (!$inventoryItem) {
             return null;
         }
 
         $level = $this->databaseHelper->findOneBy(InventoryLevel::class, [
-            'inventoryItem' => $inventoryItem
+            'inventoryItem' => $inventoryItem->getId(),
+//            'warehouse'     => $entity->getWarehouse()->getId()
         ]);
+
         return $level;
     }
 

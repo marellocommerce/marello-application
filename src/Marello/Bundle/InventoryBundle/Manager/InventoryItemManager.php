@@ -48,14 +48,13 @@ class InventoryItemManager implements InventoryItemManagerInterface
      */
     public function hasInventoryItem($product)
     {
-        $repo = $this->doctrineHelper->getEntityRepository(InventoryItem::class);
-        return (bool) $repo->findOneBy(['product' => $product->getId()]);
+        return (bool) $this->getInventoryItem($product);
     }
 
     /**
      * get inventory item by product
      * @param $product
-     * @return InventoryItem
+     * @return null|object
      */
     public function getInventoryItem($product)
     {
@@ -86,9 +85,8 @@ class InventoryItemManager implements InventoryItemManagerInterface
         }
 
         if ($this->hasInventoryItem($product)) {
-            $repo = $this->doctrineHelper->getEntityRepository(InventoryItem::class);
             /** @var InventoryItem $item */
-            $item = $repo->findOneBy(['product' => $product->getId()]);
+            $item = $this->getInventoryItem($product);
             return $item;
         }
 
