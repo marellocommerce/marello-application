@@ -10,7 +10,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *
  * @ORM\Entity(repositoryClass="Marello\Bundle\TaxBundle\Entity\Repository\TaxRateRepository")
  * @ORM\Table(name="marello_tax_tax_rate")
- * @Oro\Config()
+ * @Oro\Config(
+ *      routeName="marello_tax_taxrate_index",
+ *      routeView="marello_tax_taxrate_view",
+ *      routeUpdate="marello_tax_taxrate_update",
+ * )
  */
 class TaxRate
 {
@@ -33,7 +37,7 @@ class TaxRate
     /**
      * @var float
      *
-     * @ORM\Column(name="rate", type="float", nullable=false)
+     * @ORM\Column(name="rate", type="percent", nullable=false)
      */
     protected $rate;
 
