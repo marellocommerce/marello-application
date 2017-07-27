@@ -21,8 +21,8 @@ define(function(require) {
          * @property {Object}
          */
         options: {
-            prices: {},
-            pricesRoute: 'marello_pricing_price_by_channel',
+            data: {},
+            route: 'marello_order_item_data'
         },
 
         /**
@@ -60,15 +60,16 @@ define(function(require) {
             OrderItemsView.__super__.handleLayoutInit.apply(this, arguments);
             this.$salesChannel = this.$form.find(':input[data-ftid="' + this.$form.attr('name') + '_salesChannel"]');
 
-            mediator.on('order:get:line-items-prices', this.getLineItemsPrices, this);
-            mediator.on('order:load:line-items-prices', this.loadLineItemsPrices, this);
+            mediator.on('order:get:line-items-data', this.getLineItemsData, this);
+            mediator.on('order:form-changes:load', this.loadLineItemsData, this);
             mediator.on('order:update:line-items', this.updateLineItems, this);
 
             this.$salesChannel.change(_.bind(function() {
-                this.loadLineItemsPrices(this.getItems(), function(response) {
-                    mediator.trigger('order:refresh:line-items-prices', response);
-                });
                 this.setChannelHistory(this._getSalesChannel());
+                if (this.getItems().length === 0 || this._getSalesChannel().length ===0 ) {
+                    return;
+                }
+                mediator.trigger('order:form-changes:trigger', {updateFields: ['items']});
             }, this));
 
             this.initChannelHistory();
@@ -146,34 +147,18 @@ define(function(require) {
         /**
          * @param {Function} callback
          */
-        getLineItemsPrices: function(callback) {
-            callback(this.options.prices);
+        getLineItemsData: function(callback) {
+            callback(this.options.data);
         },
 
         /**
-         * @param {Array} items
-         * @param {Function} callback
+         * @param {Array} response
          */
-        loadLineItemsPrices: function(items, callback) {
-            var params = {
-                product_ids: items
-            };
-
-            var salesChannel = this._getSalesChannel();
-            if (salesChannel.length !== 0) {
-                params = _.extend(params, {salesChannel: salesChannel});
+        loadLineItemsData: function(response) {
+            if (response === undefined || response['items'] === undefined || response['items'].length == 0) {
+                return;
             }
-
-            $.ajax({
-                url: routing.generate(this.options.pricesRoute, params),
-                type: 'GET',
-                success: function(response) {
-                    callback(response);
-                },
-                error: function(response) {
-                    callback();
-                }
-            });
+            mediator.trigger('order:refresh:line-items', response['items']);
         },
 
         /**
@@ -215,8 +200,8 @@ define(function(require) {
                 return;
             }
 
-            mediator.off('order:get:line-items-prices', this.getLineItemsPrices, this);
-            mediator.off('order:load:line-items-prices', this.loadLineItemsPrices, this);
+            mediator.off('order:get:line-items-data', this.getLineItemsData, this);
+            mediator.off('order:form-changes:load', this.loadLineItemsData, this);
             mediator.off('order:update:line-items', this.updateLineItems, this);
 
             OrderItemsView.__super__.dispose.call(this);

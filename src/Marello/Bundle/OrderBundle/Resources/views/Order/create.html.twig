@@ -28,6 +28,15 @@
     {% endif %}
 {% endblock pageHeader %}
 
+{% set pageComponent = {
+    module: 'marellolayout/js/app/components/form-changes-component',
+    options: {
+        route: 'marello_order_form_changes',
+        prefix: 'order',
+        routeParams: {id: entity.id|default(0)}
+    }
+} %}
+
 {% block content_data %}
     {% set id = 'order-create' %}
 
@@ -38,7 +47,7 @@
              data-page-component-module="oroui/js/app/components/view-component"
              data-page-component-options="{{ {
                  view: 'marelloorder/js/app/views/order-items-view',
-                 prices: prices|default({})
+                 data: data|default({})
              }|json_encode }}">
             {{ form_widget(form.items) }}
             {{ form_errors(form.items) }}

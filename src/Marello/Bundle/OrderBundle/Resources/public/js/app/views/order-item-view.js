@@ -21,12 +21,12 @@ define(function(require) {
         /**
          * @property {Object}
          */
-        priceIdentifier: null,
+        itemIdentifier: null,
 
         /**
          * @property {Object}
          */
-        price: {},
+        data: {},
 
         /**
          * @property {Object}
@@ -46,76 +46,81 @@ define(function(require) {
          */
         handleLayoutInit: function() {
             OrderItemView.__super__.handleLayoutInit.apply(this, arguments);
-            this.initPrice();
+            this.initOrderItem();
         },
 
         /**
-         * initialize price triggers and field events
+         * initialize item triggers and field events
          */
-        initPrice: function() {
-            this.addFieldEvents('product', this.updatePrice);
+        initOrderItem: function() {
+            this.addFieldEvents('product', this.updateOrderItemData);
             this.addFieldEvents('quantity', this.updateRowTotals);
-            mediator.trigger('order:get:line-items-prices', _.bind(this.setPrice, this));
-            mediator.on('order:refresh:line-items-prices', this.setPrice, this);
+            mediator.trigger('order:get:line-items-data', _.bind(this.setOrderItemData, this));
+            mediator.on('order:refresh:line-items', this.setOrderItemData, this);
         },
 
         /**
          * Trigger subtotals update
          */
-        updatePrice: function() {
-            if (this.priceIdentifier &&
-                this.priceIdentifier === this._getPriceIdentifier()
+        updateOrderItemData: function() {
+            if (this.itemIdentifier &&
+                this.itemIdentifier === this._getItemIdentifier()
             ) {
-                this.setPrice();
+                this.setOrderItemData();
                 return;
             }
             var productId = this._getProductId();
-            var quantity = this.fieldsByName.quantity.val();
 
             if (productId.length === 0) {
-                this.setPrice({});
+                this.setOrderItemData({});
             } else {
-                mediator.trigger(
-                    'order:load:line-items-prices',
-                    [{'product': productId, 'qty': quantity}],
-                    _.bind(this.setPrice, this)
-                );
+                mediator.trigger('order:form-changes:trigger', {updateFields: ['items']});
             }
         },
 
-        /**
-         * @param {Object} prices
-         */
-        setPrice: function(prices) {
-            if (prices === undefined || typeof(prices) == 'undefined' || prices.length == 0) {
+        setOrderItemData: function(data) {
+            if (data === undefined || typeof(data) == 'undefined' || data.length == 0) {
                 return;
             }
-            var identifier = this._getPriceIdentifier();
-            if (identifier) {
-                if(prices[identifier].message !== undefined) {
-                    this.price = '';
+
+            var identifier = this._getItemIdentifier();
+            if (identifier && data[identifier] !== undefined) {
+                if(data[identifier].message !== undefined) {
+                    this.data = {};
                     this.updateRowTotals();
-                    this.options.salable = {value: false, message: prices[identifier].message};
+                    this.options.salable = {value: false, message: data[identifier].message};
                 } else {
-                    this.price = prices[identifier] || {};
+                    this.data = data[identifier] || {};
                     this.options.salable = {value: true, message: ''};
                 }
             } else {
-                this.price = {};
+                this.data = {};
             }
             mediator.trigger('order:update:line-items', {'elm': this.$el, 'salable': this.options.salable},this);
-
-            this.priceIdentifier = identifier;
 
             var $priceValue = parseFloat(this.getPriceValue()).toFixed(2);
             if($priceValue === "NaN" || $priceValue === null) {
                 $priceValue = '';
             }
 
-            this.fieldsByName.price
-                .val($priceValue);
+            this.fieldsByName.price.val($priceValue);
+            this.fieldsByName.taxCode.val(this.getTaxCode());
 
             this.updateRowTotals();
+        },
+
+        /**
+         * @returns {String|Null}
+         */
+        getPriceValue: function() {
+            return !_.isEmpty(this.data['price']) ? this.data['price'].value : null;
+        },
+
+        /**
+         * @returns {String|Null}
+         */
+        getTaxCode: function() {
+            return !_.isEmpty(this.data['tax_code']) ? this.data['tax_code'].code : null;
         },
 
         /**
@@ -143,7 +148,7 @@ define(function(require) {
          * @returns {String|Null}
          * @private
          */
-        _getPriceIdentifier: function() {
+        _getItemIdentifier: function() {
             var productId = this._getProductId();
 
             return productId.length === 0 ? null : 'product-id-' + productId;
@@ -157,7 +162,7 @@ define(function(require) {
                 return;
             }
 
-            mediator.off('order:refresh:line-items-price', this.setPrice, this);
+            mediator.off('order:refresh:line-items', this.setOrderItemData, this);
 
             OrderItemView.__super__.dispose.call(this);
         }

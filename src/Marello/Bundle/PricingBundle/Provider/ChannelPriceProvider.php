@@ -4,82 +4,45 @@ namespace Marello\Bundle\PricingBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
-
+use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDataProviderInterface;
+use Marello\Bundle\PricingBundle\Entity\BasePrice;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
-class ChannelPriceProvider
+class ChannelPriceProvider implements OrderItemDataProviderInterface
 {
-    const PRICE_IDENTIFIER = 'product-id-';
-
-    /** @var ManagerRegistry $registry  */
+    /**
+     * @var ManagerRegistry $registry
+     */
     protected $registry;
 
-    /** @var $translator */
-    protected $translator;
-
     /**
-     * ChannelPriceProvider constructor.
      * @param ManagerRegistry $registry
-     * @param $translator
      */
-    public function __construct(
-        ManagerRegistry $registry,
-        $translator
-    ) {
-        $this->registry = $registry;
-        $this->translator = $translator;
-    }
-
-    /**
-     * Get prices for each channel or get default price.
-     * if no price is available, it is not sold in the selected channel.
-     * @param $channel
-     * @param array $products
-     * @return array
-     */
-    public function getPrices($channel, array $products)
+    public function __construct(ManagerRegistry $registry)
     {
-        $result = $this->getPricesBySalesChannel($channel, $products);
-        $productCount = count($products);
-        $resultCount = count($result);
-
-        if ($productCount !== $resultCount) {
-            foreach ($products as $product) {
-                if (!array_key_exists(self::PRICE_IDENTIFIER . $product['product'], $result)) {
-                    $result[self::PRICE_IDENTIFIER . $product['product']] = [
-                        'message' => $this->translator
-                            ->trans('marello.pricing.productchannelprice.messages.product_not_salable'),
-                    ];
-                }
-            }
-        }
-
-        return $result;
+        $this->registry = $registry;
     }
 
     /**
-     * get prices for each channel or get default price
-     * @param $channel
-     * @param $products
-     * @return array
+     * {@inheritdoc}
      */
-    protected function getPricesBySalesChannel($channel, $products)
+    public function getData($channelId, array $products)
     {
         $result = [];
-        $products = $this->getRepository(Product::class)->findBySalesChannel($channel, $products);
+        $products = $this->getRepository(Product::class)->findBySalesChannel($channelId, $products);
 
         foreach ($products as $product) {
-            $priceValue = $this->getDefaultPrice($channel, $product);
-            $channelPrice = $this->getChannelPrice($channel, $product);
+            $priceValue = $this->getDefaultPrice($channelId, $product);
+            $channelPrice = $this->getChannelPrice($channelId, $product);
 
             if ($channelPrice['hasPrice']) {
                 $priceValue = $channelPrice['price'];
             }
 
-            $result[self::PRICE_IDENTIFIER.$product->getId()] = [
+            $result[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())] = [
                 'value' => $priceValue,
             ];
         }
@@ -121,7 +84,7 @@ class ChannelPriceProvider
             ['product' => $product->getId(), 'currency' => $currency]
         );
 
-        return (is_object($price)) ? (float)$price->getValue() : null;
+        return $price instanceof BasePrice ? (float)$price->getValue() : null;
     }
 
     /**
