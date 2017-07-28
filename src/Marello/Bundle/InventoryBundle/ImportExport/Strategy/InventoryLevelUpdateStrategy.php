@@ -7,6 +7,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
@@ -36,29 +37,65 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         array $searchContext = [],
         $entityIsRelation = false
     ) {
-        $inventoryLevel = $this->findInventoryLevel($entity);
-
-        if (!$inventoryLevel) {
-            return null;
-        }
+        $canUpdate = false;
+        $entityClass = ClassUtils::getClass($entity);
+        // find existing or new entity
+        $existingEntity = $this->findInventoryLevel($entity);
 
         $operator = $this->getAdjustmentOperator($entity->getInventoryQty());
-        $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
-            $inventoryLevel,
-            $inventoryLevel->getInventoryItem(),
-            $this->levelCalculator->calculateAdjustment($operator, $entity->getInventoryQty()),
-            0,
-            'import'
-        );
+        $inventoryUpdateQty = $this->levelCalculator->calculateAdjustment($operator, $entity->getInventoryQty());
+        $allocatedInventory = 0;
+        $trigger = 'import';
 
-        $this->eventDispatcher->dispatch(
-            InventoryUpdateEvent::NAME,
-            new InventoryUpdateEvent($context)
-        );
+        if ($existingEntity) {
+            if (!$this->strategyHelper->isGranted("EDIT", $existingEntity)) {
+                return $this->addAccessDeniedError($entityClass);
+            }
 
-        // deliberately return a different entity than the initial imported entity during errors with multiple
-        $product = $this->databaseHelper->findOneBy(Product::class, ['sku' => $entity->getInventoryItem()->getProduct()->getSku()]);
-        return $this->databaseHelper->findOneBy(InventoryItem::class, ['product' => $product->getId()]);
+            $this->checkEntityAcl($entity, $existingEntity, $itemData);
+            $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
+                $existingEntity,
+                $existingEntity->getInventoryItem(),
+                $inventoryUpdateQty,
+                $allocatedInventory,
+                $trigger
+            );
+            $canUpdate = true;
+        } else {
+            if (!$this->strategyHelper->isGranted("CREATE", $entity)) {
+                $this->addAccessDeniedError($entityClass);
+            }
+
+            if ($warehouse = $this->getWarehouse($entity)) {
+                $this->checkEntityAcl($entity, null, $itemData);
+                $product = $this->getProduct($entity);
+                $inventoryItem = $this->getInventoryItem($product);
+                $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+                    $product,
+                    $inventoryItem,
+                    $inventoryUpdateQty,
+                    $allocatedInventory,
+                    $trigger
+                );
+                $canUpdate = true;
+            } else {
+                $error[] = $this->translator->trans('No warehouse found, cannot update a new level without existing warehouse');
+                $this->strategyHelper->addValidationErrors($error, $this->context);
+
+                return null;
+            }
+        }
+
+        if ($canUpdate) {
+            $this->eventDispatcher->dispatch(
+                InventoryUpdateEvent::NAME,
+                new InventoryUpdateEvent($context)
+            );
+        }
+
+        // deliberately return a different entity than the initial imported entity, during errors with multiple runs of import
+        $product = $this->getProduct($entity);
+        return $this->getInventoryItem($product);
     }
 
     /**
@@ -76,25 +113,77 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     }
 
     /**
+     * @param $entityClass
+     * @return null
+     */
+    protected function addAccessDeniedError($entityClass)
+    {
+        $error = $this->translator->trans(
+            'oro.importexport.import.errors.access_denied_entity',
+            ['%entity_name%' => $entityClass]
+        );
+        $this->context->addError($error);
+
+        return null;
+    }
+
+    /**
      * @param InventoryLevel $entity
      *
      * @return null|object|InventoryLevel
      */
     protected function findInventoryLevel($entity)
     {
-        $product = $this->databaseHelper->findOneBy(Product::class, ['sku' => $entity->getInventoryItem()->getProduct()->getSku()]);
-        $inventoryItem = $this->databaseHelper->findOneBy(InventoryItem::class, ['product' => $product->getId()]);
+        /** @var Product $product */
+        $product = $this->getProduct($entity);
+        /** @var InventoryItem $inventoryItem */
+        $inventoryItem = $this->getInventoryItem($product);
 
         if (!$inventoryItem) {
             return null;
         }
 
+        $warehouse = $this->getWarehouse($entity);
+        if (!$warehouse) {
+            return null;
+        }
+
+
+        /** @var InventoryLevel $level */
         $level = $this->databaseHelper->findOneBy(InventoryLevel::class, [
             'inventoryItem' => $inventoryItem->getId(),
-//            'warehouse'     => $entity->getWarehouse()->getId()
+            'warehouse'     => $warehouse->getId()
         ]);
 
         return $level;
+    }
+
+    /**
+     * @param InventoryLevel $entity
+     * @return null|object|Product
+     */
+    protected function getProduct($entity)
+    {
+        return $this->databaseHelper->findOneBy(Product::class, ['sku' => $entity->getInventoryItem()->getProduct()->getSku()]);
+    }
+
+    /**
+     * @param Product $entity
+     * @return null|object|InventoryItem
+     */
+    protected function getInventoryItem($entity)
+    {
+        return $this->databaseHelper->findOneBy(InventoryItem::class, ['product' => $entity->getId()]);
+    }
+
+
+    /**
+     * @param InventoryLevel $entity
+     * @return null|object|Warehouse
+     */
+    protected function getWarehouse($entity)
+    {
+        return $this->databaseHelper->findOneBy(Warehouse::class, ['code' => $entity->getWarehouse()->getCode()]);
     }
 
     /**

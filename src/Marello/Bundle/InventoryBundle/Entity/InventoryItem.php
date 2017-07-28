@@ -12,7 +12,7 @@ use Marello\Bundle\InventoryBundle\Model\ExtendInventoryItem;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity()
  * @ORM\Table(
  *      name="marello_inventory_item",
  *      uniqueConstraints={
