@@ -69,4 +69,26 @@ class InventoryManager extends BaseInventoryManager
         $repo = $this->doctrineHelper->getEntityRepositoryForClass(Warehouse::class);
         return $repo->getDefault();
     }
+
+    /**
+     * @param InventoryUpdateContext $context
+     * @return null|object
+     */
+    protected function getInventoryLevel(InventoryUpdateContext $context)
+    {
+        if ($context->getInventoryLevel()) {
+            return $context->getInventoryLevel();
+        }
+
+        $inventoryItem = $this->getInventoryItem($context);
+        $warehouse = $this->getWarehouse($context);
+        $repo = $this->doctrineHelper->getEntityRepositoryForClass(InventoryLevel::class);
+        $level = $repo->findOneBy(
+            [
+                'inventoryItem' => $inventoryItem,
+                'warehouse'     => $warehouse
+            ]);
+
+        return $level;
+    }
 }

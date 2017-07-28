@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\InventoryManagerCompilerPass;
 use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\InventoryLevelFormSubscriberCompilerPass;
+use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\ImexportInventoryLevelStrategyCompilerPass;
 
 class MarelloEnterpriseInventoryBundle extends Bundle
 {
@@ -19,6 +20,7 @@ class MarelloEnterpriseInventoryBundle extends Bundle
     {
         $container->addCompilerPass(new InventoryManagerCompilerPass());
         $container->addCompilerPass(new InventoryLevelFormSubscriberCompilerPass());
+        $container->addCompilerPass(new ImexportInventoryLevelStrategyCompilerPass());
         parent::build($container);
     }
 }
