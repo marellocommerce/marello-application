@@ -3,12 +3,14 @@
 namespace Marello\Bundle\ProductBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityRepository;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDataProviderInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
-class ProductTaxCodeProvider implements OrderItemDataProviderInterface
+class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
 {
     /**
      * @var ManagerRegistry $registry
@@ -26,30 +28,42 @@ class ProductTaxCodeProvider implements OrderItemDataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getData($channelId, array $products)
+    public function processFormChanges(FormChangeContextInterface $context)
     {
-        $result = [];
+        $submittedData = $context->getSubmittedData();
+        $order = $context->getForm()->getData();
+        if ($order instanceof Order) {
+            $salesChannel = $order->getSalesChannel();
+        } else {
+            return;
+        }
+        $productIds = [];
+        foreach ($submittedData[self::ITEMS_FIELD] as $item) {
+            $productIds[] = (int)$item['product'];
+        }
+        $data = [];
         /** @var Product[] $products */
-        $products = $this->getRepository(Product::class)->findBySalesChannel($channelId, $products);
-        $channel = $this->getRepository(SalesChannel::class)->find($channelId);
+        $products = $this->getRepository()->findBySalesChannel($salesChannel->getId(), $productIds);
+
         foreach ($products as $product) {
-            $taxCode = $product->getSalesChannelTaxCode($channel) ? : $product->getTaxCode();
-            $result[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())] = [
+            $taxCode = $product->getSalesChannelTaxCode($salesChannel) ? : $product->getTaxCode();
+            $data[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())] = [
                 'id' => $taxCode->getId(),
                 'code' => $taxCode->getCode(),
 
             ];
         }
 
-        return $result;
+        $result = $context->getResult();
+        $result[self::ITEMS_FIELD]['tax_code'] = $data;
+        $context->setResult($result);
     }
 
     /**
-     * @param string $className
-     * @return EntityRepository
+     * @return ProductRepository
      */
-    protected function getRepository($className)
+    protected function getRepository()
     {
-        return $this->registry->getManagerForClass($className)->getRepository($className);
+        return $this->registry->getManagerForClass(Product::class)->getRepository(Product::class);
     }
 }

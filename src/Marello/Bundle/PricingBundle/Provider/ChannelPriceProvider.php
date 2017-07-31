@@ -4,14 +4,18 @@ namespace Marello\Bundle\PricingBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
-use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDataProviderInterface;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
 use Marello\Bundle\PricingBundle\Entity\BasePrice;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\PricingBundle\Entity\Repository\ProductChannelPriceRepository;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
-class ChannelPriceProvider implements OrderItemDataProviderInterface
+class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
 {
     /**
      * @var ManagerRegistry $registry
@@ -29,37 +33,52 @@ class ChannelPriceProvider implements OrderItemDataProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getData($channelId, array $products)
+    public function processFormChanges(FormChangeContextInterface $context)
     {
-        $result = [];
-        $products = $this->getRepository(Product::class)->findBySalesChannel($channelId, $products);
+        $submittedData = $context->getSubmittedData();
+        $order = $context->getForm()->getData();
+        if ($order instanceof Order) {
+            $salesChannel = $order->getSalesChannel();
+        } else {
+            return;
+        }
+        $productIds = [];
+        foreach ($submittedData[self::ITEMS_FIELD] as $item) {
+            $productIds[] = (int)$item['product'];
+        }
+        
+        $data = [];
+        $products = $this->getProductRepository()->findBySalesChannel($salesChannel->getId(), $productIds);
 
         foreach ($products as $product) {
-            $priceValue = $this->getDefaultPrice($channelId, $product);
-            $channelPrice = $this->getChannelPrice($channelId, $product);
+            $priceValue = $this->getDefaultPrice($salesChannel, $product);
+            $channelPrice = $this->getChannelPrice($salesChannel, $product);
 
             if ($channelPrice['hasPrice']) {
                 $priceValue = $channelPrice['price'];
             }
 
-            $result[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())] = [
-                'value' => $priceValue,
-            ];
+            $data[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())]['value'] = $priceValue;
         }
 
-        return $result;
+        $result = $context->getResult();
+        $result[self::ITEMS_FIELD]['price'] = $data;
+        $context->setResult($result);
     }
 
     /**
      * Get channel price
-     * @param $channel
-     * @param $product
+     * @param SalesChannel $channel
+     * @param Product $product
      * @return array $data
      */
     public function getChannelPrice($channel, $product)
     {
         $data = ['hasPrice' => false];
-        $price = $this->getRepository(ProductChannelPrice::class)->findOneBySalesChannel($channel, $product->getId());
+        $price = $this->getProductChannelPriceRepository()->findOneBySalesChannel(
+            $channel->getId(),
+            $product->getId()
+        );
         $pricesCount = count($price);
 
         if ($pricesCount > 0 && $pricesCount < 2) {
@@ -73,18 +92,42 @@ class ChannelPriceProvider implements OrderItemDataProviderInterface
 
     /**
      * Get Default price by currency for product
-     * @param $channel
-     * @param $product
+     * @param SalesChannel $channel
+     * @param Product $product
      * @return float
      */
     public function getDefaultPrice($channel, $product)
     {
-        $currency = $this->getRepository(SalesChannel::class)->find($channel)->getCurrency();
-        $price = $this->getRepository(ProductPrice::class)->findOneBy(
+        $currency = $channel->getCurrency();
+        $price = $this->getProductPriceRepository()->findOneBy(
             ['product' => $product->getId(), 'currency' => $currency]
         );
 
         return $price instanceof BasePrice ? (float)$price->getValue() : null;
+    }
+
+    /**
+     * @return ProductRepository
+     */
+    protected function getProductRepository()
+    {
+        return $this->getRepository(Product::class);
+    }
+
+    /**
+     * @return EntityRepository
+     */
+    protected function getProductPriceRepository()
+    {
+        return $this->getRepository(ProductPrice::class);
+    }
+
+    /**
+     * @return ProductChannelPriceRepository
+     */
+    protected function getProductChannelPriceRepository()
+    {
+        return $this->getRepository(ProductChannelPrice::class);
     }
 
     /**

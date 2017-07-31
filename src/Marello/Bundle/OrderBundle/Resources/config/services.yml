@@ -62,11 +62,11 @@ services:
             - { name: oro_dashboard.big_number.provider, alias: marello-order }
 
     marello_order.provider.form_changes.items:
-        class: Marello\Bundle\OrderBundle\Provider\OrderItemFormChangesProvider
+        class: Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider
         arguments:
-            - '@marello_order.provider.order_item_data.composite'
+            - '@translator'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: items }
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: items, priority: 10 }
 
     marello_order.provider.customer_email_owner:
         class: Marello\Bundle\OrderBundle\Provider\CustomerEmailOwnerProvider
@@ -97,8 +97,3 @@ services:
         class: '%marello_datagrid.event_listener.datagrid.workflow_grid_listener.class%'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.dashboard-order-revenue-saleschannels-grid, method: removeWorkflow }
-
-    marello_order.provider.order_item_data.composite:
-        class: 'Marello\Bundle\OrderBundle\Provider\OrderItem\CompositeOrderItemDataProvider'
-        arguments:
-            - '@translator'

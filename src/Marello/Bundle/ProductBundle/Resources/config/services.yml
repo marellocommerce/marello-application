@@ -57,4 +57,4 @@ services:
         arguments:
             - '@doctrine'
         tags:
-            - { name: marello_order.order_item_data_provider, type: tax_code }
+            - { name: marello_order.order_item_data_provider, type: tax_code, priority: 20 }

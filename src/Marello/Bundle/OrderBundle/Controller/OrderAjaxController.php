@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Controller;
 
+use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\Type\OrderType;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
@@ -29,17 +30,24 @@ class OrderAjaxController extends Controller
         }
 
         $form = $this->getType($order);
-
         $submittedData = $request->get($form->getName());
 
         $form->submit($submittedData);
-       
+        
+        $context = new FormChangeContext(
+            [
+                FormChangeContext::FORM_FIELD => $form,
+                FormChangeContext::SUBMITTED_DATA_FIELD => $submittedData,
+                FormChangeContext::RESULT_FIELD => [],
+            ]
+        );
         $formChangesProvider = $this->get('marello_layout.provider.form_changes_data.composite');
         $formChangesProvider
             ->setRequiredDataClass(Order::class)
-            ->setRequiredFields($request->get('updateFields'));
-
-        return new JsonResponse($formChangesProvider->getFormChangesData($form, $submittedData));
+            ->setRequiredFields($request->get('updateFields'))
+            ->processFormChanges($context);
+        
+        return new JsonResponse($context->getResult());
     }
 
     /**

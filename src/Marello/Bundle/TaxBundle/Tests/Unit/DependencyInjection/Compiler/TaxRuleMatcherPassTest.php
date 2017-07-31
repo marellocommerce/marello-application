@@ -1,15 +1,15 @@
 <?php
 
-namespace Marello\Bundle\LayoutBundle\Tests\Unit\DependencyInjection\Compiler;
+namespace Marello\Bundle\TaxBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Marello\Bundle\LayoutBundle\DependencyInjection\Compiler\FormChangesProviderPass;
+use Marello\Bundle\TaxBundle\DependencyInjection\Compiler\TaxRuleMatcherPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class FormChangesProviderPassTest extends \PHPUnit_Framework_TestCase
+class TaxRuleMatcherPassTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var FormChangesProviderPass
+     * @var TaxRuleMatcherPass
      */
     protected $compilerPass;
 
@@ -24,7 +24,7 @@ class FormChangesProviderPassTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->compilerPass = new FormChangesProviderPass();
+        $this->compilerPass = new TaxRuleMatcherPass();
     }
 
     public function testProcessCompositeDoesNotExist()
@@ -32,7 +32,7 @@ class FormChangesProviderPassTest extends \PHPUnit_Framework_TestCase
         $this->containerBuilder
             ->expects($this->once())
             ->method('hasDefinition')
-            ->with(FormChangesProviderPass::COMPOSITE_SERVICE)
+            ->with(TaxRuleMatcherPass::COMPOSITE_SERVICE)
             ->willReturn(false);
 
         $this->containerBuilder
@@ -51,7 +51,7 @@ class FormChangesProviderPassTest extends \PHPUnit_Framework_TestCase
         $this->containerBuilder
             ->expects($this->once())
             ->method('hasDefinition')
-            ->with(FormChangesProviderPass::COMPOSITE_SERVICE)
+            ->with(TaxRuleMatcherPass::COMPOSITE_SERVICE)
             ->willReturn(true);
 
         $this->containerBuilder
@@ -71,7 +71,7 @@ class FormChangesProviderPassTest extends \PHPUnit_Framework_TestCase
         $this->containerBuilder
             ->expects($this->once())
             ->method('hasDefinition')
-            ->with(FormChangesProviderPass::COMPOSITE_SERVICE)
+            ->with(TaxRuleMatcherPass::COMPOSITE_SERVICE)
             ->willReturn(true);
 
         $registryServiceDefinition = $this->createMock('Symfony\Component\DependencyInjection\Definition');
@@ -79,14 +79,14 @@ class FormChangesProviderPassTest extends \PHPUnit_Framework_TestCase
         $this->containerBuilder
             ->expects($this->once())
             ->method('getDefinition')
-            ->with(FormChangesProviderPass::COMPOSITE_SERVICE)
+            ->with(TaxRuleMatcherPass::COMPOSITE_SERVICE)
             ->willReturn($registryServiceDefinition);
 
         $taggedServices = [
-            'service.name.1' => [['class' =>'class1', 'type' => 'type1', 'priority' => 40]],
-            'service.name.2' => [['class' =>'class1', 'type' => 'type2', 'priority' => 20]],
-            'service.name.3' => [['class' =>'class1', 'type' => 'type3', 'priority' => 30]],
-            'service.name.4' => [['class' =>'class1', 'type' => 'type4', 'priority' => 10]],
+            'service.name.1' => [['priority' => 30]],
+            'service.name.2' => [['priority' => 10]],
+            'service.name.3' => [['priority' => 40]],
+            'service.name.4' => [['priority' => 20]],
         ];
 
         $this->containerBuilder
@@ -98,10 +98,10 @@ class FormChangesProviderPassTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly(4))
             ->method('addMethodCall')
             ->withConsecutive(
-                ['addProvider', [new Reference('service.name.4'), 'class1', 'type4']],
-                ['addProvider', [new Reference('service.name.2'), 'class1', 'type2']],
-                ['addProvider', [new Reference('service.name.3'), 'class1', 'type3']],
-                ['addProvider', [new Reference('service.name.1'), 'class1', 'type1']]
+                ['addMatcher', [new Reference('service.name.2')]],
+                ['addMatcher', [new Reference('service.name.4')]],
+                ['addMatcher', [new Reference('service.name.1')]],
+                ['addMatcher', [new Reference('service.name.3')]]
             );
 
         $this->compilerPass->process($this->containerBuilder);

@@ -1,0 +1,35 @@
+services:
+    marello_tax.tax_rule.matcher.composite:
+        class: Marello\Bundle\TaxBundle\Matcher\CompositeTaxRuleMatcher
+
+    marello_tax.tax_rule.matcher.country:
+        class: Marello\Bundle\TaxBundle\Matcher\CountryTaxRuleMatcher
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: marello_tax.tax_rule.matcher, priority: 30 }
+
+    marello_tax.tax_rule.matcher.region:
+        class: Marello\Bundle\TaxBundle\Matcher\RegionTaxRuleMatcher
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: marello_tax.tax_rule.matcher, priority: 20 }
+
+    marello_tax.tax_rule.matcher.zip_code:
+        class: Marello\Bundle\TaxBundle\Matcher\ZipCodeTaxRuleMatcher
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: marello_tax.tax_rule.matcher, priority: 10 }
+
+    marello_tax.calculator.tax_order_item_tax_totals:
+        class: Marello\Bundle\TaxBundle\Calculator\TaxCalculator
+
+    marello_tax.provider.tax_order_item_row_totals:
+        class: Marello\Bundle\TaxBundle\Provider\OrderItemRowTotalsProvider
+        arguments:
+            - '@marello_tax.calculator.tax_order_item_tax_totals'
+            - '@marello_tax.tax_rule.matcher.composite'
+        tags:
+            - { name: marello_order.order_item_data_provider, type: row_totals, priority: 30 }

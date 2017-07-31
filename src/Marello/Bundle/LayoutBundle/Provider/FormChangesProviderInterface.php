@@ -2,14 +2,12 @@
 
 namespace Marello\Bundle\LayoutBundle\Provider;
 
-use Symfony\Component\Form\FormInterface;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 
 interface FormChangesProviderInterface
 {
     /**
-     * @param FormInterface $form
-     * @param array|null $submittedData
-     * @return mixed
+     * @param FormChangeContextInterface $context
      */
-    public function getFormChangesData(FormInterface $form, array $submittedData = null);
+    public function processFormChanges(FormChangeContextInterface $context);
 }

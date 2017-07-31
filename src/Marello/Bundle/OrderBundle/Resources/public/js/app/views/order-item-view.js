@@ -29,11 +29,6 @@ define(function(require) {
         data: {},
 
         /**
-         * @property {Object}
-         */
-        taxPercentage: 21,
-
-        /**
          * @inheritDoc
          */
         initialize: function(options) {
@@ -54,7 +49,7 @@ define(function(require) {
          */
         initOrderItem: function() {
             this.addFieldEvents('product', this.updateOrderItemData);
-            this.addFieldEvents('quantity', this.updateRowTotals);
+            this.addFieldEvents('quantity', this.updateOrderItemData);
             mediator.trigger('order:get:line-items-data', _.bind(this.setOrderItemData, this));
             mediator.on('order:refresh:line-items', this.setOrderItemData, this);
         },
@@ -87,7 +82,7 @@ define(function(require) {
             if (identifier && data[identifier] !== undefined) {
                 if(data[identifier].message !== undefined) {
                     this.data = {};
-                    this.updateRowTotals();
+                    this.setRowTotals();
                     this.options.salable = {value: false, message: data[identifier].message};
                 } else {
                     this.data = data[identifier] || {};
@@ -105,8 +100,8 @@ define(function(require) {
 
             this.fieldsByName.price.val($priceValue);
             this.fieldsByName.taxCode.val(this.getTaxCode());
-
-            this.updateRowTotals();
+            
+            this.setRowTotals();
         },
 
         /**
@@ -124,24 +119,26 @@ define(function(require) {
         },
 
         /**
-         * update row totals
+         * @returns {Array|Null}
          */
-        updateRowTotals: function() {
-            var $price = this.getPriceValue();
-            var $rowTotalExclTax = '';
-            var $rowTotalInclTax = '';
-            var $tax = '';
-            if($price) {
-                var $quantity = this.fieldsByName.quantity.val();
-                $rowTotalInclTax = parseFloat($price * $quantity).toFixed(2);
-                var $priceExcl = (($rowTotalInclTax / (this.taxPercentage + 100)) * 100);
-                $tax = parseFloat(Math.round($rowTotalInclTax - $priceExcl)).toFixed(2);
-                $rowTotalExclTax = ($rowTotalInclTax - $tax).toFixed(2);
-            }
+        getRowTotals: function() {
+            return !_.isEmpty(this.data['row_totals']) ? this.data['row_totals'] : null;
+        },
 
-            this.fieldsByName.tax.val($tax);
-            this.fieldsByName.rowTotalExclTax.val($rowTotalExclTax);
-            this.fieldsByName.rowTotalInclTax.val($rowTotalInclTax);
+        /**
+         * Set row totals
+         */
+        setRowTotals: function() {
+            var row_totals = this.getRowTotals();
+            if (row_totals === null) {
+                this.fieldsByName.tax.val('');
+                this.fieldsByName.rowTotalExclTax.val('');
+                this.fieldsByName.rowTotalInclTax.val('');
+            } else {
+                this.fieldsByName.tax.val(row_totals.taxAmount);
+                this.fieldsByName.rowTotalExclTax.val(row_totals.excludingTax);
+                this.fieldsByName.rowTotalInclTax.val(row_totals.includingTax);
+            }
         },
 
         /**

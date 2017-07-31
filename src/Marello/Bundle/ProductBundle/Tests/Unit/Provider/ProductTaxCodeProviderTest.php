@@ -3,13 +3,16 @@
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityRepository;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\ProductBundle\Provider\ProductTaxCodeProvider;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Component\Testing\Unit\EntityTrait;
+use Symfony\Component\Form\FormInterface;
 
 class ProductTaxCodeProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,6 +21,11 @@ class ProductTaxCodeProviderTest extends \PHPUnit_Framework_TestCase
      * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $registry;
+
+    /**
+     * @var FormChangeContextInterface
+     */
+    protected $context;
 
     /**
      * @var ProductTaxCodeProvider
@@ -37,10 +45,19 @@ class ProductTaxCodeProviderTest extends \PHPUnit_Framework_TestCase
      * @param TaxCode $defaultTaxCode
      * @param string $expectedValue
      */
-    public function testGetData($channelTaxCode, TaxCode $defaultTaxCode, $expectedValue)
+    public function testProcessFormChanges($channelTaxCode, TaxCode $defaultTaxCode, $expectedValue)
     {
         /** @var SalesChannel $channel */
         $channel = $this->getEntity(SalesChannel::class, ['id' => 1, 'currency' => 'EUR']);
+        /** @var Order $order */
+        $order = $this->getEntity(Order::class, ['id' => 1, 'salesChannel' => $channel]);
+
+        /** @var FormInterface|\PHPUnit_Framework_MockObject_MockObject $form **/
+        $form = $this->createMock(FormInterface::class);
+        $form->expects(static::once())
+            ->method('getData')
+            ->willReturn($order);
+
         /** @var Product|\PHPUnit_Framework_MockObject_MockObject $product */
         $product = $this->createMock(Product::class);
         $product->expects(static::any())
@@ -61,13 +78,6 @@ class ProductTaxCodeProviderTest extends \PHPUnit_Framework_TestCase
             ->with($channel->getId(), [$product->getId()])
             ->willReturn([$product]);
 
-        $salesChannelRepository = $this->createMock(EntityRepository::class);
-        $salesChannelRepository
-            ->expects(static::once())
-            ->method('find')
-            ->with($channel->getId())
-            ->willReturn($channel);
-
         $this->registry
             ->expects(static::at(0))
             ->method('getManagerForClass')
@@ -79,23 +89,27 @@ class ProductTaxCodeProviderTest extends \PHPUnit_Framework_TestCase
             ->with(Product::class)
             ->willReturn($productRepository);
 
-        $this->registry
-            ->expects(static::at(2))
-            ->method('getManagerForClass')
-            ->with(SalesChannel::class)
-            ->willReturnSelf();
-        $this->registry
-            ->expects(static::at(3))
-            ->method('getRepository')
-            ->with(SalesChannel::class)
-            ->willReturn($salesChannelRepository);
-
-        $expectedData = [sprintf('%s%s', ProductTaxCodeProvider::IDENTIFIER_PREFIX, $product->getId()) =>
-            $expectedValue,
+        $expectedData = [
+            ProductTaxCodeProvider::ITEMS_FIELD => [
+                'tax_code' => [
+                    sprintf('%s%s', ProductTaxCodeProvider::IDENTIFIER_PREFIX, $product->getId()) => $expectedValue,
+                ]
+            ]
         ];
+
+        $this->context = new FormChangeContext([
+            FormChangeContext::FORM_FIELD => $form,
+            FormChangeContext::SUBMITTED_DATA_FIELD => [
+                ProductTaxCodeProvider::ITEMS_FIELD => [['product' => $product->getId()]]
+            ],
+            FormChangeContext::RESULT_FIELD => []
+        ]);
+
+        $this->productTaxCodeProvider->processFormChanges($this->context);
+
         static::assertEquals(
             $expectedData,
-            $this->productTaxCodeProvider->getData($channel->getId(), [$product->getId()])
+            $this->context->getResult()
         );
     }
 

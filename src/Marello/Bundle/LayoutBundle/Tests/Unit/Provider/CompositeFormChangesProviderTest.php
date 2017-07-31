@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\LayoutBundle\Tests\Unit\Provider;
 
+use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\LayoutBundle\Provider\CompositeFormChangesProvider;
 use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -18,6 +20,11 @@ class CompositeFormChangesProviderTest extends \PHPUnit_Framework_TestCase
      */
     protected $providersData = [];
 
+    /**
+     * @var FormChangeContextInterface
+     */
+    protected $context;
+
     protected function setUp()
     {
         $this->providersData = [
@@ -27,11 +34,17 @@ class CompositeFormChangesProviderTest extends \PHPUnit_Framework_TestCase
             ['class' => 'class2', 'type' => 'type4', 'data' => 'data4'],
         ];
 
+        $this->context = new FormChangeContext([
+            FormChangeContext::FORM_FIELD => $this->createMock(FormInterface::class),
+            FormChangeContext::SUBMITTED_DATA_FIELD => [],
+            FormChangeContext::RESULT_FIELD => []
+        ]);
+
         $this->compositeFormChangesProvider = new CompositeFormChangesProvider();
 
         foreach ($this->providersData as $data) {
             $this->compositeFormChangesProvider->addProvider(
-                $this->createProviderMock($data['data']),
+                $this->createProviderMock($data),
                 $data['class'],
                 $data['type']
             );
@@ -39,28 +52,26 @@ class CompositeFormChangesProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getFormChangesDataProvider
+     * @dataProvider processFormChangesDataProvider
      *
      * @param string $requiredClass
      * @param array $requiredFields
      * @param array $expectedData
      */
-    public function testGetFormChangesData(
+    public function testProcessFormChanges(
         $requiredClass,
         array $requiredFields,
         array $expectedData
     ) {
-        /** @var FormInterface $form */
-        $form = $this->createMock(FormInterface::class);
-        $submittedData = [];
-
         $this->compositeFormChangesProvider
             ->setRequiredDataClass($requiredClass)
             ->setRequiredFields($requiredFields);
 
+        $this->compositeFormChangesProvider->processFormChanges($this->context);
+
         static::assertEquals(
             $expectedData,
-            $this->compositeFormChangesProvider->getFormChangesData($form, $submittedData)
+            $this->context->getResult()
         );
     }
 
@@ -68,13 +79,9 @@ class CompositeFormChangesProviderTest extends \PHPUnit_Framework_TestCase
      * @expectedException \LogicException
      * @expectedExceptionMessage requiredDataClass should be specified
      */
-    public function testGetFormChangesDataNoRequiredClass()
+    public function testProcessFormChangesNoRequiredClass()
     {
-        /** @var FormInterface $form */
-        $form = $this->createMock(FormInterface::class);
-        $submittedData = [];
-
-        $this->compositeFormChangesProvider->getFormChangesData($form, $submittedData);
+        $this->compositeFormChangesProvider->processFormChanges($this->context);
     }
 
     /**
@@ -86,8 +93,12 @@ class CompositeFormChangesProviderTest extends \PHPUnit_Framework_TestCase
         $provider = $this->createMock(FormChangesProviderInterface::class);
         $provider
             ->expects(static::any())
-            ->method('getFormChangesData')
-            ->willReturn($data);
+            ->method('processFormChanges')
+            ->willReturnCallback(function () use ($data) {
+                $result = $this->context->getResult();
+                $result[$data['type']] = $data['data'];
+                $this->context->setResult($result);
+            });
 
         return $provider;
     }
@@ -95,7 +106,7 @@ class CompositeFormChangesProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function getFormChangesDataProvider()
+    public function processFormChangesDataProvider()
     {
         return [
             'allFieldsRequiredClass1' => [

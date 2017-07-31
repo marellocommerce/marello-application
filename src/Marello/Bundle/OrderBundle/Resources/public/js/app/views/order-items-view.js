@@ -6,6 +6,7 @@ define(function(require) {
         _ = require('underscore'),
         __ = require('orotranslation/js/translator'),
         DeleteConfirmation = require('oroui/js/delete-confirmation'),
+        LoadingMaskView = require('oroui/js/app/views/loading-mask-view'),
         routing = require('routing'),
         mediator = require('oroui/js/mediator'),
         layout = require('oroui/js/layout'),
@@ -51,6 +52,7 @@ define(function(require) {
         initialize: function(options) {
             this.options = $.extend(true, {}, this.options, options || {});
             OrderItemsView.__super__.initialize.apply(this, arguments);
+            mediator.on('order:form-changes:trigger', this.loadingStart, this);
         },
 
         /**
@@ -155,6 +157,7 @@ define(function(require) {
          * @param {Array} response
          */
         loadLineItemsData: function(response) {
+            this.loadingEnd();
             if (response === undefined || response['items'] === undefined || response['items'].length == 0) {
                 return;
             }
@@ -191,6 +194,16 @@ define(function(require) {
 
             return items;
         },
+        
+        /**
+         * Show loading view
+         */
+        loadingStart: function(e) {
+            if (e.updateFields !== undefined && _.contains(e.updateFields, 'items') !== true) {
+                return;
+            }
+            OrderItemsView.__super__.loadingStart.apply(this, arguments);
+        },
 
         /**
          * @inheritDoc
@@ -203,6 +216,7 @@ define(function(require) {
             mediator.off('order:get:line-items-data', this.getLineItemsData, this);
             mediator.off('order:form-changes:load', this.loadLineItemsData, this);
             mediator.off('order:update:line-items', this.updateLineItems, this);
+            mediator.off('order:form-changes:trigger', this.loadingStart, this);
 
             OrderItemsView.__super__.dispose.call(this);
         }

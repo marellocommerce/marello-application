@@ -83,10 +83,10 @@ class OrderItemDataProvidersPassTest extends \PHPUnit_Framework_TestCase
             ->willReturn($registryServiceDefinition);
 
         $taggedServices = [
-            'service.name.1' => [['type' => 'type1']],
-            'service.name.2' => [['type' => 'type2']],
-            'service.name.3' => [['type' => 'type3']],
-            'service.name.4' => [['type' => 'type4']],
+            'service.name.1' => [['type' => 'type1', 'priority' => 40]],
+            'service.name.2' => [['type' => 'type2', 'priority' => 10]],
+            'service.name.3' => [['type' => 'type3', 'priority' => 20]],
+            'service.name.4' => [['type' => 'type4', 'priority' => 30]],
         ];
 
         $this->containerBuilder
@@ -98,10 +98,10 @@ class OrderItemDataProvidersPassTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly(4))
             ->method('addMethodCall')
             ->withConsecutive(
-                ['addProvider', ['type1', new Reference('service.name.1')]],
                 ['addProvider', ['type2', new Reference('service.name.2')]],
                 ['addProvider', ['type3', new Reference('service.name.3')]],
-                ['addProvider', ['type4', new Reference('service.name.4')]]
+                ['addProvider', ['type4', new Reference('service.name.4')]],
+                ['addProvider', ['type1', new Reference('service.name.1')]]
             );
 
         $this->compilerPass->process($this->containerBuilder);

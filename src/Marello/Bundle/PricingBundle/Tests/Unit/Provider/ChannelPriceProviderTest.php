@@ -4,6 +4,10 @@ namespace Marello\Bundle\PricingBundle\Tests\Unit\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\PricingBundle\Entity\Repository\ProductChannelPriceRepository;
@@ -12,6 +16,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Component\Testing\Unit\EntityTrait;
+use Symfony\Component\Form\FormInterface;
 
 class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,6 +26,11 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
      * @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $registry;
+
+    /**
+     * @var FormChangeContextInterface
+     */
+    protected $context;
 
     /**
      * @var ChannelPriceProvider
@@ -34,18 +44,26 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getDataDataProvider
+     * @dataProvider processFormChangesDataProvider
      *
      * @param array $channelPrices
      * @param ProductPrice $defaultPrice
      * @param int $expectedValue
      */
-    public function testGetData($channelPrices, ProductPrice $defaultPrice, $expectedValue)
+    public function testProcessFormChanges($channelPrices, ProductPrice $defaultPrice, $expectedValue)
     {
         /** @var SalesChannel $channel */
         $channel = $this->getEntity(SalesChannel::class, ['id' => 1, 'currency' => 'EUR']);
+        /** @var Order $order */
+        $order = $this->getEntity(Order::class, ['id' => 1, 'salesChannel' => $channel]);
         /** @var Product $product */
         $product = $this->getEntity(Product::class, ['id' => 1]);
+
+        /** @var FormInterface|\PHPUnit_Framework_MockObject_MockObject $form **/
+        $form = $this->createMock(FormInterface::class);
+        $form->expects(static::once())
+            ->method('getData')
+            ->willReturn($order);
 
         $productRepository = $this->createMock(ProductRepository::class);
         $productRepository
@@ -53,13 +71,6 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
             ->method('findBySalesChannel')
             ->with($channel->getId(), [$product->getId()])
             ->willReturn([$product]);
-
-        $salesChannelRepository = $this->createMock(EntityRepository::class);
-        $salesChannelRepository
-            ->expects(static::once())
-            ->method('find')
-            ->with($channel->getId())
-            ->willReturn($channel);
 
         $productPriceRepository = $this->createMock(EntityRepository::class);
         $productPriceRepository
@@ -89,46 +100,51 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
         $this->registry
             ->expects(static::at(2))
             ->method('getManagerForClass')
-            ->with(SalesChannel::class)
-            ->willReturnSelf();
-        $this->registry
-            ->expects(static::at(3))
-            ->method('getRepository')
-            ->with(SalesChannel::class)
-            ->willReturn($salesChannelRepository);
-
-        $this->registry
-            ->expects(static::at(4))
-            ->method('getManagerForClass')
             ->with(ProductPrice::class)
             ->willReturnSelf();
         $this->registry
-            ->expects(static::at(5))
+            ->expects(static::at(3))
             ->method('getRepository')
             ->with(ProductPrice::class)
             ->willReturn($productPriceRepository);
 
         $this->registry
-            ->expects(static::at(6))
+            ->expects(static::at(4))
             ->method('getManagerForClass')
             ->with(ProductChannelPrice::class)
             ->willReturnSelf();
         $this->registry
-            ->expects(static::at(7))
+            ->expects(static::at(5))
             ->method('getRepository')
             ->with(ProductChannelPrice::class)
             ->willReturn($productChannelPriceRepository);
 
-        $expectedData = [sprintf('%s%s', ChannelPriceProvider::IDENTIFIER_PREFIX, $product->getId()) => [
-            'value' => $expectedValue,
-        ]];
+        $expectedData = [
+            'price' => [
+                sprintf('%s%s', ChannelPriceProvider::IDENTIFIER_PREFIX, $product->getId()) => [
+                    'value' => $expectedValue,
+                ]
+            ]
+        ];
+
+        $this->context = new FormChangeContext([
+            FormChangeContext::FORM_FIELD => $form,
+            FormChangeContext::SUBMITTED_DATA_FIELD => [
+                OrderItemFormChangesProvider::ITEMS_FIELD => [['product' => $product->getId()]]
+            ],
+            FormChangeContext::RESULT_FIELD => []
+        ]);
+
+        $this->channelPriceProvider->processFormChanges($this->context);
+
         static::assertEquals(
-            $expectedData,
-            $this->channelPriceProvider->getData($channel->getId(), [$product->getId()])
+            [OrderItemFormChangesProvider::ITEMS_FIELD => $expectedData],
+            $this->context->getResult()
+
         );
     }
 
-    public function getDataDataProvider()
+    public function processFormChangesDataProvider()
     {
         $defaultPrice = $this->getEntity(ProductPrice::class, ['id' => 1, 'value' => 100, 'currency' => 'EUR']);
 
@@ -154,7 +170,8 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetChannelPrice($prices, $expectedData)
     {
-        $channel = 1;
+        /** @var SalesChannel $channel */
+        $channel = $this->getEntity(SalesChannel::class, ['id' => 1, 'currency' => 'EUR']);
         /** @var Product $product */
         $product = $this->getEntity(Product::class, ['id' => 1]);
         $repository = $this->createMock(ProductChannelPriceRepository::class);
@@ -172,7 +189,7 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
         $repository
             ->expects(static::once())
             ->method('findOneBySalesChannel')
-            ->with($channel, $product->getId())
+            ->with($channel->getId(), $product->getId())
             ->willReturn($prices);
 
         static::assertEquals($expectedData, $this->channelPriceProvider->getChannelPrice($channel, $product));
@@ -204,17 +221,11 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDefaultPrice($price, $expectedValue)
     {
-        
         /** @var SalesChannel $channel */
         $channel = $this->getEntity(SalesChannel::class, ['id' => 1, 'currency' => 'EUR']);
+
         /** @var Product $product */
         $product = $this->getEntity(Product::class, ['id' => 1]);
-        $salesChannelRepository = $this->createMock(EntityRepository::class);
-        $salesChannelRepository
-            ->expects(static::once())
-            ->method('find')
-            ->with($channel->getId())
-            ->willReturn($channel);
         $productPriceRepository = $this->createMock(EntityRepository::class);
         $productPriceRepository
             ->expects(static::once())
@@ -225,26 +236,15 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
         $this->registry
             ->expects(static::at(0))
             ->method('getManagerForClass')
-            ->with(SalesChannel::class)
+            ->with(ProductPrice::class)
             ->willReturnSelf();
         $this->registry
             ->expects(static::at(1))
             ->method('getRepository')
-            ->with(SalesChannel::class)
-            ->willReturn($salesChannelRepository);
-
-        $this->registry
-            ->expects(static::at(2))
-            ->method('getManagerForClass')
-            ->with(ProductPrice::class)
-            ->willReturnSelf();
-        $this->registry
-            ->expects(static::at(3))
-            ->method('getRepository')
             ->with(ProductPrice::class)
             ->willReturn($productPriceRepository);
 
-        static::assertEquals($expectedValue, $this->channelPriceProvider->getDefaultPrice($channel->getId(), $product));
+        static::assertEquals($expectedValue, $this->channelPriceProvider->getDefaultPrice($channel, $product));
     }
 
     public function getDefaultPriceDataProvider()
