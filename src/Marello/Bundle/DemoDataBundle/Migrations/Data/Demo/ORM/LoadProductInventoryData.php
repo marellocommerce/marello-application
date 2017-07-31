@@ -9,9 +9,10 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 
@@ -23,12 +24,13 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
     /** @var \Marello\Bundle\InventoryBundle\Entity\Warehouse $defaultWarehouse */
     protected $defaultWarehouse;
 
+    /** @var array $replenishments */
+    protected $replenishments;
+
     /** @var ObjectManager $manager */
     protected $manager;
 
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface $container */
     protected $container;
 
     /**
@@ -64,6 +66,9 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
         $this->defaultWarehouse = $this->manager
             ->getRepository('MarelloInventoryBundle:Warehouse')
             ->getDefault();
+
+        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
+        $this->replenishments = $this->manager->getRepository($replenishmentClass)->findAll();
 
         $this->loadProductInventory();
     }
@@ -102,11 +107,12 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
 
         if ($product) {
             $inventoryItemManager = $this->container->get('marello_inventory.manager.inventory_item_manager');
+            /** @var InventoryItem $inventoryItem */
             $inventoryItem = $inventoryItemManager->getInventoryItem($product);
             if (!$inventoryItem) {
                 return;
             }
-
+            $inventoryItem->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
             $this->handleInventoryUpdate($product, $inventoryItem, $data['inventory_qty'], 0, null);
         }
     }

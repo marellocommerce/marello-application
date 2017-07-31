@@ -168,6 +168,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
     public function setReplenishment($replenishment)
     {
         $this->replenishment = $replenishment;
+
         return $this;
     }
 

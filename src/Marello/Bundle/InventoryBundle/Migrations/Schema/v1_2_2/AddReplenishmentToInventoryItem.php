@@ -49,7 +49,7 @@ class AddReplenishmentToInventoryItem implements Migration, OrderedMigrationInte
             $schema,
             $table,
             'replenishment',
-            'marello_product_reple',
+            'marello_inv_reple',
             false,
             false,
             [

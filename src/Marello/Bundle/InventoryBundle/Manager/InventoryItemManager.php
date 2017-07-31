@@ -68,7 +68,7 @@ class InventoryItemManager implements InventoryItemManagerInterface
      */
     public function getDefaultReplenishment()
     {
-        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_product_reple');
+        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
         $repo = $this->doctrineHelper->getEntityRepository($replenishmentClass);
         return $repo->findOneBy(['default' => 1]);
     }

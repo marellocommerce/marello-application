@@ -1,13 +1,13 @@
 <?php
 
-namespace Marello\Bundle\ProductBundle\Migrations\Data\ORM;
+namespace Marello\Bundle\InventoryBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
-class LoadProductReplenishmentData extends AbstractFixture
+class LoadReplenishmentData extends AbstractFixture
 {
     const NOS = 'never_out_of_stock';
     const EOL = 'end_of_life';
@@ -23,7 +23,7 @@ class LoadProductReplenishmentData extends AbstractFixture
      */
     public function load(ObjectManager $manager)
     {
-        $className = ExtendHelper::buildEnumValueClassName('marello_product_reple');
+        $className = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
 
         /** @var EnumValueRepository $enumRepo */
         $enumRepo = $manager->getRepository($className);

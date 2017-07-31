@@ -3,15 +3,22 @@
 namespace Marello\Bundle\InventoryBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloInventoryBundleInstaller implements Installation
+class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAwareInterface
 {
+    /** @var ExtendExtension */
+    protected $extendExtension;
+
     /**
      * {@inheritdoc}
      */
@@ -53,6 +60,19 @@ class MarelloInventoryBundleInstaller implements Installation
         $table = $schema->createTable('marello_inventory_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('product_id', 'integer', []);
+
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'replenishment',
+            'marello_inv_reple',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+            ]
+        );
+
         $table->setPrimaryKey(['id']);
         $table->addIndex(['product_id'], 'idx_40b8d0414584665a', []);
     }
@@ -68,9 +88,12 @@ class MarelloInventoryBundleInstaller implements Installation
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('inventory', 'integer', []);
         $table->addColumn('allocated_inventory', 'integer', []);
+        $table->addColumn('desired_inventory', 'integer', ['notnull' => false]);
+        $table->addColumn('purchase_inventory', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime');
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
+
 
         $table->setPrimaryKey(['id']);
         $table->addIndex(['inventory_item_id'], 'IDX_32D13BA4243D10EA', []);
@@ -240,5 +263,15 @@ class MarelloInventoryBundleInstaller implements Installation
             ['name'],
             ['onDelete' => null, 'onUpdate' => null]
         );
+    }
+
+    /**
+     * Sets the ExtendExtension
+     *
+     * @param ExtendExtension $extendExtension
+     */
+    public function setExtendExtension(ExtendExtension $extendExtension)
+    {
+        $this->extendExtension = $extendExtension;
     }
 }

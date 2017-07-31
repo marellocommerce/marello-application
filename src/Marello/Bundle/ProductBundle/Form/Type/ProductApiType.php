@@ -40,20 +40,6 @@ class ProductApiType extends AbstractType
                     'scale' => 2,
                 ]
             )
-            ->add(
-                'desiredStockLevel',
-                'number',
-                [
-                    'constraints' => new NotNull(),
-                ]
-            )
-            ->add(
-                'purchaseStockLevel',
-                'number',
-                [
-                    'constraints' => new NotNull(),
-                ]
-            )
             ->add('prices')
             ->add('channels')
             ->add('inventoryItems', 'collection', [
@@ -62,7 +48,6 @@ class ProductApiType extends AbstractType
                 'allow_delete'  => true,
                 'by_reference'  => false,
             ])
-            ->add('replenishment')
         ;
     }
 

@@ -38,10 +38,6 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
         $organization = $manager->getRepository(Organization::class)->getFirst();
 
         $handle = fopen(__DIR__ . '/dictionaries/purchase_orders.csv', 'r');
-
-        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_product_reple');
-        $replenishmentNOS = $manager->getRepository($replenishmentClass)->find('never_out_of_stock');
-
         if ($handle) {
             $headers = [];
             if (($data = fgetcsv($handle, 1000, ",")) !== false) {
@@ -68,9 +64,6 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
                 /** @var Product $product */
                 $product = $manager->getRepository(Product::class)
                     ->findOneBy(['sku' => $data['product']]);
-
-                //set replenishment to product to make sure it follows PO logic
-                $product->setReplenishment($replenishmentNOS);
 
                 $purchaseOrderItem = new PurchaseOrderItem();
                 $order->addItem(

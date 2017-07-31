@@ -91,24 +91,6 @@ class ProductType extends AbstractType
                 ]
             )
             ->add(
-                'desiredStockLevel',
-                'number',
-                [
-                    'label'         => 'marello.product.desired_stock_level.label',
-                    'required'      => true,
-                    'constraints'   => new NotNull(),
-                ]
-            )
-            ->add(
-                'purchaseStockLevel',
-                'number',
-                [
-                    'label'         => 'marello.product.purchase_stock_level.label',
-                    'required'      => true,
-                    'constraints'   => new NotNull(),
-                ]
-            )
-            ->add(
                 'addSalesChannels',
                 'oro_entity_identifier',
                 [

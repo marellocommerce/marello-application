@@ -6,14 +6,13 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
@@ -25,8 +24,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
     /** @var ObjectManager $manager */
     protected $manager;
-
-    protected $replenishments;
 
     /**
      * @var ContainerInterface
@@ -68,9 +65,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ->getRepository('MarelloInventoryBundle:Warehouse')
             ->getDefault();
 
-        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_product_reple');
-        $this->replenishments = $this->manager->getRepository($replenishmentClass)->findAll();
-
         $this->loadProducts();
     }
 
@@ -109,8 +103,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product = new Product();
         $product->setSku($data['sku']);
         $product->setName($data['name']);
-        $product->setDesiredStockLevel(rand($data['stock_level'], $data['stock_level'] + 10));
-        $product->setPurchaseStockLevel(rand(1, $product->getDesiredStockLevel()));
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight(mt_rand(50, 300) / 100);
 
@@ -165,8 +157,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
          * add suppliers per product
          */
         $this->addProductSuppliers($product);
-
-        $product->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
 
         $this->manager->persist($product);
 

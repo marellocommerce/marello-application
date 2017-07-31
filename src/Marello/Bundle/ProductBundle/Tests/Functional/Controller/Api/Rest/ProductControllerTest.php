@@ -118,8 +118,6 @@ class ProductControllerTest extends WebTestCase
             'name'      => 'New Product',
             'sku'       => 'NEW-SKU',
             'status'    => 'enabled',
-            'desiredStockLevel' => 10,
-            'purchaseStockLevel' => 2,
             'inventoryItems' => [
                 ['stock' => 10, 'warehouse' => $this->getDefaultWarehouse()->getId()],
             ],
@@ -172,8 +170,6 @@ class ProductControllerTest extends WebTestCase
             'name'      => 'New Product',
             'sku'       => 'NEW-SKU',
             'status'    => 'enabled',
-            'desiredStockLevel' => 10,
-            'purchaseStockLevel' => 2,
             'inventoryItems' => [
                 ['stock' => 10, 'warehouse' => -5 /* wrong ID */],
             ],
@@ -205,8 +201,6 @@ class ProductControllerTest extends WebTestCase
         $data = [
             'name'      => 'New name of product',
             'sku'       => $product->getSku(),
-            'desiredStockLevel' => 10,
-            'purchaseStockLevel' => 2,
             'status'    => $product->getStatus()->getName(),
             'inventoryItems' => $product->getInventoryItems()->map(function (InventoryItem $item) {
                 return ['stock' => $item->getStock(), 'warehouse' => $item->getWarehouse()->getId()];
@@ -214,7 +208,6 @@ class ProductControllerTest extends WebTestCase
             'channels'  => $product->getChannels()->map(function (SalesChannel $channel) {
                 return $channel->getId();
             })->toArray(),
-            'replenishment' => LoadProductReplenishmentData::NOS
         ];
 
         $this->client->request(

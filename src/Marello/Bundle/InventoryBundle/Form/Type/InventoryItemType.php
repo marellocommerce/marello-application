@@ -21,7 +21,7 @@ class InventoryItemType extends AbstractType
         $builder
             ->add('replenishment', 'oro_enum_choice',
                 [
-                    'enum_code' => 'marello_product_reple',
+                    'enum_code' => 'marello_inv_reple',
                     'required'  => true,
                     'label'     => 'marello.product.replenishment.label',
                 ]
