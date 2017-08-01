@@ -2,9 +2,9 @@
 
 namespace Marello\Bundle\OrderBundle\Provider;
 
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Templating\EngineInterface;
 
@@ -40,8 +40,9 @@ class OrderAddressFormChangesProvider implements FormChangesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getFormChangesData(FormInterface $form, array $submittedData = null)
+    public function processFormChanges(FormChangeContextInterface $context)
     {
+        $form = $context->getForm();
         if ($form->has($this->fieldName)) {
             $orderFormName = $form->getName();
             $field = $form->get($this->fieldName);
@@ -55,12 +56,12 @@ class OrderAddressFormChangesProvider implements FormChangesProviderInterface
                 )
                 ->getForm();
 
-            $form->submit($submittedData);
+            $form->submit($context->getSubmittedData());
 
-            return $this->renderForm($form->get($this->fieldName)->createView());
+            $result = $context->getResult();
+            $result[$this->fieldName] = $this->renderForm($form->get($this->fieldName)->createView());
+            $context->setResult($result);
         }
-        
-        return null;
     }
 
     /**

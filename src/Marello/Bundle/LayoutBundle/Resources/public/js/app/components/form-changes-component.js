@@ -59,7 +59,7 @@ define(function(require) {
                     self.$el.find(field).attr('data-' + self.options.prefix + '-form-changes-trigger', true);
                 });
             }
-            
+
             this.initializeListener();
 
             mediator.on(this.options.events.init, this.initializeListener, this);

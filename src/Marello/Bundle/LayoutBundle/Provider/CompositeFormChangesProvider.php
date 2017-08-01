@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\LayoutBundle\Provider;
 
-use Symfony\Component\Form\FormInterface;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 
 class CompositeFormChangesProvider implements FormChangesProviderInterface
 {
@@ -32,10 +32,9 @@ class CompositeFormChangesProvider implements FormChangesProviderInterface
 
         return $this;
     }
-    
+
     /**
-     * @param array $fields
-     * @return $this
+     * {@inheritdoc}
      */
     public function setRequiredFields(array $fields = null)
     {
@@ -53,31 +52,30 @@ class CompositeFormChangesProvider implements FormChangesProviderInterface
     public function addProvider(FormChangesProviderInterface $provider, $dataClass, $field)
     {
         $this->providers[$dataClass][$field] = $provider;
-        
+
         return $this;
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function getFormChangesData(FormInterface $form, array $submittedData = null)
+    public function processFormChanges(FormChangeContextInterface $context)
     {
         if ($this->requiredDataClass === null) {
             throw new \LogicException('requiredDataClass should be specified');
         }
 
-        $result = [];
-        /** @var FormChangesProviderInterface $provider */
-        foreach ($this->providers[$this->requiredDataClass] as $field => $provider) {
-            if (count($this->requiredFields) > 0) {
-                if (in_array($field, $this->requiredFields, true)) {
-                    $result[$field] = $provider->getFormChangesData($form, $submittedData);
+        if (array_key_exists($this->requiredDataClass, $this->providers)) {
+            /** @var FormChangesProviderInterface $provider */
+            foreach ($this->providers[$this->requiredDataClass] as $field => $provider) {
+                if (count($this->requiredFields) > 0) {
+                    if (in_array($field, $this->requiredFields, true)) {
+                        $provider->processFormChanges($context);
+                    }
+                } else {
+                    $provider->processFormChanges($context);
                 }
-            } else {
-                $result[$field] = $provider->getFormChangesData($form, $submittedData);
             }
         }
-
-        return $result;
     }
 }

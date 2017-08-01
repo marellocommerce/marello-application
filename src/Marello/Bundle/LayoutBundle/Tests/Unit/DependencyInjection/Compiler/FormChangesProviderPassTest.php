@@ -83,10 +83,10 @@ class FormChangesProviderPassTest extends \PHPUnit_Framework_TestCase
             ->willReturn($registryServiceDefinition);
 
         $taggedServices = [
-            'service.name.1' => [['class' =>'class1', 'type' => 'type1']],
-            'service.name.2' => [['class' =>'class1', 'type' => 'type2']],
-            'service.name.3' => [['class' =>'class1', 'type' => 'type3']],
-            'service.name.4' => [['class' =>'class1', 'type' => 'type4']],
+            'service.name.1' => [['class' =>'class1', 'type' => 'type1', 'priority' => 40]],
+            'service.name.2' => [['class' =>'class1', 'type' => 'type2', 'priority' => 20]],
+            'service.name.3' => [['class' =>'class1', 'type' => 'type3', 'priority' => 30]],
+            'service.name.4' => [['class' =>'class1', 'type' => 'type4', 'priority' => 10]],
         ];
 
         $this->containerBuilder
@@ -98,10 +98,10 @@ class FormChangesProviderPassTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly(4))
             ->method('addMethodCall')
             ->withConsecutive(
-                ['addProvider', [new Reference('service.name.1'), 'class1', 'type1']],
+                ['addProvider', [new Reference('service.name.4'), 'class1', 'type4']],
                 ['addProvider', [new Reference('service.name.2'), 'class1', 'type2']],
                 ['addProvider', [new Reference('service.name.3'), 'class1', 'type3']],
-                ['addProvider', [new Reference('service.name.4'), 'class1', 'type4']]
+                ['addProvider', [new Reference('service.name.1'), 'class1', 'type1']]
             );
 
         $this->compilerPass->process($this->containerBuilder);

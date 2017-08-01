@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider;
 
+use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 use Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -40,7 +41,7 @@ class OrderAddressFormChangesProviderTest extends \PHPUnit_Framework_TestCase
             $this->addressType);
     }
 
-    public function testGetFormChangesData()
+    public function testProcessFormChanges()
     {
         $type = $this->createMock('Symfony\Component\Form\ResolvedFormTypeInterface');
         $type->expects($this->once())->method('getName')->willReturn('type');
@@ -96,8 +97,14 @@ class OrderAddressFormChangesProviderTest extends \PHPUnit_Framework_TestCase
         $newForm->expects($this->once())->method('get')->with($addressField)->willReturn($newField);
         $newForm->expects($this->once())->method('submit')->with($this->isType('array'));
 
-        $data = $this->orderAddressFormChangesProvider->getFormChangesData($oldForm, ['order' => []]);
+        $context = new FormChangeContext([
+            FormChangeContext::FORM_FIELD => $oldForm,
+            FormChangeContext::SUBMITTED_DATA_FIELD => ['order' => []],
+            FormChangeContext::RESULT_FIELD => []
+        ]);
 
-        $this->assertEquals('view1', $data);
+        $this->orderAddressFormChangesProvider->processFormChanges($context);
+
+        $this->assertEquals([$addressField => 'view1'], $context->getResult());
     }
 }

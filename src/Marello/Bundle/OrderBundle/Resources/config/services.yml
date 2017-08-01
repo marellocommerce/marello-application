@@ -61,6 +61,13 @@ services:
         tags:
             - { name: oro_dashboard.big_number.provider, alias: marello-order }
 
+    marello_order.provider.form_changes.items:
+        class: Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider
+        arguments:
+            - '@translator'
+        tags:
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: items, priority: 10 }
+
     marello_order.provider.customer_email_owner:
         class: Marello\Bundle\OrderBundle\Provider\CustomerEmailOwnerProvider
         tags:
@@ -76,7 +83,7 @@ services:
             - '@form.factory'
             - 'billing'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: billingAddress }
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: billingAddress, priority: 20 }
 
     marello_order.provider.form_changes.shipping_address:
         class: Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider
@@ -85,7 +92,7 @@ services:
             - '@form.factory'
             - 'shipping'
         tags:
-            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: shippingAddress }
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: shippingAddress, priority: 30 }
 
     marello_order.search_handler.customer:
         parent: oro_form.autocomplete.search_handler

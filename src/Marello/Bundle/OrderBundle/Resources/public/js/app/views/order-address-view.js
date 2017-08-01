@@ -65,6 +65,13 @@ define(function(require) {
             this.initLayout().done(_.bind(this.handleLayoutInit, this));
 
             this.loadingMaskView = new LoadingMaskView({container: this.$el});
+            if (this.options.selectors.subtotalsFields.length > 0) {
+                _.each(this.options.selectors.subtotalsFields, function(field) {
+                    $(field).on('change', function() {
+                        mediator.trigger('order:form-changes:trigger', {updateFields: ['items']});
+                    });
+                });
+            }
 
             mediator.on('order:form-changes:trigger', this.loadingStart, this);
             mediator.on('order:form-changes:load', this.loadFormChanges, this);
@@ -169,7 +176,10 @@ define(function(require) {
         /**
          * Show loading view
          */
-        loadingStart: function() {
+        loadingStart: function(e) {
+            if (e.updateFields !== undefined && _.contains(e.updateFields, this.options.type + "Address") !== true) {
+                return;
+            }
             this.loadingMaskView.show();
         },
 

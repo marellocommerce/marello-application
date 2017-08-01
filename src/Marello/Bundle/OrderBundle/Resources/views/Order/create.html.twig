@@ -56,7 +56,12 @@
                     view: 'marelloorder/js/app/views/order-address-view',
                     type: 'billing',
                     selectors: {
-                        address: idAddressBlock
+                        address: idAddressBlock,
+                        subtotalsFields: [
+                        '#' ~ form.billingAddress.country.vars.id,
+                        '#' ~ form.billingAddress.region.vars.id,
+                        '#' ~ form.billingAddress.postalCode.vars.id
+                        ]
                     }
                 }|json_encode }}">
             {{ form_widget(form.billingAddress) }}
@@ -74,7 +79,12 @@
                     view: 'marelloorder/js/app/views/order-address-view',
                     type: 'shipping',
                     selectors: {
-                        address: idAddressBlock
+                        address: idAddressBlock,
+                        subtotalsFields: [
+                        '#' ~ form.shippingAddress.country.vars.id,
+                        '#' ~ form.shippingAddress.region.vars.id,
+                        '#' ~ form.shippingAddress.postalCode.vars.id
+                        ]
                     }
                 }|json_encode }}">
             {{ form_widget(form.shippingAddress) }}
@@ -85,7 +95,7 @@
              data-page-component-module="oroui/js/app/components/view-component"
              data-page-component-options="{{ {
                  view: 'marelloorder/js/app/views/order-items-view',
-                 prices: prices|default({})
+                 data: data|default({})
              }|json_encode }}">
             {{ form_widget(form.items) }}
             {{ form_errors(form.items) }}

@@ -27,28 +27,41 @@ class FormChangesProviderPass implements CompilerPassInterface
 
         $registryDefinition = $container->getDefinition(static::COMPOSITE_SERVICE);
 
-        foreach ($services as $id => $tags) {
-            foreach ($tags as $attributes) {
-                if (!array_key_exists('class', $attributes)) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Attribute "class" is missing for "%s" tag at "%s" service', self::TAG, $id)
-                    );
-                }
-                if (!array_key_exists('type', $attributes)) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Attribute "type" is missing for "%s" tag at "%s" service', self::TAG, $id)
-                    );
-                }
-
-                $reference = new Reference($id);
-                $registryDefinition->addMethodCall(
-                    'addProvider',
-                    [
-                        $reference,
-                        $attributes['class'],
-                        $attributes['type']
-                    ]);
+        $providers = [];
+        foreach ($services as $id => $attributes) {
+            if (!array_key_exists('class', $attributes[0])) {
+                throw new \InvalidArgumentException(
+                    sprintf('Attribute "class" is missing for "%s" tag at "%s" service', self::TAG, $id)
+                );
             }
+            if (!array_key_exists('type', $attributes[0])) {
+                throw new \InvalidArgumentException(
+                    sprintf('Attribute "type" is missing for "%s" tag at "%s" service', self::TAG, $id)
+                );
+            }
+            if (!array_key_exists('priority', $attributes[0])) {
+                throw new \InvalidArgumentException(
+                    sprintf('Attribute "priority" is missing for "%s" tag at "%s" service', self::TAG, $id)
+                );
+            }
+            $providers[(int)$attributes[0]['priority']][] = [
+                'id' => $id,
+                'class' => $attributes[0]['class'],
+                'type' => $attributes[0]['type'],
+            ];
+        }
+        ksort($providers);
+        $providers = call_user_func_array('array_merge', $providers);
+
+        foreach ($providers as $provider) {
+            $registryDefinition->addMethodCall(
+                'addProvider',
+                [
+                    new Reference($provider['id']),
+                    $provider['class'],
+                    $provider['type']
+                ]
+            );
         }
     }
 }

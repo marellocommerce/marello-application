@@ -12,6 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderType extends AbstractType
 {
+    const NAME = 'marello_order_order';
+
     /**
      * @var SalesChannelRepository
      */
@@ -64,14 +66,6 @@ class OrderType extends AbstractType
                     'required' => false,
                 ]
             )
-//            ->add(
-//                'localization',
-//                EntityType::class,
-//                [
-//                    'class' => 'OroLocaleBundle:Localization',
-//                    'required' => false,
-//                ]
-//            )
             ->add('items', 'marello_order_item_collection');
 
         $this->addAddress($builder, 'billing', $options);
@@ -117,6 +111,6 @@ class OrderType extends AbstractType
      */
     public function getName()
     {
-        return 'marello_order_order';
+        return self::NAME;
     }
 }

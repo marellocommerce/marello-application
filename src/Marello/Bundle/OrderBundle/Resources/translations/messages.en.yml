@@ -56,6 +56,7 @@ marello:
             id.label:               Id
             sku.label:              SKU
             tax.label:              Tax
+            taxCode.label:          Tax Code
             name.label:             Product
             order.label:            Order
             price.label:            Price
@@ -71,6 +72,9 @@ marello:
             discount_percent.label: Discount Percent
             tax_percent.label:      Tax Percent
             return_items.label:     Returned items
+
+            messages:
+                product_not_salable:    Product cannot be sold in the chosen Sales Channel
 
         # Customer Entity
         customer:
