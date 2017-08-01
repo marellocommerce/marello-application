@@ -2,60 +2,123 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Entity;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
+use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+use Marello\Bundle\ProductBundle\Entity\Variant;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Component\Testing\Unit\EntityTrait;
 
 class ProductTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var Product $entity */
+    use EntityTrait;
+    use EntityTestCaseTrait;
+
+    /**
+     * @var Product $entity
+     */
     protected $entity;
 
     protected function setUp()
     {
-        $name         = Product::class;
-        $this->entity = new $name();
+        $this->entity = new Product();
     }
 
-    public function tearDown()
+    public function testAccessors()
     {
-        unset($this->entity);
+        $this->assertPropertyAccessors(new Product(), [
+            ['id', 42],
+            ['name', 'some string'],
+            ['sku', 'some string'],
+            ['status', new ProductStatus('active')],
+            ['type', 'some string'],
+            ['cost', 'some string'],
+            ['weight', 3.1415926],
+            ['warranty', 42],
+            ['organization', new Organization()],
+            ['variant', new Variant()],
+            ['data', []],
+            ['desiredStockLevel', 42],
+            ['purchaseStockLevel', 42],
+            ['preferredSupplier', new Supplier()],
+            ['taxCode', new TaxCode()],
+            ['replenishment', 'some string'],
+            ['price', 'some string'],
+            ['createdAt', new \DateTime()],
+            ['updatedAt', new \DateTime()]
+        ]);
+        $this->assertPropertyCollections(new Product(), [
+            ['prices', new ProductPrice()],
+            ['channels', new SalesChannel()],
+            ['channelPrices', new ProductChannelPrice()],
+            ['inventoryItems', new InventoryItem((new Warehouse()))],
+            ['suppliers', new ProductSupplierRelation()],
+            ['salesChannelTaxCodes', new ProductChannelTaxRelation()],
+        ]);
     }
 
     /**
-     * @dataProvider  getSetDataProvider
+     * @dataProvider getSalesChannelTaxCodeDataProvider
      *
-     * @param string $property
-     * @param mixed  $value
-     * @param mixed  $expected
+     * @param SalesChannel $productChannel
+     * @param SalesChannel $estimationChannel
+     * @param TaxCode $channelTaxCode
+     * @param TaxCode|null $expectedTaxCode
      */
-    public function testSetGet($property, $value = null, $expected = null)
-    {
-        if ($value !== null) {
-            call_user_func_array([$this->entity, 'set' . ucfirst($property)], [$value]);
-        }
+    public function testGetSalesChannelTaxCode(
+        SalesChannel $productChannel,
+        SalesChannel $estimationChannel,
+        TaxCode $channelTaxCode,
+        $expectedTaxCode
+    ) {
+        /** @var TaxCode $defaultTaxCode */
+        $defaultTaxCode = $this->getEntity(TaxCode::class, ['id' => 3, 'code' => 'TAX_CODE_DEFAULT']);
+        /** @var ProductChannelTaxRelation $productChannelTaxRelation */
+        $productChannelTaxRelation = $this->getEntity(
+            ProductChannelTaxRelation::class,
+            [
+                'id' => 1,
+                'salesChannel' => $productChannel,
+                'taxCode' => $channelTaxCode
+            ]);
 
-        $this->assertEquals($expected, call_user_func_array([$this->entity, 'get' . ucfirst($property)], []));
+        $this->entity
+            ->setTaxCode($defaultTaxCode)
+            ->addSalesChannelTaxCode($productChannelTaxRelation);
+
+        static::assertEquals($expectedTaxCode, $this->entity->getSalesChannelTaxCode($estimationChannel));
     }
 
     /**
      * @return array
      */
-    public function getSetDataProvider()
+    public function getSalesChannelTaxCodeDataProvider()
     {
-        $name         = 'New Product';
-        $sku          = 'product123';
-        $createdAt    = new \DateTime('now');
-        $updatedAt    = new \DateTime('now');
-        $organization = $this->getMock('Oro\Bundle\OrganizationBundle\Entity\Organization');
-        $supplier     = $this->getMock(Supplier::class);
-
+        $validChannel = $this->getEntity(SalesChannel::class, ['id' => 1, 'currency' => 'EUR']);
+        $notValidChannel = $this->getEntity(SalesChannel::class, ['id' => 2, 'currency' => 'EUR']);
+        $channelTaxCode = $this->getEntity(TaxCode::class, ['id' => 1, 'code' => 'TAX_CODE_CHANNEL']);
         return [
-            'name'         => ['name', $name, $name],
-            'sku'          => ['sku', $sku, $sku],
-            'createdAt'    => ['createdAt', $createdAt, $createdAt],
-            'updatedAt'    => ['updatedAt', $updatedAt, $updatedAt],
-            'organization' => ['organization', $organization, $organization],
-            'preferredSupplier' => ['preferredSupplier', $supplier, $supplier]
+            'withChannelTaxCode' => [
+                'productChannel' => $validChannel,
+                'estimationChannel' => $validChannel,
+                'channelTaxCode' => $channelTaxCode,
+                'expectedTaxCode' => $channelTaxCode,
+            ],
+            'noChannelTaxCode' => [
+                'productChannel' => $validChannel,
+                'estimationChannel' => $notValidChannel,
+                'channelTaxCode' => $channelTaxCode,
+                'expectedTaxCode' => null,
+            ],
         ];
     }
 }

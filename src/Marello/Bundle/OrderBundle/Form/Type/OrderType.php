@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
-use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
@@ -18,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class OrderType extends AbstractType
 {
     const NAME = 'marello_order_order';
-    
+
     /**
      * @var SalesChannelRepository
      */
@@ -71,16 +70,35 @@ class OrderType extends AbstractType
                     'required' => false,
                 ]
             )
-            ->add('billingAddress', AddressType::class)
-            ->add('shippingAddress', AddressType::class)
             ->add('items', OrderItemCollectionType::class)
             ->add('shippingMethod', ShippingMethodSelectType::class);
 
-        /*
-         * Takes care of setting order totals.
-         */
+        $this->addAddress($builder, 'billing', $options);
+        $this->addAddress($builder, 'shipping', $options);
+
         $builder->addEventSubscriber(new OrderTotalsSubscriber());
         $builder->addEventSubscriber(new CurrencySubscriber());
+    }
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param string $type
+     * @param array $options
+     */
+    protected function addAddress(FormBuilderInterface $builder, $type, $options)
+    {
+        $builder
+            ->add(
+                    sprintf('%sAddress', $type),
+                    OrderAddressType::NAME,
+                    [
+                        'label' => sprintf('oro.order.%s_address.label', $type),
+                        'object' => $options['data'],
+                        'required' => false,
+                        'addressType' => $type,
+                        'isEditEnabled' => true
+                    ]
+                );
     }
 
     /**

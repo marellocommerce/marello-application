@@ -53,7 +53,7 @@ services:
             - '@doctrine.orm.entity_manager'
 
     marello_order.provider.order_statistic_provider:
-        class: %marello_order.provider.order_statistic_provider.class%
+        class: '%marello_order.provider.order_statistic_provider.class%'
         arguments:
             - '@doctrine'
             - '@oro_security.acl_helper'
@@ -61,15 +61,43 @@ services:
         tags:
             - { name: oro_dashboard.big_number.provider, alias: marello-order }
 
+    marello_order.provider.form_changes.items:
+        class: Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider
+        arguments:
+            - '@translator'
+        tags:
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: items, priority: 10 }
+
     marello_order.provider.customer_email_owner:
         class: Marello\Bundle\OrderBundle\Provider\CustomerEmailOwnerProvider
         tags:
             - { name: oro_email.owner.provider, order: 1 }
 
+    marello_order.provider.customer_address:
+        class: Marello\Bundle\OrderBundle\Provider\OrderCustomerAddressProvider
+
+    marello_order.provider.form_changes.billing_address:
+        class: Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider
+        arguments:
+            - '@templating'
+            - '@form.factory'
+            - 'billing'
+        tags:
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: billingAddress, priority: 20 }
+
+    marello_order.provider.form_changes.shipping_address:
+        class: Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider
+        arguments:
+            - '@templating'
+            - '@form.factory'
+            - 'shipping'
+        tags:
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: shippingAddress, priority: 30 }
+
     marello_order.search_handler.customer:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - %marello_order_customer.class%
+            - '%marello_order_customer.class%'
             - ["namePrefix", "firstName", "middleName", "lastName", "nameSuffix"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: marello_customers, acl_resource: marello_customer_view }
