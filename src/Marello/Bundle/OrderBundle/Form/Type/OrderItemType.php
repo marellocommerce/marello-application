@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Marello\Bundle\OrderBundle\Form\DataTransformer\TaxCodeToCodeTransformer;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderItemPurchasePriceSubscriber;
+use Marello\Bundle\ProductBundle\Form\Type\ProductSalesChannelAwareSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,12 +14,25 @@ class OrderItemType extends AbstractType
     const NAME = 'marello_order_item';
 
     /**
+     * @var TaxCodeToCodeTransformer
+     */
+    protected $taxCodeModelTransformer;
+
+    /**
+     * @param TaxCodeToCodeTransformer $taxCodeModelTransformer
+     */
+    public function __construct(TaxCodeToCodeTransformer $taxCodeModelTransformer)
+    {
+        $this->taxCodeModelTransformer = $taxCodeModelTransformer;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('product', 'marello_product_sales_channel_aware_select', [
+            ->add('product', ProductSalesChannelAwareSelectType::class, [
                 'required'       => true,
                 'label'          => 'marello.product.entity_label',
                 'create_enabled' => false,
@@ -31,6 +46,9 @@ class OrderItemType extends AbstractType
             ->add('tax', 'text', [
                 'read_only' => true,
             ])
+            ->add('taxCode', 'text', [
+                'read_only' => true,
+            ])
             ->add('rowTotalExclTax', 'text', [
                 'read_only' => true,
             ])
@@ -39,6 +57,7 @@ class OrderItemType extends AbstractType
             ])
         ;
 
+        $builder->get('taxCode')->addModelTransformer($this->taxCodeModelTransformer);
         $builder->addEventSubscriber(new OrderItemPurchasePriceSubscriber());
     }
 

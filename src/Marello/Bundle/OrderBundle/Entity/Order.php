@@ -426,8 +426,10 @@ class Order extends ExtendOrder implements
      */
     public function addItem(OrderItem $item)
     {
-        $this->items->add($item);
-        $item->setOrder($this);
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->setOrder($this);
+        }
 
         return $this;
     }
@@ -439,7 +441,9 @@ class Order extends ExtendOrder implements
      */
     public function removeItem(OrderItem $item)
     {
-        $this->items->removeElement($item);
+        if ($this->items->contains($item)) {
+            $this->items->removeElement($item);
+        }
 
         return $this;
     }
@@ -561,7 +565,7 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @return float
+     * @return string
      */
     public function getShippingMethod()
     {
@@ -569,7 +573,7 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @param float $shippingMethod
+     * @param string $shippingMethod
      *
      * @return $this
      */

@@ -647,7 +647,9 @@ class Product extends ExtendProduct implements
      */
     public function addInventoryItem(InventoryItem $item)
     {
-        $this->inventoryItems->add($item->setProduct($this));
+        if (!$this->inventoryItems->contains($item)) {
+            $this->inventoryItems->add($item->setProduct($this));
+        }
 
         return $this;
     }
@@ -659,8 +661,10 @@ class Product extends ExtendProduct implements
      */
     public function removeInventoryItem(InventoryItem $item)
     {
-        $this->inventoryItems->removeElement($item);
-
+        if ($this->inventoryItems->contains($item)) {
+            $this->inventoryItems->removeElement($item);
+        }
+        
         return $this;
     }
 
@@ -721,7 +725,9 @@ class Product extends ExtendProduct implements
      */
     public function addSupplier(ProductSupplierRelation $supplier)
     {
-        $this->suppliers->add($supplier);
+        if (!$this->suppliers->contains($supplier)) {
+            $this->suppliers->add($supplier);
+        }
 
         return $this;
     }
@@ -743,7 +749,9 @@ class Product extends ExtendProduct implements
      */
     public function removeSupplier(ProductSupplierRelation $supplier)
     {
-        $this->suppliers->removeElement($supplier);
+        if ($this->suppliers->contains($supplier)) {
+            $this->suppliers->removeElement($supplier);
+        }
 
         return $this;
     }
@@ -818,7 +826,9 @@ class Product extends ExtendProduct implements
      */
     public function addSalesChannelTaxCode(ProductChannelTaxRelation $salesChannelTaxCode)
     {
-        $this->salesChannelTaxCodes[] = $salesChannelTaxCode;
+        if (!$this->salesChannelTaxCodes->contains($salesChannelTaxCode)) {
+            $this->salesChannelTaxCodes->add($salesChannelTaxCode);
+        }
 
         return $this;
     }
@@ -827,10 +837,16 @@ class Product extends ExtendProduct implements
      * Remove salesChannelTaxCode
      *
      * @param ProductChannelTaxRelation $salesChannelTaxCode
+     *
+     * @return Product
      */
     public function removeSalesChannelTaxCode(ProductChannelTaxRelation $salesChannelTaxCode)
     {
-        $this->salesChannelTaxCodes->removeElement($salesChannelTaxCode);
+        if ($this->salesChannelTaxCodes->contains($salesChannelTaxCode)) {
+            $this->salesChannelTaxCodes->removeElement($salesChannelTaxCode);
+        }
+
+        return $this;
     }
 
     /**
@@ -841,5 +857,28 @@ class Product extends ExtendProduct implements
     public function getSalesChannelTaxCodes()
     {
         return $this->salesChannelTaxCodes;
+    }
+
+    /**
+     * Get salesChannelTaxCode
+     *
+     * @param SalesChannel $salesChannel
+     * @return TaxCode|null
+     */
+    public function getSalesChannelTaxCode(SalesChannel $salesChannel)
+    {
+        /** @var ProductChannelTaxRelation $productChannelTaxRelation */
+        $productChannelTaxRelation = $this->getSalesChannelTaxCodes()
+            ->filter(function ($productChannelTaxRelation) use ($salesChannel) {
+                /** @var ProductChannelTaxRelation $productChannelTaxRelation */
+                return $productChannelTaxRelation->getSalesChannel() === $salesChannel;
+            })
+            ->first();
+
+        if ($productChannelTaxRelation) {
+            return $productChannelTaxRelation->getTaxCode();
+        }
+
+        return null;
     }
 }

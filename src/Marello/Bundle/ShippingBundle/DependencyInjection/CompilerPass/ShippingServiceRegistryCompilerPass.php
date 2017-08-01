@@ -4,6 +4,7 @@ namespace Marello\Bundle\ShippingBundle\DependencyInjection\CompilerPass;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 class ShippingServiceRegistryCompilerPass implements CompilerPassInterface
 {
@@ -20,27 +21,34 @@ class ShippingServiceRegistryCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        if (!$container->hasDefinition(static::REGISTRY_SERVICE_ID)) {
+            return;
+        }
+
         $integrations  = $container->findTaggedServiceIds(self::SHIPPING_INTEGRATION_TAG);
         $dataFactories = $container->findTaggedServiceIds(self::SHIPPING_DATA_FACTORY_TAG);
         $dataProviders = $container->findTaggedServiceIds(self::SHIPPING_DATA_PROVIDER_TAG);
+        if (empty($integrations) || empty($dataFactories) || empty($dataProviders)) {
+            return;
+        }
 
-        $registry = $container->findDefinition(self::REGISTRY_SERVICE_ID);
+        $registry = $container->getDefinition(self::REGISTRY_SERVICE_ID);
 
         foreach ($integrations as $integration => $tags) {
             foreach ($tags as $tag) {
-                $registry->addMethodCall('registerIntegration', [$tag['alias'], $integration]);
+                $registry->addMethodCall('registerIntegration', [$tag['alias'], new Reference($integration)]);
             }
         }
 
         foreach ($dataFactories as $factory => $tags) {
             foreach ($tags as $tag) {
-                $registry->addMethodCall('registerDataFactory', [$tag['alias'], $factory]);
+                $registry->addMethodCall('registerDataFactory', [$tag['alias'], new Reference($factory)]);
             }
         }
         
         foreach ($dataProviders as $provider => $tags) {
             foreach ($tags as $tag) {
-                $registry->addMethodCall('registerDataProvider', [$tag['class'], $provider]);
+                $registry->addMethodCall('registerDataProvider', [$tag['class'], new Reference($provider)]);
             }
         }
     }
