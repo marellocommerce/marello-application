@@ -9,7 +9,8 @@ services:
         class: Marello\Bundle\PricingBundle\Provider\ChannelPriceProvider
         arguments:
             - '@doctrine'
-            - '@translator'
+        tags:
+            - { name: marello_order.order_item_data_provider, type: price, priority: 10 }
 
     marello_productprice.pricing.form.event_listener.pricing_subscriber:
         class: Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber

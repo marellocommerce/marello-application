@@ -13,6 +13,8 @@ services:
 
     marello_order.form.type.order_item:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderItemType
+        arguments:
+            - '@marello_order.form.data_transformer.tax_code_to_code'
         tags:
             - { name: form.type, alias: marello_order_item }
 
@@ -26,6 +28,14 @@ services:
         tags:
             - { name: form.type, alias: marello_customer }
 
+    marello_order.form.type.address:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderAddressType
+        arguments:
+            - '@oro_locale.formatter.address'
+            - '@marello_order.provider.customer_address'
+            - '@oro_importexport.serializer'
+        tags:
+            - { name: form.type, alias: marello_order_address }
 
     marello_order.form.type.customer_select:
         class: Marello\Bundle\OrderBundle\Form\Type\CustomerSelectType
@@ -48,6 +58,7 @@ services:
         class: Marello\Bundle\OrderBundle\Form\Type\OrderItemApiType
         arguments:
             - '@marello_order.form.data_transformer.product_to_sku'
+            - '@marello_order.form.data_transformer.tax_code_to_code'
         tags:
             - { name: form.type, alias: marello_order_item_api }
 
@@ -124,3 +135,8 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - MarelloSalesBundle:SalesChannel
+
+    marello_order.form.data_transformer.tax_code_to_code:
+        class: Marello\Bundle\OrderBundle\Form\DataTransformer\TaxCodeToCodeTransformer
+        arguments:
+            - '@doctrine.orm.entity_manager'

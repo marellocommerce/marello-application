@@ -56,6 +56,7 @@ marello:
             id.label:               Id
             sku.label:              SKU
             tax.label:              Tax
+            taxCode.label:          Tax Code
             name.label:             Product
             order.label:            Order
             price.label:            Price
@@ -71,6 +72,9 @@ marello:
             discount_percent.label: Discount Percent
             tax_percent.label:      Tax Percent
             return_items.label:     Returned items
+
+            messages:
+                product_not_salable:    Product cannot be sold in the chosen Sales Channel
 
         # Customer Entity
         customer:
@@ -126,3 +130,13 @@ marello:
             top_revenue_channels:
                 title: Order revenue per sales channel
                 description: Order revenue per sales channel
+
+        sections:
+            general: General
+            shipping_information: Shipping Information
+
+        form:
+            address:
+                choose: Select an address
+                choose_or_create: Select an existing address or enter a new address below
+                manual: Enter address manually

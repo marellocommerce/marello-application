@@ -1,0 +1,7 @@
+services:
+    marello_shipping.form.type.shipping_method_select:
+        class: Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodSelectType
+        arguments:
+            - '@marello_shipping.integration.shipping_service_registry'
+        tags:
+            - { name: form.type }

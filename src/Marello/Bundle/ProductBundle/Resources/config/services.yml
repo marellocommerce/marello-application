@@ -1,12 +1,12 @@
 parameters:
-    marello_product.entity.class:                 Marello\Bundle\ProductBundle\Entity\Product
+    marello_product.entity.class: Marello\Bundle\ProductBundle\Entity\Product
 
 services:
     # Autocomplete search handler
     marello_product.form.autocomplete.product.search_handler:
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - %marello_product.entity.class%
+            - '%marello_product.entity.class%'
             - ["name", "sku"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: products, acl_resource: marello_product_view }
@@ -15,7 +15,7 @@ services:
         class: 'Marello\Bundle\ProductBundle\Autocomplete\SalesChannelProductHandler'
         parent: oro_form.autocomplete.search_handler
         arguments:
-            - %marello_product.entity.class%
+            - '%marello_product.entity.class%'
             - ["name", "sku"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: sales_channel_products, acl_resource: marello_product_view }
@@ -51,3 +51,10 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-supplier-grid, method: buildBeforeProductsBySupplier }
+
+    marello_product.provider.tax_code_provider:
+        class: Marello\Bundle\ProductBundle\Provider\ProductTaxCodeProvider
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: marello_order.order_item_data_provider, type: tax_code, priority: 20 }
