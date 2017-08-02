@@ -340,6 +340,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
+            null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
             'import',

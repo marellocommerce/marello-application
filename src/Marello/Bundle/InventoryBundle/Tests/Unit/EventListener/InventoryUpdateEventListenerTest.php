@@ -39,7 +39,7 @@ class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = $this->prepareEvent();
         $this->inventoryManager->expects($this->once())
-            ->method('updateInventoryItems')
+            ->method('updateInventoryLevels')
             ->with($this->inventoryUpdateContext);
 
         $this->listener->handleUpdateInventoryEvent($event);

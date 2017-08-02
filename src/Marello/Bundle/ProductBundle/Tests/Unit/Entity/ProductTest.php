@@ -2,8 +2,10 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Component\Testing\Unit\EntityTrait;
+
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -14,9 +16,6 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Component\Testing\Unit\EntityTestCaseTrait;
-use Oro\Component\Testing\Unit\EntityTrait;
 
 class ProductTest extends \PHPUnit_Framework_TestCase
 {
@@ -47,11 +46,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             ['organization', new Organization()],
             ['variant', new Variant()],
             ['data', []],
-            ['desiredStockLevel', 42],
-            ['purchaseStockLevel', 42],
             ['preferredSupplier', new Supplier()],
             ['taxCode', new TaxCode()],
-            ['replenishment', 'some string'],
             ['price', 'some string'],
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()]
@@ -60,7 +56,6 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             ['prices', new ProductPrice()],
             ['channels', new SalesChannel()],
             ['channelPrices', new ProductChannelPrice()],
-            ['inventoryItems', new InventoryItem((new Warehouse()))],
             ['suppliers', new ProductSupplierRelation()],
             ['salesChannelTaxCodes', new ProductChannelTaxRelation()],
         ]);

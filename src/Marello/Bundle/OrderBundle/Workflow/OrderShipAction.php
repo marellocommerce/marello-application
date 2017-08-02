@@ -65,6 +65,7 @@ class OrderShipAction extends OrderTransitionAction
     {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
+            null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
             'order_workflow.shipped',
