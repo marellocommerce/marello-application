@@ -114,7 +114,7 @@ class InventoryLevel
      *
      * @var int
      */
-    protected $desiredInventory;
+    protected $desiredInventory = 0;
 
     /**
      * @ORM\Column(name="purchase_inventory", type="integer")
@@ -128,7 +128,7 @@ class InventoryLevel
      *
      * @var int
      */
-    protected $purchaseInventory;
+    protected $purchaseInventory = 0;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")

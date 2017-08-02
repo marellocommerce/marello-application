@@ -60,6 +60,12 @@ class InventoryLevelType extends AbstractType
             ])
             ->add('inventoryQty', NumberType::class, [
                 'disabled' => true
+            ])
+            ->add('desiredInventory', NumberType::class, [
+                'constraints' => new GreaterThanOrEqual(0)
+            ])
+            ->add('purchaseInventory', NumberType::class, [
+                'constraints' => new GreaterThanOrEqual(0)
             ]);
 
         $builder->addEventSubscriber($this->subscriber);
