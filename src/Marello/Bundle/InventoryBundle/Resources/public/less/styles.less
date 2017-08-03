@@ -1,33 +1,56 @@
-.inventory-line-item-adjustment {
+.marello-item-collection {
+    .marello-line-item {
+        .fields-row-narrow {
+            width: 80px;
+
+            span {
+                width: 80px;
+            }
+
+            input {
+                width: 80px;
+            }
+        }
+    }
+}
+
+.inventorylevel-warehouse {
+    .select2-container {
+        width: 190px;
+
+        .select2-choice {
+            .select2-arrow {
+                right: 8px;
+            }
+        }
+
+        select {
+            width: 190px;
+        }
+    }
+}
+
+.inventorylevel-quantity {
+    .fields-row {
+        text-align: center;
+    }
+}
+
+.inventorylevel-adjustment {
     .selector {
         width: 100px !important;
-    }
 
-    .selector span {
-        width:98px !important;
-    }
+        span {
+            width: 98px !important;
+        }
 
-    .selector select {
-        width:100px;
+        select {
+            width: 100px;
+        }
     }
 
     input {
-        width: 70px;
-    }
-}
-
-.inventory-line-item-sku {
-    width:315px;
-}
-
-.inventory-line-item-adjustment.has-errors {
-    input, .selector {
-        border: 1px solid #e9322d;
-        box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(211,33,33,0.6);
-    }
-
-    span.validation-failed {
-        display: inline;
+        width: 80px;
     }
 }
 
@@ -42,8 +65,4 @@
 
 .fa-caret-right:before {
   content: "\f0da";
-}
-
-.inventory-line-item-product {
-    width: 30%;
 }

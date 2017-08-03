@@ -1,25 +1,30 @@
 {% block marello_inventory_inventorylevel_widget %}
-    <td class="inventory-line-item-warehouse {{ form.warehouse.vars.errors|length ? 'has-errors' : '' }}">
+    <td class="inventorylevel-warehouse {{ form.warehouse.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
             {{ form_widget(form.warehouse) }}
         </div>
         {{ form_errors(form.warehouse) }}
     </td>
-    <td class="inventory-line-item-adjustment {{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
+    <td class="inventorylevel-quantity">
+        <div class="fields-row">
+            {{ form.inventoryQty.vars.value|default(0) }}
+        </div>
+    </td>
+    <td class="inventorylevel-adjustment {{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
             {{ form_widget(form.adjustmentOperator) }}
             {{ form_widget(form.quantity) }}
             {{ form_errors(form.quantity) }}
         </div>
     </td>
-    <td class="inventory-line-item-desiredInventory {{ form.desiredInventory.vars.errors|length ? 'has-errors' : '' }}">
-        <div class="fields-row">
+    <td class="inventorylevel-desiredInventory {{ form.desiredInventory.vars.errors|length ? 'has-errors' : '' }}">
+        <div class="fields-row-narrow">
             {{ form_widget(form.desiredInventory) }}
         </div>
         {{ form_errors(form.desiredInventory) }}
     </td>
-    <td class="inventory-line-item-purchaseInventory {{ form.purchaseInventory.vars.errors|length ? 'has-errors' : '' }}">
-        <div class="fields-row">
+    <td class="inventorylevel-purchaseInventory {{ form.purchaseInventory.vars.errors|length ? 'has-errors' : '' }}">
+        <div class="fields-row-narrow">
             {{ form_widget(form.purchaseInventory) }}
         </div>
         {{ form_errors(form.purchaseInventory) }}
@@ -38,7 +43,7 @@
     {% endif %}
 
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
-        class="marello-line-item"
+        class="marello-line-item display-values"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}">
         {{ form_widget(form) }}
@@ -60,6 +65,7 @@
                     <tr>
                         <th class="inventorylevel-line-item-warehouse"><span>{{ 'marello.inventory.inventoryitem.warehouse.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-inventory-qty"><span>{{ 'marello.inventory.inventorylevel.inventory.label'|trans }}</span></th>
+                        <th class="inventorylevel-line-item-adjustment"><span>{{ 'marello.inventory.model.warehouse.adjustment.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-purchase-inventory-qty"><span>{{ 'marello.product.purchase_stock_level.label'|trans }}</span></th>
                         <th class="inventorylevel-line-item-desired-inventory-qty"><span>{{ 'marello.product.desired_stock_level.label'|trans }}</span></th>
                     </tr>
