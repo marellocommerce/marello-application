@@ -198,10 +198,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight($data['weight']);
 
-        $inventoryItem = new InventoryItem($this->defaultWarehouse, $product);
-        $this->handleInventoryUpdate($inventoryItem, $data['stockLevel'], 0, null);
-        $product->getInventoryItems()->add($inventoryItem);
-
         $status = $this->manager
             ->getRepository('MarelloProductBundle:ProductStatus')
             ->findOneByName($data['status']);
@@ -327,27 +323,5 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
             $product->setPreferredSupplier($preferredSupplier);
         }
-    }
-
-    /**
-     * handle the inventory update for items which have been shipped
-     * @param InventoryItem $item
-     * @param $inventoryUpdateQty
-     * @param $allocatedInventoryQty
-     * @param $entity
-     */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
-    {
-        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
-            $item,
-            null,
-            $inventoryUpdateQty,
-            $allocatedInventoryQty,
-            'import',
-            $entity
-        );
-        /** @var InventoryManager $inventoryManager */
-        $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
-        $inventoryManager->updateInventoryItems($context);
     }
 }

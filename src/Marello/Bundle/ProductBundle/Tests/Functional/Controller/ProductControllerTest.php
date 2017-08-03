@@ -52,10 +52,7 @@ class ProductControllerTest extends WebTestCase
         $form['marello_product_form[name]']               = $name;
         $form['marello_product_form[sku]']                = $sku;
         $form['marello_product_form[status]']             = 'enabled';
-        $form['marello_product_form[desiredStockLevel]']  = 10;
-        $form['marello_product_form[purchaseStockLevel]'] = 2;
         $form['marello_product_form[addSalesChannels]']   = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
-        $form['marello_product_form[replenishment]']      = LoadProductReplenishmentData::NOS;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -193,12 +190,9 @@ class ProductControllerTest extends WebTestCase
         $form                                              = $crawler->selectButton('Save and Close')->form();
         $name                                              = 'name' . $this->generateRandomString();
         $form['marello_product_form[name]']                = $name;
-        $form['marello_product_form[desiredStockLevel]']   = 20;
-        $form['marello_product_form[purchaseStockLevel]']  = 10;
         $form['marello_product_form[removeSalesChannels]'] = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
         $form['marello_product_form[addSalesChannels]']    = $this->getReference(LoadSalesData::CHANNEL_2_REF)->getId();
         $form['marello_product_form[taxCode]']             = $taxCode;
-        $form['marello_product_form[replenishment]']       = LoadProductReplenishmentData::EOL;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
