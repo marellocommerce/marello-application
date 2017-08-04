@@ -2,11 +2,27 @@
 
 namespace Marello\Bundle\TaxBundle\Calculator;
 
-use Marello\Bundle\TaxBundle\Model\TaxResult;
+use Marello\Bundle\TaxBundle\Model\ResultElement;
+use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
 
 class TaxCalculator implements TaxCalculatorInterface
 {
-    /** {@inheritdoc} */
+    /**
+     * @var RoundingServiceInterface
+     */
+    protected $rounding;
+
+    /**
+     * @param RoundingServiceInterface $rounding
+     */
+    public function __construct(RoundingServiceInterface $rounding)
+    {
+        $this->rounding = $rounding;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function calculate($amount, $taxRate)
     {
         $inclTax = (double)$amount;
@@ -15,12 +31,10 @@ class TaxCalculator implements TaxCalculatorInterface
         $taxAmount = $inclTax * $taxRate;
         $exclTax = $inclTax - $taxAmount;
 
-        return new TaxResult(
-            [
-                TaxResult::INCLUDING_TAX => $inclTax,
-                TaxResult::EXCLUDING_TAX => $exclTax,
-                TaxResult::TAX_AMOUNT => $taxAmount
-            ]
+        return ResultElement::create(
+            $this->rounding->round($inclTax),
+            $this->rounding->round($exclTax),
+            $this->rounding->round($taxAmount)
         );
     }
 }

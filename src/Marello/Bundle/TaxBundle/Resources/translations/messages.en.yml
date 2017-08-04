@@ -68,3 +68,6 @@ marello:
 
         sections:
             general:                            General Information
+
+        subtotals:
+            tax.label:                          TAX total

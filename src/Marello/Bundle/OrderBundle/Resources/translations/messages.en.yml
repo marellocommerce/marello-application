@@ -134,6 +134,7 @@ marello:
         sections:
             general: General
             shipping_information: Shipping Information
+            subtotals: Order Totals
 
         form:
             address:

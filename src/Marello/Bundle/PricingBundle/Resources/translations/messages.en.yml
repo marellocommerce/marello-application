@@ -32,3 +32,7 @@ marello:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel
 
             no_channel_prices_configured: No channel prices configured for current product
+
+        subtotals:
+            total.label:                Grand Total
+            subtotal.label:             Subtotal

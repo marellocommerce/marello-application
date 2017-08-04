@@ -1,5 +1,6 @@
 parameters:
     marello_order.entity.order.class: Marello\Bundle\OrderBundle\Entity\Order
+    marello_order.entity.order_item.class: Marello\Bundle\OrderBundle\Entity\OrderItem
     marello_order.provider.order_statistic_provider.class: Marello\Bundle\OrderBundle\Provider\OrderDashboardStatisticProvider
     marello_order_customer.class: Marello\Bundle\OrderBundle\Entity\Customer
 
@@ -93,6 +94,13 @@ services:
             - 'shipping'
         tags:
             - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: shippingAddress, priority: 30 }
+
+    marello_order.provider.form_changes.totals:
+        class: Marello\Bundle\OrderBundle\Provider\OrderTotalsProvider
+        arguments:
+            - '@marello_productprice.pricing.subtotal_provider.composite'
+        tags:
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: totals, priority: 40 }
 
     marello_order.search_handler.customer:
         parent: oro_form.autocomplete.search_handler

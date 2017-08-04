@@ -36,7 +36,8 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     public function processFormChanges(FormChangeContextInterface $context)
     {
         $submittedData = $context->getSubmittedData();
-        $order = $context->getForm()->getData();
+        $form = $context->getForm();
+        $order = $form->getData();
         if ($order instanceof Order) {
             $salesChannel = $order->getSalesChannel();
         } else {
@@ -60,7 +61,10 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
 
             $data[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())]['value'] = $priceValue;
         }
-
+        foreach ($order->getItems() as &$item) {
+            $productId = $item->getProduct()->getId();
+            $item->setPrice($data[sprintf('%s%s', self::IDENTIFIER_PREFIX, $productId)]['value']);
+        }
         $result = $context->getResult();
         $result[self::ITEMS_FIELD]['price'] = $data;
         $context->setResult($result);

@@ -102,6 +102,16 @@
         </div>
     {% endset %}
     {% set shippingInformation = form_row(form.shippingMethod) %}
+    {% set subtotals %}
+        <div class="subtotal-error"></div>
+        <div data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marelloorder/js/app/views/order-totals-view',
+                 data: data|default({})
+             }|json_encode }}">
+            <div class="totals-container" data-totals-container></div>
+        </div>
+    {% endset %}
 
     {% set dataBlocks = [
         {
@@ -154,6 +164,15 @@
                 ]
             }]
         },
+        {
+            'title': 'marello.order.sections.subtotals'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'data': [
+                    subtotals
+                ]
+            }]
+        }
     ] %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

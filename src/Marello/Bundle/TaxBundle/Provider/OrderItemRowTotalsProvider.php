@@ -61,7 +61,7 @@ class OrderItemRowTotalsProvider extends AbstractOrderItemFormChangesProvider
                 }
                 $amount = (double)$itemResult['price'][$identifier]['value'] * (float)$item['quantity'];
                 $taxTotals = $this->taxCalculator->calculate($amount, $rate);
-                $itemResult['row_totals'][$identifier] = $taxTotals->all();
+                $itemResult['row_totals'][$identifier] = $taxTotals->jsonSerialize();
             }
         }
         $result[self::ITEMS_FIELD] = $itemResult;

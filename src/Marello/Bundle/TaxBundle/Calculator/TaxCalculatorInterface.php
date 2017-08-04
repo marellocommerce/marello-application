@@ -2,14 +2,14 @@
 
 namespace Marello\Bundle\TaxBundle\Calculator;
 
-use Marello\Bundle\TaxBundle\Model\TaxResult;
+use Marello\Bundle\TaxBundle\Model\Result;
 
 interface TaxCalculatorInterface
 {
     /**
      * @param string $amount
      * @param string $taxRate
-     * @return TaxResult
+     * @return Result
      *      includingTax - amount with tax
      *      excludingTax - amount without tax
      *      taxAmount    - tax amount

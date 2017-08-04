@@ -10,8 +10,11 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
+use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
@@ -23,6 +26,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  */
 class OrderItem extends ExtendOrderItem implements
     CurrencyAwareInterface,
+    QuantityAwareInterface,
+    PriceAwareInterface,
+    TaxAwareInterface,
     InventoryItemAwareInterface
 {
     /**
