@@ -1,17 +1,19 @@
 system_configuration:
     groups:
+        return:
+            title: marello.return.system_configuration.groups.return.title
         return_configuration:
-            title: 'Return Warranty Configuration'
+            title: marello.return.system_configuration.groups.return_configuration.title
             icon: fa-history
             priority: 50
 
         ror_settings:
-            title: 'Right of Return Settings'
+            title: marello.return.system_configuration.groups.ror_settings.title
             icon: fa-info
             priority: 100
 
         warranty_settings:
-            title: 'Product Warranty Settings'
+            title: marello.return.system_configuration.groups.warranty_settings.title
             icon: fa-info
             priority: 50
 
@@ -21,7 +23,7 @@ system_configuration:
             data_type: integer
             priority: 120
             options:
-                label: marello.return.system_configuration.ror_period
+                label: marello.return.system_configuration.fields.ror_period
                 resettable: true
                 required: true
                 constraints:
@@ -34,7 +36,7 @@ system_configuration:
             data_type: integer
             priority: 120
             options:
-                label: marello.return.system_configuration.warranty_period
+                label: marello.return.system_configuration.fields.warranty_period
                 resettable: true
                 required: true
                 constraints:
@@ -43,9 +45,9 @@ system_configuration:
                         min: 1
     tree:
         system_configuration:
-            platform:
+            marello:
                 children:
-                    general_setup:
+                    return:
                         children:
                             return_configuration:
                                 children:

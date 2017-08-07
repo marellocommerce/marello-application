@@ -59,10 +59,10 @@ class OrderItemRowTotalsProviderTest extends \PHPUnit_Framework_TestCase
         array $calculationResult,
         array $expectedResult
     ) {
-        /** @var MarelloAddress|\PHPUnit_Framework_MockObject_MockObject $context **/
-        $billingAddress = $this->createMock(MarelloAddress::class);
+        /** @var MarelloAddress|\PHPUnit_Framework_MockObject_MockObject $shippingAddress **/
+        $shippingAddress = $this->createMock(MarelloAddress::class);
         /** @var Order $order */
-        $order = $this->getEntity(Order::class, ['id' => 1, 'billingAddress' => $billingAddress]);
+        $order = $this->getEntity(Order::class, ['id' => 1, 'shippingAddress' => $shippingAddress]);
 
         /** @var FormInterface|\PHPUnit_Framework_MockObject_MockObject $form **/
         $form = $this->createMock(FormInterface::class);
@@ -73,6 +73,7 @@ class OrderItemRowTotalsProviderTest extends \PHPUnit_Framework_TestCase
         $this->taxRuleMatcher
             ->expects(static::any())
             ->method('match')
+            ->with($order->getShippingAddress(), ['TEST_CODE'])
             ->willReturn($matchedRule);
         
         $this->taxCalculator

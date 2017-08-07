@@ -2,23 +2,31 @@
 
 namespace Marello\Bundle\PricingBundle\Twig;
 
+use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
 use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
 
 class PricingExtension extends \Twig_Extension
 {
     const NAME = 'marello_pricing';
 
-    /** @var CurrencyProvider */
-    protected $provider;
+    /**
+     * @var CurrencyProvider
+     */
+    protected $currencyProvider;
 
     /**
-     * PricingExtension constructor.
-     *
-     * @param CurrencyProvider $provider
+     * @var LabelVATAwareFormatter
      */
-    public function __construct(CurrencyProvider $provider)
+    protected $vatLabelFormatter;
+
+    /**
+     * @param CurrencyProvider $currencyProvider
+     * @param LabelVATAwareFormatter $vatLabelFormatter
+     */
+    public function __construct(CurrencyProvider $currencyProvider, LabelVATAwareFormatter $vatLabelFormatter)
     {
-        $this->provider = $provider;
+        $this->currencyProvider = $currencyProvider;
+        $this->vatLabelFormatter = $vatLabelFormatter;
     }
 
     /**
@@ -43,13 +51,17 @@ class PricingExtension extends \Twig_Extension
                 'marello_pricing_get_currency_data',
                 [$this, 'getCurrencyData']
             ),
+            new \Twig_SimpleFunction(
+                'marello_pricing_vat_aware_label',
+                [$this->vatLabelFormatter, 'getFormattedLabel']
+            ),
         ];
     }
 
     /**
      * @param array $data
      *
-     * @return string
+     * @return string|null
      */
     public function getCurrencyData(array $data)
     {
@@ -58,17 +70,19 @@ class PricingExtension extends \Twig_Extension
         }
 
         if (!empty($data['currencyCode']) && empty($data['currencySymbol'])) {
-            $currencySymbol = $this->provider->getCurrencySymbol($data['currencyCode']);
+            $currencySymbol = $this->currencyProvider->getCurrencySymbol($data['currencyCode']);
 
             return $this->formatData($data['currencyCode'], $currencySymbol);
         }
 
         if (!empty($data['salesChannel'])) {
-            $currencyData = $this->provider->getCurrencyDataByChannel($data['salesChannel']);
+            $currencyData = $this->currencyProvider->getCurrencyDataByChannel($data['salesChannel']);
             $key          = sprintf('currency-%s', $data['salesChannel']);
 
             return $this->formatData($currencyData[$key]['currencyCode'], $currencyData[$key]['currencySymbol']);
         }
+        
+        return null;
     }
 
     /**

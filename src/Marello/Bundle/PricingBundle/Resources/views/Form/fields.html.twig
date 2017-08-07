@@ -67,7 +67,7 @@
                         <tr>
                             <th class="pricing-line-item-channel"><span>{{ 'marello.sales.saleschannel.entity_label'|trans }}</span></th>
                             <th class="pricing-line-item-currency"><span>{{ 'marello.pricing.productchannelprice.currency.label'|trans }}</span></th>
-                            <th class="pricing-line-item-value"><span>{{ 'marello.pricing.productchannelprice.value.label'|trans }}</span></th>
+                            <th class="pricing-line-item-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.productchannelprice.value.label') }}</span></th>
                             {% if form.vars.allow_delete %}
                                 <th class="pricing-row-item-actions"></th>
                             {% endif %}
@@ -148,7 +148,7 @@
                     <thead>
                     <tr>
                         <th class="pricing-line-item-currency"><span>{{ 'marello.pricing.productprice.currency.label'|trans }}</span></th>
-                        <th class="pricing-line-item-value"><span>{{ 'marello.pricing.productprice.value.label'|trans }}</span></th>
+                        <th class="pricing-line-item-value"><span>{{ marello_pricing_vat_aware_label('marello.pricing.productprice.value.label') }}</span></th>
                     </tr>
                     </thead>
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>

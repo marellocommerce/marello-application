@@ -51,7 +51,7 @@ class OrderItemRowTotalsProvider extends AbstractOrderItemFormChangesProvider
             if (isset($itemResult['price'][$identifier]) && isset($itemResult['tax_code'][$identifier]) &&
                 isset($item['quantity'])) {
                 $taxRule = $this->taxRuleMatcher->match(
-                    $order->getBillingAddress(),
+                    $order->getShippingAddress(),
                     [$itemResult['tax_code'][$identifier]['code']]
                 );
                 if ($taxRule) {
