@@ -11,6 +11,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
@@ -41,9 +42,8 @@ class CustomerController extends RestController implements ClassResourceInterfac
      *     description="Get a list of all Customer Entities",
      *     resource=true
      * )
-     *
+     * @AclAncestor("marello_customer_view")
      * @param Request $request
-     *
      * @return Response
      */
     public function cgetAction(Request $request)
@@ -72,7 +72,7 @@ class CustomerController extends RestController implements ClassResourceInterfac
      *      }
      * )
      * @Rest\Get("/customers/getcustomerbyemail")
-     *
+     * @AclAncestor("marello_customer_view")
      * @param Request $request
      *
      * @return Response
@@ -129,6 +129,7 @@ class CustomerController extends RestController implements ClassResourceInterfac
      *     description="Create a new Customer via the Api",
      *     resource=true
      * )
+     * @AclAncestor("marello_customer_create")
      *
      * @return Response
      */

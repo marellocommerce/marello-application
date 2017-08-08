@@ -14,29 +14,13 @@ use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 
-class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
+class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
     /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
     protected $defaultOrganization;
 
-    /** @var \Marello\Bundle\InventoryBundle\Entity\Warehouse $defaultWarehouse */
-    protected $defaultWarehouse;
-
     /** @var ObjectManager $manager */
     protected $manager;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
 
     public function getDependencies()
     {
@@ -60,10 +44,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         if (is_array($organizations) && count($organizations) > 0) {
             $this->defaultOrganization = array_shift($organizations);
         }
-
-        $this->defaultWarehouse = $this->manager
-            ->getRepository('MarelloInventoryBundle:Warehouse')
-            ->getDefault();
 
         $this->loadProducts();
     }

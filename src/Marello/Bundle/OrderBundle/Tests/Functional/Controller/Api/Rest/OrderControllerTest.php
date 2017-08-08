@@ -10,7 +10,8 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
+//use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
+use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
@@ -27,6 +28,7 @@ class OrderControllerTest extends WebTestCase
         );
         $this->loadFixtures([
             LoadOrderData::class,
+            LoadSalesData::class,
         ]);
     }
 
@@ -37,7 +39,7 @@ class OrderControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('order1')->getId()])
+            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('marello_order_1')->getId()])
         );
 
         $response = $this->client->getResponse();
@@ -66,7 +68,7 @@ class OrderControllerTest extends WebTestCase
     public function testCreateWithCustomerId()
     {
         /** @var Customer $customer */
-        $customer = $this->getReference('customer1');
+        $customer = $this->getReference('marello_customer_1');
         $data = [
             'orderReference'  => 333444,
             'salesChannel'    => $this->getReference(LoadSalesData::CHANNEL_1_REF)->getCode(),
@@ -136,6 +138,7 @@ class OrderControllerTest extends WebTestCase
         );
 
         $response = json_decode($this->client->getResponse()->getContent(), true);
+        var_dump($response);
         $this->assertArrayHasKey('id', $response);
 
         /** @var Order $order */

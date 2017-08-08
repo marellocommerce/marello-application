@@ -18,6 +18,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingData;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductInventoryData;
 
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -48,6 +49,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             LoadSalesData::class,
             LoadProductData::class,
             LoadProductChannelPricingData::class,
+            LoadProductInventoryData::class,
         ];
     }
 
@@ -91,7 +93,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 ;
 
                 $manager->persist($order);
-                $this->setReference('order' . $createdOrders, $order);
+                $this->setReference('marello_order_' . $createdOrders, $order);
                 $createdOrders++;
 
                 if (!($createdOrders % self::FLUSH_MAX)) {
