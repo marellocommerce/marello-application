@@ -1,0 +1,29 @@
+system_configuration:
+    groups:
+        pricing:
+            title: marello.pricing.system_configuration.groups.pricing.title
+        pricing_general:
+            title: marello.pricing.system_configuration.groups.general.title
+            icon: fa-cogs
+        pricing_vat:
+            title: marello.pricing.system_configuration.groups.vat.label
+
+    fields:
+        marello_pricing.is_vat_included:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: marello.pricing.system_configuration.fields.vat.label
+                required: false
+
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    pricing:
+                        children:
+                            pricing_general:
+                                children:
+                                    pricing_vat:
+                                        children:
+                                            - marello_pricing.is_vat_included

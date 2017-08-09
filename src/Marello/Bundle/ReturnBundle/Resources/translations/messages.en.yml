@@ -28,5 +28,11 @@ marello:
             return.label:               Return
 
         system_configuration:
-            ror_period:                 Right of return period
-            warranty_period:            Warranty period
+            groups:
+                return.title:               Return
+                return_configuration.title: Warranty Configuration
+                ror_settings.title:         Right of Return Settings
+                warranty_settings.title:    Product Warranty Settings
+            fields:
+                ror_period:             Right of return period
+                warranty_period:        Warranty period
