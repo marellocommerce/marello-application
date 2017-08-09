@@ -23,29 +23,12 @@ class CustomerControllerTest extends WebTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function testIndex()
-    {
-        $this->client->request(
-            'GET',
-            $this->getUrl('marello_customer_api_get_customers')
-        );
-
-        $response = $this->client->getResponse();
-
-        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
-
-        $this->assertCount(10, json_decode($response->getContent(), true));
-    }
 
     /**
      * @test
      */
     public function testCreate()
     {
-        $this->markTestIncomplete('something is wrong with authentication....');
         $data = [
             'firstName' => 'John',
             'lastName'  => 'Doe',
@@ -72,6 +55,24 @@ class CustomerControllerTest extends WebTestCase
         $this->assertArrayHasKey('id', $response);
     }
 
+
+    /**
+     * @test
+     */
+    public function testIndex()
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_customer_api_get_customers')
+        );
+
+        $response = $this->client->getResponse();
+
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+
+        $this->assertCount(10, json_decode($response->getContent(), true));
+    }
+
     /**
      * @test
      *
@@ -79,7 +80,6 @@ class CustomerControllerTest extends WebTestCase
      */
     public function getCustomerByEmailFromApi()
     {
-        $this->markTestSkipped();
         $email = 'new_customer@example.com';
 
         $this->client->request(
