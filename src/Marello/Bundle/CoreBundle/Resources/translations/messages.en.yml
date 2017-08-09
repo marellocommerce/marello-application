@@ -1,0 +1,6 @@
+marello:
+    core:
+        system_configuration:
+            groups:
+                marello:
+                    title: Marello

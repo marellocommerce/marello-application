@@ -32,3 +32,18 @@ marello:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel
 
             no_channel_prices_configured: No channel prices configured for current product
+
+        vat:
+            included.label:             incl. VAT
+            excluded.label:             excl. VAT
+
+        system_configuration:
+            groups:
+                pricing.title:          Pricing
+                general.title:          General
+                vat.label:              VAT
+            fields:
+                vat:
+                    label:              Price includes VAT
+                    included.label:     Include
+                    excluded.label:     Exclude

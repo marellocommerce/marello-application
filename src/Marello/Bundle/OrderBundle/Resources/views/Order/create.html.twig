@@ -56,12 +56,7 @@
                     view: 'marelloorder/js/app/views/order-address-view',
                     type: 'billing',
                     selectors: {
-                        address: idAddressBlock,
-                        subtotalsFields: [
-                        '#' ~ form.billingAddress.country.vars.id,
-                        '#' ~ form.billingAddress.region.vars.id,
-                        '#' ~ form.billingAddress.postalCode.vars.id
-                        ]
+                        address: idAddressBlock
                     }
                 }|json_encode }}">
             {{ form_widget(form.billingAddress) }}

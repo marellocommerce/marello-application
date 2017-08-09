@@ -118,3 +118,10 @@ services:
         class: '%marello_datagrid.event_listener.datagrid.workflow_grid_listener.class%'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.dashboard-order-revenue-saleschannels-grid, method: removeWorkflow }
+
+    marello_order.listener.datagrid.marello_order_items:
+        class: 'Marello\Bundle\PricingBundle\EventListener\Datagrid\PriceVATLabelAwareGridListener'
+        arguments:
+            - '@marello_productprice.pricing.formatter.vat_aware_label'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order-items, method: onBuildBefore }
