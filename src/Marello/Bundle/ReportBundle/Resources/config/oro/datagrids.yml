@@ -48,48 +48,58 @@ datagrids:
             acl_resource: oro_report_view
             query:
                 select:
-                    - p.name
-                    - p.sku
-                    - p.price
+                    - i.id
+                    - p.name as productName
+                    - p.sku as productSku
                     - s.label as status
-                    - SUM(l.inventory) AS stockLevel
+                    - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                 from:
-                    - { table: MarelloProductBundle:Product, alias: p }
+                    - { table: MarelloInventoryBundle:InventoryItem, alias: i }
                 join:
                     left:
+                        - { join: i.product, alias: p }
+                        - { join: i.inventoryLevels, alias: il }
                         - { join: p.status, alias: s }
-                        - { join: p.inventoryItems, alias: i }
-                        - { join: i.currentLevel, alias: l }
-                where:
-                    and:
-                        - l.inventory < 5
                 groupBy: p.sku
+#            query:
+#                select:
+#                    - p.name
+#                    - p.sku
+#                    - p.price
+#                    - s.label as status
+#                    - SUM(l.inventory) AS stockLevel
+#                from:
+#                    - { table: MarelloProductBundle:Product, alias: p }
+#                join:
+#                    left:
+#                        - { join: p.status, alias: s }
+#                        - { join: p.inventoryItems, alias: i }
+#                        - { join: i.currentLevel, alias: l }
+#                where:
+#                    and:
+#                        - inventoryQty < 5
         columns:
-            sku:
+            productSku:
                 label:              marello.product.sku.label
                 frontend_type:      string
-            name:
+            productName:
                 label:              marello.product.name.label
                 frontend_type:      string
-            stockLevel:
+            inventoryQty:
                 label:              marello.product.stock_level.label
                 frontend_type:      number
                 data_name:          stockLevel
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
-            price:
-                label:              marello.product.price.label
-                frontend_type:      currency
         sorters:
             columns:
-                sku:            { data_name: p.sku }
-                name:           { data_name: p.name }
-                stockLevel:     { data_name: stockLevel }
+                productSku:     { data_name: p.sku }
+                productName:    { data_name: p.name }
+                inventoryQty:   { data_name: inventoryQty }
                 status:         { data_name: s.label }
-                price:          { data_name: p.price }
             default:
-                stockLevel:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                inventoryQty:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         options:
             entityHint: report data
             export: false
