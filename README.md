@@ -173,9 +173,13 @@ See [Symfony Performance](http://symfony.com/doc/current/performance.html)
 
 The OroCommerce sample application is based on the Symfony standard application, so the web server configuration recommendations are the [same][8].
 
-##Using Redis for application caching
+### Using Redis for application caching
 
 To use Redis for application caching, follow the corresponding [configuration instructions][9]
+
+### License
+ 
+Copyright (c) 2015 - 2017, Oro, Inc.
 
 [1]: http://getcomposer.org/
 [2]: https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
