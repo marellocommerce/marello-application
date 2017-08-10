@@ -61,23 +61,6 @@ datagrids:
                         - { join: i.inventoryLevels, alias: il }
                         - { join: p.status, alias: s }
                 groupBy: p.sku
-#            query:
-#                select:
-#                    - p.name
-#                    - p.sku
-#                    - p.price
-#                    - s.label as status
-#                    - SUM(l.inventory) AS stockLevel
-#                from:
-#                    - { table: MarelloProductBundle:Product, alias: p }
-#                join:
-#                    left:
-#                        - { join: p.status, alias: s }
-#                        - { join: p.inventoryItems, alias: i }
-#                        - { join: i.currentLevel, alias: l }
-#                where:
-#                    and:
-#                        - inventoryQty < 5
         columns:
             productSku:
                 label:              marello.product.sku.label
