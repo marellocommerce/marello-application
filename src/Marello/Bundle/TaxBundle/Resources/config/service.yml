@@ -23,28 +23,44 @@ services:
         tags:
             - { name: marello_tax.tax_rule.matcher, priority: 10 }
 
-    marello_tax.calculator.tax_order_item_tax_totals:
-        class: Marello\Bundle\TaxBundle\Calculator\TaxCalculator
+    marello_tax.calculator.included_tax:
+        class: Marello\Bundle\TaxBundle\Calculator\IncludedTaxCalculator
         arguments:
             - '@oro_currency.rounding.price_rounding_service'
+
+    marello_tax.calculator.excluded_tax:
+        class: Marello\Bundle\TaxBundle\Calculator\ExcludedTaxCalculator
+        arguments:
+            - '@oro_currency.rounding.price_rounding_service'
+
+    marello_tax.calculator:
+        class: Marello\Bundle\TaxBundle\Calculator\TaxCalculator
+        arguments:
+            - '@oro_config.manager'
+            - '@marello_tax.calculator.included_tax'
+            - '@marello_tax.calculator.excluded_tax'
 
     marello_tax.provider.tax_order_item_row_totals:
         class: Marello\Bundle\TaxBundle\Provider\OrderItemRowTotalsProvider
         arguments:
-            - '@marello_tax.calculator.tax_order_item_tax_totals'
+            - '@marello_tax.calculator'
             - '@marello_tax.tax_rule.matcher.composite'
         tags:
             - { name: marello_order.order_item_data_provider, type: row_totals, priority: 30 }
 
     marello_tax.provider.tax_subtotal:
         class: 'Marello\Bundle\TaxBundle\Provider\TaxSubtotalProvider'
-        public: false
         arguments:
             - '@translator'
             - '@marello_tax.event.tax_event_dispatcher'
             - '@marello_tax.factory.tax'
         tags:
             - { name: marello_pricing.subtotal_provider, priority: 10 }
+
+    marello_tax.provider.tax_subtotal_operation:
+        class: 'Marello\Bundle\TaxBundle\Provider\TaxSubtotalOperationProvider'
+        arguments:
+            - '@oro_config.manager'
 
     marello_tax.factory.tax:
         class: Marello\Bundle\TaxBundle\Factory\TaxFactory
@@ -53,7 +69,7 @@ services:
         class: 'Marello\Bundle\TaxBundle\Resolver\RowTotalResolver'
         public: false
         arguments:
-            - '@marello_tax.calculator.tax_order_item_tax_totals'
+            - '@marello_tax.calculator'
 
     marello_tax.resolver.customer_address.item:
         class: 'Marello\Bundle\TaxBundle\Resolver\CustomerAddressItemResolver'
@@ -91,7 +107,7 @@ services:
             - "@event_dispatcher"
 
     marello_tax.order_tax.mapper.order_item_mapper:
-        class: 'Marello\Bundle\TaxBundle\OrderTax\Mapper\OrderLineItemMapper'
+        class: 'Marello\Bundle\TaxBundle\OrderTax\Mapper\OrderItemMapper'
         public: false
         arguments:
             - '%marello_order.entity.order_item.class%'

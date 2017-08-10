@@ -44,6 +44,14 @@
             {{ form_row(form.customer) }}
         </div>
     {% endset %}
+    {% set discountInput %}
+        <div data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marelloorder/js/app/views/order-discount-view',
+             }|json_encode }}">
+            {{ form_row(form.discountAmount) }}
+        </div>
+    {% endset %}
     {% set billingAddress %}
         {% if form.billingAddress.customerAddress is defined %}
             {% set idAddressBlock = '#' ~ form.billingAddress.customerAddress.vars.id %}
@@ -56,12 +64,7 @@
                     view: 'marelloorder/js/app/views/order-address-view',
                     type: 'billing',
                     selectors: {
-                        address: idAddressBlock,
-                        subtotalsFields: [
-                        '#' ~ form.billingAddress.country.vars.id,
-                        '#' ~ form.billingAddress.region.vars.id,
-                        '#' ~ form.billingAddress.postalCode.vars.id
-                        ]
+                        address: idAddressBlock
                     }
                 }|json_encode }}">
             {{ form_widget(form.billingAddress) }}
@@ -121,6 +124,8 @@
                 'title': '',
                 'data': [
                     customerSelector,
+                    form_row(form.salesChannel),
+                    discountInput,
                     form_rest(form)
                 ]
             }]

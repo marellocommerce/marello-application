@@ -160,7 +160,7 @@ define(function(require) {
             if (response === undefined || response['items'] === undefined || response['items'].length == 0) {
                 return;
             }
-            mediator.trigger('order:refresh:line-items', response['items', 'totals']);
+            mediator.trigger('order:refresh:line-items', response['items']);
         },
 
         /**

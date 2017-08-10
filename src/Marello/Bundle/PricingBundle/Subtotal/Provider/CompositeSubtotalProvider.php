@@ -20,7 +20,7 @@ class CompositeSubtotalProvider extends AbstractSubtotalProvider implements Tota
      */
     public function getName()
     {
-        // TODO: Implement getName() method.
+        return self::NAME;
     }
 
     /**

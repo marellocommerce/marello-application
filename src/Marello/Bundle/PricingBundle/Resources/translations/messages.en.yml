@@ -35,4 +35,18 @@ marello:
 
         subtotals:
             total.label:                Grand Total
-            subtotal.label:             Subtotal
+
+        vat:
+            included.label:             incl. VAT
+            excluded.label:             excl. VAT
+
+        system_configuration:
+            groups:
+                pricing.title:          Pricing
+                general.title:          General
+                vat.label:              VAT
+            fields:
+                vat:
+                    label:              Price includes VAT
+                    included.label:     Include
+                    excluded.label:     Exclude

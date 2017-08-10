@@ -11,11 +11,6 @@ final class Result extends AbstractResult implements \JsonSerializable
     const ITEMS = 'items';
 
     /**
-     * @var bool
-     */
-    protected $resultLocked = false;
-
-    /**
      * Creates new Result object from serialized data
      * @param array|null $serialized
      * @return Result
@@ -103,24 +98,6 @@ final class Result extends AbstractResult implements \JsonSerializable
         return parent::serialize();
     }
 
-    public function lockResult()
-    {
-        $this->resultLocked = true;
-    }
-
-    public function unlockResult()
-    {
-        $this->resultLocked = false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isResultLocked()
-    {
-        return $this->resultLocked;
-    }
-
     /**
      * @param string $key
      * @param array $serialized
@@ -138,8 +115,5 @@ final class Result extends AbstractResult implements \JsonSerializable
         if ($this->offsetExists(self::ITEMS)) {
             $this->unsetOffset(self::ITEMS);
         }
-
-        // Reset state of resultLocked
-        $this->unlockResult();
     }
 }

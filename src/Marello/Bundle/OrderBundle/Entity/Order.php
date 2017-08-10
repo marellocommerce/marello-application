@@ -10,6 +10,7 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
+use Marello\Bundle\OrderBundle\Model\DiscountAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\LineItemsAwareInterface;
@@ -55,6 +56,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class Order extends ExtendOrder implements
     DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
+    DiscountAwareInterface,
     ShippingAwareInterface,
     SubtotalAwareInterface,
     TaxAwareInterface,

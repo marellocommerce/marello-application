@@ -52,7 +52,11 @@ abstract class AbstractSubtotalProvider implements SubtotalProviderInterface
     
     public function addDependOnProvider(SubtotalProviderInterface $provider, $operation)
     {
-        if (!in_array($operation, [Subtotal::OPERATION_ADD, Subtotal::OPERATION_SUBTRACTION])) {
+        if (!in_array($operation, [
+            Subtotal::OPERATION_ADD,
+            Subtotal::OPERATION_SUBTRACTION,
+            Subtotal::OPERATION_IGNORE
+        ])) {
             throw new \Exception('Not existing operation selected');
         }
         $this->dependOnProviders[$provider->getName()] = [

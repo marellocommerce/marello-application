@@ -3,7 +3,6 @@ define(function(require) {
 
     var OrderTotalsView;
     var template =  require('tpl!marelloorder/templates/order/totals.html');
-    var noDataTemplate =  require('tpl!marelloorder/templates/order/totals-no-data.html');
     var $ = require('jquery');
     var _ = require('underscore');
     var mediator = require('oroui/js/mediator');
@@ -36,11 +35,6 @@ define(function(require) {
          * @property {Object}
          */
         template: template,
-
-        /**
-         * @property {Object}
-         */
-        noDataTemplate: noDataTemplate,
 
         /**
          * @property {LoadingMaskView}
@@ -84,10 +78,6 @@ define(function(require) {
             if (typeof this.options.selectors.template === 'string') {
                 this.template = _.template($(this.options.selectors.template).text());
             }
-
-            if (typeof this.options.selectors.noDataTemplate === 'string') {
-                this.noDataTemplate = _.template($(this.options.selectors.noDataTemplate).text());
-            }
         },
 
         /**
@@ -114,19 +104,16 @@ define(function(require) {
          */
         render: function(totals) {
             this.items = [];
+            if (totals !== undefined && totals.subtotals !== undefined && totals.total !== undefined) {
+                _.each(totals.subtotals, _.bind(this.pushItem, this));
 
-            _.each(totals.subtotals, _.bind(this.pushItem, this));
+                this.pushItem(totals.total);
+            }
+                var items = _.filter(this.items);
 
-            this.pushItem(totals.total);
+                this.$totals.html(items.join(''));
 
-            var items = _.filter(this.items);
-            /*if (_.isEmpty(items)) {
-                items = this.noDataTemplate();
-            }*/
-
-            this.$totals.html(items.join(''));
-
-            this.items = [];
+                this.items = [];
         },
 
         /**
@@ -139,9 +126,7 @@ define(function(require) {
                     amount: 0,
                     currency: localeSettings.defaults.currency,
                     visible: false,
-                    template: null,
-                    signedAmount: 0,
-                    data: {}
+                    template: null
                 }
             );
 
@@ -149,14 +134,7 @@ define(function(require) {
                 return;
             }
 
-            item.formattedAmount = NumberFormatter.formatCurrency(item.signedAmount, item.currency);
-
-            if (item.data && item.data.baseAmount && item.data.baseCurrency) {
-                item.formattedBaseAmount = NumberFormatter.formatCurrency(
-                    item.data.baseAmount,
-                    item.data.baseCurrency
-                );
-            }
+            item.formattedAmount = NumberFormatter.formatCurrency(item.amount, item.currency);
 
             var renderedItem = null;
 
@@ -178,7 +156,8 @@ define(function(require) {
             }
 
             mediator.off('order:form-changes:trigger', this.loadingStart, this);
-            mediator.off('order:form-changes:load', this.loadFormChanges, this);
+            mediator.off('order:form-changes:load', this.setTotals, this);
+            mediator.off('order:form-changes:load:after', this.loadingEnd, this);
 
             OrderTotalsView.__super__.dispose.call(this);
         }

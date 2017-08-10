@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\TaxBundle\OrderTax\Mapper;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Selectable;
 use Doctrine\Common\Util\ClassUtils;
-
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\TaxBundle\Mapper\TaxMapperInterface;
@@ -14,9 +14,9 @@ use Marello\Bundle\TaxBundle\Model\Taxable;
 class OrderMapper extends AbstractOrderMapper
 {
     /**
-     * @var OrderLineItemMapper
+     * @var OrderItemMapper
      */
-    protected $orderLineItemMapper;
+    protected $orderItemMapper;
 
     /**
      * {@inheritdoc}
@@ -27,12 +27,9 @@ class OrderMapper extends AbstractOrderMapper
         $taxable = (new Taxable())
             ->setIdentifier($order->getId())
             ->setClassName(ClassUtils::getClass($order))
-            //->setOrigin($this->addressProvider->getOriginAddress())
-            ->setDestination($this->getDestinationAddress($order))
             ->setTaxationAddress($this->getTaxationAddress($order))
-            //->setContext($this->getContext($order))
             ->setCurrency($order->getCurrency())
-            ->setItems($this->mapLineItems($order->getItems()));//mapLineItems after getContext to preloadTaxCodes
+            ->setItems($this->mapLineItems($order->getItems()));
 
         if ($order->getSubtotal()) {
             $taxable->setAmount($order->getSubtotal());
@@ -47,16 +44,16 @@ class OrderMapper extends AbstractOrderMapper
 
     /**
      * @param Selectable|Collection|OrderItem[] $lineItems
-     * @return \SplObjectStorage
+     * @return Collection
      */
     protected function mapLineItems($lineItems)
     {
-        $storage = new \SplObjectStorage();
+        $storage = new ArrayCollection();
 
         $lineItems
             ->map(
                 function (OrderItem $item) use ($storage) {
-                    $storage->attach($this->orderLineItemMapper->map($item));
+                    $storage->add($this->orderItemMapper->map($item));
                 }
             );
 
@@ -64,10 +61,10 @@ class OrderMapper extends AbstractOrderMapper
     }
 
     /**
-     * @param TaxMapperInterface $orderLineItemMapper
+     * @param TaxMapperInterface $orderItemMapper
      */
-    public function setOrderItemMapper(TaxMapperInterface $orderLineItemMapper)
+    public function setOrderItemMapper(TaxMapperInterface $orderItemMapper)
     {
-        $this->orderLineItemMapper = $orderLineItemMapper;
+        $this->orderItemMapper = $orderItemMapper;
     }
 }

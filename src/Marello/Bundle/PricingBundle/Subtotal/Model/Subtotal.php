@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\PricingBundle\Subtotal\Model;
 
-use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class Subtotal extends ParameterBag
@@ -18,13 +17,15 @@ class Subtotal extends ParameterBag
     const OPERATION_FIELD = 'operation';
     const VISIBLE_FIELD = 'visible';
     const SORT_ORDER_FIELD = 'sortOrder';
-    const DATA_FIELD = 'data';
 
     public function __construct(array $parameters)
     {
         parent::__construct($parameters);
         if (null === $this->getOperation()) {
             $this->setOperation(self::OPERATION_ADD);
+        }
+        if (null === $this->getSortOrder()) {
+            $this->setSortOrder(0);
         }
     }
 
@@ -181,21 +182,7 @@ class Subtotal extends ParameterBag
     public function toArray()
     {
         $data = $this->all();
-        $data['signedAmount'] = $this->getSignedAmount();
         
         return $data;
-    }
-
-    /**
-     * If operation is subtraction than negative amount is returned, otherwise positive amount is returned.
-     * @return float
-     */
-    public function getSignedAmount()
-    {
-        if ($this->getAmount() && $this->getOperation() === self::OPERATION_SUBTRACTION) {
-            return -$this->getAmount();
-        }
-
-        return $this->getAmount();
     }
 }

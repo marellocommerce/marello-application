@@ -59,11 +59,13 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
                 $priceValue = $channelPrice['price'];
             }
 
-            $data[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())]['value'] = $priceValue;
+            $data[$this->getIdentifier($product->getId())]['value'] = $priceValue;
         }
         foreach ($order->getItems() as &$item) {
             $productId = $item->getProduct()->getId();
-            $item->setPrice($data[sprintf('%s%s', self::IDENTIFIER_PREFIX, $productId)]['value']);
+            if (isset($data[$this->getIdentifier($productId)])) {
+                $item->setPrice($data[$this->getIdentifier($productId)]['value']);
+            }
         }
         $result = $context->getResult();
         $result[self::ITEMS_FIELD]['price'] = $data;
@@ -141,5 +143,14 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     protected function getRepository($className)
     {
         return $this->registry->getManagerForClass($className)->getRepository($className);
+    }
+
+    /**
+     * @param int $id
+     * @return string
+     */
+    protected function getIdentifier($id)
+    {
+        return sprintf('%s%s', self::IDENTIFIER_PREFIX, $id);
     }
 }

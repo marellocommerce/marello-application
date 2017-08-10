@@ -7,21 +7,18 @@ final class ResultElement extends AbstractResultElement implements \JsonSerializ
     const INCLUDING_TAX = 'includingTax';
     const EXCLUDING_TAX = 'excludingTax';
     const TAX_AMOUNT = 'taxAmount';
-    const ADJUSTMENT = 'adjustment';
 
     /**
      * @param string $includingTax
      * @param string $excludingTax
-     * @param string|int $taxAmount Tax amount value or null if it doesn't calculated
-     * @param string|int $adjustment Adjustment value or null if it doesn't calculated
+     * @param string|int $taxAmount
      *
      * @return ResultElement
      */
     public static function create(
         $includingTax,
         $excludingTax,
-        $taxAmount = null,
-        $adjustment = null
+        $taxAmount = null
     ) {
         $resultElement = new static;
 
@@ -29,9 +26,6 @@ final class ResultElement extends AbstractResultElement implements \JsonSerializ
         $resultElement->offsetSet(self::EXCLUDING_TAX, $excludingTax);
         if (null !== $taxAmount) {
             $resultElement->offsetSet(self::TAX_AMOUNT, $taxAmount);
-        }
-        if (null !== $adjustment) {
-            $resultElement->offsetSet(self::ADJUSTMENT, $adjustment);
         }
 
         return $resultElement;
@@ -67,22 +61,5 @@ final class ResultElement extends AbstractResultElement implements \JsonSerializ
     public function getTaxAmount()
     {
         return $this->getOffset(self::TAX_AMOUNT, 0);
-    }
-
-    /**
-     * @return string
-     */
-    public function getAdjustment()
-    {
-        return $this->getOffset(self::ADJUSTMENT, 0);
-    }
-
-    /**
-     * @param string $adjustment
-     * @return string
-     */
-    public function setAdjustment($adjustment)
-    {
-        $this->offsetSet(self::ADJUSTMENT, $adjustment);
     }
 }

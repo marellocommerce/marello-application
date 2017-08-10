@@ -24,10 +24,17 @@ services:
             - Marello\Bundle\PricingBundle\Model\PricingAwareInterface
             - '@marello_sales.saleschannel.provider.channel_provider'
 
+    marello_productprice.pricing.formatter.vat_aware_label:
+        class: Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter
+        arguments:
+            - '@oro_config.manager'
+            - '@translator.default'
+
     marello_productprice.pricing.twig.pricing_extension:
         class: Marello\Bundle\PricingBundle\Twig\PricingExtension
         arguments:
             - '@marello_productprice.pricing.provider.currency_provider'
+            - '@marello_productprice.pricing.formatter.vat_aware_label'
         tags:
             - { name: twig.extension }
 
@@ -38,13 +45,16 @@ services:
             - '@oro_currency.rounding.price_rounding_service'
             - '@oro_currency.config.currency'
 
-    marello_productprice.pricing.subtotal_provider.subtotal_line_item:
-        class: Marello\Bundle\PricingBundle\Subtotal\Provider\LineItemSubtotalProvider
+    marello_productprice.pricing.listener.datagrid.marello_productprice:
+        class: 'Marello\Bundle\PricingBundle\EventListener\Datagrid\PriceVATLabelAwareGridListener'
         arguments:
-            - '@translator'
-            - '@oro_currency.rounding.price_rounding_service'
-            - '@oro_currency.config.currency'
-        calls:
-            - ['addDependOnProvider', ['@marello_tax.provider.tax_subtotal', 2]]
+            - '@marello_productprice.pricing.formatter.vat_aware_label'
         tags:
-            - { name: marello_pricing.subtotal_provider, priority: 20 }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-productprice-grid, method: onBuildBefore }
+
+    marello_productprice.pricing.listener.datagrid.marello_productchannelprice:
+        class: 'Marello\Bundle\PricingBundle\EventListener\Datagrid\PriceVATLabelAwareGridListener'
+        arguments:
+            - '@marello_productprice.pricing.formatter.vat_aware_label'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-productchannelprice-grid, method: onBuildBefore }

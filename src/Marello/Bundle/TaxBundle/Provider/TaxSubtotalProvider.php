@@ -14,7 +14,7 @@ class TaxSubtotalProvider implements SubtotalProviderInterface
 {
     const TYPE = 'tax';
     const NAME = 'marello_tax.subtotal_tax';
-    const SUBTOTAL_ORDER = 500;
+    const SUBTOTAL_ORDER = 50;
 
     /**
      * @var TranslatorInterface

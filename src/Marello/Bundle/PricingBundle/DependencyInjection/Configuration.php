@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PricingBundle\DependencyInjection;
 
+use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -13,17 +14,24 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    const VAT_SYSTEM_CONFIG_PATH = 'marello_pricing.is_vat_included';
+
     /**
      * {@inheritDoc}
      */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('marello_pricing');
+        $rootNode = $treeBuilder->root(MarelloPricingExtension::ALIAS);
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        SettingsBuilder::append(
+            $rootNode,
+            [
+                'is_vat_included' => [
+                    'value' => false
+                ]
+            ]
+        );
 
         return $treeBuilder;
     }

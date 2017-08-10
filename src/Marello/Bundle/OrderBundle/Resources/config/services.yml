@@ -102,6 +102,27 @@ services:
         tags:
             - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: totals, priority: 40 }
 
+    marello_order.subtotal_provider.order_items:
+        class: Marello\Bundle\OrderBundle\Provider\OrderItemsSubtotalProvider
+        arguments:
+            - '@translator'
+            - '@oro_currency.rounding.price_rounding_service'
+            - '@oro_currency.config.currency'
+            - '@marello_productprice.pricing.provider.channelprice_provider'
+        calls:
+            - ['addDependOnProvider', ['@marello_tax.provider.tax_subtotal', '@=service("marello_tax.provider.tax_subtotal_operation").getSubtotalOperation()']]
+        tags:
+            - { name: marello_pricing.subtotal_provider, priority: 20 }
+
+    marello_order.subtotal_provider.discount:
+        class: Marello\Bundle\OrderBundle\Provider\DiscountSubtotalProvider
+        arguments:
+            - '@translator'
+            - '@oro_currency.rounding.price_rounding_service'
+            - '@oro_currency.config.currency'
+        tags:
+            - { name: marello_pricing.subtotal_provider, priority: 40 }
+
     marello_order.search_handler.customer:
         parent: oro_form.autocomplete.search_handler
         arguments:
@@ -126,3 +147,10 @@ services:
         class: '%marello_datagrid.event_listener.datagrid.workflow_grid_listener.class%'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.dashboard-order-revenue-saleschannels-grid, method: removeWorkflow }
+
+    marello_order.listener.datagrid.marello_order_items:
+        class: 'Marello\Bundle\PricingBundle\EventListener\Datagrid\PriceVATLabelAwareGridListener'
+        arguments:
+            - '@marello_productprice.pricing.formatter.vat_aware_label'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order-items, method: onBuildBefore }

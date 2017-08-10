@@ -24,15 +24,13 @@ class CustomerAddressItemResolver extends AbstractItemResolver
             return;
         }
 
-        if ($taxable->getResult()->isResultLocked()) {
-            return;
+        $taxRule = null;
+        if ($taxable->getTaxCode()) {
+            $taxRule = $this->matcher->match($address, [$taxable->getTaxCode()->getCode()]);
         }
-
-        $taxRule = $this->matcher->match($address, [$taxable->getTaxCode()->getCode()]);
         $taxableAmount = (float)$taxable->getPrice();
 
         $result = $taxable->getResult();
         $this->rowTotalResolver->resolveRowTotal($result, $taxableAmount, $taxable->getQuantity(), $taxRule);
-        $result->lockResult();
     }
 }

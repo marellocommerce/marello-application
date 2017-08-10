@@ -29,10 +29,6 @@ class CustomerAddressResolver implements ResolverInterface
             return;
         }
 
-        if ($taxable->getResult()->isResultLocked()) {
-            return;
-        }
-
         $itemsResult = [];
         foreach ($taxable->getItems() as $taxableItem) {
             $this->itemResolver->resolve($taxableItem);

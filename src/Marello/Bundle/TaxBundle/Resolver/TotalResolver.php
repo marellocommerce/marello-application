@@ -17,11 +17,7 @@ class TotalResolver implements ResolverInterface
             return;
         }
 
-        if ($taxable->getResult()->isResultLocked()) {
-            return;
-        }
-
-        $data = ResultElement::create(0.0, 0.0, 0.0, 0.0);
+        $data = ResultElement::create(0.0, 0.0, 0.0);
 
         foreach ($taxable->getItems() as $taxableItem) {
             $taxableItemResult = $taxableItem->getResult();
@@ -38,7 +34,6 @@ class TotalResolver implements ResolverInterface
 
         $result = $taxable->getResult();
         $result->offsetSet(Result::TOTAL, $data);
-        $result->lockResult();
     }
 
     /**
@@ -48,6 +43,10 @@ class TotalResolver implements ResolverInterface
      */
     protected function mergeData(ResultElement $target, ResultElement $source)
     {
+
+        if ($source->getIncludingTax() < $source->getExcludingTax()) {
+            return $target;
+        }
         $currentData = new ResultElement($target->getArrayCopy());
 
         foreach ($source as $key => $value) {
