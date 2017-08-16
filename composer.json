@@ -15,43 +15,43 @@
   "repositories": {
     "ldap-bundle": {
       "type": "vcs",
-      "url": "https://github.com/orocrm/OroCRMProLDAPBundle.git"
+      "url": "https://github.com/oroinc/OroCRMProLDAPBundle.git"
     },
     "platform-enterprise": {
       "type": "vcs",
-      "url": "https://github.com/orocrm/platform-enterprise.git"
+      "url": "https://github.com/oroinc/platform-enterprise.git"
     },
     "crm-enterprise": {
       "type": "vcs",
-      "url": "https://github.com/orocrm/crm-enterprise.git"
+      "url": "https://github.com/oroinc/crm-enterprise.git"
     },
     "crm": {
       "type": "vcs",
-      "url": "https://github.com/orocrm/crm-er.git"
+      "url": "https://github.com/oroinc/crm-er.git"
     },
     "platform": {
       "type": "vcs",
-      "url": "https://github.com/orocrm/platform-er.git"
+      "url": "https://github.com/oroinc/platform-er.git"
     },
     "commerce-enterprise": {
       "type": "vcs",
-      "url": "https://github.com/orocrm/commerce-enterprise.git"
+      "url": "https://github.com/oroinc/commerce-enterprise.git"
     },
     "customer-portal": {
       "type": "vcs",
-      "url": "https://github.com/orocrm/customer-portal-er.git"
+      "url": "https://github.com/oroinc/customer-portal-er.git"
     },
     "commerce": {
       "type": "vcs",
-      "url": "https://github.com/orocrm/commerce-er.git"
+      "url": "https://github.com/oroinc/commerce-er.git"
     },
     "commerce-crm": {
       "type": "vcs",
-      "url": "https://github.com/orocrm/commerce-crm-er.git"
+      "url": "https://github.com/oroinc/commerce-crm-er.git"
     },
     "commerce-crm-enterprise": {
       "type": "vcs",
-      "url": "https://github.com/orocrm/commerce-crm-enterprise.git"
+      "url": "https://github.com/oroinc/commerce-crm-enterprise.git"
     },
     "composer": {
       "type": "composer",
