@@ -4,6 +4,7 @@ marello:
         entity_plural_label:        Orders
         entity_label:               Order
         id.label:                   Id
+        customer.label:             Customer
         items.label:                Items
         subtotal.label:             Subtotal
         total_tax.label:            TAX Total
@@ -14,6 +15,7 @@ marello:
         sales_channel_name.label:   Sales Channel
         order_reference.label:      Order Reference
         locale.label:               Order Locale
+        localization.label:         Localization
         workflow_item.label:        Workflow Item
         workflow_step.label:        Workflow Step
         organization.label:         Organization
@@ -22,11 +24,12 @@ marello:
         discount_amount.label:      Discount Amount
         discount_percent.label:     Discount Percent
         invoiced_at.label:          Invoiced At
-        invoice_reference.label:     Invoice Reference
+        invoice_reference.label:    Invoice Reference
         payment_method.label:       Payment Method
         payment_details.label:      Payment Details
         payment_reference.label:    Payment Reference
-        shipping_method.label:      Shippingmethod
+        shipping_method.label:      Shipping Method
+        shipment.label:             Shipment
         shipping_amount_incl_tax.label:      Shipping Costs Incl. tax
         shipping_amount_excl_tax.label:      Shipping Costs Excl. tax
         status.label:               Order Status
@@ -49,6 +52,7 @@ marello:
             order_information:      Order Information
             customer_information:   Customer Information
             order_totals:           Order Totals
+            packing_slips:          Packing Slips
         # OrderItem entity
         orderitem:
             entity_label:           Ordered Item
@@ -65,6 +69,10 @@ marello:
             original_price_incl_tax.label:   Original Price Incl. Tax
             total_price_excl_tax.label:      Total Price Excl. Tax
             total_price_incl_tax.label:      Total Price Incl. Tax
+            purchase_price_incl.label:       Purchase Price Incl. Tax
+            row_total_excl_tax.label:        Row Total Excl. Tax
+            row_total_incl_tax.label:        Row Total Incl. Tax
+            tax_code.label:         Tax Code
             product_name.label:     Product Name
             product_sku.label:      Product SKU
             product.label:          Product
@@ -81,6 +89,7 @@ marello:
             entity_label:                     Customer
             entity_plural_label:              Customers
             id.label:                         Id
+            organization.label:               Organization
             primary_address.label:            Primary Address
             tax_identification_number.label:  Tax Identification Number
             addresses.label:                  Addresses

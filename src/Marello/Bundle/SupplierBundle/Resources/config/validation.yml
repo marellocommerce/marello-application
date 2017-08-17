@@ -1,15 +1,3 @@
-Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation:
-    constraints:
-        - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
-            fields: [supplier, quantityOfUnit]
-            errorPath: channel
-            message: 'marello.supplier.productsupplierrelation.messages.error.unique_product_supplier_relation'
-    properties:
-        supplier:
-            - NotBlank: ~
-        quantityOfUnit:
-            - NotBlank: ~
-
 Marello\Bundle\SupplierBundle\Entity\Supplier:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:

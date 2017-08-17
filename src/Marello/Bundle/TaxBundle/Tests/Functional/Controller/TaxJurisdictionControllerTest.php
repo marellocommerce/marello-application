@@ -8,9 +8,6 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 use Symfony\Component\DomCrawler\Form;
 
-/**
- * @dbIsolation
- */
 class TaxJurisdictionControllerTest extends WebTestCase
 {
     const CODE = 'code';

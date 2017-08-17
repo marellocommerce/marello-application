@@ -9,8 +9,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 /**
  * Test if transformer is properly configured.
- *
- * @dbIsolation
  */
 class ProductToSkuTransformerTest extends WebTestCase
 {

@@ -12,7 +12,6 @@ use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChanne
 
 /**
  * @outputBuffering enabled
- * @dbIsolation
  */
 class PricingControllerTest extends WebTestCase
 {

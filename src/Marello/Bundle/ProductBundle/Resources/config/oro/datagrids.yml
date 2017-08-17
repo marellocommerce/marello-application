@@ -420,7 +420,7 @@ datagrids:
             query:
                 select: [ psr, supplier.name ]
                 from:
-                    - { table: MarelloSupplierBundle:ProductSupplierRelation, alias: psr }
+                    - { table: MarelloProductBundle:ProductSupplierRelation, alias: psr }
                 join:
                     left:
                         supplier:

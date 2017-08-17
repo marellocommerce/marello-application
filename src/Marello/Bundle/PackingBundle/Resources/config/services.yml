@@ -1,0 +1,15 @@
+services:
+    marello_packing.mapper.order_to_packingslip:
+        class: 'Marello\Bundle\PackingBundle\Mapper\OrderToPackingSlipMapper'
+        arguments:
+            - '@oro_entity.entity_field_provider'
+            - '@property_accessor'
+            - '@oro_entity.doctrine_helper'
+
+    marello_packing.event_listener.create_packing_slip:
+        class: 'Marello\Bundle\PackingBundle\EventListener\CreatePackingSlipEventListener'
+        arguments:
+            - '@marello_packing.mapper.order_to_packingslip'
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: extendable_action.create_packingslip, method: onCreatePackingSlip, priority: 10 }

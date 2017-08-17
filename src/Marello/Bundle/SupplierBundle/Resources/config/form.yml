@@ -9,16 +9,6 @@ services:
         tags:
             - { name: form.type, alias: marello_supplier_select_form }
 
-    marello_supplier.form.type.product_supplier_relation:
-        class: Marello\Bundle\SupplierBundle\Form\Type\ProductSupplierRelationType
-        tags:
-            - { name: form.type, alias: marello_product_supplier_relation_form }
-
-    marello_supplier.form.type.product_supplier_relation_collection:
-        class: Marello\Bundle\SupplierBundle\Form\Type\ProductSupplierRelationCollectionType
-        tags:
-            - { name: form.type, alias: marello_product_supplier_relation_collection_form }
-
     ## forms
     marello_supplier.supplier.form:
         class: Symfony\Component\Form\Form

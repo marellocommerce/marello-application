@@ -39,7 +39,7 @@ class ProductSupplierRelationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation',
+            'data_class'         => 'Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation',
             'cascade_validation' => true,
         ]);
     }

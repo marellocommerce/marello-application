@@ -31,7 +31,7 @@ class MarelloReturnBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -116,9 +116,7 @@ class MarelloReturnBundleInstaller implements
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->addColumn('return_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['order_id'], 'idx_3c549d8d8d9f6d38', []);
-        $table->addIndex(['organization_id'], 'IDX_3C549D8D32C8A3DE', []);
-        $table->addIndex(['sales_channel_id'], 'IDX_3C549D8D4C7A5B2E', []);
+        $table->addUniqueIndex(['shipment_id'], 'UIDX_3C549D8D32C8A3DE5', []);
     }
 
     /**
@@ -172,6 +170,12 @@ class MarelloReturnBundleInstaller implements
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_localization'),
             ['localization_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_shipment'),
+            ['shipment_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

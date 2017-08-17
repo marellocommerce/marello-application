@@ -96,7 +96,7 @@ class OrderItem extends ExtendOrderItem implements
     /**
      * @var int
      *
-     * @ORM\Column(name="original_price_incl_tax",type="money")
+     * @ORM\Column(name="original_price_incl_tax",type="money", nullable=true)
      *
      * @JMS\Expose
      */
@@ -105,7 +105,7 @@ class OrderItem extends ExtendOrderItem implements
     /**
      * @var int
      *
-     * @ORM\Column(name="original_price_excl_tax",type="money")
+     * @ORM\Column(name="original_price_excl_tax",type="money", nullable=true)
      *
      * @JMS\Expose
      */
@@ -114,7 +114,7 @@ class OrderItem extends ExtendOrderItem implements
     /**
      * @var int
      *
-     * @ORM\Column(name="purchase_price_incl",type="money")
+     * @ORM\Column(name="purchase_price_incl",type="money", nullable=true)
      *
      * @JMS\Expose
      */

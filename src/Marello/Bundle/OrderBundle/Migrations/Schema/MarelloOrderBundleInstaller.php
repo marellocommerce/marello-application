@@ -30,7 +30,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -153,6 +153,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['shipment_id'], 'UNIQ_A619DD647BE036FC');
         $table->addUniqueIndex(['order_number'], 'UNIQ_A619DD64551F0F81');
         $table->addUniqueIndex(['order_reference', 'salesChannel_id'], 'UNIQ_A619DD64122432EB32758FE');
         $table->addIndex(['customer_id'], 'IDX_A619DD649395C3F3', []);
@@ -227,8 +228,6 @@ class MarelloOrderBundleInstaller implements
         );
         $table->addColumn('tax_code_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['product_id'], 'IDX_1118665C4584665A', []);
-        $table->addIndex(['order_id'], 'IDX_1118665C8D9F6D38', []);
     }
 
     /**
@@ -297,6 +296,13 @@ class MarelloOrderBundleInstaller implements
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_shipment'),
+            ['shipment_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
     }
 
     /**
@@ -323,7 +329,7 @@ class MarelloOrderBundleInstaller implements
             $schema->getTable('marello_tax_tax_code'),
             ['tax_code_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 

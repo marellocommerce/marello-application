@@ -1,24 +1,23 @@
 <?php
 
-namespace Marello\Bundle\SupplierBundle\Entity;
+namespace Marello\Bundle\ProductBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 
 /**
  * ProductSupplierRelation
  *
  * @ORM\Table(
- *     name="marello_supplier_prod_supp_rel",
+ *     name="marello_product_prod_supp_rel",
  *     uniqueConstraints={
  *          @ORM\UniqueConstraint(
- *              name="marello_supplier_prod_supp_rel_uidx",
+ *              name="marello_product_prod_supp_rel_uidx",
  *              columns={"product_id", "supplier_id", "quantity_of_unit"}
  *          )
  *      }
  * )
- * @ORM\Entity(repositoryClass="Marello\Bundle\SupplierBundle\Entity\Repository\ProductSupplierRelationRepository")
+ * @ORM\Entity(repositoryClass="Marello\Bundle\ProductBundle\Entity\Repository\ProductSupplierRelationRepository")
  */
 class ProductSupplierRelation
 {
@@ -34,8 +33,9 @@ class ProductSupplierRelation
     /**
      * @var Product
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="suppliers", cascade={"persist"})
-     * @ORM\JoinColumn(name="product_id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="suppliers",
+     *      cascade={"persist"})
+     * @ORM\JoinColumn(name="product_id", nullable=false, onDelete="CASCADE")
      */
     protected $product;
 
@@ -43,7 +43,7 @@ class ProductSupplierRelation
      * @var Supplier
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier", cascade={"persist"})
-     * @ORM\JoinColumn(name="supplier_id", nullable=false)
+     * @ORM\JoinColumn(name="supplier_id", nullable=false, onDelete="CASCADE")
      */
     protected $supplier;
 

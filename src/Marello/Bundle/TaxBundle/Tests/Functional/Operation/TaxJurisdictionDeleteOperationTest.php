@@ -6,9 +6,6 @@ use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxJurisdictionDa
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxRateData;
 use Oro\Bundle\ActionBundle\Tests\Functional\ActionTestCase;
 
-/**
- * @dbIsolation
- */
 class TaxJurisdictionDeleteOperationTest extends ActionTestCase
 {
     protected function setUp()

@@ -41,7 +41,7 @@ class PurchaseOrderItem implements
      * @var PurchaseOrder
      *
      * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="items")
-     * @ORM\JoinColumn
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $order;
 

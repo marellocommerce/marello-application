@@ -9,9 +9,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingData;
 
-/**
- * @dbIsolation
- */
 class InventoryControllerTest extends WebTestCase
 {
     public function setUp()

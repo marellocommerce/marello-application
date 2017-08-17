@@ -8,9 +8,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 
-/**
- * @dbIsolation
- */
 class OrderControllerTest extends WebTestCase
 {
     public function setUp()
@@ -47,12 +44,13 @@ class OrderControllerTest extends WebTestCase
 
     public function testView()
     {
-        $this->client->request(
+        $crawler = $this->client->request(
             'GET',
             $this->getUrl('marello_order_order_view', ['id' => $this->getReference('order0')->getId()])
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
+        $this->assertContains('marello-order-packingslips', $crawler->html());
     }
 
     public function testUpdateAvailable()

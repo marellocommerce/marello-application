@@ -10,11 +10,13 @@ marello:
             address.label:              Address
             id.label:                   Id
             owner.label:                Owner
+            warehouse_type.label:       Warehouse Type
 
-            warehousetype:
-                entity_label:           Warehouse Type
-                label.label:            Label
-                name.label:             Name
+        warehousetype:
+            entity_label:               Warehouse Type
+            entity_plural_label:        Warehouse Types
+            label.label:                Label
+            name.label:                 Name
 
             controller:
                 message.saved:          Warehouse saved
@@ -29,6 +31,8 @@ marello:
             id.label:                   Id
             warehouse.label:            Warehouse
             product.label:              Product
+            current_level.label:        Current Level
+            levels.label:               Levels
 
         stocklevel:
             entity_label:               Inventory Level
@@ -36,6 +40,10 @@ marello:
             id.label:                   Id
             stock.label:                Real Stock
             allocated_stock.label:      Allocated Stock
+            allocated_inventory.label:  Allocated Inventory
+            allocated_inventory_alteration.label: Allocated Inventory Alteration
+            inventory.label:            Inventory
+            inventory_alteration.label: Inventory Alteration
             virtual_stock.label:        Virtual Stock
             stock_diff.label:           Real Stock Change
             allocated_stock_diff.label: Allocated Stock Change

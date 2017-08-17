@@ -9,9 +9,6 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @dbIsolation
- */
 class UPSApiTest extends WebTestCase
 {
     /** @var UPSApi */

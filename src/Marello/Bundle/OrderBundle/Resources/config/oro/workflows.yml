@@ -3,7 +3,7 @@ workflows:
         entity:       Marello\Bundle\OrderBundle\Entity\Order
         entity_attribute: order
         start_step:   pending
-
+        exclusive_active_groups: [order_b2c]
         defaults:
             active: true
 
@@ -147,6 +147,8 @@ workflows:
                     - @marello_shipment_create:
                         entity: $order
                         service: $order.shippingMethod
+                    - '@extendable':
+                       events: [extendable_action.create_packingslip]
                     - @marello_notification_send:
                         entity: $order
                         recipient: $order.customer.email
@@ -170,6 +172,7 @@ workflows:
     marello_order_b2c_workflow_2:
         entity:       Marello\Bundle\OrderBundle\Entity\Order
         entity_attribute: order
+        exclusive_active_groups: [order_b2c]
         start_step:   pending
         attributes:
             payment_reference:
@@ -316,7 +319,7 @@ workflows:
             prepare_shipping_definition:
                 post_actions:
                     - @marello_shipment_create:
-                        order: $order
+                        entity: $order
                         service: $order.shippingMethod
             payment_reminder_definition:
                 post_actions:

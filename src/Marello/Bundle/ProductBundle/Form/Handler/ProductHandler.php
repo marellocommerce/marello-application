@@ -5,7 +5,7 @@ namespace Marello\Bundle\ProductBundle\Form\Handler;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation;
 use Oro\Component\Layout\ArrayCollection;
 use Symfony\Component\Form\FormInterface;

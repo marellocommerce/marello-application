@@ -5,9 +5,6 @@ namespace Marello\Bundle\TaxBundle\Tests\Functional\Operation;
 use Oro\Bundle\ActionBundle\Tests\Functional\ActionTestCase;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxRateData;
 
-/**
- * @dbIsolation
- */
 class TaxRateDeleteOperationTest extends ActionTestCase
 {
     protected function setUp()

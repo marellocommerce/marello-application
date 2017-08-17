@@ -5,7 +5,7 @@ namespace Marello\Bundle\SupplierBundle\Provider;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 
 class SupplierProvider

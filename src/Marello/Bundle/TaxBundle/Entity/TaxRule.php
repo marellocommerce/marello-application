@@ -42,7 +42,7 @@ class TaxRule
      * @var TaxCode
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
-     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $taxCode;
 
@@ -50,7 +50,7 @@ class TaxRule
      * @var TaxRate
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxRate")
-     * @ORM\JoinColumn(name="tax_rate_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="tax_rate_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $taxRate;
 

@@ -6,7 +6,7 @@ navigation:
                 route: marello_return_return_index
                 extras:
                     routes: ['marello_return_return_*']
-                    position: 20
+                    position: 30
         tree:
             application_menu:
                 children:

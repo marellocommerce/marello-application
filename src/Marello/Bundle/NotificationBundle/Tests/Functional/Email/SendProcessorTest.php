@@ -9,9 +9,6 @@ use Marello\Bundle\NotificationBundle\Email\SendProcessor;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 
-/**
- * @dbIsolation
- */
 class SendProcessorTest extends WebTestCase
 {
     /** @var SendProcessor */

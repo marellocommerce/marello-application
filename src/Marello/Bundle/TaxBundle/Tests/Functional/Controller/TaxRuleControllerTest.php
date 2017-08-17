@@ -12,9 +12,6 @@ use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxRateData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
-/**
- * @dbIsolation
- */
 class TaxRulesControllerTest extends WebTestCase
 {
     const TAX_RULE_SAVE_MESSAGE = 'Tax Rule saved';

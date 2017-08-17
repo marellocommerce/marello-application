@@ -11,9 +11,6 @@ use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @dbIsolation
- */
 class PurchaseOrderControllerTest extends WebTestCase
 {
     protected function setUp()

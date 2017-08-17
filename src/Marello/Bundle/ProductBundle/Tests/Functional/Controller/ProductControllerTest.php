@@ -17,7 +17,6 @@ use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData
 
 /**
  * @outputBuffering enabled
- * @dbIsolation
  */
 class ProductControllerTest extends WebTestCase
 {

@@ -57,8 +57,6 @@ class MarelloPurchaseOrderBundleInstaller implements
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['organization_id'], 'IDX_34E72AC332C8A3DE', []);
-        $table->addIndex(['supplier_id'], '', []);
 
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
@@ -85,8 +83,6 @@ class MarelloPurchaseOrderBundleInstaller implements
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['product_id'], 'IDX_3483BD864584665A', []);
-        $table->addIndex(['order_id'], 'IDX_3483BD868D9F6D38', []);
     }
 
     /**
