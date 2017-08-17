@@ -1,4 +1,23 @@
 marello:
     address:
-        # Order entity
-        marelloaddress.entity_label:        Address
+        marelloaddress:
+            id.label:             Address Id
+            entity_label:         Address
+            entity_plural_label:  Addresses
+            city.label:           City
+            company.label:        Company
+            first_name.label:     First Name
+            label.label:          Label
+            last_name.label:      Last Name
+            middle_name.label:    Middle Name
+            name_prefix.label:    Name Prefix
+            name_suffix.label:    Name Suffix
+            organization.label:   Organization
+            phone.label:          Phone
+            postal_code.label:    Zip/Postal Code
+            region.label:         Region
+            region_text.label:    Region Text
+            street.label:         Street
+            street2.label:        Street 2
+            country.label:        Country
+            customer.label:       Customer

@@ -10,6 +10,13 @@ marello:
             return_items.label:       Returned items
             workflow_item.label:      Workflow Item
             workflow_step.label:      Workflow Step
+            shipment.label:           Shipment
+            sales_channel.label:      Sales Channel
+            organization.label:       Organization
+            localization.label:       Localization
+            sales_channel_name.label: Sales Channel Name
+            locale.label:             Locale
+
             messages:
                 success:
                     returnentity:

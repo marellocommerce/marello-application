@@ -1,5 +1,6 @@
 marello:
     refund:
+        id.label:               Id
         entity_label:           Refund
         entity_plural_label:    Refunds
         refund_number.label:    Refund Number
@@ -9,12 +10,24 @@ marello:
         ordered_items.label:    Ordered Items
         additional_items.label: Additional Items
         original_order.label:   Original Order
+        currency.label:         Currency
+        locale.label:           Locale
+        customer.label:         Customer
+        items.label:            Refund Items
+        localization.label:     Localization
+        order.label:            Order
+        organization.label:     Organization
 
-        refund_item:
-            quantity_ordered.label: Ordered Quantity
-            quantity.label:         Refunded Quantity
-            refund_amount.label:    Refunded Amount
+        refunditem:
+            id.label:               Id
+            entity_label:           Refund Item
+            entity_plural_label:    Refund Items
+            base_amount.label:      Base Amount
             name.label:             Item Name
+            refund_amount.label:    Refund Amount
+            order_item.label:       Order Item
+            quantity.label:         Refunded Quantity
+            refund.label:           Refund
 
         form:
             price.label:            Price (incl VAT)

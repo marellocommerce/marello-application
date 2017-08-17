@@ -1,4 +1,9 @@
 marello:
     notification:
+        id.label:               Id
         entity_label:           Email Notification
         entity_plural_label:    Email Notifications
+        body.label:             Body
+        recipients.label:       Recipients
+        organization.label:     Organization
+        template.label:         Template
