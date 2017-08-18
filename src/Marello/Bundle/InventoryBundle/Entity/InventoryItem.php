@@ -16,7 +16,7 @@ use Marello\Bundle\ProductBundle\Entity\ProductInterface;
  * @ORM\Table(
  *      name="marello_inventory_item",
  *      uniqueConstraints={
- *          @ORM\UniqueConstraint(columns={"product_id", "warehouse_id"})
+ *          @ORM\UniqueConstraint(columns={"product_id"})
  *      }
  * )
  * @Oro\Config(
