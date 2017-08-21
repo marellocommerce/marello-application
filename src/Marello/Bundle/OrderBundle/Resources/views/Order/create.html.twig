@@ -44,6 +44,14 @@
             {{ form_row(form.customer) }}
         </div>
     {% endset %}
+    {% set discountInput %}
+        <div data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marelloorder/js/app/views/order-discount-view',
+             }|json_encode }}">
+            {{ form_row(form.discountAmount) }}
+        </div>
+    {% endset %}
     {% set billingAddress %}
         {% if form.billingAddress.customerAddress is defined %}
             {% set idAddressBlock = '#' ~ form.billingAddress.customerAddress.vars.id %}
@@ -97,6 +105,16 @@
         </div>
     {% endset %}
     {% set shippingInformation = form_row(form.shippingMethod) %}
+    {% set subtotals %}
+        <div class="subtotal-error"></div>
+        <div data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marelloorder/js/app/views/order-totals-view',
+                 data: data|default({})
+             }|json_encode }}">
+            <div class="totals-container" data-totals-container></div>
+        </div>
+    {% endset %}
 
     {% set dataBlocks = [
         {
@@ -106,6 +124,8 @@
                 'title': '',
                 'data': [
                     customerSelector,
+                    form_row(form.salesChannel),
+                    discountInput,
                     form_rest(form)
                 ]
             }]
@@ -149,6 +169,15 @@
                 ]
             }]
         },
+        {
+            'title': 'marello.order.sections.subtotals'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'data': [
+                    subtotals
+                ]
+            }]
+        }
     ] %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

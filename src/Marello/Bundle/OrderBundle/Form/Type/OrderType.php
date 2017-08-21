@@ -8,7 +8,6 @@ use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
 use Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodSelectType;
-use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -50,7 +49,7 @@ class OrderType extends AbstractType
             )
             ->add(
                 'discountAmount',
-                OroMoneyType::class,
+                TextType::class,
                 [
                     'label'    => 'marello.order.discount_amount.label',
                     'required' => false,

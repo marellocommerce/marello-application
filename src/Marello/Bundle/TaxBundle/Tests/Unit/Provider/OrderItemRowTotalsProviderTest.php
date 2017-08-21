@@ -9,7 +9,7 @@ use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
 use Marello\Bundle\TaxBundle\Matcher\TaxRuleMatcherInterface;
-use Marello\Bundle\TaxBundle\Model\TaxResult;
+use Marello\Bundle\TaxBundle\Model\ResultElement;
 use Marello\Bundle\TaxBundle\Provider\OrderItemRowTotalsProvider;
 use Oro\Component\Testing\Unit\EntityTrait;
 use Symfony\Component\Form\FormInterface;
@@ -79,7 +79,7 @@ class OrderItemRowTotalsProviderTest extends \PHPUnit_Framework_TestCase
         $this->taxCalculator
             ->expects(static::any())
             ->method('calculate')
-            ->willReturn(new TaxResult($calculationResult));
+            ->willReturn(new ResultElement($calculationResult));
 
         $context = new FormChangeContext([
             FormChangeContext::FORM_FIELD => $form,
@@ -110,9 +110,9 @@ class OrderItemRowTotalsProviderTest extends \PHPUnit_Framework_TestCase
         ];
 
         $calculationResult = [
-            TaxResult::INCLUDING_TAX => 100,
-            TaxResult::EXCLUDING_TAX => 90,
-            TaxResult::TAX_AMOUNT => 10
+            ResultElement::INCLUDING_TAX => 100,
+            ResultElement::EXCLUDING_TAX => 90,
+            ResultElement::TAX_AMOUNT => 10
         ];
 
         $expectedResults = $resultBefore;
