@@ -54,6 +54,7 @@ class WarehouseControllerTest extends WebTestCase
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $data = [
             'label'      => 'Warehouse 13',
+            'code'       => 'warehouse_13',
             'country'    => 'NL',
             'street'     => 'Typicalstreetname',
             'street2'    => '30',
@@ -66,6 +67,7 @@ class WarehouseControllerTest extends WebTestCase
         $form   = $crawler->selectButton('Save and Close')->form();
 
         $form['marello_warehouse[label]']               = $data['label'];
+        $form['marello_warehouse[code]']                = $data['code'];
         $form['marello_warehouse[address][country]']    = $data['country'];
         $form['marello_warehouse[address][street]']     = $data['street'];
         $form['marello_warehouse[address][street2]']    = $data['street2'];
