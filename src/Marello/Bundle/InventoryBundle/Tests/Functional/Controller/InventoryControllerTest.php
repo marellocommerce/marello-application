@@ -73,7 +73,7 @@ class InventoryControllerTest extends WebTestCase
         $manager = $this->getContainer()->get('marello_inventory.manager.inventory_item_manager');
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $manager->getInventoryItem($this->getReference(LoadProductData::PRODUCT_1_REF));
-        $this->assertEquals(false, $inventoryItem->hasInventoryLevels());
+        $this->assertEquals(true, $inventoryItem->hasInventoryLevels());
 
         $token = $this->getContainer()->get('security.csrf.token_manager')
             ->getToken('marello_inventory_inventory_update')->getValue();

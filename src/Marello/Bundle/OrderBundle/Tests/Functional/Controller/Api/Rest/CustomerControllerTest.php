@@ -55,11 +55,10 @@ class CustomerControllerTest extends WebTestCase
         $this->assertArrayHasKey('id', $response);
     }
 
-
     /**
      * @test
      */
-    public function testIndex()
+    public function testCget()
     {
         $this->client->request(
             'GET',
