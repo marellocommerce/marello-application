@@ -2,13 +2,13 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Extension;
 
-use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 
+use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
+
 class WarehouseExtension extends AbstractTypeExtension
 {
-
     /**
      * {@inheritdoc}
      */

@@ -24,7 +24,7 @@ class LoadWarehouseData extends AbstractFixture
          */
         $additionalWarehouse = new Warehouse('Warehouse 13', false);
         $additionalWarehouse->setOwner($organization);
-
+        $additionalWarehouse->setCode('warehouse_13');
         $warehouseAddress = new MarelloAddress();
 
         $manager->persist($warehouseAddress);

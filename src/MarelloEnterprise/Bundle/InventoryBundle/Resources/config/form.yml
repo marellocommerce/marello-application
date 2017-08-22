@@ -6,6 +6,11 @@ services:
         tags:
             - { name: form.type_extension, alias: marello_warehouse }
 
+    marello_enterprise.form.extension.inventorylevel:
+        class: MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\InventoryLevelExtension
+        tags:
+            - { name: form.type_extension, alias: marello_inventory_inventorylevel }
+
     marelloenterprise.manager.api:
         class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
         parent: oro_soap.manager.entity_manager.abstract
@@ -18,5 +23,19 @@ services:
         parent: oro_soap.handler.delete.abstract
         scope: request
         arguments:
-            - "@marelloenterprise_inventory.validator.warehouse_delete"
-            - "@oro_security.security_facade"
+            - '@marelloenterprise_inventory.validator.warehouse_delete'
+            - '@oro_security.security_facade'
+
+    # Autocomplete search handler
+    marelloenterprise_inventory.form.autocomplete.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_inventory.entity.warehouse.class%'
+            - ["label"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: warehouses, acl_resource: marello_inventory_inventory_view }
+
+    marelloenterprise_inventory.form.type.warehouse_select:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseSelectType'
+        tags:
+            - { name: form.type, alias: marello_warehouse_select }

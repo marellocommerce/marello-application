@@ -1,0 +1,14 @@
+search:
+    Marello\Bundle\InventoryBundle\Entity\Warehouse:
+        alias:                          marello_warehouses
+        title_fields:                   [label]
+        route:
+            name:                       marello_inventory_warehouse_update
+            parameters:
+                id:                     id
+        search_template: MarelloEnterpriseInventoryBundle:Warehouse:searchResult.html.twig
+        fields:
+            -
+                name:                   label
+                target_type:            text
+                target_fields:          [label]

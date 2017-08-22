@@ -1,0 +1,6 @@
+marelloenterprise:
+    inventory:
+        validation:
+            messages:
+                error:
+                    unique_warehouse_inventory_level:   Warehouse should be unique for an Inventory Level

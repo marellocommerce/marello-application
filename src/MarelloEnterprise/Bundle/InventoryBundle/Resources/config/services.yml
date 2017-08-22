@@ -21,7 +21,7 @@ services:
     marelloenterprise_inventory.validator.default_warehouse_exists:
         class: '%marelloenterprise_inventory.validator.default_warehouse_exists.class%'
         arguments:
-            - @doctrine
+            - '@doctrine'
         tags:
             - { name: validator.constraint_validator, alias: marello_enterprise_inventory.default_warehouse_exists }
 

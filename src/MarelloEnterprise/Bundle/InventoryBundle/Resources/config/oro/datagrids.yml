@@ -16,6 +16,8 @@ datagrids:
         columns:
             label:
                 label:              marello.inventory.warehouse.label.label
+            code:
+                label:              marello.inventory.warehouse.code.label
             warehouseType:
                 label:              marello.inventory.warehouse.warehousetype.entity_label
                 frontend_type:      string
@@ -25,15 +27,19 @@ datagrids:
         sorters:
             columns:
                 label:              { data_name: w.label }
+                code:               { data_name: w.code }
                 warehouseType:      { data_name: wt.label }
                 default:            { data_name: w.default }
             default:
-                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 label:
                     type:             string
                     data_name:        w.label
+                code:
+                    type:             string
+                    data_name:        w.code
                 warehouseType:
                     type: entity
                     data_name: wt
@@ -56,17 +62,17 @@ datagrids:
                 params:
                     id: id
         actions:
-            delete:
-                type: delete
-                link: delete_link
-                icon: trash
-                confirmation: true
             update:
                 type: navigate
                 link: update_link
                 icon: edit
                 rowAction: true
-        action_configuration: [@marelloenterprise_inventory.datagrid.action_permission_provider, "getActionPermissions"]
+            delete:
+                type: delete
+                link: delete_link
+                icon: trash
+                confirmation: true
+        action_configuration: ['@marelloenterprise_inventory.datagrid.action_permission_provider', "getActionPermissions"]
         options:
             mass_actions:
                 delete:
