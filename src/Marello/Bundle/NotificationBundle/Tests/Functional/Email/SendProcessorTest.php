@@ -16,7 +16,7 @@ class SendProcessorTest extends WebTestCase
 
     public function setUp()
     {
-        $this->initClient();
+        $this->initClient($this->generateBasicAuthHeader());
 
         $this->loadFixtures(
             [
@@ -34,7 +34,7 @@ class SendProcessorTest extends WebTestCase
     public function sendsNotifications()
     {
         /** @var Order $order */
-        $order = $this->getReference('order0');
+        $order = $this->getReference('marello_order_0');
 
         $notificationsBefore = count(
             $this->getContainer()
@@ -67,7 +67,7 @@ class SendProcessorTest extends WebTestCase
     public function throwsExceptionWhenTemplateIsNotFound()
     {
         /** @var Order $order */
-        $order = $this->getReference('order1');
+        $order = $this->getReference('marello_order_1');
 
         $this->sendProcessor->sendNotification(
             'this is not a valid template name',

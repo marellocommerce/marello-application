@@ -40,29 +40,8 @@ class ProductApiType extends AbstractType
                     'scale' => 2,
                 ]
             )
-            ->add(
-                'desiredStockLevel',
-                'number',
-                [
-                    'constraints' => new NotNull(),
-                ]
-            )
-            ->add(
-                'purchaseStockLevel',
-                'number',
-                [
-                    'constraints' => new NotNull(),
-                ]
-            )
             ->add('prices')
             ->add('channels')
-            ->add('inventoryItems', 'collection', [
-                'type'          => new InventoryItemApiType($this->transformer),
-                'allow_add'     => true,
-                'allow_delete'  => true,
-                'by_reference'  => false,
-            ])
-            ->add('replenishment')
         ;
     }
 

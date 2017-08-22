@@ -2,29 +2,29 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener\Doctrine;
 
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 
 /**
  * Trait SetsPropertyValue
  *
- * Allows to set private and protected property values of StockLevel.
+ * Allows to set private and protected property values of InventoryLevelLogRecord.
  *
  * @package Marello\Bundle\InventoryBundle\EventListener\Doctrine
  */
 trait SetsPropertyValue
 {
     /**
-     * Sets property value of StockLevel.
+     * Sets property value of InventoryLevel.
      *
-     * @param StockLevel $stockLevel
-     * @param string     $propertyName
-     * @param mixed      $value
+     * @param InventoryLevelLogRecord    $inventoryLevelLogRecord
+     * @param string            $propertyName
+     * @param mixed             $value
      */
-    protected function setPropertyValue(StockLevel $stockLevel, $propertyName, $value)
+    protected function setPropertyValue(InventoryLevelLogRecord $inventoryLevelLogRecord, $propertyName, $value)
     {
-        $reflection = new \ReflectionObject($stockLevel);
+        $reflection = new \ReflectionObject($inventoryLevelLogRecord);
         $property   = $reflection->getProperty($propertyName);
         $property->setAccessible(true);
-        $property->setValue($stockLevel, $value);
+        $property->setValue($inventoryLevelLogRecord, $value);
     }
 }

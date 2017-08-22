@@ -175,6 +175,8 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
      */
     public function setPrimaryAddress(MarelloAddress $primaryAddress)
     {
+        $primaryAddress->setCustomer($this);
+        $this->addAddress($primaryAddress);
         $this->primaryAddress = $primaryAddress;
 
         return $this;

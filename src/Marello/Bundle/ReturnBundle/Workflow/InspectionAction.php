@@ -65,6 +65,7 @@ class InspectionAction extends AbstractAction
     {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
+            null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
             'return_workflow.inspection_ok',

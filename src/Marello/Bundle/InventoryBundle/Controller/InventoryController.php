@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\Controller;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,7 +21,8 @@ class InventoryController extends Controller
     public function indexAction()
     {
         return [
-            'entity_class' => 'Marello\Bundle\InventoryBundle\Entity\InventoryItem',
+            'entity_class' => InventoryItem::class,
+//            'invlev_class' => InventoryLevel::class
         ];
     }
 
@@ -27,14 +30,15 @@ class InventoryController extends Controller
      * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_view")
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function viewAction(Product $product)
+    public function viewAction(InventoryItem $inventoryItem)
     {
         return [
-            'entity' => $product,
+            'entity' => $inventoryItem,
+            'product' => $inventoryItem->getProduct()
         ];
     }
 
@@ -42,48 +46,48 @@ class InventoryController extends Controller
      * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_update")
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array|RedirectResponse
      */
-    public function updateAction(Product $product)
+    public function updateAction(InventoryItem $inventoryItem)
     {
-        $handler = $this->get('marello_inventory.form.handler.product_inventory');
+        $handler = $this->get('marello_inventory.form.handler.inventory_item');
 
-        if ($handler->process($product)) {
+        if ($handler->process($inventoryItem)) {
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route'      => 'marello_inventory_inventory_update',
-                    'parameters' => ['id' => $product->getId()],
+                    'parameters' => ['id' => $inventoryItem->getId()],
                 ],
                 [
-                    'route'      => 'marello_product_view',
-                    'parameters' => ['id' => $product->getId()],
+                    'route'      => 'marello_inventory_inventory_view',
+                    'parameters' => ['id' => $inventoryItem->getId()],
                 ],
-                $product
+                $inventoryItem
             );
         }
-
         return [
             'form'   => $handler->getFormView(),
-            'entity' => $product,
+            'entity' => $inventoryItem,
+            'product' => $inventoryItem->getProduct()
         ];
     }
+
 
     /**
      * @Config\Route("/widget/info/{id}", name="marello_inventory_widget_info", requirements={"id"="\d+"})
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function infoAction(Product $product)
+    public function infoAction(InventoryItem $inventoryItem)
     {
-        $item = $product->getInventoryItems()->first();
-
         return [
-            'item' => $item,
+            'item' => $inventoryItem,
+            'product' => $inventoryItem->getProduct()
         ];
     }
 
@@ -91,16 +95,14 @@ class InventoryController extends Controller
      * @Config\Route("/widget/datagrid/{id}", name="marello_inventory_widget_datagrid", requirements={"id"="\d+"})
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function datagridAction(Product $product)
+    public function datagridAction(InventoryItem $inventoryItem)
     {
-        $item = $product->getInventoryItems()->first();
-
         return [
-            'item' => $item,
+            'item' => $inventoryItem,
         ];
     }
 }

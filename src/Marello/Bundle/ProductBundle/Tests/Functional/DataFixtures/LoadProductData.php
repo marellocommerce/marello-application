@@ -6,25 +6,17 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
-use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
 
-class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
+class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
     const PRODUCT_1_REF = 'product1';
     const PRODUCT_2_REF = 'product2';
@@ -34,16 +26,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
     protected $defaultOrganization;
 
-    /** @var \Marello\Bundle\InventoryBundle\Entity\Warehouse $defaultWarehouse */
-    protected $defaultWarehouse;
-
     /** @var ObjectManager $manager */
     protected $manager;
-
-    /** @var ContainerInterface $container */
-    protected $container;
-
-    protected $replenishments;
 
     /** @var array $data */
     protected $data = [
@@ -52,9 +36,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             'sku'           => 'p1',
             'price'         => 10,
             'weight'        => 0.00,
-            'stockLevel'    => 5,
-            'desiredStock'  => 10,
-            'purchaseStock' => 4,
             'status'        => 'enabled',
             'channel'       => 'channel1',
             'supplier'      => [
@@ -72,9 +53,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             'sku'           => 'p2',
             'price'         => 25,
             'weight'        => 2.00,
-            'stockLevel'    => -10,
-            'desiredStock'  => 25,
-            'purchaseStock' => 5,
             'status'        => 'disabled',
             'channel'       => 'channel1;channel2',
             'supplier'      => [
@@ -99,9 +77,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             'sku'           => 'p3',
             'price'         => 50,
             'weight'        => 5.00,
-            'stockLevel'    => 100,
-            'desiredStock'  => 50,
-            'purchaseStock' => 25,
             'status'        => 'disabled',
             'channel'       => 'channel1;channel3',
             'supplier'      => [
@@ -127,8 +102,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             'price'         => 100,
             'weight'        => 10.00,
             'stockLevel'    => 0,
-            'desiredStock'  => 10,
-            'purchaseStock' => 8,
             'status'        => 'enabled',
             'channel'       => 'channel1;channel2;channel3',
             'supplier'      => [
@@ -145,14 +118,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ]
         ],
     ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
 
     public function getDependencies()
     {
@@ -178,13 +143,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $this->defaultOrganization = array_shift($organizations);
         }
 
-        $this->defaultWarehouse = $this->manager
-            ->getRepository('MarelloInventoryBundle:Warehouse')
-            ->getDefault();
-
-        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_product_reple');
-        $this->replenishments = $this->manager->getRepository($replenishmentClass)->findAll();
-
         $this->loadProducts();
     }
 
@@ -201,7 +159,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     }
 
     /**
-     * create new products and inventory items
+     * create new products
      * @param array $data
      * @return Product $product
      */
@@ -210,14 +168,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product = new Product();
         $product->setSku($data['sku']);
         $product->setName($data['name']);
-        $product->setDesiredStockLevel($data['desiredStock']);
-        $product->setPurchaseStockLevel($data['purchaseStock']);
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight($data['weight']);
-
-        $inventoryItem = new InventoryItem($this->defaultWarehouse, $product);
-        $this->handleInventoryUpdate($inventoryItem, $data['stockLevel'], 0, null);
-        $product->getInventoryItems()->add($inventoryItem);
 
         $status = $this->manager
             ->getRepository('MarelloProductBundle:ProductStatus')
@@ -231,9 +183,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $this->addProductTaxes($product);
 
         $this->addProductSuppliers($product, $data);
-
-        $product->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
-
         $this->manager->persist($product);
 
         return $product;
@@ -347,26 +296,5 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
 
             $product->setPreferredSupplier($preferredSupplier);
         }
-    }
-
-    /**
-     * handle the inventory update for items which have been shipped
-     * @param InventoryItem $item
-     * @param $inventoryUpdateQty
-     * @param $allocatedInventoryQty
-     * @param $entity
-     */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
-    {
-        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
-            $item,
-            $inventoryUpdateQty,
-            $allocatedInventoryQty,
-            'import',
-            $entity
-        );
-        /** @var InventoryManager $inventoryManager */
-        $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
-        $inventoryManager->updateInventoryItems($context);
     }
 }

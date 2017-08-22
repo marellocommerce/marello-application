@@ -33,6 +33,8 @@ marello:
         shipping_amount_incl_tax.label:      Shipping Costs Incl. tax
         shipping_amount_excl_tax.label:      Shipping Costs Excl. tax
         status.label:               Order Status
+        localization.label:         Localization
+        shipment.label:             Shipment
         billing_address:
             label:                  Billing Address
             name.label:             Bill to Name
@@ -60,7 +62,7 @@ marello:
             id.label:               Id
             sku.label:              SKU
             tax.label:              Tax
-            taxCode.label:          Tax Code
+            tax_code.label:         Tax Code
             name.label:             Product
             order.label:            Order
             price.label:            Price
@@ -80,6 +82,9 @@ marello:
             discount_percent.label: Discount Percent
             tax_percent.label:      Tax Percent
             return_items.label:     Returned items
+            purchase_price_incl.label:   Purchase Price Incl. Tax
+            row_total_excl_tax.label:    Row Total Excl. Tax
+            row_total_incl_tax.label:    Row Total Incl. Tax
 
             messages:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel
@@ -102,7 +107,8 @@ marello:
             name_suffix.label:                Name Suffix
             company.label:                    Company
             phone.label:                      Phone
-
+            organization.label:               Organization
+            label:                            Customer
             form:
                 choose:             Choose customer
 

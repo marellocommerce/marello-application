@@ -91,32 +91,6 @@ class ProductType extends AbstractType
                 ]
             )
             ->add(
-                'desiredStockLevel',
-                'number',
-                [
-                    'label'         => 'marello.product.desired_stock_level.label',
-                    'required'      => true,
-                    'constraints'   => new NotNull(),
-                ]
-            )
-            ->add(
-                'purchaseStockLevel',
-                'number',
-                [
-                    'label'         => 'marello.product.purchase_stock_level.label',
-                    'required'      => true,
-                    'constraints'   => new NotNull(),
-                ]
-            )
-            ->add(
-                'inventoryItems',
-                'marello_inventory_item_collection',
-                [
-                    'label'              => 'marello.inventory.label',
-                    'cascade_validation' => true,
-                ]
-            )
-            ->add(
                 'addSalesChannels',
                 'oro_entity_identifier',
                 [
@@ -151,13 +125,6 @@ class ProductType extends AbstractType
                 [
                     'label'              => 'marello.tax.taxcode.entity_label',
                     'cascade_validation' => true,
-                ]
-            )
-            ->add('replenishment', 'oro_enum_choice',
-                [
-                    'enum_code' => 'marello_product_reple',
-                    'required'  => true,
-                    'label'     => 'marello.product.replenishment.label',
                 ]
             )
         ;

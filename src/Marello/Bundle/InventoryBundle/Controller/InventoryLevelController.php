@@ -2,18 +2,19 @@
 
 namespace Marello\Bundle\InventoryBundle\Controller;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * @Config\Route("/stock-level")
+ * @Config\Route("/inventory-level")
  */
-class StockLevelController extends Controller
+class InventoryLevelController extends Controller
 {
     /**
-     * @Config\Route("/{id}", requirements={"id"="\d+"}, name="marello_inventory_stocklevel_index")
+     * @Config\Route("/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_index")
      * @Config\Template
      *
      * @param Product $product
@@ -28,15 +29,15 @@ class StockLevelController extends Controller
     }
 
     /**
-     * @Config\Route("/chart/{id}", requirements={"id"="\d+"}, name="marello_inventory_stocklevel_chart")
+     * @Config\Route("/chart/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_chart")
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      * @param Request $request
      *
      * @return array
      */
-    public function chartAction(Product $product, Request $request)
+    public function chartAction(InventoryItem $inventoryItem, Request $request)
     {
         /*
          * Create parameters required for chart.
@@ -46,7 +47,7 @@ class StockLevelController extends Controller
 
         $items = $this
             ->get('marello_inventory.logging.chart_builder')
-            ->getChartData($product, $from, $to);
+            ->getChartData($inventoryItem, $from, $to);
 
         $viewBuilder = $this->container->get('oro_chart.view_builder');
 
@@ -67,6 +68,6 @@ class StockLevelController extends Controller
             ])
             ->getView();
 
-        return compact('chartView', 'product');
+        return compact('chartView', 'inventoryItem');
     }
 }

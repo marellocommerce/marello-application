@@ -130,8 +130,6 @@
                     form_row(form.name),
                     form_row(form.sku),
                     form_row(form.status),
-                    form_row(form.desiredStockLevel),
-                    form_row(form.purchaseStockLevel),
                     form_row(form.weight),
                     form_row(form.warranty),
                 ]
@@ -145,21 +143,6 @@
                 'data': [
                     productPrices,
                     productChannelPrices
-                ]
-            }]
-        },
-        {
-            'title': 'marello.inventory.label'|trans,
-            'class': 'active',
-            'subblocks': [{
-                'title': 'marello.inventory.label'|trans,
-                'data': [
-                    form_row(form.inventoryItems),
-                ]
-            }, {
-                'title': 'marello.product.replenishment.label'|trans,
-                'data': [
-                    form_row(form.replenishment),
                 ]
             }]
         },

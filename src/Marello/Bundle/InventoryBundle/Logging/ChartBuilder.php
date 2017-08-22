@@ -3,8 +3,9 @@
 namespace Marello\Bundle\InventoryBundle\Logging;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 use Oro\Bundle\DashboardBundle\Helper\DateHelper;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -36,19 +37,19 @@ class ChartBuilder
     /**
      * Returns data in format ready for inventory chart.
      *
-     * @param Product   $product
+     * @param InventoryItem $inventoryItem
      * @param \DateTime $from
      * @param \DateTime $to
      *
      * @return array
      */
-    public function getChartData(Product $product, \DateTime $from, \DateTime $to)
+    public function getChartData(InventoryItem $inventoryItem, \DateTime $from, \DateTime $to)
     {
         $repository = $this->doctrine
-            ->getRepository(StockLevel::class);
+            ->getRepository(InventoryLevelLogRecord::class);
 
-        $records            = $repository->getStockLevelsForProduct($product, $from, $to);
-        $initialRecord      = $repository->getInitialStock($product, $from);
+        $records            = $repository->getInventoryLogRecordsForItem($inventoryItem, $from, $to);
+        $initialRecord      = $repository->getInitialInventory($inventoryItem, $from);
         $inventory          = $initialRecord['inventory'];
         $allocatedInventory = $initialRecord['allocatedInventory'];
 
@@ -68,7 +69,7 @@ class ChartBuilder
         }
 
         $data = [
-            $this->translator->trans('marello.inventory.stocklevel.stock.label')           => array_values(
+            $this->translator->trans('marello.inventory.inventorylevel.inventory.label') => array_values(
                 array_map(function ($value) {
                     return [
                         'time' => $value['date'],
@@ -76,7 +77,7 @@ class ChartBuilder
                     ];
                 }, $dates)
             ),
-            $this->translator->trans('marello.inventory.stocklevel.allocated_stock.label') => array_values(
+            $this->translator->trans('marello.inventory.inventorylevel.allocated_inventory.label') => array_values(
                 array_map(function ($value) {
                     return [
                         'time' => $value['date'],
@@ -84,7 +85,7 @@ class ChartBuilder
                     ];
                 }, $dates)
             ),
-            $this->translator->trans('marello.inventory.stocklevel.virtual_stock.label')   => array_values(
+            $this->translator->trans('marello.inventory.inventorylevel.virtual_inventory.label') => array_values(
                 array_map(function ($value) {
                     return [
                         'time' => $value['date'],

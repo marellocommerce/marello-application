@@ -3,21 +3,28 @@
 namespace Marello\Bundle\InventoryBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
+
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloInventoryBundleInstaller implements Installation
+class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAwareInterface
 {
+    /** @var ExtendExtension */
+    protected $extendExtension;
+
     /**
      * {@inheritdoc}
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2_2';
     }
 
     /**
@@ -27,7 +34,8 @@ class MarelloInventoryBundleInstaller implements Installation
     {
         /** Tables generation **/
         $this->createMarelloInventoryItemTable($schema);
-        $this->createMarelloInventoryStockLevelTable($schema);
+        $this->createMarelloInventoryInventoryLevelTable($schema);
+        $this->createMarelloInventoryInventoryLogLevelTable($schema);
         $this->createMarelloInventoryWarehouseTable($schema);
         $this->createMarelloInventoryWarehouseTypeTable($schema);
 
@@ -36,9 +44,10 @@ class MarelloInventoryBundleInstaller implements Installation
 
         /** Foreign keys generation **/
         $this->addMarelloInventoryItemForeignKeys($schema);
-        $this->addMarelloInventoryStockLevelForeignKeys($schema);
+        $this->addMarelloInventoryInventoryLevelForeignKeys($schema);
         $this->addMarelloInventoryWarehouseForeignKeys($schema);
         $this->addMarelloInventoryWarehouseTypeForeignKeys($schema);
+        $this->addMarelloInventoryInventoryLevelLogForeignKeys($schema);
     }
 
     /**
@@ -51,12 +60,20 @@ class MarelloInventoryBundleInstaller implements Installation
         $table = $schema->createTable('marello_inventory_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('product_id', 'integer', []);
-        $table->addColumn('warehouse_id', 'integer', []);
-        $table->addColumn('current_level_id', 'integer', ['notnull' => false]);
+
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'replenishment',
+            'marello_inv_reple',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
+            ]
+        );
+
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['product_id', 'warehouse_id'], 'uniq_40b8d0414584665a5080ecde');
-        $table->addUniqueIndex(['current_level_id'], 'UNIQ_40B8D04178824D09');
-        $table->addIndex(['warehouse_id'], 'idx_40b8d0415080ecde', []);
         $table->addIndex(['product_id'], 'idx_40b8d0414584665a', []);
     }
 
@@ -65,22 +82,41 @@ class MarelloInventoryBundleInstaller implements Installation
      *
      * @param Schema $schema
      */
-    protected function createMarelloInventoryStockLevelTable(Schema $schema)
+    protected function createMarelloInventoryInventoryLevelTable(Schema $schema)
     {
         $table = $schema->createTable('marello_inventory_level');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('user_id', 'integer', ['notnull' => false]);
         $table->addColumn('inventory', 'integer', []);
-        $table->addColumn('inventory_alteration', 'integer', []);
         $table->addColumn('allocated_inventory', 'integer', []);
+        $table->addColumn('desired_inventory', 'integer', ['notnull' => false]);
+        $table->addColumn('purchase_inventory', 'integer', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime');
+        $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
+
+
+        $table->setPrimaryKey(['id']);
+        $table->addIndex(['inventory_item_id'], 'IDX_32D13BA4243D10EA', []);
+        $table->addColumn('warehouse_id', 'integer', []);
+        $table->addUniqueIndex(['inventory_item_id', 'warehouse_id'], 'uniq_40b8d0414584665a5080ecde');
+        $table->addIndex(['warehouse_id'], 'idx_40b8d0415080ecde', []);
+    }
+
+    protected function createMarelloInventoryInventoryLogLevelTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_level_log');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('user_id', 'integer', ['notnull' => false]);
+        $table->addColumn('inventory_alteration', 'integer', []);
         $table->addColumn('allocated_inventory_alteration', 'integer', []);
         $table->addColumn('change_trigger', 'string', ['length' => 255]);
         $table->addColumn('subject_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('subject_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
-        $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
+        $table->addColumn('updated_at', 'datetime');
+        $table->addColumn('inventory_level_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['inventory_item_id'], 'IDX_32D13BA4243D10EA', []);
+        $table->addIndex(['inventory_level_id'], 'IDX_32D13BA4243D10EA', []);
         $table->addIndex(['user_id'], 'IDX_32D13BA4F675F31B', []);
     }
 
@@ -96,9 +132,11 @@ class MarelloInventoryBundleInstaller implements Installation
         $table->addColumn('owner_id', 'integer', []);
         $table->addColumn('address_id', 'integer', ['notnull' => false]);
         $table->addColumn('label', 'string', ['length' => 255]);
+        $table->addColumn('code', 'string', ['length' => 255]);
         $table->addColumn('is_default', 'boolean', []);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['address_id'], 'uniq_15597d1f5b7af75');
+        $table->addUniqueIndex(['code'], 'UNIQ_15597D177153098');
         $table->addIndex(['owner_id'], 'idx_15597d17e3c61f9', []);
     }
 
@@ -114,7 +152,7 @@ class MarelloInventoryBundleInstaller implements Installation
             $table->addColumn('name', 'string', ['length' => 32]);
             $table->addColumn('label', 'string', ['length' => 255]);
             $table->setPrimaryKey(['name']);
-            $table->addUniqueIndex(['label'], '');
+            $table->addUniqueIndex(['label'], 'UNIQ_629E2BBEA750E8');
         }
     }
 
@@ -132,17 +170,27 @@ class MarelloInventoryBundleInstaller implements Installation
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
+    }
+
+    /**
+     * Add marello_inventory_level foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryInventoryLevelForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_level');
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_inventory_warehouse'),
-            ['warehouse_id'],
+            $schema->getTable('marello_inventory_item'),
+            ['inventory_item_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_inventory_level'),
-            ['current_level_id'],
+            $schema->getTable('marello_inventory_warehouse'),
+            ['warehouse_id'],
             ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            ['onDelete' => null, 'onUpdate' => null]
         );
     }
 
@@ -151,12 +199,12 @@ class MarelloInventoryBundleInstaller implements Installation
      *
      * @param Schema $schema
      */
-    protected function addMarelloInventoryStockLevelForeignKeys(Schema $schema)
+    protected function addMarelloInventoryInventoryLevelLogForeignKeys(Schema $schema)
     {
-        $table = $schema->getTable('marello_inventory_level');
+        $table = $schema->getTable('marello_inventory_level_log');
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_inventory_item'),
-            ['inventory_item_id'],
+            $schema->getTable('marello_inventory_level'),
+            ['inventory_level_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
@@ -215,5 +263,15 @@ class MarelloInventoryBundleInstaller implements Installation
             ['name'],
             ['onDelete' => null, 'onUpdate' => null]
         );
+    }
+
+    /**
+     * Sets the ExtendExtension
+     *
+     * @param ExtendExtension $extendExtension
+     */
+    public function setExtendExtension(ExtendExtension $extendExtension)
+    {
+        $this->extendExtension = $extendExtension;
     }
 }

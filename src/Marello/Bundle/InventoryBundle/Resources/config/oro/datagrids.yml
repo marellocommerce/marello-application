@@ -4,80 +4,75 @@ datagrids:
             type: orm
             query:
                 select:
-                    - p.id
-                    - p.name
-                    - p.sku
-                    - p.price
+                    - i.id
+                    - p.name as productName
+                    - p.sku as productSku
                     - s.label as status
-                    - p.createdAt
-                    - p.updatedAt
-                    - COALESCE(SUM(l.inventory), 0) AS inventory
-                    - COALESCE(SUM(l.allocatedInventory), 0) AS allocatedInventory
-                    - COALESCE(SUM(l.inventory - l.allocatedInventory), 0) AS virtualStock
+                    - COALESCE(SUM(il.inventory), 0) AS inventoryQty
+                    - COALESCE(SUM(il.allocatedInventory), 0) AS allocatedInventoryQty
+                    - COALESCE(SUM(il.inventory - il.allocatedInventory), 0) AS virtualInventoryQty
                 from:
-                    - { table: MarelloProductBundle:Product, alias: p }
+                    - { table: MarelloInventoryBundle:InventoryItem, alias: i }
                 join:
                     left:
+                        - { join: i.product, alias: p }
+                        - { join: i.inventoryLevels, alias: il }
                         - { join: p.status, alias: s }
-                        - { join: p.inventoryItems, alias: i }
-                        - { join: i.currentLevel, alias: l }
-                groupBy: p.id
+                groupBy: i.id
         columns:
-            sku:
+            productSku:
                 label:              marello.product.sku.label
                 frontend_type:      string
-            product:
+                data_name:          productSku
+            productName:
                 label:              marello.product.entity_label
                 frontend_type:      string
-                data_name:          name
-            inventory:
-                label:              marello.inventory.stocklevel.stock.label
+                data_name:          productName
+            inventoryQty:
+                label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number
-                data_name:          inventory
-            allocatedInventory:
-                label:              marello.inventory.stocklevel.allocated_stock.label
+                data_name:          inventoryQty
+            allocatedInventoryQty:
+                label:              marello.inventory.inventorylevel.allocated_inventory.label
                 frontend_type:      number
-                data_name:          allocatedInventory
-            virtualStock:
-                label:              marello.inventory.stocklevel.virtual_stock.label
+                data_name:          allocatedInventoryQty
+            virtualInventoryQty:
+                label:              marello.inventory.inventorylevel.virtual_inventory.label
                 frontend_type:      number
-                data_name:          virtualStock
+                data_name:          virtualInventoryQty
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
-            createdAt:
-                label:              oro.ui.created_at
-                frontend_type:      datetime
+                data_name:          status
         sorters:
             columns:
-                sku:                { data_name: p.sku }
-                product:            { data_name: p.name }
-                inventory:          { data_name: inventory }
-                allocatedInventory: { data_name: allocatedInventory }
-                virtualStock:       { data_name: virtualStock }
-                status:             { data_name: s.label }
-                createdAt:          { data_name: p.createdAt }
+                productSku:             { data_name: p.sku }
+                productName:            { data_name: p.name }
+                inventoryQty:           { data_name: inventoryQty }
+                allocatedInventoryQty:  { data_name: allocatedInventoryQty }
+                virtualInventoryQty:    { data_name: virtualInventoryQty }
+                status:                 { data_name: s.label }
             default:
-                sku: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                productSku: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
-                sku:
+                productSku:
                     type:             string
                     data_name:        p.sku
-                product:
+                productName:
                     type:             string
                     data_name:        p.name
-                inventory:
+                inventoryQty:
                     type:             number
-                    data_name:        inventory
+                    data_name:        inventoryQty
                     filter_by_having: true
-                allocatedInventory:
+                allocatedInventoryQty:
                     type:             number
-                    data_name:        allocatedInventory
+                    data_name:        allocatedInventoryQty
                     filter_by_having: true
-                virtualStock:
+                virtualInventoryQty:
                     type:             number
-                    data_name:        virtualStock
+                    data_name:        virtualInventoryQty
                     filter_by_having: true
                 status:
                     type:             entity
@@ -85,19 +80,29 @@ datagrids:
                     options:
                         field_options:
                             class: Marello\Bundle\ProductBundle\Entity\ProductStatus
-                createdAt:
-                    type:             datetime
-                    data_name:        createdAt
         properties:
-            inventory_link:
+            id: ~
+            inventory_view_link:
+                type:       url
+                route:      marello_inventory_inventory_view
+                params:     [ id ]
+            inventory_update_link:
                 type:       url
                 route:      marello_inventory_inventory_update
-                params:     { id: id }
+                params:     [ id ]
         actions:
-            inventory:
+            view:
                 type:           navigate
-                icon:           cubes
-                link:           inventory_link
+                label:          oro.grid.action.view
+                link:           inventory_view_link
+                icon:           eye
+                acl_recource:   marello_product_view
+                rowAction:      true
+            update:
+                type:           navigate
+                label:          marello.inventory.update
+                icon:           edit
+                link:           inventory_update_link
         options:
             export: true
 
@@ -106,57 +111,60 @@ datagrids:
             type: orm
             query:
                 select:
-                    - l
-                    - (l.inventoryAlteration) AS stockDiff
-                    - (l.allocatedInventoryAlteration) AS allocatedStockDiff
+                    - lr
+                    - wh.label as warehouseName
+                    - (lr.inventoryAlteration) AS inventoryDiff
+                    - (lr.allocatedInventoryAlteration) AS allocatedInventoryDiff
                 from:
-                    - { table: MarelloInventoryBundle:StockLevel, alias: l }
+                    - { table: MarelloInventoryBundle:InventoryLevelLogRecord, alias: lr }
                 join:
                     left:
-                        - { join: l.inventoryItem, alias: i }
+                        - { join: lr.inventoryLevel, alias: il }
+                        - { join: il.warehouse, alias: wh }
                 where:
                     and:
-                        - IDENTITY(i.product) = :product_id
+                        - IDENTITY(il.inventoryItem) = :inventoryItemId
             bind_parameters:
-                product_id: productId
+                inventoryItemId: inventoryItemId
         columns:
-            stockDiff:
-                data_name:      stockDiff
-                label:          marello.inventory.stocklevel.stock_diff.label
+            inventoryDiff:
+                data_name:      inventoryDiff
+                label:          marello.inventory.inventorylevel.inventory_diff.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/StockLevel/diff.html.twig
-            allocatedStockDiff:
-                data_name:      allocatedStockDiff
-                label:          marello.inventory.stocklevel.allocated_stock_diff.label
+                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
+            allocatedInventoryDiff:
+                data_name:      allocatedInventoryDiff
+                label:          marello.inventory.inventorylevel.allocated_inventory_diff.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/StockLevel/diff.html.twig
+                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
+
             changeTrigger:
                 data_name:      changeTrigger
-                label:          marello.inventory.stocklevel.change_trigger.label
+                label:          marello.inventory.inventorylevel.change_trigger.label
                 type:           translatable
                 domain:         MarelloStockLevelChangeTrigger
                 frontend_type:  string
             user:
-                label:          marello.inventory.stocklevel.user.label
+                label:          marello.inventory.inventorylevel.user.label
                 frontend_type:  string
             subject:
-                label:          marello.inventory.stocklevel.subject.label
+                label:          marello.inventory.inventorylevel.subject.label
                 type:           twig
                 frontend_type:  html
-                template:       MarelloInventoryBundle::Datagrid/StockLevel/subject.html.twig
+                template:       MarelloInventoryBundle::Datagrid/InventoryLevel/subject.html.twig
             createdAt:
                 label:          oro.ui.created_at
                 frontend_type:  datetime
         sorters:
             columns:
                 createdAt:
-                    data_name:  l.createdAt
-                stockDiff:
-                    data_name:  stockDiff
-                allocatedStockDiff:
-                    data_name:  allocatedStockDiff
+                    data_name:  lr.createdAt
+                inventoryDiff:
+                    data_name:  inventoryDiff
+                allocatedInventoryDiff:
+                    data_name:  allocatedInventoryDiff
             default:
                 createdAt:      DESC
         options:
@@ -168,12 +176,15 @@ datagrids:
         extends: marello-inventory-log
         filters:
             columns:
-                stockDiff:
+                warehouseName:
+                    type:             string
+                    data_name:        warehouseName
+                inventoryDiff:
                     type:             number
-                    data_name:        stockDiff
-                allocatedStockDiff:
+                    data_name:        inventoryDiff
+                allocatedInventoryDiff:
                     type:             number
-                    data_name:        allocatedStockDiff
+                    data_name:        allocatedInventoryDiff
                 changeTrigger:
                     type:             string
                     data_name:        l.changeTrigger
@@ -184,3 +195,55 @@ datagrids:
             toolbarOptions:
                 pageSize:
                     default_per_page: 50
+
+
+    marello-inventory-levels:
+        source:
+            type: orm
+            query:
+                select:
+                    - il
+                    - wh.label as warehouseName
+                    - wt.label as warehouseType
+                    - COALESCE(il.inventory, 0) AS inventoryQty
+                    - COALESCE(il.allocatedInventory, 0) AS allocatedInventoryQty
+                    - COALESCE(il.inventory - il.allocatedInventory, 0) AS virtualInventoryQty
+                from:
+                    - { table: MarelloInventoryBundle:InventoryLevel, alias: il }
+                join:
+                    left:
+                        - { join: il.warehouse, alias: wh }
+                        - { join: wh.warehouseType, alias: wt }
+                where:
+                    and:
+                        - IDENTITY(il.inventoryItem) = :inventoryItemId
+                groupBy: il.id
+            bind_parameters:
+                inventoryItemId: inventoryItemId
+        columns:
+            warehouseName:
+                label:              marello.inventory.warehouse.label.label
+                frontend_type:      string
+                data_name:          warehouseName
+            warehouseType:
+                label:              marello.inventory.warehouse.warehousetype.entity_label
+                frontend_type:      string
+                data_name:          warehouseType
+            inventoryQty:
+                label:              marello.inventory.inventorylevel.inventory.label
+                frontend_type:      number
+                data_name:          inventoryQty
+            allocatedInventoryQty:
+                label:              marello.inventory.inventorylevel.allocated_inventory.label
+                frontend_type:      number
+                data_name:          allocatedInventoryQty
+            virtualInventoryQty:
+                label:              marello.inventory.inventorylevel.virtual_inventory.label
+                frontend_type:      number
+                data_name:          virtualInventoryQty
+            createdAt:
+                label:              oro.ui.created_at
+                frontend_type:      datetime
+            updatedAt:
+                label:              oro.ui.updated_at
+                frontend_type:      datetime

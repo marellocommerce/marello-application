@@ -6,44 +6,18 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 
-class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
+class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
     /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
     protected $defaultOrganization;
 
-    /** @var \Marello\Bundle\InventoryBundle\Entity\Warehouse $defaultWarehouse */
-    protected $defaultWarehouse;
-
     /** @var ObjectManager $manager */
     protected $manager;
-
-    protected $replenishments;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
 
     public function getDependencies()
     {
@@ -67,13 +41,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         if (is_array($organizations) && count($organizations) > 0) {
             $this->defaultOrganization = array_shift($organizations);
         }
-
-        $this->defaultWarehouse = $this->manager
-            ->getRepository('MarelloInventoryBundle:Warehouse')
-            ->getDefault();
-
-        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_product_reple');
-        $this->replenishments = $this->manager->getRepository($replenishmentClass)->findAll();
 
         $this->loadProducts();
     }
@@ -104,7 +71,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     }
 
     /**
-     * create new products and inventory items
+     * create new products
      * @param array $data
      * @return Product $product
      */
@@ -113,13 +80,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product = new Product();
         $product->setSku($data['sku']);
         $product->setName($data['name']);
-        $product->setDesiredStockLevel(rand($data['stock_level'], $data['stock_level'] + 10));
-        $product->setPurchaseStockLevel(rand(1, $product->getDesiredStockLevel()));
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight(mt_rand(50, 300) / 100);
-        $inventoryItem = new InventoryItem($this->defaultWarehouse, $product);
-        $this->handleInventoryUpdate($inventoryItem, $data['stock_level'], 0, null);
-        $product->getInventoryItems()->add($inventoryItem);
 
         $status = $this->manager
             ->getRepository('MarelloProductBundle:ProductStatus')
@@ -172,8 +134,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
          * add suppliers per product
          */
         $this->addProductSuppliers($product);
-
-        $product->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
 
         $this->manager->persist($product);
 
@@ -262,28 +222,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     private function getRandomFloat($min, $max)
     {
         return ($min + lcg_value()*(abs($max - $min)));
-    }
-
-    /**
-     * handle the inventory update for items which have been shipped
-     * @param InventoryItem $item
-     * @param $inventoryUpdateQty
-     * @param $allocatedInventoryQty
-     * @param $entity
-     */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
-    {
-        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
-            $item,
-            $inventoryUpdateQty,
-            $allocatedInventoryQty,
-            'import',
-            $entity
-        );
-
-        /** @var InventoryManager $inventoryManager */
-        $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
-        $inventoryManager->updateInventoryItems($context);
     }
 
     /**

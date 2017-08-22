@@ -3,12 +3,15 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\InventoryBundle\Entity\ProductInventoryAwareInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\PurchaseOrderBundle\Entity\Repository\PurchaseOrderItemRepository")
@@ -17,7 +20,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @Oro\Config()
  */
 class PurchaseOrderItem implements
-    InventoryItemAwareInterface
+    ProductInventoryAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     
@@ -31,7 +34,7 @@ class PurchaseOrderItem implements
     protected $id;
 
     /**
-     * @var Product
+     * @var ProductInterface
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
      */
@@ -110,11 +113,11 @@ class PurchaseOrderItem implements
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection|\Marello\Bundle\InventoryBundle\Entity\InventoryItem[]
+     * @return \Marello\Bundle\ProductBundle\Entity\Product
      */
     public function getInventoryItems()
     {
-        return $this->getProduct()->getInventoryItems();
+        return $this->getProduct();
     }
 
     /**
@@ -161,11 +164,11 @@ class PurchaseOrderItem implements
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @return $this
      */
-    public function setProduct(Product $product)
+    public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
         $this->productName = $this->product->getName();
@@ -175,7 +178,7 @@ class PurchaseOrderItem implements
     }
 
     /**
-     * @return Product
+     * @return ProductInterface
      */
     public function getProduct()
     {

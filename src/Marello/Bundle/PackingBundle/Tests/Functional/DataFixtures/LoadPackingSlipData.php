@@ -40,7 +40,7 @@ class LoadPackingSlipData extends AbstractFixture implements ContainerAwareInter
         $mapper = $this->container->get('marello_packing.mapper.order_to_packingslip');
 
         for ($i = 0; $i < self::COUNT; $i++) {
-            $order = $this->getReference('order' . $i);
+            $order = $this->getReference('marello_order_' . $i);
             $packingSlips = $mapper->map($order);
 
             foreach ($packingSlips as $k => $packingSlip) {

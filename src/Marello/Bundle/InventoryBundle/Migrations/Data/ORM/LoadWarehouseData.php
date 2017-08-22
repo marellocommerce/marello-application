@@ -19,13 +19,12 @@ class LoadWarehouseData implements FixtureInterface
         /*
          * Create default warehouse with name of Warehouse.
          */
-        $defaultWarehouse = new Warehouse('Warehouse', true);
+        $defaultWarehouse = new Warehouse('Warehouse 1', true);
         $defaultWarehouse->setOwner($organization);
+        $defaultWarehouse->setCode('warehouse_1');
 
         $warehouseAddress = new MarelloAddress();
-
         $manager->persist($warehouseAddress);
-
         $defaultWarehouse->setAddress($warehouseAddress);
 
         $manager->persist($defaultWarehouse);

@@ -35,7 +35,7 @@ class ManualShippingServiceDataFactoryTest extends WebTestCase
     public function testOrderShipment()
     {
         /** @var Order $order */
-        $order = $this->getReference('order1');
+        $order = $this->getReference('marello_order_1');
 
         $shippingDataProvider = $this->client
             ->getContainer()

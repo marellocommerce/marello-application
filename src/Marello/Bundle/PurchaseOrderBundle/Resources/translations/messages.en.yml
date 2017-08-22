@@ -1,5 +1,6 @@
 marello:
     purchaseorder:
+        id.label:                                       Id
         entity_label:                                   Purchase Order
         entity_plural_label:                            Purchase Orders
         id.label:                                       Id
@@ -21,6 +22,8 @@ marello:
         all_items_have_been_received:                   All items have been received, please proceed to click "Fully received"
         has_item.label:                                 Has Product
         billing_and_shipping.label:                     Billing & Shipping Info
+        supplier.label:                                 Supplier
+        organization.label:                             Organization
 
         ui:
             continue:                                   Continue
@@ -46,7 +49,12 @@ marello:
             purchase_stock_level.label:                 Purchase Level
             desired_stock_level.label:                  Desired Level
             virtual_stock_level.label:                  Virtual Level
-
+            product.label:                              Product
+            order.label:                                Order
+            supplier.label:                             Supplier
+            product_sku.label:                          Product Sku
+            product_name.label:                         Product Name
+            data.label:                                 Data
             validation:
                 received_amount:                        Total amount received can only be as many items as ordered amount.
 

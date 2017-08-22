@@ -52,9 +52,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  * )
  */
 class Product extends ExtendProduct implements
+    ProductInterface,
     SalesChannelAwareInterface,
-    PricingAwareInterface,
-    InventoryItemAwareInterface
+    PricingAwareInterface
 {
     /**
      * @var integer
@@ -292,20 +292,6 @@ class Product extends ExtendProduct implements
      * )
      */
     protected $data;
-
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @var int
-     */
-    protected $desiredStockLevel;
-
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @var int
-     */
-    protected $purchaseStockLevel;
 
     /**
      * @var ArrayCollection|ProductSupplierRelation[]
@@ -680,46 +666,6 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return int
-     */
-    public function getDesiredStockLevel()
-    {
-        return $this->desiredStockLevel;
-    }
-
-    /**
-     * @param int $desiredStockLevel
-     *
-     * @return $this
-     */
-    public function setDesiredStockLevel($desiredStockLevel)
-    {
-        $this->desiredStockLevel = $desiredStockLevel;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPurchaseStockLevel()
-    {
-        return $this->purchaseStockLevel;
-    }
-
-    /**
-     * @param int $purchaseStockLevel
-     *
-     * @return $this
-     */
-    public function setPurchaseStockLevel($purchaseStockLevel)
-    {
-        $this->purchaseStockLevel = $purchaseStockLevel;
-
-        return $this;
-    }
-
-    /**
      * @return float
      */
     public function getWeight()
@@ -925,31 +871,11 @@ class Product extends ExtendProduct implements
                 return $productChannelTaxRelation->getSalesChannel() === $salesChannel;
             })
             ->first();
-        
+
         if ($productChannelTaxRelation) {
             return $productChannelTaxRelation->getTaxCode();
         }
-        
+
         return null;
-    }
-
-    /**
-    * @return string
-    */
-    public function getReplenishment()
-    {
-        return $this->replenishment;
-    }
-
-    /**
-     * @param string $replenishment
-     *
-     * @return $this
-     */
-    public function setReplenishment($replenishment)
-    {
-        $this->replenishment = $replenishment;
-
-        return $this;
     }
 }

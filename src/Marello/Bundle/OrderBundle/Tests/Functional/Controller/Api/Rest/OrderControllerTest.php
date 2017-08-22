@@ -34,7 +34,7 @@ class OrderControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('order1')->getId()])
+            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('marello_order_1')->getId()])
         );
 
         $response = $this->client->getResponse();

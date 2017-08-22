@@ -13,11 +13,8 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloProductBundleInstaller implements Installation, ExtendExtensionAwareInterface
+class MarelloProductBundleInstaller implements Installation
 {
-    /** @var ExtendExtension */
-    protected $extendExtension;
-
     /**
      * {@inheritdoc}
      */
@@ -60,8 +57,6 @@ class MarelloProductBundleInstaller implements Installation, ExtendExtensionAwar
         $table->addColumn('variant_id', 'integer', ['notnull' => false]);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('sku', 'string', ['length' => 255]);
-        $table->addColumn('desiredstocklevel', 'integer', []);
-        $table->addColumn('purchasestocklevel', 'integer', []);
         $table->addColumn(
             'price',
             'money',
@@ -84,18 +79,9 @@ class MarelloProductBundleInstaller implements Installation, ExtendExtensionAwar
         $table->addUniqueIndex(['sku'], 'marello_product_product_skuidx');
         $table->addIndex(['created_at'], 'idx_marello_product_created_at', []);
         $table->addIndex(['updated_at'], 'idx_marello_product_updated_at', []);
-
-        $this->extendExtension->addEnumField(
-            $schema,
-            $table,
-            'replenishment',
-            'marello_product_reple',
-            false,
-            false,
-            [
-                'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
-            ]
-        );
+        $table->addIndex(['product_status'], 'IDX_25845B8D197C24B8', []);
+        $table->addIndex(['preferred_supplier_id']);
+        $table->addIndex(['tax_code_id']);
     }
 
     /**
@@ -303,15 +289,5 @@ class MarelloProductBundleInstaller implements Installation, ExtendExtensionAwar
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
-    }
-
-    /**
-     * Sets the ExtendExtension
-     *
-     * @param ExtendExtension $extendExtension
-     */
-    public function setExtendExtension(ExtendExtension $extendExtension)
-    {
-        $this->extendExtension = $extendExtension;
     }
 }

@@ -7,8 +7,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\StockLevelRepository")
- * @ORM\Table(name="marello_inventory_level")
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository")
+ * @ORM\Table(name="marello_inventory_level_log")
  * @Oro\Config(
  *      defaultValues={
  *          "entity"={
@@ -16,8 +16,9 @@ use Oro\Bundle\UserBundle\Entity\User;
  *          }
  *      }
  * )
+ * @ORM\HasLifecycleCallbacks()
  */
-class StockLevel
+class InventoryLevelLogRecord
 {
     /**
      * @ORM\Id
@@ -36,8 +37,8 @@ class StockLevel
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem", inversedBy="levels")
-     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel")
+     * @ORM\JoinColumn(name="inventory_level_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -49,23 +50,9 @@ class StockLevel
      *      }
      * )
      *
-     * @var InventoryItem
+     * @var InventoryLevel
      */
-    protected $inventoryItem;
-
-    /**
-     * @ORM\Column(name="inventory", type="integer")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "header"="Level"
-     *          }
-     *      }
-     * )
-     *
-     * @var int
-     */
-    protected $inventory;
+    protected $inventoryLevel;
 
     /**
      * @ORM\Column(name="inventory_alteration", type="integer")
@@ -80,20 +67,6 @@ class StockLevel
      * @var int
      */
     protected $inventoryAlteration;
-
-    /**
-     * @ORM\Column(name="allocated_inventory", type="integer")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var int
-     */
-    protected $allocatedInventory;
 
     /**
      * @ORM\Column(name="allocated_inventory_alteration", type="integer")
@@ -193,36 +166,45 @@ class StockLevel
     protected $createdAt;
 
     /**
-     * StockLevel constructor.
+     * @var \DateTime $updatedAt
      *
-     * @param InventoryItem $inventoryItem
-     * @param int           $inventory
+     * @ORM\Column(type="datetime", name="updated_at")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.updated_at"
+     *          }
+     *      }
+     * )
+     *
+     * @var \DateTime
+     */
+    protected $updatedAt;
+
+    /**
+     * InventoryLevel constructor.
+     *
+     * @param InventoryLevel $inventoryLevel
      * @param int           $inventoryAlt
-     * @param int           $allocatedInventory
      * @param int           $allocatedInventoryAlt
      * @param string        $changeTrigger
      * @param User          $user
      * @param mixed|null    $subject
      */
     public function __construct(
-        InventoryItem $inventoryItem,
-        $inventory,
+        InventoryLevel $inventoryLevel,
         $inventoryAlt,
-        $allocatedInventory,
         $allocatedInventoryAlt,
         $changeTrigger,
         User $user = null,
         $subject = null
     ) {
-        $this->inventoryItem                = $inventoryItem;
-        $this->inventory                    = $inventory;
+        $this->inventoryLevel               = $inventoryLevel;
         $this->inventoryAlteration          = $inventoryAlt;
-        $this->allocatedInventory           = $allocatedInventory;
         $this->allocatedInventoryAlteration = $allocatedInventoryAlt;
         $this->changeTrigger                = $changeTrigger;
         $this->user                         = $user;
         $this->subject                      = $subject;
-        $this->createdAt                    = new \DateTime();
     }
 
     /**
@@ -234,17 +216,17 @@ class StockLevel
     }
 
     /**
-     * @return InventoryItem
+     * @return InventoryLevel
      */
-    public function getInventoryItem()
+    public function getInventoryLevel()
     {
-        return $this->inventoryItem;
+        return $this->inventoryLevel;
     }
 
     /**
      * @return int
      */
-    public function getStockDiff()
+    public function getInventoryDiff()
     {
         return $this->inventoryAlteration;
     }
@@ -252,41 +234,9 @@ class StockLevel
     /**
      * @return int
      */
-    public function getStock()
-    {
-        return $this->inventory;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAllocatedStockDiff()
+    public function getAllocatedInventoryDiff()
     {
         return $this->allocatedInventoryAlteration;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAllocatedStock()
-    {
-        return $this->allocatedInventory;
-    }
-
-    /**
-     * @return int
-     */
-    public function getVirtualStock()
-    {
-        return $this->inventory - $this->allocatedInventory;
-    }
-
-    /**
-     * @return int
-     */
-    public function getVirtualStockDiff()
-    {
-        return $this->getStockDiff() - $this->getAllocatedStockDiff();
     }
 
     /**
@@ -303,14 +253,6 @@ class StockLevel
     public function getUser()
     {
         return $this->user;
-    }
-    
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
     }
 
     /**
@@ -337,8 +279,35 @@ class StockLevel
         return $this->subjectId;
     }
 
-    public function __toString()
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdateTimestamp()
     {
-        return (string) $this->getAllocatedStock();
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistTimestamp()
+    {
+        $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }

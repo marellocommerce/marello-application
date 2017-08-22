@@ -41,5 +41,46 @@ services:
         tags:
             - { name: kernel.event_listener, event: marello_inventory.inventory.update, method: handleUpdateInventoryEvent }
 
+    marello_inventory.listener.on_product_create_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\OnProductCreateEventListener'
+        arguments:
+            - '@marello_inventory.manager.inventory_item_manager'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    marello_inventory.listener.on_product_delete_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\OnProductDeleteEventListener'
+        arguments:
+            - '@marello_inventory.manager.inventory_item_manager'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
     marello_inventory.manager.inventory_manager:
         class: Marello\Bundle\InventoryBundle\Manager\InventoryManager
+        calls:
+            - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
+            - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
+
+    marello_inventory.validator.inventory_update_context:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator'
+
+    marello_inventory.manager.inventory_item_manager:
+        class: 'Marello\Bundle\InventoryBundle\Manager\InventoryItemManager'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        lazy: true
+
+    marello_inventory.model.inventory_level_calculator:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator'
+
+    marello_inventory.model.inventory_level_totals_calculator:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator'
+
+    marello_inventory.twig.inventory_total_extension:
+        class: 'Marello\Bundle\InventoryBundle\Twig\InventoryTotalExtension'
+        arguments:
+            - '@marello_inventory.model.inventory_level_totals_calculator'
+        tags:
+            - { name: twig.extension }

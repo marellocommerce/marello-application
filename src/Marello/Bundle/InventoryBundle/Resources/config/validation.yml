@@ -1,0 +1,11 @@
+Marello\Bundle\InventoryBundle\Entity\Warehouse:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [code]
+            errorPath: code
+            message: 'marello.inventory.validation.messages.error.unique_warehouse_code'
+    properties:
+        label:
+            - NotBlank: ~
+        code:
+            - NotBlank: ~

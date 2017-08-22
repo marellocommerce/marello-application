@@ -6,7 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * Class StockLevelAuthorFillSubscriber
  *
- * When StockLevel is created without user, fills user with currently logged in user if possible.
+ * When InventoryLevel is created without user, fills user with currently logged in user if possible.
  *
  * @package Marello\Bundle\InventoryBundle\EventListener\Doctrine
  */
@@ -45,7 +45,7 @@ class StockLevelAuthorFillSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if (!$entity instanceof StockLevel) {
+        if (!$entity instanceof InventoryLevelLogRecord) {
             return;
         }
 

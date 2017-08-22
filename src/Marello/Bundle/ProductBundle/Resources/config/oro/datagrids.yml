@@ -12,14 +12,12 @@ datagrids:
                     - s.label as status
                     - p.createdAt
                     - p.updatedAt
-                    - COALESCE(SUM(l.inventory), 0) AS stockLevel
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
-                        - { join: i.currentLevel, alias: l }
                 groupBy: p.id
         columns:
             sku:
@@ -28,11 +26,6 @@ datagrids:
             name:
                 label:              marello.product.name.label
                 frontend_type:      string
-            stockLevel:
-                label:              marello.product.stock_level.label
-                frontend_type:      number
-                data_name:          stockLevel
-                align:              left
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
@@ -64,7 +57,6 @@ datagrids:
             columns:
                 sku:            { data_name: p.sku }
                 name:           { data_name: p.name }
-                stockLevel:     { data_name: stockLevel }
                 status:         { data_name: s.label }
                 createdAt:      { data_name: p.createdAt }
                 updatedAt:      { data_name: p.updatedAt }
@@ -78,10 +70,6 @@ datagrids:
                 name:
                     type:             string
                     data_name:        p.name
-                stockLevel:
-                    type:             number
-                    data_name:        stockLevel
-                    filter_by_having: true
                 status:
                     type: entity
                     data_name: s
@@ -108,6 +96,11 @@ datagrids:
                 acl_resource:   marello_product_delete
                 icon:           trash
                 label:          oro.grid.action.delete
+            inventory:
+                type:           navigate
+                link:           inventory_link
+                icon:           cubes
+                label:          marello.inventory.update
         options:
             entityHint: product
             export: true

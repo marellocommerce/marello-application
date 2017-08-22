@@ -119,6 +119,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
     {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
+            null,
             $inventoryUpdateQty,
             null,
             'purchase_order',

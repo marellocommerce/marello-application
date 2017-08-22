@@ -14,7 +14,7 @@ marello:
             name_suffix.label:     Name Suffix
             organization.label:    Organization
             phone.label:           Phone
-            postal_code.label:     Postal Code
+            postal_code.label:     Zip/Postal Code
             region_text.label:     Region Text
             street.label:          Street
             street2.label:         Street2

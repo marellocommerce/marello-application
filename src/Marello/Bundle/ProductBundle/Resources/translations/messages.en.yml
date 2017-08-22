@@ -1,5 +1,6 @@
 marello:
     product:
+        id.label:                   Id
         entity_plural_label:        Products
         entity_label:               Product
         name.label:                 Name
@@ -10,21 +11,17 @@ marello:
         status.label:               Status
         cost.label:                 Cost
         data.label:                 Data
-        id.label:                   Id
         type.label:                 Product Type
         preferred_supplier.label:   Preferred Supplier
         stock_level.label:          Total Stock
         channel_prices.label:       Product Channel Prices
-        desired_stock_level.label:  Desired Stock Level
-        purchase_stock_level.label: Purchase Stock Level
         tax_code.label:             Tax Code
-        sales_channel_tax_codes.label:  Sales Channel Tax Codes
         channels.label:             Sales Channels
+        sales_channel_tax_codes.label:  Sales Channel Tax Code
         inventory_items.label:      Inventory Items
         organization.label:         Organization
         variant.label:              Variant
         prices.label:               Product Prices
-        replenishment.label:        Replenishment
 
         variant:
             label:                    Variant
@@ -50,6 +47,7 @@ marello:
             sales_channel.label:                Sales Channel
             tax_code.label:                     Tax Code
             form.add_productchanneltaxrelation: Add Sales Channel Tax Code
+
 
         messages:
             success:

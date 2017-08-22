@@ -42,6 +42,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             LoadSalesData::class,
             LoadProductData::class,
             LoadProductChannelPricingData::class,
+            LoadProductInventoryData::class,
         ];
     }
 

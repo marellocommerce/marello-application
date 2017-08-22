@@ -2,24 +2,16 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
-use Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemModifyTransformer;
-use Marello\Bundle\InventoryBundle\Model\InventoryItemModify;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelCollectionType;
 
 class InventoryItemType extends AbstractType
 {
     const NAME = 'marello_inventory_item';
-
-    /** @var InventoryItemModifyTransformer $transformer */
-    protected $transformer;
-
-    public function __construct(InventoryItemModifyTransformer $transformer)
-    {
-        $this->transformer = $transformer;
-    }
 
     /**
      * {@inheritdoc}
@@ -27,19 +19,14 @@ class InventoryItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('stockOperator', 'choice', [
-                'choices'            => [
-                    InventoryItemModify::OPERATOR_INCREASE => 'increase',
-                    InventoryItemModify::OPERATOR_DECREASE => 'decrease',
-                ],
-                'translation_domain' => 'MarelloInventoryChangeDirection',
-            ])
-            ->add('stock', 'number', [
-                'constraints' => new GreaterThanOrEqual(0),
-                'data'        => 0,
-            ]);
-
-        $builder->addViewTransformer($this->transformer);
+            ->add('replenishment', 'oro_enum_choice',
+                [
+                    'enum_code' => 'marello_inv_reple',
+                    'required'  => true,
+                    'label'     => 'marello.product.replenishment.label',
+                ]
+            )
+            ->add('inventoryLevels', InventoryLevelCollectionType::class);
     }
 
     /**
@@ -48,7 +35,7 @@ class InventoryItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => InventoryItemModify::class,
+            'data_class'         => InventoryItem::class,
             'cascade_validation' => true,
         ]);
     }

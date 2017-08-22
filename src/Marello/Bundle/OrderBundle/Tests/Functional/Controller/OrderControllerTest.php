@@ -46,7 +46,7 @@ class OrderControllerTest extends WebTestCase
     {
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('marello_order_order_view', ['id' => $this->getReference('order0')->getId()])
+            $this->getUrl('marello_order_order_view', ['id' => $this->getReference('marello_order_0')->getId()])
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
@@ -57,7 +57,7 @@ class OrderControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_order_order_update', ['id' => $this->getReference('order0')->getId()])
+            $this->getUrl('marello_order_order_update', ['id' => $this->getReference('marello_order_0')->getId()])
         );
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
@@ -68,7 +68,7 @@ class OrderControllerTest extends WebTestCase
         $this->client->request(
             'GET',
             $this->getUrl('marello_order_order_address', [
-                'id'               => $this->getReference('order0')->getBillingAddress()->getId(),
+                'id'               => $this->getReference('marello_order_0')->getBillingAddress()->getId(),
                 'typeId'           => 1,
                 '_widgetContainer' => 'block',
             ])
@@ -82,7 +82,7 @@ class OrderControllerTest extends WebTestCase
         $crawler = $this->client->request(
             'GET',
             $this->getUrl('marello_order_order_updateaddress', [
-                'id'               => $this->getReference('order0')->getBillingAddress()->getId(),
+                'id'               => $this->getReference('marello_order_0')->getBillingAddress()->getId(),
                 '_widgetContainer' => 'dialog',
             ])
         );

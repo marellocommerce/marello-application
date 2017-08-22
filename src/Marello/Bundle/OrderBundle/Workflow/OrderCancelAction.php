@@ -65,6 +65,7 @@ class OrderCancelAction extends OrderTransitionAction
     {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
+            null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
             'order_workflow.cancelled',
