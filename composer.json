@@ -17,6 +17,7 @@
         }
     },
     "require": {
+        "oro\/platform": "2.2.*",
         "oro\/platform-serialised-fields": "2.2.*",
         "oro\/calendar-bundle": "2.2.*"
     },
