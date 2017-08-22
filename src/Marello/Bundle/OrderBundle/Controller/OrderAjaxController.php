@@ -33,7 +33,7 @@ class OrderAjaxController extends Controller
         $submittedData = $request->get($form->getName());
 
         $form->submit($submittedData);
-        
+
         $context = new FormChangeContext(
             [
                 FormChangeContext::FORM_FIELD => $form,
@@ -46,7 +46,7 @@ class OrderAjaxController extends Controller
             ->setRequiredDataClass(Order::class)
             ->setRequiredFields($request->get('updateFields'))
             ->processFormChanges($context);
-        
+
         return new JsonResponse($context->getResult());
     }
 

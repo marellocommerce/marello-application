@@ -14,6 +14,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    const VAT_SYSTEM_CONFIG_PATH = 'marello_pricing.is_vat_included';
+
     /**
      * {@inheritDoc}
      */

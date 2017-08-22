@@ -2,12 +2,12 @@
 
 namespace Marello\Bundle\PricingBundle\Formatter;
 
+use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class LabelVATAwareFormatter
 {
-    const VAT_SYSTEM_CONFIG_PATH = 'marello_pricing.is_vat_included';
     const TRANSLATION_INCL_VAT = 'marello.pricing.vat.included.label';
     const TRANSLATION_EXCL_VAT = 'marello.pricing.vat.excluded.label';
 
@@ -37,7 +37,7 @@ class LabelVATAwareFormatter
      */
     public function getFormattedLabel($originalLabel)
     {
-        $isVatEnabled = $this->configManager->get(self::VAT_SYSTEM_CONFIG_PATH);
+        $isVatEnabled = $this->configManager->get(Configuration::VAT_SYSTEM_CONFIG_PATH);
         if ($isVatEnabled) {
             $suffix = $this->translator->trans(self::TRANSLATION_INCL_VAT);
         } else {

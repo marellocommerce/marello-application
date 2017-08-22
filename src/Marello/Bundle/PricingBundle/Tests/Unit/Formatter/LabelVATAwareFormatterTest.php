@@ -2,11 +2,10 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Unit\Formatter;
 
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-
-use Symfony\Component\Translation\TranslatorInterface;
-
+use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
 use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class LabelVATAwareFormatterTest extends \PHPUnit_Framework_TestCase
 {
@@ -64,7 +63,7 @@ class LabelVATAwareFormatterTest extends \PHPUnit_Framework_TestCase
         $this->configManager
             ->expects(static::once())
             ->method('get')
-            ->with(LabelVATAwareFormatter::VAT_SYSTEM_CONFIG_PATH)
+            ->with(Configuration::VAT_SYSTEM_CONFIG_PATH)
             ->willReturn($confValue);
 
         static::assertEquals($expectedValue, $this->labelVATAwareFormatter->getFormattedLabel($labelBeforeTranslation));

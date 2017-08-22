@@ -6,7 +6,6 @@ define(function(require) {
         _ = require('underscore'),
         __ = require('orotranslation/js/translator'),
         DeleteConfirmation = require('oroui/js/delete-confirmation'),
-        LoadingMaskView = require('oroui/js/app/views/loading-mask-view'),
         routing = require('routing'),
         mediator = require('oroui/js/mediator'),
         layout = require('oroui/js/layout'),
@@ -71,7 +70,7 @@ define(function(require) {
                 if (this.getItems().length === 0 || this._getSalesChannel().length ===0 ) {
                     return;
                 }
-                mediator.trigger('order:form-changes:trigger', {updateFields: ['items']});
+                mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals']});
             }, this));
 
             this.initChannelHistory();

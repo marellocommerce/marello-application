@@ -3,55 +3,62 @@
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Calculator;
 
 use Marello\Bundle\TaxBundle\Calculator\TaxCalculator;
-use Marello\Bundle\TaxBundle\Model\TaxResult;
+use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
 
 class TaxCalculatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var TaxCalculator
+     * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $taxCalculator;
+    protected $configManager;
 
     protected function setUp()
     {
-        $this->taxCalculator = new TaxCalculator();
+        $this->configManager = $this->getMockBuilder(ConfigManager::class)
+            ->disableOriginalConstructor()->getMock();
     }
 
     /**
-     * @dataProvider calculateDataProvider
+     * @dataProvider taxDataProvider
      *
-     * @param float $amount
-     * @param float $taxRate
-     * @param array $result
+     * @param bool $taxConfig
+     * @param int $inclCalculatorRun
+     * @param int $exclCalculatorRun
      */
-    public function testCalculate($amount, $taxRate, $result)
+    public function testTaxIncluded($taxConfig, $inclCalculatorRun, $exclCalculatorRun)
     {
-        static::assertEquals(new TaxResult($result), $this->taxCalculator->calculate($amount, $taxRate));
+        /** @var TaxCalculatorInterface|\PHPUnit_Framework_MockObject_MockObject $taxIncl */
+        $taxIncl = $this->createMock(TaxCalculatorInterface::class);
+
+        /** @var TaxCalculatorInterface|\PHPUnit_Framework_MockObject_MockObject $taxExcl */
+        $taxExcl = $this->createMock(TaxCalculatorInterface::class);
+
+        $this->configManager
+            ->expects($this->once())
+            ->method('get')
+            ->with(Configuration::VAT_SYSTEM_CONFIG_PATH)
+            ->willReturn($taxConfig);
+        $taxIncl->expects($this->exactly($inclCalculatorRun))->method('calculate');
+        $taxExcl->expects($this->exactly($exclCalculatorRun))->method('calculate');
+
+        $calculator = new TaxCalculator($this->configManager, $taxIncl, $taxExcl);
+        $calculator->calculate(0, 0);
     }
 
-    /**
-     * @return array
-     */
-    public function calculateDataProvider()
+    public function taxDataProvider()
     {
         return [
-            [
-                'amount' => 150,
-                'taxRate' => 0.1,
-                'result' => [
-                    TaxResult::INCLUDING_TAX => 150,
-                    TaxResult::EXCLUDING_TAX => 135,
-                    TaxResult::TAX_AMOUNT => 15
-                ]
+            'inclTax' => [
+                'taxConfig' => true,
+                'inclCalculatorRun' => 1,
+                'exclCalculatorRun' => 0,
             ],
-            [
-                'amount' => 100,
-                'taxRate' => 0.1,
-                'result' => [
-                    TaxResult::INCLUDING_TAX => 100,
-                    TaxResult::EXCLUDING_TAX => 90,
-                    TaxResult::TAX_AMOUNT => 10
-                ]
+            'exclTax' => [
+                'taxConfig' => false,
+                'inclCalculatorRun' => 0,
+                'exclCalculatorRun' => 1,
             ]
         ];
     }
