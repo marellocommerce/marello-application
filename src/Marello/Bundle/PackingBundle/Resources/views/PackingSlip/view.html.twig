@@ -2,12 +2,14 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
+{% oro_title_set({params : {"%id%": entity.packingSlipNumber }}) %}
+
 {% block pageHeader %}
     {% set breadcrumbs = {
     'entity':      entity,
     'indexPath':   path('marello_packing_packingslip_index'),
     'indexLabel': 'marello.packing.packingslip.entity_plural_label'|trans,
-    'entityTitle': entity.id
+    'entityTitle': entity.packingSlipNumber
     } %}
     {{ parent() }}
 {% endblock pageHeader %}
@@ -22,6 +24,7 @@
                         <div class="title">
                             <span class="widget-title">{{ 'marello.packing.packingslip.datablock.information'|trans }}</span>
                         </div>
+                        {{ UI.renderProperty('marello.packing.packingslip.packing_slip_number.label'|trans, entity.packingSlipNumber) }}
                         {{ UI.renderProperty('marello.packing.packingslip.order.label'|trans, entity.order) }}
                         {{ UI.renderProperty('marello.packing.packingslip.sales_channel.label'|trans, entity.salesChannel) }}
                         {{ UI.renderProperty('marello.packing.packingslip.warehouse.label'|trans, entity.warehouse) }}

@@ -17,6 +17,5 @@ navigation:
 
     titles:
         marello_packing_packingslip_index:  'marello.packing.packingslip.entity_plural_label'
-#        marello_packing_packingslip_view:   'Packing Slip #%%id%%'
-#        marello_packing_packingslip_update: 'Packing Slip #%%id%% - Update'
-#        marello_packing_packingslip_create: 'New Packing Slip'
+        marello_packing_packingslip_view:   'Packing Slip #%%id%%'
+        marello_packing_packingslip_update: 'Packing Slip #%%id%% - Update'

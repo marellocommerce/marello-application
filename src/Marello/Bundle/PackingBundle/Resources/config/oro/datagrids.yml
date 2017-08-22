@@ -15,6 +15,9 @@ datagrids:
                         - { join: ps.billingAddress, alias: ba }
                         - { join: ps.shippingAddress, alias: sa }
         columns:
+            packingSlipNumber:
+                label:            marello.packing.packingslip.packing_slip_number.label
+                frontend_type:    string
             order:
                 label:            marello.packing.packingslip.order.label
             salesChannel:
@@ -22,9 +25,13 @@ datagrids:
             warehouse:
                 label:            marello.packing.packingslip.warehouse.label
             billingAddress:
-                label:            marello.packing.packingslip.billing_address.label
+                frontend_type:    string
+                data_name:        billingName # This alias is generated using GridAddressFilterListener
+                label:            marello.packing.packingslip.billing_address.name.label
             shippingAddress:
-                label:            marello.packing.packingslip.shipping_address.label
+                frontend_type:    string
+                data_name:        shippingName # This alias is generated using GridAddressFilterListener
+                label:            marello.packing.packingslip.shipping_address.name.label
             createdAt:
                 label:            oro.ui.created_at
                 frontend_type:    datetime
@@ -33,6 +40,8 @@ datagrids:
                 frontend_type:    datetime
         sorters:
             columns:
+                packingSlipNumber:
+                    data_name: ps.packingSlipNumber
                 order:
                     data_name: o.id
                 salesChannel:
@@ -48,9 +57,12 @@ datagrids:
                 updatedAt:
                     data_name: ps.updatedAt
             default:
-                order: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                packingSlipNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         filters:
             columns:
+                packingSlipNumber:
+                    type: string
+                    data_name: ps.packingSlipNumber
                 order:
                     type: string
                     data_name: o.orderNumber
@@ -142,7 +154,6 @@ datagrids:
                     data_name: ps.updatedAt
             default:
                 productSku: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
-
         totals:
             grand_total:
                 columns:

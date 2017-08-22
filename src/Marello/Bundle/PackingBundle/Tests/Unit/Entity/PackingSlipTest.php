@@ -27,6 +27,7 @@ class PackingSlipTest extends \PHPUnit_Framework_TestCase
             ['organization', new Organization()],
             ['salesChannel', new SalesChannel()],
             ['warehouse', new Warehouse()],
+            ['packingSlipNumber', '#00000000042'],
             ['comment', 'some string'],
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()]

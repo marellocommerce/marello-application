@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\Customer;
@@ -38,7 +39,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="marello_packing_packing_slip")
  * @ORM\HasLifecycleCallbacks()
  */
-class PackingSlip extends ExtendPackingSlip
+class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     
@@ -121,6 +122,13 @@ class PackingSlip extends ExtendPackingSlip
      * @var string
      */
     protected $comment;
+
+    /**
+     * @ORM\Column(name="packing_slip_number", type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $packingSlipNumber;
 
     public function __construct()
     {
@@ -330,5 +338,42 @@ class PackingSlip extends ExtendPackingSlip
         $this->comment = $comment;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPackingSlipNumber()
+    {
+        return $this->packingSlipNumber;
+    }
+
+    /**
+     * @param $packingSlipNumber
+     * @return $this
+     */
+    public function setPackingSlipNumber($packingSlipNumber)
+    {
+        $this->packingSlipNumber = $packingSlipNumber;
+
+        return $this;
+    }
+
+    /**
+     * @param $id
+     */
+    public function setDerivedProperty($id)
+    {
+        if (!$this->packingSlipNumber) {
+            $this->setPackingSlipNumber(sprintf('%09d', $id));
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('#%s', $this->packingSlipNumber);
     }
 }

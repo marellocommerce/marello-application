@@ -9,11 +9,15 @@ marello:
             customer.label:         Customer
             organization.label:     Organization
             sales_channel.label:    Sales Channel
-            billing_address.label:  Billing Address
-            shipping_address.label: Shipping Address
+            billing_address:
+                label:                  Billing Address
+                name.label:             Bill to Name
+            shipping_address:
+                label:                  Shipping Address
+                name.label:             Ship to Name
             warehouse.label:        Warehouse
             comment.label:          Comment
-
+            packing_slip_number.label: Packing Slip Number
             datablock:
                 general:            General
                 information:        Packing Slip Information

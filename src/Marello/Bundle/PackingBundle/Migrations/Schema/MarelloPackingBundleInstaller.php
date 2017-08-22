@@ -60,6 +60,7 @@ class MarelloPackingBundleInstaller implements Installation, ActivityExtensionAw
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
         $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
         $table->addColumn('comment', 'text', ['notnull' => false]);
+        $table->addColumn('packing_slip_number', 'text', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
 
