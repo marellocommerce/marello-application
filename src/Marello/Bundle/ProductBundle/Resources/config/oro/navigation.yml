@@ -5,7 +5,7 @@ navigation:
                 label: marello.product.navigation.product.label
                 uri: '#'
                 extras:
-                    position: 50
+                    position: 10
                     icon: fa-barcode
 
             products_list:

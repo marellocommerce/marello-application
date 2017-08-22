@@ -23,7 +23,7 @@ class InventoryItemType extends AbstractType
                 [
                     'enum_code' => 'marello_inv_reple',
                     'required'  => true,
-                    'label'     => 'marello.product.replenishment.label',
+                    'label'     => 'marello.inventory.inventoryitem.replenishment.label',
                 ]
             )
             ->add('inventoryLevels', InventoryLevelCollectionType::class);
