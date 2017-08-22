@@ -1,4 +1,4 @@
-mports:
+imports:
     - { resource: config.yml }
     - { resource: parameters_test.yml }
     - { resource: security_test.yml }

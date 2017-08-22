@@ -21,9 +21,9 @@
         }
     },
     "require": {
-        "oro\/platform-enterprise": "2.0.*",
-        "oro\/platform-serialised-fields": "2.0.*",
-        "oro\/calendar-bundle": "2.0.*"
+        "oro\/platform-enterprise": "2.2.*",
+        "oro\/platform-serialised-fields": "2.2.*",
+        "oro\/calendar-bundle": "2.2.*"
     },
     "require-dev": {
         "sensio\/generator-bundle": "3.1.2",
@@ -51,12 +51,23 @@
         }
     },
     "scripts": {
+        "test": [
+            "rm -rf app\/cache\/*",
+            "rm -rf app\/logs\/*",
+            "phpunit -c app --tap --testsuite=\"Unit Tests\""
+        ],
         "test-extended": [
             "rm -rf app\/cache\/*",
             "rm -rf app\/logs\/*",
-            "app\/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http:\/\/localhost --force --drop-database --timeout 3600",
-            "phpunit -c app --tap --testsuite=\"Enterprise Unit Tests\"",
-            "phpunit -c app --tap --testsuite=\"Enterprise Functional Tests\""
+            "app\/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http:\/\/localhost --drop-database --timeout 3600",
+            "phpunit -c app --tap --testsuite=\"Unit Tests\"",
+            "phpunit -c app --tap --testsuite=\"Functional Tests\""
+        ],
+        "test-functional": [
+            "rm -rf app\/cache\/*",
+            "rm -rf app\/logs\/*",
+            "app\/console cache:clear --env test",
+            "phpunit -c app --tap --testsuite=\"Functional Tests\""
         ],
         "post-install-cmd": [
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::checkComposerPlugin",
