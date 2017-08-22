@@ -1,0 +1,4 @@
+marello_packing_bundle:
+    resource: "@MarelloPackingBundle/Controller"
+    type:     annotation
+    prefix:   /marello/packing

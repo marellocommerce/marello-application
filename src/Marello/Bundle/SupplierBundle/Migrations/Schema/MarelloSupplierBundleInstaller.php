@@ -24,7 +24,7 @@ class MarelloSupplierBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -34,11 +34,9 @@ class MarelloSupplierBundleInstaller implements
     {
         /** Tables generation **/
         $this->createMarelloSupplierSupplierTable($schema);
-        $this->createMarelloSupplierProductSupplierRelationTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloSupplierSupplierForeignKeys($schema);
-        $this->addMarelloSupplierProductSupplierRelationForeignKeys($schema);
     }
 
     /**
@@ -59,43 +57,11 @@ class MarelloSupplierBundleInstaller implements
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['address_id'], '', []);
+        $table->addUniqueIndex(['address_id'], 'UNIQ_16532C7BF5B7AF75', []);
         $table->addUniqueIndex(['name']);
         $table->addUniqueIndex(['email']);
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
-    }
-
-    /**
-     * Create marello_supplier_prod_supp_rel table
-     *
-     * @param Schema $schema
-     */
-    protected function createMarelloSupplierProductSupplierRelationTable(Schema $schema)
-    {
-        $table = $schema->createTable('marello_supplier_prod_supp_rel');
-        $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('product_id', 'integer', ['notnull' => true]);
-        $table->addColumn('supplier_id', 'integer', ['notnull' => true]);
-        $table->addColumn('quantity_of_unit', 'integer', ['notnull' => true]);
-        $table->addColumn('priority', 'integer', []);
-        $table->addColumn(
-            'cost',
-            'money',
-            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
-        );
-        $table->addColumn('can_dropship', 'boolean', []);
-        $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(
-            [
-                'product_id',
-                'supplier_id',
-                'quantity_of_unit'
-            ],
-            'marello_supplier_prod_supp_rel_uidx'
-        );
-        $table->addIndex(['product_id'], '', []);
-        $table->addIndex(['supplier_id'], '', []);
     }
 
     /**
@@ -109,28 +75,6 @@ class MarelloSupplierBundleInstaller implements
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),
             ['address_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
-        );
-    }
-
-    /**
-     * Add marello_supplier_prod_supp_rel foreign keys.
-     *
-     * @param Schema $schema
-     */
-    protected function addMarelloSupplierProductSupplierRelationForeignKeys(Schema $schema)
-    {
-        $table = $schema->getTable('marello_supplier_prod_supp_rel');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_product_product'),
-            ['product_id'],
-            ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
-        );
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_supplier_supplier'),
-            ['supplier_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );

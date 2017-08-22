@@ -11,7 +11,7 @@ trait StockLevelTrait
 {
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\StockLevel", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="current_level_id", nullable=true)
+     * @ORM\JoinColumn(name="current_level_id", referencedColumnName="id", onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={

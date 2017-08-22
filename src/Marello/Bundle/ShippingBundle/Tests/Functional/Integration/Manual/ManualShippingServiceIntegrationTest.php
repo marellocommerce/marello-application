@@ -12,9 +12,6 @@ use Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceIntegr
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
-/**
- * @dbIsolation
- */
 class ManualShippingServiceIntegrationTest extends WebTestCase
 {
 

@@ -11,9 +11,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
 
-/**
- * @dbIsolation
- */
 class SupplierControllerTest extends WebTestCase
 {
     protected function setUp()

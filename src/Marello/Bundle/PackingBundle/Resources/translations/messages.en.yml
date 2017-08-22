@@ -1,0 +1,41 @@
+marello:
+    packing:
+        packingslip:
+            entity_label:           Packing Slip
+            entity_plural_label:    Packing Slips
+            id.label:               Id
+            items.label:            Items
+            order.label:            Order
+            customer.label:         Customer
+            organization.label:     Organization
+            sales_channel.label:    Sales Channel
+            billing_address:
+                label:                  Billing Address
+                name.label:             Bill to Name
+            shipping_address:
+                label:                  Shipping Address
+                name.label:             Ship to Name
+            warehouse.label:        Warehouse
+            comment.label:          Comment
+            packing_slip_number.label: Packing Slip Number
+            datablock:
+                general:            General
+                information:        Packing Slip Information
+                items:              Items
+
+        packingslipitem:
+            entity_label:           Packing Slip Item
+            entity_plural_label:    Packing Slip Items
+            id.label:               Id
+            packing_slip.label:     Packing Slip
+            product.label:          Product
+            product_name.label:     Product Name
+            product_sku.label:      Product SKU
+            quantity.label:         Quantity
+            weight.label:           Weight
+            order_item.label:       Order Item
+            comment.label:          Comment
+
+        datagrid:
+            columns:
+                grand_total:        Totals

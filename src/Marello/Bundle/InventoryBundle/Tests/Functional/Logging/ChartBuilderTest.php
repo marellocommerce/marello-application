@@ -10,9 +10,6 @@ use Marello\Bundle\InventoryBundle\Entity\StockLevel;
 use Marello\Bundle\InventoryBundle\Logging\ChartBuilder;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
-/**
- * @dbIsolation
- */
 class ChartBuilderTest extends WebTestCase
 {
     /** @var ChartBuilder */

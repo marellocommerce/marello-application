@@ -9,9 +9,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
-/**
- * @dbIsolation
- */
 class VariantControllerTest extends WebTestCase
 {
     public function setUp()

@@ -152,6 +152,16 @@
         </div>
     {% endset %}
 
+    {% set packingSlips %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-order-packingslips', {'orderId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'marello.order.datablock.general'|trans,
@@ -173,6 +183,13 @@
             'class': 'active',
             'subblocks': [
                 { 'data' : [items] }
+            ]
+        },
+        {
+            'title': 'marello.order.datablock.packing_slips'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [packingSlips] }
             ]
         }
     ] %}

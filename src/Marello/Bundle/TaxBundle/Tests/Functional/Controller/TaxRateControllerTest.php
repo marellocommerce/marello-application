@@ -6,9 +6,6 @@ use Marello\Bundle\TaxBundle\Entity\TaxRate;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 
-/**
- * @dbIsolation
- */
 class TaxRateControllerTest extends WebTestCase
 {
     const TAX_CODE = 'unique';

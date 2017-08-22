@@ -16,9 +16,6 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
-/**
- * @dbIsolation
- */
 class UPSShippingServiceDataFactoryTest extends WebTestCase
 {
     /** @var UPSShippingServiceDataFactory */

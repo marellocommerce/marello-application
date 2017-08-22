@@ -13,7 +13,7 @@ navigation:
                 route: marello_sales_saleschannel_index
                 extras:
                     routes: ['marello_sales_saleschannel_*']
-                    position: 40
+                    position: 50
 
             shortcut_new_saleschannel:
                 label: 'marello.sales.saleschannel.menu.shortcut_new_saleschannel.label'

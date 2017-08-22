@@ -79,42 +79,42 @@ class Order extends ExtendOrder implements
     /**
      * @var string
      *
-     * @ORM\Column(name="order_number",type="string", unique=true, nullable=true)
+     * @ORM\Column(name="order_number", type="string", unique=true, nullable=true)
      */
     protected $orderNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="order_reference",type="string", nullable=true)
+     * @ORM\Column(name="order_reference", type="string", nullable=true)
      */
     protected $orderReference;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="invoice_reference",type="string", nullable=true)
+     * @ORM\Column(name="invoice_reference", type="string", nullable=true)
      */
     protected $invoiceReference;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="subtotal",type="money")
+     * @ORM\Column(name="subtotal", type="money")
      */
     protected $subtotal = 0;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="total_tax",type="money")
+     * @ORM\Column(name="total_tax", type="money")
      */
     protected $totalTax = 0;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="grand_total",type="money")
+     * @ORM\Column(name="grand_total", type="money")
      */
     protected $grandTotal = 0;
 
@@ -146,14 +146,14 @@ class Order extends ExtendOrder implements
     /**
      * @var double
      *
-     * @ORM\Column(name="shipping_amount_incl_tax", type="money", nullable=false)
+     * @ORM\Column(name="shipping_amount_incl_tax", type="money", nullable=true)
      */
     protected $shippingAmountInclTax;
 
     /**
      * @var double
      *
-     * @ORM\Column(name="shipping_amount_excl_tax", type="money", nullable=false)
+     * @ORM\Column(name="shipping_amount_excl_tax", type="money", nullable=true)
      */
     protected $shippingAmountExclTax;
 

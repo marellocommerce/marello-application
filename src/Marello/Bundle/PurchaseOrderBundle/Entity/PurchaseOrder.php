@@ -73,7 +73,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      * @var Supplier
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
-     * @ORM\JoinColumn(name="supplier_id", nullable=false)
+     * @ORM\JoinColumn(name="supplier_id", onDelete="CASCADE", nullable=false)
      */
     protected $supplier;
 

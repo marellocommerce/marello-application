@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;

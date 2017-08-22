@@ -8,9 +8,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
-/**
- * @dbIsolation
- */
 class ReturnControllerTest extends WebTestCase
 {
     public function setUp()

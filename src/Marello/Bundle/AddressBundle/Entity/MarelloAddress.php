@@ -3,8 +3,8 @@
 namespace Marello\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\AddressBundle\Model\ExtendMarelloAddress;
 use Marello\Bundle\OrderBundle\Entity\Customer;
-use Oro\Bundle\AddressBundle\Model\ExtendAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
@@ -27,7 +27,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      }
  * )
  */
-class MarelloAddress extends ExtendAddress
+class MarelloAddress extends ExtendMarelloAddress
 {
 
     /**

@@ -6,9 +6,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 
-/**
- * @dbIsolation
- */
 class SalesChannelControllerTest extends WebTestCase
 {
     public function setUp()

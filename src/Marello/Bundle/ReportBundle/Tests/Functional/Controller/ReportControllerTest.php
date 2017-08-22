@@ -4,9 +4,6 @@ namespace Marello\Bundle\ReportBundle\Tests\Functional\Controller;
 
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @dbIsolation
- */
 class ReportControllerTest extends WebTestCase
 {
     const ORDERS_REPORT_GROUP = 'orders';

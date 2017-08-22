@@ -11,7 +11,7 @@ use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Marello\Bundle\ProductBundle\Entity\ProductStatus;
 use Marello\Bundle\ProductBundle\Entity\Variant;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;

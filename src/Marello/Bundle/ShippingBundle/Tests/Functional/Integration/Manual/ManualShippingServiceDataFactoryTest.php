@@ -10,9 +10,6 @@ use Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceDataFa
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
-/**
- * @dbIsolation
- */
 class ManualShippingServiceDataFactoryTest extends WebTestCase
 {
     /** @var ManualShippingServiceDataFactory */

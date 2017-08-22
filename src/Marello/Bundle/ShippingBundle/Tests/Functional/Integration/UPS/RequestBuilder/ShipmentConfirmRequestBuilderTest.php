@@ -9,9 +9,6 @@ use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirm
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @dbIsolation
- */
 class ShipmentConfirmRequestBuilderTest extends WebTestCase
 {
     /** @var ShipmentConfirmRequestBuilder */

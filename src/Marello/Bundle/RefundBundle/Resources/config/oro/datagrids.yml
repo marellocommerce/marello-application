@@ -212,9 +212,9 @@ datagrids:
                 refund_id: refundId
         columns:
             name:
-                label:      marello.refund.refund_item.name.label
+                label:      marello.refund.refunditem.name.label
             refundAmount:
-                label:              marello.refund.refund_item.refund_amount.label
+                label:              marello.refund.refunditem.refund_amount.label
                 type:               localized_number
                 method:             formatCurrency
                 context_resolver:   Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
@@ -246,10 +246,10 @@ datagrids:
                 label: marello.product.name.label
                 data_name: orderItem.productName
             quantity:
-                label: marello.refund.refund_item.quantity.label
+                label: marello.refund.refunditem.quantity.label
                 frontend_type: number
             refundAmount:
-                label:              marello.refund.refund_item.refund_amount.label
+                label:              marello.refund.refunditem.refund_amount.label
                 type:               localized_number
                 method:             formatCurrency
                 context_resolver:   Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure

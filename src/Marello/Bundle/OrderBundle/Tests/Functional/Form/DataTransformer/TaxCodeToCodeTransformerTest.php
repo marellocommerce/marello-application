@@ -7,9 +7,6 @@ use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-/**
- * @dbIsolation
- */
 class TaxCodeToCodeTransformerTest extends WebTestCase
 {
     const TRANSFORMER_SERVICE_ID = 'marello_order.form.data_transformer.tax_code_to_code';

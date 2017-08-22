@@ -13,9 +13,6 @@ use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
-/**
- * @dbIsolation
- */
 class ReturnControllerTest extends WebTestCase
 {
     protected function setUp()

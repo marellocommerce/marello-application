@@ -4,21 +4,18 @@ namespace Marello\Bundle\ProductBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
-use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
-use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
+use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Marello\Bundle\ProductBundle\Model\ExtendProduct;
-use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
-use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 /**
  * Represents a Marello Product
@@ -314,7 +311,7 @@ class Product extends ExtendProduct implements
      * @var ArrayCollection|ProductSupplierRelation[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation",
+     *     targetEntity="Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation",
      *     mappedBy="product",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
@@ -325,7 +322,7 @@ class Product extends ExtendProduct implements
     /**
      * @var Supplier
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
-     * @ORM\JoinColumn(name="preferred_supplier_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="preferred_supplier_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     protected $preferredSupplier;
 
@@ -333,7 +330,7 @@ class Product extends ExtendProduct implements
      * @var TaxCode
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     protected $taxCode;
 

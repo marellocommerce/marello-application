@@ -114,7 +114,7 @@ datagrids:
                     - psr.quantityOfUnit
                     - psr.cost
                 from:
-                    - { table: MarelloSupplierBundle:ProductSupplierRelation, alias: psr }
+                    - { table: MarelloProductBundle:ProductSupplierRelation, alias: psr }
                 join:
                     inner:
                         - { join: psr.product, alias: p }

@@ -2,6 +2,9 @@ marello:
     purchaseorder:
         entity_label:                                   Purchase Order
         entity_plural_label:                            Purchase Orders
+        id.label:                                       Id
+        organization.label:                             Organization
+        supplier.label:                                 Supplier
         purchase_order_number.label:                    PO Number
         purchase_order_supplier.label:                  Supplier
         status.label:                                   Purchase Order Status
@@ -26,11 +29,20 @@ marello:
             add_product:                                Add Product
 
         purchaseorderitem:
+            entity_label:                               Purchase Order Item
+            entity_plural_label:                        Purchase Order Items
+            id.label:                                   Id
+            data.label:                                 Data
             order_amount.label:                         Order Amount
             ordered_amount.label:                       Ordered Amount
             received_amount.label:                      Received Quantity
             status.label:                               Status
             accepted_qty.label:                         Accepted Quantity
+            order.label:                                Order
+            product.label:                              Product
+            product_name.label:                         Product Name
+            product_sku.label:                          Product SKU
+            supplier.label:                             Supplier
             purchase_stock_level.label:                 Purchase Level
             desired_stock_level.label:                  Desired Level
             virtual_stock_level.label:                  Virtual Level
