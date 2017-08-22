@@ -10,10 +10,15 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
+use Marello\Bundle\OrderBundle\Model\DiscountAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrder;
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
+use Marello\Bundle\PricingBundle\Subtotal\Model\LineItemsAwareInterface;
+use Marello\Bundle\PricingBundle\Subtotal\Model\SubtotalAwareInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
+use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -50,7 +55,12 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class Order extends ExtendOrder implements
     DerivedPropertyAwareInterface,
+    CurrencyAwareInterface,
+    DiscountAwareInterface,
     ShippingAwareInterface,
+    SubtotalAwareInterface,
+    TaxAwareInterface,
+    LineItemsAwareInterface,
     LocaleAwareInterface
 {
     use HasShipmentTrait;
@@ -337,6 +347,14 @@ class Order extends ExtendOrder implements
     public function getTotalTax()
     {
         return $this->totalTax;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTax()
+    {
+        return $this->getTotalTax();
     }
 
     /**

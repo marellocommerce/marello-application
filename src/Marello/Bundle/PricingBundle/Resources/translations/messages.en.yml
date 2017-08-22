@@ -33,6 +33,9 @@ marello:
 
             no_channel_prices_configured: No channel prices configured for current product
 
+        subtotals:
+            total.label:                Grand Total
+
         vat:
             included.label:             incl. VAT
             excluded.label:             excl. VAT

@@ -69,7 +69,7 @@ define(function(require) {
             if (productId.length === 0) {
                 this.setOrderItemData({});
             } else {
-                mediator.trigger('order:form-changes:trigger', {updateFields: ['items']});
+                mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals']});
             }
         },
 

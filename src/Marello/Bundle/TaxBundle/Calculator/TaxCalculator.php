@@ -2,25 +2,55 @@
 
 namespace Marello\Bundle\TaxBundle\Calculator;
 
-use Marello\Bundle\TaxBundle\Model\TaxResult;
+use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class TaxCalculator implements TaxCalculatorInterface
 {
-    /** {@inheritdoc} */
+    /**
+     * @var ConfigManager
+     */
+    protected $configManager;
+
+    /**
+     * @var TaxCalculatorInterface
+     */
+    protected $includedTaxCalculator;
+
+    /**
+     * @var TaxCalculatorInterface
+     */
+    protected $excludedTaxCalculator;
+
+    /**
+     * @param ConfigManager $configManager
+     * @param TaxCalculatorInterface $includedTaxCalculator
+     * @param TaxCalculatorInterface $excludedTaxCalculator
+     */
+    public function __construct(
+        ConfigManager $configManager,
+        TaxCalculatorInterface $includedTaxCalculator,
+        TaxCalculatorInterface $excludedTaxCalculator
+    ) {
+        $this->configManager = $configManager;
+        $this->includedTaxCalculator = $includedTaxCalculator;
+        $this->excludedTaxCalculator = $excludedTaxCalculator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function calculate($amount, $taxRate)
     {
-        $inclTax = (double)$amount;
-        $taxRate = (float) $taxRate;
+        if ($this->isPricesIncludeTax()) {
+            return $this->includedTaxCalculator->calculate($amount, $taxRate);
+        }
 
-        $taxAmount = $inclTax * $taxRate;
-        $exclTax = $inclTax - $taxAmount;
-
-        return new TaxResult(
-            [
-                TaxResult::INCLUDING_TAX => $inclTax,
-                TaxResult::EXCLUDING_TAX => $exclTax,
-                TaxResult::TAX_AMOUNT => $taxAmount
-            ]
-        );
+        return $this->excludedTaxCalculator->calculate($amount, $taxRate);
+    }
+    
+    protected function isPricesIncludeTax()
+    {
+        return $this->configManager->get(Configuration::VAT_SYSTEM_CONFIG_PATH);
     }
 }
