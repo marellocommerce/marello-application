@@ -52,12 +52,20 @@
 
     {% set dataBlocks = [
         {
-            'title': 'marello.inventory.label'|trans,
+            'title': 'marello.inventory.inventorylevel.totals.label'|trans,
             'class': 'active',
             'subblocks': [{
                 'title': '',
                 'data': [
-                    currentInventoryWidget,
+                    currentInventoryWidget
+                ]
+            }]
+        },        {
+            'title': 'marello.inventory.inventorylevel.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
                     inventoryQuantityWidget
                 ]
             }]
