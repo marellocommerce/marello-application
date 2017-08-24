@@ -42,7 +42,7 @@ class InventoryLevel
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem", inversedBy="inventoryLevels")
-     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -60,7 +60,7 @@ class InventoryLevel
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="warehouse_id", referencedColumnName="id", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={

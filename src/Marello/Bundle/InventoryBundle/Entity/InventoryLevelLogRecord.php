@@ -38,7 +38,7 @@ class InventoryLevelLogRecord
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel")
-     * @ORM\JoinColumn(name="inventory_level_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="inventory_level_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={

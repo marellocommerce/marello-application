@@ -87,7 +87,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
     protected $product;
 
     /**
-     * @ORM\Column(name="desired_inventory", type="integer")
+     * @ORM\Column(name="desired_inventory", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -101,7 +101,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
     protected $desiredInventory = 0;
 
     /**
-     * @ORM\Column(name="purchase_inventory", type="integer")
+     * @ORM\Column(name="purchase_inventory", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
