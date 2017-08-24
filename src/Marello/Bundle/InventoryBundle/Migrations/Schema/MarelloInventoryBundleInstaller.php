@@ -60,7 +60,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table = $schema->createTable('marello_inventory_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('product_id', 'integer', []);
-
+        $table->addColumn('desired_inventory', 'integer', ['notnull' => false]);
+        $table->addColumn('purchase_inventory', 'integer', ['notnull' => false]);
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -74,7 +75,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         );
 
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['product_id'], 'idx_40b8d0414584665a', []);
+        $table->addUniqueIndex(['product_id'], 'UNIQ_40B8D0414584665A', []);
     }
 
     /**
@@ -88,8 +89,6 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('inventory', 'integer', []);
         $table->addColumn('allocated_inventory', 'integer', []);
-        $table->addColumn('desired_inventory', 'integer', ['notnull' => false]);
-        $table->addColumn('purchase_inventory', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime');
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
@@ -184,7 +183,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             $schema->getTable('marello_inventory_item'),
             ['inventory_item_id'],
             ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            ['onDelete' => null, 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_inventory_warehouse'),
@@ -206,7 +205,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             $schema->getTable('marello_inventory_level'),
             ['inventory_level_id'],
             ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            ['onDelete' => null, 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),

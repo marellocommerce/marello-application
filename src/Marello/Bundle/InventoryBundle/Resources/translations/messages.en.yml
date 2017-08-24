@@ -31,6 +31,8 @@ marello:
             id.label:                   Id
             product.label:              Product
             replenishment.label:        Replenishment
+            desired_inventory.label:    Desired Inventory Level
+            purchase_inventory.label:   Purchase Inventory Level
             inventory_levels.label:     Inventory Levels
 
         inventorylevel:
@@ -48,8 +50,6 @@ marello:
             subject_id.label:               Subject Id
             subject_type.label:             Subject Type
             log.label:                      Inventory Level Log
-            desired_inventory.label:        Desired Inventory Level
-            purchase_inventory.label:       Purchase Inventory Level
             warehouse.label:                Warehouse
 
         inventorylevellogrecord:
@@ -66,5 +66,6 @@ marello:
         information.label:              Inventory Information
         movements.label:                Inventory Movements
         management:
+            menu.label:                 Inventory
             label:                      Inventory Management
             add_to_warehouse.label:     Add to Warehouse

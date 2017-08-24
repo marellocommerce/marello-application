@@ -37,7 +37,8 @@ class RemoveOldInventoryItemColumns implements Migration, OrderedMigrationInterf
         $this->dropIndexes($inventoryItemTable, [
             'uniq_40b8d0414584665a5080ecde',
             'UNIQ_40B8D04178824D09',
-            'idx_40b8d0415080ecde'
+            'idx_40b8d0415080ecde',
+            'idx_40b8d0414584665a',
         ]);
         $this->dropForeignkeys($inventoryItemTable, [
             'FK_40B8D0415080ECDE',

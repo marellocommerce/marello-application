@@ -118,10 +118,10 @@ datagrids:
                     - p.name
                     - sup.id AS preferredSupplierId
                     - sup.name AS preferredSupplier
-                    - p.desiredStockLevel
-                    - p.purchaseStockLevel
-                    - COALESCE(SUM(l.inventory - l.allocatedInventory), 0) AS virtualStock
-                    - (p.desiredStockLevel - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount
+                    - i.desiredInventory
+                    - i.purchaseInventory
+                    - COALESCE(SUM(l.inventory - l.allocatedInventory), 0) AS virtualInventory
+                    - (i.desiredInventory - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount
                     - >
                       (CASE WHEN p.id IN (:data_in) AND p.id NOT IN (:data_not_in)
                         THEN true ELSE false
@@ -131,7 +131,7 @@ datagrids:
                 join:
                     left:
                         - { join: p.inventoryItems, alias: i }
-                        - { join: i.currentLevel, alias: l }
+                        - { join: i.inventoryLevels, alias: l }
                         - { join: p.status, alias: s }
                         - { join: p.preferredSupplier, alias: sup }
                 where:
@@ -139,10 +139,10 @@ datagrids:
                         - sup.name <> ''
                         - sup.id = :supplierId
                         - s.name = 'enabled'                                          # Only select product with enabled status
-                        - p.replenishment = 'never_out_of_stock'
+                        - i.replenishment = 'never_out_of_stock'
 
-                having: SUM(l.inventory - l.allocatedInventory) < p.purchaseStockLevel  # Only products with virtual stock lower than required purchase stock level
-                groupBy: p.id
+                having: SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory  # Only products with virtual stock lower than required purchase stock level
+                groupBy: p.sku
 
             bind_parameters:
                 - supplierId
@@ -162,16 +162,16 @@ datagrids:
                 label:              marello.product.preferred_supplier.label
                 frontend_type:      string
                 data_name:          preferredSupplier
-            purchaseStockLevel:
+            purchaseInventory:
                 label:              marello.purchaseorder.purchaseorderitem.purchase_stock_level.label
                 frontend_type:      number
-            desiredStockLevel:
+            desiredInventory:
                 label:              marello.purchaseorder.purchaseorderitem.desired_stock_level.label
                 frontend_type:      number
-            virtualStock:
+            virtualInventory:
                 label:              marello.purchaseorder.purchaseorderitem.virtual_stock_level.label
                 frontend_type:      number
-                data_name:          virtualStock
+                data_name:          virtualInventory
             orderAmount:
                 label:              marello.purchaseorder.purchaseorderitem.order_amount.label
                 frontend_type:      number
@@ -182,9 +182,9 @@ datagrids:
                 sku:                    { data_name: p.sku }
                 name:                   { data_name: p.name }
                 preferredSupplier:      { data_name: preferredSupplier }
-                purchaseStockLevel:     { data_name: p.purchaseStockLevel }
-                desiredStockLevel:      { data_name: p.desiredStockLevel }
-                virtualStock:           { data_name: virtualStock }
+                purchaseInventory:      { data_name: i.purchaseInventory }
+                desiredInventory:       { data_name: i.desiredInventory }
+                virtualInventory:       { data_name: virtualInventory }
                 orderAmount:            { data_name: orderAmount }
             default:
                 hasProduct: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
@@ -199,15 +199,15 @@ datagrids:
                 name:
                     type:             string
                     data_name:        p.name
-                purchaseStockLevel:
+                purchaseInventory:
                     type:             number
-                    data_name:        p.purchaseStockLevel
-                desiredStockLevel:
+                    data_name:        i.purchaseInventory
+                desiredInventory:
                     type:             number
-                    data_name:        p.desiredStockLevel
-                virtualStock:
+                    data_name:        i.desiredInventory
+                virtualInventory:
                     type:             number
-                    data_name:        virtualStock
+                    data_name:        virtualInventory
                     filter_by_having: true
                 orderAmount:
                     type:             number
