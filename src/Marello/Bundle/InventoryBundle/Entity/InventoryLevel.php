@@ -103,34 +103,6 @@ class InventoryLevel
     protected $allocatedInventory = 0;
 
     /**
-     * @ORM\Column(name="desired_inventory", type="integer")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var int
-     */
-    protected $desiredInventory = 0;
-
-    /**
-     * @ORM\Column(name="purchase_inventory", type="integer")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var int
-     */
-    protected $purchaseInventory = 0;
-
-    /**
      * @ORM\Column(name="created_at", type="datetime")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -232,44 +204,6 @@ class InventoryLevel
     public function getVirtualInventoryQty()
     {
         return $this->inventory - $this->allocatedInventory;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDesiredInventory()
-    {
-        return $this->desiredInventory;
-    }
-
-    /**
-     * @param int $desiredInventory
-     * @return $this
-     */
-    public function setDesiredInventory($desiredInventory)
-    {
-        $this->desiredInventory = $desiredInventory;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPurchaseInventory()
-    {
-        return $this->purchaseInventory;
-    }
-
-    /**
-     * @param int $purchaseInventory
-     * @return $this
-     */
-    public function setPurchaseInventory($purchaseInventory)
-    {
-        $this->purchaseInventory = $purchaseInventory;
-
-        return $this;
     }
 
     /**

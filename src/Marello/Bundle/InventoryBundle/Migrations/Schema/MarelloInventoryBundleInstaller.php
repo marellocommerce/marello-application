@@ -60,7 +60,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table = $schema->createTable('marello_inventory_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('product_id', 'integer', []);
-
+        $table->addColumn('desired_inventory', 'integer', ['notnull' => false]);
+        $table->addColumn('purchase_inventory', 'integer', ['notnull' => false]);
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -88,8 +89,6 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('inventory', 'integer', []);
         $table->addColumn('allocated_inventory', 'integer', []);
-        $table->addColumn('desired_inventory', 'integer', ['notnull' => false]);
-        $table->addColumn('purchase_inventory', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime');
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
