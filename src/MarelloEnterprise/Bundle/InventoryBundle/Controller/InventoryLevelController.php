@@ -17,15 +17,13 @@ class InventoryLevelController extends BaseController
      * @Config\Route("/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_index")
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function indexAction(Product $product)
+    public function indexAction(InventoryItem $inventoryItem)
     {
-        return [
-            'product' => $product,
-        ];
+        return parent::indexAction($inventoryItem);
     }
 
     /**
@@ -39,35 +37,6 @@ class InventoryLevelController extends BaseController
      */
     public function chartAction(InventoryItem $inventoryItem, Request $request)
     {
-        /*
-         * Create parameters required for chart.
-         */
-        $from     = new \DateTime($request->query->get('from', 'tomorrow - 1 second - 1 week'));
-        $to       = new \DateTime($request->query->get('to', 'tomorrow - 1 second'));
-
-        $items = $this
-            ->get('marello_inventory.logging.chart_builder')
-            ->getChartData($inventoryItem, $from, $to);
-
-        $viewBuilder = $this->container->get('oro_chart.view_builder');
-
-        $chartView = $viewBuilder
-            ->setArrayData($items)
-            ->setOptions([
-                'name'        => 'marelloinventory',
-                'data_schema' => [
-                    'label' => [
-                        'field_name' => 'time',
-                        'label'      => 'Time',
-                    ],
-                    'value' => [
-                        'field_name' => 'inventory',
-                        'label'      => 'Inventory Level',
-                    ],
-                ],
-            ])
-            ->getView();
-
-        return compact('chartView', 'inventoryItem');
+        return parent::chartAction($inventoryItem, $request);
     }
 }
