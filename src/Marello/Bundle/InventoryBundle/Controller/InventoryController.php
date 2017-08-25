@@ -22,7 +22,6 @@ class InventoryController extends Controller
     {
         return [
             'entity_class' => InventoryItem::class,
-//            'invlev_class' => InventoryLevel::class
         ];
     }
 

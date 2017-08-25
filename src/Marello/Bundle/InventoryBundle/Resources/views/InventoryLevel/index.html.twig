@@ -12,12 +12,12 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
-{% set pageTitle = 'marello.inventory.stocklevel.log.label'|trans %}
+{% set pageTitle = 'marello.inventory.inventorylevel.log.label'|trans %}
 {% set gridName  = 'marello-inventory-log-extended' %}
 
 {% block content %}
     {% set params  = {
-        productId: product.id
+        inventoryItemId: inventoryItem.id
     } %}
     {{ parent() }}
 {% endblock %}
