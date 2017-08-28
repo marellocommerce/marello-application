@@ -21,6 +21,32 @@ class ProductApiEntityManager extends ApiEntityManager
                         'label' => null,
                     ],
                 ],
+                'taxCode'        => [
+                    'exclusion_policy' => 'all',
+                    'fields'           => [
+                        'code'  => null
+                    ]
+                ],
+                'salesChannelTaxCodes' => [
+                    'exclusion_policy' => 'all',
+                    'fields'           => [
+                        'salesChannel' => [
+                            'exclusion_policy' => 'all',
+                            'fields'    => [
+                                'id'          => null,
+                                'code'        => null,
+                                'active'      => null,
+                                'channelType' => null,
+                            ]
+                        ],
+                        'taxCode'    => [
+                            'exclusion_policy' => 'all',
+                            'fields'           => [
+                                'code'  => null
+                            ]
+                        ],
+                    ],
+                ],
                 'organization'   => [
                     'exclusion_policy' => 'all',
                     'fields'           => ['id' => null],

@@ -51,6 +51,9 @@ class ProductControllerTest extends WebTestCase
         $this->assertArrayHasKey('sku', $data);
         $this->assertEquals($product->getSku(), $data['sku']);
 
+        $this->assertArrayHasKey('taxCode', $data);
+        $this->assertArrayHasKey('salesChannelTaxCodes', $data);
+
         $this->assertArrayHasKey('createdAt', $data);
         $this->assertArrayHasKey('updatedAt', $data);
         $this->assertArrayHasKey('status', $data);
