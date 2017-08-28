@@ -118,7 +118,13 @@ class ProductControllerTest extends WebTestCase
             'status'    => 'enabled',
             'channels'  => [
                 $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId(),
-            ]
+            ],
+            'prices'    => [
+                [
+                    'currency' => 'CHF',
+                    'value' => 100.0000
+                ]
+            ],
         ];
 
         $this->client->request(

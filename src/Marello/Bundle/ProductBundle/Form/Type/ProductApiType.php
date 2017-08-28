@@ -13,14 +13,6 @@ class ProductApiType extends AbstractType
 {
     const NAME = 'marello_product_api_form';
 
-    /** @var InventoryItemUpdateApiTransformer $transformer */
-    protected $transformer;
-
-    public function __construct(InventoryItemUpdateApiTransformer $transformer)
-    {
-        $this->transformer = $transformer;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -40,7 +32,7 @@ class ProductApiType extends AbstractType
                     'scale' => 2,
                 ]
             )
-            ->add('prices')
+            ->add('prices', 'marello_product_price_collection')
             ->add('channels')
         ;
     }
