@@ -23,15 +23,24 @@
             "type": "vcs",
             "url": "https://github.com/oroinc/platform-enterprise.git"
         },
-        "marello-enterprise": {
+        "marello-enterprise-dev": {
             "type": "vcs",
-            "url": "https://github.com/marellocommerce/marello-ee.git"
+            "url": "https://github.com/marellocommerce/marello-ee-dev.git",
+            "branch": "dev"
+        },
+        "marello-dev": {
+            "type": "vcs",
+            "url": "https://github.com/marellocommerce/marello-dev.git",
+            "branch": "dev"
         }
     },
     "require": {
         "oro\/platform-enterprise": "2.2.*",
         "oro\/platform-serialised-fields": "2.2.*",
-        "oro\/calendar-bundle": "2.2.*"
+        "oro\/calendar-bundle": "2.2.*",
+        "marellocommerce\/marello": "1.x-dev",
+        "marellocommerce\/marello-enterprise": "1.x-dev",
+
     },
     "require-dev": {
         "sensio\/generator-bundle": "3.1.2",
