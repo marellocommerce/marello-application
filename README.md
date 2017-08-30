@@ -39,7 +39,7 @@ http://getcomposer.org/ or just run the following command:
 - Clone https://github.com/marellocommerce/marello-application.git Marello Application project with
 
 ```bash
-    git clone https://github.com/marellocommerce/marello-application.git
+    git clone https://github.com/marellocommerce/marello-application-ee.git
 ```
 
 - Make sure that you have [NodeJS][4] installed

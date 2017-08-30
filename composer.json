@@ -1,12 +1,16 @@
 {
-    "name": "marellocommerce\/marello-application-ee-dev",
-    "description": "Marello ERP for Commerce dev",
-    "homepage": "https:\/\/github.com\/marellocommerce\/marello-application-ee-dev.git",
-    "license": "OSL-3.0",
+    "name": "marellocommerce\/marello-application-ee",
+    "description": "Marello ERP for Commerce Enterprise",
+    "homepage": "https:\/\/github.com\/marellocommerce\/marello-application-ee.git",
+    "license": "Commercial",
+    "authors": [
+        {
+            "name": "Marello",
+            "homepage": "https://www.marello.com"
+        }
+    ],
     "autoload": {
         "psr-0": {
-            "Marello\\Bundle\\": "src\/Marello\/src",
-            "MarelloEnterprise\\Bundle\\": "src\/MarelloEnterprise\/src",
             "": "src\/"
         }
     },
@@ -17,7 +21,11 @@
         },
         "platform-enterprise": {
             "type": "vcs",
-            "url": "https://github.com/orocrm/platform-enterprise.git"
+            "url": "https://github.com/oroinc/platform-enterprise.git"
+        },
+        "marello-enterprise": {
+            "type": "vcs",
+            "url": "https://github.com/marellocommerce/marello-ee.git"
         }
     },
     "require": {
@@ -51,24 +59,6 @@
         }
     },
     "scripts": {
-        "test": [
-            "rm -rf app\/cache\/*",
-            "rm -rf app\/logs\/*",
-            "phpunit -c app --tap --testsuite=\"Unit Tests\""
-        ],
-        "test-extended": [
-            "rm -rf app\/cache\/*",
-            "rm -rf app\/logs\/*",
-            "app\/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http:\/\/localhost --drop-database --timeout 3600",
-            "phpunit -c app --tap --testsuite=\"Unit Tests\"",
-            "phpunit -c app --tap --testsuite=\"Functional Tests\""
-        ],
-        "test-functional": [
-            "rm -rf app\/cache\/*",
-            "rm -rf app\/logs\/*",
-            "app\/console cache:clear --env test",
-            "phpunit -c app --tap --testsuite=\"Functional Tests\""
-        ],
         "post-install-cmd": [
             "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::checkComposerPlugin",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -94,26 +84,7 @@
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
         "incenteev-parameters": {
-            "file": "app\/config\/parameters.yml",
-            "env-map": {
-                "database_driver": "APP_DB_DRIVER",
-                "database_host": "APP_DB_HOST",
-                "database_port": "APP_DB_PORT",
-                "database_name": "APP_DB_NAME",
-                "database_user": "APP_DB_USER",
-                "database_password": "APP_DB_PASSWORD",
-                "mailer_transport": "APP_MAILER_TRANSPORT",
-                "mailer_host": "APP_MAILER_HOST",
-                "mailer_port": "APP_MAILER_PORT",
-                "mailer_encryption": "APP_MAILER_ENCRYPTION",
-                "mailer_user": "APP_MAILER_USER",
-                "mailer_password": "APP_MAILER_PASSWORD",
-                "websocket_bind_port": "APP_WEBSOCKET_BACKEND_PORT",
-                "websocket_backend_port": "APP_WEBSOCKET_BACKEND_PORT",
-                "websocket_frontend_port": "APP_WEBSOCKET_FRONTEND_PORT",
-                "installed": "APP_IS_INSTALLED",
-                "secret": "APP_SECRET"
-            }
+            "file": "app\/config\/parameters.yml"
         },
         "asset-installer-paths": {
             "npm-asset-library": "web\/bundles\/npmassets",
