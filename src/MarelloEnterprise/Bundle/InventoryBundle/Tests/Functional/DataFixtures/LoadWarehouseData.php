@@ -10,7 +10,7 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 
 class LoadWarehouseData extends AbstractFixture
 {
-    CONST ADDITIONAL_WAREHOUSE = 'additional';
+    const ADDITIONAL_WAREHOUSE = 'additional';
 
     /**
      * {@inheritdoc}

@@ -134,7 +134,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
     /**
      * Get Warehouse Type
      * @param $type
-     * @return object
+     * @return WarehouseType
      */
     private function getWarehouseType($type)
     {

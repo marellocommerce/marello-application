@@ -1,13 +1,43 @@
 marelloenterprise:
     inventory:
+        wfarule:
+            entity_label:               Warehouse Fulfillment Allocation Rule
+            entity_plural_label:        Warehouse Fulfillment Allocation Rules
+            entity_short_label:         WFA Rule
+            entity_short_plural_label:  WFA Rules
+            id.label:                   Id
+            strategy.label:             Strategy
+            organization.label:         Organization
+            rule.label:                 Rule
+
+            notification:
+                enabled:                WFA rule has been enabled successfully
+                disabled:               WFA rule has been disabled successfully
+
+            datagrid:
+                action.enable:          Enable
+                action.disable:         Disable
+                status:
+                    success_message:    "{0} No entities status were changed|{1} One entity status was changed|]1,Inf[ %count% entities status were changed"
+
         messages:
             success:
                 warehouse:
-                    saved:          Warehouse saved
-
+                    saved:              Warehouse saved
+                wfarule:
+                    saved:              WFA Rule saved
         navigation:
             warehouse:
-                create_label:       Create new warehouse
+                create_label:           Create new Warehouse
+            wfarule:
+                create_label:           Create new WFA Rule
 
         warehouse:
-            form.select_warehouse: Select Warehouse
+            form.select_warehouse:      Select Warehouse
+
+        sections:
+            general:                    General
+
+        strategies:
+            min_quantity:               Minimum Quantity
+            min_distance:               Minimum Distance

@@ -27,3 +27,56 @@ services:
 
     marelloenterprise_inventory.validator.warehouse_delete:
         class: '%marelloenterprise_inventory.validator.warehouse_delete.class%'
+
+    marelloenterprise_inventory.wfa_rule.manager.api:
+        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - 'MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule'
+            - '@doctrine.orm.entity_manager'
+
+    marelloenterprise_inventory.datagrid.wfa_rule_actions_visibility_provider:
+        parent: marello_rule.action.visibility_provider
+
+    marelloenterprise_inventory.wfa_strategy.registry:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry'
+
+    marelloenterprise_inventory.wfa_strategy.min_quantity:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantityWFAStrategy'
+        tags:
+            - { name: marello_inventory_wfa_strategy }
+
+    marelloenterprise_inventory.provider.wfa_strategy.choices:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Provider\WFAStrategyChoicesProvider'
+        arguments:
+        - '@marelloenterprise_inventory.wfa_strategy.registry'
+        - '@translator'
+
+    marelloenterprise_inventory.provider.order_warehouse:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+        arguments:
+            - '@marelloenterprise_inventory.wfa_strategy.registry'
+            - '@marello_rule.rule_filtration.service'
+            - '@oro_entity.doctrine_helper'
+
+    marelloenterprise_inventory.formatter.wfa_strategy.label:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Formatter\WFAStrategyLabelFormatter'
+        arguments:
+        - '@marelloenterprise_inventory.wfa_strategy.registry'
+        - '@translator'
+
+    marelloenterprise_inventory.twig.shipping_method_extension:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Twig\WFAStrategyExtension'
+        public: false
+        arguments:
+            - '@marelloenterprise_inventory.formatter.wfa_strategy.label'
+        tags:
+            - { name: twig.extension }
+
+    marelloenterprise_inventory.repository.wfa_rule:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule'
+        calls:
+            - [setAclHelper, ['@oro_securitypro.security.acl_helper']]

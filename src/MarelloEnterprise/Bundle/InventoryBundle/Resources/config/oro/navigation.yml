@@ -6,14 +6,22 @@ navigation:
                 route: marelloenterprise_inventory_warehouse_index
                 extras:
                     routes: ['marello_inventory_warehouse_*', 'marelloenterprise_inventory_warehouse_*']
+            wfa_rules:
+                label: marelloenterprise.inventory.wfarule.entity_short_plural_label
+                route: marelloenterprise_inventory_wfa_rule_index
+                extras:
+                    routes: ['marelloenterprise_inventory_wfa_rule_*']
         tree:
             application_menu:
                 children:
                     system_tab:
                         children:
                             warehouses: ~
+                            wfa_rules: ~
 
     titles:
-        marelloenterprise_inventory_warehouse_index:  marello.inventory.warehouse.entity_plural_label
         marelloenterprise_inventory_warehouse_create: marelloenterprise.inventory.navigation.warehouse.create_label
-        marelloenterprise_inventory_warehouse_update: '%%warehouse.label%% - Edit'
+        marelloenterprise_inventory_warehouse_update: '%warehouse.label% - Edit'
+        marelloenterprise_inventory_wfa_rule_create:  marelloenterprise.inventory.navigation.wfarule.create_label
+        marelloenterprise_inventory_wfa_rule_update:  '%wfarule.label% - Edit'
+        marelloenterprise_inventory_wfa_rule_view:    '%wfarule.label% - View'

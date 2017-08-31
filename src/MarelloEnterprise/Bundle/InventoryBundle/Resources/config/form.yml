@@ -39,3 +39,11 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseSelectType'
         tags:
             - { name: form.type, alias: marello_warehouse_select }
+
+    marelloenterprise_inventory.form.type.wfarule:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WFARuleType'
+        arguments:
+            - '@marelloenterprise_inventory.provider.wfa_strategy.choices'
+            - '@marelloenterprise_inventory.repository.wfa_rule'
+        tags:
+            - { name: form.type, alias: marello_inventory_wfarule_type }

@@ -1,7 +1,12 @@
 marelloenterprise_inventory_warehouse:
     resource: "@MarelloEnterpriseInventoryBundle/Controller/WarehouseController.php"
     type:     annotation
-    prefix:   /marello/inventory
+    prefix:   /marello/inventory/warehouse
+
+marelloenterprise_inventory_wfarule:
+    resource: "@MarelloEnterpriseInventoryBundle/Controller/WFARuleController.php"
+    type:     annotation
+    prefix:   /marello/inventory/wfarules
 
 marelloenterprise_inventory_bundle_api:
     resource: "@MarelloEnterpriseInventoryBundle/Resources/config/oro/routing_api.yml"

@@ -2,13 +2,10 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Functional\Controller;
 
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
-/**
- * @dbIsolation
- */
 class WarehouseControllerTest extends WebTestCase
 {
     /**
@@ -88,6 +85,7 @@ class WarehouseControllerTest extends WebTestCase
 
     /**
      * @depends testCreateNewWarehouse
+     * @param string $label
      */
     public function testUpdateExistingWarehouse($label)
     {

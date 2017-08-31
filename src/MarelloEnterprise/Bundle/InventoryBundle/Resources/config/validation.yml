@@ -1,6 +1,7 @@
 Marello\Bundle\InventoryBundle\Entity\Warehouse:
     constraints:
         - MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists: ~
+
 Marello\Bundle\InventoryBundle\Entity\InventoryLevel:
     constraints:
         - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
@@ -9,4 +10,9 @@ Marello\Bundle\InventoryBundle\Entity\InventoryLevel:
             message: 'marelloenterprise.inventory.validation.messages.error.unique_warehouse_inventory_level'
     properties:
         warehouse:
+            - NotBlank: ~
+
+MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule:
+    properties:
+        strategy:
             - NotBlank: ~

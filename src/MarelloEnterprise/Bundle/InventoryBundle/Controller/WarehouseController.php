@@ -13,9 +13,6 @@ use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationT
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Controller\WarehouseController as BaseController;
 
-/**
- * @Config\Route("/warehouse")
- */
 class WarehouseController extends BaseController
 {
     /**

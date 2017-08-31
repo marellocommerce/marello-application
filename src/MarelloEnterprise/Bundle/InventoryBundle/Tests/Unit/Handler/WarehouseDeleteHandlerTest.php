@@ -16,10 +16,10 @@ use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseDeleteValidator;
 
 class WarehouseDeleteHandlerTest extends TestCase
 {
-    /** @var  WarehouseDeleteValidator $warehouseDeleteValidator */
+    /** @var  WarehouseDeleteValidator|\PHPUnit_Framework_MockObject_MockObject $warehouseDeleteValidator */
     protected $warehouseDeleteValidator;
 
-    /** @var SecurityFacade $securityFacade */
+    /** @var SecurityFacade|\PHPUnit_Framework_MockObject_MockObject $securityFacade */
     protected $securityFacade;
 
     /** @var WarehouseDeleteHandler $warehouseDeleteHandler */
@@ -52,6 +52,7 @@ class WarehouseDeleteHandlerTest extends TestCase
     public function testHandlerThrowsEntityNotFoundException()
     {
         $nonExistingWarehouseId = 0;
+        /** @var ApiEntityManager|\PHPUnit_Framework_MockObject_MockObject $apiEntityManager */
         $apiEntityManager = $this->getMockBuilder(ApiEntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -69,6 +70,7 @@ class WarehouseDeleteHandlerTest extends TestCase
     public function testHandlerThrowsAccessDeniedAcception()
     {
         $warehouseId = 0;
+        /** @var ApiEntityManager|\PHPUnit_Framework_MockObject_MockObject $apiEntityManagerMock */
         $apiEntityManagerMock = $this->getMockBuilder(ApiEntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -97,6 +99,7 @@ class WarehouseDeleteHandlerTest extends TestCase
     public function testHandlerWillThrowException()
     {
         $warehouseId = 0;
+        /** @var ApiEntityManager|\PHPUnit_Framework_MockObject_MockObject $apiEntityManagerMock */
         $apiEntityManagerMock = $this->getMockBuilder(ApiEntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -128,11 +131,11 @@ class WarehouseDeleteHandlerTest extends TestCase
     public function testHandlerWarehouseCanBeDeleted()
     {
         $warehouseId = 0;
-
+        /** @var OwnerDeletionManager|\PHPUnit_Framework_MockObject_MockObject $ownerDeletionManagerMock */
         $ownerDeletionManagerMock = $this->getMockBuilder(OwnerDeletionManager::class)
             ->disableOriginalConstructor()
             ->getMock();
-
+        /** @var ApiEntityManager|\PHPUnit_Framework_MockObject_MockObject $apiEntityManagerMock */
         $apiEntityManagerMock = $this->getMockBuilder(ApiEntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
