@@ -84,3 +84,8 @@ services:
             - '@marello_inventory.model.inventory_level_totals_calculator'
         tags:
             - { name: twig.extension }
+
+    marello_inventory.provider.order_warehouse:
+        class: 'Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+        arguments:
+            - '@oro_entity.doctrine_helper'

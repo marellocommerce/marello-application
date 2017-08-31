@@ -62,9 +62,11 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
             $data[$this->getIdentifier($product->getId())]['value'] = $priceValue;
         }
         foreach ($order->getItems() as &$item) {
-            $productId = $item->getProduct()->getId();
-            if (isset($data[$this->getIdentifier($productId)])) {
-                $item->setPrice($data[$this->getIdentifier($productId)]['value']);
+            if ($product = $item->getProduct()) {
+                $productId = $product->getId();
+                if (isset($data[$this->getIdentifier($productId)])) {
+                    $item->setPrice($data[$this->getIdentifier($productId)]['value']);
+                }
             }
         }
         $result = $context->getResult();

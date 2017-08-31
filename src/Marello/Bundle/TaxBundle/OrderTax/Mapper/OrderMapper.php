@@ -53,7 +53,9 @@ class OrderMapper extends AbstractOrderMapper
         $lineItems
             ->map(
                 function (OrderItem $item) use ($storage) {
-                    $storage->add($this->orderItemMapper->map($item));
+                    if ($item->getProduct()) {
+                        $storage->add($this->orderItemMapper->map($item));
+                    }
                 }
             );
 

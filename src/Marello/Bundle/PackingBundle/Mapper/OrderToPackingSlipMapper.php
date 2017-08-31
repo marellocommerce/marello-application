@@ -3,29 +3,30 @@
 namespace Marello\Bundle\PackingBundle\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Doctrine\Common\Collections\Collection;
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
 {
     /**
-     * @var DoctrineHelper
+     * @var OrderWarehousesProviderInterface
      */
-    protected $doctrineHelper;
+    protected $warehousesProvider;
 
     public function __construct(
         EntityFieldProvider $entityFieldProvider,
         PropertyAccessorInterface $propertyAccessor,
-        DoctrineHelper $doctrineHelper
+        OrderWarehousesProviderInterface $warehousesProvider
     ) {
         parent::__construct($entityFieldProvider, $propertyAccessor);
-        $this->doctrineHelper = $doctrineHelper;
+        $this->warehousesProvider = $warehousesProvider;
     }
 
     /**
@@ -38,25 +39,28 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
                 sprintf('Wrong source entity "%s" provided to OrderToPackingSlipMapper', get_class($sourceEntity))
             );
         }
-        /** @var Order $sourceEntity */
-        $packingSlip = new PackingSlip();
-        $data = $this->getData($sourceEntity, PackingSlip::class);
-        $data['order'] = $sourceEntity;
-        $data['warehouse'] = $this->getWarehouse();
-        $data['items'] = $this->getItems($sourceEntity);
+        $packingSlips = [];
+        foreach ($this->warehousesProvider->getWarehousesForOrder($sourceEntity) as $result) {
+            /** @var Order $sourceEntity */
+            $packingSlip = new PackingSlip();
+            $data = $this->getData($sourceEntity, PackingSlip::class);
+            $data['order'] = $sourceEntity;
+            $data['warehouse'] = $result->getWarehouse();
+            $data['items'] = $this->getItems($result->getOrderItems());
 
-        $this->assignData($packingSlip, $data);
-
-        return [$packingSlip];
+            $this->assignData($packingSlip, $data);
+            $packingSlips[] = $packingSlip;
+        }
+        return $packingSlips;
     }
 
     /**
-     * @param Order $entity
+     * @param Collection $items
      * @return ArrayCollection
      */
-    protected function getItems(Order $entity)
+    protected function getItems(Collection $items)
     {
-        $orderItems = $entity->getItems()->toArray();
+        $orderItems = $items->toArray();
         $packingSlipItems = [];
         /** @var OrderItem $item */
         foreach ($orderItems as $item) {
@@ -74,21 +78,12 @@ class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
     {
         $packingSlipItem = new PackingSlipItem();
         $packingSlipData = $this->getData($orderItem, PackingSlipItem::class);
-        $packingSlipData['weight'] = $orderItem->getProduct()->getWeight();
+        /** @var Product $product */
+        $product = $orderItem->getProduct();
+        $packingSlipData['weight'] = $product->getWeight();
         $packingSlipData['orderItem'] = $orderItem;
         $this->assignData($packingSlipItem, $packingSlipData);
 
         return $packingSlipItem;
-    }
-
-    /**
-     * @return Warehouse
-     */
-    protected function getWarehouse()
-    {
-        return $this->doctrineHelper
-            ->getEntityManagerForClass(Warehouse::class)
-            ->getRepository(Warehouse::class)
-            ->getDefault();
     }
 }

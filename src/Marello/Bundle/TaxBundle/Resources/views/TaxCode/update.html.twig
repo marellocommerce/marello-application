@@ -9,9 +9,21 @@
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_tax_taxcode_index')) }}
-    {% set html = UI.saveAndCloseButton() %}
-    {% set html = html ~ UI.saveAndStayButton() %}
-    {{ UI.dropdownSaveButton({ 'html': html }) }}
+    {% if entity.id and resource_granted('marello_tax_taxcode_update') %}
+        {% set html = '' %}
+        {% if resource_granted('marello_tax_taxcode_view') %}
+            {% set html = UI.saveAndCloseButton({
+            'route': 'marello_tax_taxcode_view',
+            'params': {'id': '$id'}
+            }) %}
+        {% endif %}
+        {% set html = html ~ UI.saveAndStayButton({
+        'route': 'marello_tax_taxcode_update',
+        'params': {'id': '$id'}
+        }) %}
+
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}

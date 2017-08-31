@@ -68,3 +68,11 @@ marello:
         management:
             label:                      Inventory Management
             add_to_warehouse.label:     Add to Warehouse
+
+        messages:
+            success:
+                warehouse:
+                    saved:              Warehouse saved
+            error:
+                warehouse:
+                    not_found:     No warehouse found, cannot update a new level without existing warehouse

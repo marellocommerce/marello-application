@@ -104,6 +104,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     {
         $result = $this->createResultModel();
 
+        /** @var Result $newResult */
         $newResult = unserialize(serialize($result));
         $this->assertEquals([], $newResult->getItems());
     }

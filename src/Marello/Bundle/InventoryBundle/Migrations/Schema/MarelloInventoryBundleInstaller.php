@@ -74,7 +74,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         );
 
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['product_id'], 'idx_40b8d0414584665a', []);
+        $table->addUniqueIndex(['product_id'], 'UNIQ_40B8D0414584665A', []);
     }
 
     /**
@@ -190,7 +190,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             $schema->getTable('marello_inventory_warehouse'),
             ['warehouse_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 

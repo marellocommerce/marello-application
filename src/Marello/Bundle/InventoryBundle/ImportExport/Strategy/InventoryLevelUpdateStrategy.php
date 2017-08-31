@@ -37,7 +37,6 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         array $searchContext = [],
         $entityIsRelation = false
     ) {
-        $canUpdate = false;
         $entityClass = ClassUtils::getClass($entity);
         // find existing or new entity
         $existingEntity = $this->findInventoryLevel($entity);
@@ -79,7 +78,7 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
                 );
                 $canUpdate = true;
             } else {
-                $error[] = $this->translator->trans('No warehouse found, cannot update a new level without existing warehouse');
+                $error[] = $this->translator->trans('marello.inventory.messages.error.warehouse.not_found');
                 $this->strategyHelper->addValidationErrors($error, $this->context);
 
                 return null;
@@ -93,7 +92,8 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             );
         }
 
-        // deliberately return a different entity than the initial imported entity, during errors with multiple runs of import
+        // deliberately return a different entity than the initial imported entity,
+        // during errors with multiple runs of import
         $product = $this->getProduct($entity);
         return $this->getInventoryItem($product);
     }
@@ -164,7 +164,8 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
      */
     protected function getProduct($entity)
     {
-        return $this->databaseHelper->findOneBy(Product::class, ['sku' => $entity->getInventoryItem()->getProduct()->getSku()]);
+        return $this->databaseHelper
+            ->findOneBy(Product::class, ['sku' => $entity->getInventoryItem()->getProduct()->getSku()]);
     }
 
     /**

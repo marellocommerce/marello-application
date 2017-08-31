@@ -100,7 +100,7 @@ datagrids:
                 rowAction:      true
             update:
                 type:           navigate
-                label:          marello.inventory.update
+                label:          oro.grid.action.update
                 icon:           edit
                 link:           inventory_update_link
         options:

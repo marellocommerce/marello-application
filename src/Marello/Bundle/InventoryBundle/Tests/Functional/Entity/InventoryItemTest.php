@@ -2,15 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class InventoryItemTest extends WebTestCase
 {

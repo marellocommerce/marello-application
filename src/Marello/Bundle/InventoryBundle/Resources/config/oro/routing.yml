@@ -1,4 +1,14 @@
-marello_inventory_bundle:
-    resource: "@MarelloInventoryBundle/Controller"
+marello_inventory_item:
+    resource: "@MarelloInventoryBundle/Controller/InventoryController.php"
     type:     annotation
-    prefix:   /marello/inventory
+    prefix:   /marello/inventory/item
+
+marello_inventory_level:
+    resource: "@MarelloInventoryBundle/Controller/InventoryLevelController.php"
+    type:     annotation
+    prefix:   /marello/inventory/inventory-level
+
+marello_inventory_warehouse:
+    resource: "@MarelloInventoryBundle/Controller/WarehouseController.php"
+    type:     annotation
+    prefix:   /marello/inventory/warehouse

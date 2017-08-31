@@ -4,7 +4,6 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity()
@@ -42,7 +41,7 @@ class InventoryLevel
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryItem", inversedBy="inventoryLevels")
-     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="inventory_item_id", referencedColumnName="id", onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -103,7 +102,7 @@ class InventoryLevel
     protected $allocatedInventory = 0;
 
     /**
-     * @ORM\Column(name="desired_inventory", type="integer")
+     * @ORM\Column(name="desired_inventory", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -117,7 +116,7 @@ class InventoryLevel
     protected $desiredInventory = 0;
 
     /**
-     * @ORM\Column(name="purchase_inventory", type="integer")
+     * @ORM\Column(name="purchase_inventory", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={

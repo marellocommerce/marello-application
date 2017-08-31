@@ -8,9 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Config\Route("/warehouse")
- */
 class WarehouseController extends Controller
 {
     /**
@@ -38,7 +35,7 @@ class WarehouseController extends Controller
             $em->flush();
             $this->get('session')->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.inventory.warehouse.controller.message.saved')
+                $this->get('translator')->trans('marello.inventory.messages.success.warehouse.saved')
             );
             return $this->redirectToRoute('marello_inventory_warehouse_updatedefault');
         }

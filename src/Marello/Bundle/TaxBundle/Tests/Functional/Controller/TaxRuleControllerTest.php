@@ -149,6 +149,7 @@ class TaxRulesControllerTest extends WebTestCase
     ) {
         $form = $crawler->selectButton('Save and Close')->form(
             [
+                'input_action' => '{"route":"marello_tax_taxrule_view","params":{"id":"$id"}}',
                 'marello_tax_rule_form[taxCode]' => $taxCode->getId(),
                 'marello_tax_rule_form[taxRate]' => $taxRate->getId(),
                 'marello_tax_rule_form[taxJurisdiction]' => $taxJurisdiction->getId(),

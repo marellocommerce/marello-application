@@ -2,12 +2,10 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelCollectionType;
 
 class InventoryItemType extends AbstractType
 {

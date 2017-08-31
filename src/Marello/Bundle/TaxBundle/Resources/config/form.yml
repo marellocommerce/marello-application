@@ -82,24 +82,21 @@ services:
     ## factory
     marello_tax.taxcode.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', 'createNamed']
         arguments:
             - 'marello_tax_code_form'
             - 'marello_tax_code_form'
 
     marello_tax.taxrate.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', 'createNamed']
         arguments:
             - 'marello_tax_rate_form'
             - 'marello_tax_rate_form'
 
     marello_tax.taxrule.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', 'createNamed']
         arguments:
             - 'marello_tax_rule_form'
             - 'marello_tax_rule_form'
