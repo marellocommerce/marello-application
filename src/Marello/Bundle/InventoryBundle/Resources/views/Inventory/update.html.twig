@@ -52,23 +52,33 @@
 
     {% set dataBlocks = [
         {
-            'title': 'marello.inventory.label'|trans,
+            'title': 'marello.inventory.inventorylevel.totals.label'|trans,
             'class': 'active',
             'subblocks': [{
                 'title': '',
                 'data': [
-                    currentInventoryWidget,
+                    currentInventoryWidget
+                ]
+            }]
+        },        {
+            'title': 'marello.inventory.inventorylevel.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
                     inventoryQuantityWidget
                 ]
             }]
         },
         {
-            'title': 'marello.product.replenishment.label'|trans,
+            'title': 'marello.inventory.inventoryitem.replenishment.label'|trans,
             'class': 'active',
             'subblocks': [{
                 'title': '',
                 'data': [
-                    form_widget(form.replenishment)
+                    form_row(form.purchaseInventory),
+                    form_row(form.desiredInventory),
+                    form_row(form.replenishment)
                 ]
             }]
         }

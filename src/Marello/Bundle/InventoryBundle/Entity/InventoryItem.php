@@ -87,6 +87,34 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
     protected $product;
 
     /**
+     * @ORM\Column(name="desired_inventory", type="integer", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var int
+     */
+    protected $desiredInventory = 0;
+
+    /**
+     * @ORM\Column(name="purchase_inventory", type="integer", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var int
+     */
+    protected $purchaseInventory = 0;
+
+    /**
      * @var string
      * @Oro\ConfigField(
      *      defaultValues={
@@ -150,6 +178,44 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
     public function getProduct()
     {
         return $this->product;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDesiredInventory()
+    {
+        return $this->desiredInventory;
+    }
+
+    /**
+     * @param int $desiredInventory
+     * @return $this
+     */
+    public function setDesiredInventory($desiredInventory)
+    {
+        $this->desiredInventory = $desiredInventory;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPurchaseInventory()
+    {
+        return $this->purchaseInventory;
+    }
+
+    /**
+     * @param int $purchaseInventory
+     * @return $this
+     */
+    public function setPurchaseInventory($purchaseInventory)
+    {
+        $this->purchaseInventory = $purchaseInventory;
+
+        return $this;
     }
 
     /**

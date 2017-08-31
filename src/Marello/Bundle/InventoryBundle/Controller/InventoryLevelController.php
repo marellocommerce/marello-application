@@ -3,7 +3,6 @@
 namespace Marello\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,14 +13,15 @@ class InventoryLevelController extends Controller
      * @Config\Route("/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventorylevel_index")
      * @Config\Template
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function indexAction(Product $product)
+    public function indexAction(InventoryItem $inventoryItem)
     {
         return [
-            'product' => $product,
+            'product' => $inventoryItem->getProduct(),
+            'inventoryItem' => $inventoryItem
         ];
     }
 

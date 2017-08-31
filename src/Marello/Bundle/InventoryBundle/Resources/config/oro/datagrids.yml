@@ -112,7 +112,6 @@ datagrids:
             query:
                 select:
                     - lr
-                    - wh.label as warehouseName
                     - (lr.inventoryAlteration) AS inventoryDiff
                     - (lr.allocatedInventoryAlteration) AS allocatedInventoryDiff
                 from:
@@ -120,7 +119,6 @@ datagrids:
                 join:
                     left:
                         - { join: lr.inventoryLevel, alias: il }
-                        - { join: il.warehouse, alias: wh }
                 where:
                     and:
                         - IDENTITY(il.inventoryItem) = :inventoryItemId
@@ -129,28 +127,28 @@ datagrids:
         columns:
             inventoryDiff:
                 data_name:      inventoryDiff
-                label:          marello.inventory.inventorylevel.inventory_diff.label
+                label:          marello.inventory.inventorylevellogrecord.inventory_alteration.label
                 type:           twig
                 frontend_type:  html
                 template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
             allocatedInventoryDiff:
                 data_name:      allocatedInventoryDiff
-                label:          marello.inventory.inventorylevel.allocated_inventory_diff.label
+                label:          marello.inventory.inventorylevellogrecord.allocated_inventory_alteration.label
                 type:           twig
                 frontend_type:  html
                 template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
 
             changeTrigger:
                 data_name:      changeTrigger
-                label:          marello.inventory.inventorylevel.change_trigger.label
+                label:          marello.inventory.inventorylevellogrecord.change_trigger.label
                 type:           translatable
                 domain:         MarelloStockLevelChangeTrigger
                 frontend_type:  string
             user:
-                label:          marello.inventory.inventorylevel.user.label
+                label:          marello.inventory.inventorylevellogrecord.user.label
                 frontend_type:  string
             subject:
-                label:          marello.inventory.inventorylevel.subject.label
+                label:          marello.inventory.inventorylevellogrecord.subject_type.label
                 type:           twig
                 frontend_type:  html
                 template:       MarelloInventoryBundle::Datagrid/InventoryLevel/subject.html.twig
@@ -176,9 +174,6 @@ datagrids:
         extends: marello-inventory-log
         filters:
             columns:
-                warehouseName:
-                    type:             string
-                    data_name:        warehouseName
                 inventoryDiff:
                     type:             number
                     data_name:        inventoryDiff
@@ -203,17 +198,11 @@ datagrids:
             query:
                 select:
                     - il
-                    - wh.label as warehouseName
-                    - wt.label as warehouseType
                     - COALESCE(il.inventory, 0) AS inventoryQty
                     - COALESCE(il.allocatedInventory, 0) AS allocatedInventoryQty
                     - COALESCE(il.inventory - il.allocatedInventory, 0) AS virtualInventoryQty
                 from:
                     - { table: MarelloInventoryBundle:InventoryLevel, alias: il }
-                join:
-                    left:
-                        - { join: il.warehouse, alias: wh }
-                        - { join: wh.warehouseType, alias: wt }
                 where:
                     and:
                         - IDENTITY(il.inventoryItem) = :inventoryItemId
@@ -221,14 +210,6 @@ datagrids:
             bind_parameters:
                 inventoryItemId: inventoryItemId
         columns:
-            warehouseName:
-                label:              marello.inventory.warehouse.label.label
-                frontend_type:      string
-                data_name:          warehouseName
-            warehouseType:
-                label:              marello.inventory.warehouse.warehousetype.entity_label
-                frontend_type:      string
-                data_name:          warehouseType
             inventoryQty:
                 label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number

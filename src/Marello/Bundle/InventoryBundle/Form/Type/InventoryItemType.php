@@ -6,6 +6,10 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+
+use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
 
 class InventoryItemType extends AbstractType
 {
@@ -17,13 +21,19 @@ class InventoryItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('replenishment', 'oro_enum_choice',
+            ->add('replenishment', EnumChoiceType::class,
                 [
                     'enum_code' => 'marello_inv_reple',
                     'required'  => true,
-                    'label'     => 'marello.product.replenishment.label',
+                    'label'     => 'marello.inventory.inventoryitem.replenishment.label',
                 ]
             )
+            ->add('desiredInventory', NumberType::class, [
+                'constraints' => new GreaterThanOrEqual(0)
+            ])
+            ->add('purchaseInventory', NumberType::class, [
+                'constraints' => new GreaterThanOrEqual(0)
+            ])
             ->add('inventoryLevels', InventoryLevelCollectionType::class);
     }
 

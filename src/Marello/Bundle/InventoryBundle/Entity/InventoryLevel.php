@@ -59,7 +59,7 @@ class InventoryLevel
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="warehouse_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -100,34 +100,6 @@ class InventoryLevel
      * @var int
      */
     protected $allocatedInventory = 0;
-
-    /**
-     * @ORM\Column(name="desired_inventory", type="integer", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var int
-     */
-    protected $desiredInventory = 0;
-
-    /**
-     * @ORM\Column(name="purchase_inventory", type="integer", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     *
-     * @var int
-     */
-    protected $purchaseInventory = 0;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -231,44 +203,6 @@ class InventoryLevel
     public function getVirtualInventoryQty()
     {
         return $this->inventory - $this->allocatedInventory;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDesiredInventory()
-    {
-        return $this->desiredInventory;
-    }
-
-    /**
-     * @param int $desiredInventory
-     * @return $this
-     */
-    public function setDesiredInventory($desiredInventory)
-    {
-        $this->desiredInventory = $desiredInventory;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPurchaseInventory()
-    {
-        return $this->purchaseInventory;
-    }
-
-    /**
-     * @param int $purchaseInventory
-     * @return $this
-     */
-    public function setPurchaseInventory($purchaseInventory)
-    {
-        $this->purchaseInventory = $purchaseInventory;
-
-        return $this;
     }
 
     /**

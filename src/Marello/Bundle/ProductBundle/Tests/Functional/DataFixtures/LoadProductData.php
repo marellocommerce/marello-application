@@ -248,6 +248,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
                 ->setProduct($product)
                 ->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_3_REF))
             ;
+            $product->addSalesChannelTaxCode($productChannelTaxRelation);
         }
     }
 
