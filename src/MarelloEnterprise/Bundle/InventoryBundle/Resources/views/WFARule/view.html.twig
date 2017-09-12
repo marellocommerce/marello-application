@@ -6,10 +6,12 @@
 {% endif %}
 
 {% block navButtons %}
-    {{ UI.editButton({
-        'path' : path('marelloenterprise_inventory_wfa_rule_update', { 'id': entity.id }),
-        'entity_label': 'marelloenterprise.inventory.wfarule.entity_short_label'|trans
-    }) }}
+    {% if not entity.rule.isSystem %}
+        {{ UI.editButton({
+            'path' : path('marelloenterprise_inventory_wfa_rule_update', { 'id': entity.id }),
+            'entity_label': 'marelloenterprise.inventory.wfarule.entity_short_label'|trans
+        }) }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}

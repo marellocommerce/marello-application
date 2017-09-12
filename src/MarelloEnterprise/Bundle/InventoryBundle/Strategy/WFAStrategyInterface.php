@@ -3,6 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy;
 
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
 
 interface WFAStrategyInterface
@@ -18,8 +19,14 @@ interface WFAStrategyInterface
     public function getLabel();
 
     /**
+     * @return boolean
+     */
+    public function isEnabled();
+
+    /**
      * @param Order $order
+     * @param OrderWarehouseResult[] $initialResults
      * @return Warehouse[]|null
      */
-    public function getWarehouses(Order $order);
+    public function getWarehouses(Order $order, array $initialResults = []);
 }

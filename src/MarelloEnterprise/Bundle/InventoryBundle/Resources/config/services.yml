@@ -42,7 +42,18 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry'
 
     marelloenterprise_inventory.wfa_strategy.min_quantity:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantityWFAStrategy'
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy'
+        arguments:
+            - '@marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.main'
+        tags:
+            - { name: marello_inventory_wfa_strategy }
+
+    marelloenterprise_inventory.wfa_strategy.min_distance:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy'
+        arguments:
+            - '@marelloenterprise_address.distance_calculator.main'
+        calls:
+            - [setFeatureChecker, ['@oro_featuretoggle.checker.feature_checker']]
         tags:
             - { name: marello_inventory_wfa_strategy }
 
@@ -80,3 +91,14 @@ services:
             - 'MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule'
         calls:
             - [setAclHelper, ['@oro_securitypro.security.acl_helper']]
+
+    marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.multiple_wh:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\MultipleWarehouses\MultipleWHCalculatorChainElement'
+
+    marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.single_wh:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\SingleWarehouse\SingleWHCalculatorChainElement'
+        calls:
+            - ['setSuccessor', ['@marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.multiple_wh']]
+
+    marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.main:
+        parent: marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.single_wh

@@ -1,0 +1,57 @@
+system_configuration:
+    groups:
+        google_address_geocoding_settings:
+            title: marelloenterprise.google_api.system_configuration.groups.google_address_geocoding_settings.title
+        google_distance_matrix_settings:
+            title: marelloenterprise.google_api.system_configuration.groups.google_distance_matrix_settings.title
+
+    fields:
+        marello_enterprise_google_api.enable_google_address_geocoding:
+            data_type: boolean
+            type: oro_config_checkbox
+            page_reload: true
+            options:
+                label: marelloenterprise.google_api.system_configuration.fields.enable_google_address_geocoding.label
+                tooltip: marelloenterprise.google_api.system_configuration.fields.enable_google_address_geocoding.tooltip
+                required: false
+                resettable: false
+            priority: 10
+
+        marello_enterprise_google_api.enable_google_distance_matrix:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: marelloenterprise.google_api.system_configuration.fields.enable_google_distance_matrix.label
+                tooltip: marelloenterprise.google_api.system_configuration.fields.enable_google_distance_matrix.tooltip
+                required: false
+                resettable: false
+            priority: 20
+
+        marello_enterprise_google_api.google_distance_matrix_mode:
+            data_type: boolean
+            type: choice
+            options:
+                label: marelloenterprise.google_api.system_configuration.fields.google_distance_matrix_mode.label
+                choices:
+                    driving: marelloenterprise.google_api.system_configuration.fields.google_distance_matrix_mode.choices.driving
+                    walking: marelloenterprise.google_api.system_configuration.fields.google_distance_matrix_mode.choices.walking
+                    bicycling: marelloenterprise.google_api.system_configuration.fields.google_distance_matrix_mode.choices.bicycling
+                required: false
+                resettable: false
+            priority: 10
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            google_settings:
+                                children:
+                                    google_address_geocoding_settings:
+                                        children:
+                                            - marello_enterprise_google_api.enable_google_address_geocoding
+                                    google_distance_matrix_settings:
+                                        children:
+                                            - marello_enterprise_google_api.enable_google_distance_matrix
+                                            - marello_enterprise_google_api.google_distance_matrix_mode

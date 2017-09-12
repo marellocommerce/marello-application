@@ -59,6 +59,24 @@ class WarehouseController extends BaseController
         return $this->update($request, $warehouse);
     }
 
+
+    /**
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Method({"GET"})
+     * @Config\Template
+     * @AclAncestor("marello_inventory_warehouse_view")
+     *
+     * @param Warehouse $warehouse
+     *
+     * @return array
+     */
+    public function viewAction(Warehouse $warehouse)
+    {
+        return [
+            'entity' => $warehouse,
+        ];
+    }
+
     /**
      * @param Request        $request
      * @param Warehouse|null $warehouse
@@ -106,5 +124,21 @@ class WarehouseController extends BaseController
             'entity' => $warehouse,
             'form'   => $form->createView(),
         ];
+    }
+
+    /**
+     * @Config\Route("/address-book/{id}", requirements={"id"="\d+"})
+     * @Config\Template("MarelloEnterpriseInventoryBundle:Warehouse/widget:addressBook.html.twig")
+     * @AclAncestor("marello_inventory_warehouse_view")
+     *
+     * @param Warehouse $warehouse
+     * @return array
+     */
+    public function addressBookAction(Warehouse $warehouse)
+    {
+        return array(
+            'entity' => $warehouse,
+            'address_edit_acl_resource' => 'marello_inventory_warehouse_update'
+        );
     }
 }

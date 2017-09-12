@@ -42,15 +42,25 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
         $this->doctrineHelper = $doctrineHelper;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getWarehousesForOrder(Order $order)
     {
         /** @var WFARule[] $filteredRules */
         $filteredRules = $this->rulesFiltrationService->getFilteredRuleOwners($this->getRules());
+        $results = [];
         foreach ($filteredRules as $rule) {
-            $results = $this->strategiesRegistry->getStrategy($rule->getStrategy())->getWarehouses($order);
+            $results = $this->strategiesRegistry->getStrategy($rule->getStrategy())->getWarehouses($order, $results);
+            if (count($results) === 1) {
+                return reset($results);
+            }
+        }
+
+        if (count($results) >= 1) {
             return reset($results);
         }
-        
+
         return null;
     }
 

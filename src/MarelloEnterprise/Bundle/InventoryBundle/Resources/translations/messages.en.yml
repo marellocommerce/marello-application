@@ -21,6 +21,9 @@ marelloenterprise:
                     success_message:    "{0} No entities status were changed|{1} One entity status was changed|]1,Inf[ %count% entities status were changed"
 
         messages:
+            warning:
+                wfarule:
+                    is_system_update_attempt:      System WFA Rule can't be updated
             success:
                 warehouse:
                     saved:              Warehouse saved

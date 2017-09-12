@@ -1,0 +1,62 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% if entity.id %}
+    {% oro_title_set({params : {"%warehouse.label%": entity.label|default('N/A'|trans) } }) %}
+{% endif %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity': entity,
+    'indexPath': path('marelloenterprise_inventory_warehouse_index'),
+    'indexLabel': 'marello.inventory.warehouse.entity_label'|trans,
+    'entityTitle': entity.label|default('N/A'|trans)
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+
+    {%- set warehouseInformation -%}
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ UI.renderProperty('marello.inventory.warehouse.label.label'|trans, entity.label) }}
+                {{ UI.renderProperty('marello.inventory.warehouse.code.label'|trans, entity.code) }}
+                {{ UI.renderProperty('marello.inventory.warehouse.default.label'|trans, entity.default ?
+                'marello.rule.enabled.yes.label'|trans
+                :
+                'marello.rule.enabled.no.label'|trans
+                ) }}
+                {{ UI.renderProperty('marello.inventory.warehouse.warehouse_type.label'|trans, entity.warehouseType) }}
+            </div>
+        </div>
+    {%- endset -%}
+
+    {% set addressBookWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'contentClasses': [],
+            'url': path('marelloenterprise_inventory_warehouse_addressbook', {id: entity.id})
+        }) }}
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'oro.entity_config.block_titles.general.label'|trans,
+            'class': 'active',
+            'subblocks': [
+                {'data' : [warehouseInformation]},
+                {'data' : [addressBookWidget] },
+            ]
+        }
+    ] %}
+
+    {% set id = 'warehouse-view' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+
+    {{ parent() }}
+{% endblock content_data %}
+
+{% block stats %}
+    {# Must be empty, because parent view uses this block to render dates, which are not implemented in this entity #}
+{% endblock stats %}

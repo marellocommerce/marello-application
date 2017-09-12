@@ -36,7 +36,9 @@ class WFAStrategyChoicesProvider
         return array_reduce(
             $this->strategiesRegistry->getStrategies(),
             function (array $result, WFAStrategyInterface $strategy) {
-                $result[$strategy->getIdentifier()] = $this->translator->trans($strategy->getLabel());
+                if ($strategy->isEnabled()) {
+                    $result[$strategy->getIdentifier()] = $this->translator->trans($strategy->getLabel());
+                }
 
                 return $result;
             },

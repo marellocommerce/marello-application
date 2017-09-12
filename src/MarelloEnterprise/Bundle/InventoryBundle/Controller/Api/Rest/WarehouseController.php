@@ -5,6 +5,8 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Controller\Api\Rest;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 
+use FOS\RestBundle\Util\Codes;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,6 +21,34 @@ use Oro\Bundle\SecurityBundle\Annotation as Security;
  */
 class WarehouseController extends RestController implements ClassResourceInterface
 {
+    /**
+     * REST GET warehouse address
+     *
+     * @ApiDoc(
+     *      description="Get warehouse address"
+     * )
+     * @Security\AclAncestor("marello_inventory_warehouse_view")
+     * @param Warehouse $warehouse
+     * @return Response
+     */
+    public function getAddressAction(Warehouse $warehouse)
+    {
+        $address = null;
+        if ($warehouse) {
+            $addressEntity = $warehouse->getAddress();
+            if ($addressEntity) {
+                $address = $this->getPreparedItem($addressEntity);
+                $address['countryIso2'] = $addressEntity->getCountryIso2();
+                $address['countryIso3'] = $addressEntity->getCountryIso3();
+                $address['regionCode'] = $addressEntity->getRegionCode();
+                $address['country'] = $addressEntity->getCountryName();
+            }
+        }
+        $responseData = $address ? json_encode($address) : '';
+
+        return new Response($responseData, Codes::HTTP_OK);
+    }
+    
     /**
      * Delete entity Warehouse
      *

@@ -1,0 +1,31 @@
+services:
+    marelloenterprise_address.entity_update_geocoding_listener:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\EventListener\Doctrine\AddressGeocodingListener'
+        arguments:
+            - '@marelloenterprise.google_api.result_provider.geocoding'
+            - '@session'
+        calls:
+            - [setFeatureChecker, ['@oro_featuretoggle.checker.feature_checker']]
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\AddressBundle\Entity\MarelloAddress', event: postUpdate }
+
+    marelloenterprise_address.cron.command.address_geocoding:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Command\Cron\AddressGeocodingCommand'
+        tags:
+            - { name: console.command }
+
+    marelloenterprise_address.distance_calculator.chain_element.straight_line:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalculatorChainElement'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
+    marelloenterprise_address.distance_calculator.chain_element.matrix_based:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\MatrixBasedAddressesDistanceCalculatorChainElement'
+        arguments:
+            - '@marelloenterprise.google_api.result_provider.distance_matrix'
+        calls:
+            - [setFeatureChecker, ['@oro_featuretoggle.checker.feature_checker']]
+            - [setSuccessor, ['@marelloenterprise_address.distance_calculator.chain_element.straight_line']]
+
+    marelloenterprise_address.distance_calculator.main:
+        parent: marelloenterprise_address.distance_calculator.chain_element.matrix_based

@@ -82,6 +82,15 @@ class WFARuleController extends Controller
      */
     public function updateAction(Request $request, WFARule $entity)
     {
+        if ($entity->getRule()->getIsSystem()) {
+            $this->addFlash(
+                'warning',
+                'marelloenterprise.inventory.messages.warning.wfarule.is_system_update_attempt'
+            );
+
+            return $this->redirect($this->generateUrl('marelloenterprise_inventory_wfa_rule_index'));
+        }
+
         return $this->update($entity, $request);
     }
 
