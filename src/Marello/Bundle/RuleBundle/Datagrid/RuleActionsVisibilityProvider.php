@@ -7,6 +7,11 @@ use Marello\Bundle\RuleBundle\Entity\RuleInterface;
 
 class RuleActionsVisibilityProvider
 {
+    const ENABLE_ACTION = 'enable';
+    const DISABLE_ACTION = 'disable';
+    const UPDATE_ACTION = 'update';
+    const DELETE_ACTION = 'delete';
+
     /**
      * @param ResultRecordInterface $record
      * @param array $actions
@@ -23,16 +28,19 @@ class RuleActionsVisibilityProvider
         $rule = $record->getValue('rule');
 
         if ($rule instanceof RuleInterface) {
-            if (array_key_exists('enable', $visibility)) {
-                $visibility['enable'] = !$rule->isEnabled();
-            }
+            if ($rule->getIsSystem()) {
+                $visibility[self::ENABLE_ACTION] = false;
+                $visibility[self::DISABLE_ACTION] = false;
+                $visibility[self::UPDATE_ACTION] = false;
+                $visibility[self::DELETE_ACTION] = false;
+            } else {
+                if (array_key_exists(self::ENABLE_ACTION, $visibility)) {
+                    $visibility[self::ENABLE_ACTION] = !$rule->isEnabled();
+                }
 
-            if (array_key_exists('disable', $visibility)) {
-                $visibility['disable'] = $rule->isEnabled();
-            }
-
-            if (array_key_exists('delete', $visibility)) {
-                $visibility['delete'] = !$rule->getIsSystem();
+                if (array_key_exists(self::DISABLE_ACTION, $visibility)) {
+                    $visibility[self::DISABLE_ACTION] = $rule->isEnabled();
+                }
             }
         }
 

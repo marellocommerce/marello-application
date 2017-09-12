@@ -22,10 +22,11 @@ class RuleActionsVisibilityProviderTest extends \PHPUnit_Framework_TestCase
      * @param bool  $enabled
      * @param array $actions
      * @param array $expected
+     * @param bool  $isSystem
      *
      * @dataProvider recordsDataProvider
      */
-    public function testGetActionsVisibility($enabled, array $actions, array $expected)
+    public function testGetActionsVisibility($enabled, array $actions, array $expected, $isSystem)
     {
         $rule = $this->createMock(Rule::class);
         $rule->expects(static::any())
@@ -33,7 +34,7 @@ class RuleActionsVisibilityProviderTest extends \PHPUnit_Framework_TestCase
             ->willReturn($enabled);
         $rule->expects(static::any())
             ->method('getIsSystem')
-            ->willReturn($enabled);
+            ->willReturn($isSystem);
         $this->assertEquals(
             $expected,
             $this->provider->getActionsVisibility(new ResultRecord(['rule' => $rule]), $actions)
@@ -46,15 +47,29 @@ class RuleActionsVisibilityProviderTest extends \PHPUnit_Framework_TestCase
     public function recordsDataProvider()
     {
         return [
-            'enabled' => [
+            'enabledNotSystem' => [
                 true,
                 ['enable' => ['config'], 'disable' => ['config'], 'delete' => ['config']],
-                ['enable' => false, 'disable' => true, 'delete' => false],
+                ['enable' => false, 'disable' => true, 'delete' => true],
+                false
             ],
-            'disabled' => [
+            'disabledNotSystem' => [
                 false,
                 ['enable' => ['config'], 'disable' => ['config'], 'delete' => ['config']],
                 ['enable' => true, 'disable' => false, 'delete' => true],
+                false
+            ],
+            'enabledSystem' => [
+                true,
+                ['enable' => ['config'], 'disable' => ['config'], 'delete' => ['config']],
+                ['enable' => false, 'disable' => false, 'update' => false, 'delete' => false],
+                true
+            ],
+            'disabledSystem' => [
+                false,
+                ['enable' => ['config'], 'disable' => ['config'], 'delete' => ['config']],
+                ['enable' => false, 'disable' => false, 'update' => false, 'delete' => false],
+                true
             ],
         ];
     }

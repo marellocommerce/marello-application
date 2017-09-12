@@ -6,3 +6,5 @@ Marello\Bundle\RuleBundle\Entity\Rule:
             - Type:
                 type: integer
             - NotBlank: ~
+            - Range:
+                min: 1

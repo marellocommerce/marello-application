@@ -23,6 +23,10 @@ datagrids:
                 label:            marello.order.sales_channel.label
                 frontend_type:    string
                 data_name:        salesChannelName
+            shippingMethod:
+                label:            marello.order.shipping_method.label
+                frontend_type:    string
+                data_name:        shippingMethod
             orderReference:
                 label:            marello.order.order_reference.label
                 frontend_type:    string
@@ -52,6 +56,8 @@ datagrids:
                     data_name: o.orderNumber
                 salesChannel:
                     data_name: o.salesChannel
+                shippingMethod:
+                    data_name: o.shippingMethod
                 orderReference:
                     data_name: o.orderReference
                 billingAddress:
@@ -74,6 +80,9 @@ datagrids:
                 salesChannel:
                     type: string
                     data_name: o.salesChannelName
+                shippingMethod:
+                    type: string
+                    data_name: o.shippingMethod
                 orderReference:
                     type: number
                     data_name: o.orderReference

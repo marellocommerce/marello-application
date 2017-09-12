@@ -7,6 +7,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider;
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -31,9 +34,9 @@ class OrderToPackingSlipMapperTest extends \PHPUnit_Framework_TestCase
     protected $entityFieldProvider;
 
     /**
-     * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var OrderWarehousesProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $doctrineHelper;
+    protected $warehousesProvider;
 
     /**
      * @var OrderToPackingSlipMapper
@@ -45,36 +48,20 @@ class OrderToPackingSlipMapperTest extends \PHPUnit_Framework_TestCase
         $this->entityFieldProvider = $this->getMockBuilder(EntityFieldProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
+        $this->warehousesProvider = $this->getMockBuilder(OrderWarehousesProviderInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->orderToPackingSlipMapper = new OrderToPackingSlipMapper(
             $this->entityFieldProvider,
             PropertyAccess::createPropertyAccessor(),
-            $this->doctrineHelper
+            $this->warehousesProvider
         );
     }
 
     public function testMap()
     {
         $warehouse = new Warehouse();
-        $warehouseRepository = $this->createMock(WarehouseRepository::class);
-        $warehouseRepository
-            ->expects(static::once())
-            ->method('getDefault')
-            ->willReturn($warehouse);
-
-        $entityManager = $this->createMock(EntityManagerInterface::class);
-        $entityManager
-            ->expects(static::once())
-            ->method('getRepository')
-            ->willReturn($warehouseRepository);
-
-        $this->doctrineHelper
-            ->expects(static::once())
-            ->method('getEntityManagerForClass')
-            ->willReturn($entityManager);
-
+        
         $this->entityFieldProvider->expects($this->at(0))->method('getFields')->willReturn(
             [
                 ['name' => 'id', 'identifier' => true],
@@ -150,6 +137,16 @@ class OrderToPackingSlipMapperTest extends \PHPUnit_Framework_TestCase
             'items' => $expectedItems,
             'warehouse' => $warehouse
         ]);
+
+        $this->warehousesProvider
+            ->expects(static::once())
+            ->method('getWarehousesForOrder')
+            ->willReturn([
+                0 => new OrderWarehouseResult([
+                    OrderWarehouseResult::WAREHOUSE_FIELD => $warehouse,
+                    OrderWarehouseResult::ORDER_ITEMS_FIELD => $sourceEntity->getItems(),
+                ])
+            ]);
 
         static::assertEquals([$expectedEntity], $result = $this->orderToPackingSlipMapper->map($sourceEntity));
     }
