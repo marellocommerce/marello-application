@@ -12,5 +12,4 @@ interface OrderWarehousesProviderInterface
      * @return OrderWarehouseResult[]
      */
     public function getWarehousesForOrder(Order $order);
-        
 }

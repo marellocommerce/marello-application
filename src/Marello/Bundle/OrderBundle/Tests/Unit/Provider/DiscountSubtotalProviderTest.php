@@ -74,7 +74,7 @@ class DiscountSubtotalProviderTest extends \PHPUnit_Framework_TestCase
     {
         /** @var Order $entity */
         $entity = $this->getEntity(Order::class, ['id' => 1, 'currency' => 'USD', 'discountAmount' => 10.0]);
-        //TODO: add test assertions
+
         $subtotal = $this->discountSubtotalProvider->getSubtotal($entity);
         $this->assertInstanceOf(Subtotal::class, $subtotal);
         $this->assertEquals(DiscountSubtotalProvider::TYPE, $subtotal->getType());
