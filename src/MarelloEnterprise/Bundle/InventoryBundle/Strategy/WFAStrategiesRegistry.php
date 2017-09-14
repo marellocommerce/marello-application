@@ -11,10 +11,13 @@ class WFAStrategiesRegistry
 
     /**
      * @param WFAStrategyInterface $strategy
+     * @return $this
      */
     public function addStrategy(WFAStrategyInterface $strategy)
     {
         $this->strategies[$strategy->getIdentifier()] = $strategy;
+        
+        return $this;
     }
 
     /**

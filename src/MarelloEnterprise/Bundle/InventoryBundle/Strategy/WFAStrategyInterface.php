@@ -26,7 +26,7 @@ interface WFAStrategyInterface
     /**
      * @param Order $order
      * @param OrderWarehouseResult[] $initialResults
-     * @return Warehouse[]|null
+     * @return OrderWarehouseResult[]|null
      */
-    public function getWarehouses(Order $order, array $initialResults = []);
+    public function getWarehouseResults(Order $order, array $initialResults = []);
 }

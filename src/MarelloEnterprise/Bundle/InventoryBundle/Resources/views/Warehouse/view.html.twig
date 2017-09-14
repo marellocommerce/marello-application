@@ -32,13 +32,13 @@
         </div>
     {%- endset -%}
 
-    {% set addressBookWidget %}
+{#    {% set addressBookWidget %}
         {{ oro_widget_render({
             'widgetType': 'block',
             'contentClasses': [],
             'url': path('marelloenterprise_inventory_warehouse_addressbook', {id: entity.id})
         }) }}
-    {% endset %}
+    {% endset %}#}
 
     {% set dataBlocks = [
         {
@@ -46,7 +46,6 @@
             'class': 'active',
             'subblocks': [
                 {'data' : [warehouseInformation]},
-                {'data' : [addressBookWidget] },
             ]
         }
     ] %}

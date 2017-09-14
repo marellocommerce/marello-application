@@ -11,6 +11,9 @@ use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
 
 class MinimumDistanceWFAStrategy implements WFAStrategyInterface, FeatureToggleableInterface
 {
+    const IDENTIFIER = 'min_distance';
+    const LABEL = 'marelloenterprise.inventory.strategies.min_distance';
+
     use FeatureCheckerHolderTrait;
 
     /**
@@ -23,7 +26,7 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface, FeatureTogglea
      */
     public function getIdentifier()
     {
-        return 'min_distance';
+        return self::IDENTIFIER;
     }
 
     /**
@@ -31,7 +34,7 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface, FeatureTogglea
      */
     public function getLabel()
     {
-        return 'marelloenterprise.inventory.strategies.min_distance';
+        return self::LABEL;
     }
 
     /**
@@ -53,7 +56,7 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface, FeatureTogglea
     /**
      * {@inheritdoc}
      */
-    public function getWarehouses(Order $order, array $initialResults = [])
+    public function getWarehouseResults(Order $order, array $initialResults = [])
     {
         if (!$this->isEnabled() || empty($initialResults)) {
             return $initialResults;

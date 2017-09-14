@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory;
 
+use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
 
 class DistanceMatrixApiResultFactory extends AbstractGoogleApiResultFactory
@@ -12,7 +13,7 @@ class DistanceMatrixApiResultFactory extends AbstractGoogleApiResultFactory
     const DURATION = 'duration';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createSuccessResult(array $data)
     {
@@ -26,6 +27,28 @@ class DistanceMatrixApiResultFactory extends AbstractGoogleApiResultFactory
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getZeroResultsErrorMessage(GoogleApiContextInterface $context)
+    {
+        return sprintf(
+            "Google Maps Distance Matrix API can't calculate distance between %s and %s",
+            $context->getOriginAddress(),
+            $context->getDestinationAddress()
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getResponseStatus(array $data)
+    {
+        $primaryElement = $this->getPrimaryElement($data);
+        return $primaryElement ? $primaryElement['status'] : $data['status'];
+    }
+
+
+    /**
      * @param array $data
      *
      * @return array
@@ -33,7 +56,12 @@ class DistanceMatrixApiResultFactory extends AbstractGoogleApiResultFactory
      */
     private function getPrimaryRow(array $data)
     {
-        return $this->getValueByKeyRecursively($data, 'rows')[0];
+        $rows = $this->getValueByKeyRecursively($data, 'rows');
+        if (count($rows) > 0) {
+            return $rows[0];
+        }
+        
+        return null;
     }
 
     /**
@@ -44,7 +72,17 @@ class DistanceMatrixApiResultFactory extends AbstractGoogleApiResultFactory
      */
     private function getPrimaryElement(array $data)
     {
-        return $this->getValueByKeyRecursively($this->getPrimaryRow($data), 'elements')[0];
+        $primaryRow = $this->getPrimaryRow($data);
+        if ($primaryRow) {
+            $elements = $this->getValueByKeyRecursively($primaryRow, 'elements');
+            if (count($elements) > 0) {
+                return $elements[0];
+            }
+            
+            return null;
+        }
+
+        return null;
     }
 
     /**

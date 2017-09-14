@@ -10,6 +10,7 @@ use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
 class MinimumQuantityWFAStrategy implements WFAStrategyInterface
 {
     const IDENTIFIER = 'min_quantity';
+    const LABEL = 'marelloenterprise.inventory.strategies.min_quantity';
 
     /**
      * @var MinQtyWHCalculatorInterface
@@ -34,7 +35,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
      */
     public function getLabel()
     {
-        return 'marelloenterprise.inventory.strategies.min_quantity';
+        return self::LABEL;
     }
 
     /**
@@ -48,7 +49,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function getWarehouses(Order $order, array $initialResults = [])
+    public function getWarehouseResults(Order $order, array $initialResults = [])
     {
         $productsByWh = [];
         $warehouses = [];

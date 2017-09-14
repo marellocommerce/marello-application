@@ -51,6 +51,10 @@ datagrids:
                     data_name:        w.default
         properties:
             id: ~
+            view_link:
+                type:   url
+                route:  marelloenterprise_inventory_warehouse_view
+                params: [ id ]
             update_link:
                 type:   url
                 route:  marelloenterprise_inventory_warehouse_update
@@ -60,6 +64,11 @@ datagrids:
                 route:  marelloenterprise_inventory_api_delete_warehouse
                 params: [ id ]
         actions:
+            view:
+                type: navigate
+                link: view_link
+                icon: eye
+                rowAction: true
             update:
                 type: navigate
                 link: update_link

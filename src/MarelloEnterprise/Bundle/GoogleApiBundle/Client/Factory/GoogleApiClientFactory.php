@@ -8,6 +8,7 @@ use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientFactoryInterface
 class GoogleApiClientFactory implements GoogleApiClientFactoryInterface
 {
     const PARAM_API_KEY = 'key';
+    const GOOGLE_INTEGRATION_CLIENT_SECRET = 'oro_google_integration.client_secret';
 
     /**
      * @var RestClientFactoryInterface
@@ -48,7 +49,7 @@ class GoogleApiClientFactory implements GoogleApiClientFactoryInterface
             $this->url,
             [
                 'query' => [
-                    self::PARAM_API_KEY => $this->configManager->get('oro_google_integration.client_secret')
+                    self::PARAM_API_KEY => $this->configManager->get(self::GOOGLE_INTEGRATION_CLIENT_SECRET)
                 ]
             ]
         );

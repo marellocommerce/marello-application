@@ -49,11 +49,12 @@ class GoogleApiResultsProvider implements GoogleApiResultsProviderInterface
     {
         $client = $this->clientFactory->createClient();
         $request = $this->requestFactory->createRequest($context);
-        if (empty($request->getRequestParameters())) {
+        $params = $request->getRequestParameters();
+        if (empty($params)) {
             return null;
         }
         try {
-            $response = $client->get(self::FORMAT, $request->getRequestParameters());
+            $response = $client->get(self::FORMAT, $params);
         } catch (RestException $e) {
             return $this->resultFactory->createExceptionResult($e);
         }

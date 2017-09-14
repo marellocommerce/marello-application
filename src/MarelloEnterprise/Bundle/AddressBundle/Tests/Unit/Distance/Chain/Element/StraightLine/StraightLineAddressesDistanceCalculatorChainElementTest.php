@@ -5,10 +5,10 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Tests\Unit\Distance\Chain\Eleme
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\
+StraightLineAddressesDistanceCalculatorChainElement;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalculatorChainElement;
 
 class StraightLineAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Framework_TestCase
 {

@@ -15,6 +15,7 @@ abstract class AbstractGoogleApiResultFactory implements GoogleApiResultFactoryI
     const OK_CODE = 'OK';
     const ZERO_RESULTS_CODE = 'ZERO_RESULTS';
     const OVER_QUERY_LIMIT_CODE = 'OVER_QUERY_LIMIT';
+    const INVALID_REQUEST_CODE = 'INVALID_REQUEST';
     
     /**
      * @var LoggerInterface
@@ -43,13 +44,10 @@ abstract class AbstractGoogleApiResultFactory implements GoogleApiResultFactoryI
         if (!is_array($data)) {
             throw new \LogicException($data);
         }
-        if ($data['status'] !== self::OK_CODE) {
-            if ($data['status'] === self::ZERO_RESULTS_CODE) {
-                $message = sprintf(
-                    "Google Maps Distance Matrix API can't calculate distance between %s and %s",
-                    $context->getOriginAddress(),
-                    $context->getDestinationAddress()
-                );
+        $status = $this->getResponseStatus($data);
+        if ($status !== self::OK_CODE) {
+            if ($status === self::ZERO_RESULTS_CODE) {
+                $message = $this->getZeroResultsErrorMessage($context);
                 $resultParams = [
                     GoogleApiResult::FIELD_STATUS => false,
                     GoogleApiResult::FIELD_ERROR_TYPE => GoogleApiResult::WARNING_TYPE,
@@ -79,6 +77,18 @@ abstract class AbstractGoogleApiResultFactory implements GoogleApiResultFactoryI
      * @return array
      */
     abstract protected function createSuccessResult(array $data);
+
+    /**
+     * @param GoogleApiContextInterface $context
+     * @return string
+     */
+    abstract protected function getZeroResultsErrorMessage(GoogleApiContextInterface $context);
+
+    /**
+     * @param array $data
+     * @return string
+     */
+    abstract protected function getResponseStatus(array $data);
 
     /**
      * {@inheritDoc}

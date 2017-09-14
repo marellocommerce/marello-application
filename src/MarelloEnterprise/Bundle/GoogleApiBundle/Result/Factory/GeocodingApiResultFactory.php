@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory;
 
+use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
 
 class GeocodingApiResultFactory extends AbstractGoogleApiResultFactory
@@ -13,9 +14,9 @@ class GeocodingApiResultFactory extends AbstractGoogleApiResultFactory
     const FORMATTED_ADDRESS = 'formatted_address';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function createSuccessResult(array $data)
+    protected function createSuccessResult(array $data)
     {
         return [
             GoogleApiResult::FIELD_STATUS => true,
@@ -28,6 +29,26 @@ class GeocodingApiResultFactory extends AbstractGoogleApiResultFactory
             ]
         ];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getZeroResultsErrorMessage(GoogleApiContextInterface $context)
+    {
+        return sprintf(
+            "Google Maps Geocoding API can't find coordinates for %s",
+            $context->getOriginAddress()
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getResponseStatus(array $data)
+    {
+        return $data['status'];
+    }
+
 
     /**
      * @param array $data
