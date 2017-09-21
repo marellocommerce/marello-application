@@ -2,20 +2,15 @@
 
 namespace Marello\Bundle\SalesBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\LocaleBundle\Entity\Localization;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\SalesBundle\Model\ExtendSalesChannel;
-
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository")
@@ -31,6 +26,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @Oro\Config(
  *  routeName="marello_sales_saleschannel_index",
  *  routeView="marello_sales_saleschannel_view",
+ *  routeCreate="marello_sales_saleschannel_create",
+ *  routeUpdate="marello_sales_saleschannel_update",
  *  defaultValues={
  *      "entity"={"icon"="fa-sitemap"},
  *      "ownership"={
@@ -114,6 +111,13 @@ class SalesChannel extends ExtendSalesChannel implements
      * @ORM\Column(name="channel_type", type="string")
      */
     protected $channelType = self::DEFAULT_TYPE;
+    
+    /**
+     * Many Features have One Product.
+     * @ORM\ManyToOne(targetEntity="SalesChannelGroup", inversedBy="salesChannels")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     */
+    protected $group;
 
     /**
      * @param string|null $name
@@ -285,5 +289,24 @@ class SalesChannel extends ExtendSalesChannel implements
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * @return SalesChannelGroup $group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param SalesChannelGroup $group
+     * @return $this
+     */
+    public function setGroup(SalesChannelGroup $group)
+    {
+        $this->group = $group;
+
+        return $this;
     }
 }

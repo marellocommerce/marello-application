@@ -4,8 +4,6 @@ namespace Marello\Bundle\SalesBundle\Tests\Functional\Entity\Repository;
 
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
-use Oro\Bundle\ShippingBundle\Entity\Repository\ShippingMethodConfigRepository;
-use Oro\Bundle\ShippingBundle\Tests\Functional\DataFixtures\LoadShippingMethodTypeConfigsWithFakeTypes;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 /**

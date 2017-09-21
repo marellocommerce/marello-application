@@ -3,8 +3,8 @@
 namespace Marello\Bundle\SalesBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-
 use Doctrine\ORM\QueryBuilder;
+use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 

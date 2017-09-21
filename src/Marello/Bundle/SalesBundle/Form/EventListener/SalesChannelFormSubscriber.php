@@ -56,8 +56,10 @@ class SalesChannelFormSubscriber implements EventSubscriberInterface
         if (!($data && $data->getId())) {
             $currency = $this->localeSettings->getCurrency();
         }
-
-        FormUtils::replaceField($form, 'currency', ['data' => $currency]);
+        
+        if (isset($currency)) {
+            FormUtils::replaceField($form, 'currency', ['data' => $currency]);
+        }
 
         $this->disableFields($form, $data);
 

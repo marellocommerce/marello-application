@@ -2,26 +2,32 @@
 
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\ReturnBundle\Form\DataTransformer\OrderToOrderNumberTransformer;
+use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectApiType;
+use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
-
-use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
-use Marello\Bundle\ReturnBundle\Form\DataTransformer\OrderToOrderNumberTransformer;
 
 class ReturnApiType extends AbstractType
 {
     const NAME = 'marello_return_api';
 
-    /** @var OrderToOrderNumberTransformer */
+    /**
+     * @var OrderToOrderNumberTransformer
+     */
     protected $orderToOrderNumberTransformer;
 
+    /**
+     * @var EntityToIdTransformer
+     */
     protected $salesChannelTransformer;
 
     /**
-     * ReturnApiType constructor.
-     *
      * @param OrderToOrderNumberTransformer $orderToOrderNumberTransformer
      * @param EntityToIdTransformer         $salesChannelTransformer
      */
@@ -39,28 +45,27 @@ class ReturnApiType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('order', 'text', [
+            ->add('order', TextType::class, [
                 'required'    => true,
                 'constraints' => new NotNull(),
             ])
-            ->add('returnNumber', 'text', [
+            ->add('returnNumber', TextType::class, [
                 'required' => false,
             ])
-            ->add('returnReference', 'text', [
+            ->add('returnReference', TextType::class, [
                 'required' => false,
             ])
-            ->add('salesChannel', 'marello_sales_channel_select_api', [
+            ->add('salesChannel', SalesChannelSelectApiType::class, [
                 'required'    => true,
                 'constraints' => new NotNull(),
             ])
-            ->add('returnItems', 'collection', [
+            ->add('returnItems', CollectionType::class, [
                 'type'         => ReturnItemApiType::NAME,
                 'allow_add'    => true,
                 'by_reference' => false,
             ]);
 
         $builder->get('order')->addModelTransformer($this->orderToOrderNumberTransformer);
-//        $builder->get('salesChannel')->addModelTransformer($this->salesChannelTransformer);
     }
 
     /**
@@ -69,15 +74,13 @@ class ReturnApiType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'      => 'Marello\Bundle\ReturnBundle\Entity\ReturnEntity',
+            'data_class'      => ReturnEntity::class,
             'csrf_protection' => false,
         ]);
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
     public function getName()
     {

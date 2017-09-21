@@ -1,6 +1,7 @@
 <?php
 namespace Marello\Bundle\SalesBundle\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,12 +31,21 @@ class SalesChannelSelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'oro_jqueryselect2_hidden';
+        return OroJquerySelect2HiddenType::class;
     }
+    
     /**
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return self::NAME;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
