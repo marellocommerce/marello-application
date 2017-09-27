@@ -2,16 +2,13 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 
+use Marello\Bundle\InventoryBundle\Controller\WarehouseController as BaseController;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
-
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Controller\WarehouseController as BaseController;
 
 /**
  * @Config\Route("/warehouse")
@@ -27,7 +24,7 @@ class WarehouseController extends BaseController
     public function indexAction()
     {
         return [
-            'entity_class' => 'Marello\Bundle\InventoryBundle\Entity\Warehouse',
+            'entity_class' => Warehouse::class,
         ];
     }
 
@@ -43,14 +40,14 @@ class WarehouseController extends BaseController
      */
     public function createAction(Request $request)
     {
-        return $this->update($request);
+        return $this->update(new Warehouse(), $request);
     }
 
     /**
      * @Config\Route("/update/{id}")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
-     * @AclAncestor("marello_inventory_warehouse_update")
+     * @AclAncestor("marelloenterprise_inventory_warehouse_update")
      *
      * @param Warehouse $warehouse
      * @param Request   $request
@@ -59,55 +56,40 @@ class WarehouseController extends BaseController
      */
     public function updateAction(Warehouse $warehouse, Request $request)
     {
-        return $this->update($request, $warehouse);
+        return $this->update($warehouse, $request);
+    }
+
+
+    /**
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Method({"GET"})
+     * @Config\Template
+     * @AclAncestor("marelloenterprise_inventory_warehouse_view")
+     *
+     * @param Warehouse $warehouse
+     *
+     * @return array
+     */
+    public function viewAction(Warehouse $warehouse)
+    {
+        return [
+            'entity' => $warehouse,
+        ];
     }
 
     /**
-     * @param Request        $request
-     * @param Warehouse|null $warehouse
+     * @param Warehouse $warehouse
+     * @param Request $request
      *
-     * @return RedirectResponse
+     * @return array|RedirectResponse
      */
-    protected function update(Request $request, Warehouse $warehouse = null)
+    protected function update(Warehouse $warehouse, Request $request)
     {
-        if (!$warehouse) {
-            $warehouse = new Warehouse();
-
-            /** @var UsernamePasswordOrganizationToken $token */
-            $token = $this->get('security.token_storage')->getToken();
-
-            $warehouse->setOwner($token->getOrganizationContext());
-        }
-
-        $form = $this->createForm('marello_warehouse', $warehouse);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $em->persist($warehouse);
-            $em->flush();
-
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('marelloenterprise.inventory.messages.success.warehouse.saved')
-            );
-
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'marelloenterprise_inventory_warehouse_update',
-                    'parameters' => ['id' => $warehouse->getId()],
-                ],
-                [
-                    'route' => 'marelloenterprise_inventory_warehouse_index',
-                ],
-                $warehouse
-            );
-        }
-
-        return [
-            'entity' => $warehouse,
-            'form'   => $form->createView(),
-        ];
+        return $this->get('oro_form.update_handler')->update(
+            $warehouse,
+            $this->createForm(WarehouseType::class, $warehouse),
+            $this->get('translator')->trans('marelloenterprise.inventory.messages.success.warehouse.saved'),
+            $request
+        );
     }
 }

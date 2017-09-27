@@ -2,59 +2,45 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Validator;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\ORM\EntityManagerInterface;
-
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class DefaultWarehouseExistsValidator extends ConstraintValidator
 {
-    /**
-     * @var ExecutionContextInterface
-     */
-    protected $context;
+    const ALIAS = 'marelloenterprise_inventory.default_warehouse_exists';
 
     /**
-     * @var Registry
+     * @var WarehouseRepository
      */
-    protected $registry;
+    protected $warehouseRepository;
 
     /**
-     * @param Registry $registry
+     * @param WarehouseRepository $warehouseRepository
      */
-    public function __construct(Registry $registry)
+    public function __construct(WarehouseRepository $warehouseRepository)
     {
-        $this->registry = $registry;
+        $this->warehouseRepository = $warehouseRepository;
     }
 
     /**
-     * Checks if there is already a default warehouse selected.
-     *
-     * @param Warehouse                         $value
+     * @param mixed $value
      * @param DefaultWarehouseExists|Constraint $constraint
      */
     public function validate($value, Constraint $constraint)
     {
+        if (!$value instanceof Warehouse) {
+            throw new UnexpectedTypeException($value, Warehouse::class);
+        }
         if ($value->getId() && !$value->isDefault()) {
-            /** @var EntityManagerInterface $em */
-            $em = $this->registry->getManager();
-
-            $qb = $em->createQueryBuilder();
-            $qb
-                ->select($qb->expr()->count('w'))
-                ->from('MarelloInventoryBundle:Warehouse', 'w')
-                ->where($qb->expr()->eq('w.default', $qb->expr()->literal(true)))
-                ->andWhere($qb->expr()->not($qb->expr()->eq('w.id', $value->getId())));
-
-            $count = $qb->getQuery()->getSingleScalarResult();
-
-            if (!$count) {
-                $this->context->buildViolation($constraint->message)
+            if (count($this->warehouseRepository->getDefaultExcept($value->getId())) === 0) {
+                /** @var ExecutionContextInterface $context */
+                $context = $this->context;
+                $context->buildViolation($constraint->message)
                     ->atPath('default')
                     ->addViolation();
             }

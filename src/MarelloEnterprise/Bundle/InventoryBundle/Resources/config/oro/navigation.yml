@@ -1,19 +1,33 @@
 navigation:
     menu_config:
         items:
+            warehouse_tab:
+                label: 'marelloenterprise.inventory.navigation.warehouse.label'
+                uri: '#'
+                extras:
+                    position: 40
             warehouses:
                 label: marello.inventory.warehouse.entity_plural_label
                 route: marelloenterprise_inventory_warehouse_index
                 extras:
                     routes: ['marello_inventory_warehouse_*', 'marelloenterprise_inventory_warehouse_*']
+            warehousegroups:
+                label: marello.inventory.warehousegroup.entity_plural_label
+                route: marelloenterprise_inventory_warehousegroup_index
+                extras:
+                    routes: ['marelloenterprise_inventory_warehousegroup_*']
         tree:
             application_menu:
                 children:
-                    system_tab:
+                    warehouse_tab:
                         children:
                             warehouses: ~
+                            warehousegroups: ~
 
     titles:
-        marelloenterprise_inventory_warehouse_index:  marello.inventory.warehouse.entity_plural_label
-        marelloenterprise_inventory_warehouse_create: marelloenterprise.inventory.navigation.warehouse.create_label
-        marelloenterprise_inventory_warehouse_update: '%%warehouse.label%% - Edit'
+        marelloenterprise_inventory_warehouse_index:  'marello.inventory.warehouse.entity_plural_label'
+        marelloenterprise_inventory_warehouse_create: 'oro.ui.create_entity'
+        marelloenterprise_inventory_warehouse_update: '%warehouse.label% - Update'
+        marelloenterprise_inventory_warehousegroup_index:  'marello.inventory.warehousegroup.entity_plural_label'
+        marelloenterprise_inventory_warehousegroup_create: 'oro.ui.create_entity'
+        marelloenterprise_inventory_warehousegroup_update: '%name% - Update'

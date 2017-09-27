@@ -2,12 +2,18 @@ marelloenterprise:
     inventory:
         messages:
             success:
-                warehouse:
-                    saved:          Warehouse saved
+                warehouse.saved:        Warehouse has been saved successfully
+                warehousegroup.saved:   Warehouse Group has been saved successfully
 
         navigation:
             warehouse:
-                create_label:       Create new warehouse
+                label:                  Warehouses
+                create_label:           Create new warehouse
 
         warehouse:
-            form.select_warehouse: Select Warehouse
+            form.select_warehouse:      Select Warehouse
+
+        warehousegroup:
+            datablock:
+                general: General
+                warehouses: Warehouses

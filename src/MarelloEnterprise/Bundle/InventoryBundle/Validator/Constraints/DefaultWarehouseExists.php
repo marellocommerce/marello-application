@@ -2,22 +2,26 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints;
 
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator;
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
 class DefaultWarehouseExists extends Constraint
 {
-    public $message = 'There must be a default warehouse.';
+    public $message = 'marelloenterprise.inventory.validation.messages.error.default_warehouse_exists';
 
+    /**
+     * {@inheritdoc}
+     */
     public function getTargets()
     {
         return self::CLASS_CONSTRAINT;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function validatedBy()
     {
-        return 'marello_enterprise_inventory.default_warehouse_exists';
+        return DefaultWarehouseExistsValidator::ALIAS;
     }
 }

@@ -19,16 +19,27 @@ class WarehouseSelectType extends AbstractType
                 'autocomplete_alias' => 'warehouses',
                 'configs'            => [
                     'placeholder' => 'marelloenterprise.inventory.warehouse.form.select_warehouse',
-                    'result_template_twig' => 'MarelloEnterpriseInventoryBundle:Warehouse:Autocomplete/result.html.twig',
-                    'selection_template_twig' => 'MarelloEnterpriseInventoryBundle:Warehouse:Autocomplete/selection.html.twig',
+                    'result_template_twig' =>
+                        'MarelloEnterpriseInventoryBundle:Warehouse:Autocomplete/result.html.twig',
+                    'selection_template_twig' =>
+                        'MarelloEnterpriseInventoryBundle:Warehouse:Autocomplete/selection.html.twig',
                 ],
             ]
         );
     }
+    
     /**
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return self::NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return self::NAME;
     }
