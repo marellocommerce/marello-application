@@ -103,6 +103,9 @@ class SalesChannelGroupHandler
         $this->manager->flush();
     }
 
+    /**
+     * @return SalesChannelGroup
+     */
     private function getSystemSalesChannelsGroup()
     {
         return $this->manager->getRepository(SalesChannelGroup::class)->findOneBy(['system' => true]);

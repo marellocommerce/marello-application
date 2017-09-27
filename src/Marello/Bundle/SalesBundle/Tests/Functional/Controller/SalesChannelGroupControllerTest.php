@@ -20,6 +20,9 @@ class SalesChannelGroupControllerTest extends WebTestCase
 
     const SAVE_MESSAGE = 'Sales Channel Group has been saved successfully';
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->initClient(
@@ -118,8 +121,7 @@ class SalesChannelGroupControllerTest extends WebTestCase
 
         $this->assertViewPage($crawler->html(), self::UPDATED_NAME, self::UPDATED_DESCRIPTION, $channelNames);
     }
-
-
+    
     /**
      * @depends testUpdate
      * @param int $id
@@ -205,8 +207,7 @@ class SalesChannelGroupControllerTest extends WebTestCase
         $this->assertContains(self::SAVE_MESSAGE, $html);
         $this->assertViewPage($html, $name, $description, $channelNames);
     }
-
-
+    
     /**
      * @param string $html
      * @param string $name

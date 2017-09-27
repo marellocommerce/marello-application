@@ -11,7 +11,9 @@ use Marello\Bundle\SalesBundle\Migrations\Data\ORM\LoadSalesChannelGroupData;
 
 class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
 {
-    /** @var ObjectManager $manager */
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
 
     /**
@@ -50,7 +52,7 @@ class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
     {
         $organization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
         $defaultSystemGroup = $this->manager->getRepository(SalesChannelGroup::class)->findOneBy(['system' => true]);
-        $i            = 1;
+        $i = 1;
 
         foreach ($this->data as $values) {
             $channel = (new SalesChannel($values['name']))

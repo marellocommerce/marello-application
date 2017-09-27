@@ -113,7 +113,8 @@ class SalesChannel extends ExtendSalesChannel implements
     protected $channelType = self::DEFAULT_TYPE;
     
     /**
-     * Many Features have One Product.
+     * @var SalesChannelGroup
+     *
      * @ORM\ManyToOne(targetEntity="SalesChannelGroup", inversedBy="salesChannels")
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      */

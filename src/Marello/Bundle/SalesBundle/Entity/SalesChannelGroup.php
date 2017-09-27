@@ -5,6 +5,7 @@ namespace Marello\Bundle\SalesBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\SalesBundle\Model\ExtendSalesChannelGroup;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
@@ -13,6 +14,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
  * @ORM\Entity()
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_sales_channel_group")
  * @Config(
  *  routeName="marello_sales_saleschannelgroup_index",
@@ -30,6 +32,8 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  */
 class SalesChannelGroup extends ExtendSalesChannelGroup
 {
+    use EntityCreatedUpdatedAtTrait;
+    
     /**
      * @ORM\Id
      * @ORM\Column(type="integer", name="id")
@@ -98,6 +102,8 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
     protected $organization;
     
     /**
+     * @var SalesChannel[]
+     *
      * @ORM\OneToMany(targetEntity="SalesChannel", mappedBy="group", fetch="EAGER")
      */
     private $salesChannels;

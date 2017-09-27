@@ -16,6 +16,9 @@ class SalesChannelGroupRemoveListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected $salesChannelGroupRemoveListener;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->salesChannelGroupRemoveListener = new SalesChannelGroupRemoveListener();
@@ -71,11 +74,9 @@ class SalesChannelGroupRemoveListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getEntityManager')
             ->willReturn($entityManager);
 
-        //TODO: add test assertions
         $this->salesChannelGroupRemoveListener->preRemove($salesChannelGroup, $args);
     }
-
-
+    
     /**
      * @return array
      */

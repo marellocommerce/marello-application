@@ -32,6 +32,9 @@ class SalesChannelGroupHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected $salesChannelGroupHandler;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->form = $this->createMock(FormInterface::class);

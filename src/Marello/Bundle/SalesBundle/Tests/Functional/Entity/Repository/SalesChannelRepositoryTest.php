@@ -16,6 +16,9 @@ class SalesChannelRepositoryTest extends WebTestCase
      */
     protected $repository;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->initClient([], static::generateBasicAuthHeader());

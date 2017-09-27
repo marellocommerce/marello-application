@@ -56,8 +56,7 @@ class SalesChannelType extends AbstractType
                 },
                 'choice_label' => 'name'
             ])
-            ->add('locale')
-        ;
+            ->add('locale');
     }
 
     /**

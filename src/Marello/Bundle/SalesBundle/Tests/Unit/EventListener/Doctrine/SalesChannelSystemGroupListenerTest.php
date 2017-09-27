@@ -16,6 +16,9 @@ class SalesChannelSystemGroupListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected $salesChannelSystemGroupListener;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->salesChannelSystemGroupListener = new SalesChannelSystemGroupListener();

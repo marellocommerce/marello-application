@@ -37,6 +37,8 @@ class MarelloSalesBundle implements Migration
         $table->addColumn('description', 'text', ['notnull' => false]);
         $table->addColumn('system', 'boolean', ['default' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
     }
 

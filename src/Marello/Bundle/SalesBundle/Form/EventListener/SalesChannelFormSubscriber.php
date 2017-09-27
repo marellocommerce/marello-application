@@ -2,15 +2,13 @@
 
 namespace Marello\Bundle\SalesBundle\Form\EventListener;
 
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\FormBundle\Utils\FormUtils;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Oro\Bundle\FormBundle\Utils\FormUtils;
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
-
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class SalesChannelFormSubscriber implements EventSubscriberInterface
 {
@@ -28,8 +26,7 @@ class SalesChannelFormSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Get subscribed events
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {

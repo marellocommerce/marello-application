@@ -8,7 +8,9 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 
 class LoadSalesChannelGroupData extends AbstractFixture
 {
-    /** @var ObjectManager $manager */
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
 
     /**

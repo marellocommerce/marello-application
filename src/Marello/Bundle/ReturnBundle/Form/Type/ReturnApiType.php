@@ -86,4 +86,12 @@ class ReturnApiType extends AbstractType
     {
         return self::NAME;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return self::NAME;
+    }
 }
