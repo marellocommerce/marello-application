@@ -125,6 +125,8 @@ class SalesChannel extends ExtendSalesChannel implements
      */
     public function __construct($name = null)
     {
+        parent::__construct();
+        
         $this->name = $name;
     }
 
