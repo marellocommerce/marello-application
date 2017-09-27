@@ -8,12 +8,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Config\Route("/warehouse")
+ */
 class WarehouseController extends Controller
 {
     /**
      * @Config\Route("/update-default", requirements={"id"="\d+"}, name="marello_inventory_warehouse_updatedefault")
      * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Config\Template("MarelloInventoryBundle:Warehouse:updateDefault.html.twig")
      * @AclAncestor("marello_inventory_warehouse_update")
      *
      * @param Request $request

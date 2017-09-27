@@ -10,13 +10,19 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class ChartBuilder
 {
-    /** @var Registry */
+    /**
+     * @var Registry
+     */
     protected $doctrine;
 
-    /** @var DateHelper */
+    /**
+     * @var DateHelper
+     */
     protected $dateHelper;
 
-    /** @var TranslatorInterface */
+    /**
+     * @var TranslatorInterface
+     */
     protected $translator;
 
     /**

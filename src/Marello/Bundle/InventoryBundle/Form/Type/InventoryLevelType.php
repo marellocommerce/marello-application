@@ -3,28 +3,30 @@
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
-use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-
 
 class InventoryLevelType extends AbstractType
 {
     const NAME = 'marello_inventory_inventorylevel';
 
-    /** @var EventSubscriberInterface $subscriber */
+    /**
+     * @var EventSubscriberInterface
+     */
     protected $subscriber;
 
+    /**
+     * @param EventSubscriberInterface $subscriber
+     */
     public function __construct(EventSubscriberInterface $subscriber)
     {
         $this->subscriber = $subscriber;
@@ -80,6 +82,14 @@ class InventoryLevelType extends AbstractType
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return self::NAME;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return self::NAME;
     }

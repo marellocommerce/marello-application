@@ -7,6 +7,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ * @Config\Route("/item")
+ */
 class InventoryController extends Controller
 {
     /**

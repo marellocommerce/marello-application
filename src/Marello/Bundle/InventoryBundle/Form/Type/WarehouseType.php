@@ -2,7 +2,10 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
+use Marello\Bundle\AddressBundle\Form\Type\AddressType;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -26,17 +29,17 @@ class WarehouseType extends AbstractType
         $builder
             ->add(
                 'label',
-                'text',
+                TextType::class,
                 ['required' => true]
             )
             ->add(
                 'code',
-                'text',
+                TextType::class,
                 ['required' => true]
             )
             ->add(
                 'address',
-                'marello_address',
+                AddressType::class,
                 ['required' => true]
             );
 
@@ -49,7 +52,7 @@ class WarehouseType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\InventoryBundle\Entity\Warehouse',
+            'data_class'         => Warehouse::class,
             'cascade_validation' => true,
         ]);
     }
@@ -58,6 +61,14 @@ class WarehouseType extends AbstractType
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return self::NAME;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return self::NAME;
     }

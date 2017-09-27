@@ -20,7 +20,7 @@ class InventoryUpdateContextFactory
      */
     public static function createInventoryUpdateContext(
         $entity,
-        $inventoryItem = null,
+        $inventoryItem,
         $inventoryUpdateQty,
         $allocatedInventoryUpdateQty,
         $trigger,
@@ -54,7 +54,7 @@ class InventoryUpdateContextFactory
      */
     public static function createInventoryLevelUpdateContext(
         InventoryLevel $inventoryLevel,
-        $inventoryItem = null,
+        $inventoryItem,
         $inventoryUpdateQty,
         $allocatedInventoryQty,
         $trigger,

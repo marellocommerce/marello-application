@@ -7,7 +7,9 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\AbstractMassAction;
 
 class StatusEnableMassAction extends AbstractMassAction
 {
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $requiredOptions = ['handler', 'entity_name', 'data_identifier'];
 
     /**

@@ -8,7 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleType extends AbstractType
@@ -45,8 +44,7 @@ class RuleType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
-     * @throws AccessException
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

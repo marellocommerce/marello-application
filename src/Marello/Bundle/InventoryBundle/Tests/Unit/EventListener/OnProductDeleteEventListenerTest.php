@@ -2,23 +2,28 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\EventListener;
 
-use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-
 use Marello\Bundle\InventoryBundle\EventListener\OnProductDeleteEventListener;
 use Marello\Bundle\InventoryBundle\Manager\InventoryItemManagerInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
 class OnProductDeleteEventListenerTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var OnProductDeleteEventListener $listener */
+    /**
+     * @var OnProductDeleteEventListener
+     */
     protected $listener;
 
-    /** @var InventoryItemManagerInterface $inventoryItemManager */
+    /**
+     * @var InventoryItemManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
     protected $inventoryItemManager;
 
-    /** @var EntityManagerInterface $entityManager */
+    /**
+     * @var EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
     protected $entityManager;
 
     /**
@@ -39,9 +44,6 @@ class OnProductDeleteEventListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener = new OnProductDeleteEventListener($this->inventoryItemManager);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function testIfInventoryItemIsDeletedWhenProductIsDeleted()
     {
         $event = $this->prepareEvent();
@@ -64,9 +66,6 @@ class OnProductDeleteEventListenerTest extends \PHPUnit_Framework_TestCase
         $this->listener->onFlush($event);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function testNoProductsScheduledForDeletion()
     {
         $event = $this->prepareEvent();

@@ -3,13 +3,12 @@
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-
-use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
 
 class InventoryItemType extends AbstractType
 {
@@ -52,6 +51,14 @@ class InventoryItemType extends AbstractType
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return self::NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return self::NAME;
     }

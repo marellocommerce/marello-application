@@ -2,20 +2,15 @@
 
 namespace Marello\Bundle\SalesBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\LocaleBundle\Entity\Localization;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\SalesBundle\Model\ExtendSalesChannel;
-
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository")
@@ -120,6 +115,8 @@ class SalesChannel extends ExtendSalesChannel implements
      */
     public function __construct($name = null)
     {
+        parent::__construct();
+        
         $this->name = $name;
     }
 

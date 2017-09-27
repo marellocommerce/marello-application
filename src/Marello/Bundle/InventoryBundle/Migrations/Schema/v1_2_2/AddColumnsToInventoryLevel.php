@@ -13,7 +13,6 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  */
 class AddColumnsToInventoryLevel implements Migration, OrderedMigrationInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -52,7 +51,9 @@ class AddColumnsToInventoryLevel implements Migration, OrderedMigrationInterface
         }
     }
 
-
+    /**
+     * @param Schema $schema
+     */
     protected function updateInventoryLevelForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_inventory_level');

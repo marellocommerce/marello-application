@@ -26,7 +26,6 @@ class MarelloInventoryBundle implements Migration
 
         /** update foreign key for warehouse table */
         $this->addMarelloInventoryWarehouseTypeForeignKeys($schema);
-
     }
 
     /**

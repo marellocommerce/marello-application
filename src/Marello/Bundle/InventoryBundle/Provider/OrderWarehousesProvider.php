@@ -45,5 +45,4 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
             ->getRepository(Warehouse::class)
             ->getDefault();
     }
-
 }

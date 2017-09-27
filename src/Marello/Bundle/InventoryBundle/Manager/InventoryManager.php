@@ -2,24 +2,27 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class InventoryManager implements InventoryManagerInterface
 {
-    /** @var DoctrineHelper */
+    /**
+     * @var DoctrineHelper
+     */
     protected $doctrineHelper;
 
-    /** @var InventoryUpdateContextValidator $contextValidator */
+    /**
+     * @var InventoryUpdateContextValidator
+     */
     protected $contextValidator;
 
     /**
@@ -106,7 +109,8 @@ class InventoryManager implements InventoryManagerInterface
             return false;
         }
 
-        if (($level->getInventoryQty() === $inventory) && ($level->getAllocatedInventoryQty() === $allocatedInventory)) {
+        if (($level->getInventoryQty() === $inventory) &&
+            ($level->getAllocatedInventoryQty() === $allocatedInventory)) {
             return false;
         }
 

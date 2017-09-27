@@ -3,12 +3,11 @@
 namespace Marello\Bundle\InventoryBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
-
-use Oro\Bundle\MigrationBundle\Migration\Installation;
-use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
+use Oro\Bundle\MigrationBundle\Migration\Installation;
+use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -16,7 +15,9 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterf
  */
 class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAwareInterface
 {
-    /** @var ExtendExtension */
+    /**
+     * @var ExtendExtension
+     */
     protected $extendExtension;
 
     /**
@@ -189,7 +190,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             $schema->getTable('marello_inventory_warehouse'),
             ['warehouse_id'],
             ['id'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+            ['onDelete' => null, 'onUpdate' => null]
         );
     }
 

@@ -2,6 +2,7 @@ marello:
     inventory:
         label:                          Inventory
         variant_inventory_label:        Variant Inventory
+
         warehouse:
             entity_label:               Warehouse
             entity_plural_label:        Warehouses
@@ -12,6 +13,7 @@ marello:
             id.label:                   Id
             owner.label:                Owner
             warehouse_type.label:       Warehouse Type
+
         warehousetype:
             entity_label:               Warehouse Type
             entity_plural_label:        Warehouse Types
@@ -34,6 +36,7 @@ marello:
             desired_inventory.label:    Desired Inventory Level
             purchase_inventory.label:   Purchase Inventory Level
             inventory_levels.label:     Inventory Levels
+            warehouse.label:            Warehouse
 
         inventorylevel:
             entity_label:                   Inventory Level
@@ -72,8 +75,7 @@ marello:
 
         messages:
             success:
-                warehouse:
-                    saved:              Warehouse saved
+                warehouse.saved:        Warehouse has been saved successfully
             error:
                 warehouse:
                     not_found:     No warehouse found, cannot update a new level without existing warehouse

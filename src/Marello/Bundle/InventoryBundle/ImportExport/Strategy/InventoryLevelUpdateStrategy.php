@@ -16,7 +16,9 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 {
-    /** @var InventoryLevelCalculator $levelCalculator */
+    /**
+     * @var InventoryLevelCalculator
+     */
     protected $levelCalculator;
 
     /**
@@ -37,6 +39,7 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         array $searchContext = [],
         $entityIsRelation = false
     ) {
+        $canUpdate = false;
         $entityClass = ClassUtils::getClass($entity);
         // find existing or new entity
         $existingEntity = $this->findInventoryLevel($entity);
