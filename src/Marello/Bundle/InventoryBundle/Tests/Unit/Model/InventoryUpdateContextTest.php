@@ -11,7 +11,9 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
 class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var InventoryUpdateContext $inventoryUpdateContext */
+    /**
+     * @var InventoryUpdateContext
+     */
     protected $inventoryUpdateContext;
 
     public function setUp()
@@ -48,7 +50,7 @@ class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
      */
     public function getSetValueDataProvider()
     {
-        $object     = $this->getMock(Product::class);
+        $object     = $this->createMock(Product::class);
         $integer    = 10;
         $string     = 'manual';
         $rand       = uniqid();
@@ -87,11 +89,11 @@ class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
      */
     public function getSetDataProvider()
     {
-        $product = $this->getMock(Product::class);
+        $product = $this->createMock(Product::class);
         $stock         = 10;
         $allocatedStock          = 5;
         $changeTrigger = 'manual';
-        $user   = $this->getMock(User::class);
+        $user   = $this->createMock(User::class);
         $relatedEntity = $this
             ->getMockBuilder(Order::class)
             ->disableOriginalConstructor()
@@ -101,8 +103,7 @@ class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder(InventoryItem::class)
             ->disableOriginalConstructor()
             ->getMock();
-
-
+        
         return [
             'product'           => ['product', $product, $product],
             'stock'             => ['stock', $stock, $stock],

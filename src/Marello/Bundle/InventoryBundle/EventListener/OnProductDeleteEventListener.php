@@ -2,22 +2,27 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener;
 
-use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-
 use Marello\Bundle\InventoryBundle\Manager\InventoryItemManagerInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
 class OnProductDeleteEventListener
 {
-    /** @var InventoryItemManagerInterface $manager */
+    /**
+     * @var InventoryItemManagerInterface
+     */
     protected $inventoryItemManager;
 
-    /** @var UnitOfWork $unitOfWork */
+    /**
+     * @var UnitOfWork
+     */
     protected $unitOfWork;
 
-    /** @var EntityManager $em */
+    /**
+     * @var EntityManager
+     */
     protected $em;
 
     /**

@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
+use Marello\Bundle\ProductBundle\Entity\Variant;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,7 +17,7 @@ class VariantInventoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('products', 'collection', [
+        $builder->add('products', CollectionType::class, [
             'type'               => ProductInventoryType::NAME,
             'allow_add'          => false,
             'allow_delete'       => false,
@@ -32,7 +34,7 @@ class VariantInventoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\ProductBundle\Entity\Variant',
+            'data_class'         => Variant::class,
             'cascade_validation' => true,
         ]);
     }
@@ -41,6 +43,14 @@ class VariantInventoryType extends AbstractType
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return self::NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return self::NAME;
     }

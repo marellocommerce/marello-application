@@ -2,23 +2,26 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\EventListener;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class InventoryLevelSubscriber implements EventSubscriberInterface
 {
-    /** @var InventoryLevelCalculator $levelCalculator */
+    /**
+     * @var InventoryLevelCalculator
+     */
     protected $levelCalculator;
 
-    /** @var EventDispatcherInterface $eventDispatcher */
+    /**
+     * @var EventDispatcherInterface
+     */
     protected $eventDispatcher;
 
     /**
@@ -29,7 +32,7 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
     public function __construct(
         InventoryLevelCalculator $levelCalculator,
         EventDispatcherInterface $eventDispatcher
-    ){
+    ) {
         $this->levelCalculator = $levelCalculator;
         $this->eventDispatcher = $eventDispatcher;
     }

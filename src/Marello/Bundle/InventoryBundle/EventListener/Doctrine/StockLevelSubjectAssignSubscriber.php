@@ -22,7 +22,9 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
 {
     use SetsPropertyValue;
 
-    /** @var array|InventoryLevel[] */
+    /**
+     * @var array|InventoryLevel[]
+     */
     protected $assignSubjects;
 
     /**
@@ -78,7 +80,11 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
              * Set appropriate values and persist changes.
              */
             $this->setPropertyValue($inventoryLevelLogRecord, 'subjectId', $id);
-            $this->setPropertyValue($inventoryLevelLogRecord, 'subjectType', ClassUtils::getClass($inventoryLevelLogRecord->getSubject()));
+            $this->setPropertyValue(
+                $inventoryLevelLogRecord,
+                'subjectType',
+                ClassUtils::getClass($inventoryLevelLogRecord->getSubject())
+            );
             $args->getEntityManager()->persist($inventoryLevelLogRecord);
         }
 

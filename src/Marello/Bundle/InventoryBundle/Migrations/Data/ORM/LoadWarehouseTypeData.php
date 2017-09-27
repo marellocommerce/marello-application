@@ -3,37 +3,42 @@
 namespace Marello\Bundle\InventoryBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 
 class LoadWarehouseTypeData extends AbstractFixture implements DependentFixtureInterface
 {
-    /** @var ObjectManager $manager */
+    const GLOBAL_TYPE = 'global';
+    const FIXED_TYPE = 'fixed';
+    const VIRTUAL_TYPE = 'virtual';
+    
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
 
     /**
      * @var array
      */
     protected $data = [
-        'global'    => 'Global',
-        'fixed'     => 'Fixed',
-        'virtual'   => 'Virtual',
+        self::GLOBAL_TYPE,
+        self::FIXED_TYPE,
+        self::VIRTUAL_TYPE,
     ];
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getDependencies()
     {
         return [
-            'Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseData'
+            LoadWarehouseData::class
         ];
     }
 
     /**
-     * @param ObjectManager $manager
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -46,9 +51,9 @@ class LoadWarehouseTypeData extends AbstractFixture implements DependentFixtureI
      */
     public function loadWarehouseTypes()
     {
-        foreach ($this->data as $name => $label) {
+        foreach ($this->data as $name) {
             $type = new WarehouseType($name);
-            $type->setLabel($label);
+            $type->setLabel(ucfirst($name));
             $this->manager->persist($type);
             $this->setReference('warehouse_type_'.$name, $type);
         }

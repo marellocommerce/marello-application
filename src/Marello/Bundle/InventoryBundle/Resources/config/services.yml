@@ -1,5 +1,6 @@
 parameters:
     marello_inventory.entity.warehouse.class: Marello\Bundle\InventoryBundle\Entity\Warehouse
+    marello_inventory.entity.warehousegroup.class: Marello\Bundle\InventoryBundle\Entity\WarehouseGroup
 
 services:
     marello_product.widget_provider.actions.variant_mass_inventory:
@@ -84,3 +85,9 @@ services:
             - '@marello_inventory.model.inventory_level_totals_calculator'
         tags:
             - { name: twig.extension }
+
+    marello_inventory.repository.warehouse:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'

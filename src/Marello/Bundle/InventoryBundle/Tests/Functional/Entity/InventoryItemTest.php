@@ -2,22 +2,24 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class InventoryItemTest extends WebTestCase
 {
-    /** @var InventoryManager $manager */
+    /**
+     * @var InventoryManager
+     */
     protected $manager;
 
-    /** @var InventoryItemManager $itemManager */
+    /**
+     * @var InventoryItemManager
+     */
     protected $itemManager;
 
     /**
@@ -31,9 +33,6 @@ class InventoryItemTest extends WebTestCase
         $this->itemManager = $this->client->getContainer()->get('marello_inventory.manager.inventory_item_manager');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function testCreateAndUpdateNewInventoryItem()
     {
         $product = new Product();
@@ -57,9 +56,6 @@ class InventoryItemTest extends WebTestCase
         $this->assertNotEmpty($inventoryItem->getInventoryLevels());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function testIfInventoryItemIsUpdatedCorrectlyWithMultipleChanges()
     {
         $product = new Product();

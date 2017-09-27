@@ -5,32 +5,53 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
     /** flush manager count */
     const FLUSH_MAX = 25;
 
-    /** @var ObjectManager $manager */
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
-
+    
+    /**
+     * @var resource|null
+     */
     protected $ordersFile = null;
-    protected $ordersFileHeader = [];
-    protected $itemsFile = null;
-    protected $itemsFileHeader = [];
 
-    /** @var Warehouse */
+    /**
+     * @var array
+     */
+    protected $ordersFileHeader = [];
+
+    /**
+     * @var resource|null
+     */
+    protected $itemsFile = null;
+
+    /**
+     * @var array
+     */
+    protected $itemsFileHeader = [];
+    
+    /**
+     * @var Warehouse
+     */
     protected $defaultWarehouse;
 
+    /**
+     * @var int
+     */
     protected $customers = 0;
 
     /**
@@ -77,7 +98,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                     $grandTotal += $item->getRowTotalInclTax();
                 });
 
-//                $grandTotal += $order->getShippingAmount();
                 $grandTotal += $order->getShippingAmountInclTax();
 
                 $order
@@ -199,6 +219,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $this->setReference('marello_customer_' . $this->customers++, $customer);
         $orderEntity->setCustomer($customer);
 
+        /** @var SalesChannel $channel */
         $channel = $this->getReference('marello_sales_channel_' . $row['channel']);
         $orderEntity->setSalesChannel($channel);
         $orderEntity->setCurrency($channel->getCurrency());

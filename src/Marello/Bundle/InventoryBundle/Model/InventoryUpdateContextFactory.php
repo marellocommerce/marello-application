@@ -2,9 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\ProductInventoryAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
@@ -22,7 +20,7 @@ class InventoryUpdateContextFactory
      */
     public static function createInventoryUpdateContext(
         $entity,
-        $inventoryItem = null,
+        $inventoryItem,
         $inventoryUpdateQty,
         $allocatedInventoryUpdateQty,
         $trigger,
@@ -43,7 +41,6 @@ class InventoryUpdateContextFactory
         ;
 
         return $context;
-
     }
 
     /**
@@ -57,7 +54,7 @@ class InventoryUpdateContextFactory
      */
     public static function createInventoryLevelUpdateContext(
         InventoryLevel $inventoryLevel,
-        $inventoryItem = null,
+        $inventoryItem,
         $inventoryUpdateQty,
         $allocatedInventoryQty,
         $trigger,
