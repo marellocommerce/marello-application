@@ -85,6 +85,9 @@ class WFARuleType extends AbstractType
         $view->vars['strategies'] = $this->choicesProvider->getChoices();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -92,6 +95,9 @@ class WFARuleType extends AbstractType
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBlockPrefix()
     {
         return self::NAME;

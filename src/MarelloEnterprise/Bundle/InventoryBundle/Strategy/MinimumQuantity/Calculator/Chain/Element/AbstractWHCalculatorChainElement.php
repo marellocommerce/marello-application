@@ -2,7 +2,6 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element;
 
-use Doctrine\Common\Collections\Collection;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\MinQtyWHCalculatorInterface;
 
@@ -42,14 +41,4 @@ abstract class AbstractWHCalculatorChainElement implements MinQtyWHCalculatorInt
         }
         return false;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function calculate(
-        array $productsByWh,
-        array $orderItemsByProducts,
-        array $warehouses,
-        Collection $orderItems
-    );
 }

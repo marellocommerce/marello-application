@@ -48,8 +48,7 @@ class GeocodingApiResultFactory extends AbstractGoogleApiResultFactory
     {
         return $data['status'];
     }
-
-
+    
     /**
      * @param array $data
      *

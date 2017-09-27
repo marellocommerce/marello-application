@@ -16,7 +16,10 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
      * @var MinQtyWHCalculatorInterface
      */
     private $minQtyWHCalculator;
-    
+
+    /**
+     * @param MinQtyWHCalculatorInterface $minQtyWHCalculator
+     */
     public function __construct(MinQtyWHCalculatorInterface $minQtyWHCalculator)
     {
         $this->minQtyWHCalculator = $minQtyWHCalculator;

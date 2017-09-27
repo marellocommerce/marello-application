@@ -22,6 +22,9 @@ class StraightLineAddressesDistanceCalculatorChainElementTest extends \PHPUnit_F
      */
     protected $distanceCalculator;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)

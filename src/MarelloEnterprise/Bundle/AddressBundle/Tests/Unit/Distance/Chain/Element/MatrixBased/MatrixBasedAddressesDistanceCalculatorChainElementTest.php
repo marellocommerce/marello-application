@@ -24,6 +24,9 @@ class MatrixBasedAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Fr
      */
     protected $distanceCalculator;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->distanceMatrixResultsProvider = $this->createMock(GoogleApiResultsProviderInterface::class);
@@ -37,7 +40,7 @@ class MatrixBasedAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Fr
      * @param bool $isFeatureEnabled
      * @param GoogleApiResultInterface $apiResults
      * @param float $expectedDistance
-     * @param \PHPUnit_Framework_MockObject_MockObject|null $successor
+     * @param AddressesDistanceCalculatorInterface|\PHPUnit_Framework_MockObject_MockObject $successor
      */
     public function testCalculate(
         $isFeatureEnabled,

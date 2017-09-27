@@ -13,6 +13,9 @@ class GeocodingApiRequestFactory implements GoogleApiRequestFactoryInterface
     const COMPONENT_ADMINISTRATIVE_AREA = 'administrative_area';
     const COMPONENT_POSTAL_CODE = 'postal_code';
 
+    /**
+     * {@inheritdoc}
+     */
     public function createRequest(GoogleApiContextInterface $context)
     {
         $addressString = '';

@@ -44,6 +44,9 @@ class GeocodingApiRequestFactoryTest extends \PHPUnit_Framework_TestCase
         static::assertEquals($expectedRequest, $actualRequest);
     }
 
+    /**
+     * @return array
+     */
     public function createRequestDataProvider()
     {
         $iso2Code = 'iso2Code';

@@ -6,7 +6,6 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 interface AddressesDistanceCalculatorInterface
 {
-
     /**
      * @param MarelloAddress $originAddress
      * @param MarelloAddress $destinationAddress

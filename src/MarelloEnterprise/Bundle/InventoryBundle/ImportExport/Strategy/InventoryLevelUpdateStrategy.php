@@ -3,11 +3,10 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\ImportExport\Strategy;
 
 use Doctrine\Common\Util\ClassUtils;
-
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\InventoryBundle\ImportExport\Strategy\InventoryLevelUpdateStrategy as BaseStrategy;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class InventoryLevelUpdateStrategy extends BaseStrategy
 {
@@ -29,6 +28,7 @@ class InventoryLevelUpdateStrategy extends BaseStrategy
         array $searchContext = [],
         $entityIsRelation = false
     ) {
+        $canUpdate = false;
         $entityClass = ClassUtils::getClass($entity);
         // find existing or new entity
         $existingEntity = $this->findInventoryLevel($entity);

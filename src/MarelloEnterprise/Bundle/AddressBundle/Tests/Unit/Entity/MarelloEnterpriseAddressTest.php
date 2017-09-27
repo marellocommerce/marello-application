@@ -3,9 +3,7 @@
 namespace MarelloEnterprise\Bundle\AddressBundle\Tests\Unit\Entity;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
-
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
 class MarelloEnterpriseAddressTest extends \PHPUnit_Framework_TestCase

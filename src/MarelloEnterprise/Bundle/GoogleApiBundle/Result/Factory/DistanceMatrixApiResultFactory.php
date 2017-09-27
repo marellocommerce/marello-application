@@ -46,8 +46,7 @@ class DistanceMatrixApiResultFactory extends AbstractGoogleApiResultFactory
         $primaryElement = $this->getPrimaryElement($data);
         return $primaryElement ? $primaryElement['status'] : $data['status'];
     }
-
-
+    
     /**
      * @param array $data
      *

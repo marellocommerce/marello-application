@@ -25,10 +25,8 @@ marelloenterprise:
                 wfarule:
                     is_system_update_attempt:      System WFA Rule can't be updated
             success:
-                warehouse:
-                    saved:              Warehouse saved
-                wfarule:
-                    saved:              WFA Rule saved
+                warehouse.saved:        Warehouse has been saved successfully
+                wfarule.saved:          WFA Rule has been saved successfully
         navigation:
             warehouse:
                 create_label:           Create new Warehouse

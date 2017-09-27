@@ -48,6 +48,9 @@ class DistanceMatrixApiRequestFactory implements GoogleApiRequestFactoryInterfac
         $this->repository = $this->getRepository();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function createRequest(GoogleApiContextInterface $context)
     {
         return new GoogleApiRequest([
@@ -60,6 +63,11 @@ class DistanceMatrixApiRequestFactory implements GoogleApiRequestFactoryInterfac
         ]);
     }
 
+    /**
+     * @param MarelloAddress $address
+     * @return mixed
+     * @throws \Exception
+     */
     private function getCoordinates(MarelloAddress $address)
     {
         $eeAddress = $this->repository->findOneBy(['address' => $address]);

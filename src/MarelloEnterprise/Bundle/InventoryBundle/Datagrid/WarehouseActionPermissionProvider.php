@@ -2,15 +2,13 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Datagrid;
 
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-
 use Marello\Bundle\DataGridBundle\Action\ActionPermissionInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class WarehouseActionPermissionProvider implements ActionPermissionInterface
 {
     /**
-     * @param ResultRecordInterface $record
-     * @return array
+     * {@inheritdoc}
      */
     public function getActionPermissions(ResultRecordInterface $record)
     {

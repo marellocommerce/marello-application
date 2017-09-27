@@ -37,6 +37,9 @@ class AddressGeocodingListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected $addressGeocodingListener;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->geocodingApiResultsProvider = $this->createMock(GoogleApiResultsProviderInterface::class);
@@ -64,7 +67,7 @@ class AddressGeocodingListenerTest extends \PHPUnit_Framework_TestCase
         $callTimes,
         $callFlashBag
     ) {
-        /** @var MarelloAddress **/
+        /** @var MarelloAddress $address */
         $address = $this->getEntity(MarelloAddress::class, ['id' => 1]);
 
         /** @var LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject $args **/

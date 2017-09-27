@@ -3,47 +3,55 @@
 namespace Marello\Bundle\ReturnBundle\Tests\Unit\Validator;
 
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
-
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseDeleteHandler;
+use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
-use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
-
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseDeleteHandler;
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseDeleteValidator;
+use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class WarehouseDeleteHandlerTest extends TestCase
 {
-    /** @var  WarehouseDeleteValidator|\PHPUnit_Framework_MockObject_MockObject $warehouseDeleteValidator */
-    protected $warehouseDeleteValidator;
-
-    /** @var SecurityFacade|\PHPUnit_Framework_MockObject_MockObject $securityFacade */
+    /**
+     * @var SecurityFacade|\PHPUnit_Framework_MockObject_MockObject
+     */
     protected $securityFacade;
 
-    /** @var WarehouseDeleteHandler $warehouseDeleteHandler */
+    /**
+     * @var ApiEntityManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $apiEntityManager;
+
+    /**
+     * @var WarehouseDeleteHandler
+     */
     protected $warehouseDeleteHandler;
+
+    /**
+     * @var OwnerDeletionManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $ownerDeletionManager;
 
     /**
      * {@inheritdoc}
      */
     public function setUp()
     {
-        parent::setUp();
-
         $this->securityFacade = $this
             ->getMockBuilder(SecurityFacade::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->warehouseDeleteValidator = $this
-            ->getMockBuilder(WarehouseDeleteValidator::class)
+        $this->apiEntityManager = $this->getMockBuilder(ApiEntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->warehouseDeleteHandler =
-            new WarehouseDeleteHandler($this->warehouseDeleteValidator, $this->securityFacade);
+        $this->ownerDeletionManager = $this->getMockBuilder(OwnerDeletionManager::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->warehouseDeleteHandler = new WarehouseDeleteHandler($this->securityFacade);
+        $this->warehouseDeleteHandler->setOwnerDeletionManager($this->ownerDeletionManager);
     }
 
     /**
@@ -52,93 +60,123 @@ class WarehouseDeleteHandlerTest extends TestCase
     public function testHandlerThrowsEntityNotFoundException()
     {
         $nonExistingWarehouseId = 0;
-        /** @var ApiEntityManager|\PHPUnit_Framework_MockObject_MockObject $apiEntityManager */
-        $apiEntityManager = $this->getMockBuilder(ApiEntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
-        $apiEntityManager->expects($this->once())
+        $this->apiEntityManager->expects($this->once())
             ->method('find')
             ->with($nonExistingWarehouseId);
 
-        $this->warehouseDeleteHandler->handleDelete($nonExistingWarehouseId, $apiEntityManager);
+        $this->warehouseDeleteHandler->handleDelete($nonExistingWarehouseId, $this->apiEntityManager);
     }
 
     /**
-     * @expectedException \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @expectedException \Oro\Bundle\SecurityBundle\Exception\ForbiddenException
+     * @expectedExceptionMessage An operation is forbidden. Reason: has assignments
      */
-    public function testHandlerThrowsAccessDeniedAcception()
+    public function testHandlerThrowsForbiddenExceptionByHasAssignments()
     {
         $warehouseId = 0;
-        /** @var ApiEntityManager|\PHPUnit_Framework_MockObject_MockObject $apiEntityManagerMock */
-        $apiEntityManagerMock = $this->getMockBuilder(ApiEntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $warehouseMock = $this->getMockBuilder(Warehouse::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $apiEntityManagerMock->expects($this->once())
+        $this->apiEntityManager->expects($this->once())
             ->method('find')
             ->with($warehouseId)
             ->willReturn($warehouseMock);
+
+        $om = $this->createMock(ObjectManager::class);
+
+        $this->apiEntityManager->expects($this->once())
+            ->method('getObjectManager')
+            ->willReturn($om);
+
+        $this->ownerDeletionManager->expects($this->once())
+            ->method('isOwner')
+            ->willReturn(true);
+
+        $this->ownerDeletionManager->expects($this->once())
+            ->method('hasAssignments')
+            ->willReturn(true);
+
+        $this->warehouseDeleteHandler->handleDelete($warehouseId, $this->apiEntityManager);
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\SecurityBundle\Exception\ForbiddenException
+     * @expectedExceptionMessage You have no rights to delete this entity
+     */
+    public function testHandlerThrowsForbiddenExceptionByNoRightsToDeleteEntity()
+    {
+        $warehouseId = 0;
+
+        $warehouseMock = $this->getMockBuilder(Warehouse::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->apiEntityManager->expects($this->once())
+            ->method('find')
+            ->with($warehouseId)
+            ->willReturn($warehouseMock);
+
+        $om = $this->createMock(ObjectManager::class);
+
+        $this->apiEntityManager->expects($this->once())
+            ->method('getObjectManager')
+            ->willReturn($om);
 
         $this->securityFacade->expects($this->once())
             ->method('isGranted')
             ->willReturn(false);
 
-        $this->warehouseDeleteHandler->handleDelete($warehouseId, $apiEntityManagerMock);
+        $this->ownerDeletionManager->expects($this->once())
+            ->method('isOwner')
+            ->willReturn(false);
+
+        $this->warehouseDeleteHandler->handleDelete($warehouseId, $this->apiEntityManager);
     }
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Cannot delete default warehouse.
-     * @expectedExceptionCode 500
+     * @expectedExceptionMessage An operation is forbidden. Reason: It is forbidden to delete default Warehouse
      */
-    public function testHandlerWillThrowException()
+    public function testHandlerThrowsForbiddenExceptionByNotPossibleToDeleteDefaultWarehouse()
     {
         $warehouseId = 0;
-        /** @var ApiEntityManager|\PHPUnit_Framework_MockObject_MockObject $apiEntityManagerMock */
-        $apiEntityManagerMock = $this->getMockBuilder(ApiEntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $warehouseMock = $this->getMockBuilder(Warehouse::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $apiEntityManagerMock->expects($this->once())
+        $this->apiEntityManager->expects($this->once())
             ->method('find')
             ->with($warehouseId)
             ->willReturn($warehouseMock);
+
+        $om = $this->createMock(ObjectManager::class);
+
+        $this->apiEntityManager->expects($this->once())
+            ->method('getObjectManager')
+            ->willReturn($om);
 
         $this->securityFacade->expects($this->once())
             ->method('isGranted')
             ->willReturn(true);
 
-        $this->warehouseDeleteValidator->expects($this->once())
-            ->method('validate')
-            ->with($warehouseMock)
+        $this->ownerDeletionManager->expects($this->once())
+            ->method('isOwner')
             ->willReturn(false);
 
-        $this->warehouseDeleteHandler->handleDelete($warehouseId, $apiEntityManagerMock);
+        $warehouseMock->expects($this->once())
+            ->method('isDefault')
+            ->willReturn(true);
+
+        $this->warehouseDeleteHandler->handleDelete($warehouseId, $this->apiEntityManager);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function testHandlerWarehouseCanBeDeleted()
     {
         $warehouseId = 0;
-        /** @var OwnerDeletionManager|\PHPUnit_Framework_MockObject_MockObject $ownerDeletionManagerMock */
-        $ownerDeletionManagerMock = $this->getMockBuilder(OwnerDeletionManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        /** @var ApiEntityManager|\PHPUnit_Framework_MockObject_MockObject $apiEntityManagerMock */
-        $apiEntityManagerMock = $this->getMockBuilder(ApiEntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
 
         $warehouseMock = $this->getMockBuilder(Warehouse::class)
             ->disableOriginalConstructor()
@@ -148,7 +186,7 @@ class WarehouseDeleteHandlerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $apiEntityManagerMock->expects($this->once())
+        $this->apiEntityManager->expects($this->once())
             ->method('find')
             ->with($warehouseId)
             ->willReturn($warehouseMock);
@@ -157,28 +195,20 @@ class WarehouseDeleteHandlerTest extends TestCase
             ->method('isGranted')
             ->willReturn(true);
 
-        $this->warehouseDeleteValidator->expects($this->once())
-            ->method('validate')
-            ->with($warehouseMock)
-            ->willReturn(true);
-
-        $apiEntityManagerMock->expects($this->atLeastOnce())
+        $this->apiEntityManager->expects($this->atLeastOnce())
             ->method('getObjectManager')
             ->willReturn($objectManagerMock);
 
         $objectManagerMock->expects($this->atLeastOnce())
             ->method('remove');
 
-        $ownerDeletionManagerMock->expects($this->atLeastOnce())
+        $this->ownerDeletionManager->expects($this->atLeastOnce())
             ->method('isOwner')
             ->willReturn(false);
 
         $objectManagerMock->expects($this->atLeastOnce())
             ->method('flush');
 
-        // set owner deletion manager
-        $this->warehouseDeleteHandler->setOwnerDeletionManager($ownerDeletionManagerMock);
-
-        $this->warehouseDeleteHandler->handleDelete($warehouseId, $apiEntityManagerMock);
+        $this->warehouseDeleteHandler->handleDelete($warehouseId, $this->apiEntityManager);
     }
 }

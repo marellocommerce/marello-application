@@ -3,7 +3,6 @@
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Context\Factory;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\Factory\GoogleApiContextFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContext;
 

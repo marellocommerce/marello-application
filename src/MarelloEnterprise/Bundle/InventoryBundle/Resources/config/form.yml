@@ -1,5 +1,3 @@
-parameters:
-    marelloenterprise_inventory.form.type.warehouse_delete.handler.class: MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseDeleteHandler
 services:
     marello_enterprise.form.extension.warehouse:
         class: MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\WarehouseExtension
@@ -10,21 +8,6 @@ services:
         class: MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\InventoryLevelExtension
         tags:
             - { name: form.type_extension, alias: marello_inventory_inventorylevel }
-
-    marelloenterprise.manager.api:
-        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - '%marello_inventory.entity.warehouse.class%'
-            - "@doctrine.orm.entity_manager"
-
-    marelloenterprise_inventory.form.type.warehouse_delete.handler:
-        class:  '%marelloenterprise_inventory.form.type.warehouse_delete.handler.class%'
-        parent: oro_soap.handler.delete.abstract
-        scope: request
-        arguments:
-            - '@marelloenterprise_inventory.validator.warehouse_delete'
-            - '@oro_security.security_facade'
 
     # Autocomplete search handler
     marelloenterprise_inventory.form.autocomplete.search_handler:

@@ -4,13 +4,12 @@ namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Result\Factory;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Psr\Log\LoggerInterface;
-
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 
 class GeocodingApiResultFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -60,7 +59,6 @@ class GeocodingApiResultFactoryTest extends \PHPUnit_Framework_TestCase
 
         static::assertEquals($expectedResult, $actualResult);
     }
-
 
     public function testCreateExceptionResult()
     {

@@ -4,8 +4,6 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
-use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 abstract class AbstractAddressesDistanceCalculatorChainElement implements AddressesDistanceCalculatorInterface
 {
@@ -32,8 +30,7 @@ abstract class AbstractAddressesDistanceCalculatorChainElement implements Addres
     {
         return $this->successor;
     }
-
-
+    
     /**
      * {@inheritdoc}
      */

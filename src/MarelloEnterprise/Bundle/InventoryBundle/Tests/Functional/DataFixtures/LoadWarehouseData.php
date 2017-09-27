@@ -4,7 +4,6 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Functional\DataFixtures
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 

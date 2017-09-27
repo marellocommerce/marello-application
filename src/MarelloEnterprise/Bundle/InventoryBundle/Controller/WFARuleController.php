@@ -9,8 +9,12 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @Route("/wfa-rule")
+ */
 class WFARuleController extends Controller
 {
     /**
@@ -97,7 +101,7 @@ class WFARuleController extends Controller
     /**
      * @param WFARule $entity
      * @param Request $request
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array|RedirectResponse
      */
     protected function update(WFARule $entity, Request $request)
     {

@@ -27,10 +27,19 @@ class WarehouseSelectType extends AbstractType
             ]
         );
     }
+    
     /**
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return self::NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return self::NAME;
     }

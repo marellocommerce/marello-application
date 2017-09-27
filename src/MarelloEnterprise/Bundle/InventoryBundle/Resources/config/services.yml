@@ -28,12 +28,26 @@ services:
     marelloenterprise_inventory.validator.warehouse_delete:
         class: '%marelloenterprise_inventory.validator.warehouse_delete.class%'
 
+    marelloenterprise_inventory.warehouse.manager.api:
+        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - '%marello_inventory.entity.warehouse.class%'
+            - '@doctrine.orm.entity_manager'
+
     marelloenterprise_inventory.wfa_rule.manager.api:
         class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
         parent: oro_soap.manager.entity_manager.abstract
         arguments:
             - 'MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule'
             - '@doctrine.orm.entity_manager'
+
+    marelloenterprise_inventory.handler.warehouse_delete:
+        class:  'MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseDeleteHandler'
+        parent: oro_soap.handler.delete.abstract
+        scope: request
+        arguments:
+            - '@oro_security.security_facade'
 
     marelloenterprise_inventory.datagrid.wfa_rule_actions_visibility_provider:
         parent: marello_rule.action.visibility_provider

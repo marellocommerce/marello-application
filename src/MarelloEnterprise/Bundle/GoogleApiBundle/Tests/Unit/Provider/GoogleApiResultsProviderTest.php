@@ -87,6 +87,9 @@ class GoogleApiResultsProviderTest extends \PHPUnit_Framework_TestCase
         $this->googleApiResultsProvider->getApiResults($context);
     }
 
+    /**
+     * @return array
+     */
     public function getApiResultsDataProvider()
     {
         return [

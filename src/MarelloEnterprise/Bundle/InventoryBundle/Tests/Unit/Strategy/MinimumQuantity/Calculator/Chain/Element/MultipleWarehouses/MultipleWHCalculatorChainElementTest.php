@@ -1,7 +1,8 @@
 <?php
 
-namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumQuantity\Calculator\Chain\Element\
-MultipleWarehouses;
+// @codingStandardsIgnoreStart
+namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumQuantity\Calculator\Chain\Element\MultipleWarehouses;
+// @codingStandardsIgnoreEnd
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

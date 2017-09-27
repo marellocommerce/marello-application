@@ -25,3 +25,4 @@ navigation:
         marelloenterprise_inventory_wfa_rule_create:  marelloenterprise.inventory.navigation.wfarule.create_label
         marelloenterprise_inventory_wfa_rule_update:  '%wfarule.label% - Edit'
         marelloenterprise_inventory_wfa_rule_view:    '%wfarule.label% - View'
+

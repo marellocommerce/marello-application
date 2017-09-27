@@ -2,7 +2,6 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
 

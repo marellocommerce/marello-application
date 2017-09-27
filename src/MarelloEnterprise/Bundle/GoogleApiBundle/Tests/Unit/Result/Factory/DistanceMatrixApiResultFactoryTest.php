@@ -28,8 +28,7 @@ class DistanceMatrixApiResultFactoryTest extends \PHPUnit_Framework_TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->distanceMatrixApiResultFactory = new DistanceMatrixApiResultFactory($this->logger);
     }
-
-
+    
     /**
      * @dataProvider getAPIResponse
      *
@@ -64,8 +63,7 @@ class DistanceMatrixApiResultFactoryTest extends \PHPUnit_Framework_TestCase
 
         static::assertEquals($expectedResult, $actualResult);
     }
-
-
+    
     public function testCreateExceptionResult()
     {
         $message = 'error message';

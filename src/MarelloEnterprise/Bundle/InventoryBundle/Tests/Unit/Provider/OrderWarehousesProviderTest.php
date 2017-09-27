@@ -103,6 +103,9 @@ class OrderWarehousesProviderTest extends \PHPUnit_Framework_TestCase
         static::assertEquals($expectedResult, $this->orderWarehousesProvider->getWarehousesForOrder($order));
     }
 
+    /**
+     * @return array
+     */
     public function getWarehousesForOrderDataProvider()
     {
         $result1 = new OrderWarehouseResult([OrderWarehouseResult::WAREHOUSE_FIELD => 'warehouse1']);

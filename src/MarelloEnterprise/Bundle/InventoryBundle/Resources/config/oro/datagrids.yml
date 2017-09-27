@@ -1,5 +1,5 @@
 datagrids:
-    marello-enterprise-inventory-warehouse-grid:
+    marelloenterprise-inventory-warehouses-grid:
         source:
             type: orm
             acl_resource: marelloenterprise_inventory_warehouse_view
@@ -76,8 +76,10 @@ datagrids:
                 rowAction: true
             delete:
                 type: delete
+                label: oro.grid.action.delete
                 link: delete_link
                 icon: trash
+                rowAction: true
                 confirmation: true
         action_configuration: ['@marelloenterprise_inventory.datagrid.action_permission_provider', "getActionPermissions"]
         options:
@@ -85,7 +87,7 @@ datagrids:
                 delete:
                     enabled: false
 
-    marello-enterprise-inventory-wfa-rules-grid:
+    marelloenterprise-inventory-wfa-rules-grid:
         acl_resource: marelloenterprise_inventory_wfa_rule_view
         source:
             type:         orm
