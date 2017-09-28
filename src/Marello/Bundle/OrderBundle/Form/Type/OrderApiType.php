@@ -2,10 +2,14 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
+use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectApiType;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
+use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -16,12 +20,12 @@ class OrderApiType extends AbstractType
 {
     const NAME = 'marello_order_api';
 
-    /** @var EntityToIdTransformer */
+    /**
+     * @var EntityToIdTransformer
+     */
     protected $salesChannelTransformer;
 
     /**
-     * OrderApiType constructor.
-     *
      * @param EntityToIdTransformer $salesChannelTransformer
      */
     public function __construct(EntityToIdTransformer $salesChannelTransformer)
@@ -37,23 +41,23 @@ class OrderApiType extends AbstractType
     {
         $builder
             ->add('orderReference')
-            ->add('salesChannel', 'marello_sales_channel_select_api', [
+            ->add('salesChannel', SalesChannelSelectApiType::class, [
                 'required'    => true,
                 'constraints' => new NotNull(),
             ])
-            ->add('subtotal', 'oro_money')
-            ->add('totalTax', 'oro_money')
-            ->add('discountAmount', 'oro_money')
-            ->add('currency', 'text')
-            ->add('couponCode', 'text')
-            ->add('grandTotal', 'oro_money')
-            ->add('billingAddress', AddressType::NAME)
-            ->add('shippingAddress', AddressType::NAME)
-            ->add('paymentMethod', 'text')
-            ->add('paymentDetails', 'text')
-            ->add('shippingMethod', 'text')
-            ->add('shippingAmountInclTax', 'oro_money')
-            ->add('shippingAmountExclTax', 'oro_money')
+            ->add('subtotal', OroMoneyType::class)
+            ->add('totalTax', OroMoneyType::class)
+            ->add('discountAmount', OroMoneyType::class)
+            ->add('currency', TextType::class)
+            ->add('couponCode', TextType::class)
+            ->add('grandTotal', OroMoneyType::class)
+            ->add('billingAddress', AddressType::class)
+            ->add('shippingAddress', AddressType::class)
+            ->add('paymentMethod', TextType::class)
+            ->add('paymentDetails', TextType::class)
+            ->add('shippingMethod', TextType::class)
+            ->add('shippingAmountInclTax', OroMoneyType::class)
+            ->add('shippingAmountExclTax', OroMoneyType::class)
             ->add('items', OrderItemCollectionType::NAME, [
                 'type'      => OrderItemApiType::NAME,
                 'allow_add' => true,
@@ -89,7 +93,7 @@ class OrderApiType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\OrderBundle\Entity\Order',
+            'data_class'         => Order::class,
             'intention'          => 'order',
             'cascade_validation' => true,
             'csrf_protection'    => false,

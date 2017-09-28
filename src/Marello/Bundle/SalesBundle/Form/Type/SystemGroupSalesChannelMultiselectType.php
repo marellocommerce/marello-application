@@ -3,9 +3,9 @@ namespace Marello\Bundle\SalesBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SalesChannelMultiSelectType extends AbstractSalesChannelMultiSelectType
+class SystemGroupSalesChannelMultiselectType extends AbstractSalesChannelMultiSelectType
 {
-    const NAME = 'marello_sales_saleschannel_multi_select';
+    const NAME = 'marello_system_group_sales_saleschannel_multi_select';
 
     /**
      * {@inheritdoc}
@@ -13,11 +13,12 @@ class SalesChannelMultiSelectType extends AbstractSalesChannelMultiSelectType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'autocomplete_alias' => 'saleschannels',
+            'autocomplete_alias' => 'system_group_saleschannels',
             'configs'            => [
                 'multiple'    => true,
                 'placeholder' => 'marello.sales.saleschannel.form.select_saleschannels',
-                'allowClear'  => true
+                'allowClear'  => true,
+                'component' => 'autocomplete-system-group-sales-channels',
             ],
         ]);
     }
@@ -29,7 +30,7 @@ class SalesChannelMultiSelectType extends AbstractSalesChannelMultiSelectType
     {
         return self::NAME;
     }
-
+    
     /**
      * {@inheritdoc}
      */

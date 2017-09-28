@@ -68,27 +68,91 @@ datagrids:
             default:
                 id: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         properties:
-            id: ~
-            delete_link:
+            view_link:
                 type:   url
-                route:  marello_sales_saleschannel_delete
-                params: [ id ]
-            edit_link:
-                type:   url
-                route:  marello_sales_saleschannel_update
+                route:  marello_sales_saleschannel_view
                 params: [ id ]
         actions:
-            edit:
-                type:          navigate
-                link:          edit_link
-                icon:          edit
-                rowAction:     true
-            delete:
-                type:          delete
-                link:          delete_link
-                label:         oro.grid.action.delete
-                confirmation:  true
-                icon:          trash
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_resource:   marello_sales_saleschannel_view
+                rowAction:      true
         options:
             entityHint: sales_channel
             entity_pagination: true
+
+    marello-sales-channel-groups:
+        source:
+            type: orm
+            query:
+                select:
+                    - scg
+                from:
+                    - { table: MarelloSalesBundle:SalesChannelGroup, alias: scg }
+                join:
+                    left:
+                        - { join: scg.salesChannels, alias: sc }
+                where:
+                    and:
+                        - scg.system != true
+        columns:
+            id:
+                label:                marello.sales.saleschannelgroup.id.label
+                frontend_type:        string
+            name:
+                label:                marello.sales.saleschannelgroup.name.label
+                frontend_type:        string
+            description:
+                label:                marello.sales.saleschannelgroup.description.label
+                frontend_type:        string
+            salesChannels:
+                label:                marello.sales.saleschannelgroup.sales_channels.label
+                type:                 twig
+                frontend_type:        html
+                template:             MarelloSalesBundle:SalesChannelGroup/Datagrid:salesChannels.html.twig
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: sc.name
+        sorters:
+            columns:
+                id:
+                    data_name: scg.id
+                name:
+                    data_name: scg.name
+                description:
+                    data_name: sc.description
+        properties:
+            view_link:
+                type:   url
+                route:  marello_sales_saleschannelgroup_view
+                params: [ id ]
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_resource:   marello_sales_saleschannelgroup_view
+                rowAction:      true
+        options:
+            entity_pagination: true
+
+    marello-group-sales-channels:
+        extends: marello-sales-channel
+        source:
+            query:
+                join:
+                    left:
+                        - { join: sc.group, alias: scg }
+                where:
+                    and:
+                        - scg.id = :id
+            bind_parameters:
+                - id
+        filters: ~
+        actions: ~
