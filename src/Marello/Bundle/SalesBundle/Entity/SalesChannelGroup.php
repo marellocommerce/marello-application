@@ -106,7 +106,7 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
      *
      * @ORM\OneToMany(targetEntity="SalesChannel", mappedBy="group", fetch="EAGER")
      */
-    private $salesChannels;
+    protected $salesChannels;
 
     public function __construct()
     {
@@ -232,7 +232,10 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
 
         return $this;
     }
-    
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->getName();

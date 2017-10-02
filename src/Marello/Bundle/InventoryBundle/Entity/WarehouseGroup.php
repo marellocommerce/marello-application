@@ -10,6 +10,7 @@ use Marello\Bundle\InventoryBundle\Model\ExtendWarehouseGroup;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
@@ -18,6 +19,10 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  * @ORM\HasLifecycleCallbacks()
  * @Config(
  *  defaultValues={
+ *       "security"={
+ *           "type"="ACL",
+ *           "group_name"=""
+ *       },
  *      "ownership"={
  *          "owner_type"="ORGANIZATION",
  *          "owner_field_name"="organization",
@@ -26,11 +31,13 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *  }
  * )
  */
-class WarehouseGroup extends ExtendWarehouseGroup
+class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
- 
+
     /**
+     * @var int
+     *
      * @ORM\Id
      * @ORM\Column(type="integer", name="id")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -98,17 +105,28 @@ class WarehouseGroup extends ExtendWarehouseGroup
     protected $organization;
 
     /**
+     * @var Warehouse[]
+     *
      * @ORM\OneToMany(targetEntity="Warehouse", mappedBy="group", fetch="EAGER")
      */
-    private $warehouses;
+    protected $warehouses;
+
+    /**
+     * @var WarehouseChannelGroupLink
+     *
+     * @ORM\OneToOne(targetEntity="WarehouseChannelGroupLink", mappedBy="warehouseGroup")
+     */
+    protected $warehouseChannelGroupLink;
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->warehouses = new ArrayCollection();
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId()
     {
@@ -173,7 +191,7 @@ class WarehouseGroup extends ExtendWarehouseGroup
     }
 
     /**
-     * @return OrganizationInterface
+     * {@inheritdoc}
      */
     public function getOrganization()
     {
@@ -181,7 +199,7 @@ class WarehouseGroup extends ExtendWarehouseGroup
     }
 
     /**
-     * @param OrganizationInterface $organization
+     * {@inheritdoc}
      * @return $this
      */
     public function setOrganization(OrganizationInterface $organization)
@@ -201,7 +219,6 @@ class WarehouseGroup extends ExtendWarehouseGroup
 
     /**
      * @param Warehouse $warehouse
-     *
      * @return $this
      */
     public function addWarehouse(Warehouse $warehouse)
@@ -215,7 +232,6 @@ class WarehouseGroup extends ExtendWarehouseGroup
 
     /**
      * @param Warehouse $warehouse
-     *
      * @return $this
      */
     public function removeWarehouse(Warehouse $warehouse)
@@ -227,6 +243,28 @@ class WarehouseGroup extends ExtendWarehouseGroup
         return $this;
     }
 
+    /**
+     * @return WarehouseChannelGroupLink
+     */
+    public function getWarehouseChannelGroupLink()
+    {
+        return $this->warehouseChannelGroupLink;
+    }
+
+    /**
+     * @param WarehouseChannelGroupLink $warehouseChannelGroupLink
+     * @return $this
+     */
+    public function setWarehouseChannelGroupLink($warehouseChannelGroupLink)
+    {
+        $this->warehouseChannelGroupLink = $warehouseChannelGroupLink;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->getName();

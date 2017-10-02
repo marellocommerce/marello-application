@@ -40,6 +40,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->createMarelloInventoryWarehouseTable($schema);
         $this->createMarelloInventoryWarehouseTypeTable($schema);
         $this->createMarelloInventoryWarehouseGroupTable($schema);
+        $this->createMarelloInventoryWarehouseChannelGroupLinkTable($schema);
+        $this->createMarelloInventoryWhChLinkJoinChannelGroupTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloInventoryItemForeignKeys($schema);
@@ -47,6 +49,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->addMarelloInventoryWarehouseForeignKeys($schema);
         $this->addMarelloInventoryWarehouseGroupForeignKeys($schema);
         $this->addMarelloInventoryInventoryLevelLogForeignKeys($schema);
+        $this->addMarelloInventoryWarehouseChannelGroupLinkForeignKeys($schema);
+        $this->addMarelloInventoryWhChLinkJoinChannelGroupForeignKeys($schema);
     }
 
     /**
@@ -179,6 +183,34 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
     }
 
     /**
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryWarehouseChannelGroupLinkTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_wh_chg_link');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('system', 'boolean', ['default' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('warehouse_group_id', 'integer', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->addUniqueIndex(['warehouse_group_id'], 'UNIQ_2AC24B90DE1CBBE1');
+        $table->setPrimaryKey(['id']);
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryWhChLinkJoinChannelGroupTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_lnk_join_chg');
+        $table->addColumn('link_id', 'integer', ['notnull' => true]);
+        $table->addColumn('channel_group_id', 'integer', ['notnull' => true]);
+        $table->addUniqueIndex(['channel_group_id'], 'UNIQ_629E2BBEA750E85');
+        $table->setPrimaryKey(['link_id', 'channel_group_id']);
+    }
+
+    /**
      * Add marello_inventory_item foreign keys.
      *
      * @param Schema $schema
@@ -283,6 +315,46 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             ['organization_id'],
             ['id'],
             ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryWarehouseChannelGroupLinkForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_wh_chg_link');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_wh_group'),
+            ['warehouse_group_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+    }
+    
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryWhChLinkJoinChannelGroupForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_lnk_join_chg');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_wh_chg_link'),
+            ['link_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_sales_channel_group'),
+            ['channel_group_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
         );
     }
 

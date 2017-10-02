@@ -6,73 +6,48 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class SalesChannelGroupHandler
+class SalesChannelGroupHandler implements FormHandlerInterface
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
-
     /**
      * @var EntityManagerInterface
      */
     protected $manager;
 
     /**
-     * @param FormInterface $form
      * @param ObjectManager $manager
      */
-    public function __construct(FormInterface $form, ObjectManager $manager)
+    public function __construct(ObjectManager $manager)
     {
-        $this->form = $form;
         $this->manager = $manager;
     }
 
     /**
-     * Process form
-     *
-     * @param  SalesChannelGroup $entity
-     * @param Request $request
-     * @return bool True on successful processing, false otherwise
+     * {@inheritdoc}
      */
-    public function process(SalesChannelGroup $entity, Request $request)
+    public function process($data, FormInterface $form, Request $request)
     {
-        $channelsBefore = $entity->getSalesChannels()->toArray();
-        $this->form->setData($entity);
+        if (!$data instanceof SalesChannelGroup) {
+            throw new \InvalidArgumentException('Argument data should be instance of SalesChannelGroup entity');
+        }
+        
+        $channelsBefore = $data->getSalesChannels()->toArray();
+        $form->setData($data);
 
         if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($request);
+            $form->submit($request);
 
-            if ($this->form->isValid()) {
-                $this->onSuccess($entity, $channelsBefore);
+            if ($form->isValid()) {
+                $this->onSuccess($data, $channelsBefore);
 
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * Returns form instance
-     *
-     * @return FormInterface
-     */
-    public function getFormView()
-    {
-        $config = $this->form->getConfig();
-
-        /** @var FormInterface $form */
-        $form = $config->getFormFactory()->createNamed(
-            $this->form->getName(),
-            $config->getType()->getName(),
-            $this->form->getData()
-        );
-
-        return $form->createView();
     }
 
     /**

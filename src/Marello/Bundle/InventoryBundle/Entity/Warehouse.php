@@ -133,6 +133,8 @@ class Warehouse extends ExtendWarehouse
      */
     public function __construct($label = null, $default = false)
     {
+        parent::__construct();
+        
         $this->label   = $label;
         $this->default = $default;
     }

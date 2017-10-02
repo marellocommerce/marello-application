@@ -139,6 +139,8 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
      */
     public function __construct(Warehouse $warehouse, ProductInterface $product = null)
     {
+        parent::__construct();
+        
         $this->product   = $product;
         $this->warehouse = $warehouse;
         $this->inventoryLevels    = new ArrayCollection();

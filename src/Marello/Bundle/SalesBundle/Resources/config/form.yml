@@ -48,20 +48,13 @@ services:
         tags:
             - { name: form.type, alias: marello_sales_channel_select_api }
 
-    #forms
-    marello_sales.saleschannelgroup.form:
-        class: Symfony\Component\Form\Form
-        factory: ['@form.factory', createNamed]
-        arguments:
-            - 'marello_sales_channel_group'
-            - 'marello_sales_channel_group'
-
     #form handlers
     marello_sales.saleschannelgroup_form.handler:
         class: '%marello_sales.form_handler.saleschannelgroup.class%'
         arguments:
-            - '@marello_sales.saleschannelgroup.form'
             - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_form.form.handler, alias: marello_sales.saleschannelgroup_form.handler }
 
     #data transformer
     marello_sales.form.data_transformer.sales_channel:

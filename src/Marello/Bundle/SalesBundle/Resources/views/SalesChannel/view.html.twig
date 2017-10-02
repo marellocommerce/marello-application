@@ -1,7 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
-{% oro_title_set({params : {"%id%": entity.name }}) %}
+{% oro_title_set({params : {'%name%': entity.name, '%entityName%': 'marello.sales.saleschannel.entity_label'|trans }}) %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {

@@ -8,11 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Form\Handler\SalesChannelGroupHandler;
-use Symfony\Component\Form\FormConfigInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
 class SalesChannelGroupHandlerTest extends \PHPUnit_Framework_TestCase
@@ -39,7 +35,7 @@ class SalesChannelGroupHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->form = $this->createMock(FormInterface::class);
         $this->manager = $this->createMock(ObjectManager::class);
-        $this->salesChannelGroupHandler = new SalesChannelGroupHandler($this->form, $this->manager);
+        $this->salesChannelGroupHandler = new SalesChannelGroupHandler($this->manager);
     }
 
     public function testProcess()
@@ -113,55 +109,7 @@ class SalesChannelGroupHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('isValid')
             ->willReturn(true);
 
-        $this->salesChannelGroupHandler->process($updatedGroup, $request);
-    }
-
-    public function testGetFormView()
-    {
-        $formView = $this->createMock(FormView::class);
-
-        $form = $this->createMock(FormInterface::class);
-        $form
-            ->expects(static::once())
-            ->method('createView')
-            ->willReturn($formView);
-
-        $formFactory = $this->createMock(FormFactoryInterface::class);
-        $formFactory
-            ->expects(static::once())
-            ->method('createNamed')
-            ->willReturn($form);
-
-        $formType = $this->createMock(FormTypeInterface::class);
-        $formType
-            ->expects(static::once())
-            ->method('getName')
-            ->willReturn('name');
-
-        $config = $this->createMock(FormConfigInterface::class);
-        $config
-            ->expects(static::once())
-            ->method('getFormFactory')
-            ->willReturn($formFactory);
-        $config
-            ->expects(static::once())
-            ->method('getType')
-            ->willReturn($formType);
-
-        $this->form
-            ->expects(static::once())
-            ->method('getConfig')
-            ->willReturn($config);
-        $this->form
-            ->expects(static::once())
-            ->method('getName')
-            ->willReturn('name');
-        $this->form
-            ->expects(static::once())
-            ->method('getData')
-            ->willReturn([]);
-
-        static::assertEquals($formView, $this->salesChannelGroupHandler->getFormView());
+        $this->salesChannelGroupHandler->process($updatedGroup, $this->form, $request);
     }
 
     /**

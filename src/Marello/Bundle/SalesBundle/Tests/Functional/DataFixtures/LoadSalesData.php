@@ -12,6 +12,7 @@ class LoadSalesData extends AbstractFixture
     const CHANNEL_1_REF = 'channel1';
     const CHANNEL_2_REF = 'channel2';
     const CHANNEL_3_REF = 'channel3';
+    const CHANNEL_4_REF = 'channel4';
 
     /**
      * @var ObjectManager $manager
@@ -43,6 +44,14 @@ class LoadSalesData extends AbstractFixture
             'code' => 'chan_gbp',
             'type' => 'pos',
             'currency' => 'GBP',
+            'active' => false,
+            'default' => false,
+        ],
+        self::CHANNEL_4_REF => [
+            'name' => 'Channel-UAH',
+            'code' => 'chan_uah',
+            'type' => 'pos',
+            'currency' => 'UAH',
             'active' => false,
             'default' => false,
         ],
