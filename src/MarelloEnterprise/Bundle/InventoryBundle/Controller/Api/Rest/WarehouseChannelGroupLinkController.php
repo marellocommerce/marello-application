@@ -10,20 +10,20 @@ use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Rest\RouteResource("warehousegroup")
+ * @Rest\RouteResource("warehousechannelgrouplink")
  * @Rest\NamePrefix("marelloenterprise_inventory_api_")
  */
-class WarehouseGroupController extends RestController implements ClassResourceInterface
+class WarehouseChannelGroupLinkController extends RestController implements ClassResourceInterface
 {
     /**
-     * Delete entity WarehouseGroup
+     * Delete entity WarehouseChannelGroupLink
      *
      * @param int $id
      *
      * @ApiDoc(
-     *      description="Delete warehousegroup from application"
+     *      description="Delete warehousechannelgrouplink from application"
      * )
-     * @Security\AclAncestor("marelloenterprise_inventory_warehousegroup_delete")
+     * @Security\AclAncestor("marelloenterprise_inventory_warehousechannelgrouplink_delete")
      * @return Response
      */
     public function deleteAction($id)
@@ -36,7 +36,7 @@ class WarehouseGroupController extends RestController implements ClassResourceIn
      */
     public function getManager()
     {
-        return $this->get('marelloenterprise_inventory.warehousegroup.manager.api');
+        return $this->get('marelloenterprise_inventory.warehousechannelgrouplink.manager.api');
     }
 
     /**
@@ -60,6 +60,6 @@ class WarehouseGroupController extends RestController implements ClassResourceIn
      */
     public function getDeleteHandler()
     {
-        return $this->get('marelloenterprise_inventory.handler.warehousegroup_delete');
+        return $this->get('marelloenterprise_inventory.handler.warehousechannelgrouplink_delete');
     }
 }

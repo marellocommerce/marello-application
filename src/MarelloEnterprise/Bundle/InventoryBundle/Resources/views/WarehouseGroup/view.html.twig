@@ -2,7 +2,7 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% oro_title_set({params : {"%id%": entity.name }}) %}
+{% oro_title_set({params : {'%name%': entity.name, '%entityName%': 'marello.inventory.warehousegroup.entity_label'|trans} }) %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {

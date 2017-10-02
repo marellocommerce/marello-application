@@ -2,11 +2,11 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Functional\Controller\Api\Rest;
 
-use MarelloEnterprise\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadWarehouseGroupData;
+use MarelloEnterprise\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadWarehouseChannelGroupLinkData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class WarehouseGroupControllerTest extends WebTestCase
+class WarehouseChannelGroupLinkControllerTest extends WebTestCase
 {
     /**
      * {@inheritdoc}
@@ -16,17 +16,17 @@ class WarehouseGroupControllerTest extends WebTestCase
         $this->initClient([], $this->generateWsseAuthHeader());
 
         $this->loadFixtures([
-            LoadWarehouseGroupData::class
+            LoadWarehouseChannelGroupLinkData::class
         ]);
     }
 
     public function testDeleteExistingWarehouseGroup()
     {
-        $id = $this->getReference(LoadWarehouseGroupData::ADDITIONAL_WAREHOUSE_GROUP)->getId();
+        $id = $this->getReference(LoadWarehouseChannelGroupLinkData::ADDITIONAL_WAREHOUSE_CHANNELGROUP_LINK)->getId();
 
         $this->client->request(
             'DELETE',
-            $this->getUrl('marelloenterprise_inventory_api_delete_warehousegroup', ['id' => $id])
+            $this->getUrl('marelloenterprise_inventory_api_delete_warehousechannelgrouplink', ['id' => $id])
         );
 
         /** @var $result Response */
@@ -35,28 +35,28 @@ class WarehouseGroupControllerTest extends WebTestCase
 
         $this->client->request(
             'GET',
-            $this->getUrl('marelloenterprise_inventory_warehousegroup_view', array('id' => $id))
+            $this->getUrl('marelloenterprise_inventory_warehousechannelgrouplink_update', array('id' => $id))
         );
 
         $result = $this->client->getResponse();
         $this->assertResponseStatusCodeEquals($result, 404);
     }
 
-    public function testCannotDeleteSystemWarehouseGroup()
+    public function testCannotDeleteSystemLink()
     {
-        $warehouseGroup = $this->getContainer()
+        $link = $this->getContainer()
             ->get('doctrine')
-            ->getRepository('MarelloInventoryBundle:WarehouseGroup')
+            ->getRepository('MarelloInventoryBundle:WarehouseChannelGroupLink')
             ->findOneBy(['system' => true]);
 
         $this->client->request(
             'DELETE',
-            $this->getUrl('marelloenterprise_inventory_api_delete_warehousegroup', ['id' => $warehouseGroup->getId()])
+            $this->getUrl('marelloenterprise_inventory_api_delete_warehousechannelgrouplink', ['id' => $link->getId()])
         );
 
         $this->getJsonResponseContent($this->client->getResponse(), Response::HTTP_FORBIDDEN);
         $this->assertEquals(
-            '{"reason":"It is forbidden to delete system Warehouse Group"}',
+            '{"reason":"It is forbidden to delete system Warehouse Channel Group Link"}',
             $this->client->getResponse()->getContent()
         );
     }

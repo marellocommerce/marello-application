@@ -1,8 +1,8 @@
 define(function (require) {
     'use strict';
-    var Select2AutocompleteSystemGroupGlobalWarehousesComponent,
+    var Select2AutocompleteOwnerAwareWarehouseGroupComponent,
         Select2AutocompleteComponent = require('oro/select2-autocomplete-component');
-    Select2AutocompleteSystemGroupGlobalWarehousesComponent = Select2AutocompleteComponent.extend({
+    Select2AutocompleteOwnerAwareWarehouseGroupComponent = Select2AutocompleteComponent.extend({
 
         /**
          * @property {Object}
@@ -16,7 +16,7 @@ define(function (require) {
          */
         initialize: function(options) {
             this.$sourceElement = options._sourceElement;
-            Select2AutocompleteSystemGroupGlobalWarehousesComponent.__super__.initialize.call(this, options);
+            Select2AutocompleteOwnerAwareWarehouseGroupComponent.__super__.initialize.call(this, options);
         },
 
         /**
@@ -42,10 +42,10 @@ define(function (require) {
                 return;
             }
 
-            Select2AutocompleteSystemGroupGlobalWarehousesComponent.__super__.dispose.call(this);
+            Select2AutocompleteOwnerAwareWarehouseGroupComponent.__super__.dispose.call(this);
         }
     });
-    return Select2AutocompleteSystemGroupGlobalWarehousesComponent;
+    return Select2AutocompleteOwnerAwareWarehouseGroupComponent;
 });
 
 

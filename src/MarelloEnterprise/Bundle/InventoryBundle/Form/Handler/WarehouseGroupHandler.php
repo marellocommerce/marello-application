@@ -6,73 +6,48 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class WarehouseGroupHandler
+class WarehouseGroupHandler implements FormHandlerInterface
 {
-    /**
-     * @var FormInterface
-     */
-    protected $form;
-
     /**
      * @var EntityManagerInterface
      */
     protected $manager;
 
     /**
-     * @param FormInterface $form
      * @param ObjectManager $manager
      */
-    public function __construct(FormInterface $form, ObjectManager $manager)
+    public function __construct(ObjectManager $manager)
     {
-        $this->form = $form;
         $this->manager = $manager;
     }
 
     /**
-     * Process form
-     *
-     * @param WarehouseGroup $entity
-     * @param Request $request
-     * @return bool
+     * {@inheritdoc}
      */
-    public function process(WarehouseGroup $entity, Request $request)
+    public function process($data, FormInterface $form, Request $request)
     {
-        $warehousesBefore = $entity->getWarehouses()->toArray();
-        $this->form->setData($entity);
+        if (!$data instanceof WarehouseGroup) {
+            throw new \InvalidArgumentException('Argument data should be instance of WarehouseGroup entity');
+        }
+        
+        $warehousesBefore = $data->getWarehouses()->toArray();
+        $form->setData($data);
 
         if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($request);
+            $form->submit($request);
 
-            if ($this->form->isValid()) {
-                $this->onSuccess($entity, $warehousesBefore);
+            if ($form->isValid()) {
+                $this->onSuccess($data, $warehousesBefore);
 
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * Returns form instance
-     *
-     * @return FormInterface
-     */
-    public function getFormView()
-    {
-        $config = $this->form->getConfig();
-
-        /** @var FormInterface $form */
-        $form = $config->getFormFactory()->createNamed(
-            $this->form->getName(),
-            $config->getType()->getName(),
-            $this->form->getData()
-        );
-
-        return $form->createView();
     }
 
     /**
@@ -103,6 +78,9 @@ class WarehouseGroupHandler
         $this->manager->flush();
     }
 
+    /**
+     * @return WarehouseGroup
+     */
     private function getSystemWarehouseGroup()
     {
         return $this->manager->getRepository(WarehouseGroup::class)->findOneBy(['system' => true]);
