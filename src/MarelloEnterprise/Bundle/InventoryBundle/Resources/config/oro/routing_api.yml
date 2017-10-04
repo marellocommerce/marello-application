@@ -5,3 +5,8 @@ marelloenterprise_inventory_warehouse_api:
 marelloenterprise_inventory_warehousegroup_api:
     resource:     "@MarelloEnterpriseInventoryBundle/Controller/Api/Rest/WarehouseGroupController.php"
     type:         rest
+
+marelloenterprise_inventory_warehousechannelgrouplink_api:
+    resource:     "@MarelloEnterpriseInventoryBundle/Controller/Api/Rest/WarehouseChannelGroupLinkController.php"
+    type:         rest
+

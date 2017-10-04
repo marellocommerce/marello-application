@@ -3,6 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGroupType;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -104,20 +105,12 @@ class WarehouseGroupController extends Controller
      */
     protected function update(WarehouseGroup $entity, Request $request)
     {
-        $handler = $this->get('marelloenterprise_inventory.form_handler.warehousegroup');
-
-        if ($handler->process($entity, $request)) {
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('marelloenterprise.inventory.messages.success.warehousegroup.saved')
-            );
-
-            return $this->get('oro_ui.router')->redirect($entity);
-        }
-
-        return [
-            'entity' => $entity,
-            'form'   => $handler->getFormView(),
-        ];
+        return $this->get('oro_form.update_handler')->update(
+            $entity,
+            $this->createForm(WarehouseGroupType::class, $entity),
+            $this->get('translator')->trans('marelloenterprise.inventory.messages.success.warehousegroup.saved'),
+            $request,
+            'marelloenterprise_inventory.form_handler.warehousegroup'
+        );
     }
 }

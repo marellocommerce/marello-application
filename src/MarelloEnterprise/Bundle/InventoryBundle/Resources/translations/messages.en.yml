@@ -2,8 +2,9 @@ marelloenterprise:
     inventory:
         messages:
             success:
-                warehouse.saved:        Warehouse has been saved successfully
-                warehousegroup.saved:   Warehouse Group has been saved successfully
+                warehouse.saved:                   Warehouse has been saved successfully
+                warehousegroup.saved:              Warehouse Group has been saved successfully
+                warehousechannelgrouplink.saved:   Warehouse Channel Group Link has been saved successfully
 
         navigation:
             warehouse:
@@ -17,3 +18,10 @@ marelloenterprise:
             datablock:
                 general: General
                 warehouses: Warehouses
+            form:
+                select_warehousegroup:      Select Warehouse Group
+
+        warehousechannelgrouplink:
+            datablock:
+                general: General
+                channel_groups: Sales Channel Groups
