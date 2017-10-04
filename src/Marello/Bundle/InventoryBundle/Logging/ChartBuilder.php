@@ -3,7 +3,6 @@
 namespace Marello\Bundle\InventoryBundle\Logging;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 use Oro\Bundle\DashboardBundle\Helper\DateHelper;
@@ -11,13 +10,19 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class ChartBuilder
 {
-    /** @var Registry */
+    /**
+     * @var Registry
+     */
     protected $doctrine;
 
-    /** @var DateHelper */
+    /**
+     * @var DateHelper
+     */
     protected $dateHelper;
 
-    /** @var TranslatorInterface */
+    /**
+     * @var TranslatorInterface
+     */
     protected $translator;
 
     /**

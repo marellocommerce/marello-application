@@ -191,7 +191,6 @@ datagrids:
                 pageSize:
                     default_per_page: 50
 
-
     marello-inventory-levels:
         source:
             type: orm

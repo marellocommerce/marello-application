@@ -2,14 +2,13 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller\Api\Rest;
 
-use Symfony\Component\HttpFoundation\Response;
-
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductControllerTest extends WebTestCase
 {
@@ -24,13 +23,13 @@ class ProductControllerTest extends WebTestCase
     }
 
     /**
-     * @return \Marello\Bundle\InventoryBundle\Entity\Warehouse
+     * @return Warehouse
      */
     protected function getDefaultWarehouse()
     {
-        return $this->getContainer()
-            ->get('doctrine')
-            ->getRepository('MarelloInventoryBundle:Warehouse')
+        return $this
+            ->getContainer()
+            ->get('marello_inventory.repository.warehouse')
             ->getDefault();
     }
 

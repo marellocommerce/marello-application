@@ -2,26 +2,30 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Logging;
 
-use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Logging\ChartBuilder;
 use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
+use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductInventoryData;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class ChartBuilderTest extends WebTestCase
 {
-    /** @var ChartBuilder */
+    /**
+     * @var ChartBuilder
+     */
     protected $chartBuilder;
 
-    /** @var InventoryItemManager $itemManager */
+    /**
+     * @var InventoryItemManager
+     */
     protected $itemManager;
 
-    /** @var InventoryTotalCalculator $totalCalculator **/
+    /**
+     * @var InventoryTotalCalculator
+     */
     protected $totalCalculator;
 
     public function setUp()
@@ -30,7 +34,9 @@ class ChartBuilderTest extends WebTestCase
 
         $this->chartBuilder = $this->client->getContainer()->get('marello_inventory.logging.chart_builder');
         $this->itemManager = $this->client->getContainer()->get('marello_inventory.manager.inventory_item_manager');
-        $this->totalCalculator = $this->client->getContainer()->get('marello_inventory.model.inventory_level_totals_calculator');
+        $this->totalCalculator = $this->client
+            ->getContainer()
+            ->get('marello_inventory.model.inventory_level_totals_calculator');
 
         $this->loadFixtures([
             LoadProductData::class,

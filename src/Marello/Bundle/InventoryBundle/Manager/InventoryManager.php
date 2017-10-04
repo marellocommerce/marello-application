@@ -106,7 +106,8 @@ class InventoryManager implements InventoryManagerInterface
             return false;
         }
 
-        if (($level->getInventoryQty() === $inventory) && ($level->getAllocatedInventoryQty() === $allocatedInventory)) {
+        if (($level->getInventoryQty() === $inventory) &&
+            ($level->getAllocatedInventoryQty() === $allocatedInventory)) {
             return false;
         }
 

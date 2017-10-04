@@ -2,12 +2,12 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\TemplateFixture;
 
-use Oro\Bundle\ImportExportBundle\TemplateFixture\AbstractTemplateRepository;
-use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
-
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\ImportExportBundle\TemplateFixture\AbstractTemplateRepository;
+use Oro\Bundle\ImportExportBundle\TemplateFixture\TemplateFixtureInterface;
 
 class InventoryLevelFixture extends AbstractTemplateRepository implements TemplateFixtureInterface
 {
@@ -33,7 +33,7 @@ class InventoryLevelFixture extends AbstractTemplateRepository implements Templa
     protected function createEntity($key)
     {
         $warehouseRepo = $this->templateManager
-            ->getEntityRepository('Marello\Bundle\InventoryBundle\Entity\Warehouse');
+            ->getEntityRepository(Warehouse::class);
 
         $product = $this->createProduct();
         $warehouse = $warehouseRepo->getEntity('default');
@@ -71,8 +71,6 @@ class InventoryLevelFixture extends AbstractTemplateRepository implements Templa
         $entity = new Product();
         $entity->setName('SKU 1');
         $entity->setSku('sku_001');
-        $entity->setDesiredStockLevel(0);
-        $entity->setPurchaseStockLevel(0);
 
         return $entity;
     }

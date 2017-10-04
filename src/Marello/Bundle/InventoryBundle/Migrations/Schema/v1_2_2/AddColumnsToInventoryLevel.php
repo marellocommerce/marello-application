@@ -3,13 +3,9 @@
 namespace Marello\Bundle\InventoryBundle\Migrations\Schema\v1_2_2;
 
 use Doctrine\DBAL\Schema\Schema;
-
 use Oro\Bundle\MigrationBundle\Migration\Migration;
-use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\MigrationBundle\Migration\OrderedMigrationInterface;
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
+use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -17,7 +13,6 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterf
  */
 class AddColumnsToInventoryLevel implements Migration, OrderedMigrationInterface
 {
-
     /**
      * {@inheritdoc}
      */
@@ -56,7 +51,9 @@ class AddColumnsToInventoryLevel implements Migration, OrderedMigrationInterface
         }
     }
 
-
+    /**
+     * @param Schema $schema
+     */
     protected function updateInventoryLevelForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_inventory_level');

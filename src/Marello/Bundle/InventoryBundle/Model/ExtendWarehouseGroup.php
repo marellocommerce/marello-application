@@ -3,9 +3,9 @@
 namespace Marello\Bundle\InventoryBundle\Model;
 
 /**
- * Class ExtendWarehouse
+ * Class ExtendWarehouseGroup
  * @package Marello\Bundle\InventoryBundle\Model
  */
-class ExtendWarehouse
+class ExtendWarehouseGroup
 {
 }

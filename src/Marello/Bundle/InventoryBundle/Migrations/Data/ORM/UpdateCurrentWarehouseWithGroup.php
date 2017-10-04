@@ -6,9 +6,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 
-class UpdateCurrentWarehouseWithType extends AbstractFixture implements DependentFixtureInterface
+class UpdateCurrentWarehouseWithGroup extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * @var ObjectManager
@@ -21,7 +21,7 @@ class UpdateCurrentWarehouseWithType extends AbstractFixture implements Dependen
     public function getDependencies()
     {
         return [
-            LoadWarehouseTypeData::class
+            LoadWarehouseGroupData::class
         ];
     }
 
@@ -35,14 +35,14 @@ class UpdateCurrentWarehouseWithType extends AbstractFixture implements Dependen
     }
 
     /**
-     * update current Warehouse with the WarehouseType
+     * update current Warehouse with WarehouseGroup
      */
     public function updateCurrentWarehouse()
     {
         $defaultWarehouse = $this->manager->getRepository(Warehouse::class)->getDefault();
-        /** @var WarehouseType $warehouseType */
-        $warehouseType = $this->getReference('warehouse_type_global');
-        $defaultWarehouse->setWarehouseType($warehouseType);
+        /** @var WarehouseGroup $warehouseGroup */
+        $warehouseGroup = $this->getReference('system_warehouse_group');
+        $defaultWarehouse->setGroup($warehouseGroup);
         $this->manager->persist($defaultWarehouse);
         $this->manager->flush();
     }

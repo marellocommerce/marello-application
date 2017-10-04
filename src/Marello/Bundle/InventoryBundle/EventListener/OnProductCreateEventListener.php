@@ -2,23 +2,28 @@
 
 namespace Marello\Bundle\InventoryBundle\EventListener;
 
-use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Manager\InventoryItemManagerInterface;
+use Marello\Bundle\ProductBundle\Entity\Product;
 
 class OnProductCreateEventListener
 {
-    /** @var InventoryItemManagerInterface $producer */
+    /**
+     * @var InventoryItemManagerInterface
+     */
     protected $inventoryItemManager;
 
-    /** @var UnitOfWork $unitOfWork */
+    /**
+     * @var UnitOfWork
+     */
     protected $unitOfWork;
 
-    /** @var EntityManager $em */
+    /**
+     * @var EntityManager
+     */
     protected $em;
 
     /**
@@ -42,7 +47,6 @@ class OnProductCreateEventListener
         if (!empty($this->unitOfWork->getScheduledEntityInsertions())) {
             $records = $this->filterRecords($this->unitOfWork->getScheduledEntityInsertions());
             $this->applyCallBackForChangeSet('createInventoryItem', $records);
-
         }
     }
 

@@ -3,8 +3,6 @@
 namespace Marello\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -76,7 +74,7 @@ class InventoryController extends Controller
 
     /**
      * @Config\Route("/widget/info/{id}", name="marello_inventory_widget_info", requirements={"id"="\d+"})
-     * @Config\Template
+     * @Config\Template("MarelloInventoryBundle:Inventory/widget:info.html.twig")
      *
      * @param InventoryItem $inventoryItem
      *
@@ -92,7 +90,7 @@ class InventoryController extends Controller
 
     /**
      * @Config\Route("/widget/datagrid/{id}", name="marello_inventory_widget_datagrid", requirements={"id"="\d+"})
-     * @Config\Template
+     * @Config\Template("MarelloInventoryBundle:Inventory/widget:datagrid.html.twig")
      *
      * @param InventoryItem $inventoryItem
      *

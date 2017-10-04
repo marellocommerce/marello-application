@@ -3,34 +3,43 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadProductInventoryData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
-    /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
+    /**
+     * @var Organization
+     */
     protected $defaultOrganization;
 
-    /** @var \Marello\Bundle\InventoryBundle\Entity\Warehouse $defaultWarehouse */
+    /**
+     * @var Warehouse
+     */
     protected $defaultWarehouse;
 
-    /** @var array $replenishments */
+    /**
+     * @var array
+     */
     protected $replenishments;
 
-    /** @var ObjectManager $manager */
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
 
-    /** @var ContainerInterface $container */
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
 
     /**
@@ -41,6 +50,9 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
         $this->container = $container;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getDependencies()
     {
         return [
@@ -63,8 +75,8 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
             $this->defaultOrganization = array_shift($organizations);
         }
 
-        $this->defaultWarehouse = $this->manager
-            ->getRepository('MarelloInventoryBundle:Warehouse')
+        $this->defaultWarehouse = $this->container
+            ->get('marello_inventory.repository.warehouse')
             ->getDefault();
 
         $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
