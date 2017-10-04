@@ -7,7 +7,6 @@ parameters:
 
     #validator
     marelloenterprise_inventory.validator.default_warehouse_exists.class: MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator
-    marelloenterprise_inventory.validator.warehouse_delete.class: MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseDeleteValidator
 
 services:
     marelloenterprise_inventory.event_listener.default_warehouse_subscriber:
@@ -15,15 +14,70 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    marelloenterprise_inventory.event_listener.doctrine.warehouse.system_group:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseSystemGroupListener'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\Warehouse', event: prePersist }
+
+    marelloenterprise_inventory.event_listener.doctrine.warehousegroup.remove:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupRemoveListener'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup', event: preRemove }
+
     marelloenterprise_inventory.datagrid.action_permission_provider:
         class: '%marelloenterprise_inventory.datagrid.action_permission_provider.class%'
 
     marelloenterprise_inventory.validator.default_warehouse_exists:
         class: '%marelloenterprise_inventory.validator.default_warehouse_exists.class%'
         arguments:
-            - '@doctrine'
+            - '@marelloenterprise_inventory.repository.warehouse'
         tags:
-            - { name: validator.constraint_validator, alias: marello_enterprise_inventory.default_warehouse_exists }
+            - { name: validator.constraint_validator, alias: marelloenterprise_inventory.default_warehouse_exists }
 
-    marelloenterprise_inventory.validator.warehouse_delete:
-        class: '%marelloenterprise_inventory.validator.warehouse_delete.class%'
+    marelloenterprise_inventory.validator.warehouse_added_to_user_group:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToUserGroupValidator'
+        arguments:
+            - '@marelloenterprise_inventory.repository.warehouse'
+        tags:
+            - { name: validator.constraint_validator, alias: marelloenterprise_inventory.warehouse_added_to_user_group }
+
+    marelloenterprise_inventory.warehouse.manager.api:
+        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - '%marello_inventory.entity.warehouse.class%'
+            - '@doctrine.orm.entity_manager'
+
+    marelloenterprise_inventory.warehousegroup.manager.api:
+        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - '%marello_inventory.entity.warehousegroup.class%'
+            - '@doctrine.orm.entity_manager'
+
+    marelloenterprise_inventory.handler.warehouse_delete:
+        class:  'MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseDeleteHandler'
+        parent: oro_soap.handler.delete.abstract
+        scope: request
+        arguments:
+            - '@oro_security.security_facade'
+
+    marelloenterprise_inventory.handler.warehousegroup_delete:
+        class:  'MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseGroupDeleteHandler'
+        parent: oro_soap.handler.delete.abstract
+        scope: request
+        arguments:
+            - '@oro_security.security_facade'
+
+    marelloenterprise_inventory.metadata.warehouse:
+        class: 'Doctrine\ORM\Mapping\ClassMetadata'
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
+
+    marelloenterprise_inventory.repository.warehouse:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@marelloenterprise_inventory.metadata.warehouse'
+        calls:
+            - [setAclHelper, ['@oro_securitypro.security.acl_helper']]

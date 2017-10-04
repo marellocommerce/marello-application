@@ -5,25 +5,35 @@ namespace MarelloEnterprise\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseData as BaseWarehouseData;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseData as BaseWarehouseData;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
-
 class LoadWarehouseData extends AbstractFixture implements DependentFixtureInterface
 {
-    /** @var ObjectManager $manager */
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
 
-    /** @var Organization $organization  */
+    /**
+     * @var Organization
+     */
     protected $organization;
+    
+    /**
+     * @var WarehouseGroup
+     */
+    protected $systemGroup;
 
-    /** @var array $data */
+    /**
+     * @var array
+     */
     protected $data = [
         'current_default' => [
             'default'   => true,
@@ -78,6 +88,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
     {
         $this->manager = $manager;
         $this->organization = $this->getOrganization();
+        $this->systemGroup = $this->getSystemWarehouseGroup();
 
         $this->loadWarehouses();
     }
@@ -89,6 +100,14 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
     protected function getOrganization()
     {
         return $this->manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
+    }
+
+    /**
+     * @return WarehouseGroup
+     */
+    protected function getSystemWarehouseGroup()
+    {
+        return $this->manager->getRepository('MarelloInventoryBundle:WarehouseGroup')->findOneBy(['system' => true]);
     }
 
     /**
@@ -117,6 +136,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
         } else {
             $warehouse = new Warehouse($data['name'], false);
             $warehouse->setOwner($this->organization);
+            $warehouse->setGroup($this->systemGroup);
             $warehouse->setCode($data['code']);
 
             $address = $this->createAddress($data['address']);
@@ -134,11 +154,11 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
     /**
      * Get Warehouse Type
      * @param $type
-     * @return object
+     * @return WarehouseType
      */
     private function getWarehouseType($type)
     {
-        return $this->manager->getRepository(WarehouseType::class)->find($type);
+        return $this->manager->getRepository(WarehouseType::class)->findOneBy(['name' => $type]);
     }
 
     /**

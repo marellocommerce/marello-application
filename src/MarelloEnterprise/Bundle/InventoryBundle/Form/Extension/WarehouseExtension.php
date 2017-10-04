@@ -2,10 +2,11 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Extension;
 
-use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\FormBuilderInterface;
-
 use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 class WarehouseExtension extends AbstractTypeExtension
 {
@@ -25,13 +26,12 @@ class WarehouseExtension extends AbstractTypeExtension
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('default', 'checkbox', [
+            ->add('default', CheckboxType::class, [
                 'required' => false,
                 'tooltip'  => 'marelloenterprise.inventory.warehouse.delete',
             ])
-            ->add(
-                'warehouseType', 'entity', [
-                'label'    => 'marello.inventory.warehouse.warehousetype.entity_label',
+            ->add('warehouseType', EntityType::class, [
+                'label'    => 'marello.inventory.warehousetype.entity_label',
                 'class'    => 'MarelloInventoryBundle:WarehouseType',
                 'property' => 'label',
                 'required' => true,

@@ -2,20 +2,18 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\InventoryManagerCompilerPass;
+use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\
+ImexportInventoryLevelStrategyCompilerPass;
 use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\InventoryLevelFormSubscriberCompilerPass;
-use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\ImexportInventoryLevelStrategyCompilerPass;
+use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\InventoryManagerCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class MarelloEnterpriseInventoryBundle extends Bundle
 {
-    public function getParent()
-    {
-        return 'MarelloInventoryBundle';
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new InventoryManagerCompilerPass());

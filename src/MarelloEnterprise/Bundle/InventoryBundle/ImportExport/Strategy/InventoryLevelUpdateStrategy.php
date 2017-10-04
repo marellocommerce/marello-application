@@ -74,7 +74,7 @@ class InventoryLevelUpdateStrategy extends BaseStrategy
                 $context->setValue('warehouse', $warehouse);
                 $canUpdate = true;
             } else {
-                $error[] = $this->translator->trans('No warehouse found, cannot update a new level without existing warehouse');
+                $error[] = $this->translator->trans('marello.inventory.messages.error.warehouse.not_found');
                 $this->strategyHelper->addValidationErrors($error, $this->context);
 
                 return null;
@@ -88,7 +88,8 @@ class InventoryLevelUpdateStrategy extends BaseStrategy
             );
         }
 
-        // deliberately return a different entity than the initial imported entity, during errors with multiple runs of import
+        // deliberately return a different entity than the initial imported entity,
+        // during errors with multiple runs of import
         $product = $this->getProduct($entity);
         return $this->getInventoryItem($product);
     }

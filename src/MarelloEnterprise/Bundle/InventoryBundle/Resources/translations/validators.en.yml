@@ -3,4 +3,6 @@ marelloenterprise:
         validation:
             messages:
                 error:
-                    unique_warehouse_inventory_level:   Warehouse should be unique for an Inventory Level
+                    unique_warehouse_inventory_level: Warehouse should be unique for an Inventory Level
+                    default_warehouse_exists:         There must be a default warehouse
+                    warehouse_added_to_user_group:    This warehouse added to group, for changing warehouse type please remove it from group first

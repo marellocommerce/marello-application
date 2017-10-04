@@ -2,12 +2,10 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Functional\Controller\Api\Rest;
 
-use Symfony\Component\HttpFoundation\Response;
-
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use MarelloEnterprise\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadWarehouseData;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class WarehouseControllerTest extends WebTestCase
 {
@@ -28,15 +26,24 @@ class WarehouseControllerTest extends WebTestCase
      */
     public function testDeleteExistingWarehouse()
     {
-        $warehouseId = $this->getReference(LoadWarehouseData::ADDITIONAL_WAREHOUSE)->getId();
+        $warehouseId = $this->getReference(LoadWarehouseData::WAREHOUSE_1_REF)->getId();
 
         $this->client->request(
             'DELETE',
             $this->getUrl('marelloenterprise_inventory_api_delete_warehouse', ['id' => $warehouseId])
         );
 
-        $this->getJsonResponseContent($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertEquals('{"id":""}', $this->client->getResponse()->getContent());
+        /** @var $result Response */
+        $result = $this->client->getResponse();
+        $this->assertEmptyResponseStatusCodeEquals($result, 204);
+
+        $this->client->request(
+            'GET',
+            $this->getUrl('marelloenterprise_inventory_warehouse_view', array('id' => $warehouseId))
+        );
+
+        $result = $this->client->getResponse();
+        $this->assertResponseStatusCodeEquals($result, 404);
     }
 
     /**
@@ -54,9 +61,9 @@ class WarehouseControllerTest extends WebTestCase
             $this->getUrl('marelloenterprise_inventory_api_delete_warehouse', ['id' => $warehouse->getId()])
         );
 
-        $this->getJsonResponseContent($this->client->getResponse(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        $this->getJsonResponseContent($this->client->getResponse(), Response::HTTP_FORBIDDEN);
         $this->assertEquals(
-            '{"code":500,"message":"Cannot delete default warehouse."}',
+            '{"reason":"It is forbidden to delete default Warehouse"}',
             $this->client->getResponse()->getContent()
         );
     }

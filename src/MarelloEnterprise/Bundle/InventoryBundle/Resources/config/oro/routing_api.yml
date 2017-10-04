@@ -1,3 +1,7 @@
 marelloenterprise_inventory_warehouse_api:
     resource:     "@MarelloEnterpriseInventoryBundle/Controller/Api/Rest/WarehouseController.php"
     type:         rest
+
+marelloenterprise_inventory_warehousegroup_api:
+    resource:     "@MarelloEnterpriseInventoryBundle/Controller/Api/Rest/WarehouseGroupController.php"
+    type:         rest

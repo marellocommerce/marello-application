@@ -1,33 +1,16 @@
-parameters:
-    marelloenterprise_inventory.form.type.warehouse_delete.handler.class: MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseDeleteHandler
 services:
     marello_enterprise.form.extension.warehouse:
-        class: MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\WarehouseExtension
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\WarehouseExtension'
         tags:
             - { name: form.type_extension, alias: marello_warehouse }
 
     marello_enterprise.form.extension.inventorylevel:
-        class: MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\InventoryLevelExtension
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\InventoryLevelExtension'
         tags:
             - { name: form.type_extension, alias: marello_inventory_inventorylevel }
 
-    marelloenterprise.manager.api:
-        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - '%marello_inventory.entity.warehouse.class%'
-            - "@doctrine.orm.entity_manager"
-
-    marelloenterprise_inventory.form.type.warehouse_delete.handler:
-        class:  '%marelloenterprise_inventory.form.type.warehouse_delete.handler.class%'
-        parent: oro_soap.handler.delete.abstract
-        scope: request
-        arguments:
-            - '@marelloenterprise_inventory.validator.warehouse_delete'
-            - '@oro_security.security_facade'
-
     # Autocomplete search handler
-    marelloenterprise_inventory.form.autocomplete.search_handler:
+    marelloenterprise_inventory.form.autocomplete.search_handler.warehouses:
         parent: oro_form.autocomplete.search_handler
         arguments:
             - '%marello_inventory.entity.warehouse.class%'
@@ -35,7 +18,56 @@ services:
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: warehouses, acl_resource: marello_inventory_inventory_view }
 
-    marelloenterprise_inventory.form.type.warehouse_select:
+    marelloenterprise_inventory.form.autocomplete.search_handler.system_group_global_warehouses:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Autocomplete\SystemGroupGlobalWarehousesSearchHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_inventory.entity.warehouse.class%'
+            - ["label"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: system_group_global_warehouses, acl_resource: marello_inventory_inventory_view }
+
+    marelloenterprise_inventory.form.data_transformer.warehouse:
+        class: 'Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - 'MarelloInventoryBundle:Warehouse'
+
+    marelloenterprise_inventory.form_type.warehouse_select:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseSelectType'
         tags:
             - { name: form.type, alias: marello_warehouse_select }
+
+    marelloenterprise_inventory.form_type.warehouse_multi_select:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseMultiSelectType'
+        arguments:
+            - '@marelloenterprise_inventory.form.data_transformer.warehouse'
+        tags:
+            - { name: form.type, alias: marello_warehouse_multi_select }
+
+    marelloenterprise_inventory.form_type.system_group_global_warehouse_multi_select:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\SystemGroupGlobalWarehouseMultiSelectType'
+        arguments:
+            - '@marelloenterprise_inventory.form.data_transformer.warehouse'
+        tags:
+            - { name: form.type, alias: marello_system_group_global_warehouse_multi_select }
+
+    marelloenterprise_inventory.form_type.warehousegroup:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGroupType'
+        tags:
+            - { name: form.type, alias: marello_warehouse_group }
+
+    #forms
+    marelloenterprise_inventory.form.warehousegroup:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - 'marello_warehouse_group'
+            - 'marello_warehouse_group'
+
+    #form handlers
+    marelloenterprise_inventory.form_handler.warehousegroup:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler'
+        arguments:
+            - '@marelloenterprise_inventory.form.warehousegroup'
+            - '@doctrine.orm.entity_manager'
