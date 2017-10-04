@@ -22,14 +22,24 @@ marello:
             name.label:                 Name
 
         warehousegroup:
-            entity_label:               Warehouse Group
-            entity_plural_label:        Warehouse Groups
-            description.label:          Description
+            entity_label:                       Warehouse Group
+            entity_plural_label:                Warehouse Groups
+            description.label:                  Description
+            id.label:                           Id
+            name.label:                         Name
+            system.label:                       System
+            organization.label:                 Organization
+            warehouses.label:                   Warehouses
+            warehouse_channel_group_link.label: Warehouse Channel Group Link
+
+        warehousechannelgrouplink:
+            entity_label:               Warehouse Channel Group Link
+            entity_plural_label:        Warehouse Channel Group Links
             id.label:                   Id
-            name.label:                 Name
             system.label:               System
             organization.label:         Organization
-            warehouses.label:           Warehouses
+            sales_channel_groups.label: Sales Channel Groups
+            warehouse_group.label:      Warehouse Group
 
         model:
             warehouse:

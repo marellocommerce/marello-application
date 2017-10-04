@@ -3,6 +3,7 @@
 namespace Marello\Bundle\SalesBundle\Controller;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -104,20 +105,12 @@ class SalesChannelGroupController extends Controller
      */
     protected function update(SalesChannelGroup $entity, Request $request)
     {
-        $handler = $this->get('marello_sales.saleschannelgroup_form.handler');
-
-        if ($handler->process($entity, $request)) {
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('marello.sales.saleschannelgroup.messages.success.saved')
-            );
-
-            return $this->get('oro_ui.router')->redirect($entity);
-        }
-        
-        return [
-            'entity' => $entity,
-            'form'   => $handler->getFormView(),
-        ];
+        return $this->get('oro_form.update_handler')->update(
+            $entity,
+            $this->createForm(SalesChannelGroupType::class, $entity),
+            $this->get('translator')->trans('marello.sales.saleschannelgroup.messages.success.saved'),
+            $request,
+            'marello_sales.saleschannelgroup_form.handler'
+        );
     }
 }
