@@ -9,6 +9,7 @@ default: &default
         Behat\MinkExtension:
             base_url: 'http://dev2-commerce-crm-ee.local'
         Behat\Symfony2Extension: ~
+        Oro\Bundle\TestFrameworkBundle\BehatJunitExtension\ServiceContainer\BehatJunitExtension: ~
         Oro\Bundle\TestFrameworkBundle\Behat\ServiceContainer\OroTestFrameworkExtension:
             shared_contexts:
                 - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
