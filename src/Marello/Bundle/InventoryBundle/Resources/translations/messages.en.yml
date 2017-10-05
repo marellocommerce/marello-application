@@ -13,6 +13,7 @@ marello:
             id.label:                   Id
             owner.label:                Owner
             warehouse_type.label:       Warehouse Type
+            group.label:                Warehouse Group
 
         warehousetype:
             entity_label:               Warehouse Type
@@ -20,8 +21,25 @@ marello:
             label.label:                Label
             name.label:                 Name
 
-        controller:
-            message.saved:          Warehouse saved
+        warehousegroup:
+            entity_label:                       Warehouse Group
+            entity_plural_label:                Warehouse Groups
+            description.label:                  Description
+            id.label:                           Id
+            name.label:                         Name
+            system.label:                       System
+            organization.label:                 Organization
+            warehouses.label:                   Warehouses
+            warehouse_channel_group_link.label: Warehouse Channel Group Link
+
+        warehousechannelgrouplink:
+            entity_label:               Warehouse Channel Group Link
+            entity_plural_label:        Warehouse Channel Group Links
+            id.label:                   Id
+            system.label:               System
+            organization.label:         Organization
+            sales_channel_groups.label: Sales Channel Groups
+            warehouse_group.label:      Warehouse Group
 
         model:
             warehouse:
@@ -77,5 +95,4 @@ marello:
             success:
                 warehouse.saved:        Warehouse has been saved successfully
             error:
-                warehouse:
-                    not_found:     No warehouse found, cannot update a new level without existing warehouse
+                warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse

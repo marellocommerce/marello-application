@@ -9,3 +9,20 @@ Marello\Bundle\InventoryBundle\Entity\Warehouse:
             - NotBlank: ~
         code:
             - NotBlank: ~
+
+Marello\Bundle\InventoryBundle\Entity\WarehouseGroup:
+    properties:
+        name:
+            - NotBlank: ~
+        warehouses:
+            - NotBlank: ~
+
+Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink:
+    properties:
+        warehouseGroup:
+            - NotBlank: ~
+        salesChannelGroups:
+            - Valid: ~
+            - Count:
+                min: 1
+                minMessage: 'marello.inventory.validation.messages.error.warehousechannelgrouplink.has_no_channel_groups'

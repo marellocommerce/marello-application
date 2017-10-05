@@ -26,6 +26,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @Oro\Config(
  *  routeName="marello_sales_saleschannel_index",
  *  routeView="marello_sales_saleschannel_view",
+ *  routeCreate="marello_sales_saleschannel_create",
+ *  routeUpdate="marello_sales_saleschannel_update",
  *  defaultValues={
  *      "entity"={"icon"="fa-sitemap"},
  *      "ownership"={
@@ -109,6 +111,14 @@ class SalesChannel extends ExtendSalesChannel implements
      * @ORM\Column(name="channel_type", type="string")
      */
     protected $channelType = self::DEFAULT_TYPE;
+    
+    /**
+     * @var SalesChannelGroup
+     *
+     * @ORM\ManyToOne(targetEntity="SalesChannelGroup", inversedBy="salesChannels")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     */
+    protected $group;
 
     /**
      * @param string|null $name
@@ -282,5 +292,24 @@ class SalesChannel extends ExtendSalesChannel implements
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * @return SalesChannelGroup $group
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param SalesChannelGroup $group
+     * @return $this
+     */
+    public function setGroup(SalesChannelGroup $group)
+    {
+        $this->group = $group;
+
+        return $this;
     }
 }

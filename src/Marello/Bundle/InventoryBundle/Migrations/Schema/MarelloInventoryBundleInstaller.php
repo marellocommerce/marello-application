@@ -25,7 +25,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v1_2_2';
+        return 'v1_2_3';
     }
 
     /**
@@ -39,16 +39,18 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->createMarelloInventoryInventoryLogLevelTable($schema);
         $this->createMarelloInventoryWarehouseTable($schema);
         $this->createMarelloInventoryWarehouseTypeTable($schema);
-
-        /** Update existing table */
-        $this->updateMarelloInventoryWarehouseTable($schema);
+        $this->createMarelloInventoryWarehouseGroupTable($schema);
+        $this->createMarelloInventoryWarehouseChannelGroupLinkTable($schema);
+        $this->createMarelloInventoryWhChLinkJoinChannelGroupTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloInventoryItemForeignKeys($schema);
         $this->addMarelloInventoryInventoryLevelForeignKeys($schema);
         $this->addMarelloInventoryWarehouseForeignKeys($schema);
-        $this->addMarelloInventoryWarehouseTypeForeignKeys($schema);
+        $this->addMarelloInventoryWarehouseGroupForeignKeys($schema);
         $this->addMarelloInventoryInventoryLevelLogForeignKeys($schema);
+        $this->addMarelloInventoryWarehouseChannelGroupLinkForeignKeys($schema);
+        $this->addMarelloInventoryWhChLinkJoinChannelGroupForeignKeys($schema);
     }
 
     /**
@@ -102,6 +104,11 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addIndex(['warehouse_id'], 'idx_40b8d0415080ecde', []);
     }
 
+    /**
+     * Create marello_inventory_level_log table
+     *
+     * @param Schema $schema
+     */
     protected function createMarelloInventoryInventoryLogLevelTable(Schema $schema)
     {
         $table = $schema->createTable('marello_inventory_level_log');
@@ -134,10 +141,13 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('label', 'string', ['length' => 255]);
         $table->addColumn('code', 'string', ['length' => 255]);
         $table->addColumn('is_default', 'boolean', []);
+        $table->addColumn('warehouse_type', 'string', ['notnull' => false, 'length' => 32]);
+        $table->addColumn('group_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['address_id'], 'uniq_15597d1f5b7af75');
         $table->addUniqueIndex(['code'], 'UNIQ_15597D177153098');
-        $table->addIndex(['owner_id'], 'idx_15597d17e3c61f9', []);
+        $table->addIndex(['owner_id'], 'IDX_15597d17e3c61f9', []);
+        $table->addIndex(['group_id'], 'IDX_15597D1FE54D947', []);
     }
 
     /**
@@ -154,6 +164,50 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             $table->setPrimaryKey(['name']);
             $table->addUniqueIndex(['label'], 'UNIQ_629E2BBEA750E8');
         }
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryWarehouseGroupTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_wh_group');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('name', 'string', ['length' => 255]);
+        $table->addColumn('description', 'text', ['notnull' => false]);
+        $table->addColumn('system', 'boolean', ['default' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->setPrimaryKey(['id']);
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryWarehouseChannelGroupLinkTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_wh_chg_link');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('system', 'boolean', ['default' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('warehouse_group_id', 'integer', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->addUniqueIndex(['warehouse_group_id'], 'UNIQ_2AC24B90DE1CBBE1');
+        $table->setPrimaryKey(['id']);
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryWhChLinkJoinChannelGroupTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_inventory_lnk_join_chg');
+        $table->addColumn('link_id', 'integer', ['notnull' => true]);
+        $table->addColumn('channel_group_id', 'integer', ['notnull' => true]);
+        $table->addUniqueIndex(['channel_group_id'], 'UNIQ_629E2BBEA750E85');
+        $table->setPrimaryKey(['link_id', 'channel_group_id']);
     }
 
     /**
@@ -236,31 +290,70 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
-    }
-
-    /**
-     * Update existing Warehouse table
-     * @param Schema $schema
-     */
-    protected function updateMarelloInventoryWarehouseTable(Schema $schema)
-    {
-        $table = $schema->getTable('marello_inventory_warehouse');
-        $table->addColumn('warehouse_type', 'string', ['notnull' => false, 'length' => 32]);
-        $table->addIndex(['warehouse_type']);
-    }
-
-    /**
-     * Add marello_inventory_wh_type foreign keys.
-     *
-     * @param Schema $schema
-     */
-    protected function addMarelloInventoryWarehouseTypeForeignKeys(Schema $schema)
-    {
-        $table = $schema->getTable('marello_inventory_warehouse');
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_inventory_wh_type'),
             ['warehouse_type'],
             ['name'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_wh_group'),
+            ['group_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryWarehouseGroupForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_wh_group');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryWarehouseChannelGroupLinkForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_wh_chg_link');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_wh_group'),
+            ['warehouse_group_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+    }
+    
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryWhChLinkJoinChannelGroupForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_lnk_join_chg');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_wh_chg_link'),
+            ['link_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_sales_channel_group'),
+            ['channel_group_id'],
+            ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );
     }

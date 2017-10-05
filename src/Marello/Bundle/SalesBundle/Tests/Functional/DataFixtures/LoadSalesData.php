@@ -4,14 +4,15 @@ namespace Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 
 class LoadSalesData extends AbstractFixture
 {
     const CHANNEL_1_REF = 'channel1';
     const CHANNEL_2_REF = 'channel2';
     const CHANNEL_3_REF = 'channel3';
+    const CHANNEL_4_REF = 'channel4';
 
     /**
      * @var ObjectManager $manager
@@ -46,6 +47,14 @@ class LoadSalesData extends AbstractFixture
             'active' => false,
             'default' => false,
         ],
+        self::CHANNEL_4_REF => [
+            'name' => 'Channel-UAH',
+            'code' => 'chan_uah',
+            'type' => 'pos',
+            'currency' => 'UAH',
+            'active' => false,
+            'default' => false,
+        ],
     ];
 
     /**
@@ -63,10 +72,13 @@ class LoadSalesData extends AbstractFixture
     protected function loadSalesChannels()
     {
         $organization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
+        $defaultSystemGroup = $this->manager->getRepository(SalesChannelGroup::class)->findOneBy(['system' => true]);
 
         foreach ($this->data as $ref => $values) {
             $channel = $this->buildChannel($ref, $values);
-            $channel->setOwner($organization);
+            $channel
+                ->setOwner($organization)
+                ->setGroup($defaultSystemGroup);
 
             $this->manager->persist($channel);
             $this->setReference($ref, $channel);

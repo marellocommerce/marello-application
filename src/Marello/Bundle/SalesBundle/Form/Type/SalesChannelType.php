@@ -3,27 +3,30 @@
 namespace Marello\Bundle\SalesBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Form\EventListener\SalesChannelFormSubscriber;
+use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Marello\Bundle\SalesBundle\Form\EventListener\SalesChannelFormSubscriber;
-use Symfony\Component\Validator\Constraints\Count;
 
 class SalesChannelType extends AbstractType
 {
     const NAME = 'marello_sales_channel';
 
-    /** @var SalesChannelFormSubscriber $salesChannelFormSubscriber */
+    /**
+     * @var SalesChannelFormSubscriber
+     */
     protected $salesChannelFormSubscriber;
 
     /**
-     * SalesChannelType constructor.
      * @param SalesChannelFormSubscriber $salesChannelFormSubscriber
      */
     public function __construct(SalesChannelFormSubscriber $salesChannelFormSubscriber)
     {
-        $this->salesChannelFormSubscriber    = $salesChannelFormSubscriber;
+        $this->salesChannelFormSubscriber = $salesChannelFormSubscriber;
     }
 
     /**
@@ -36,14 +39,14 @@ class SalesChannelType extends AbstractType
             ->add('name')
             ->add('code')
             ->add('channelType')
-            ->add('currency', 'oro_currency')
-            ->add('default', 'checkbox', [
+            ->add('currency', CurrencyType::class)
+            ->add('default', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('active', 'checkbox', [
+            ->add('active', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('localization', 'entity', [
+            ->add('localization', EntityType::class, [
                 'required' => true,
                 'multiple' => false,
                 'class' => 'OroLocaleBundle:Localization',
@@ -53,8 +56,7 @@ class SalesChannelType extends AbstractType
                 },
                 'choice_label' => 'name'
             ])
-            ->add('locale')
-        ;
+            ->add('locale');
     }
 
     /**
@@ -63,7 +65,7 @@ class SalesChannelType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\SalesBundle\Entity\SalesChannel'
+            'data_class' => SalesChannel::class
         ]);
     }
 
@@ -71,6 +73,14 @@ class SalesChannelType extends AbstractType
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return self::NAME;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return self::NAME;
     }

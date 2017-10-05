@@ -17,7 +17,7 @@ class MarelloSalesBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -26,10 +26,28 @@ class MarelloSalesBundleInstaller implements Installation
     public function up(Schema $schema, QueryBag $queries)
     {
         /** Tables generation **/
+        $this->createMarelloSalesChannelGroupTable($schema);
         $this->createMarelloSalesSalesChannelTable($schema);
 
         /** Foreign keys generation **/
+        $this->addMarelloSalesChannelGroupForeignKeys($schema);
         $this->addMarelloSalesSalesChannelForeignKeys($schema);
+    }
+    
+    /**
+     * @param Schema $schema
+     */
+    protected function createMarelloSalesChannelGroupTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_sales_channel_group');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('name', 'string', ['length' => 255]);
+        $table->addColumn('description', 'text', ['notnull' => false]);
+        $table->addColumn('system', 'boolean', ['default' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $table->setPrimaryKey(['id']);
     }
 
     /**
@@ -52,9 +70,24 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('currency', 'string', ['length' => 5]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
+        $table->addColumn('group_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'marello_sales_sales_channel_codeidx');
         $table->addIndex(['owner_id'], 'idx_37c71d17e3c61f9', []);
+    }
+    
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloSalesChannelGroupForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_sales_channel_group');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
     }
 
     /**
@@ -74,6 +107,13 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_localization'),
             ['localization_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_sales_channel_group'),
+            ['group_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

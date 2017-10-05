@@ -21,7 +21,10 @@ marello:
             form.select_saleschannel:           Select Sales Channel
             selected_channels.label:            Selected Sales Channels
             localization.label:                 Localization
+            group.label:                        Group
             messages:
+                success:
+                    saved:                      Sales Channel has been saved successfully
                 sales_channel_has_associations: Sales Channel has associations
 
             menu:
@@ -29,3 +32,23 @@ marello:
                 shortcut_new_saleschannel.description: Create new sales channel instance
                 shortcut_list_saleschannel.label: Show sales channel list
                 shortcut_list_saleschannel.description: Show list of sales channels
+
+            datablock:
+                general: General
+
+        saleschannelgroup:
+            entity_label: Sales Channel Group
+            entity_plural_label: Sales Channels Groups
+            description.label: Description
+            id.label: Id
+            name.label: Name
+            system.label: System
+            organization.label: Organization
+            sales_channels.label: Sales Channels
+
+            datablock:
+                general: General
+                sales_channels: Sales Channels
+            messages:
+                success:
+                    saved: Sales Channel Group has been saved successfully

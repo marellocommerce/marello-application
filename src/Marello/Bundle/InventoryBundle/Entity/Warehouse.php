@@ -112,6 +112,20 @@ class Warehouse extends ExtendWarehouse
      * )
      */
     protected $warehouseType;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="WarehouseGroup", inversedBy="warehouses")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=60,
+     *              "full"=true,
+     *          }
+     *      }
+     * )
+     */
+    protected $group;
 
     /**
      * @param string $label
@@ -256,6 +270,26 @@ class Warehouse extends ExtendWarehouse
     public function setWarehouseType(WarehouseType $warehouseType)
     {
         $this->warehouseType = $warehouseType;
+
+        return $this;
+    }
+
+    /**
+     * @return WarehouseGroup
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param WarehouseGroup $group
+     *
+     * @return $this
+     */
+    public function setGroup(WarehouseGroup $group)
+    {
+        $this->group = $group;
 
         return $this;
     }
