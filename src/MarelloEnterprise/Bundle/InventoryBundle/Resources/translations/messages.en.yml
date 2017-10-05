@@ -25,16 +25,31 @@ marelloenterprise:
                 wfarule:
                     is_system_update_attempt:      System WFA Rule can't be updated
             success:
-                warehouse.saved:        Warehouse has been saved successfully
-                wfarule.saved:          WFA Rule has been saved successfully
+                warehouse.saved:                   Warehouse has been saved successfully
+                warehousegroup.saved:              Warehouse Group has been saved successfully
+                warehousechannelgrouplink.saved:   Warehouse Channel Group Link has been saved successfully
+                wfarule.saved:                     WFA Rule has been saved successfully
         navigation:
             warehouse:
+                label:                  Warehouses
                 create_label:           Create new Warehouse
             wfarule:
                 create_label:           Create new WFA Rule
 
         warehouse:
             form.select_warehouse:      Select Warehouse
+
+        warehousegroup:
+            datablock:
+                general:                General
+                warehouses:             Warehouses
+            form:
+                select_warehousegroup:  Select Warehouse Group
+
+        warehousechannelgrouplink:
+            datablock:
+                general:                General
+                channel_groups:         Sales Channel Groups
 
         sections:
             general:                    General

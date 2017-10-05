@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseData as BaseWarehouseData;
 use Oro\Bundle\AddressBundle\Entity\Country;
@@ -24,6 +25,11 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
      * @var Organization
      */
     protected $organization;
+    
+    /**
+     * @var WarehouseGroup
+     */
+    protected $systemGroup;
 
     /**
      * @var array
@@ -82,6 +88,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
     {
         $this->manager = $manager;
         $this->organization = $this->getOrganization();
+        $this->systemGroup = $this->getSystemWarehouseGroup();
 
         $this->loadWarehouses();
     }
@@ -93,6 +100,14 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
     protected function getOrganization()
     {
         return $this->manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
+    }
+
+    /**
+     * @return WarehouseGroup
+     */
+    protected function getSystemWarehouseGroup()
+    {
+        return $this->manager->getRepository('MarelloInventoryBundle:WarehouseGroup')->findOneBy(['system' => true]);
     }
 
     /**
@@ -121,6 +136,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
         } else {
             $warehouse = new Warehouse($data['name'], false);
             $warehouse->setOwner($this->organization);
+            $warehouse->setGroup($this->systemGroup);
             $warehouse->setCode($data['code']);
 
             $address = $this->createAddress($data['address']);
@@ -142,7 +158,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
      */
     private function getWarehouseType($type)
     {
-        return $this->manager->getRepository(WarehouseType::class)->find($type);
+        return $this->manager->getRepository(WarehouseType::class)->findOneBy(['name' => $type]);
     }
 
     /**

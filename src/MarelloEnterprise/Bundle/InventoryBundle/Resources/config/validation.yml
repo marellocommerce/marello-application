@@ -1,7 +1,7 @@
 Marello\Bundle\InventoryBundle\Entity\Warehouse:
     constraints:
         - MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists: ~
-
+        - MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\WarehouseAddedToUserGroup: ~
 Marello\Bundle\InventoryBundle\Entity\InventoryLevel:
     constraints:
         - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:

@@ -18,6 +18,11 @@ class WarehouseDeleteHandlerTest extends TestCase
     protected $securityFacade;
 
     /**
+     * @var OwnerDeletionManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $ownerDeletionManager;
+
+    /**
      * @var ApiEntityManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $apiEntityManager;
@@ -28,15 +33,12 @@ class WarehouseDeleteHandlerTest extends TestCase
     protected $warehouseDeleteHandler;
 
     /**
-     * @var OwnerDeletionManager|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $ownerDeletionManager;
-
-    /**
      * {@inheritdoc}
      */
     public function setUp()
     {
+        parent::setUp();
+
         $this->securityFacade = $this
             ->getMockBuilder(SecurityFacade::class)
             ->disableOriginalConstructor()

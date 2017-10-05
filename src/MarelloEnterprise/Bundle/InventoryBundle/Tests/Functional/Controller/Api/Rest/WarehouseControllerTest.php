@@ -26,7 +26,7 @@ class WarehouseControllerTest extends WebTestCase
      */
     public function testDeleteExistingWarehouse()
     {
-        $warehouseId = $this->getReference(LoadWarehouseData::ADDITIONAL_WAREHOUSE)->getId();
+        $warehouseId = $this->getReference(LoadWarehouseData::WAREHOUSE_1_REF)->getId();
 
         $this->client->request(
             'DELETE',
