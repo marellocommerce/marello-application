@@ -89,7 +89,7 @@ class SalesChannelGroupController extends Controller
         if ($entity->isSystem()) {
             $this->addFlash(
                 'warning',
-                'marello.sales.messages.warning.wfarule.is_system_update_attempt'
+                'marello.sales.saleschannelgroup.messages.warning.is_system_update_attempt'
             );
 
             return $this->redirect($this->generateUrl('marello_sales_saleschannelgroup_index'));

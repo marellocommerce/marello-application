@@ -8,9 +8,6 @@ datagrids:
                 from:
                     - { table: MarelloSalesBundle:SalesChannel, alias: sc }
         columns:
-            id:
-                label:                marello.sales.saleschannel.id.label
-                frontend_type:        string
             name:
                 label:                marello.sales.saleschannel.name.label
                 frontend_type:        string
@@ -51,8 +48,6 @@ datagrids:
                     data_name: sc.default
         sorters:
             columns:
-                id:
-                    data_name: sc.id
                 name:
                     data_name: sc.name
                 code:
@@ -66,8 +61,9 @@ datagrids:
                 default:
                     data_name: sc.default
             default:
-                id: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+                name: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         properties:
+            id: ~
             view_link:
                 type:   url
                 route:  marello_sales_saleschannel_view
@@ -99,9 +95,6 @@ datagrids:
                     and:
                         - scg.system != true
         columns:
-            id:
-                label:                marello.sales.saleschannelgroup.id.label
-                frontend_type:        string
             name:
                 label:                marello.sales.saleschannelgroup.name.label
                 frontend_type:        string
@@ -120,13 +113,12 @@ datagrids:
                     data_name: sc.name
         sorters:
             columns:
-                id:
-                    data_name: scg.id
                 name:
                     data_name: scg.name
                 description:
                     data_name: sc.description
         properties:
+            id: ~
             view_link:
                 type:   url
                 route:  marello_sales_saleschannelgroup_view

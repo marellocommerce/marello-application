@@ -52,3 +52,5 @@ marello:
             messages:
                 success:
                     saved: Sales Channel Group has been saved successfully
+                warning:
+                    is_system_update_attempt: System Sales Channel Group can't be updated

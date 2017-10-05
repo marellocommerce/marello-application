@@ -14,10 +14,11 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
-{% if entity.system %}
-    {% block navButtons %}
-    {% endblock %}
-{% endif %}
+{% block navButtons %}
+    {% if entity.system == false %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
 
 {% block content_data %}
     {% set generalSubblocks = [] %}
