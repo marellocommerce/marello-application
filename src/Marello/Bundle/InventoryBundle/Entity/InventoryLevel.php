@@ -4,6 +4,9 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
  * @ORM\Entity()
@@ -16,12 +19,21 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      defaultValues={
  *          "entity"={
  *              "icon"="fa-list-alt"
+ *          },
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class InventoryLevel
+class InventoryLevel implements OrganizationAwareInterface
 {
     /**
      * @ORM\Id
@@ -133,6 +145,14 @@ class InventoryLevel
     protected $updatedAt;
 
     /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $organization;
+
+    /**
      * @return int
      */
     public function getId()
@@ -222,6 +242,25 @@ class InventoryLevel
     public function getWarehouse()
     {
         return $this->warehouse;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return $this
+     */
+    public function setOrganization(OrganizationInterface $organization)
+    {
+        $this->organization = $organization;
+
+        return $this;
     }
 
     /**

@@ -83,6 +83,8 @@ class SalesChannelGroupHandler implements FormHandlerInterface
      */
     private function getSystemSalesChannelsGroup()
     {
-        return $this->manager->getRepository(SalesChannelGroup::class)->findOneBy(['system' => true]);
+        return $this->manager
+            ->getRepository(SalesChannelGroup::class)
+            ->findSystemChannelGroup();
     }
 }

@@ -219,7 +219,7 @@ class Warehouse extends ExtendWarehouse
      *
      * @return $this
      */
-    public function setOwner($owner)
+    public function setOwner(OrganizationInterface $owner)
     {
         $this->owner = $owner;
 

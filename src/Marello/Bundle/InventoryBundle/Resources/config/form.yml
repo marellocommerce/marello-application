@@ -38,24 +38,6 @@ services:
         tags:
             - { name: form.type, alias: marello_inventory_item_api }
 
-    ## forms
-    marello_inventory.form.inventory_item:
-        class: Symfony\Component\Form\Form
-        factory: ['@form.factory', createNamed]
-        arguments:
-            - 'marello_inventory_item'
-            - 'marello_inventory_item'
-
-    ## form handlers
-    marello_inventory.form.handler.inventory_item:
-        class: Marello\Bundle\InventoryBundle\Form\Handler\InventoryItemHandler
-        scope: request
-        arguments:
-            - '@marello_inventory.form.inventory_item'
-            - '@request'
-            - '@doctrine.orm.entity_manager'
-
-
     marello_inventory.form.event_listener.inventory_level_subscriber:
         class: Marello\Bundle\InventoryBundle\Form\EventListener\InventoryLevelSubscriber
         arguments:

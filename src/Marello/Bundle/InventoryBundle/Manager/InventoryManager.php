@@ -48,7 +48,10 @@ class InventoryManager implements InventoryManagerInterface
         $level = $this->getInventoryLevel($context);
         if (!$level) {
             $level = new InventoryLevel();
-            $level->setWarehouse($this->getWarehouse());
+            $level
+                ->setWarehouse($this->getWarehouse())
+                ->setOrganization($context->getProduct()->getOrganization());
+            
             /** @var InventoryItem $item */
             $item = $this->getInventoryItem($context);
             $item->addInventoryLevel($level);

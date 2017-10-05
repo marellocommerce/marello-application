@@ -132,6 +132,8 @@ class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInter
 
     public function __construct()
     {
+        parent::__construct();
+        
         $this->items = new ArrayCollection();
     }
 

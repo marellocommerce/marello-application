@@ -72,7 +72,9 @@ class LoadSalesData extends AbstractFixture
     protected function loadSalesChannels()
     {
         $organization = $this->manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
-        $defaultSystemGroup = $this->manager->getRepository(SalesChannelGroup::class)->findOneBy(['system' => true]);
+        $defaultSystemGroup = $this->manager
+            ->getRepository(SalesChannelGroup::class)
+            ->findSystemChannelGroup();
 
         foreach ($this->data as $ref => $values) {
             $channel = $this->buildChannel($ref, $values);
