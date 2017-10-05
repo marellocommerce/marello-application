@@ -47,7 +47,7 @@ class WarehouseChannelGroupLinkControllerTest extends WebTestCase
         $link = $this->getContainer()
             ->get('doctrine')
             ->getRepository('MarelloInventoryBundle:WarehouseChannelGroupLink')
-            ->findOneBy(['system' => true]);
+            ->findSystemLink();
 
         $this->client->request(
             'DELETE',

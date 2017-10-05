@@ -4,7 +4,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityRepository;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler;
@@ -61,11 +61,10 @@ class WarehouseGroupHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getWarehouses')
             ->willReturn(new ArrayCollection($whAfter));
 
-        $repository = $this->createMock(EntityRepository::class);
+        $repository = $this->createMock(WarehouseGroupRepository::class);
         $repository
             ->expects(static::once())
-            ->method('findOneBy')
-            ->with(['system' => true])
+            ->method('findSystemWarehouseGroup')
             ->willReturn($systemGroup);
 
         $this->manager

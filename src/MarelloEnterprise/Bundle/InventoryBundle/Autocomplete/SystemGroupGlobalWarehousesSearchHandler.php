@@ -26,7 +26,7 @@ class SystemGroupGlobalWarehousesSearchHandler extends SearchHandler
             ->setFirstResult($firstResult)
             ->setMaxResults($maxResults);
 
-        return $queryBuilder->getQuery()->getResult();
+        return $this->aclHelper->apply($queryBuilder->getQuery())->getResult();
     }
 
     /**

@@ -47,7 +47,7 @@ class WarehouseGroupControllerTest extends WebTestCase
         $warehouseGroup = $this->getContainer()
             ->get('doctrine')
             ->getRepository('MarelloInventoryBundle:WarehouseGroup')
-            ->findOneBy(['system' => true]);
+            ->findSystemWarehouseGroup();
 
         $this->client->request(
             'DELETE',
