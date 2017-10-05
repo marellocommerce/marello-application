@@ -102,9 +102,6 @@ datagrids:
                     and:
                         - whg.system != true
         columns:
-            id:
-                label:                marello.inventory.warehousegroup.id.label
-                frontend_type:        string
             name:
                 label:                marello.inventory.warehousegroup.name.label
                 frontend_type:        string
@@ -123,13 +120,12 @@ datagrids:
                     data_name: whg.name
         sorters:
             columns:
-                id:
-                    data_name: whg.id
                 name:
                     data_name: whg.name
                 description:
                     data_name: whg.description
         properties:
+            id: ~
             view_link:
                 type:   url
                 route:  marelloenterprise_inventory_warehousegroup_view
@@ -215,9 +211,6 @@ datagrids:
                     and:
                         - wcgl.system != true
         columns:
-            id:
-                label:                marello.inventory.warehousechannelgrouplink.id.label
-                frontend_type:        string
             warehouseGroup:
                 label:                marello.inventory.warehousechannelgrouplink.warehouse_group.label
                 frontend_type:        string
@@ -227,6 +220,7 @@ datagrids:
                 frontend_type:        html
                 template:             MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink/Datagrid:salesChannelGroups.html.twig
         properties:
+            id: ~
             update_link:
                 type:   url
                 route:  marelloenterprise_inventory_warehousechannelgrouplink_update
@@ -289,9 +283,6 @@ datagrids:
                 label:                ~
                 editable:             true
                 frontend_type:        boolean
-            id:
-                label:                marello.sales.saleschannelgroup.id.label
-                frontend_type:        string
             name:
                 label:                marello.sales.saleschannelgroup.name.label
                 frontend_type:        string
@@ -300,8 +291,6 @@ datagrids:
                 frontend_type:        string
         sorters:
             columns:
-                id:
-                    data_name: scg.id
                 name:
                     data_name: scg.name
                 description:
