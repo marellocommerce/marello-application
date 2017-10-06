@@ -11,3 +11,8 @@ Marello\Bundle\InventoryBundle\Entity\InventoryLevel:
     properties:
         warehouse:
             - NotBlank: ~
+
+MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule:
+    properties:
+        strategy:
+            - NotBlank: ~
