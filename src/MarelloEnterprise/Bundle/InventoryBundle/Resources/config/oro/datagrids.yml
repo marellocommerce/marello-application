@@ -319,3 +319,140 @@ datagrids:
                 selectors:
                     included: '#addSalesChannelGroups'
                     excluded: '#removeSalesChannelGroups'
+
+    marelloenterprise-inventory-wfa-rules-grid:
+        acl_resource: marelloenterprise_inventory_wfa_rule_view
+        source:
+            type:         orm
+            query:
+                select:
+                    - wfarule
+                    - wfarule.id
+                    - rule.name
+                    - rule.enabled
+                    - rule.sortOrder
+                    - rule.stopProcessing
+                    - rule.isSystem
+                    - wfarule.strategy
+                from:
+                    - { table: MarelloEnterpriseInventoryBundle:WFARule, alias: wfarule }
+                join:
+                    inner:
+                        - { join: wfarule.rule, alias: rule }
+        columns:
+            id:
+                label:         marelloenterprise.inventory.wfarule.id.label
+            name:
+                label:         marello.rule.name.label
+            enabled:
+                label:         marello.rule.enabled.label
+                frontend_type: boolean
+            sortOrder:
+                label:         marello.rule.sort_order.label
+            stopProcessing:
+                label:         marello.rule.stop_processing.label
+                frontend_type: boolean
+            isSystem:
+                label:         marello.rule.is_system.label
+                frontend_type: boolean
+            strategy:
+                label:         marelloenterprise.inventory.wfarule.strategy.label
+                type:          twig
+                frontend_type: html
+                template:      MarelloEnterpriseInventoryBundle:WFARule/DataGrid:strategy.html.twig
+        properties:
+            id: ~
+            view_link:
+                type:     url
+                route:    marelloenterprise_inventory_wfa_rule_view
+                params:   [ id ]
+            enable_link:
+                type:     url
+                route:    marelloenterprise_inventory_api_enable_wfarule
+                params:   [ id ]
+            disable_link:
+                type:     url
+                route:    marelloenterprise_inventory_api_disable_wfarule
+                params:   [ id ]
+        sorters:
+            columns:
+                id:
+                    data_name: wfarule.id
+                name:
+                    data_name: rule.name
+                enabled:
+                   data_name:  rule.enabled
+                sortOrder:
+                    data_name: rule.sortOrder
+                stopProcessing:
+                    data_name: rule.stopProcessing
+                isSystem:
+                    data_name: rule.isSystem
+        filters:
+            columns:
+                id:
+                    type:      number
+                    data_name: wfarule.id
+                name:
+                    type:      string
+                    data_name: rule.name
+                enabled:
+                    type:      boolean
+                    data_name: rule.enabled
+                sortOrder:
+                    type:      number
+                    data_name: rule.sortOrder
+                stopProcessing:
+                    type:      boolean
+                    data_name: rule.stopProcessing
+                isSystem:
+                    type:      boolean
+                    data_name: rule.isSystem
+                strategy:
+                    type:      choice
+                    data_name: wfarule.strategy
+                    options:
+                        field_options:
+                            multiple:          true
+                            choices:           "@marelloenterprise_inventory.provider.wfa_strategy.choices->getChoices"
+                            translatable_options: false
+        actions:
+            view:
+                type:          navigate
+                link:          view_link
+                acl_resource:  marelloenterprise_inventory_wfa_rule_view
+                icon:          eye
+                label:         oro.grid.action.view
+                rowAction:     true
+            enable:
+                type:         ajax
+                acl_resource: marelloenterprise_inventory_wfa_rule_update
+                label:        marelloenterprise.inventory.wfarule.datagrid.action.enable
+                icon:         check
+                link:         enable_link
+            disable:
+                type:         ajax
+                acl_resource: marelloenterprise_inventory_wfa_rule_update
+                label:        marelloenterprise.inventory.wfarule.datagrid.action.disable
+                icon:         close
+                link:         disable_link
+        action_configuration: ['@marelloenterprise_inventory.datagrid.wfa_rule_actions_visibility_provider', getActionsVisibility]
+        options:
+            mass_actions:
+                delete:
+                    enabled: false
+        mass_actions:
+            enable:
+                type:         wfaruleenable
+                acl_resource: marelloenterprise_inventory_wfa_rule_update
+                label:        marelloenterprise.inventory.wfarule.datagrid.action.enable
+                icon:         check
+                entity_name:  'MarelloEnterpriseInventoryBundle:WFARule'
+                data_identifier: wfarule.id
+            disable:
+                type:         wfaruledisable
+                acl_resource: marelloenterprise_inventory_wfa_rule_update
+                label:        marelloenterprise.inventory.wfarule.datagrid.action.disable
+                icon:         close
+                entity_name:  'MarelloEnterpriseInventoryBundle:WFARule'
+                data_identifier: wfarule.id
