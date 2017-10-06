@@ -3,14 +3,14 @@
 namespace Marello\Bundle\OrderBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class OrderController extends Controller
 {
@@ -138,7 +138,7 @@ class OrderController extends Controller
     /**
      * @Config\Route("/widget/address/{id}/{typeId}", requirements={"id"="\d+","typeId"="\d+"})
      * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Config\Template("MarelloOrderBundle:Order/widget:address.html.twig")
      * @Security\AclAncestor("marello_order_update")
      *
      * @param Request $request
@@ -169,7 +169,7 @@ class OrderController extends Controller
     public function updateAddressAction(Request $request, MarelloAddress $address)
     {
         $responseData = array(
-            'saved' => false,
+            'saved' => false
         );
         $form  = $this->createForm('marello_address', $address);
         $form->handleRequest($request);

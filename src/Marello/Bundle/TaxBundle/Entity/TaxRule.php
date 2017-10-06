@@ -107,11 +107,11 @@ class TaxRule
     /**
      * Set taxCode
      *
-     * @param \Marello\Bundle\TaxBundle\Entity\TaxCode $taxCode
+     * @param TaxCode $taxCode
      *
      * @return TaxRule
      */
-    public function setTaxCode(\Marello\Bundle\TaxBundle\Entity\TaxCode $taxCode)
+    public function setTaxCode(TaxCode $taxCode)
     {
         $this->taxCode = $taxCode;
 
@@ -121,7 +121,7 @@ class TaxRule
     /**
      * Get taxCode
      *
-     * @return \Marello\Bundle\TaxBundle\Entity\TaxCode
+     * @return TaxCode
      */
     public function getTaxCode()
     {
@@ -131,7 +131,7 @@ class TaxRule
     /**
      * Set taxRate
      *
-     * @param \Marello\Bundle\TaxBundle\Entity\TaxRate $taxRate
+     * @param TaxRate $taxRate
      *
      * @return TaxRule
      */
@@ -145,7 +145,7 @@ class TaxRule
     /**
      * Get taxRate
      *
-     * @return \Marello\Bundle\TaxBundle\Entity\TaxRate
+     * @return TaxRate
      */
     public function getTaxRate()
     {

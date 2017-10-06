@@ -47,21 +47,24 @@ class OrderItemRowTotalsProvider extends AbstractOrderItemFormChangesProvider
         }
         $itemResult = $result[self::ITEMS_FIELD];
         foreach ($submittedData[self::ITEMS_FIELD] as $item) {
-            $identifier = sprintf('%s%s', self::IDENTIFIER_PREFIX, $item['product']);
-            if (isset($itemResult['price'][$identifier]) && isset($itemResult['tax_code'][$identifier]) &&
-                isset($item['quantity'])) {
-                $taxRule = $this->taxRuleMatcher->match(
-                    $order->getShippingAddress(),
-                    [$itemResult['tax_code'][$identifier]['code']]
-                );
-                if ($taxRule) {
-                    $rate = $taxRule->getTaxRate()->getRate();
-                } else {
-                    $rate = 0;
+            if (!empty($item['product'])) {
+                $identifier = sprintf('%s%s', self::IDENTIFIER_PREFIX, $item['product']);
+                if (isset($itemResult['price'][$identifier]) && isset($itemResult['tax_code'][$identifier]) &&
+                    isset($item['quantity'])
+                ) {
+                    $taxRule = $this->taxRuleMatcher->match(
+                        $order->getShippingAddress(),
+                        [$itemResult['tax_code'][$identifier]['code']]
+                    );
+                    if ($taxRule) {
+                        $rate = $taxRule->getTaxRate()->getRate();
+                    } else {
+                        $rate = 0;
+                    }
+                    $amount = (double)$itemResult['price'][$identifier]['value'] * (float)$item['quantity'];
+                    $taxTotals = $this->taxCalculator->calculate($amount, $rate);
+                    $itemResult['row_totals'][$identifier] = $taxTotals->jsonSerialize();
                 }
-                $amount = (double)$itemResult['price'][$identifier]['value'] * (float)$item['quantity'];
-                $taxTotals = $this->taxCalculator->calculate($amount, $rate);
-                $itemResult['row_totals'][$identifier] = $taxTotals->jsonSerialize();
             }
         }
         $result[self::ITEMS_FIELD] = $itemResult;

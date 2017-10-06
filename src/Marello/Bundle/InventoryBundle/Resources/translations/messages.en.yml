@@ -54,6 +54,7 @@ marello:
             desired_inventory.label:    Desired Inventory Level
             purchase_inventory.label:   Purchase Inventory Level
             inventory_levels.label:     Inventory Levels
+            warehouse.label:            Warehouse
 
         inventorylevel:
             entity_label:                   Inventory Level
@@ -92,6 +93,6 @@ marello:
 
         messages:
             success:
-                warehouse.saved:        Warehouse  has been saved successfully
+                warehouse.saved:        Warehouse has been saved successfully
             error:
                 warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse

@@ -22,6 +22,7 @@ marello:
         organization.label:         Organization
         variant.label:              Variant
         prices.label:               Product Prices
+        replenishment.label:        Replenishment
 
         variant:
             label:                    Variant

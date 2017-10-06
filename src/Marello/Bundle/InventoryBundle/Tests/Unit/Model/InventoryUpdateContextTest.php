@@ -16,6 +16,9 @@ class InventoryUpdateContextTest extends \PHPUnit_Framework_TestCase
      */
     protected $inventoryUpdateContext;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->inventoryUpdateContext = new InventoryUpdateContext();

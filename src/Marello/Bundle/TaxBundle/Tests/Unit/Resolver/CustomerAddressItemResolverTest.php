@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Resolver;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\TaxBundle\Model\Result;
 use Marello\Bundle\TaxBundle\Model\ResultElement;
 use Marello\Bundle\TaxBundle\Model\Taxable;
 use Marello\Bundle\TaxBundle\Resolver\CustomerAddressItemResolver;

@@ -87,7 +87,7 @@ datagrids:
             update:
                 type:           navigate
                 acl_resource:   marello_product_update
-                label:          marello.product.update
+                label:          oro.grid.action.update
                 icon:           edit
                 link:           update_link
             delete:
@@ -100,7 +100,7 @@ datagrids:
                 type:           navigate
                 link:           inventory_link
                 icon:           cubes
-                label:          marello.inventory.update
+                label:          marello.inventory.management.label
         options:
             entityHint: product
             export: true

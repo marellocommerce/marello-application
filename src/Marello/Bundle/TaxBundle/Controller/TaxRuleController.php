@@ -2,15 +2,10 @@
 
 namespace Marello\Bundle\TaxBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Oro\Bundle\SecurityBundle\Annotation as Security;
-
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Class TaxRuleController
@@ -32,7 +27,12 @@ class TaxRuleController extends Controller
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxrule_view")
+     * @Security\Acl(
+     *      id="marello_tax_taxrule_view",
+     *      type="entity",
+     *      class="MarelloTaxBundle:TaxRule",
+     *      permission="VIEW"
+     * )
      *
      * @param TaxRule $taxRule
      *
@@ -47,13 +47,16 @@ class TaxRuleController extends Controller
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxrule_create")
-     *
-     * @param Request $request
+     * @Security\Acl(
+     *      id="marello_tax_taxrule_create",
+     *      type="entity",
+     *      class="MarelloTaxBundle:TaxRule",
+     *      permission="CREATE"
+     * )
      *
      * @return array
      */
-    public function createAction(Request $request)
+    public function createAction()
     {
         return $this->update(new TaxRule());
     }
@@ -62,14 +65,18 @@ class TaxRuleController extends Controller
      * @Config\Route("/update/{id}", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxrule_update")
+     * @Security\Acl(
+     *      id="marello_tax_taxrule_update",
+     *      type="entity",
+     *      class="MarelloTaxBundle:TaxRule",
+     *      permission="EDIT"
+     * )
      *
-     * @param Request $request
-     * @param TaxRule   $taxRule
+     * @param TaxRule $taxRule
      *
      * @return array
      */
-    public function updateAction(Request $request, TaxRule $taxRule)
+    public function updateAction(TaxRule $taxRule)
     {
         return $this->update($taxRule);
     }
@@ -91,21 +98,7 @@ class TaxRuleController extends Controller
                 $this->get('translator')->trans('marello.tax.messages.success.taxrule.saved')
             );
             
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'marello_tax_taxrule_update',
-                    'parameters' => [
-                        'id' => $taxRule->getId(),
-                    ],
-                ],
-                [
-                    'route'      => 'marello_tax_taxrule_view',
-                    'parameters' => [
-                        'id' => $taxRule->getId(),
-                    ],
-                ],
-                $taxRule
-            );
+            return $this->get('oro_ui.router')->redirect($taxRule);
         }
 
         return [

@@ -86,7 +86,7 @@ class TaxJurisdictionControllerTest extends WebTestCase
     }
 
     /**
-     * @paran $id int
+     * @param int $id
      * @return int
      * @depends testCreate
      */
@@ -161,6 +161,7 @@ class TaxJurisdictionControllerTest extends WebTestCase
             ->getToken('marello_tax_jurisdiction_type')->getValue();
 
         $formData = [
+            'input_action' => '{"route":"marello_tax_taxjurisdiction_view","params":{"id":"$id"}}',
             'marello_tax_jurisdiction_type' => [
                 'code' => $code,
                 'description' => $description,

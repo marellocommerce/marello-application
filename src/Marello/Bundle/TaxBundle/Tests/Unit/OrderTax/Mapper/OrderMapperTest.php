@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\OrderTax\Mapper;
 
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Component\Testing\Unit\EntityTrait;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
@@ -88,12 +89,13 @@ class OrderMapperTest extends \PHPUnit_Framework_TestCase
             ->setFirstName('FirstName')
             ->setLastName('LastName')
             ->setStreet('street');
-
+        $orderItem = (new OrderItem())
+            ->setProduct(new Product());
         /** @var Order $order */
         $order = $this->getEntity(Order::class, ['id' => $id]);
         $order
             ->setSubtotal($subtotal)
-            ->addItem(new OrderItem())
+            ->addItem($orderItem)
             ->setShippingAddress($shippingAddress)
             ->setBillingAddress($billingAddress)
             ->setCurrency('$')

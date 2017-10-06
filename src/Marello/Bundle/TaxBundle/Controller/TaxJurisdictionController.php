@@ -8,6 +8,7 @@ use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class TaxJurisdictionController
@@ -60,11 +61,12 @@ class TaxJurisdictionController extends Controller
      *      permission="CREATE"
      * )
      *
+     * @param Request $request
      * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        return $this->update(new TaxJurisdiction());
+        return $this->update(new TaxJurisdiction(), $request);
     }
 
     /**
@@ -77,36 +79,27 @@ class TaxJurisdictionController extends Controller
      *      permission="EDIT"
      * )
      *
+     * @param Request $request
      * @param TaxJurisdiction $taxJurisdiction
      * @return array
      */
-    public function updateAction(TaxJurisdiction $taxJurisdiction)
+    public function updateAction(Request $request, TaxJurisdiction $taxJurisdiction)
     {
-        return $this->update($taxJurisdiction);
+        return $this->update($taxJurisdiction, $request);
     }
 
     /**
      * @param TaxJurisdiction $taxJurisdiction
+     * @param Request $request
      * @return array|RedirectResponse
      */
-    protected function update(TaxJurisdiction $taxJurisdiction)
+    protected function update(TaxJurisdiction $taxJurisdiction, Request $request)
     {
-        return $this->get('oro_form.model.update_handler')->handleUpdate(
+        return $this->get('oro_form.update_handler')->update(
             $taxJurisdiction,
-            $this->createForm(TaxJurisdictionType::NAME, $taxJurisdiction),
-            function (TaxJurisdiction $taxJurisdiction) {
-                return [
-                    'route' => 'marello_tax_taxjurisdiction_update',
-                    'parameters' => ['id' => $taxJurisdiction->getId()]
-                ];
-            },
-            function (TaxJurisdiction $taxJurisdiction) {
-                return [
-                    'route' => 'marello_tax_taxjurisdiction_view',
-                    'parameters' => ['id' => $taxJurisdiction->getId()]
-                ];
-            },
-            $this->get('translator')->trans('marello.tax.messages.success.taxjurisdiction.saved')
+            $this->createForm(TaxJurisdictionType::class, $taxJurisdiction),
+            $this->get('translator')->trans('marello.tax.messages.success.taxjurisdiction.saved'),
+            $request
         );
     }
 }

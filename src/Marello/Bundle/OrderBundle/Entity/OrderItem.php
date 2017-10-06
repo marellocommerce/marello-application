@@ -202,6 +202,8 @@ class OrderItem extends ExtendOrderItem implements
      */
     public function __construct()
     {
+        parent::__construct();
+        
         $this->returnItems = new ArrayCollection();
     }
 
