@@ -332,7 +332,7 @@ datagrids:
                     - rule.enabled
                     - rule.sortOrder
                     - rule.stopProcessing
-                    - rule.isSystem
+                    - rule.system
                     - wfarule.strategy
                 from:
                     - { table: MarelloEnterpriseInventoryBundle:WFARule, alias: wfarule }
@@ -340,8 +340,6 @@ datagrids:
                     inner:
                         - { join: wfarule.rule, alias: rule }
         columns:
-            id:
-                label:         marelloenterprise.inventory.wfarule.id.label
             name:
                 label:         marello.rule.name.label
             enabled:
@@ -352,8 +350,8 @@ datagrids:
             stopProcessing:
                 label:         marello.rule.stop_processing.label
                 frontend_type: boolean
-            isSystem:
-                label:         marello.rule.is_system.label
+            system:
+                label:         marello.rule.system.label
                 frontend_type: boolean
             strategy:
                 label:         marelloenterprise.inventory.wfarule.strategy.label
@@ -376,8 +374,6 @@ datagrids:
                 params:   [ id ]
         sorters:
             columns:
-                id:
-                    data_name: wfarule.id
                 name:
                     data_name: rule.name
                 enabled:
@@ -386,13 +382,10 @@ datagrids:
                     data_name: rule.sortOrder
                 stopProcessing:
                     data_name: rule.stopProcessing
-                isSystem:
-                    data_name: rule.isSystem
+                system:
+                    data_name: rule.system
         filters:
             columns:
-                id:
-                    type:      number
-                    data_name: wfarule.id
                 name:
                     type:      string
                     data_name: rule.name
@@ -405,9 +398,9 @@ datagrids:
                 stopProcessing:
                     type:      boolean
                     data_name: rule.stopProcessing
-                isSystem:
+                system:
                     type:      boolean
-                    data_name: rule.isSystem
+                    data_name: rule.system
                 strategy:
                     type:      choice
                     data_name: wfarule.strategy

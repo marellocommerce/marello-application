@@ -20,11 +20,6 @@ class AddressGeocodingCommand extends ContainerAwareCommand implements CronComma
     const COMMAND_NAME = 'oro:cron:address-geocoding';
 
     /**
-     * The maximum number of jobs running in the same time
-     */
-    const MAX_JOBS_COUNT = 3;
-
-    /**
      * @inheritdoc
      */
     public function getDefaultDefinition()
@@ -108,8 +103,7 @@ class AddressGeocodingCommand extends ContainerAwareCommand implements CronComma
             }
             $em->flush();
         }
-
-
+        
         if ($notSuccessGeocodingCnt > 0) {
             $message = (
                     sprintf(
@@ -130,13 +124,5 @@ class AddressGeocodingCommand extends ContainerAwareCommand implements CronComma
         $output->writeln($message);
 
         return 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMaxJobsCount()
-    {
-        return self::MAX_JOBS_COUNT;
     }
 }

@@ -153,7 +153,7 @@ services:
         arguments:
             - '@marelloenterprise_inventory.wfa_strategy.registry'
             - '@marello_rule.rule_filtration.service'
-            - '@oro_entity.doctrine_helper'
+            - '@marelloenterprise_inventory.repository.wfa_rule'
 
     marelloenterprise_inventory.formatter.wfa_strategy.label:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Formatter\WFAStrategyLabelFormatter'

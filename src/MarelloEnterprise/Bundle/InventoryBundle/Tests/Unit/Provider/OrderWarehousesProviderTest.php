@@ -2,16 +2,14 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Provider;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use MarelloEnterprise\Bundle\InventoryBundle\Provider\OrderWarehousesProvider;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class OrderWarehousesProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -26,9 +24,9 @@ class OrderWarehousesProviderTest extends \PHPUnit_Framework_TestCase
     protected $rulesFiltrationService;
 
     /**
-     * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var WFARuleRepository|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $doctrineHelper;
+    protected $wfaRuleRepository;
 
     /**
      * @var OrderWarehousesProvider
@@ -39,13 +37,13 @@ class OrderWarehousesProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->strategiesRegistry = $this->createMock(WFAStrategiesRegistry::class);
         $this->rulesFiltrationService = $this->createMock(RuleFiltrationServiceInterface::class);
-        $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
+        $this->wfaRuleRepository = $this->getMockBuilder(WFARuleRepository::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->orderWarehousesProvider = new OrderWarehousesProvider(
             $this->strategiesRegistry,
             $this->rulesFiltrationService,
-            $this->doctrineHelper
+            $this->wfaRuleRepository
         );
     }
 
@@ -69,21 +67,10 @@ class OrderWarehousesProviderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $wfaRule1 = $this->mockWfaRule('strategy1');
         $wfaRule2 = $this->mockWfaRule('strategy2');
-        $repository = $this->createMock(EntityRepository::class);
-        $repository->expects(static::once())
-            ->method('findAll')
+
+        $this->wfaRuleRepository->expects(static::once())
+            ->method('findAllWFARules')
             ->willReturn([$wfaRule1, $wfaRule2]);
-        $em = $this->createMock(EntityManager::class);
-        $this->doctrineHelper
-            ->expects(static::once())
-            ->method('getEntityManagerForClass')
-            ->with(WFARule::class)
-            ->willReturn($em);
-        $em
-            ->expects(static::once())
-            ->method('getRepository')
-            ->with(WFARule::class)
-            ->willReturn($repository);
         $this->rulesFiltrationService
             ->expects(static::once())
             ->method('getFilteredRuleOwners')

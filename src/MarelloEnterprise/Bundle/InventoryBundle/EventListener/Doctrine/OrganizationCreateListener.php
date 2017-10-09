@@ -6,7 +6,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\RuleBundle\Entity\Rule;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrganizationCreateListener
@@ -15,14 +18,14 @@ class OrganizationCreateListener
      * @var EntityManagerInterface
      */
     private $entityManager;
-    
+
     /**
      * Installed flag
      *
      * @var bool
      */
     protected $installed;
-    
+
     /**
      * @param bool $installed
      */
@@ -30,7 +33,7 @@ class OrganizationCreateListener
     {
         $this->installed = $installed;
     }
-    
+
     /**
      * @param Organization $organization
      * @param LifecycleEventArgs $args
@@ -41,6 +44,7 @@ class OrganizationCreateListener
             $this->entityManager = $args->getEntityManager();
             $this->createSystemWarehouseGroupForOrganization($organization);
             $this->createSystemWarehouseChannelGroupLinkForOrganization($organization);
+            $this->createSystemWFARuleForOrganization($organization);
         }
     }
 
@@ -87,5 +91,24 @@ class OrganizationCreateListener
             $this->entityManager->persist($systemLink);
             $this->entityManager->flush();
         }
+    }
+
+    /**
+     * @param Organization $organization
+     */
+    private function createSystemWFARuleForOrganization(Organization $organization)
+    {
+        $rule = $this->entityManager
+            ->getRepository(Rule::class)
+            ->findOneBy(['system' => true]);
+        
+        $wfaRule = new WFARule();
+        $wfaRule
+            ->setRule($rule)
+            ->setStrategy(MinimumQuantityWFAStrategy::IDENTIFIER)
+            ->setOrganization($organization);
+
+        $this->entityManager->persist($wfaRule);
+        $this->entityManager->flush();
     }
 }

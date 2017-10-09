@@ -6,7 +6,7 @@
 {% endif %}
 
 {% block navButtons %}
-    {% if not entity.rule.isSystem %}
+    {% if not entity.rule.system %}
         {{ UI.editButton({
             'path' : path('marelloenterprise_inventory_wfa_rule_update', { 'id': entity.id }),
             'entity_label': 'marelloenterprise.inventory.wfarule.entity_short_label'|trans
@@ -41,7 +41,7 @@
                 :
                 'marello.rule.enabled.no.label'|trans
                 ) }}
-                {{ UI.renderProperty('marello.rule.is_system.label'|trans, entity.rule.isSystem ?
+                {{ UI.renderProperty('marello.rule.system.label'|trans, entity.rule.system ?
                 'marello.rule.enabled.yes.label'|trans
                 :
                 'marello.rule.enabled.no.label'|trans
