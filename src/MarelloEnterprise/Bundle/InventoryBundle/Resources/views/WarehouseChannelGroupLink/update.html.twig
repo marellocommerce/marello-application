@@ -7,8 +7,6 @@
 {% oro_title_set({params : {'%id%': entity.id, '%entityName%': 'marello.inventory.warehousechannelgrouplink.entity_label'|trans} }) %}
 
 {% block navButtons %}
-    {{ parent() }}
-
     {% if entity.id and not entity.system and resource_granted('DELETE', entity) %}
         {{ UI.deleteButton({
             'dataUrl': path('marelloenterprise_inventory_api_delete_warehousechannelgrouplink', {'id': entity.id}),
