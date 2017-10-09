@@ -2,9 +2,8 @@
 
 namespace Marello\Bundle\TaxBundle\Matcher;
 
-use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 
 interface TaxRuleMatcherInterface
 {

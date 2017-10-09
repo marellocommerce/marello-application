@@ -24,15 +24,23 @@ class CreatePackingSlipEventListener
     protected $entityManager;
 
     /**
+     * @var bool
+     */
+    protected $stopPropagation = false;
+
+    /**
      * @param MapperInterface $mapper
      * @param DoctrineHelper $doctrineHelper
+     * @param bool $stopPropagation
      */
     public function __construct(
         MapperInterface $mapper,
-        DoctrineHelper $doctrineHelper
+        DoctrineHelper $doctrineHelper,
+        $stopPropagation = false
     ) {
         $this->mapper = $mapper;
         $this->entityManager = $doctrineHelper->getEntityManagerForClass(PackingSlip::class);
+        $this->stopPropagation = $stopPropagation;
     }
 
     /**
@@ -56,6 +64,10 @@ class CreatePackingSlipEventListener
             $this->entityManager->persist($packingSlip);
         }
         $this->entityManager->flush();
+        
+        if ($this->stopPropagation) {
+            $event->stopPropagation();
+        }
     }
 
     /**

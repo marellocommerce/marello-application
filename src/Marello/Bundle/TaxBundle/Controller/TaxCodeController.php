@@ -2,15 +2,10 @@
 
 namespace Marello\Bundle\TaxBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Oro\Bundle\SecurityBundle\Annotation as Security;
-
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Class TaxCodeController
@@ -32,7 +27,12 @@ class TaxCodeController extends Controller
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxcode_view")
+     * @Security\Acl(
+     *      id="marello_tax_taxcode_view",
+     *      type="entity",
+     *      class="MarelloTaxBundle:TaxCode",
+     *      permission="VIEW"
+     * )
      *
      * @param TaxCode $taxCode
      *
@@ -47,13 +47,16 @@ class TaxCodeController extends Controller
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxcode_create")
-     *
-     * @param Request $request
+     * @Security\Acl(
+     *      id="marello_tax_taxcode_create",
+     *      type="entity",
+     *      class="MarelloTaxBundle:TaxCode",
+     *      permission="CREATE"
+     * )
      *
      * @return array
      */
-    public function createAction(Request $request)
+    public function createAction()
     {
         return $this->update(new TaxCode());
     }
@@ -62,14 +65,18 @@ class TaxCodeController extends Controller
      * @Config\Route("/update/{id}", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxcode_update")
+     * @Security\Acl(
+     *      id="marello_tax_taxcode_update",
+     *      type="entity",
+     *      class="MarelloTaxBundle:TaxCode",
+     *      permission="EDIT"
+     * )
      *
-     * @param Request $request
-     * @param TaxCode   $taxCode
+     * @param TaxCode $taxCode
      *
      * @return array
      */
-    public function updateAction(Request $request, TaxCode $taxCode)
+    public function updateAction(TaxCode $taxCode)
     {
         return $this->update($taxCode);
     }
@@ -91,21 +98,7 @@ class TaxCodeController extends Controller
                 $this->get('translator')->trans('marello.tax.messages.success.taxcode.saved')
             );
             
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'marello_tax_taxcode_update',
-                    'parameters' => [
-                        'id' => $taxCode->getId(),
-                    ],
-                ],
-                [
-                    'route'      => 'marello_tax_taxcode_view',
-                    'parameters' => [
-                        'id' => $taxCode->getId(),
-                    ],
-                ],
-                $taxCode
-            );
+            return $this->get('oro_ui.router')->redirect($taxCode);
         }
 
         return [

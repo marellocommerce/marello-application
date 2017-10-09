@@ -55,6 +55,7 @@ marello:
             purchase_inventory.label:   Purchase Inventory Level
             inventory_levels.label:     Inventory Levels
             organization.label:         Organization
+            warehouse.label:            Warehouse
 
         inventorylevel:
             entity_label:                   Inventory Level

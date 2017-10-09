@@ -93,6 +93,7 @@ class TaxRateControllerTest extends WebTestCase
     {
         $form = $crawler->selectButton('Save and Close')->form(
             [
+                'input_action' => '{"route":"marello_tax_taxrate_view","params":{"id":"$id"}}',
                 'marello_tax_rate_form[code]' => $code,
                 'marello_tax_rate_form[rate]' => $rate,
             ]

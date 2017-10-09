@@ -87,6 +87,11 @@ services:
         tags:
             - { name: twig.extension }
 
+    marello_inventory.provider.order_warehouse:
+        class: 'Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
     marello_inventory.repository.warehouse:
         class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
         parent: oro_entity.abstract_repository

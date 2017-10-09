@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\TaxBundle\Form\Type;
 
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -19,7 +21,7 @@ class TaxCodeType extends AbstractType
         $builder
             ->add(
                 'code',
-                'text',
+                TextType::class,
                 [
                     'required' => true,
                     'constraints' => new NotNull()
@@ -27,7 +29,7 @@ class TaxCodeType extends AbstractType
             )
             ->add(
                 'description',
-                'text',
+                TextType::class,
                 [
                     'required' => false,
                 ]
@@ -41,7 +43,7 @@ class TaxCodeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\TaxBundle\Entity\TaxCode',
+            'data_class'         => TaxCode::class,
             'cascade_validation' => true,
         ]);
     }

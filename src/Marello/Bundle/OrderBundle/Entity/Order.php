@@ -269,6 +269,8 @@ class Order extends ExtendOrder implements
         AbstractAddress $billingAddress = null,
         AbstractAddress $shippingAddress = null
     ) {
+        parent::__construct();
+        
         $this->items           = new ArrayCollection();
         $this->billingAddress  = $billingAddress;
         $this->shippingAddress = $shippingAddress;

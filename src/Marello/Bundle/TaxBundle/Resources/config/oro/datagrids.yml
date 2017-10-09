@@ -106,15 +106,9 @@ datagrids:
                     - { table: MarelloTaxBundle:TaxRule, alias: t }
                 join:
                     left:
-                        taxCode:
-                            join: t.taxCode
-                            alias: tc
-                        taxRate:
-                            join: t.taxRate
-                            alias: tr
-                        taxJurisdiction:
-                            join: t.taxJurisdiction
-                            alias: tj
+                        - { join: t.taxCode, alias: tc }
+                        - { join: t.taxRate, alias: tr }
+                        - { join: t.taxJurisdiction, alias: tj }
         columns:
             code:
                 label:            marello.tax.taxrule.tax_code.label
