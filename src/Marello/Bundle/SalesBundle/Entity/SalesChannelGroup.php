@@ -26,6 +26,10 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *          "owner_type"="ORGANIZATION",
  *          "owner_field_name"="organization",
  *          "owner_column_name"="organization_id"
+ *      },
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
  *      }
  *  }
  * )
@@ -110,6 +114,8 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
 
     public function __construct()
     {
+        parent::__construct();
+        
         $this->salesChannels = new ArrayCollection();
     }
 
