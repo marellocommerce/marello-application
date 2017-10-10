@@ -13,7 +13,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marello_sales_channel_group")
  * @Config(

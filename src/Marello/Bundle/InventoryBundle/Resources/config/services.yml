@@ -97,3 +97,21 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_inventory.repository.warehousegroup:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_inventory.repository.warehousechannelgrouplink:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]

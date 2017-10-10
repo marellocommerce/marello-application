@@ -45,9 +45,11 @@ class AddColumnsToInventoryLevel implements Migration, OrderedMigrationInterface
             $table->addUniqueIndex(['inventory_item_id', 'warehouse_id'], 'uniq_40b8d0414584665a5080ecde');
             $table->addIndex(['warehouse_id'], 'idx_40b8d0415080ecde', []);
         }
-
         if (!$table->hasColumn('updated_at')) {
             $table->addColumn('updated_at', 'datetime');
+        }
+        if (!$table->hasColumn('organization_id')) {
+            $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         }
     }
 
@@ -62,6 +64,12 @@ class AddColumnsToInventoryLevel implements Migration, OrderedMigrationInterface
             ['warehouse_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 }

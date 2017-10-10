@@ -20,7 +20,7 @@ class LoadRulesDataFixture extends AbstractFixture
                 ->setName($reference)
                 ->setEnabled((bool)$data['enabled'])
                 ->setSortOrder((int)$data['sort_order'])
-                ->setIsSystem($data['is_system'])
+                ->setSystem($data['is_system'])
                 ->setStopProcessing((bool)$data['is_stop_processing']);
 
             $manager->persist($entity);

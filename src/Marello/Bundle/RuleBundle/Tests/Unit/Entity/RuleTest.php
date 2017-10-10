@@ -20,7 +20,7 @@ class RuleTest extends \PHPUnit_Framework_TestCase
             ['enabled', true],
             ['sortOrder', 10],
             ['stopProcessing', true],
-            ['isSystem', true],
+            ['system', true],
             ['createdAt', $now, false],
             ['updatedAt', $now, false],
         ];

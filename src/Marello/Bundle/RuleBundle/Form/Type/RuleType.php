@@ -37,8 +37,8 @@ class RuleType extends AbstractType
                 'required' => false,
                 'label' => 'marello.rule.stop_processing.label',
             ])
-            ->add('isSystem', CheckboxType::class, [
-                'label'    => 'marello.rule.is_system.label',
+            ->add('system', CheckboxType::class, [
+                'label'    => 'marello.rule.system.label',
                 'required' => false,
             ]);
     }

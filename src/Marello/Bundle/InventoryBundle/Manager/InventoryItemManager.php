@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Manager;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
@@ -24,7 +25,7 @@ class InventoryItemManager implements InventoryItemManagerInterface
     }
 
     /**
-     * @param $product
+     * @param Product $product
      * @return InventoryItem|null
      */
     public function createInventoryItem($product)
@@ -39,7 +40,10 @@ class InventoryItemManager implements InventoryItemManagerInterface
                 ->getEntityManagerForClass(Warehouse::class)
                 ->getRepository(Warehouse::class)
                 ->getDefault();
-            return new InventoryItem($defaultWarehouse, $product);
+            $inventoryItem = new InventoryItem($defaultWarehouse, $product);
+            $inventoryItem->setOrganization($product->getOrganization());
+            
+            return $inventoryItem;
         }
 
         return null;

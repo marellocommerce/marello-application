@@ -41,7 +41,7 @@ class UpdateCurrentWarehouseWithGroup extends AbstractFixture implements Depende
     {
         $defaultWarehouse = $this->manager->getRepository(Warehouse::class)->getDefault();
         /** @var WarehouseGroup $warehouseGroup */
-        $warehouseGroup = $this->getReference('system_warehouse_group');
+        $warehouseGroup = $this->getReference('warehouse_system_group');
         $defaultWarehouse->setGroup($warehouseGroup);
         $this->manager->persist($defaultWarehouse);
         $this->manager->flush();

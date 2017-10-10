@@ -3,9 +3,10 @@
 namespace Marello\Bundle\SalesBundle\Tests\Unit\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener;
@@ -22,7 +23,7 @@ class SalesChannelGroupListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->salesChannelGroupListener = new SalesChannelGroupListener();
+        $this->salesChannelGroupListener = new SalesChannelGroupListener(true);
     }
 
     /**
@@ -49,23 +50,29 @@ class SalesChannelGroupListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getSalesChannels')
             ->willReturn([$salesChannel]);
 
-        $repository = $this->createMock(EntityRepository::class);
-        $repository
-            ->expects(static::at(0))
-            ->method('findOneBy')
-            ->with(['system' => true])
+        $groupRepository = $this->createMock(SalesChannelGroupRepository::class);
+        $groupRepository
+            ->expects(static::once())
+            ->method('findSystemChannelGroup')
             ->willReturn($systemSalesChannelGroup);
-        $repository
-            ->expects(static::at(1))
-            ->method('findOneBy')
-            ->with(['system' => true])
+        $linkRepository = $this->createMock(WarehouseChannelGroupLinkRepository::class);
+        $linkRepository
+            ->expects(static::once())
+            ->method('findSystemLink')
             ->willReturn($systemLink);
 
         $entityManager = $this->createMock(EntityManagerInterface::class);
         $entityManager
             ->expects(static::exactly(2))
             ->method('getRepository')
-            ->willReturn($repository);
+            ->withConsecutive(
+                [SalesChannelGroup::class],
+                [WarehouseChannelGroupLink::class]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $groupRepository,
+                $linkRepository
+            );
         $entityManager
             ->expects(static::exactly($qty))
             ->method('persist')
@@ -125,11 +132,10 @@ class SalesChannelGroupListenerTest extends \PHPUnit_Framework_TestCase
         /** @var SalesChannelGroup|\PHPUnit_Framework_MockObject_MockObject $salesChannelGroup **/
         $salesChannelGroup = $this->createMock(SalesChannelGroup::class);
 
-        $repository = $this->createMock(EntityRepository::class);
+        $repository = $this->createMock(WarehouseChannelGroupLinkRepository::class);
         $repository
             ->expects(static::once())
-            ->method('findOneBy')
-            ->with(['system' => true])
+            ->method('findSystemLink')
             ->willReturn($defaultLink);
 
         $entityManager = $this->createMock(EntityManagerInterface::class);

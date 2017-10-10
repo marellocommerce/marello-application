@@ -17,7 +17,7 @@ class ActiveSalesChannelHandler extends SearchHandler
         $queryBuilder = $this->getBasicQueryBuilder();
         $queryBuilder->andWhere($queryBuilder->expr()->in('sc.id', $entityIds));
 
-        return $queryBuilder->getQuery()->getResult();
+        return $this->aclHelper->apply($queryBuilder->getQuery())->getResult();
     }
 
     /**
@@ -33,7 +33,7 @@ class ActiveSalesChannelHandler extends SearchHandler
             ->setFirstResult($firstResult)
             ->setMaxResults($maxResults);
 
-        return $queryBuilder->getQuery()->getResult();
+        return $this->aclHelper->apply($queryBuilder->getQuery())->getResult();
     }
 
     /**

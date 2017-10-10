@@ -60,12 +60,12 @@ interface RuleInterface
     /**
      * @return bool
      */
-    public function getIsSystem();
+    public function isSystem();
 
     /**
-     * @param bool $isSystem
+     * @param bool $system
      *
      * @return $this
      */
-    public function setIsSystem($isSystem);
+    public function setSystem($system);
 }

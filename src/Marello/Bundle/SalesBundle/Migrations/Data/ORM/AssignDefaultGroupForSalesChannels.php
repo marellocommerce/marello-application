@@ -27,7 +27,9 @@ class AssignDefaultGroupForSalesChannels extends AbstractFixture implements Depe
     public function load(ObjectManager $manager)
     {
         $salesChannels = $manager->getRepository(SalesChannel::class)->findAll();
-        $defaultSystemGroup = $manager->getRepository(SalesChannelGroup::class)->findOneBy(['system' => true]);
+        $defaultSystemGroup = $manager
+            ->getRepository(SalesChannelGroup::class)
+            ->findSystemChannelGroup();
         foreach ($salesChannels as $salesChannel) {
             $salesChannel->setGroup($defaultSystemGroup);
             $manager->persist($salesChannel);
