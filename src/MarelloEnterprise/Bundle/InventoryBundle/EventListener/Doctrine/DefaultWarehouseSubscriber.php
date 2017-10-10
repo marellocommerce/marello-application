@@ -6,12 +6,11 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 class DefaultWarehouseSubscriber implements EventSubscriber
 {
-
     /**
      * {@inheritdoc}
      */
@@ -36,8 +35,7 @@ class DefaultWarehouseSubscriber implements EventSubscriber
         }
 
         if ($args->hasChangedField('default') && $entity->isDefault()) {
-            $em = $args->getEntityManager();
-            $this->resetDefault($em);
+            $this->resetDefault($args->getEntityManager(), $entity->getOwner());
         }
     }
 
@@ -53,19 +51,22 @@ class DefaultWarehouseSubscriber implements EventSubscriber
             return;
         }
 
-        $this->resetDefault($args->getEntityManager());
+        $this->resetDefault($args->getEntityManager(), $entity->getOwner());
     }
 
     /**
      * reset default Warehouse
      * @param EntityManager $em
+     * @param OrganizationInterface $organization
      */
-    protected function resetDefault(EntityManager $em)
+    protected function resetDefault(EntityManager $em, OrganizationInterface $organization)
     {
         $qb = $em->createQueryBuilder();
         $qb
             ->update('MarelloInventoryBundle:Warehouse', 'w')
-            ->set('w.default', $qb->expr()->literal(false));
+            ->set('w.default', $qb->expr()->literal(false))
+            ->where($qb->expr()->eq('w.owner', ':organization'))
+            ->setParameter('organization', $organization);
 
         $qb->getQuery()->execute();
     }

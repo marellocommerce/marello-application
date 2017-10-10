@@ -3,8 +3,8 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseSystemGroupListener;
@@ -21,7 +21,7 @@ class WarehouseSystemGroupListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->warehouseSystemGroupListener = new WarehouseSystemGroupListener();
+        $this->warehouseSystemGroupListener = new WarehouseSystemGroupListener(true);
     }
 
     /**
@@ -32,11 +32,10 @@ class WarehouseSystemGroupListenerTest extends \PHPUnit_Framework_TestCase
     {
         $warehouse = new Warehouse();
 
-        $repository = $this->createMock(EntityRepository::class);
+        $repository = $this->createMock(WarehouseGroupRepository::class);
         $repository
             ->expects(static::once())
-            ->method('findOneBy')
-            ->with(['system' => true])
+            ->method('findSystemWarehouseGroup')
             ->willReturn($warehouseGroup);
 
         $entityManager = $this->createMock(EntityManagerInterface::class);
