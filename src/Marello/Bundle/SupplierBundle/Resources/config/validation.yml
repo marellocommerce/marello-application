@@ -3,6 +3,9 @@ Marello\Bundle\SupplierBundle\Entity\Supplier:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: name
             message: 'marello.supplier.supplier.messages.error.unique_name'
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: email
+            message: 'marello.supplier.supplier.messages.error.unique_email'
     properties:
         name:
             - NotBlank: ~

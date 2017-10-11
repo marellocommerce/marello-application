@@ -39,19 +39,50 @@
 
 {% block content_data %}
     {% set id = 'order-create' %}
-    {% set customerSelector %}
-        <div data-page-component-module="marelloorder/js/app/components/customer-selection-component">
-            {{ form_row(form.customer) }}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        <div data-page-component-module="marelloorder/js/app/components/customer-selection-component">
+                            {{ form_row(form.customer) }}
+                        </div>
+                        {{ form_row(form.salesChannel) }}
+                        <div data-page-component-module="oroui/js/app/components/view-component"
+                             data-page-component-options="{{ {
+                                 view: 'marelloorder/js/app/views/order-discount-view',
+                             }|json_encode }}">
+                            {{ form_row(form.discountAmount) }}
+                        </div>
+                        {{ form_row(form.couponCode) }}
+                        {{ form_row(form.locale) }}
+                    </div>
+                </div>
+            </div>
         </div>
     {% endset %}
-    {% set discountInput %}
-        <div data-page-component-module="oroui/js/app/components/view-component"
-             data-page-component-options="{{ {
-                 view: 'marelloorder/js/app/views/order-discount-view',
-             }|json_encode }}">
-            {{ form_row(form.discountAmount) }}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+
+    {% set subtotals %}
+        <div class="responsive-block">
+            <div class="box-type1">
+                <div class="title">
+                    <span class="widget-title">{{ 'marello.order.datablock.order_totals'|trans }}</span>
+                </div>
+                <div class="subtotal-error"></div>
+                <div data-page-component-module="oroui/js/app/components/view-component"
+                     data-page-component-options="{{ {
+                         view: 'marelloorder/js/app/views/order-totals-view',
+                         data: data|default({})
+                     }|json_encode }}">
+                    <div class="totals-container" data-totals-container></div>
+                </div>
+            </div>
         </div>
     {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [subtotals] }]) %}
+
     {% set billingAddress %}
         {% if form.billingAddress.customerAddress is defined %}
             {% set idAddressBlock = '#' ~ form.billingAddress.customerAddress.vars.id %}
@@ -105,30 +136,12 @@
         </div>
     {% endset %}
     {% set shippingInformation = form_row(form.shippingMethod) %}
-    {% set subtotals %}
-        <div class="subtotal-error"></div>
-        <div data-page-component-module="oroui/js/app/components/view-component"
-             data-page-component-options="{{ {
-                 view: 'marelloorder/js/app/views/order-totals-view',
-                 data: data|default({})
-             }|json_encode }}">
-            <div class="totals-container" data-totals-container></div>
-        </div>
-    {% endset %}
 
     {% set dataBlocks = [
         {
             'title': 'marello.order.sections.general'|trans,
             'class': 'active',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    customerSelector,
-                    form_row(form.salesChannel),
-                    discountInput,
-                    form_rest(form)
-                ]
-            }]
+            'subblocks': generalSubblocks
         },
         {
             'title': 'marello.order.items.label'|trans,
@@ -166,15 +179,6 @@
             'subblocks': [{
                 'data': [
                     shippingInformation
-                ]
-            }]
-        },
-        {
-            'title': 'marello.order.sections.subtotals'|trans,
-            'class': 'active',
-            'subblocks': [{
-                'data': [
-                    subtotals
                 ]
             }]
         }

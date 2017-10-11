@@ -8,6 +8,8 @@
 {% endif %}
 
 {% block navButtons %}
+    {{ parent() }}
+
     {{ UI.cancelButton(path('marello_tax_taxrule_index')) }}
     {% if entity.id and resource_granted('marello_tax_taxrule_update') %}
         {% set html = '' %}

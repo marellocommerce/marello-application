@@ -46,7 +46,7 @@ class TaxRate
      */
     public function __toString()
     {
-        return $this->code. ' '. $this->rate. '%';
+        return $this->code;
     }
 
     /**

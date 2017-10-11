@@ -154,6 +154,14 @@ define(function(require) {
         /**
          * @inheritDoc
          */
+        removeRow: function() {
+            OrderItemView.__super__.removeRow.call(this);
+            mediator.trigger('order:form-changes:trigger', {updateFields: ['totals']});
+        },
+
+        /**
+         * @inheritDoc
+         */
         dispose: function() {
             if (this.disposed) {
                 return;

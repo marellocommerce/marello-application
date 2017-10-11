@@ -51,6 +51,9 @@
                     <h5>{{ 'marello.order.customer.primary_address.label' | trans }}</h5>
                     {{ Address.renderAddress(entity.primaryAddress) }}
                 </div>
+                <div class="responsive-block">
+                    {% placeholder marello_customer_address with {'address' : entity.primaryAddress} %}
+                </div>
             </div>
         </div>
     {% endset %}
