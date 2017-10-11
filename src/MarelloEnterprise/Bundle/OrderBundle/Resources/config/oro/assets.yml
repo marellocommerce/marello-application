@@ -1,0 +1,4 @@
+assets:
+    css:
+      'marelloenterpriseorder':
+          - 'bundles/marelloenterpriseorder/css/map.css'
