@@ -14,11 +14,15 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository"))
  * @ORM\Table(name="marello_inventory_wh_chg_link")
  * @ORM\HasLifecycleCallbacks()
  * @Config(
  *  defaultValues={
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      },
  *      "ownership"={
  *          "owner_type"="ORGANIZATION",
  *          "owner_field_name"="organization",

@@ -3,25 +3,25 @@
 namespace Marello\Bundle\SalesBundle\Tests\Unit\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelSystemGroupListener;
+use Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelListener;
 
-class SalesChannelSystemGroupListenerTest extends \PHPUnit_Framework_TestCase
+class SalesChannelListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var SalesChannelSystemGroupListener
+     * @var SalesChannelListener
      */
-    protected $salesChannelSystemGroupListener;
+    protected $salesChannelListener;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->salesChannelSystemGroupListener = new SalesChannelSystemGroupListener();
+        $this->salesChannelListener = new SalesChannelListener(true);
     }
 
     /**
@@ -32,11 +32,10 @@ class SalesChannelSystemGroupListenerTest extends \PHPUnit_Framework_TestCase
     {
         $salesChannel = new SalesChannel();
 
-        $repository = $this->createMock(EntityRepository::class);
+        $repository = $this->createMock(SalesChannelGroupRepository::class);
         $repository
             ->expects(static::once())
-            ->method('findOneBy')
-            ->with(['system' => true])
+            ->method('findSystemChannelGroup')
             ->willReturn($salesChannelGroup);
 
         $entityManager = $this->createMock(EntityManagerInterface::class);
@@ -56,7 +55,7 @@ class SalesChannelSystemGroupListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getEntityManager')
             ->willReturn($entityManager);
 
-        $this->salesChannelSystemGroupListener->prePersist($salesChannel, $args);
+        $this->salesChannelListener->prePersist($salesChannel, $args);
 
         static::assertEquals($salesChannelGroup, $salesChannel->getGroup());
     }

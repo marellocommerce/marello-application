@@ -1,5 +1,6 @@
 parameters:
     marello_sales.saleschannel.entity.class:                        Marello\Bundle\SalesBundle\Entity\SalesChannel
+    marello_sales.saleschannelgroup.entity.class:                   Marello\Bundle\SalesBundle\Entity\SalesChannelGroup
     marello_sales.saleschannel.model.channel_aware_interface.class: Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface
 
 services:
@@ -53,6 +54,14 @@ services:
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
 
+    marello_sales.repository.sales_channel_group:
+        class: 'Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
     marello_sales.twig.sales_extension:
         class: Marello\Bundle\SalesBundle\Twig\SalesExtension
         arguments:
@@ -60,13 +69,39 @@ services:
         tags:
             - { name: twig.extension }
 
-    marello_sales.listener.doctrine.sales_channel.system_group:
-        class: 'Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelSystemGroupListener'
+    marello_sales.event_listener.doctrine.sales_channel:
+        class: 'Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelListener'
+        arguments:
+            - '%installed%'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannel', event: prePersist }
 
-    marello_sales.listener.doctrine.sales_channel_group:
+    marello_sales.event_listener.doctrine.sales_channel_group:
         class: 'Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener'
+        arguments:
+            - '%installed%'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup', event: preRemove }
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup', event: postPersist }
+
+    marello_sales.event_listener.datagrid.saleschannelgroups_grid:
+        class: 'Marello\Bundle\SalesBundle\EventListener\Datagrid\SalesChannelGroupDatagridListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marello-sales-channel-groups, method: onResultAfter }
+
+    marello_sales.datagrid.saleschannelgroup.action_permission_provider:
+        class: 'Marello\Bundle\SalesBundle\Datagrid\SalesChannelGroupActionPermissionProvider'
+
+    marello_sales.saleschannelgroup.manager.api:
+        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - '%marello_sales.saleschannelgroup.entity.class%'
+            - '@doctrine.orm.entity_manager'
+
+    marello_sales.handler.saleschannelgroup_delete:
+        class:  'Marello\Bundle\SalesBundle\Handler\SalesChannelGroupDeleteHandler'
+        parent: oro_soap.handler.delete.abstract
+        scope: request
+        arguments:
+            - '@oro_security.security_facade'

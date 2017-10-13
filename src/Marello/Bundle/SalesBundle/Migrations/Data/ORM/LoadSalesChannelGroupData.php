@@ -18,9 +18,8 @@ class LoadSalesChannelGroupData extends AbstractFixture
      */
     protected $data = [
         [
-            'name' => 'System',
-            'description' => 'Default system sales channels group',
-            'type' => 'marello',
+            'name' => 'System Group',
+            'description' => 'System Sales Channel Group',
             'system' => true
         ],
     ];
@@ -44,8 +43,10 @@ class LoadSalesChannelGroupData extends AbstractFixture
         foreach ($this->data as $values) {
             $group = new SalesChannelGroup();
             $group
-                ->setName($values['name'])
-                ->setDescription($values['description'])
+                ->setName(
+                    sprintf('%s %s', $organization->getName(), $values['name'])
+                )
+                ->setDescription(sprintf('%s for %s organization', $values['description'], $organization->getName()))
                 ->setSystem($values['system'])
                 ->setOrganization($organization);
 
