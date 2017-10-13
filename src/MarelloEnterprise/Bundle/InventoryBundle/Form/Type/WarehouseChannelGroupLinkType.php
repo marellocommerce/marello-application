@@ -31,6 +31,8 @@ class WarehouseChannelGroupLinkType extends AbstractType
                 'warehouseGroup',
                 NotLinkedWarehouseGroupAutocompleteType::class,
                 [
+                    'label' => 'marello.inventory.warehousechannelgrouplink.warehouse_group.label',
+                    'tooltip'   => 'marelloenterprise.inventory.warehousechannelgrouplink.select_warehousegroup',
                     'grid_parameters' => ['linkOwner' => $entityId],
                     'attr' => [
                         'data-entity-id' => $entityId

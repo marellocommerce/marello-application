@@ -6,13 +6,13 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToUserGroupValidator;
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToLinkedGroupValidator;
 use Oro\Component\Testing\Unit\EntityTrait;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class WarehouseAddedToUserGroupValidatorTest extends \PHPUnit_Framework_TestCase
+class WarehouseAddedToLinkedGroupValidatorTest extends \PHPUnit_Framework_TestCase
 {
     use EntityTrait;
 
@@ -27,7 +27,7 @@ class WarehouseAddedToUserGroupValidatorTest extends \PHPUnit_Framework_TestCase
     private $context;
 
     /**
-     * @var WarehouseAddedToUserGroupValidator
+     * @var WarehouseAddedToLinkedGroupValidator
      */
     private $validator;
 
@@ -39,7 +39,7 @@ class WarehouseAddedToUserGroupValidatorTest extends \PHPUnit_Framework_TestCase
         $this->constraint = $this->createMock(Constraint::class);
         $this->context = $this->createMock(ExecutionContextInterface::class);
 
-        $this->validator = new WarehouseAddedToUserGroupValidator();
+        $this->validator = new WarehouseAddedToLinkedGroupValidator();
         $this->validator->initialize($this->context);
     }
 

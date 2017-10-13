@@ -4,8 +4,8 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Doct
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseChannelGroupLinkListener;
@@ -22,7 +22,7 @@ class WarehouseChannelGroupLinkListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->warehouseChannelGroupLinkListener = new WarehouseChannelGroupLinkListener();
+        $this->warehouseChannelGroupLinkListener = new WarehouseChannelGroupLinkListener(true);
     }
 
     /**
@@ -116,11 +116,10 @@ class WarehouseChannelGroupLinkListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $repository = $this->createMock(EntityRepository::class);
+        $repository = $this->createMock(WarehouseChannelGroupLinkRepository::class);
         $repository
             ->expects(static::once())
-            ->method('findOneBy')
-            ->with(['system' => true])
+            ->method('findSystemLink')
             ->willReturn($systemLink);
 
         $entityManager = $this->createMock(EntityManagerInterface::class);

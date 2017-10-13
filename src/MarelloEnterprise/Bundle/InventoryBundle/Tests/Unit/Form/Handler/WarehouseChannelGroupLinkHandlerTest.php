@@ -4,7 +4,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityRepository;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseChannelGroupLinkHandler;
@@ -73,11 +73,10 @@ class WarehouseChannelGroupLinkHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('addSalesChannelGroup')
             ->with($chg1);
 
-        $repository = $this->createMock(EntityRepository::class);
+        $repository = $this->createMock(WarehouseChannelGroupLinkRepository::class);
         $repository
             ->expects(static::once())
-            ->method('findOneBy')
-            ->with(['system' => true])
+            ->method('findSystemLink')
             ->willReturn($systemLink);
 
         $this->manager

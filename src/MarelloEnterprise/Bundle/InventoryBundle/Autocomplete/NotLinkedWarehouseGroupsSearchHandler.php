@@ -17,7 +17,7 @@ class NotLinkedWarehouseGroupsSearchHandler extends SearchHandler
         $queryBuilder = $this->getBasicQueryBuilder();
         $queryBuilder->andWhere($queryBuilder->expr()->in('whg.id', $entityIds));
 
-        return $queryBuilder->getQuery()->getResult();
+        return $this->aclHelper->apply($queryBuilder->getQuery())->getResult();
     }
 
     /**
@@ -38,7 +38,7 @@ class NotLinkedWarehouseGroupsSearchHandler extends SearchHandler
             ->setFirstResult($firstResult)
             ->setMaxResults($maxResults);
 
-        return $queryBuilder->getQuery()->getResult();
+        return $this->aclHelper->apply($queryBuilder->getQuery())->getResult();
     }
 
     /**

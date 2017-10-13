@@ -89,7 +89,8 @@ class WarehouseController extends BaseController
             $warehouse,
             $this->createForm(WarehouseType::class, $warehouse),
             $this->get('translator')->trans('marelloenterprise.inventory.messages.success.warehouse.saved'),
-            $request
+            $request,
+            'marelloenterprise_inventory.form_handler.warehouse'
         );
     }
 }

@@ -16,7 +16,7 @@ class WarehouseGroupRemoveListener
         $em = $args->getEntityManager();
         $systemGroup = $em
             ->getRepository(WarehouseGroup::class)
-            ->findOneBy(['system' => true]);
+            ->findSystemWarehouseGroup();
 
         if ($systemGroup) {
             $warehouses = $warehouseGroup->getWarehouses();

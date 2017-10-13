@@ -95,6 +95,8 @@ class WarehouseChannelGroupLinkHandler implements FormHandlerInterface
      */
     private function getSystemLink()
     {
-        return $this->manager->getRepository(WarehouseChannelGroupLink::class)->findOneBy(['system' => true]);
+        return $this->manager
+            ->getRepository(WarehouseChannelGroupLink::class)
+            ->findSystemLink();
     }
 }

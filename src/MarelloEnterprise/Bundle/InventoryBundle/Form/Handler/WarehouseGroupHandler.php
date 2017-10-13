@@ -83,6 +83,8 @@ class WarehouseGroupHandler implements FormHandlerInterface
      */
     private function getSystemWarehouseGroup()
     {
-        return $this->manager->getRepository(WarehouseGroup::class)->findOneBy(['system' => true]);
+        return $this->manager
+            ->getRepository(WarehouseGroup::class)
+            ->findSystemWarehouseGroup();
     }
 }

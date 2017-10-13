@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ReturnBundle\Tests\Unit\Validator;
+namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
@@ -136,7 +136,7 @@ class WarehouseGroupDeleteHandlerTest extends TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage An operation is forbidden. Reason: It is forbidden to delete system Warehouse Group
+     * @expectedExceptionMessage It is forbidden to delete system Warehouse Group
      */
     public function testHandlerThrowsForbiddenExceptionByNotPossibleToDeleteDefaultWarehouse()
     {

@@ -44,12 +44,12 @@ marelloenterprise:
                 general:                General
                 warehouses:             Warehouses
             form:
-                select_warehousegroup:  Select Warehouse Group
+                select_warehousegroup:  Select Warehouse (Group)
 
         warehousechannelgrouplink:
             datablock:
                 general:                General
-                channel_groups:         Sales Channel Groups
+                channel_groups:         Sales Channel (Groups)
 
         sections:
             general:                    General

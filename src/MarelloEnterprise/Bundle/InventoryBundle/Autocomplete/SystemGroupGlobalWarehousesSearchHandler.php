@@ -26,7 +26,7 @@ class SystemGroupGlobalWarehousesSearchHandler extends SearchHandler
             ->setFirstResult($firstResult)
             ->setMaxResults($maxResults);
 
-        return $queryBuilder->getQuery()->getResult();
+        return $this->aclHelper->apply($queryBuilder->getQuery())->getResult();
     }
 
     /**
@@ -59,14 +59,14 @@ class SystemGroupGlobalWarehousesSearchHandler extends SearchHandler
             ->orderBy('wh.label', 'ASC');
         if (!$groupId) {
             $qb
-                ->where('whg.system = :isSystem AND wht.name = :global')
+                ->where('whg.system = :isSystem AND wht.name in (:types)')
                 ->setParameter('isSystem', true)
-                ->setParameter('global', LoadWarehouseTypeData::GLOBAL_TYPE);
+                ->setParameter('types', [LoadWarehouseTypeData::GLOBAL_TYPE, LoadWarehouseTypeData::VIRTUAL_TYPE]);
         } else {
             $qb
-                ->where('(whg.system = :isSystem AND wht.name = :global) OR whg.id = :id')
+                ->where('(whg.system = :isSystem AND wht.name in (:types)) OR whg.id = :id')
                 ->setParameter('isSystem', true)
-                ->setParameter('global', LoadWarehouseTypeData::GLOBAL_TYPE)
+                ->setParameter('types', [LoadWarehouseTypeData::GLOBAL_TYPE, LoadWarehouseTypeData::VIRTUAL_TYPE])
                 ->setParameter('id', $groupId);
         }
         return $qb;

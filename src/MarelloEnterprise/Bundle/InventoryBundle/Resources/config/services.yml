@@ -2,9 +2,6 @@ parameters:
     # subscriber
     marelloenterprise_inventory.event_listener.default_warehouse_subscriber.class: MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\DefaultWarehouseSubscriber
 
-    # grid action permission provider
-    marelloenterprise_inventory.datagrid.action_permission_provider.class: MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseActionPermissionProvider
-
     #validator
     marelloenterprise_inventory.validator.default_warehouse_exists.class: MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator
 
@@ -14,8 +11,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    marelloenterprise_inventory.event_listener.doctrine.warehouse.system_group:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseSystemGroupListener'
+    marelloenterprise_inventory.event_listener.doctrine.warehouse:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener'
+        arguments:
+            - '%installed%'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\Warehouse', event: prePersist }
 
@@ -26,12 +25,39 @@ services:
 
     marelloenterprise_inventory.event_listener.doctrine.warehousechannelgrouplink:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseChannelGroupLinkListener'
+        arguments:
+            - '%installed%'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink', event: prePersist }
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink', event: postRemove }
 
-    marelloenterprise_inventory.datagrid.action_permission_provider:
-        class: '%marelloenterprise_inventory.datagrid.action_permission_provider.class%'
+    marelloenterprise_inventory.event_listener.doctrine.organization.create:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\OrganizationCreateListener'
+        arguments:
+            - '%installed%'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrganizationBundle\Entity\Organization', event: postPersist, priority: 10 }
+
+    marelloenterprise_inventory.event_listener.datagrid.warehousegroups_grid:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\WarehouseGroupDatagridListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marelloenterprise-inventory-warehousegroups-grid, method: onResultAfter }
+
+    marelloenterprise_inventory.event_listener.datagrid.warehousechannelgrouplinks_grid:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\WarehouseChannelGroupLinkDatagridListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after.marelloenterprise-inventory-warehousechannelgrouplinks-grid, method: onResultAfter }
+
+    marelloenterprise_inventory.datagrid.warehouse.action_permission_provider:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseActionPermissionProvider'
+
+    marelloenterprise_inventory.datagrid.warehousegroup.action_permission_provider:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseGroupActionPermissionProvider'
+        arguments:
+            - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
+
+    marelloenterprise_inventory.datagrid.warehousechannelgrouplink.action_permission_provider:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseChannelGroupLinkActionPermissionProvider'
 
     marelloenterprise_inventory.validator.default_warehouse_exists:
         class: '%marelloenterprise_inventory.validator.default_warehouse_exists.class%'
@@ -40,12 +66,19 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: marelloenterprise_inventory.default_warehouse_exists }
 
-    marelloenterprise_inventory.validator.warehouse_added_to_user_group:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToUserGroupValidator'
+    marelloenterprise_inventory.validator.warehouse_added_to_linked_group:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToLinkedGroupValidator'
         arguments:
-            - '@marelloenterprise_inventory.repository.warehouse'
+            - '@doctrine.orm.entity_manager'
         tags:
-            - { name: validator.constraint_validator, alias: marelloenterprise_inventory.warehouse_added_to_user_group }
+            - { name: validator.constraint_validator, alias: marelloenterprise_inventory.warehouse_added_to_linked_group }
+
+    marelloenterprise_inventory.validator.fixed_warehouse_type_linking:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Validator\FixedWarehouseTypeLinkingValidator'
+        arguments:
+            - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
+        tags:
+            - { name: validator.constraint_validator, alias: marelloenterprise_inventory.fixed_warehouse_type_linking }
 
     marelloenterprise_inventory.warehouse.manager.api:
         class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
@@ -88,6 +121,7 @@ services:
         scope: request
         arguments:
             - '@oro_security.security_facade'
+            - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
 
     marelloenterprise_inventory.handler.warehousechannelgrouplink_delete:
         class:  'MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseChannelGroupLinkDeleteHandler'
@@ -95,6 +129,17 @@ services:
         scope: request
         arguments:
             - '@oro_security.security_facade'
+
+    marelloenterprise_inventory.checker.warehousegroup.is_fixed:
+        class:  'MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker'
+
+    marelloenterprise_inventory.twig.warehouse_extension:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Twig\WarehouseExtension'
+        public: false
+        arguments:
+            - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
+        tags:
+            - { name: twig.extension }
 
     marelloenterprise_inventory.metadata.warehouse:
         class: 'Doctrine\ORM\Mapping\ClassMetadata'
@@ -150,7 +195,7 @@ services:
         - '@marelloenterprise_inventory.wfa_strategy.registry'
         - '@translator'
 
-    marelloenterprise_inventory.twig.shipping_method_extension:
+    marelloenterprise_inventory.twig.wfa_strategy_extension:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Twig\WFAStrategyExtension'
         public: false
         arguments:
