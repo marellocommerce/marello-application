@@ -39,6 +39,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *  routeName="marello_product_index",
  *  routeView="marello_product_view",
  *  defaultValues={
+ *      "dataaudit"={
+ *            "auditable"=true
+ *      },
  *      "entity"={"icon"="fa-barcode"},
  *      "ownership"={
  *              "organization_field_name"="organization",
@@ -101,6 +104,20 @@ class Product extends ExtendProduct implements
      * )
      */
     protected $sku;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="manufacturing_code", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $manufacturingCode;
 
     /**
      * @var ProductStatus
@@ -393,6 +410,22 @@ class Product extends ExtendProduct implements
         $this->sku = $sku;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getManufacturingCode()
+    {
+        return $this->manufacturingCode;
+    }
+
+    /**
+     * @param string $manufacturingCode
+     */
+    public function setManufacturingCode($manufacturingCode)
+    {
+        $this->manufacturingCode = $manufacturingCode;
     }
 
     /**

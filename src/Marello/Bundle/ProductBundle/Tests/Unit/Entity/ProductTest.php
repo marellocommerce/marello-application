@@ -38,6 +38,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             ['id', 42],
             ['name', 'some string'],
             ['sku', 'some string'],
+            ['manufacturingCode', 'some string'],
             ['status', new ProductStatus('active')],
             ['type', 'some string'],
             ['cost', 'some string'],

@@ -3,10 +3,11 @@
 namespace Marello\Bundle\ProductBundle\Migrations\Schema\v1_5;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
-use Oro\Bundle\MigrationBundle\Migration\Migration;
+
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareTrait;
+use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
 
 class MarelloProductBundle implements
     Migration,
@@ -14,7 +15,8 @@ class MarelloProductBundle implements
 {
     use AttachmentExtensionAwareTrait;
 
-    const MAX_PRODUCT_IMAGE_SIZE_IN_MB = 10;
+    const PRODUCT_TABLE = 'marello_product_product';
+    const MAX_PRODUCT_IMAGE_SIZE_IN_MB = 1;
     const MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS = 250;
     /**
      * {@inheritdoc}
@@ -23,6 +25,9 @@ class MarelloProductBundle implements
     {
         /** Add Image attribute relation **/
         $this->addImageRelation($schema);
+
+        /** Add Manufacturing code attribute */
+        $this->addManufacturingCode($schema);
     }
 
     /**
@@ -32,7 +37,7 @@ class MarelloProductBundle implements
     {
         $this->attachmentExtension->addImageRelation(
             $schema,
-            'marello_product_product',
+            self::PRODUCT_TABLE,
             'image',
             [
                 'importexport' => ['excluded' => true]
@@ -41,5 +46,14 @@ class MarelloProductBundle implements
             self::MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS,
             self::MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS
         );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addManufacturingCode(Schema $schema)
+    {
+        $table = $schema->getTable(self::PRODUCT_TABLE);
+        $table->addColumn('manufacturing_code', 'string', ['length' => 255, 'notnull' => false]);
     }
 }

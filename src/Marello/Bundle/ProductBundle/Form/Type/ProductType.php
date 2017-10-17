@@ -64,6 +64,14 @@ class ProductType extends AbstractType
                 ]
             )
             ->add(
+                'manufacturingCode',
+                'text',
+                [
+                    'required' => false,
+                    'label'    => 'marello.product.manufacturing_code.label',
+                ]
+            )
+            ->add(
                 'weight',
                 'number',
                 [
