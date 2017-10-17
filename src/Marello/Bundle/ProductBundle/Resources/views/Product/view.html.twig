@@ -50,7 +50,24 @@
             'title': ''
         }) }}
     {% endset %}
-    {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }]) %}
+
+    {% set productImage = asset('bundles/marellocore/img/no_image.png') %}
+    {% if entity.image is not null %}
+        {% set productImage = file_url(entity, 'image', entity.image) %}
+    {% endif %}
+
+    {% set productImageWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="visual">
+                        <img src="{{ productImage }}" alt="{{ entity.name }}" width="250" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }, {'data' : [productImageWidget] }]) %}
 
     {% set dataBlocks = [{
         'title': 'General'|trans,

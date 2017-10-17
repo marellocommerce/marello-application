@@ -23,6 +23,7 @@ marello:
         variant.label:              Variant
         prices.label:               Product Prices
         replenishment.label:        Replenishment
+        image.label:                Image
 
         variant:
             label:                    Variant
