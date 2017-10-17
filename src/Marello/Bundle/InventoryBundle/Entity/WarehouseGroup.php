@@ -107,7 +107,7 @@ class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareIn
     /**
      * @var Warehouse[]
      *
-     * @ORM\OneToMany(targetEntity="Warehouse", mappedBy="group", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Warehouse", mappedBy="group", cascade={"persist"}, fetch="EAGER")
      */
     protected $warehouses;
 
@@ -224,6 +224,7 @@ class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareIn
     public function addWarehouse(Warehouse $warehouse)
     {
         if (!$this->warehouses->contains($warehouse)) {
+            $warehouse->setGroup($this);
             $this->warehouses->add($warehouse);
         }
 

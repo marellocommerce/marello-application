@@ -12,10 +12,11 @@ class SalesChannelGroupActionPermissionProvider implements ActionPermissionInter
      */
     public function getActionPermissions(ResultRecordInterface $record)
     {
+        $system = $record->getValue('system');
         return [
-            'update' => !$record->getValue('system'),
+            'update' => !$system,
             'view' => true,
-            'delete' => !$record->getValue('system'),
+            'delete' => !$system,
         ];
     }
 }

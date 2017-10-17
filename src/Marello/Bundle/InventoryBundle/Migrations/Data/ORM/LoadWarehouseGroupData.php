@@ -62,7 +62,7 @@ class LoadWarehouseGroupData extends AbstractFixture implements DependentFixture
                 ->setOrganization($organization);
 
             $this->manager->persist($group);
-            $this->setReference(sprintf('warehouse_%s', strtolower($values['name'])), $group);
+            $this->setReference(sprintf('warehouse_%s', str_replace(' ', '_', strtolower($values['name']))), $group);
         }
 
         $this->manager->flush();
