@@ -34,7 +34,7 @@ class WarehouseDeleteHandler extends DeleteHandler
             throw new ForbiddenException('You have no rights to delete this entity');
         }
         if ($entity->isDefault()) {
-            throw new \Exception('It is forbidden to delete default Warehouse');
+            throw new ForbiddenException('It is forbidden to delete default Warehouse');
         }
     }
 
@@ -47,10 +47,11 @@ class WarehouseDeleteHandler extends DeleteHandler
     protected function deleteEntity($entity, ObjectManager $em)
     {
         if ($entity instanceof Warehouse) {
-            $group = $entity->getGroup();
-            $em->remove($entity);
-            if (!$group->isSystem() && $group->getWarehouses()->count() <= 1) {
-                $em->remove($group);
+            if ($group = $entity->getGroup()) {
+                $em->remove($entity);
+                if (!$group->isSystem() && $group->getWarehouses()->count() <= 1) {
+                    $em->remove($group);
+                }
             }
         }
     }

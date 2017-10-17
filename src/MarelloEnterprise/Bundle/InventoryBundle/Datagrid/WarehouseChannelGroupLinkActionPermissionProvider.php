@@ -3,8 +3,6 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Datagrid;
 
 use Marello\Bundle\DataGridBundle\Action\ActionPermissionInterface;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class WarehouseChannelGroupLinkActionPermissionProvider implements ActionPermissionInterface
@@ -14,10 +12,12 @@ class WarehouseChannelGroupLinkActionPermissionProvider implements ActionPermiss
      */
     public function getActionPermissions(ResultRecordInterface $record)
     {
+        $system = $record->getValue('system');
+        
         return [
-            'update' => !$record->getValue('system'),
+            'update' => !$system,
             'view' => true,
-            'delete' => !$record->getValue('system'),
+            'delete' => !$system,
         ];
     }
 }

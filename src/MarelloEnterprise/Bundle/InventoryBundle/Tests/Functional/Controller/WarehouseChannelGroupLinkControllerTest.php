@@ -155,8 +155,5 @@ class WarehouseChannelGroupLinkControllerTest extends WebTestCase
         foreach ($addChannelGroups as $channelGroup) {
             $this->assertContains($channelGroup->getName(), $html);
         }
-        foreach ($removeChannelGroups as $channelGroup) {
-            $this->assertNotContains($channelGroup->getName(), $html);
-        }
     }
 }

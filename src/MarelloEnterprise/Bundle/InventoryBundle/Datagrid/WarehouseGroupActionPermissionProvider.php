@@ -30,12 +30,13 @@ class WarehouseGroupActionPermissionProvider implements ActionPermissionInterfac
         $delete = true;
         /** @var WarehouseGroup $group */
         $group = $record->getRootEntity();
-        if ($record->getValue('system') || $this->checker->check($group)) {
+        $system = $record->getValue('system');
+        if ($system || $this->checker->check($group)) {
             $delete = false;
         }
         
         return [
-            'update' => !$record->getValue('system'),
+            'update' => !$system,
             'view' => true,
             'delete' => $delete,
         ];

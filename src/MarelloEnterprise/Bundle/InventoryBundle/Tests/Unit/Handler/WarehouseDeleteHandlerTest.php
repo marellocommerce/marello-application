@@ -2,8 +2,10 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Handler;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseDeleteHandler;
 use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -180,9 +182,19 @@ class WarehouseDeleteHandlerTest extends TestCase
     {
         $warehouseId = 0;
 
+        $warehouseGroupMock = $this->createMock(WarehouseGroup::class);
+        $warehouseGroupMock
+            ->expects(static::once())
+            ->method('getWarehouses')
+            ->willReturn(new ArrayCollection());
+
         $warehouseMock = $this->getMockBuilder(Warehouse::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $warehouseMock
+            ->expects(static::once())
+            ->method('getGroup')
+            ->willReturn($warehouseGroupMock);
 
         $objectManagerMock = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()

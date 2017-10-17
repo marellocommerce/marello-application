@@ -42,7 +42,7 @@ class WarehouseGroupDeleteHandler extends DeleteHandler
             throw new ForbiddenException('You have no rights to delete this entity');
         }
         if ($entity->isSystem()) {
-            throw new \Exception('It is forbidden to delete system Warehouse Group');
+            throw new ForbiddenException('It is forbidden to delete system Warehouse Group');
         }
         if ($this->checker->check($entity)) {
             throw new \Exception('It is forbidden to delete Fixed Warehouse(Group)');

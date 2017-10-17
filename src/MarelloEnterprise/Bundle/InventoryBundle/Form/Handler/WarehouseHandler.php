@@ -62,7 +62,10 @@ class WarehouseHandler implements FormHandlerInterface
      */
     protected function onSuccess(Warehouse $entity, $typeBefore)
     {
-        $typeAfter = $entity->getWarehouseType()->getName();
+        $typeAfter = $entity->getWarehouseType();
+        if ($typeAfter) {
+            $typeAfter = $typeAfter->getName();
+        }
 
         if ($typeBefore !== $typeAfter) {
             if ($typeBefore === LoadWarehouseTypeData::FIXED_TYPE) {
@@ -78,9 +81,9 @@ class WarehouseHandler implements FormHandlerInterface
                 } else {
                     $group = new WarehouseGroup();
                     $group
-                        ->setName($entity->getLabel())
+                        ->setName($label)
                         ->setOrganization($entity->getOwner())
-                        ->setDescription(sprintf('%s group', $entity->getLabel()))
+                        ->setDescription(sprintf('%s group', $label))
                         ->setSystem(false);
                 }
                 $this->manager->persist($group);
@@ -97,6 +100,6 @@ class WarehouseHandler implements FormHandlerInterface
      */
     private function getSystemWarehouseGroup()
     {
-        return $this->manager->getRepository(WarehouseGroup::class)->findOneBy(['system' => true]);
+        return $this->manager->getRepository(WarehouseGroup::class)->findSystemWarehouseGroup();
     }
 }

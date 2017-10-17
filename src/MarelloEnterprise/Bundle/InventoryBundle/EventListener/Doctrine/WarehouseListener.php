@@ -32,7 +32,8 @@ class WarehouseListener
     {
         if ($this->installed) {
             $em = $args->getEntityManager();
-            if ($warehouse->getWarehouseType()->getName() === LoadWarehouseTypeData::FIXED_TYPE) {
+            $whType = $warehouse->getWarehouseType();
+            if ($whType && $whType->getName() === LoadWarehouseTypeData::FIXED_TYPE) {
                 $group = new WarehouseGroup();
                 $group
                     ->setName($warehouse->getLabel())

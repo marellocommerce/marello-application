@@ -2,7 +2,10 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Validator;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
@@ -27,6 +30,11 @@ class WarehouseAddedToLinkedGroupValidatorTest extends \PHPUnit_Framework_TestCa
     private $context;
 
     /**
+     * @var EntityManager|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $manager;
+
+    /**
      * @var WarehouseAddedToLinkedGroupValidator
      */
     private $validator;
@@ -38,8 +46,9 @@ class WarehouseAddedToLinkedGroupValidatorTest extends \PHPUnit_Framework_TestCa
     {
         $this->constraint = $this->createMock(Constraint::class);
         $this->context = $this->createMock(ExecutionContextInterface::class);
+        $this->manager = $this->createMock(EntityManager::class);
 
-        $this->validator = new WarehouseAddedToLinkedGroupValidator();
+        $this->validator = new WarehouseAddedToLinkedGroupValidator($this->manager);
         $this->validator->initialize($this->context);
     }
 
@@ -57,13 +66,18 @@ class WarehouseAddedToLinkedGroupValidatorTest extends \PHPUnit_Framework_TestCa
     /**
      * @dataProvider validateDataProvider
      * @param bool $system
+     * @param WarehouseChannelGroupLink|null $link
      * @param string $type
      * @param int $buildViolationTimes
      */
-    public function testValidate($system, $type, $buildViolationTimes)
+    public function testValidate($system, $link, $type, $buildViolationTimes)
     {
         /** @var WarehouseGroup $type */
-        $group = $this->getEntity(WarehouseGroup::class, ['id' => 1], ['system' => $system]);
+        $group = $this->getEntity(WarehouseGroup::class, [
+            'id' => 1,
+            'system' => $system,
+            'warehouseChannelGroupLink' => $link
+        ]);
         /** @var WarehouseType $type */
         $type = $this->getEntity(WarehouseType::class, [], ['name' => $type]);
         /** @var Warehouse $value */
@@ -72,6 +86,17 @@ class WarehouseAddedToLinkedGroupValidatorTest extends \PHPUnit_Framework_TestCa
             ['id' => 1, 'warehouseType' => $type, 'group' => $group],
             ['label' => 'label', 'default' => false]
         );
+
+        $uow = $this->createMock(UnitOfWork::class);
+        $uow
+            ->expects(static::exactly($buildViolationTimes))
+            ->method('getOriginalEntityData')
+            ->willReturn(['warehouse_type' => LoadWarehouseTypeData::VIRTUAL_TYPE]);
+
+        $this->manager
+            ->expects(static::exactly($buildViolationTimes))
+            ->method('getUnitOfWork')
+            ->willReturn($uow);
 
         $builder = $this->createMock(ConstraintViolationBuilderInterface::class);
 
@@ -95,16 +120,19 @@ class WarehouseAddedToLinkedGroupValidatorTest extends \PHPUnit_Framework_TestCa
         return [
             'withViolation' => [
                 'system' => false,
+                'link' => new WarehouseChannelGroupLink(),
                 'type' => LoadWarehouseTypeData::FIXED_TYPE,
                 'buildViolationTimes' => 1
             ],
             'noViolationWithGlobalType' => [
                 'system' => false,
+                'link' => null,
                 'type' => LoadWarehouseTypeData::GLOBAL_TYPE,
                 'buildViolationTimes' => 0
             ],
             'noViolationSystemGroup' => [
                 'system' => true,
+                'link' => null,
                 'type' => LoadWarehouseTypeData::GLOBAL_TYPE,
                 'buildViolationTimes' => 0
             ]

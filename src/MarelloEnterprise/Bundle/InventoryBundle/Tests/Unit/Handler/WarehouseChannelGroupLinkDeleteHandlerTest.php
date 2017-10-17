@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ReturnBundle\Tests\Unit\Validator;
+namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
