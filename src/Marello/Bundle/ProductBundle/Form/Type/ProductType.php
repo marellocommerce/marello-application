@@ -6,6 +6,7 @@ use Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber;
 use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Oro\Bundle\AttachmentBundle\Form\Type\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -60,6 +61,14 @@ class ProductType extends AbstractType
                 [
                     'required' => true,
                     'label'    => 'marello.product.sku.label',
+                ]
+            )
+            ->add(
+                'manufacturingCode',
+                'text',
+                [
+                    'required' => false,
+                    'label'    => 'marello.product.manufacturing_code.label',
                 ]
             )
             ->add(
@@ -127,6 +136,13 @@ class ProductType extends AbstractType
                     'cascade_validation' => true,
                 ]
             )
+            ->add('image',
+                ImageType::class,
+                [
+                    'label' => 'marello.product.image.label',
+                    'required' => false
+                ]
+            );
         ;
 
         $builder->addEventSubscriber($this->defaultSalesChannelSubscriber);

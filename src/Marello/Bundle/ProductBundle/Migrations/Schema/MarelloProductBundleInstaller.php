@@ -3,24 +3,32 @@
 namespace Marello\Bundle\ProductBundle\Migrations\Schema;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
-use Oro\Bundle\MigrationBundle\Migration\Installation;
+
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+use Oro\Bundle\MigrationBundle\Migration\Installation;
+use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareTrait;
+use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloProductBundleInstaller implements Installation
+class MarelloProductBundleInstaller implements
+    Installation,
+    AttachmentExtensionAwareInterface
 {
+    use AttachmentExtensionAwareTrait;
+
+    const PRODUCT_TABLE = 'marello_product_product';
+    const MAX_PRODUCT_IMAGE_SIZE_IN_MB = 1;
+    const MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS = 250;
+
     /**
      * {@inheritdoc}
      */
     public function getMigrationVersion()
     {
-        return 'v1_4';
+        return 'v1_5';
     }
 
     /**
@@ -41,6 +49,9 @@ class MarelloProductBundleInstaller implements Installation
         $this->addMarelloProductSaleschannelForeignKeys($schema);
         $this->addMarelloProductSalesChannelTaxRelationForeignKeys($schema);
         $this->addMarelloProductSupplierRelationForeignKeys($schema);
+
+        /** Add Image attribute relation **/
+        $this->addImageRelation($schema);
     }
 
     /**
@@ -50,13 +61,14 @@ class MarelloProductBundleInstaller implements Installation
      */
     protected function createMarelloProductProductTable(Schema $schema)
     {
-        $table = $schema->createTable('marello_product_product');
+        $table = $schema->createTable(self::PRODUCT_TABLE);
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('product_status', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('variant_id', 'integer', ['notnull' => false]);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('sku', 'string', ['length' => 255]);
+        $table->addColumn('manufacturing_code', 'string', ['length' => 255, 'notnull' => false]);
         $table->addColumn(
             'price',
             'money',
@@ -185,7 +197,7 @@ class MarelloProductBundleInstaller implements Installation
      */
     protected function addMarelloProductProductForeignKeys(Schema $schema)
     {
-        $table = $schema->getTable('marello_product_product');
+        $table = $schema->getTable(self::PRODUCT_TABLE);
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_product_product_status'),
             ['product_status'],
@@ -227,7 +239,7 @@ class MarelloProductBundleInstaller implements Installation
     {
         $table = $schema->getTable('marello_product_saleschannel');
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_product_product'),
+            $schema->getTable(self::PRODUCT_TABLE),
             ['product_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
@@ -250,7 +262,7 @@ class MarelloProductBundleInstaller implements Installation
     {
         $table = $schema->getTable('marello_prod_prod_chan_tax_rel');
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_product_product'),
+            $schema->getTable(self::PRODUCT_TABLE),
             ['product_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
@@ -278,7 +290,7 @@ class MarelloProductBundleInstaller implements Installation
     {
         $table = $schema->getTable('marello_product_prod_supp_rel');
         $table->addForeignKeyConstraint(
-            $schema->getTable('marello_product_product'),
+            $schema->getTable(self::PRODUCT_TABLE),
             ['product_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
@@ -288,6 +300,24 @@ class MarelloProductBundleInstaller implements Installation
             ['supplier_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addImageRelation(Schema $schema)
+    {
+        $this->attachmentExtension->addImageRelation(
+            $schema,
+            self::PRODUCT_TABLE,
+            'image',
+            [
+                'importexport' => ['excluded' => true]
+            ],
+            self::MAX_PRODUCT_IMAGE_SIZE_IN_MB,
+            self::MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS,
+            self::MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS
         );
     }
 }
