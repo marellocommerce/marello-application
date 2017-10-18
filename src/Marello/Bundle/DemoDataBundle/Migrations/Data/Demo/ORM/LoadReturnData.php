@@ -22,6 +22,11 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
     public function load(ObjectManager $manager)
     {
         $orders = $manager->getRepository('MarelloOrderBundle:Order')->findAll();
+
+        if (count($orders) <= 0) {
+            return;
+        }
+
         $channel = $this->getReference('marello_sales_channel_1');
         $reasonClass = ExtendHelper::buildEnumValueClassName('marello_return_reason');
         $reasons = $manager->getRepository($reasonClass)->findAll();

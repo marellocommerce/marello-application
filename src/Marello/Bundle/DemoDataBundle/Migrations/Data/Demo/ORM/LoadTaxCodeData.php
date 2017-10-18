@@ -11,7 +11,8 @@ class LoadTaxCodeData extends AbstractFixture
     const TAXCODE_0_REF = 'marello_taxcode_0';
     const TAXCODE_1_REF = 'marello_taxcode_1';
     const TAXCODE_2_REF = 'marello_taxcode_2';
-    
+    const TAXCODE_3_REF = 'marello_taxcode_3';
+
     /**
      * @var ObjectManager $manager
      */
@@ -21,9 +22,22 @@ class LoadTaxCodeData extends AbstractFixture
      * @var array
      */
     protected $data = [
-        self::TAXCODE_0_REF => ['code' => 'TAX_EXEMPT', 'description' => 'No tax applied'],
-        self::TAXCODE_1_REF => ['code' => 'TAX_HIGH', 'description' => 'High tax'],
-        self::TAXCODE_2_REF => ['code' => 'TAX_LOW', 'description' => 'Low tax'],
+        self::TAXCODE_0_REF => [
+            'code' => 'DE_high',
+            'description' => 'DE High'
+        ],
+        self::TAXCODE_1_REF => [
+            'code' => 'FR_high',
+            'description' => 'FR High'
+        ],
+        self::TAXCODE_2_REF => [
+            'code' => 'UK_high',
+            'description' => 'UK High'
+        ],
+        self::TAXCODE_3_REF => [
+            'code' => 'US',
+            'description' => 'US'
+        ]
     ];
 
     /**
