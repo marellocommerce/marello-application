@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
 
 {% oro_title_set({params : {"%name%": entity.name } }) %}
 {% set gridName  = 'marello-products-grid' %}
@@ -50,7 +51,24 @@
             'title': ''
         }) }}
     {% endset %}
-    {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }]) %}
+
+    {% set productImage = asset('bundles/marellocore/img/no_image.png') %}
+    {% if entity.image is not null %}
+        {% set productImage = file_url(entity, 'image', entity.image) %}
+    {% endif %}
+
+    {% set productImageWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="visual">
+                        <img src="{{ productImage }}" alt="{{ entity.name }}" width="250" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [productInformationWidget] }, {'data' : [productImageWidget] }]) %}
 
     {% set dataBlocks = [{
         'title': 'General'|trans,
@@ -164,6 +182,27 @@
             'useSpan': false,
             'data' : [
                 productSupplierWidget
+            ]
+        }]
+    }]) %}
+
+    {% set additionalData %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ entityConfig.renderDynamicFields(entity) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.product.sections.additional'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                additionalData
             ]
         }]
     }]) %}

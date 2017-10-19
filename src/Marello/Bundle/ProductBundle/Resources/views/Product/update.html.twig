@@ -123,7 +123,7 @@
     {% set channelIds = marello_sales_get_saleschannel_ids(entity)|length > 0 ? marello_sales_get_saleschannel_ids(entity) : 0 %}
     {% set dataBlocks = [
         {
-            'title': 'General Information'|trans,
+            'title': 'marello.product.sections.general'|trans,
             'subblocks': [{
                 'title': 'General',
                 'data':  [
@@ -132,6 +132,8 @@
                     form_row(form.status),
                     form_row(form.weight),
                     form_row(form.warranty),
+                    form_row(form.manufacturingCode),
+                    form_row(form.image),
                 ]
             }]
         },
@@ -180,6 +182,22 @@
             }]
         }
     ] %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'marello.product.sections.additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }] ) %}
+    {% endif %}
 
     {% set data = {
         'formErrors': form_errors(form) ? form_errors(form) : null,

@@ -6,12 +6,8 @@ datagrids:
             acl_resource: marello_product_view
             query:
                 select:
-                    - p.id
-                    - p.name
-                    - p.sku
+                    - p
                     - s.label as status
-                    - p.createdAt
-                    - p.updatedAt
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
@@ -29,12 +25,21 @@ datagrids:
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
+                frontend_type:      string
+                renderable:         false
+            weight:
+                label:              marello.product.weight.label
+                frontend_type:      number
+                renderable:         false
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
             updatedAt:
                 label:              oro.ui.updated_at
                 frontend_type:      datetime
+                renderable:         false
         properties:
             id: ~
             view_link:
@@ -76,6 +81,14 @@ datagrids:
                     options:
                         field_options:
                             class: Marello\Bundle\ProductBundle\Entity\ProductStatus
+                manufacturingCode:
+                    data_name:          p.manufacturingCode
+                    type:               string
+                    enabled:            false
+                weight:
+                    data_name:          p.weight
+                    type:               number
+                    enabled:            false
         actions:
             view:
                 type:           navigate
