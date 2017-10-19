@@ -86,7 +86,7 @@ class WFARuleController extends Controller
      */
     public function updateAction(Request $request, WFARule $entity)
     {
-        if ($entity->getRule()->getIsSystem()) {
+        if ($entity->getRule()->isSystem()) {
             $this->addFlash(
                 'warning',
                 'marelloenterprise.inventory.messages.warning.wfarule.is_system_update_attempt'

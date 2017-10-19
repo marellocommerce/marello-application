@@ -2,13 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Provider;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 {
@@ -23,23 +22,23 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     protected $rulesFiltrationService;
 
     /**
-     * @var DoctrineHelper
+     * @var WFARuleRepository
      */
-    protected $doctrineHelper;
+    protected $wfaRuleRepository;
 
     /**
      * @param WFAStrategiesRegistry $strategiesRegistry
      * @param RuleFiltrationServiceInterface $rulesFiltrationService
-     * @param DoctrineHelper $doctrineHelper
+     * @param WFARuleRepository $wfaRuleRepository
      */
     public function __construct(
         WFAStrategiesRegistry $strategiesRegistry,
         RuleFiltrationServiceInterface $rulesFiltrationService,
-        DoctrineHelper $doctrineHelper
+        WFARuleRepository $wfaRuleRepository
     ) {
         $this->strategiesRegistry = $strategiesRegistry;
         $this->rulesFiltrationService = $rulesFiltrationService;
-        $this->doctrineHelper = $doctrineHelper;
+        $this->wfaRuleRepository = $wfaRuleRepository;
     }
 
     /**
@@ -48,7 +47,8 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
     public function getWarehousesForOrder(Order $order)
     {
         /** @var WFARule[] $filteredRules */
-        $filteredRules = $this->rulesFiltrationService->getFilteredRuleOwners($this->getRules());
+        $filteredRules = $this->rulesFiltrationService
+            ->getFilteredRuleOwners($this->wfaRuleRepository->findAllWFARules());
         $results = [];
         foreach ($filteredRules as $rule) {
             $results = $this->strategiesRegistry
@@ -64,16 +64,5 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
         }
 
         return null;
-    }
-
-    /**
-     * @return Warehouse[]
-     */
-    protected function getRules()
-    {
-        return $this->doctrineHelper
-            ->getEntityManagerForClass(WFARule::class)
-            ->getRepository(WFARule::class  )
-            ->findAll();
     }
 }

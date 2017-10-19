@@ -44,7 +44,7 @@ class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterf
                     ->setName($ruleData['name'])
                     ->setSortOrder($ruleData['sortOrder'])
                     ->setStopProcessing($ruleData['stopProcessing'])
-                    ->setIsSystem(true);
+                    ->setSystem(true);
                 $wfaRule = new WFARule();
                 $wfaRule
                     ->setRule($rule)

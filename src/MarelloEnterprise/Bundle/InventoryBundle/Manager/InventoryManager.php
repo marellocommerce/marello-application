@@ -26,7 +26,9 @@ class InventoryManager extends BaseInventoryManager
         $level = $this->getInventoryLevel($context);
         if (!$level) {
             $level = new InventoryLevel();
-            $level->setWarehouse($this->getWarehouse($context));
+            $level
+                ->setWarehouse($this->getWarehouse($context))
+                ->setOrganization($context->getProduct()->getOrganization());
             /** @var InventoryItem $item */
             $item = $this->getInventoryItem($context);
             $item->addInventoryLevel($level);

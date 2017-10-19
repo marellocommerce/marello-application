@@ -3,6 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use Oro\Bundle\SecurityProBundle\ORM\Walker\AclHelper;
 
 class WFARuleRepository extends EntityRepository
@@ -31,5 +32,16 @@ class WFARuleRepository extends EntityRepository
             ->select('wfa.strategy');
 
         return $this->aclHelper->apply($qb)->getArrayResult();
+    }
+
+
+    /**
+     * @return WFARule[]
+     */
+    public function findAllWFARules()
+    {
+        $qb = $this->createQueryBuilder('wfa');
+
+        return $this->aclHelper->apply($qb)->getResult();
     }
 }
