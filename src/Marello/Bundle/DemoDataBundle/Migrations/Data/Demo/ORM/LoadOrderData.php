@@ -5,14 +5,16 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\OrderBundle\Entity\Customer;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -128,8 +130,10 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             $order->addItem($item);
         }
 
-        $manager->persist($order);
-        $manager->flush();
+        if ($order) {
+            $manager->persist($order);
+            $manager->flush();
+        }
 
         $this->closeFiles();
     }

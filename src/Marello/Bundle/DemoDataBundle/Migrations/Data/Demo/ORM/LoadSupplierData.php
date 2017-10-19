@@ -4,62 +4,35 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 class LoadSupplierData extends AbstractFixture
 {
+    const SUPPLIER_COST_PERCENTAGE = 0.40;
+
     /** @var ObjectManager $manager */
     protected $manager;
 
     /**
-     * @var array
+     * @var array $data
      */
     protected $data = [
         [
-            'name' => 'Supplier 1',
+            'name' => 'Quiksilver',
             'priority' => 1,
             'can_dropship' => true,
             'is_active' => true,
             'address'=>
                 [
-                    'street_address' => 'Street name 1',
-                    'zipcode' => 12345,
-                    'city'=> 'Amsterdam',
-                    'country'=> 'NL',
-                    'state' => 'NH'
-                ],
-            'email' => 'supplier1@email.com'
-        ],
-        [
-            'name' => 'Supplier 2',
-            'priority' => 2,
-            'can_dropship' => true,
-            'is_active' => true,
-            'address'=>
-                [
-                    'street_address' => 'Street name 2',
-                    'zipcode' => 67890,
+                    'street_address' => 'Torenallee 20',
+                    'zipcode' => '5617 BC',
                     'city'=> 'Eindhoven',
                     'country'=> 'NL',
-                    'state'=> 'NB'
+                    'state' => 'NB'
                 ],
-            'email' => 'supplier2@email.com'
-        ],
-        [
-            'name' => 'Supplier 3',
-            'priority' => 9,
-            'can_dropship' => false,
-            'is_active' => true,
-            'address'=>
-                [
-                    'street_address' => 'Street name 3',
-                    'zipcode' => 454545,
-                    'city'=> 'London',
-                    'country'=> 'GB',
-                    'state' => 'LND'
-                ],
-            'email' => 'supplier3@email.com'
+            'email' => 'supplier1@email.com'
         ]
     ];
 

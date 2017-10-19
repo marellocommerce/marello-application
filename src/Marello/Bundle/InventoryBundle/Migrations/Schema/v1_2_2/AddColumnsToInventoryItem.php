@@ -15,7 +15,7 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterf
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class AddReplenishmentToInventoryItem implements Migration, OrderedMigrationInterface, ExtendExtensionAwareInterface
+class AddColumnsToInventoryItem implements Migration, OrderedMigrationInterface, ExtendExtensionAwareInterface
 {
     /** @var ExtendExtension */
     protected $extendExtension;
@@ -35,6 +35,8 @@ class AddReplenishmentToInventoryItem implements Migration, OrderedMigrationInte
     {
         /** Table updates **/
         $this->updateInventoryItemTable($schema);
+
+        $this->updateInventoryItemForeignKeys($schema);
     }
 
     /**
@@ -45,6 +47,9 @@ class AddReplenishmentToInventoryItem implements Migration, OrderedMigrationInte
     protected function updateInventoryItemTable(Schema $schema)
     {
         $table = $schema->getTable('marello_inventory_item');
+        if (!$table->hasColumn('organization_id')) {
+            $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        }
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -55,6 +60,20 @@ class AddReplenishmentToInventoryItem implements Migration, OrderedMigrationInte
             [
                 'extend' => ['owner' => ExtendScope::OWNER_CUSTOM],
             ]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function updateInventoryItemForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_item');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 

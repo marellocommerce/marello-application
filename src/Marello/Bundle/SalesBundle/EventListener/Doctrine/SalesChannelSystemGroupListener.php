@@ -9,18 +9,35 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 class SalesChannelSystemGroupListener
 {
     /**
+     * Installed flag
+     *
+     * @var bool
+     */
+    protected $installed;
+
+    /**
+     * @param bool $installed
+     */
+    public function __construct($installed)
+    {
+        $this->installed = $installed;
+    }
+
+    /**
      * @param SalesChannel $salesChannel
      * @param LifecycleEventArgs $args
      */
     public function prePersist(SalesChannel $salesChannel, LifecycleEventArgs $args)
     {
-        $systemGroup = $args
-            ->getEntityManager()
-            ->getRepository(SalesChannelGroup::class)
-            ->findOneBy(['system' => true]);
-        
-        if ($systemGroup) {
-            $salesChannel->setGroup($systemGroup);
+        if ($this->installed) {
+            $systemGroup = $args
+                ->getEntityManager()
+                ->getRepository(SalesChannelGroup::class)
+                ->findSystemChannelGroup();
+
+            if ($systemGroup) {
+                $salesChannel->setGroup($systemGroup);
+            }
         }
     }
 }

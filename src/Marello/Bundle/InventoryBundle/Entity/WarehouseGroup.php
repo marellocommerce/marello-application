@@ -14,7 +14,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository")
  * @ORM\Table(name="marello_inventory_wh_group")
  * @ORM\HasLifecycleCallbacks()
  * @Config(

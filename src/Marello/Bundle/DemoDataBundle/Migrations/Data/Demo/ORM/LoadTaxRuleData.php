@@ -5,10 +5,11 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
+use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
 
 class LoadTaxRuleData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -20,31 +21,22 @@ class LoadTaxRuleData extends AbstractFixture implements DependentFixtureInterfa
 
     const REFERENCE_PREFIX = 'tax_rule';
 
-    private $data = [
+    /** @var array $data */
+    protected $data = [
         self::TAX_RULE_1 => [
-            'tax_code' => LoadTaxCodeData::TAXCODE_0_REF,
-            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_1,
-            'tax_rate' => LoadTaxRateData::CODE_1
-        ],
-        self::TAX_RULE_2 => [
-            'tax_code' => LoadTaxCodeData::TAXCODE_0_REF,
-            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_2,
-            'tax_rate' => LoadTaxRateData::CODE_2
-        ],
-        self::TAX_RULE_3 => [
             'tax_code' => LoadTaxCodeData::TAXCODE_0_REF,
             'tax_jurisdiction' => LoadTaxJurisdictionData::REF_3,
             'tax_rate' => LoadTaxRateData::CODE_3
         ],
-        self::TAX_RULE_4 => [
+        self::TAX_RULE_2 => [
             'tax_code' => LoadTaxCodeData::TAXCODE_1_REF,
-            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_4,
-            'tax_rate' => LoadTaxRateData::CODE_4
+            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_1,
+            'tax_rate' => LoadTaxRateData::CODE_1
         ],
-        self::TAX_RULE_5 => [
+        self::TAX_RULE_3 => [
             'tax_code' => LoadTaxCodeData::TAXCODE_2_REF,
-            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_5,
-            'tax_rate' => LoadTaxRateData::CODE_5
+            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_2,
+            'tax_rate' => LoadTaxRateData::CODE_2
         ],
     ];
 

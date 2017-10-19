@@ -14,7 +14,9 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  */
 class MarelloShippingBundleInstaller implements Installation, AttachmentExtensionAwareInterface
 {
-    /** @var AttachmentExtension */
+    /**
+     * @var AttachmentExtension
+     */
     protected $attachmentExtension;
 
     /**
@@ -22,7 +24,7 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -32,6 +34,8 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
     {
         /** Tables generation **/
         $this->createMarelloShipmentTable($schema);
+        
+        $this->addMarelloShipmentForeignKeys($schema);
 
         $this->attachmentExtension->addImageRelation(
             $schema,
@@ -58,9 +62,26 @@ class MarelloShippingBundleInstaller implements Installation, AttachmentExtensio
         $table->addColumn('base64_encoded_label', 'text', ['notnull' => false]);
         $table->addColumn('identification_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('ups_package_tracking_number', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime', []);
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
+    }
+
+    /**
+     * Add marello_shipment foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloShipmentForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_shipment');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
     }
 
     /**

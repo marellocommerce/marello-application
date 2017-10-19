@@ -37,8 +37,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *              "group_name"=""
  *          },
  *          "ownership"={
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )

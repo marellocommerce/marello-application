@@ -4,7 +4,7 @@ namespace Marello\Bundle\SalesBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityRepository;
+use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Form\Handler\SalesChannelGroupHandler;
@@ -61,11 +61,10 @@ class SalesChannelGroupHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getSalesChannels')
             ->willReturn(new ArrayCollection($channelsAfter));
 
-        $repository = $this->createMock(EntityRepository::class);
+        $repository = $this->createMock(SalesChannelGroupRepository::class);
         $repository
             ->expects(static::once())
-            ->method('findOneBy')
-            ->with(['system' => true])
+            ->method('findSystemChannelGroup')
             ->willReturn($systemGroup);
 
         $this->manager

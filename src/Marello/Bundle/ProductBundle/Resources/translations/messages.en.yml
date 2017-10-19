@@ -23,6 +23,8 @@ marello:
         variant.label:              Variant
         prices.label:               Product Prices
         replenishment.label:        Replenishment
+        manufacturing_code.label:   Manufacturing Code
+        image.label:                Image
 
         variant:
             label:                    Variant
@@ -58,6 +60,10 @@ marello:
                     saved:          Variant saved
             error:
                 sku:                SKU already exists, please provide a unique SKU
+
+        sections:
+            general:                General Information
+            additional:             Additional
 
         form.choose_product:        Select Product
         form.add_product:           Add Product

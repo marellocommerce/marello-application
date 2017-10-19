@@ -5,8 +5,10 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class LoadProductChannelPricingData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -72,7 +74,8 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
             return;
         }
 
-        $channel                = $this->getReference('marello_sales_channel_' . (int)$data['channel']);
+        /** @var SalesChannel $channel */
+        $channel                = $this->getReference($data['channel']);
         $productChannelPrice    = new ProductChannelPrice();
         $productData            = $product->getData();
 

@@ -27,7 +27,7 @@ class WarehouseController extends Controller
     {
         $entity = $this->getDoctrine()
             ->getRepository('MarelloInventoryBundle:Warehouse')
-            ->findOneBy(['default' => true]);
+            ->getDefault();
 
         $form = $this->createForm('marello_warehouse', $entity);
         $form->handleRequest($request);

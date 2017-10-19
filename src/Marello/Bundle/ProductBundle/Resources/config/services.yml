@@ -58,3 +58,11 @@ services:
             - '@doctrine'
         tags:
             - { name: marello_order.order_item_data_provider, type: tax_code, priority: 20 }
+
+    marello_product.repository.product:
+        class: 'Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\ProductBundle\Entity\Product'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]

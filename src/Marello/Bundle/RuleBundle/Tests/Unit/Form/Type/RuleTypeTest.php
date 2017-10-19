@@ -44,7 +44,7 @@ class RuleTypeTest extends FormIntegrationTestCase
             ->setName('new rule')
             ->setSortOrder(1)
             ->setEnabled(false)
-            ->setIsSystem(false)
+            ->setSystem(false)
             ->setCreatedAt($rule->getCreatedAt())
             ->setUpdatedAt($rule->getUpdatedAt())
         ;

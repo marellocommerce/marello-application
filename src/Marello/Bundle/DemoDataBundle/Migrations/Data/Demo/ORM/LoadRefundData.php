@@ -37,6 +37,10 @@ class LoadRefundData extends AbstractFixture implements DependentFixtureInterfac
             ->getRepository(Order::class)
             ->findAll();
 
+        if (count($orders) <= 0) {
+            return;
+        }
+
         foreach ($orders as $order) {
             if (mt_rand(0, 4) !== 0) {
                 continue;

@@ -46,6 +46,7 @@ class InventoryItemUpdateApi
 
         if (!$this->inventoryItem) {
             $this->inventoryItem = new InventoryItem($this->warehouse);
+            $this->inventoryItem->setOrganization($this->warehouse->getOwner());
         }
 
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
