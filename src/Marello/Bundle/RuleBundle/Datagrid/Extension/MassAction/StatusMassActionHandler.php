@@ -96,7 +96,7 @@ class StatusMassActionHandler implements MassActionHandlerInterface
                 ->getRepository($this->repositoryClassPath)
                 ->createQueryBuilder('ruleOwner')
                 ->innerJoin('ruleOwner.rule', 'rule')
-                ->andWhere('rule.isSystem = false');
+                ->andWhere('rule.system = false');
 
             if (!$isAllSelected) {
                 $queryBuilder->andWhere($queryBuilder->expr()->in('ruleOwner.id', $methodsConfigsRuleIds));

@@ -4,17 +4,31 @@ namespace Marello\Bundle\ShippingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Model\ExtendShipment;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="marello_shipment")
  * @ORM\HasLifecycleCallbacks()
- * @Oro\Config
+ * @Oro\Config(
+ *  defaultValues={
+ *      "ownership"={
+ *          "owner_type"="ORGANIZATION",
+ *          "owner_field_name"="organization",
+ *          "owner_column_name"="organization_id"
+ *      },
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
-class Shipment extends ExtendShipment
+class Shipment extends ExtendShipment implements OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
 
@@ -61,6 +75,14 @@ class Shipment extends ExtendShipment
      * @var string
      */
     protected $base64EncodedLabel;
+    
+    /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $organization;
 
     /**
      * @return mixed
@@ -166,6 +188,25 @@ class Shipment extends ExtendShipment
     public function setBase64EncodedLabel($base64EncodedLabel)
     {
         $this->base64EncodedLabel = $base64EncodedLabel;
+
+        return $this;
+    }
+
+    /**
+     * @return OrganizationInterface
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param OrganizationInterface $organization
+     * @return $this
+     */
+    public function setOrganization(OrganizationInterface $organization)
+    {
+        $this->organization = $organization;
 
         return $this;
     }

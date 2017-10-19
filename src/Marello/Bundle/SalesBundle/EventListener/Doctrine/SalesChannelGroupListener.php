@@ -10,6 +10,21 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 class SalesChannelGroupListener
 {
     /**
+     * Installed flag
+     *
+     * @var bool
+     */
+    protected $installed;
+
+    /**
+     * @param bool $installed
+     */
+    public function __construct($installed)
+    {
+        $this->installed = $installed;
+    }
+    
+    /**
      * @var WarehouseChannelGroupLink
      */
     private $systemWarehouseChannelGroupLink;
@@ -23,7 +38,7 @@ class SalesChannelGroupListener
         $em = $args->getEntityManager();
         $systemGroup = $em
             ->getRepository(SalesChannelGroup::class)
-            ->findOneBy(['system' => true]);
+            ->findSystemChannelGroup();
         $systemWarehouseChannelGroupLink = $this->getSystemWarehouseChannelGroupLink($em);
 
         if (!$systemGroup || !$systemWarehouseChannelGroupLink) {
@@ -45,14 +60,16 @@ class SalesChannelGroupListener
      */
     public function postPersist(SalesChannelGroup $salesChannelGroup, LifecycleEventArgs $args)
     {
-        $em = $args->getEntityManager();
-        $systemWarehouseChannelGroupLink = $this->getSystemWarehouseChannelGroupLink($em);
+        if ($this->installed) {
+            $em = $args->getEntityManager();
+            $systemWarehouseChannelGroupLink = $this->getSystemWarehouseChannelGroupLink($em);
 
-        if ($systemWarehouseChannelGroupLink) {
-            $systemWarehouseChannelGroupLink->addSalesChannelGroup($salesChannelGroup);
-            
-            $em->persist($systemWarehouseChannelGroupLink);
-            $em->flush();
+            if ($systemWarehouseChannelGroupLink) {
+                $systemWarehouseChannelGroupLink->addSalesChannelGroup($salesChannelGroup);
+
+                $em->persist($systemWarehouseChannelGroupLink);
+                $em->flush();
+            }
         }
     }
 
@@ -65,7 +82,7 @@ class SalesChannelGroupListener
         if ($this->systemWarehouseChannelGroupLink === null) {
             $this->systemWarehouseChannelGroupLink = $entityManager
                 ->getRepository(WarehouseChannelGroupLink::class)
-                ->findOneBy(['system' => true]);
+                ->findSystemLink();
         }
 
         return $this->systemWarehouseChannelGroupLink;

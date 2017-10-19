@@ -5,9 +5,21 @@
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_inventory_inventory_index')) }}
-    {% set html = UI.saveAndCloseButton() %}
-    {% set html = html ~ UI.saveAndStayButton() %}
-    {{ UI.dropdownSaveButton({ 'html': html }) }}
+    {% if entity.id and resource_granted('marello_inventory_inventory_update') %}
+        {% set html = '' %}
+        {% if resource_granted('marello_inventory_inventory_view') %}
+            {% set html = UI.saveAndCloseButton({
+            'route': 'marello_inventory_inventory_view',
+            'params': {'id': '$id'}
+            }) %}
+        {% endif %}
+        {% set html = html ~ UI.saveAndStayButton({
+        'route': 'marello_inventory_inventory_update',
+        'params': {'id': '$id'}
+        }) %}
+
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -15,7 +27,7 @@
         'entity':      form.vars.value,
         'indexPath':   path('marello_inventory_inventory_index'),
         'indexLabel': 'marello.inventory.label'|trans,
-        'entityTitle': product.sku
+        'entityTitle': entity.product.sku
     } %}
     {{ parent() }}
 {% endblock pageHeader %}

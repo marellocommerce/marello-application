@@ -153,8 +153,7 @@ class OrderController extends Controller
             'addressType' => ((int)$request->get('typeId') === 1) ? 'billing' : 'shipping'
         ];
     }
-
-
+    
     /**
      * @Config\Route("/update/address/{id}", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})

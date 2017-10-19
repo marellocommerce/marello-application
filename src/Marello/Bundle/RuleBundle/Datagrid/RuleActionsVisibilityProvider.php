@@ -28,7 +28,7 @@ class RuleActionsVisibilityProvider
         $rule = $record->getValue('rule');
 
         if ($rule instanceof RuleInterface) {
-            if ($rule->getIsSystem()) {
+            if ($rule->isSystem()) {
                 $visibility[self::ENABLE_ACTION] = false;
                 $visibility[self::DISABLE_ACTION] = false;
                 $visibility[self::UPDATE_ACTION] = false;

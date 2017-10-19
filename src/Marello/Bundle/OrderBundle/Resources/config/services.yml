@@ -56,8 +56,7 @@ services:
     marello_order.provider.order_statistic_provider:
         class: '%marello_order.provider.order_statistic_provider.class%'
         arguments:
-            - '@doctrine'
-            - '@oro_security.acl_helper'
+            - '@marello_order.repository.order'
             - '@oro_dashboard.provider.big_number.date_helper'
         tags:
             - { name: oro_dashboard.big_number.provider, alias: marello-order }
@@ -154,3 +153,11 @@ services:
             - '@marello_productprice.pricing.formatter.vat_aware_label'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-order-items, method: onBuildBefore }
+
+    marello_order.repository.order:
+        class: 'Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\OrderBundle\Entity\Order'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]

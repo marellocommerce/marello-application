@@ -3,9 +3,12 @@
 namespace Marello\Bundle\InventoryBundle\Controller;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Config\Route("/item")
@@ -15,6 +18,7 @@ class InventoryController extends Controller
     /**
      * @Config\Route("/", name="marello_inventory_inventory_index")
      * @Config\Template
+     * @Security\AclAncestor("marello_inventory_inventory_view")
      */
     public function indexAction()
     {
@@ -26,7 +30,12 @@ class InventoryController extends Controller
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_view")
      * @Config\Template
-     *
+     * @Security\Acl(
+     *      id="marello_inventory_inventory_view",
+     *      type="entity",
+     *      class="MarelloInventoryBundle:InventoryItem",
+     *      permission="VIEW"
+     * )
      * @param InventoryItem $inventoryItem
      *
      * @return array
@@ -42,33 +51,25 @@ class InventoryController extends Controller
     /**
      * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_update")
      * @Config\Template
-     *
+     * @Security\Acl(
+     *      id="marello_inventory_inventory_update",
+     *      type="entity",
+     *      class="MarelloInventoryBundle:InventoryItem",
+     *      permission="EDIT"
+     * )
      * @param InventoryItem $inventoryItem
+     * @param Request $request
      *
      * @return array|RedirectResponse
      */
-    public function updateAction(InventoryItem $inventoryItem)
+    public function updateAction(InventoryItem $inventoryItem, Request $request)
     {
-        $handler = $this->get('marello_inventory.form.handler.inventory_item');
-
-        if ($handler->process($inventoryItem)) {
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'marello_inventory_inventory_update',
-                    'parameters' => ['id' => $inventoryItem->getId()],
-                ],
-                [
-                    'route'      => 'marello_inventory_inventory_view',
-                    'parameters' => ['id' => $inventoryItem->getId()],
-                ],
-                $inventoryItem
-            );
-        }
-        return [
-            'form'   => $handler->getFormView(),
-            'entity' => $inventoryItem,
-            'product' => $inventoryItem->getProduct()
-        ];
+        return $this->get('oro_form.update_handler')->update(
+            $inventoryItem,
+            $this->createForm(InventoryItemType::class, $inventoryItem),
+            $this->get('translator')->trans('marello.inventory.messages.success.inventoryitem.saved'),
+            $request
+        );
     }
 
 

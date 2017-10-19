@@ -5,9 +5,23 @@ namespace Marello\Bundle\ProductBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class ProductRepository extends EntityRepository
 {
+    /**
+     * @var AclHelper
+     */
+    private $aclHelper;
+
+    /**
+     * @param AclHelper $aclHelper
+     */
+    public function setAclHelper(AclHelper $aclHelper)
+    {
+        $this->aclHelper = $aclHelper;
+    }
+    
     /**
      * Return products for specified price list and product IDs
      *
@@ -31,6 +45,6 @@ class ProductRepository extends EntityRepository
             ->setParameter('salesChannel', $salesChannel)
             ->setParameter('productIds', $productIds);
 
-        return $qb->getQuery()->getResult();
+        return $this->aclHelper->apply($qb->getQuery())->getResult();
     }
 }

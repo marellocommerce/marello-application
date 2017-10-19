@@ -9,13 +9,25 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 class OrderRepository extends EntityRepository
 {
     /**
+     * @var AclHelper
+     */
+    private $aclHelper;
+
+    /**
+     * @param AclHelper $aclHelper
+     */
+    public function setAclHelper(AclHelper $aclHelper)
+    {
+        $this->aclHelper = $aclHelper;
+    }
+    
+    /**
      * @param \DateTime $start
      * @param \DateTime $end
-     * @param AclHelper $aclHelper
      *
      * @return int
      */
-    public function getTotalRevenueValue(\DateTime $start, \DateTime $end, AclHelper $aclHelper)
+    public function getTotalRevenueValue(\DateTime $start, \DateTime $end)
     {
         $select = 'SUM(
              CASE WHEN orders.grandTotal IS NOT NULL THEN orders.grandTotal ELSE 0 END
@@ -26,7 +38,7 @@ class OrderRepository extends EntityRepository
             ->setParameter('dateStart', $start)
             ->setParameter('dateEnd', $end);
 
-        $value = $aclHelper->apply($qb)->getOneOrNullResult();
+        $value = $this->aclHelper->apply($qb)->getOneOrNullResult();
 
         return $value['val'] ?: 0;
     }
@@ -34,11 +46,10 @@ class OrderRepository extends EntityRepository
     /**
      * @param \DateTime $start
      * @param \DateTime $end
-     * @param AclHelper $aclHelper
      *
      * @return int
      */
-    public function getTotalOrdersNumberValue(\DateTime $start, \DateTime $end, AclHelper $aclHelper)
+    public function getTotalOrdersNumberValue(\DateTime $start, \DateTime $end)
     {
         $qb = $this->createQueryBuilder('o');
         $qb->select('count(o.id) as val')
@@ -46,7 +57,7 @@ class OrderRepository extends EntityRepository
             ->setParameter('dateStart', $start)
             ->setParameter('dateEnd', $end);
 
-        $value = $aclHelper->apply($qb)->getOneOrNullResult();
+        $value = $this->aclHelper->apply($qb)->getOneOrNullResult();
 
         return $value['val'] ?: 0;
     }
@@ -56,11 +67,10 @@ class OrderRepository extends EntityRepository
      *
      * @param \DateTime $start
      * @param \DateTime $end
-     * @param AclHelper $aclHelper
      *
      * @return int
      */
-    public function getAverageOrderValue(\DateTime $start, \DateTime $end, AclHelper $aclHelper)
+    public function getAverageOrderValue(\DateTime $start, \DateTime $end)
     {
         $select = 'SUM(
              CASE WHEN o.grandTotal IS NOT NULL THEN o.grandTotal ELSE 0 END
@@ -72,7 +82,7 @@ class OrderRepository extends EntityRepository
             ->setParameter('dateStart', $start)
             ->setParameter('dateEnd', $end);
 
-        $value = $aclHelper->apply($qb)->getOneOrNullResult();
+        $value = $this->aclHelper->apply($qb)->getOneOrNullResult();
 
         return $value['revenue'] ? $value['revenue'] / $value['ordersCount'] : 0;
     }

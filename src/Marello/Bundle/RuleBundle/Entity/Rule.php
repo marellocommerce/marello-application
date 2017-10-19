@@ -126,7 +126,7 @@ class Rule extends ExtendRule implements DatesAwareInterface, RuleInterface
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_system", type="boolean", nullable=false, options={"default"=false})
+     * @ORM\Column(name="system", type="boolean", nullable=false, options={"default"=false})
      * @ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -138,7 +138,7 @@ class Rule extends ExtendRule implements DatesAwareInterface, RuleInterface
      *      }
      *  )
      */
-    private $isSystem;
+    private $system;
 
     /**
      * @ORM\PrePersist
@@ -247,9 +247,9 @@ class Rule extends ExtendRule implements DatesAwareInterface, RuleInterface
      * @param bool $isSystem
      * @return $this
      */
-    public function setIsSystem($isSystem)
+    public function setSystem($isSystem)
     {
-        $this->isSystem = $isSystem;
+        $this->system = $isSystem;
 
         return $this;
     }
@@ -257,9 +257,9 @@ class Rule extends ExtendRule implements DatesAwareInterface, RuleInterface
     /**
      * @return bool
      */
-    public function getIsSystem()
+    public function isSystem()
     {
-        return $this->isSystem;
+        return $this->system;
     }
 
     /**

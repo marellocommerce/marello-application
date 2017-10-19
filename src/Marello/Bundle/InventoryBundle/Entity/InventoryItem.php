@@ -10,6 +10,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 use Marello\Bundle\InventoryBundle\Model\ExtendInventoryItem;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
  * @ORM\Entity()
@@ -26,13 +29,17 @@ use Marello\Bundle\ProductBundle\Entity\ProductInterface;
  *          },
  *          "security"={
  *              "type"="ACL",
- *              "permissions"="VIEW;EDIT",
  *              "group_name"=""
+ *          },
+ *          "ownership"={
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
  */
-class InventoryItem extends ExtendInventoryItem implements ProductInventoryAwareInterface
+class InventoryItem extends ExtendInventoryItem implements ProductInventoryAwareInterface, OrganizationAwareInterface
 {
     /**
      * @ORM\Id
@@ -125,6 +132,14 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
      * )
      */
     protected $replenishment;
+    
+    /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    protected $organization;
 
     /**
      * @var Warehouse
@@ -281,5 +296,24 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
     public function hasInventoryLevels()
     {
         return ($this->inventoryLevels->count() > 0);
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return $this
+     */
+    public function setOrganization(OrganizationInterface $organization)
+    {
+        $this->organization = $organization;
+
+        return $this;
     }
 }

@@ -65,6 +65,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('product_id', 'integer', []);
         $table->addColumn('desired_inventory', 'integer', ['notnull' => false]);
         $table->addColumn('purchase_inventory', 'integer', ['notnull' => false]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -95,8 +96,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime');
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
-
-
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        
         $table->setPrimaryKey(['id']);
         $table->addIndex(['inventory_item_id'], 'IDX_32D13BA4243D10EA', []);
         $table->addColumn('warehouse_id', 'integer', []);
@@ -224,6 +225,12 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
     }
 
     /**
@@ -245,6 +252,12 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             ['warehouse_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 

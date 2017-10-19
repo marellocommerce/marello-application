@@ -3,10 +3,10 @@
 namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
-class WarehouseRepository extends EntityRepository
+class WarehouseChannelGroupLinkRepository extends EntityRepository
 {
     /**
      * @var AclHelper
@@ -20,17 +20,17 @@ class WarehouseRepository extends EntityRepository
     {
         $this->aclHelper = $aclHelper;
     }
-    /**
-     * Finds default warehouse.
-     *
-     * @return Warehouse
-     */
-    public function getDefault()
-    {
-        $qb = $this->createQueryBuilder('wh');
-        $qb
-            ->where($qb->expr()->eq('wh.default', true));
 
-        return $this->aclHelper->apply($qb)->getSingleResult();
+    /**
+     * @return WarehouseChannelGroupLink
+     */
+    public function findSystemLink()
+    {
+        $qb = $this->createQueryBuilder('wcgl');
+        $qb
+            ->where($qb->expr()->eq('wcgl.system', true));
+        $results = $this->aclHelper->apply($qb)->getResult();
+
+        return reset($results);
     }
 }
