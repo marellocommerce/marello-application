@@ -5,6 +5,7 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Migrations\Data\ORM\LoadSalesChannelGroupData;
@@ -12,12 +13,12 @@ use Marello\Bundle\SalesBundle\Migrations\Data\ORM\LoadSalesChannelGroupData;
 class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * @var ObjectManager
+     * @var ObjectManager $manager
      */
     protected $manager;
 
     /**
-     * @var array
+     * @var array $data
      */
     protected $data = [
         [
@@ -101,7 +102,6 @@ class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
                 ->setGroup($defaultSystemGroup);
             
             $this->manager->persist($channel);
-            $this->setReference('marello_sales_channel_' . $i, $channel);
             $this->setReference($channel->getCode(), $channel);
             $i++;
         }

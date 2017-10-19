@@ -6,25 +6,19 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 
 class LoadProductSalesChannelTaxCodeData extends AbstractFixture implements DependentFixtureInterface
 {
     /**
-     * @var ObjectManager
+     * @var ObjectManager $manager
      */
     protected $manager;
 
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
+    /** @var array $data */
     protected $data = [
         [
             'code'      => 'sales_channel_de_munchen',
@@ -70,7 +64,6 @@ class LoadProductSalesChannelTaxCodeData extends AbstractFixture implements Depe
 
     /**
      * {@inheritDoc}
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function load(ObjectManager $manager)
     {
@@ -89,7 +82,7 @@ class LoadProductSalesChannelTaxCodeData extends AbstractFixture implements Depe
 
     /**
      * @param Product $product
-     * load products
+     * load products channel tax data
      */
     protected function loadProductChannelTaxData(Product $product)
     {
