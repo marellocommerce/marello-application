@@ -5,28 +5,19 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+
 class LoadProductInventoryData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
-    /**
-     * @var Organization
-     */
-    protected $defaultOrganization;
-
-    /**
-     * @var Warehouse
-     */
-    protected $defaultWarehouse;
-
     /**
      * @var array
      */
@@ -67,17 +58,6 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
-        $organizations = $this->manager
-            ->getRepository('OroOrganizationBundle:Organization')
-            ->findAll();
-
-        if (is_array($organizations) && count($organizations) > 0) {
-            $this->defaultOrganization = array_shift($organizations);
-        }
-
-        $this->defaultWarehouse = $this->container
-            ->get('marello_inventory.repository.warehouse')
-            ->getDefault();
 
         $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
         $this->replenishments = $this->manager->getRepository($replenishmentClass)->findAll();

@@ -33,7 +33,7 @@ class RuleActionsVisibilityProviderTest extends \PHPUnit_Framework_TestCase
             ->method('isEnabled')
             ->willReturn($enabled);
         $rule->expects(static::any())
-            ->method('getIsSystem')
+            ->method('isSystem')
             ->willReturn($isSystem);
         $this->assertEquals(
             $expected,

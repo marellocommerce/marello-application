@@ -39,10 +39,14 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *  routeName="marello_product_index",
  *  routeView="marello_product_view",
  *  defaultValues={
+ *      "dataaudit"={
+ *            "auditable"=true
+ *      },
  *      "entity"={"icon"="fa-barcode"},
  *      "ownership"={
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *      },
  *      "security"={
  *          "type"="ACL",
@@ -101,6 +105,20 @@ class Product extends ExtendProduct implements
      * )
      */
     protected $sku;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="manufacturing_code", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $manufacturingCode;
 
     /**
      * @var ProductStatus
@@ -396,6 +414,22 @@ class Product extends ExtendProduct implements
     }
 
     /**
+     * @return string
+     */
+    public function getManufacturingCode()
+    {
+        return $this->manufacturingCode;
+    }
+
+    /**
+     * @param string $manufacturingCode
+     */
+    public function setManufacturingCode($manufacturingCode)
+    {
+        $this->manufacturingCode = $manufacturingCode;
+    }
+
+    /**
      * @return ProductStatus
      */
     public function getStatus()
@@ -413,6 +447,15 @@ class Product extends ExtendProduct implements
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * Get the first price from the ProductPrice collection
+     * @return ProductPrice
+     */
+    public function getPrice()
+    {
+        return $this->prices->first();
     }
 
     /**

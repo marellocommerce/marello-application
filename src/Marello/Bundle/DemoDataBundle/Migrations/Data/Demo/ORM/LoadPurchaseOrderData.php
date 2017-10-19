@@ -76,11 +76,14 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
                     }
                 }
             }
-            $this->setReference('marello-purchase-order-' . $orderNo, $order);
-            $manager->persist($product);
-            $manager->persist($order);
 
-            $manager->flush();
+            if ($order && $product) {
+                $this->setReference('marello-purchase-order-' . $orderNo, $order);
+                $manager->persist($product);
+                $manager->persist($order);
+
+                $manager->flush();
+            }
 
             fclose($handle);
         }

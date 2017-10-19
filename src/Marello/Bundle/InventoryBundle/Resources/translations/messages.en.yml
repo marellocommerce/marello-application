@@ -54,6 +54,7 @@ marello:
             desired_inventory.label:    Desired Inventory Level
             purchase_inventory.label:   Purchase Inventory Level
             inventory_levels.label:     Inventory Levels
+            organization.label:         Organization
             warehouse.label:            Warehouse
 
         inventorylevel:
@@ -72,6 +73,7 @@ marello:
             subject_type.label:             Subject Type
             log.label:                      Inventory Level Log
             warehouse.label:                Warehouse
+            organization.label:             Organization
 
         inventorylevellogrecord:
             id.label:                       Id
@@ -94,5 +96,6 @@ marello:
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully
+                inventoryitem.saved:    Inventory Item has been saved successfully
             error:
                 warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse

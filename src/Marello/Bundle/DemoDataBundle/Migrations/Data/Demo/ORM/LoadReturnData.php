@@ -12,6 +12,10 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 class LoadReturnData extends AbstractFixture implements DependentFixtureInterface
 {
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
     public function getDependencies()
     {
         return [
@@ -19,9 +23,18 @@ class LoadReturnData extends AbstractFixture implements DependentFixtureInterfac
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $orders = $manager->getRepository('MarelloOrderBundle:Order')->findAll();
+
+        if (count($orders) <= 0) {
+            return;
+        }
+
         $channel = $this->getReference('marello_sales_channel_1');
         $reasonClass = ExtendHelper::buildEnumValueClassName('marello_return_reason');
         $reasons = $manager->getRepository($reasonClass)->findAll();
