@@ -449,6 +449,15 @@ class Product extends ExtendProduct implements
     }
 
     /**
+     * Get the first price from the ProductPrice collection
+     * @return ProductPrice
+     */
+    public function getPrice()
+    {
+        return $this->prices->first();
+    }
+
+    /**
      * @return ArrayCollection
      */
     public function getPrices()
