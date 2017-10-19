@@ -40,32 +40,92 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'type'      => 'global'
         ],
         'additional1' => [
-            'name'          => 'Warehouse 13',
-            'code'          => 'warehouse_13',
+            'name'          => 'Warehouse DE 2',
+            'code'          => 'warehouse_de_2',
             'default'       => false,
             'address'       => [
-                'country' => 'US',
-                'street' => '2875 Hartway Street',
-                'city' => 'Univille',
-                'state' => 'SD',
-                'postalCode' => '57078',
-                'phone' => '605-857-1824',
-                'company' => 'Marello'
+                'country' => 'DE',
+                'street' => 'Platz der Luftbrücke 5',
+                'city' => 'Berlin',
+                'state' => 'BE',
+                'postalCode' => '12101',
+                'phone' => '000-000-000',
+                'company' => 'Goodwaves Berlin'
             ],
             'type'          => 'global'
         ],
         'additional2' => [
-            'name'          => 'Flagship Store',
-            'code'          => 'flagship_store',
+            'name'          => 'Warehouse FR 1',
+            'code'          => 'warehouse_fr_1',
             'default'       => false,
             'address'       => [
-                'country' => 'US',
-                'street' => '475 5th Avenue',
-                'city' => 'New York',
-                'state' => 'NY',
-                'postalCode' => '10017',
-                'phone' => '917-536-4267',
-                'company' => 'Marello'
+                'country' => 'FR',
+                'street' => '22 Av. des Champs-Élysées',
+                'city' => 'Paris',
+                'state' => '75',
+                'postalCode' => '75008',
+                'phone' => '000-000-000',
+                'company' => 'Goodwaves Paris'
+            ],
+            'type'          => 'global'
+        ],
+        'additional3' => [
+            'name'          => 'Warehouse FR 2',
+            'code'          => 'warehouse_fr_2',
+            'default'       => false,
+            'address'       => [
+                'country' => 'FR',
+                'street' => '120 Cours de la Marne',
+                'city' => 'Bordeaux',
+                'state' => '33',
+                'postalCode' => '33800',
+                'phone' => '000-000-000',
+                'company' => 'Goodwaves Bordeaux'
+            ],
+            'type'          => 'global'
+        ],
+        'additional4' => [
+            'name'          => 'Store Warehouse DE München',
+            'code'          => 'store_warehouse_de_munchen',
+            'default'       => false,
+            'address'       => [
+                'country' => 'DE',
+                'street' => 'Nordallee 25',
+                'city' => 'München',
+                'state' => 'BY',
+                'postalCode' => '85356',
+                'phone' => '000-000-000',
+                'company' => 'Goodwaves München'
+            ],
+            'type'          => 'fixed'
+        ],
+        'additional5' => [
+            'name'          => 'Store Warehouse DE Frankfurt',
+            'code'          => 'store_warehouse_de_frankfurt',
+            'default'       => false,
+            'address'       => [
+                'country' => 'DE',
+                'street' => 'Flughafen Frankfurt am Main 200',
+                'city' => 'Frankfurt am Main',
+                'state' => 'HE',
+                'postalCode' => '60549',
+                'phone' => '000-000-000',
+                'company' => 'Goodwaves Frankfurt'
+            ],
+            'type'          => 'fixed'
+        ],
+        'additional6' => [
+            'name'          => 'Store Warehouse DE Berlin',
+            'code'          => 'store_warehouse_de_berlin',
+            'default'       => false,
+            'address'       => [
+                'country' => 'DE',
+                'street' => 'Grunerstraße 20',
+                'city' => 'Berlin',
+                'state' => 'BE',
+                'postalCode' => '10179',
+                'phone' => '000-000-000',
+                'company' => 'Goodwaves Berlin'
             ],
             'type'          => 'fixed'
         ],
