@@ -27,7 +27,6 @@
                         {{ UI.renderProperty('marello.tax.taxrule.tax_code.label'|trans, entity.taxCode) }}
                         {{ UI.renderProperty('marello.tax.taxrule.tax_rate.label'|trans, entity.taxRate) }}
                         {{ UI.renderProperty('marello.tax.taxrule.tax_jurisdiction.label'|trans, entity.taxJurisdiction) }}
-                        {{ UI.renderProperty('marello.tax.taxrule.includes_vat.label'|trans, entity.includesVat ? 'marello.tax.taxrule.includes_vat.value.yes'|trans : 'marello.tax.taxrule.includes_vat.value.no'|trans) }}
                         {% set taxRateViewGranted = resource_granted('marello_tax_taxrule_update') %}
                         {%- if taxRateViewGranted -%}
                             {%- set taxRateData -%}

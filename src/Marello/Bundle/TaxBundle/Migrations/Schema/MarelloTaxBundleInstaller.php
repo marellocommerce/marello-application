@@ -18,7 +18,7 @@ class MarelloTaxBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_2';
     }
 
     /**
@@ -81,7 +81,6 @@ class MarelloTaxBundleInstaller implements Installation
         $table->addColumn('tax_code_id', 'integer', ['notnull' => false]);
         $table->addColumn('tax_rate_id', 'integer', ['notnull' => false]);
         $table->addColumn('tax_jurisdiction_id', 'integer', ['notnull' => false]);
-        $table->addColumn('includes_vat', 'boolean', []);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);

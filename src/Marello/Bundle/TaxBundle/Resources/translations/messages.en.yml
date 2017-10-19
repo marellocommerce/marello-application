@@ -27,11 +27,6 @@ marello:
             tax_code.label:                     Tax Code
             tax_rate.label:                     Tax Rate
             tax_jurisdiction.label:             Tax Jurisdiction
-            includes_vat:
-                label:                          Includes Vat
-                value:
-                    yes:                        Yes
-                    no:                         No
             datablock.general:                  General
             datablock.taxrule_information:      Tax Rule Information
 
