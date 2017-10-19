@@ -5,48 +5,22 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
-use Marello\Bundle\TaxBundle\Entity\ZipCode;
+
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
+
+use Marello\Bundle\TaxBundle\Entity\ZipCode;
+use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
 
 class LoadTaxJurisdictionData extends AbstractFixture
 {
     const REF_1 = 'FRANCE';
     const REF_2 = 'GREAT_BRITAIN';
     const REF_3 = 'GERMANY';
-//    const REF_4 = 'CULVER_CITY';
-//    const REF_5 = 'SANTA_MONICA';
-
     const REFERENCE_PREFIX = 'tax_jurisdiction';
 
+    /** @var array $data */
     protected $data = [
-//        self::REF_1 => [
-//            'country' => 'US',
-//            'state' => 'CA',
-//            'zip_codes' => [
-//                ['start' => '90620', 'end' => '90630'],
-//                ['start' => '90720', 'end' => '90721'],
-//                ['start' => '90740', 'end' => '90743'],
-//                ['start' => '92602', 'end' => '92859'],
-//                ['start' => '92861', 'end' => '92871'],
-//                ['start' => '92885', 'end' => '92899'],
-//            ],
-//            'description' => 'Orange County',
-//        ],
-//        self::REF_2 => [
-//            'country' => 'US',
-//            'state' => 'CA',
-//            'zip_codes' => [
-//                ['start' => '90001', 'end' => '90039'],
-//                ['start' => '90041', 'end' => '90224'],
-//                ['start' => '90239', 'end' => '90278'],
-//                ['start' => '90290', 'end' => '90296'],
-//                '90304',
-//            ],
-//            'description' => 'Los Angeles County',
-//        ],
         self::REF_1 => [
             'country' => 'FR',
             'state' => null,

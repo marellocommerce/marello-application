@@ -4,16 +4,19 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
 class LoadSupplierData extends AbstractFixture
 {
+    const SUPPLIER_COST_PERCENTAGE = 0.40;
+
     /** @var ObjectManager $manager */
     protected $manager;
 
     /**
-     * @var array
+     * @var array $data
      */
     protected $data = [
         [

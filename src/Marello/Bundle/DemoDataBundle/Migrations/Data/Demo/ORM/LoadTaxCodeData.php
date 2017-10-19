@@ -4,14 +4,15 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 
 class LoadTaxCodeData extends AbstractFixture
 {
-    const TAXCODE_0_REF = 'marello_taxcode_0';
-    const TAXCODE_1_REF = 'marello_taxcode_1';
-    const TAXCODE_2_REF = 'marello_taxcode_2';
-    const TAXCODE_3_REF = 'marello_taxcode_3';
+    const TAXCODE_0_REF = 'DE_high';
+    const TAXCODE_1_REF = 'FR_high';
+    const TAXCODE_2_REF = 'UK_high';
+    const TAXCODE_3_REF = 'US';
 
     /**
      * @var ObjectManager $manager
@@ -19,7 +20,7 @@ class LoadTaxCodeData extends AbstractFixture
     protected $manager;
 
     /**
-     * @var array
+     * @var array $data
      */
     protected $data = [
         self::TAXCODE_0_REF => [

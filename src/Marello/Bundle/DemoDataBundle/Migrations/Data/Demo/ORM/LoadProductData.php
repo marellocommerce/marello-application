@@ -18,6 +18,10 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     /** @var ObjectManager $manager */
     protected $manager;
 
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
     public function getDependencies()
     {
         return [
@@ -89,8 +93,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setStatus($status);
         $channels = explode(';', $data['channel']);
         $currencies = [];
-        foreach ($channels as $channelId) {
-            $channel = $this->getReference('marello_sales_channel_'. (int)$channelId);
+        foreach ($channels as $channelCode) {
+            $channel = $this->getReference($channelCode);
             $product->addChannel($channel);
             $currencies[] = $channel->getCurrency();
         }
@@ -111,19 +115,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         /**
         * set default taxCode
         */
-        $product->setTaxCode($this->getReference('marello_taxcode_0'));
-//        foreach ($channels as $channelId) {
-//            $channel = $this->getReference('marello_sales_channel_'. (int)$channelId);
-//
-//            $productSalesChannelRelation = new ProductChannelTaxRelation();
-//            $productSalesChannelRelation
-//                ->setProduct($product)
-//                ->setSalesChannel($channel)
-//                ->setTaxCode($this->getReference('marello_taxcode_'. rand(0, 2)))
-//            ;
-//            $this->manager->persist($productSalesChannelRelation);
-//            $product->addSalesChannelTaxCode($productSalesChannelRelation);
-//        }
+        $product->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_0_REF));
 
         /**
          * add suppliers per product
@@ -136,11 +128,12 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     }
 
     /**
+     * Get correct price based on the currency code
      * @param array $data
      * @param string $currency
      * @return float
      */
-    protected function getValuePerCurrency(array $data, $currency = 'EUR')
+    private function getValuePerCurrency(array $data, $currency = 'EUR')
     {
         $currencyPriceIdentifier = sprintf('price_%s', $currency);
         if (isset($data[$currencyPriceIdentifier]) && !empty($currencyPriceIdentifier)) {
@@ -167,8 +160,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
                 ->setSupplier($supplier)
                 ->setQuantityOfUnit(100)
                 ->setCanDropship(true)
-                ->setPriority(rand(1, 6))
-                ->setCost($this->getRandomFloat(25, 30))
+                ->setPriority(1)
+                ->setCost($this->calculateSupplierCost($product))
             ;
             $this->manager->persist($productSupplierRelation);
             $product->addSupplier($productSupplierRelation);
@@ -194,14 +187,18 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     }
 
     /**
-     * Get random float
-     * @param $min
-     * @param $max
-     * @return mixed
+     * Calculate the cost for the supplier based of a static percentage
+     * of the retail price
+     * @param Product $product
+     * @return float $supplierCost
      */
-    private function getRandomFloat($min, $max)
+    private function calculateSupplierCost(Product $product)
     {
-        return ($min + lcg_value()*(abs($max - $min)));
+        $percentage = LoadSupplierData::SUPPLIER_COST_PERCENTAGE;
+        $defaultPrice = $product->getPrice();
+        $supplierCost = $defaultPrice->getValue() * $percentage;
+
+        return $supplierCost;
     }
 
     /**
