@@ -13,67 +13,59 @@ use Oro\Bundle\AddressBundle\Entity\Region;
 
 class LoadTaxJurisdictionData extends AbstractFixture
 {
-    const REF_1 = 'LOS_ANGELES_COUNTY';
-    const REF_2 = 'ORANGE_COUNTY';
-    const REF_3 = 'VENTURA_COUNTY';
-    const REF_4 = 'CULVER_CITY';
-    const REF_5 = 'SANTA_MONICA';
-
-    protected $data = [
-        self::REF_1 => [
-            'country' => 'US',
-            'state' => 'CA',
-            'zip_codes' => [
-                ['start' => '90001', 'end' => '90039'],
-                ['start' => '90041', 'end' => '90224'],
-                ['start' => '90239', 'end' => '90278'],
-                ['start' => '90290', 'end' => '90296'],
-                '90304',
-            ],
-            'description' => 'Los Angeles County',
-        ],
-        self::REF_2 => [
-            'country' => 'US',
-            'state' => 'CA',
-            'zip_codes' => [
-                ['start' => '90620', 'end' => '90630'],
-                ['start' => '90720', 'end' => '90721'],
-                ['start' => '90740', 'end' => '90743'],
-                ['start' => '92602', 'end' => '92859'],
-                ['start' => '92861', 'end' => '92871'],
-                ['start' => '92885', 'end' => '92899'],
-            ],
-            'description' => 'Orange County',
-        ],
-        self::REF_3 => [
-            'country' => 'US',
-            'state' => 'CA',
-            'zip_codes' => [
-                ['start' => '91319', 'end' => '91320'],
-                ['start' => '91358', 'end' => '91362'],
-                '91377',
-            ],
-            'description' => 'Ventura County',
-        ],
-        self::REF_4 => [
-            'country' => 'US',
-            'state' => 'CA',
-            'zip_codes' => [
-                ['start' => '90232', 'end' => '90233'],
-            ],
-            'description' => 'Culver City',
-        ],
-        self::REF_5 => [
-            'country' => 'US',
-            'state' => 'CA',
-            'zip_codes' => [
-                ['start' => '90401', 'end' => '90409'],
-            ],
-            'description' => 'Santa Monica',
-        ],
-    ];
+    const REF_1 = 'FRANCE';
+    const REF_2 = 'GREAT_BRITAIN';
+    const REF_3 = 'GERMANY';
+//    const REF_4 = 'CULVER_CITY';
+//    const REF_5 = 'SANTA_MONICA';
 
     const REFERENCE_PREFIX = 'tax_jurisdiction';
+
+    protected $data = [
+//        self::REF_1 => [
+//            'country' => 'US',
+//            'state' => 'CA',
+//            'zip_codes' => [
+//                ['start' => '90620', 'end' => '90630'],
+//                ['start' => '90720', 'end' => '90721'],
+//                ['start' => '90740', 'end' => '90743'],
+//                ['start' => '92602', 'end' => '92859'],
+//                ['start' => '92861', 'end' => '92871'],
+//                ['start' => '92885', 'end' => '92899'],
+//            ],
+//            'description' => 'Orange County',
+//        ],
+//        self::REF_2 => [
+//            'country' => 'US',
+//            'state' => 'CA',
+//            'zip_codes' => [
+//                ['start' => '90001', 'end' => '90039'],
+//                ['start' => '90041', 'end' => '90224'],
+//                ['start' => '90239', 'end' => '90278'],
+//                ['start' => '90290', 'end' => '90296'],
+//                '90304',
+//            ],
+//            'description' => 'Los Angeles County',
+//        ],
+        self::REF_1 => [
+            'country' => 'FR',
+            'state' => null,
+            'zip_codes' => null,
+            'description' => 'France',
+        ],
+        self::REF_2 => [
+            'country' => 'GB',
+            'state' => null,
+            'zip_codes' => null,
+            'description' => 'United Kingdom',
+        ],
+        self::REF_3 => [
+            'country' => 'DE',
+            'state' => null,
+            'zip_codes' => null,
+            'description' => 'Germany',
+        ],
+    ];
 
     /**
      * @param EntityManager $manager
@@ -83,7 +75,10 @@ class LoadTaxJurisdictionData extends AbstractFixture
     {
         foreach ($this->data as $ref => $data) {
             $country = $this->getCountryByIso2Code($manager, $data['country']);
-            $region = $this->getRegionByCountryAndCode($manager, $country, $data['state']);
+            $region = null;
+            if ($data['state'] !== null) {
+                $region = $this->getRegionByCountryAndCode($manager, $country, $data['state']);
+            }
             $taxJurisdiction =  $this->createTaxJurisdiction(
                 $manager,
                 $ref,
@@ -113,7 +108,7 @@ class LoadTaxJurisdictionData extends AbstractFixture
         $code,
         $description,
         Country $country,
-        Region $region,
+        Region $region = null,
         $zipCodes
     ) {
         $taxJurisdiction = new TaxJurisdiction();
@@ -122,16 +117,18 @@ class LoadTaxJurisdictionData extends AbstractFixture
             ->setCountry($country)
             ->setRegion($region);
 
-        foreach ($zipCodes as $data) {
-            $zipCode = new ZipCode();
-            if (is_array($data)) {
-                $zipCode->setZipRangeStart($data['start']);
-                $zipCode->setZipRangeEnd($data['end']);
-            } else {
-                $zipCode->setZipCode($data);
-            }
+        if (is_array($zipCodes)) {
+            foreach ($zipCodes as $data) {
+                $zipCode = new ZipCode();
+                if (is_array($data)) {
+                    $zipCode->setZipRangeStart($data['start']);
+                    $zipCode->setZipRangeEnd($data['end']);
+                } else {
+                    $zipCode->setZipCode($data);
+                }
 
-            $taxJurisdiction->addZipCode($zipCode);
+                $taxJurisdiction->addZipCode($zipCode);
+            }
         }
 
         $manager->persist($taxJurisdiction);

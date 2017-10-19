@@ -9,7 +9,6 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
-use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -104,31 +103,27 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             // add prices
             $price = new ProductPrice();
             $price->setCurrency($currency);
-            if (count($currencies) > 1 && $currency === 'USD') {
-                $price->setValue(($data['price'] * 1.12));
-            } else {
-                $price->setValue($data['price']);
-            }
-
+            $priceValue = $this->getValuePerCurrency($data, $currency);
+            $price->setValue($priceValue);
             $product->addPrice($price);
         }
 
         /**
-        * set default taxCode and taxcodes per saleschannel
+        * set default taxCode
         */
-        $product->setTaxCode($this->getReference('marello_taxcode_'. rand(0, 2)));
-        foreach ($channels as $channelId) {
-            $channel = $this->getReference('marello_sales_channel_'. (int)$channelId);
-
-            $productSalesChannelRelation = new ProductChannelTaxRelation();
-            $productSalesChannelRelation
-                ->setProduct($product)
-                ->setSalesChannel($channel)
-                ->setTaxCode($this->getReference('marello_taxcode_'. rand(0, 2)))
-            ;
-            $this->manager->persist($productSalesChannelRelation);
-            $product->addSalesChannelTaxCode($productSalesChannelRelation);
-        }
+        $product->setTaxCode($this->getReference('marello_taxcode_0'));
+//        foreach ($channels as $channelId) {
+//            $channel = $this->getReference('marello_sales_channel_'. (int)$channelId);
+//
+//            $productSalesChannelRelation = new ProductChannelTaxRelation();
+//            $productSalesChannelRelation
+//                ->setProduct($product)
+//                ->setSalesChannel($channel)
+//                ->setTaxCode($this->getReference('marello_taxcode_'. rand(0, 2)))
+//            ;
+//            $this->manager->persist($productSalesChannelRelation);
+//            $product->addSalesChannelTaxCode($productSalesChannelRelation);
+//        }
 
         /**
          * add suppliers per product
@@ -138,6 +133,21 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $this->manager->persist($product);
 
         return $product;
+    }
+
+    /**
+     * @param array $data
+     * @param string $currency
+     * @return float
+     */
+    protected function getValuePerCurrency(array $data, $currency = 'EUR')
+    {
+        $currencyPriceIdentifier = sprintf('price_%s', $currency);
+        if (isset($data[$currencyPriceIdentifier]) && !empty($currencyPriceIdentifier)) {
+            return $data[$currencyPriceIdentifier];
+        }
+
+        return $data['default_price'];
     }
 
     /**
@@ -151,47 +161,17 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ->findAll();
 
         foreach ($suppliers as $supplier) {
-
-            //Add a bit of randomness to product suppliers
-            if (rand(1, 4) === 4) {
-                continue;
-            }
-
-            $productSupplierRelation1 = new ProductSupplierRelation();
-            $productSupplierRelation1
+            $productSupplierRelation = new ProductSupplierRelation();
+            $productSupplierRelation
                 ->setProduct($product)
                 ->setSupplier($supplier)
                 ->setQuantityOfUnit(100)
                 ->setCanDropship(true)
                 ->setPriority(rand(1, 6))
-                ->setCost($this->getRandomFloat(45, 60))
+                ->setCost($this->getRandomFloat(25, 30))
             ;
-            $this->manager->persist($productSupplierRelation1);
-            $product->addSupplier($productSupplierRelation1);
-
-            $productSupplierRelation2 = new ProductSupplierRelation();
-            $productSupplierRelation2
-                ->setProduct($product)
-                ->setSupplier($supplier)
-                ->setQuantityOfUnit(400)
-                ->setCanDropship(true)
-                ->setPriority(rand(1, 6))
-                ->setCost($this->getRandomFloat(20, 40))
-            ;
-            $this->manager->persist($productSupplierRelation2);
-            $product->addSupplier($productSupplierRelation2);
-
-            $productSupplierRelation3 = new ProductSupplierRelation();
-            $productSupplierRelation3
-                ->setProduct($product)
-                ->setSupplier($supplier)
-                ->setQuantityOfUnit(750)
-                ->setCanDropship(true)
-                ->setPriority(rand(1, 6))
-                ->setCost($this->getRandomFloat(10, 15))
-            ;
-            $this->manager->persist($productSupplierRelation3);
-            $product->addSupplier($productSupplierRelation3);
+            $this->manager->persist($productSupplierRelation);
+            $product->addSupplier($productSupplierRelation);
         }
 
         $preferredSupplier = null;

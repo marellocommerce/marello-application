@@ -24,43 +24,43 @@ class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
             'name' => 'Sales Channel DE München',
             'code' => 'sales_channel_de_munchen',
             'type' => 'pos',
-            'currency' => 'EUR'
+            'currency' => 'EUR',
         ],
         [
             'name' => 'Sales Channel DE Berlin',
             'code' => 'sales_channel_de_berlin',
             'type' => 'pos',
-            'currency' => 'EUR'
+            'currency' => 'EUR',
         ],
         [
             'name' => 'Sales Channel DE Frankfurt',
             'code' => 'sales_channel_de_frankfurt',
             'type' => 'pos',
-            'currency' => 'EUR'
+            'currency' => 'EUR',
         ],
         [
             'name' => 'Sales Channel US Webshop',
             'code' => 'sales_channel_us_webshop',
             'type' => 'magento',
-            'currency' => 'USD'
+            'currency' => 'USD',
         ],
         [
             'name' => 'Sales Channel DE Webshop',
             'code' => 'sales_channel_de_webshop',
             'type' => 'magento',
-            'currency' => 'EUR'
+            'currency' => 'EUR',
         ],
         [
             'name' => 'Sales Channel FR Webshop',
             'code' => 'sales_channel_fr_webshop',
             'type' => 'magento',
-            'currency' => 'EUR'
+            'currency' => 'EUR',
         ],
         [
             'name' => 'Sales Channel UK Webshop',
             'code' => 'sales_channel_uk_webshop',
             'type' => 'magento',
-            'currency' => 'GBP'
+            'currency' => 'GBP',
         ]
     ];
 
@@ -102,6 +102,7 @@ class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
             
             $this->manager->persist($channel);
             $this->setReference('marello_sales_channel_' . $i, $channel);
+            $this->setReference($channel->getCode(), $channel);
             $i++;
         }
 

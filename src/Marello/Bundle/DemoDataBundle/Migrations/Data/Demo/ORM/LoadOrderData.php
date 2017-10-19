@@ -128,8 +128,10 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             $order->addItem($item);
         }
 
-        $manager->persist($order);
-        $manager->flush();
+        if ($order) {
+            $manager->persist($order);
+            $manager->flush();
+        }
 
         $this->closeFiles();
     }

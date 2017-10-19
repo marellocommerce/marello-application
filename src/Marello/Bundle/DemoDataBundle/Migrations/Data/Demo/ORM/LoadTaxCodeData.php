@@ -24,19 +24,19 @@ class LoadTaxCodeData extends AbstractFixture
     protected $data = [
         self::TAXCODE_0_REF => [
             'code' => 'DE_high',
-            'description' => 'DE High'
+            'description' => 'DE High',
         ],
         self::TAXCODE_1_REF => [
             'code' => 'FR_high',
-            'description' => 'FR High'
+            'description' => 'FR High',
         ],
         self::TAXCODE_2_REF => [
             'code' => 'UK_high',
-            'description' => 'UK High'
+            'description' => 'UK High',
         ],
         self::TAXCODE_3_REF => [
             'code' => 'US',
-            'description' => 'US'
+            'description' => 'US',
         ]
     ];
 
