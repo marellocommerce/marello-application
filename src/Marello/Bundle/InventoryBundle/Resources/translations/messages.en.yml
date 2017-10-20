@@ -38,8 +38,8 @@ marello:
             id.label:                   Id
             system.label:               System
             organization.label:         Organization
-            sales_channel_groups.label: Sales Channel Groups
-            warehouse_group.label:      Warehouse Group
+            sales_channel_groups.label: Sales Channel (Groups)
+            warehouse_group.label:      Warehouse (Group)
 
         model:
             warehouse:
