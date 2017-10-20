@@ -52,7 +52,7 @@
         }) }}
     {% endset %}
 
-    {% set productImage = asset('bundles/marellocore/img/no_image.png') %}
+    {% set productImage = asset('bundles/marelloproduct/img/no_image_available.jpg') %}
     {% if entity.image is not null %}
         {% set productImage = file_url(entity, 'image', entity.image) %}
     {% endif %}
