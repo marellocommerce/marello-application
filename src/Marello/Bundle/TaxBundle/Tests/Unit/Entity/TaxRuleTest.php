@@ -16,7 +16,6 @@ class TaxRuleTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertPropertyAccessors(new TaxRule(), [
             ['id', 42],
-            ['includesVat', 1],
             ['taxCode', new TaxCode()],
             ['taxRate', new TaxRate()],
             ['taxJurisdiction', new TaxJurisdiction()],

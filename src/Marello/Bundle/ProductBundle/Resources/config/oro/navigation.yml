@@ -47,6 +47,6 @@ navigation:
 
     titles:
         marello_product_index: marello.product.entity_plural_label
-        marello_product_view: '%%name%%'
-        marello_product_update: '%%name%%'
+        marello_product_view: '%name%'
+        marello_product_update: '%name%'
         marello_product_create: 'New product'

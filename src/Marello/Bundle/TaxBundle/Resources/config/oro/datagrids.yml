@@ -121,9 +121,6 @@ datagrids:
             jurisdiction:
                 label:            marello.tax.taxrule.tax_jurisdiction.label
                 frontend_type:    string
-            includesVat:
-                label:            marello.tax.taxrule.includes_vat.label
-                frontend_type:    boolean
         sorters:
             columns:
                 code:
@@ -132,8 +129,6 @@ datagrids:
                     data_name: rate
                 jurisdiction:
                     data_name: jurisdiction
-                includesVat:
-                    data_name: t.includesVat
             default:
                 code: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
@@ -147,9 +142,6 @@ datagrids:
                 jurisdiction:
                     type:       string
                     data_name:  jurisdiction
-                includesVat:
-                    type:       string
-                    data_name:  t.includesVat
         properties:
             id: ~
             view_link:

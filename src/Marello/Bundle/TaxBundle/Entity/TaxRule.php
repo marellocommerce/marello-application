@@ -32,13 +32,6 @@ class TaxRule
     protected $id;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="includes_vat", type="boolean", nullable=false)
-     */
-    protected $includesVat;
-
-    /**
      * @var TaxCode
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
@@ -78,30 +71,6 @@ class TaxRule
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set includesVat
-     *
-     * @param boolean $includesVat
-     *
-     * @return TaxRule
-     */
-    public function setIncludesVat($includesVat)
-    {
-        $this->includesVat = $includesVat;
-
-        return $this;
-    }
-
-    /**
-     * Get includesVat
-     *
-     * @return boolean
-     */
-    public function getIncludesVat()
-    {
-        return $this->includesVat;
     }
 
     /**
