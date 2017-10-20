@@ -1,0 +1,10 @@
+placeholders:
+    placeholders:
+        marello_customer_address:
+            items:
+                marelloenterprise_customer_address_map:
+                    order: 100
+
+    items:
+        marelloenterprise_customer_address_map:
+            template: MarelloEnterpriseOrderBundle:Customer:customerAddressMap.html.twig

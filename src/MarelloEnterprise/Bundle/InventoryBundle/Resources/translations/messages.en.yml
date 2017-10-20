@@ -1,5 +1,8 @@
 marelloenterprise:
     inventory:
+        inventoryitem:
+            inventory_levels:
+                totals:                 Inventory Levels Totals
         wfarule:
             entity_label:               Warehouse Fulfillment Allocation Rule
             entity_plural_label:        Warehouse Fulfillment Allocation Rules

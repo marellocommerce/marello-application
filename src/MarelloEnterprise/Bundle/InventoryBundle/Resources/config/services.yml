@@ -221,3 +221,9 @@ services:
 
     marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.main:
         parent: marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.single_wh
+
+    marelloenterprise_inventory.listener.datagrid.inventory_levels:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\InventoryLevelsGridListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-inventory-levels, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.marello-inventory-levels, method: onResultBeforeQuery, priority: -255 }

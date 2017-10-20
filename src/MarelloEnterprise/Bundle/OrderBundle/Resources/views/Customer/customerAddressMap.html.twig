@@ -1,0 +1,17 @@
+{% set apiKey = oro_config_value('oro_google_integration.client_secret') %}
+{% if feature_enabled('address_geocoding') and apiKey is not empty%}
+    {% block stylesheet %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/marelloenterpriseorder/css/map.css') }}"/>
+    {% endblock %}
+    <div class="map-visual-frame"
+         data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ {
+             view: 'oroaddress/js/mapservice/googlemaps',
+             apiKey: apiKey,
+             address: {
+                 address: address.postalCode ~ ' ' ~ address.country ~ ' ' ~ address.region ~ ' ' ~ address.city ~ ' ' ~ address.street ~ ' ' ~ address.street2,
+                 label: address.fullName
+             }
+         }|json_encode }}">
+    </div>
+{% endif %}
