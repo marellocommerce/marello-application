@@ -25,7 +25,7 @@
                             <span class="widget-title">{{ 'marello.tax.taxrule.datablock.taxrule_information'|trans }}</span>
                         </div>
                         {{ UI.renderProperty('marello.tax.taxrule.tax_code.label'|trans, entity.taxCode) }}
-                        {{ UI.renderProperty('marello.tax.taxrule.tax_rate.label'|trans, entity.taxRate) }}
+                        {{ UI.renderHtmlProperty('marello.tax.taxrule.tax_rate.label'|trans, entity.taxRate.code ~  '(' ~ entity.taxRate.rate|oro_format_percent ~ ')' ) }}
                         {{ UI.renderProperty('marello.tax.taxrule.tax_jurisdiction.label'|trans, entity.taxJurisdiction) }}
                         {% set taxRateViewGranted = resource_granted('marello_tax_taxrule_update') %}
                         {%- if taxRateViewGranted -%}

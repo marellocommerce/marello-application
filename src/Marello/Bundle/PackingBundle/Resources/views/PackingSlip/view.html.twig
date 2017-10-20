@@ -1,6 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroAddressBundle::macros.html.twig' as address %}
 
 {% oro_title_set({params : {"%id%": entity.packingSlipNumber }}) %}
 
@@ -28,8 +29,14 @@
                         {{ UI.renderProperty('marello.packing.packingslip.order.label'|trans, entity.order) }}
                         {{ UI.renderProperty('marello.packing.packingslip.sales_channel.label'|trans, entity.salesChannel) }}
                         {{ UI.renderProperty('marello.packing.packingslip.warehouse.label'|trans, entity.warehouse) }}
-                        {{ UI.renderProperty('marello.packing.packingslip.billing_address.label'|trans, entity.billingAddress) }}
-                        {{ UI.renderProperty('marello.packing.packingslip.shipping_address.label'|trans, entity.shippingAddress) }}
+                        {{ oro_widget_render({
+                            'widgetType': 'block',
+                            'url': path('marello_order_order_address', {id: entity.billingAddress.id, typeId: 1}),
+                        }) }}
+                        {{ oro_widget_render({
+                            'widgetType': 'block',
+                            'url': path('marello_order_order_address', {id: entity.shippingAddress.id, typeId: 2}),
+                        }) }}
                     </div>
                 </div>
             </div>
