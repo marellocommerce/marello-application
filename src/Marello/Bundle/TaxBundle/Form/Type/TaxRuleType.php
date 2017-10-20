@@ -28,7 +28,6 @@ class TaxRuleType extends AbstractType
                 'label' => 'marello.tax.taxrule.tax_jurisdiction.label',
                 'required' => true
             ])
-            ->add('includesVat')
         ;
     }
 
