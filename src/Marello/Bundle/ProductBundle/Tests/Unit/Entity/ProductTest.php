@@ -49,7 +49,6 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             ['data', []],
             ['preferredSupplier', new Supplier()],
             ['taxCode', new TaxCode()],
-            ['price', 'some string'],
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()]
         ]);
@@ -60,6 +59,39 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             ['suppliers', new ProductSupplierRelation()],
             ['salesChannelTaxCodes', new ProductChannelTaxRelation()],
         ]);
+    }
+
+    /**
+     * Test the getPrice of product to returnt the first price
+     * of the ProductPrices Collection
+     */
+    public function testGetFirstPriceFromCollection()
+    {
+        /** @var ProductPrice $firstProductPrice */
+        $firstProductPrice = $this->getEntity(
+            ProductPrice::class,
+            [
+                'id' => 1,
+                'value' => 10,
+                'currency' => 'EUR',
+                'product' => $this->entity
+            ]);
+
+        /** @var ProductPrice $secondProductPrice */
+        $secondProductPrice = $this->getEntity(
+            ProductPrice::class,
+            [
+                'id' => 2,
+                'value' => 15,
+                'currency' => 'EUR',
+                'product' => $this->entity
+            ]);
+
+        $this->entity
+            ->addPrice($firstProductPrice)
+            ->addPrice($secondProductPrice);
+
+        static::assertEquals($firstProductPrice, $this->entity->getPrice());
     }
 
     /**
