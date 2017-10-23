@@ -92,8 +92,7 @@ class LoadTaxRuleData extends AbstractFixture implements DependentFixtureInterfa
         $taxRule
             ->setTaxCode($taxCode)
             ->setTaxRate($taxRate)
-            ->setTaxJurisdiction($taxJurisdiction)
-            ->setIncludesVat(true);
+            ->setTaxJurisdiction($taxJurisdiction);
 
         $manager->persist($taxRule);
 
