@@ -68,7 +68,7 @@ class InventoryBalanceCommand extends ContainerAwareCommand
             ->findAll();
 
         $output->writeln(sprintf('<info>count of products %s</info>', count($products)));
-        $this->triggerInventoryBalancer($products);
+        $this->triggerInventoryBalancer($products, $output);
     }
 
     /**
@@ -81,7 +81,7 @@ class InventoryBalanceCommand extends ContainerAwareCommand
         $output->writeln('<info>Start processing of Products for rebalancing</info>');
         $products = $this->getProducts($input);
         $output->writeln(sprintf('<info>count of products %s</info>', count($products)));
-        $this->triggerInventoryBalancer($products);
+        $this->triggerInventoryBalancer($products, $output);
     }
 
     /**
@@ -110,13 +110,15 @@ class InventoryBalanceCommand extends ContainerAwareCommand
     /**
      * Trigger inventory balancer for products
      * @param Product[] $products
+     * @param OutputInterface $output
      */
-    protected function triggerInventoryBalancer($products)
+    protected function triggerInventoryBalancer($products, OutputInterface $output)
     {
         $inventoryBalancer = $this->getContainer()->get('marello_inventory.model.balancer.inventory_balancer');
 
         /** @var Product $product */
         foreach ($products as $product) {
+            $output->writeln(sprintf('<info>processing product sku %s</info>', $product->getSku()));
             // balance 'Global' && 'Virtual' Warehouses
             $inventoryBalancer->balanceInventory($product);
 
