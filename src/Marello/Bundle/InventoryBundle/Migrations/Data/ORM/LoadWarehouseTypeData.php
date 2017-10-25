@@ -6,13 +6,10 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 
 class LoadWarehouseTypeData extends AbstractFixture implements DependentFixtureInterface
 {
-    const GLOBAL_TYPE = 'global';
-    const FIXED_TYPE = 'fixed';
-    const VIRTUAL_TYPE = 'virtual';
-    
     /**
      * @var ObjectManager
      */
@@ -22,9 +19,9 @@ class LoadWarehouseTypeData extends AbstractFixture implements DependentFixtureI
      * @var array
      */
     protected $data = [
-        self::GLOBAL_TYPE,
-        self::FIXED_TYPE,
-        self::VIRTUAL_TYPE,
+        WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED,
+        WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
+        WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL
     ];
 
     /**

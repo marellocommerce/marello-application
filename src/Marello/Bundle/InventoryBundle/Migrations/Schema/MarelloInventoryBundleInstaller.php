@@ -25,7 +25,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v1_2_3';
+        return 'v1_2_4';
     }
 
     /**
@@ -42,6 +42,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->createMarelloInventoryWarehouseGroupTable($schema);
         $this->createMarelloInventoryWarehouseChannelGroupLinkTable($schema);
         $this->createMarelloInventoryWhChLinkJoinChannelGroupTable($schema);
+        $this->createMarelloInventoryVirtualInventoryLevel($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloInventoryItemForeignKeys($schema);
@@ -51,6 +52,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->addMarelloInventoryInventoryLevelLogForeignKeys($schema);
         $this->addMarelloInventoryWarehouseChannelGroupLinkForeignKeys($schema);
         $this->addMarelloInventoryWhChLinkJoinChannelGroupForeignKeys($schema);
+        $this->addMarelloInventoryVirtualInventoryLevelForeignKeys($schema);
     }
 
     /**
@@ -212,6 +214,27 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
     }
 
     /**
+     * @param Schema $schema
+     */
+    protected function createMarelloInventoryVirtualInventoryLevel(Schema $schema)
+    {
+        $table = $schema->createTable('marello_vrtl_inventory_level');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('inventory', 'integer', []);
+        $table->addColumn('product_id', 'integer', []);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('channel_group_id', 'integer', ['notnull' => false]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+
+        $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['product_id', 'channel_group_id'], 'UNIQ_BDB9A2F64584665A89E4AAEE');
+        $table->addIndex(['channel_group_id'], 'IDX_BDB9A2F689E4AAEE', []);
+        $table->addIndex(['product_id'], 'IDX_BDB9A2F64584665A', []);
+        $table->addIndex(['organization_id'], 'IDX_BDB9A2F632C8A3DE', []);
+    }
+
+    /**
      * Add marello_inventory_item foreign keys.
      *
      * @param Schema $schema
@@ -366,6 +389,34 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_sales_channel_group'),
             ['channel_group_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addMarelloInventoryVirtualInventoryLevelForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_vrtl_inventory_level');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_sales_channel_group'),
+            ['channel_group_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_product'),
+            ['product_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

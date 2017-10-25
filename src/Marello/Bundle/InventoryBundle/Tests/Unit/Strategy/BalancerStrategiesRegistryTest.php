@@ -17,6 +17,9 @@ class BalancerStrategiesRegistryTest extends \PHPUnit_Framework_TestCase
         $this->balancerStrategiesRegistry = new BalancerStrategiesRegistry();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testAddStrategy()
     {
         $strategy = $this->mockStrategy('identifier');
@@ -25,6 +28,9 @@ class BalancerStrategiesRegistryTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(['identifier' => $strategy], $this->balancerStrategiesRegistry->getStrategies());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testGetStrategy()
     {
         $strategy = $this->mockStrategy('identifier');
@@ -32,6 +38,9 @@ class BalancerStrategiesRegistryTest extends \PHPUnit_Framework_TestCase
         static::assertEquals($strategy, $this->balancerStrategiesRegistry->getStrategy('identifier'));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testGetStrategies()
     {
         $strategy1 = $this->mockStrategy('identifier1');
@@ -46,6 +55,9 @@ class BalancerStrategiesRegistryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testHasStrategy()
     {
         $strategy = $this->mockStrategy('identifier');
