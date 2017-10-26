@@ -37,7 +37,9 @@ marelloenterprise:
                 create_label:           Create new WFA Rule
 
         warehouse:
-            form.select_warehouse:      Select Warehouse
+            form:
+                select_warehouse:       Select Warehouse
+                create_own_group:       Create Own Warehouse Group
 
         warehousegroup:
             datablock:

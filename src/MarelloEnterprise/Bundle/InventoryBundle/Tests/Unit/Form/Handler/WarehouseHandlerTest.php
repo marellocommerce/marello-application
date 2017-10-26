@@ -60,6 +60,11 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects(static::once())
             ->method('getMethod')
             ->willReturn('POST');
+        $organization = $this->createMock(OrganizationInterface::class);
+        $this->entity
+            ->expects(static::any())
+            ->method('getOwner')
+            ->willReturn($organization);
 
         $this->form
             ->expects(static::once())
@@ -73,7 +78,21 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects(static::once())
             ->method('isValid')
             ->willReturn(true);
-
+        $this->form
+            ->expects(static::once())
+            ->method('has')
+            ->with('createOwnGroup')
+            ->willReturn(true);
+        $childForm = $this->createMock(FormInterface::class);
+        $childForm
+            ->expects(static::once())
+            ->method('getData')
+            ->willReturn(true);
+        $this->form
+            ->expects(static::once())
+            ->method('get')
+            ->with('createOwnGroup')
+            ->willReturn($childForm);
 
         $this->warehouseHandler = new WarehouseHandler($this->manager);
     }
@@ -121,9 +140,8 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('flush');
 
         $this->entity
-            ->expects(static::once())
-            ->method('setGroup')
-            ->with($group);
+            ->expects(static::exactly(2))
+            ->method('setGroup');
 
         $this->warehouseHandler->process($this->entity, $this->form, $this->request);
     }
@@ -133,7 +151,7 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
         /** @var Warehouse|\PHPUnit_Framework_MockObject_MockObject $group */
         $group = $this->createMock(WarehouseGroup::class);
         $group
-            ->expects(static::once())
+            ->expects(static::any())
             ->method('isSystem')
             ->willReturn(false);
         $group
@@ -159,7 +177,7 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getWarehouseType')
             ->willReturn($typeBefore);
         $this->entity
-            ->expects(static::at(1))
+            ->expects(static::at(2))
             ->method('getWarehouseType')
             ->willReturn($typeAfter);
         $this->entity
@@ -181,7 +199,7 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
         $this->entity
             ->expects(static::once())
             ->method('setGroup')
-            ->with($group);
+            ->willReturnSelf();
 
         $this->warehouseHandler->process($this->entity, $this->form, $this->request);
     }
@@ -203,7 +221,7 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getWarehouseType')
             ->willReturn($typeBefore);
         $this->entity
-            ->expects(static::at(1))
+            ->expects(static::at(2))
             ->method('getWarehouseType')
             ->willReturn($typeAfter);
         $this->entity
@@ -211,7 +229,7 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('getGroup')
             ->willReturn($group);
         $this->entity
-            ->expects(static::once())
+            ->expects(static::exactly(2))
             ->method('getLabel')
             ->willReturn('label');
 
@@ -224,7 +242,8 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->entity
             ->expects(static::once())
-            ->method('setGroup');
+            ->method('setGroup')
+            ->willReturnSelf();
 
         $organization = $this->createMock(OrganizationInterface::class);
         $this->entity

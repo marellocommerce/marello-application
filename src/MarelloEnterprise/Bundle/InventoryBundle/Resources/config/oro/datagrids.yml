@@ -98,8 +98,9 @@ datagrids:
                 join:
                     left:
                         - { join: whg.warehouses, alias: wh }
-                groupBy: whg.id
-
+                where:
+                    and:
+                        - whg.system != true
         columns:
             name:
                 label:                marello.inventory.warehousegroup.name.label
@@ -112,25 +113,17 @@ datagrids:
                 type:                 twig
                 frontend_type:        html
                 template:             MarelloEnterpriseInventoryBundle:WarehouseGroup/Datagrid:warehouses.html.twig
-            system:
-                label:                marello.inventory.warehousegroup.system.label
-                frontend_type:        boolean
         filters:
             columns:
                 name:
                     type: string
                     data_name: whg.name
-                system:
-                    type: boolean
-                    data_name: whg.system
         sorters:
             columns:
                 name:
                     data_name: whg.name
                 description:
                     data_name: whg.description
-                system:
-                    data_name: whg.system
         properties:
             id: ~
             view_link:

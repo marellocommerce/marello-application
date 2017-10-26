@@ -43,9 +43,13 @@ class WarehouseHandler implements FormHandlerInterface
 
         if (in_array($request->getMethod(), ['POST', 'PUT'])) {
             $form->submit($request);
+            $createOwnGroup = false;
+            if ($form->has('createOwnGroup')) {
+                $createOwnGroup = $form->get('createOwnGroup')->getData();
+            }
 
             if ($form->isValid()) {
-                $this->onSuccess($data, $typeBefore);
+                $this->onSuccess($data, $typeBefore, $createOwnGroup);
 
                 return true;
             }
@@ -59,9 +63,11 @@ class WarehouseHandler implements FormHandlerInterface
      *
      * @param Warehouse $entity
      * @param string $typeBefore
+     * @param bool $createOwnGroup
      */
-    protected function onSuccess(Warehouse $entity, $typeBefore)
+    protected function onSuccess(Warehouse $entity, $typeBefore, $createOwnGroup = false)
     {
+        $group = $entity->getGroup();
         $typeAfter = $entity->getWarehouseType();
         if ($typeAfter) {
             $typeAfter = $typeAfter->getName();
@@ -69,30 +75,51 @@ class WarehouseHandler implements FormHandlerInterface
 
         if ($typeBefore !== $typeAfter) {
             if ($typeBefore === LoadWarehouseTypeData::FIXED_TYPE) {
-                $this->manager->remove($entity->getGroup());
+                $this->manager->remove($group);
                 $entity->setGroup($this->getSystemWarehouseGroup());
             } elseif ($typeAfter === LoadWarehouseTypeData::FIXED_TYPE) {
-                $group = $entity->getGroup();
                 $label = $entity->getLabel();
-                if (!$group->isSystem() && $group->getWarehouses()->count() === 1) {
+                if ($group && !$group->isSystem() && $group->getWarehouses()->count() === 1) {
                     $group
                         ->setName($label)
                         ->setDescription(sprintf('%s group', $label));
+                    $this->manager->persist($group);
+                    $this->manager->flush($group);
                 } else {
-                    $group = new WarehouseGroup();
-                    $group
-                        ->setName($label)
-                        ->setOrganization($entity->getOwner())
-                        ->setDescription(sprintf('%s group', $label))
-                        ->setSystem(false);
+                    $group = $this->createOwnGroup($entity);
                 }
-                $this->manager->persist($group);
-                $this->manager->flush($group);
-                $entity->setGroup($group);
+            } elseif ($createOwnGroup) {
+                $group = $this->createOwnGroup($entity);
             }
+        } elseif ($createOwnGroup) {
+            $group = $this->createOwnGroup($entity);
         }
+        if ($group) {
+            $entity->setGroup($group);
+        }
+
         $this->manager->persist($entity);
         $this->manager->flush();
+    }
+
+    /**
+     * @param Warehouse $entity
+     * @return WarehouseGroup
+     */
+    private function createOwnGroup(Warehouse $entity)
+    {
+        $label = $entity->getLabel();
+        $group = new WarehouseGroup();
+        $group
+            ->setName($label)
+            ->setOrganization($entity->getOwner())
+            ->setDescription(sprintf('%s group', $label))
+            ->setSystem(false);
+
+        $this->manager->persist($group);
+        $this->manager->flush($group);
+
+        return $group;
     }
 
     /**
