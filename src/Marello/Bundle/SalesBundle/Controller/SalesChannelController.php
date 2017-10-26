@@ -88,7 +88,8 @@ class SalesChannelController extends Controller
             $channel,
             $this->createForm(SalesChannelType::class, $channel),
             $this->get('translator')->trans('marello.sales.saleschannel.messages.success.saved'),
-            $request
+            $request,
+            'marello_sales.saleschannel_form.handler'
         );
     }
 }

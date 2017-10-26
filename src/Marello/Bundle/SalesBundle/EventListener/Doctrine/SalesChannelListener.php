@@ -29,7 +29,7 @@ class SalesChannelListener
      */
     public function prePersist(SalesChannel $salesChannel, LifecycleEventArgs $args)
     {
-        if ($this->installed) {
+        if ($this->installed && !$salesChannel->getGroup()) {
             $systemGroup = $args
                 ->getEntityManager()
                 ->getRepository(SalesChannelGroup::class)

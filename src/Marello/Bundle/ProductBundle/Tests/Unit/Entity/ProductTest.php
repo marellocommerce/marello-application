@@ -49,7 +49,6 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             ['data', []],
             ['preferredSupplier', new Supplier()],
             ['taxCode', new TaxCode()],
-            ['price', 'some string'],
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()]
         ]);
@@ -60,6 +59,22 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             ['suppliers', new ProductSupplierRelation()],
             ['salesChannelTaxCodes', new ProductChannelTaxRelation()],
         ]);
+    }
+
+    public function testGetPrise()
+    {
+        $price1 = new ProductPrice();
+        $price2 = new ProductPrice();
+
+        $product = new Product();
+
+        $product
+            ->addPrice($price1)
+            ->addPrice($price2);
+
+        static::assertEquals($price1, $product->getPrice());
+        $product->removePrice($price1);
+        static::assertEquals($price2, $product->getPrice());
     }
 
     /**

@@ -10,6 +10,8 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesChannelType extends AbstractType
@@ -56,7 +58,26 @@ class SalesChannelType extends AbstractType
                 },
                 'choice_label' => 'name'
             ])
-            ->add('locale');
+            ->add('locale')
+            ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetDataListener']);
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetDataListener(FormEvent $event)
+    {
+        /** @var SalesChannel $channel */
+        $channel = $event->getData();
+        $form = $event->getForm();
+
+        if ($channel->getGroup() === null || $channel->getGroup()->isSystem() === true) {
+            $form->add('createOwnGroup', CheckboxType::class, [
+                'required' => false,
+                'mapped' => false,
+                'label' => 'marello.sales.saleschannel.create_own_group.label'
+            ]);
+        }
     }
 
     /**
