@@ -47,7 +47,11 @@ class VirtualInventoryHandler
     public function saveVirtualInventory(VirtualInventoryLevel $level)
     {
         $repository = $this->objectManager->getRepository(VirtualInventoryLevel::class);
-        $existingLevel = $repository->findOneBy(['salesChannelGroup' => $level->getSalesChannelGroup(), 'product' => $level->getProduct()]);
+        $existingLevel = $repository->findOneBy([
+            'salesChannelGroup' => $level->getSalesChannelGroup(),
+            'product' => $level->getProduct()
+        ]);
+
         if ($existingLevel) {
             $level = $existingLevel;
             $level->setInventory($level->getInventory());

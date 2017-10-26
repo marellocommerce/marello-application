@@ -86,12 +86,23 @@ marello:
             subject_type.label:             Related Subject
             user.label:                     User
 
-        information.label:              Inventory Information
-        movements.label:                Inventory Movements
+        virtualinventorylevel:
+            id.label:                       Id
+            entity_label:                   Virtual Inventory Level
+            entity_plural_label:            Virtual Inventory Levels
+            product.label:                  Product
+            saleschannelgroup:              SalesChannel Group
+            inventory:                      Inventory Qty
+            organization:                   Organization
+
+        information.label:                  Inventory Information
+        movements.label:                    Inventory Movements
         management:
-            menu.label:                 Inventory
-            label:                      Inventory Management
-            add_to_warehouse.label:     Add to Warehouse
+            menu:
+                label:                      Inventory
+                balanced_inventory.label:   Balanced Inventory
+            label:                          Inventory Management
+            add_to_warehouse.label:         Add to Warehouse
 
         messages:
             success:

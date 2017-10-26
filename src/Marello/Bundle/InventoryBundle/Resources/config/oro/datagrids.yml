@@ -227,3 +227,82 @@ datagrids:
             updatedAt:
                 label:              oro.ui.updated_at
                 frontend_type:      datetime
+
+
+    marello-balanced-inventory-levels-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - vrt
+                from:
+                    - { table: 'Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel', alias: vrt }
+        columns:
+            inventory:
+                label:              marello.inventory.inventorylevel.inventory.label
+                frontend_type:      number
+                data_name:          inventory
+            createdAt:
+                label:              oro.ui.created_at
+                frontend_type:      datetime
+            updatedAt:
+                label:              oro.ui.updated_at
+                frontend_type:      datetime
+#        acl_resource: marelloenterprise_inventory_wfa_rule_view
+#        source:
+#            type: orm
+#            query:
+#                select:
+#                    - vrtIl
+#                    - p.name as productName
+#                    - p.sku as productSku
+#                    - scg.name as salesChannelGroupName
+#                from:
+#                    - { table: MarelloInventoryBundle:VirtualInventoryLevel, alias: vrtIl }
+#                join:
+#                    left:
+#                        - { join: vrtIl.product, alias: p }
+#                        - { join: vrtIl.salesChannelGroup, alias: scg }
+#        columns:
+#            inventory:
+#                label:              marello.inventory.inventorylevel.inventory.label
+#                frontend_type:      number
+#                data_name:          inventory
+#            productName:
+#                label:              marello.product.entity_label
+#                frontend_type:      string
+#                data_name:          productName
+#            productSku:
+#                label:              marello.product.sku.label
+#                frontend_type:      string
+#                data_name:          productSku
+#            salesChannelGroupName:
+#                label:              marello.sales.saleschannelgroup.entity_label
+#                frontend_type:      string
+#                data_name:          salesChannelGroupName
+#            createdAt:
+#                label:              oro.ui.created_at
+#                frontend_type:      datetime
+#            updatedAt:
+#                label:              oro.ui.updated_at
+#                frontend_type:      datetime
+#        filters:
+#            columns:
+#                productName:
+#                    type:             string
+#                    data_name:        productName
+#                productSku:
+#                    type:             string
+#                    data_name:        productSku
+#        sorters:
+#            columns:
+#                createdAt:
+#                    data_name:  vrtIl.createdAt
+#                salesChannelGroupName:
+#                    data_name:  salesChannelGroupName
+#                productName:
+#                    data_name:  productName
+#                productSku:
+#                    data_name:  productSku
+#            default:
+#                createdAt:      DESC
