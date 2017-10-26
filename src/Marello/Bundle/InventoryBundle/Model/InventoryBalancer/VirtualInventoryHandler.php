@@ -4,6 +4,9 @@ namespace Marello\Bundle\InventoryBundle\Model\InventoryBalancer;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+
 use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
@@ -12,7 +15,7 @@ use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\VirtualInventoryFacto
 
 class VirtualInventoryHandler
 {
-    /** @var VirtualInventoryFactory $triggerFactory */
+    /** @var VirtualInventoryFactory $virtualInventoryFactory */
     protected $virtualInventoryFactory;
 
     /** @var ObjectManager $objectManager */
@@ -59,6 +62,11 @@ class VirtualInventoryHandler
             $level = $existingLevel;
         }
 
+        if (!$level->getOrganization()) {
+            $organization = $this->getOrganization($level->getProduct());
+            $level->setOrganization($organization);
+        }
+
         $this->objectManager->persist($level);
         $this->objectManager->flush();
     }
@@ -89,5 +97,15 @@ class VirtualInventoryHandler
         ]);
 
         return $existingLevel;
+    }
+
+    /**
+     * Get organization from entity
+     * @param OrganizationAwareInterface $entity
+     * @return OrganizationInterface
+     */
+    private function getOrganization(OrganizationAwareInterface $entity)
+    {
+        return $entity->getOrganization();
     }
 }

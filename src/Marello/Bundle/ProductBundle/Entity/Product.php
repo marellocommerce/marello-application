@@ -16,6 +16,8 @@ use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
  * Represents a Marello Product
@@ -58,7 +60,8 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 class Product extends ExtendProduct implements
     ProductInterface,
     SalesChannelAwareInterface,
-    PricingAwareInterface
+    PricingAwareInterface,
+    OrganizationAwareInterface
 {
     /**
      * @var integer
@@ -627,7 +630,7 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return Organization
+     * @return OrganizationInterface
      */
     public function getOrganization()
     {
@@ -635,10 +638,10 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @param Organization $organization
+     * @param OrganizationInterface $organization
      * @return Product
      */
-    public function setOrganization($organization)
+    public function setOrganization(OrganizationInterface $organization)
     {
         $this->organization = $organization;
 

@@ -228,6 +228,7 @@ class InventoryBalancer
     }
 
     /**
+     * Get strategy from the registry
      * @return BalancerStrategyInterface|null
      */
     protected function getStrategy()
