@@ -14,11 +14,14 @@ interface BalancerStrategyInterface
      */
     public function getIdentifier();
 
+    /** @return bool */
+    public function isEnabled();
+
     /**
      * @param ProductInterface $product
      * @param ArrayAccess $salesChannelGroups
      * @param $inventory
-     * @return mixed
+     * @return array
      */
-    public function getBalancedResult(ProductInterface $product, ArrayAccess $salesChannelGroups, $inventory);
+    public function getResults(ProductInterface $product, ArrayAccess $salesChannelGroups, $inventory);
 }

@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\VirtualInventoryFactory;
 
@@ -43,21 +44,50 @@ class VirtualInventoryHandler
     /**
      * Save virtual inventory
      * @param VirtualInventoryLevel $level
+     * @param bool $force
      */
-    public function saveVirtualInventory(VirtualInventoryLevel $level)
+    public function saveVirtualInventory(VirtualInventoryLevel $level, $force = false)
     {
-        $repository = $this->objectManager->getRepository(VirtualInventoryLevel::class);
-        $existingLevel = $repository->findOneBy([
-            'salesChannelGroup' => $level->getSalesChannelGroup(),
-            'product' => $level->getProduct()
-        ]);
+        $existingLevel = $this->findExistingVirtualInventory($level->getProduct(), $level->getSalesChannelGroup());
 
         if ($existingLevel) {
+            if (!$this->isLevelChanged($existingLevel, $level) && !$force) {
+                return;
+            }
+
+            $existingLevel->setInventory($level->getInventory());
             $level = $existingLevel;
-            $level->setInventory($level->getInventory());
         }
 
         $this->objectManager->persist($level);
         $this->objectManager->flush();
+    }
+
+    /**
+     * Check whether the existing level has changed inventory
+     * @param VirtualInventoryLevel $existingLevel
+     * @param VirtualInventoryLevel $level
+     * @return bool
+     */
+    private function isLevelChanged($existingLevel, $level)
+    {
+        return ((float)$existingLevel->getInventory() !== (float)$level->getInventory());
+    }
+
+    /**
+     * Find existing VirtualInventoryLevel
+     * @param ProductInterface $product
+     * @param SalesChannelGroup $group
+     * @return VirtualInventoryLevel|object
+     */
+    private function findExistingVirtualInventory(ProductInterface $product, SalesChannelGroup $group)
+    {
+        $repository = $this->objectManager->getRepository(VirtualInventoryLevel::class);
+        $existingLevel = $repository->findOneBy([
+            'salesChannelGroup' => $group,
+            'product' => $product
+        ]);
+
+        return $existingLevel;
     }
 }

@@ -14,6 +14,7 @@ use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategyInterface;
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\BalancedResultObject;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\VirtualInventoryHandler;
 
 class InventoryBalancer
@@ -28,6 +29,9 @@ class InventoryBalancer
 
     /** @var InventoryItemManager $inventoryItemManager */
     protected $inventoryItemManager;
+
+    /** @var string $balancingStrategy */
+    protected $balancingStrategy = self::DEFAULT_BALANCER_STRATEGY;
 
     /**
      * @param BalancerStrategiesRegistry $balancerRegistry
@@ -63,6 +67,15 @@ class InventoryBalancer
         $sortedWhgLevels = $this->sortInventoryLevels($filteredInventoryLevels, $isFixed);
         $linkedWhgToScgs = $this->getLinkedWarehouseGroupsToSalesChannelGroups($filteredInventoryLevels);
         $this->generateResult($linkedWhgToScgs, $sortedWhgLevels, $product);
+    }
+
+    /**
+     * Set balancing strategy for inventory balancer
+     * @param string $strategyIdentifier
+     */
+    public function setBalancingStrategy($strategyIdentifier)
+    {
+        $this->balancingStrategy = $strategyIdentifier;
     }
 
     /**
@@ -194,10 +207,12 @@ class InventoryBalancer
         $strategy = $this->getStrategy();
         foreach ($linkedWhgToScgs as $whgId => $scgs) {
             $inventoryTotalForWhg = $sortedWhgLevels[$whgId];
-            $result = $strategy->getBalancedResult($product, $scgs, $inventoryTotalForWhg);
-            foreach ($scgs as $group) {
-                $virtualLevel = $this->virtualInventoryHandler->createVirtualInventory($product, $group, $result);
-                $this->virtualInventoryHandler->saveVirtualInventory($virtualLevel);
+            /** @var BalancedResultObject[] $balancedResults */
+            $balancedResults = $strategy->getResults($product, $scgs, $inventoryTotalForWhg);
+            foreach ($balancedResults as $groupId => $result) {
+                $virtualLevel = $this->virtualInventoryHandler
+                    ->createVirtualInventory($product, $result->getGroup(), $result->getInventoryQty());
+                $this->virtualInventoryHandler->saveVirtualInventory($virtualLevel, true);
             }
         }
     }
@@ -213,12 +228,11 @@ class InventoryBalancer
     }
 
     /**
-     * @param string $strategyIdentifier
      * @return BalancerStrategyInterface|null
      */
-    protected function getStrategy($strategyIdentifier = self::DEFAULT_BALANCER_STRATEGY)
+    protected function getStrategy()
     {
-        return $this->balancerStrategyRegistry->getStrategy($strategyIdentifier);
+        return $this->balancerStrategyRegistry->getStrategy($this->balancingStrategy);
     }
 
     /**
