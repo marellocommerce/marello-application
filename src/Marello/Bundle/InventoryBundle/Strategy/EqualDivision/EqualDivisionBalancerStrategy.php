@@ -42,20 +42,46 @@ class EqualDivisionBalancerStrategy extends AbstractBalancerStrategy
     ) {
         $result = [];
         $totalChannelGroups = count($salesChannelGroups);
-        $totalPerChannelRaw = ($inventoryTotal / $totalChannelGroups);
-        $totalPerChannelPrecision = round($totalPerChannelRaw, 0, PHP_ROUND_HALF_DOWN);
-        $calculatedResult = ($totalPerChannelPrecision * $totalChannelGroups);
+        $totalChannelGroupInventory = $this->calculateTotalPerChannelGroup($totalChannelGroups, $inventoryTotal);
+        $remainder = $this->calculateRemainder($totalChannelGroupInventory, $totalChannelGroups, $inventoryTotal);
 
         foreach ($salesChannelGroups as $scg) {
-            if ((float)$calculatedResult !== (float)$inventoryTotal) {
-                $leftOverTotal = ($inventoryTotal - $calculatedResult);
-                if ($leftOverTotal === (float) 0) {
-                    $result[$scg->getId()] = $this->createResultObject($scg, $totalPerChannelPrecision);
-                }
+            $inventory = $totalChannelGroupInventory;
+            if ($remainder > 0) {
+                // increase the total for this channel in order to distribute the left over of the totals
+                $inventory++;
             }
-            $result[$scg->getId()] = $this->createResultObject($scg, $calculatedResult);
+
+            $result[$scg->getId()] = $this->createResultObject($scg, $inventory);
+            // decrease left over total so we get to 0 and don't add more inventory than there actually is
+            $remainder--;
         }
 
         return $result;
+    }
+
+    /**
+     * Calculate the remainder of the total inventory
+     * @param $totalChannelGroupInventory
+     * @param $totalChannelGroups
+     * @param $inventoryTotal
+     * @return mixed
+     */
+    private function calculateRemainder($totalChannelGroupInventory, $totalChannelGroups, $inventoryTotal)
+    {
+        $calculatedResult = ($totalChannelGroupInventory * $totalChannelGroups);
+        return ($inventoryTotal - $calculatedResult);
+    }
+
+    /**
+     * Calculate total per sales channel
+     * @param $totalChannelGroups
+     * @param $inventoryTotal
+     * @return float
+     */
+    private function calculateTotalPerChannelGroup($totalChannelGroups, $inventoryTotal)
+    {
+        $totalPerChannelRaw = ($inventoryTotal / $totalChannelGroups);
+        return floor($totalPerChannelRaw);
     }
 }
