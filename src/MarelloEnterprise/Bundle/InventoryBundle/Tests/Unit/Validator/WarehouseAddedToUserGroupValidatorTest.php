@@ -2,15 +2,17 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Validator;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToUserGroupValidator;
-use Oro\Component\Testing\Unit\EntityTrait;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
+
+use Oro\Component\Testing\Unit\EntityTrait;
+
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToUserGroupValidator;
 
 class WarehouseAddedToUserGroupValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -95,17 +97,17 @@ class WarehouseAddedToUserGroupValidatorTest extends \PHPUnit_Framework_TestCase
         return [
             'withViolation' => [
                 'system' => false,
-                'type' => LoadWarehouseTypeData::FIXED_TYPE,
+                'type' => WarehouseTypeProviderInterface::FIXED_TYPE,
                 'buildViolationTimes' => 1
             ],
             'noViolationWithGlobalType' => [
                 'system' => false,
-                'type' => LoadWarehouseTypeData::GLOBAL_TYPE,
+                'type' => WarehouseTypeProviderInterface::GLOBAL_TYPE,
                 'buildViolationTimes' => 0
             ],
             'noViolationSystemGroup' => [
                 'system' => true,
-                'type' => LoadWarehouseTypeData::GLOBAL_TYPE,
+                'type' => WarehouseTypeProviderInterface::GLOBAL_TYPE,
                 'buildViolationTimes' => 0
             ]
         ];

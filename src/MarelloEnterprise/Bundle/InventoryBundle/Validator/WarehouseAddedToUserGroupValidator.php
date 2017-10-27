@@ -2,13 +2,14 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Validator;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\WarehouseAddedToUserGroup;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\WarehouseAddedToUserGroup;
 
 class WarehouseAddedToUserGroupValidator extends ConstraintValidator
 {
@@ -30,7 +31,7 @@ class WarehouseAddedToUserGroupValidator extends ConstraintValidator
         }
         $group = $value->getGroup();
         if ($group && !$group->isSystem() &&
-            $value->getWarehouseType()->getName() !== LoadWarehouseTypeData::GLOBAL_TYPE) {
+            $value->getWarehouseType()->getName() !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL) {
             $this->context->buildViolation($constraint->message)
                 ->atPath('warehouseType')
                 ->addViolation();
