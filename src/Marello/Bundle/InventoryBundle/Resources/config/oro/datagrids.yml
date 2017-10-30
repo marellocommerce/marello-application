@@ -230,7 +230,6 @@ datagrids:
 
 
     marello-balanced-inventory-levels-grid:
-#        acl_resource: marelloenterprise_inventory_wfa_rule_view
         source:
             type: orm
             query:

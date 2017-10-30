@@ -139,3 +139,12 @@ services:
 
     marello_inventory.model.balancer.virtual_inventory_factory:
         class: 'Marello\Bundle\InventoryBundle\Model\InventoryBalancer\VirtualInventoryFactory'
+
+    marello_inventory.async.inventory_rebalance_processor:
+        class: 'Marello\Bundle\InventoryBundle\Async\InventoryRebalanceProcessor'
+        arguments:
+            - '@marello_inventory.model.balancer.inventory_balancer'
+            - '@logger'
+            - '@doctrine'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }

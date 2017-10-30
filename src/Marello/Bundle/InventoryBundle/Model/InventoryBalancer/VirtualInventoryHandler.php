@@ -91,12 +91,10 @@ class VirtualInventoryHandler
     private function findExistingVirtualInventory(ProductInterface $product, SalesChannelGroup $group)
     {
         $repository = $this->objectManager->getRepository(VirtualInventoryLevel::class);
-        $existingLevel = $repository->findOneBy([
+        return $repository->findOneBy([
             'salesChannelGroup' => $group,
             'product' => $product
         ]);
-
-        return $existingLevel;
     }
 
     /**

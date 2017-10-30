@@ -43,8 +43,8 @@ class InventoryRebalanceProcessor implements MessageProcessorInterface, TopicSub
         LoggerInterface $logger,
         ManagerRegistry $registry
     ) {
-        $this->logger = $logger;
         $this->inventoryBalancer = $inventoryBalancer;
+        $this->logger = $logger;
         $this->registry = $registry;
     }
 
@@ -53,7 +53,10 @@ class InventoryRebalanceProcessor implements MessageProcessorInterface, TopicSub
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::RESOLVE_REBALANCE_INVENTORY];
+        return [
+            Topics::RESOLVE_REBALANCE_INVENTORY,
+            Topics::RESOLVE_REBALANCE_ALL_INVENTORY
+        ];
     }
 
     /**
@@ -67,10 +70,18 @@ class InventoryRebalanceProcessor implements MessageProcessorInterface, TopicSub
         
         $trigger = null;
         try {
-            $messageData = JSON::decode($message->getBody());
-            $product = $em->getRepository(Product::class)->find($messageData);
-            $this->inventoryBalancer->balanceInventory($product);
-            $this->inventoryBalancer->balanceInventory($product, true);
+            if ($message->getBody() === Topics::ALL_INVENTORY) {
+                $products = $em->getRepository(Product::class)->findAll();
+                foreach ($products as $product) {
+                    $this->balanceProduct($product);
+                }
+                // send notification afterwards....TODO
+            } else {
+                $messageData = JSON::decode($message->getBody());
+                $product = $em->getRepository(Product::class)->find($messageData);
+                $this->balanceProduct($product);
+            }
+
             $em->commit();
         } catch (\InvalidArgumentException $e) {
             $em->rollback();
@@ -94,5 +105,15 @@ class InventoryRebalanceProcessor implements MessageProcessorInterface, TopicSub
         }
 
         return self::ACK;
+    }
+
+    /**
+     * Balance product for Global/Virtual && Fixed warehouses
+     * @param Product $product
+     */
+    private function balanceProduct(Product $product)
+    {
+        $this->inventoryBalancer->balanceInventory($product);
+        $this->inventoryBalancer->balanceInventory($product, true);
     }
 }

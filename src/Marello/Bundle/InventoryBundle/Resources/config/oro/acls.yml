@@ -13,3 +13,8 @@ acls:
         type:       entity
         class:      MarelloInventoryBundle:InventoryItem
         permission: VIEW
+
+    marello_inventory_inventory_recalculate_update:
+        type:       entity
+        class:      MarelloInventoryBundle:VirtualInventoryLevel
+        permission: EDIT

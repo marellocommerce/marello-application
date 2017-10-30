@@ -108,5 +108,6 @@ marello:
             success:
                 warehouse.saved:        Warehouse has been saved successfully
                 inventoryitem.saved:    Inventory Item has been saved successfully
+                inventory_rebalance.started: Rebalance started successfully. You will receive email notification upon completion.
             error:
                 warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse
