@@ -54,12 +54,4 @@ class WarehouseChannelGroupLinkController extends RestController implements Clas
     {
         throw new \BadMethodCallException('FormHandler is not available.');
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDeleteHandler()
-    {
-        return $this->get('marelloenterprise_inventory.handler.warehousechannelgrouplink_delete');
-    }
 }

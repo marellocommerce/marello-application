@@ -23,14 +23,6 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup', event: preRemove }
 
-    marelloenterprise_inventory.event_listener.doctrine.warehousechannelgrouplink:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseChannelGroupLinkListener'
-        arguments:
-            - '%installed%'
-        tags:
-            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink', event: prePersist }
-            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink', event: postRemove }
-
     marelloenterprise_inventory.event_listener.doctrine.organization.create:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\OrganizationCreateListener'
         arguments:
@@ -55,9 +47,6 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseGroupActionPermissionProvider'
         arguments:
             - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
-
-    marelloenterprise_inventory.datagrid.warehousechannelgrouplink.action_permission_provider:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseChannelGroupLinkActionPermissionProvider'
 
     marelloenterprise_inventory.validator.default_warehouse_exists:
         class: '%marelloenterprise_inventory.validator.default_warehouse_exists.class%'
@@ -123,13 +112,6 @@ services:
             - '@oro_security.security_facade'
             - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
 
-    marelloenterprise_inventory.handler.warehousechannelgrouplink_delete:
-        class:  'MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseChannelGroupLinkDeleteHandler'
-        parent: oro_soap.handler.delete.abstract
-        scope: request
-        arguments:
-            - '@oro_security.security_facade'
-
     marelloenterprise_inventory.checker.warehousegroup.is_fixed:
         class:  'MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker'
 
@@ -146,11 +128,24 @@ services:
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
 
+    marelloenterprise_inventory.metadata.warehousechannelgrouplink:
+        class: 'Doctrine\ORM\Mapping\ClassMetadata'
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink'
+
     marelloenterprise_inventory.repository.warehouse:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@marelloenterprise_inventory.metadata.warehouse'
+        calls:
+            - [setAclHelper, ['@oro_securitypro.security.acl_helper']]
+
+    marelloenterprise_inventory.repository.warehousechannelgrouplink:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@marelloenterprise_inventory.metadata.warehousechannelgrouplink'
         calls:
             - [setAclHelper, ['@oro_securitypro.security.acl_helper']]
 

@@ -41,23 +41,4 @@ class WarehouseChannelGroupLinkControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertResponseStatusCodeEquals($result, 404);
     }
-
-    public function testCannotDeleteSystemLink()
-    {
-        $link = $this->getContainer()
-            ->get('doctrine')
-            ->getRepository('MarelloInventoryBundle:WarehouseChannelGroupLink')
-            ->findSystemLink();
-
-        $this->client->request(
-            'DELETE',
-            $this->getUrl('marelloenterprise_inventory_api_delete_warehousechannelgrouplink', ['id' => $link->getId()])
-        );
-
-        $this->getJsonResponseContent($this->client->getResponse(), Response::HTTP_FORBIDDEN);
-        $this->assertEquals(
-            '{"reason":"It is forbidden to delete system Warehouse Channel Group Link"}',
-            $this->client->getResponse()->getContent()
-        );
-    }
 }

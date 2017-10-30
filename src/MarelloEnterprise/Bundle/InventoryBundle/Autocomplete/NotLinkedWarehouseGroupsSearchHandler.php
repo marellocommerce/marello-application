@@ -69,7 +69,8 @@ class NotLinkedWarehouseGroupsSearchHandler extends SearchHandler
         $qb
             ->leftJoin('whg.warehouseChannelGroupLink', 'wcgl')
             ->orderBy('whg.name', 'ASC')
-            ->where('wcgl.id IS NULL');
+            ->andWhere('wcgl.id IS NULL')
+            ->andWhere('whg.system != true');
 
         if ($linkId) {
             $qb

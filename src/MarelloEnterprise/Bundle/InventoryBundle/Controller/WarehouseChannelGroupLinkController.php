@@ -95,8 +95,7 @@ class WarehouseChannelGroupLinkController extends Controller
             $this
                 ->get('translator')
                 ->trans('marelloenterprise.inventory.messages.success.warehousechannelgrouplink.saved'),
-            $request,
-            'marelloenterprise_inventory.form_handler.warehousechannelgrouplink'
+            $request
         );
     }
 }
