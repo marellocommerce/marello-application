@@ -41,6 +41,9 @@ class SalesChannelGroupListener
             ->findSystemChannelGroup();
         $systemWarehouseChannelGroupLink = $this->getSystemWarehouseChannelGroupLink($em);
 
+        if (!$systemGroup && !$systemWarehouseChannelGroupLink) {
+            return;
+        }
         if ($systemGroup) {
             $salesChannels = $salesChannelGroup->getSalesChannels();
             foreach ($salesChannels as $salesChannel) {
