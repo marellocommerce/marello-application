@@ -113,9 +113,11 @@ marello:
                     title:                  Inventory
                     balacing:
                         title:              Inventory Balancer
-                        strategy.label:     Inventory Balancing Strategy
+                        general.label:      General
+                        strategy.label:     Balancing Strategy
             fields:
-                balancing_strategy.label:   Inventory Balancer Strategy
+                balancing_strategy.label:             Strategy
+                balance_threshold_percentage.label:   Threshhold Percentage
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully

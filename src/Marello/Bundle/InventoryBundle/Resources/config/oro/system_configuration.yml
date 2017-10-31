@@ -5,10 +5,20 @@ system_configuration:
         inventory_balancing:
             title: marello.inventory.system_configuration.groups.inventory.balacing.title
             icon: fa-cubes
+        inventory_balancing_general:
+            title: marello.inventory.system_configuration.groups.inventory.balacing.general.label
         inventory_balancing_strategy:
             title: marello.inventory.system_configuration.groups.inventory.balacing.strategy.label
 
     fields:
+        marello_inventory.balance_threshold_percentage:
+            data_type: percent
+            type: oro_percent
+            options:
+                label: marello.inventory.system_configuration.fields.balance_threshold_percentage.label
+                tooltip: marello.inventory.system_configuration.fields.balance_threshold_percentage
+                required: true
+
         marello_inventory.balancing_strategy:
             data_type: string
             type: marello_inventory_balancer_strategy_choice
@@ -24,6 +34,9 @@ system_configuration:
                         children:
                             inventory_balancing:
                                 children:
+                                    inventory_balancing_general:
+                                        children:
+                                            - marello_inventory.balance_threshold_percentage
                                     inventory_balancing_strategy:
                                         children:
                                             - marello_inventory.balancing_strategy

@@ -18,6 +18,7 @@ use Marello\Bundle\InventoryBundle\Strategy\EqualDivision\EqualDivisionBalancerS
 class Configuration implements ConfigurationInterface
 {
     const SYSTEM_CONFIG_PATH_BALANCE_STRATEGY = 'marello_inventory.balancing_strategy';
+    const SYSTEM_CONFIG_PATH_THRESHOLD_PERCENTAGE = 'marello_inventory.balance_threshold_percentage';
 
     /**
      * {@inheritDoc}
@@ -32,6 +33,9 @@ class Configuration implements ConfigurationInterface
             [
                 'balancing_strategy' => [
                     'value' => EqualDivisionBalancerStrategy::IDENTIFIER
+                ],
+                'balance_threshold_percentage' => [
+                    'value' => 0.20
                 ]
             ]
         );
