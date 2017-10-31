@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Tests\Functional\Integration\UPS;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSApi;
@@ -55,6 +55,6 @@ class UPSApiTest extends WebTestCase
 
         $request = $this->requestBuilder->build($data);
 
-        $result = $this->api->post('ShipConfirm', $request);
+        $this->api->post('ShipConfirm', $request);
     }
 }

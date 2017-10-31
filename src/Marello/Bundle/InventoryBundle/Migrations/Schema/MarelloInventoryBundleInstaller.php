@@ -273,7 +273,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             $schema->getTable('marello_inventory_level'),
             ['inventory_level_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_user'),
