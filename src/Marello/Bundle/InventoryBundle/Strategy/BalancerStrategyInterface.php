@@ -17,6 +17,9 @@ interface BalancerStrategyInterface
     /** @return bool */
     public function isEnabled();
 
+    /** @return string */
+    public function getLabel();
+
     /**
      * @param ProductInterface $product
      * @param ArrayAccess $salesChannelGroups

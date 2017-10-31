@@ -17,7 +17,12 @@ use Marello\Bundle\InventoryBundle\Strategy\AbstractBalancerStrategy;
 class EqualDivisionBalancerStrategy extends AbstractBalancerStrategy
 {
     const IDENTIFIER = 'equal_division';
+    const LABEL = 'marello.inventory.balancing.strategies.equal_division';
 
+    /**
+     * {@inheritdoc}
+     * @return string
+     */
     public function getIdentifier()
     {
         return self::IDENTIFIER;
@@ -29,6 +34,15 @@ class EqualDivisionBalancerStrategy extends AbstractBalancerStrategy
     public function isEnabled()
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return string
+     */
+    public function getLabel()
+    {
+        return self::LABEL;
     }
 
     /**

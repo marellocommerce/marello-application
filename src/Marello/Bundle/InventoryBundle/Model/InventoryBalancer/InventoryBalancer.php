@@ -4,6 +4,8 @@ namespace Marello\Bundle\InventoryBundle\Model\InventoryBalancer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
@@ -11,6 +13,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\InventoryBundle\DependencyInjection\Configuration;
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategyInterface;
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
@@ -19,8 +22,6 @@ use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\VirtualInventoryHandl
 
 class InventoryBalancer
 {
-    const DEFAULT_BALANCER_STRATEGY = 'equal_division';
-
     /** @var BalancerStrategiesRegistry $balancerStrategyRegistry */
     protected $balancerStrategyRegistry;
 
@@ -31,21 +32,27 @@ class InventoryBalancer
     protected $inventoryItemManager;
 
     /** @var string $balancingStrategy */
-    protected $balancingStrategy = self::DEFAULT_BALANCER_STRATEGY;
+    protected $balancingStrategy = null;
+
+    /** @var ConfigManager $configManager */
+    protected $configManager;
 
     /**
      * @param BalancerStrategiesRegistry $balancerRegistry
      * @param InventoryItemManager $inventoryItemManager
      * @param VirtualInventoryHandler $virtualInventoryHandler
+     * @param ConfigManager $configManager
      */
     public function __construct(
         BalancerStrategiesRegistry $balancerRegistry,
         InventoryItemManager $inventoryItemManager,
-        VirtualInventoryHandler $virtualInventoryHandler
+        VirtualInventoryHandler $virtualInventoryHandler,
+        ConfigManager $configManager
     ) {
         $this->balancerStrategyRegistry = $balancerRegistry;
         $this->inventoryItemManager = $inventoryItemManager;
         $this->virtualInventoryHandler = $virtualInventoryHandler;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -233,7 +240,12 @@ class InventoryBalancer
      */
     protected function getStrategy()
     {
-        return $this->balancerStrategyRegistry->getStrategy($this->balancingStrategy);
+        $strategy = $this->balancingStrategy;
+        if (!$this->balancingStrategy) {
+            $strategy = $this->configManager->get(Configuration::SYSTEM_CONFIG_PATH_BALANCE_STRATEGY);
+        }
+
+        return $this->balancerStrategyRegistry->getStrategy($strategy);
     }
 
     /**

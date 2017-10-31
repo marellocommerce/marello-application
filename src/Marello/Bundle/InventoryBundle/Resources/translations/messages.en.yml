@@ -97,13 +97,25 @@ marello:
 
         information.label:                  Inventory Information
         movements.label:                    Inventory Movements
+        balancing:
+            strategies:
+                equal_division:             Equal Division
+
         management:
             menu:
                 label:                      Inventory
                 balanced_inventory.label:   Balanced Inventory
             label:                          Inventory Management
             add_to_warehouse.label:         Add to Warehouse
-
+        system_configuration:
+            groups:
+                inventory:
+                    title:                  Inventory
+                    balacing:
+                        title:              Inventory Balancer
+                        strategy.label:     Inventory Balancing Strategy
+            fields:
+                balancing_strategy.label:   Inventory Balancer Strategy
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully

@@ -130,6 +130,13 @@ services:
             - '@marello_inventory.balancer_strategy.registry'
             - '@marello_inventory.manager.inventory_item_manager'
             - '@marello_inventory.model.balancer.virtual_inventory_handler'
+            - '@oro_config.manager'
+
+    marello_inventory.provider.balancer.balancing_strategy_choices_provider:
+        class: 'Marello\Bundle\InventoryBundle\Provider\BalancingStrategyChoicesProvider'
+        arguments:
+            - '@marello_inventory.balancer_strategy.registry'
+            - '@translator'
 
     marello_inventory.model.balancer.virtual_inventory_handler:
         class: 'Marello\Bundle\InventoryBundle\Model\InventoryBalancer\VirtualInventoryHandler'
@@ -148,3 +155,4 @@ services:
             - '@doctrine'
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
+
