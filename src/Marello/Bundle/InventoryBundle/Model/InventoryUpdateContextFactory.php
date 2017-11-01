@@ -12,10 +12,11 @@ class InventoryUpdateContextFactory
     /**
      * @param ProductInventoryAwareInterface||ProductInterface $entity
      * @param InventoryItem $inventoryItem
-     * @param $inventoryUpdateQty
-     * @param $allocatedInventoryUpdateQty
-     * @param $trigger
-     * @param $relatedEntity
+     * @param int $inventoryUpdateQty
+     * @param int $allocatedInventoryUpdateQty
+     * @param string $trigger
+     * @param null $relatedEntity
+     * @param bool $virtual
      * @return InventoryUpdateContext|null
      */
     public static function createInventoryUpdateContext(
@@ -24,7 +25,8 @@ class InventoryUpdateContextFactory
         $inventoryUpdateQty,
         $allocatedInventoryUpdateQty,
         $trigger,
-        $relatedEntity = null
+        $relatedEntity = null,
+        $virtual = false
     ) {
         if (!$entity instanceof ProductInterface && $entity instanceof ProductInventoryAwareInterface) {
             $entity = $entity->getProduct();
@@ -38,6 +40,7 @@ class InventoryUpdateContextFactory
             ->setProduct($entity)
             ->setInventoryItem($inventoryItem)
             ->setRelatedEntity($relatedEntity)
+            ->setValue('isVirtual', $virtual)
         ;
 
         return $context;
@@ -50,6 +53,7 @@ class InventoryUpdateContextFactory
      * @param $allocatedInventoryQty
      * @param $trigger
      * @param null $relatedEntity
+     * @param bool $virtual
      * @return InventoryUpdateContext
      */
     public static function createInventoryLevelUpdateContext(
@@ -58,7 +62,8 @@ class InventoryUpdateContextFactory
         $inventoryUpdateQty,
         $allocatedInventoryQty,
         $trigger,
-        $relatedEntity = null
+        $relatedEntity = null,
+        $virtual = false
     ) {
         $context = self::create();
         $context
@@ -68,6 +73,7 @@ class InventoryUpdateContextFactory
             ->setInventoryLevel($inventoryLevel)
             ->setInventoryItem($inventoryItem)
             ->setRelatedEntity($relatedEntity)
+            ->setValue('isVirtual', $virtual)
         ;
 
         return $context;

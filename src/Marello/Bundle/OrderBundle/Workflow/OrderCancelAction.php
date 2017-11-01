@@ -69,7 +69,8 @@ class OrderCancelAction extends OrderTransitionAction
             $inventoryUpdateQty,
             $allocatedInventoryQty,
             'order_workflow.cancelled',
-            $entity
+            $entity,
+            true
         );
 
         $this->eventDispatcher->dispatch(

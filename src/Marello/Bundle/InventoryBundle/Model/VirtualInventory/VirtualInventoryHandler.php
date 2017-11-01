@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\Model\InventoryBalancer;
+namespace Marello\Bundle\InventoryBundle\Model\VirtualInventory;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -11,7 +11,7 @@ use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\VirtualInventoryFactory;
+use Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryFactory;
 
 class VirtualInventoryHandler
 {

@@ -92,7 +92,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
     protected $salesChannelGroup;
 
     /**
-     * @ORM\Column(name="inventory", type="integer")
+     * @ORM\Column(name="inventory_qty", type="integer")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -104,6 +104,20 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
      * @var int
      */
     protected $inventory;
+
+    /**
+     * @ORM\Column(name="original_inventory_qty", type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="marello.inventory.original_inventory_qty.label"
+     *          }
+     *      }
+     * )
+     *
+     * @var int
+     */
+    protected $orgInventory;
 
     /**
      * @var Organization
@@ -123,7 +137,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
     {
         $this->product = $product;
         $this->salesChannelGroup = $group;
-        $this->inventory = $inventory;
+        $this->inventory = $this->orgInventory = $inventory;
     }
 
     /**
@@ -180,6 +194,22 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
     public function setInventory($inventory)
     {
         $this->inventory = $inventory;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOrgInventory()
+    {
+        return $this->orgInventory;
+    }
+
+    /**
+     * @param int $orgInventory
+     */
+    public function setOrgInventory($orgInventory)
+    {
+        $this->orgInventory = $orgInventory;
     }
 
     /**

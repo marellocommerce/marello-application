@@ -139,13 +139,13 @@ services:
             - '@translator'
 
     marello_inventory.model.balancer.virtual_inventory_handler:
-        class: 'Marello\Bundle\InventoryBundle\Model\InventoryBalancer\VirtualInventoryHandler'
+        class: 'Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@marello_inventory.model.balancer.virtual_inventory_factory'
 
     marello_inventory.model.balancer.virtual_inventory_factory:
-        class: 'Marello\Bundle\InventoryBundle\Model\InventoryBalancer\VirtualInventoryFactory'
+        class: 'Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryFactory'
 
     marello_inventory.async.inventory_rebalance_processor:
         class: 'Marello\Bundle\InventoryBundle\Async\InventoryRebalanceProcessor'

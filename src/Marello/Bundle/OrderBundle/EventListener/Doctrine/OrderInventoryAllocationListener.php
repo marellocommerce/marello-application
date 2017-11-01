@@ -48,9 +48,9 @@ class OrderInventoryAllocationListener
             null,
             $inventoryUpdateQty,
             'order_workflow.pending',
-            $order
+            $order,
+            true
         );
-
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)
