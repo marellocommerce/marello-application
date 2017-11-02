@@ -14,7 +14,7 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository")
  * @ORM\Table(name="marello_vrtl_inventory_level",
  *       uniqueConstraints={
  *          @ORM\UniqueConstraint(columns={"product_id", "channel_group_id"})
