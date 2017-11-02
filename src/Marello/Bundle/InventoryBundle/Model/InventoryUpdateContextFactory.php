@@ -40,7 +40,7 @@ class InventoryUpdateContextFactory
             ->setProduct($entity)
             ->setInventoryItem($inventoryItem)
             ->setRelatedEntity($relatedEntity)
-            ->setValue('isVirtual', $virtual)
+            ->setIsVirtual($virtual)
         ;
 
         return $context;
@@ -73,7 +73,7 @@ class InventoryUpdateContextFactory
             ->setInventoryLevel($inventoryLevel)
             ->setInventoryItem($inventoryItem)
             ->setRelatedEntity($relatedEntity)
-            ->setValue('isVirtual', $virtual)
+            ->setIsVirtual($virtual)
         ;
 
         return $context;

@@ -257,4 +257,25 @@ class InventoryUpdateContext
     {
         return $this->getValue('product');
     }
+
+    /**
+     * {@inheritdoc}
+     * @param bool $isVirtual
+     * @return $this
+     */
+    public function setIsVirtual($isVirtual)
+    {
+        $this->setValue('is_virtual', $isVirtual);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return bool|null
+     */
+    public function getIsVirtual()
+    {
+        $this->getValue('is_virtual');
+    }
 }
