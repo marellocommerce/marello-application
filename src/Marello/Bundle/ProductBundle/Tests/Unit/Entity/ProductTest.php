@@ -61,6 +61,22 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
+    public function testGetPrise()
+    {
+        $price1 = new ProductPrice();
+        $price2 = new ProductPrice();
+
+        $product = new Product();
+
+        $product
+            ->addPrice($price1)
+            ->addPrice($price2);
+
+        static::assertEquals($price1, $product->getPrice());
+        $product->removePrice($price1);
+        static::assertEquals($price2, $product->getPrice());
+    }
+
     /**
      * Test the getPrice of product to returnt the first price
      * of the ProductPrices Collection

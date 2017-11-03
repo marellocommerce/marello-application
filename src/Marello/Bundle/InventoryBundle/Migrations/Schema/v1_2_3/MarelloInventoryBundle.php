@@ -28,6 +28,7 @@ class MarelloInventoryBundle implements Migration
         $this->addMarelloInventoryWarehouseForeignKeys($schema);
         $this->addMarelloInventoryWarehouseChannelGroupLinkForeignKeys($schema);
         $this->addMarelloInventoryWhChLinkJoinChannelGroupForeignKeys($schema);
+        $this->modifyMarelloInventoryLevelLogTableForeignKeys($schema);
     }
 
     /**
@@ -149,6 +150,25 @@ class MarelloInventoryBundle implements Migration
             ['channel_group_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     * @throws \Doctrine\DBAL\Schema\SchemaException
+     */
+    protected function modifyMarelloInventoryLevelLogTableForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_inventory_level_log');
+        if ($table->hasForeignKey('FK_41E09B7BEBFBF136')) {
+            $table->removeForeignKey('FK_41E09B7BEBFBF136');
+        }
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_inventory_level'),
+            ['inventory_level_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 }

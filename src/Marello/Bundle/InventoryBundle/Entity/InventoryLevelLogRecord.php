@@ -37,8 +37,9 @@ class InventoryLevelLogRecord
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel")
-     * @ORM\JoinColumn(name="inventory_level_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\InventoryLevel",
+     *     cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="inventory_level_id", referencedColumnName="id", onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={

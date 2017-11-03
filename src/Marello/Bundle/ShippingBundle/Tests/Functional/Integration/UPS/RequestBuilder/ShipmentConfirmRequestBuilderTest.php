@@ -2,9 +2,8 @@
 
 namespace Marello\Bundle\ShippingBundle\Tests\Functional\Integration\UPS\RequestBuilder;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Shipment;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder;
 use Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
@@ -45,6 +44,6 @@ class ShipmentConfirmRequestBuilderTest extends WebTestCase
 
         $data = $this->factory->createData($shippingDataProvider);
 
-        $request = $this->requestBuilder->build($data);
+        $this->requestBuilder->build($data);
     }
 }

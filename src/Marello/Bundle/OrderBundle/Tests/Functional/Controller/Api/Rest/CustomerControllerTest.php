@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
