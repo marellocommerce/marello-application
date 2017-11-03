@@ -6,6 +6,7 @@ use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator;
@@ -62,11 +63,12 @@ class VirtualInventoryManager implements InventoryManagerInterface
         }
 
         $product = $context->getProduct();
-        /** @var VirtualInventoryLevel $levelToUpdate */
-        $levelToUpdate = $this->handler->findExistingVirtualInventory($product, $salesChannelGroup);
-        $currentInventoryQty = $levelToUpdate->getInventory();
+        /** @var VirtualInventoryLevel $level */
+        $level = $this->handler->findExistingVirtualInventory($product, $salesChannelGroup);
+        $currentInventoryQty = $level->getInventory();
 
-        $this->handler->saveVirtualInventory($levelToUpdate, true);
+
+        $this->handler->saveVirtualInventory($level, true);
     }
 
     /**
@@ -88,10 +90,20 @@ class VirtualInventoryManager implements InventoryManagerInterface
         $this->doctrineHelper = $doctrineHelper;
     }
 
+    /**
+     * @param ChannelAwareInterface $entity
+     * @return SalesChannelGroup
+     */
     protected function getSalesChannelGroupFromEntity($entity)
     {
         /** @var SalesChannel $salesChannel */
         $salesChannel = $entity->getSalesChannel();
         return $salesChannel->getGroup();
+    }
+
+
+    protected function isPositive($qty)
+    {
+        return ($qty > 0);
     }
 }
