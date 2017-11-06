@@ -41,15 +41,19 @@ class SalesChannelGroupListener
             ->findSystemChannelGroup();
         $systemWarehouseChannelGroupLink = $this->getSystemWarehouseChannelGroupLink($em);
 
-        if (!$systemGroup || !$systemWarehouseChannelGroupLink) {
+        if (!$systemGroup && !$systemWarehouseChannelGroupLink) {
             return;
         }
-        $salesChannels = $salesChannelGroup->getSalesChannels();
-        foreach ($salesChannels as $salesChannel) {
-            $salesChannel->setGroup($systemGroup);
-            $em->persist($salesChannel);
+        if ($systemGroup) {
+            $salesChannels = $salesChannelGroup->getSalesChannels();
+            foreach ($salesChannels as $salesChannel) {
+                $salesChannel->setGroup($systemGroup);
+                $em->persist($salesChannel);
+            }
         }
-        $systemWarehouseChannelGroupLink->removeSalesChannelGroup($salesChannelGroup);
+        if ($systemWarehouseChannelGroupLink) {
+            $systemWarehouseChannelGroupLink->removeSalesChannelGroup($salesChannelGroup);
+        }
         
         $em->flush();
     }

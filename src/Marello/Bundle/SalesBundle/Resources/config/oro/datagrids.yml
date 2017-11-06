@@ -91,6 +91,9 @@ datagrids:
                 join:
                     left:
                         - { join: scg.salesChannels, alias: sc }
+                where:
+                    and:
+                        - scg.system != true
         columns:
             name:
                 label:                marello.sales.saleschannelgroup.name.label
@@ -103,25 +106,17 @@ datagrids:
                 type:                 twig
                 frontend_type:        html
                 template:             MarelloSalesBundle:SalesChannelGroup/Datagrid:salesChannels.html.twig
-            system:
-                label:                marello.sales.saleschannelgroup.system.label
-                frontend_type:        boolean
         filters:
             columns:
                 name:
                     type: string
-                    data_name: scg.name
-                system:
-                    type: boolean
-                    data_name: scg.system
+                    data_name: sc.name
         sorters:
             columns:
                 name:
                     data_name: scg.name
                 description:
-                    data_name: scg.description
-                system:
-                    data_name: scg.system
+                    data_name: sc.description
         properties:
             id: ~
             view_link:

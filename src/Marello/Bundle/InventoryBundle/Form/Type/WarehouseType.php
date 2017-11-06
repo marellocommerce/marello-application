@@ -5,8 +5,11 @@ namespace Marello\Bundle\InventoryBundle\Form\Type;
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WarehouseType extends AbstractType
@@ -41,9 +44,31 @@ class WarehouseType extends AbstractType
                 'address',
                 AddressType::class,
                 ['required' => true]
+            )
+            ->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                [$this, 'preSetDataListener']
             );
 
         $this->removeNonStreetFieldsFromAddress($builder, 'address');
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetDataListener(FormEvent $event)
+    {
+        /** @var Warehouse $warehouse */
+        $warehouse = $event->getData();
+        $form = $event->getForm();
+
+        if ($warehouse->getGroup() === null || $warehouse->getGroup()->isSystem() === true) {
+            $form->add('createOwnGroup', CheckboxType::class, [
+                'required' => false,
+                'mapped' => false,
+                'label' => 'marelloenterprise.inventory.warehouse.form.create_own_group'
+            ]);
+        }
     }
 
     /**

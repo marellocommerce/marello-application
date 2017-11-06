@@ -28,25 +28,27 @@ class SalesChannelGroupListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider preRemoveDataProvider
-     * @param int $qty
+     * @param int $flushQty
+     * @param int $persistQty
      * @param \PHPUnit_Framework_MockObject_MockObject|null $systemSalesChannelGroup
      * @param \PHPUnit_Framework_MockObject_MockObject|null $systemLink
      */
     public function testPreRemove(
-        $qty,
+        $flushQty,
+        $persistQty,
         \PHPUnit_Framework_MockObject_MockObject $systemSalesChannelGroup = null,
         \PHPUnit_Framework_MockObject_MockObject $systemLink = null
     ) {
         /** @var SalesChannel|\PHPUnit_Framework_MockObject_MockObject $salesChannel **/
         $salesChannel = $this->createMock(SalesChannel::class);
         $salesChannel
-            ->expects(static::exactly($qty))
+            ->expects(static::exactly($persistQty))
             ->method('setGroup')
             ->with($systemSalesChannelGroup);
         /** @var SalesChannelGroup|\PHPUnit_Framework_MockObject_MockObject $salesChannelGroup **/
         $salesChannelGroup = $this->createMock(SalesChannelGroup::class);
         $salesChannelGroup
-            ->expects(static::exactly($qty))
+            ->expects(static::exactly($persistQty))
             ->method('getSalesChannels')
             ->willReturn([$salesChannel]);
 
@@ -74,11 +76,11 @@ class SalesChannelGroupListenerTest extends \PHPUnit_Framework_TestCase
                 $linkRepository
             );
         $entityManager
-            ->expects(static::exactly($qty))
+            ->expects(static::exactly($persistQty))
             ->method('persist')
             ->with($salesChannel);
         $entityManager
-            ->expects(static::exactly($qty))
+            ->expects(static::exactly($flushQty))
             ->method('flush');
 
         /** @var LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject $args **/
@@ -100,22 +102,26 @@ class SalesChannelGroupListenerTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'withSystemGroupWithSystemLink' => [
-                'qty' => 1,
+                'flushQty' => 1,
+                'persistQty' => 1,
                 'group' => $this->createMock(SalesChannelGroup::class),
                 'link' => $this->createMock(WarehouseChannelGroupLink::class)
             ],
             'noSystemGroupWithSystemLink' => [
-                'qty' => 0,
+                'flushQty' => 1,
+                'persistQty' => 0,
                 'group' => null,
                 'link' => $this->createMock(WarehouseChannelGroupLink::class)
             ],
             'withSystemGroupNoSystemLink' => [
-                'qty' => 0,
+                'flushQty' => 1,
+                'persistQty' => 1,
                 'group' => $this->createMock(SalesChannelGroup::class),
                 'link' => null
             ],
             'noSystemGroupNoSystemLink' => [
-                'qty' => 0,
+                'flushQty' => 0,
+                'persistQty' => 0,
                 'group' => null,
                 'link' => null
             ]
