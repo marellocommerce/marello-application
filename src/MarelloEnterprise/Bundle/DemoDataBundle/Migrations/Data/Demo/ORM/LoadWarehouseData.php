@@ -10,6 +10,7 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseData as BaseWarehouseData;
+use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -196,7 +197,6 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
         } else {
             $warehouse = new Warehouse($data['name'], false);
             $warehouse->setOwner($this->organization);
-            $warehouse->setGroup($this->systemGroup);
             $warehouse->setCode($data['code']);
 
             $address = $this->createAddress($data['address']);
@@ -207,6 +207,22 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
 
         $type = $this->getWarehouseType($data['type']);
         $warehouse->setWarehouseType($type);
+
+        if ($warehouse->getWarehouseType()->getName() === LoadWarehouseTypeData::FIXED_TYPE) {
+            $group = new WarehouseGroup();
+            $group
+                ->setName($warehouse->getLabel())
+                ->setOrganization($warehouse->getOwner())
+                ->setDescription(sprintf('%s group', $warehouse->getLabel()))
+                ->setSystem(false);
+            $this->manager->persist($group);
+            $this->manager->flush($group);
+        } else {
+            $group = $this->systemGroup;
+        }
+        if ($group) {
+            $warehouse->setGroup($group);
+        }
 
         return $warehouse;
     }

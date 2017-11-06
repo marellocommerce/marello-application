@@ -2,12 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints;
 
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToUserGroupValidator;
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToLinkedGroupValidator;
 use Symfony\Component\Validator\Constraint;
 
-class WarehouseAddedToUserGroup extends Constraint
+class WarehouseAddedToLinkedGroup extends Constraint
 {
-    public $message = 'marelloenterprise.inventory.validation.messages.error.warehouse_added_to_user_group';
+    public $message = 'marelloenterprise.inventory.validation.messages.error.warehouse_added_to_linked_group';
 
     /**
      * {@inheritdoc}
@@ -22,6 +22,6 @@ class WarehouseAddedToUserGroup extends Constraint
      */
     public function validatedBy()
     {
-        return WarehouseAddedToUserGroupValidator::ALIAS;
+        return WarehouseAddedToLinkedGroupValidator::ALIAS;
     }
 }

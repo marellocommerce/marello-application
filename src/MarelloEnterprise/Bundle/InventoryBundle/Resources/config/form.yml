@@ -93,16 +93,16 @@ services:
             - { name: form.type, alias: marello_inventory_wfarule_type }
 
     #form handlers
+    marelloenterprise_inventory.form_handler.warehouse:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseHandler'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_form.form.handler, alias: marelloenterprise_inventory.form_handler.warehouse }
+
     marelloenterprise_inventory.form_handler.warehousegroup:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler'
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: oro_form.form.handler, alias: marelloenterprise_inventory.form_handler.warehousegroup }
-
-    marelloenterprise_inventory.form_handler.warehousechannelgrouplink:
-        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseChannelGroupLinkHandler'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: oro_form.form.handler, alias: marelloenterprise_inventory.form_handler.warehousechannelgrouplink }

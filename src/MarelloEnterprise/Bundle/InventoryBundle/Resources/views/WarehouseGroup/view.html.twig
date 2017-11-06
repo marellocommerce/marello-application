@@ -22,7 +22,7 @@
                 'entity_label': 'marello.inventory.warehousegroup.entity_label'|trans
             }) }}
         {% endif %}
-        {% if resource_granted('DELETE', entity) %}
+        {% if resource_granted('DELETE', entity) and not marello_inventory_is_fixed_warehousegroup(entity) %}
             {{ UI.deleteButton({
                 'dataUrl': path('marelloenterprise_inventory_api_delete_warehousegroup', {'id': entity.id}),
                 'dataRedirect': path('marelloenterprise_inventory_warehousegroup_index'),

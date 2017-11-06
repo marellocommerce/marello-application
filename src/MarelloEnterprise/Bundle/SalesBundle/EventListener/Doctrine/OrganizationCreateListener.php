@@ -32,7 +32,7 @@ class OrganizationCreateListener
         if ($this->installed) {
             $systemChannelGroup = new SalesChannelGroup();
             $systemChannelGroup
-                ->setName(sprintf('%s_system_group', str_replace(' ', '_', strtolower($organization->getName()))))
+                ->setName(sprintf('%s System Group', $organization->getName()))
                 ->setDescription(sprintf('System Sales Channel Group for %s organization', $organization->getName()))
                 ->setSystem(true)
                 ->setOrganization($organization);

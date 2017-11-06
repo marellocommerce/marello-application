@@ -35,14 +35,14 @@ class InventoryManager extends BaseInventoryManager
         }
 
         $inventory = null;
-        $allocatedInventory = null;
+        $allocatedInventory = 0;
         if ($context->getInventory()) {
             $inventory = ($level->getInventoryQty() + $context->getInventory());
         }
-
-        if ($context->getAllocatedInventory()) {
-            $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
-        }
+//
+//        if ($context->getAllocatedInventory()) {
+//            $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
+//        }
 
         $this->updateInventoryLevel(
             $level,

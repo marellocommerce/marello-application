@@ -6,7 +6,7 @@ use MarelloEnterprise\Bundle\InventoryBundle\Formatter\WFAStrategyLabelFormatter
 
 class WFAStrategyExtension extends \Twig_Extension
 {
-    const SHIPPING_METHOD_EXTENSION_NAME = 'marello_wfa_strategy';
+    const NAME = 'marello_wfa_strategy';
 
     /**
      * @var WFAStrategyLabelFormatter
@@ -26,7 +26,7 @@ class WFAStrategyExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return static::SHIPPING_METHOD_EXTENSION_NAME;
+        return static::NAME;
     }
 
     /**

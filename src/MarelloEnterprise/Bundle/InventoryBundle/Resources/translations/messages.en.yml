@@ -37,19 +37,21 @@ marelloenterprise:
                 create_label:           Create new WFA Rule
 
         warehouse:
-            form.select_warehouse:      Select Warehouse
+            form:
+                select_warehouse:       Select Warehouse
+                create_own_group:       Create Own Warehouse Group
 
         warehousegroup:
             datablock:
                 general:                General
                 warehouses:             Warehouses
             form:
-                select_warehousegroup:  Select Warehouse Group
+                select_warehousegroup:  Select Warehouse (Group)
 
         warehousechannelgrouplink:
             datablock:
                 general:                General
-                channel_groups:         Sales Channel Groups
+                channel_groups:         Sales Channel (Groups)
 
         sections:
             general:                    General

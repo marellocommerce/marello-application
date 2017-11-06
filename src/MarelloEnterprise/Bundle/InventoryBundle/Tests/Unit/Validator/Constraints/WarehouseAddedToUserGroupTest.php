@@ -2,37 +2,37 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Validator\Constraints;
 
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\WarehouseAddedToUserGroup;
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToUserGroupValidator;
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\WarehouseAddedToLinkedGroup;
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToLinkedGroupValidator;
 
-class WarehouseAddedToUserGroupTest extends \PHPUnit_Framework_TestCase
+class WarehouseAddedToLinkedGroupTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var WarehouseAddedToUserGroup
+     * @var WarehouseAddedToLinkedGroup
      */
-    protected $warehouseAddedToUserGroup;
+    protected $warehouseAddedToLinkedGroup;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->warehouseAddedToUserGroup = new WarehouseAddedToUserGroup([]);
+        $this->warehouseAddedToLinkedGroup = new WarehouseAddedToLinkedGroup([]);
     }
 
     public function testGetTargets()
     {
         static::assertEquals(
-            WarehouseAddedToUserGroup::CLASS_CONSTRAINT,
-            $this->warehouseAddedToUserGroup->getTargets()
+            WarehouseAddedToLinkedGroup::CLASS_CONSTRAINT,
+            $this->warehouseAddedToLinkedGroup->getTargets()
         );
     }
 
     public function testValidatedBy()
     {
         static::assertEquals(
-            WarehouseAddedToUserGroupValidator::ALIAS,
-            $this->warehouseAddedToUserGroup->validatedBy()
+            WarehouseAddedToLinkedGroupValidator::ALIAS,
+            $this->warehouseAddedToLinkedGroup->validatedBy()
         );
     }
 }

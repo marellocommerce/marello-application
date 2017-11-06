@@ -7,21 +7,21 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseSystemGroupListener;
+use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener;
 
-class WarehouseSystemGroupListenerTest extends \PHPUnit_Framework_TestCase
+class WarehouseListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var WarehouseSystemGroupListener
+     * @var WarehouseListener
      */
-    protected $warehouseSystemGroupListener;
+    protected $warehouseListener;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->warehouseSystemGroupListener = new WarehouseSystemGroupListener(true);
+        $this->warehouseListener = new WarehouseListener(true);
     }
 
     /**
@@ -55,7 +55,7 @@ class WarehouseSystemGroupListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getEntityManager')
             ->willReturn($entityManager);
 
-        $this->warehouseSystemGroupListener->prePersist($warehouse, $args);
+        $this->warehouseListener->prePersist($warehouse, $args);
 
         static::assertEquals($warehouseGroup, $warehouse->getGroup());
     }

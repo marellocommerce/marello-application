@@ -61,14 +61,20 @@ class SystemGroupGlobalWarehousesSearchHandler extends SearchHandler
             ->orderBy('wh.label', 'ASC');
         if (!$groupId) {
             $qb
-                ->where('whg.system = :isSystem AND wht.name = :global')
+                ->where('whg.system = :isSystem AND wht.name in (:types)')
                 ->setParameter('isSystem', true)
-                ->setParameter('global', WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL);
+                ->setParameter('types', [
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL
+                ]);
         } else {
             $qb
-                ->where('(whg.system = :isSystem AND wht.name = :global) OR whg.id = :id')
+                ->where('(whg.system = :isSystem AND wht.name in (:types)) OR whg.id = :id')
                 ->setParameter('isSystem', true)
-                ->setParameter('global', WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL)
+                ->setParameter('types', [
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL
+                ])
                 ->setParameter('id', $groupId);
         }
         return $qb;

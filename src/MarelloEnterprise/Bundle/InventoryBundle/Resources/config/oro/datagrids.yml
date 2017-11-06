@@ -81,7 +81,7 @@ datagrids:
                 icon: trash
                 rowAction: true
                 confirmation: true
-        action_configuration: ['@marelloenterprise_inventory.datagrid.action_permission_provider', "getActionPermissions"]
+        action_configuration: ['@marelloenterprise_inventory.datagrid.warehouse.action_permission_provider', "getActionPermissions"]
         options:
             mass_actions:
                 delete:
@@ -159,6 +159,7 @@ datagrids:
                 icon:           trash
                 rowAction:      true
                 confirmation:   true
+        action_configuration: ['@marelloenterprise_inventory.datagrid.warehousegroup.action_permission_provider', "getActionPermissions"]
         options:
             entity_pagination: true
 
@@ -247,36 +248,14 @@ datagrids:
         options:
             entity_pagination: true
 
-    marelloenterprise-not-linked-warehouse-groups-grid:
+    marelloenterprise-not-linked-saleschannelgroups-grid:
         source:
             type: orm
-            query:
-                select:
-                    - scg.id
-                    - scg.name
-                    - scg.description
-                    - >
-                        (CASE WHEN (:linkOwner IS NOT NULL) THEN
-                            CASE WHEN (scg.id IN (:channelGroups) OR scg.id IN (:data_in)) AND scg.id NOT IN (:data_not_in)
-                            THEN true ELSE false END
-                        ELSE
-                            CASE WHEN scg.id IN (:data_in) AND scg.id NOT IN (:data_not_in)
-                            THEN true ELSE false END
-                        END) as hasLink
-                from:
-                    - { table: MarelloInventoryBundle:WarehouseChannelGroupLink, alias: wcgl }
-                join:
-                    left:
-                        - { join: wcgl.salesChannelGroups, alias: scg }
-                where:
-                    and:
-                        - wcgl.system = true OR wcgl.id = :linkOwner
-                        - scg.system != true
+            query_builder: '@marelloenterprise_inventory.repository.warehousechannelgrouplink->getNotLinkedSalesChannelGroupsGridQueryBuilder'
             bind_parameters:
                 -
                     name: linkOwner
-                    default: null
-                    type: integer
+                    default: -1
                 - channelGroups
         columns:
             hasLink:
@@ -292,9 +271,9 @@ datagrids:
         sorters:
             columns:
                 name:
-                    data_name: scg.name
+                    data_name: name
                 description:
-                    data_name: scg.description
+                    data_name: description
                 hasLink:
                     data_name: hasLink
             default:

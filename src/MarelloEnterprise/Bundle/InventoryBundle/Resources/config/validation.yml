@@ -1,7 +1,12 @@
 Marello\Bundle\InventoryBundle\Entity\Warehouse:
     constraints:
         - MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists: ~
-        - MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\WarehouseAddedToUserGroup: ~
+        - MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\WarehouseAddedToLinkedGroup: ~
+
+Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink:
+    constraints:
+        - MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\FixedWarehouseTypeLinking: ~
+
 Marello\Bundle\InventoryBundle\Entity\InventoryLevel:
     constraints:
         - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
