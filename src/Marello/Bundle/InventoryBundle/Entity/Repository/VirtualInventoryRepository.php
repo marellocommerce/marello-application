@@ -34,11 +34,15 @@ class VirtualInventoryRepository extends EntityRepository
      */
     public function findExistingVirtualInventory(ProductInterface $product, SalesChannelGroup $group)
     {
-        $qb = $this->createQueryBuilder('v');
+        $qb = $this->createQueryBuilder('virtual_inventory');
         $qb
-            ->where($qb->expr()->eq('v.product', $product))
-            ->andWhere($qb->expr()->eq('v.salesChannelGroup', $group));
+            ->where(
+                $qb->expr()->eq('virtual_inventory.salesChannelGroup', ':salesChannelGroup'),
+                $qb->expr()->eq('virtual_inventory.product', ':product')
+            )
+            ->setParameter('product', $product)
+            ->setParameter('salesChannelGroup', $group);
 
-        return $this->aclHelper->apply($qb)->getSingleResult();
+        return $this->aclHelper->apply($qb)->getOneOrNullResult();
     }
 }

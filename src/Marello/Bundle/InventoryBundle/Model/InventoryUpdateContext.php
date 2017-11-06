@@ -276,6 +276,6 @@ class InventoryUpdateContext
      */
     public function getIsVirtual()
     {
-        $this->getValue('is_virtual');
+        return $this->getValue('is_virtual');
     }
 }

@@ -93,6 +93,8 @@ marello:
             product.label:                  Product
             saleschannelgroup:              SalesChannel Group
             inventory:                      Inventory Qty
+            original_inventory_qty:         Original Inventory Qty
+            allocated_inventory_qty:        Allocated Inventory Qty
             organization:                   Organization
 
         information.label:                  Inventory Information

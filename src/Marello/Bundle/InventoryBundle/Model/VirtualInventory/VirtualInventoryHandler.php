@@ -22,21 +22,15 @@ class VirtualInventoryHandler
     /** @var ObjectManager $objectManager */
     protected $objectManager;
 
-    /** @var VirtualInventoryRepository $virtualInventoryRepository */
-    protected $virtualInventoryRepository;
-
     /**
      * @param ObjectManager $objectManager
      * @param VirtualInventoryFactory $virtualInventoryFactory
-     * @param VirtualInventoryRepository $virtualInventoryRepository
      */
     public function __construct(
         ObjectManager $objectManager,
-        VirtualInventoryFactory $virtualInventoryFactory,
-        VirtualInventoryRepository $virtualInventoryRepository
+        VirtualInventoryFactory $virtualInventoryFactory
     ) {
         $this->objectManager = $objectManager;
-        $this->virtualInventoryRepository = $virtualInventoryRepository;
         $this->virtualInventoryFactory = $virtualInventoryFactory;
     }
 
@@ -59,7 +53,6 @@ class VirtualInventoryHandler
     public function saveVirtualInventory(VirtualInventoryLevel $level, $force = false)
     {
         $existingLevel = $this->findExistingVirtualInventory($level->getProduct(), $level->getSalesChannelGroup());
-
         if ($existingLevel) {
             if (!$this->isLevelChanged($existingLevel, $level) && !$force) {
                 return;
@@ -74,8 +67,14 @@ class VirtualInventoryHandler
             $level->setOrganization($organization);
         }
 
-        $this->objectManager->persist($level);
-        $this->objectManager->flush();
+        try {
+            $this->objectManager->persist($level);
+//            if (!$force) {
+//                $this->objectManager->flush();
+//            }
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**

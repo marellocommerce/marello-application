@@ -222,6 +222,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('inventory_qty', 'integer', []);
         $table->addColumn('original_inventory_qty', 'integer', []);
+        $table->addColumn('alloc_inventory_qty', 'integer', ['notnull' => false, 'default' => 0]);
         $table->addColumn('product_id', 'integer', []);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('channel_group_id', 'integer', ['notnull' => false]);

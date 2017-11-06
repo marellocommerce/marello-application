@@ -51,6 +51,7 @@ class OrderInventoryAllocationListener
             $order,
             true
         );
+
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)
