@@ -4,14 +4,17 @@ namespace Marello\Bundle\PackingBundle\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
+
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+
+use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 
 class OrderToPackingSlipMapper extends AbstractPackingSlipMapper
 {

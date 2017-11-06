@@ -32,7 +32,7 @@ class MarelloInventoryBundle implements Migration
         $table->addColumn('product_id', 'integer', []);
         $table->addColumn('inventory_qty', 'integer', []);
         $table->addColumn('original_inventory_qty', 'integer', []);
-        $table->addColumn('alloc_inventory_qty', 'integer', ['notnull' => false, 'default' => 0]);
+        $table->addColumn('reserved_inventory_qty', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);

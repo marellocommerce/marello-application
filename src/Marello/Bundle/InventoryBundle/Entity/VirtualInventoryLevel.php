@@ -121,18 +121,18 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
 
 
     /**
-     * @ORM\Column(name="alloc_inventory_qty", type="integer")
+     * @ORM\Column(name="reserved_inventory_qty", type="integer")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
-     *              "label"="marello.inventory.allocated_inventory_qty.label"
+     *              "label"="marello.inventory.reserved_inventory_qty.label"
      *          }
      *      }
      * )
      *
      * @var int
      */
-    protected $allocatedInventory;
+    protected $reservedInventory;
 
     /**
      * @var Organization
@@ -214,17 +214,17 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
     /**
      * @return int
      */
-    public function getAllocatedInventory()
+    public function getReservedInventory()
     {
-        return $this->allocatedInventory;
+        return $this->reservedInventory;
     }
 
     /**
-     * @param int $allocatedInventory
+     * @param int $reservedInventory
      */
-    public function setAllocatedInventory($allocatedInventory)
+    public function setReservedInventory($reservedInventory)
     {
-        $this->allocatedInventory = $allocatedInventory;
+        $this->reservedInventory = $reservedInventory;
     }
 
     /**

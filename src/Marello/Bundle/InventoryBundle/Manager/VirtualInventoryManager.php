@@ -83,17 +83,11 @@ class VirtualInventoryManager implements InventoryManagerInterface
      */
     private function updateInventory(VirtualInventoryLevel $level, $allocQty)
     {
-        if ($level->getAllocatedInventory() >= 0) {
+        if ($level->getReservedInventory() >= 0) {
             $newInventoryQty = ($level->getInventory() - $allocQty);
         } else {
             $newInventoryQty = ($level->getInventory() + $allocQty);
         }
-
-        file_put_contents(
-            '/var/www/app/logs/debug.log',
-            print_r(__METHOD__. " #".__LINE__. " " . $newInventoryQty, true) . "\r\n",
-            FILE_APPEND
-        );
 
         $level->setInventory($newInventoryQty);
 
@@ -107,8 +101,8 @@ class VirtualInventoryManager implements InventoryManagerInterface
      */
     private function updateAllocatedInventory(VirtualInventoryLevel $level, $allocQty)
     {
-        $newInventoryQty = ($level->getAllocatedInventory() + $allocQty);
-        $level->setAllocatedInventory($newInventoryQty);
+        $newInventoryQty = ($level->getReservedInventory() + $allocQty);
+        $level->setReservedInventory($newInventoryQty);
         return $level;
     }
 

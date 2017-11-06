@@ -217,11 +217,9 @@ class InventoryBalancer
             /** @var BalancedResultObject[] $balancedResults */
             $balancedResults = $strategy->getResults($product, $scgs, $inventoryTotalForWhg);
             foreach ($balancedResults as $groupId => $result) {
-                var_dump($result->getGroup()->getName());
-                var_dump($result->getInventoryQty());
                 $virtualLevel = $this->virtualInventoryHandler
                     ->createVirtualInventory($product, $result->getGroup(), $result->getInventoryQty());
-                $this->virtualInventoryHandler->saveVirtualInventory($virtualLevel, true, true);
+                $this->virtualInventoryHandler->saveVirtualInventory($virtualLevel, true);
             }
         }
     }

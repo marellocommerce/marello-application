@@ -66,9 +66,9 @@ class InventoryManager implements InventoryManagerInterface
             $inventory = ($level->getInventoryQty() + $context->getInventory());
         }
 
-//        if ($context->getAllocatedInventory()) {
-//            $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
-//        }
+        if ($context->getAllocatedInventory()) {
+            $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
+        }
 
         $this->updateInventoryLevel(
             $level,

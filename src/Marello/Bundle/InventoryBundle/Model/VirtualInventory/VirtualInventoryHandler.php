@@ -69,9 +69,9 @@ class VirtualInventoryHandler
 
         try {
             $this->objectManager->persist($level);
-//            if (!$force) {
-//                $this->objectManager->flush();
-//            }
+            if (!$force) {
+                $this->objectManager->flush();
+            }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
