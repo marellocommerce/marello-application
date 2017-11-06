@@ -1,0 +1,3 @@
+marello_sales_saleschannelgroup_api:
+    resource:     "@MarelloSalesBundle/Controller/Api/Rest/SalesChannelGroupController.php"
+    type:         rest

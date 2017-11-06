@@ -146,6 +146,15 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('is_default', 'boolean', []);
         $table->addColumn('warehouse_type', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('group_id', 'integer', ['notnull' => false]);
+        /*$table->addColumn(
+            'create_group',
+            'boolean',
+            [
+                'oro_options' => [
+                    'extend'    => ['is_extend' => true, 'is_serialized' => true, 'owner' => ExtendScope::OWNER_SYSTEM],
+                ]
+            ]
+        );*/
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['address_id'], 'uniq_15597d1f5b7af75');
         $table->addUniqueIndex(['code'], 'UNIQ_15597D177153098');

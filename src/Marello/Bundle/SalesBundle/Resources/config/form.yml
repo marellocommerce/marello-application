@@ -7,6 +7,7 @@ parameters:
     marello_sales.form_type.system_group_saleschannel.multiselect.class:       Marello\Bundle\SalesBundle\Form\Type\SystemGroupSalesChannelMultiselectType
     marello_sales.form_type.saleschannelgroup.class:                           Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType
     #form handlers
+    marello_sales.form_handler.saleschannel.class:                             Marello\Bundle\SalesBundle\Form\Handler\SalesChannelHandler
     marello_sales.form_handler.saleschannelgroup.class:                        Marello\Bundle\SalesBundle\Form\Handler\SalesChannelGroupHandler
 services:
     #form types
@@ -49,6 +50,13 @@ services:
             - { name: form.type, alias: marello_sales_channel_select_api }
 
     #form handlers
+    marello_sales.saleschannel_form.handler:
+        class: '%marello_sales.form_handler.saleschannel.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_form.form.handler, alias: marello_sales.saleschannel_form.handler }
+
     marello_sales.saleschannelgroup_form.handler:
         class: '%marello_sales.form_handler.saleschannelgroup.class%'
         arguments:

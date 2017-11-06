@@ -108,7 +108,7 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
     /**
      * @var SalesChannel[]
      *
-     * @ORM\OneToMany(targetEntity="SalesChannel", mappedBy="group", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="SalesChannel", mappedBy="group", cascade={"persist"}, fetch="EAGER")
      */
     protected $salesChannels;
 
@@ -219,6 +219,7 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
     public function addSalesChannel(SalesChannel $salesChannel)
     {
         if (!$this->salesChannels->contains($salesChannel)) {
+            $salesChannel->setGroup($this);
             $this->salesChannels->add($salesChannel);
         }
 

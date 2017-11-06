@@ -14,6 +14,7 @@ marello:
             owner.label:                Owner
             warehouse_type.label:       Warehouse Type
             group.label:                Warehouse Group
+            create_group.label:         Create Group
 
         warehousetype:
             entity_label:               Warehouse Type
@@ -38,8 +39,8 @@ marello:
             id.label:                   Id
             system.label:               System
             organization.label:         Organization
-            sales_channel_groups.label: Sales Channel Groups
-            warehouse_group.label:      Warehouse Group
+            sales_channel_groups.label: Sales Channel (Groups)
+            warehouse_group.label:      Warehouse (Group)
 
         model:
             warehouse:

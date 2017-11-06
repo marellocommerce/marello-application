@@ -19,7 +19,7 @@ class LoadWarehouseGroupData extends AbstractFixture implements DependentFixture
      */
     protected $data = [
         [
-            'name' => 'system_group',
+            'name' => 'System Group',
             'description' => 'System Warehouse Group',
             'system' => true
         ],
@@ -55,14 +55,14 @@ class LoadWarehouseGroupData extends AbstractFixture implements DependentFixture
             $group = new WarehouseGroup();
             $group
                 ->setName(
-                    sprintf('%s_%s', str_replace(' ', '_', strtolower($organization->getName())), $values['name'])
+                    sprintf('%s %s', $organization->getName(), $values['name'])
                 )
                 ->setDescription(sprintf('%s for %s organization', $values['description'], $organization->getName()))
                 ->setSystem($values['system'])
                 ->setOrganization($organization);
 
             $this->manager->persist($group);
-            $this->setReference(sprintf('warehouse_%s', strtolower($values['name'])), $group);
+            $this->setReference(sprintf('warehouse_%s', str_replace(' ', '_', strtolower($values['name']))), $group);
         }
 
         $this->manager->flush();

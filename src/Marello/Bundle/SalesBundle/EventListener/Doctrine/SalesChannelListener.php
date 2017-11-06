@@ -6,7 +6,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 
-class SalesChannelSystemGroupListener
+class SalesChannelListener
 {
     /**
      * Installed flag
@@ -29,7 +29,7 @@ class SalesChannelSystemGroupListener
      */
     public function prePersist(SalesChannel $salesChannel, LifecycleEventArgs $args)
     {
-        if ($this->installed) {
+        if ($this->installed && !$salesChannel->getGroup()) {
             $systemGroup = $args
                 ->getEntityManager()
                 ->getRepository(SalesChannelGroup::class)
