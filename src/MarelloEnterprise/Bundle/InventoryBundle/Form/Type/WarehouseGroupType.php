@@ -3,6 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Type;
 
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,10 +20,17 @@ class WarehouseGroupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $entity = $builder->getData();
+        $entityId = null;
+        $fixedType = false;
         if ($entity instanceof WarehouseGroup) {
             $entityId = $entity->getId();
-        } else {
-            $entityId = null;
+            if ($entityId) {
+                foreach ($entity->getWarehouses() as $warehouse) {
+                    if ($warehouse->getWarehouseType()->getName() === LoadWarehouseTypeData::FIXED_TYPE) {
+                        $fixedType = true;
+                    }
+                }
+            }
         }
 
         $builder
@@ -39,7 +47,8 @@ class WarehouseGroupType extends AbstractType
                 SystemGroupGlobalWarehouseMultiSelectType::class,
                 [
                     'attr' => [
-                        'data-entity-id' => $entityId
+                        'data-entity-id' => $entityId,
+                        'disabled' => $fixedType
                     ]
                 ]
             );
