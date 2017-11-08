@@ -87,16 +87,44 @@ marello:
             subject_type.label:             Related Subject
             user.label:                     User
 
-        information.label:              Inventory Information
-        movements.label:                Inventory Movements
-        management:
-            menu.label:                 Inventory
-            label:                      Inventory Management
-            add_to_warehouse.label:     Add to Warehouse
+        virtualinventorylevel:
+            id.label:                       Id
+            entity_label:                   Virtual Inventory Level
+            entity_plural_label:            Virtual Inventory Levels
+            product.label:                  Product
+            saleschannelgroup:              SalesChannel Group
+            inventory:                      Inventory Qty
+            original_inventory_qty:         Original Inventory Qty
+            reserved_inventory_qty:        Reserved Inventory Qty
+            organization:                   Organization
 
+        information.label:                  Inventory Information
+        movements.label:                    Inventory Movements
+        balancing:
+            strategies:
+                equal_division:             Equal Division
+
+        management:
+            menu:
+                label:                      Inventory
+                balanced_inventory.label:   Balanced Inventory
+            label:                          Inventory Management
+            add_to_warehouse.label:         Add to Warehouse
+        system_configuration:
+            groups:
+                inventory:
+                    title:                  Inventory
+                    balacing:
+                        title:              Inventory Balancer
+                        general.label:      General
+                        strategy.label:     Balancing Strategy
+            fields:
+                balancing_strategy.label:             Strategy
+                balance_threshold_percentage.label:   Threshhold Percentage
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully
                 inventoryitem.saved:    Inventory Item has been saved successfully
+                inventory_rebalance.started: Rebalance started successfully. You will receive email notification upon completion.
             error:
                 warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse

@@ -2,22 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\Command;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\Common\Collections\Collection;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
-use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\InventoryBundle\Strategy\EqualDivision\EqualDivisionBalancerStrategy;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
 class InventoryBalanceCommand extends ContainerAwareCommand
 {
@@ -62,6 +53,7 @@ class InventoryBalanceCommand extends ContainerAwareCommand
     }
 
     /**
+     * Process all products for rebalancing
      * @param OutputInterface $output
      */
     protected function processAllProducts(OutputInterface $output)
@@ -74,9 +66,13 @@ class InventoryBalanceCommand extends ContainerAwareCommand
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class)
             ->findAll();
+
+        $output->writeln(sprintf('<info>count of products %s</info>', count($products)));
+        $this->triggerInventoryBalancer($products, $output);
     }
 
     /**
+     * Process products based on the user input
      * @param InputInterface $input
      * @param OutputInterface $output
      */
@@ -85,44 +81,11 @@ class InventoryBalanceCommand extends ContainerAwareCommand
         $output->writeln('<info>Start processing of Products for rebalancing</info>');
         $products = $this->getProducts($input);
         $output->writeln(sprintf('<info>count of products %s</info>', count($products)));
-        /** @var Product $product */
-        foreach ($products as $product) {
-            /** @var InventoryItem $inventoryItem */
-            $inventoryItem = $product->getInventoryItems()->first();
-            /** @var InventoryLevel[]|ArrayCollection $levels */
-            $nonFixedWarehouseLevels = $inventoryItem->getInventoryLevels()->filter(function($level) {
-                /** @var InventoryLevel $level */
-                return ($level->getWarehouse()->getWarehouseType()->getName() !== 'fixed' && $level->getWarehouse()->getGroup()->getWarehouseChannelGroupLink() !== null);
-            });
-
-            $sortedWhgLevels = [];
-            $linkedWhgToScgs = [];
-            $nonFixedWarehouseLevels->map(function($level) use (&$sortedWhgLevels, &$linkedWhgToScgs) {
-                /** @var InventoryLevel $level */
-
-                /** @var WarehouseGroup $whg */
-                $whg = $level->getWarehouse()->getGroup();
-                if (!array_key_exists($whg->getId(), $sortedWhgLevels)) {
-                    $sortedWhgLevels[$whg->getId()] = $level->getVirtualInventoryQty();
-                } else {
-                    $sortedWhgLevels[$whg->getId()] += $level->getVirtualInventoryQty();
-                }
-
-                $linkedWhgToScgs[$whg->getId()] = $linkedSalesChannelGroups = $whg->getWarehouseChannelGroupLink()->getSalesChannelGroups();
-
-
-            });
-
-            $strategy = new EqualDivisionBalancerStrategy();
-            foreach ($linkedWhgToScgs as $whgId => $scgs) {
-                $inventoryTotalForWhg = $sortedWhgLevels[$whgId];
-                $result = $strategy->getBalancedResult($product, $scgs, $inventoryTotalForWhg);
-                var_dump($result);
-            }
-        }
+        $this->triggerInventoryBalancer($products, $output);
     }
 
     /**
+     * Get products based on the user input
      * @param InputInterface $input
      * @return mixed
      */
@@ -135,7 +98,6 @@ class InventoryBalanceCommand extends ContainerAwareCommand
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class);
 
-        var_dump(count($productIds));
         $products = [];
         if (count($productIds)) {
             $products = $productRepository->findBy(['id' => $productIds]);
@@ -143,5 +105,25 @@ class InventoryBalanceCommand extends ContainerAwareCommand
 
         /** @var Product[] $products */
         return $products;
+    }
+
+    /**
+     * Trigger inventory balancer for products
+     * @param Product[] $products
+     * @param OutputInterface $output
+     */
+    protected function triggerInventoryBalancer($products, OutputInterface $output)
+    {
+        $inventoryBalancer = $this->getContainer()->get('marello_inventory.model.balancer.inventory_balancer');
+
+        /** @var Product $product */
+        foreach ($products as $product) {
+            $output->writeln(sprintf('<info>processing product sku %s</info>', $product->getSku()));
+            // balance 'Global' && 'Virtual' Warehouses
+            $inventoryBalancer->balanceInventory($product, false, true);
+
+            // balance 'Fixed' warehouses
+            $inventoryBalancer->balanceInventory($product, true, true);
+        }
     }
 }

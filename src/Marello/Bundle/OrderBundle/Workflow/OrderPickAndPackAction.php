@@ -4,7 +4,6 @@ namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -12,10 +11,12 @@ use Oro\Component\ConfigExpression\ContextAccessor;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 
-class OrderCancelAction extends OrderTransitionAction
+class OrderPickAndPackAction extends OrderTransitionAction
 {
     /** @var Registry */
     protected $doctrine;
@@ -23,22 +24,28 @@ class OrderCancelAction extends OrderTransitionAction
     /** @var EventDispatcherInterface $eventDispatcher */
     protected $eventDispatcher;
 
+    /** @var OrderWarehousesProviderInterface $warehousesProvider */
+    protected $warehousesProvider;
+
     /**
      * OrderShipAction constructor.
      *
      * @param ContextAccessor           $contextAccessor
      * @param Registry                  $doctrine
      * @param EventDispatcherInterface  $eventDispatcher
+     * @param OrderWarehousesProviderInterface $warehousesProvider
      */
     public function __construct(
         ContextAccessor $contextAccessor,
         Registry $doctrine,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        OrderWarehousesProviderInterface $warehousesProvider
     ) {
         parent::__construct($contextAccessor);
 
         $this->doctrine = $doctrine;
         $this->eventDispatcher = $eventDispatcher;
+        $this->warehousesProvider = $warehousesProvider;
     }
 
     /**
@@ -48,10 +55,14 @@ class OrderCancelAction extends OrderTransitionAction
     {
         /** @var Order $order */
         $order = $context->getEntity();
+        foreach ($this->warehousesProvider->getWarehousesForOrder($order) as $result) {
+            $warehouse = $result->getWarehouse();
+            $items = $result->getOrderItems();
+            $items->map(function (OrderItem $item) use ($order, $warehouse) {
+                $this->handleInventoryUpdate($item, null, $item->getQuantity(), $order, $warehouse);
+            });
+        }
 
-        $order->getItems()->map(function (OrderItem $item) use ($order) {
-            $this->handleInventoryUpdate($item, null, -$item->getQuantity(), $order);
-        });
     }
 
     /**
@@ -59,19 +70,26 @@ class OrderCancelAction extends OrderTransitionAction
      * @param OrderItem $item
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
-     * @param OrderItem $entity
+     * @param Order $entity
+     * @param Warehouse $warehouse
      */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
-    {
+    protected function handleInventoryUpdate(
+        $item,
+        $inventoryUpdateQty,
+        $allocatedInventoryQty,
+        $entity,
+        $warehouse
+    ) {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
-            'order_workflow.cancelled',
-            $entity,
-            true
+            'order_workflow.inventory_allocated',
+            $entity
         );
+
+        $context->setValue('warehouse', $warehouse);
 
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,

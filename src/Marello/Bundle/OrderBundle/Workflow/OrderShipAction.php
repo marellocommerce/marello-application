@@ -59,7 +59,7 @@ class OrderShipAction extends OrderTransitionAction
      * @param OrderItem $item
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
-     * @param OrderItem $entity
+     * @param Order $entity
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
@@ -75,6 +75,15 @@ class OrderShipAction extends OrderTransitionAction
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)
+        );
+
+        $virtualInvContext = $context
+            ->setInventory(0)
+            ->setIsVirtual(true);
+
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($virtualInvContext)
         );
     }
 }

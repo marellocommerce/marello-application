@@ -40,6 +40,7 @@ services:
         class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryUpdateEventListener'
         arguments:
             - '@marello_inventory.manager.inventory_manager'
+            - '@marello_inventory.manager.virtualinventory_manager'
         tags:
             - { name: kernel.event_listener, event: marello_inventory.inventory.update, method: handleUpdateInventoryEvent }
 
@@ -60,7 +61,7 @@ services:
             - { name: doctrine.event_listener, event: onFlush }
 
     marello_inventory.manager.inventory_manager:
-        class: Marello\Bundle\InventoryBundle\Manager\InventoryManager
+        class: 'Marello\Bundle\InventoryBundle\Manager\InventoryManager'
         calls:
             - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
             - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
@@ -113,5 +114,61 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_inventory.balancer_strategy.registry:
+        class: 'Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry'
+
+    marello_inventory.balancer_strategy.equal_division_strategy:
+        class: 'Marello\Bundle\InventoryBundle\Strategy\EqualDivision\EqualDivisionBalancerStrategy'
+        tags:
+            - { name: marello_inventory_balancer_strategy }
+
+    marello_inventory.model.balancer.inventory_balancer:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancer'
+        arguments:
+            - '@marello_inventory.balancer_strategy.registry'
+            - '@marello_inventory.manager.inventory_item_manager'
+            - '@marello_inventory.model.virtualinventory.virtual_inventory_handler'
+            - '@oro_config.manager'
+
+    marello_inventory.provider.balancer.balancing_strategy_choices_provider:
+        class: 'Marello\Bundle\InventoryBundle\Provider\BalancingStrategyChoicesProvider'
+        arguments:
+            - '@marello_inventory.balancer_strategy.registry'
+            - '@translator'
+
+    marello_inventory.model.virtualinventory.virtual_inventory_handler:
+        class: 'Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@marello_inventory.model.virtualinventory.virtual_inventory_factory'
+
+    marello_inventory.model.virtualinventory.virtual_inventory_factory:
+        class: 'Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryFactory'
+
+    marello_inventory.manager.virtualinventory_manager:
+        class: 'Marello\Bundle\InventoryBundle\Manager\VirtualInventoryManager'
+        calls:
+            - [setVirtualInventoryHandler, ['@marello_inventory.model.virtualinventory.virtual_inventory_handler']]
+            - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
+            - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
+        lazy: true
+
+    marello_inventory.async.inventory_rebalance_processor:
+        class: 'Marello\Bundle\InventoryBundle\Async\InventoryRebalanceProcessor'
+        arguments:
+            - '@marello_inventory.model.balancer.inventory_balancer'
+            - '@logger'
+            - '@doctrine'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    marello_inventory.repository.virtualinventory:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
