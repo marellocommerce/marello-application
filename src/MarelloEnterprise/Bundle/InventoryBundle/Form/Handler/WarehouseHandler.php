@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -74,17 +74,17 @@ class WarehouseHandler implements FormHandlerInterface
         }
 
         if ($typeBefore !== $typeAfter) {
-            if ($typeBefore === LoadWarehouseTypeData::FIXED_TYPE) {
+            if ($typeBefore === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
                 $this->manager->remove($group);
                 $entity->setGroup($this->getSystemWarehouseGroup());
-            } elseif ($typeAfter === LoadWarehouseTypeData::FIXED_TYPE) {
+            } elseif ($typeAfter === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
                 $label = $entity->getLabel();
                 if ($group && !$group->isSystem() && $group->getWarehouses()->count() === 1) {
                     $group
                         ->setName($label)
                         ->setDescription(sprintf('%s group', $label));
                     $this->manager->persist($group);
-                    $this->manager->flush($group);
+                    $this->manager->flush();
                 } else {
                     $group = $this->createOwnGroup($entity);
                 }
@@ -117,7 +117,7 @@ class WarehouseHandler implements FormHandlerInterface
             ->setSystem(false);
 
         $this->manager->persist($group);
-        $this->manager->flush($group);
+        $this->manager->flush();
 
         return $group;
     }

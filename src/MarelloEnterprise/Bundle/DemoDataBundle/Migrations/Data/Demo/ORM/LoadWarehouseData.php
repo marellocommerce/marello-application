@@ -10,7 +10,7 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseData as BaseWarehouseData;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -38,7 +38,8 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
     protected $data = [
         'current_default' => [
             'default'   => true,
-            'type'      => 'global'
+            'type'      => 'global',
+            'group'         => 'Europe'
         ],
         'additional1' => [
             'name'          => 'Warehouse DE 2',
@@ -53,7 +54,8 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
                 'phone' => '000-000-000',
                 'company' => 'Goodwaves Berlin'
             ],
-            'type'          => 'global'
+            'type'          => 'global',
+            'group'         => 'Europe'
         ],
         'additional2' => [
             'name'          => 'Warehouse FR 1',
@@ -68,7 +70,8 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
                 'phone' => '000-000-000',
                 'company' => 'Goodwaves Paris'
             ],
-            'type'          => 'global'
+            'type'          => 'global',
+            'group'         => 'Europe'
         ],
         'additional3' => [
             'name'          => 'Warehouse FR 2',
@@ -83,7 +86,8 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
                 'phone' => '000-000-000',
                 'company' => 'Goodwaves Bordeaux'
             ],
-            'type'          => 'global'
+            'type'          => 'global',
+            'group'         => 'Europe'
         ],
         'additional4' => [
             'name'          => 'Store Warehouse DE München',
@@ -98,7 +102,8 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
                 'phone' => '000-000-000',
                 'company' => 'Goodwaves München'
             ],
-            'type'          => 'fixed'
+            'type'          => 'fixed',
+            'group'         => null
         ],
         'additional5' => [
             'name'          => 'Store Warehouse DE Frankfurt',
@@ -113,7 +118,8 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
                 'phone' => '000-000-000',
                 'company' => 'Goodwaves Frankfurt'
             ],
-            'type'          => 'fixed'
+            'type'          => 'fixed',
+            'group'         => null
         ],
         'additional6' => [
             'name'          => 'Store Warehouse DE Berlin',
@@ -128,7 +134,8 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
                 'phone' => '000-000-000',
                 'company' => 'Goodwaves Berlin'
             ],
-            'type'          => 'fixed'
+            'type'          => 'fixed',
+            'group'         => null
         ],
     ];
 
@@ -207,24 +214,67 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
 
         $type = $this->getWarehouseType($data['type']);
         $warehouse->setWarehouseType($type);
+        $this->loadWarehouseGroups($warehouse, $data);
 
-        if ($warehouse->getWarehouseType()->getName() === LoadWarehouseTypeData::FIXED_TYPE) {
-            $group = new WarehouseGroup();
-            $group
-                ->setName($warehouse->getLabel())
-                ->setOrganization($warehouse->getOwner())
-                ->setDescription(sprintf('%s group', $warehouse->getLabel()))
-                ->setSystem(false);
-            $this->manager->persist($group);
-            $this->manager->flush($group);
+        return $warehouse;
+    }
+
+    /**
+     * Load additional warehouse groups
+     * @param Warehouse $warehouse
+     * @param array $data
+     */
+    private function loadWarehouseGroups(Warehouse $warehouse, array $data)
+    {
+        $group = null;
+        if ($warehouse->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
+            $group = $this->createNewWarehouseGroup($warehouse);
+        } elseif(isset($data['group']) ) {
+            $existingGroup = $this->getExistingWarehouseGroup($data['group']);
+            if ($existingGroup) {
+                $group = $existingGroup;
+            } else {
+                $group = $this->createNewWarehouseGroup($warehouse, $data['group']);
+            }
         } else {
             $group = $this->systemGroup;
         }
+
         if ($group) {
             $warehouse->setGroup($group);
+            $this->setReference($data['group'], $group);
         }
+    }
 
-        return $warehouse;
+    /**
+     * Create new WarehouseGroup
+     * @param Warehouse $warehouse
+     * @param null $groupName
+     * @return WarehouseGroup
+     */
+    private function createNewWarehouseGroup(Warehouse $warehouse, $groupName = null) {
+        $description = $groupName = $groupName ? $groupName : $warehouse->getLabel();
+        $group = new WarehouseGroup();
+        $group
+            ->setName($groupName)
+            ->setOrganization($warehouse->getOwner())
+            ->setDescription(sprintf('%s group', $description))
+            ->setSystem(false);
+
+        $this->manager->persist($group);
+        $this->manager->flush();
+
+        return $group;
+    }
+
+    /**
+     * Get Warehouse GroupName
+     * @param $warehouseGroupName
+     * @return WarehouseType
+     */
+    private function getExistingWarehouseGroup($warehouseGroupName)
+    {
+        return $this->manager->getRepository(WarehouseGroup::class)->findOneBy(['name' => $warehouseGroupName]);
     }
 
     /**
