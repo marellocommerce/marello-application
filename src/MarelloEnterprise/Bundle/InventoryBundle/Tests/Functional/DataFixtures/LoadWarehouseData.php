@@ -4,9 +4,10 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Functional\DataFixtures
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 
 class LoadWarehouseData extends AbstractFixture
 {
@@ -46,7 +47,7 @@ class LoadWarehouseData extends AbstractFixture
         $organization = $manager->getRepository('OroOrganizationBundle:Organization')->getFirst();
         $warehouseType = $manager
             ->getRepository('MarelloInventoryBundle:WarehouseType')
-            ->findOneBy(['name' => LoadWarehouseTypeData::GLOBAL_TYPE]);
+            ->findOneBy(['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]);
 
         foreach ($this->data as $ref => $values) {
             $warehouse = $this->buildWarehouse($ref, $values);

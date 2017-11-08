@@ -69,7 +69,6 @@ class InventoryLevelUpdateStrategy extends BaseStrategy
                     $trigger
                 );
 
-                $warehouse = $this->getWarehouse($entity);
                 $context->setValue('warehouse', $warehouse);
                 $canUpdate = true;
             } else {

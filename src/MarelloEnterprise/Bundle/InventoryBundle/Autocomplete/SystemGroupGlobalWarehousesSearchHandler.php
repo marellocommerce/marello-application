@@ -3,8 +3,10 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Autocomplete;
 
 use Doctrine\ORM\QueryBuilder;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
+
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
+
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 
 class SystemGroupGlobalWarehousesSearchHandler extends SearchHandler
 {
@@ -61,12 +63,18 @@ class SystemGroupGlobalWarehousesSearchHandler extends SearchHandler
             $qb
                 ->where('whg.system = :isSystem AND wht.name in (:types)')
                 ->setParameter('isSystem', true)
-                ->setParameter('types', [LoadWarehouseTypeData::GLOBAL_TYPE, LoadWarehouseTypeData::VIRTUAL_TYPE]);
+                ->setParameter('types', [
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL
+                ]);
         } else {
             $qb
                 ->where('(whg.system = :isSystem AND wht.name in (:types)) OR whg.id = :id')
                 ->setParameter('isSystem', true)
-                ->setParameter('types', [LoadWarehouseTypeData::GLOBAL_TYPE, LoadWarehouseTypeData::VIRTUAL_TYPE])
+                ->setParameter('types', [
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL
+                ])
                 ->setParameter('id', $groupId);
         }
         return $qb;
