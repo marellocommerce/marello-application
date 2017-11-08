@@ -49,8 +49,10 @@ class VirtualInventoryHandler
      * Save virtual inventory
      * @param VirtualInventoryLevel $level
      * @param bool $force
+     * @param bool $manual
+     * @throws \Exception
      */
-    public function saveVirtualInventory(VirtualInventoryLevel $level, $force = false)
+    public function saveVirtualInventory(VirtualInventoryLevel $level, $force = false, $manual = false)
     {
         $existingLevel = $this->findExistingVirtualInventory($level->getProduct(), $level->getSalesChannelGroup());
         if ($existingLevel) {
@@ -69,7 +71,7 @@ class VirtualInventoryHandler
 
         try {
             $this->objectManager->persist($level);
-            if (!$force) {
+            if ($manual) {
                 $this->objectManager->flush();
             }
         } catch (\Exception $e) {

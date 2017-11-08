@@ -120,10 +120,10 @@ class InventoryBalanceCommand extends ContainerAwareCommand
         foreach ($products as $product) {
             $output->writeln(sprintf('<info>processing product sku %s</info>', $product->getSku()));
             // balance 'Global' && 'Virtual' Warehouses
-            $inventoryBalancer->balanceInventory($product);
+            $inventoryBalancer->balanceInventory($product, false, true);
 
             // balance 'Fixed' warehouses
-            $inventoryBalancer->balanceInventory($product, true);
+            $inventoryBalancer->balanceInventory($product, true, true);
         }
     }
 }

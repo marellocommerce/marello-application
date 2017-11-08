@@ -59,8 +59,9 @@ class InventoryBalancer
      * Balance inventory for a product
      * @param Product $product
      * @param bool $isFixed
+     * @param bool $manual
      */
-    public function balanceInventory(Product $product, $isFixed = false)
+    public function balanceInventory(Product $product, $isFixed = false, $manual = false)
     {
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->getInventoryItemFromProduct($product);
@@ -73,7 +74,7 @@ class InventoryBalancer
         $filteredInventoryLevels = $this->filterInventoryLevels($inventoryLevels, $isFixed);
         $sortedWhgLevels = $this->sortInventoryLevels($filteredInventoryLevels, $isFixed);
         $linkedWhgToScgs = $this->getLinkedWarehouseGroupsToSalesChannelGroups($filteredInventoryLevels);
-        $this->generateResult($linkedWhgToScgs, $sortedWhgLevels, $product);
+        $this->generateResult($linkedWhgToScgs, $sortedWhgLevels, $product, $manual);
     }
 
     /**
@@ -208,19 +209,30 @@ class InventoryBalancer
      * @param $linkedWhgToScgs
      * @param $sortedWhgLevels
      * @param $product
+     * @param $manual
      */
-    protected function generateResult($linkedWhgToScgs, $sortedWhgLevels, $product)
+    protected function generateResult($linkedWhgToScgs, $sortedWhgLevels, $product, $manual)
     {
         $strategy = $this->getStrategy();
         foreach ($linkedWhgToScgs as $whgId => $scgs) {
             $inventoryTotalForWhg = $sortedWhgLevels[$whgId];
             /** @var BalancedResultObject[] $balancedResults */
             $balancedResults = $strategy->getResults($product, $scgs, $inventoryTotalForWhg);
-            foreach ($balancedResults as $groupId => $result) {
-                $virtualLevel = $this->virtualInventoryHandler
-                    ->createVirtualInventory($product, $result->getGroup(), $result->getInventoryQty());
-                $this->virtualInventoryHandler->saveVirtualInventory($virtualLevel, true);
-            }
+            $this->processResults($balancedResults, $product, $manual);
+        }
+    }
+
+    /**
+     * Process results by creating virtual inventory item
+     * @param $results
+     * @param $product
+     */
+    protected function processResults($results, $product, $manual)
+    {
+        foreach ($results as $groupId => $result) {
+            $virtualLevel = $this->virtualInventoryHandler
+                ->createVirtualInventory($product, $result->getGroup(), $result->getInventoryQty());
+            $this->virtualInventoryHandler->saveVirtualInventory($virtualLevel, true, $manual);
         }
     }
 
