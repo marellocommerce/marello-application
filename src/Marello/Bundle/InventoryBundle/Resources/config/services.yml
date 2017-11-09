@@ -153,7 +153,7 @@ services:
         calls:
             - [setVirtualInventoryHandler, ['@marello_inventory.model.virtualinventory.virtual_inventory_handler']]
             - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
-            - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
+            - [setEventDispatcher, ['@event_dispatcher']]
         lazy: true
 
     marello_inventory.async.inventory_rebalance_processor:

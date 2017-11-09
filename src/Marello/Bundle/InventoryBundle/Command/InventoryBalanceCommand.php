@@ -31,7 +31,7 @@ class InventoryBalanceCommand extends ContainerAwareCommand
                 'product ids for rebalancing inventory',
                 []
             )
-            ->setDescription('Rebalance inventory for SalesChannel (Groups)');
+            ->setDescription('Rebalance inventory for Product(s)');
     }
 
     /**

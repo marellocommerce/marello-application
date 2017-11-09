@@ -56,5 +56,7 @@ class OrderInventoryAllocationListener
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)
         );
+
+
     }
 }
