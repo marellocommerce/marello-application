@@ -95,7 +95,7 @@ marello:
             saleschannelgroup:              SalesChannel Group
             inventory:                      Inventory Qty
             original_inventory_qty:         Original Inventory Qty
-            reserved_inventory_qty:        Reserved Inventory Qty
+            reserved_inventory_qty:         Reserved Inventory Qty
             organization:                   Organization
 
         information.label:                  Inventory Information

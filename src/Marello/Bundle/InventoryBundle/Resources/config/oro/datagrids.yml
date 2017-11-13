@@ -255,9 +255,14 @@ datagrids:
                 frontend_type:      string
                 data_name:          productSku
             inventory:
-                label:              marello.inventory.inventorylevel.inventory.label
+                label:              marello.inventory.virtualinventorylevel.inventory
                 frontend_type:      number
                 data_name:          inventory
+                align:              left
+            orgInventory:
+                label:              marello.inventory.virtualinventorylevel.original_inventory_qty
+                frontend_type:      number
+                data_name:          orgInventory
                 align:              left
             salesChannelGroupName:
                 label:              marello.sales.saleschannelgroup.entity_label

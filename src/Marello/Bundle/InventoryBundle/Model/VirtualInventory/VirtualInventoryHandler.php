@@ -55,6 +55,11 @@ class VirtualInventoryHandler
     public function saveVirtualInventory(VirtualInventoryLevel $level, $force = false, $manual = false)
     {
         $existingLevel = $this->findExistingVirtualInventory($level->getProduct(), $level->getSalesChannelGroup());
+        file_put_contents(
+            '/var/www/app/logs/debug.log',
+            __METHOD__. " #" . __LINE__ . " ". print_r($this->isLevelChanged($existingLevel, $level), true). "\r\n",
+            FILE_APPEND
+        );
         if ($existingLevel) {
             if (!$this->isLevelChanged($existingLevel, $level) && !$force) {
                 return;
@@ -71,6 +76,11 @@ class VirtualInventoryHandler
 
         try {
             $this->objectManager->persist($level);
+            file_put_contents(
+                '/var/www/app/logs/debug.log',
+                __METHOD__. " #" . __LINE__ . " ". print_r($level->getInventory(), true). "\r\n",
+                FILE_APPEND
+            );
             if ($manual) {
                 $this->objectManager->flush();
             }

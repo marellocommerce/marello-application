@@ -16,7 +16,7 @@ use Oro\Component\MessageQueue\Util\JSON;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancer;
 
-class InventoryTriggerRebalanceProcessor implements MessageProcessorInterface, TopicSubscriberInterface
+class InventoryRebalanceProductProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
     /**
      * @var LoggerInterface
@@ -53,10 +53,7 @@ class InventoryTriggerRebalanceProcessor implements MessageProcessorInterface, T
      */
     public static function getSubscribedTopics()
     {
-        return [
-            Topics::RESOLVE_REBALANCE_INVENTORY,
-            Topics::RESOLVE_REBALANCE_ALL_INVENTORY
-        ];
+        return [Topics::RESOLVE_REBALANCE_INVENTORY];
     }
 
     /**
@@ -64,27 +61,40 @@ class InventoryTriggerRebalanceProcessor implements MessageProcessorInterface, T
      */
     public function process(MessageInterface $message, SessionInterface $session)
     {
+        $data = JSON::decode($message->getBody());
+        if (! isset($data['product_id'])) {
+            $this->logger->critical(
+                sprintf('Got invalid message. "%s"', $message->getBody()),
+                ['message' => $message]
+            );
+
+            return self::REJECT;
+        }
+
         /** @var EntityManagerInterface $em */
         $em = $this->registry->getManagerForClass(Product::class);
-        $em->beginTransaction();
-        
-        $trigger = null;
         try {
-            if ($message->getBody() === Topics::ALL_INVENTORY) {
-                $products = $em->getRepository(Product::class)->findAll();
-                foreach ($products as $product) {
-                    $this->balanceProduct($product);
-                }
-                // send notification afterwards....TODO
-            } else {
-                $messageData = JSON::decode($message->getBody());
-                $product = $em->getRepository(Product::class)->find($messageData);
-                $this->balanceProduct($product);
+            $product = $em->getRepository(Product::class)->find($data['product_id']);
+
+            if (!$product) {
+                $this->logger->error(
+                    sprintf(
+                        'Product is invalid. Cannot find product with id: "%s"',
+                        $data['product_id']
+                    )
+                );
+                return self::REJECT;
             }
 
-            $em->commit();
+            file_put_contents(
+                '/var/www/app/logs/debug.log',
+                __METHOD__. " #" . __LINE__ . " ". print_r($product->getSku(), true). "\r\n",
+                FILE_APPEND
+            );
+
+            $this->balanceProduct($product);
+
         } catch (\InvalidArgumentException $e) {
-            $em->rollback();
             $this->logger->error(
                 sprintf(
                     'Message is invalid: %s. Original message: "%s"',
@@ -95,7 +105,6 @@ class InventoryTriggerRebalanceProcessor implements MessageProcessorInterface, T
 
             return self::REJECT;
         } catch (\Exception $e) {
-            $em->rollback();
             $this->logger->error(
                 'Unexpected exception occurred during Inventory Rebalance',
                 ['exception' => $e]

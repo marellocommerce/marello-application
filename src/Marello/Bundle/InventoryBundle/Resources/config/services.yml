@@ -44,6 +44,15 @@ services:
         tags:
             - { name: kernel.event_listener, event: marello_inventory.inventory.update, method: handleUpdateInventoryEvent }
 
+    marello_inventory.event_listener.virtualinventory_update_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\VirtualInventoryUpdateAfterEventListener'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+            - '@marello_inventory.model.balancer.inventorybalancer_trigger_calculator'
+            - '@marello_inventory.repository.virtualinventory'
+        tags:
+            - { name: kernel.event_listener, event: marello_inventory.virtualinventory.update_after, method: handleUpdateInventoryEvent }
+
     marello_inventory.listener.on_product_create_event_listener:
         class: 'Marello\Bundle\InventoryBundle\EventListener\OnProductCreateEventListener'
         arguments:
@@ -133,6 +142,11 @@ services:
             - '@marello_inventory.model.virtualinventory.virtual_inventory_handler'
             - '@oro_config.manager'
 
+    marello_inventory.model.balancer.inventorybalancer_trigger_calculator:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator'
+        arguments:
+            - '@oro_config.manager'
+
     marello_inventory.provider.balancer.balancing_strategy_choices_provider:
         class: 'Marello\Bundle\InventoryBundle\Provider\BalancingStrategyChoicesProvider'
         arguments:
@@ -156,8 +170,17 @@ services:
             - [setEventDispatcher, ['@event_dispatcher']]
         lazy: true
 
-    marello_inventory.async.inventory_rebalance_processor:
-        class: 'Marello\Bundle\InventoryBundle\Async\InventoryRebalanceProcessor'
+    marello_inventory.async.inventory_rebalance_products_processor:
+        class: 'Marello\Bundle\InventoryBundle\Async\InventoryRebalanceProductsProcessor'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+            - '@logger'
+            - '@marello_product.repository.product'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    marello_inventory.async.inventory_rebalance_product_processor:
+        class: 'Marello\Bundle\InventoryBundle\Async\InventoryRebalanceProductProcessor'
         arguments:
             - '@marello_inventory.model.balancer.inventory_balancer'
             - '@logger'

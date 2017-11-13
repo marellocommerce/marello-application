@@ -8,8 +8,8 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
 class VirtualInventoryUpdateEvent extends Event
 {
-    const VIRTUAL_UPDATE_BEFORE = 'marello_inventory.virutalinventory.update_before';
-    const VIRTUAL_UPDATE_AFTER = 'marello_inventory.virutalinventory.update_after';
+    const VIRTUAL_UPDATE_BEFORE = 'marello_inventory.virtualinventory.update_before';
+    const VIRTUAL_UPDATE_AFTER = 'marello_inventory.virtualinventory.update_after';
 
     /**
      * @var InventoryUpdateContext

@@ -65,11 +65,21 @@ class InventoryBalancer
     {
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->getInventoryItemFromProduct($product);
+        file_put_contents(
+            '/var/www/app/logs/debug.log',
+            __METHOD__. " #" . __LINE__ . " ". print_r($inventoryItem->getProduct()->getSku(), true). "\r\n",
+            FILE_APPEND
+        );
 
         if (!$inventoryItem) {
-            return;
+            throw new \Exception('no inventory item found');
+//            return;
         }
-
+        file_put_contents(
+            '/var/www/app/logs/debug.log',
+            __METHOD__. " #" . __LINE__ . " ". print_r($manual, true). "\r\n",
+            FILE_APPEND
+        );
         $inventoryLevels = $inventoryItem->getInventoryLevels();
         $filteredInventoryLevels = $this->filterInventoryLevels($inventoryLevels, $isFixed);
         $sortedWhgLevels = $this->sortInventoryLevels($filteredInventoryLevels, $isFixed);
