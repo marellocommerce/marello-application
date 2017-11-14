@@ -56,7 +56,6 @@ class VirtualInventoryUpdateAfterEventListener
             // do nothing when context isn't for virtual inventory levels
             return;
         }
-
         if (!$context->getValue(self::VIRTUAL_LEVEL_CONTEXT_KEY)
             || !$context->getValue(self::SALESCHANNELGROUP_CONTEXT_KEY)
         ) {
@@ -68,11 +67,10 @@ class VirtualInventoryUpdateAfterEventListener
         $product = $context->getProduct();
         $level = $context->getValue(self::VIRTUAL_LEVEL_CONTEXT_KEY);
         $group = $context->getValue(self::SALESCHANNELGROUP_CONTEXT_KEY);
-
         if ($this->isRebalanceApplicable($product, $level, $group)) {
             $this->messageProducer->send(
                 Topics::RESOLVE_REBALANCE_INVENTORY,
-                ['product_id' => $product->getId()]
+                ['product_id' => $product->getId(), 'jobId' => md5($product->getId())]
             );
         }
     }

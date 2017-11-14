@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
+use Marello\Bundle\InventoryBundle\Async\Topics;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
@@ -66,6 +67,11 @@ class InventoryBalanceCommand extends ContainerAwareCommand
             ->getManagerForClass(Product::class)
             ->getRepository(Product::class)
             ->findAll();
+
+        if (count($products) <= 0) {
+            $output->writeln(sprintf('<error>No products found, did you add products first?</error>'));
+            return;
+        }
 
         $output->writeln(sprintf('<info>count of products %s</info>', count($products)));
         $this->triggerInventoryBalancer($products, $output);

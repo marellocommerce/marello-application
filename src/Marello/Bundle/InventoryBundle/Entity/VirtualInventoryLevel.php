@@ -173,10 +173,13 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
 
     /**
      * @param Product $product
+     * @return $this
      */
     public function setProduct($product)
     {
         $this->product = $product;
+
+        return $this;
     }
 
     /**
@@ -189,10 +192,13 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
 
     /**
      * @param SalesChannelGroup $salesChannelGroup
+     * @return $this
      */
     public function setSalesChannelGroup(SalesChannelGroup $salesChannelGroup)
     {
         $this->salesChannelGroup = $salesChannelGroup;
+
+        return $this;
     }
 
     /**
@@ -205,10 +211,13 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
 
     /**
      * @param int $inventory
+     * @return $this
      */
     public function setInventory($inventory)
     {
         $this->inventory = $inventory;
+
+        return $this;
     }
 
     /**
@@ -221,10 +230,13 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
 
     /**
      * @param int $reservedInventory
+     * @return $this
      */
     public function setReservedInventory($reservedInventory)
     {
         $this->reservedInventory = $reservedInventory;
+
+        return $this;
     }
 
     /**
@@ -236,11 +248,14 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
     }
 
     /**
-     * @param int $orgInventory
+     * @param $orgInventory
+     * @return $this
      */
     public function setOrgInventory($orgInventory)
     {
         $this->orgInventory = $orgInventory;
+
+        return $this;
     }
 
     /**
@@ -253,9 +268,12 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
 
     /**
      * @param OrganizationInterface $organization
+     * @return $this
      */
     public function setOrganization(OrganizationInterface $organization)
     {
         $this->organization = $organization;
+
+        return $this;
     }
 }

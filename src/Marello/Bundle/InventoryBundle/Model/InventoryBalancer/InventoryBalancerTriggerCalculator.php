@@ -44,7 +44,7 @@ class InventoryBalancerTriggerCalculator
         // percentages are stored in decimal numbers (i.e. 20% is 0.2)
         $percentage = ($currentInventoryQty / $originalInventoryQty);
 
-        return ((float)$percentage >= (float) $balanceThreshold);
+        return ((float)$percentage <= (float) $balanceThreshold);
     }
 
     /**

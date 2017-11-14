@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\Async;
 
-use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Psr\Log\LoggerInterface;
 
 use Oro\Component\MessageQueue\Client\MessageProducer;
@@ -11,6 +10,7 @@ use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
 class InventoryRebalanceProductsProcessor implements MessageProcessorInterface, TopicSubscriberInterface
@@ -64,7 +64,7 @@ class InventoryRebalanceProductsProcessor implements MessageProcessorInterface, 
         $products = $this->repository->findAll();
         /** @var ProductInterface $product */
         foreach ($products as $product) {
-            $this->producer->send(Topics::RESOLVE_REBALANCE_INVENTORY, ['product_id' => $product->getId()]);
+            $this->producer->send(Topics::RESOLVE_REBALANCE_INVENTORY, ['product_id' => $product->getId(), 'jobId' => md5( $product->getId())]);
         }
 
         return self::ACK;

@@ -156,7 +156,7 @@ services:
     marello_inventory.model.virtualinventory.virtual_inventory_handler:
         class: 'Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler'
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@doctrine'
             - '@marello_inventory.model.virtualinventory.virtual_inventory_factory'
 
     marello_inventory.model.virtualinventory.virtual_inventory_factory:

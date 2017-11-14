@@ -2,35 +2,29 @@
 
 namespace Marello\Bundle\InventoryBundle\Async;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Psr\Log\LoggerInterface;
 
+use Oro\Component\MessageQueue\Util\JSON;
+use Oro\Component\MessageQueue\Transport\SessionInterface;
+use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
 use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
-use Oro\Component\MessageQueue\Transport\MessageInterface;
-use Oro\Component\MessageQueue\Transport\SessionInterface;
-use Oro\Component\MessageQueue\Util\JSON;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancer;
 
 class InventoryRebalanceProductProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
-    /**
-     * @var LoggerInterface
-     */
+    /** @var LoggerInterface $logger */
     protected $logger;
 
-    /**
-     * @var InventoryBalancer
-     */
+    /** @var InventoryBalancer $inventoryBalancer */
     protected $inventoryBalancer;
 
-    /**
-     * @var ManagerRegistry
-     */
+    /** @var ManagerRegistry $registry */
     protected $registry;
 
     /**
@@ -86,14 +80,7 @@ class InventoryRebalanceProductProcessor implements MessageProcessorInterface, T
                 return self::REJECT;
             }
 
-            file_put_contents(
-                '/var/www/app/logs/debug.log',
-                __METHOD__. " #" . __LINE__ . " ". print_r($product->getSku(), true). "\r\n",
-                FILE_APPEND
-            );
-
             $this->balanceProduct($product);
-
         } catch (\InvalidArgumentException $e) {
             $this->logger->error(
                 sprintf(
@@ -122,7 +109,7 @@ class InventoryRebalanceProductProcessor implements MessageProcessorInterface, T
      */
     private function balanceProduct(Product $product)
     {
-        $this->inventoryBalancer->balanceInventory($product);
-        $this->inventoryBalancer->balanceInventory($product, true);
+        $this->inventoryBalancer->balanceInventory($product, false, true);
+        $this->inventoryBalancer->balanceInventory($product, true, true);
     }
 }

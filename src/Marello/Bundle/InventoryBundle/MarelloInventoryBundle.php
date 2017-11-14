@@ -15,6 +15,7 @@ class MarelloInventoryBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new BalancerStrategiesCompilerPass());
+
         parent::build($container);
     }
 }
