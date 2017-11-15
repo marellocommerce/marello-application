@@ -109,4 +109,4 @@ navigation:
                                             returned_qty_by_reason: ~
 
     titles:
-        marello_report_index: '%%reportName%% - %%reportGroup%%'
+        marello_report_index: '%reportName% - %reportGroup%'
