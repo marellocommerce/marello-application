@@ -64,10 +64,6 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
-        $organizations = $this->manager
-            ->getRepository('OroOrganizationBundle:Organization')
-            ->findAll();
-
         $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_inv_reple');
         $this->replenishments = $this->manager->getRepository($replenishmentClass)->findAll();
 
@@ -152,7 +148,7 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
 
         /** @var InventoryManager $inventoryManager */
         $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
-        $inventoryManager->updateInventoryLevels($context);
+        $inventoryManager->updateInventoryLevel($context);
     }
 
     /**
