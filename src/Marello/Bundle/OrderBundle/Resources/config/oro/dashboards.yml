@@ -4,7 +4,7 @@ dashboards:
             items:
                 orders:
                     label:      marello.order.entity_plural_label
-                    icon:       list-alt
+                    icon:       shopping-cart
                     route:      marello_order_order_index
                     acl:        marello_order_view
                     position:   25
