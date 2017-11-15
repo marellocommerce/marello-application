@@ -37,7 +37,7 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *      routeCreate="marello_order_order_create",
  *      defaultValues={
  *          "entity"={
- *              "icon"="fa-list-alt"
+ *              "icon"="fa-shopping-cart"
  *          },
  *          "security"={
  *              "type"="ACL",
