@@ -14,6 +14,7 @@ interface InventoryManagerInterface
 
     /**
      * @param InventoryUpdateContext $context
+     * @BC_BREAK
      */
-    public function updateInventoryLevels(InventoryUpdateContext $context);
+    public function updateInventoryLevel(InventoryUpdateContext $context);
 }

@@ -35,9 +35,10 @@ class InventoryUpdateEventListener
     {
         $context = $event->getInventoryUpdateContext();
         if (!$context->getIsVirtual()) {
-            $this->manager->updateInventoryLevels($context);
+            $this->manager->updateInventoryLevel($context);
+            return;
         }
 
-        $this->virtualInventoryManager->updateInventoryLevels($context);
+        $this->virtualInventoryManager->updateInventoryLevel($context);
     }
 }

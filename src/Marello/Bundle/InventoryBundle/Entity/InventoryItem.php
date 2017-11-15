@@ -150,9 +150,9 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
      * InventoryItem constructor.
      *
      * @param Warehouse $warehouse
-     * @param ProductInterface   $product
+     * @param ProductInterface $product
      */
-    public function __construct(Warehouse $warehouse, ProductInterface $product = null)
+    public function __construct(Warehouse $warehouse = null, ProductInterface $product)
     {
         parent::__construct();
         
@@ -162,11 +162,24 @@ class InventoryItem extends ExtendInventoryItem implements ProductInventoryAware
     }
 
     /**
+     * @deprecated
      * @return Warehouse
      */
     public function getWarehouse()
     {
         return $this->warehouse;
+    }
+
+    /**
+     * @deprecated
+     * @param Warehouse $warehouse
+     * @return $this
+     */
+    public function setWarehouse(Warehouse $warehouse)
+    {
+        $this->warehouse = $warehouse;
+
+        return $this;
     }
 
     /**

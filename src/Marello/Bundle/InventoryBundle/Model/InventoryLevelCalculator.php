@@ -48,7 +48,7 @@ class InventoryLevelCalculator
     {
         $adjustmentOperator = $this->getAdjustmentOperator($operator);
         $adjustment = $this->getAdjustment($adjustmentOperator, $quantity);
-        return $adjustment;
+        return (int) $adjustment;
     }
 
     /**

@@ -6,12 +6,11 @@ use Symfony\Component\EventDispatcher\Event;
 
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
-class InventoryUpdateEvent extends Event
+class VirtualInventoryUpdateEvent extends Event
 {
-    const NAME = 'marello_inventory.inventory.update';
+    const VIRTUAL_UPDATE_BEFORE = 'marello_inventory.virtualinventory.update_before';
+    const VIRTUAL_UPDATE_AFTER = 'marello_inventory.virtualinventory.update_after';
 
-    const INVENTORY_UPDATE_BEFORE = 'marello_inventory.inventory.update_before';
-    const INVENTORY_UPDATE_AFTER = 'marello_inventory.inventory.update_after';
     /**
      * @var InventoryUpdateContext
      */

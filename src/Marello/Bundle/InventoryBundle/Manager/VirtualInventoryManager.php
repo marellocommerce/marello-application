@@ -2,23 +2,24 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Event\VirtualInventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator;
 use Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler;
 
 class VirtualInventoryManager implements InventoryManagerInterface
 {
-    /** @var DoctrineHelper $doctrineHelper */
-    protected $doctrineHelper;
-
     /** @var InventoryUpdateContextValidator $contextValidator */
     protected $contextValidator;
+
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
 
     /** @var VirtualInventoryHandler $handler */
     protected $handler;
@@ -29,7 +30,7 @@ class VirtualInventoryManager implements InventoryManagerInterface
      */
     public function updateInventoryItems(InventoryUpdateContext $context)
     {
-        $this->updateInventoryLevels($context);
+        $this->updateInventoryLevel($context);
     }
 
     /**
@@ -37,8 +38,13 @@ class VirtualInventoryManager implements InventoryManagerInterface
      * @param InventoryUpdateContext $context
      * @throws \Exception
      */
-    public function updateInventoryLevels(InventoryUpdateContext $context)
+    public function updateInventoryLevel(InventoryUpdateContext $context)
     {
+        $this->eventDispatcher->dispatch(
+            VirtualInventoryUpdateEvent::VIRTUAL_UPDATE_BEFORE,
+            new VirtualInventoryUpdateEvent($context)
+        );
+
         if (!$this->contextValidator->validateContext($context)) {
             throw new \Exception('InventoryUpdateContext structure not valid.');
         }
@@ -49,6 +55,7 @@ class VirtualInventoryManager implements InventoryManagerInterface
 
         $entity = $context->getRelatedEntity();
         $salesChannelGroup = $this->getSalesChannelGroupFromEntity($entity);
+        $context->setValue('salesChannelGroup', $salesChannelGroup);
         if (!$salesChannelGroup) {
             throw new \Exception('No SalesChannelGroups(s)');
         }
@@ -59,10 +66,16 @@ class VirtualInventoryManager implements InventoryManagerInterface
         if (!$level) {
             $level = $this->handler->createVirtualInventory($product, $salesChannelGroup, 0);
         }
-
-        $level = $this->updateAllocatedInventory($level, $context->getAllocatedInventory());
+        $level = $this->updateReservedInventory($level, $context->getAllocatedInventory());
         $level = $this->updateInventory($level, $context->getAllocatedInventory());
         $this->handler->saveVirtualInventory($level, true);
+
+        $context->setValue('virtualInventoryLevel', $level);
+        
+        $this->eventDispatcher->dispatch(
+            VirtualInventoryUpdateEvent::VIRTUAL_UPDATE_AFTER,
+            new VirtualInventoryUpdateEvent($context)
+        );
     }
 
     /**
@@ -99,7 +112,7 @@ class VirtualInventoryManager implements InventoryManagerInterface
      * @param int $allocQty
      * @return VirtualInventoryLevel
      */
-    private function updateAllocatedInventory(VirtualInventoryLevel $level, $allocQty)
+    private function updateReservedInventory(VirtualInventoryLevel $level, $allocQty)
     {
         $newInventoryQty = ($level->getReservedInventory() + $allocQty);
         $level->setReservedInventory($newInventoryQty);
@@ -117,13 +130,13 @@ class VirtualInventoryManager implements InventoryManagerInterface
     }
 
     /**
-     * Sets the doctrine helper
+     * Sets the event dispatcher
      *
-     * @param DoctrineHelper $doctrineHelper
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
-        $this->doctrineHelper = $doctrineHelper;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

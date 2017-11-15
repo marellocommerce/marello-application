@@ -2,7 +2,9 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

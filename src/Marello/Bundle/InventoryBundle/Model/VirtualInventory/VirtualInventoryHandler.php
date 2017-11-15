@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Model\VirtualInventory;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
@@ -19,18 +19,18 @@ class VirtualInventoryHandler
     /** @var VirtualInventoryFactory $virtualInventoryFactory */
     protected $virtualInventoryFactory;
 
-    /** @var ObjectManager $objectManager */
-    protected $objectManager;
+    /** @var ManagerRegistry $doctrine */
+    protected $doctrine;
 
     /**
-     * @param ObjectManager $objectManager
+     * @param ManagerRegistry $doctrine
      * @param VirtualInventoryFactory $virtualInventoryFactory
      */
     public function __construct(
-        ObjectManager $objectManager,
+        ManagerRegistry $doctrine,
         VirtualInventoryFactory $virtualInventoryFactory
     ) {
-        $this->objectManager = $objectManager;
+        $this->doctrine = $doctrine;
         $this->virtualInventoryFactory = $virtualInventoryFactory;
     }
 
@@ -54,13 +54,17 @@ class VirtualInventoryHandler
      */
     public function saveVirtualInventory(VirtualInventoryLevel $level, $force = false, $manual = false)
     {
+        /** @var VirtualInventoryLevel $existingLevel */
         $existingLevel = $this->findExistingVirtualInventory($level->getProduct(), $level->getSalesChannelGroup());
         if ($existingLevel) {
             if (!$this->isLevelChanged($existingLevel, $level) && !$force) {
                 return;
             }
 
-            $existingLevel->setInventory($level->getInventory());
+            $existingLevel
+                ->setInventory($level->getInventory())
+                ->setOrgInventory($level->getOrgInventory());
+
             $level = $existingLevel;
         }
 
@@ -70,9 +74,12 @@ class VirtualInventoryHandler
         }
 
         try {
-            $this->objectManager->persist($level);
+            if (!$existingLevel) {
+                $this->getManagerForClass()->persist($level);
+            }
+
             if ($manual) {
-                $this->objectManager->flush();
+                $this->getManagerForClass()->flush();
             }
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
@@ -88,8 +95,17 @@ class VirtualInventoryHandler
     public function findExistingVirtualInventory(ProductInterface $product, SalesChannelGroup $group)
     {
         /** @var VirtualInventoryRepository $repository */
-        $repository = $this->objectManager->getRepository(VirtualInventoryLevel::class);
+        $repository = $this->doctrine->getRepository(VirtualInventoryLevel::class);
         return $repository->findExistingVirtualInventory($product, $group);
+    }
+
+    /**
+     * @param $entityClass
+     * @return \Doctrine\Common\Persistence\ObjectManager|null
+     */
+    private function getManagerForClass($entityClass = VirtualInventoryLevel::class)
+    {
+        return $this->doctrine->getManagerForClass($entityClass);
     }
 
     /**
