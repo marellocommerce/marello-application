@@ -2,28 +2,29 @@
 
 namespace Marello\Bundle\InventoryBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator;
-use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Bundle\UserBundle\Entity\User;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 
 class InventoryManager implements InventoryManagerInterface
 {
-    /**
-     * @var DoctrineHelper
-     */
+    /** @var DoctrineHelper $doctrineHelper*/
     protected $doctrineHelper;
 
-    /**
-     * @var InventoryUpdateContextValidator
-     */
+    /** @var InventoryUpdateContextValidator $contextValidator */
     protected $contextValidator;
+
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
 
     /**
      * @deprecated use updateInventoryLevels instead
@@ -33,7 +34,7 @@ class InventoryManager implements InventoryManagerInterface
      */
     public function updateInventoryItems(InventoryUpdateContext $context)
     {
-        $this->updateInventoryLevels($context);
+        $this->updateInventoryLevel($context);
     }
 
     /**
@@ -41,8 +42,13 @@ class InventoryManager implements InventoryManagerInterface
      * @param InventoryUpdateContext $context
      * @throws \Exception
      */
-    public function updateInventoryLevels(InventoryUpdateContext $context)
+    public function updateInventoryLevel(InventoryUpdateContext $context)
     {
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::INVENTORY_UPDATE_BEFORE,
+            new InventoryUpdateEvent($context)
+        );
+
         if (!$this->contextValidator->validateContext($context)) {
             throw new \Exception('Context structure not valid.');
         }
@@ -70,35 +76,33 @@ class InventoryManager implements InventoryManagerInterface
             $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
         }
 
-        $this->updateInventoryLevel(
-            $level,
-            $context->getChangeTrigger(),
-            $inventory,
-            $context->getInventory(),
-            $allocatedInventory,
-            $context->getAllocatedInventory(),
-            $context->getUser(),
-            $context->getRelatedEntity()
+        $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
+        $em = $this->doctrineHelper->getEntityManager($updatedLevel);
+        $em->persist($updatedLevel);
+
+//        $this->createLogRecord(
+//            $updatedLevel,
+//            $inventory,
+//            $allocatedInventory,
+//            $context->getChangeTrigger(),
+//            $context->getUser(),
+//            $context->getRelatedEntity()
+//        );
+        /**
+         *
+         * $this->updateInventoryLevel(
+        $level,
+        $context->getChangeTrigger(),
+        $inventory,
+        $context->getInventory(),
+        $allocatedInventory,
+        $context->getAllocatedInventory(),
+        $context->getUser(),
+        $context->getRelatedEntity()
         );
-    }
+        }
 
-
-    /**
-     * @param InventoryLevel    $level                  InventoryLevel to be updated
-     * @param string            $trigger                Action that triggered the change
-     * @param int|null          $inventory              New inventory or null if it should remain unchanged
-     * @param int|null          $inventoryAlt           Inventory Change qty, qty that represents the actual change
-     * @param int|null          $allocatedInventory     New allocated inventory or null if it should remain unchanged
-     * @param int|null          $allocatedInventoryAlt  Allocated Inventory Change qty, qty that represents the
-     *                                                  actual change
-     * @param User|null         $user                   User who triggered the change, if left null,
-     *                                                  it is automatically assigned to current one
-     * @param mixed|null        $subject                Any entity that should be associated to this operation
-     *
-     * @throws \Exception
-     * @return bool
-     */
-    protected function updateInventoryLevel(
+        protected function updateInventoryLevel(
         InventoryLevel $level,
         $trigger,
         $inventory = null,
@@ -108,29 +112,47 @@ class InventoryManager implements InventoryManagerInterface
         User $user = null,
         $subject = null
     ) {
+         */
+
+
+        $context->setInventoryLevel($updatedLevel);
+
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::INVENTORY_UPDATE_AFTER,
+            new InventoryUpdateEvent($context)
+        );
+
+    }
+
+
+    /**
+     * @param InventoryLevel    $level                  InventoryLevel to be updated
+     * @param int|null          $inventory              New inventory or null if it should remain unchanged
+     * @param int|null          $allocatedInventory     New allocated inventory or null if it should remain unchanged
+     *                                                  actual change
+     * @throws \Exception
+     * @return InventoryLevel
+     */
+    protected function updateInventory(
+        InventoryLevel $level,
+        $inventory = null,
+        $allocatedInventory = null
+    ) {
         if (($inventory === null) && ($allocatedInventory === null)) {
-            return false;
+            return $level;
         }
 
         if (($level->getInventoryQty() === $inventory) &&
             ($level->getAllocatedInventoryQty() === $allocatedInventory)) {
-            return false;
+            return $level;
         }
 
         if ($inventory === null) {
             $inventory = $level->getInventoryQty();
         }
 
-        if ($inventoryAlt === null) {
-            $inventoryAlt = 0;
-        }
-
         if ($allocatedInventory === null) {
             $allocatedInventory = $level->getAllocatedInventoryQty();
-        }
-
-        if ($allocatedInventoryAlt === null) {
-            $allocatedInventoryAlt = 0;
         }
 
         try {
@@ -141,45 +163,7 @@ class InventoryManager implements InventoryManagerInterface
             throw new \Exception($e->getMessage());
         }
 
-        $this->createLogRecord(
-            $level,
-            $inventoryAlt,
-            $allocatedInventoryAlt,
-            $trigger,
-            $user,
-            $subject
-        );
-        return true;
-    }
-
-    /**
-     * @param InventoryLevel $level
-     * @param $inventoryAlt
-     * @param $allocatedInventoryAlt
-     * @param $trigger
-     * @param $user
-     * @param $subject
-     */
-    protected function createLogRecord(
-        InventoryLevel $level,
-        $inventoryAlt,
-        $allocatedInventoryAlt,
-        $trigger,
-        $user,
-        $subject
-    ) {
-        $record = new InventoryLevelLogRecord(
-            $level,
-            $inventoryAlt,
-            $allocatedInventoryAlt,
-            $trigger,
-            $user,
-            $subject
-        );
-
-        $em = $this->doctrineHelper->getEntityManager($record);
-        $em->persist($level);
-        $em->persist($record);
+        return $level;
     }
 
     /**
@@ -247,5 +231,15 @@ class InventoryManager implements InventoryManagerInterface
     public function setDoctrineHelper(DoctrineHelper $doctrineHelper)
     {
         $this->doctrineHelper = $doctrineHelper;
+    }
+
+    /**
+     * Sets the event dispatcher
+     *
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

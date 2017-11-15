@@ -30,7 +30,7 @@ class VirtualInventoryManager implements InventoryManagerInterface
      */
     public function updateInventoryItems(InventoryUpdateContext $context)
     {
-        $this->updateInventoryLevels($context);
+        $this->updateInventoryLevel($context);
     }
 
     /**
@@ -38,12 +38,13 @@ class VirtualInventoryManager implements InventoryManagerInterface
      * @param InventoryUpdateContext $context
      * @throws \Exception
      */
-    public function updateInventoryLevels(InventoryUpdateContext $context)
+    public function updateInventoryLevel(InventoryUpdateContext $context)
     {
         $this->eventDispatcher->dispatch(
             VirtualInventoryUpdateEvent::VIRTUAL_UPDATE_BEFORE,
             new VirtualInventoryUpdateEvent($context)
         );
+
         if (!$this->contextValidator->validateContext($context)) {
             throw new \Exception('InventoryUpdateContext structure not valid.');
         }
@@ -129,7 +130,7 @@ class VirtualInventoryManager implements InventoryManagerInterface
     }
 
     /**
-     * Sets the doctrine helper
+     * Sets the event dispatcher
      *
      * @param EventDispatcherInterface $eventDispatcher
      */

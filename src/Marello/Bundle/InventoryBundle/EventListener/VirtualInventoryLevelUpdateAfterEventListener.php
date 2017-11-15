@@ -13,7 +13,7 @@ use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
 
-class VirtualInventoryUpdateAfterEventListener
+class VirtualInventoryLevelUpdateAfterEventListener
 {
     const VIRTUAL_LEVEL_CONTEXT_KEY = 'virtualInventoryLevel';
     const SALESCHANNELGROUP_CONTEXT_KEY  = 'salesChannelGroup';
@@ -48,7 +48,7 @@ class VirtualInventoryUpdateAfterEventListener
      * @param VirtualInventoryUpdateEvent $event
      * @return mixed
      */
-    public function handleUpdateInventoryEvent(VirtualInventoryUpdateEvent $event)
+    public function handleInventoryUpdateAfterEvent(VirtualInventoryUpdateEvent $event)
     {
         /** @var InventoryUpdateContext $context */
         $context = $event->getInventoryUpdateContext();

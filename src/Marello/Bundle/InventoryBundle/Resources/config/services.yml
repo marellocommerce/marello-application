@@ -45,15 +45,30 @@ services:
             - { name: kernel.event_listener, event: marello_inventory.inventory.update, method: handleUpdateInventoryEvent }
 
     marello_inventory.event_listener.virtualinventory_update_event_listener:
-        class: 'Marello\Bundle\InventoryBundle\EventListener\VirtualInventoryUpdateAfterEventListener'
+        class: 'Marello\Bundle\InventoryBundle\EventListener\VirtualInventoryLevelUpdateAfterEventListener'
         arguments:
             - '@oro_message_queue.client.message_producer'
             - '@marello_inventory.model.balancer.inventorybalancer_trigger_calculator'
             - '@marello_inventory.repository.virtualinventory'
         tags:
-            - { name: kernel.event_listener, event: marello_inventory.virtualinventory.update_after, method: handleUpdateInventoryEvent }
+            - { name: kernel.event_listener, event: marello_inventory.virtualinventory.update_after, method: handleInventoryUpdateAfterEvent }
 
-    marello_inventory.listener.on_product_create_event_listener:
+#    marello_inventory.event_listener.inventorylevel_update_after_event_listener:
+#        class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryLevelUpdateAfterEventListener'
+#        arguments:
+#            - '@oro_message_queue.client.message_producer'
+#        tags:
+#            - { name: kernel.event_listener, event: marello_inventory.inventory.update_after, method: handleInventoryUpdateAfterEvent }
+
+    marello_inventory.event_listener.inventoryitem_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryItemEventListener'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    marello_inventory.event_listener.on_product_create_event_listener:
         class: 'Marello\Bundle\InventoryBundle\EventListener\OnProductCreateEventListener'
         arguments:
             - '@marello_inventory.manager.inventory_item_manager'
@@ -61,7 +76,7 @@ services:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
-    marello_inventory.listener.on_product_delete_event_listener:
+    marello_inventory.event_listener.on_product_delete_event_listener:
         class: 'Marello\Bundle\InventoryBundle\EventListener\OnProductDeleteEventListener'
         arguments:
             - '@marello_inventory.manager.inventory_item_manager'
@@ -74,6 +89,8 @@ services:
         calls:
             - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
             - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
+            - [setEventDispatcher, ['@event_dispatcher']]
+        lazy: true
 
     marello_inventory.validator.inventory_update_context:
         class: 'Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator'
