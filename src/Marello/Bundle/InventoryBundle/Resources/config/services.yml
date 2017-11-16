@@ -53,12 +53,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: marello_inventory.virtualinventory.update_after, method: handleInventoryUpdateAfterEvent }
 
-#    marello_inventory.event_listener.inventorylevel_update_after_event_listener:
-#        class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryLevelUpdateAfterEventListener'
-#        arguments:
-#            - '@oro_message_queue.client.message_producer'
-#        tags:
-#            - { name: kernel.event_listener, event: marello_inventory.inventory.update_after, method: handleInventoryUpdateAfterEvent }
+    marello_inventory.event_listener.inventorylevel_update_after_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryLevelUpdateAfterEventListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: marello_inventory.inventory.update_after, method: handleInventoryLevelUpdateAfterEvent }
 
     marello_inventory.event_listener.inventoryitem_event_listener:
         class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryItemEventListener'
