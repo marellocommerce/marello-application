@@ -79,42 +79,6 @@ class InventoryManager implements InventoryManagerInterface
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
         $em = $this->doctrineHelper->getEntityManager($updatedLevel);
         $em->persist($updatedLevel);
-
-//        $this->createLogRecord(
-//            $updatedLevel,
-//            $inventory,
-//            $allocatedInventory,
-//            $context->getChangeTrigger(),
-//            $context->getUser(),
-//            $context->getRelatedEntity()
-//        );
-        /**
-         *
-         * $this->updateInventoryLevel(
-        $level,
-        $context->getChangeTrigger(),
-        $inventory,
-        $context->getInventory(),
-        $allocatedInventory,
-        $context->getAllocatedInventory(),
-        $context->getUser(),
-        $context->getRelatedEntity()
-        );
-        }
-
-        protected function updateInventoryLevel(
-        InventoryLevel $level,
-        $trigger,
-        $inventory = null,
-        $inventoryAlt = null,
-        $allocatedInventory = null,
-        $allocatedInventoryAlt = null,
-        User $user = null,
-        $subject = null
-    ) {
-         */
-
-
         $context->setInventoryLevel($updatedLevel);
 
         $this->eventDispatcher->dispatch(
