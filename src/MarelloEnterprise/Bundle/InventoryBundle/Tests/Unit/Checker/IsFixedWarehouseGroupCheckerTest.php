@@ -5,7 +5,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Checker;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
 use Oro\Component\Testing\Unit\EntityTrait;
 
@@ -49,8 +49,8 @@ class IsFixedWarehouseGroupCheckerTest extends \PHPUnit_Framework_TestCase
         return [
             [
                 'warehouseTypes' => [
-                    LoadWarehouseTypeData::FIXED_TYPE,
-                    LoadWarehouseTypeData::GLOBAL_TYPE,
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED,
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
                 ],
                 'result' => false
             ],
@@ -60,7 +60,7 @@ class IsFixedWarehouseGroupCheckerTest extends \PHPUnit_Framework_TestCase
             ],
             [
                 'warehouseTypes' => [
-                    LoadWarehouseTypeData::FIXED_TYPE,
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED,
                 ],
                 'result' => true
             ]

@@ -16,7 +16,6 @@ use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
 use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToLinkedGroupValidator;
 
 class WarehouseAddedToLinkedGroupValidatorTest extends \PHPUnit_Framework_TestCase
@@ -95,7 +94,7 @@ class WarehouseAddedToLinkedGroupValidatorTest extends \PHPUnit_Framework_TestCa
         $uow
             ->expects(static::exactly($buildViolationTimes))
             ->method('getOriginalEntityData')
-            ->willReturn(['warehouse_type' => LoadWarehouseTypeData::VIRTUAL_TYPE]);
+            ->willReturn(['warehouse_type' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL]);
 
         $this->manager
             ->expects(static::exactly($buildViolationTimes))
@@ -124,20 +123,20 @@ class WarehouseAddedToLinkedGroupValidatorTest extends \PHPUnit_Framework_TestCa
         return [
             'withViolation' => [
                 'system' => false,
-                'type' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED,
                 'link' => new WarehouseChannelGroupLink(),
+                'type' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED,
                 'buildViolationTimes' => 1
             ],
             'noViolationWithGlobalType' => [
                 'system' => false,
-                'type' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
                 'link' => null,
+                'type' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
                 'buildViolationTimes' => 0
             ],
             'noViolationSystemGroup' => [
                 'system' => true,
-                'type' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
                 'link' => null,
+                'type' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
                 'buildViolationTimes' => 0
             ]
         ];
