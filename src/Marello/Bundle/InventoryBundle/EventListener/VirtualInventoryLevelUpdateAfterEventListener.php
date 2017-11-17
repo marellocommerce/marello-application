@@ -10,6 +10,7 @@ use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\InventoryBundle\Event\VirtualInventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
 use Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
 
@@ -82,13 +83,13 @@ class VirtualInventoryLevelUpdateAfterEventListener
     /**
      * Check if the rebalancing is applicable for the product
      * @param ProductInterface $product
-     * @param VirtualInventoryLevel $level
+     * @param VirtualInventoryLevelInterface $level
      * @param SalesChannelGroup $group
      * @return bool
      */
     protected function isRebalanceApplicable(
         ProductInterface $product,
-        VirtualInventoryLevel $level = null,
+        VirtualInventoryLevelInterface $level = null,
         SalesChannelGroup $group = null
     ){
         if (!$level || !$group) {

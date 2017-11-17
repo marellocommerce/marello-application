@@ -2,16 +2,15 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\EventListener;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Event\VirtualInventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
 use Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository;
 use Marello\Bundle\InventoryBundle\EventListener\VirtualInventoryLevelUpdateAfterEventListener;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
@@ -51,6 +50,7 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
         $this->inventoryManager = $this->createMock(InventoryManager::class);
 
         $this->producer = $this->createMock(MessageProducerInterface::class);
+        /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
         $configManager =  $this->createMock(ConfigManager::class);
         $calculator = new InventoryBalancerTriggerCalculator($configManager);
 
@@ -92,7 +92,10 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
     public function testRebalanceThresholdHasBeenReachedAndTriggerIsBeingSend()
     {
         $context = new InventoryUpdateContext();
-        $context->setValue('virtualInventoryLevel', $this->createMock(InventoryLevel::class));
+        /** @var VirtualInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $level */
+        $level = $this->createMock(VirtualInventoryLevelInterface::class);
+
+        $context->setValue('virtualInventoryLevel', $level);
         $context->setValue('salesChannelGroup', $this->createMock(SalesChannelGroup::class));
         $context->setProduct($this->createMock(Product::class));
         $context->setIsVirtual(true);
@@ -104,7 +107,7 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
         $calculator
             ->expects($this->once())
             ->method('isBalanceThresholdReached')
-            ->with($this->createMock(InventoryLevel::class))
+            ->with($this->createMock(VirtualInventoryLevelInterface::class))
             ->willReturn(true);
 
         $listener = new VirtualInventoryLevelUpdateAfterEventListener(

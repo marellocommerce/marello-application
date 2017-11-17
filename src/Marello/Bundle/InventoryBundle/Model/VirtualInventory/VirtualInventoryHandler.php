@@ -62,8 +62,8 @@ class VirtualInventoryHandler
             }
 
             $existingLevel
-                ->setInventory($level->getInventory())
-                ->setOrgInventory($level->getOrgInventory());
+                ->setInventoryQty($level->getInventoryQty())
+                ->setBalancedInventoryQty($level->getBalancedInventoryQty());
 
             $level = $existingLevel;
         }
@@ -116,7 +116,7 @@ class VirtualInventoryHandler
      */
     private function isLevelChanged($existingLevel, $level)
     {
-        return ((float)$existingLevel->getInventory() !== (float)$level->getInventory());
+        return ((float)$existingLevel->getInventoryQty() !== (float)$level->getInventoryQty());
     }
 
     /**
