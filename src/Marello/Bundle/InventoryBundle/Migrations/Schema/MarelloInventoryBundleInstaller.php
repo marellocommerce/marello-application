@@ -230,7 +230,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table = $schema->createTable('marello_vrtl_inventory_level');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('inventory_qty', 'integer', []);
-        $table->addColumn('original_inventory_qty', 'integer', []);
+        $table->addColumn('blncd_inventory_qty', 'integer', []);
         $table->addColumn('reserved_inventory_qty', 'integer', ['notnull' => false]);
         $table->addColumn('product_id', 'integer', []);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);

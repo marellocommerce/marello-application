@@ -94,7 +94,7 @@ marello:
             product.label:                  Product
             saleschannelgroup:              SalesChannel Group
             inventory:                      Inventory Qty
-            original_inventory_qty:         Original Inventory Qty
+            balanced_inventory_qty:         Balanced Inventory Qty
             reserved_inventory_qty:         Reserved Inventory Qty
             organization:                   Organization
 

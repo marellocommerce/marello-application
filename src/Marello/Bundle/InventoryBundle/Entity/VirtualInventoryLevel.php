@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -41,7 +42,7 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class VirtualInventoryLevel implements OrganizationAwareInterface
+class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInventoryLevelInterface
 {
     use EntityCreatedUpdatedAtTrait;
 
@@ -106,18 +107,18 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
     protected $inventory;
 
     /**
-     * @ORM\Column(name="original_inventory_qty", type="integer")
+     * @ORM\Column(name="blncd_inventory_qty", type="integer")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
-     *              "label"="marello.inventory.original_inventory_qty.label"
+     *              "label"="marello.inventory.balanced_inventory_qty.label"
      *          }
      *      }
      * )
      *
      * @var int
      */
-    protected $orgInventory;
+    protected $balancedInventory;
 
 
     /**
@@ -204,7 +205,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
     /**
      * @return int
      */
-    public function getInventory()
+    public function getInventoryQty()
     {
         return $this->inventory;
     }
@@ -213,7 +214,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
      * @param int $inventory
      * @return $this
      */
-    public function setInventory($inventory)
+    public function setInventoryQty($inventory)
     {
         $this->inventory = $inventory;
 
@@ -223,7 +224,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
     /**
      * @return int
      */
-    public function getReservedInventory()
+    public function getReservedInventoryQty()
     {
         return $this->reservedInventory;
     }
@@ -232,7 +233,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
      * @param int $reservedInventory
      * @return $this
      */
-    public function setReservedInventory($reservedInventory)
+    public function setReservedInventoryQty($reservedInventory)
     {
         $this->reservedInventory = $reservedInventory;
 
@@ -242,18 +243,18 @@ class VirtualInventoryLevel implements OrganizationAwareInterface
     /**
      * @return int
      */
-    public function getOrgInventory()
+    public function getBalancedInventoryQty()
     {
-        return $this->orgInventory;
+        return $this->balancedInventory;
     }
 
     /**
-     * @param $orgInventory
+     * @param $balancedInventory
      * @return $this
      */
-    public function setOrgInventory($orgInventory)
+    public function setBalancedInventoryQty($balancedInventory)
     {
-        $this->orgInventory = $orgInventory;
+        $this->balancedInventory = $balancedInventory;
 
         return $this;
     }

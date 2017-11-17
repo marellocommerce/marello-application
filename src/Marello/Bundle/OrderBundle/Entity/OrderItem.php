@@ -8,11 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
 
-use Marello\Bundle\InventoryBundle\Entity\ProductInventoryAwareInterface;
+use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Model\QuantityAwareInterface;
+use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
@@ -32,7 +32,7 @@ class OrderItem extends ExtendOrderItem implements
     QuantityAwareInterface,
     PriceAwareInterface,
     TaxAwareInterface,
-    ProductInventoryAwareInterface
+    ProductAwareInterface
 {
     /**
      * @var int

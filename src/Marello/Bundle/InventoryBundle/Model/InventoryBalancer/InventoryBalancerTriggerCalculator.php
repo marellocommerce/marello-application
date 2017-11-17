@@ -4,13 +4,13 @@ namespace Marello\Bundle\InventoryBundle\Model\InventoryBalancer;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\InventoryBundle\DependencyInjection\Configuration;
+use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
 
 class InventoryBalancerTriggerCalculator
 {
     /** @var ConfigManager $configManager */
-    protected $configManager;
+    private $configManager;
 
     /**
      * @param ConfigManager $configManager
@@ -22,10 +22,10 @@ class InventoryBalancerTriggerCalculator
 
     /**
      * Check whether the balance threshold has been reached
-     * @param VirtualInventoryLevel $virtualInventoryLevel
+     * @param VirtualInventoryLevelInterface $virtualInventoryLevel
      * @return bool
      */
-    public function isBalanceThresholdReached(VirtualInventoryLevel $virtualInventoryLevel)
+    public function isBalanceThresholdReached(VirtualInventoryLevelInterface $virtualInventoryLevel)
     {
         $balanceThreshold = $this->getBalanceTriggerThreshold();
         return $this->calculate($virtualInventoryLevel, $balanceThreshold);
@@ -33,16 +33,16 @@ class InventoryBalancerTriggerCalculator
 
     /**
      * Calculate the percentage the inventory currently is and compare it to systems threshold
-     * @param VirtualInventoryLevel $virtualInventoryLevel
+     * @param VirtualInventoryLevelInterface $virtualInventoryLevel
      * @param float $balanceThreshold
      * @return bool
      */
-    protected function calculate(VirtualInventoryLevel $virtualInventoryLevel, $balanceThreshold)
+    public function calculate(VirtualInventoryLevelInterface $virtualInventoryLevel, $balanceThreshold)
     {
-        $currentInventoryQty = $virtualInventoryLevel->getInventory();
-        $originalInventoryQty = $virtualInventoryLevel->getOrgInventory();
+        $currentInventoryQty = $virtualInventoryLevel->getInventoryQty();
+        $balancedInventoryQty = $virtualInventoryLevel->getBalancedInventoryQty();
         // percentages are stored in decimal numbers (i.e. 20% is 0.2)
-        $percentage = ($currentInventoryQty / $originalInventoryQty);
+        $percentage = ($currentInventoryQty / $balancedInventoryQty);
 
         return ((float)$percentage <= (float) $balanceThreshold);
     }

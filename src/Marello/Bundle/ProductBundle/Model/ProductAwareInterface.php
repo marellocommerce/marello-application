@@ -1,10 +1,10 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\Entity;
+namespace Marello\Bundle\ProductBundle\Model;
 
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 
-interface ProductInventoryAwareInterface
+interface ProductAwareInterface
 {
     public function getProduct();
 
