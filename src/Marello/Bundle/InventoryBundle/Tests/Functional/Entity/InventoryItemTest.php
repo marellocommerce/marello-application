@@ -55,7 +55,7 @@ class InventoryItemTest extends WebTestCase
             'import'
         );
 
-        $this->manager->updateInventoryLevels($context);
+        $this->manager->updateInventoryLevel($context);
 
         $this->assertEquals(true, $inventoryItem->hasInventoryLevels());
         $this->assertNotEmpty($inventoryItem->getInventoryLevels());
@@ -82,7 +82,7 @@ class InventoryItemTest extends WebTestCase
             'manual'
         );
 
-        $this->manager->updateInventoryLevels($context);
+        $this->manager->updateInventoryLevel($context);
 
         $this->assertEquals(true, $inventoryItem->hasInventoryLevels());
         $this->assertNotEmpty($inventoryItem->getInventoryLevels());
@@ -102,7 +102,7 @@ class InventoryItemTest extends WebTestCase
             'manual'
         );
 
-        $this->manager->updateInventoryLevels($context);
+        $this->manager->updateInventoryLevel($context);
 
         /** @var InventoryLevel $inventoryLevel */
         $inventoryLevel = $inventoryItem->getInventoryLevels()->first();

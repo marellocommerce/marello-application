@@ -64,6 +64,9 @@ class InventoryControllerTest extends WebTestCase
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testUpdateInventoryItemAddLevelAndIncrease()
     {
         /** @var InventoryItemManager $manager */

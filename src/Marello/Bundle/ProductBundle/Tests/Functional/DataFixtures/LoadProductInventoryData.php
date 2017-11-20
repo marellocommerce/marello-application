@@ -150,7 +150,7 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
 
         /** @var InventoryManager $inventoryManager */
         $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
-        $inventoryManager->updateInventoryLevels($context);
+        $inventoryManager->updateInventoryLevel($context);
     }
 
     /**

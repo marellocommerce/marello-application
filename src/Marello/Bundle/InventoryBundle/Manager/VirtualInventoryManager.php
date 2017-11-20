@@ -25,7 +25,7 @@ class VirtualInventoryManager implements InventoryManagerInterface
     protected $handler;
 
     /**
-     * @deprecated use updateInventoryLevels instead
+     * @deprecated use updateInventoryLevel instead
      * @param InventoryUpdateContext $context
      */
     public function updateInventoryItems(InventoryUpdateContext $context)

@@ -64,7 +64,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
@@ -93,11 +93,11 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
     protected $salesChannelGroup;
 
     /**
-     * @ORM\Column(name="inventory_qty", type="integer")
+     * @ORM\Column(name="inventory_qty", type="integer", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
-     *              "label"="marello.inventory.label"
+     *              "label"="marello.inventory.virtualinventorylevel.inventory.label"
      *          }
      *      }
      * )
@@ -107,11 +107,11 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
     protected $inventory;
 
     /**
-     * @ORM\Column(name="blncd_inventory_qty", type="integer")
+     * @ORM\Column(name="blncd_inventory_qty", type="integer", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
-     *              "label"="marello.inventory.balanced_inventory_qty.label"
+     *              "label"="marello.inventory.virtualinventorylevel.balanced_inventory_qty.label"
      *          }
      *      }
      * )
@@ -122,11 +122,11 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
 
 
     /**
-     * @ORM\Column(name="reserved_inventory_qty", type="integer")
+     * @ORM\Column(name="reserved_inventory_qty", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
-     *              "label"="marello.inventory.reserved_inventory_qty.label"
+     *              "label"="marello.inventory.virtualinventorylevel.reserved_inventory_qty.label"
      *          }
      *      }
      * )
@@ -139,7 +139,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      * @var Organization
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     protected $organization;
 
@@ -153,7 +153,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
     {
         $this->product = $product;
         $this->salesChannelGroup = $group;
-        $this->inventory = $this->orgInventory = $inventory;
+        $this->inventory = $this->balancedInventory = $inventory;
     }
 
     /**

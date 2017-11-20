@@ -93,10 +93,10 @@ marello:
             entity_plural_label:            Virtual Inventory Levels
             product.label:                  Product
             saleschannelgroup:              SalesChannel Group
-            inventory:                      Inventory Qty
-            balanced_inventory_qty:         Balanced Inventory Qty
-            reserved_inventory_qty:         Reserved Inventory Qty
-            organization:                   Organization
+            inventory.label:                Inventory Qty
+            balanced_inventory_qty.label:   Balanced Inventory Qty
+            reserved_inventory_qty.label:   Reserved Inventory Qty
+            organization.label:             Organization
 
         information.label:                  Inventory Information
         movements.label:                    Inventory Movements
