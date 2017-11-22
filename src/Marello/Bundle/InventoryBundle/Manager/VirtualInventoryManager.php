@@ -50,7 +50,7 @@ class VirtualInventoryManager implements InventoryManagerInterface
         }
 
         if (!$context->getRelatedEntity() instanceof ChannelAwareInterface) {
-            throw new \Exception('Cannot determine origin if entity is not aware of SalesChannel(s)');
+            throw new \Exception('Cannot determine origin when the entity is not aware of SalesChannel(s)');
         }
 
         $entity = $context->getRelatedEntity();
@@ -68,7 +68,8 @@ class VirtualInventoryManager implements InventoryManagerInterface
         }
         $level = $this->updateReservedInventory($level, $context->getAllocatedInventory());
         $level = $this->updateInventory($level, $context->getAllocatedInventory());
-        $this->handler->saveVirtualInventory($level, true);
+
+        $this->handler->saveVirtualInventory($level, true, true);
 
         $context->setValue('virtualInventoryLevel', $level);
         
@@ -96,13 +97,13 @@ class VirtualInventoryManager implements InventoryManagerInterface
      */
     private function updateInventory(VirtualInventoryLevel $level, $allocQty)
     {
-        if ($level->getReservedInventory() >= 0) {
-            $newInventoryQty = ($level->getInventory() - $allocQty);
+        if ($level->getReservedInventoryQty() >= 0) {
+            $newInventoryQty = ($level->getInventoryQty() - $allocQty);
         } else {
-            $newInventoryQty = ($level->getInventory() + $allocQty);
+            $newInventoryQty = ($level->getInventoryQty() + $allocQty);
         }
 
-        $level->setInventory($newInventoryQty);
+        $level->setInventoryQty($newInventoryQty);
 
         return $level;
     }
@@ -114,8 +115,8 @@ class VirtualInventoryManager implements InventoryManagerInterface
      */
     private function updateReservedInventory(VirtualInventoryLevel $level, $allocQty)
     {
-        $newInventoryQty = ($level->getReservedInventory() + $allocQty);
-        $level->setReservedInventory($newInventoryQty);
+        $newInventoryQty = ($level->getReservedInventoryQty() + $allocQty);
+        $level->setReservedInventoryQty($newInventoryQty);
         return $level;
     }
 

@@ -60,25 +60,25 @@ class InventoryBalancer
      * @param Product $product
      * @param bool $isFixed
      * @param bool $manual
+     * @throws \Exception
      */
     public function balanceInventory(Product $product, $isFixed = false, $manual = false)
     {
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->getInventoryItemFromProduct($product);
-        file_put_contents(
-            '/var/www/app/logs/debug.log',
-            __METHOD__. " #" . __LINE__ . " ". print_r($inventoryItem->getProduct()->getSku(), true). "\r\n",
-            FILE_APPEND
-        );
 
         if (!$inventoryItem) {
             throw new \Exception('No inventory item found');
         }
 
         $inventoryLevels = $inventoryItem->getInventoryLevels();
+
         $filteredInventoryLevels = $this->filterInventoryLevels($inventoryLevels, $isFixed);
         $sortedWhgLevels = $this->sortInventoryLevels($filteredInventoryLevels, $isFixed);
         $linkedWhgToScgs = $this->getLinkedWarehouseGroupsToSalesChannelGroups($filteredInventoryLevels);
+        if ((count($linkedWhgToScgs) <= 0) || (count($sortedWhgLevels) <= 0)) {
+            throw new \Exception('Fuck you dave');
+        }
         $this->generateResult($linkedWhgToScgs, $sortedWhgLevels, $product, $manual);
     }
 
@@ -223,11 +223,7 @@ class InventoryBalancer
             $inventoryTotalForWhg = $sortedWhgLevels[$whgId];
             $reservedInventoryQuantity = $this->getReservedInventoryForProductScgs($product, $scgs);
             $totalInventoryToBalance = ($inventoryTotalForWhg - $reservedInventoryQuantity);
-            file_put_contents(
-                '/var/www/app/logs/debug.log',
-                __METHOD__. " #" . __LINE__ . " INVENTORY TO BALANCE: ". print_r($totalInventoryToBalance, true) .  "\r\n",
-                FILE_APPEND
-            );
+
             /** @var BalancedResultObject[] $balancedResults */
             $balancedResults = $strategy->getResults($product, $scgs, $totalInventoryToBalance);
             $this->processResults($balancedResults, $product, $manual);
@@ -239,7 +235,7 @@ class InventoryBalancer
      * @param $results
      * @param $product
      */
-    protected function processResults($results, $product, $manual)
+    public function processResults($results, $product, $manual)
     {
         foreach ($results as $groupId => $result) {
             $virtualLevel = $this->virtualInventoryHandler
@@ -254,19 +250,10 @@ class InventoryBalancer
         foreach ($scgs as $scg) {
             $level = $this->virtualInventoryHandler->findExistingVirtualInventory($product, $scg);
             if ($level) {
-                $reservedInventory += $level->getReservedInventory();
-                file_put_contents(
-                    '/var/www/app/logs/debug.log',
-                    __METHOD__. " #" . __LINE__ . " RESERVED INVENTORY PER LEVEL: ". print_r($level->getReservedInventory(), true) .  "\r\n",
-                    FILE_APPEND
-                );
+                $reservedInventory += $level->getReservedInventoryQty();
             }
         }
-        file_put_contents(
-            '/var/www/app/logs/debug.log',
-            __METHOD__. " #" . __LINE__ . " TOTAL RESERVED INVENTORY: ". print_r($reservedInventory, true) .  "\r\n",
-            FILE_APPEND
-        );
+
         return $reservedInventory;
     }
 

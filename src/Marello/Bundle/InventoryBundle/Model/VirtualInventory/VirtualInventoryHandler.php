@@ -74,7 +74,27 @@ class VirtualInventoryHandler
         }
 
         try {
+            file_put_contents(
+                '/var/www/app/logs/debug.log',
+                "BY FORCE?? " . print_r($force, true) . "\r\n",
+                FILE_APPEND
+            );
+            file_put_contents(
+                '/var/www/app/logs/debug.log',
+                "IS MANUAL?? " . print_r($manual, true) . "\r\n",
+                FILE_APPEND
+            );
             if (!$existingLevel) {
+                file_put_contents(
+                    '/var/www/app/logs/debug.log',
+                    $level->getProduct()->getSku() . "\r\n",
+                    FILE_APPEND
+                );
+                file_put_contents(
+                    '/var/www/app/logs/debug.log',
+                    $level->getSalesChannelGroup()->getName() . "\r\n",
+                    FILE_APPEND
+                );
                 $this->getManagerForClass()->persist($level);
             }
 

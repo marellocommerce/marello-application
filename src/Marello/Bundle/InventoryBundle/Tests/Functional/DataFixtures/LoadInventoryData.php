@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures;
+namespace Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -8,14 +8,20 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesChannelGroupData;
 
-class LoadProductInventoryData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
+class LoadInventoryData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
     /**
      * @var Organization
@@ -57,6 +63,7 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
     {
         return [
             LoadProductData::class,
+            LoadSalesChannelGroupData::class
         ];
     }
 
@@ -121,11 +128,13 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
             $inventoryItemManager = $this->container->get('marello_inventory.manager.inventory_item_manager');
             /** @var InventoryItem $inventoryItem */
             $inventoryItem = $inventoryItemManager->getInventoryItem($product);
+
             if (!$inventoryItem) {
                 return;
             }
             $inventoryItem->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
             $this->handleInventoryUpdate($product, $inventoryItem, $data['inventory_qty'], 0, null);
+            $this->balanceInventory($product);
         }
     }
 
@@ -151,6 +160,31 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
         /** @var InventoryManager $inventoryManager */
         $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
         $inventoryManager->updateInventoryLevel($context);
+    }
+
+    /**
+     * @param Product $product
+     */
+    public function balanceInventory($product)
+    {
+        /** @var SalesChannel[] $salesChannels */
+        $salesChannels = $product->getChannels();
+        foreach ($salesChannels as $salesChannel) {
+            $salesChannelGroups[$salesChannel->getGroup()->getId()] = $salesChannel->getGroup();
+        }
+
+        /** @var VirtualInventoryHandler $virtualInventoryHandler */
+        $virtualInventoryHandler = $this->container->get('marello_inventory.model.virtualinventory.virtual_inventory_handler');
+
+        foreach ($salesChannelGroups as $salesChannelGroup) {
+            /** @var VirtualInventoryLevel $level */
+            $level = $virtualInventoryHandler->findExistingVirtualInventory($product, $salesChannelGroup);
+            if (!$level) {
+                $level = $virtualInventoryHandler->createVirtualInventory($product, $salesChannelGroup, 0);
+            }
+
+            $virtualInventoryHandler->saveVirtualInventory($level, true, true);
+        }
     }
 
     /**

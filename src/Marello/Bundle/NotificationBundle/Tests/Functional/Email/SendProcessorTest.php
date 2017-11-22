@@ -8,7 +8,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\NotificationBundle\Email\SendProcessor;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
-
+use Marello\Bundle\InventoryBundle\DependencyInjection\Configuration;
 class SendProcessorTest extends WebTestCase
 {
     /** @var SendProcessor */
@@ -35,7 +35,6 @@ class SendProcessorTest extends WebTestCase
     {
         /** @var Order $order */
         $order = $this->getReference('marello_order_0');
-
         $notificationsBefore = count(
             $this->getContainer()
                 ->get('doctrine')
@@ -59,20 +58,4 @@ class SendProcessorTest extends WebTestCase
         $this->assertEquals(1, $notificationsAfter - $notificationsBefore);
     }
 
-    /**
-     * @test
-     * @covers SendProcessor::sendNotification
-     * @expectedException \Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException
-     */
-    public function throwsExceptionWhenTemplateIsNotFound()
-    {
-        /** @var Order $order */
-        $order = $this->getReference('marello_order_1');
-
-        $this->sendProcessor->sendNotification(
-            'this is not a valid template name',
-            [$order->getCustomer()->getEmail()],
-            $order
-        );
-    }
 }

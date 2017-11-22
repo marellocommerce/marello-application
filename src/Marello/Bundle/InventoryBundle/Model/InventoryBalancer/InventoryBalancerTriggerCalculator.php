@@ -41,6 +41,10 @@ class InventoryBalancerTriggerCalculator
     {
         $currentInventoryQty = $virtualInventoryLevel->getInventoryQty();
         $balancedInventoryQty = $virtualInventoryLevel->getBalancedInventoryQty();
+        if ($balancedInventoryQty === 0) {
+            return false;
+        }
+
         // percentages are stored in decimal numbers (i.e. 20% is 0.2)
         $percentage = ($currentInventoryQty / $balancedInventoryQty);
 

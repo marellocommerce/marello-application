@@ -85,7 +85,6 @@ class InventoryManager implements InventoryManagerInterface
             InventoryUpdateEvent::INVENTORY_UPDATE_AFTER,
             new InventoryUpdateEvent($context)
         );
-
     }
 
 
