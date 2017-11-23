@@ -4,13 +4,13 @@ namespace Marello\Bundle\InventoryBundle\Model;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\ProductInventoryAwareInterface;
+use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 
 class InventoryUpdateContextFactory
 {
     /**
-     * @param ProductInventoryAwareInterface||ProductInterface $entity
+     * @param ProductAwareInterface||ProductInterface $entity
      * @param InventoryItem $inventoryItem
      * @param int $inventoryUpdateQty
      * @param int $allocatedInventoryUpdateQty
@@ -28,7 +28,7 @@ class InventoryUpdateContextFactory
         $relatedEntity = null,
         $virtual = false
     ) {
-        if (!$entity instanceof ProductInterface && $entity instanceof ProductInventoryAwareInterface) {
+        if (!$entity instanceof ProductInterface && $entity instanceof ProductAwareInterface) {
             $entity = $entity->getProduct();
         }
 

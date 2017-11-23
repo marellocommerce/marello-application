@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Entity\ProductInventoryAwareInterface;
+use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\PurchaseOrderBundle\Entity\Repository\PurchaseOrderItemRepository")
@@ -20,7 +20,7 @@ use Marello\Bundle\InventoryBundle\Entity\ProductInventoryAwareInterface;
  * @Oro\Config()
  */
 class PurchaseOrderItem implements
-    ProductInventoryAwareInterface
+    ProductAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     

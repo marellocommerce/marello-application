@@ -22,7 +22,7 @@ marello:
             selected_channels.label:            Selected Sales Channels
             localization.label:                 Localization
             group.label:                        Group
-            create_own_group.label:             Create Own Sales Channel Group
+            create_own_group.label:             Create Sales Channel Group
             messages:
                 success:
                     saved:                      Sales Channel has been saved successfully

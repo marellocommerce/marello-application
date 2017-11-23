@@ -14,14 +14,14 @@ class InventoryItemTest extends \PHPUnit_Framework_TestCase
 
     public function testAccessors()
     {
-        $this->assertPropertyAccessors(new InventoryItem(new Warehouse()), [
+        $this->assertPropertyAccessors(new InventoryItem(new Warehouse(), new Product()), [
             ['id', 42],
-            ['product', new Product()],
             ['desiredInventory', 42],
             ['purchaseInventory', 42],
             ['replenishment', 'some string']
         ]);
-        $this->assertPropertyCollections(new InventoryItem(new Warehouse()), [
+
+        $this->assertPropertyCollections(new InventoryItem(new Warehouse(), new Product()), [
             ['inventoryLevels', new InventoryLevel()],
         ]);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\Entity;
+namespace Marello\Bundle\InventoryBundle\Model;
 
 interface InventoryItemAwareInterface
 {

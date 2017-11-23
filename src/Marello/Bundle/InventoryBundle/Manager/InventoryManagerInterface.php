@@ -7,7 +7,7 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 interface InventoryManagerInterface
 {
     /**
-     * @deprecated use updateInventoryLevels instead
+     * @deprecated use updateInventoryLevel instead
      * @param InventoryUpdateContext $context
      */
     public function updateInventoryItems(InventoryUpdateContext $context);

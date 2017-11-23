@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\InventoryBundle\Model\InventoryQtyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -33,7 +34,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class InventoryLevel implements OrganizationAwareInterface
+class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInterface
 {
     /**
      * @ORM\Id

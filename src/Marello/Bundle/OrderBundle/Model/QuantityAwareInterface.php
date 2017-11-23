@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ProductBundle\Model;
+namespace Marello\Bundle\OrderBundle\Model;
 
 interface QuantityAwareInterface
 {

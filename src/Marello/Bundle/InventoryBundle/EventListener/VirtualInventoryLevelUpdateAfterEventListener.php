@@ -10,6 +10,7 @@ use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\InventoryBundle\Event\VirtualInventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
 use Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
 
@@ -56,11 +57,15 @@ class VirtualInventoryLevelUpdateAfterEventListener
             // do nothing when context isn't for virtual inventory levels
             return;
         }
+
         if (!$context->getValue(self::VIRTUAL_LEVEL_CONTEXT_KEY)
             || !$context->getValue(self::SALESCHANNELGROUP_CONTEXT_KEY)
         ) {
-            // cannot rebalance inventory for product, we don't enough variables to accurately rebalance
-            return;
+            throw new \InvalidArgumentException(
+                sprintf('To few arguments given in the context, no %s or %s given, please check your data',
+                    self::VIRTUAL_LEVEL_CONTEXT_KEY, self::SALESCHANNELGROUP_CONTEXT_KEY
+                )
+            );
         }
 
         /** @var ProductInterface $product */
@@ -78,13 +83,13 @@ class VirtualInventoryLevelUpdateAfterEventListener
     /**
      * Check if the rebalancing is applicable for the product
      * @param ProductInterface $product
-     * @param VirtualInventoryLevel $level
+     * @param VirtualInventoryLevelInterface $level
      * @param SalesChannelGroup $group
      * @return bool
      */
     protected function isRebalanceApplicable(
         ProductInterface $product,
-        VirtualInventoryLevel $level = null,
+        VirtualInventoryLevelInterface $level = null,
         SalesChannelGroup $group = null
     ){
         if (!$level || !$group) {

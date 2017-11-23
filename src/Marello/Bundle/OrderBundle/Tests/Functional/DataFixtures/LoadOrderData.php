@@ -13,7 +13,7 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingData;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductInventoryData;
+use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryData;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
@@ -70,7 +70,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             LoadSalesData::class,
             LoadProductData::class,
             LoadProductChannelPricingData::class,
-            LoadProductInventoryData::class,
+            LoadInventoryData::class,
         ];
     }
 

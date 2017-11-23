@@ -9,7 +9,7 @@ use Marello\Bundle\PricingBundle\Subtotal\Model\LineItemsAwareInterface;
 use Marello\Bundle\PricingBundle\Subtotal\Model\Subtotal;
 use Marello\Bundle\PricingBundle\Subtotal\Provider\AbstractSubtotalProvider;
 use Marello\Bundle\PricingBundle\Subtotal\Provider\SubtotalProviderInterface;
-use Marello\Bundle\ProductBundle\Model\QuantityAwareInterface;
+use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
 use Oro\Bundle\CurrencyBundle\Provider\DefaultCurrencyProviderInterface;
 use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
