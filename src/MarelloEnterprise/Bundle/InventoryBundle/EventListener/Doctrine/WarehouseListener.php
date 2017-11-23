@@ -5,7 +5,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 
 class WarehouseListener
 {
@@ -33,7 +33,7 @@ class WarehouseListener
         if ($this->installed && !$warehouse->getGroup()) {
             $em = $args->getEntityManager();
             $whType = $warehouse->getWarehouseType();
-            if ($whType && $whType->getName() === LoadWarehouseTypeData::FIXED_TYPE) {
+            if ($whType && $whType->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
                 $group = new WarehouseGroup();
                 $group
                     ->setName($warehouse->getLabel())

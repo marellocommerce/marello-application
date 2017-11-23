@@ -2,14 +2,14 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Type;
 
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 class WarehouseGroupType extends AbstractType
 {
     const NAME = 'marello_warehouse_group';
@@ -26,7 +26,7 @@ class WarehouseGroupType extends AbstractType
             $entityId = $entity->getId();
             if ($entityId) {
                 foreach ($entity->getWarehouses() as $warehouse) {
-                    if ($warehouse->getWarehouseType()->getName() === LoadWarehouseTypeData::FIXED_TYPE) {
+                    if ($warehouse->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
                         $fixedType = true;
                     }
                 }

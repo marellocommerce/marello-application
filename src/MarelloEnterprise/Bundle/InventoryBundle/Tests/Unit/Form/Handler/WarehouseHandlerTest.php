@@ -8,7 +8,7 @@ use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
-use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseHandler;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Component\Testing\Unit\EntityTrait;
@@ -102,8 +102,8 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
         /** @var Warehouse|\PHPUnit_Framework_MockObject_MockObject $group */
         $group = $this->createMock(WarehouseGroup::class);
 
-        $typeBefore = $this->getEntity(WarehouseType::class, ['name' => LoadWarehouseTypeData::FIXED_TYPE]);
-        $typeAfter = $this->getEntity(WarehouseType::class, ['name' => LoadWarehouseTypeData::GLOBAL_TYPE]);
+        $typeBefore = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED]);
+        $typeAfter = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]);
 
         $this->entity
             ->expects(static::at(0))
@@ -169,8 +169,8 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->with('label group')
             ->willReturnSelf();
 
-        $typeBefore = $this->getEntity(WarehouseType::class, ['name' => LoadWarehouseTypeData::GLOBAL_TYPE]);
-        $typeAfter = $this->getEntity(WarehouseType::class, ['name' => LoadWarehouseTypeData::FIXED_TYPE]);
+        $typeBefore = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]);
+        $typeAfter = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED]);
 
         $this->entity
             ->expects(static::at(0))
@@ -213,8 +213,8 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('isSystem')
             ->willReturn(true);
 
-        $typeBefore = $this->getEntity(WarehouseType::class, ['name' => LoadWarehouseTypeData::GLOBAL_TYPE]);
-        $typeAfter = $this->getEntity(WarehouseType::class, ['name' => LoadWarehouseTypeData::FIXED_TYPE]);
+        $typeBefore = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]);
+        $typeAfter = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED]);
 
         $this->entity
             ->expects(static::at(0))

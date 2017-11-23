@@ -2,11 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Manager;
 
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager as BaseInventoryManager;
 
 class InventoryManager extends BaseInventoryManager
@@ -16,8 +17,13 @@ class InventoryManager extends BaseInventoryManager
      * @param InventoryUpdateContext $context
      * @throws \Exception
      */
-    public function updateInventoryLevels(InventoryUpdateContext $context)
+    public function updateInventoryLevel(InventoryUpdateContext $context)
     {
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::INVENTORY_UPDATE_BEFORE,
+            new InventoryUpdateEvent($context)
+        );
+
         if (!$this->contextValidator->validateContext($context)) {
             throw new \Exception('Context structure not valid.');
         }
@@ -44,15 +50,15 @@ class InventoryManager extends BaseInventoryManager
             $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
         }
 
-        $this->updateInventoryLevel(
-            $level,
-            $context->getChangeTrigger(),
-            $inventory,
-            $context->getInventory(),
-            $allocatedInventory,
-            $context->getAllocatedInventory(),
-            $context->getUser(),
-            $context->getRelatedEntity()
+        $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
+        $em = $this->doctrineHelper->getEntityManager($updatedLevel);
+        $em->persist($updatedLevel);
+
+        $context->setInventoryLevel($updatedLevel);
+
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::INVENTORY_UPDATE_AFTER,
+            new InventoryUpdateEvent($context)
         );
     }
 

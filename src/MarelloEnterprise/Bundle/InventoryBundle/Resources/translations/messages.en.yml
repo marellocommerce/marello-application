@@ -42,7 +42,7 @@ marelloenterprise:
         warehouse:
             form:
                 select_warehouse:       Select Warehouse
-                create_own_group:       Create Own Warehouse Group
+                create_own_group:       Create Warehouse Group
 
         warehousegroup:
             datablock:
