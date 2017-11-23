@@ -203,7 +203,7 @@ define(function(require) {
             }
 
             var $oldAddress = this.$address;
-            this.setAddress($(address));
+            this.setAddress($($.trim(address.replace(/<!--(.*?)-->/ig, ''))));
 
             $oldAddress.parent().trigger('content:remove');
             $oldAddress.inputWidget('dispose');
