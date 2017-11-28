@@ -62,7 +62,6 @@ class OrderPickAndPackAction extends OrderTransitionAction
                 $this->handleInventoryUpdate($item, null, $item->getQuantity(), $order, $warehouse);
             });
         }
-
     }
 
     /**

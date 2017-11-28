@@ -24,7 +24,9 @@ abstract class AbstractBalancerStrategy implements BalancerStrategyInterface
         ProductInterface $product,
         ArrayAccess $salesChannelGroups,
         $inventoryTotal
-    ) {}
+    ) {
+       //Function should be overridden by the derived BalancerStrategy
+    }
 
     /**
      * Create Result object for balanced inventory

@@ -33,6 +33,7 @@ class EntitySerializer extends BaseEntitySerializer
      * @param BaseDataAccessorInterface    $dataAccessor
      * @param BaseDataTransformerInterface $dataTransformer
      * @param AclProtectedQueryFactory     $queryFactory
+     * @param WorkflowManager              $workflowManager
      */
     public function __construct(
         ManagerRegistry $doctrine,
@@ -41,7 +42,6 @@ class EntitySerializer extends BaseEntitySerializer
         BaseDataTransformerInterface $dataTransformer,
         AclProtectedQueryFactory $queryFactory,
         WorkflowManager $workflowManager
-
     ) {
         $doctrineHelper = new DoctrineHelper($doctrine);
         $fieldAccessor  = new FieldAccessor(
@@ -49,6 +49,7 @@ class EntitySerializer extends BaseEntitySerializer
             $dataAccessor,
             new ExtendEntityFieldFilter($configManager)
         );
+
         parent::__construct(
             $doctrineHelper,
             $dataAccessor,
@@ -148,7 +149,12 @@ class EntitySerializer extends BaseEntitySerializer
                 if ($this->hasWorkflowAssociation($entity) && $this->hasWorkflowItemField($config)) {
                     $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($entity);
                     $targetConfig = $this->getTargetEntity($config, $field);
-                    $value = $this->serializeEntities($workflowItems, self::WORKFLOW_ITEM_FQCN, $targetConfig, $context);
+                    $value = $this->serializeEntities(
+                        $workflowItems,
+                        self::WORKFLOW_ITEM_FQCN,
+                        $targetConfig,
+                        $context
+                    );
                     $result[$field] = $this->transformValue($entityClass, $field, $value, $context, $fieldConfig);
                 }
             }
@@ -176,5 +182,4 @@ class EntitySerializer extends BaseEntitySerializer
     {
         return $this->workflowManager->hasWorkflowItemsByEntity($entity);
     }
-
 }

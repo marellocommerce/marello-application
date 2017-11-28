@@ -38,7 +38,10 @@ class InventoryLevelType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('warehouse', EntityType::class, [
+            ->add(
+                'warehouse',
+                EntityType::class,
+                [
                     'class' => Warehouse::class,
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('wh')
@@ -47,22 +50,35 @@ class InventoryLevelType extends AbstractType
                     'attr'  => ['readonly' => true]
                 ]
             )
-            ->add('adjustmentOperator', ChoiceType::class, [
-                'choices'            => [
-                    InventoryLevelCalculator::OPERATOR_INCREASE => 'increase',
-                    InventoryLevelCalculator::OPERATOR_DECREASE => 'decrease',
-                ],
-                'translation_domain' => 'MarelloInventoryChangeDirection',
-                'mapped' => false
-            ])
-            ->add('quantity', NumberType::class, [
-                'constraints' => new GreaterThanOrEqual(0),
-                'data'        => 0,
-                'mapped' => false
-            ])
-            ->add('inventoryQty', NumberType::class, [
-                'disabled' => true
-            ]);
+            ->add(
+                'adjustmentOperator',
+                ChoiceType::class,
+                [
+                    'choices' =>
+                        [
+                            InventoryLevelCalculator::OPERATOR_INCREASE => 'increase',
+                            InventoryLevelCalculator::OPERATOR_DECREASE => 'decrease',
+                        ],
+                    'translation_domain' => 'MarelloInventoryChangeDirection',
+                    'mapped' => false
+                ]
+            )
+            ->add(
+                'quantity',
+                NumberType::class,
+                [
+                    'constraints' => new GreaterThanOrEqual(0),
+                    'data'        => 0,
+                    'mapped' => false
+                ]
+            )
+            ->add(
+                'inventoryQty',
+                NumberType::class,
+                [
+                    'disabled' => true
+                ]
+            );
 
         $builder->addEventSubscriber($this->subscriber);
     }

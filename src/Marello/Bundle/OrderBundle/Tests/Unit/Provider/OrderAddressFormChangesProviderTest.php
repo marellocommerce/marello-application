@@ -38,7 +38,8 @@ class OrderAddressFormChangesProviderTest extends \PHPUnit_Framework_TestCase
         $this->orderAddressFormChangesProvider = new OrderAddressFormChangesProvider(
             $this->twigEngine,
             $this->formFactory,
-            $this->addressType);
+            $this->addressType
+        );
     }
 
     public function testProcessFormChanges()

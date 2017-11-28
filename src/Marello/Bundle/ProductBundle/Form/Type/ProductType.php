@@ -136,7 +136,8 @@ class ProductType extends AbstractType
                     'cascade_validation' => true,
                 ]
             )
-            ->add('image',
+            ->add(
+                'image',
                 ImageType::class,
                 [
                     'label' => 'marello.product.image.label',

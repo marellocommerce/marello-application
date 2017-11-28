@@ -8,7 +8,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\NotificationBundle\Email\SendProcessor;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
-use Marello\Bundle\InventoryBundle\DependencyInjection\Configuration;
+
 class SendProcessorTest extends WebTestCase
 {
     /** @var SendProcessor */
@@ -57,5 +57,4 @@ class SendProcessorTest extends WebTestCase
 
         $this->assertEquals(1, $notificationsAfter - $notificationsBefore);
     }
-
 }

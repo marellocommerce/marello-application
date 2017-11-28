@@ -32,5 +32,4 @@ class MarelloSupplierBundle implements Migration
         $table->addColumn('email', 'string', ['notnull' => false, 'length' => 255]);
         $table->addUniqueIndex(['email']);
     }
-
 }

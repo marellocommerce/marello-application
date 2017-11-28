@@ -62,8 +62,10 @@ class VirtualInventoryLevelUpdateAfterEventListener
             || !$context->getValue(self::SALESCHANNELGROUP_CONTEXT_KEY)
         ) {
             throw new \InvalidArgumentException(
-                sprintf('To few arguments given in the context, no %s or %s given, please check your data',
-                    self::VIRTUAL_LEVEL_CONTEXT_KEY, self::SALESCHANNELGROUP_CONTEXT_KEY
+                sprintf(
+                    'To few arguments given in the context, no %s or %s given, please check your data',
+                    self::VIRTUAL_LEVEL_CONTEXT_KEY,
+                    self::SALESCHANNELGROUP_CONTEXT_KEY
                 )
             );
         }
@@ -91,7 +93,7 @@ class VirtualInventoryLevelUpdateAfterEventListener
         ProductInterface $product,
         VirtualInventoryLevelInterface $level = null,
         SalesChannelGroup $group = null
-    ){
+    ) {
         if (!$level || !$group) {
             // cannot rebalance level without appropriate information to retrieve level
             return false;

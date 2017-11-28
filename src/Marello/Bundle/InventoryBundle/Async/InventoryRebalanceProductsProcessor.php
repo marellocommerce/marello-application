@@ -64,7 +64,13 @@ class InventoryRebalanceProductsProcessor implements MessageProcessorInterface, 
         $products = $this->repository->findAll();
         /** @var ProductInterface $product */
         foreach ($products as $product) {
-            $this->producer->send(Topics::RESOLVE_REBALANCE_INVENTORY, ['product_id' => $product->getId(), 'jobId' => md5( $product->getId())]);
+            $this->producer->send(
+                Topics::RESOLVE_REBALANCE_INVENTORY,
+                [
+                    'product_id' => $product->getId(),
+                    'jobId' => md5($product->getId())
+                ]
+            );
         }
 
         return self::ACK;

@@ -20,20 +20,33 @@ class InventoryItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('replenishment', EnumChoiceType::class,
+            ->add(
+                'replenishment',
+                EnumChoiceType::class,
                 [
                     'enum_code' => 'marello_inv_reple',
                     'required'  => true,
                     'label'     => 'marello.inventory.inventoryitem.replenishment.label',
                 ]
             )
-            ->add('desiredInventory', NumberType::class, [
-                'constraints' => new GreaterThanOrEqual(0)
-            ])
-            ->add('purchaseInventory', NumberType::class, [
-                'constraints' => new GreaterThanOrEqual(0)
-            ])
-            ->add('inventoryLevels', InventoryLevelCollectionType::class);
+            ->add(
+                'desiredInventory',
+                NumberType::class,
+                [
+                    'constraints' => new GreaterThanOrEqual(0)
+                ]
+            )
+            ->add(
+                'purchaseInventory',
+                NumberType::class,
+                [
+                    'constraints' => new GreaterThanOrEqual(0)
+                ]
+            )
+            ->add(
+                'inventoryLevels',
+                InventoryLevelCollectionType::class
+            );
     }
 
     /**

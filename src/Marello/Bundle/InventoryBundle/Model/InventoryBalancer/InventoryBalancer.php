@@ -100,8 +100,10 @@ class InventoryBalancer
     protected function filterInventoryLevels($inventoryLevels, $isFixed)
     {
         /** @var InventoryItem[]|ArrayCollection $inventoryLevels */
-        $inventoryLevels = $inventoryLevels->filter(function($level) use ($isFixed) {
-            return ($this->filterInventoryLevelByWarehouseType($level, $isFixed) && $this->hasWarehouseChannelGroupLink($level));
+        $inventoryLevels = $inventoryLevels->filter(function ($level) use ($isFixed) {
+            return ($this->filterInventoryLevelByWarehouseType($level, $isFixed)
+                && $this->hasWarehouseChannelGroupLink($level)
+            );
         });
 
         return $inventoryLevels;
@@ -116,7 +118,7 @@ class InventoryBalancer
     protected function sortInventoryLevels($inventoryLevels, $isFixed)
     {
         $sortedWhgLevels = [];
-        $inventoryLevels->map(function($level) use (&$sortedWhgLevels, $isFixed) {
+        $inventoryLevels->map(function ($level) use (&$sortedWhgLevels, $isFixed) {
             /** @var InventoryLevel $level */
             /** @var Warehouse $warehouse */
             $warehouse = $level->getWarehouse();
@@ -144,13 +146,14 @@ class InventoryBalancer
     protected function getLinkedWarehouseGroupsToSalesChannelGroups($inventoryLevels)
     {
         $linkedWhgToScgs = [];
-        $inventoryLevels->map(function($level) use (&$linkedWhgToScgs) {
+        $inventoryLevels->map(function ($level) use (&$linkedWhgToScgs) {
             /** @var InventoryLevel $level */
             /** @var Warehouse $warehouse */
             $warehouse = $level->getWarehouse();
             /** @var WarehouseGroup $warehouseGroup */
             $warehouseGroup = $this->getGroup($warehouse);
-            $linkedWhgToScgs[$warehouseGroup->getId()] = $this->getWarehouseChannelGroupLink($warehouse)->getSalesChannelGroups();
+            $channelLink = $this->getWarehouseChannelGroupLink($warehouse);
+            $linkedWhgToScgs[$warehouseGroup->getId()] = $channelLink->getSalesChannelGroups();
         });
 
         return $linkedWhgToScgs;

@@ -91,7 +91,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
                 'value' => 10,
                 'currency' => 'EUR',
                 'product' => $this->entity
-            ]);
+            ]
+        );
 
         /** @var ProductPrice $secondProductPrice */
         $secondProductPrice = $this->getEntity(
@@ -101,7 +102,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
                 'value' => 15,
                 'currency' => 'EUR',
                 'product' => $this->entity
-            ]);
+            ]
+        );
 
         $this->entity
             ->addPrice($firstProductPrice)
@@ -133,7 +135,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
                 'id' => 1,
                 'salesChannel' => $productChannel,
                 'taxCode' => $channelTaxCode
-            ]);
+            ]
+        );
 
         $this->entity
             ->setTaxCode($defaultTaxCode)

@@ -14,6 +14,8 @@ class NotificationController extends Controller
      * @Config\Route("/view/thread/{id}", name="marello_notification_thread_view", requirements={"id"="\d+"})
      * @Config\Template("MarelloNotificationBundle:Notification/Thread:notificationItem.html.twig")
      * @Security\AclAncestor("marello_notification_notification_view")
+     * @param Notification $entity
+     * @return array
      */
     public function viewThreadAction(Notification $entity)
     {

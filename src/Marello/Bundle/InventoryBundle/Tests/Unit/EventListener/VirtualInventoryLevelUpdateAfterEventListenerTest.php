@@ -78,7 +78,8 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
     /**
      * Test that the event is not handled because the context is for an inventory level
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage To few arguments given in the context, no virtualInventoryLevel or salesChannelGroup given, please check your data
+     * @expectedExceptionMessage To few arguments given in the context,
+        no virtualInventoryLevel or salesChannelGroup given, please check your data
      */
     public function testThrowInvalidArgumentExceptionOnToFewDataGivenInContext()
     {

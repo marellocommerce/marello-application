@@ -28,7 +28,7 @@ class PurchaseOrderItemValidator extends ConstraintValidator
             ;
         }
 
-        if ($value->getOrderedAmount() == null || $value->getOrderedAmount() <= 0 ) {
+        if ($value->getOrderedAmount() == null || $value->getOrderedAmount() <= 0) {
             $this->context
                 ->buildViolation($constraint->orderedAmountMessage)
                 ->atPath('orderedAmount')

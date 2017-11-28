@@ -88,16 +88,16 @@ class OrderType extends AbstractType
     {
         $builder
             ->add(
-                    sprintf('%sAddress', $type),
-                    OrderAddressType::NAME,
-                    [
-                        'label' => sprintf('oro.order.%s_address.label', $type),
-                        'object' => $options['data'],
-                        'required' => false,
-                        'addressType' => $type,
-                        'isEditEnabled' => true
-                    ]
-                );
+                sprintf('%sAddress', $type),
+                OrderAddressType::NAME,
+                [
+                    'label' => sprintf('oro.order.%s_address.label', $type),
+                    'object' => $options['data'],
+                    'required' => false,
+                    'addressType' => $type,
+                    'isEditEnabled' => true
+                ]
+            );
     }
 
     /**

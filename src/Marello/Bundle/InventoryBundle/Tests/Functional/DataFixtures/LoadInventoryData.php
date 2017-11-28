@@ -173,17 +173,17 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
             $salesChannelGroups[$salesChannel->getGroup()->getId()] = $salesChannel->getGroup();
         }
 
-        /** @var VirtualInventoryHandler $virtualInventoryHandler */
-        $virtualInventoryHandler = $this->container->get('marello_inventory.model.virtualinventory.virtual_inventory_handler');
+        /** @var VirtualInventoryHandler $handler */
+        $handler = $this->container->get('marello_inventory.model.virtualinventory.virtual_inventory_handler');
 
         foreach ($salesChannelGroups as $salesChannelGroup) {
             /** @var VirtualInventoryLevel $level */
-            $level = $virtualInventoryHandler->findExistingVirtualInventory($product, $salesChannelGroup);
+            $level = $handler->findExistingVirtualInventory($product, $salesChannelGroup);
             if (!$level) {
-                $level = $virtualInventoryHandler->createVirtualInventory($product, $salesChannelGroup);
+                $level = $handler->createVirtualInventory($product, $salesChannelGroup);
             }
 
-            $virtualInventoryHandler->saveVirtualInventory($level, true, true);
+            $handler->saveVirtualInventory($level, true, true);
         }
     }
 

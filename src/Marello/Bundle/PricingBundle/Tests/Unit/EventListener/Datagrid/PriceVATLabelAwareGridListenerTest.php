@@ -56,14 +56,15 @@ class PriceVATLabelAwareGridListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->listener->onBuildBefore($event);
 
-        static::assertEquals([
-            'name' => 'marello-order-items',
-            'columns' => [
-                $column => [
-                    'label' => $expectedLabel
+        static::assertEquals(
+            [
+                'name' => 'marello-order-items',
+                'columns' => [
+                    $column => [
+                        'label' => $expectedLabel
+                    ]
                 ]
-            ]
-        ],
+            ],
             $gridConfig->toArray()
         );
     }

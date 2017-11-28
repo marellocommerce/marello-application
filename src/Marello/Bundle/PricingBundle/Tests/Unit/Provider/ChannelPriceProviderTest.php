@@ -140,7 +140,6 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(
             [OrderItemFormChangesProvider::ITEMS_FIELD => $expectedData],
             $this->context->getResult()
-
         );
     }
 
