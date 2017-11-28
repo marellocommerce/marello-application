@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\SalesBundle\Migrations\Data\ORM\LoadSalesChannelGroupData;
+use Marello\Bundle\SalesBundle\Migrations\Data\ORM\LoadSalesChannelGroupData as MigrationLoadSalesChannelGroupData;
 
 class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -71,7 +71,7 @@ class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
-            LoadSalesChannelGroupData::class,
+            MigrationLoadSalesChannelGroupData::class,
         ];
     }
 

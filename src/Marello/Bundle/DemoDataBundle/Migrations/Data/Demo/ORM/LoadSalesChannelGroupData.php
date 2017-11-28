@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 
 class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -70,6 +71,7 @@ class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixt
 
             $this->setReference($values['name'], $group);
             $this->manager->persist($group);
+            $this->createWarehouseChannelGroupLink($group);
         }
 
         $this->manager->flush();
@@ -84,6 +86,22 @@ class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixt
         $this->loadSalesChannelGroups();
     }
 
+    /**
+     * Add WarehouseChanelGroupLink to SalesChannel group since listener will only
+     * add them to the WHG Link if application is installed
+     * @param SalesChannelGroup $channelGroup
+     */
+    private function createWarehouseChannelGroupLink(SalesChannelGroup $channelGroup)
+    {
+        /** @var WarehouseChannelGroupLink $systemWarehouseChannelGroupLink */
+        $systemWarehouseChannelGroupLink = $this->manager
+            ->getRepository(WarehouseChannelGroupLink::class)
+            ->findSystemLink();
+
+        $systemWarehouseChannelGroupLink->addSalesChannelGroup($channelGroup);
+
+        $this->manager->persist($systemWarehouseChannelGroupLink);
+    }
     /**
      * Add sales channels to group
      * @param SalesChannelGroup $group
