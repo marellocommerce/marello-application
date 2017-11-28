@@ -210,10 +210,10 @@ class InventoryBalancer
     }
 
     /**
-     * Geenrate
-     * @param $linkedWhgToScgs
-     * @param $sortedWhgLevels
-     * @param $product
+     * Generate & process balancer result
+     * @param array $linkedWhgToScgs
+     * @param array $sortedWhgLevels
+     * @param ProductInterface $product
      * @param bool $flushManager
      */
     public function generateResult($linkedWhgToScgs, $sortedWhgLevels, $product, $flushManager)
@@ -236,7 +236,7 @@ class InventoryBalancer
      * @param ProductInterface $product
      * @param $flushManager bool
      */
-    public function processResults($results, $product, $flushManager)
+    private function processResults($results, $product, $flushManager)
     {
         foreach ($results as $groupId => $result) {
             $virtualLevel = $this->virtualInventoryHandler
