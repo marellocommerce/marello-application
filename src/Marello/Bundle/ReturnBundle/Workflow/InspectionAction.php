@@ -72,13 +72,6 @@ class InspectionAction extends AbstractAction
             $entity
         );
 
-        file_put_contents(
-            '/home/www/vhosts/marello-ee-dev.test-madia.nl/app/logs/debug.log',
-            print_r($context->getIsVirtual()) . "\r\n",
-            FILE_APPEND
-        );
-
-
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,
             new InventoryUpdateEvent($context)

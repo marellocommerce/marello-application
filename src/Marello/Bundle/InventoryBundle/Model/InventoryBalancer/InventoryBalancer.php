@@ -4,6 +4,8 @@ namespace Marello\Bundle\InventoryBundle\Model\InventoryBalancer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -59,10 +61,10 @@ class InventoryBalancer
      * Balance inventory for a product
      * @param Product $product
      * @param bool $isFixed
-     * @param bool $manual
+     * @param bool $flushManager
      * @throws \Exception
      */
-    public function balanceInventory(Product $product, $isFixed = false, $manual = false)
+    public function balanceInventory(Product $product, $isFixed = false, $flushManager = false)
     {
         /** @var InventoryItem $inventoryItem */
         $inventoryItem = $this->getInventoryItemFromProduct($product);
@@ -76,10 +78,8 @@ class InventoryBalancer
         $filteredInventoryLevels = $this->filterInventoryLevels($inventoryLevels, $isFixed);
         $sortedWhgLevels = $this->sortInventoryLevels($filteredInventoryLevels, $isFixed);
         $linkedWhgToScgs = $this->getLinkedWarehouseGroupsToSalesChannelGroups($filteredInventoryLevels);
-        if ((count($linkedWhgToScgs) <= 0) || (count($sortedWhgLevels) <= 0)) {
-            throw new \Exception('Fuck you dave');
-        }
-        $this->generateResult($linkedWhgToScgs, $sortedWhgLevels, $product, $manual);
+
+        $this->generateResult($linkedWhgToScgs, $sortedWhgLevels, $product, $flushManager);
     }
 
     /**
@@ -210,13 +210,13 @@ class InventoryBalancer
     }
 
     /**
-     *
+     * Geenrate
      * @param $linkedWhgToScgs
      * @param $sortedWhgLevels
      * @param $product
-     * @param $manual
+     * @param bool $flushManager
      */
-    protected function generateResult($linkedWhgToScgs, $sortedWhgLevels, $product, $manual)
+    public function generateResult($linkedWhgToScgs, $sortedWhgLevels, $product, $flushManager)
     {
         $strategy = $this->getStrategy();
         foreach ($linkedWhgToScgs as $whgId => $scgs) {
@@ -226,25 +226,32 @@ class InventoryBalancer
 
             /** @var BalancedResultObject[] $balancedResults */
             $balancedResults = $strategy->getResults($product, $scgs, $totalInventoryToBalance);
-            $this->processResults($balancedResults, $product, $manual);
+            $this->processResults($balancedResults, $product, $flushManager);
         }
     }
 
     /**
-     * Process results by creating virtual inventory item
-     * @param $results
-     * @param $product
+     * Process results by creating virtual inventory level
+     * @param array $results
+     * @param ProductInterface $product
+     * @param $flushManager bool
      */
-    public function processResults($results, $product, $manual)
+    public function processResults($results, $product, $flushManager)
     {
         foreach ($results as $groupId => $result) {
             $virtualLevel = $this->virtualInventoryHandler
                 ->createVirtualInventory($product, $result->getGroup(), $result->getInventoryQty());
-            $this->virtualInventoryHandler->saveVirtualInventory($virtualLevel, true, $manual);
+            $this->virtualInventoryHandler->saveVirtualInventory($virtualLevel, true, $flushManager);
         }
     }
 
-    protected function getReservedInventoryForProductScgs(Product $product, $scgs)
+    /**
+     * Get reserved inventory
+     * @param ProductInterface $product
+     * @param SalesChannelGroup[] $scgs
+     * @return int
+     */
+    protected function getReservedInventoryForProductScgs(ProductInterface $product, $scgs)
     {
         $reservedInventory = 0;
         foreach ($scgs as $scg) {

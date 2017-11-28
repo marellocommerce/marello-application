@@ -10,7 +10,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
@@ -73,7 +73,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      *      }
      * )
      *
-     * @var Product
+     * @var ProductInterface
      */
     protected $product;
 
@@ -145,11 +145,11 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
 
     /**
      * VirtualInventoryLevel constructor.
-     * @param Product $product
+     * @param ProductInterface $product
      * @param SalesChannelGroup $group
      * @param null $inventory
      */
-    public function __construct(Product $product, SalesChannelGroup $group, $inventory = null)
+    public function __construct(ProductInterface $product, SalesChannelGroup $group, $inventory = null)
     {
         $this->product = $product;
         $this->salesChannelGroup = $group;
@@ -165,7 +165,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
     }
 
     /**
-     * @return Product
+     * @return ProductInterface
      */
     public function getProduct()
     {
@@ -173,7 +173,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      * @return $this
      */
     public function setProduct($product)
