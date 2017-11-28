@@ -229,7 +229,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
         $group = null;
         if ($warehouse->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
             $group = $this->createNewWarehouseGroup($warehouse);
-        } elseif(isset($data['group']) ) {
+        } elseif (isset($data['group'])) {
             $existingGroup = $this->getExistingWarehouseGroup($data['group']);
             if ($existingGroup) {
                 $group = $existingGroup;
@@ -252,7 +252,8 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
      * @param null $groupName
      * @return WarehouseGroup
      */
-    private function createNewWarehouseGroup(Warehouse $warehouse, $groupName = null) {
+    private function createNewWarehouseGroup(Warehouse $warehouse, $groupName = null)
+    {
         $description = $groupName = $groupName ? $groupName : $warehouse->getLabel();
         $group = new WarehouseGroup();
         $group

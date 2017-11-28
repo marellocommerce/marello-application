@@ -176,7 +176,7 @@ class WarehouseControllerTest extends WebTestCase
         $phone
     ) {
         $token = $this->getContainer()->get('security.csrf.token_manager')
-            ->getToken( WarehouseType::NAME)->getValue();
+            ->getToken(WarehouseType::NAME)->getValue();
 
         $formData = [
             'input_action' => '{"route":"marelloenterprise_inventory_warehouse_view","params":{"id":"$id"}}',

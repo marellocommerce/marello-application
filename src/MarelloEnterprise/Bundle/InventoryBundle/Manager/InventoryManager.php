@@ -95,7 +95,8 @@ class InventoryManager extends BaseInventoryManager
             [
                 'inventoryItem' => $inventoryItem,
                 'warehouse'     => $warehouse
-            ]);
+            ]
+        );
 
         return $level;
     }

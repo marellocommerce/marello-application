@@ -54,7 +54,7 @@ HASLINK;
                         ->join('wcgl.salesChannelGroups', 'sc')
                         ->where('wcgl.id != :linkOwner')
                         ->getDQL()
-                    )
+                )
             );
 
         return $qb;

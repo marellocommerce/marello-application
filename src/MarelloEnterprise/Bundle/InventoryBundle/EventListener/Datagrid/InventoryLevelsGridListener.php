@@ -32,8 +32,7 @@ class InventoryLevelsGridListener
                 ]
             ],
             $columns
-            );
-
+        );
         $config->offsetSet('columns', $finalColumns);
     }
 }

@@ -24,7 +24,8 @@ class GeocodingApiResultFactory extends AbstractGoogleApiResultFactory
                 self::LATITUDE => $this->getValueByKeyRecursively($this->getLocation($data), self::LATITUDE),
                 self::LONGITUDE => $this->getValueByKeyRecursively($this->getLocation($data), self::LONGITUDE),
                 self::FORMATTED_ADDRESS => $this->getValueByKeyRecursively(
-                    $this->getPrimaryResult($data), self::FORMATTED_ADDRESS
+                    $this->getPrimaryResult($data),
+                    self::FORMATTED_ADDRESS
                 ),
             ]
         ];

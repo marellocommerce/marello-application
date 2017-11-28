@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+
 class WarehouseGroupType extends AbstractType
 {
     const NAME = 'marello_warehouse_group';
@@ -26,7 +27,8 @@ class WarehouseGroupType extends AbstractType
             $entityId = $entity->getId();
             if ($entityId) {
                 foreach ($entity->getWarehouses() as $warehouse) {
-                    if ($warehouse->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
+                    $warehouseType = $warehouse->getWarehouseType()->getName();
+                    if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
                         $fixedType = true;
                     }
                 }

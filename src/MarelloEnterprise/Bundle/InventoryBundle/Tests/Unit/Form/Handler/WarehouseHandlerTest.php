@@ -102,8 +102,18 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
         /** @var Warehouse|\PHPUnit_Framework_MockObject_MockObject $group */
         $group = $this->createMock(WarehouseGroup::class);
 
-        $typeBefore = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED]);
-        $typeAfter = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]);
+        $typeBefore = $this->getEntity(
+            WarehouseType::class,
+            [
+                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED
+            ]
+        );
+        $typeAfter = $this->getEntity(
+            WarehouseType::class,
+            [
+                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL
+            ]
+        );
 
         $this->entity
             ->expects(static::at(0))
@@ -169,8 +179,18 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->with('label group')
             ->willReturnSelf();
 
-        $typeBefore = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]);
-        $typeAfter = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED]);
+        $typeBefore = $this->getEntity(
+            WarehouseType::class,
+            [
+                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL
+            ]
+        );
+        $typeAfter = $this->getEntity(
+            WarehouseType::class,
+            [
+                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED
+            ]
+        );
 
         $this->entity
             ->expects(static::at(0))
@@ -213,8 +233,18 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('isSystem')
             ->willReturn(true);
 
-        $typeBefore = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL]);
-        $typeAfter = $this->getEntity(WarehouseType::class, ['name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED]);
+        $typeBefore = $this->getEntity(
+            WarehouseType::class,
+            [
+                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL
+            ]
+        );
+        $typeAfter = $this->getEntity(
+            WarehouseType::class,
+            [
+                'name' => WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED
+            ]
+        );
 
         $this->entity
             ->expects(static::at(0))

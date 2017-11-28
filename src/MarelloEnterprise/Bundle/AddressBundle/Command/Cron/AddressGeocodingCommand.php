@@ -77,7 +77,7 @@ class AddressGeocodingCommand extends ContainerAwareCommand implements CronComma
         $notSuccessGeocodingCnt = 0;
 
         foreach ($geocodedAddresses as $ga) {
-            array_splice($addresses, array_search($ga, $addresses ), 1);
+            array_splice($addresses, array_search($ga, $addresses), 1);
         }
         foreach ($addresses as $address) {
             $results = $geocodingApiResultsProvider

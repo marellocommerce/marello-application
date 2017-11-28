@@ -104,6 +104,10 @@ class LoadWarehouseChannelGroupLinkData extends AbstractFixture implements Depen
      */
     private function getExistingWarehouseChannelGroupLink($warehouseGroup)
     {
-        return $this->manager->getRepository(WarehouseChannelGroupLink::class)->findOneBy(['warehouseGroup' => $warehouseGroup]);
+        return $this->manager->getRepository(WarehouseChannelGroupLink::class)->findOneBy(
+            [
+                'warehouseGroup' => $warehouseGroup
+            ]
+        );
     }
 }
