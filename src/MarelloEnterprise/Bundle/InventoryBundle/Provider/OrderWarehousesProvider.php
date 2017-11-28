@@ -50,10 +50,12 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
         $filteredRules = $this->rulesFiltrationService
             ->getFilteredRuleOwners($this->wfaRuleRepository->findAllWFARules());
         $results = [];
+
         foreach ($filteredRules as $rule) {
             $results = $this->strategiesRegistry
                 ->getStrategy($rule->getStrategy())
                 ->getWarehouseResults($order, $results);
+
             if (count($results) === 1) {
                 return reset($results);
             }
