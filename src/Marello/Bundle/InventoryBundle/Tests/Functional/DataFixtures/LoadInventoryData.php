@@ -180,7 +180,7 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
             /** @var VirtualInventoryLevel $level */
             $level = $virtualInventoryHandler->findExistingVirtualInventory($product, $salesChannelGroup);
             if (!$level) {
-                $level = $virtualInventoryHandler->createVirtualInventory($product, $salesChannelGroup, 0);
+                $level = $virtualInventoryHandler->createVirtualInventory($product, $salesChannelGroup);
             }
 
             $virtualInventoryHandler->saveVirtualInventory($level, true, true);

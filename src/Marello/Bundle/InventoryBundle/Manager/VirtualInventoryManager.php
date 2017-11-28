@@ -64,12 +64,12 @@ class VirtualInventoryManager implements InventoryManagerInterface
         /** @var VirtualInventoryLevel $level */
         $level = $this->handler->findExistingVirtualInventory($product, $salesChannelGroup);
         if (!$level) {
-            $level = $this->handler->createVirtualInventory($product, $salesChannelGroup, 0);
+            $level = $this->handler->createVirtualInventory($product, $salesChannelGroup);
         }
-        $level = $this->updateReservedInventory($level, $context->getAllocatedInventory());
-        $level = $this->updateInventory($level, $context->getAllocatedInventory());
 
-        $this->handler->saveVirtualInventory($level, true, true);
+        $level = $this->updateReservedInventory($level, $context->getAllocatedInventory());
+        $level = $this->updateInventory($level, $context);
+        $this->handler->saveVirtualInventory($level, true);
 
         $context->setValue('virtualInventoryLevel', $level);
         
@@ -92,15 +92,20 @@ class VirtualInventoryManager implements InventoryManagerInterface
 
     /**
      * @param VirtualInventoryLevel $level
-     * @param int $allocQty
+     * @param InventoryUpdateContext $context
      * @return VirtualInventoryLevel
      */
-    private function updateInventory(VirtualInventoryLevel $level, $allocQty)
+    private function updateInventory(VirtualInventoryLevel $level, $context)
     {
-        if ($level->getReservedInventoryQty() >= 0) {
+        $allocQty = $context->getAllocatedInventory();
+        $inventoryQty = $context->getInventory();
+
+        if (!$inventoryQty && ($allocQty > 0)) {
             $newInventoryQty = ($level->getInventoryQty() - $allocQty);
+        } elseif (!$inventoryQty && $allocQty < 0) {
+            $newInventoryQty = ($level->getInventoryQty() + ( -1 * $allocQty));
         } else {
-            $newInventoryQty = ($level->getInventoryQty() + $allocQty);
+            $newInventoryQty = $level->getInventoryQty();
         }
 
         $level->setInventoryQty($newInventoryQty);

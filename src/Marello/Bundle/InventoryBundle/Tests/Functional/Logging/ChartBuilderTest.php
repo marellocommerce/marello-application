@@ -8,7 +8,7 @@ use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductInventoryData;
+use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class ChartBuilderTest extends WebTestCase
@@ -40,7 +40,7 @@ class ChartBuilderTest extends WebTestCase
 
         $this->loadFixtures([
             LoadProductData::class,
-            LoadProductInventoryData::class
+            LoadInventoryData::class
         ]);
     }
 

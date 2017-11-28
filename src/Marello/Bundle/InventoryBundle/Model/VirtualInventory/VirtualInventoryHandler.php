@@ -35,12 +35,12 @@ class VirtualInventoryHandler
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      * @param SalesChannelGroup $group
      * @param $inventoryQty
      * @return VirtualInventoryLevel
      */
-    public function createVirtualInventory(Product $product, SalesChannelGroup $group, $inventoryQty)
+    public function createVirtualInventory(ProductInterface $product, SalesChannelGroup $group, $inventoryQty = 0)
     {
         return $this->virtualInventoryFactory->create($product, $group, $inventoryQty);
     }
@@ -49,10 +49,10 @@ class VirtualInventoryHandler
      * Save virtual inventory
      * @param VirtualInventoryLevel $level
      * @param bool $force
-     * @param bool $manual
+     * @param bool $flushManager
      * @throws \Exception
      */
-    public function saveVirtualInventory(VirtualInventoryLevel $level, $force = false, $manual = false)
+    public function saveVirtualInventory(VirtualInventoryLevel $level, $force = false, $flushManager = false)
     {
         /** @var VirtualInventoryLevel $existingLevel */
         $existingLevel = $this->findExistingVirtualInventory($level->getProduct(), $level->getSalesChannelGroup());
@@ -74,31 +74,11 @@ class VirtualInventoryHandler
         }
 
         try {
-            file_put_contents(
-                '/var/www/app/logs/debug.log',
-                "BY FORCE?? " . print_r($force, true) . "\r\n",
-                FILE_APPEND
-            );
-            file_put_contents(
-                '/var/www/app/logs/debug.log',
-                "IS MANUAL?? " . print_r($manual, true) . "\r\n",
-                FILE_APPEND
-            );
             if (!$existingLevel) {
-                file_put_contents(
-                    '/var/www/app/logs/debug.log',
-                    $level->getProduct()->getSku() . "\r\n",
-                    FILE_APPEND
-                );
-                file_put_contents(
-                    '/var/www/app/logs/debug.log',
-                    $level->getSalesChannelGroup()->getName() . "\r\n",
-                    FILE_APPEND
-                );
                 $this->getManagerForClass()->persist($level);
             }
 
-            if ($manual) {
+            if ($flushManager) {
                 $this->getManagerForClass()->flush();
             }
         } catch (\Exception $e) {

@@ -115,7 +115,7 @@ class VirtualInventoryLevelUpdateAfterEventListener
      * @param SalesChannelGroup $group
      * @return VirtualInventoryLevel|object
      */
-    public function findExistingVirtualInventory(ProductInterface $product, SalesChannelGroup $group)
+    protected function findExistingVirtualInventory(ProductInterface $product, SalesChannelGroup $group)
     {
         /** @var VirtualInventoryRepository $repository */
         return $this->repository->findExistingVirtualInventory($product, $group);

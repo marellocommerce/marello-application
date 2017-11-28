@@ -254,15 +254,15 @@ datagrids:
                 label:              marello.product.sku.label
                 frontend_type:      string
                 data_name:          productSku
-            inventory:
-                label:              marello.inventory.virtualinventorylevel.inventory
+            inventoryQty:
+                label:              marello.inventory.virtualinventorylevel.inventory.label
                 frontend_type:      number
-                data_name:          inventory
+                data_name:          inventoryQty
                 align:              left
-            orgInventory:
-                label:              marello.inventory.virtualinventorylevel.original_inventory_qty
+            balancedInventoryQty:
+                label:              marello.inventory.virtualinventorylevel.balanced_inventory_qty.label
                 frontend_type:      number
-                data_name:          orgInventory
+                data_name:          balancedInventoryQty
                 align:              left
             salesChannelGroupName:
                 label:              marello.sales.saleschannelgroup.entity_label
@@ -277,12 +277,12 @@ datagrids:
                 renderable:         false
         filters:
             columns:
-                productName:
-                    type:             string
-                    data_name:        productName
                 productSku:
                     type:             string
                     data_name:        productSku
+                productName:
+                    type:             string
+                    data_name:        productName
         sorters:
             columns:
                 createdAt:
