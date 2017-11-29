@@ -5,6 +5,7 @@ datagrids:
             query:
                 select:
                     - ps
+                    - o.orderNumber
                 from:
                     - { table: MarelloPackingBundle:PackingSlip, alias: ps }
                 join:
@@ -18,7 +19,7 @@ datagrids:
             packingSlipNumber:
                 label:            marello.packing.packingslip.packing_slip_number.label
                 frontend_type:    string
-            order:
+            orderNumber:
                 label:            marello.packing.packingslip.order.label
             salesChannel:
                 label:            marello.packing.packingslip.sales_channel.label
@@ -42,8 +43,8 @@ datagrids:
             columns:
                 packingSlipNumber:
                     data_name: ps.packingSlipNumber
-                order:
-                    data_name: o.id
+                orderNumber:
+                    data_name: o.orderNumber
                 salesChannel:
                     data_name: sc.name
                 warehouse:
@@ -63,7 +64,7 @@ datagrids:
                 packingSlipNumber:
                     type: string
                     data_name: ps.packingSlipNumber
-                order:
+                orderNumber:
                     type: string
                     data_name: o.orderNumber
                 salesChannel:

@@ -98,9 +98,10 @@ class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixt
             ->getRepository(WarehouseChannelGroupLink::class)
             ->findSystemLink();
 
-        $systemWarehouseChannelGroupLink->addSalesChannelGroup($channelGroup);
-
-        $this->manager->persist($systemWarehouseChannelGroupLink);
+        if ($systemWarehouseChannelGroupLink) {
+            $systemWarehouseChannelGroupLink->addSalesChannelGroup($channelGroup);
+            $this->manager->persist($systemWarehouseChannelGroupLink);
+        }
     }
     /**
      * Add sales channels to group

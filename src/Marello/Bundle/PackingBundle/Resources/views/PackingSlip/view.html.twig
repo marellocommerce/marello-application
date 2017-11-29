@@ -26,7 +26,7 @@
                             <span class="widget-title">{{ 'marello.packing.packingslip.datablock.information'|trans }}</span>
                         </div>
                         {{ UI.renderProperty('marello.packing.packingslip.packing_slip_number.label'|trans, entity.packingSlipNumber) }}
-                        {{ UI.renderProperty('marello.packing.packingslip.order.label'|trans, entity.order) }}
+                        {{ UI.renderProperty('marello.packing.packingslip.order.label'|trans, entity.order.orderNumber) }}
                         {{ UI.renderProperty('marello.packing.packingslip.sales_channel.label'|trans, entity.salesChannel) }}
                         {{ UI.renderProperty('marello.packing.packingslip.warehouse.label'|trans, entity.warehouse) }}
                         {{ oro_widget_render({
