@@ -135,9 +135,12 @@ define(function(require) {
                 this.fieldsByName.rowTotalExclTax.val('');
                 this.fieldsByName.rowTotalInclTax.val('');
             } else {
-                this.fieldsByName.tax.val(row_totals.taxAmount);
-                this.fieldsByName.rowTotalExclTax.val(row_totals.excludingTax);
-                this.fieldsByName.rowTotalInclTax.val(row_totals.includingTax);
+                var taxAmount = parseFloat(row_totals.taxAmount).toFixed(2);
+                var taxExcl = parseFloat(row_totals.excludingTax).toFixed(2);
+                var taxIncl = parseFloat(row_totals.includingTax).toFixed(2);
+                this.fieldsByName.tax.val(taxAmount);
+                this.fieldsByName.rowTotalExclTax.val(taxExcl);
+                this.fieldsByName.rowTotalInclTax.val(taxIncl);
             }
         },
 
