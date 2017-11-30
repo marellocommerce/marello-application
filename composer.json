@@ -1,7 +1,7 @@
 {
     "name": "marellocommerce/marello-enterprise",
-    "description": "Marello",
-    "homepage": "https://github.com/marellocommerce/marello-ee.git",
+    "description": "Marello Enterprise ERP for Commerce",
+    "homepage": "https://github.com/marellocommerce/marello-enterprise.git",
     "license": "Commercial",
     "authors": [
         {
@@ -21,9 +21,9 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "oro/platform-enterprise": "2.x-dev",
-        "marellocommerce/marello": "1.x-dev"
+        "php": ">=7.0",
+        "oro/platform-enterprise": "2.2.*",
+        "marellocommerce/marello": "1.2.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
