@@ -4,8 +4,7 @@ Marello Enterprise
 Marello Enterprise is the commercial extension of [Marello][1]. This extension enables Microsoft Outlook integration, improves multiple organization support for the sales channel.
 
 This document contains information on how to download, install, and start
-using Marello. For a more detailed explanation, see the [Installation]
-chapter.
+using Marello. For a more detailed explanation, see the **Installation** chapter.
 
 Requirements
 ------------
@@ -16,15 +15,16 @@ Marello Enterprise requires
 - PHP 7.0 or above;
 - Oro Platform Enterprise
 
-## Installation
+Installation
+------------
 
 Marello Enterprise is a composer package that requires an application to initialize and run it,
 [marello-enterprise-application][2] is an example of such application. 
 
-## Documentation
-  
-The documentation for the Marello Enterprise application can be found on the [Marello website][3].
-Additional documentation for Oro Platform / OroCRM can be found at the [website of OroCRM][4] or on the website of [Symfony][5]
+Documentation
+------------
+
+The documentation for the Marello Enterprise application can be found on the [Marello website][3]. Additional documentation for Oro Platform / OroCRM can be found at the [website of OroCRM][4] or on the website of [Symfony][5]
 
 [1]: https://github.com/marellocommerce/marello
 [2]: https://github.com/marellocommerce/marello-application-ee
