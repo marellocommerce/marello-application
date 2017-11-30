@@ -5232,7 +5232,7 @@
         },
         {
             "name": "oro/calendar-bundle",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCalendarBundle.git",
@@ -5283,7 +5283,7 @@
         },
         {
             "name": "oro/commerce",
-            "version": "1.5.x-dev",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/commerce-er.git",
@@ -5351,13 +5351,13 @@
             "description": "OroCommerce - an open-source Business to Business Commerce application. \\nThis package contains bundles and needs to be added as a dependency in an OroCommerce application.",
             "homepage": "https://github.com/orocommerce/orocommerce",
             "support": {
-                "source": "https://github.com/oroinc/commerce-er/tree/1.5"
+                "source": "https://github.com/oroinc/commerce-er/tree/1.5.0"
             },
             "time": "2017-11-30T06:52:29+00:00"
         },
         {
             "name": "oro/commerce-crm",
-            "version": "1.5.x-dev",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/commerce-crm-er.git",
@@ -5402,7 +5402,7 @@
         },
         {
             "name": "oro/commerce-crm-ee",
-            "version": "1.5.x-dev",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/commerce-crm-enterprise.git",
@@ -5452,7 +5452,7 @@
         },
         {
             "name": "oro/commerce-enterprise",
-            "version": "1.5.x-dev",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/commerce-enterprise.git",
@@ -5494,13 +5494,13 @@
             "description": "OroCommerce Enterprise.",
             "homepage": "https://github.com/laboro/commerce-enterprise",
             "support": {
-                "source": "https://github.com/oroinc/commerce-enterprise/tree/1.5"
+                "source": "https://github.com/oroinc/commerce-enterprise/tree/1.5.0"
             },
             "time": "2017-11-29T13:11:03+00:00"
         },
         {
             "name": "oro/crm",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/crm-er.git",
@@ -5570,7 +5570,7 @@
         },
         {
             "name": "oro/crm-abandoned-cart",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMAbandonedCartBundle.git",
@@ -5617,7 +5617,7 @@
         },
         {
             "name": "oro/crm-call-bundle",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMCallBundle.git",
@@ -5667,7 +5667,7 @@
         },
         {
             "name": "oro/crm-dotmailer",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMDotmailerBundle.git",
@@ -5715,7 +5715,7 @@
         },
         {
             "name": "oro/crm-enterprise",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/crm-enterprise.git",
@@ -5758,13 +5758,13 @@
             "description": "OroCRM Enterprise",
             "homepage": "https://github.com/oroinc/crm-enterprise.git",
             "support": {
-                "source": "https://github.com/oroinc/crm-enterprise/tree/2.5"
+                "source": "https://github.com/oroinc/crm-enterprise/tree/2.5.0"
             },
             "time": "2017-11-30T13:06:26+00:00"
         },
         {
             "name": "oro/crm-hangouts-call-bundle",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMHangoutsCallBundle.git",
@@ -5817,7 +5817,7 @@
         },
         {
             "name": "oro/crm-magento-embedded-contact-us",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMMagentoContactUsBundle.git",
@@ -5863,7 +5863,7 @@
         },
         {
             "name": "oro/crm-mail-chimp",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMMailChimpBundle.git",
@@ -5911,7 +5911,7 @@
         },
         {
             "name": "oro/crm-pro-ldap-bundle",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/OroCRMProLDAPBundle.git",
@@ -5960,7 +5960,7 @@
         },
         {
             "name": "oro/crm-task-bundle",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMTaskBundle.git",
@@ -6010,7 +6010,7 @@
         },
         {
             "name": "oro/crm-zendesk",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMZendeskBundle.git",
@@ -6061,7 +6061,7 @@
         },
         {
             "name": "oro/customer-portal",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/customer-portal-er.git",
@@ -6168,7 +6168,7 @@
         },
         {
             "name": "oro/marketing",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/OroCRMMarketingBundle.git",
@@ -6217,7 +6217,7 @@
         },
         {
             "name": "oro/platform",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-er.git",
@@ -6379,13 +6379,13 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/oroinc/platform.git",
             "support": {
-                "source": "https://github.com/oroinc/platform-er/tree/2.5"
+                "source": "https://github.com/oroinc/platform-er/tree/2.5.0"
             },
             "time": "2017-11-30T10:04:02+00:00"
         },
         {
             "name": "oro/platform-enterprise",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-enterprise.git",
@@ -6432,7 +6432,7 @@
         },
         {
             "name": "oro/platform-serialised-fields",
-            "version": "2.5.x-dev",
+            "version": "2.5.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroEntitySerializedFieldsBundle.git",
@@ -7310,16 +7310,16 @@
         },
         {
             "name": "seld/jsonlint",
-            "version": "1.6.1",
+            "version": "1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/jsonlint.git",
-                "reference": "50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77"
+                "reference": "7a30649c67ee0d19faacfd9fa2cfb6cc032d9b19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77",
-                "reference": "50d63f2858d87c4738d5b76a7dcbb99fa8cf7c77",
+                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/7a30649c67ee0d19faacfd9fa2cfb6cc032d9b19",
+                "reference": "7a30649c67ee0d19faacfd9fa2cfb6cc032d9b19",
                 "shasum": ""
             },
             "require": {
@@ -7355,7 +7355,7 @@
                 "parser",
                 "validator"
             ],
-            "time": "2017-06-18T15:11:04+00:00"
+            "time": "2017-11-30T15:34:22+00:00"
         },
         {
             "name": "seld/phar-utils",
