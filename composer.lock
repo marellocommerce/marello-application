@@ -5287,12 +5287,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/commerce-er.git",
-                "reference": "42e4314790f57b6083a11aa76458df30bddca7f6"
+                "reference": "0aa335843c03e4c69bb56cfe4bc32a6187604aaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/commerce-er/zipball/42e4314790f57b6083a11aa76458df30bddca7f6",
-                "reference": "42e4314790f57b6083a11aa76458df30bddca7f6",
+                "url": "https://api.github.com/repos/oroinc/commerce-er/zipball/0aa335843c03e4c69bb56cfe4bc32a6187604aaa",
+                "reference": "0aa335843c03e4c69bb56cfe4bc32a6187604aaa",
                 "shasum": ""
             },
             "require": {
@@ -5353,7 +5353,7 @@
             "support": {
                 "source": "https://github.com/oroinc/commerce-er/tree/1.5"
             },
-            "time": "2017-11-28T15:36:27+00:00"
+            "time": "2017-11-30T06:52:29+00:00"
         },
         {
             "name": "oro/commerce-crm",
@@ -5719,12 +5719,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/crm-enterprise.git",
-                "reference": "eb3aa07bb472ea855bf0b1cee33a9ee69b759d5f"
+                "reference": "ef6f6cf4a0243e9733325a94d72e41df86a88e9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/crm-enterprise/zipball/eb3aa07bb472ea855bf0b1cee33a9ee69b759d5f",
-                "reference": "eb3aa07bb472ea855bf0b1cee33a9ee69b759d5f",
+                "url": "https://api.github.com/repos/oroinc/crm-enterprise/zipball/ef6f6cf4a0243e9733325a94d72e41df86a88e9f",
+                "reference": "ef6f6cf4a0243e9733325a94d72e41df86a88e9f",
                 "shasum": ""
             },
             "require": {
@@ -5760,7 +5760,7 @@
             "support": {
                 "source": "https://github.com/oroinc/crm-enterprise/tree/2.5"
             },
-            "time": "2017-11-29T11:47:08+00:00"
+            "time": "2017-11-30T13:06:26+00:00"
         },
         {
             "name": "oro/crm-hangouts-call-bundle",
@@ -6221,12 +6221,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-er.git",
-                "reference": "93211a54983b731375e94ad87de2dd349d1e1ce5"
+                "reference": "902126584a2bda4e3a714eb234e5207df39474ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-er/zipball/93211a54983b731375e94ad87de2dd349d1e1ce5",
-                "reference": "93211a54983b731375e94ad87de2dd349d1e1ce5",
+                "url": "https://api.github.com/repos/oroinc/platform-er/zipball/902126584a2bda4e3a714eb234e5207df39474ba",
+                "reference": "902126584a2bda4e3a714eb234e5207df39474ba",
                 "shasum": ""
             },
             "require": {
@@ -6381,7 +6381,7 @@
             "support": {
                 "source": "https://github.com/oroinc/platform-er/tree/2.5"
             },
-            "time": "2017-11-28T09:22:27+00:00"
+            "time": "2017-11-30T10:04:02+00:00"
         },
         {
             "name": "oro/platform-enterprise",
