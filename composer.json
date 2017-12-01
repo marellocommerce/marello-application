@@ -1,69 +1,53 @@
 {
-    "name": "marellocommerce\/marello-application-ee",
+    "name": "marellocommerce/marello-application-ee",
     "description": "Marello ERP for Commerce Enterprise",
-    "homepage": "https:\/\/github.com\/marellocommerce\/marello-application-ee.git",
+    "homepage": "https://github.com/marellocommerce/marello-application-ee.git",
     "license": "Commercial",
     "authors": [
         {
-            "name": "Marello",
+            "name": "Madia B.V.",
             "homepage": "https://www.marello.com"
         }
     ],
     "autoload": {
         "psr-0": {
-            "": "src\/"
+            "": "src/"
         }
     },
     "repositories": {
         "composer": {
             "type": "composer",
-            "url": "https:\/\/packagist.orocrm.com"
+            "url": "https://packagist.orocrm.com"
         },
         "platform-enterprise": {
             "type": "vcs",
             "url": "https://github.com/oroinc/platform-enterprise.git"
         },
-        "marello-enterprise-dev": {
+        "marello-enterprise": {
             "type": "vcs",
-            "url": "https://github.com/marellocommerce/marello-ee-dev.git",
-            "branch": "dev"
+            "url": "https://github.com/marellocommerce/marello-enterprise.git",
+            "branch": "master"
         },
-        "marello-dev": {
+        "marello": {
             "type": "vcs",
-            "url": "https://github.com/marellocommerce/marello-dev.git",
-            "branch": "dev"
+            "url": "https://github.com/marellocommerce/marello.git",
+            "branch": "master"
         }
     },
     "require": {
-        "oro\/platform-enterprise": "2.2.*",
-        "oro\/platform-serialised-fields": "2.2.*",
-        "oro\/calendar-bundle": "2.2.*",
-        "marellocommerce\/marello": "1.x-dev",
-        "marellocommerce\/marello-enterprise": "1.x-dev",
-
-    },
-    "require-dev": {
-        "sensio\/generator-bundle": "3.1.2",
-        "behat\/behat": "3.2.2",
-        "behat\/mink-extension": "2.2.*",
-        "behat\/mink-selenium2-driver": "1.*",
-        "behat\/symfony2-extension": "2.1.1",
-        "nelmio\/alice": "2.2.*",
-        "phpunit\/phpunit": "5.7.*",
-        "phpunit\/phpunit-selenium": "3.0.*",
-        "johnkary\/phpunit-speedtrap": "1.0.*",
-        "mybuilder\/phpunit-accelerator": "1.2.*",
-        "squizlabs\/php_codesniffer": "2.7.*",
-        "phpmd\/phpmd": "2.5.*",
-        "sebastian\/phpcpd": "2.0.*"
+        "marellocommerce/marello": "1.2.*",
+        "marellocommerce/marello-enterprise": "1.*",
+        "oro/platform-enterprise": "2.2.*",
+        "oro/platform-serialised-fields": "2.2.*",
+        "oro/calendar-bundle": "2.2.*"
     },
     "config": {
-        "component-dir": "web\/bundles\/components",
+        "component-dir": "web/bundles/components",
         "bin-dir": "bin",
         "fxp-asset": {
             "asset-installer-paths": {
-                "npm-asset-library": "web\/bundles\/npmassets",
-                "bower-asset-library": "web\/bundles\/bowerassets"
+                "npm-asset-library": "web/bundles/npmassets",
+                "bower-asset-library": "web/bundles/bowerassets"
             }
         }
     },
@@ -93,11 +77,11 @@
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
         "incenteev-parameters": {
-            "file": "app\/config\/parameters.yml"
+            "file": "app/config/parameters.yml"
         },
         "asset-installer-paths": {
-            "npm-asset-library": "web\/bundles\/npmassets",
-            "bower-asset-library": "web\/bundles\/bowerassets"
+            "npm-asset-library": "web/bundles/npmassets",
+            "bower-asset-library": "web/bundles/bowerassets"
         }
     }
 }
