@@ -20,10 +20,10 @@
         }
     ],
     "require": {
-        "oro/platform": "2.0.*",
-        "oro/platform-serialised-fields": "2.0.*",
-        "oro/calendar-bundle": "2.0.0",
-        "marellocommerce/marello": "1.1.*"
+        "oro/platform": "2.2.*",
+        "oro/platform-serialised-fields": "2.2.*",
+        "oro/calendar-bundle": "2.2.*",
+        "marellocommerce/marello": "1.2.*"
     },
     "config": {
         "component-dir": "web/bundles/components",

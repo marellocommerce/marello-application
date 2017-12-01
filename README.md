@@ -10,7 +10,7 @@ using Marello.
 
 Marello is a Symfony 2 based application with the following requirements:
 
-* PHP 5.6 or above with command line interface
+* PHP 7.0 or above with command line interface
 * PHP Extensions
     * GD
     * Mcrypt
@@ -97,7 +97,7 @@ Installed PHP Accelerators must be compatible with Symfony and Doctrine (support
 
 Note that the port used in Websocket must be open in firewall for outgoing/incoming connections
 
-Using MySQL 5.6 on HDD is potentially risky because of performance issues
+Using MySQL 5.6 on HDD is potentially risky because of  performance issues
 
 Recommended configuration for this case:
 
