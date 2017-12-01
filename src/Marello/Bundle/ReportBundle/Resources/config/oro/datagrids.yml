@@ -41,8 +41,8 @@ datagrids:
             entityHint: report data
             export: false
 
-    marello_report-products-low_stock_products:
-        pageTitle: marello.report.title.low_stock_products
+    marello_report-products-low_inventory_products:
+        pageTitle: marello.report.title.low_inventory_products
         source:
             type: orm
             acl_resource: oro_report_view
@@ -69,9 +69,9 @@ datagrids:
                 label:              marello.product.name.label
                 frontend_type:      string
             inventoryQty:
-                label:              marello.product.stock_level.label
+                label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number
-                data_name:          stockLevel
+                data_name:          inventoryQty
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
@@ -207,10 +207,6 @@ datagrids:
                             - { join: ri.orderItem, alias: oi }
                             - { join: ri.reason, alias: rre }
                             - { join: oi.order, alias: o }
-                            - { join: o.workflowStep, alias: wfs }
-                    where:
-                        and:
-                            - wfs.name = 'shipped'
             columns:
                 productSku:
                     label:              marello.product.sku.label
@@ -284,10 +280,6 @@ datagrids:
                         left:
                             - { join: ri.orderItem, alias: oi }
                             - { join: oi.order, alias: o }
-                            - { join: o.workflowStep, alias: wfs }
-                    where:
-                        and:
-                            - wfs.name = 'shipped'
             columns:
                 productSku:
                     label:              marello.product.sku.label

@@ -489,14 +489,18 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="method-info" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
-                                                    <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Shipping method:</h3>
-                                                    <p style="font-size: 16px; margin: 1em 0;">{{ entity.shippingMethod }}</p>
-                                                </td>
-                                                <td class="method-info" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
-                                                    <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Payment method:</h3>
-                                                    <p style="font-size: 16px; margin: 1em 0;">{{ entity.paymentMethod }}</p>
-                                                </td>
+                                                {% if entity.shippingMethod is not null %}
+                                                    <td class="method-info" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
+                                                        <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Shipping method:</h3>
+                                                        <p style="font-size: 16px; margin: 1em 0;">{{ entity.shippingMethod }}</p>
+                                                    </td>
+                                                {% endif %}
+                                                {% if entity.paymentMethod is not null %}
+                                                    <td class="method-info" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
+                                                        <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Payment method::</h3>
+                                                        <p style="font-size: 16px; margin: 1em 0;">{{ entity.paymentMethod }}</p>
+                                                    </td>
+                                                {% endif %}
                                             </tr>
                                         </table>
                                         <table class="email-items" style="border: 1px solid #d6d7d7; border-collapse: collapse; width: 100%;">
@@ -512,7 +516,13 @@
                                                     Quantity
                                                 </th>
                                                 <th class="item-info" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align:right;">
-                                                    Total Price
+                                                    Price excl Tax
+                                                </th>
+                                                <th class="item-info" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align:right;">
+                                                    Tax
+                                                </th>
+                                                <th class="item-info" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align:right;">
+                                                    Row Total Incl Tax
                                                 </th>
                                             </tr>
                                             </thead>
@@ -529,6 +539,12 @@
                                                         {{ item.quantity }}
                                                     </td>
                                                     <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align:right;">
+                                                        {{ item.price|oro_format_currency({'currency': entity.currency}) }}
+                                                    </td>
+                                                    <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align:right;">
+                                                        {{ item.tax|oro_format_currency({'currency': entity.currency}) }}
+                                                    </td>
+                                                    <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align:right;">
                                                         {{ item.rowTotalInclTax|oro_format_currency({'currency': entity.currency}) }}
                                                     </td>
                                                 </tr>
@@ -536,15 +552,23 @@
                                             </tbody>
                                             <tfoot class="order-totals">
                                             <tr class="subtotal">
-                                                <th colspan="3" scope="row" style="background-color: #f8f8f8; border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align: right;">
+                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align: right;">
                                                     Subtotal:
                                                 </th>
                                                 <td data-th="subtotaal" style="background-color: #f8f8f8; border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align: right;">
                                                     <span class="price" style="white-space: nowrap;">{{ entity.subtotal|oro_format_currency({'currency': entity.currency}) }}</span>
                                                 </td>
                                             </tr>
+                                            <tr class="tax">
+                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    Tax:
+                                                </th>
+                                                <td data-th="tax" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                    <span class="price" style="white-space: nowrap;">{{ entity.totalTax|oro_format_currency({'currency': entity.currency}) }}</span>
+                                                </td>
+                                            </tr>
                                             <tr class="shipping">
-                                                <th colspan="3" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
                                                     Shipping cost:
                                                 </th>
                                                 <td data-th="Verzending en verwerking" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
@@ -552,7 +576,7 @@
                                                 </td>
                                             </tr>
                                             <tr class="grand_total">
-                                                <th colspan="3" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
                                                     <strong style="font-weight: 600;">
                                                         Total:
                                                     </strong>

@@ -298,10 +298,6 @@ datagrids:
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
                 align:            right
-            taxPercent:
-                label:            marello.order.orderitem.tax_percent.label
-                frontend_type:    percent
-                align:            right
             rowTotalInclTax:
                 label:            marello.order.orderitem.total_price_incl_tax.label
                 type:             localized_number
