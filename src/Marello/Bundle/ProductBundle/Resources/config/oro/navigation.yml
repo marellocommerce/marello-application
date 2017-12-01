@@ -5,7 +5,7 @@ navigation:
                 label: marello.product.navigation.product.label
                 uri: '#'
                 extras:
-                    position: 50
+                    position: 10
                     icon: fa-barcode
 
             products_list:
@@ -47,6 +47,6 @@ navigation:
 
     titles:
         marello_product_index: marello.product.entity_plural_label
-        marello_product_view: '%%name%%'
-        marello_product_update: '%%name%%'
+        marello_product_view: '%name%'
+        marello_product_update: '%name%'
         marello_product_create: 'New product'

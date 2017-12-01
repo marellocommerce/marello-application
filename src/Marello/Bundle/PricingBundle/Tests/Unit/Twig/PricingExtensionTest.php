@@ -2,15 +2,21 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Unit\Twig;
 
+use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
 use Marello\Bundle\PricingBundle\Twig\PricingExtension;
 use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
 
 class PricingExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var CurrencyProvider|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $provider;
+    protected $currencyProvider;
+
+    /**
+     * @var LabelVATAwareFormatter|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $vatLabelFormatter;
 
     /** @var PricingExtension */
     protected $extension;
@@ -22,16 +28,20 @@ class PricingExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->provider = $this->getMockBuilder(CurrencyProvider::class)
+        $this->currencyProvider = $this->getMockBuilder(CurrencyProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->extension = new PricingExtension($this->provider);
+        $this->vatLabelFormatter = $this->getMockBuilder(LabelVATAwareFormatter::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->extension = new PricingExtension($this->currencyProvider, $this->vatLabelFormatter);
     }
 
     protected function tearDown()
     {
         unset($this->extension);
-        unset($this->provider);
+        unset($this->currencyProvider);
+        unset($this->vatLabelFormatter);
     }
 
     public function testGetName()
@@ -42,10 +52,11 @@ class PricingExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFunctions()
     {
         $functions = $this->extension->getFunctions();
-        $this->assertCount(1, $functions);
+        $this->assertCount(2, $functions);
 
         $expectedFunctions = array(
-            'marello_pricing_get_currency_data'
+            'marello_pricing_get_currency_data',
+            'marello_pricing_vat_aware_label'
         );
 
         /** @var \Twig_SimpleFunction $function */

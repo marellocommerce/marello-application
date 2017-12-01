@@ -7,12 +7,13 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 
 /**
  * Class StockLevelSubjectAssignSubscriber
  *
- * Responsible for setting subjectType and subjectId fields on StockLevelEntity.
+ * Responsible for setting subjectType and subjectId fields on InventoryLevelLogRecord.
  * It stores class and id on entity so it can be later retrieved as a reference to subject.
  *
  * @package Marello\Bundle\InventoryBundle\EventListener\Doctrine
@@ -21,7 +22,9 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
 {
     use SetsPropertyValue;
 
-    /** @var array|StockLevel[] */
+    /**
+     * @var array|InventoryLevel[]
+     */
     protected $assignSubjects;
 
     /**
@@ -33,7 +36,7 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
         $this->assignSubjects = $this->getLevelsToAssign($insertions);
 
         /*
-         * If there are any StockLevel entities with subjects set...
+         * If there are any InventoryLevel entities with subjects set...
          * Begin transaction, which makes this flush not commit changes to DB.
          */
         if (count($this->assignSubjects) > 0) {
@@ -57,10 +60,10 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
         }
 
         /*
-         * Assign type and id values for each StockLevel with subject present.
+         * Assign type and id values for each InventoryLevel with subject present.
          */
-        foreach ($this->assignSubjects as $stockLevel) {
-            $id = $stockLevel->getSubject()->getId();
+        foreach ($this->assignSubjects as $inventoryLevelLogRecord) {
+            $id = $inventoryLevelLogRecord->getSubject()->getId();
 
             /*
              * If subject is and entity with no id, it means it has not been persisted...
@@ -76,13 +79,17 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
             /*
              * Set appropriate values and persist changes.
              */
-            $this->setPropertyValue($stockLevel, 'subjectId', $id);
-            $this->setPropertyValue($stockLevel, 'subjectType', ClassUtils::getClass($stockLevel->getSubject()));
-            $args->getEntityManager()->persist($stockLevel);
+            $this->setPropertyValue($inventoryLevelLogRecord, 'subjectId', $id);
+            $this->setPropertyValue(
+                $inventoryLevelLogRecord,
+                'subjectType',
+                ClassUtils::getClass($inventoryLevelLogRecord->getSubject())
+            );
+            $args->getEntityManager()->persist($inventoryLevelLogRecord);
         }
 
         /*
-         * Flush changes made to Stocklevels and finish transaction.
+         * Flush changes made to InventoryLevels and finish transaction.
          */
         try {
             $args->getEntityManager()->flush();
@@ -108,16 +115,16 @@ class StockLevelSubjectAssignSubscriber implements EventSubscriber
 
     /**
      * Filters all entity insertions into stock levels which need to have subjects handled...
-     * And entity has to be StockLevel, have subject set and it has to have subjectType and subjectId empty.
+     * And entity has to be InventoryLevel, have subject set and it has to have subjectType and subjectId empty.
      *
      * @param array $insertions
      *
-     * @return StockLevel[]
+     * @return InventoryLevel[]
      */
     protected function getLevelsToAssign(array $insertions)
     {
         return array_filter($insertions, function ($entity) {
-            if (!$entity instanceof StockLevel) {
+            if (!$entity instanceof InventoryLevelLogRecord) {
                 return false;
             }
 

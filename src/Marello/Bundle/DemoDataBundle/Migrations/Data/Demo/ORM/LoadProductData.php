@@ -6,45 +6,22 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 
-class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
+class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
     /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
     protected $defaultOrganization;
 
-    /** @var \Marello\Bundle\InventoryBundle\Entity\Warehouse $defaultWarehouse */
-    protected $defaultWarehouse;
-
     /** @var ObjectManager $manager */
     protected $manager;
 
-    protected $replenishments;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
     /**
      * {@inheritdoc}
+     * @return array
      */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }
-
     public function getDependencies()
     {
         return [
@@ -67,13 +44,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         if (is_array($organizations) && count($organizations) > 0) {
             $this->defaultOrganization = array_shift($organizations);
         }
-
-        $this->defaultWarehouse = $this->manager
-            ->getRepository('MarelloInventoryBundle:Warehouse')
-            ->getDefault();
-
-        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_product_reple');
-        $this->replenishments = $this->manager->getRepository($replenishmentClass)->findAll();
 
         $this->loadProducts();
     }
@@ -104,7 +74,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     }
 
     /**
-     * create new products and inventory items
+     * create new products
      * @param array $data
      * @return Product $product
      */
@@ -113,13 +83,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product = new Product();
         $product->setSku($data['sku']);
         $product->setName($data['name']);
-        $product->setDesiredStockLevel(rand($data['stock_level'], $data['stock_level'] + 10));
-        $product->setPurchaseStockLevel(rand(1, $product->getDesiredStockLevel()));
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight(mt_rand(50, 300) / 100);
-        $inventoryItem = new InventoryItem($this->defaultWarehouse, $product);
-        $this->handleInventoryUpdate($inventoryItem, $data['stock_level'], 0, null);
-        $product->getInventoryItems()->add($inventoryItem);
 
         $status = $this->manager
             ->getRepository('MarelloProductBundle:ProductStatus')
@@ -128,8 +93,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setStatus($status);
         $channels = explode(';', $data['channel']);
         $currencies = [];
-        foreach ($channels as $channelId) {
-            $channel = $this->getReference('marello_sales_channel_'. (int)$channelId);
+        foreach ($channels as $channelCode) {
+            $channel = $this->getReference($channelCode);
             $product->addChannel($channel);
             $currencies[] = $channel->getCurrency();
         }
@@ -142,42 +107,40 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             // add prices
             $price = new ProductPrice();
             $price->setCurrency($currency);
-            if (count($currencies) > 1 && $currency === 'USD') {
-                $price->setValue(($data['price'] * 1.12));
-            } else {
-                $price->setValue($data['price']);
-            }
-
+            $priceValue = $this->getValuePerCurrency($data, $currency);
+            $price->setValue($priceValue);
             $product->addPrice($price);
         }
 
         /**
-        * set default taxCode and taxcodes per saleschannel
+        * set default taxCode
         */
-        $product->setTaxCode($this->getReference('marello_taxcode_'. rand(0, 2)));
-        foreach ($channels as $channelId) {
-            $channel = $this->getReference('marello_sales_channel_'. (int)$channelId);
-
-            $productSalesChannelRelation = new ProductChannelTaxRelation();
-            $productSalesChannelRelation
-                ->setProduct($product)
-                ->setSalesChannel($channel)
-                ->setTaxCode($this->getReference('marello_taxcode_'. rand(0, 2)))
-            ;
-            $this->manager->persist($productSalesChannelRelation);
-            $product->addSalesChannelTaxCode($productSalesChannelRelation);
-        }
+        $product->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_0_REF));
 
         /**
          * add suppliers per product
          */
         $this->addProductSuppliers($product);
 
-        $product->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
-
         $this->manager->persist($product);
 
         return $product;
+    }
+
+    /**
+     * Get correct price based on the currency code
+     * @param array $data
+     * @param string $currency
+     * @return float
+     */
+    private function getValuePerCurrency(array $data, $currency = 'EUR')
+    {
+        $currencyPriceIdentifier = sprintf('price_%s', $currency);
+        if (isset($data[$currencyPriceIdentifier]) && !empty($currencyPriceIdentifier)) {
+            return $data[$currencyPriceIdentifier];
+        }
+
+        return $data['default_price'];
     }
 
     /**
@@ -191,47 +154,17 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ->findAll();
 
         foreach ($suppliers as $supplier) {
-
-            //Add a bit of randomness to product suppliers
-            if (rand(1, 4) === 4) {
-                continue;
-            }
-
-            $productSupplierRelation1 = new ProductSupplierRelation();
-            $productSupplierRelation1
+            $productSupplierRelation = new ProductSupplierRelation();
+            $productSupplierRelation
                 ->setProduct($product)
                 ->setSupplier($supplier)
                 ->setQuantityOfUnit(100)
                 ->setCanDropship(true)
-                ->setPriority(rand(1, 6))
-                ->setCost($this->getRandomFloat(45, 60))
+                ->setPriority(1)
+                ->setCost($this->calculateSupplierCost($product))
             ;
-            $this->manager->persist($productSupplierRelation1);
-            $product->addSupplier($productSupplierRelation1);
-
-            $productSupplierRelation2 = new ProductSupplierRelation();
-            $productSupplierRelation2
-                ->setProduct($product)
-                ->setSupplier($supplier)
-                ->setQuantityOfUnit(400)
-                ->setCanDropship(true)
-                ->setPriority(rand(1, 6))
-                ->setCost($this->getRandomFloat(20, 40))
-            ;
-            $this->manager->persist($productSupplierRelation2);
-            $product->addSupplier($productSupplierRelation2);
-
-            $productSupplierRelation3 = new ProductSupplierRelation();
-            $productSupplierRelation3
-                ->setProduct($product)
-                ->setSupplier($supplier)
-                ->setQuantityOfUnit(750)
-                ->setCanDropship(true)
-                ->setPriority(rand(1, 6))
-                ->setCost($this->getRandomFloat(10, 15))
-            ;
-            $this->manager->persist($productSupplierRelation3);
-            $product->addSupplier($productSupplierRelation3);
+            $this->manager->persist($productSupplierRelation);
+            $product->addSupplier($productSupplierRelation);
         }
 
         $preferredSupplier = null;
@@ -254,36 +187,18 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     }
 
     /**
-     * Get random float
-     * @param $min
-     * @param $max
-     * @return mixed
+     * Calculate the cost for the supplier based of a static percentage
+     * of the retail price
+     * @param Product $product
+     * @return float $supplierCost
      */
-    private function getRandomFloat($min, $max)
+    private function calculateSupplierCost(Product $product)
     {
-        return ($min + lcg_value()*(abs($max - $min)));
-    }
+        $percentage = LoadSupplierData::SUPPLIER_COST_PERCENTAGE;
+        $defaultPrice = $product->getPrice();
+        $supplierCost = $defaultPrice->getValue() * $percentage;
 
-    /**
-     * handle the inventory update for items which have been shipped
-     * @param InventoryItem $item
-     * @param $inventoryUpdateQty
-     * @param $allocatedInventoryQty
-     * @param $entity
-     */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
-    {
-        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
-            $item,
-            $inventoryUpdateQty,
-            $allocatedInventoryQty,
-            'import',
-            $entity
-        );
-
-        /** @var InventoryManager $inventoryManager */
-        $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');
-        $inventoryManager->updateInventoryItems($context);
+        return $supplierCost;
     }
 
     /**

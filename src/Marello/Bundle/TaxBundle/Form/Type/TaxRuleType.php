@@ -5,7 +5,6 @@ namespace Marello\Bundle\TaxBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class TaxRuleType extends AbstractType
 {
@@ -17,14 +16,18 @@ class TaxRuleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('taxCode', EntityType::class, array(
-                'class' => 'MarelloTaxBundle:TaxCode',
-                'choice_label' => 'code',
-            ))
-            ->add('taxRate', EntityType::class, array(
-                'class' => 'MarelloTaxBundle:TaxRate'
-            ))
-            ->add('includesVat')
+            ->add('taxCode', TaxCodeSelectType::class, [
+                'label' => 'marello.tax.taxrule.tax_code.label',
+                'required' => true
+            ])
+            ->add('taxRate', TaxRateSelectType::class, [
+                'label' => 'marello.tax.taxrule.tax_rate.label',
+                'required' => true
+            ])
+            ->add('taxJurisdiction', TaxJurisdictionSelectType::class, [
+                'label' => 'marello.tax.taxrule.tax_jurisdiction.label',
+                'required' => true
+            ])
         ;
     }
 

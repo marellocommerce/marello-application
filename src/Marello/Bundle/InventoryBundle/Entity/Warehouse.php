@@ -3,16 +3,18 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\InventoryBundle\Model\ExtendWarehouse;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
-use Marello\Bundle\InventoryBundle\Model\ExtendWarehouse;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository")
- * @ORM\Table(name="marello_inventory_warehouse")
+ * @ORM\Table(name="marello_inventory_warehouse",
+ *       uniqueConstraints={
+ *          @ORM\UniqueConstraint(columns={"code"})
+ *      }
+ * )
  * @Oro\Config(
  *      defaultValues={
  *          "security"={
@@ -38,11 +40,18 @@ class Warehouse extends ExtendWarehouse
     protected $id;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", name="label", nullable=false)
      *
      * @var string
      */
     protected $label;
+
+    /**
+     * @ORM\Column(type="string", name="code", nullable=false)
+     *
+     * @var string
+     */
+    protected $code;
 
     /**
      * @ORM\Column(type="boolean", nullable=false, name="is_default")
@@ -103,6 +112,20 @@ class Warehouse extends ExtendWarehouse
      * )
      */
     protected $warehouseType;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="WarehouseGroup", inversedBy="warehouses")
+     * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "order"=60,
+     *              "full"=true,
+     *          }
+     *      }
+     * )
+     */
+    protected $group;
 
     /**
      * @param string $label
@@ -110,6 +133,8 @@ class Warehouse extends ExtendWarehouse
      */
     public function __construct($label = null, $default = false)
     {
+        parent::__construct();
+        
         $this->label   = $label;
         $this->default = $default;
     }
@@ -138,6 +163,25 @@ class Warehouse extends ExtendWarehouse
     public function setLabel($label)
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param $code
+     * @return $this
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
 
         return $this;
     }
@@ -175,7 +219,7 @@ class Warehouse extends ExtendWarehouse
      *
      * @return $this
      */
-    public function setOwner($owner)
+    public function setOwner(OrganizationInterface $owner)
     {
         $this->owner = $owner;
 
@@ -226,6 +270,26 @@ class Warehouse extends ExtendWarehouse
     public function setWarehouseType(WarehouseType $warehouseType)
     {
         $this->warehouseType = $warehouseType;
+
+        return $this;
+    }
+
+    /**
+     * @return WarehouseGroup
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param WarehouseGroup $group
+     *
+     * @return $this
+     */
+    public function setGroup(WarehouseGroup $group)
+    {
+        $this->group = $group;
 
         return $this;
     }

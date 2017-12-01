@@ -28,33 +28,120 @@
     {% endif %}
 {% endblock pageHeader %}
 
+{% set pageComponent = {
+    module: 'marellolayout/js/app/components/form-changes-component',
+    options: {
+        route: 'marello_order_form_changes',
+        prefix: 'order',
+        routeParams: {id: entity.id|default(0)}
+    }
+} %}
+
 {% block content_data %}
     {% set id = 'order-create' %}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        <div data-page-component-module="marelloorder/js/app/components/customer-selection-component">
+                            {{ form_row(form.customer) }}
+                        </div>
+                        {{ form_row(form.salesChannel) }}
+                        <div data-page-component-module="oroui/js/app/components/view-component"
+                             data-page-component-options="{{ {
+                                 view: 'marelloorder/js/app/views/order-discount-view',
+                             }|json_encode }}">
+                            {{ form_row(form.discountAmount) }}
+                        </div>
+                        {{ form_row(form.couponCode) }}
+                        {{ form_row(form.locale) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
 
-    {% set billingAddress = form_widget(form.billingAddress) %}
-    {% set shippingAddress = form_widget(form.shippingAddress) %}
+    {% set subtotals %}
+        <div class="responsive-block">
+            <div class="box-type1">
+                <div class="title">
+                    <span class="widget-title">{{ 'marello.order.datablock.order_totals'|trans }}</span>
+                </div>
+                <div class="subtotal-error"></div>
+                <div data-page-component-module="oroui/js/app/components/view-component"
+                     data-page-component-options="{{ {
+                         view: 'marelloorder/js/app/views/order-totals-view',
+                         data: data|default({})
+                     }|json_encode }}">
+                    <div class="totals-container" data-totals-container></div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [subtotals] }]) %}
+
+    {% set billingAddress %}
+        {% if form.billingAddress.customerAddress is defined %}
+            {% set idAddressBlock = '#' ~ form.billingAddress.customerAddress.vars.id %}
+        {% else %}
+            {% set idAddressBlock = null %}
+        {% endif %}
+        <div
+                data-page-component-module="oroui/js/app/components/view-component"
+                data-page-component-options="{{ {
+                    view: 'marelloorder/js/app/views/order-address-view',
+                    type: 'billing',
+                    selectors: {
+                        address: idAddressBlock
+                    }
+                }|json_encode }}">
+            {{ form_widget(form.billingAddress) }}
+        </div>
+    {% endset %}
+    {% set shippingAddress %}
+        {% if form.shippingAddress.customerAddress is defined %}
+            {% set idAddressBlock = '#' ~ form.shippingAddress.customerAddress.vars.id %}
+        {% else %}
+            {% set idAddressBlock = null %}
+        {% endif %}
+        <div
+                data-page-component-module="oroui/js/app/components/view-component"
+                data-page-component-options="{{ {
+                    view: 'marelloorder/js/app/views/order-address-view',
+                    type: 'shipping',
+                    selectors: {
+                        address: idAddressBlock,
+                        subtotalsFields: [
+                        '#' ~ form.shippingAddress.country.vars.id,
+                        '#' ~ form.shippingAddress.region.vars.id,
+                        '#' ~ form.shippingAddress.postalCode.vars.id
+                        ]
+                    }
+                }|json_encode }}">
+            {{ form_widget(form.shippingAddress) }}
+        </div>
+    {% endset %}
     {% set orderItems %}
         <div class="order-line-items"
              data-page-component-module="oroui/js/app/components/view-component"
              data-page-component-options="{{ {
                  view: 'marelloorder/js/app/views/order-items-view',
-                 prices: prices|default({})
+                 data: data|default({})
              }|json_encode }}">
             {{ form_widget(form.items) }}
             {{ form_errors(form.items) }}
         </div>
     {% endset %}
+    {% set shippingInformation = form_row(form.shippingMethod) %}
 
     {% set dataBlocks = [
         {
-            'title': 'General'|trans,
+            'title': 'marello.order.sections.general'|trans,
             'class': 'active',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    form_rest(form)
-                ]
-            }]
+            'subblocks': generalSubblocks
         },
         {
             'title': 'marello.order.items.label'|trans,
@@ -86,6 +173,15 @@
                 ]
             }]
         },
+        {
+            'title': 'marello.order.sections.shipping_information'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'data': [
+                    shippingInformation
+                ]
+            }]
+        }
     ] %}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

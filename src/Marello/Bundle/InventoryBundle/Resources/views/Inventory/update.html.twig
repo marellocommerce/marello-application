@@ -5,9 +5,21 @@
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marello_inventory_inventory_index')) }}
-    {% set html = UI.saveAndCloseButton() %}
-    {% set html = html ~ UI.saveAndStayButton() %}
-    {{ UI.dropdownSaveButton({ 'html': html }) }}
+    {% if entity.id and resource_granted('marello_inventory_inventory_update') %}
+        {% set html = '' %}
+        {% if resource_granted('marello_inventory_inventory_view') %}
+            {% set html = UI.saveAndCloseButton({
+            'route': 'marello_inventory_inventory_view',
+            'params': {'id': '$id'}
+            }) %}
+        {% endif %}
+        {% set html = html ~ UI.saveAndStayButton({
+        'route': 'marello_inventory_inventory_update',
+        'params': {'id': '$id'}
+        }) %}
+
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
 {% endblock navButtons %}
 
 {% block pageHeader %}
@@ -15,42 +27,74 @@
         'entity':      form.vars.value,
         'indexPath':   path('marello_inventory_inventory_index'),
         'indexLabel': 'marello.inventory.label'|trans,
-        'entityTitle': entity.sku
+        'entityTitle': entity.product.sku
     } %}
     {{ parent() }}
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'product-inventory-edit' %}
+    {% set id = 'inventory-edit' %}
+    {% set inventoryQuantityWidget %}
+        <div class="responsive-block">
+            <div class="box-type1">
+                <div class="inventoryitem"
+                     data-page-component-module="oroui/js/app/components/view-component"
+                     data-page-component-options="{{ {
+                         view: 'marellolayout/js/app/views/abstract-items-view'
+                     }|json_encode }}">
+                    {{ form_widget(form.inventoryLevels) }}
+                    {{ form_errors(form.inventoryLevels) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set currentInventoryWidget %}
+    <div class="responsive-block">
+        <div class="box-type1">
+            <div class="title">
+                <span class="widget-title">{{ 'marello.inventory.inventorylevel.totals.label'|trans }}</span>
+            </div>
+            {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.inventory.label'|trans, marello_inventory_get_inventorylevel_total_inventory(entity)) }}
+            {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.allocated_inventory.label'|trans, marello_inventory_get_inventorylevel_total_allocatedinventory(entity)) }}
+            {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.virtual_inventory.label'|trans, marello_inventory_get_inventorylevel_total_virtualinventory(entity)) }}
+        </div>
+    </div>
+    {% endset %}
 
     {% set dataBlocks = [
         {
-            'title': 'marello.inventory.label'|trans,
+            'title': 'marello.inventory.inventorylevel.totals.label'|trans,
             'class': 'active',
             'subblocks': [{
                 'title': '',
                 'data': [
-                    form_row(form.inventoryItems),
+                    currentInventoryWidget
+                ]
+            }]
+        },        {
+            'title': 'marello.inventory.inventorylevel.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    inventoryQuantityWidget
+                ]
+            }]
+        },
+        {
+            'title': 'marello.inventory.inventoryitem.replenishment.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_row(form.purchaseInventory),
+                    form_row(form.desiredInventory),
+                    form_row(form.replenishment)
                 ]
             }]
         }
     ] %}
-
-    {% if form.variant.products|length > 0 %}
-        {% set dataBlocks = dataBlocks|merge([
-            {
-                'title': 'marello.product.variant.entity_plural_label'|trans,
-                'class': 'active',
-                'subblocks': [{
-                    'title': '',
-                    'data': [
-                        form_widget(form.variant),
-                    ]
-                }]
-            }
-            ])
-        %}
-    {% endif %}
 
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

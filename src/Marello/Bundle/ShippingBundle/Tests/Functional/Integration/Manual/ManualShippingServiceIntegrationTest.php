@@ -12,9 +12,6 @@ use Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceIntegr
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
-/**
- * @dbIsolation
- */
 class ManualShippingServiceIntegrationTest extends WebTestCase
 {
 
@@ -42,7 +39,7 @@ class ManualShippingServiceIntegrationTest extends WebTestCase
     public function testIntegrationOrder()
     {
         /** @var Order $order */
-        $order = $this->getReference('order1');
+        $order = $this->getReference('marello_order_1');
 
         $shippingDataProvider = $this->client
             ->getContainer()

@@ -6,9 +6,6 @@ use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadRefundData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @dbIsolation
- */
 class RefundControllerTest extends WebTestCase
 {
     public function setUp()

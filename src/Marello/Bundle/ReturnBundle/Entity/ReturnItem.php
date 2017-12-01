@@ -4,7 +4,7 @@ namespace Marello\Bundle\ReturnBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
+use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;

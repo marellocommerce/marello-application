@@ -11,9 +11,6 @@ use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @dbIsolation
- */
 class PurchaseOrderControllerTest extends WebTestCase
 {
     protected function setUp()
@@ -89,7 +86,8 @@ class PurchaseOrderControllerTest extends WebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->getUrl('marello_purchaseorder_purchaseorder_create'),
-            $formValues);
+            $formValues
+        );
 
         $result = $this->client->getResponse();
         $this->assertContains($supplier->getName(), $crawler->html());
@@ -112,7 +110,8 @@ class PurchaseOrderControllerTest extends WebTestCase
             'product' => $product2->getId(),
             'orderedAmount' => 5
         );
-        $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added'] = ''. $product1->getid() . ','. $product2->getId();
+        $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added']
+            = ''. $product1->getid() . ','. $product2->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formValues);
@@ -138,7 +137,8 @@ class PurchaseOrderControllerTest extends WebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->getUrl('marello_purchaseorder_purchaseorder_create'),
-            $formValues);
+            $formValues
+        );
 
         $result = $this->client->getResponse();
         $this->assertContains("This value should not be blank", $crawler->html());
@@ -160,7 +160,8 @@ class PurchaseOrderControllerTest extends WebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->getUrl('marello_purchaseorder_purchaseorder_create'),
-            $formValues);
+            $formValues
+        );
 
         $result = $this->client->getResponse();
         $this->assertContains($supplier->getName(), $crawler->html());
@@ -200,7 +201,8 @@ class PurchaseOrderControllerTest extends WebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->getUrl('marello_purchaseorder_purchaseorder_create'),
-            $formValues);
+            $formValues
+        );
 
         $result = $this->client->getResponse();
         $this->assertContains($supplier->getName(), $crawler->html());
@@ -224,7 +226,8 @@ class PurchaseOrderControllerTest extends WebTestCase
             'product' => $product2->getId(),
             'orderedAmount' => 5
         );
-        $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added'] = ''. $product1->getid() . ','. $product2->getId();
+        $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added']
+            = ''. $product1->getid() . ','. $product2->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formValues);
@@ -251,7 +254,8 @@ class PurchaseOrderControllerTest extends WebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->getUrl('marello_purchaseorder_purchaseorder_create'),
-            $formValues);
+            $formValues
+        );
 
         $result = $this->client->getResponse();
         $this->assertContains($supplier->getName(), $crawler->html());
@@ -274,7 +278,8 @@ class PurchaseOrderControllerTest extends WebTestCase
             'product' => $product2->getId(),
             'orderedAmount' => 0
         );
-        $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added'] = ''. $product1->getid() . ','. $product2->getId();
+        $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added']
+            = ''. $product1->getid() . ','. $product2->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formValues);
@@ -301,7 +306,8 @@ class PurchaseOrderControllerTest extends WebTestCase
         $crawler = $this->client->request(
             'POST',
             $this->getUrl('marello_purchaseorder_purchaseorder_create'),
-            $formValues);
+            $formValues
+        );
 
         $result = $this->client->getResponse();
         $this->assertContains($supplier->getName(), $crawler->html());
@@ -324,7 +330,8 @@ class PurchaseOrderControllerTest extends WebTestCase
             'product' => $product2->getId(),
             'orderedAmount' => 5
         );
-        $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added'] = ''. $product1->getid() . ','. $product2->getId();
+        $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added']
+            = ''. $product1->getid() . ','. $product2->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formValues);

@@ -1,7 +1,11 @@
 marello:
     purchaseorder:
+        id.label:                                       Id
         entity_label:                                   Purchase Order
         entity_plural_label:                            Purchase Orders
+        id.label:                                       Id
+        organization.label:                             Organization
+        supplier.label:                                 Supplier
         purchase_order_number.label:                    PO Number
         purchase_order_supplier.label:                  Supplier
         status.label:                                   Purchase Order Status
@@ -18,6 +22,8 @@ marello:
         all_items_have_been_received:                   All items have been received, please proceed to click "Fully received"
         has_item.label:                                 Has Product
         billing_and_shipping.label:                     Billing & Shipping Info
+        supplier.label:                                 Supplier
+        organization.label:                             Organization
 
         ui:
             continue:                                   Continue
@@ -26,15 +32,29 @@ marello:
             add_product:                                Add Product
 
         purchaseorderitem:
+            entity_label:                               Purchase Order Item
+            entity_plural_label:                        Purchase Order Items
+            id.label:                                   Id
+            data.label:                                 Data
             order_amount.label:                         Order Amount
             ordered_amount.label:                       Ordered Amount
             received_amount.label:                      Received Quantity
             status.label:                               Status
             accepted_qty.label:                         Accepted Quantity
+            order.label:                                Order
+            product.label:                              Product
+            product_name.label:                         Product Name
+            product_sku.label:                          Product SKU
+            supplier.label:                             Supplier
             purchase_stock_level.label:                 Purchase Level
             desired_stock_level.label:                  Desired Level
             virtual_stock_level.label:                  Virtual Level
-
+            product.label:                              Product
+            order.label:                                Order
+            supplier.label:                             Supplier
+            product_sku.label:                          Product Sku
+            product_name.label:                         Product Name
+            data.label:                                 Data
             validation:
                 received_amount:                        Total amount received can only be as many items as ordered amount.
 

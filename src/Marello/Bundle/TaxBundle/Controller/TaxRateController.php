@@ -2,15 +2,10 @@
 
 namespace Marello\Bundle\TaxBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Oro\Bundle\SecurityBundle\Annotation as Security;
-
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * Class TaxRateController
@@ -32,7 +27,12 @@ class TaxRateController extends Controller
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxrate_view")
+     * @Security\Acl(
+     *      id="marello_tax_taxrate_view",
+     *      type="entity",
+     *      class="MarelloTaxBundle:TaxRate",
+     *      permission="VIEW"
+     * )
      *
      * @param TaxRate $taxRate
      *
@@ -47,13 +47,16 @@ class TaxRateController extends Controller
      * @Config\Route("/create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxrate_create")
-     *
-     * @param Request $request
+     * @Security\Acl(
+     *      id="marello_tax_taxrate_create",
+     *      type="entity",
+     *      class="MarelloTaxBundle:TaxRate",
+     *      permission="CREATE"
+     * )
      *
      * @return array
      */
-    public function createAction(Request $request)
+    public function createAction()
     {
         return $this->update(new TaxRate());
     }
@@ -62,14 +65,18 @@ class TaxRateController extends Controller
      * @Config\Route("/update/{id}", requirements={"id"="\d+"})
      * @Config\Method({"GET", "POST"})
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxrate_update")
+     * @Security\Acl(
+     *      id="marello_tax_taxrate_update",
+     *      type="entity",
+     *      class="MarelloTaxBundle:TaxRate",
+     *      permission="EDIT"
+     * )
      *
-     * @param Request $request
-     * @param TaxRate   $taxRate
+     * @param TaxRate $taxRate
      *
      * @return array
      */
-    public function updateAction(Request $request, TaxRate $taxRate)
+    public function updateAction(TaxRate $taxRate)
     {
         return $this->update($taxRate);
     }
@@ -77,7 +84,7 @@ class TaxRateController extends Controller
     /**
      * Handles supplier updates and creation.
      *
-     * @param TaxRate   $taxRate
+     * @param TaxRate $taxRate
      *
      * @return array
      */
@@ -91,21 +98,7 @@ class TaxRateController extends Controller
                 $this->get('translator')->trans('marello.tax.messages.success.taxrate.saved')
             );
             
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'marello_tax_taxrate_update',
-                    'parameters' => [
-                        'id' => $taxRate->getId(),
-                    ],
-                ],
-                [
-                    'route'      => 'marello_tax_taxrate_view',
-                    'parameters' => [
-                        'id' => $taxRate->getId(),
-                    ],
-                ],
-                $taxRate
-            );
+            return $this->get('oro_ui.router')->redirect($taxRate);
         }
 
         return [

@@ -2,15 +2,16 @@
 
 namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class OrderInventoryAllocationListener
 {
@@ -46,9 +47,11 @@ class OrderInventoryAllocationListener
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             null,
+            null,
             $inventoryUpdateQty,
             'order_workflow.pending',
-            $order
+            $order,
+            true
         );
 
         $this->eventDispatcher->dispatch(

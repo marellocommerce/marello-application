@@ -1,21 +1,27 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\Tests\Unit\Entity;
+namespace Marello\Bundle\InventoryBundle\Tests\Functional\Entity;
 
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class InventoryItemTest extends WebTestCase
 {
-    /** @var InventoryManager $manager */
+    /**
+     * @var InventoryManager
+     */
     protected $manager;
+
+    /**
+     * @var InventoryItemManager
+     */
+    protected $itemManager;
 
     /**
      * {@inheritdoc}
@@ -25,74 +31,83 @@ class InventoryItemTest extends WebTestCase
         $this->initClient();
 
         $this->manager = $this->client->getContainer()->get('marello_inventory.manager.inventory_manager');
+        $this->itemManager = $this->client->getContainer()->get('marello_inventory.manager.inventory_item_manager');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function testCreateAndUpdateNewInventoryItem()
     {
-        $inventoryItem = new InventoryItem(new Warehouse(), new Product());
+        $organization = new Organization();
+        /** @var Product $product */
+        $product = new Product();
+        $product->setOrganization($organization);
 
-        $this->assertEquals(0, $inventoryItem->getStock());
-        $this->assertEquals(0, $inventoryItem->getAllocatedStock());
-        $this->assertEquals(0, $inventoryItem->getVirtualStock());
-        $this->assertNull($inventoryItem->getCurrentLevel());
+        $inventoryItem = $this->itemManager->createInventoryItem($product);
+
+        $this->assertEquals(false, $inventoryItem->hasInventoryLevels());
+        $this->assertEmpty($inventoryItem->getInventoryLevels());
 
         /** @var InventoryUpdateContext $context */
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $product,
             $inventoryItem,
             10,
             20,
-            'manual'
+            'import'
         );
-        $this->manager->updateInventoryItems($context);
 
-        $this->assertEquals(10, $inventoryItem->getStock());
-        $this->assertEquals(20, $inventoryItem->getAllocatedStock());
-        $this->assertEquals(-10, $inventoryItem->getVirtualStock());
-        $this->assertInstanceOf(StockLevel::class, $inventoryItem->getCurrentLevel());
-        $this->assertInstanceOf(StockLevel::class, $inventoryItem->getLevels()->first());
+        $this->manager->updateInventoryLevel($context);
+
+        $this->assertEquals(true, $inventoryItem->hasInventoryLevels());
+        $this->assertNotEmpty($inventoryItem->getInventoryLevels());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function testIfInventoryItemIsUpdatedCorrectlyWithMultipleChanges()
     {
-        $inventoryItem = new InventoryItem(new Warehouse(), new Product());
+        $organization = new Organization();
+        /** @var Product $product */
+        $product = new Product();
+        $product->setOrganization($organization);
 
-        $this->assertEquals(0, $inventoryItem->getStock());
-        $this->assertEquals(0, $inventoryItem->getAllocatedStock());
-        $this->assertEquals(0, $inventoryItem->getVirtualStock());
-        $this->assertNull($inventoryItem->getCurrentLevel());
+        $inventoryItem = $this->itemManager->createInventoryItem($product);
+
+        $this->assertEquals(false, $inventoryItem->hasInventoryLevels());
+        $this->assertEmpty($inventoryItem->getInventoryLevels());
 
         /** @var InventoryUpdateContext $context */
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+            $product,
             $inventoryItem,
             10,
             20,
             'manual'
         );
-        $this->manager->updateInventoryItems($context);
 
-        $this->assertEquals(10, $inventoryItem->getStock());
-        $this->assertEquals(20, $inventoryItem->getAllocatedStock());
-        $this->assertEquals(-10, $inventoryItem->getVirtualStock());
-        $this->assertInstanceOf(StockLevel::class, $inventoryItem->getCurrentLevel());
-        $this->assertInstanceOf(StockLevel::class, $inventoryItem->getLevels()->first());
+        $this->manager->updateInventoryLevel($context);
+
+        $this->assertEquals(true, $inventoryItem->hasInventoryLevels());
+        $this->assertNotEmpty($inventoryItem->getInventoryLevels());
+
+        /** @var InventoryLevel $inventoryLevel */
+        $inventoryLevel = $inventoryItem->getInventoryLevels()->first();
+        $this->assertEquals(10, $inventoryLevel->getInventoryQty());
+        $this->assertEquals(20, $inventoryLevel->getAllocatedInventoryQty());
+        $this->assertEquals((10 - 20), $inventoryLevel->getVirtualInventoryQty());
 
         /** @var InventoryUpdateContext $context */
-        $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+        $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
+            $inventoryLevel,
             $inventoryItem,
             -5,
             -10,
             'manual'
         );
-        $this->manager->updateInventoryItems($context);
 
-        $this->assertEquals(5, $inventoryItem->getStock());
-        $this->assertEquals(10, $inventoryItem->getAllocatedStock());
-        $this->assertEquals(-5, $inventoryItem->getVirtualStock());
+        $this->manager->updateInventoryLevel($context);
+
+        /** @var InventoryLevel $inventoryLevel */
+        $inventoryLevel = $inventoryItem->getInventoryLevels()->first();
+        $this->assertEquals(5, $inventoryLevel->getInventoryQty());
+        $this->assertEquals(10, $inventoryLevel->getAllocatedInventoryQty());
+        $this->assertEquals((5 - 10), $inventoryLevel->getVirtualInventoryQty());
     }
 }

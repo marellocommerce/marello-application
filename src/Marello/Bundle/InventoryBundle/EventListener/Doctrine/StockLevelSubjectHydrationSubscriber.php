@@ -5,12 +5,12 @@ namespace Marello\Bundle\InventoryBundle\EventListener\Doctrine;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
 
 /**
  * Class StockLevelSubjectHydrationSubscriber
  *
- * Hydrates the subject field of StockLevel entity.
+ * Hydrates the subject field of InventoryLevel entity.
  * Subject is stored as class name and id. A reference to this entity is created so it can be accessed.
  *
  * @package Marello\Bundle\InventoryBundle\EventListener\Doctrine
@@ -28,12 +28,12 @@ class StockLevelSubjectHydrationSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if (!$entity instanceof StockLevel) {
+        if (!$entity instanceof InventoryLevelLogRecord) {
             return;
         }
 
         /*
-         * Guard against StockLevels without subject stored.
+         * Guard against InventoryLevels without subject stored.
          */
         if (!$entity->getSubjectType() || !$entity->getSubjectId()) {
             return;

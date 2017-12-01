@@ -10,6 +10,8 @@ class InventoryUpdateEvent extends Event
 {
     const NAME = 'marello_inventory.inventory.update';
 
+    const INVENTORY_UPDATE_BEFORE = 'marello_inventory.inventory.update_before';
+    const INVENTORY_UPDATE_AFTER = 'marello_inventory.inventory.update_after';
     /**
      * @var InventoryUpdateContext
      */

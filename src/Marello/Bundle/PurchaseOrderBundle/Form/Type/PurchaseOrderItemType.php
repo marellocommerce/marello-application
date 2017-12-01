@@ -51,5 +51,4 @@ class PurchaseOrderItemType extends AbstractType
     {
         return self::NAME;
     }
-
 }

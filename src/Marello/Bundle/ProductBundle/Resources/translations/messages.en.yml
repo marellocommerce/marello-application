@@ -1,5 +1,6 @@
 marello:
     product:
+        id.label:                   Id
         entity_plural_label:        Products
         entity_label:               Product
         name.label:                 Name
@@ -10,20 +11,20 @@ marello:
         status.label:               Status
         cost.label:                 Cost
         data.label:                 Data
-        id.label:                   Id
         type.label:                 Product Type
         preferred_supplier.label:   Preferred Supplier
         stock_level.label:          Total Stock
         channel_prices.label:       Product Channel Prices
-        desired_stock_level.label:  Desired Stock Level
-        purchase_stock_level.label: Purchase Stock Level
-
+        tax_code.label:             Tax Code
         channels.label:             Sales Channels
+        sales_channel_tax_codes.label:  Sales Channel Tax Code
         inventory_items.label:      Inventory Items
         organization.label:         Organization
         variant.label:              Variant
         prices.label:               Product Prices
         replenishment.label:        Replenishment
+        manufacturing_code.label:   Manufacturing Code
+        image.label:                Image
 
         variant:
             label:                    Variant
@@ -36,6 +37,7 @@ marello:
 
         productstatus:
             entity_label:           Product Status
+            entity_plural_label:    Product Statuses
             label.label:            Label
             name.label:             Name
 
@@ -45,9 +47,10 @@ marello:
             entity_plural_label:                Product Channel Tax Code Relations
             widget_title:                       Sales Channel Tax Codes
             product.label:                      Product
-            saleschannel.label:                 Sales Channel
-            taxcode.label:                      Tax Code
+            sales_channel.label:                Sales Channel
+            tax_code.label:                     Tax Code
             form.add_productchanneltaxrelation: Add Sales Channel Tax Code
+
 
         messages:
             success:
@@ -57,6 +60,10 @@ marello:
                     saved:          Variant saved
             error:
                 sku:                SKU already exists, please provide a unique SKU
+
+        sections:
+            general:                General Information
+            additional:             Additional
 
         form.choose_product:        Select Product
         form.add_product:           Add Product

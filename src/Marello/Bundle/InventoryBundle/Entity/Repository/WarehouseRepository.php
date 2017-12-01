@@ -4,9 +4,22 @@ namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class WarehouseRepository extends EntityRepository
 {
+    /**
+     * @var AclHelper
+     */
+    private $aclHelper;
+
+    /**
+     * @param AclHelper $aclHelper
+     */
+    public function setAclHelper(AclHelper $aclHelper)
+    {
+        $this->aclHelper = $aclHelper;
+    }
     /**
      * Finds default warehouse.
      *
@@ -14,6 +27,10 @@ class WarehouseRepository extends EntityRepository
      */
     public function getDefault()
     {
-        return $this->findOneBy(['default' => true]);
+        $qb = $this->createQueryBuilder('wh');
+        $qb
+            ->where($qb->expr()->eq('wh.default', true));
+
+        return $this->aclHelper->apply($qb)->getSingleResult();
     }
 }

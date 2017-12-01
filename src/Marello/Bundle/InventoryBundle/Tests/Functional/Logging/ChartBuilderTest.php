@@ -2,30 +2,45 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Logging;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Logging\ChartBuilder;
+use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
+use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\StockLevel;
-use Marello\Bundle\InventoryBundle\Logging\ChartBuilder;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
-
-/**
- * @dbIsolation
- */
 class ChartBuilderTest extends WebTestCase
 {
-    /** @var ChartBuilder */
+    /**
+     * @var ChartBuilder
+     */
     protected $chartBuilder;
+
+    /**
+     * @var InventoryItemManager
+     */
+    protected $itemManager;
+
+    /**
+     * @var InventoryTotalCalculator
+     */
+    protected $totalCalculator;
 
     public function setUp()
     {
         $this->initClient();
 
         $this->chartBuilder = $this->client->getContainer()->get('marello_inventory.logging.chart_builder');
+        $this->itemManager = $this->client->getContainer()->get('marello_inventory.manager.inventory_item_manager');
+        $this->totalCalculator = $this->client
+            ->getContainer()
+            ->get('marello_inventory.model.inventory_level_totals_calculator');
 
         $this->loadFixtures([
-            LoadProductData::class
+            LoadProductData::class,
+            LoadInventoryData::class
         ]);
     }
 
@@ -38,24 +53,19 @@ class ChartBuilderTest extends WebTestCase
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
         /** @var InventoryItem $inventoryItem */
-        $inventoryItem = $product
-            ->getInventoryItems()
-            ->first();
-
-        /** @var StockLevel $inventory */
-        $inventory = $inventoryItem->getCurrentLevel();
+        $inventoryItem = $this->itemManager->getInventoryItem($product);
 
         /*
          * Get start and end points of interval +- 3 days around creation of this single log.
          */
-        $from = clone $inventory->getCreatedAt();
-        $to   = clone $inventory->getCreatedAt();
+        $from = clone $product->getCreatedAt();
+        $to   = clone $product->getCreatedAt();
 
         $from->modify('- 3 days');
         $to->modify('+ 3 days');
 
         $data = $this->chartBuilder->getChartData(
-            $product,
+            $inventoryItem,
             $from,
             $to
         );
@@ -74,7 +84,7 @@ class ChartBuilderTest extends WebTestCase
 
         $this->assertEquals(0, $first['inventory'], 'First item stock level should be zero.');
         $this->assertEquals(
-            $inventoryItem->getStock(),
+            $this->totalCalculator->getTotalInventoryQty($inventoryItem),
             $last['inventory'],
             'Last item stock level should be same as the one stored in inventory item.'
         );

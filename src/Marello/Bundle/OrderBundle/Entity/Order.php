@@ -2,23 +2,32 @@
 
 namespace Marello\Bundle\OrderBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
-use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\OrderBundle\Model\ExtendOrder;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
-use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
+
+use Marello\Bundle\OrderBundle\Model\ExtendOrder;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
+use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
+use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
+use Marello\Bundle\OrderBundle\Model\DiscountAwareInterface;
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
+use Marello\Bundle\PricingBundle\Subtotal\Model\SubtotalAwareInterface;
+use Marello\Bundle\PricingBundle\Subtotal\Model\LineItemsAwareInterface;
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository")
@@ -28,15 +37,16 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *      routeCreate="marello_order_order_create",
  *      defaultValues={
  *          "entity"={
- *              "icon"="fa-list-alt"
+ *              "icon"="fa-shopping-cart"
  *          },
  *          "security"={
  *              "type"="ACL",
  *              "group_name"=""
  *          },
  *          "ownership"={
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
@@ -50,8 +60,14 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  */
 class Order extends ExtendOrder implements
     DerivedPropertyAwareInterface,
+    CurrencyAwareInterface,
+    DiscountAwareInterface,
     ShippingAwareInterface,
-    LocaleAwareInterface
+    SubtotalAwareInterface,
+    TaxAwareInterface,
+    LineItemsAwareInterface,
+    LocaleAwareInterface,
+    ChannelAwareInterface
 {
     use HasShipmentTrait;
     use LocalizationTrait;
@@ -69,42 +85,42 @@ class Order extends ExtendOrder implements
     /**
      * @var string
      *
-     * @ORM\Column(name="order_number",type="string", unique=true, nullable=true)
+     * @ORM\Column(name="order_number", type="string", unique=true, nullable=true)
      */
     protected $orderNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="order_reference",type="string", nullable=true)
+     * @ORM\Column(name="order_reference", type="string", nullable=true)
      */
     protected $orderReference;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="invoice_reference",type="string", nullable=true)
+     * @ORM\Column(name="invoice_reference", type="string", nullable=true)
      */
     protected $invoiceReference;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="subtotal",type="money")
+     * @ORM\Column(name="subtotal", type="money")
      */
     protected $subtotal = 0;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="total_tax",type="money")
+     * @ORM\Column(name="total_tax", type="money")
      */
     protected $totalTax = 0;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="grand_total",type="money")
+     * @ORM\Column(name="grand_total", type="money")
      */
     protected $grandTotal = 0;
 
@@ -136,14 +152,14 @@ class Order extends ExtendOrder implements
     /**
      * @var double
      *
-     * @ORM\Column(name="shipping_amount_incl_tax", type="money", nullable=false)
+     * @ORM\Column(name="shipping_amount_incl_tax", type="money", nullable=true)
      */
     protected $shippingAmountInclTax;
 
     /**
      * @var double
      *
-     * @ORM\Column(name="shipping_amount_excl_tax", type="money", nullable=false)
+     * @ORM\Column(name="shipping_amount_excl_tax", type="money", nullable=true)
      */
     protected $shippingAmountExclTax;
 
@@ -258,6 +274,8 @@ class Order extends ExtendOrder implements
         AbstractAddress $billingAddress = null,
         AbstractAddress $shippingAddress = null
     ) {
+        parent::__construct();
+        
         $this->items           = new ArrayCollection();
         $this->billingAddress  = $billingAddress;
         $this->shippingAddress = $shippingAddress;
@@ -337,6 +355,14 @@ class Order extends ExtendOrder implements
     public function getTotalTax()
     {
         return $this->totalTax;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTax()
+    {
+        return $this->getTotalTax();
     }
 
     /**
@@ -426,8 +452,10 @@ class Order extends ExtendOrder implements
      */
     public function addItem(OrderItem $item)
     {
-        $this->items->add($item);
-        $item->setOrder($this);
+        if (!$this->items->contains($item)) {
+            $this->items->add($item);
+            $item->setOrder($this);
+        }
 
         return $this;
     }
@@ -439,7 +467,9 @@ class Order extends ExtendOrder implements
      */
     public function removeItem(OrderItem $item)
     {
-        $this->items->removeElement($item);
+        if ($this->items->contains($item)) {
+            $this->items->removeElement($item);
+        }
 
         return $this;
     }
@@ -561,7 +591,7 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @return float
+     * @return string
      */
     public function getShippingMethod()
     {
@@ -569,7 +599,7 @@ class Order extends ExtendOrder implements
     }
 
     /**
-     * @param float $shippingMethod
+     * @param string $shippingMethod
      *
      * @return $this
      */

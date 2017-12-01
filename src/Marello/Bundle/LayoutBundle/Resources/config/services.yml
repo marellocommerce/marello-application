@@ -1,0 +1,3 @@
+services:
+    marello_layout.provider.form_changes_data.composite:
+        class: 'Marello\Bundle\LayoutBundle\Provider\CompositeFormChangesProvider'

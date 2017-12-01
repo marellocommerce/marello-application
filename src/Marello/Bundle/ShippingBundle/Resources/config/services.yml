@@ -1,8 +1,6 @@
 services:
     marello_shipping.integration.shipping_service_registry:
         class: Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry
-        arguments:
-            - '@service_container'
 
     marello_shipping.workflow.action.create:
         class: Marello\Bundle\ShippingBundle\Workflow\ShipmentCreateAction

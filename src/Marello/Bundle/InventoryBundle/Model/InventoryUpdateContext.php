@@ -37,7 +37,7 @@ class InventoryUpdateContext
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated
      * @param $items
      * @return $this
      */
@@ -49,12 +49,54 @@ class InventoryUpdateContext
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated
      * @return mixed|null
      */
     public function getItems()
     {
         return $this->getValue('items');
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $item
+     * @return $this
+     */
+    public function setInventoryItem($item)
+    {
+        $this->setValue('inventory_item', $item);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
+    public function getInventoryItem()
+    {
+        return $this->getValue('inventory_item');
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $item
+     * @return $this
+     */
+    public function setInventoryLevel($inventoryLevel)
+    {
+        $this->setValue('inventory_level', $inventoryLevel);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return mixed|null
+     */
+    public function getInventoryLevel()
+    {
+        return $this->getValue('inventory_level');
     }
 
     /**
@@ -121,34 +163,67 @@ class InventoryUpdateContext
     }
 
     /**
-     * {@inheritdoc}
-     * @param $allocatedStock
+     * @deprecated use setAllocatedInventoryQty instead
+     * @param $allocatedQty
      * @return $this
      */
-    public function setAllocatedStock($allocatedStock)
+    public function setAllocatedStock($allocatedQty)
     {
-        $this->setValue('allocated_stock', $allocatedStock);
+        return $this->setAllocatedInventory($allocatedQty);
+    }
+
+    /**
+     * @param $allocatedQty
+     * @return $this
+     */
+    public function setAllocatedInventory($allocatedQty)
+    {
+        $this->setValue('allocated_inventory_qty', $allocatedQty);
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated use getAllocatedInventory instead
      * @return mixed|null
      */
     public function getAllocatedStock()
     {
-        return $this->getValue('allocated_stock');
+        return $this->getAllocatedInventory();
+    }
+
+    public function getAllocatedInventory()
+    {
+        return $this->getValue('allocated_inventory_qty');
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated use setInventory($qty) instead
      * @param $stock
      * @return $this
      */
     public function setStock($stock)
     {
-        $this->setValue('stock', $stock);
+        return $this->setInventory($stock);
+    }
+
+    /**
+     * @deprecated use getInventory() instead
+     * @return mixed|null
+     */
+    public function getStock()
+    {
+        return $this->getInventory();
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $qty
+     * @return $this
+     */
+    public function setInventory($qty)
+    {
+        $this->setValue('quantity', $qty);
 
         return $this;
     }
@@ -157,9 +232,9 @@ class InventoryUpdateContext
      * {@inheritdoc}
      * @return mixed|null
      */
-    public function getStock()
+    public function getInventory()
     {
-        return $this->getValue('stock');
+        return $this->getValue('quantity');
     }
 
     /**
@@ -181,5 +256,26 @@ class InventoryUpdateContext
     public function getProduct()
     {
         return $this->getValue('product');
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param bool $isVirtual
+     * @return $this
+     */
+    public function setIsVirtual($isVirtual)
+    {
+        $this->setValue('is_virtual', $isVirtual);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return bool|null
+     */
+    public function getIsVirtual()
+    {
+        return $this->getValue('is_virtual');
     }
 }

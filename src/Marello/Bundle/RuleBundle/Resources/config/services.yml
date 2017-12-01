@@ -1,0 +1,24 @@
+parameters:
+    marello_rule.entity.rule.class: 'Marello\Bundle\RuleBundle\Entity\Rule'
+
+services:
+    marello_rule.rule_filtration.service:
+        class: 'Marello\Bundle\RuleBundle\RuleFiltration\BasicRuleFiltrationService'
+        public: false
+
+    marello_rule.rule_filtration.enabled_decorator:
+        class: 'Marello\Bundle\RuleBundle\RuleFiltration\EnabledRuleFiltrationServiceDecorator'
+        public: false
+        decorates: marello_rule.rule_filtration.service
+        arguments:
+            - '@marello_rule.rule_filtration.enabled_decorator.inner'
+
+    marello_rule.rule_filtration.stop_processing_decorator:
+        class: 'Marello\Bundle\RuleBundle\RuleFiltration\StopProcessingRuleFiltrationServiceDecorator'
+        public: false
+        decorates: marello_rule.rule_filtration.service
+        arguments:
+            - '@marello_rule.rule_filtration.stop_processing_decorator.inner'
+
+    marello_rule.action.visibility_provider:
+        class: 'Marello\Bundle\RuleBundle\Datagrid\RuleActionsVisibilityProvider'

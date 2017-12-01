@@ -55,19 +55,13 @@ class DefaultSalesChannelSubscriber implements EventSubscriberInterface
 
     /**
      * Get default channels for new products.
-     * @return array $qb
+     * @return array
      */
     public function getDefaultChannels()
     {
-        $qb = $this->em->getRepository('MarelloSalesBundle:SalesChannel')
-            ->createQueryBuilder('sc');
-
-        return $qb
-            ->where($qb->expr()->eq('sc.active', $qb->expr()->literal(true)))
-            ->andWhere($qb->expr()->eq('sc.default', $qb->expr()->literal(true)))
-            ->orderBy('sc.name', 'ASC')
-            ->getQuery()
-            ->getResult();
+        return $this->em
+            ->getRepository('MarelloSalesBundle:SalesChannel')
+            ->getDefaultActiveChannels();
     }
 
     /**

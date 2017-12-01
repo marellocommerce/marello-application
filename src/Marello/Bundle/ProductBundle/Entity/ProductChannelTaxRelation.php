@@ -36,8 +36,9 @@ class ProductChannelTaxRelation
     /**
      * @var Product
      *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="salesChannelTaxCodes", cascade={"persist"})
-     * @ORM\JoinColumn(name="product_id", nullable=false)
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product", inversedBy="salesChannelTaxCodes",
+     *      cascade={"persist"})
+     * @ORM\JoinColumn(name="product_id", onDelete="CASCADE", nullable=false)
      *
      */
     protected $product;
@@ -46,7 +47,7 @@ class ProductChannelTaxRelation
      * @var SalesChannel
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel", cascade={"persist"})
-     * @ORM\JoinColumn(name="sales_channel_id", nullable=false)
+     * @ORM\JoinColumn(name="sales_channel_id", onDelete="CASCADE", nullable=false)
      *
      */
     protected $salesChannel;
@@ -55,7 +56,7 @@ class ProductChannelTaxRelation
      * @var TaxCode
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode", cascade={"persist"})
-     * @ORM\JoinColumn(name="tax_code_id", nullable=false)
+     * @ORM\JoinColumn(name="tax_code_id", onDelete="CASCADE", nullable=false)
      *
      */
     protected $taxCode;

@@ -14,9 +14,6 @@ use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
-/**
- * @dbIsolation
- */
 class OrderControllerTest extends WebTestCase
 {
     protected function setUp()
@@ -37,7 +34,7 @@ class OrderControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('order1')->getId()])
+            $this->getUrl('marello_order_api_get_order', ['id' => $this->getReference('marello_order_1')->getId()])
         );
 
         $response = $this->client->getResponse();
@@ -108,6 +105,7 @@ class OrderControllerTest extends WebTestCase
                     'originalPriceExclTax'  => 140.10,
                     'purchasePriceIncl'     => 190.00,
                     'tax'                   => 39.90,
+                    'taxCode'               => 'TAX_HIGH',
                     'taxPercent'            => 0.21,
                     'rowTotalInclTax'       => 190.00,
                     'rowTotalExclTax'       => 180.00,
@@ -120,6 +118,7 @@ class OrderControllerTest extends WebTestCase
                     'originalPriceExclTax'  => 128.25,
                     'purchasePriceIncl'     => 175.00,
                     'tax'                   => 36.75,
+                    'taxCode'               => 'TAX_VERY_HIGH',
                     'taxPercent'            => 0.21,
                     'rowTotalInclTax'       => 175.00,
                     'rowTotalExclTax'       => 165.00,
@@ -212,6 +211,7 @@ class OrderControllerTest extends WebTestCase
                     'originalPriceExclTax'  => 140.10,
                     'purchasePriceIncl'     => 190.00,
                     'tax'                   => 39.90,
+                    'taxCode'               => 'TAX_HIGH',
                     'taxPercent'            => 0.21,
                     'rowTotalInclTax'       => 190.00,
                     'rowTotalExclTax'       => 180.00,
@@ -225,6 +225,7 @@ class OrderControllerTest extends WebTestCase
                     'originalPriceExclTax'  => 128.25,
                     'purchasePriceIncl'     => 175.00,
                     'tax'                   => 36.75,
+                    'taxCode'               => 'TAX_VERY_HIGH',
                     'taxPercent'            => 0.21,
                     'rowTotalInclTax'       => 175.00,
                     'rowTotalExclTax'       => 165.00,
@@ -389,6 +390,7 @@ class OrderControllerTest extends WebTestCase
                 'originalPriceInclTax'     => [],
                 'purchasePriceIncl' => [],
                 'tax'               => [],
+                'taxCode'           => [],
                 'taxPercent'        => [],
                 'rowTotalExclTax'          => [],
                 'rowTotalInclTax'          => [],

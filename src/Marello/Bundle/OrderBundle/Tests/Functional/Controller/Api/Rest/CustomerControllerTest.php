@@ -2,13 +2,10 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadOrderData;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-/**
- * @dbIsolation
- */
 class CustomerControllerTest extends WebTestCase
 {
     protected function setUp()
@@ -17,27 +14,12 @@ class CustomerControllerTest extends WebTestCase
             [],
             $this->generateWsseAuthHeader()
         );
+
         $this->loadFixtures([
-            LoadOrderData::class,
+            LoadOrderData::class
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function testIndex()
-    {
-        $this->client->request(
-            'GET',
-            $this->getUrl('marello_customer_api_get_customers')
-        );
-
-        $response = $this->client->getResponse();
-
-        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
-
-        $this->assertCount(10, json_decode($response->getContent(), true));
-    }
 
     /**
      * @test
@@ -68,6 +50,23 @@ class CustomerControllerTest extends WebTestCase
 
         $response = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('id', $response);
+    }
+
+    /**
+     * @test
+     */
+    public function testCget()
+    {
+        $this->client->request(
+            'GET',
+            $this->getUrl('marello_customer_api_get_customers')
+        );
+
+        $response = $this->client->getResponse();
+
+        $this->assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+
+        $this->assertCount(10, json_decode($response->getContent(), true));
     }
 
     /**

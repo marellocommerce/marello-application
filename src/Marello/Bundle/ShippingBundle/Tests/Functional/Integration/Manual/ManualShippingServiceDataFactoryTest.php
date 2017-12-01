@@ -10,9 +10,6 @@ use Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceDataFa
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
-/**
- * @dbIsolation
- */
 class ManualShippingServiceDataFactoryTest extends WebTestCase
 {
     /** @var ManualShippingServiceDataFactory */
@@ -38,7 +35,7 @@ class ManualShippingServiceDataFactoryTest extends WebTestCase
     public function testOrderShipment()
     {
         /** @var Order $order */
-        $order = $this->getReference('order1');
+        $order = $this->getReference('marello_order_1');
 
         $shippingDataProvider = $this->client
             ->getContainer()

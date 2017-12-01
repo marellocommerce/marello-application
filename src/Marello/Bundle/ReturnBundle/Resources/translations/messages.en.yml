@@ -10,6 +10,12 @@ marello:
             return_items.label:       Returned items
             workflow_item.label:      Workflow Item
             workflow_step.label:      Workflow Step
+            locale.label:             Locale
+            sales_channel_name.label: Sales Channel Name
+            localization.label:       Localization
+            organization.label:       Organization
+            sales_channel.label:      Sales Channel
+            shipment.label:           Shipment
             messages:
                 success:
                     returnentity:
@@ -28,5 +34,11 @@ marello:
             return.label:               Return
 
         system_configuration:
-            ror_period:                 Right of return period
-            warranty_period:            Warranty period
+            groups:
+                return.title:               Return
+                return_configuration.title: Warranty Configuration
+                ror_settings.title:         Right of Return Settings
+                warranty_settings.title:    Product Warranty Settings
+            fields:
+                ror_period:             Right of return period
+                warranty_period:        Warranty period

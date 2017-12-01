@@ -5,18 +5,19 @@ namespace Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingData;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryData;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -24,17 +25,39 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     /** flush manager count */
     const FLUSH_MAX = 25;
 
-    /** @var ObjectManager $manager */
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
 
+    /**
+     * @var resource|null
+     */
     protected $ordersFile = null;
+
+    /**
+     * @var array
+     */
     protected $ordersFileHeader = [];
+
+    /**
+     * @var resource|null
+     */
     protected $itemsFile = null;
+
+    /**
+     * @var array
+     */
     protected $itemsFileHeader = [];
 
-    /** @var Warehouse */
+    /**
+     * @var Warehouse
+     */
     protected $defaultWarehouse;
 
+    /**
+     * @var int
+     */
     protected $customers = 0;
 
     /**
@@ -43,9 +66,11 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
+            LoadTaxCodeData::class,
             LoadSalesData::class,
             LoadProductData::class,
             LoadProductChannelPricingData::class,
+            LoadInventoryData::class,
         ];
     }
 
@@ -89,7 +114,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 ;
 
                 $manager->persist($order);
-                $this->setReference('order' . $createdOrders, $order);
+                $this->setReference('marello_order_' . $createdOrders, $order);
                 $createdOrders++;
 
                 if (!($createdOrders % self::FLUSH_MAX)) {
@@ -198,6 +223,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $this->setReference('customer' . $this->customers++, $customer);
         $orderEntity->setCustomer($customer);
 
+        /** @var SalesChannel $channel */
         $channel = $this->getReference($row['channel']);
         $orderEntity->setSalesChannel($channel);
         $orderEntity->setCurrency($channel->getCurrency());

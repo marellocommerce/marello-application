@@ -2,10 +2,15 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
+use Marello\Bundle\AddressBundle\Form\Type\AddressType;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 class WarehouseType extends AbstractType
 {
@@ -27,16 +32,43 @@ class WarehouseType extends AbstractType
         $builder
             ->add(
                 'label',
-                'text',
-                ['constraints' => new NotNull()]
+                TextType::class,
+                ['required' => true]
+            )
+            ->add(
+                'code',
+                TextType::class,
+                ['required' => true]
             )
             ->add(
                 'address',
-                'marello_address',
+                AddressType::class,
                 ['required' => true]
+            )
+            ->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                [$this, 'preSetDataListener']
             );
 
         $this->removeNonStreetFieldsFromAddress($builder, 'address');
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function preSetDataListener(FormEvent $event)
+    {
+        /** @var Warehouse $warehouse */
+        $warehouse = $event->getData();
+        $form = $event->getForm();
+
+        if ($warehouse->getGroup() === null || $warehouse->getGroup()->isSystem() === true) {
+            $form->add('createOwnGroup', CheckboxType::class, [
+                'required' => false,
+                'mapped' => false,
+                'label' => 'marelloenterprise.inventory.warehouse.form.create_own_group'
+            ]);
+        }
     }
 
     /**
@@ -45,7 +77,7 @@ class WarehouseType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\InventoryBundle\Entity\Warehouse',
+            'data_class'         => Warehouse::class,
             'cascade_validation' => true,
         ]);
     }
@@ -54,6 +86,14 @@ class WarehouseType extends AbstractType
      * {@inheritdoc}
      */
     public function getName()
+    {
+        return self::NAME;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return self::NAME;
     }

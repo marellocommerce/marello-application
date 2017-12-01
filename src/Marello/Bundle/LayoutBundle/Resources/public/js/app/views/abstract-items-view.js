@@ -3,6 +3,7 @@ define(function(require) {
 
     var AbstractItemsView,
         $ = require('jquery'),
+        LoadingMaskView = require('oroui/js/app/views/loading-mask-view'),
         BaseView = require('oroui/js/app/views/base/view');
 
     /**
@@ -21,10 +22,16 @@ define(function(require) {
         $form: null,
 
         /**
+         * @property {LoadingMaskView}
+         */
+        loadingMaskView: null,
+
+        /**
          * @inheritDoc
          */
         initialize: function(options) {
             this.options = $.extend(true, {}, this.options, options || {});
+            this.loadingMaskView = new LoadingMaskView({container: this.$el});
             this.initLayout().done(_.bind(this.handleLayoutInit, this));
             this.delegate('click', '.marello-add-line-item', this.addRow);
         },
@@ -39,6 +46,19 @@ define(function(require) {
             });
         },
 
+        /**
+         * Show loading view
+         */
+        loadingStart: function() {
+            this.loadingMaskView.show();
+        },
+
+        /**
+         * Hide loading view
+         */
+        loadingEnd: function() {
+            this.loadingMaskView.hide();
+        },
 
         /**
          * handle index and html for the collection container

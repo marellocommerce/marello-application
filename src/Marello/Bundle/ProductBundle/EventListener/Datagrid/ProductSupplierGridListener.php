@@ -2,15 +2,15 @@
 
 namespace Marello\Bundle\ProductBundle\EventListener\Datagrid;
 
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Doctrine\ORM\EntityManager;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-use Doctrine\ORM\EntityManager;
 
 class ProductSupplierGridListener
 {
-    /** @var EntityManager */
+    /**
+     * @var EntityManager
+     */
     protected $entityManager;
 
     public function __construct(EntityManager $entityManager)
@@ -28,7 +28,6 @@ class ProductSupplierGridListener
         $supplier = $event->getDatagrid()->getParameters()->get('supplier');
 
         if (!$supplier) {
-
             $supplierId = $event->getDatagrid()->getParameters()->get('supplierId');
 
             if ($supplierId) {
@@ -52,7 +51,9 @@ class ProductSupplierGridListener
      */
     private function getProductsRelatedToSupplier(Supplier $supplier)
     {
-        $productsIds = $this->entityManager->getRepository('MarelloSupplierBundle:ProductSupplierRelation')->getProductIdsRelatedToSupplier($supplier);
+        $productsIds = $this->entityManager
+            ->getRepository('MarelloProductBundle:ProductSupplierRelation')
+            ->getProductIdsRelatedToSupplier($supplier);
         return $productsIds;
     }
 }

@@ -6,7 +6,7 @@ use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 
 use Marello\Bundle\ExtendWorkflowBundle\Model\WorkflowItemApiAwareInterface;
 
-class ReturnApiEntityManager extends ApiEntityManager implements  WorkflowItemApiAwareInterface
+class ReturnApiEntityManager extends ApiEntityManager implements WorkflowItemApiAwareInterface
 {
     /**
      * {@inheritdoc}

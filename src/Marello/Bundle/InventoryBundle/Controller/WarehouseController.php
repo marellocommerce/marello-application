@@ -16,7 +16,7 @@ class WarehouseController extends Controller
     /**
      * @Config\Route("/update-default", requirements={"id"="\d+"}, name="marello_inventory_warehouse_updatedefault")
      * @Config\Method({"GET", "POST"})
-     * @Config\Template
+     * @Config\Template("MarelloInventoryBundle:Warehouse:updateDefault.html.twig")
      * @AclAncestor("marello_inventory_warehouse_update")
      *
      * @param Request $request
@@ -27,7 +27,7 @@ class WarehouseController extends Controller
     {
         $entity = $this->getDoctrine()
             ->getRepository('MarelloInventoryBundle:Warehouse')
-            ->findOneBy(['default' => true]);
+            ->getDefault();
 
         $form = $this->createForm('marello_warehouse', $entity);
         $form->handleRequest($request);
@@ -38,7 +38,7 @@ class WarehouseController extends Controller
             $em->flush();
             $this->get('session')->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.inventory.warehouse.controller.message.saved')
+                $this->get('translator')->trans('marello.inventory.messages.success.warehouse.saved')
             );
             return $this->redirectToRoute('marello_inventory_warehouse_updatedefault');
         }

@@ -6,20 +6,14 @@ datagrids:
             acl_resource: marello_product_view
             query:
                 select:
-                    - p.id
-                    - p.name
-                    - p.sku
+                    - p
                     - s.label as status
-                    - p.createdAt
-                    - p.updatedAt
-                    - COALESCE(SUM(l.inventory), 0) AS stockLevel
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
-                        - { join: i.currentLevel, alias: l }
                 groupBy: p.id
         columns:
             sku:
@@ -28,20 +22,24 @@ datagrids:
             name:
                 label:              marello.product.name.label
                 frontend_type:      string
-            stockLevel:
-                label:              marello.product.stock_level.label
-                frontend_type:      number
-                data_name:          stockLevel
-                align:              left
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
+                frontend_type:      string
+                renderable:         false
+            weight:
+                label:              marello.product.weight.label
+                frontend_type:      number
+                renderable:         false
             createdAt:
                 label:              oro.ui.created_at
                 frontend_type:      datetime
             updatedAt:
                 label:              oro.ui.updated_at
                 frontend_type:      datetime
+                renderable:         false
         properties:
             id: ~
             view_link:
@@ -64,7 +62,6 @@ datagrids:
             columns:
                 sku:            { data_name: p.sku }
                 name:           { data_name: p.name }
-                stockLevel:     { data_name: stockLevel }
                 status:         { data_name: s.label }
                 createdAt:      { data_name: p.createdAt }
                 updatedAt:      { data_name: p.updatedAt }
@@ -78,16 +75,20 @@ datagrids:
                 name:
                     type:             string
                     data_name:        p.name
-                stockLevel:
-                    type:             number
-                    data_name:        stockLevel
-                    filter_by_having: true
                 status:
                     type: entity
                     data_name: s
                     options:
                         field_options:
                             class: Marello\Bundle\ProductBundle\Entity\ProductStatus
+                manufacturingCode:
+                    data_name:          p.manufacturingCode
+                    type:               string
+                    enabled:            false
+                weight:
+                    data_name:          p.weight
+                    type:               number
+                    enabled:            false
         actions:
             view:
                 type:           navigate
@@ -99,7 +100,7 @@ datagrids:
             update:
                 type:           navigate
                 acl_resource:   marello_product_update
-                label:          marello.product.update
+                label:          oro.grid.action.update
                 icon:           edit
                 link:           update_link
             delete:
@@ -108,6 +109,11 @@ datagrids:
                 acl_resource:   marello_product_delete
                 icon:           trash
                 label:          oro.grid.action.delete
+            inventory:
+                type:           navigate
+                link:           inventory_link
+                icon:           cubes
+                label:          marello.inventory.management.label
         options:
             entityHint: product
             export: true
@@ -116,6 +122,23 @@ datagrids:
     marello-products-extended-no-actions-grid:
         extends: marello-products-grid
         actions: ~
+
+    marello-products-sales-channel-aware-grid:
+        extends: marello-products-extended-no-actions-grid
+        source:
+            query:
+                join:
+                    left:
+                        - { join: p.channels, alias: ch }
+                where:
+                    and:
+                        - ch.id = :channelId
+            bind_parameters:
+                - channelId
+        sorters:
+            default:
+                name: ASC
+                sku: ASC
 
     marello-products-supplier-no-actions-grid:
         extends: marello-products-grid
@@ -131,14 +154,14 @@ datagrids:
                     - p.name
                     - p.sku
                     - s.label as status
-                    - SUM(l.inventory) AS stockLevel
+                    - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                 from:
-                    - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
+                    - { table: MarelloProductBundle:Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
-                        - { join: i.currentLevel, alias: l }
+                        - { join: i.inventoryLevels, alias: il }
                 where:
                     and:
                         - p.variant = :variantId
@@ -154,9 +177,10 @@ datagrids:
             name:
                 label:              marello.product.name.label
                 frontend_type:      string
-            stockLevel:
-                label:              marello.product.stock_level.label
-                frontend_type:      string
+            inventoryQty:
+                label:              marello.inventory.inventorylevel.inventory.label
+                frontend_type:      number
+                data_name:          inventoryQty
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
@@ -164,9 +188,9 @@ datagrids:
             columns:
                 name:           { data_name: p.name }
                 sku:            { data_name: p.sku }
-                stockLevel:     { data_name: stockLevel }
+                inventoryQty:   { data_name: inventoryQty }
             default:
-                stockLevel:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                inventoryQty:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         options:
             entityHint: product
             toolbarOptions:
@@ -192,14 +216,14 @@ datagrids:
                     - p.name
                     - p.sku
                     - s.label as status
-                    - SUM(l.inventory) AS stockLevel
+                    - COALESCE(SUM(il.inventory), 0) AS inventoryQty
                 from:
                     - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
                 join:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
-                        - { join: i.currentLevel, alias: l }
+                        - { join: i.inventoryLevels, alias: il }
                 where:
                     and:
                         - p.id != :product
@@ -215,18 +239,19 @@ datagrids:
                     type: integer
         columns:
             hasVariant:
-                label:                ~
-                editable:             true
-                frontend_type:        boolean
+                label:              ~
+                editable:           true
+                frontend_type:      boolean
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
             name:
                 label:              marello.product.name.label
                 frontend_type:      string
-            stockLevel:
-                label:              marello.product.stock_level.label
-                frontend_type:      string
+            inventoryQty:
+                label:              marello.inventory.inventorylevel.inventory.label
+                frontend_type:      number
+                data_name:          inventoryQty
             status:
                 label:              marello.product.status.label
                 frontend_type:      string
@@ -250,7 +275,7 @@ datagrids:
                 sku:            { data_name: p.sku }
                 hasVariant:     { data_name: hasVariant }
             default:
-                hasVariant:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                hasVariant:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         properties:
             id: ~
         options:
@@ -403,7 +428,7 @@ datagrids:
             query:
                 select: [ psr, supplier.name ]
                 from:
-                    - { table: MarelloSupplierBundle:ProductSupplierRelation, alias: psr }
+                    - { table: MarelloProductBundle:ProductSupplierRelation, alias: psr }
                 join:
                     left:
                         supplier:

@@ -4,21 +4,20 @@ namespace Marello\Bundle\ProductBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
-use Marello\Bundle\InventoryBundle\Entity\InventoryItemAwareInterface;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
-use Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
+use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Marello\Bundle\ProductBundle\Model\ExtendProduct;
-use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
-use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
  * Represents a Marello Product
@@ -42,10 +41,14 @@ use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
  *  routeName="marello_product_index",
  *  routeView="marello_product_view",
  *  defaultValues={
+ *      "dataaudit"={
+ *            "auditable"=true
+ *      },
  *      "entity"={"icon"="fa-barcode"},
  *      "ownership"={
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *      },
  *      "security"={
  *          "type"="ACL",
@@ -55,8 +58,10 @@ use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
  * )
  */
 class Product extends ExtendProduct implements
+    ProductInterface,
     SalesChannelAwareInterface,
     PricingAwareInterface,
+    OrganizationAwareInterface,
     InventoryItemAwareInterface
 {
     /**
@@ -104,6 +109,20 @@ class Product extends ExtendProduct implements
      * )
      */
     protected $sku;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="manufacturing_code", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $manufacturingCode;
 
     /**
      * @var ProductStatus
@@ -297,24 +316,10 @@ class Product extends ExtendProduct implements
     protected $data;
 
     /**
-     * @ORM\Column(type="integer")
-     *
-     * @var int
-     */
-    protected $desiredStockLevel;
-
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @var int
-     */
-    protected $purchaseStockLevel;
-
-    /**
      * @var ArrayCollection|ProductSupplierRelation[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\SupplierBundle\Entity\ProductSupplierRelation",
+     *     targetEntity="Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation",
      *     mappedBy="product",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
@@ -325,7 +330,7 @@ class Product extends ExtendProduct implements
     /**
      * @var Supplier
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
-     * @ORM\JoinColumn(name="preferred_supplier_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="preferred_supplier_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     protected $preferredSupplier;
 
@@ -333,7 +338,7 @@ class Product extends ExtendProduct implements
      * @var TaxCode
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
      */
     protected $taxCode;
 
@@ -413,6 +418,22 @@ class Product extends ExtendProduct implements
     }
 
     /**
+     * @return string
+     */
+    public function getManufacturingCode()
+    {
+        return $this->manufacturingCode;
+    }
+
+    /**
+     * @param string $manufacturingCode
+     */
+    public function setManufacturingCode($manufacturingCode)
+    {
+        $this->manufacturingCode = $manufacturingCode;
+    }
+
+    /**
      * @return ProductStatus
      */
     public function getStatus()
@@ -430,6 +451,15 @@ class Product extends ExtendProduct implements
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * Get the first price from the ProductPrice collection
+     * @return ProductPrice
+     */
+    public function getPrice()
+    {
+        return $this->prices->first();
     }
 
     /**
@@ -601,7 +631,7 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return Organization
+     * @return OrganizationInterface
      */
     public function getOrganization()
     {
@@ -609,10 +639,10 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @param Organization $organization
+     * @param OrganizationInterface $organization
      * @return Product
      */
-    public function setOrganization($organization)
+    public function setOrganization(OrganizationInterface $organization)
     {
         $this->organization = $organization;
 
@@ -661,7 +691,9 @@ class Product extends ExtendProduct implements
      */
     public function addInventoryItem(InventoryItem $item)
     {
-        $this->inventoryItems->add($item->setProduct($this));
+        if (!$this->inventoryItems->contains($item)) {
+            $this->inventoryItems->add($item->setProduct($this));
+        }
 
         return $this;
     }
@@ -673,48 +705,10 @@ class Product extends ExtendProduct implements
      */
     public function removeInventoryItem(InventoryItem $item)
     {
-        $this->inventoryItems->removeElement($item);
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDesiredStockLevel()
-    {
-        return $this->desiredStockLevel;
-    }
-
-    /**
-     * @param int $desiredStockLevel
-     *
-     * @return $this
-     */
-    public function setDesiredStockLevel($desiredStockLevel)
-    {
-        $this->desiredStockLevel = $desiredStockLevel;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPurchaseStockLevel()
-    {
-        return $this->purchaseStockLevel;
-    }
-
-    /**
-     * @param int $purchaseStockLevel
-     *
-     * @return $this
-     */
-    public function setPurchaseStockLevel($purchaseStockLevel)
-    {
-        $this->purchaseStockLevel = $purchaseStockLevel;
-
+        if ($this->inventoryItems->contains($item)) {
+            $this->inventoryItems->removeElement($item);
+        }
+        
         return $this;
     }
 
@@ -775,7 +769,9 @@ class Product extends ExtendProduct implements
      */
     public function addSupplier(ProductSupplierRelation $supplier)
     {
-        $this->suppliers->add($supplier);
+        if (!$this->suppliers->contains($supplier)) {
+            $this->suppliers->add($supplier);
+        }
 
         return $this;
     }
@@ -797,7 +793,9 @@ class Product extends ExtendProduct implements
      */
     public function removeSupplier(ProductSupplierRelation $supplier)
     {
-        $this->suppliers->removeElement($supplier);
+        if ($this->suppliers->contains($supplier)) {
+            $this->suppliers->removeElement($supplier);
+        }
 
         return $this;
     }
@@ -872,7 +870,9 @@ class Product extends ExtendProduct implements
      */
     public function addSalesChannelTaxCode(ProductChannelTaxRelation $salesChannelTaxCode)
     {
-        $this->salesChannelTaxCodes[] = $salesChannelTaxCode;
+        if (!$this->salesChannelTaxCodes->contains($salesChannelTaxCode)) {
+            $this->salesChannelTaxCodes->add($salesChannelTaxCode);
+        }
 
         return $this;
     }
@@ -881,10 +881,16 @@ class Product extends ExtendProduct implements
      * Remove salesChannelTaxCode
      *
      * @param ProductChannelTaxRelation $salesChannelTaxCode
+     *
+     * @return Product
      */
     public function removeSalesChannelTaxCode(ProductChannelTaxRelation $salesChannelTaxCode)
     {
-        $this->salesChannelTaxCodes->removeElement($salesChannelTaxCode);
+        if ($this->salesChannelTaxCodes->contains($salesChannelTaxCode)) {
+            $this->salesChannelTaxCodes->removeElement($salesChannelTaxCode);
+        }
+
+        return $this;
     }
 
     /**
@@ -898,22 +904,25 @@ class Product extends ExtendProduct implements
     }
 
     /**
-    * @return string
-    */
-    public function getReplenishment()
-    {
-        return $this->replenishment;
-    }
-
-    /**
-     * @param string $replenishment
+     * Get salesChannelTaxCode
      *
-     * @return $this
+     * @param SalesChannel $salesChannel
+     * @return TaxCode|null
      */
-    public function setReplenishment($replenishment)
+    public function getSalesChannelTaxCode(SalesChannel $salesChannel)
     {
-        $this->replenishment = $replenishment;
+        /** @var ProductChannelTaxRelation $productChannelTaxRelation */
+        $productChannelTaxRelation = $this->getSalesChannelTaxCodes()
+            ->filter(function ($productChannelTaxRelation) use ($salesChannel) {
+                /** @var ProductChannelTaxRelation $productChannelTaxRelation */
+                return $productChannelTaxRelation->getSalesChannel() === $salesChannel;
+            })
+            ->first();
 
-        return $this;
+        if ($productChannelTaxRelation) {
+            return $productChannelTaxRelation->getTaxCode();
+        }
+
+        return null;
     }
 }

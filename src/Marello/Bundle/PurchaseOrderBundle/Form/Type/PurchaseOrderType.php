@@ -38,7 +38,9 @@ class PurchaseOrderType extends AbstractType
                 ]
             )
             ->add(
-                'dueDate', OroDateType::NAME, [
+                'dueDate',
+                OroDateType::NAME,
+                [
                     'required' => false,
                     'label' => 'marello.purchaseorder.due_date.label',
                 ]

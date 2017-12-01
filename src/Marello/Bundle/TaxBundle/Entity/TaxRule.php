@@ -11,7 +11,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *
  * @ORM\Entity(repositoryClass="Marello\Bundle\TaxBundle\Entity\Repository\TaxRuleRepository")
  * @ORM\Table(name="marello_tax_tax_rule")
- * @Oro\Config()
+ * @Oro\Config(
+ *      routeName="marello_tax_taxrule_index",
+ *      routeView="marello_tax_taxrule_view",
+ *      routeUpdate="marello_tax_taxrule_update",
+ * )
  * @ORM\HasLifecycleCallbacks()
  */
 class TaxRule
@@ -28,17 +32,10 @@ class TaxRule
     protected $id;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="includes_vat", type="boolean", nullable=false)
-     */
-    protected $includesVat;
-
-    /**
      * @var TaxCode
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
-     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $taxCode;
 
@@ -46,9 +43,17 @@ class TaxRule
      * @var TaxRate
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxRate")
-     * @ORM\JoinColumn(name="tax_rate_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="tax_rate_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $taxRate;
+
+    /**
+     * @var TaxJurisdiction
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxJurisdiction")
+     * @ORM\JoinColumn(name="tax_jurisdiction_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $taxJurisdiction;
 
     /**
      * @return string
@@ -69,37 +74,13 @@ class TaxRule
     }
 
     /**
-     * Set includesVat
-     *
-     * @param boolean $includesVat
-     *
-     * @return TaxRule
-     */
-    public function setIncludesVat($includesVat)
-    {
-        $this->includesVat = $includesVat;
-
-        return $this;
-    }
-
-    /**
-     * Get includesVat
-     *
-     * @return boolean
-     */
-    public function getIncludesVat()
-    {
-        return $this->includesVat;
-    }
-
-    /**
      * Set taxCode
      *
-     * @param \Marello\Bundle\TaxBundle\Entity\TaxCode $taxCode
+     * @param TaxCode $taxCode
      *
      * @return TaxRule
      */
-    public function setTaxCode(\Marello\Bundle\TaxBundle\Entity\TaxCode $taxCode)
+    public function setTaxCode(TaxCode $taxCode)
     {
         $this->taxCode = $taxCode;
 
@@ -109,7 +90,7 @@ class TaxRule
     /**
      * Get taxCode
      *
-     * @return \Marello\Bundle\TaxBundle\Entity\TaxCode
+     * @return TaxCode
      */
     public function getTaxCode()
     {
@@ -119,11 +100,11 @@ class TaxRule
     /**
      * Set taxRate
      *
-     * @param \Marello\Bundle\TaxBundle\Entity\TaxRate $taxRate
+     * @param TaxRate $taxRate
      *
      * @return TaxRule
      */
-    public function setTaxRate(\Marello\Bundle\TaxBundle\Entity\TaxRate $taxRate)
+    public function setTaxRate(TaxRate $taxRate)
     {
         $this->taxRate = $taxRate;
 
@@ -133,10 +114,30 @@ class TaxRule
     /**
      * Get taxRate
      *
-     * @return \Marello\Bundle\TaxBundle\Entity\TaxRate
+     * @return TaxRate
      */
     public function getTaxRate()
     {
         return $this->taxRate;
+    }
+
+    /**
+     * @param TaxJurisdiction $taxJurisdiction
+     *
+     * @return $this
+     */
+    public function setTaxJurisdiction(TaxJurisdiction $taxJurisdiction = null)
+    {
+        $this->taxJurisdiction = $taxJurisdiction;
+
+        return $this;
+    }
+
+    /**
+     * @return TaxJurisdiction
+     */
+    public function getTaxJurisdiction()
+    {
+        return $this->taxJurisdiction;
     }
 }

@@ -38,14 +38,14 @@ navigation:
                     description: 'marello.report.menu.revenue_per_sales_channel.description'
                     skipBreadcrumbs: true
 
-            low_stock_products:
-                label: 'marello.report.menu.low_stock_products.label'
+            low_inventory_products:
+                label: 'marello.report.menu.low_inventory_products.label'
                 route: 'marello_report_index'
                 route_parameters:
                     reportGroupName: 'products'
-                    reportName:      'low_stock_products'
+                    reportName:      'low_inventory_products'
                 extras:
-                    description: 'marello.report.menu.low_stock_products.description'
+                    description: 'marello.report.menu.low_inventory_products.description'
                     skipBreadcrumbs: true
 
             best_selling_items:
@@ -100,7 +100,7 @@ navigation:
                                             revenue_per_sales_channel: ~
                                     products_report_tab:
                                         children:
-                                            low_stock_products: ~
+                                            low_inventory_products: ~
                                             best_selling_items: ~
                                             worst_selling_items: ~
                                     returns_report_tab:
@@ -109,4 +109,4 @@ navigation:
                                             returned_qty_by_reason: ~
 
     titles:
-        marello_report_index: '%%reportName%% - %%reportGroup%%'
+        marello_report_index: '%reportName% - %reportGroup%'

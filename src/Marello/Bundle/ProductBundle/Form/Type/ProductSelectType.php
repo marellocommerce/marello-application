@@ -7,6 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ProductSelectType extends AbstractType
 {
     const NAME = 'marello_product_select';
+    
     /**
      * {@inheritdoc}
      */

@@ -17,7 +17,7 @@ class TaxCodeSelectType extends AbstractType
             [
                 'autocomplete_alias' => 'taxcodes',
                 'configs'            => [
-                    'placeholder' => 'marello.tax.taxcode.form.select_taxcode',
+                    'placeholder' => 'marello.tax.form.select_taxcode',
                     'result_template_twig' => 'MarelloTaxBundle:TaxCode:Autocomplete/result.html.twig',
                     'selection_template_twig' => 'MarelloTaxBundle:TaxCode:Autocomplete/selection.html.twig',
                 ],

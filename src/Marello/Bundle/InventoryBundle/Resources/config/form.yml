@@ -1,69 +1,52 @@
 services:
     marello_inventory.form.type.warehouse:
-        class: Marello\Bundle\InventoryBundle\Form\Type\WarehouseType
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\WarehouseType'
         tags:
             - { name: form.type, alias: marello_warehouse }
 
-    marello_inventory.form.type.product_inventory:
-        class: Marello\Bundle\InventoryBundle\Form\Type\ProductInventoryType
+    marello_inventory.form.type.inventory_item:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType'
         tags:
-             - { name: form.type, alias: marello_product_inventory }
+             - { name: form.type, alias: marello_inventory_item }
 
     marello_inventory.form.type.variant_inventory:
-        class: Marello\Bundle\InventoryBundle\Form\Type\VariantInventoryType
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\VariantInventoryType'
         tags:
              - { name: form.type, alias: marello_variant_inventory }
 
-    marello_inventory.form.type.inventory_item_collection:
-        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemCollectionType
-        arguments:
-            - '@marello_inventory.form.event_listener.inventory_item_collection'
+    marello_inventory.form.type.inventory_inventorylevel_collection:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelCollectionType'
         tags:
-            - { name: form.type, alias: marello_inventory_item_collection }
-
-    marello_inventory.form.inventory_item_modify_transformer:
-        class: Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemModifyTransformer
-        arguments:
-            - '@event_dispatcher'
+            - { name: form.type, alias: marello_inventory_inventorylevel_collection }
 
     marello_inventory.form.inventory_item_update_api_transformer:
-        class: Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemUpdateApiTransformer
+        class: 'Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemUpdateApiTransformer'
         arguments:
             - '@event_dispatcher'
 
-    marello_inventory.form.type.inventory_item:
-        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType
+    marello_inventory.form.type.inventory_inventorylevel:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelType'
         arguments:
-            - '@marello_inventory.form.inventory_item_modify_transformer'
+            - '@marello_inventory.form.event_listener.inventory_level_subscriber'
         tags:
-            - { name: form.type, alias: marello_inventory_item }
+            - { name: form.type, alias: marello_inventory_inventorylevel }
 
     marello_inventory.form.type.inventory_item_api:
-        class: Marello\Bundle\InventoryBundle\Form\Type\InventoryItemApiType
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryItemApiType'
         arguments:
             - '@marello_inventory.form.inventory_item_update_api_transformer'
         tags:
             - { name: form.type, alias: marello_inventory_item_api }
 
-    marello_inventory.form.event_listener.inventory_item_collection:
-        class: Marello\Bundle\InventoryBundle\Form\EventListener\InventoryItemCollectionSubscriber
+    marello_inventory.form.event_listener.inventory_level_subscriber:
+        class: 'Marello\Bundle\InventoryBundle\Form\EventListener\InventoryLevelSubscriber'
         arguments:
-            - '@doctrine'
+            - '@marello_inventory.model.inventory_level_calculator'
+            - '@event_dispatcher'
 
-    ## forms
-    marello_inventory.form.product_inventory:
-        class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+    marello_inventory.form.type.inventory_balancer_strategy_choice:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\BalancerStrategyChoiceType'
         arguments:
-            - 'marello_product_inventory'
-            - 'marello_product_inventory'
-
-    ## form handlers
-    marello_inventory.form.handler.product_inventory:
-        class: Marello\Bundle\InventoryBundle\Form\Handler\ProductInventoryHandler
-        scope: request
-        arguments:
-            - '@marello_inventory.form.product_inventory'
-            - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@marello_inventory.provider.balancer.balancing_strategy_choices_provider'
+        tags:
+            - { name: form.type, alias: marello_inventory_balancer_strategy_choice }

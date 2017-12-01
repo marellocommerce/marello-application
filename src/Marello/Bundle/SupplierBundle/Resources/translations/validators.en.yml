@@ -1,8 +1,6 @@
 marello:
     supplier:
-        productsupplierrelation:
-            messages:
-                error.unique_product_supplier_relation: Supplier and Quantity of unit fields cannot be the same for more than one entry.
         supplier:
             messages:
-                error.unique_name: This supplier name already exists, please provide a unique name.
+                error.unique_name: This supplier name already exists, please enter another name.
+                error.unique_email: This email address already exists, please enter another email address.

@@ -2,46 +2,47 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 class ShippingServiceRegistry
 {
-    /** @var ContainerInterface */
-    protected $container;
-
-    /** @var array */
+    /**
+     * @var ShippingServiceIntegrationInterface[]
+     */
     protected $integrations = [];
 
-    /** @var array */
+    /**
+     * @var ShippingServiceDataFactoryInterface[]
+     */
     protected $dataFactories = [];
     
-    /** @var array */
-    protected $dataProviders = [];
-
     /**
-     * ShippingServiceRegistry constructor.
-     *
-     * @param ContainerInterface $container
+     * @var ShippingServiceDataProviderInterface[]
      */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
+    protected $dataProviders = [];
 
     /**
      * @param string $service
      *
      * @return ShippingServiceIntegrationInterface
      *
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function getIntegration($service)
     {
         if (!$this->hasIntegration($service)) {
-            throw new \Exception(sprintf('No shipping service integration for "%s" integration.', $service));
+            throw new \InvalidArgumentException(
+                sprintf('No shipping service integration for "%s" integration.', $service)
+            );
         }
 
-        return $this->container->get($this->integrations[$service]);
+        return $this->integrations[$service];
+    }
+
+    /**
+     * @return ShippingServiceIntegrationInterface[]
+     */
+    public function getIntegrations()
+    {
+        return $this->integrations;
     }
 
     /**
@@ -49,15 +50,25 @@ class ShippingServiceRegistry
      *
      * @return ShippingServiceDataFactoryInterface
      *
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function getDataFactory($service)
     {
         if (!$this->hasDataFactory($service)) {
-            throw new \Exception(sprintf('No shipping service data factory for "%s" integration.', $service));
+            throw new \InvalidArgumentException(
+                sprintf('No shipping service data factory for "%s" integration.', $service)
+            );
         }
 
-        return $this->container->get($this->dataFactories[$service]);
+        return $this->dataFactories[$service];
+    }
+
+    /**
+     * @return ShippingServiceDataFactoryInterface[]
+     */
+    public function getDataFactories()
+    {
+        return $this->dataFactories;
     }
     
     /**
@@ -65,42 +76,50 @@ class ShippingServiceRegistry
      *
      * @return ShippingServiceDataProviderInterface
      *
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     public function getDataProvider($entity)
     {
         if (!$this->hasDataProvider($entity)) {
-            throw new \Exception(sprintf('No shipping service data provider for "%s" entity.', $entity));
+            throw new \InvalidArgumentException(sprintf('No shipping service data provider for "%s" entity.', $entity));
         }
 
-        return $this->container->get($this->dataProviders[$entity]);
+        return $this->dataProviders[$entity];
+    }
+
+    /**
+     * @return ShippingServiceDataProviderInterface[]
+     */
+    public function getDataProviders()
+    {
+        return $this->dataProviders;
     }
 
     /**
      * @param string $service
-     * @param string $id
+     * @param ShippingServiceIntegrationInterface $integration
      */
-    public function registerIntegration($service, $id)
+    public function registerIntegration($service, ShippingServiceIntegrationInterface $integration)
     {
-        $this->integrations[$service] = $id;
+        $this->integrations[$service] = $integration;
     }
 
     /**
      * @param string $service
-     * @param string $id
+     * @param ShippingServiceDataFactoryInterface $factory
      */
-    public function registerDataFactory($service, $id)
+    public function registerDataFactory($service, ShippingServiceDataFactoryInterface $factory)
     {
-        $this->dataFactories[$service] = $id;
+        $this->dataFactories[$service] = $factory;
     }
     
     /**
      * @param string $entity
-     * @param string $id
+     * @param ShippingServiceDataProviderInterface $provider
      */
-    public function registerDataProvider($entity, $id)
+    public function registerDataProvider($entity, ShippingServiceDataProviderInterface $provider)
     {
-        $this->dataProviders[$entity] = $id;
+        $this->dataProviders[$entity] = $provider;
     }
 
     /**
@@ -108,7 +127,7 @@ class ShippingServiceRegistry
      *
      * @return bool
      */
-    protected function hasIntegration($service)
+    public function hasIntegration($service)
     {
         return array_key_exists($service, $this->integrations);
     }
@@ -118,7 +137,7 @@ class ShippingServiceRegistry
      *
      * @return bool
      */
-    protected function hasDataFactory($service)
+    public function hasDataFactory($service)
     {
         return array_key_exists($service, $this->dataFactories);
     }
@@ -128,7 +147,7 @@ class ShippingServiceRegistry
      *
      * @return bool
      */
-    protected function hasDataProvider($entity)
+    public function hasDataProvider($entity)
     {
         return array_key_exists($entity, $this->dataProviders);
     }

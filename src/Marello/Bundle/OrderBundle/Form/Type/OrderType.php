@@ -2,17 +2,31 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
+use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
+use Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodSelectType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderType extends AbstractType
 {
+    const NAME = 'marello_order_order';
+
+    /**
+     * @var SalesChannelRepository
+     */
+    private $salesChannelRepository;
+
+    public function __construct(SalesChannelRepository $salesChannelRepository)
+    {
+        $this->salesChannelRepository = $salesChannelRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -28,14 +42,14 @@ class OrderType extends AbstractType
             )
             ->add(
                 'salesChannel',
-                'genemu_jqueryselect2_entity',
+                SalesChannelSelectType::class,
                 [
-                    'class' => 'MarelloSalesBundle:SalesChannel',
+                    'autocomplete_alias' => 'active_saleschannels',
                 ]
             )
             ->add(
                 'discountAmount',
-                'oro_money',
+                TextType::class,
                 [
                     'label'    => 'marello.order.discount_amount.label',
                     'required' => false,
@@ -43,35 +57,47 @@ class OrderType extends AbstractType
             )
             ->add(
                 'couponCode',
-                'text',
+                TextType::class,
                 [
                     'required' => false,
                 ]
             )
             ->add(
                 'locale',
-                'text',
+                TextType::class,
                 [
                     'required' => false,
                 ]
             )
-//            ->add(
-//                'localization',
-//                EntityType::class,
-//                [
-//                    'class' => 'OroLocaleBundle:Localization',
-//                    'required' => false,
-//                ]
-//            )
-            ->add('billingAddress', 'marello_address')
-            ->add('shippingAddress', 'marello_address')
-            ->add('items', 'marello_order_item_collection');
+            ->add('items', OrderItemCollectionType::class)
+            ->add('shippingMethod', ShippingMethodSelectType::class);
 
-        /*
-         * Takes care of setting order totals.
-         */
+        $this->addAddress($builder, 'billing', $options);
+        $this->addAddress($builder, 'shipping', $options);
+
         $builder->addEventSubscriber(new OrderTotalsSubscriber());
         $builder->addEventSubscriber(new CurrencySubscriber());
+    }
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param string $type
+     * @param array $options
+     */
+    protected function addAddress(FormBuilderInterface $builder, $type, $options)
+    {
+        $builder
+            ->add(
+                sprintf('%sAddress', $type),
+                OrderAddressType::NAME,
+                [
+                    'label' => sprintf('oro.order.%s_address.label', $type),
+                    'object' => $options['data'],
+                    'required' => false,
+                    'addressType' => $type,
+                    'isEditEnabled' => true
+                ]
+            );
     }
 
     /**
@@ -89,6 +115,6 @@ class OrderType extends AbstractType
      */
     public function getName()
     {
-        return 'marello_order_order';
+        return self::NAME;
     }
 }

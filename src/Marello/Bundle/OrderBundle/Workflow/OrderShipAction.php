@@ -15,6 +15,8 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
 
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
+
 class OrderShipAction extends OrderTransitionAction
 {
     /** @var Registry */
@@ -23,22 +25,28 @@ class OrderShipAction extends OrderTransitionAction
     /** @var EventDispatcherInterface $eventDispatcher */
     protected $eventDispatcher;
 
+    /** @var OrderWarehousesProviderInterface $warehousesProvider */
+    protected $warehousesProvider;
+
     /**
      * OrderShipAction constructor.
      *
      * @param ContextAccessor           $contextAccessor
      * @param Registry                  $doctrine
      * @param EventDispatcherInterface  $eventDispatcher
+     * @param OrderWarehousesProviderInterface $warehousesProvider
      */
     public function __construct(
         ContextAccessor $contextAccessor,
         Registry $doctrine,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        OrderWarehousesProviderInterface $warehousesProvider
     ) {
         parent::__construct($contextAccessor);
 
         $this->doctrine = $doctrine;
         $this->eventDispatcher = $eventDispatcher;
+        $this->warehousesProvider = $warehousesProvider;
     }
 
     /**
@@ -48,10 +56,13 @@ class OrderShipAction extends OrderTransitionAction
     {
         /** @var Order $order */
         $order = $context->getEntity();
-
-        $order->getItems()->map(function (OrderItem $item) use ($order) {
-            $this->handleInventoryUpdate($item, -$item->getQuantity(), -$item->getQuantity(), $order);
-        });
+        foreach ($this->warehousesProvider->getWarehousesForOrder($order) as $result) {
+            $warehouse = $result->getWarehouse();
+            $items = $result->getOrderItems();
+            $items->map(function (OrderItem $item) use ($order, $warehouse) {
+                $this->handleInventoryUpdate($item, -$item->getQuantity(), -$item->getQuantity(), $order, $warehouse);
+            });
+        }
     }
 
     /**
@@ -59,17 +70,27 @@ class OrderShipAction extends OrderTransitionAction
      * @param OrderItem $item
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
-     * @param OrderItem $entity
+     * @param Order $entity
      */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
+    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity, $warehouse)
     {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
+            null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
             'order_workflow.shipped',
             $entity
         );
+
+        $context->setValue('warehouse', $warehouse);
+
+        $this->eventDispatcher->dispatch(
+            InventoryUpdateEvent::NAME,
+            new InventoryUpdateEvent($context)
+        );
+
+        $context->setIsVirtual(true);
 
         $this->eventDispatcher->dispatch(
             InventoryUpdateEvent::NAME,

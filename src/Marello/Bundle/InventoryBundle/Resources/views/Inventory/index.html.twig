@@ -5,9 +5,9 @@
 
 {% block navButtons %}
     {% include 'OroImportExportBundle:ImportExport:buttons.html.twig' with {
-    entity_class: entity_class,
-    exportProcessor: 'marello_inventory_item',
-    exportTemplateProcessor: 'marello_inventory_item',
+    entity_class: 'Marello\\Bundle\\InventoryBundle\\Entity\\InventoryLevel',
+    exportProcessor: 'marello_inventorlevel_export',
+    exportTemplateProcessor: 'marello_inventorlevel_export',
     importProcessor: 'marello_inventory.add_or_replace',
     importTitle: 'Import Inventory',
     dataGridName: gridName

@@ -1,5 +1,17 @@
 marello:
     shipping:
+        shipment:
+            entity_label:                      Shipment
+            entity_plural_label:               Shipments
+            base64_encoded_label.label:        Base64 Encoded Label
+            id.label:                          Id
+            identification_number.label:       Identification Number
+            shipping_service.label:            Shipping Service
+            ups_package_tracking_number.label: UPS Package Tracking Number
+            ups_shipment_digest.label:         UPS Shipment Digest
+            shipping_label.label:              Shipping Label
+            organization.label:                Organization
+
         system_configuration:
             ups_username:               'API Username'
             ups_password:               'API Password'
@@ -18,3 +30,14 @@ marello:
             shipper_address_state:      'State/Region'
             shipper_address_postal_code: 'Postal Code'
             shipper_address_country_code: 'Country'
+
+        shipment:
+            id.label: Id
+            entity_label: Shipment
+            entity_plural_label: Shipments
+            base64_encoded_label.label: Base 64 Encoded Label
+            identification_number.label: Identification Service
+            shipping_service.label: Shipping Service
+            ups_package_tracking_number.label: Ups Tracking number
+            ups_shipment_digest.label: Ups Shipment Digest
+            shipping_label.label: Shipping Label

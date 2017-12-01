@@ -6,6 +6,7 @@ use Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber;
 use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Oro\Bundle\AttachmentBundle\Form\Type\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -63,6 +64,14 @@ class ProductType extends AbstractType
                 ]
             )
             ->add(
+                'manufacturingCode',
+                'text',
+                [
+                    'required' => false,
+                    'label'    => 'marello.product.manufacturing_code.label',
+                ]
+            )
+            ->add(
                 'weight',
                 'number',
                 [
@@ -88,32 +97,6 @@ class ProductType extends AbstractType
                     'class'    => 'MarelloProductBundle:ProductStatus',
                     'property' => 'label',
                     'required' => true,
-                ]
-            )
-            ->add(
-                'desiredStockLevel',
-                'number',
-                [
-                    'label'         => 'marello.product.desired_stock_level.label',
-                    'required'      => true,
-                    'constraints'   => new NotNull(),
-                ]
-            )
-            ->add(
-                'purchaseStockLevel',
-                'number',
-                [
-                    'label'         => 'marello.product.purchase_stock_level.label',
-                    'required'      => true,
-                    'constraints'   => new NotNull(),
-                ]
-            )
-            ->add(
-                'inventoryItems',
-                'marello_inventory_item_collection',
-                [
-                    'label'              => 'marello.inventory.label',
-                    'cascade_validation' => true,
                 ]
             )
             ->add(
@@ -153,13 +136,14 @@ class ProductType extends AbstractType
                     'cascade_validation' => true,
                 ]
             )
-            ->add('replenishment', 'oro_enum_choice',
+            ->add(
+                'image',
+                ImageType::class,
                 [
-                    'enum_code' => 'marello_product_reple',
-                    'required'  => true,
-                    'label'     => 'marello.product.replenishment.label',
+                    'label' => 'marello.product.image.label',
+                    'required' => false
                 ]
-            )
+            );
         ;
 
         $builder->addEventSubscriber($this->defaultSalesChannelSubscriber);

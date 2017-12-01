@@ -138,7 +138,10 @@ class PurchaseOrderController extends Controller
         $form = $handler->getForm();
 
         if ($handler->handle()) {
-            $this->addFlash('success', $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.saved'));
+            $this->addFlash(
+                'success',
+                $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.saved')
+            );
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route'      => 'marello_purchaseorder_purchaseorder_view',
@@ -153,7 +156,11 @@ class PurchaseOrderController extends Controller
             );
         }
 
-        $this->addFlash('error', $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.not_saved'));
+        $this->addFlash(
+            'error',
+            $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.not_saved')
+        );
+
         if (($e = $form->getErrorsAsString()) != '') {
             $this->addFlash('error', $e);
         }
@@ -174,7 +181,10 @@ class PurchaseOrderController extends Controller
         $handler = $this->get('marello_purchase_order.form.handler.purchase_order_update');
 
         if ($handler->process($purchaseOrder)) {
-            $this->addFlash('success', $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.saved'));
+            $this->addFlash(
+                'success',
+                $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.saved')
+            );
 
 
             return $this->get('oro_ui.router')->redirectAfterSave(

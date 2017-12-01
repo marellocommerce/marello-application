@@ -22,9 +22,14 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      routeName="marello_purchaseorder_purchaseorder_index",
  *      routeCreate="marello_purchaseorder_purchaseorder_create",
  *      defaultValues={
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
+ *          },
  *          "ownership"={
- *              "organization_field_name"="organization",
- *              "organization_column_name"="organization_id"
+ *              "owner_type"="ORGANIZATION",
+ *              "owner_field_name"="organization",
+ *              "owner_column_name"="organization_id"
  *          }
  *      }
  * )
@@ -73,7 +78,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      * @var Supplier
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
-     * @ORM\JoinColumn(name="supplier_id", nullable=false)
+     * @ORM\JoinColumn(name="supplier_id", onDelete="CASCADE", nullable=false)
      */
     protected $supplier;
 

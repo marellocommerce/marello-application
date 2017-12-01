@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\Controller;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Config\Route("/item")
@@ -15,92 +18,89 @@ class InventoryController extends Controller
     /**
      * @Config\Route("/", name="marello_inventory_inventory_index")
      * @Config\Template
+     * @Security\AclAncestor("marello_inventory_inventory_view")
      */
     public function indexAction()
     {
         return [
-            'entity_class' => 'Marello\Bundle\InventoryBundle\Entity\InventoryItem',
+            'entity_class' => InventoryItem::class,
         ];
     }
 
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_view")
      * @Config\Template
-     *
-     * @param Product $product
+     * @Security\Acl(
+     *      id="marello_inventory_inventory_view",
+     *      type="entity",
+     *      class="MarelloInventoryBundle:InventoryItem",
+     *      permission="VIEW"
+     * )
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function viewAction(Product $product)
+    public function viewAction(InventoryItem $inventoryItem)
     {
         return [
-            'entity' => $product,
+            'entity' => $inventoryItem,
+            'product' => $inventoryItem->getProduct()
         ];
     }
 
     /**
      * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_update")
      * @Config\Template
-     *
-     * @param Product $product
+     * @Security\Acl(
+     *      id="marello_inventory_inventory_update",
+     *      type="entity",
+     *      class="MarelloInventoryBundle:InventoryItem",
+     *      permission="EDIT"
+     * )
+     * @param InventoryItem $inventoryItem
+     * @param Request $request
      *
      * @return array|RedirectResponse
      */
-    public function updateAction(Product $product)
+    public function updateAction(InventoryItem $inventoryItem, Request $request)
     {
-        $handler = $this->get('marello_inventory.form.handler.product_inventory');
-
-        if ($handler->process($product)) {
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'marello_inventory_inventory_update',
-                    'parameters' => ['id' => $product->getId()],
-                ],
-                [
-                    'route'      => 'marello_product_view',
-                    'parameters' => ['id' => $product->getId()],
-                ],
-                $product
-            );
-        }
-
-        return [
-            'form'   => $handler->getFormView(),
-            'entity' => $product,
-        ];
+        return $this->get('oro_form.update_handler')->update(
+            $inventoryItem,
+            $this->createForm(InventoryItemType::class, $inventoryItem),
+            $this->get('translator')->trans('marello.inventory.messages.success.inventoryitem.saved'),
+            $request
+        );
     }
+
 
     /**
      * @Config\Route("/widget/info/{id}", name="marello_inventory_widget_info", requirements={"id"="\d+"})
-     * @Config\Template
+     * @Config\Template("MarelloInventoryBundle:Inventory/widget:info.html.twig")
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function infoAction(Product $product)
+    public function infoAction(InventoryItem $inventoryItem)
     {
-        $item = $product->getInventoryItems()->first();
-
         return [
-            'item' => $item,
+            'item' => $inventoryItem,
+            'product' => $inventoryItem->getProduct()
         ];
     }
 
     /**
      * @Config\Route("/widget/datagrid/{id}", name="marello_inventory_widget_datagrid", requirements={"id"="\d+"})
-     * @Config\Template
+     * @Config\Template("MarelloInventoryBundle:Inventory/widget:datagrid.html.twig")
      *
-     * @param Product $product
+     * @param InventoryItem $inventoryItem
      *
      * @return array
      */
-    public function datagridAction(Product $product)
+    public function datagridAction(InventoryItem $inventoryItem)
     {
-        $item = $product->getInventoryItems()->first();
-
         return [
-            'item' => $item,
+            'item' => $inventoryItem,
         ];
     }
 }

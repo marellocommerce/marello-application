@@ -2,17 +2,11 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Functional\Controller;
 
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
-
-/**
- * @dbIsolation
- */
 class TaxCodeControllerTest extends WebTestCase
 {
     public function setUp()
@@ -47,8 +41,9 @@ class TaxCodeControllerTest extends WebTestCase
         $form = $crawler->selectButton('Save and Close')->form();
         $code = 'CODE 1';
         $description = 'Description 1';
-        $form['marello_tax_code_form[code]']            = $code;
-        $form['marello_tax_code_form[description]']     = $description;
+        $form['input_action'] = '{"route":"marello_tax_taxcode_view","params":{"id":"$id"}}';
+        $form['marello_tax_code_form[code]'] = $code;
+        $form['marello_tax_code_form[description]'] = $description;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -89,6 +84,7 @@ class TaxCodeControllerTest extends WebTestCase
 
     /**
      * @depends testCreateNewTaxCode
+     * @param string $code
      */
     public function testUpdateTaxCode($code)
     {

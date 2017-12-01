@@ -52,7 +52,9 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                 ]
             )
             ->add(
-                'dueDate', OroDateType::NAME, [
+                'dueDate',
+                OroDateType::NAME,
+                [
                     'required' => false,
                     'label' => 'marello.purchaseorder.due_date.label',
                 ]
@@ -114,10 +116,13 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
         /** @var PurchaseOrder $purchaseOrder */
         $purchaseOrder = $form->getData();
 
-        $view->children['itemsAdvice']->vars['grid_url'] = $this->router->generate('marello_purchase_order_widget_products_by_supplier', array(
-            'id' => $purchaseOrder->getId(),
-            'supplierId' => $form->get('supplier')->getData()->getId()
-        ));
+        $view->children['itemsAdvice']->vars['grid_url'] = $this->router->generate(
+            'marello_purchase_order_widget_products_by_supplier',
+            [
+                'id' => $purchaseOrder->getId(),
+                'supplierId' => $form->get('supplier')->getData()->getId()
+            ]
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)

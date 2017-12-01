@@ -474,38 +474,32 @@
                                     <td style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
                                         <table class="email-items" style="border: 1px solid #d6d7d7; border-collapse: collapse; width: 100%;">
                                             <thead>
-                                            <tr>
-                                                <th class="item-info item-info-left" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
-                                                    Product Name
-                                                </th>
-                                                <th class="item-info item-info-left" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
-                                                    Product SKU
-                                                </th>
-                                                <th class="item-info item-info-right" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
-                                                    Quantity
-                                                </th>
-                                                <th class="item-info" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; text-align:right;">
-                                                    Total Price
-                                                </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for item in entity.returnItems %}
                                                 <tr>
-                                                    <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
-                                                        {{ item.orderItem.productName }}
-                                                    </td>
-                                                    <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
-                                                        {{ item.orderItem.productSku }}
-                                                    </td>
-                                                    <td class="item-info item-info-right" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
-                                                        {{ item.quantity }}
-                                                    </td>
-                                                    <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; text-align:right;">
-                                                        {{ item.orderItem.rowTotalInclTax|oro_format_currency({'currency': entity.order.currency}) }}
-                                                    </td>
+                                                    <th class="item-info item-info-left" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
+                                                        Product Name
+                                                    </th>
+                                                    <th class="item-info item-info-left" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
+                                                        Product SKU
+                                                    </th>
+                                                    <th class="item-info item-info-right" style="background-color: #f8f8f8; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px;">
+                                                        Quantity
+                                                    </th>
                                                 </tr>
-                                            {% endfor %}
+                                            </thead>
+                                                <tbody>
+                                                {% for item in entity.returnItems %}
+                                                    <tr>
+                                                        <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
+                                                            {{ item.orderItem.productName }}
+                                                        </td>
+                                                        <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
+                                                            {{ item.orderItem.productSku }}
+                                                        </td>
+                                                        <td class="item-info item-info-right" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
+                                                            {{ item.quantity }}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </td>

@@ -2,20 +2,14 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller\Api\Rest;
 
-use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadProductReplenishmentData;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
-
-/**
- * @dbIsolation
- */
 class ProductControllerTest extends WebTestCase
 {
 
@@ -29,13 +23,13 @@ class ProductControllerTest extends WebTestCase
     }
 
     /**
-     * @return \Marello\Bundle\InventoryBundle\Entity\Warehouse
+     * @return Warehouse
      */
     protected function getDefaultWarehouse()
     {
-        return $this->getContainer()
-            ->get('doctrine')
-            ->getRepository('MarelloInventoryBundle:Warehouse')
+        return $this
+            ->getContainer()
+            ->get('marello_inventory.repository.warehouse')
             ->getDefault();
     }
 
@@ -55,6 +49,9 @@ class ProductControllerTest extends WebTestCase
 
         $this->assertArrayHasKey('sku', $data);
         $this->assertEquals($product->getSku(), $data['sku']);
+
+        $this->assertArrayHasKey('taxCode', $data);
+        $this->assertArrayHasKey('salesChannelTaxCodes', $data);
 
         $this->assertArrayHasKey('createdAt', $data);
         $this->assertArrayHasKey('updatedAt', $data);
@@ -118,15 +115,15 @@ class ProductControllerTest extends WebTestCase
             'name'      => 'New Product',
             'sku'       => 'NEW-SKU',
             'status'    => 'enabled',
-            'desiredStockLevel' => 10,
-            'purchaseStockLevel' => 2,
-            'inventoryItems' => [
-                ['stock' => 10, 'warehouse' => $this->getDefaultWarehouse()->getId()],
-            ],
             'channels'  => [
                 $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId(),
             ],
-            'replenishment' => LoadProductReplenishmentData::NOS
+            'prices'    => [
+                [
+                    'currency' => 'CHF',
+                    'value' => 100.0000
+                ]
+            ],
         ];
 
         $this->client->request(
@@ -150,15 +147,6 @@ class ProductControllerTest extends WebTestCase
         $this->assertEquals($data['name'], $product->getName());
         $this->assertEquals($data['sku'], $product->getSku());
         $this->assertEquals($data['status'], $product->getStatus()->getName());
-        $this->assertCount(1, $product->getInventoryItems());
-        $this->assertEquals(
-            reset($data['inventoryItems'])['stock'],
-            $product->getInventoryItems()->first()->getStock()
-        );
-        $this->assertEquals(
-            reset($data['inventoryItems'])['warehouse'],
-            $product->getInventoryItems()->first()->getWarehouse()->getId()
-        );
         $this->assertCount(1, $product->getChannels());
         $this->assertEquals(reset($data['channels']), $product->getChannels()->first()->getId());
     }
@@ -172,8 +160,6 @@ class ProductControllerTest extends WebTestCase
             'name'      => 'New Product',
             'sku'       => 'NEW-SKU',
             'status'    => 'enabled',
-            'desiredStockLevel' => 10,
-            'purchaseStockLevel' => 2,
             'inventoryItems' => [
                 ['stock' => 10, 'warehouse' => -5 /* wrong ID */],
             ],
@@ -205,16 +191,10 @@ class ProductControllerTest extends WebTestCase
         $data = [
             'name'      => 'New name of product',
             'sku'       => $product->getSku(),
-            'desiredStockLevel' => 10,
-            'purchaseStockLevel' => 2,
             'status'    => $product->getStatus()->getName(),
-            'inventoryItems' => $product->getInventoryItems()->map(function (InventoryItem $item) {
-                return ['stock' => $item->getStock(), 'warehouse' => $item->getWarehouse()->getId()];
-            })->toArray(),
             'channels'  => $product->getChannels()->map(function (SalesChannel $channel) {
                 return $channel->getId();
             })->toArray(),
-            'replenishment' => LoadProductReplenishmentData::NOS
         ];
 
         $this->client->request(

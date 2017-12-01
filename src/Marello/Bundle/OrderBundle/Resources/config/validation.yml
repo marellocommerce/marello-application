@@ -16,8 +16,17 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
             - NotBlank: ~
         tax:
             - NotBlank: ~
+        taxCode:
+            - NotBlank: ~
         rowTotalInclTax:
             - NotBlank: ~
         rowTotalExclTax:
             - NotBlank: ~
     constraints: ~
+
+Marello\Bundle\OrderBundle\Entity\Order:
+    properties:
+        customer:
+            - NotBlank: ~
+        salesChannel:
+            - NotBlank: ~

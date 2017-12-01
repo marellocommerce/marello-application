@@ -38,10 +38,6 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
         $organization = $manager->getRepository(Organization::class)->getFirst();
 
         $handle = fopen(__DIR__ . '/dictionaries/purchase_orders.csv', 'r');
-
-        $replenishmentClass = ExtendHelper::buildEnumValueClassName('marello_product_reple');
-        $replenishmentNOS = $manager->getRepository($replenishmentClass)->find('never_out_of_stock');
-
         if ($handle) {
             $headers = [];
             if (($data = fgetcsv($handle, 1000, ",")) !== false) {
@@ -69,23 +65,25 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
                 $product = $manager->getRepository(Product::class)
                     ->findOneBy(['sku' => $data['product']]);
 
-                //set replenishment to product to make sure it follows PO logic
-                $product->setReplenishment($replenishmentNOS);
-
                 $purchaseOrderItem = new PurchaseOrderItem();
                 $order->addItem(
                     $purchaseOrderItem->setProduct($product)->setOrderedAmount($data['ordered_amount'])
                 );
 
                 if (!$order->getSupplier()) {
-                    $order->setSupplier($order->getItems()->first()->getProduct()->getPreferredSupplier());
+                    if ($supplier = $order->getItems()->first()->getProduct()->getPreferredSupplier()) {
+                        $order->setSupplier($supplier);
+                    }
                 }
             }
-            $this->setReference('marello-purchase-order-' . $orderNo, $order);
-            $manager->persist($product);
-            $manager->persist($order);
 
-            $manager->flush();
+            if ($order && $product) {
+                $this->setReference('marello-purchase-order-' . $orderNo, $order);
+                $manager->persist($product);
+                $manager->persist($order);
+
+                $manager->flush();
+            }
 
             fclose($handle);
         }

@@ -1,0 +1,4 @@
+config:
+    paths:
+        'marellosales/js/app/components/sales-channel-select-component': 'bundles/marellosales/js/app/components/sales-channel-select-component.js'
+        'oro/select2-autocomplete-system-group-sales-channels-component': 'bundles/marellosales/js/app/components/select2-autocomplete-system-group-sales-channels-component.js'

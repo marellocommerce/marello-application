@@ -12,7 +12,6 @@ use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChanne
 
 /**
  * @outputBuffering enabled
- * @dbIsolation
  */
 class PricingControllerTest extends WebTestCase
 {
@@ -28,26 +27,26 @@ class PricingControllerTest extends WebTestCase
         ]);
     }
 
-    public function testGetProductPriceByChannelAvailable()
+    public function testCurrencyByChannel()
     {
+        $channelId = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
+        $currencyDataKeys =['currencyCode', 'currencySymbol'];
         $queryData = [
-            'salesChannel' => $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId(),
-            'product_ids'  => [
-                ['product' => $this->getReference(LoadProductData::PRODUCT_1_REF)->getId()],
-                ['product' => $this->getReference(LoadProductData::PRODUCT_2_REF)->getId()],
-                ['product' => $this->getReference(LoadProductData::PRODUCT_3_REF)->getId()],
-                ['product' => $this->getReference(LoadProductData::PRODUCT_4_REF)->getId()],
-            ],
+            'salesChannel' => $channelId,
         ];
 
         $this->client->request(
             'GET',
-            $this->getUrl('marello_pricing_price_by_channel') . '?' . http_build_query($queryData)
+            $this->getUrl('marello_pricing_currency_by_channel') . '?' . http_build_query($queryData)
         );
 
         $responseData = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
-        $this->assertCount(4, $responseData, 'Response should contain 4 results, one for each product requested.');
+        $this->assertCount(1, $responseData);
+        $this->assertArrayHasKey(sprintf('currency-%s', $channelId), $responseData);
+        foreach ($currencyDataKeys as $key) {
+            $this->assertArrayHasKey($key, $responseData[sprintf('currency-%s', $channelId)]);
+        }
     }
 }

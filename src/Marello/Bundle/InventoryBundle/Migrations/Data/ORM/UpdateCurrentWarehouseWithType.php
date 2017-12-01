@@ -3,23 +3,25 @@
 namespace Marello\Bundle\InventoryBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 
 class UpdateCurrentWarehouseWithType extends AbstractFixture implements DependentFixtureInterface
 {
-    /** @var ObjectManager $manager */
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getDependencies()
     {
         return [
-            'Marello\Bundle\InventoryBundle\Migrations\Data\ORM\LoadWarehouseTypeData'
+            LoadWarehouseTypeData::class
         ];
     }
 
@@ -38,6 +40,7 @@ class UpdateCurrentWarehouseWithType extends AbstractFixture implements Dependen
     public function updateCurrentWarehouse()
     {
         $defaultWarehouse = $this->manager->getRepository(Warehouse::class)->getDefault();
+        /** @var WarehouseType $warehouseType */
         $warehouseType = $this->getReference('warehouse_type_global');
         $defaultWarehouse->setWarehouseType($warehouseType);
         $this->manager->persist($defaultWarehouse);
