@@ -1,0 +1,6 @@
+api:
+    entities:
+        Marello\Bundle\OrderBundle\Entity\Order:
+            # disable order deletion
+            actions:
+                delete: false

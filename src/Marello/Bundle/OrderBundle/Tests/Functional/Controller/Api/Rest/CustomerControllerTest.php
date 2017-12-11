@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
 
-use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadCustomerData;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class CustomerControllerTest extends WebTestCase
 {
@@ -16,7 +18,7 @@ class CustomerControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadOrderData::class
+            LoadCustomerData::class
         ]);
     }
 
@@ -26,6 +28,7 @@ class CustomerControllerTest extends WebTestCase
      */
     public function testCreate()
     {
+
         $data = [
             'firstName' => 'John',
             'lastName'  => 'Doe',
@@ -40,6 +43,7 @@ class CustomerControllerTest extends WebTestCase
                 'postalCode' => '5617 BC',
                 'company'    => 'Madia Inc'
             ],
+//            'organization' => $this->getUser()->getOrganization()->getId()
         ];
 
         $this->client->request(
@@ -116,5 +120,21 @@ class CustomerControllerTest extends WebTestCase
         $this->assertArrayNotHasKey('customer', $decodedResponse);
         $this->assertArrayHasKey('message', $decodedResponse);
         $this->assertEquals('Customer with email notexisting@customer.com not found', $decodedResponse['message']);
+    }
+
+    /**
+     * @return User
+     */
+    protected function getUser()
+    {
+        return $this->getEntityManager()->getRepository('OroUserBundle:User')->findOneByUsername(self::USER_NAME);
+    }
+
+    /**
+     * @return ObjectManager
+     */
+    protected function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine')->getManager();
     }
 }
