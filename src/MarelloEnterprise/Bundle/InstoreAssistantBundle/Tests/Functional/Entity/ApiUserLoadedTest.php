@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Tests\Functional\Entity;
 
+use MarelloEnterprise\Bundle\InstoreAssistantBundle\Migrations\Data\ORM\LoadApiUserRole;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
@@ -34,9 +35,37 @@ class ApiUserLoadedTest extends WebTestCase
         /** @var User $user */
         $user = $userManager->loadUserByUsername(LoadApiUser::INSTORE_API_USERNAME);
 
-        $this->assertTrue((bool)$user->getRole(self::ROLE_CUSTOM_API_USER), 'User has the custom assigned role');
+        $this->assertTrue(
+            (bool)$user->getRole(LoadApiUserRole::ROLE_INSTORE_ASSISTANT_API_USER), 'User has the custom assigned role'
+        );
         $this->assertTrue($user->isEnabled(), 'User is ready and enabled');
         $this->assertNotNull($user, 'Api User is loaded Correctly');
-        $this->assertNotNull($user->getApiKeys(), 'Api User has a generated API key');
+        $this->assertNotEmpty($user->getApiKeys(), 'Api User has a generated API key');
+
+    }
+
+    public function testApiUserOnlyHasAccessToViewUsers()
+    {
+        /** @var UserManager $userManager */
+        $userManager = $this->getContainer()->get('oro_user.manager');
+        /** @var User $user */
+        $user = $userManager->loadUserByUsername(LoadApiUser::INSTORE_API_USERNAME);
+        // using the Oro Security Facade instead of directly using the SecurityContext during the deprecation
+        // since Symfony version 2.6 and removal in Symfony 3.0
+        $securityContext = $this->getContainer()->get('oro_security.security_facade');
+        if (!$securityContext->getToken()) {
+            $this->updateUserSecurityToken($user->getEmail());
+        }
+        $this->assertTrue(
+            $securityContext->isGranted('oro_user_user_view', $user), 'User CAN view other users'
+        );
+
+        $this->assertFalse(
+            $securityContext->isGranted('oro_user_user_create', $user), 'User CANNOT create other users'
+        );
+
+        $this->assertFalse(
+            $securityContext->isGranted('oro_user_user_update', $user), 'User CANNOT update other users'
+        );
     }
 }

@@ -14,6 +14,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\LoadOrganizationAndBusinessUnitData;
 
 class LoadApiUser extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
@@ -115,6 +116,8 @@ class LoadApiUser extends AbstractFixture implements ContainerAwareInterface, De
         $this->userManager->updatePassword($user);
         $this->userManager->updateUser($user);
         $this->em->flush();
+
+        $this->generateApiKey($user);
     }
 
     /**
@@ -145,4 +148,34 @@ class LoadApiUser extends AbstractFixture implements ContainerAwareInterface, De
         return $user;
     }
 
+    /**
+     * Generate API key for Instore Assistant user
+     * @param User $user
+     */
+    protected function generateApiKey(User $user)
+    {
+        $userApi = $this->getUserApi($user);
+        $userApi->setApiKey($userApi->generateKey())
+            ->setUser($user)
+            ->setOrganization($this->organization);
+
+        $this->em->persist($userApi);
+        $this->em->flush();
+    }
+
+    /**
+     * Returns current UserApi or creates new one
+     *
+     * @param User $user
+     *
+     * @return UserApi
+     */
+    protected function getUserApi(User $user)
+    {
+        if (!$userApi = $this->userManager->getApi($user, $this->organization)) {
+            $userApi = new UserApi();
+        }
+
+        return $userApi;
+    }
 }
