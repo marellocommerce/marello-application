@@ -5232,16 +5232,16 @@
         },
         {
             "name": "oro/calendar-bundle",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCalendarBundle.git",
-                "reference": "4664cca733eb7221031cf2cac5e4a28db35d4eeb"
+                "reference": "a288006632c37b39d497093009692d516cb73416"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCalendarBundle/zipball/4664cca733eb7221031cf2cac5e4a28db35d4eeb",
-                "reference": "4664cca733eb7221031cf2cac5e4a28db35d4eeb",
+                "url": "https://api.github.com/repos/orocrm/OroCalendarBundle/zipball/a288006632c37b39d497093009692d516cb73416",
+                "reference": "a288006632c37b39d497093009692d516cb73416",
                 "shasum": ""
             },
             "require": {
@@ -5279,20 +5279,20 @@
                 "Calendar",
                 "Oro"
             ],
-            "time": "2017-11-24T19:01:15+00:00"
+            "time": "2017-12-13T12:58:53+00:00"
         },
         {
             "name": "oro/commerce",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/commerce-er.git",
-                "reference": "0aa335843c03e4c69bb56cfe4bc32a6187604aaa"
+                "reference": "bd33b56910eb5bad45151bb384f35ea6211ff88a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/commerce-er/zipball/0aa335843c03e4c69bb56cfe4bc32a6187604aaa",
-                "reference": "0aa335843c03e4c69bb56cfe4bc32a6187604aaa",
+                "url": "https://api.github.com/repos/oroinc/commerce-er/zipball/bd33b56910eb5bad45151bb384f35ea6211ff88a",
+                "reference": "bd33b56910eb5bad45151bb384f35ea6211ff88a",
                 "shasum": ""
             },
             "require": {
@@ -5351,22 +5351,22 @@
             "description": "OroCommerce - an open-source Business to Business Commerce application. \\nThis package contains bundles and needs to be added as a dependency in an OroCommerce application.",
             "homepage": "https://github.com/orocommerce/orocommerce",
             "support": {
-                "source": "https://github.com/oroinc/commerce-er/tree/1.5.0"
+                "source": "https://github.com/oroinc/commerce-er/tree/1.5"
             },
-            "time": "2017-11-30T06:52:29+00:00"
+            "time": "2017-12-14T08:09:42+00:00"
         },
         {
             "name": "oro/commerce-crm",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/commerce-crm-er.git",
-                "reference": "c2e2c743bbab8647c74f98fb961f8e15b74124c5"
+                "reference": "19e39b0888fe605d9f095f46449ad617bbab259b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/commerce-crm-er/zipball/c2e2c743bbab8647c74f98fb961f8e15b74124c5",
-                "reference": "c2e2c743bbab8647c74f98fb961f8e15b74124c5",
+                "url": "https://api.github.com/repos/oroinc/commerce-crm-er/zipball/19e39b0888fe605d9f095f46449ad617bbab259b",
+                "reference": "19e39b0888fe605d9f095f46449ad617bbab259b",
                 "shasum": ""
             },
             "require": {
@@ -5398,7 +5398,7 @@
             "support": {
                 "source": "https://github.com/oroinc/commerce-crm-er/tree/1.5"
             },
-            "time": "2017-11-28T15:28:53+00:00"
+            "time": "2017-12-13T10:37:56+00:00"
         },
         {
             "name": "oro/commerce-crm-ee",
@@ -5452,16 +5452,16 @@
         },
         {
             "name": "oro/commerce-enterprise",
-            "version": "1.5.0",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/commerce-enterprise.git",
-                "reference": "d52f258a502023d910b09b32fb24682f5aaac305"
+                "reference": "882aef020ef95362db75abfd3c026496e56e99b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/commerce-enterprise/zipball/d52f258a502023d910b09b32fb24682f5aaac305",
-                "reference": "d52f258a502023d910b09b32fb24682f5aaac305",
+                "url": "https://api.github.com/repos/oroinc/commerce-enterprise/zipball/882aef020ef95362db75abfd3c026496e56e99b0",
+                "reference": "882aef020ef95362db75abfd3c026496e56e99b0",
                 "shasum": ""
             },
             "require": {
@@ -5494,22 +5494,22 @@
             "description": "OroCommerce Enterprise.",
             "homepage": "https://github.com/laboro/commerce-enterprise",
             "support": {
-                "source": "https://github.com/oroinc/commerce-enterprise/tree/1.5.0"
+                "source": "https://github.com/oroinc/commerce-enterprise/tree/1.5"
             },
-            "time": "2017-11-29T13:11:03+00:00"
+            "time": "2017-12-08T11:06:56+00:00"
         },
         {
             "name": "oro/crm",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/crm-er.git",
-                "reference": "bc17872edb4ea08f9aa365e35515a57ec41ad4cb"
+                "reference": "29b5ebac0098349d656a78fba89328ac396e4a78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/crm-er/zipball/bc17872edb4ea08f9aa365e35515a57ec41ad4cb",
-                "reference": "bc17872edb4ea08f9aa365e35515a57ec41ad4cb",
+                "url": "https://api.github.com/repos/oroinc/crm-er/zipball/29b5ebac0098349d656a78fba89328ac396e4a78",
+                "reference": "29b5ebac0098349d656a78fba89328ac396e4a78",
                 "shasum": ""
             },
             "require": {
@@ -5566,7 +5566,7 @@
             "support": {
                 "source": "https://github.com/oroinc/crm-er/tree/2.5"
             },
-            "time": "2017-11-28T15:28:53+00:00"
+            "time": "2017-12-14T09:56:43+00:00"
         },
         {
             "name": "oro/crm-abandoned-cart",
@@ -5667,16 +5667,16 @@
         },
         {
             "name": "oro/crm-dotmailer",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMDotmailerBundle.git",
-                "reference": "0a0fc657f981b8a95dabef4ed32681d90ac1d289"
+                "reference": "3ebbd217eb3691740a433bf71d64c90f19999191"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMDotmailerBundle/zipball/0a0fc657f981b8a95dabef4ed32681d90ac1d289",
-                "reference": "0a0fc657f981b8a95dabef4ed32681d90ac1d289",
+                "url": "https://api.github.com/repos/orocrm/OroCRMDotmailerBundle/zipball/3ebbd217eb3691740a433bf71d64c90f19999191",
+                "reference": "3ebbd217eb3691740a433bf71d64c90f19999191",
                 "shasum": ""
             },
             "require": {
@@ -5711,20 +5711,20 @@
             ],
             "description": "Oro Dotmailer integration",
             "homepage": "https://github.com/oroinc/OroCRMDotmailerBundle.git",
-            "time": "2017-11-24T19:01:15+00:00"
+            "time": "2017-11-28T17:02:16+00:00"
         },
         {
             "name": "oro/crm-enterprise",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/crm-enterprise.git",
-                "reference": "ef6f6cf4a0243e9733325a94d72e41df86a88e9f"
+                "reference": "29f869ca0cda02022afea750567b2f2c50050852"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/crm-enterprise/zipball/ef6f6cf4a0243e9733325a94d72e41df86a88e9f",
-                "reference": "ef6f6cf4a0243e9733325a94d72e41df86a88e9f",
+                "url": "https://api.github.com/repos/oroinc/crm-enterprise/zipball/29f869ca0cda02022afea750567b2f2c50050852",
+                "reference": "29f869ca0cda02022afea750567b2f2c50050852",
                 "shasum": ""
             },
             "require": {
@@ -5758,9 +5758,9 @@
             "description": "OroCRM Enterprise",
             "homepage": "https://github.com/oroinc/crm-enterprise.git",
             "support": {
-                "source": "https://github.com/oroinc/crm-enterprise/tree/2.5.0"
+                "source": "https://github.com/oroinc/crm-enterprise/tree/2.5"
             },
-            "time": "2017-11-30T13:06:26+00:00"
+            "time": "2017-12-08T11:06:56+00:00"
         },
         {
             "name": "oro/crm-hangouts-call-bundle",
@@ -5863,16 +5863,16 @@
         },
         {
             "name": "oro/crm-mail-chimp",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMMailChimpBundle.git",
-                "reference": "536908e0f527e5496f1ecd80b60655ef0aadd48e"
+                "reference": "a8873ed316ff93af43475402ae2b8500aa37bcad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMMailChimpBundle/zipball/536908e0f527e5496f1ecd80b60655ef0aadd48e",
-                "reference": "536908e0f527e5496f1ecd80b60655ef0aadd48e",
+                "url": "https://api.github.com/repos/orocrm/OroCRMMailChimpBundle/zipball/a8873ed316ff93af43475402ae2b8500aa37bcad",
+                "reference": "a8873ed316ff93af43475402ae2b8500aa37bcad",
                 "shasum": ""
             },
             "require": {
@@ -5907,7 +5907,7 @@
             ],
             "description": "OroCRM MailChimp integration",
             "homepage": "https://github.com/oroinc/OroCRMMailChimpBundle.git",
-            "time": "2017-11-22T09:00:56+00:00"
+            "time": "2017-12-01T10:43:28+00:00"
         },
         {
             "name": "oro/crm-pro-ldap-bundle",
@@ -6061,16 +6061,16 @@
         },
         {
             "name": "oro/customer-portal",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/customer-portal-er.git",
-                "reference": "c6d9b8f08a8b64852b142e48e61ad8aa6da56220"
+                "reference": "8eed8e59df737fb61ba7ea8d45a9f1bd2da6f006"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/customer-portal-er/zipball/c6d9b8f08a8b64852b142e48e61ad8aa6da56220",
-                "reference": "c6d9b8f08a8b64852b142e48e61ad8aa6da56220",
+                "url": "https://api.github.com/repos/oroinc/customer-portal-er/zipball/8eed8e59df737fb61ba7ea8d45a9f1bd2da6f006",
+                "reference": "8eed8e59df737fb61ba7ea8d45a9f1bd2da6f006",
                 "shasum": ""
             },
             "require": {
@@ -6109,7 +6109,7 @@
             "support": {
                 "source": "https://github.com/oroinc/customer-portal-er/tree/2.5"
             },
-            "time": "2017-11-24T19:01:15+00:00"
+            "time": "2017-12-13T13:50:16+00:00"
         },
         {
             "name": "oro/doctrine-extensions",
@@ -6217,16 +6217,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-er.git",
-                "reference": "902126584a2bda4e3a714eb234e5207df39474ba"
+                "reference": "00fcd1a6e3328c8810f53ce1db0373532ebd6c25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-er/zipball/902126584a2bda4e3a714eb234e5207df39474ba",
-                "reference": "902126584a2bda4e3a714eb234e5207df39474ba",
+                "url": "https://api.github.com/repos/oroinc/platform-er/zipball/00fcd1a6e3328c8810f53ce1db0373532ebd6c25",
+                "reference": "00fcd1a6e3328c8810f53ce1db0373532ebd6c25",
                 "shasum": ""
             },
             "require": {
@@ -6379,22 +6379,22 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/oroinc/platform.git",
             "support": {
-                "source": "https://github.com/oroinc/platform-er/tree/2.5.0"
+                "source": "https://github.com/oroinc/platform-er/tree/2.5"
             },
-            "time": "2017-11-30T10:04:02+00:00"
+            "time": "2017-12-14T10:59:03+00:00"
         },
         {
             "name": "oro/platform-enterprise",
-            "version": "2.5.0",
+            "version": "2.5.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-enterprise.git",
-                "reference": "58181f7f1e426838e3c96feb53c35838b60639c7"
+                "reference": "9e817d110a320f883ff3efb266a1b66b8df04ca7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/58181f7f1e426838e3c96feb53c35838b60639c7",
-                "reference": "58181f7f1e426838e3c96feb53c35838b60639c7",
+                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/9e817d110a320f883ff3efb266a1b66b8df04ca7",
+                "reference": "9e817d110a320f883ff3efb266a1b66b8df04ca7",
                 "shasum": ""
             },
             "require": {
@@ -6428,7 +6428,7 @@
             "support": {
                 "source": "https://github.com/oroinc/platform-enterprise/tree/2.5"
             },
-            "time": "2017-11-24T19:01:15+00:00"
+            "time": "2017-12-08T11:06:56+00:00"
         },
         {
             "name": "oro/platform-serialised-fields",
@@ -10280,26 +10280,26 @@
         },
         {
             "name": "pdepend/pdepend",
-            "version": "2.5.0",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pdepend/pdepend.git",
-                "reference": "0c50874333149c0dad5a2877801aed148f2767ff"
+                "reference": "9daf26d0368d4a12bed1cacae1a9f3a6f0adf239"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/0c50874333149c0dad5a2877801aed148f2767ff",
-                "reference": "0c50874333149c0dad5a2877801aed148f2767ff",
+                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/9daf26d0368d4a12bed1cacae1a9f3a6f0adf239",
+                "reference": "9daf26d0368d4a12bed1cacae1a9f3a6f0adf239",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.7",
-                "symfony/config": "^2.3.0|^3",
-                "symfony/dependency-injection": "^2.3.0|^3",
-                "symfony/filesystem": "^2.3.0|^3"
+                "symfony/config": "^2.3.0|^3|^4",
+                "symfony/dependency-injection": "^2.3.0|^3|^4",
+                "symfony/filesystem": "^2.3.0|^3|^4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.4.0,<4.8",
+                "phpunit/phpunit": "^4.8|^5.7",
                 "squizlabs/php_codesniffer": "^2.0.0"
             },
             "bin": [
@@ -10316,7 +10316,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Official version of pdepend to be handled with Composer",
-            "time": "2017-01-19T14:23:36+00:00"
+            "time": "2017-12-13T13:21:38+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
