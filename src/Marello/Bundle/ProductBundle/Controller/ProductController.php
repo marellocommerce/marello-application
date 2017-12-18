@@ -93,7 +93,7 @@ class ProductController extends Controller
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_product_view")
      * @Security\AclAncestor("marello_product_view")
-     * @Config\Template
+     * @Config\Template("MarelloProductBundle:Product:view.html.twig")
      *
      * @param Product $product
      *
