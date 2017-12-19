@@ -97,7 +97,8 @@
                     selectors: {
                         address: idAddressBlock
                     }
-                }|json_encode }}">
+                }|json_encode }}"
+                data-layout="separate">
             {{ form_widget(form.billingAddress) }}
         </div>
     {% endset %}
@@ -120,7 +121,8 @@
                         '#' ~ form.shippingAddress.postalCode.vars.id
                         ]
                     }
-                }|json_encode }}">
+                }|json_encode }}"
+                data-layout="separate">
             {{ form_widget(form.shippingAddress) }}
         </div>
     {% endset %}
@@ -130,7 +132,8 @@
              data-page-component-options="{{ {
                  view: 'marelloorder/js/app/views/order-items-view',
                  data: data|default({})
-             }|json_encode }}">
+             }|json_encode }}"
+             data-layout="separate">
             {{ form_widget(form.items) }}
             {{ form_errors(form.items) }}
         </div>

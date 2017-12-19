@@ -4,7 +4,6 @@ define(function(require) {
     var CustomerSelectionComponent;
     var BaseComponent = require('oroui/js/app/components/base/component');
     var _ = require('underscore');
-    var routing = require('routing');
     var mediator = require('oroui/js/mediator');
 
     CustomerSelectionComponent = BaseComponent.extend({
