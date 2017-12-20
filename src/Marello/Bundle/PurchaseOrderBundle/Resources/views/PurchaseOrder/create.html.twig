@@ -33,7 +33,8 @@
              data-page-component-options="{{ {
                  view: 'marellopurchaseorder/js/app/views/purchaseorder-items-view',
                  items: items|default({})
-             }|json_encode }}">
+             }|json_encode }}"
+             data-layout="separate">
             {{ form_widget(form.items) }}
             {{ form_errors(form.items) }}
         </div>

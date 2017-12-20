@@ -65,7 +65,8 @@
              data-page-component-options="{{ {
                  view: 'marellopricing/js/app/views/channel-pricing-items-view',
                  options: priceEnableElement|default({})
-             }|json_encode }}">
+             }|json_encode }}"
+             data-layout="separate">
             {{ form_widget(form.channelPrices) }}
             {{ form_errors(form.channelPrices) }}
         </div>
@@ -82,7 +83,8 @@
                  data-page-component-options="{{ {
                      view: 'marellolayout/js/app/views/abstract-items-view',
                      options: {}
-                 }|json_encode }}">
+                 }|json_encode }}"
+                 data-layout="separate">
                 {{ form_widget(form.prices) }}
                 {{ form_errors(form.prices) }}
             </div>
@@ -102,7 +104,8 @@
              data-page-component-module="oroui/js/app/components/view-component"
              data-page-component-options="{{ {
                  view: 'marelloproduct/js/app/views/product-channel-taxcodes-view'
-             }|json_encode }}">
+             }|json_encode }}"
+             data-layout="separate">
             {{ form_widget(form.salesChannelTaxCodes) }}
             {{ form_errors(form.salesChannelTaxCodes) }}
         </div>
@@ -114,7 +117,8 @@
              data-page-component-options="{{ {
                  view: 'marellosupplier/js/app/views/product-suppliers-view',
                  suppliers: suppliers|default({})
-             }|json_encode }}">
+             }|json_encode }}"
+             data-layout="separate">
             {{ form_widget(form.suppliers) }}
             {{ form_errors(form.suppliers) }}
         </div>
