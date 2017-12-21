@@ -38,7 +38,8 @@
          data-page-component-options="{{ {
              view: 'marellolayout/js/app/views/abstract-items-view',
              prices: prices|default({})
-         }|json_encode }}">
+         }|json_encode }}"
+         data-layout="separate">
         {{ form_widget(form.additionalItems) }}
         {{ form_errors(form.additionalItems) }}
     </div>

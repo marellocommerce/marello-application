@@ -38,7 +38,7 @@ class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixt
             'channels' => [
                 'sales_channel_us_webshop'
             ]
-        ],
+        ]
     ];
 
     /**
@@ -67,14 +67,14 @@ class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixt
                 ->setDescription(sprintf('%s for %s organization', $values['description'], $organization->getName()))
                 ->setSystem($values['system'])
                 ->setOrganization($organization);
-            $this->addSalesChannels($group, $values['channels']);
-
-            $this->setReference($values['name'], $group);
             $this->manager->persist($group);
-            $this->createWarehouseChannelGroupLink($group);
-        }
 
+            $this->addSalesChannels($group, $values['channels']);
+            $this->createWarehouseChannelGroupLink($group);
+            $this->setReference($values['name'], $group);
+        }
         $this->manager->flush();
+
     }
 
     /**
@@ -115,6 +115,7 @@ class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixt
             /** @var SalesChannel $channel */
             $group->addSalesChannel($channel);
         }
+        $this->manager->flush();
     }
 
     /**

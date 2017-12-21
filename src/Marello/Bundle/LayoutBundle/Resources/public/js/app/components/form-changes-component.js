@@ -29,7 +29,7 @@ define(function(require) {
                 trigger: 'form-changes:trigger',
                 init: 'form-changes:init',
                 listenersOff: 'form-changes:listeners:off',
-                listenersOn: 'form-changes:listeners:on',
+                listenersOn: 'form-changes:listeners:on'
             },
             triggerTimeout: 1500
         },

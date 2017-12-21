@@ -4,7 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Async;
 
 use Psr\Log\LoggerInterface;
 
-use Oro\Component\MessageQueue\Client\MessageProducer;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
@@ -21,16 +21,16 @@ class InventoryRebalanceProductsProcessor implements MessageProcessorInterface, 
     /** @var ProductRepository $repository */
     protected $repository;
 
-    /** @var MessageProducer $producer */
+    /** @var MessageProducerInterface $producer */
     protected $producer;
 
     /**
-     * @param MessageProducer $producer
+     * @param MessageProducerInterface $producer
      * @param LoggerInterface $logger
      * @param ProductRepository $repository
      */
     public function __construct(
-        MessageProducer $producer,
+        MessageProducerInterface $producer,
         LoggerInterface $logger,
         ProductRepository $repository
     ) {
