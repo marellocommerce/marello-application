@@ -36,15 +36,10 @@ git clone -b x.y.z https://github.com/marellocommerce/marello-application.git
 where x.y.z is the latest [release tag](https://github.com/marellocommerce/marello-application/releases) or use the latest master:
 
 ```bash
-git clone https://github.com/marellocommerce/marello-application.git
+    git clone https://github.com/marellocommerce/marello-application.git
 ```
 
 - Install [Composer][3] globally following the official Composer [installation documentation][4]
-and install [fxpio/composer-asset-plugin][5] plugin for it:
-
-```bash
-composer global require "fxp/composer-asset-plugin:~1.2"
-```
 
 - Make sure that you have [NodeJS][4] installed
 
@@ -87,7 +82,10 @@ php app/console oro:cron --env prod
 ```bash
 php app/console oro:message-queue:consume --env=prod
 ```
-**Note** We do recommend to use a supervisor for running the ``oro:message-queue:consume`` command. This will make sure that the command and the consumer will run all the time. This has become important for every Oro Platform based application since a lot of background tasks depend on the consumer to run. For more information about configuration and what supervisor can do for you can either through the [Oro(CRM) docs][6] or the [site of Supervisord][7].
+**Note** We do recommend to use a supervisor for running the ``oro:message-queue:consume`` command. This will make sure that the command and
+the consumer will run all the time. This has become important for every Oro Platform based application since a lot of background tasks depend
+ on the consumer to run. For more information about configuration and what supervisor can do for you can either through the [Oro(CRM) docs][6] or the
+ [site of Supervisord][7].
  
 **Note:** ``app/console`` is a path from project root folder. Please make sure you are using full path for crontab configuration or if you running console command from other location.
 
@@ -97,7 +95,7 @@ Installed PHP Accelerators must be compatible with Symfony and Doctrine (support
 
 Note that the port used in Websocket must be open in firewall for outgoing/incoming connections
 
-Using MySQL 5.6 on HDD is potentially risky because of  performance issues
+Using MySQL 5.6 on HDD is potentially risky because of performance issues
 
 Recommended configuration for this case:
 
@@ -114,7 +112,7 @@ See [Optimizing InnoDB Disk I/O][3] for more
 You need to load `uuid-ossp` extension for proper doctrine's `guid` type handling.
 Log into database and run sql query:
 
-```bash
+```
 CREATE EXTENSION "uuid-ossp";
 ```
 
