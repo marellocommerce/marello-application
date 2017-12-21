@@ -117,7 +117,7 @@ class ShipmentCreateActionTest extends \PHPUnit_Framework_TestCase
             ->willReturn($metaData);
 
         $this->doctrine->expects(static::once())
-            ->method('getEntityManager')
+            ->method('getManager')
             ->willReturn($em);
 
         $context = new ActionData(

@@ -31,7 +31,7 @@ class RuleTypeTest extends FormIntegrationTestCase
      */
     public function testSubmitValid(RuleInterface $rule)
     {
-        $form = $this->factory->create($this->formType, $rule);
+        $form = $this->factory->create(RuleType::class, $rule);
 
         $this->assertSame($rule, $form->getData());
 

@@ -13,7 +13,7 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
     protected $manager;
 
     protected $widgets = [
-//        'my_calendar'     => 'remove',
+        'my_calendar'     => 'remove',
         'top_revenue_channels_widget' => [0,0],
         'latest_orders_widget' => [1,0],
         'recent_emails'   => [1, 2],
@@ -26,7 +26,7 @@ class LoadDashboardData extends AbstractDashboardFixture implements DependentFix
     public function getDependencies()
     {
         return [
-//            'Oro\Bundle\CalendarBundle\Migrations\Data\ORM\LoadDashboardData',
+            'Oro\Bundle\CalendarBundle\Migrations\Data\ORM\LoadDashboardData',
             'Oro\Bundle\EmailBundle\Migrations\Data\ORM\LoadDashboardData',
             'Oro\Bundle\DashboardBundle\Migrations\Data\ORM\LoadDashboardData'
         ];
