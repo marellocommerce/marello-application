@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bd3722ae42063e2222a9870d7ce4e9e9",
+    "content-hash": "4a9184b35fd8ce9ceeb04ed062fa8865",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -242,16 +242,16 @@
         },
         {
             "name": "bower-asset/autolinker.js",
-            "version": "1.4.3",
+            "version": "1.4.4",
             "source": {
                 "type": "git",
-                "url": "git@github.com:gregjacobs/Autolinker.js.git",
-                "reference": "2b50541dfc0abde6f1e565796623ab0250caa997"
+                "url": "https://github.com/gregjacobs/Autolinker.js.git",
+                "reference": "355143d271c314e1cb68eb120b55450461927427"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gregjacobs/Autolinker.js/zipball/2b50541dfc0abde6f1e565796623ab0250caa997",
-                "reference": "2b50541dfc0abde6f1e565796623ab0250caa997",
+                "url": "https://api.github.com/repos/gregjacobs/Autolinker.js/zipball/355143d271c314e1cb68eb120b55450461927427",
+                "reference": "355143d271c314e1cb68eb120b55450461927427",
                 "shasum": null
             },
             "type": "bower-asset",
@@ -509,6 +509,29 @@
                 "OFL-1.1",
                 "MIT",
                 "CC-BY-3.0"
+            ]
+        },
+        {
+            "name": "bower-asset/fullcalendar",
+            "version": "v3.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fullcalendar/fullcalendar.git",
+                "reference": "447ab267528a211b253058dfb5d898b7a2296492"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fullcalendar/fullcalendar/zipball/447ab267528a211b253058dfb5d898b7a2296492",
+                "reference": "447ab267528a211b253058dfb5d898b7a2296492",
+                "shasum": null
+            },
+            "require": {
+                "bower-asset/jquery": ">=2,<4.0",
+                "bower-asset/moment": ">=2.9.0,<3.0.0"
+            },
+            "type": "bower-asset",
+            "license": [
+                "MIT"
             ]
         },
         {
@@ -3731,7 +3754,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -4708,6 +4731,57 @@
             "time": "2014-09-28T14:18:11+00:00"
         },
         {
+            "name": "oro/calendar-bundle",
+            "version": "2.5.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:orocrm/OroCalendarBundle.git",
+                "reference": "a288006632c37b39d497093009692d516cb73416"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/orocrm/OroCalendarBundle/zipball/a288006632c37b39d497093009692d516cb73416",
+                "reference": "a288006632c37b39d497093009692d516cb73416",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/fullcalendar": "3.4.0",
+                "oro/platform": "2.5.*",
+                "php": ">=7.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Oro\\Bundle\\CalendarBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.orocrm.com/downloads/",
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Oro, Inc",
+                    "homepage": "http://www.orocrm.com"
+                }
+            ],
+            "description": "Oro Calendar Bundle",
+            "homepage": "https://github.com/oroinc/OroCalendarBundle.git",
+            "keywords": [
+                "Calendar",
+                "Oro"
+            ],
+            "time": "2017-12-13T12:58:53+00:00"
+        },
+        {
             "name": "oro/doctrine-extensions",
             "version": "1.1.2",
             "source": {
@@ -4982,17 +5056,17 @@
         },
         {
             "name": "oro/redis-config",
-            "version": "2.0.0-beta.1",
+            "version": "2.0.0-beta.2",
             "target-dir": "src/Oro/Bundle/RedisConfigBundle",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/redis-config.git",
-                "reference": "d37a652362cdee73d12c8c46c933876c1552d624"
+                "reference": "aad53525d37de78211bfd344ef6904a3b2d69fa6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/redis-config/zipball/d37a652362cdee73d12c8c46c933876c1552d624",
-                "reference": "d37a652362cdee73d12c8c46c933876c1552d624",
+                "url": "https://api.github.com/repos/orocrm/redis-config/zipball/aad53525d37de78211bfd344ef6904a3b2d69fa6",
+                "reference": "aad53525d37de78211bfd344ef6904a3b2d69fa6",
                 "shasum": ""
             },
             "require": {
@@ -5017,7 +5091,7 @@
                 "OroPlatform",
                 "Redis"
             ],
-            "time": "2016-05-25T12:17:15+00:00"
+            "time": "2017-12-21T10:50:55+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -8510,26 +8584,26 @@
         },
         {
             "name": "pdepend/pdepend",
-            "version": "2.5.0",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pdepend/pdepend.git",
-                "reference": "0c50874333149c0dad5a2877801aed148f2767ff"
+                "reference": "9daf26d0368d4a12bed1cacae1a9f3a6f0adf239"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/0c50874333149c0dad5a2877801aed148f2767ff",
-                "reference": "0c50874333149c0dad5a2877801aed148f2767ff",
+                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/9daf26d0368d4a12bed1cacae1a9f3a6f0adf239",
+                "reference": "9daf26d0368d4a12bed1cacae1a9f3a6f0adf239",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.7",
-                "symfony/config": "^2.3.0|^3",
-                "symfony/dependency-injection": "^2.3.0|^3",
-                "symfony/filesystem": "^2.3.0|^3"
+                "symfony/config": "^2.3.0|^3|^4",
+                "symfony/dependency-injection": "^2.3.0|^3|^4",
+                "symfony/filesystem": "^2.3.0|^3|^4"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.4.0,<4.8",
+                "phpunit/phpunit": "^4.8|^5.7",
                 "squizlabs/php_codesniffer": "^2.0.0"
             },
             "bin": [
@@ -8546,7 +8620,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Official version of pdepend to be handled with Composer",
-            "time": "2017-01-19T14:23:36+00:00"
+            "time": "2017-12-13T13:21:38+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -9132,16 +9206,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "5.7.25",
+            "version": "5.7.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4b1c822a68ae6577df38a59eb49b046712ec0f6a"
+                "reference": "7fbc25c13309de0c4c9bb48b7361f1eca34c7fbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4b1c822a68ae6577df38a59eb49b046712ec0f6a",
-                "reference": "4b1c822a68ae6577df38a59eb49b046712ec0f6a",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/7fbc25c13309de0c4c9bb48b7361f1eca34c7fbd",
+                "reference": "7fbc25c13309de0c4c9bb48b7361f1eca34c7fbd",
                 "shasum": ""
             },
             "require": {
@@ -9210,7 +9284,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-11-14T14:50:51+00:00"
+            "time": "2017-12-17T06:14:38+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -9801,7 +9875,7 @@
             ],
             "description": "Copy/Paste Detector (CPD) for PHP code.",
             "homepage": "https://github.com/sebastianbergmann/phpcpd",
-            "time": "2017-11-16 09:52:34"
+            "time": "2017-11-16T09:52:34+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -10341,6 +10415,8 @@
     },
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=7.0"
+    },
     "platform-dev": []
 }
