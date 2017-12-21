@@ -50,7 +50,7 @@ class ShipmentCreateAction extends AbstractAction
         $service = strtolower($this->contextAccessor->getValue($context, $this->service));
         /** @var ShippingAwareInterface $entity */
         $entity = $this->contextAccessor->getValue($context, $this->entity);
-        $entityClass = $this->doctrine->getEntityManager()->getClassMetadata(get_class($entity))->getName();
+        $entityClass = $this->doctrine->getManager()->getClassMetadata(get_class($entity))->getName();
 
         if (!$service || !$this->registry->hasIntegration($service) || !$this->registry->hasDataFactory($service)) {
             $service = self::DEFAULT_SHIPPING_SERVICE;
