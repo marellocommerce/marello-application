@@ -18,10 +18,10 @@
        {
             "type": "composer",
             "url": "http://packagist.orocrm.com"
-        }
+       }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.0",
         "oro/platform-enterprise": "2.x-dev",
         "marellocommerce/marello": "1.x-dev"
     },
