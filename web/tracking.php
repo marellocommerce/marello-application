@@ -1,14 +1,22 @@
 <?php
 /**
+ * IMPORTANT:
+ *  Do not change this file manually, because it will be overwritten on application install/update procedure.
+ *  The original file is located in `Oro/Bundles/TrackingBundle/Resources/public/lib/tracking.php`.
+ *
  * This is tracking endpoint, which must be as fast as possible.
  * KISS.
+ *
+ * @SuppressWarnings(PHPMD)
+ * @codingStandardsIgnoreFile
  */
 
 $trackingFolder = '../app/logs/tracking';
 $settingsFile   = $trackingFolder . DIRECTORY_SEPARATOR . 'settings.ser';
 $settings       = [
-    'dynamic_tracking_enabled'  => true,
+    'dynamic_tracking_enabled'  => false,
     'dynamic_tracking_endpoint' => '/tracking/data/create',
+    'dynamic_tracking_base_url' => null,
     'log_rotate_interval'       => 60,
     'piwik_host'                => null,
     'piwik_token_auth'          => null
@@ -27,6 +35,14 @@ function passDataToUrl($url)
     curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
     curl_exec($handle);
     curl_close($handle);
+}
+
+/** @param array */
+function fillTrackingData(array &$data)
+{
+    $data['loggedAt'] = getLoggedAt();
+    $data['cip']      = getClientIp();
+    $data['ua']       = $_SERVER['HTTP_USER_AGENT'];
 }
 
 /**
@@ -81,10 +97,9 @@ function passDataToApplication($url)
 {
     $_SERVER['REQUEST_URI'] = modifyUrl($url);
 
-    $_GET['loggedAt'] = getLoggedAt();
-    $_GET['cip']      = getClientIp();
-    $_GET['ua']       = $_SERVER['HTTP_USER_AGENT'];
+    fillTrackingData($_GET);
 
+    require_once __DIR__ . '/../app/autoload.php';
     require_once __DIR__ . '/../app/bootstrap.php.cache';
     require_once __DIR__ . '/../app/AppKernel.php';
     $kernel = new AppKernel('prod', false);
@@ -117,6 +132,9 @@ if (is_dir($trackingFolder)) {
 
 // Track visit
 if ($settings['dynamic_tracking_enabled']) {
+    if (!empty($settings['dynamic_tracking_base_url'])) {
+        $_SERVER['SCRIPT_FILENAME'] = $settings['dynamic_tracking_base_url'];
+    }
     // Pass visit to dynamic tracking endpoint
     passDataToApplication($settings['dynamic_tracking_endpoint']);
 } else {
@@ -134,9 +152,8 @@ if ($settings['dynamic_tracking_enabled']) {
     $fileName = $date->format('Ymd-H') . '-' . $rotateInterval . '-' . $currentPart . '.log';
 
     // Add visit to log to file
-    $rawData             = $_GET;
-    $rawData['loggedAt'] = getLoggedAt();
-    $data                = json_encode($rawData) . PHP_EOL;
+    fillTrackingData($_GET);
+    $data                = json_encode($_GET) . PHP_EOL;
     $fh                  = fopen($trackingFolder . DIRECTORY_SEPARATOR . $fileName, 'a');
     if (flock($fh, LOCK_EX)) {
         fwrite($fh, $data);

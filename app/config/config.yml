@@ -19,7 +19,7 @@ framework:
     default_locale:           "%locale%"
     trusted_proxies:          ~
     session:
-        name:                 CRMID
+        name:                 BAPID
         handler_id:           %session_handler%
         save_path:            %kernel.root_dir%/cache/sessions
         gc_maxlifetime:       3600
@@ -67,18 +67,18 @@ fos_rest:
         decoders:
             json: fos_rest.decoder.json
     view:
-        failed_validation: HTTP_BAD_REQUEST
-        default_engine: php
+        failed_validation:    HTTP_BAD_REQUEST
+        default_engine:       php
         formats:
-            json: true
-            xml: false
+            json:             true
+            xml:              false
     format_listener:
         rules:
             - { path: '^/api/rest', priorities: [ json ], fallback_format: json, prefer_extension: false }
             - { path: '^/api/soap', stop: true }
             - { path: '^/', stop: true }
     routing_loader:
-        default_format: json
+        default_format:       json
 
 fos_js_routing:
     routes_to_expose:         [oro_*]
@@ -93,7 +93,7 @@ stof_doctrine_extensions:
 
 services:
     twig.extension.intl:
-         class: Twig_Extensions_Extension_Intl
+         class:               Twig_Extensions_Extension_Intl
          tags:
              - { name: twig.extension }
 
@@ -105,8 +105,8 @@ genemu_form:
     autocomplete: ~
 
 a2lix_translation_form:
-    locales:                  [en, fr]
-    templating:               "OroUIBundle:Form:translatable.html.twig"
+    locales: [en, fr]
+    templating: "OroUIBundle:Form:translatable.html.twig"
 
 lexik_maintenance:
     authorized:
@@ -123,18 +123,10 @@ lexik_maintenance:
 oro_distribution:
     entry_point: ~
 
-oro_ui:
-    settings:
-        organization_name:
-            value:            "OroCRM"
-
 oro_require_js:
-    config:
-        waitSeconds: 0
-    build_path: "js/oro.min.js"
-    building_timeout: 3600
+    build_path:               "js/oro.min.js"
+    building_timeout:         3600
     build:
-        optimize: "uglify2"
         preserveLicenseComments: true
 
 oro_help:
@@ -145,9 +137,6 @@ oro_help:
         Oro:
             prefix: ~
             alias: Platform
-        OroCRM:
-            prefix: ~
-            alias: CRM
     routes:
         oro_default:
             uri: Platform/OroDashboardBundle

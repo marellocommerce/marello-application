@@ -1,6 +1,6 @@
 imports:
     - { resource: config.yml }
-    - { resource: parameters_test.yml }
+    - { resource: parameters_test.yml, ignore_errors: true }
     - { resource: security_test.yml }
 
 parameters:
@@ -12,7 +12,7 @@ framework:
         storage_id: session.storage.mock_file
     csrf_protection: true
     profiler:
-        enabled: false
+        enabled: "%profiler.enabled%"
 
 monolog:
     handlers:
@@ -55,3 +55,4 @@ oro_user:
 
 twig:
     strict_variables: true
+    debug: false
