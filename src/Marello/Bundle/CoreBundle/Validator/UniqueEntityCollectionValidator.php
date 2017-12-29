@@ -89,9 +89,7 @@ class UniqueEntityCollectionValidator extends ConstraintValidator
                     )
                 );
             }
-            
-            $function = sprintf('get%s', ucfirst($fieldName));
-            $value = $entity->$function();
+
             if (is_object($value)) {
                 $value = $value->getId();
             }
