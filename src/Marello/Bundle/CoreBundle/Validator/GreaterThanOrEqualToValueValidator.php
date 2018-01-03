@@ -60,20 +60,11 @@ class GreaterThanOrEqualToValueValidator extends ConstraintValidator
             );
         }
 
-        $fieldsAndValues = $this->entityGetFieldValues($entity, $fields);
-        if (0 === count($fieldsAndValues)) {
-            throw new \Exception(
-                sprintf(
-                    'Could not validate fields on entity %s, no data has been found for the specified fields',
-                    get_class($entity)
-                )
-            );
-        }
-
+        $values = $this->entityGetFieldValues($entity, $fields);
         $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
 
-        if (!$this->compareValues($fieldsAndValues[0], $fieldsAndValues[1])) {
-            $message = $this->compileViolationMessage($constraint, $fieldsAndValues);
+        if (!$this->compareValues($values[0], $values[1])) {
+            $message = $this->compileViolationMessage($constraint, $values);
             $this->context->buildViolation($message)
                 ->atPath($errorPath)
                 ->addViolation();
@@ -109,15 +100,19 @@ class GreaterThanOrEqualToValueValidator extends ConstraintValidator
      */
     private function entityGetFieldValues($entity, $fields)
     {
+        file_put_contents(
+            '/var/www/app/logs/debug.log',
+            print_r(get_class($entity), true) . "\r\n",
+            FILE_APPEND
+        );
         $className = get_class($entity);
         $em = $this->registry->getManagerForClass($className);
         if (!$em) {
-            throw InvalidMethodException(sprintf('No manager found for class %s', $className));
+            throw new ConstraintDefinitionException(sprintf('No manager found for class %s', $className));
         }
+
         $classMetaData = $em->getClassMetadata($className);
-
-        $fieldsAndValues = [];
-
+        $results = [];
         /* @var $class \Doctrine\Common\Persistence\Mapping\ClassMetadata */
         foreach ($fields as $fieldName) {
             if (!$classMetaData->hasField($fieldName) && !$classMetaData->hasAssociation($fieldName)) {
@@ -132,10 +127,10 @@ class GreaterThanOrEqualToValueValidator extends ConstraintValidator
 
             $accessor = $this->getPropertyAccessor();
             $value = $accessor->getValue($entity, $fieldName);
-            if (!$value) {
+            if (null !== $value) {
                 throw new InvalidMethodException(
                     sprintf(
-                        'Entity "%s" has no method public method for property %s',
+                        'Entity "%s" has no value set for property %s',
                         $className,
                         $fieldName
                     )
@@ -146,10 +141,10 @@ class GreaterThanOrEqualToValueValidator extends ConstraintValidator
                 $value = $value->getId();
             }
 
-            $fieldsAndValues[$fieldName] = $value;
+            $results[] = $value;
         }
 
-        return $fieldsAndValues;
+        return $results;
     }
 
     /**

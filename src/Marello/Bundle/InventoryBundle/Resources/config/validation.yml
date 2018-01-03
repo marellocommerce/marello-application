@@ -31,5 +31,5 @@ Marello\Bundle\InventoryBundle\Entity\InventoryItem:
     constraints:
         - Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanOrEqualToValue:
             fields: [desiredInventory, purchaseInventory]
-            errorPath: purchaseInventory
-            message: 'Desired inventory level needs to be greater than or equal to the purchase inventory level'
+            errorPath: desiredInventory
+            message: 'marello.inventory.validation.messages.error.inventoryitem.desired_should_be_greater_than_purchase_inventory'
