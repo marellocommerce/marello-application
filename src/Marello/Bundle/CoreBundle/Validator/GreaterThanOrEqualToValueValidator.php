@@ -100,11 +100,6 @@ class GreaterThanOrEqualToValueValidator extends ConstraintValidator
      */
     private function entityGetFieldValues($entity, $fields)
     {
-        file_put_contents(
-            '/var/www/app/logs/debug.log',
-            print_r(get_class($entity), true) . "\r\n",
-            FILE_APPEND
-        );
         $className = get_class($entity);
         $em = $this->registry->getManagerForClass($className);
         if (!$em) {
@@ -127,7 +122,7 @@ class GreaterThanOrEqualToValueValidator extends ConstraintValidator
 
             $accessor = $this->getPropertyAccessor();
             $value = $accessor->getValue($entity, $fieldName);
-            if (null !== $value) {
+            if (null === $value) {
                 throw new InvalidMethodException(
                     sprintf(
                         'Entity "%s" has no value set for property %s',
