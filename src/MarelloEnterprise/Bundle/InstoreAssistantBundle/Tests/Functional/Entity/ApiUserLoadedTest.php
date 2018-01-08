@@ -2,14 +2,13 @@
 
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Tests\Functional\Entity;
 
-use MarelloEnterprise\Bundle\InstoreAssistantBundle\Migrations\Data\ORM\LoadApiUserRole;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Migrations\Data\ORM\LoadApiUser;
+use MarelloEnterprise\Bundle\InstoreAssistantBundle\Migrations\Data\ORM\LoadApiUserRole;
 
 class ApiUserLoadedTest extends WebTestCase
 {
@@ -44,6 +43,9 @@ class ApiUserLoadedTest extends WebTestCase
 
     }
 
+    /**
+     * test if API user only has access to view other users and no additional permissions
+     */
     public function testApiUserOnlyHasAccessToViewUsers()
     {
         /** @var UserManager $userManager */

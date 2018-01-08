@@ -1,0 +1,10 @@
+services:
+    marelloenterprise_instoreassistant.provider.auth_provider:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Provider\InstoreUserAuthenticationProvider
+        arguments:
+            - '@marelloenterprise_instoreassistant.manager.oro_user_manager'
+            - '@security.encoder_factory'
+
+    marelloenterprise_instoreassistant.manager.oro_user_manager:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager\OroUserManager
+        parent: oro_user.manager
