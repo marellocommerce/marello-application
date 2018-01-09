@@ -8,3 +8,33 @@ services:
     marelloenterprise_instoreassistant.manager.oro_user_manager:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager\OroUserManager
         parent: oro_user.manager
+
+    marelloenterprise_instoreassistant.api.rest.route_options_resolver.user_profile:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Routing\InstoreUserRestRouteOptionsResolver
+        public: false
+        arguments:
+            - '@oro_api.value_normalizer'
+        tags:
+            - { name: routing.options_resolver }
+
+    marelloenterprise_instoreassistant.api.rest.api_doc.route_options_resolver.user_profile:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\ApiDoc\InstoreUserRestRouteOptionsResolver
+        public: false
+        arguments:
+            - '@oro_api.value_normalizer'
+        tags:
+            - { name: oro_api.routing_options_resolver, priority: 100 }
+
+    marelloenterprise_instoreassistant.api.get.set_instore_userapi_entity_id:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Get\SetInstoreUserApiEntityId
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: oro.api.processor, action: get, group: normalize_input, class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi }
+
+    marelloenterprise_instoreassistant.api.shared.instore_user_verification_check:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Shared\InstoreUserVerificationCheck
+        tags:
+            - { name: oro.api.processor, action: get, group: security_check, class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi }
+            - { name: oro.api.processor, action: create, group: security_check, class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi }
+            - { name: oro.api.processor, action: update, group: security_check, class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi }

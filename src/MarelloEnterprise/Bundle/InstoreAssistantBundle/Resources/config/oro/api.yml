@@ -1,0 +1,48 @@
+api:
+    entity_aliases:
+        MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi:
+            alias: instoreuserapi
+            plural_alias: instoreuserapi
+    entities:
+        Oro\Bundle\UserBundle\Entity\UserApi:
+            exclusion_policy: all
+            fields:
+                id:
+                    data_type:   integer
+                apiKey:
+                    data_type:    string
+            actions:
+                get_list:
+                    exclude: false
+                delete:
+                    exclude: false
+                delete_list:
+                    exclude: false
+                create:
+                    exclude: false
+                update:
+                    exclude: false
+
+        MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi:
+            documentation_resource: '@MarelloEnterpriseInstoreAssistantBundle/Resources/doc/api/instore_user_api.md'
+            fields:
+                id:
+                    data_type:   integer
+                    description: The unique identifier of a UserApi.
+                apiKey:
+                    data_type:    string
+                    description:  Api key
+            actions:
+                get:
+                    description: Get verified Instore User API key
+                    documentation: Retrieve a record of the verified Instore User Api key
+                get_list: false
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+                get_subresource: false
+                get_relationship: false
+                update_relationship: false
+                add_relationship: false
+                delete_relationship: false

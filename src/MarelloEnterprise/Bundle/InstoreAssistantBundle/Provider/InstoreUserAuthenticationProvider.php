@@ -61,7 +61,7 @@ class InstoreUserAuthenticationProvider implements AuthenticationProviderInterfa
      */
     protected function hasValidCredentials($user, $credentials)
     {
-        /** @var  $userEncoder */
+        /** @var PasswordEncoderInterface $userEncoder */
         $userEncoder = $this->getEncoder($user);
         return $userEncoder->isPasswordValid($user->getPassword(), $credentials, $user->getSalt());
     }
@@ -90,16 +90,16 @@ class InstoreUserAuthenticationProvider implements AuthenticationProviderInterfa
 
         return $user;
     }
-
-    /**
-     * Get InstoreUser Api
-     * @param OrganizationAwareUserInterface $user
-     * @return mixed
-     */
-    protected function getInstoreUserApi(OrganizationAwareUserInterface $user)
-    {
-        return $this->userManager->getApi($user, $user->getOrganization());
-    }
+//
+//    /**
+//     * Get InstoreUser Api
+//     * @param OrganizationAwareUserInterface $user
+//     * @return mixed
+//     */
+//    protected function getInstoreUserApi(OrganizationAwareUserInterface $user)
+//    {
+//        return $this->userManager->getApi($user, $user->getOrganization());
+//    }
 
     /**
      * Authentication does not require a token (yet)
