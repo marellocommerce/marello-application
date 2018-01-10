@@ -6,9 +6,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 
-use Oro\Bundle\UserBundle\Entity\OrganizationAwareUserInterface;
 use Oro\Bundle\UserBundle\Entity\UserInterface as OroUserInterface;
 
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager\OroUserManagerInterface;
@@ -20,7 +18,7 @@ use MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager\OroUserManagerInterf
  * Class InstoreUserAuthenticationProvider
  * @package MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager
  */
-class InstoreUserAuthenticationProvider implements AuthenticationProviderInterface
+class InstoreUserAuthenticationProvider implements InstoreUserAuthenticationProviderInterface
 {
     /** @var OroUserManagerInterface $userManager */
     private $userManager;
@@ -31,8 +29,7 @@ class InstoreUserAuthenticationProvider implements AuthenticationProviderInterfa
     public function __construct(
         OroUserManagerInterface $userManager,
         EncoderFactory $encoderFactory
-    )
-    {
+    ) {
         $this->userManager = $userManager;
         $this->encoderFactory = $encoderFactory;
     }
@@ -90,16 +87,6 @@ class InstoreUserAuthenticationProvider implements AuthenticationProviderInterfa
 
         return $user;
     }
-//
-//    /**
-//     * Get InstoreUser Api
-//     * @param OrganizationAwareUserInterface $user
-//     * @return mixed
-//     */
-//    protected function getInstoreUserApi(OrganizationAwareUserInterface $user)
-//    {
-//        return $this->userManager->getApi($user, $user->getOrganization());
-//    }
 
     /**
      * Authentication does not require a token (yet)

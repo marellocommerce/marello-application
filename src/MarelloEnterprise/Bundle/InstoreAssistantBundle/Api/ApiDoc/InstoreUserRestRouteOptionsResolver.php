@@ -59,17 +59,6 @@ class InstoreUserRestRouteOptionsResolver implements RouteOptionsResolverInterfa
         );
         $userProfileGetRoute = $routes->getByPath($userProfileGetRoutePath, $route->getMethods());
 
-        file_put_contents(
-            '/var/www/app/logs/api-debug.log',
-            print_r($userProfileGetRoutePath, true) . "\r\n",
-            FILE_APPEND
-        );
-
-        file_put_contents(
-            '/var/www/app/logs/api-debug.log',
-            print_r($route->getMethods(), true) . "\r\n",
-            FILE_APPEND
-        );
         if (null !== $userProfileGetRoute) {
             $routes->remove($routes->getName($userProfileGetRoute));
         }
