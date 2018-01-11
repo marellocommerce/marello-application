@@ -33,19 +33,9 @@ class InstoreUserVerificationCheck implements ProcessorInterface
            return;
         }
 
-        $username = $password = 'instore-assistant';
-        file_put_contents(
-            '/var/www/app/logs/api-debug.log',
-            print_r(!$context->getClassName() instanceof InstoreUserApi, true) . "\r\n",
-            FILE_APPEND
-        );
-        if(!$this->authenticationProvider->authenticateInstoreUser($username, $password)) {
+        if(!$this->authenticationProvider->authenticateInstoreUser($context->getUsername(), $context->getPassword())) {
             throw new NotFoundHttpException('The User you\'re trying to authenticate is not valid');
         }
-//        if (!$context->hasResult()) {
-//            throw new NotFoundHttpException('Unsupported request.');
-//        } elseif (null === $context->getResult()) {
-//            throw new NotFoundHttpException('An entity with the requested identifier does not exist.');
-//        }
+
     }
 }
