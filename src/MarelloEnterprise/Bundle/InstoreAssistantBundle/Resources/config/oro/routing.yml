@@ -1,0 +1,8 @@
+marelloenterprise_instoreassistant_rest_api_authenticate_instore_user:
+    path: /api/instoreuser/authenticate
+    methods: [POST]
+    defaults:
+        _controller: MarelloEnterpriseInstoreAssistantBundle:Api\InstoreAssistantUser:authenticate
+        _action: authenticate
+    options:
+        group: rest_api

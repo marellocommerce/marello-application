@@ -1,0 +1,16 @@
+services:
+    marelloenterprise_instoreassistant.api.processor.authenticate.processor:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\AuthenticateProcessor
+#        public: false
+        arguments:
+            - '@oro_api.processor_bag'
+            - authenticate
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    marelloenterprise_instoreassistant.api.processor.authentication.instore_user_verification_check:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Authenticate\InstoreUserVerificationCheck
+        arguments:
+            - '@marelloenterprise_instoreassistant.provider.auth_provider'
+        tags:
+            - { name: oro.api.processor, action: authenticate, class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi }

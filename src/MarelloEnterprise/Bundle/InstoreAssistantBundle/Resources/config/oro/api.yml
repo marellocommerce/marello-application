@@ -1,28 +1,9 @@
 api:
     entity_aliases:
         MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi:
-            alias: instoreuserapi
-            plural_alias: instoreuserapi
+            alias: instoreuser
+            plural_alias: instoreuser
     entities:
-        Oro\Bundle\UserBundle\Entity\UserApi:
-            exclusion_policy: all
-            fields:
-                id:
-                    data_type:   integer
-                apiKey:
-                    data_type:    string
-            actions:
-                get_list:
-                    exclude: false
-                delete:
-                    exclude: false
-                delete_list:
-                    exclude: false
-                create:
-                    exclude: false
-                update:
-                    exclude: false
-
         MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi:
             documentation_resource: '@MarelloEnterpriseInstoreAssistantBundle/Resources/doc/api/instore_user_api.md'
             fields:

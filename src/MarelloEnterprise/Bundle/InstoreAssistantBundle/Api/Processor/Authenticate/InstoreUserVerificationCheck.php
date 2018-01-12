@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Shared;
+namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Authenticate;
 
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -33,7 +33,7 @@ class InstoreUserVerificationCheck implements ProcessorInterface
            return;
         }
 
-        if(!$this->authenticationProvider->authenticateInstoreUser($context->getUsername(), $context->getPassword())) {
+        if(!$this->authenticationProvider->authenticateInstoreUser($context->get('username'), $context->get('password'))) {
             throw new NotFoundHttpException('The User you\'re trying to authenticate is not valid');
         }
 
