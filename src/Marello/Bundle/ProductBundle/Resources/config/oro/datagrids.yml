@@ -14,7 +14,7 @@ datagrids:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.inventoryItems, alias: i }
-                groupBy: p.id
+                groupBy: p.id, s.label
         columns:
             sku:
                 label:              marello.product.sku.label
@@ -166,7 +166,7 @@ datagrids:
                     and:
                         - p.variant = :variantId
                         - p.id != :productId
-                groupBy: p.id
+                groupBy: p.id, p.sku, s.label, inventoryQty
             bind_parameters:
                 - variantId
                 - productId

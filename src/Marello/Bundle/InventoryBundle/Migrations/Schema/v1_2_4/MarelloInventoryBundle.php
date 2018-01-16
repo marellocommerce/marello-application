@@ -41,7 +41,7 @@ class MarelloInventoryBundle implements Migration
         $table->addUniqueIndex(['product_id', 'channel_group_id'], 'UNIQ_BDB9A2F64584665A89E4AAEE');
         $table->addIndex(['channel_group_id'], 'IDX_BDB9A2F689E4AAEE', []);
         $table->addIndex(['product_id'], 'IDX_BDB9A2F64584665A', []);
-        $table->addIndex(['organization_id'], 'IDX_BDB9A2F632C8A3DE', []);
+        $table->addIndex(['organization_id']);
     }
 
     /**
@@ -68,7 +68,7 @@ class MarelloInventoryBundle implements Migration
             $schema->getTable('marello_product_product'),
             ['product_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 }
