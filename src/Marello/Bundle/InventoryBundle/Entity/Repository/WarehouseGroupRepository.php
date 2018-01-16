@@ -28,7 +28,7 @@ class WarehouseGroupRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('whg');
         $qb
-            ->where($qb->expr()->eq('whg.system', true));
+            ->where($qb->expr()->eq('whg.system', $qb->expr()->literal(true)));
         $results = $this->aclHelper->apply($qb)->getResult();
         
         return reset($results);
