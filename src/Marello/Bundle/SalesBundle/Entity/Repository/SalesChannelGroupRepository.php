@@ -28,7 +28,7 @@ class SalesChannelGroupRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('scg');
         $qb
-            ->where($qb->expr()->eq('scg.system', true));
+            ->where($qb->expr()->eq('scg.system', $qb->expr()->literal(true)));
         $result = $this->aclHelper->apply($qb)->getResult();
         
         return reset($result);

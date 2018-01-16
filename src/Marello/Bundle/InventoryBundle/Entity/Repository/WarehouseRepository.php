@@ -29,7 +29,7 @@ class WarehouseRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('wh');
         $qb
-            ->where($qb->expr()->eq('wh.default', true));
+            ->where($qb->expr()->eq('wh.default', $qb->expr()->literal(true)));
 
         return $this->aclHelper->apply($qb)->getSingleResult();
     }
