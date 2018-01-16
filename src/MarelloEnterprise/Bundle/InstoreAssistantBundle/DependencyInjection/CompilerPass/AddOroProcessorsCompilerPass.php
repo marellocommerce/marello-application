@@ -27,7 +27,6 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
 
         foreach ($taggedServices as $serviceId => $tags) {
             $serviceDefinition = $container->getDefinition($serviceId);
-
             foreach ($tags as $tag) {
                 // filter out tags which are not part of the 'create' action
                 // filter out tags which have the groups save_data and transform_data
@@ -45,13 +44,7 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
                         'requestType' => array_key_exists('requestType', $tag) ? $tag['requestType'] : null
                     ]
                 );
-                file_put_contents(
-                    '/var/www/app/logs/processor-service-ids.log',
-                    print_r($serviceId, true) . "\r\n",
-                    FILE_APPEND
-                );
             }
-
         }
     }
 }

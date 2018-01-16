@@ -34,6 +34,11 @@ class InstoreUserRestRouteOptionsResolver implements RouteOptionsResolverInterfa
      */
     public function resolve(Route $route, RouteCollectionAccessor $routes)
     {
+        file_put_contents(
+            '/var/www/app/logs/route-debug.log',
+            print_r($route->getOptions(), true) . "\r\n",
+            FILE_APPEND
+        );
         if (RestRouteOptionsResolver::ROUTE_GROUP !== $route->getOption('group')
             || ApiActions::GET !== $route->getDefault('_action')
             || $route->getDefault(RestRouteOptionsResolver::ENTITY_ATTRIBUTE)
