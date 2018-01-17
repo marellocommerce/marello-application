@@ -1597,23 +1597,23 @@
         },
         {
             "name": "composer/spdx-licenses",
-            "version": "1.1.6",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/spdx-licenses.git",
-                "reference": "2603a0d7ddc00a015deb576fa5297ca43dee6b1c"
+                "reference": "2d899e9b33023c631854f36c39ef9f8317a7ab33"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/spdx-licenses/zipball/2603a0d7ddc00a015deb576fa5297ca43dee6b1c",
-                "reference": "2603a0d7ddc00a015deb576fa5297ca43dee6b1c",
+                "url": "https://api.github.com/repos/composer/spdx-licenses/zipball/2d899e9b33023c631854f36c39ef9f8317a7ab33",
+                "reference": "2d899e9b33023c631854f36c39ef9f8317a7ab33",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.3.2 || ^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.5 || ^5.0.5",
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5",
                 "phpunit/phpunit-mock-objects": "2.3.0 || ^3.0"
             },
             "type": "library",
@@ -1654,7 +1654,7 @@
                 "spdx",
                 "validator"
             ],
-            "time": "2017-04-03T19:08:52+00:00"
+            "time": "2018-01-03T16:37:06+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -2883,16 +2883,16 @@
         },
         {
             "name": "gedmo/doctrine-extensions",
-            "version": "v2.4.31",
+            "version": "v2.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "79cd1d49898a21ede9a5dfad41c021abd9a14339"
+                "reference": "d5fdc573b6a2ecfa29c070ecb3db8397ac55ed78"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/79cd1d49898a21ede9a5dfad41c021abd9a14339",
-                "reference": "79cd1d49898a21ede9a5dfad41c021abd9a14339",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/d5fdc573b6a2ecfa29c070ecb3db8397ac55ed78",
+                "reference": "d5fdc573b6a2ecfa29c070ecb3db8397ac55ed78",
                 "shasum": ""
             },
             "require": {
@@ -2905,7 +2905,7 @@
                 "doctrine/mongodb-odm": ">=1.0.2",
                 "doctrine/orm": ">=2.5.0",
                 "phpunit/phpunit": "*",
-                "symfony/yaml": "~2.6|~3.0"
+                "symfony/yaml": "~2.6|~3.0|~4.0"
             },
             "suggest": {
                 "doctrine/mongodb-odm": "to use the extensions with the MongoDB ODM",
@@ -2957,7 +2957,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2017-10-12T06:26:21+00:00"
+            "time": "2018-01-08T14:13:45+00:00"
         },
         {
             "name": "genemu/form-bundle",
@@ -3963,16 +3963,16 @@
         },
         {
             "name": "knplabs/gaufrette",
-            "version": "v0.4.0",
+            "version": "v0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/Gaufrette.git",
-                "reference": "7cd2806ba1c2ea11cd125350363cd56b821c9e08"
+                "reference": "2f228650fd4cc50c3d3c1d6541546ffc169b2240"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/7cd2806ba1c2ea11cd125350363cd56b821c9e08",
-                "reference": "7cd2806ba1c2ea11cd125350363cd56b821c9e08",
+                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/2f228650fd4cc50c3d3c1d6541546ffc169b2240",
+                "reference": "2f228650fd4cc50c3d3c1d6541546ffc169b2240",
                 "shasum": ""
             },
             "require": {
@@ -3992,10 +3992,10 @@
                 "microsoft/azure-storage": "~0.15.0",
                 "microsoft/windowsazure": "~0.4",
                 "mikey179/vfsstream": "~1.2.0",
-                "mongodb/mongodb": "~1.1.4",
+                "mongodb/mongodb": "^1.1",
                 "phpseclib/phpseclib": "^2.0",
                 "phpspec/phpspec": "~2.4",
-                "phpunit/phpunit": "3.7.*",
+                "phpunit/phpunit": "^5.6.8",
                 "rackspace/php-opencloud": "^1.9.2"
             },
             "suggest": {
@@ -4019,7 +4019,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.4.x-dev"
+                    "dev-master": "0.5.x-dev"
                 }
             },
             "autoload": {
@@ -4041,7 +4041,7 @@
                     "homepage": "http://knplabs.com"
                 }
             ],
-            "description": "PHP5 library that provides a filesystem abstraction layer",
+            "description": "PHP library that provides a filesystem abstraction layer",
             "homepage": "http://knplabs.com",
             "keywords": [
                 "abstraction",
@@ -4049,7 +4049,7 @@
                 "filesystem",
                 "media"
             ],
-            "time": "2017-06-17T10:37:47+00:00"
+            "time": "2018-01-04T19:50:08+00:00"
         },
         {
             "name": "knplabs/knp-gaufrette-bundle",
@@ -4678,30 +4678,25 @@
         },
         {
             "name": "michelf/php-markdown",
-            "version": "1.7.0",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/michelf/php-markdown.git",
-                "reference": "1f51cc520948f66cd2af8cbc45a5ee175e774220"
+                "reference": "01ab082b355bf188d907b9929cd99b2923053495"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/1f51cc520948f66cd2af8cbc45a5ee175e774220",
-                "reference": "1f51cc520948f66cd2af8cbc45a5ee175e774220",
+                "url": "https://api.github.com/repos/michelf/php-markdown/zipball/01ab082b355bf188d907b9929cd99b2923053495",
+                "reference": "01ab082b355bf188d907b9929cd99b2923053495",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-lib": "1.4.x-dev"
-                }
-            },
             "autoload": {
-                "psr-0": {
-                    "Michelf": ""
+                "psr-4": {
+                    "Michelf\\": "Michelf/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -4725,7 +4720,7 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2016-10-29T18:58:20+00:00"
+            "time": "2018-01-15T00:49:33+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5232,16 +5227,16 @@
         },
         {
             "name": "oro/calendar-bundle",
-            "version": "2.5.1",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCalendarBundle.git",
-                "reference": "a288006632c37b39d497093009692d516cb73416"
+                "reference": "110672cc1e72c3b04cb8f634fc976cc6eb28a635"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCalendarBundle/zipball/a288006632c37b39d497093009692d516cb73416",
-                "reference": "a288006632c37b39d497093009692d516cb73416",
+                "url": "https://api.github.com/repos/orocrm/OroCalendarBundle/zipball/110672cc1e72c3b04cb8f634fc976cc6eb28a635",
+                "reference": "110672cc1e72c3b04cb8f634fc976cc6eb28a635",
                 "shasum": ""
             },
             "require": {
@@ -5279,20 +5274,20 @@
                 "Calendar",
                 "Oro"
             ],
-            "time": "2017-12-13T12:58:53+00:00"
+            "time": "2018-01-15T18:47:48+00:00"
         },
         {
             "name": "oro/commerce",
-            "version": "1.5.2",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/commerce-er.git",
-                "reference": "edebbdcefcc9e1dc4aebb9aae6454721eb3cf538"
+                "reference": "57bd3fad365bed5738ac2912c00214f6584b2f52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/commerce-er/zipball/edebbdcefcc9e1dc4aebb9aae6454721eb3cf538",
-                "reference": "edebbdcefcc9e1dc4aebb9aae6454721eb3cf538",
+                "url": "https://api.github.com/repos/oroinc/commerce-er/zipball/57bd3fad365bed5738ac2912c00214f6584b2f52",
+                "reference": "57bd3fad365bed5738ac2912c00214f6584b2f52",
                 "shasum": ""
             },
             "require": {
@@ -5351,9 +5346,9 @@
             "description": "OroCommerce - an open-source Business to Business Commerce application. \\nThis package contains bundles and needs to be added as a dependency in an OroCommerce application.",
             "homepage": "https://github.com/orocommerce/orocommerce",
             "support": {
-                "source": "https://github.com/oroinc/commerce-er/tree/1.5"
+                "source": "https://github.com/oroinc/commerce-er/tree/1.5.3"
             },
-            "time": "2017-12-27T11:30:00+00:00"
+            "time": "2018-01-15T10:28:50+00:00"
         },
         {
             "name": "oro/commerce-crm",
@@ -5452,16 +5447,16 @@
         },
         {
             "name": "oro/commerce-enterprise",
-            "version": "1.5.1",
+            "version": "1.5.2",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/commerce-enterprise.git",
-                "reference": "882aef020ef95362db75abfd3c026496e56e99b0"
+                "reference": "a6d2ed27ed5e037a23ed2adbdcc35ce34472e120"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/commerce-enterprise/zipball/882aef020ef95362db75abfd3c026496e56e99b0",
-                "reference": "882aef020ef95362db75abfd3c026496e56e99b0",
+                "url": "https://api.github.com/repos/oroinc/commerce-enterprise/zipball/a6d2ed27ed5e037a23ed2adbdcc35ce34472e120",
+                "reference": "a6d2ed27ed5e037a23ed2adbdcc35ce34472e120",
                 "shasum": ""
             },
             "require": {
@@ -5494,22 +5489,22 @@
             "description": "OroCommerce Enterprise.",
             "homepage": "https://github.com/laboro/commerce-enterprise",
             "support": {
-                "source": "https://github.com/oroinc/commerce-enterprise/tree/1.5"
+                "source": "https://github.com/oroinc/commerce-enterprise/tree/1.5.2"
             },
-            "time": "2017-12-08T11:06:56+00:00"
+            "time": "2018-01-10T17:32:28+00:00"
         },
         {
             "name": "oro/crm",
-            "version": "2.5.2",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/crm-er.git",
-                "reference": "043fb5dd886f53bc6f4a48822e4371afb8585583"
+                "reference": "21fb9b29c813953e21454cfca2f13d3abdf1eadc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/crm-er/zipball/043fb5dd886f53bc6f4a48822e4371afb8585583",
-                "reference": "043fb5dd886f53bc6f4a48822e4371afb8585583",
+                "url": "https://api.github.com/repos/oroinc/crm-er/zipball/21fb9b29c813953e21454cfca2f13d3abdf1eadc",
+                "reference": "21fb9b29c813953e21454cfca2f13d3abdf1eadc",
                 "shasum": ""
             },
             "require": {
@@ -5566,7 +5561,7 @@
             "support": {
                 "source": "https://github.com/oroinc/crm-er/tree/2.5"
             },
-            "time": "2017-12-26T15:26:22+00:00"
+            "time": "2018-01-13T04:18:17+00:00"
         },
         {
             "name": "oro/crm-abandoned-cart",
@@ -5667,16 +5662,16 @@
         },
         {
             "name": "oro/crm-dotmailer",
-            "version": "2.5.1",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/OroCRMDotmailerBundle.git",
-                "reference": "3ebbd217eb3691740a433bf71d64c90f19999191"
+                "reference": "24e5d4e18ae70aa75015c052b875243532e549a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMDotmailerBundle/zipball/3ebbd217eb3691740a433bf71d64c90f19999191",
-                "reference": "3ebbd217eb3691740a433bf71d64c90f19999191",
+                "url": "https://api.github.com/repos/orocrm/OroCRMDotmailerBundle/zipball/24e5d4e18ae70aa75015c052b875243532e549a1",
+                "reference": "24e5d4e18ae70aa75015c052b875243532e549a1",
                 "shasum": ""
             },
             "require": {
@@ -5711,7 +5706,7 @@
             ],
             "description": "Oro Dotmailer integration",
             "homepage": "https://github.com/oroinc/OroCRMDotmailerBundle.git",
-            "time": "2017-11-28T17:02:16+00:00"
+            "time": "2018-01-11T13:37:38+00:00"
         },
         {
             "name": "oro/crm-enterprise",
@@ -6061,16 +6056,16 @@
         },
         {
             "name": "oro/customer-portal",
-            "version": "2.5.2",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/customer-portal-er.git",
-                "reference": "a5dc7139b2bafb295e3d65d2a75df010372b8af6"
+                "reference": "9b724a24ab59f591d0750acb55a7c7bd85534505"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/customer-portal-er/zipball/a5dc7139b2bafb295e3d65d2a75df010372b8af6",
-                "reference": "a5dc7139b2bafb295e3d65d2a75df010372b8af6",
+                "url": "https://api.github.com/repos/oroinc/customer-portal-er/zipball/9b724a24ab59f591d0750acb55a7c7bd85534505",
+                "reference": "9b724a24ab59f591d0750acb55a7c7bd85534505",
                 "shasum": ""
             },
             "require": {
@@ -6107,9 +6102,9 @@
             ],
             "homepage": "https://github.com/oroinc/customer-portal",
             "support": {
-                "source": "https://github.com/oroinc/customer-portal-er/tree/2.5"
+                "source": "https://github.com/oroinc/customer-portal-er/tree/2.5.3"
             },
-            "time": "2017-12-27T11:29:25+00:00"
+            "time": "2018-01-09T09:37:46+00:00"
         },
         {
             "name": "oro/doctrine-extensions",
@@ -6168,16 +6163,16 @@
         },
         {
             "name": "oro/marketing",
-            "version": "2.5.1",
+            "version": "2.5.2",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/OroCRMMarketingBundle.git",
-                "reference": "181f0540af6fd8c31e90955e28463ffab6b3281f"
+                "reference": "63fda7f2ae41b2f66532ea41be16ee2f81c96ef5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroCRMMarketingBundle/zipball/181f0540af6fd8c31e90955e28463ffab6b3281f",
-                "reference": "181f0540af6fd8c31e90955e28463ffab6b3281f",
+                "url": "https://api.github.com/repos/oroinc/OroCRMMarketingBundle/zipball/63fda7f2ae41b2f66532ea41be16ee2f81c96ef5",
+                "reference": "63fda7f2ae41b2f66532ea41be16ee2f81c96ef5",
                 "shasum": ""
             },
             "require": {
@@ -6213,20 +6208,20 @@
                 "Oro",
                 "Tracking"
             ],
-            "time": "2017-12-15T18:36:24+00:00"
+            "time": "2018-01-11T13:37:38+00:00"
         },
         {
             "name": "oro/platform",
-            "version": "2.5.2",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-er.git",
-                "reference": "f6bd52bf2b89996744feff96c4b677ecbaa2a2d9"
+                "reference": "db1e7ecb9b5a936246243797f394316c36d8b998"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-er/zipball/f6bd52bf2b89996744feff96c4b677ecbaa2a2d9",
-                "reference": "f6bd52bf2b89996744feff96c4b677ecbaa2a2d9",
+                "url": "https://api.github.com/repos/oroinc/platform-er/zipball/db1e7ecb9b5a936246243797f394316c36d8b998",
+                "reference": "db1e7ecb9b5a936246243797f394316c36d8b998",
                 "shasum": ""
             },
             "require": {
@@ -6381,20 +6376,20 @@
             "support": {
                 "source": "https://github.com/oroinc/platform-er/tree/2.5"
             },
-            "time": "2017-12-26T15:26:22+00:00"
+            "time": "2018-01-15T15:32:03+00:00"
         },
         {
             "name": "oro/platform-enterprise",
-            "version": "2.5.2",
+            "version": "2.5.3",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-enterprise.git",
-                "reference": "488626994fd24f3d4d4a020f29d1b51af24698fc"
+                "reference": "b51063bdb40f94688b9b36136f2d972b3b9aaacf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/488626994fd24f3d4d4a020f29d1b51af24698fc",
-                "reference": "488626994fd24f3d4d4a020f29d1b51af24698fc",
+                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/b51063bdb40f94688b9b36136f2d972b3b9aaacf",
+                "reference": "b51063bdb40f94688b9b36136f2d972b3b9aaacf",
                 "shasum": ""
             },
             "require": {
@@ -6428,7 +6423,7 @@
             "support": {
                 "source": "https://github.com/oroinc/platform-enterprise/tree/2.5"
             },
-            "time": "2017-12-26T12:49:34+00:00"
+            "time": "2018-01-10T17:57:12+00:00"
         },
         {
             "name": "oro/platform-serialised-fields",
@@ -7310,23 +7305,23 @@
         },
         {
             "name": "seld/jsonlint",
-            "version": "1.6.2",
+            "version": "1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/jsonlint.git",
-                "reference": "7a30649c67ee0d19faacfd9fa2cfb6cc032d9b19"
+                "reference": "9b355654ea99460397b89c132b5c1087b6bf4473"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/7a30649c67ee0d19faacfd9fa2cfb6cc032d9b19",
-                "reference": "7a30649c67ee0d19faacfd9fa2cfb6cc032d9b19",
+                "url": "https://api.github.com/repos/Seldaek/jsonlint/zipball/9b355654ea99460397b89c132b5c1087b6bf4473",
+                "reference": "9b355654ea99460397b89c132b5c1087b6bf4473",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.3 || ^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.5"
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
             },
             "bin": [
                 "bin/jsonlint"
@@ -7355,7 +7350,7 @@
                 "parser",
                 "validator"
             ],
-            "time": "2017-11-30T15:34:22+00:00"
+            "time": "2018-01-03T12:13:57+00:00"
         },
         {
             "name": "seld/phar-utils",
@@ -7510,16 +7505,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.1.6",
+            "version": "v4.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "387b6a3b723ba35588b33d5f8d14e28ed608bd30"
+                "reference": "d539ccba2b4dce515de04f16b7ed7ae5b9eeb434"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/387b6a3b723ba35588b33d5f8d14e28ed608bd30",
-                "reference": "387b6a3b723ba35588b33d5f8d14e28ed608bd30",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/d539ccba2b4dce515de04f16b7ed7ae5b9eeb434",
+                "reference": "d539ccba2b4dce515de04f16b7ed7ae5b9eeb434",
                 "shasum": ""
             },
             "require": {
@@ -7551,7 +7546,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2017-10-29T18:48:08+00:00"
+            "time": "2018-01-11T05:54:03+00:00"
         },
         {
             "name": "snc/redis-bundle",
@@ -8375,27 +8370,27 @@
         },
         {
             "name": "symfony/security-acl",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-acl.git",
-                "reference": "053b49bf4aa333a392c83296855989bcf88ddad1"
+                "reference": "ab4dfe2d95e038cd367dd04604487b0a3359bcff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-acl/zipball/053b49bf4aa333a392c83296855989bcf88ddad1",
-                "reference": "053b49bf4aa333a392c83296855989bcf88ddad1",
+                "url": "https://api.github.com/repos/symfony/security-acl/zipball/ab4dfe2d95e038cd367dd04604487b0a3359bcff",
+                "reference": "ab4dfe2d95e038cd367dd04604487b0a3359bcff",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.9",
-                "symfony/security-core": "~2.8|~3.0"
+                "symfony/security-core": "~2.8|~3.0|~4.0"
             },
             "require-dev": {
                 "doctrine/common": "~2.2",
                 "doctrine/dbal": "~2.2",
                 "psr/log": "~1.0",
-                "symfony/phpunit-bridge": "~2.8|~3.0"
+                "symfony/phpunit-bridge": "~2.8|~3.0|~4.0"
             },
             "suggest": {
                 "doctrine/dbal": "For using the built-in ACL implementation",
@@ -8432,7 +8427,7 @@
             ],
             "description": "Symfony Security Component - ACL (Access Control List)",
             "homepage": "https://symfony.com",
-            "time": "2015-12-28T09:39:46+00:00"
+            "time": "2017-07-21T06:01:18+00:00"
         },
         {
             "name": "symfony/swiftmailer-bundle",
@@ -8797,16 +8792,16 @@
         },
         {
             "name": "vakata/jstree",
-            "version": "3.3.4",
+            "version": "3.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vakata/jstree.git",
-                "reference": "a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16"
+                "reference": "0097fab41981daf36c234b73b683166daabd5f28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vakata/jstree/zipball/a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16",
-                "reference": "a6a0d0dfb784d5ef0b3415d847ac7b6bfbab1f16",
+                "url": "https://api.github.com/repos/vakata/jstree/zipball/0097fab41981daf36c234b73b683166daabd5f28",
+                "reference": "0097fab41981daf36c234b73b683166daabd5f28",
                 "shasum": ""
             },
             "require": {
@@ -8850,7 +8845,7 @@
             ],
             "description": "jsTree is jquery plugin, that provides interactive trees.",
             "homepage": "http://jstree.com",
-            "time": "2017-04-06T14:23:09+00:00"
+            "time": "2018-01-02T08:13:23+00:00"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
