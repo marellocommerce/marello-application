@@ -14,9 +14,7 @@ api:
                     data_type:    string
                     description:  Api key
             actions:
-                get:
-                    description: Get verified Instore User API key
-                    documentation: Retrieve a record of the verified Instore User Api key
+                get: false
                 get_list: false
                 create: false
                 update: false

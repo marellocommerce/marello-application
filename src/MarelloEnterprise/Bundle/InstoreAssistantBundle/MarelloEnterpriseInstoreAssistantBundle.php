@@ -14,7 +14,8 @@ class MarelloEnterpriseInstoreAssistantBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new AddOroProcessorsCompilerPass());
         parent::build($container);
+
+        $container->addCompilerPass(new AddOroProcessorsCompilerPass());
     }
 }

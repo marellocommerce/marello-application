@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Controller\Api;
 
+use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -70,35 +71,20 @@ class InstoreAssistantUserController extends AbstractRestApiController
      */
     public function authenticateAction(Request $request)
     {
-        // oro made it impossible to actually use the registration of a new action, so I'll add the main entry point
-        // for the action on the fly to 'workaround' the problem....
+        // oro made it impossible to actually use the registration of a new action
         // downside for this is not being able to use the action the way it was supposed to work....
         // reason it doesn't work is because it will try and load the definition when it's not defined yet...
         // this is because the order in which the bundles are loaded probably, all the other actions are defined
         // in the same bundle and are being loaded after they are being included in the OroApiExtension.php
         // of the OroApiBundle...
-
-        $this->addMainActionProcessor();
         $processor = $this->getProcessor($request);
         /** @var AuthenticationContext $context */
         $context = $this->getContext($processor, $request);
+        $context->setClassName(InstoreUserApi::class);
         $context->setRequestData($request->request->all());
 
         $processor->process($context);
 
         return $this->buildResponse($context);
-    }
-
-    /**
-     * Add custom main entry action processor during the inability to add a new one for a custom action
-     * without blowing up the application....
-     */
-    private function addMainActionProcessor()
-    {
-        $processor = $this->get('marelloenterprise_instoreassistant.api.processor.authenticate.processor');
-        // processor bag which apparently we cannot add an additional main processor too...
-        /** @var ActionProcessorBagInterface $processorBag */
-        $processorBag = $this->getActionProcessorBag();
-        $processorBag->addProcessor($processor);
     }
 }

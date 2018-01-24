@@ -5,14 +5,18 @@ oro_api:
                 initialize:
                     priority: -10
                 resource_check:
-                    priority: -15
-                normalize_input:
                     priority: -20
-                security_check:
+                normalize_input:
                     priority: -30
-                normalize_data:
+                security_check:
                     priority: -40
-                finalize:
+                load_data:
                     priority: -50
-                normalize_result:
+                transform_data:
                     priority: -60
+                normalize_data:
+                    priority: -70
+                finalize:
+                    priority: -80
+                normalize_result:
+                    priority: -90

@@ -1,7 +1,7 @@
 services:
     marelloenterprise_instoreassistant.api.processor.authenticate.processor:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\AuthenticateProcessor
-#        public: false
+        public: false
         arguments:
             - '@oro_api.processor_bag'
             - authenticate
@@ -13,4 +13,4 @@ services:
         arguments:
             - '@marelloenterprise_instoreassistant.provider.auth_provider'
         tags:
-            - { name: oro.api.processor, action: authenticate, class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi }
+            - { name: oro.api.processor, action: authenticate, group: security_check, class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi }

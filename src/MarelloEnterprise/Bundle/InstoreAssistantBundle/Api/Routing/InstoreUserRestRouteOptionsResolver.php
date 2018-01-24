@@ -15,13 +15,13 @@ use Oro\Bundle\ApiBundle\Util\ValueNormalizerUtil;
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi;
 
 /**
- * Adds the route "GET /api/instoreuserapi".
- * The name of this route is "marelloenterprise_instoreassistant_rest_api_get_instore_userapi".
+ * Adds the route "POST /api/instoreuser/authenticate".
+ * The name of this route is "marelloenterprise_instoreassistant_rest_api_authenticate_instore_user".
  */
 class InstoreUserRestRouteOptionsResolver implements RouteOptionsResolverInterface
 {
-    const GET_ROUTE_NAME          = 'oro_rest_api_get';
-    const USER_PROFILE_ROUTE_NAME = 'marelloenterprise_instoreassistant_rest_api_get_instore_userapi';
+    const INSTOREUSER_API_ROUTE_NAME = 'marelloenterprise_instoreassistant_rest_api_authenticate_instore_user';
+    const INSTOREUSER_API_ROUT_ACTIION = 'authenticate';
 
     /** @var ValueNormalizer */
     private $valueNormalizer;
@@ -40,43 +40,36 @@ class InstoreUserRestRouteOptionsResolver implements RouteOptionsResolverInterfa
     public function resolve(Route $route, RouteCollectionAccessor $routes)
     {
         if (RestRouteOptionsResolver::ROUTE_GROUP !== $route->getOption('group')
-            || ApiActions::GET !== $route->getDefault('_action')
-            || self::GET_ROUTE_NAME !== $routes->getName($route)
+            || self::INSTOREUSER_API_ROUT_ACTIION !== $route->getDefault('_action')
+            || self::INSTOREUSER_API_ROUTE_NAME !== $routes->getName($route)
         ) {
             return;
         }
-
-        $userProfileEntityType = ValueNormalizerUtil::convertToEntityType(
+        file_put_contents(
+            '/var/www/app/logs/api-request.log',
+            __METHOD__ . " " . print_r($route->getPath(), true) . "\r\n",
+            FILE_APPEND
+        );
+        $instoreUserModelEntityType = ValueNormalizerUtil::convertToEntityType(
             $this->valueNormalizer,
             InstoreUserApi::class,
             new RequestType([RequestType::REST]),
             false
         );
-        if (!$userProfileEntityType) {
+
+        if (!$instoreUserModelEntityType) {
             return;
         }
 
-        $userProfileGetRoute = $routes->cloneRoute($route);
-        // remove "{id}" placeholder and replace "{entity}" placeholder with
-        // the alias of the user profile model
-        $userProfileGetRoute->setPath(
-            str_replace(
-                RestRouteOptionsResolver::ENTITY_PLACEHOLDER,
-                $userProfileEntityType,
-                str_replace('/{id}', '', $userProfileGetRoute->getPath())
-            )
-        );
         // set "entity" attribute and remove it from the requirements
-        $userProfileGetRoute->setDefault(RestRouteOptionsResolver::ENTITY_ATTRIBUTE, $userProfileEntityType);
-        $requirements = $userProfileGetRoute->getRequirements();
-        unset($requirements[RestRouteOptionsResolver::ENTITY_ATTRIBUTE]);
-        $userProfileGetRoute->setRequirements($requirements);
-        // add the user profile route before the default "get" route
-        $routes->insert(
-            self::USER_PROFILE_ROUTE_NAME,
-            $userProfileGetRoute,
-            self::GET_ROUTE_NAME,
-            true
-        );
+//        $route->setDefault(RestRouteOptionsResolver::ENTITY_ATTRIBUTE, $instoreUserModelEntityType);
+//        $requirements = $route->getRequirements();
+//        unset($requirements[RestRouteOptionsResolver::ENTITY_ATTRIBUTE]);
+//        $route->setRequirements($requirements);
+//        file_put_contents(
+//            '/var/www/app/logs/api-request.log',
+//            __METHOD__ . " " . print_r($route->getDefaults(), true) . "\r\n",
+//            FILE_APPEND
+//        );
     }
 }
