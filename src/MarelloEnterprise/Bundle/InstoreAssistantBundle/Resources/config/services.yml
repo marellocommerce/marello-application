@@ -9,14 +9,6 @@ services:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager\OroUserManager
         parent: oro_user.manager
 
-    marelloenterprise_instoreassistant.api.rest.route_options_resolver.user_profile:
-        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Routing\InstoreUserRestRouteOptionsResolver
-        public: false
-        arguments:
-            - '@oro_api.value_normalizer'
-        tags:
-            - { name: routing.options_resolver }
-
     marelloenterprise_instoreassistant.api.rest.api_doc.route_options_resolver.user_profile:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\ApiDoc\InstoreUserRestRouteOptionsResolver
         public: false
