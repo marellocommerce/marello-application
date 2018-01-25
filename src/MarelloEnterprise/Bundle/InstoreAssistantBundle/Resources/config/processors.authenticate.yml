@@ -8,6 +8,11 @@ services:
             - '@oro_api.config_provider'
             - '@oro_api.metadata_provider'
 
+    marelloenterprise_instoreassistant.api.processor.normalize_credentials_data:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\NormalizeCredentialsData
+        tags:
+            - { name: oro.api.processor, action: authenticate, group: normalize_input, priority: -10 }
+
     marelloenterprise_instoreassistant.api.processor.authenticate.instore_user_verification_check:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Authenticate\InstoreUserVerificationCheck
         arguments:
@@ -15,11 +20,19 @@ services:
         tags:
             - { name: oro.api.processor, action: authenticate, group: security_check, class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi }
 
-    marelloenterprise_instoreassistant.api.processor.get.instore_user_verification_check:
-        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Get\InstoreUserApi
+    marelloenterprise_instoreassistant.api.processor.load_oro_user_api:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\LoadOroUserApi
         arguments:
-            - '@oro_api.entity_loader'
-            - '@oro_api.entity_instantiator'
             - '@marelloenterprise_instoreassistant.manager.oro_user_manager'
         tags:
             - { name: oro.api.processor, action: authenticate, group: load_data, priority: -10 }
+
+    marelloenterprise_instoreassistant.api.processor.convert_to_instore_user_api:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\ConvertToInstoreUserApi
+        tags:
+            - { name: oro.api.processor, action: authenticate, group: transform_data, priority: -10 }
+
+    marelloenterprise_instoreassistant.api.processor.normalize_instore_user_api:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\NormalizeInstoreUserApi
+        tags:
+            - { name: oro.api.processor, action: authenticate, group: normalize_data, priority: -10 }

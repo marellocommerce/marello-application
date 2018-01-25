@@ -2,8 +2,6 @@
 
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model;
 
-use Oro\Bundle\UserBundle\Entity\UserApi;
-
 class InstoreUserApi
 {
     /** @var int $id */
@@ -13,19 +11,22 @@ class InstoreUserApi
     protected $apiKey;
 
     /**
+     * InstoreUserApi constructor.
+     * @param int $id
+     * @param string $apiKey
+     */
+    public function __construct($id, $apiKey)
+    {
+        $this->id = $id;
+        $this->apiKey = $apiKey;
+    }
+
+    /**
      * @return int
      */
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -37,10 +38,14 @@ class InstoreUserApi
     }
 
     /**
-     * @param string $apiKey
+     * Implement to Array
+     * @return array
      */
-    public function setApiKey($apiKey)
+    public function toArray()
     {
-        $this->apiKey = $apiKey;
+        return [
+            'id' => $this->id,
+            'apiKey' => $this->apiKey
+        ];
     }
 }

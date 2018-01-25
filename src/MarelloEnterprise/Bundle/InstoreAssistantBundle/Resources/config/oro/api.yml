@@ -1,15 +1,16 @@
 api:
     entity_aliases:
         MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi:
-            alias: instoreuser
-            plural_alias: instoreuser
+            alias: instoreuserapi
+            plural_alias: instoreuserapi
     entities:
         MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi:
             documentation_resource: '@MarelloEnterpriseInstoreAssistantBundle/Resources/doc/api/instore_user_api.md'
+            identifier_field_names: [id]
             fields:
                 id:
                     data_type:   integer
-                    description: The unique identifier of a UserApi.
+                    description: The identifier of a UserApi.
                 apiKey:
                     data_type:    string
                     description:  Api key

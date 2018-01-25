@@ -45,8 +45,8 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
         'oro_api.add_included_entities_to_result_document',
         'oro_api.set_primary_entity',
         'oro_api.create.set_entity_id',
+        'oro_api.create.load_normalized_entity',
         'oro_api.load_normalized_included_entities',
-//        'marelloenterprise_instoreassistant.api.processor.authenticate.instore_user_verification_check'
     ];
 
     /**

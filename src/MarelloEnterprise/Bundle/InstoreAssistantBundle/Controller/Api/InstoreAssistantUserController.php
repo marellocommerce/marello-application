@@ -25,7 +25,7 @@ class InstoreAssistantUserController extends AbstractRestApiController
      *     resource=true,
      *     description="authenticate instore assistant user by email, username and credentials",
      *     views={"rest_plain","rest_json_api"},
-     *     section="instoreuser",
+     *     section="instoreuserapi",
      *     requirements={
      *          {
      *              "name"="username",
@@ -60,7 +60,7 @@ class InstoreAssistantUserController extends AbstractRestApiController
      *          }
      *     },
      *     statusCodes={
-     *          201="Returned when successful",
+     *          201="Returned when successfully logged in",
      *          401="Returned when the user is not Authorized to make a call to the API",
      *          403="Returned when the user has no permissions to get the entities",
      *          500="Returned when an unexpected error occurs"
@@ -82,14 +82,14 @@ class InstoreAssistantUserController extends AbstractRestApiController
         $context = $this->getContext($processor, $request);
         $context->setClassName(InstoreUserApi::class);
 
-        //tmp fix for data attribute
-        $params =['data' => ['type' => 'instoreuser', 'attributes' => $request->request->all()]];
+        //tmp fix for data attribute for testing via the /api/doc route on application
+        $params =['data' => ['type' => 'instoreuserapi', 'attributes' => $request->request->all()]];
         $request->request->remove('username');
         $request->request->remove('credentials');
         $request->request->add($params);
 
-        $context->setRequestData($request->request->all());
 
+        $context->setRequestData($request->request->all());
         $processor->process($context);
 
         return $this->buildResponse($context);

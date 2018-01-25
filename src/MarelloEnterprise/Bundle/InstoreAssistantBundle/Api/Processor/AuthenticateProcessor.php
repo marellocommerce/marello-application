@@ -2,9 +2,10 @@
 
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor;
 
-use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Authenticate\AuthenticationContext;
 use Oro\Component\ChainProcessor\ContextInterface as ComponentContextInterface;
 use Oro\Bundle\ApiBundle\Processor\RequestActionProcessor;
+
+use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Authenticate\AuthenticationContext;
 
 class AuthenticateProcessor extends RequestActionProcessor
 {

@@ -11,6 +11,7 @@ use Oro\Bundle\ApiBundle\Request\ApiActions;
 use Oro\Bundle\ApiBundle\Request\RequestType;
 use Oro\Bundle\ApiBundle\Request\ValueNormalizer;
 use Oro\Bundle\ApiBundle\Util\ValueNormalizerUtil;
+
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi;
 
 /**
@@ -41,26 +42,26 @@ class InstoreUserRestRouteOptionsResolver implements RouteOptionsResolverInterfa
             return;
         }
 
-        $userProfileEntityType = ValueNormalizerUtil::convertToEntityType(
+        $instoreUserApiEntityType = ValueNormalizerUtil::convertToEntityType(
             $this->valueNormalizer,
             InstoreUserApi::class,
             new RequestType([RequestType::REST]),
             false
         );
 
-        if (!$userProfileEntityType) {
+        if (!$instoreUserApiEntityType) {
             return;
         }
 
-        $userProfileGetRoutePath = str_replace(
+        $instoreUserApiGetRoutePath = str_replace(
             RestRouteOptionsResolver::ENTITY_PLACEHOLDER,
-            $userProfileEntityType,
+            $instoreUserApiEntityType,
             $route->getPath()
         );
-        $userProfileGetRoute = $routes->getByPath($userProfileGetRoutePath, $route->getMethods());
+        $instoreUserApiGetRoute = $routes->getByPath($instoreUserApiGetRoutePath, $route->getMethods());
 
-        if (null !== $userProfileGetRoute) {
-            $routes->remove($routes->getName($userProfileGetRoute));
+        if (null !== $instoreUserApiGetRoute) {
+            $routes->remove($routes->getName($instoreUserApiGetRoute));
         }
     }
 }
