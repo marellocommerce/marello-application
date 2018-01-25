@@ -3,12 +3,11 @@
 
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Authenticate;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 use Oro\Component\ChainProcessor\ContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
 use Oro\Bundle\ApiBundle\Request\Constraint;
 use Oro\Bundle\ApiBundle\Model\Error;
+
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi;
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Provider\InstoreUserAuthenticationProviderInterface;
 

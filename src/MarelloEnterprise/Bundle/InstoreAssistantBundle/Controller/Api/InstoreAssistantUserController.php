@@ -81,6 +81,13 @@ class InstoreAssistantUserController extends AbstractRestApiController
         /** @var AuthenticationContext $context */
         $context = $this->getContext($processor, $request);
         $context->setClassName(InstoreUserApi::class);
+
+        //tmp fix for data attribute
+        $params =['data' => ['type' => 'instoreuser', 'attributes' => $request->request->all()]];
+        $request->request->remove('username');
+        $request->request->remove('credentials');
+        $request->request->add($params);
+
         $context->setRequestData($request->request->all());
 
         $processor->process($context);

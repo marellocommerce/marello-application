@@ -8,9 +8,18 @@ services:
             - '@oro_api.config_provider'
             - '@oro_api.metadata_provider'
 
-    marelloenterprise_instoreassistant.api.processor.authentication.instore_user_verification_check:
+    marelloenterprise_instoreassistant.api.processor.authenticate.instore_user_verification_check:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Authenticate\InstoreUserVerificationCheck
         arguments:
             - '@marelloenterprise_instoreassistant.provider.auth_provider'
         tags:
             - { name: oro.api.processor, action: authenticate, group: security_check, class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi }
+
+    marelloenterprise_instoreassistant.api.processor.get.instore_user_verification_check:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Get\InstoreUserApi
+        arguments:
+            - '@oro_api.entity_loader'
+            - '@oro_api.entity_instantiator'
+            - '@marelloenterprise_instoreassistant.manager.oro_user_manager'
+        tags:
+            - { name: oro.api.processor, action: authenticate, group: load_data, priority: -10 }

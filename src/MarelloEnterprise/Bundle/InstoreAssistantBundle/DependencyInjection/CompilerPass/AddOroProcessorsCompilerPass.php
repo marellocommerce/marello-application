@@ -18,17 +18,35 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
     const CUSTOM_ACTION_NAME = 'authenticate';
     const CUSTOM_ACTION_PROCESSOR = 'marelloenterprise_instoreassistant.api.processor.authenticate.processor';
 
+    protected $actions = [
+        'create'
+    ];
+
     /** @var array  */
     protected $groups = [
         'initialize',
-        'resource_check',
+        // tmp remove resource_check group during issues with correct action configuration
+//        'resource_check',
         'normalize_input',
         'security_check',
         'load_data',
-        'transform_data',
         'normalize_data',
         'finalize',
         'normalize_result'
+    ];
+
+    protected $ignoreProcessorIds = [
+        'oro_api.create.json_api.extract_entity_id',
+        'oro_api.create.rest.normalize_entity_id',
+        'oro_api.restore_default_form_extension',
+        'oro_api.create.create_entity',
+        'oro_api.create.process_localized_values',
+        'oro_api.json_api.normalize_included_data',
+        'oro_api.add_included_entities_to_result_document',
+        'oro_api.set_primary_entity',
+        'oro_api.create.set_entity_id',
+        'oro_api.load_normalized_included_entities',
+//        'marelloenterprise_instoreassistant.api.processor.authenticate.instore_user_verification_check'
     ];
 
     /**
@@ -59,25 +77,29 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
 
         foreach ($taggedServices as $serviceId => $tags) {
             $serviceDefinition = $container->getDefinition($serviceId);
-            if (!$this->searchTags(self::CUSTOM_ACTION_NAME, $tags)) {
-                continue;
-            }
-
             $isAdded = false;
             foreach ($tags as $tag) {
-                if ($tag['action'] === self::CUSTOM_ACTION_NAME) {
+                if (!in_array($tag['action'], $this->actions) || in_array($serviceId, $this->ignoreProcessorIds)) {
                     continue;
                 }
 
                 if (isset($tag['group']) && in_array($tag['group'], $this->groups) && !$isAdded) {
+                    $tagParameters = [
+                        'action' => self::CUSTOM_ACTION_NAME,
+                        'group' => $tag['group']
+                    ];
+
+                    if (array_key_exists('priority', $tag)) {
+                        $tagParameters['priority'] = $tag['priority'];
+                    }
+
+                    if (array_key_exists('requestType', $tag)) {
+                        $tagParameters['requestType'] = $tag['requestType'];
+                    }
+
                     $serviceDefinition->addTag(
                         self::ORO_PROCESSOR_TAG,
-                        [
-                            'action' => self::CUSTOM_ACTION_NAME,
-                            'group' => $tag['group'],
-                            'priority' => array_key_exists('priority', $tag) ? $tag['priority'] : null,
-                            'requestType' => array_key_exists('requestType', $tag) ? $tag['requestType'] : null
-                        ]
+                        $tagParameters
                     );
                     $isAdded = true;
                 }
@@ -114,31 +136,5 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
             $processorBagConfigProviderServiceDef->replaceArgument(0, $builder->getGroups());
             $processorBagConfigProviderServiceDef->replaceArgument(1, $builder->getProcessors());
         }
-    }
-
-    /**
-     * Search tags in the array with arguments recursively
-     * @param $needle
-     * @param $haystack
-     * @param bool $strict
-     * @param array $path
-     * @return array|bool
-     */
-    protected function searchTags($needle, $haystack, $strict = false, $path = [])
-    {
-        if (!is_array($haystack)) {
-            return false;
-        }
-
-        foreach ($haystack as $key => $val) {
-            if (is_array($val) && $subPath = $this->searchTags($needle, $val, $strict, $path)) {
-                $path = array_merge($path, [$key], $subPath);
-                return $path;
-            } elseif ((!$strict && $val == $needle) || ($strict && $val === $needle)) {
-                $path[] = $key;
-                return $path;
-            }
-        }
-        return false;
     }
 }

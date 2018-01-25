@@ -12,8 +12,6 @@ oro_api:
                     priority: -40
                 load_data:
                     priority: -50
-                transform_data:
-                    priority: -60
                 normalize_data:
                     priority: -70
                 finalize:
