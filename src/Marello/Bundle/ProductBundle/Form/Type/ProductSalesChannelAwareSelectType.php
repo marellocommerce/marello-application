@@ -34,7 +34,6 @@ class ProductSalesChannelAwareSelectType extends AbstractType
             $options['configs']['component'] .= '-sales-channel-aware';
         };
         $options['configs']['extra_config'] = 'sales_channel_aware';
-
         $view->vars = array_replace_recursive($view->vars, ['configs' => $options['configs']]);
     }
 
