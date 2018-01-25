@@ -4,6 +4,7 @@ services:
         arguments:
             - '@marelloenterprise_instoreassistant.manager.oro_user_manager'
             - '@security.encoder_factory'
+            - '@oro_userpro.security.login_attempts_manager'
 
     marelloenterprise_instoreassistant.manager.oro_user_manager:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager\OroUserManager

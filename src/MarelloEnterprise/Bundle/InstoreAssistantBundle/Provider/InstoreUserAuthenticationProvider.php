@@ -7,7 +7,9 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserInterface as OroUserInterface;
+use Oro\Bundle\UserProBundle\Security\LoginAttemptsManager;
 
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager\OroUserManagerInterface;
 
@@ -26,12 +28,17 @@ class InstoreUserAuthenticationProvider implements InstoreUserAuthenticationProv
     /** @var EncoderFactory $encoderFactory */
     private $encoderFactory;
 
+    /** @var LoginAttemptsManager $attemptsManager */
+    private $attemptsManager;
+
     public function __construct(
         OroUserManagerInterface $userManager,
-        EncoderFactory $encoderFactory
+        EncoderFactory $encoderFactory,
+        LoginAttemptsManager $attemptsManager
     ) {
         $this->userManager = $userManager;
         $this->encoderFactory = $encoderFactory;
+        $this->attemptsManager = $attemptsManager;
     }
 
     /**
@@ -46,8 +53,15 @@ class InstoreUserAuthenticationProvider implements InstoreUserAuthenticationProv
             return false;
         }
 
+        /** @var User $user */
         $user = $this->getInstoreUser($username);
-        return $this->hasValidCredentials($user, $credentials);
+        if (!$userHasValidCredentials = $this->hasValidCredentials($user, $credentials)) {
+            $this->attemptsManager->trackLoginFailure($user);
+        } else {
+            $this->attemptsManager->trackLoginSuccess($user);
+        }
+
+        return $userHasValidCredentials;
     }
 
     /**
