@@ -11,7 +11,7 @@ services:
     marelloenterprise_instoreassistant.api.processor.normalize_credentials_data:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\NormalizeCredentialsData
         tags:
-            - { name: oro.api.processor, action: authenticate, group: normalize_input, priority: -10 }
+            - { name: oro.api.processor, action: authenticate, group: normalize_input, priority: -60 }
 
     marelloenterprise_instoreassistant.api.processor.authenticate.instore_user_verification_check:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Authenticate\InstoreUserVerificationCheck
