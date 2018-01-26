@@ -85,7 +85,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      *      defaultValues={
      *          "importexport"={
      *              "order"=10,
-     *              "full"=true,
+     *              "identity"=true,
      *          }
      *      }
      * )
