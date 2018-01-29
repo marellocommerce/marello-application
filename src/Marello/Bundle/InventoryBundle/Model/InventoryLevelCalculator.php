@@ -48,6 +48,7 @@ class InventoryLevelCalculator
     {
         $adjustmentOperator = $this->getAdjustmentOperator($operator);
         $adjustment = $this->getAdjustment($adjustmentOperator, $quantity);
+
         return (int) $adjustment;
     }
 
@@ -67,6 +68,11 @@ class InventoryLevelCalculator
      */
     protected function getAdjustment($operator, $quantity)
     {
+        // prevent giving back a positive adjustment while it should be a negative one
+        if ($operator === self::OPERATOR_DECREASE && $quantity < 0) {
+            $quantity = ($quantity * -1);
+        }
+
         return ($quantity * $operator);
     }
 }
