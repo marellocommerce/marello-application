@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f511bd5a29cd720b530b93db8a4a804",
+    "content-hash": "867a6922dffdeb00d00b07adf2d1991a",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -416,7 +416,7 @@
             "version": "1.4.3",
             "source": {
                 "type": "git",
-                "url": "git@github.com:gregjacobs/Autolinker.js.git",
+                "url": "https://github.com/gregjacobs/Autolinker.js.git",
                 "reference": "2b50541dfc0abde6f1e565796623ab0250caa997"
             },
             "dist": {
@@ -7169,6 +7169,7 @@
                 "xls",
                 "xlsx"
             ],
+            "abandoned": "phpoffice/phpspreadsheet",
             "time": "2015-05-01T07:00:55+00:00"
         },
         {
@@ -7226,12 +7227,12 @@
             "version": "3.7.8",
             "source": {
                 "type": "git",
-                "url": "https://github.com/piwik/device-detector.git",
+                "url": "https://github.com/matomo-org/device-detector.git",
                 "reference": "2ea3108d8cdffd58d855eff3cc493c0acc4cf102"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/piwik/device-detector/zipball/2ea3108d8cdffd58d855eff3cc493c0acc4cf102",
+                "url": "https://api.github.com/repos/matomo-org/device-detector/zipball/2ea3108d8cdffd58d855eff3cc493c0acc4cf102",
                 "reference": "2ea3108d8cdffd58d855eff3cc493c0acc4cf102",
                 "shasum": ""
             },
@@ -12004,24 +12005,24 @@
         },
         {
             "name": "sebastian/phpcpd",
-            "version": "dev-master",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpcpd.git",
-                "reference": "8cd349c5801aaa9e7259b89d4778e24ddf7b6526"
+                "reference": "dfed51c1288790fc957c9433e2f49ab152e8a564"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpcpd/zipball/8cd349c5801aaa9e7259b89d4778e24ddf7b6526",
-                "reference": "8cd349c5801aaa9e7259b89d4778e24ddf7b6526",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpcpd/zipball/dfed51c1288790fc957c9433e2f49ab152e8a564",
+                "reference": "dfed51c1288790fc957c9433e2f49ab152e8a564",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.6|^7.0",
                 "phpunit/php-timer": "^1.0.6",
                 "sebastian/finder-facade": "^1.1",
-                "sebastian/version": "^2.0",
-                "symfony/console": "^2.7|^3.0"
+                "sebastian/version": "^1.0|^2.0",
+                "symfony/console": "^2.7|^3.0|^4.0"
             },
             "bin": [
                 "phpcpd"
@@ -12050,7 +12051,7 @@
             ],
             "description": "Copy/Paste Detector (CPD) for PHP code.",
             "homepage": "https://github.com/sebastianbergmann/phpcpd",
-            "time": "2017-02-27T06:12:50+00:00"
+            "time": "2017-11-16T08:49:28+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -12576,14 +12577,7 @@
             "time": "2016-11-23T20:04:58+00:00"
         }
     ],
-    "aliases": [
-        {
-            "alias": "3.1.0",
-            "alias_normalized": "3.1.0.0",
-            "version": "9999999-dev",
-            "package": "sebastian/phpcpd"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "oro/commerce": 20,
@@ -12611,8 +12605,7 @@
         "oro/commerce-wirecard": 20,
         "oro/commerce-apruve": 20,
         "oro/commerce-dpd": 20,
-        "oro/commerce-infinitepay": 20,
-        "sebastian/phpcpd": 20
+        "oro/commerce-infinitepay": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
