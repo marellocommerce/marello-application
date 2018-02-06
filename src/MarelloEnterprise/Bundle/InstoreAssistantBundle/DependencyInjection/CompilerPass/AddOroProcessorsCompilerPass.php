@@ -15,8 +15,12 @@ use Oro\Bundle\ApiBundle\DependencyInjection\Compiler\ConfigurationCompilerPass;
 class AddOroProcessorsCompilerPass implements CompilerPassInterface
 {
     const ORO_PROCESSOR_TAG = 'oro.api.processor';
-    const CUSTOM_ACTION_NAME = 'authenticate';
-    const CUSTOM_ACTION_PROCESSOR = 'marelloenterprise_instoreassistant.api.processor.authenticate.processor';
+    const AUTH_ACTION_NAME = 'authenticate';
+
+    protected $processors = [
+        'marelloenterprise_instoreassistant.api.processor.authenticate.processor',
+        'marelloenterprise_instoreassistant.api.processor.options.processor'
+    ];
 
     protected $actions = [
         'create'
@@ -61,10 +65,12 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
 
         if (null !== $actionProcessorBagServiceDef) {
             // register an action processor in the bag
-            $actionProcessorBagServiceDef->addMethodCall(
-                'addProcessor',
-                [new Reference(self::CUSTOM_ACTION_PROCESSOR)]
-            );
+            foreach ($this->processors as $processorServiceId) {
+                $actionProcessorBagServiceDef->addMethodCall(
+                    'addProcessor',
+                    [new Reference($processorServiceId)]
+                );
+            }
         }
 
         // Add all processors in the $groups variable to the authenticate action as new tag
@@ -85,7 +91,7 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
 
                 if (isset($tag['group']) && in_array($tag['group'], $this->groups) && !$isAdded) {
                     $tagParameters = [
-                        'action' => self::CUSTOM_ACTION_NAME,
+                        'action' => self::AUTH_ACTION_NAME,
                         'group' => $tag['group']
                     ];
 

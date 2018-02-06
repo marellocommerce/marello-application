@@ -1,0 +1,19 @@
+services:
+    marelloenterprise_instoreassistant.api.processor.options.processor:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\CorsOptionsProcessor
+        public: false
+        arguments:
+            - '@oro_api.processor_bag'
+            - options
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    marelloenterprise_instoreassistant.api.processor.options.add_cors_headers:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options\AddCorsRequestHeaders
+        tags:
+            - { name: oro.api.processor, action: options, group: initialize, priority: -20 }
+
+    marelloenterprise_instoreassistant.api.processor.options.add_cors_response_headers:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options\AddCorsResponseHeaders
+        tags:
+            - { name: oro.api.processor, action: options, group: finalize }
