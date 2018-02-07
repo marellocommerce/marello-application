@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\ImportExport\Strategy;
 
+use Doctrine\Common\Util\ClassUtils;
+
 use Oro\Bundle\ImportExportBundle\Strategy\Import\ConfigurableAddOrReplaceStrategy;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -15,6 +17,7 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 {
     const IMPORT_TRIGGER = 'import';
+    const ALLOCATED_QTY = 0;
 
     /**
      * @var InventoryLevelCalculator
@@ -39,50 +42,20 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         array $searchContext = [],
         $entityIsRelation = false
     ) {
-        $oid = spl_object_hash($entity);
-        if (isset($this->cachedEntities[$oid])) {
-            return $this->addDuplicateValidationError($itemData);
-        }
-
         // find existing or new entity
         $existingEntity = $this->findInventoryLevel($entity);
-        $inventoryUpdateQty = $entity->getInventoryQty();
-        $allocatedInventory = 0;
-
         if ($existingEntity) {
-            $existingOid = spl_object_hash($existingEntity);
-            if (isset($this->cachedEntities[$existingOid])) {
-                return $this->addDuplicateValidationError($itemData);
-            }
             $this->checkEntityAcl($entity, $existingEntity, $itemData);
+            $inventoryUpdateQty = $entity->getInventoryQty();
             $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
                 $existingEntity,
                 $existingEntity->getInventoryItem(),
                 $inventoryUpdateQty,
-                $allocatedInventory,
+                self::ALLOCATED_QTY,
                 self::IMPORT_TRIGGER
             );
-
-            $this->cachedEntities[$existingOid] = $existingEntity;
-
         } else {
-            if ($warehouse = $this->getWarehouse($entity)) {
-                $this->checkEntityAcl($entity, null, $itemData);
-                $product = $this->getProduct($entity);
-                $inventoryItem = $this->getInventoryItem($product);
-                $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
-                    $product,
-                    $inventoryItem,
-                    $inventoryUpdateQty,
-                    $allocatedInventory,
-                    self::IMPORT_TRIGGER
-                );
-            } else {
-                $error[] = $this->translator->trans('marello.inventory.messages.error.warehouse.not_found');
-                $this->strategyHelper->addValidationErrors($error, $this->context);
-
-                return null;
-            }
+            $context = $this->createNewEntityContext($entity, $itemData);
         }
 
         if (!$this->context->getErrors()) {
@@ -90,13 +63,61 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
                 InventoryUpdateEvent::NAME,
                 new InventoryUpdateEvent($context)
             );
-            $this->cachedEntities[$oid] = $entity;
         }
 
         // deliberately return a different entity than the initial imported entity,
         // during errors with multiple runs of import
         $product = $this->getProduct($entity);
         return $this->getInventoryItem($product);
+    }
+
+    /**
+     * @param object|InventoryLevel $entity
+     * @param $itemData
+     * @return \Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext|null
+     */
+    protected function createNewEntityContext($entity, $itemData)
+    {
+        if ($warehouse = $this->getWarehouse($entity)) {
+            $this->checkEntityAcl($entity, null, $itemData);
+            $product = $this->getProduct($entity);
+            $inventoryItem = $this->getInventoryItem($product);
+            $inventoryUpdateQty = $entity->getInventoryQty();
+
+            $newEntityKey = $this->createSerializedEntityKey($entity, $entity->getInventoryItem(), $warehouse->getCode());
+            if ($this->newEntitiesHelper->getEntity($newEntityKey)) {
+                return $this->addDuplicateValidationError($itemData);
+            }
+
+            $this->newEntitiesHelper->setEntity($newEntityKey, $entity);
+            $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+                $product,
+                $inventoryItem,
+                $inventoryUpdateQty,
+                self::ALLOCATED_QTY,
+                self::IMPORT_TRIGGER
+            );
+        } else {
+            $error[] = $this->translator->trans('marello.inventory.messages.error.warehouse.not_found');
+            $this->strategyHelper->addValidationErrors($error, $this->context);
+
+            return null;
+        }
+
+        return $context;
+    }
+
+    /**
+     * Create serialized key for identifying unique items
+     * @param $entity
+     * @param $inventoryItemId
+     * @param $warerhouseCode
+     * @return string
+     */
+    private function createSerializedEntityKey($entity, $inventoryItemId, $warerhouseCode)
+    {
+        $entityClass = ClassUtils::getClass($entity);
+        return sprintf('%s:%s', $entityClass, serialize([$inventoryItemId, $warerhouseCode]));
     }
 
     /**
