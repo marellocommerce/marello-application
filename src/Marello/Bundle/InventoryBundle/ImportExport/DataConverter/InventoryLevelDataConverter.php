@@ -22,9 +22,9 @@ class InventoryLevelDataConverter extends AbstractTreeDataConverter
     protected function getHeaderConversionRules()
     {
         return [
-            'SKU'                  => 'inventoryItem:product:sku',
-            'Stock Level'          => 'inventory',
-            'Warehouse'            => 'warehouse:code'
+            'SKU'            => 'inventoryItem:product:sku',
+            'Warehouse Code' => 'warehouse:code',
+            'Adjustment'     => 'inventory'
         ];
     }
 
@@ -37,11 +37,25 @@ class InventoryLevelDataConverter extends AbstractTreeDataConverter
     {
         return [
             'inventoryItem:product:sku',
-            'inventory',
-            'warehouse:label',
             'warehouse:code',
-            'inventoryItem:product:desiredStockLevel',
-            'inventoryItem:product:purchaseStockLevel'
+            'inventory'
         ];
+    }
+
+    /**
+     * Fixed the issue with ignoring the "skipNullValues" parameter
+     * @param array $exportedRecord
+     * @param bool $skipNullValues
+     * @return array
+     */
+    public function convertToExportFormat(array $exportedRecord, $skipNullValues = true)
+    {
+        $exportedRecord = parent::convertToExportFormat($exportedRecord, $skipNullValues);
+
+        if ($skipNullValues) {
+            $exportedRecord = $this->removeEmptyColumns($exportedRecord, $skipNullValues);
+        }
+
+        return $exportedRecord;
     }
 }
