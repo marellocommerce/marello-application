@@ -16,6 +16,9 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
 {
+    const IMPORT_TRIGGER = 'import';
+    const ALLOCATED_QTY = 0;
+
     /**
      * @var InventoryLevelCalculator
      */
@@ -39,56 +42,23 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         array $searchContext = [],
         $entityIsRelation = false
     ) {
-        $canUpdate = false;
-        $entityClass = ClassUtils::getClass($entity);
         // find existing or new entity
         $existingEntity = $this->findInventoryLevel($entity);
-
-        $operator = $this->getAdjustmentOperator($entity->getInventoryQty());
-        $inventoryUpdateQty = $this->levelCalculator->calculateAdjustment($operator, $entity->getInventoryQty());
-        $allocatedInventory = 0;
-        $trigger = 'import';
-
         if ($existingEntity) {
-            if (!$this->strategyHelper->isGranted("EDIT", $existingEntity)) {
-                return $this->addAccessDeniedError($entityClass);
-            }
-
             $this->checkEntityAcl($entity, $existingEntity, $itemData);
+            $inventoryUpdateQty = $entity->getInventoryQty();
             $context = InventoryUpdateContextFactory::createInventoryLevelUpdateContext(
                 $existingEntity,
                 $existingEntity->getInventoryItem(),
                 $inventoryUpdateQty,
-                $allocatedInventory,
-                $trigger
+                self::ALLOCATED_QTY,
+                self::IMPORT_TRIGGER
             );
-            $canUpdate = true;
         } else {
-            if (!$this->strategyHelper->isGranted("CREATE", $entity)) {
-                $this->addAccessDeniedError($entityClass);
-            }
-
-            if ($warehouse = $this->getWarehouse($entity)) {
-                $this->checkEntityAcl($entity, null, $itemData);
-                $product = $this->getProduct($entity);
-                $inventoryItem = $this->getInventoryItem($product);
-                $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
-                    $product,
-                    $inventoryItem,
-                    $inventoryUpdateQty,
-                    $allocatedInventory,
-                    $trigger
-                );
-                $canUpdate = true;
-            } else {
-                $error[] = $this->translator->trans('marello.inventory.messages.error.warehouse.not_found');
-                $this->strategyHelper->addValidationErrors($error, $this->context);
-
-                return null;
-            }
+            $context = $this->createNewEntityContext($entity, $itemData);
         }
 
-        if ($canUpdate) {
+        if (!$this->context->getErrors()) {
             $this->eventDispatcher->dispatch(
                 InventoryUpdateEvent::NAME,
                 new InventoryUpdateEvent($context)
@@ -102,9 +72,59 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     }
 
     /**
+     * @param object|InventoryLevel $entity
+     * @param $itemData
+     * @return \Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext|null
+     */
+    protected function createNewEntityContext($entity, $itemData)
+    {
+        if ($warehouse = $this->getWarehouse($entity)) {
+            $this->checkEntityAcl($entity, null, $itemData);
+            $product = $this->getProduct($entity);
+            $inventoryItem = $this->getInventoryItem($product);
+            $inventoryUpdateQty = $entity->getInventoryQty();
+
+            $newEntityKey = $this->createSerializedEntityKey($entity, $entity->getInventoryItem(), $warehouse->getCode());
+            if ($this->newEntitiesHelper->getEntity($newEntityKey)) {
+                return $this->addDuplicateValidationError($itemData);
+            }
+
+            $this->newEntitiesHelper->setEntity($newEntityKey, $entity);
+            $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
+                $product,
+                $inventoryItem,
+                $inventoryUpdateQty,
+                self::ALLOCATED_QTY,
+                self::IMPORT_TRIGGER
+            );
+        } else {
+            $error[] = $this->translator->trans('marello.inventory.messages.error.warehouse.not_found');
+            $this->strategyHelper->addValidationErrors($error, $this->context);
+
+            return null;
+        }
+
+        return $context;
+    }
+
+    /**
+     * Create serialized key for identifying unique items
+     * @param $entity
+     * @param $inventoryItemId
+     * @param $warerhouseCode
+     * @return string
+     */
+    private function createSerializedEntityKey($entity, $inventoryItemId, $warerhouseCode)
+    {
+        $entityClass = ClassUtils::getClass($entity);
+        return sprintf('%s:%s', $entityClass, serialize([$inventoryItemId, $warerhouseCode]));
+    }
+
+    /**
      * Get adjustment operator
      * @param $inventoryQty
      * @return string
+     * @deprecated since version 1.2.3, will be removed in 1.3
      */
     protected function getAdjustmentOperator($inventoryQty)
     {
@@ -118,6 +138,7 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     /**
      * @param $entityClass
      * @return null
+     * @deprecated since version 1.2.3, will be removed in 1.3
      */
     protected function addAccessDeniedError($entityClass)
     {
@@ -125,6 +146,22 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             'oro.importexport.import.errors.access_denied_entity',
             ['%entity_name%' => $entityClass]
         );
+        $this->context->addError($error);
+
+        return null;
+    }
+
+    /**
+     * @param $itemData
+     * @return null
+     */
+    protected function addDuplicateValidationError(array $itemData)
+    {
+        $error = $this->translator->trans(
+            'marello.inventory.messages.error.inventorylevel.duplicate_entry',
+            ['%entity_sku%' => $itemData['inventoryItem']['product']['sku']]
+        );
+
         $this->context->addError($error);
 
         return null;
@@ -150,7 +187,6 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
         if (!$warehouse) {
             return null;
         }
-
 
         /** @var InventoryLevel $level */
         $level = $this->databaseHelper->findOneBy(InventoryLevel::class, [
@@ -208,6 +244,7 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
     /**
      * Set inventoryLevel calculator
      * @param InventoryLevelCalculator $levelCalculator
+     * @deprecated since version 1.2.3, will be removed in 1.3
      */
     public function setLevelCalculator(InventoryLevelCalculator $levelCalculator)
     {

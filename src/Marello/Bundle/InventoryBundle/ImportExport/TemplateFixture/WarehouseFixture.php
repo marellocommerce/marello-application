@@ -30,7 +30,7 @@ class WarehouseFixture extends AbstractTemplateRepository implements TemplateFix
      */
     protected function createEntity($key)
     {
-        $warehouse = new Warehouse('Warehouse 13', true);
+        $warehouse = new Warehouse(null, true);
         $warehouse->setCode('warehouse_13');
 
         return $warehouse;
