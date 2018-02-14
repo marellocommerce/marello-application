@@ -1,0 +1,14 @@
+api:
+    entities:
+        Marello\Bundle\AddressBundle\Entity\MarelloAddress:
+            fields:
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            actions:
+                delete_list: false
+                get_subresource: false
+                get_relationship: false
+                update_relationship: false
+                delete_relationship: false

@@ -1,6 +1,57 @@
 api:
     entities:
         Marello\Bundle\OrderBundle\Entity\Order:
-            # disable order deletion
+            fields:
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    orderNumber:
+                        data_type: string
+                        allow_array: true
+                        property_path: orderNumber
+                        description: 'Filter by order number'
+                    orderReference:
+                        data_type: string
+                        allow_array: true
+                        property_path: orderReference
+                        description: 'Filter by order reference'
+                    createdAt:
+                        exclude: true
+                    updatedAt:
+                        exclude: true
+            actions:
+                update: false
+                delete: false
+                delete_list: false
+                get_subresource: false
+                get_relationship: false
+                update_relationship: false
+                delete_relationship: false
+
+        Marello\Bundle\OrderBundle\Entity\Customer:
+            fields:
+                addresses:
+                    exclude: true
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    email:
+                        data_type: string
+                        allow_array: true
+                        property_path: email
+                        description: 'Filter by email'
             actions:
                 delete: false
+                delete_list: false
+                get_relationship: false
+                get_subresource: false
+#                update_relationship: false
+                delete_relationship: false

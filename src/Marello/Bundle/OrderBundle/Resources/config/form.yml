@@ -111,11 +111,11 @@ services:
             - '@doctrine.orm.entity_manager'
 
     marello_order.form.customer_api:
-            class: Symfony\Component\Form\Form
-            factory: ['@form.factory', createNamed]
-            arguments:
-                - ~
-                - 'marello_customer_api'
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - ~
+            - 'marello_customer_api'
 
     marello_order.form.handler.customer_api:
         class: Marello\Bundle\OrderBundle\Form\Handler\CustomerApiHandler
