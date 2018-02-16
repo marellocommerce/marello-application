@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\CoreBundle\Tests\Functional\Workflow;
+namespace Marello\Bundle\CoreBundle\Tests\Unit;
 
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -14,13 +14,10 @@ use Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction;
 
 class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $entityManager;
-
+    /** @var ContextAccessor|\PHPUnit_Framework_MockObject_MockObject $contextAccessor */
     protected $contextAccessor;
 
+    /** @var WorkflowManager|\PHPUnit_Framework_MockObject_MockObject $workflowManager */
     protected $workflowManager;
 
     /**
@@ -48,21 +45,6 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->action->setDispatcher($dispatcher);
-    }
-
-    /**
-     * Call protected methods for testing
-     * @param $obj
-     * @param $name
-     * @param array $args
-     * @return mixed
-     */
-    protected static function callMethod($obj, $name, array $args)
-    {
-        $class = new \ReflectionClass($obj);
-        $method = $class->getMethod($name);
-        $method->setAccessible(true);
-        return $method->invokeArgs($obj, $args);
     }
 
     /**

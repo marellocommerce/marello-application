@@ -101,7 +101,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['inventory_item_id'], 'IDX_32D13BA4243D10EA', []);
+        $table->addIndex(['inventory_item_id']);
         $table->addColumn('warehouse_id', 'integer', []);
         $table->addUniqueIndex(['inventory_item_id', 'warehouse_id'], 'uniq_40b8d0414584665a5080ecde');
         $table->addIndex(['warehouse_id'], 'idx_40b8d0415080ecde', []);
@@ -126,7 +126,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('updated_at', 'datetime');
         $table->addColumn('inventory_level_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addIndex(['inventory_level_id'], 'IDX_32D13BA4243D10EA', []);
+        $table->addIndex(['inventory_level_id']);
         $table->addIndex(['user_id'], 'IDX_32D13BA4F675F31B', []);
     }
 
@@ -242,7 +242,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addUniqueIndex(['product_id', 'channel_group_id'], 'UNIQ_BDB9A2F64584665A89E4AAEE');
         $table->addIndex(['channel_group_id'], 'IDX_BDB9A2F689E4AAEE', []);
         $table->addIndex(['product_id'], 'IDX_BDB9A2F64584665A', []);
-        $table->addIndex(['organization_id'], 'IDX_BDB9A2F632C8A3DE', []);
+        $table->addIndex(['organization_id']);
     }
 
     /**
@@ -429,7 +429,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
             $schema->getTable('marello_product_product'),
             ['product_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
     }
 

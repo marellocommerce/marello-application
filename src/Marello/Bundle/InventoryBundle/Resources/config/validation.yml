@@ -26,3 +26,10 @@ Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink:
             - Count:
                 min: 1
                 minMessage: 'marello.inventory.validation.messages.error.warehousechannelgrouplink.has_no_channel_groups'
+
+Marello\Bundle\InventoryBundle\Entity\InventoryItem:
+    constraints:
+        - Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanOrEqualToValue:
+            fields: [desiredInventory, purchaseInventory]
+            errorPath: desiredInventory
+            message: 'marello.inventory.validation.messages.error.inventoryitem.desired_should_be_greater_than_purchase_inventory'

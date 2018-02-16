@@ -104,6 +104,12 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
             if (!$inventoryItem) {
                 return;
             }
+
+            $desiredInventory = round(($data['inventory_qty'] * 1.75));
+            $inventoryItem->setDesiredInventory($desiredInventory);
+            $purchaseInventory = round(($data['inventory_qty'] * 1.5));
+            $inventoryItem->setPurchaseInventory($purchaseInventory);
+
             $inventoryItem->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
             $this->handleInventoryUpdate($product, $inventoryItem, $data['inventory_qty'], 0, null);
         }

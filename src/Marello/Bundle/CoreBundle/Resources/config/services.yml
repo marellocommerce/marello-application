@@ -24,6 +24,13 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: greater_than_date }
 
+    marello_core.greater_than_or_equal_to_value_validator:
+        class: Marello\Bundle\CoreBundle\Validator\GreaterThanOrEqualToValueValidator
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_core.greater_than_or_equal_to_value_validator }
+
     marello_core.twig.workflow_extension:
         class: Marello\Bundle\CoreBundle\Twig\WorkflowExtension
         arguments:

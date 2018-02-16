@@ -91,7 +91,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('tax_identification_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['primary_address_id'], 'UNIQ_75C456C9F5B7AF75');
-        $table->addIndex(['organization_id'], 'IDX_75C456C932C8A3DE', []);
+        $table->addIndex(['organization_id']);
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
     }
@@ -161,7 +161,7 @@ class MarelloOrderBundleInstaller implements
         $table->addIndex(['billing_address_id'], 'IDX_A619DD6443656FE6', []);
         $table->addIndex(['shipping_address_id'], 'IDX_A619DD64B1835C8F', []);
         $table->addIndex(['salesChannel_id'], 'IDX_A619DD644C7A5B2E', []);
-        $table->addIndex(['organization_id'], 'IDX_A619DD6432C8A3DE', []);
+        $table->addIndex(['organization_id']);
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
