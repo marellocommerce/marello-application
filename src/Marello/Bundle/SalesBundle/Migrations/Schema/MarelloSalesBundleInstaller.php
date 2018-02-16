@@ -72,17 +72,10 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('group_id', 'integer', ['notnull' => false]);
-        /*$table->addColumn(
-            'create_group',
-            'boolean',
-            [
-                'oro_options' => [
-                    'extend'    => ['is_extend' => true, 'is_serialized' => true, 'owner' => ExtendScope::OWNER_SYSTEM],
-                ]
-            ]
-        );*/
+        $table->addColumn('integration_channel_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'marello_sales_sales_channel_codeidx');
+        $table->addUniqueIndex(['integration_channel_id'], 'UNIQ_75C456C9F5B7AF7511');
         $table->addIndex(['owner_id'], 'idx_37c71d17e3c61f9', []);
     }
     
@@ -124,6 +117,12 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_sales_channel_group'),
             ['group_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['integration_channel_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

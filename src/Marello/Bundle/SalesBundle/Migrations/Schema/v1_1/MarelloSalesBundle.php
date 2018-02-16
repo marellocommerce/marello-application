@@ -49,6 +49,8 @@ class MarelloSalesBundle implements Migration
     {
         $table = $schema->getTable('marello_sales_sales_channel');
         $table->addColumn('group_id', 'integer', ['notnull' => false]);
+        $table->addColumn('integration_channel_id', 'integer', ['notnull' => false]);
+        $table->addUniqueIndex(['integration_channel_id'], 'UNIQ_75C456C9F5B7AF7511');
     }
     
     /**
@@ -74,6 +76,12 @@ class MarelloSalesBundle implements Migration
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_sales_channel_group'),
             ['group_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['integration_channel_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

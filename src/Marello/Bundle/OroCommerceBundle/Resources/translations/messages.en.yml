@@ -1,0 +1,36 @@
+marello:
+    orocommerce:
+        orocommercesettings:
+            label: 'OroCommerce Settings'
+            url.label: 'Url'
+            username.label: "Username"
+            key.label: "API Key"
+            currency.label: 'Currency'
+            product_unit.label: 'Product Unit'
+            customer_tax_code.label: 'Customer Tax Code'
+            price_list.label: 'Price List'
+            product_family.label: 'Product Family'
+            inventory_threshold:
+                label: 'Inventory Threshold'
+                tooltip: 'The value that defines the limit of the inventory after which this product can not be ordered'
+            low_inventory_threshold:
+                label: 'Low Inventory Threshold'
+                tooltip: 'The minimum stock level defined for the product. Reaching the defined level will trigger a warning message to the buyer in the front store.'
+            back_order:
+                label: 'Backorder'
+                tooltip: 'Backorder flag defines whether a product may be ordered while not in stock or when the inventory is low. When such product is ordered, the shippment will happen once the product is restocked.'
+        channel_type:
+            label: 'OroCommerce'
+        connector:
+            order.label: 'Order Connector'
+            product.label: 'Product Connector'
+            product_price.label: 'Product Price Connector'
+            product_image.label: 'Product Image Connector'
+            inventory_level.label: 'Inventory Level Connector'
+            tax_code.label: 'Tax Code Connector'
+            tax_rate.label: 'Tax Rate Connector'
+            tax_jurisdiction.label: 'Tax Jurisdiction Connector'
+            tax_rule.label: 'Tax Rule Connector'
+        connection_validation:
+            button.text: 'Check OroCommerce Connection'
+            success.message: 'OroCommerce Connection is valid'

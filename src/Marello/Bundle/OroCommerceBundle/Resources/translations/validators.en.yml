@@ -1,0 +1,7 @@
+marelloenterprise:
+    ebay:
+        validation:
+            messages:
+                error:
+                    items_location_does_not_match_marketplace_country: 'Items Location Country should be same as Marketplace Country'
+                    not_enterprise_user: 'eBay integration can be created just by eBay enterprise user'
