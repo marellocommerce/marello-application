@@ -16,6 +16,9 @@ marello:
             group.label:                Warehouse Group
             create_group.label:         Create Group
 
+            form:
+                create_own_group:       Create Warehouse Group
+
         warehousetype:
             entity_label:               Warehouse Type
             entity_plural_label:        Warehouse Types
