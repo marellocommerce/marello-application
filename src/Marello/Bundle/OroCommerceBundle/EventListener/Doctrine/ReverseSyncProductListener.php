@@ -86,6 +86,7 @@ class ReverseSyncProductListener
     }
     
     /**
+     * {@inheritdoc}
      * @return array
      */
     protected function getEntitiesToSync()
@@ -143,6 +144,7 @@ class ReverseSyncProductListener
     }
 
     /**
+     * Filter entities by class
      * @param array $entities
      * @return array
      */
@@ -183,6 +185,7 @@ class ReverseSyncProductListener
         if (count($changeSet) === 0) {
             return true;
         }
+
         foreach (array_keys($changeSet) as $fieldName) {
             if (in_array($fieldName, $this->syncFields)) {
                 return true;
@@ -193,6 +196,7 @@ class ReverseSyncProductListener
     }
 
     /**
+     * Schedule a synchronisation based on the action
      * @param Product $entity
      * @param string $action
      */

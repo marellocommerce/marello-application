@@ -4,6 +4,12 @@ namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Component\DependencyInjection\ServiceLink;
+
 use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
@@ -11,9 +17,6 @@ use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceInventoryL
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Component\DependencyInjection\ServiceLink;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ReverseSyncInventoryLevelListener
 {
@@ -152,14 +155,7 @@ class ReverseSyncInventoryLevelListener
                             'product' => $product->getId(),
                             'group' => $entity->getSalesChannelGroup()->getId(),
                         ];
-                    }/* else {
-                        $connector_params = [
-                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                            ProductExportCreateReader::SKU_FILTER => $product->getSku(),
-                            'product' => $product->getId(),
-                            'group' => $entity->getSalesChannelGroup()->getId(),
-                        ];
-                    }*/
+                    }
 
                     if (!empty($connector_params)) {
                         $this->syncScheduler->getService()->schedule(

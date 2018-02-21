@@ -7,7 +7,6 @@ use Marello\Bundle\OroCommerceBundle\Client\Guzzle\Http\Url;
 
 class RequestFactory extends BaseRequestFactory
 {
-
     /**
      * @var string
      */

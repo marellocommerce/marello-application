@@ -50,7 +50,7 @@ class ReverseSyncOrderListener
      */
     public function onOrderPaid(ExtendableActionEvent $event)
     {
-        //$this->onOrderModification($event, OrderExportWriter::PAID_ACTION);
+        $this->onOrderModification($event, OrderExportWriter::PAID_ACTION);
     }
 
     /**
