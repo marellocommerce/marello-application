@@ -1,2 +1,0 @@
-bundles:
-    - { name: Marello\Bridge\MarelloCommerce\MarelloCommerceBridgeBundle, priority: 60 }
