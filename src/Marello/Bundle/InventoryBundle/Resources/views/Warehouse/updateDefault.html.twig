@@ -1,4 +1,3 @@
-{# src/InventoryBundle/Resources/views/Vehicle/update.html.twig #}
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
@@ -19,7 +18,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'vehicle-edit' %}
+    {% set id = 'marello-inventory-warehouse-update-default' %}
     {% set addressField = form_widget(form.address) %}
 
     {% set dataBlocks = [{
