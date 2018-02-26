@@ -14,6 +14,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
+    {% set id = 'marello-saleschannel-view' %}
     {% set generalSubblocks = [] %}
     {% set generalInformation %}
         <div class="widget-content">
@@ -52,7 +53,6 @@
         }
     ] %}
 
-    {% set id = 'marello-sales-channel-view' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

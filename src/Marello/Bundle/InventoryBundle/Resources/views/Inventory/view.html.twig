@@ -26,6 +26,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
+    {% set id = 'marello-inventory-view' %}
     {% set generalSubblocks = [] %}
     {% set inventoryInformationWidget %}
         <div class="widget-content">
@@ -100,7 +101,6 @@
         }])
     %}
 
-    {% set id = 'inventoryView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}
