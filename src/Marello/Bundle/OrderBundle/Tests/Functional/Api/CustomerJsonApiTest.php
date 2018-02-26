@@ -3,6 +3,8 @@
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Api;
 
 use Marello\Bundle\OrderBundle\Entity\Customer;
+use Oro\Bundle\AddressBundle\Entity\Country;
+use Oro\Bundle\AddressBundle\Entity\Region;
 use Symfony\Component\HttpFoundation\Response;
 
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
@@ -73,42 +75,72 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
      */
     public function testCreateNewCustomer()
     {
-        $requestData = [
-            'data' => [
-                'type' => self::TESTING_ENTITY,
-                'attributes' => [
-                    'firstName' => 'John',
-                    'lastName'  => 'Doe',
-                    'email'     => 'new_customer@example.com',
-                ],
+//        $requestData = [
+//            'data' => [
+//                'type' => self::TESTING_ENTITY,
+//                'attributes' => [
+//                    'firstName' => 'John',
+//                    'lastName'  => 'Doe',
+//                    'email'     => 'new_customer@example.com',
+//                ],
 //                'relationships' => [
 //                    'primaryAddress' => [
-//                        'data' => [
-//                            'type' => 'marello_addresses',
-//                            'id'   => '2'
+//                        'data' => ['type' => 'marelloaddresses', 'id'  => '8da4d8e7-6b25-4c5c-8075-b510f7bbb84f']
+//                    ]
+//                ]
+//            ],
+//            'included' => [
+//                [
+//                    'type' => 'marelloaddresses',
+//                    'id'   => '8da4d8e7-6b25-4c5c-8075-b510f7bbb84f',
+//                    'attributes' =>  [
+//                        'firstName'  => 'John',
+//                        'lastName'   => 'Doe',
+//                        'street'     => 'Torenallee 20',
+//                        'city'       => 'Eindhoven',
+//                        'postalCode' => '5617 BC',
+//                        'company'    => 'Madia Inc'
+//                    ],
+//                    'relationships' => [
+//                        'country' => [
+//                            'data' => ['type' => 'countries', 'id' => 'US']
+//                        ],
+//                        'region' => [
+//                            'data' => ['type' => 'regions', 'id' => 'US-NY']
 //                        ]
 //                    ]
+//                ]
+//            ]
+//        ];
+//        $requestData = [
+//            'data' => [
+//                'type' => 'marelloaddresses',
+//                'attributes' =>  [
+//                    'firstName'  => 'John',
+//                    'lastName'   => 'Doe',
+//                    'street'     => 'Torenallee 20',
+//                    'city'       => 'Eindhoven',
+//                    'postalCode' => '5617 BC'
 //                ],
-                'included' => [
-                    'type' => 'marello_addresses',
-                    'attributes' =>  [
-                            'firstName'  => 'John',
-                            'lastName'   => 'Doe',
-                            'country'    => 'NL',
-                            'street'     => 'Torenallee 20',
-                            'city'       => 'Eindhoven',
-                            'region'     => 'NL-NB',
-                            'postalCode' => '5617 BC',
-                            'company'    => 'Madia Inc'
-                    ]
-                ]
-            ]
-        ];
-
+//                'relationships' => [
+//                    'country' => [
+//                        'data' => ['type' => Country::class, 'id' => 'US']
+//                    ],
+//                    'region' => [
+//                            'data' => ['type' => Region::class, 'id' => 'US-NY']
+//                    ]
+//                ]
+//            ]
+//        ];
         $response = $this->post(
-            ['entity' => self::TESTING_ENTITY],
-            $requestData
+            ['entity' => 'marelloaddresses'],
+            'address_create.yml'
         );
+
+//        $response = $this->post(
+//            ['entity' => 'marelloaddresses'],
+//            $requestData
+//        );
 
         $this->assertJsonResponse($response);
 

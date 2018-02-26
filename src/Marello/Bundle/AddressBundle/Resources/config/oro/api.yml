@@ -1,4 +1,8 @@
 api:
+    entity_aliases:
+        Marello\Bundle\AddressBundle\Entity\MarelloAddress:
+            alias: marelloaddress
+            plural_alias: marelloaddresses
     entities:
         Marello\Bundle\AddressBundle\Entity\MarelloAddress:
             fields:
@@ -8,7 +12,7 @@ api:
                     exclude: true
             actions:
                 delete_list: false
-                get_subresource: false
-                get_relationship: false
-                update_relationship: false
-                delete_relationship: false
+#                get_subresource: false
+#                get_relationship: false
+#                update_relationship: false
+#                delete_relationship: false
