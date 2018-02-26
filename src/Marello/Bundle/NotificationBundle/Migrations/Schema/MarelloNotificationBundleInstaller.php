@@ -47,7 +47,7 @@ class MarelloNotificationBundleInstaller implements Installation
         $table->addColumn('created_at', 'datetime', ['comment' => '(DC2Type:datetime)']);
         $table->addColumn('body', 'text', []);
         $table->addIndex(['template_id'], 'idx_c883e8665da0fb8', []);
-        $table->addIndex(['organization_id'], 'idx_c883e86632c8a3de', []);
+        $table->addIndex(['organization_id']);
         $table->setPrimaryKey(['id']);
     }
 

@@ -75,7 +75,7 @@ class MarelloRefundBundleInstaller implements
         $table->addUniqueIndex(['refund_number'], 'UNIQ_973FA8836E8C706D');
         $table->addIndex(['customer_id'], 'IDX_973FA8839395C3F3', []);
         $table->addIndex(['order_id'], 'IDX_973FA8838D9F6D38', []);
-        $table->addIndex(['organization_id'], 'IDX_A619DD6432C8A3DE', []);
+        $table->addIndex(['organization_id']);
     }
 
     /**

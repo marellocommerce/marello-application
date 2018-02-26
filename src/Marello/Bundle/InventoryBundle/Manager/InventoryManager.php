@@ -77,8 +77,6 @@ class InventoryManager implements InventoryManagerInterface
         }
 
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
-        $em = $this->doctrineHelper->getEntityManager($updatedLevel);
-        $em->persist($updatedLevel);
         $context->setInventoryLevel($updatedLevel);
 
         $this->eventDispatcher->dispatch(
@@ -122,6 +120,9 @@ class InventoryManager implements InventoryManagerInterface
             $level
                 ->setInventoryQty($inventory)
                 ->setAllocatedInventoryQty($allocatedInventory);
+
+            $em = $this->doctrineHelper->getEntityManager($level);
+            $em->persist($level);
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }

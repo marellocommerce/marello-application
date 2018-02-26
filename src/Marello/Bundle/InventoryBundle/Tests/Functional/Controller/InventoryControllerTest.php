@@ -113,8 +113,7 @@ class InventoryControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, 200);
 
-        // TODO:: uncomment when MAR10001-312 will be merged
-        $this->assertContains('Warehouse 1', $crawler->html());
+        $this->assertContains('Warehouse DE 1', $crawler->html());
         $this->assertContains('never_out_of_stock', $crawler->html());
     }
 
