@@ -38,6 +38,7 @@
 {% endblock %}
 
 {% block content_data %}
+    {% set id = 'marello-warehouse-view' %}
 
     {%- set warehouseInformation -%}
         <div class="row-fluid form-horizontal">
@@ -66,7 +67,6 @@
         }
     ] %}
 
-    {% set id = 'warehouse-view' %}
     {% set data = {'dataBlocks': dataBlocks} %}
 
     {{ parent() }}
