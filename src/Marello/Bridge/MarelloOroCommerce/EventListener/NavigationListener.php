@@ -32,24 +32,10 @@ class NavigationListener
 
         foreach ($menu->getChildren() as $child) {
             if ($this->itemHasChildrenFromDifferentApplications($child)) {
-                $subChildren = $child->getChildren();
-                $marello = $child->addChild(sprintf('%s.%s', $child->getName(), 'marello'), ['uri' => '#'])
-                    ->setLabel('Marello')
-                    ->setLinkAttribute('class','unclickable')
-                    ->setExtra('position', 10)
-                    ->setAttribute('divider_append', true);
-                $oro = $child->addChild(sprintf('%s.%s', $child->getName(), 'oro'), ['uri' => '#'])
-                    ->setLabel('Oro')
-                    ->setLinkAttribute('class','unclickable')
-                    ->setExtra('position', 20)
-                    ->setExtra('type', 'dropdown');
-                foreach ($subChildren as $subChild) {
-                    if ($this->startsWith($subChild->getLabel(), 'oro')) {
-                        $oro->addChild($subChild->copy());
-                    } elseif ($this->startsWith($subChild->getLabel(), 'marello')) {
-                        $marello->addChild($subChild->copy());
-                    }
-                    $child->removeChild($subChild);
+                foreach ($child->getChildren() as $subChild) {
+                   if ($this->startsWith($subChild->getLabel(), 'marello')) {
+                        $subChild->setLabel(sprintf('ERP %s', $this->translator->trans($subChild->getLabel())));
+                   }
                 }
             }
         }
