@@ -1,11 +1,4 @@
 services:
-    marello_commerce_bridge.event_listener.navigation_listener:
-        class: Marello\Bridge\MarelloOroCommerce\EventListener\NavigationListener
-        arguments:
-            - '@translator.default'
-        tags:
-            - { name: kernel.event_listener, event: oro_menu.configure.application_menu, method: onNavigationConfigure }
-
     marello_commerce_bridge.event_listener.widget_items_load_data:
         class: Marello\Bridge\MarelloOroCommerce\EventListener\WidgetConfigurationLoadListener
         arguments:
