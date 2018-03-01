@@ -5,4 +5,4 @@ services:
     class:  Marello\Bundle\MageBridgeBundle\OAuth\ResourceOwner\MagentoResourceOwner
     parent: hwi_oauth.abstract_resource_owner.oauth1
 
-#hwi_oauth.http_client
+

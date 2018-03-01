@@ -1,0 +1,39 @@
+parameters:
+  marello_magebridge.transport.rest_transport.class: Marello\Bundle\MageBridgeBundle\Provider\Transport\RestTransport
+  marello_magebridge.provider.magento_channel_type.class: Marello\Bundle\MageBridgeBundle\Provider\MagentoChannelType
+  marello_magebridge.form.type.rest_transport_setting.class: Marello\Bundle\MageBridgeBundle\Form\Type\RestTransportSettingsFormType
+
+services:
+    # Providers
+    marello_magebridge.provider.magento_channel_type:
+        class: %marello_magebridge.provider.magento_channel_type.class%
+        tags:
+            - { name: oro_integration.channel, type: magento }
+
+    # Integration related services
+    marello_magebridge.transport.rest_transport:
+        class: %marello_magebridge.transport.rest_transport.class%
+        parent: oro_integration.transport.rest.abstract_transport
+#        arguments:
+#            - '@oro_importexport.serializer'
+        tags:
+            - { name: oro_integration.transport, type: magento_rest, channel_type: magento }
+
+    # Forms and extensions
+    marello_magebridge.form.type.rest_transport_setting:
+        class: %marello_magebridge.form.type.rest_transport_setting.class%
+#        arguments:
+#            - "@oro_magento.transport.rest_transport"
+#            - "@oro_magento.form.subscriber.transport_setting"
+#            - "@oro_integration.manager.types_registry"
+        tags:
+            - { name: form.type, alias: marello_magebridge_rest_transport_setting_form_type }
+
+#    oro_magento.form.type.rest_transport_setting:
+#        class: Oro\Bundle\MagentoBundle\Form\Type\RestTransportSettingFormType
+#        arguments:
+#            - "@oro_magento.transport.rest_transport"
+#            - "@oro_magento.form.subscriber.transport_setting"
+#            - "@oro_integration.manager.types_registry"
+#        tags:
+#            - { name: form.type, alias: oro_magento_rest_transport_setting_form_type }

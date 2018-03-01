@@ -1,0 +1,17 @@
+marello:
+    magebridge:
+        magento:
+          channel_type:
+              label: 'Magento'
+          transport:
+              rest:
+                  label: Magento REST API
+
+          system_configuration:
+              integrations.title:         'Integrations'
+              magento_integration.title:  'Magento'
+              magento_settings.title:     'Settings'
+
+          form:
+              magento_url:
+                  description: 'Example: https://domain.com'
