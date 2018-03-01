@@ -13,8 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Class TaxJurisdictionController
  * @package Marello\Bundle\TaxBundle\Controller
- * @Config\Route("/jurisdiction")
- */
+  */
 class TaxJurisdictionController extends Controller
 {
     /**
