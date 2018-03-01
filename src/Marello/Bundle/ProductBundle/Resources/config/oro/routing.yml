@@ -1,7 +1,12 @@
-marello_product_bundle:
-    resource: "@MarelloProductBundle/Controller"
+marello_product_product:
+    resource: "@MarelloProductBundle/Controller/ProductController.php"
     type:     annotation
     prefix:   /marello/product
+
+marello_product_variant:
+    resource: "@MarelloProductBundle/Controller/VariantController.php"
+    type:     annotation
+    prefix:   /marello/product/variant
 
 marello_product_bundle_api:
     resource: "@MarelloProductBundle/Resources/config/oro/routing_api.yml"

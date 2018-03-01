@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 /**
  * Class TaxRuleController
  * @package Marello\Bundle\TaxBundle\Controller
- * @Config\Route("/rule")
  */
 class TaxRuleController extends Controller
 {

@@ -17,7 +17,7 @@ use Marello\Bundle\ProductBundle\Entity\Variant;
 class VariantController extends Controller
 {
     /**
-     * @Config\Route("/variant/create/parent/{id}", requirements={"id"="\d+"}, name="marello_product_create_variant")
+     * @Config\Route("/create/parent/{id}", requirements={"id"="\d+"}, name="marello_product_create_variant")
      * @Config\Method({"GET", "POST"})
      * @Security\AclAncestor("marello_product_create_variant")
      * @Config\Template("MarelloProductBundle:Variant:update.html.twig")
@@ -32,7 +32,7 @@ class VariantController extends Controller
 
     /**
      * @Config\Route(
-     *     "/variant/add/{id}/parent/{parentId}",
+     *     "/add/{id}/parent/{parentId}",
      *     requirements={"id"="\d+","parentId"="\d+"}, name="marello_product_add_variant"
      * )
      * @Security\AclAncestor("marello_product_add_variant")
@@ -108,7 +108,7 @@ class VariantController extends Controller
     }
 
     /**
-     * @Config\Route("/variant/widget/info/{id}", name="marello_product_variant_widget_info", requirements={"id"="\d+"})
+     * @Config\Route("/widget/info/{id}", name="marello_product_variant_widget_info", requirements={"id"="\d+"})
      * @Security\AclAncestor("marello_product_view")
      * @Config\Template
      *
