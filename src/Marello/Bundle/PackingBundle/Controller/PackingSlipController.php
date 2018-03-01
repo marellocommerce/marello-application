@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 class PackingSlipController extends Controller
 {
     /**
-     * @Config\Route("/", name="marello_packing_packingslip_index", name="marello_packing_packingslip_view")
+     * @Config\Route("/", name="marello_packing_packingslip_index")
      * @Config\Template
      * @Security\AclAncestor("marello_packing_slip_view")
      */

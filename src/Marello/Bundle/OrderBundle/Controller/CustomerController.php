@@ -55,7 +55,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, , name="marello_order_customer_update")
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_order_customer_update")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\AclAncestor("marello_customer_update")
