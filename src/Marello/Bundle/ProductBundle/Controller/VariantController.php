@@ -40,7 +40,7 @@ class VariantController extends Controller
      *
      * @param Request $request
      * @param Variant $variant
-     * @return array
+     * @return array|Response
      * @throws NotFoundHttpException
      */
     public function updateVariantAction(Request $request, Variant $variant)

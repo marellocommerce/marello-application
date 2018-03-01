@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PurchaseOrderController extends Controller
 {
     /**
-     * @Config\Route("/")
+     * @Config\Route("/", name="marello_purchaseorder_purchaseorder_index")
      * @Config\Template
      * @Security\AclAncestor("marello_purchase_order_view")
      */
@@ -25,7 +25,7 @@ class PurchaseOrderController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_purchaseorder_purchaseorder_view")
      * @Config\Template
      * @Security\AclAncestor("marello_purchase_order_view")
      *
@@ -41,7 +41,7 @@ class PurchaseOrderController extends Controller
     }
 
     /**
-     * @Config\Route("/select-products")
+     * @Config\Route("/select-products", name="marello_purchaseorder_purchaseorder_selectproducts")
      * @Config\Template
      * @Security\AclAncestor("marello_purchase_order_create")
      */

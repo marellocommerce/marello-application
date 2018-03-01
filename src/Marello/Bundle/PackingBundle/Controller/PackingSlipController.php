@@ -24,7 +24,7 @@ class PackingSlipController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_packing_packingslip_view")
      * @Config\Template
      * @Security\AclAncestor("marello_packing_slip_view")
      *

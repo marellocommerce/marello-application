@@ -25,7 +25,7 @@ class TaxRateController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_tax_taxrate_view")
      * @Config\Template
      * @Security\Acl(
      *      id="marello_tax_taxrate_view",
@@ -44,7 +44,7 @@ class TaxRateController extends Controller
     }
 
     /**
-     * @Config\Route("/create")
+     * @Config\Route("/create", name="marello_tax_taxrate_create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\Acl(
@@ -62,7 +62,7 @@ class TaxRateController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_tax_taxrate_update")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\Acl(
