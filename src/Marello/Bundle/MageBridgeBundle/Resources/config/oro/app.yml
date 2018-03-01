@@ -2,12 +2,12 @@ hwi_oauth:
     resource_owners:
         magento:
             type:                oauth1
-            client_id:           7f091baa0db68dcfeacc24dec5d789ad
-            client_secret:       4601fe4043d24916a5156e4de5dde377
-            request_token_url:   http://localhost:15100/oauth/initiate
-            access_token_url:    http://localhost:15100/oauth/token
-            authorization_url:   http://localhost:15100/admin/oauth/authorize
-            infos_url:           http://localhost:15100/api/rest
+            client_id:           885e8571be283a5944a0e14345f12915
+            client_secret:       c29ebc9bbbc0c0da953891150d3aabf0
+            request_token_url:   https://cavallaronapoli.test-madia.nl/oauth/initiate
+            access_token_url:    https://cavallaronapoli.test-madia.nl/oauth/token
+            authorization_url:   https://cavallaronapoli.test-madia.nl/admin/oauth/authorize
+            infos_url:           https://cavallaronapoli.test-madia.nl/api/rest
             realm:               "read"
             user_response_class: HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse
             paths:
