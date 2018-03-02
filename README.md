@@ -10,7 +10,7 @@ chapter.
 Requirements
 ------------
 
-Marello requires Symfony 2.8.x, Doctrine 2 and PHP 5.6 or above.
+Marello requires Symfony 2.8.x, Doctrine 2 and PHP 7 or above.
 
 Installation
 ------------
