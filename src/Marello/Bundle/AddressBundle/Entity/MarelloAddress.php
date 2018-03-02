@@ -45,7 +45,8 @@ class MarelloAddress extends ExtendMarelloAddress
     protected $company;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", inversedBy="addresses")
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", inversedBy="addresses",
+     *     cascade={"persist"})
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      *
      * @var Customer

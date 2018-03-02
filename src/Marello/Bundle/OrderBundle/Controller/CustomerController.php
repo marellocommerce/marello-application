@@ -8,13 +8,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Config\Route("/customer")
- */
 class CustomerController extends Controller
 {
     /**
-     * @Config\Route("/")
+     * @Config\Route("/", name="marello_order_customer_index")
      * @Config\Template
      * @Security\AclAncestor("marello_customer_view")
      *
@@ -26,7 +23,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_order_customer_view")
      * @Config\Template
      * @Security\AclAncestor("marello_customer_view")
      *
@@ -40,7 +37,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * @Config\Route("/create")
+     * @Config\Route("/create", name="marello_order_customer_create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template("@MarelloOrder/Customer/update.html.twig")
      * @Security\AclAncestor("marello_customer_create")
@@ -55,7 +52,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_order_customer_update")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\AclAncestor("marello_customer_update")

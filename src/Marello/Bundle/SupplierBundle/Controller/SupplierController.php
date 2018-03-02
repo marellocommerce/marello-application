@@ -26,7 +26,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_supplier_supplier_view")
      * @Config\Template
      * @Security\AclAncestor("marello_supplier_view")
      *
@@ -40,7 +40,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * @Config\Route("/create")
+     * @Config\Route("/create", name="marello_supplier_supplier_create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\AclAncestor("marello_supplier_create")
@@ -55,7 +55,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_supplier_supplier_update")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\AclAncestor("marello_supplier_update")
@@ -111,7 +111,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * @Config\Route("/widget/address/{id}/{typeId}", requirements={"id"="\d+","typeId"="\d+"})
+     * @Config\Route("/widget/address/{id}/{typeId}", requirements={"id"="\d+","typeId"="\d+"}, name="marello_supplier_supplier_address")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\AclAncestor("marello_supplier_update")
@@ -129,7 +129,7 @@ class SupplierController extends Controller
     }
 
     /**
-     * @Config\Route("/update/address/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/update/address/{id}", requirements={"id"="\d+"}, name="marello_supplier_supplier_updateaddress")
      * @Config\Method({"GET", "POST"})
      * @Config\Template("MarelloSupplierBundle:Supplier:widget/updateAddress.html.twig")
      * @Security\AclAncestor("marello_supplier_update")

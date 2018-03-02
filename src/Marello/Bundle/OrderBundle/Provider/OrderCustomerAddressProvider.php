@@ -28,7 +28,11 @@ class OrderCustomerAddressProvider
             }
 
             $primaryAddress = $customer->getPrimaryAddress();
+            
             $result[$primaryAddress->getId()] = $primaryAddress;
+            foreach($customer->getAddresses() as $address) {
+                $result[$address->getId()] = $address;
+            }
             $this->cache[$key] = $result;
 
             return $result;
@@ -43,6 +47,16 @@ class OrderCustomerAddressProvider
      */
     protected function getCacheKey($object)
     {
-        return sprintf('%s_%s', ClassUtils::getClass($object), $object->getId());
+        $key = sprintf(
+            '%s_%s_%s',
+            ClassUtils::getClass($object),
+            $object->getId(),
+            $object->getPrimaryAddress()->getId()
+        );
+        foreach($object->getAddresses() as $address) {
+            $key = sprintf('%s_%s', $key, $address->getId());
+        }
+        
+        return $key;
     }
 }

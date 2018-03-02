@@ -15,6 +15,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
+    {% set id = 'marello-taxrate-view' %}
     {% set generalSubblocks = [] %}
     {% set generalInformation %}
         <div class="widget-content">
@@ -49,7 +50,7 @@
         }
     ] %}
 
-    {% set id = 'marelloSupplierView' %}
+
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

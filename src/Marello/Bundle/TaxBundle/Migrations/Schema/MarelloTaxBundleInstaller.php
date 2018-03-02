@@ -18,7 +18,7 @@ class MarelloTaxBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -50,6 +50,7 @@ class MarelloTaxBundleInstaller implements Installation
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('code', 'string', ['notnull' => true, 'length' => 32]);
         $table->addColumn('description', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code']);
     }
@@ -65,6 +66,7 @@ class MarelloTaxBundleInstaller implements Installation
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('code', 'string', ['notnull' => true, 'length' => 32]);
         $table->addColumn('rate', 'percent', ['notnull' => true, 'comment' => '(DC2Type:percent)']);
+        $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code']);
     }
@@ -81,6 +83,7 @@ class MarelloTaxBundleInstaller implements Installation
         $table->addColumn('tax_code_id', 'integer', ['notnull' => false]);
         $table->addColumn('tax_rate_id', 'integer', ['notnull' => false]);
         $table->addColumn('tax_jurisdiction_id', 'integer', ['notnull' => false]);
+        $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
@@ -102,6 +105,7 @@ class MarelloTaxBundleInstaller implements Installation
         $table->addColumn('code', 'string', ['length' => 255]);
         $table->addColumn('description', 'text', ['notnull' => false]);
         $table->addColumn('region_text', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'UNIQ_2CBEF9AE77153098');
     }
