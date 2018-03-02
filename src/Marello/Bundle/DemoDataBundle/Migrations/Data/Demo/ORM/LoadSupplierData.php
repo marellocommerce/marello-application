@@ -5,6 +5,8 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
@@ -74,7 +76,10 @@ class LoadSupplierData extends AbstractFixture
                     ->findOneBy(['combinedCode' => $values['address']['country'] . '-' . $values['address']['state']])
             );
             $this->manager->persist($address);
-            
+            $organization = $this->manager
+                ->getRepository(Organization::class)
+                ->getFirst();
+            $supplier->setOrganization($organization);
             $supplier->setAddress($address);
             $this->manager->persist($supplier);
             $this->setReference('marello_supplier_' . $i, $supplier);

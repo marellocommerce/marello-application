@@ -72,15 +72,6 @@ class MarelloSalesBundleInstaller implements Installation
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
         $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('group_id', 'integer', ['notnull' => false]);
-        /*$table->addColumn(
-            'create_group',
-            'boolean',
-            [
-                'oro_options' => [
-                    'extend'    => ['is_extend' => true, 'is_serialized' => true, 'owner' => ExtendScope::OWNER_SYSTEM],
-                ]
-            ]
-        );*/
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['code'], 'marello_sales_sales_channel_codeidx');
         $table->addIndex(['owner_id'], 'idx_37c71d17e3c61f9', []);
