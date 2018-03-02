@@ -24,7 +24,7 @@ class MarelloSupplierBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_2';
+        return 'v1_3';
     }
 
     /**
@@ -48,6 +48,7 @@ class MarelloSupplierBundleInstaller implements
     {
         $table = $schema->createTable('marello_supplier_supplier');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('name', 'string', ['notnull' => true, 'length' => 255]);
         $table->addColumn('email', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('priority', 'integer', []);
@@ -57,6 +58,7 @@ class MarelloSupplierBundleInstaller implements
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
+        $table->addIndex(['organization_id']);
         $table->addUniqueIndex(['address_id'], 'UNIQ_16532C7BF5B7AF75', []);
         $table->addUniqueIndex(['name']);
         $table->addUniqueIndex(['email']);
@@ -77,6 +79,13 @@ class MarelloSupplierBundleInstaller implements
             ['address_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_organization'),
+            ['organization_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
     }
 
