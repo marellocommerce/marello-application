@@ -18,14 +18,6 @@ class RestTransport extends AbstractRestTransport
 {
     const API_URL_PREFIX = 'api/rest';
 
-//    /**
-//     * @param Transport $transportEntity
-//     */
-//    public function init(Transport $transportEntity)
-//    {
-//
-//    }
-
     /**
      * {@inheritdoc}
      */
@@ -41,7 +33,7 @@ class RestTransport extends AbstractRestTransport
      */
     public function getSettingsFormType()
     {
-        'marello_magebridge_rest_transport_setting_form_type';
+        return 'marello_magebridge_rest_transport_setting_form_type';
     }
 
     /**
@@ -51,7 +43,7 @@ class RestTransport extends AbstractRestTransport
      */
     public function getSettingsEntityFQCN()
     {
-//        return 'Marello\\Bundle\\MageBridgeBundle\\Entity\\MagentoRestTransport';
+        return 'Marello\\Bundle\\MageBridgeBundle\\Entity\\MagentoRestTransport';
     }
 
     /**

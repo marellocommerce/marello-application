@@ -13,5 +13,6 @@ marello:
               magento_settings.title:     'Settings'
 
           form:
-              magento_url:
+              url:
+                  label: 'URL'
                   description: 'Example: https://domain.com'

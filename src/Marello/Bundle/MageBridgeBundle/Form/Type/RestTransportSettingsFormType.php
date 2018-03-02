@@ -8,58 +8,55 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class RestTransportSettingsFormType extends AbstractType
 {
-    const NAME = 'marello_magebridge.form.type.rest_transport_setting';
+    const NAME = 'marello_magebridge_rest_transport_setting_form_type';
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+//        $isExisting = $builder->getData() && $builder->getData()->getId();
+
         $builder->add(
             'url',
             'url',
             [
-                'label' => 'marello.magebridge.transport.rest.url.label',
+                'label' => 'marello.magebridge.magento.form.url.label',
                 'required' => true,
-                'tooltip' => 'marello.magebridge.form.magento_url.description',
+                'tooltip' => 'marello.magebridge.magento.form.url.description',
             ]
         );
+
+        $builder->add(
+            'authenticate',
+            'marello_magebrdige_transport_auth_button',
+            [
+                'label' => 'marello.magebridge.magento.transport.authenticate_connection.label'
+            ]
+        );
+
+
 //        $builder->add(
-//            'email',
-//            'email',
+//            'salesChannel',
+//            'marello_sales_saleschannel_multi_select',
 //            [
-//                'label' => 'oro.zendesk.zendeskresttransport.email.label',
-//                'tooltip' => 'oro.zendesk.form.email.description',
+//                'label' => 'oro.magento.customer.data_channel.label',
+////            'entities' => ['Marello\Bundle\SalesBundle\Entity'],
 //                'required' => true,
+//                'disabled' => $isExisting,
+////            'single_channel_mode' => false
 //            ]
 //        );
-//        $builder->add(
-//            'token',
-//            'text',
-//            [
-//                'label' => 'oro.zendesk.zendeskresttransport.token.label',
-//                'tooltip' => 'oro.zendesk.form.token.description',
-//                'required' => true
-//            ]
-//        );
-//        $builder->add(
-//            'zendeskUserEmail',
-//            'text',
-//            [
-//                'label' => 'oro.zendesk.zendeskresttransport.zendesk_user_email.label',
-//                'tooltip' => 'oro.zendesk.form.zendesk_user_email.description',
-//                'required' => true
-//            ]
-//        );
+
     }
 
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function setDefaultOptions(OptionsResolverInterface $resolver)
-//    {
-//        $resolver->setDefaults(['data_class' => 'Marello\Bundle\MageBridgeBundle\Entity\MagentoRestTransport']);
-//    }
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(['data_class' => 'Marello\Bundle\MageBridgeBundle\Entity\MagentoRestTransport']);
+    }
 
     /**
      * {@inheritdoc}
