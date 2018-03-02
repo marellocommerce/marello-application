@@ -56,7 +56,7 @@
 {% endfor %}
 
 {% block content_data %}
-    {% set id = 'warehouse-channelgroup-link-edit' %}
+    {% set id = 'marello-warehouse-channelgroup-link-update' %}
 
     {% set dataBlocks = [
         {
@@ -86,8 +86,8 @@
     ] %}
 
     {% set data = {
-    'formErrors': form_errors(form),
-    'dataBlocks': dataBlocks
+        'formErrors': form_errors(form),
+        'dataBlocks': dataBlocks
     }%}
 
     {{ parent() }}
