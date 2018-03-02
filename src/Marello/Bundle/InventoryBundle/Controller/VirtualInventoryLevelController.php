@@ -11,9 +11,6 @@ use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Marello\Bundle\InventoryBundle\Async\Topics;
 use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 
-/**
- * @Config\Route("/virtual-inventory-level")
- */
 class VirtualInventoryLevelController extends Controller
 {
     /**

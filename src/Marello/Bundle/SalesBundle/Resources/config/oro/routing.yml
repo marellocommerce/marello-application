@@ -1,7 +1,12 @@
-marello_sales_bundle:
-    resource: "@MarelloSalesBundle/Controller"
+marello_sales_saleschannel:
+    resource: "@MarelloSalesBundle/Controller/SalesChannelController.php"
     type:     annotation
-    prefix:   /marello/sales
+    prefix:   /marello/saleschannel
+
+marello_sales_saleschannelgroup:
+    resource: "@MarelloSalesBundle/Controller/SalesChannelGroupController.php"
+    type:     annotation
+    prefix:   /marello/saleschannel-group
 
 marello_sales_bundle_api:
     resource: "@MarelloSalesBundle/Resources/config/oro/routing_api.yml"
