@@ -1,0 +1,23 @@
+navigation:
+    menu_config:
+        items:
+            inventory_tab:
+                display: false
+            orocommerce_warehouse_list:
+                label:      'marello.orocommerce.warehouse.menu.warehouse_list.label'
+                route:      'oro_warehouse_index'
+            oro_manage_inventory:
+                label:      'marello.orocommerce.inventory.menu.inventory_list.label'
+                route:      'oro_inventory_level_index'
+
+        tree:
+            application_menu:
+                children:
+                    warehouse_tab:
+                        children:
+                            orocommerce_warehouse_list: ~
+                    products_tab:
+                        children:
+                            inventory_management:
+                                children:
+                                    oro_manage_inventory: ~
