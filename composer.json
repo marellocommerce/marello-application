@@ -22,8 +22,8 @@
     ],
     "require": {
         "php": ">=7.0",
-        "oro/platform-enterprise": "2.5.*",
-        "marellocommerce/marello": "1.2.*"
+        "oro/platform-enterprise": "2.x-dev",
+        "marellocommerce/marello": "1.x-dev"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

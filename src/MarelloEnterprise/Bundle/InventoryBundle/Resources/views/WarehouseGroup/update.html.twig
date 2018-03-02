@@ -50,27 +50,26 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-    {% set id = 'sales-channel-group-edit' %}
+    {% set id = 'marello-saleschannel-group-update' %}
 
     {% set dataBlocks = [
     {
     'title': 'marelloenterprise.inventory.warehousegroup.datablock.general'|trans,
     'class': 'active',
     'subblocks': [
-    {
-    'data': [
-    form_row(form.name),
-    form_row(form.description),
-    form_row(form.warehouses),
+        {
+            'data': [
+                form_row(form.name),
+                form_row(form.description),
+                form_row(form.warehouses),
+            ]
+        }
     ]
-    }
-    ]
-    }
-    ] %}
+    }] %}
 
     {% set data = {
-    'formErrors': form_errors(form),
-    'dataBlocks': dataBlocks
+        'formErrors': form_errors(form),
+        'dataBlocks': dataBlocks
     }%}
 
     {{ parent() }}
