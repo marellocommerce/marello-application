@@ -51,9 +51,6 @@ class InventoryManager extends BaseInventoryManager
         }
 
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
-        $em = $this->doctrineHelper->getEntityManager($updatedLevel);
-        $em->persist($updatedLevel);
-
         $context->setInventoryLevel($updatedLevel);
 
         $this->eventDispatcher->dispatch(
