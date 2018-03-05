@@ -18,12 +18,32 @@ class RestTransportSettingsFormType extends AbstractType
 //        $isExisting = $builder->getData() && $builder->getData()->getId();
 
         $builder->add(
-            'url',
-            'url',
+            'infosUrl',
+            'text',
             [
-                'label' => 'marello.magebridge.magento.form.url.label',
-                'required' => true,
-                'tooltip' => 'marello.magebridge.magento.form.url.description',
+                'label'     => 'marello.magebridge.magento.form.infos_url.label',
+                'required'  => true,
+                'tooltip'   => 'marello.magebridge.magento.form.infos_url.description',
+            ]
+        );
+
+        $builder->add(
+            'clientId',
+            'text',
+            [
+                'label'     => 'marello.magebridge.magento.form.client_id.label',
+                'required'  => true,
+                'tooltip'   => 'marello.magebridge.magento.form.client_id.description',
+            ]
+        );
+
+        $builder->add(
+            'clientSecret',
+            'text',
+            [
+                'label'     => 'marello.magebridge.magento.form.client_secret.label',
+                'required'  => true,
+                'tooltip'   => 'marello.magebridge.magento.form.client_secret.description',
             ]
         );
 
@@ -31,9 +51,34 @@ class RestTransportSettingsFormType extends AbstractType
             'authenticate',
             'marello_magebrdige_transport_auth_button',
             [
-                'label' => 'marello.magebridge.magento.transport.authenticate_connection.label'
+                'label'     => 'marello.magebridge.magento.transport.authenticate_connection.label',
             ]
         );
+
+        //TODO : remove these fields they are automatically being filled in
+        $builder->add(
+            'token',
+            'text',
+            [
+                'label'     => 'marello.magebridge.magento.form.token.label',
+                'required'  => true,
+                'disabled'  => true,
+                'tooltip'   => 'marello.magebridge.magento.form.token.description',
+            ]
+        );
+
+        $builder->add(
+            'tokenSecret',
+            'text',
+            [
+                'label'     => 'marello.magebridge.magento.form.token_secret.label',
+                'required'  => true,
+                'disabled'  => true,
+                'tooltip'   => 'marello.magebridge.magento.form.token_secret.description',
+            ]
+        );
+
+
 
 
 //        $builder->add(

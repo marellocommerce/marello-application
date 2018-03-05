@@ -55,7 +55,7 @@ class RestTransport extends AbstractRestTransport
      */
     protected function getClientBaseUrl(ParameterBag $parameterBag)
     {
-        return rtrim($parameterBag->get('url'), '/') . '/' . ltrim(static::API_URL_PREFIX, '/');
+        return rtrim($parameterBag->get('infosUrl'), '/') . '/' . ltrim(static::API_URL_PREFIX, '/');
     }
 
     /**

@@ -57,15 +57,3 @@ services:
 #            - '@oro_magento.provider.website_choices'
 #            - '@oro_magento.provider.connector_choices'
             - '@request'
-
-
-#
-#integrations:
-#    form:
-#        synchronization_settings: # form name (now synchronization_settings and mapping_settings are available)
-#            isTwoWaySyncEnabled:  # field name
-#                type: checkbox    # form field type
-#                options:          # form options
-#                    label:    oro.integration.integration.is_two_way_sync_enabled.label
-#                    required: false
-#                applicable: [magento_rest]  # on which integration types this setting should be shown

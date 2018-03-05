@@ -54,7 +54,7 @@ class MagentoRestTransport extends Transport
     /**
      * @var string
      *
-     * @ORM\Column(name="marello_magento_info_url", type="string", length=255, nullable=false)
+     * @ORM\Column(name="marello_magento_infos_url", type="string", length=255, nullable=false)
      */
     protected $infosUrl;
 

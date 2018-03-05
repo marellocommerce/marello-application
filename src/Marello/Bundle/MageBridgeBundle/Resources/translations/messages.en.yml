@@ -6,6 +6,8 @@ marello:
           transport:
               rest:
                   label: Magento REST API
+              authenticate_connection:
+                  label: 'Authenticate Magento'
 
           system_configuration:
               integrations.title:         'Integrations'
@@ -13,6 +15,18 @@ marello:
               magento_settings.title:     'Settings'
 
           form:
-              url:
-                  label: 'URL'
-                  description: 'Example: https://domain.com'
+              infos_url:
+                  label: 'Base URL'
+                  description: 'Example: https://magento_domain.com'
+              client_id:
+                  label: 'Consumer Key'
+                  description: 'See Magento backoffice'
+              client_secret:
+                  label: 'Consumer Secret'
+                  description: 'See Magento backoffice'
+              token:
+                  label: 'Token'
+                  description: 'Not manually filled in Leave empty - will be filled in upon authentication completion'
+              token_secret:
+                  label: 'Token Secret'
+                  description: 'Not manually filled in Leave empty - will be filled in upon authentication completion'
