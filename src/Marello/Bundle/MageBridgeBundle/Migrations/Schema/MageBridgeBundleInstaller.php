@@ -28,10 +28,12 @@ class MageBridgeBundleInstaller implements Installation
     public function updateOroIntegrationTransportTable(Schema $schema)
     {
         $table = $schema->getTable('oro_integration_transport');
-        $table->addColumn('marello_magento_infos_url', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('marello_magento_client_id', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('marello_magento_client_secret', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('marello_magento_token', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('marello_magento_token_secret', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('api_url', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('admin_url', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('client_id', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('client_secret', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('token_key', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('token_secret', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('salesChannels', 'array', ['notnull' => false, 'comment' => '(DC2Type:array)']);
     }
 }

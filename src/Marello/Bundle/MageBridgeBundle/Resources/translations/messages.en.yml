@@ -15,9 +15,12 @@ marello:
               magento_settings.title:     'Settings'
 
           form:
-              infos_url:
+              api_url:
                   label: 'Base URL'
                   description: 'Example: https://magento_domain.com'
+              admin_url:
+                  label: 'Admin URL'
+                  description: 'Example: https://magento_domain.com/admin'
               client_id:
                   label: 'Consumer Key'
                   description: 'See Magento backoffice'

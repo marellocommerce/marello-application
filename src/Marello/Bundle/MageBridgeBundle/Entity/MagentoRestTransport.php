@@ -26,37 +26,51 @@ class MagentoRestTransport extends Transport
     /**
      * @var string
      *
-     * @ORM\Column(name="marello_magento_client_id", type="string", length=255, nullable=false)
+     * @ORM\Column(name="api_url", type="string", length=255, nullable=false)
+     */
+    protected $apiUrl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="admin_url", type="string", length=255, nullable=false)
+     */
+    protected $adminUrl;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="client_id", type="string", length=255, nullable=false)
      */
     protected $clientId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="marello_magento_client_secret", type="string", length=255, nullable=false)
+     * @ORM\Column(name="client_secret", type="string", length=255, nullable=false)
      */
     protected $clientSecret;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="marello_magento_token", type="string", length=255, nullable=false)
+     * @ORM\Column(name="token_key", type="string", length=255, nullable=false)
      */
-    protected $token;
+    protected $tokenKey;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="marello_magento_token_secret", type="string", length=255, nullable=false)
+     * @ORM\Column(name="token_secret", type="string", length=255, nullable=false)
      */
     protected $tokenSecret;
 
     /**
-     * @var string
+     * @var array
      *
-     * @ORM\Column(name="marello_magento_infos_url", type="string", length=255, nullable=false)
+     * @ORM\Column(name="salesChannels", type="array")
      */
-    protected $infosUrl;
+    protected $salesChannels = [];
 
     /**
      * @var ParameterBag
@@ -64,7 +78,64 @@ class MagentoRestTransport extends Transport
     private $settings;
 
     /**
-     * @return mixed
+     * @return array
+     */
+    public function getSalesChannels()
+    {
+        return $this->salesChannels;
+    }
+
+    /**
+     * @param $salesChannels
+     * @return $this
+     */
+    public function setSalesChannels($salesChannels)
+    {
+        $this->salesChannels = $salesChannels;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiUrl()
+    {
+        return $this->apiUrl;
+    }
+
+    /**
+     * @param string $apiUrl
+     * @return $this
+     */
+    public function setApiUrl($apiUrl)
+    {
+        $this->apiUrl = $apiUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdminUrl()
+    {
+        return $this->adminUrl;
+    }
+
+    /**
+     * @param string $adminUrl
+     * @return $this
+     */
+    public function setAdminUrl($adminUrl)
+    {
+        $this->adminUrl = $adminUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string
      */
     public function getClientId()
     {
@@ -72,7 +143,7 @@ class MagentoRestTransport extends Transport
     }
 
     /**
-     * @param mixed $clientId
+     * @param string $clientId
      * @return $this
      */
     public function setClientId($clientId)
@@ -83,7 +154,7 @@ class MagentoRestTransport extends Transport
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getClientSecret()
     {
@@ -91,7 +162,7 @@ class MagentoRestTransport extends Transport
     }
 
     /**
-     * @param mixed $clientSecret
+     * @param $clientSecret
      * @return $this
      */
     public function setClientSecret($clientSecret)
@@ -102,26 +173,26 @@ class MagentoRestTransport extends Transport
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getToken()
+    public function getTokenKey()
     {
-        return $this->token;
+        return $this->tokenKey;
     }
 
     /**
-     * @param $token
+     * @param string $tokenKey
      * @return $this
      */
-    public function setToken($token)
+    public function setTokenKey($tokenKey)
     {
-        $this->token = $token;
+        $this->tokenKey = $tokenKey;
 
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTokenSecret()
     {
@@ -129,31 +200,12 @@ class MagentoRestTransport extends Transport
     }
 
     /**
-     * @param mixed $tokenSecret
+     * @param $tokenSecret
      * @return $this
      */
     public function setTokenSecret($tokenSecret)
     {
         $this->tokenSecret = $tokenSecret;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getInfosUrl()
-    {
-        return $this->infosUrl;
-    }
-
-    /**
-     * @param mixed $infosUrl
-     * @return $this
-     */
-    public function setInfosUrl($infosUrl)
-    {
-        $this->infosUrl = $infosUrl;
 
         return $this;
     }
@@ -166,15 +218,18 @@ class MagentoRestTransport extends Transport
         if (null === $this->settings) {
             $this->settings = new ParameterBag(
                 array(
-                    'infosUrl' => $this->getInfosUrl(),
+                    'apiUrl' => $this->getApiUrl(),
+                    'adminUrl' => $this->getAdminUrl(),
                     'clientId' => $this->getClientId(),
                     'clientSecret' => $this->getClientSecret(),
-                    'token' => $this->getToken(),
-                    'tokenSecret' => $this->getTokenSecret()
+                    'tokenKey' => $this->getTokenKey(),
+                    'tokenSecret' => $this->getTokenSecret(),
+                    'salesChannels' => $this->getSalesChannels(),
                 )
             );
         }
 
         return $this->settings;
     }
+
 }

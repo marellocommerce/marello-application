@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\MageBridgeBundle\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\DataTransformer\ArrayToJsonTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RestTransportSettingsFormType extends AbstractType
 {
@@ -15,15 +17,27 @@ class RestTransportSettingsFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-//        $isExisting = $builder->getData() && $builder->getData()->getId();
+        $isExisting = $builder->getData() && $builder->getData()->getId();
 
         $builder->add(
-            'infosUrl',
+            'apiUrl',
             'text',
             [
-                'label'     => 'marello.magebridge.magento.form.infos_url.label',
+                'label'     => 'marello.magebridge.magento.form.api_url.label',
+                'tooltip'   => 'marello.magebridge.magento.form.api_url.description',
                 'required'  => true,
-                'tooltip'   => 'marello.magebridge.magento.form.infos_url.description',
+                'constraints' => [new NotBlank()],
+            ]
+        );
+
+        $builder->add(
+            'adminUrl',
+            'text',
+            [
+                'label'     => 'marello.magebridge.magento.form.admin_url.label',
+                'tooltip'   => 'marello.magebridge.magento.form.admin_url.description',
+                'required'  => true,
+                'constraints' => [new NotBlank()],
             ]
         );
 
@@ -32,8 +46,9 @@ class RestTransportSettingsFormType extends AbstractType
             'text',
             [
                 'label'     => 'marello.magebridge.magento.form.client_id.label',
-                'required'  => true,
                 'tooltip'   => 'marello.magebridge.magento.form.client_id.description',
+                'required'  => true,
+                'constraints' => [new NotBlank()],
             ]
         );
 
@@ -42,8 +57,9 @@ class RestTransportSettingsFormType extends AbstractType
             'text',
             [
                 'label'     => 'marello.magebridge.magento.form.client_secret.label',
-                'required'  => true,
                 'tooltip'   => 'marello.magebridge.magento.form.client_secret.description',
+                'required'  => true,
+                'constraints' => [new NotBlank()],
             ]
         );
 
@@ -57,13 +73,14 @@ class RestTransportSettingsFormType extends AbstractType
 
         //TODO : remove these fields they are automatically being filled in
         $builder->add(
-            'token',
+            'tokenKey',
             'text',
             [
                 'label'     => 'marello.magebridge.magento.form.token.label',
-                'required'  => true,
-                'disabled'  => true,
                 'tooltip'   => 'marello.magebridge.magento.form.token.description',
+                'required'  => true,
+                'constraints' => [new NotBlank()],
+                'disabled'  => true,
             ]
         );
 
@@ -72,26 +89,29 @@ class RestTransportSettingsFormType extends AbstractType
             'text',
             [
                 'label'     => 'marello.magebridge.magento.form.token_secret.label',
-                'required'  => true,
-                'disabled'  => true,
                 'tooltip'   => 'marello.magebridge.magento.form.token_secret.description',
+                'required'  => true,
+                'constraints' => [new NotBlank()],
+                'disabled'  => true,
             ]
         );
 
-
-
+        $builder->add(
+            'salesChannels',
+            'marello_sales_saleschannel_multi_select',
+            [
+                'label' => 'marello.magebridge.magento.form.sales_channel.label',
+                'required' => true,
+                'disabled' => $isExisting,
+            ]
+        );
 
 //        $builder->add(
-//            'salesChannel',
-//            'marello_sales_saleschannel_multi_select',
-//            [
-//                'label' => 'oro.magento.customer.data_channel.label',
-////            'entities' => ['Marello\Bundle\SalesBundle\Entity'],
-//                'required' => true,
-//                'disabled' => $isExisting,
-////            'single_channel_mode' => false
-//            ]
+//            $builder->create('websites', 'hidden')
+//                ->addViewTransformer(new ArrayToJsonTransformer())
 //        );
+
+
     }
 
     /**

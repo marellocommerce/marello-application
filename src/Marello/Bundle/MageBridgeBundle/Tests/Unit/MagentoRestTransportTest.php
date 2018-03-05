@@ -30,22 +30,25 @@ class MagentoRestTransportTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSettingsBag()
     {
-        $url = 'magento_base_url.com';
+        $url = 'http://magento_base_url.com';
+        $adminUrl = 'http://magento_base_url.com/admin';
         $token = uniqid();
 
-        $this->target->setInfosUrl($url);
+        $this->target->setApiUrl($url);
+        $this->target->setAdminUrl($adminUrl);
 
         $this->target->setClientId($token);
         $this->target->setClientSecret($token);
 
-        $this->target->setToken($token);
+        $this->target->setTokenKey($token);
         $this->target->setTokenSecret($token);
 
         $result = $this->target->getSettingsBag();
-        $this->assertEquals($result->get('infosUrl'), $url);
+        $this->assertEquals($result->get('apiUrl'), $url);
+        $this->assertEquals($result->get('adminUrl'), $adminUrl);
         $this->assertEquals($result->get('clientId'), $token);
         $this->assertEquals($result->get('clientSecret'), $token);
-        $this->assertEquals($result->get('token'), $token);
+        $this->assertEquals($result->get('tokenKey'), $token);
         $this->assertEquals($result->get('tokenSecret'), $token);
     }
 
@@ -55,11 +58,14 @@ class MagentoRestTransportTest extends \PHPUnit_Framework_TestCase
     public function settersAndGettersDataProvider()
     {
         return array(
-            array('infosUrl', 'magento_base_url.com'),
+            array('apiUrl', 'magento_base_url.com'),
+            array('adminUrl', 'magento_base_url.com/admin'),
             array('clientId', uniqid()),
             array('clientSecret', uniqid()),
-            array('token', uniqid()),
+            array('tokenKey', uniqid()),
             array('tokenSecret', uniqid()),
+            array('salesChannels', []),
         );
     }
+
 }
