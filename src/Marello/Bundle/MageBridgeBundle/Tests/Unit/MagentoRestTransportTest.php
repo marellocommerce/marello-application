@@ -43,6 +43,10 @@ class MagentoRestTransportTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->target->getSettingsBag();
         $this->assertEquals($result->get('infosUrl'), $url);
+        $this->assertEquals($result->get('clientId'), $token);
+        $this->assertEquals($result->get('clientSecret'), $token);
+        $this->assertEquals($result->get('token'), $token);
+        $this->assertEquals($result->get('tokenSecret'), $token);
     }
 
     /**
