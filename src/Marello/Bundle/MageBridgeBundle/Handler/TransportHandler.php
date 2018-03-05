@@ -20,8 +20,8 @@ use Oro\Bundle\MagentoBundle\Entity\MagentoTransport;
  */
 class TransportHandler
 {
-    const INTEGRATION_TYPE  = 'type';
-    const TRANSPORT_TYPE    = 'transport';
+    const INTEGRATION_TYPE = 'type';
+    const TRANSPORT_TYPE = 'transport';
 
     /** @var  TypesRegistry */
     protected $typesRegistry;
@@ -39,11 +39,11 @@ class TransportHandler
     protected $request;
 
     /**
-     * @param TypesRegistry             $typesRegistry
-     * @param TransportEntityProvider   $transportEntityProvider
-     * @param WebsiteChoicesProvider    $websiteProvider
-     * @param ConnectorChoicesProvider  $choicesProvider
-     * @param Request                   $request
+     * @param TypesRegistry $typesRegistry
+     * @param TransportEntityProvider $transportEntityProvider
+     * @param WebsiteChoicesProvider $websiteProvider
+     * @param ConnectorChoicesProvider $choicesProvider
+     * @param Request $request
      */
     public function __construct(
         TypesRegistry $typesRegistry,
@@ -51,12 +51,13 @@ class TransportHandler
 //        WebsiteChoicesProvider $websiteProvider,
 //        ConnectorChoicesProvider $choicesProvider,
         Request $request
-    ) {
-        $this->typesRegistry            = $typesRegistry;
-        $this->transportEntityProvider  = $transportEntityProvider;
+    )
+    {
+        $this->typesRegistry = $typesRegistry;
+        $this->transportEntityProvider = $transportEntityProvider;
 //        $this->websiteProvider          = $websiteProvider;
 //        $this->connectorProvider        = $choicesProvider;
-        $this->request                  = $request;
+        $this->request = $request;
     }
 
     /**
@@ -64,7 +65,7 @@ class TransportHandler
      */
     public function getAuthenticateResponse()
     {
-        die(__METHOD__ .'###'. __LINE__);
+        die(__METHOD__ . '###' . __LINE__);
 
         $transport = $this->getMagentoTransport();
         $transportEntity = $this->getMagentoTransportEntity($transport);
@@ -80,7 +81,7 @@ class TransportHandler
             ->connectorProvider
             ->getAllowedConnectorsChoices($isExtensionInstalled, $isSupportedVersion, $integrationTypeName);
 
-        return  [
+        return [
             'success' => true,
             'websites' => $this->websiteProvider->formatWebsiteChoices($transport),
             'isExtensionInstalled' => $isExtensionInstalled,
@@ -96,12 +97,13 @@ class TransportHandler
 
     /**
      * @param MagentoTransportInterface $transport
-     * @param MagentoTransport          $transportEntity
+     * @param MagentoTransport $transportEntity
      */
     protected function initMagentoTransport(
         MagentoTransportInterface $transport,
         MagentoTransport $transportEntity
-    ) {
+    )
+    {
         if ($transport instanceof TransportCacheClearInterface) {
             $transport->cacheClear($transportEntity->getWsdlUrl());
         }
@@ -116,7 +118,7 @@ class TransportHandler
     protected function getMagentoTransport()
     {
         $integrationTypeName = $this->request->get(self::INTEGRATION_TYPE, false);
-        $transportType       = $this->request->get(self::TRANSPORT_TYPE, false);
+        $transportType = $this->request->get(self::TRANSPORT_TYPE, false);
 
         /** @var MagentoTransportInterface $transport */
         $transport = $this->typesRegistry->getTransportType($integrationTypeName, $transportType);

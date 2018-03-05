@@ -43,5 +43,17 @@ class IntegrationConfigController extends Controller
     {
         //TODO: 3) based on the return back data && session data request final token keys
     }
+
+    /**
+     * @return JsonResponse
+     *
+     * @Route("/rejected", name="marello_magento_integration_rejected_callback")
+     * @AclAncestor("marello_integration_update")
+     */
+    public function rejectedAction()
+    {
+        //TODO: handle rejected action by magento authentication
+
+    }
 }
 

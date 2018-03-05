@@ -2,7 +2,8 @@
     {% set oroBridgeExtension = form.parent.vars.oroBridgeExtension is defined ? form.parent.vars.oroBridgeExtension : null %}
     <div class="controls">
         <div class="controls btn btn-large  btn-primary pull-right">
-            <a href="{{ path('marello_magento_integration_authenticate') }}" {{ block('button_attributes') }} title="{{ label|trans({}, translation_domain) }}">{{ label|trans({}, translation_domain) }}</a>
+            <a href="{{ path('marello_magento_integration_authenticate') }}" {{ block('button_attributes') }}
+               title="{{ label|trans({}, translation_domain) }}">{{ label|trans({}, translation_domain) }}</a>
         </div>
     </div>
 {% endblock %}

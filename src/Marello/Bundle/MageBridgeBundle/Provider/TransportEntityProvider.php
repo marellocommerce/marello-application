@@ -29,7 +29,7 @@ class TransportEntityProvider
     public function __construct(FormFactoryInterface $formFactory, ManagerRegistry $registry)
     {
         $this->formFactory = $formFactory;
-        $this->registry    = $registry;
+        $this->registry = $registry;
     }
 
     /**
@@ -37,7 +37,7 @@ class TransportEntityProvider
      * in case when password should be merged from saved data
      *
      * @param MagentoTransportInterface $transport
-     * @param Request                   $request
+     * @param Request $request
      *
      * @return MagentoTransport
      */
@@ -65,7 +65,7 @@ class TransportEntityProvider
 
     /**
      * @param TransportInterface $settingsEntity
-     * @param string                    $entityId
+     * @param string $entityId
      *
      * @return object
      */

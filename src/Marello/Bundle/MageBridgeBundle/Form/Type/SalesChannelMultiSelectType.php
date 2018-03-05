@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\MageBridgeBundle\Form\Type;
 
 use Marello\Bundle\SalesBundle\Form\Type\AbstractSalesChannelMultiSelectType;
@@ -15,10 +16,10 @@ class SalesChannelMultiSelectType extends AbstractSalesChannelMultiSelectType
     {
         $resolver->setDefaults([
             'autocomplete_alias' => 'saleschannels',
-            'configs'            => [
-                'multiple'    => true,
+            'configs' => [
+                'multiple' => true,
                 'placeholder' => 'marello.sales.saleschannel.form.select_saleschannels',
-                'allowClear'  => true
+                'allowClear' => true
             ],
         ]);
     }

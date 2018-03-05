@@ -5,6 +5,7 @@
  * Date: 1-3-18
  * Time: 12:02
  */
+
 namespace Marello\Bundle\MageBridgeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -25,27 +26,131 @@ class MagentoRestTransport extends Transport
     /**
      * @var string
      *
-     * @ORM\Column(name="marello_magento_url", type="string", length=255, nullable=false)
+     * @ORM\Column(name="marello_magento_client_id", type="string", length=255, nullable=false)
      */
-    protected $url;
+    protected $clientId;
 
     /**
-     * @param string $url
-     * @return $this
+     * @var string
+     *
+     * @ORM\Column(name="marello_magento_client_secret", type="string", length=255, nullable=false)
      */
-    public function setUrl($url)
+    protected $clientSecret;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="marello_magento_token", type="string", length=255, nullable=false)
+     */
+    protected $token;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="marello_magento_token_secret", type="string", length=255, nullable=false)
+     */
+    protected $tokenSecret;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="marello_magento_info_url", type="string", length=255, nullable=false)
+     */
+    protected $infosUrl;
+
+    /**
+     * @var ParameterBag
+     */
+    private $settings;
+
+    /**
+     * @return mixed
+     */
+    public function getClientId()
     {
-        $this->url = $url;
+        return $this->clientId;
+    }
+
+    /**
+     * @param mixed $clientId
+     */
+    public function setClientId($clientId)
+    {
+        $this->clientId = $clientId;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getUrl()
+    public function getClientSecret()
     {
-        return $this->url;
+        return $this->clientSecret;
+    }
+
+    /**
+     * @param mixed $clientSecret
+     */
+    public function setClientSecret($clientSecret)
+    {
+        $this->clientSecret = $clientSecret;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTokenSecret()
+    {
+        return $this->tokenSecret;
+    }
+
+    /**
+     * @param mixed $tokenSecret
+     */
+    public function setTokenSecret($tokenSecret)
+    {
+        $this->tokenSecret = $tokenSecret;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInfosUrl()
+    {
+        return $this->infosUrl;
+    }
+
+    /**
+     * @param mixed $infosUrl
+     */
+    public function setInfosUrl($infosUrl)
+    {
+        $this->infosUrl = $infosUrl;
+
+        return $this;
     }
 
     /**
@@ -56,10 +161,11 @@ class MagentoRestTransport extends Transport
         if (null === $this->settings) {
             $this->settings = new ParameterBag(
                 array(
-//                    'email'            => $this->getEmail(),
-                    'url'              => $this->getUrl(),
-//                    'token'            => $this->getToken(),
-//                    'zendeskUserEmail' => $this->getZendeskUserEmail()
+                    'infosUrl' => $this->getInfosUrl(),
+                    'clientId' => $this->getClientId(),
+                    'clientSecret' => $this->getClientSecret(),
+                    'token' => $this->getToken(),
+                    'tokenSecret' => $this->getTokenSecret()
                 )
             );
         }

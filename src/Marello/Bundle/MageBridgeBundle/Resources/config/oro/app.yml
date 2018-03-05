@@ -4,10 +4,10 @@ hwi_oauth:
             type:                oauth1
             client_id:           885e8571be283a5944a0e14345f12915
             client_secret:       c29ebc9bbbc0c0da953891150d3aabf0
-            request_token_url:   https://cavallaronapoli.test-madia.nl/oauth/initiate
-            access_token_url:    https://cavallaronapoli.test-madia.nl/oauth/token
-            authorization_url:   https://cavallaronapoli.test-madia.nl/admin/oauth/authorize
-            infos_url:           https://cavallaronapoli.test-madia.nl/api/rest
+            request_token_url:   https://m1demo.test-madia.nl/oauth/initiate
+            access_token_url:    https://m1demo.test-madia.nl/oauth/token
+            authorization_url:   https://m1demo.test-madia.nl/admin/oauth/authorize
+            infos_url:           https://m1demo.test-madia.nl/api/rest
             realm:               "read"
             user_response_class: HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse
             paths:
