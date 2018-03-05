@@ -73,6 +73,7 @@ class MagentoRestTransport extends Transport
 
     /**
      * @param mixed $clientId
+     * @return $this
      */
     public function setClientId($clientId)
     {
@@ -91,6 +92,7 @@ class MagentoRestTransport extends Transport
 
     /**
      * @param mixed $clientSecret
+     * @return $this
      */
     public function setClientSecret($clientSecret)
     {
@@ -108,7 +110,8 @@ class MagentoRestTransport extends Transport
     }
 
     /**
-     * @param mixed $token
+     * @param $token
+     * @return $this
      */
     public function setToken($token)
     {
@@ -127,6 +130,7 @@ class MagentoRestTransport extends Transport
 
     /**
      * @param mixed $tokenSecret
+     * @return $this
      */
     public function setTokenSecret($tokenSecret)
     {
@@ -145,6 +149,7 @@ class MagentoRestTransport extends Transport
 
     /**
      * @param mixed $infosUrl
+     * @return $this
      */
     public function setInfosUrl($infosUrl)
     {
