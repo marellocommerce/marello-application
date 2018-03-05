@@ -30,7 +30,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_3';
+        return 'v1_4';
     }
 
     /**
@@ -79,7 +79,7 @@ class MarelloOrderBundleInstaller implements
         $table = $schema->createTable('marello_order_customer');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', []);
-        $table->addColumn('primary_address_id', 'integer', []);
+        $table->addColumn('primary_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('name_prefix', 'string', ['notnull' => false, 'length' => 255]);
@@ -118,6 +118,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('payment_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_reference', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('payment_details', 'text', ['notnull' => false]);
+        $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn(
             'shipping_amount_incl_tax',
             'money',

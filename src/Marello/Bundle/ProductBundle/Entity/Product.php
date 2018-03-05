@@ -454,11 +454,25 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * Get the first price from the ProductPrice collection
+     * @param string $currency
      * @return ProductPrice
      */
-    public function getPrice()
+    public function getPrice($currency = null)
     {
+        if ($currency) {
+            /** @var ProductPrice $productPrice */
+            $productPrice = $this->getPrices()
+                ->filter(function ($productPrice) use ($currency) {
+                    /** @var ProductPrice $productPrice */
+                    return $productPrice->getCurrency() === $currency;
+                })
+                ->first();
+
+            if ($productPrice) {
+                return $productPrice;
+            }
+        }
+        
         return $this->prices->first();
     }
 
@@ -563,7 +577,7 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|SalesChannel[]
      */
     public function getChannels()
     {
@@ -921,6 +935,27 @@ class Product extends ExtendProduct implements
 
         if ($productChannelTaxRelation) {
             return $productChannelTaxRelation->getTaxCode();
+        }
+
+        return null;
+    }
+
+    /**
+     * @param SalesChannel $salesChannel
+     * @return ProductChannelPrice|null
+     */
+    public function getSalesChannelPrice(SalesChannel $salesChannel)
+    {
+        /** @var ProductChannelPrice $productChannelPrice */
+        $productChannelPrice = $this->getChannelPrices()
+            ->filter(function ($productChannelPrice) use ($salesChannel) {
+                /** @var ProductChannelPrice $productChannelPrice */
+                return $productChannelPrice->getChannel() === $salesChannel;
+            })
+            ->first();
+
+        if ($productChannelPrice) {
+            return $productChannelPrice;
         }
 
         return null;

@@ -105,3 +105,11 @@ services:
         scope: request
         arguments:
             - '@oro_security.security_facade'
+
+    marello_sales.condition.sales_channel_has_valid_integration:
+        class: 'Marello\Bundle\SalesBundle\Condition\HasValidIntegration'
+        arguments:
+            - '@oro_integration.manager.types_registry'
+        tags:
+            - { name: oro_workflow.condition, alias: 'sales_channel_has_valid_integration' }
+            - { name: oro_action.condition, alias: 'sales_channel_has_valid_integration' }

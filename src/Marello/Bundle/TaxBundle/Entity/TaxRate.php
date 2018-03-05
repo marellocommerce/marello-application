@@ -42,6 +42,20 @@ class TaxRate
     protected $rate;
 
     /**
+     * @var array $data
+     *
+     * @ORM\Column(name="data", type="json_array", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $data;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -105,5 +119,25 @@ class TaxRate
     public function getRate()
     {
         return $this->rate;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return TaxRate
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }

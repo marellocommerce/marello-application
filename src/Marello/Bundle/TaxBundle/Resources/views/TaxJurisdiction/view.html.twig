@@ -15,6 +15,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
+    {% set id = 'marello-tax-jusrisdiction-view' %}
     {% set zipCodes %}
         {% set codes = [] %}
         {% for zipCode in entity.zipCodes %}
@@ -42,7 +43,7 @@
         ]
     }] %}
 
-    {% set id = 'tax-jusrisdiction-view' %}
+
     {% set data = {'dataBlocks': dataBlocks} %}
 
     {{ parent() }}
