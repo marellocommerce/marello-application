@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "529c3c0a12174662822749b2abdcf9e3",
+    "content-hash": "e0cbc6d8f1078162fd1f56a1990ade20",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -4285,16 +4285,16 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "1.2.3",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "a548ac61a8920b2f68c34a31d83d96e700be54c0"
+                "reference": "5ed8505827c090da153bde8a4ad2e22e0a7b6785"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/a548ac61a8920b2f68c34a31d83d96e700be54c0",
-                "reference": "a548ac61a8920b2f68c34a31d83d96e700be54c0",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/5ed8505827c090da153bde8a4ad2e22e0a7b6785",
+                "reference": "5ed8505827c090da153bde8a4ad2e22e0a7b6785",
                 "shasum": ""
             },
             "require": {
@@ -4310,9 +4310,12 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Marello\\Bundle": "src/"
-                }
+                "psr-4": {
+                    "": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
             },
             "license": [
                 "OSL-3.0"
@@ -4326,10 +4329,10 @@
             "description": "Marello",
             "homepage": "https://github.com/marellocommerce/marello.git",
             "support": {
-                "source": "https://github.com/marellocommerce/marello/tree/1.2.3",
+                "source": "https://github.com/marellocommerce/marello/tree/1.3.0",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2018-02-21T09:17:27+00:00"
+            "time": "2018-03-02T15:12:27+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -6034,16 +6037,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "d539ccba2b4dce515de04f16b7ed7ae5b9eeb434"
+                "reference": "dc270d5fec418cc6ac983671dba5d80ffaffb142"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/d539ccba2b4dce515de04f16b7ed7ae5b9eeb434",
-                "reference": "d539ccba2b4dce515de04f16b7ed7ae5b9eeb434",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/dc270d5fec418cc6ac983671dba5d80ffaffb142",
+                "reference": "dc270d5fec418cc6ac983671dba5d80ffaffb142",
                 "shasum": ""
             },
             "require": {
@@ -6075,7 +6078,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2018-01-11T05:54:03+00:00"
+            "time": "2018-02-28T22:10:01+00:00"
         },
         {
             "name": "snc/redis-bundle",
@@ -9996,16 +9999,16 @@
         },
         {
             "name": "sebastian/phpcpd",
-            "version": "dev-master",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpcpd.git",
-                "reference": "cff7f36c2ae89d59987de25d14fd41a72dd4a703"
+                "reference": "dfed51c1288790fc957c9433e2f49ab152e8a564"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpcpd/zipball/cff7f36c2ae89d59987de25d14fd41a72dd4a703",
-                "reference": "cff7f36c2ae89d59987de25d14fd41a72dd4a703",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpcpd/zipball/dfed51c1288790fc957c9433e2f49ab152e8a564",
+                "reference": "dfed51c1288790fc957c9433e2f49ab152e8a564",
                 "shasum": ""
             },
             "require": {
@@ -10042,7 +10045,7 @@
             ],
             "description": "Copy/Paste Detector (CPD) for PHP code.",
             "homepage": "https://github.com/sebastianbergmann/phpcpd",
-            "time": "2017-11-16T09:52:34+00:00"
+            "time": "2017-11-16T08:49:28+00:00"
         },
         {
             "name": "sebastian/recursion-context",
