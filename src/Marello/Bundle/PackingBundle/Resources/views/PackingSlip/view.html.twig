@@ -16,6 +16,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
+    {% set id = 'marello-packingslip-view' %}
     {% set generalSubblocks = [] %}
     {% set generalInformation %}
         <div class="widget-content">
@@ -68,7 +69,6 @@
         }
     ] %}
 
-    {% set id = 'marelloPackingSlipView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

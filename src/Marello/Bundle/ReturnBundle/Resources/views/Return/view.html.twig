@@ -26,6 +26,7 @@
 {% endblock navButtons %}
 
 {% block content_data %}
+    {% set id = 'marello-return-view' %}
     {% set order %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -118,7 +119,6 @@
         }
     ] %}
 
-    {% set id = 'marelloReturnView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

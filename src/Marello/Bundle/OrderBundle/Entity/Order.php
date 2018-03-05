@@ -267,6 +267,20 @@ class Order extends ExtendOrder implements
     protected $organization;
 
     /**
+     * @var array $data
+     *
+     * @ORM\Column(name="data", type="json_array", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $data;
+
+    /**
      * @param AbstractAddress|null $billingAddress
      * @param AbstractAddress|null $shippingAddress
      */
@@ -838,5 +852,25 @@ class Order extends ExtendOrder implements
                 ->atPath('discountAmount')
                 ->addViolation();
         }
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return Order
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }

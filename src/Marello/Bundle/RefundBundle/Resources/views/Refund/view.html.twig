@@ -22,6 +22,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
+    {% set id = 'marello-refund-view' %}
     {% set order %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -121,7 +122,6 @@
         }
     ] %}
 
-    {% set id = 'refundView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

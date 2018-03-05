@@ -155,4 +155,29 @@ class TaxRuleRepository extends EntityRepository
             throw new \InvalidArgumentException('Region or Region Text arguments missed');
         }
     }
+
+    /**
+     * @param string $taxCode
+     * @param string $taxRate
+     * @param string $taxJurisdiction
+     * @return TaxRule|null
+     */
+    public function findOneByCodes($taxCode, $taxRate, $taxJurisdiction)
+    {
+        $qb = $this->createQueryBuilder('taxRule');
+        $qb
+            ->join('taxRule.taxCode', 'tc')
+            ->join('taxRule.taxRate', 'tr')
+            ->join('taxRule.taxJurisdiction', 'tj')
+            ->andWhere('tc.code = :tc_code')
+            ->andWhere('tr.code = :tr_code')
+            ->andWhere('tj.code = :tj_code')
+            ->setParameter('tc_code', $taxCode ? : -1)
+            ->setParameter('tr_code', $taxRate ? : -1)
+            ->setParameter('tj_code', $taxJurisdiction ? : -1);
+        
+        $results = $qb->getQuery()->getResult();
+        
+        return count($results) > 0 ? reset($results) : null;
+    }
 }

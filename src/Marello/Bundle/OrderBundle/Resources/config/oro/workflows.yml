@@ -113,6 +113,13 @@ workflows:
 
         transition_definitions:
             cancel_definition:
+                conditions:
+                    '@and':
+                        - '@sales_channel_has_valid_integration':
+                            salesChannel: $order.salesChannel
+                actions:
+                    - '@extendable':
+                        events: [extendable_action.order_cancel]
                 post_actions:
                     - @marello_cancel_order: ~
                     - @marello_notification_send:
@@ -122,6 +129,10 @@ workflows:
             hold_definition: []
             un_hold_definition: []
             invoice_definition:
+                conditions:
+                    '@and':
+                        - '@sales_channel_has_valid_integration':
+                            salesChannel: $order.salesChannel
                 post_actions:
                     - @assign_value:
                         attribute: $order.paymentReference
@@ -136,6 +147,8 @@ workflows:
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_invoiced
+                    - '@extendable':
+                        events: [extendable_action.order_paid]
             credit_definition:
                 post_actions:
                     - @marello_notification_send:
@@ -143,6 +156,13 @@ workflows:
                         recipient: $order.customer.email
                         template: marello_order_credited
             prepare_shipping_definition:
+                conditions:
+                    '@and':
+                        - '@not_empty': $order.shippingAddress.country
+                        - '@not_empty': $order.shippingAddress.region
+                        - '@not_empty': $order.shippingAddress.postalCode
+                        - '@not_empty': $order.shippingAddress.city
+                        - '@not_empty': $order.shippingAddress.street
                 post_actions:
                     - @marello_shipment_create:
                         entity: $order
@@ -155,12 +175,23 @@ workflows:
                         recipient: $order.customer.email
                         template: marello_order_shipping_prepared
             ship_definition:
+                conditions:
+                    '@and':
+                        - '@not_empty': $order.shippingAddress.country
+                        - '@not_empty': $order.shippingAddress.region
+                        - '@not_empty': $order.shippingAddress.postalCode
+                        - '@not_empty': $order.shippingAddress.city
+                        - '@not_empty': $order.shippingAddress.street
+                        - '@sales_channel_has_valid_integration':
+                            salesChannel: $order.salesChannel
                 post_actions:
                     - @marello_ship_order: ~
                     - @marello_notification_send:
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_shipped_confirmation
+                    - '@extendable':
+                       events: [extendable_action.order_shipped]
             payment_reminder_definition:
                 post_actions:
                     - @marello_notification_send:
