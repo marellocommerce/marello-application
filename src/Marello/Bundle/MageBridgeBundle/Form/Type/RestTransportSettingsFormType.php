@@ -47,7 +47,6 @@ class RestTransportSettingsFormType extends AbstractType
 ////            'single_channel_mode' => false
 //            ]
 //        );
-
     }
 
     /**

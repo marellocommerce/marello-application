@@ -53,7 +53,5 @@ class IntegrationConfigController extends Controller
     public function rejectedAction()
     {
         //TODO: handle rejected action by magento authentication
-
     }
 }
-

@@ -15,7 +15,6 @@ use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth1ResourceOwner as Bas
 use HWI\Bundle\OAuthBundle\Security\OAuthUtils;
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 
-
 class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
 {
 //    use ConfigurableCredentialsTrait;
@@ -247,6 +246,4 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
 
         return $response;
     }
-
-
 }

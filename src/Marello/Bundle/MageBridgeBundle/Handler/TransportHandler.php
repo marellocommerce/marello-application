@@ -51,8 +51,7 @@ class TransportHandler
 //        WebsiteChoicesProvider $websiteProvider,
 //        ConnectorChoicesProvider $choicesProvider,
         Request $request
-    )
-    {
+    ) {
         $this->typesRegistry = $typesRegistry;
         $this->transportEntityProvider = $transportEntityProvider;
 //        $this->websiteProvider          = $websiteProvider;
@@ -102,8 +101,7 @@ class TransportHandler
     protected function initMagentoTransport(
         MagentoTransportInterface $transport,
         MagentoTransport $transportEntity
-    )
-    {
+    ) {
         if ($transport instanceof TransportCacheClearInterface) {
             $transport->cacheClear($transportEntity->getWsdlUrl());
         }
