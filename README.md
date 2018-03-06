@@ -1,13 +1,13 @@
-Marello Enterprise Application
+Marello OroCommerce Enterprise Application
 ==============================
 
-Marello Enterprise Application is the commercial version of Marello Application bundled with extended capabilities of OroPlatform Enterprise.
+Marello OroCommerce Enterprise Application is combination of both OroCommerce and Marello Enterprise editions. 
 This document contains information on how to download, install, and start
 using Marello Enterprise.
 
 ## Requirements
 
-Marello Enterprise is a Symfony 2 based application with the following requirements:
+Marello - OroCommerce Enterprise is a Symfony 2 based application with the following requirements:
 
 * PHP 7.0 or above with command line interface
 * PHP Extensions
@@ -24,7 +24,7 @@ Marello Enterprise is a Symfony 2 based application with the following requireme
 
 ## Installation instructions
 
-As both Symfony and Marello Enterprise use [Composer][2] to manage their dependencies, this is the recommended way to install Marello Enterprise.
+As Symfony, OroCommerce and Marello Enterprise use [Composer][2] to manage their dependencies, this is the recommended way to install Marello Enterprise.
 
 - Clone Marello Enterprise application repository:
 
@@ -107,6 +107,12 @@ And ensure that timeout has default value
     wait_timeout = 28800
 
 See [Optimizing InnoDB Disk I/O][3] for more
+
+### Additional dependencies
+The Marello OroCommerce combination has additional dependencies in order to function properly and create the integration between both applications.
+These dependencies are:
+* https://github.com/marellocommerce/marello-orocommerce-bridge, general integration bundle with the code of the connector
+* https://github.com/marellocommerce/marello-orocommerce-api-bridge, extension of the OroCommerce API in order to add additional API endpoints for Marello to integrate
 
 ## PostgreSQL installation notes
 
