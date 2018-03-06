@@ -7,7 +7,7 @@ Marello (Enterprise) contains the possibility to integrate with the B2B Commerce
 Requirements
 ------------
 
-Marello OroCommerce Bridge requires Marello (EE) 1.3.* and OroCommerce (EE) 1.5.* installed in order to function correctly. 
+Marello OroCommerce Bridge requires Marello CE 1.3.* or Marello EE 1.1.* and OroCommerce (EE) 1.5.* installed in order to function correctly. 
 
 Terminology
 ------------
