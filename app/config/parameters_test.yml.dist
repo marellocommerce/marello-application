@@ -2,7 +2,7 @@ parameters:
     database_driver:        pdo_mysql
     database_host:          127.0.0.1
     database_port:          ~
-    database_name:          b2b_crm_ee_dev_test
+    database_name:          marello_orocommerce_ee_application_dev
     database_user:          root
     database_password:      ~
 

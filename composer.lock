@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6da520003097aa48540ff49e3f56cd33",
+    "content-hash": "18a038e416c06cbfa71c34c3cca20564",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -631,8 +631,7 @@
                 "reference": "df0ddedcab1a8fdb3a7abafc5fe97819931e7bd5",
                 "shasum": null
             },
-            "type": "bower-asset",
-            "time": "2014-07-21T18:45:41+00:00"
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/font-awesome",
@@ -872,8 +871,7 @@
                 "reference": "e25ba46913160617935f837836016ea7ed2be08c",
                 "shasum": null
             },
-            "type": "bower-asset",
-            "time": "2017-02-08T18:28:50+00:00"
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/jsplumb",
@@ -4744,6 +4742,203 @@
             "time": "2016-06-20T17:11:22+00:00"
         },
         {
+            "name": "marellocommerce/marello",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/marellocommerce/marello.git",
+                "reference": "5ed8505827c090da153bde8a4ad2e22e0a7b6785"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/5ed8505827c090da153bde8a4ad2e22e0a7b6785",
+                "reference": "5ed8505827c090da153bde8a4ad2e22e0a7b6785",
+                "shasum": ""
+            },
+            "require": {
+                "oro/calendar-bundle": "2.5.*",
+                "oro/platform": "2.5.*",
+                "oro/platform-serialised-fields": "2.5.*",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Madia B.V.",
+                    "homepage": "http://www.marello.com"
+                }
+            ],
+            "description": "Marello",
+            "homepage": "https://github.com/marellocommerce/marello.git",
+            "support": {
+                "source": "https://github.com/marellocommerce/marello/tree/1.3.0",
+                "issues": "https://github.com/marellocommerce/marello/issues"
+            },
+            "time": "2018-03-02T15:12:27+00:00"
+        },
+        {
+            "name": "marellocommerce/marello-enterprise",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:marellocommerce/marello-enterprise.git",
+                "reference": "23dc525808613fbd7fe75fe6fc5954b0b34598b3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marellocommerce/marello-enterprise/zipball/23dc525808613fbd7fe75fe6fc5954b0b34598b3",
+                "reference": "23dc525808613fbd7fe75fe6fc5954b0b34598b3",
+                "shasum": ""
+            },
+            "require": {
+                "marellocommerce/marello": "1.3.*",
+                "oro/platform-enterprise": "2.5.*",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "MarelloEnterprise\\Bundle": "src/"
+                }
+            },
+            "license": [
+                "Commercial"
+            ],
+            "authors": [
+                {
+                    "name": "Madia B.V.",
+                    "homepage": "http://www.marello.com"
+                }
+            ],
+            "description": "Marello Enterprise ERP for Commerce",
+            "homepage": "https://github.com/marellocommerce/marello-enterprise.git",
+            "support": {
+                "source": "https://github.com/marellocommerce/marello-enterprise/tree/1.1.0",
+                "issues": "https://github.com/marellocommerce/marello-enterprise/issues"
+            },
+            "time": "2018-03-02T14:53:06+00:00"
+        },
+        {
+            "name": "marellocommerce/marello-orocommerce-api-bridge",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:marellocommerce/marello-orocommerce-api-bridge.git",
+                "reference": "31b08e88db60f66461e33b53eb6434daed9a111a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marellocommerce/marello-orocommerce-api-bridge/zipball/31b08e88db60f66461e33b53eb6434daed9a111a",
+                "reference": "31b08e88db60f66461e33b53eb6434daed9a111a",
+                "shasum": ""
+            },
+            "require": {
+                "oro/commerce": "1.5.*",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Madia B.V.",
+                    "homepage": "https://www.marello.com"
+                }
+            ],
+            "description": "Api Bridge for exposing additional resources from OroCommerce to integrate with Marello",
+            "homepage": "https://github.com/marellocommerce/marello-orocommerce-api-bridge.git",
+            "support": {
+                "source": "https://github.com/marellocommerce/marello-orocommerce-api-bridge/tree/1.0.0",
+                "issues": "https://github.com/marellocommerce/marello-orocommerce-api-bridge/issues"
+            },
+            "time": "2018-02-22T14:55:41+00:00"
+        },
+        {
+            "name": "marellocommerce/marello-orocommerce-bridge",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:marellocommerce/marello-orocommerce-bridge.git",
+                "reference": "80256d63c9f5d450c698c10d3040d124213aa126"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/marellocommerce/marello-orocommerce-bridge/zipball/80256d63c9f5d450c698c10d3040d124213aa126",
+                "reference": "80256d63c9f5d450c698c10d3040d124213aa126",
+                "shasum": ""
+            },
+            "require": {
+                "marellocommerce/marello": "1.3.*",
+                "oro/commerce": "1.5.*",
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "license": [
+                "OSL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Madia B.V.",
+                    "homepage": "https://www.marello.com"
+                }
+            ],
+            "description": "Marello package, integrates Products, Inventory and Orders with OroCommerce",
+            "homepage": "https://github.com/marellocommerce/marello-orocommerce-bridge.git",
+            "support": {
+                "source": "https://github.com/marellocommerce/marello-orocommerce-bridge/tree/1.0.0",
+                "issues": "https://github.com/marellocommerce/marello-orocommerce-bridge/issues"
+            },
+            "time": "2018-03-06T08:08:34+00:00"
+        },
+        {
             "name": "michelf/php-markdown",
             "version": "1.8.0",
             "source": {
@@ -5418,101 +5613,6 @@
             "time": "2018-02-22T14:05:56+00:00"
         },
         {
-            "name": "oro/commerce-crm",
-            "version": "1.5.1",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:oroinc/commerce-crm-er.git",
-                "reference": "19e39b0888fe605d9f095f46449ad617bbab259b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/commerce-crm-er/zipball/19e39b0888fe605d9f095f46449ad617bbab259b",
-                "reference": "19e39b0888fe605d9f095f46449ad617bbab259b",
-                "shasum": ""
-            },
-            "require": {
-                "oro/commerce": "1.5.*",
-                "oro/crm": "2.5.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Oro": "src/"
-                }
-            },
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "https://www.orocommerce.com/"
-                }
-            ],
-            "description": "OroCRM integration for OroCommerce",
-            "homepage": "https://github.com/orocommerce/orocommerce-orocrm",
-            "support": {
-                "source": "https://github.com/oroinc/commerce-crm-er/tree/1.5"
-            },
-            "time": "2017-12-13T10:37:56+00:00"
-        },
-        {
-            "name": "oro/commerce-crm-ee",
-            "version": "1.5.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:oroinc/commerce-crm-enterprise.git",
-                "reference": "bf164489cddf5b8c58ecd65b0ec8e1c33b0a8d3a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/commerce-crm-enterprise/zipball/bf164489cddf5b8c58ecd65b0ec8e1c33b0a8d3a",
-                "reference": "bf164489cddf5b8c58ecd65b0ec8e1c33b0a8d3a",
-                "shasum": ""
-            },
-            "require": {
-                "oro/commerce-crm": "1.5.*",
-                "oro/commerce-enterprise": "1.5.*",
-                "oro/crm-enterprise": "2.5.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "Commercial"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocommerce.com"
-                }
-            ],
-            "description": "OroCommerce CRM Enterprise",
-            "homepage": "https://github.com/orocommerce/orocommerce",
-            "support": {
-                "source": "https://github.com/oroinc/commerce-crm-enterprise/tree/1.5",
-                "issues": "https://github.com/oroinc/commerce-crm-enterprise/issues"
-            },
-            "time": "2017-11-15T10:57:13+00:00"
-        },
-        {
             "name": "oro/commerce-enterprise",
             "version": "1.5.5",
             "source": {
@@ -5559,567 +5659,6 @@
                 "source": "https://github.com/oroinc/commerce-enterprise/tree/1.5.5"
             },
             "time": "2018-02-22T11:09:55+00:00"
-        },
-        {
-            "name": "oro/crm",
-            "version": "2.5.6",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:oroinc/crm-er.git",
-                "reference": "8073155456b86edbd116f580f19ee15cd8b541a6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/crm-er/zipball/8073155456b86edbd116f580f19ee15cd8b541a6",
-                "reference": "8073155456b86edbd116f580f19ee15cd8b541a6",
-                "shasum": ""
-            },
-            "require": {
-                "oro/calendar-bundle": "2.5.*",
-                "oro/crm-call-bundle": "2.5.*",
-                "oro/crm-task-bundle": "2.5.*",
-                "oro/marketing": "2.5.*",
-                "oro/platform": "2.5.*",
-                "php": ">=7.0"
-            },
-            "require-dev": {
-                "behat/behat": "3.2.2",
-                "behat/mink-extension": "2.2.*",
-                "behat/mink-selenium2-driver": "1.*",
-                "behat/symfony2-extension": "2.1.1",
-                "friendsofphp/php-cs-fixer": "2.1.*",
-                "johnkary/phpunit-speedtrap": "1.0.*",
-                "mybuilder/phpunit-accelerator": "1.2.*",
-                "nelmio/alice": "2.2.*",
-                "phpmd/phpmd": "2.6.*",
-                "phpunit/phpcov": "3.1.*",
-                "phpunit/phpunit": "5.7.*",
-                "phpunit/phpunit-selenium": "3.0.*",
-                "sebastian/phpcpd": "dev-master#cff7f36c2ae89d59987de25d14fd41a72dd4a703 as 3.1.0",
-                "sensio/generator-bundle": "3.1.2",
-                "squizlabs/php_codesniffer": "2.8.*",
-                "symfony/phpunit-bridge": "3.2.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "OroCRM",
-            "homepage": "https://github.com/oroinc/crm.git",
-            "support": {
-                "source": "https://github.com/oroinc/crm-er/tree/2.5"
-            },
-            "time": "2018-02-16T14:00:11+00:00"
-        },
-        {
-            "name": "oro/crm-abandoned-cart",
-            "version": "2.5.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:orocrm/OroCRMAbandonedCartBundle.git",
-                "reference": "5c03c6d0f127946e15a05c4bb40ee43208e9ff9d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMAbandonedCartBundle/zipball/5c03c6d0f127946e15a05c4bb40ee43208e9ff9d",
-                "reference": "5c03c6d0f127946e15a05c4bb40ee43208e9ff9d",
-                "shasum": ""
-            },
-            "require": {
-                "oro/crm": "2.5.*",
-                "oro/crm-mail-chimp": "2.5.*",
-                "oro/marketing": "2.5.*",
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\AbandonedCartBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.orocrm.com/downloads/",
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "Oro Abandoned Cart",
-            "time": "2017-11-15T10:57:13+00:00"
-        },
-        {
-            "name": "oro/crm-call-bundle",
-            "version": "2.5.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:orocrm/OroCRMCallBundle.git",
-                "reference": "fc701d22a0e723fe7b82b95dfa57e69f429454c6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMCallBundle/zipball/fc701d22a0e723fe7b82b95dfa57e69f429454c6",
-                "reference": "fc701d22a0e723fe7b82b95dfa57e69f429454c6",
-                "shasum": ""
-            },
-            "require": {
-                "oro/platform": "2.5.*",
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\CallBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.orocrm.com/downloads/",
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "Oro Call Bundle",
-            "homepage": "https://github.com/oroinc/OroCRMCallBundle.git",
-            "keywords": [
-                "Call",
-                "Oro"
-            ],
-            "time": "2017-11-15T10:57:13+00:00"
-        },
-        {
-            "name": "oro/crm-dotmailer",
-            "version": "2.5.2",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:orocrm/OroCRMDotmailerBundle.git",
-                "reference": "24e5d4e18ae70aa75015c052b875243532e549a1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMDotmailerBundle/zipball/24e5d4e18ae70aa75015c052b875243532e549a1",
-                "reference": "24e5d4e18ae70aa75015c052b875243532e549a1",
-                "shasum": ""
-            },
-            "require": {
-                "oro/crm": "2.5.*",
-                "oro/marketing": "2.5.*",
-                "php": ">=7.0",
-                "romanpitak/dotmailer-api-v2-client": "1.0.11"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\DotmailerBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.orocrm.com/downloads/",
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "Oro Dotmailer integration",
-            "homepage": "https://github.com/oroinc/OroCRMDotmailerBundle.git",
-            "time": "2018-01-11T13:37:38+00:00"
-        },
-        {
-            "name": "oro/crm-enterprise",
-            "version": "2.5.2",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:oroinc/crm-enterprise.git",
-                "reference": "0d4e0209c6266a856e59b56ef1b0d2588ee8a90e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/crm-enterprise/zipball/0d4e0209c6266a856e59b56ef1b0d2588ee8a90e",
-                "reference": "0d4e0209c6266a856e59b56ef1b0d2588ee8a90e",
-                "shasum": ""
-            },
-            "require": {
-                "oro/crm": "2.5.*",
-                "oro/platform-enterprise": "2.5.*",
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "": "src/"
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "Commercial"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "OroCRM Enterprise",
-            "homepage": "https://github.com/oroinc/crm-enterprise.git",
-            "support": {
-                "source": "https://github.com/oroinc/crm-enterprise/tree/2.5"
-            },
-            "time": "2018-01-22T11:28:02+00:00"
-        },
-        {
-            "name": "oro/crm-hangouts-call-bundle",
-            "version": "2.5.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:orocrm/OroCRMHangoutsCallBundle.git",
-                "reference": "98b9504270718b84b72981273f71f731635ac040"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMHangoutsCallBundle/zipball/98b9504270718b84b72981273f71f731635ac040",
-                "reference": "98b9504270718b84b72981273f71f731635ac040",
-                "shasum": ""
-            },
-            "require": {
-                "oro/calendar-bundle": "2.5.*",
-                "oro/crm-call-bundle": "2.5.*",
-                "oro/platform": "2.5.*",
-                "php": ">=7.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\HangoutsCallBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.orocrm.com/downloads/",
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "Oro Google Hangouts integration",
-            "homepage": "https://github.com/oroinc/OroCRMHangoutsCallBundle.git",
-            "keywords": [
-                "Google Hangouts",
-                "Oro",
-                "integration"
-            ],
-            "time": "2017-11-15T10:57:13+00:00"
-        },
-        {
-            "name": "oro/crm-magento-embedded-contact-us",
-            "version": "2.5.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:orocrm/OroCRMMagentoContactUsBundle.git",
-                "reference": "13734711675ad226f88a154a4ac46cb63c943aa3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMMagentoContactUsBundle/zipball/13734711675ad226f88a154a4ac46cb63c943aa3",
-                "reference": "13734711675ad226f88a154a4ac46cb63c943aa3",
-                "shasum": ""
-            },
-            "require": {
-                "oro/crm": "2.5.*",
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\MagentoContactUsBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.orocrm.com/downloads/",
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "OroCRM Magento Embedded Contact Us package",
-            "homepage": "https://github.com/oroinc/OroCRMMagentoContactUsBundle.git",
-            "time": "2017-11-15T10:57:13+00:00"
-        },
-        {
-            "name": "oro/crm-mail-chimp",
-            "version": "2.5.3",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:orocrm/OroCRMMailChimpBundle.git",
-                "reference": "bf26a71003e8d8edf4a67ec14b0f76ae3497da34"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMMailChimpBundle/zipball/bf26a71003e8d8edf4a67ec14b0f76ae3497da34",
-                "reference": "bf26a71003e8d8edf4a67ec14b0f76ae3497da34",
-                "shasum": ""
-            },
-            "require": {
-                "oro/crm": "2.5.*",
-                "oro/marketing": "2.5.*",
-                "php": ">=7.0",
-                "zfr/zfr-mailchimp": "2.0.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\MailChimpBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.orocrm.com/downloads/",
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "OroCRM MailChimp integration",
-            "homepage": "https://github.com/oroinc/OroCRMMailChimpBundle.git",
-            "time": "2018-02-21T11:46:54+00:00"
-        },
-        {
-            "name": "oro/crm-pro-ldap-bundle",
-            "version": "2.5.1",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:oroinc/OroCRMProLDAPBundle.git",
-                "reference": "2ce1b1f4e560bc71d32e82cce5f340d459b0d52f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroCRMProLDAPBundle/zipball/2ce1b1f4e560bc71d32e82cce5f340d459b0d52f",
-                "reference": "2ce1b1f4e560bc71d32e82cce5f340d459b0d52f",
-                "shasum": ""
-            },
-            "require": {
-                "oro/platform": "2.5.*",
-                "php": ">=7.0",
-                "zendframework/zend-ldap": ">=2.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\LDAPBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "OroCRM Pro LDAP Bundle",
-            "homepage": "https://github.com/oroinc/OroCRMProLDAPBundle.git",
-            "support": {
-                "source": "https://github.com/oroinc/OroCRMProLDAPBundle/tree/2.5"
-            },
-            "time": "2018-01-17T13:19:39+00:00"
-        },
-        {
-            "name": "oro/crm-task-bundle",
-            "version": "2.5.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:orocrm/OroCRMTaskBundle.git",
-                "reference": "de800da8ac6edf23862c0a403f5f34bf8f0a3c76"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMTaskBundle/zipball/de800da8ac6edf23862c0a403f5f34bf8f0a3c76",
-                "reference": "de800da8ac6edf23862c0a403f5f34bf8f0a3c76",
-                "shasum": ""
-            },
-            "require": {
-                "oro/platform": "2.5.*",
-                "php": ">=7.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\TaskBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.orocrm.com/downloads/",
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "Oro Task Bundle",
-            "homepage": "https://github.com/oroinc/OroCRMTaskBundle.git",
-            "keywords": [
-                "Oro",
-                "Task"
-            ],
-            "time": "2017-11-15T10:57:13+00:00"
-        },
-        {
-            "name": "oro/crm-zendesk",
-            "version": "2.5.0",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:orocrm/OroCRMZendeskBundle.git",
-                "reference": "b88ad45118f51187ec673907378d0632bdf3f005"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/OroCRMZendeskBundle/zipball/b88ad45118f51187ec673907378d0632bdf3f005",
-                "reference": "b88ad45118f51187ec673907378d0632bdf3f005",
-                "shasum": ""
-            },
-            "require": {
-                "oro/crm": "2.5.*",
-                "php": ">=7.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Oro\\Bundle\\ZendeskBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.orocrm.com/downloads/",
-            "license": [
-                "OSL-3.0"
-            ],
-            "authors": [
-                {
-                    "name": "Oro, Inc",
-                    "homepage": "http://www.orocrm.com"
-                }
-            ],
-            "description": "OroCRM Zendesk Integration",
-            "homepage": "https://github.com/oroinc/OroCRMZendeskBundle.git",
-            "keywords": [
-                "Oro",
-                "Zendesk",
-                "integration"
-            ],
-            "time": "2017-11-15T10:57:13+00:00"
         },
         {
             "name": "oro/customer-portal",
@@ -6488,7 +6027,7 @@
             "description": "OroPlatform Enterprise",
             "homepage": "https://github.com/oroinc/platform-enterprise.git",
             "support": {
-                "source": "https://github.com/oroinc/platform-enterprise/tree/2.5.6"
+                "source": "https://github.com/oroinc/platform-enterprise/tree/2.5"
             },
             "time": "2018-02-20T17:10:22+00:00"
         },
@@ -7283,100 +6822,6 @@
             "time": "2015-08-10T12:35:38+00:00"
         },
         {
-            "name": "romanpitak/dotmailer-api-v2-client",
-            "version": "v1.0.11",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:laboro/dotMailer-API-v2-PHP-client.git",
-                "reference": "d31cae6f4ddf8627fad94a3c8621a30a7d279d5d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laboro/dotMailer-API-v2-PHP-client/zipball/d31cae6f4ddf8627fad94a3c8621a30a7d279d5d",
-                "reference": "d31cae6f4ddf8627fad94a3c8621a30a7d279d5d",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": ">=5.3.3",
-                "romanpitak/php-rest-client": ">=v1.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DotMailer\\Api\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.orocrm.com/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Roman Piták",
-                    "email": "roman@pitak.net",
-                    "homepage": "http://pitak.net",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Client library for the dotMailer v2 (REST) API.",
-            "homepage": "https://github.com/romanpitak/dotMailer-API-v2-PHP-client",
-            "keywords": [
-                "API",
-                "client",
-                "dotMailer",
-                "rest",
-                "v2",
-                "version 2"
-            ],
-            "time": "2016-11-11T10:21:32+00:00"
-        },
-        {
-            "name": "romanpitak/php-rest-client",
-            "version": "v1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/romanpitak/PHP-REST-Client.git",
-                "reference": "728b6c44040a13daeb8033953f5f3cdd3dde1980"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/romanpitak/PHP-REST-Client/zipball/728b6c44040a13daeb8033953f5f3cdd3dde1980",
-                "reference": "728b6c44040a13daeb8033953f5f3cdd3dde1980",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "RestClient\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Roman Piták",
-                    "email": "roman@pitak.net",
-                    "homepage": "http://pitak.net",
-                    "role": "Developer"
-                }
-            ],
-            "description": "REST client library.",
-            "homepage": "https://github.com/romanpitak/PHP-REST-Client",
-            "keywords": [
-                "client",
-                "http",
-                "rest"
-            ],
-            "time": "2015-02-19T15:32:16+00:00"
-        },
-        {
             "name": "seld/cli-prompt",
             "version": "1.0.3",
             "source": {
@@ -7626,16 +7071,16 @@
         },
         {
             "name": "sensiolabs/security-checker",
-            "version": "v4.1.7",
+            "version": "v4.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/security-checker.git",
-                "reference": "d539ccba2b4dce515de04f16b7ed7ae5b9eeb434"
+                "reference": "dc270d5fec418cc6ac983671dba5d80ffaffb142"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/d539ccba2b4dce515de04f16b7ed7ae5b9eeb434",
-                "reference": "d539ccba2b4dce515de04f16b7ed7ae5b9eeb434",
+                "url": "https://api.github.com/repos/sensiolabs/security-checker/zipball/dc270d5fec418cc6ac983671dba5d80ffaffb142",
+                "reference": "dc270d5fec418cc6ac983671dba5d80ffaffb142",
                 "shasum": ""
             },
             "require": {
@@ -7667,7 +7112,7 @@
                 }
             ],
             "description": "A security checker for your composer.lock",
-            "time": "2018-01-11T05:54:03+00:00"
+            "time": "2018-02-28T22:10:01+00:00"
         },
         {
             "name": "snc/redis-bundle",
@@ -8853,16 +8298,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.35.0",
+            "version": "v1.35.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "daa657073e55b0a78cce8fdd22682fddecc6385f"
+                "reference": "9c24f2cd39dc1906b76879e099970b7e53724601"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/daa657073e55b0a78cce8fdd22682fddecc6385f",
-                "reference": "daa657073e55b0a78cce8fdd22682fddecc6385f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/9c24f2cd39dc1906b76879e099970b7e53724601",
+                "reference": "9c24f2cd39dc1906b76879e099970b7e53724601",
                 "shasum": ""
             },
             "require": {
@@ -8914,7 +8359,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-09-27T18:06:46+00:00"
+            "time": "2018-03-03T16:21:29+00:00"
         },
         {
             "name": "vakata/jstree",
@@ -9218,59 +8663,6 @@
                 "zf2"
             ],
             "time": "2017-07-11T19:17:22+00:00"
-        },
-        {
-            "name": "zendframework/zend-ldap",
-            "version": "2.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zendframework/zend-ldap.git",
-                "reference": "a9284a7440e17ce0ba697670bb4db1baf2340acd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-ldap/zipball/a9284a7440e17ce0ba697670bb4db1baf2340acd",
-                "reference": "a9284a7440e17ce0ba697670bb4db1baf2340acd",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ldap": "*",
-                "php": "^5.5 || ^7.0"
-            },
-            "require-dev": {
-                "php-mock/php-mock-phpunit": "~0.3",
-                "phpunit/phpunit": "^4.6",
-                "zendframework/zend-coding-standard": "~1.0.0",
-                "zendframework/zend-config": "^2.5",
-                "zendframework/zend-eventmanager": "^2.6.3 || ^3.0.1",
-                "zendframework/zend-stdlib": "^2.7 || ^3.0"
-            },
-            "suggest": {
-                "zendframework/zend-eventmanager": "Zend\\EventManager component"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.8-dev",
-                    "dev-develop": "2.9-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zend\\Ldap\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "description": "provides support for LDAP operations including but not limited to binding, searching and modifying entries in an LDAP directory",
-            "homepage": "https://github.com/zendframework/zend-ldap",
-            "keywords": [
-                "ldap",
-                "zf2"
-            ],
-            "time": "2017-03-06T20:39:12+00:00"
         },
         {
             "name": "zendframework/zend-loader",
@@ -9641,56 +9033,6 @@
                 "zf2"
             ],
             "time": "2015-03-25T20:55:48+00:00"
-        },
-        {
-            "name": "zfr/zfr-mailchimp",
-            "version": "v2.0.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/zf-fr/zfr-mailchimp.git",
-                "reference": "265a640e009580742d6cba2331c5efa0b695cc79"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/zf-fr/zfr-mailchimp/zipball/265a640e009580742d6cba2331c5efa0b695cc79",
-                "reference": "265a640e009580742d6cba2331c5efa0b695cc79",
-                "shasum": ""
-            },
-            "require": {
-                "guzzle/guzzle": "~3.5",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~3.7"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "ZfrMailChimp\\": "src/"
-                },
-                "classmap": [
-                    "./"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michaël Gallego",
-                    "email": "mic.gallego@gmail.com",
-                    "homepage": "http://www.michaelgallego.fr"
-                }
-            ],
-            "description": "PHP library for interacting with the v2 MailChimp REST API",
-            "homepage": "https://github.com/zf-fr/zfr-mailchimp",
-            "keywords": [
-                "campaign",
-                "mail",
-                "mailchimp"
-            ],
-            "time": "2016-11-24T06:46:20+00:00"
         }
     ],
     "packages-dev": [
@@ -12231,6 +11573,8 @@
     "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=7.0"
+    },
     "platform-dev": []
 }

@@ -1,16 +1,13 @@
 {
-  "name": "oro/commerce-crm-enterprise-application",
-  "description": "OroCommerce + OroCrm Enterprise Application.",
-  "license": "Commercial",
-  "authors": [
-    {
-      "name": "Oro, Inc",
-      "homepage": "https://www.orocommerce.com"
-    }
-  ],
+  "name": "marellocommerce/marello-orocommerce-ee-application",
+  "description": "Marello OroCommerce enterprise application",
+  "homepage": "https://github.com/marellocommerce/marello-orocommerce-ee-application",
+  "license": "OSL-3.0",
   "autoload": {
-    "psr-4": {"": "src/"},
-    "exclude-from-classmap": ["**/Tests/"]
+    "autoload": {
+      "psr-4": {"": "src/"},
+      "exclude-from-classmap": ["**/Tests/"]
+    }
   },
   "repositories": {
     "ldap-bundle": {
@@ -20,14 +17,6 @@
     "platform-enterprise": {
       "type": "vcs",
       "url": "https://github.com/oroinc/platform-enterprise.git"
-    },
-    "crm-enterprise": {
-      "type": "vcs",
-      "url": "https://github.com/oroinc/crm-enterprise.git"
-    },
-    "crm": {
-      "type": "vcs",
-      "url": "https://github.com/oroinc/crm-er.git"
     },
     "platform": {
       "type": "vcs",
@@ -45,14 +34,6 @@
       "type": "vcs",
       "url": "https://github.com/oroinc/commerce-er.git"
     },
-    "commerce-crm": {
-      "type": "vcs",
-      "url": "https://github.com/oroinc/commerce-crm-er.git"
-    },
-    "commerce-crm-enterprise": {
-      "type": "vcs",
-      "url": "https://github.com/oroinc/commerce-crm-enterprise.git"
-    },
     "composer": {
       "type": "composer",
       "url": "https://packagist.orocrm.com"
@@ -60,22 +41,39 @@
     "asset-packagist": {
       "type": "composer",
       "url": "https://asset-packagist.orocrm.com"
+    },
+    "marello-enterprise": {
+      "type": "vcs",
+      "url": "https://github.com/marellocommerce/marello-enterprise.git",
+      "branch": "master"
+    },
+    "marello": {
+      "type": "vcs",
+      "url": "https://github.com/marellocommerce/marello.git",
+      "branch": "master"
+    },
+    "marello-orocommerce-bridge": {
+      "type": "vcs",
+      "url": "https://github.com/marellocommerce/marello-orocommerce-bridge.git",
+      "branch": "master"
+    },
+    "marello-orocommerce-api-bridge": {
+      "type": "vcs",
+      "url": "https://github.com/marellocommerce/marello-orocommerce-api-bridge.git",
+      "branch": "master"
     }
   },
   "require": {
-    "oro/crm-enterprise": "2.5.*",
+    "php": ">=7.0",
+    "oro/platform": "2.5.*",
+    "oro/commerce": "1.5.*",
     "oro/platform-serialised-fields": "2.5.*",
-    "oro/crm-hangouts-call-bundle": "2.5.*",
-    "oro/crm-abandoned-cart": "2.5.*",
-    "oro/crm-magento-embedded-contact-us": "2.5.*",
-    "oro/crm-mail-chimp": "2.5.*",
-    "oro/crm-dotmailer": "2.5.*",
-    "oro/crm-zendesk": "2.5.*",
-    "oro/crm-pro-ldap-bundle": "2.5.*",
+    "oro/calendar-bundle": "2.5.*",
     "oro/commerce-enterprise": "1.5.*",
-    "oro/commerce-crm": "1.5.*",
-    "oro/commerce-crm-ee": "1.5.*",
-    "oro/customer-portal": "2.5.*"
+    "oro/customer-portal": "2.5.*",
+    "marellocommerce/marello-enterprise": "1.1.*",
+    "marellocommerce/marello-orocommerce-bridge": "1.0.*",
+    "marellocommerce/marello-orocommerce-api-bridge": "1.0.*"
   },
   "require-dev": {
     "sensio/generator-bundle": "3.1.2",
