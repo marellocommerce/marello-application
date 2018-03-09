@@ -9,9 +9,9 @@ data:
         postalCode: '14608'
         organization: 'test organization'
         namePrefix:
-        firstName:
+        firstName: 'test'
         middleName:
-        lastName:
+        lastName: 'user'
         nameSuffix:
     relationships:
         country:

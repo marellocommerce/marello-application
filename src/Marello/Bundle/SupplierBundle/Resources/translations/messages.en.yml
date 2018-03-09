@@ -11,6 +11,7 @@ marello:
         is_active.label:              Active
         address.label:                Address
         email.label:                  Email
+        organization.label:           Organization
         datablock:
             general:                  General
             supplier_information:     Supplier Information

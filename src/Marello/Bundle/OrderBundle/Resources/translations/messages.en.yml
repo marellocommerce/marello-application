@@ -30,6 +30,7 @@ marello:
         payment_reference.label:    Payment Reference
         shipping_method.label:      Shipping Method
         shipment.label:             Shipment
+        data.label:                 Data
         shipping_amount_incl_tax.label:      Shipping Costs Incl. tax
         shipping_amount_excl_tax.label:      Shipping Costs Excl. tax
         status.label:               Order Status
