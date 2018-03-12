@@ -85,4 +85,26 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
         $customer = $this->getEntityManager()->find(Customer::class, $responseContent->data->id);
         $this->assertEquals($customer->getEmail(), $responseContent->data->attributes->email);
     }
+
+    /**
+     * Update existing customer email address
+     */
+    public function testUpdateEmailExistingCustomer()
+    {
+        $existingCustomer = $this->getReference('marello-customer-1');
+        $response = $this->patch(
+            [
+                'entity' => self::TESTING_ENTITY,
+                'id' => $existingCustomer->getId()
+            ],
+            'customer_email_update.yml'
+        );
+
+        $this->assertJsonResponse($response);
+        $responseContent = json_decode($response->getContent());
+
+        /** @var Customer $customer */
+        $customer = $this->getEntityManager()->find(Customer::class, $responseContent->data->id);
+        $this->assertEquals($customer->getEmail(), 'mynewemailaddres@example.com');
+    }
 }

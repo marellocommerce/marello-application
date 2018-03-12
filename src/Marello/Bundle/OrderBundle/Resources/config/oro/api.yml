@@ -34,8 +34,6 @@ api:
 
         Marello\Bundle\OrderBundle\Entity\Customer:
             fields:
-#                addresses:
-#                    exclude: true
                 createdAt:
                     exclude: true
                 updatedAt:
@@ -51,7 +49,4 @@ api:
             actions:
                 delete: false
                 delete_list: false
-#                get_relationship: false
-#                get_subresource: false
-#                update_relationship: false
-#                delete_relationship: false
+                delete_relationship: false
