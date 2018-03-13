@@ -66,3 +66,20 @@ services:
             - 'Marello\Bundle\ProductBundle\Entity\Product'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_product.service.duplicator:
+        class: 'Marello\Bundle\ProductBundle\Duplicator\ProductDuplicator'
+        arguments:
+            - "@oro_entity.doctrine_helper"
+            - "@event_dispatcher"
+            - "@oro_attachment.file_manager"
+            - "@oro_attachment.provider.attachment"
+        calls:
+            - [setSkuIncrementor,  ["@marello_product.service.sku_incrementor"]]
+
+    marello_product.service.sku_incrementor:
+        class: 'Marello\Bundle\ProductBundle\Duplicator\SkuIncrementor'
+        public: false
+        arguments:
+            - "@oro_entity.doctrine_helper"
+            - '%marello_product.entity.class%'

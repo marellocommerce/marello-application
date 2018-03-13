@@ -368,6 +368,19 @@ class Product extends ExtendProduct implements
         $this->suppliers            = new ArrayCollection();
         $this->salesChannelTaxCodes = new ArrayCollection();
     }
+    
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id                   = null;
+            $this->prices               = new ArrayCollection();
+            $this->channelPrices        = new ArrayCollection();
+            $this->channels             = new ArrayCollection();
+            $this->inventoryItems       = new ArrayCollection();
+            $this->suppliers            = new ArrayCollection();
+            $this->salesChannelTaxCodes = new ArrayCollection();
+        }
+    }
 
     /**
      * @return int
@@ -785,6 +798,7 @@ class Product extends ExtendProduct implements
     {
         if (!$this->suppliers->contains($supplier)) {
             $this->suppliers->add($supplier);
+            $supplier->setProduct($this);
         }
 
         return $this;
@@ -813,8 +827,7 @@ class Product extends ExtendProduct implements
 
         return $this;
     }
-
-
+    
     /**
      * @return Supplier
      */
@@ -886,6 +899,7 @@ class Product extends ExtendProduct implements
     {
         if (!$this->salesChannelTaxCodes->contains($salesChannelTaxCode)) {
             $this->salesChannelTaxCodes->add($salesChannelTaxCode);
+            $salesChannelTaxCode->setProduct($this);
         }
 
         return $this;

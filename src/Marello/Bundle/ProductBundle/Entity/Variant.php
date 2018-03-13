@@ -64,6 +64,13 @@ class Variant
         $this->products = new ArrayCollection();
     }
 
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+        }
+    }
+
     /**
      * @return int
      */

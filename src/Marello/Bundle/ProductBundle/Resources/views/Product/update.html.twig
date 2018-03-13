@@ -45,6 +45,13 @@
     {{ UI.cancelButton(path('marello_product_index')) }}
 
     {% set html = UI.saveAndCloseButton() %}
+    {% if resource_granted('oro_product_create') %}
+        {% set saveAndDuplicateButton = UI.saveActionButton({
+        'label': 'marello.product.ui.save_and_duplicate'|trans,
+        'action': 'save_and_duplicate'
+        }) %}
+        {% set html = html ~ saveAndDuplicateButton %}
+    {% endif %}
     {% if form.vars.value.id or resource_granted('marello_product_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
