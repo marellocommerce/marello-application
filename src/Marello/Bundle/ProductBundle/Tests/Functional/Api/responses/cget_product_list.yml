@@ -1,0 +1,53 @@
+data:
+    -
+        type: products
+        id: '<toString(@product1->id)>'
+        attributes:
+            name: product1
+            sku: p1
+            manufacturingCode: null
+            productType: null
+            cost: null
+            weight: 0
+            warranty: null
+            data: []
+            price: {  }
+    -
+        type: products
+        id: '<toString(@product2->id)>'
+        attributes:
+            name: 'product 2'
+            sku: p2
+            manufacturingCode: null
+            productType: null
+            cost: null
+            weight: 2
+            warranty: null
+            data: []
+            price: {  }
+    -
+        type: products
+        id: '<toString(@product3->id)>'
+        attributes:
+            name: 'product 3'
+            sku: p3
+            manufacturingCode: null
+            productType: null
+            cost: null
+            weight: 5
+            warranty: null
+            data: []
+            price: {  }
+    -
+        type: products
+        id: '<toString(@product4->id)>'
+        attributes:
+            name: 'product 4'
+            sku: p4
+            manufacturingCode: null
+            productType: null
+            cost: null
+            weight: 10
+            warranty: null
+            data: []
+            price: {  }

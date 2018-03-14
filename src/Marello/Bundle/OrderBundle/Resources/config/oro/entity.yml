@@ -3,3 +3,7 @@ oro_entity:
         Marello\Bundle\OrderBundle\Entity\Customer:
             alias: customer
             plural_alias: customers
+
+        Marello\Bundle\OrderBundle\Entity\Order:
+            alias: order
+            plural_alias: orders

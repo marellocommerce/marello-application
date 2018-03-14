@@ -1,0 +1,14 @@
+data:
+    -
+        type: products
+        id: '<toString(@product1->id)>'
+        attributes:
+            name: product1
+            sku: p1
+            manufacturingCode: null
+            productType: null
+            cost: null
+            weight: 0
+            warranty: null
+            data: []
+            price: {  }
