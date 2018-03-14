@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ReturnController extends Controller
 {
     /**
-     * @Config\Route("/")
+     * @Config\Route("/", name="marello_return_return_index")
      * @Config\Template
      * @Security\AclAncestor("marello_return_view")
      */
@@ -23,7 +23,7 @@ class ReturnController extends Controller
     }
 
     /**
-     * @Config\Route("/create/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/create/{id}", requirements={"id"="\d+"}, name="marello_return_return_create")
      * @Config\Template
      * @Security\AclAncestor("marello_return_create")
      *
@@ -75,7 +75,7 @@ class ReturnController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_return_return_view")
      * @Config\Template
      * @Security\AclAncestor("marello_return_view")
      *
@@ -89,7 +89,7 @@ class ReturnController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_return_return_update")
      * @Config\Template
      * @Security\AclAncestor("marello_return_update")
      *

@@ -10,9 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Config\Route("/channel")
- */
 class SalesChannelController extends Controller
 {
     /**
@@ -29,7 +26,7 @@ class SalesChannelController extends Controller
     }
 
     /**
-     * @Config\Route("/create")
+     * @Config\Route("/create", name="marello_sales_saleschannel_create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template("MarelloSalesBundle:SalesChannel:update.html.twig")
      * @Security\AclAncestor("marello_sales_saleschannel_create")

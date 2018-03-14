@@ -1,7 +1,7 @@
 navigation:
     menu_config:
         items:
-            products:
+            products_tab:
                 label: marello.product.navigation.product.label
                 uri: '#'
                 extras:
@@ -36,7 +36,7 @@ navigation:
         tree:
             application_menu:
                 children:
-                    products:
+                    products_tab:
                         children:
                             products_list: ~
                         position: 10

@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Mapper\MapperInterface;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
@@ -45,6 +46,7 @@ class CreatePackingSlipEventListener
 
     /**
      * @param ExtendableActionEvent $event
+     * @throws \Exception
      */
     public function onCreatePackingSlip(ExtendableActionEvent $event)
     {
@@ -54,7 +56,14 @@ class CreatePackingSlipEventListener
 
         /** @var Order $entity */
         $entity = $event->getContext()->getData()->get('order');
-
+        foreach ($entity->getItems() as $item) {
+            /** @var Product $product */
+            $product = $item->getProduct();
+            if (!$product->getWeight()) {
+                throw new \Exception(sprintf('Packing Slip can\'t be created because product %s added to order
+                 does not have weight specified', $product->getSku()));
+            }
+        }
         $packingSlips = $this->mapper->map($entity);
 
         if (0 === count($packingSlips)) {

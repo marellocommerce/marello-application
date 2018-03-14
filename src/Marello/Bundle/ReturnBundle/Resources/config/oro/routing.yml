@@ -1,9 +1,9 @@
-marello_order_bundle:
-    resource: "@MarelloReturnBundle/Controller"
+marello_return_return:
+    resource: "@MarelloReturnBundle/Controller/ReturnController.php"
     type:     annotation
     prefix:   /marello/return
 
-marello_order_bundle_api:
+marello_return_bundle_api:
     resource: "@MarelloReturnBundle/Resources/config/oro/routing_api.yml"
     type: rest
     prefix: api/rest/{version}

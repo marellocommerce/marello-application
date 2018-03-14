@@ -7,28 +7,28 @@ navigation:
                 extras:
                     position: 30
 
-            tax_code_list:
+            marello_tax_code_list:
                 label: 'marello.tax.taxcode.entity_plural_label'
                 route: 'marello_tax_taxcode_index'
                 extras:
                     routes: ['marello_tax_taxcode_*']
                     position: 20
 
-            tax_rate_list:
+            marello_tax_rate_list:
                 label: 'marello.tax.taxrate.entity_plural_label'
                 route: 'marello_tax_taxrate_index'
                 extras:
                     routes: ['marello_tax_taxrate_*']
                     position: 30
 
-            tax_rule_list:
+            marello_tax_rule_list:
                 label: 'marello.tax.taxrule.entity_plural_label'
                 route: 'marello_tax_taxrule_index'
                 extras:
                     routes: ['marello_tax_taxrule_*']
                     position: 10
 
-            tax_jurisdiction_list:
+            marello_tax_jurisdiction_list:
                 label: 'marello.tax.taxjurisdiction.entity_plural_label'
                 route: 'marello_tax_taxjurisdiction_index'
                 extras:
@@ -40,10 +40,10 @@ navigation:
                 children:
                     taxes_tab:
                         children:
-                            tax_code_list: ~
-                            tax_rule_list: ~
-                            tax_rate_list: ~
-                            tax_jurisdiction_list: ~
+                            marello_tax_code_list: ~
+                            marello_tax_rule_list: ~
+                            marello_tax_rate_list: ~
+                            marello_tax_jurisdiction_list: ~
 
     titles:
         marello_tax_taxcode_index: 'marello.tax.taxcode.entity_plural_label'

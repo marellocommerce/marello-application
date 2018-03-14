@@ -27,6 +27,7 @@
 {% endblock navButtons %}
 
 {% block content_data %}
+    {% set id = 'marello-order-view' %}
     {% set generalSubblocks = [] %}
     {% set generalInformation %}
         <div class="widget-content">
@@ -194,7 +195,7 @@
         }
     ] %}
 
-    {% set id = 'marelloOrderView' %}
+
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

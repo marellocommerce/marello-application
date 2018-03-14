@@ -1,3 +1,8 @@
+parameters:
+    marello_tax.entity.tax_code.class: Marello\Bundle\TaxBundle\Entity\TaxCode
+    marello_tax.entity.tax_rate.class: Marello\Bundle\TaxBundle\Entity\TaxRate
+    marello_tax.entity.tax_rule.class: Marello\Bundle\TaxBundle\Entity\TaxRule
+    marello_tax.entity.tax_jurisdiction.class: Marello\Bundle\TaxBundle\Entity\TaxJurisdiction
 services:
     marello_tax.tax_rule.matcher.composite:
         class: Marello\Bundle\TaxBundle\Matcher\CompositeTaxRuleMatcher

@@ -9,6 +9,7 @@ use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\SalesBundle\Model\ExtendSalesChannel;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -119,6 +120,14 @@ class SalesChannel extends ExtendSalesChannel implements
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      */
     protected $group;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
+     * @ORM\JoinColumn(name="integration_channel_id", nullable=true)
+     *
+     * @var Channel
+     */
+    protected $integrationChannel;
 
     /**
      * @param string|null $name
@@ -309,6 +318,25 @@ class SalesChannel extends ExtendSalesChannel implements
     public function setGroup(SalesChannelGroup $group)
     {
         $this->group = $group;
+
+        return $this;
+    }
+
+    /**
+     * @return Channel|null
+     */
+    public function getIntegrationChannel()
+    {
+        return $this->integrationChannel;
+    }
+
+    /**
+     * @param Channel $integrationChannel
+     * @return $this
+     */
+    public function setIntegrationChannel(Channel $integrationChannel)
+    {
+        $this->integrationChannel = $integrationChannel;
 
         return $this;
     }

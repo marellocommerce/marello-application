@@ -1,7 +1,7 @@
 navigation:
     menu_config:
         items:
-            customer_tab:
+            customers_tab:
                 label: marello.order.navigation.customers.label
                 uri: '#'
                 extras:
@@ -42,7 +42,7 @@ navigation:
                     sales_tab:
                         children:
                             orders: ~
-                    customer_tab:
+                    customers_tab:
                         children:
                             customers: ~
             shortcuts:
