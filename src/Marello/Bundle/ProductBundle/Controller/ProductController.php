@@ -2,17 +2,19 @@
 
 namespace Marello\Bundle\ProductBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-
-use Oro\Bundle\SecurityBundle\Annotation as Security;
-
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Oro\Bundle\ActionBundle\Model\ActionData;
+use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\UIBundle\Route\Router;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductController extends Controller
 {
+    const ACTION_SAVE_AND_DUPLICATE = 'save_and_duplicate';
+
     /**
      * @Config\Route(
      *      "/{_format}",
@@ -32,10 +34,14 @@ class ProductController extends Controller
      * @Config\Route("/create", name="marello_product_create")
      * @Security\AclAncestor("marello_product_create")
      * @Config\Template("MarelloProductBundle:Product:update.html.twig")
+     *
+     * @param Request $request
+     *
+     * @return array
      */
-    public function createAction()
+    public function createAction(Request $request)
     {
-        return $this->update(new Product());
+        return $this->update(new Product(), $request);
     }
 
     /**
@@ -44,44 +50,62 @@ class ProductController extends Controller
      * @Config\Template
      *
      * @param Product $product
+     * @param Request $request
      *
      * @return array
      */
-    public function updateAction(Product $product)
+    public function updateAction(Product $product, Request $request)
     {
-        return $this->update($product);
+        return $this->update($product, $request);
     }
 
     /**
      * @param Product $product
+     * @param Request $request
      *
      * @return array
      */
-    protected function update(Product $product)
+    protected function update(Product $product, Request $request)
     {
         $handler = $this->get('marello_product.product_form.handler');
 
         if ($handler->process($product)) {
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('marello.product.messages.success.product.saved')
-            );
+            if ($request->get(Router::ACTION_PARAMETER) === self::ACTION_SAVE_AND_DUPLICATE) {
+                $saveMessage = $this->get('translator')
+                    ->trans('marello.product.ui.product.saved_and_duplicated.message');
+                $this->get('session')->getFlashBag()->set('success', $saveMessage);
+                $actionGroup = $this->get('oro_action.action_group_registry')->findByName('marello_product_duplicate');
+                if ($actionGroup) {
+                    $actionData = $actionGroup->execute(new ActionData(['data' => $product]));
+                    /** @var Product $productCopy */
+                    if ($productCopy = $actionData->offsetGet('productCopy')) {
+                        return new RedirectResponse(
+                            $this->get('router')->generate('marello_product_view', ['id' => $productCopy->getId()])
+                        );
+                    }
+                }
+            } else {
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('marello.product.messages.success.product.saved')
+                );
 
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'marello_product_update',
-                    'parameters' => [
-                        'id'                      => $product->getId(),
-                    ]
-                ],
-                [
-                    'route'      => 'marello_product_view',
-                    'parameters' => [
-                        'id'                      => $product->getId(),
-                    ]
-                ],
-                $product
-            );
+                return $this->get('oro_ui.router')->redirectAfterSave(
+                    [
+                        'route' => 'marello_product_update',
+                        'parameters' => [
+                            'id' => $product->getId(),
+                        ]
+                    ],
+                    [
+                        'route' => 'marello_product_view',
+                        'parameters' => [
+                            'id' => $product->getId(),
+                        ]
+                    ],
+                    $product
+                );
+            }
         }
 
         return [
