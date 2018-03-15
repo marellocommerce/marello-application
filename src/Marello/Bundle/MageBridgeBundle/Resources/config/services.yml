@@ -40,7 +40,7 @@ services:
         arguments:
             - '@marello_sales.form.data_transformer.sales_channel'
         tags:
-            - { name: form.type, alias: marello_sales_saleschannel_multi_select }
+            - { name: form.type, alias: marello_magebridge_saleschannel_multi_select }
 
     marello_magebrdige.form.type.transport_check:
         class: Marello\Bundle\MageBridgeBundle\Form\Type\TransportAuthButtonType

@@ -1,0 +1,46 @@
+operations:
+    marello_magento_authenticate:
+        label: marello.magebridge.integration.authenticate
+        applications: [default]
+        acl_resource: [EDIT, $.data]
+        order: 20
+        datagrids:
+            - oro-integration-grid
+        routes:
+            - oro_integration_update
+        button_options:
+            icon: fa-check
+        attributes:
+            actionAllowed:
+                label: oro.integration.operation.attribute.actionAllowed.label
+                type: boolean
+            actionSuccess:
+                label: oro.integration.operation.attribute.actionSuccess.label
+                type: boolean
+        preactions:
+            - '@call_service_method':
+                service: oro_integration.utils.edit_mode
+                method: isSwitchEnableAllowed
+                method_parameters: [$.data.editMode]
+                attribute: $.actionAllowed
+        preconditions:
+            '@and':
+                - '@equal': [$.actionAllowed, true]
+                - '@equal': [$.data.enabled, true]
+                - '@equal': [$.data.type, magento]
+        actions:
+#            - '@call_service_method':
+#                service: oro_integration.action_handler.channel_disable
+#                method: handleAction
+#                method_parameters: [$.data]
+#                attribute: $.actionSuccess
+#            - '@flash_message':
+#                conditions:
+#                    '@equal': [$.actionSuccess, true]
+#                message: oro.integration.notification.channel.deactivated
+#                type: 'success'
+            - @redirect:
+                parameters:
+                    route: marello_magento_integration_authenticate
+                    route_parameters: {id: $.data.id}
+

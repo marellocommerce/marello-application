@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesChannelMultiSelectType extends AbstractSalesChannelMultiSelectType
 {
-    const NAME = 'marello_sales_saleschannel_multi_select';
+    const NAME = 'marello_magebridge_saleschannel_multi_select';
 
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ class SalesChannelMultiSelectType extends AbstractSalesChannelMultiSelectType
             'autocomplete_alias' => 'saleschannels',
             'configs' => [
                 'multiple' => true,
-                'placeholder' => 'marello.sales.saleschannel.form.select_saleschannels',
+                'placeholder' => 'marello.magebridge.saleschannel.form.select_saleschannels',
                 'allowClear' => true
             ],
         ]);

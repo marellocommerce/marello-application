@@ -6,19 +6,20 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class IntegrationConfigController extends Controller
 {
     /**
-     * @return JsonResponse
-     *
-     * @Route("/authenticate", name="marello_magento_integration_authenticate")
+     * @Route("/authenticate/{id}", requirements={"id"="\d+"}, name="marello_magento_integration_authenticate")
      * @AclAncestor("marello_integration_update")
      */
-    public function requestTokenAction()
+    public function requestTokenAction(Integration $integration)
     {
+        var_dump($integration->getName());
+        die(__METHOD__ . '###'. __LINE__);
         //TODO: 1) initiate: get consumerKey, consumerSecret, apiUrl and execute 1st step oauth/initiate
         //TODO: 2) authorize: redirect user to magento admin uri with callback url
 
@@ -30,7 +31,7 @@ class IntegrationConfigController extends Controller
 //            $response = $this->logErrorAndGetResponse($e);
 //        }
 //
-        return new JsonResponse(["x" => "y"]);
+
     }
 
     /**

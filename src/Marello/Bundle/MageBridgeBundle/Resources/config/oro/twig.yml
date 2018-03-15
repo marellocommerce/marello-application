@@ -1,2 +1,2 @@
-bundles:
-    - MarelloMageBridgeBundle:Form:fields.html.twig
+#bundles:
+#    - MarelloMageBridgeBundle:Form:fields.html.twig

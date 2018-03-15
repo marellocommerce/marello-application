@@ -63,6 +63,7 @@ class RestTransportSettingsFormType extends AbstractType
             ]
         );
 
+        /*
         $builder->add(
             'authenticate',
             'marello_magebrdige_transport_auth_button',
@@ -70,6 +71,7 @@ class RestTransportSettingsFormType extends AbstractType
                 'label'     => 'marello.magebridge.magento.transport.authenticate_connection.label',
             ]
         );
+        */
 
         //TODO : remove these fields they are automatically being filled in
         $builder->add(
@@ -98,7 +100,7 @@ class RestTransportSettingsFormType extends AbstractType
 
         $builder->add(
             'salesChannels',
-            'marello_sales_saleschannel_multi_select',
+            'marello_magebridge_saleschannel_multi_select',
             [
                 'label' => 'marello.magebridge.magento.form.sales_channel.label',
                 'tooltip' => 'marello.magebridge.magento.form.sales_channel.description',
