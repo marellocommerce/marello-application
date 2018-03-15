@@ -27,8 +27,6 @@ api:
                 update: false
                 delete: false
                 delete_list: false
-                get_subresource: false
-                get_relationship: false
                 update_relationship: false
                 delete_relationship: false
 
