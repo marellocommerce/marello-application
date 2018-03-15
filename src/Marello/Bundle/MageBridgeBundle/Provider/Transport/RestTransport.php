@@ -70,24 +70,4 @@ class RestTransport extends AbstractRestTransport
         //TODO: extract client options here
         return [];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWebsites()
-    {
-        var_dump($this);
-        die(__METHOD__ .'###'. __LINE__);
-
-
-//        try {
-//            $data = $this->client->get('store/websites', [], $this->headers)->json();
-//            $data = $this->responseConverterManager->convert($data, self::WEBSITE_RESPONSE_TYPE);
-//
-//            return new LoadableRestIterator($data);
-//        } catch (RestException $e) {
-//            return $this->handleException($e, 'getWebsites');
-//        }
-    }
-
 }

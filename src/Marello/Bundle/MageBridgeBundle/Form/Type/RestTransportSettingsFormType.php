@@ -101,17 +101,11 @@ class RestTransportSettingsFormType extends AbstractType
             'marello_sales_saleschannel_multi_select',
             [
                 'label' => 'marello.magebridge.magento.form.sales_channel.label',
+                'tooltip' => 'marello.magebridge.magento.form.sales_channel.description',
                 'required' => true,
                 'disabled' => $isExisting,
             ]
         );
-
-//        $builder->add(
-//            $builder->create('websites', 'hidden')
-//                ->addViewTransformer(new ArrayToJsonTransformer())
-//        );
-
-
     }
 
     /**

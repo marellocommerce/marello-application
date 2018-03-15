@@ -6,9 +6,9 @@ parameters:
 
 services:
 
-  hwi_oauth.resource_owner.magento:
-    class:  Marello\Bundle\MageBridgeBundle\OAuth\ResourceOwner\MagentoResourceOwner
-    parent: hwi_oauth.abstract_resource_owner.oauth1
+    hwi_oauth.resource_owner.magento:
+      class:  Marello\Bundle\MageBridgeBundle\OAuth\ResourceOwner\MagentoResourceOwner
+      parent: hwi_oauth.abstract_resource_owner.oauth1
 
     # Providers
     marello_magebridge.provider.magento_channel_type:

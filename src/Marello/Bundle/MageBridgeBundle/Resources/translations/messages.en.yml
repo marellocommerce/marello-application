@@ -33,3 +33,6 @@ marello:
               token_secret:
                   label: 'Token Secret'
                   description: 'Not manually filled in Leave empty - will be filled in upon authentication completion'
+              sales_channel:
+                  label: 'Magento Sales Channel'
+                  description: 'Magento Sales Channel related to this integration'
