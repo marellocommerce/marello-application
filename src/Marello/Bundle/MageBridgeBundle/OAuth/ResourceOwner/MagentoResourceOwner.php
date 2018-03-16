@@ -17,7 +17,7 @@ use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 
 class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
 {
-//    use ConfigurableCredentialsTrait;
+
     /**
      * {@inheritdoc}
      */

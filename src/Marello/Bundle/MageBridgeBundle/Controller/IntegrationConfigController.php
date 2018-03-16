@@ -30,6 +30,9 @@ class IntegrationConfigController extends Controller
 //        } catch (\Exception $e) {
 //            $response = $this->logErrorAndGetResponse($e);
 //        }
+
+
+//        return $this->redirect('http://symfony.com/doc');
 //
 
     }

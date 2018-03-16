@@ -1,38 +1,46 @@
 marello:
     magebridge:
         magento:
-          channel_type:
-              label: 'Magento'
-          transport:
-              rest:
-                  label: Magento REST API
-              authenticate_connection:
-                  label: 'Authenticate Magento'
+            channel_type:
+                label: 'Magento'
+            transport:
+                rest:
+                    label: Magento REST API
+                authenticate_connection:
+                    label: 'Authenticate Magento'
 
-          system_configuration:
-              integrations.title:         'Integrations'
-              magento_integration.title:  'Magento'
-              magento_settings.title:     'Settings'
+            system_configuration:
+                integrations.title:         'Integrations'
+                magento_integration.title:  'Magento'
+                magento_settings.title:     'Settings'
 
-          form:
-              api_url:
-                  label: 'Base URL'
-                  description: 'Example: https://magento_domain.com'
-              admin_url:
-                  label: 'Admin URL'
-                  description: 'Example: https://magento_domain.com/admin'
-              client_id:
-                  label: 'Consumer Key'
-                  description: 'See Magento backoffice'
-              client_secret:
-                  label: 'Consumer Secret'
-                  description: 'See Magento backoffice'
-              token:
-                  label: 'Token'
-                  description: 'Not manually filled in Leave empty - will be filled in upon authentication completion'
-              token_secret:
-                  label: 'Token Secret'
-                  description: 'Not manually filled in Leave empty - will be filled in upon authentication completion'
-              sales_channel:
-                  label: 'Magento Sales Channel'
-                  description: 'Magento Sales Channel related to this integration'
+            form:
+                api_url:
+                    label: 'Base URL'
+                    description: 'Example: https://magento_domain.com'
+                admin_url:
+                    label: 'Admin URL'
+                    description: 'Example: https://magento_domain.com/admin'
+                client_id:
+                    label: 'Consumer Key'
+                    description: 'See Magento backoffice'
+                client_secret:
+                    label: 'Consumer Secret'
+                    description: 'See Magento backoffice'
+                token:
+                    label: 'Token'
+                    description: 'Not manually filled in Leave empty - will be filled in upon authentication completion'
+                token_secret:
+                    label: 'Token Secret'
+                    description: 'Not manually filled in Leave empty - will be filled in upon authentication completion'
+                sales_channel:
+                    label: 'Magento Sales Channel'
+                    description: 'Magento Sales Channel related to this integration'
+
+            integration:
+                authenticate:
+                    label: 'Authenticate'
+
+            notification:
+                notification:
+                    channel_linked_message: 'Store successfully linked to Marello'

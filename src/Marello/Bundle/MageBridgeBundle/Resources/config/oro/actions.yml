@@ -1,6 +1,6 @@
 operations:
     marello_magento_authenticate:
-        label: marello.magebridge.integration.authenticate
+        label: marello.magebridge.magento.integration.authenticate.label
         applications: [default]
         acl_resource: [EDIT, $.data]
         order: 20
@@ -29,18 +29,12 @@ operations:
                 - '@equal': [$.data.enabled, true]
                 - '@equal': [$.data.type, magento]
         actions:
-#            - '@call_service_method':
-#                service: oro_integration.action_handler.channel_disable
-#                method: handleAction
-#                method_parameters: [$.data]
-#                attribute: $.actionSuccess
-#            - '@flash_message':
-#                conditions:
-#                    '@equal': [$.actionSuccess, true]
-#                message: oro.integration.notification.channel.deactivated
-#                type: 'success'
+            - '@flash_message':
+                conditions:
+                    '@equal': [$.actionSuccess, true]
+                message: marello.magebridge.magento.integration.notification.channel_linked_message
+                type: 'success'
             - @redirect:
                 parameters:
                     route: marello_magento_integration_authenticate
                     route_parameters: {id: $.data.id}
-
