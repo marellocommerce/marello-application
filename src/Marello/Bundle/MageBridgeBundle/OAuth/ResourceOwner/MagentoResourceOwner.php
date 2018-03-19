@@ -15,6 +15,7 @@ use Buzz\Message\Response as HttpResponse;
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth1ResourceOwner as BaseGenericOAuth1ResourceOwner;
 use HWI\Bundle\OAuthBundle\Security\OAuthUtils;
 use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
 {
@@ -46,10 +47,6 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             'access_token_url' => 'https://magento_domain.com/oauth/token',
             'products' => 'https://magento_domain.com/api/rest/products',
             'infos_url' => 'https://magento_domain.com/',
-            'identifier' => 'user.username',
-            'nickname' => 'user.username',
-            'realname' => 'user.display_name',
-            'profilepicture' => 'user.avatar',
             'client_id' => 'magento_consumer_key',
             'client_secret' => 'magento_consumer_secret',
         ));
@@ -60,11 +57,15 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
      */
     public function getRequestToken($redirectUri, array $extraParameters = array())
     {
-        //TODO : fix me
-        var_dump($this->getOption(''));
-
-
         $requestTokens = parent::getRequestToken($redirectUri, $extraParameters);
+
+
+//        var_dump($requestTokens);
+//        var_dump($request->query->get('oauth_token'));
+//        var_dump($request->query->get('oauth_verifier'));
+//        var_dump($request->query->get('oauth_token_secret'));
+//        die(__METHOD__ .'###'. __LINE__);
+
         foreach ($requestTokens as $key => $value) {
             $this->getSession()->set($key, $value);
         }
@@ -207,9 +208,9 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
     /**
      * {@inheritdoc}
      */
-    public function getAuthorizationUrl($redirectUri, array $token = array())
+    public function getAuthorizationUrl($redirectUri, array $extraParameters = array())
     {
-//        $token = $this->getRequestToken($redirectUri, $extraParameters);
+        $token = $this->getRequestToken($redirectUri, $extraParameters);
 
         return $this->normalizeUrl($this->options['authorization_url'], array('oauth_token' => $token['oauth_token']));
     }
@@ -219,20 +220,14 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
      */
     public function getAccessToken(Request $request, $redirectUri, array $extraParameters = array())
     {
-
-//        var_dump($request->query->get('oauth_token'));
-//        var_dump($request->query->get('oauth_verifier'));
-//        die(__METHOD__ .'###'. __LINE__);
-
-
-//        try {
-//            if (null === $requestToken = $this->storage->fetch($this, $request->query->get('oauth_token'))) {
-//                throw new \RuntimeException('No request token found in the storage.');
-//            }
-//        } catch (\InvalidArgumentException $e) {
-//            print_r($e->__toString());die(__METHOD__ .'###'. __LINE__);
-//            throw new AuthenticationException('Given token is not valid.');
-//        }
+        try {
+            $requestToken = $request->query->get('oauth_token');
+            if (null === $requestToken) {
+                throw new \RuntimeException('No request token found in the storage.');
+            }
+        } catch (\InvalidArgumentException $e) {
+            throw new AuthenticationException('Given token is not valid.');
+        }
 
         $parameters = array_merge(array(
             'oauth_consumer_key' => $this->options['client_id'],
@@ -250,12 +245,19 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             $url,
             $parameters,
             $this->options['client_secret'],
-            $request->query->get('oauth_token_secret'),
+            $this->getSession()->get('oauth_token_secret'),
             $this->options['signature_method']
         );
 
         $response = $this->doGetTokenRequest($url, $parameters);
         $response = $this->getResponseContent($response);
+
+
+//        var_dump($response);
+//        var_dump($request->query->get('oauth_token'));
+//        var_dump($request->query->get('oauth_verifier'));
+//        var_dump($request->query->get('oauth_token_secret'));
+//        die(__METHOD__ .'###'. __LINE__);
 
         if (isset($response['oauth_problem'])) {
             throw new AuthenticationException(sprintf('OAuth error: "%s"', $response['oauth_problem']));

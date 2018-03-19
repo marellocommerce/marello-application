@@ -2,12 +2,12 @@ hwi_oauth:
     resource_owners:
         magento:
             type:                oauth1
-            client_id:           magento_consumer
-            client_secret:       c29ebc9bbbc0c0da953891150d3aabf0
-            request_token_url:   https://m1demo.test-madia.nl/oauth/initiate
-            access_token_url:    https://m1demo.test-madia.nl/oauth/token
-            authorization_url:   https://m1demo.test-madia.nl/admin/oauth/authorize
-            infos_url:           https://m1demo.test-madia.nl/api/rest
+            client_id:           magento_consumer_key
+            client_secret:       magento_consumer_secret
+            request_token_url:   https://magento_domain.com/oauth/initiate
+            access_token_url:    https://magento_domain.com/oauth/token
+            authorization_url:   https://magento_domain.com/admin/oauth/authorize
+            infos_url:           https://magento_domain.com/api/rest
             realm:               "read"
             user_response_class: HWI\Bundle\OAuthBundle\OAuth\Response\PathUserResponse
             paths:

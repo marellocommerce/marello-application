@@ -8,7 +8,7 @@
 
 namespace Marello\Bundle\MageBridgeBundle\OAuth\ResourceOwner;
 
-use Oro\Bundle\IntegrationBundle\Entity\Channel as Integration;
+use Marello\Bundle\MageBridgeBundle\Entity\MagentoRestTransport as Integration;
 
 trait IntegrationChannelTrait
 {
@@ -41,10 +41,30 @@ trait IntegrationChannelTrait
 
         $this->options['client_id'] = $integrationChannel->getClientId();
         $this->options['client_secret'] = $integrationChannel->getClientSecret();
-        $this->options['access_token_url'] = $integrationChannel->getClientSecret();
+
+        //url's
+        $apiUrl = $this->removeTraiingSlash($integrationChannel->getApiUrl());
+        $adminUrl = $this->removeTraiingSlash($integrationChannel->getAdminUrl());
+
+
+//        var_dump($apiUrl);
+//        var_dump($adminUrl);
+//        die();
+
+        $this->options['request_token_url'] = $apiUrl . '/oauth/initiate';
+        $this->options['authorization_url'] = $adminUrl . "/oauth_authorize";
+        $this->options['access_token_url'] = $apiUrl . '/oauth/token';
+        $this->options['infos_url'] = $apiUrl;
 
         return $this;
     }
 
-
+    /**
+     * @param $url
+     * @return string
+     */
+    private function removeTraiingSlash($url)
+    {
+        return $url;
+    }
 }
