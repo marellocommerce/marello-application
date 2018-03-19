@@ -2,7 +2,7 @@ hwi_oauth:
     resource_owners:
         magento:
             type:                oauth1
-            client_id:           885e8571be283a5944a0e14345f12915
+            client_id:           magento_consumer
             client_secret:       c29ebc9bbbc0c0da953891150d3aabf0
             request_token_url:   https://m1demo.test-madia.nl/oauth/initiate
             access_token_url:    https://m1demo.test-madia.nl/oauth/token

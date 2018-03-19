@@ -4,6 +4,7 @@ namespace Marello\Bundle\MageBridgeBundle\OAuth\ResourceOwner;
 
 use Buzz\Exception\ClientException;
 use HWI\Bundle\OAuthBundle\OAuth\Exception\HttpTransportException;
+use Oro\Bundle\MagentoBundle\Entity\IntegrationEntityTrait;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,6 +18,8 @@ use HWI\Bundle\OAuthBundle\Security\Core\Authentication\Token\OAuthToken;
 
 class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
 {
+    use IntegrationChannelTrait;
+    use SessionTrait;
 
     /**
      * {@inheritdoc}
@@ -28,6 +31,8 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
         'profilepicture' => 'user.avatar',
     );
 
+
+
     /**
      * {@inheritdoc}
      */
@@ -36,18 +41,34 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(array(
-            'request_token_url' => 'https://m1demo.test-madia.nl/oauth/initiate',
-            'authorization_url' => 'https://m1demo.test-madia.nl/admin/oauth_authorize',
-            'access_token_url' => 'https://m1demo.test-madia.nl/oauth/token',
-            'products' => 'https://m1demo.test-madia.nl/api/rest/products',
-            'infos_url' => 'https://m1demo.test-madia.nl/',
+            'request_token_url' => 'https://magento_domain.com/oauth/initiate',
+            'authorization_url' => 'https://magento_domain.com/admin/oauth_authorize',
+            'access_token_url' => 'https://magento_domain.com/oauth/token',
+            'products' => 'https://magento_domain.com/api/rest/products',
+            'infos_url' => 'https://magento_domain.com/',
             'identifier' => 'user.username',
             'nickname' => 'user.username',
             'realname' => 'user.display_name',
             'profilepicture' => 'user.avatar',
-            'client_id' => '26e7ed48f6a321e359c1df944198d600',
-            'client_secret' => 'ff3f08683d4fd5e39782703965eb0519',
+            'client_id' => 'magento_consumer_key',
+            'client_secret' => 'magento_consumer_secret',
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequestToken($redirectUri, array $extraParameters = array())
+    {
+        //TODO : fix me
+        var_dump($this->getOption(''));
+
+
+        $requestTokens = parent::getRequestToken($redirectUri, $extraParameters);
+        foreach ($requestTokens as $key => $value) {
+            $this->getSession()->set($key, $value);
+        }
+        return $requestTokens;
     }
 
     /**
