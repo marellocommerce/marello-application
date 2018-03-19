@@ -2,12 +2,14 @@
 
 namespace Marello\Bundle\ProductBundle\Form\Handler;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
-use Marello\Bundle\TaxBundle\Entity\ProductChannelTaxRelation;
-use Oro\Component\Layout\ArrayCollection;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -56,8 +58,18 @@ class ProductHandler
                 $removeChannels = $this->form->get('removeSalesChannels')->getData();
                 $salesChannelTaxCodes = $this->form->get('salesChannelTaxCodes')->getData();
                 $suppliers = $this->form->get('suppliers')->getData();
+                $appendCategories = $this->form->get('appendCategories')->getData();
+                $removeCategories = $this->form->get('removeCategories')->getData();
 
-                $this->onSuccess($entity, $addChannels, $removeChannels, $salesChannelTaxCodes, $suppliers);
+                $this->onSuccess(
+                    $entity,
+                    $addChannels,
+                    $removeChannels,
+                    $salesChannelTaxCodes,
+                    $suppliers,
+                    $appendCategories,
+                    $removeCategories
+                );
 
                 return true;
             }
@@ -82,21 +94,27 @@ class ProductHandler
      * @param Product $entity
      * @param array $addChannels
      * @param array $removeChannels
-     * @param ArrayCollection $salesChannelTaxCodes
-     * @param ArrayCollection $suppliers
+     * @param ArrayCollection|ProductChannelTaxRelation[] $salesChannelTaxCodes
+     * @param ArrayCollection|Supplier[] $suppliers
+     * @param Category[] $appendCategories
+     * @param Category[] $removeCategories
      */
     protected function onSuccess(
         Product $entity,
         array $addChannels,
         array $removeChannels,
         $salesChannelTaxCodes,
-        $suppliers
+        $suppliers,
+        array $appendCategories,
+        array $removeCategories
     ) {
         $this->addChannels($entity, $addChannels);
         $this->removeChannels($entity, $removeChannels);
         $this->setSalesChannelTaxRelationProduct($entity, $salesChannelTaxCodes);
         $this->setProductSupplierRelationProduct($entity, $suppliers);
         $this->setPreferredSupplier($entity);
+        $this->appendCategories($entity, $appendCategories);
+        $this->removeCategories($entity, $removeCategories);
 
         $this->manager->persist($entity);
         $this->manager->flush();
@@ -132,7 +150,7 @@ class ProductHandler
 
     /**
      * @param Product $product
-     * @param ArrayCollection $suppliers
+     * @param Supplier[] $suppliers
      */
     protected function setProductSupplierRelationProduct(Product $product, $suppliers)
     {
@@ -144,7 +162,7 @@ class ProductHandler
 
     /**
      * @param Product $product
-     * @param ArrayCollection $salesChannelTaxCodes
+     * @param ProductChannelTaxRelation[] $salesChannelTaxCodes
      */
     protected function setSalesChannelTaxRelationProduct(Product $product, $salesChannelTaxCodes)
     {
@@ -175,6 +193,30 @@ class ProductHandler
 
         if ($preferredSupplier) {
             $product->setPreferredSupplier($preferredSupplier);
+        }
+    }
+
+    /**
+     * @param Product $product
+     * @param Category[] $categories
+     */
+    protected function appendCategories(Product $product, array $categories)
+    {
+        /** @var $category Category */
+        foreach ($categories as $category) {
+            $product->addCategory($category);
+        }
+    }
+
+    /**
+     * @param Product $product
+     * @param Category[] $categories
+     */
+    protected function removeCategories(Product $product, array $categories)
+    {
+        /** @var $category Category */
+        foreach ($categories as $category) {
+            $product->removeCategory($category);
         }
     }
 }

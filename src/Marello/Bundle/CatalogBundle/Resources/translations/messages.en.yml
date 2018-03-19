@@ -1,0 +1,20 @@
+marello:
+    catalog:
+        category:
+            id.label:               Id
+            entity_plural_label:    Categories
+            entity_label:           Category
+            name.label:             Name
+            code.label:              Code
+
+        product:
+            in_category.label: In category
+
+        menu:
+            shortcut_new_product.label: Create new product
+            shortcut_new_product.description: Create new product instance
+            shortcut_list_products.label: Show product list
+            shortcut_list_products.description: List of products
+
+        ui:
+            category.saved.message: Category has been saved

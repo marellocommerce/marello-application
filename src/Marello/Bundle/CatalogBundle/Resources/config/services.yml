@@ -1,0 +1,34 @@
+parameters:
+    marello_catalog.category.entity.class: Marello\Bundle\CatalogBundle\Entity\Category
+services:
+    marello_catalog.category.form.type:
+        class: Marello\Bundle\CatalogBundle\Form\Type\CategoryType
+        arguments:
+            - '@marello_catalog.formatter.category_code'
+        tags:
+            - { name: form.type, alias: marello_catalog_category }
+
+    marello_catalog.category.form:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', 'createNamed']
+        arguments:
+            - 'marello_catalog_category'
+            - 'marello_catalog_category'
+
+    marello_catalog.category.form.handler:
+        class: Marello\Bundle\CatalogBundle\Form\Handler\CategoryHandler
+        scope: request
+        arguments:
+            - '@marello_catalog.category.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    marello_catalog.listener.datagrid.category_products_column_listener:
+        class: Marello\Bundle\CatalogBundle\EventListener\Datagrid\CategoryProductsColumnListener
+        arguments:
+            - '@marello_datagrid.datagridhelper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-category-products-extend-grid, method: buildBefore }
+
+    marello_catalog.formatter.category_code:
+        class: Marello\Bundle\CatalogBundle\Formatter\CategoryCodeFormatter
