@@ -40,8 +40,6 @@ operations:
                     route: marello_magento_integration_authenticate
                     route_parameters: {id: $.data.id}
             - '@flash_message':
-                conditions:
-                    '@not_blank': [$.data.token_key]
-                    '@not_blank': [$.data.token_secret]
+            #TODO: add condition to check the transport token_key && token_secret if they are not empty
                 message: marello.magebridge.magento.integration.channel_linked_message
                 type: 'success'
