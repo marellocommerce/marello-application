@@ -35,7 +35,7 @@
         'entity':      form.vars.value,
         'indexPath':   path('marello_category_index'),
         'indexLabel': 'marello.catalog.category.entity_plural_label'|trans,
-        'entityTitle': form.vars.value.id
+        'entityTitle': entity.name|default('N/A')
         } %}
         {{ parent() }}
     {% else %}
@@ -61,7 +61,7 @@
         }]}
     ] %}
 
-    {% if resource_granted('oro_product_update') %}
+    {% if resource_granted('marello_category_update') %}
         {% set dataBlocks = dataBlocks|merge([{
             'title' : 'marello.product.entity_plural_label'|trans,
             'subblocks': [
@@ -73,6 +73,22 @@
             ]
         }]) %}
     {% endif %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.catalog.category.sections.additional'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                additionalData
+            ]
+        }]
+    }]) %}
 
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
