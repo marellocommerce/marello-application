@@ -53,6 +53,14 @@ services:
             - '@form.factory'
             - '@doctrine'
 
+    marello_magebrdige.action_handler.transport_authentication:
+        class: 'Marello\Bundle\MageBridgeBundle\ActionHandler\TransportTokenAuthActionHandler'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@session'
+            - '@oro_integration.manager.fields_changes'
+
+
     marello_magebrdige.handler.transport:
         class: Marello\Bundle\MageBridgeBundle\Handler\TransportHandler
         scope: request

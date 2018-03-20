@@ -1,0 +1,7 @@
+{% block magento_redirect %}
+    <a href={{ authorize_url }} target='_blank'>click here</a>
+    <script>
+        setTimeout(function(){window.location.href="{{ authorize_url }}"},5000);
+    </script>
+{% endblock %}
+

@@ -24,7 +24,7 @@ class IntegrationConfigController extends Controller
      */
     public function requestTokenAction(Integration $integration, Request $request)
     {
-        try {
+//        try {
             //save integration
             $request->getSession()->set("integration", $integration);
 
@@ -40,25 +40,35 @@ class IntegrationConfigController extends Controller
 
             $authorizeUrl = $magentoResourceOwner->getAuthorizationUrl($callBackUrl);
 
-            echo "
-                    <a href='{$authorizeUrl}' target='_blank'>click here</a> 
-                    <script>setTimeout(function(){window.location.href=\"{$authorizeUrl}\"},5000);</script>";
+
+            return $this->render(
+               'MarelloMageBridgeBundle:IntegrationConfig:redirect.html.twig',
+                ['authorize_url' => $authorizeUrl]
+            );
+
+
+
+//            $request->getSession()->set("authroize_url", $authorizeUrl);
+
+//            echo "
+//                    <a href='{$authorizeUrl}' target='_blank'>click here</a>
+//                    <script>setTimeout(function(){window.location.href=\"{$authorizeUrl}\"},5000);</script>";
 
 //            header("Access-Control-Allow-Origin: *");
 //            header("Location: {$authorizeUrl}");
-
+//            exit;
 //            sleep(2);
 //            header("Refresh:5; url={$authorizeUrl}");
 
 
-//            return $this->redirect($authorizeUrl);
-        } catch (\Exception $e) {
-            //TODO: log exception
-            print_r($e->__toString());
-        }
+//            return $this->redirect($this->getMagentoUrlRedirect($authorizeUrl));
+//        } catch (\Exception $e) {
+//            //TODO: log exception
+//            print_r($e->__toString());
+//        }
 
-        exit ();
-        return $this;
+//        exit();
+//        return $this;
     }
 
     /**
@@ -83,7 +93,7 @@ class IntegrationConfigController extends Controller
         //TODO: 4) Save final token on the integration data
 
 
-        try {
+//        try {
             $integration = $request->getSession()->get('integration');
 
             /** @var MagentoResourceOwner $resourceOwner */
@@ -96,24 +106,28 @@ class IntegrationConfigController extends Controller
 
             $accessTokens = $magentoResourceOwner->getAccessToken($request, $this->getCallBackUrl());
 
-            $integration->setTokenKey($accessTokens['oauth_token'])
-            ->setTokenSecret($accessTokens['oauth_token_secret']);
+            $this->get('marello_magebrdige.action_handler.transport_authentication')
+                ->setTokens($accessTokens)
+                ->handleAction($integration);
 
-            $manager = $this->getDoctrine()->getRepository(get_class($integration));
-            $manager->persist($integration);
-            $manager->flush($integration);
+//            $integration->setTokenKey($accessTokens['oauth_token'])
+//            ->setTokenSecret($accessTokens['oauth_token_secret']);
+//
+//            $manager = $this->getDoctrine()->getRepository(get_class($integration));
+//            $manager->persist($integration);
+//            $manager->flush($integration);
 
 //            var_dump($accessTokens);
 //            die(__METHOD__ . '###' . __LINE__);
 
 
-        } catch (\Exception $e) {
-            //TODO: log exception
-            var_dump($e->__toString());
-            die(__METHOD__ . '###' . __LINE__);
-        }
+//        } catch (\Exception $e) {
+//            //TODO: log exception
+//            var_dump($e->__toString());
+//            die(__METHOD__ . '###' . __LINE__);
+//        }
 
-        return $this->redirect("/");
+        return $this->redirect($this->getRouterUrl('oro_integration_index'));
 
 //        var_dump($request->getSession()->get('oauth_token'));
 //        var_dump($request->getSession()->get('oauth_token_secret'));
@@ -137,6 +151,27 @@ class IntegrationConfigController extends Controller
     }
 
     /**
+     * @Route("/redirect", name="marello_magento_redirect")
+     */
+    public function redirectAction(Request $request)
+    {
+
+        $authorizeUrl = $request->getSession()->get('authroize_url');
+//        die($request->getSession()->get('authroize_url'));
+        try {
+            echo "
+                    <a href='{$authorizeUrl}' target='_blank'>click here</a>
+                    <script>setTimeout(function(){window.location.href=\"{$authorizeUrl}\"},5000);</script>";
+            exit;
+        } catch (\Exception $e) {
+            //TODO: log exception
+            print_r($e->__toString());
+        }
+
+        exit();
+    }
+
+    /**
      * @return MagentoResourceOwner
      */
     protected function getMagentoResourceOwner()
@@ -146,6 +181,15 @@ class IntegrationConfigController extends Controller
 
         return $resourceOwner;
     }
+
+    /**
+     * @return mixed
+     */
+    protected function getMagentoUrlRedirect()
+    {
+        return $this->getApplicationUrl() . $this->getRouterUrl('marello_magento_redirect');
+    }
+
 
     /**
      * @param $name

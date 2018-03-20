@@ -33,7 +33,6 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
     );
 
 
-
     /**
      * {@inheritdoc}
      */
@@ -59,17 +58,7 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
     {
         $requestTokens = parent::getRequestToken($redirectUri, $extraParameters);
 
-
-//        var_dump($requestTokens);
-//        var_dump($request->query->get('oauth_token'));
-//        var_dump($request->query->get('oauth_verifier'));
-//        var_dump($request->query->get('oauth_token_secret'));
-//        die(__METHOD__ .'###'. __LINE__);
-
-        foreach ($requestTokens as $key => $value) {
-            $this->getSession()->set($key, $value);
-        }
-        return $requestTokens;
+        return $this->setResponseSession($requestTokens);
     }
 
     /**
@@ -252,13 +241,6 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
         $response = $this->doGetTokenRequest($url, $parameters);
         $response = $this->getResponseContent($response);
 
-
-//        var_dump($response);
-//        var_dump($request->query->get('oauth_token'));
-//        var_dump($request->query->get('oauth_verifier'));
-//        var_dump($request->query->get('oauth_token_secret'));
-//        die(__METHOD__ .'###'. __LINE__);
-
         if (isset($response['oauth_problem'])) {
             throw new AuthenticationException(sprintf('OAuth error: "%s"', $response['oauth_problem']));
         }
@@ -267,6 +249,20 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             throw new AuthenticationException('Not a valid request token.');
         }
 
+        return $this->setResponseSession($response);
+    }
+
+    /**
+     * @param $response
+     * @return mixed
+     */
+    private function setResponseSession($response)
+    {
+        foreach ($response as $key => $value) {
+            $this->getSession()->set($key, $value);
+        }
+
         return $response;
     }
+
 }
