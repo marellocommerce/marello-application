@@ -39,14 +39,9 @@ operations:
                 parameters:
                     route: marello_magento_integration_authenticate
                     route_parameters: {id: $.data.id}
-#            - '@call_service_method':
-#                service: marello_magebrdige.action_handler.transport_authentication
-#                method: handleAction
-#                method_parameters: [$.data.transport]
-#                attribute: $.actionSuccess
             - '@flash_message':
-#                conditions:
-#                    '@equal': [$.actionSuccess, true]
+                conditions:
+                    '@not_blank': [$.data.token_key]
+                    '@not_blank': [$.data.token_secret]
                 message: marello.magebridge.magento.integration.channel_linked_message
                 type: 'success'
-#            - '@redirect': {route: "oro_integration_index"}
