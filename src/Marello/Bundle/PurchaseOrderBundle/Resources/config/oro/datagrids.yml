@@ -5,8 +5,12 @@ datagrids:
             query:
                 select:
                     - po
+                    - sup.name as supplier
                 from:
                     - { table: MarelloPurchaseOrderBundle:PurchaseOrder, alias: po }
+                join:
+                    left:
+                        - { join: po.supplier, alias: sup }
         columns:
             purchaseOrderNumber:
                 label:              marello.purchaseorder.purchase_order_number.label
@@ -30,7 +34,7 @@ datagrids:
                 purchaseOrderNumber:
                     data_name:      po.purchaseOrderNumber
                 supplier:
-                    data_name:      po.supplier
+                    data_name:      supplier
                 createdAt:
                     data_name:      po.createdAt
                 updatedAt:
@@ -46,7 +50,7 @@ datagrids:
                     data_name: po.purchaseOrderNumber
                 supplier:
                     type: string
-                    data_name: po.supplier
+                    data_name: supplier
                 createdAt:
                     type: datetime
                     data_name: po.createdAt

@@ -63,14 +63,6 @@ class PurchaseOrderControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_OK);
     }
 
-//    /** @test */
-//    public function testCreateStepTwoAction()
-//    {
-//        $this->client->request('GET', $this->getUrl('marello_purchaseorder_purchaseorder_create_step_two'));
-//
-//        $this->assertHtmlResponseStatusCodeEquals($this->client->getResponse(), Response::HTTP_FOUND);
-//    }
-
     /** @test */
     public function testCreateAllStepsAction()
     {
@@ -341,5 +333,23 @@ class PurchaseOrderControllerTest extends WebTestCase
 
         $html = $crawler->html();
         $this->assertContains('Due date must be greater than', $html);
+    }
+
+    /**
+     * @test
+     * @depends testCreateAllStepsAction
+     */
+    public function testFilterBySupplierOnGrid()
+    {
+        /** @var PurchaseOrder $po */
+        $po = $this->getReference(LoadPurchaseOrderData::PURCHASE_ORDER_1_REF);
+        $supplier = $po->getSupplier();
+        $response = $this->client->requestGrid(
+            'marello-purchase-order',
+            ['marello-purchase-order[_filter][supplier][value]' => $supplier->getName()]
+        );
+
+        self::assertJsonResponseStatusCodeEquals($response, Response::HTTP_OK);
+        $this->assertContains($supplier->getName(), $response->getContent());
     }
 }
