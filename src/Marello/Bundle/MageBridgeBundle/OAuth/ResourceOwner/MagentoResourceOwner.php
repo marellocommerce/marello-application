@@ -264,5 +264,4 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
 
         return $response;
     }
-
 }

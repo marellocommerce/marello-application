@@ -10,7 +10,21 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 class TransportTokenAuthActionHandler implements TransportActionHandlerInterface
 {
-    protected $tokens;
+    /** @var array */
+    protected $tokens = [];
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * @return mixed
@@ -31,23 +45,6 @@ class TransportTokenAuthActionHandler implements TransportActionHandlerInterface
     }
 
     /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    private $session;
-
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager, Session $session, FieldsChangesManager $fieldsChangesManager)
-    {
-        $this->entityManager = $entityManager;
-        $this->session = $session;
-        $this->fieldsChangesManager = $fieldsChangesManager;
-    }
-
-    /**
      * @var FieldsChangesManager
      */
     protected $fieldsChangesManager;
@@ -60,7 +57,6 @@ class TransportTokenAuthActionHandler implements TransportActionHandlerInterface
         $this->fieldsChangesManager = $fieldsChangesManager;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -69,17 +65,14 @@ class TransportTokenAuthActionHandler implements TransportActionHandlerInterface
         $this->entityManager->getConnection()->beginTransaction();
         $this->entityManager->getConnection()->setAutoCommit(false);
 
-        $transport->setTokenKey($this->session->get('oauth_token'))
-            ->setTokenSecret($this->session->get('oauth_token_secret'));
-
         $entityClassName = get_class($transport);
 
         $this->entityManager->getConnection()->executeQuery(
             sprintf(
                 'UPDATE %s SET token_key="%s", token_secret="%s" WHERE id=%s',
                 $this->entityManager->getClassMetadata($entityClassName)->getTableName(),
-                $this->session->get('oauth_token'),
-                $this->session->get('oauth_token_secret'),
+                $this->tokens['oauth_token'],
+                $this->tokens['oauth_token_secret'],
                 $transport->getId()
             )
         );
@@ -87,16 +80,6 @@ class TransportTokenAuthActionHandler implements TransportActionHandlerInterface
         $this->entityManager->commit();
         $this->entityManager->flush();
 
-        //DEBUG:
-        file_put_contents("/var/www/app/logs/transport.log", print_r($transport, true), FILE_APPEND);
-
         return true;
     }
-
-//    public function redirectUrl($url)
-//    {
-//            header("Access-Control-Allow-Origin: {$url}");
-//            header("Location: {$url}");
-//            exit;
-//    }
 }

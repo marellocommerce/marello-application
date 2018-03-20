@@ -32,5 +32,4 @@ trait SessionTrait
 
         return $this;
     }
-
 }

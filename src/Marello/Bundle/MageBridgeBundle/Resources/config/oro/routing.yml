@@ -1,4 +1,4 @@
 marello_magento_integration_authenticate:
-    resource: "@MarelloMageBridgeBundle/Controller/IntegrationConfigController.php"
+    resource: "@MarelloMageBridgeBundle/Controller/IntegrationController.php"
     type:         annotation
     prefix:       /magento

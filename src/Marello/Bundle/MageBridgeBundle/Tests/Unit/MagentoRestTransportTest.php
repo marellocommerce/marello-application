@@ -67,5 +67,4 @@ class MagentoRestTransportTest extends \PHPUnit_Framework_TestCase
             array('salesChannels', []),
         );
     }
-
 }

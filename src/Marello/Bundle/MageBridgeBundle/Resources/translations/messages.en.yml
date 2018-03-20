@@ -40,7 +40,10 @@ marello:
             integration:
                 authenticate:
                     label: 'Authenticate'
+                complete_authentication: 'Your store is now pre-authorized. <a href="%url%">Click here to complete.</a>'
+                channel_linked_message: 'Store successfully linked to Marello'
+                action:
+                    confirm_title: 'Marello Store authorization'
+                    message: 'You are about to be linking your store with Marello'
+                    confirm_ok: 'Confirm authorization'
 
-            notification:
-                notification:
-                    channel_linked_message: 'Store successfully linked to Marello'

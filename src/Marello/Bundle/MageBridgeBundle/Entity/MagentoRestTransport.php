@@ -231,5 +231,4 @@ class MagentoRestTransport extends Transport
 
         return $this->settings;
     }
-
 }

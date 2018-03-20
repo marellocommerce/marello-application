@@ -1,0 +1,9 @@
+marello.magebrdige:
+    action:
+        auth:
+            message: 'Link Marello with your Magento Store?'
+            confirm_title: 'Link Confirmation'
+            confirm_content: 'Are you sure you want to link your Magento Store with Marello?'
+            confirm_ok: 'Link'
+            channel_linked_message: 'Authorization completed, your store is now linked with Marello'
+#marello_magebrdige.action_handler.channel_linked_message
