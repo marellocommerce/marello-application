@@ -192,6 +192,18 @@
                     suppliers
                 ]
             }]
+        },
+        {
+            'title' : 'marello.catalog.category.entity_plural_label'|trans,
+            'subblocks': [{
+                'title' : null,
+                'useSpan': false,
+                'data' : [
+                    form_widget(form.appendCategories, {'id': 'productAppendCategories'}),
+                    form_widget(form.removeCategories, {'id': 'productRemoveCategories'}),
+                    dataGrid.renderGrid('marello-product-categories-extend-grid', { product_id: entity.id ? entity.id : 0 }, { cssClass: 'inner-grid' })
+                ]
+            }]
         }
     ] %}
 

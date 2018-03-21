@@ -1,18 +1,18 @@
 <?php
 
-namespace Marello\Bundle\ProductBundle\EventListener\Datagrid;
+namespace Marello\Bundle\CatalogBundle\EventListener\Datagrid;
 
 use Marello\Bundle\DataGridBundle\Helper\DatagridHelper;
-
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 
-class ProductSalesChannelColumnListener
+class CategoryProductsColumnListener
 {
-    /** @var DatagridHelper $datagridHelper */
+    /**
+     * @var DatagridHelper $datagridHelper
+     */
     protected $datagridHelper;
 
     /**
-     * ProductSalesChannelColumnListener constructor.
      * @param DatagridHelper $datagridHelper
      */
     public function __construct(DatagridHelper $datagridHelper)
@@ -29,7 +29,6 @@ class ProductSalesChannelColumnListener
         $gridConfig = $event->getConfig();
 
         $this->datagridHelper->setGridConfig($gridConfig);
-        $this->datagridHelper->removeWhereClause();
-        $this->datagridHelper->moveColumnToFront('hasChannel');
+        $this->datagridHelper->moveColumnToFront('inCategory');
     }
 }

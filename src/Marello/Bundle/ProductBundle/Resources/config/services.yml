@@ -35,13 +35,17 @@ services:
         tags:
             - { name: twig.extension }
 
-    marello_product.util.datagrid.datagridhelper:
-        class: Marello\Bundle\ProductBundle\Util\Datagrid\DatagridHelper
+    marello_product.listener.datagrid.product_categories_column_listener:
+        class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductCategoriesColumnListener
+        arguments:
+            - '@marello_datagrid.datagridhelper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-categories-extend-grid, method: buildBefore }
 
     marello_product.listener.datagrid.product_saleschannel_column_listener:
         class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSalesChannelColumnListener
         arguments:
-            - '@marello_product.util.datagrid.datagridhelper'
+            - '@marello_datagrid.datagridhelper'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-saleschannel-extended-grid, method: buildBefore }
 

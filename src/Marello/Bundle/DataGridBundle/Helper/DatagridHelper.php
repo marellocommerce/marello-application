@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ProductBundle\Util\Datagrid;
+namespace Marello\Bundle\DataGridBundle\Helper;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
