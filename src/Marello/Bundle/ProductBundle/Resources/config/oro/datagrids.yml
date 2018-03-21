@@ -470,6 +470,7 @@ datagrids:
                     - p.id
                     - p.sku
                     - p.name
+                    - p.manufacturingCode
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
         columns:
@@ -478,6 +479,9 @@ datagrids:
                 frontend_type:      string
             name:
                 label:              marello.product.name.label
+                frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
                 frontend_type:      string
         filters:
             columns:
@@ -489,10 +493,15 @@ datagrids:
                     label:            marello.product.name.label
                     type:             string
                     data_name:        p.name
+                manufacturingCode:
+                    label:            marello.product.manufacturing_code.label
+                    type:             string
+                    data_name:        p.manufacturingCode
         sorters:
             columns:
-                sku:            { data_name: p.sku }
-                name:           { data_name: p.name }
+                sku:                  { data_name: p.sku }
+                name:                 { data_name: p.name }
+                manufacturingCode:    { data_name: p.manufacturingCode }
             default:
                 sku:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         properties:

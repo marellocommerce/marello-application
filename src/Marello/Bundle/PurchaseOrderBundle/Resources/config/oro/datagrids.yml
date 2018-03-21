@@ -81,8 +81,12 @@ datagrids:
             query:
                 select:
                     - poi
+                    - product.manufacturingCode
                 from:
                     - { table: MarelloPurchaseOrderBundle:PurchaseOrderItem, alias: poi }
+                join:
+                    left:
+                        - { join: poi.product, alias: product }
                 where:
                     and:
                         - IDENTITY(poi.order) = :order_id
@@ -94,6 +98,9 @@ datagrids:
                 frontend_type: string
             productName:
                 label: marello.product.name.label
+                frontend_type: string
+            manufacturingCode:
+                label: marello.product.manufacturing_code.label
                 frontend_type: string
             supplier:
                 label: marello.supplier.entity_label
@@ -116,6 +123,7 @@ datagrids:
                     - p.id
                     - p.sku
                     - p.name
+                    - p.manufacturingCode
                     - sup.id AS preferredSupplierId
                     - sup.name AS preferredSupplier
                     - i.desiredInventory
@@ -158,6 +166,9 @@ datagrids:
             name:
                 label:              marello.product.name.label
                 frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
+                frontend_type:      string
             preferredSupplier:
                 label:              marello.product.preferred_supplier.label
                 frontend_type:      string
@@ -181,6 +192,7 @@ datagrids:
                 hasProduct:             { data_name: hasProduct }
                 sku:                    { data_name: p.sku }
                 name:                   { data_name: p.name }
+                manufacturingCode:      { data_name: p.manufacturingCode }
                 preferredSupplier:      { data_name: preferredSupplier }
                 purchaseInventory:      { data_name: i.purchaseInventory }
                 desiredInventory:       { data_name: i.desiredInventory }
@@ -199,6 +211,9 @@ datagrids:
                 name:
                     type:             string
                     data_name:        p.name
+                manufacturingCode:
+                    type:             string
+                    data_name:        p.manufacturingCode
                 purchaseInventory:
                     type:             number
                     data_name:        i.purchaseInventory
