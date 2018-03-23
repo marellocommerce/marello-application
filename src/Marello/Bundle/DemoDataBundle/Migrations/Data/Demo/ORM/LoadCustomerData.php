@@ -6,6 +6,8 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\AddressBundle\Entity\Country;
+use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -40,12 +42,12 @@ class LoadCustomerData extends AbstractFixture
         $handle = fopen($this->getDictionary('customers.csv'), "r");
         if ($handle) {
             $headers = [];
-            if (($data = fgetcsv($handle, 1000, ",")) !== false) {
+            if (($data = fgetcsv($handle, 2000, ",")) !== false) {
                 //read headers
                 $headers = $data;
             }
             $i = 0;
-            while (($data = fgetcsv($handle, 1000, ",")) !== false) {
+            while (($data = fgetcsv($handle, 2000, ",")) !== false) {
                 $data = array_combine($headers, array_values($data));
                 /** @var Customer $customer */
                 $customer = $this->createCustomer($data, $organization);
@@ -76,27 +78,43 @@ class LoadCustomerData extends AbstractFixture
      */
     protected function createCustomer($row, Organization $organization)
     {
-        $billingAddress = new MarelloAddress();
-        $billingAddress->setNamePrefix($row['title']);
-        $billingAddress->setFirstName($row['firstname']);
-        $billingAddress->setLastName($row['lastname']);
-        $billingAddress->setStreet($row['street_address']);
-        $billingAddress->setPostalCode($row['zipcode']);
-        $billingAddress->setCity($row['city']);
-        $billingAddress->setCountry(
-            $this->manager
-                ->getRepository('OroAddressBundle:Country')->find($row['country'])
-        );
-        $billingAddress->setRegion(
-            $this->manager
-                ->getRepository('OroAddressBundle:Region')
-                ->findOneBy(['combinedCode' => $row['country'] . '-' . $row['state']])
-        );
-        $billingAddress->setPhone($row['telephone_number']);
-        $billingAddress->setCompany($row['company']);
-        $this->manager->persist($billingAddress);
+        $primaryAddress = new MarelloAddress();
+        $primaryAddress->setNamePrefix($row['title']);
+        $primaryAddress->setFirstName($row['firstname']);
+        $primaryAddress->setLastName($row['lastname']);
+        $street = sprintf('%s %s', $row['street'], $this->generateRandomInt());
+        $primaryAddress->setStreet($street);
+        $primaryAddress->setPostalCode($row['zipcode']);
+        $primaryAddress->setCity($row['city']);
+        /** @var Country $country */
+        $country = $this->manager
+            ->getRepository('OroAddressBundle:Country')
+            ->findOneBy([
+                'name' => $row['country']
+            ]);
 
-        $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $billingAddress);
+        $primaryAddress->setCountry($country);
+
+        /** @var Region $region */
+        $region = $this->manager
+            ->getRepository('OroAddressBundle:Region')
+            ->createQueryBuilder('r')
+            ->where('r.name LIKE :state')
+            ->setParameter('state', '%'.$row['state'].'%')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if ($region) {
+            $primaryAddress->setRegion($region);
+        }
+
+        $primaryAddress->setPhone($row['phone']);
+
+        $this->manager->persist($primaryAddress);
+
+        $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $primaryAddress);
+        $customer->setNamePrefix($row['title']);
         $customer->setOrganization($organization);
         $this->manager->persist($customer);
         
@@ -111,5 +129,14 @@ class LoadCustomerData extends AbstractFixture
     protected function getDictionary($name)
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'dictionaries' . DIRECTORY_SEPARATOR . $name;
+    }
+
+    /**
+     * Generate number for street address
+     * @return int
+     */
+    protected function generateRandomInt()
+    {
+        return mt_rand(1, 3000);
     }
 }
