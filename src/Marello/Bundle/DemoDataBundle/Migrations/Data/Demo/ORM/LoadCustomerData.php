@@ -95,12 +95,13 @@ class LoadCustomerData extends AbstractFixture
 
         $primaryAddress->setCountry($country);
 
+        $state  = sprintf('%%%s%%', $row['state']);
         /** @var Region $region */
         $region = $this->manager
             ->getRepository('OroAddressBundle:Region')
             ->createQueryBuilder('r')
             ->where('r.name LIKE :state')
-            ->setParameter('state', '%'.$row['state'].'%')
+            ->setParameter('state', $state)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
