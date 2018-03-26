@@ -28,13 +28,28 @@ class LoadSupplierData extends AbstractFixture
             'is_active' => true,
             'address'=>
                 [
-                    'street_address' => 'Torenallee 20',
-                    'zipcode' => '5617 BC',
-                    'city'=> 'Eindhoven',
-                    'country'=> 'NL',
-                    'state' => 'NB'
+                    'street_address' => '70 Bowman St.',
+                    'zipcode' => '06074',
+                    'city'=> 'South Windsor',
+                    'country'=> 'US',
+                    'state' => 'CT'
                 ],
             'email' => 'supplier1@email.com'
+        ],
+        [
+            'name' => 'BIC Sport North America, Inc.',
+            'priority' => 2,
+            'can_dropship' => false,
+            'is_active' => true,
+            'address'=>
+                [
+                    'street_address' => '71 Pilgrim Avenue',
+                    'zipcode' => '60185',
+                    'city'=> 'West Chicago',
+                    'country'=> 'US',
+                    'state' => 'IL'
+                ],
+            'email' => 'supplier2@bicsport.com'
         ]
     ];
 
