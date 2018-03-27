@@ -63,6 +63,7 @@ datagrids:
                 sku:            { data_name: p.sku }
                 name:           { data_name: p.name }
                 status:         { data_name: s.label }
+                weight:         { data_name: p.weight }
                 createdAt:      { data_name: p.createdAt }
                 updatedAt:      { data_name: p.updatedAt }
             default:
@@ -88,6 +89,8 @@ datagrids:
                 weight:
                     data_name:          p.weight
                     type:               number
+                    options:
+                        data_type:      %oro_filter.form.type.filter.number.class%::DATA_DECIMAL
                     enabled:            false
         actions:
             view:
