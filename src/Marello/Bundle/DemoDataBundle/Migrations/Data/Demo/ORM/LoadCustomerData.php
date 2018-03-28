@@ -101,11 +101,13 @@ class LoadCustomerData extends AbstractFixture
             ->getRepository('OroAddressBundle:Region')
             ->createQueryBuilder('r')
             ->where('r.name LIKE :state')
+            ->andWhere('r.country = :country')
             ->setParameter('state', $state)
+            ->setParameter('country', $country->getIso2Code())
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
-
+        
         if ($region) {
             $primaryAddress->setRegion($region);
         }
