@@ -1,5 +1,6 @@
 Marello
 ========================
+[![GitHub release](https://img.shields.io/github/release/marellocommerce/marello.svg)](https://github.com/marellocommerce/marello/releases)
 
 Marello an Open Source ERP for Commerce tool.
 

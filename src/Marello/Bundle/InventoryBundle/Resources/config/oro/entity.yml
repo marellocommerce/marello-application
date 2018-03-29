@@ -1,0 +1,5 @@
+oro_entity:
+    entity_aliases:
+        Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel:
+            alias: virtualinventorylevel
+            plural_alias: virtualinventorylevels
