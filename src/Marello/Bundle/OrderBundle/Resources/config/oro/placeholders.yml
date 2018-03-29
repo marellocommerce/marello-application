@@ -2,7 +2,7 @@ placeholders:
     placeholders:
         marello_customer_address:
             items:
-                marelloe_customer_address_map:
+                marello_customer_address_map:
                     order: 100
 
     items:
