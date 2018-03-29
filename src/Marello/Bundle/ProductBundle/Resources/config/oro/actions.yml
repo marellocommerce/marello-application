@@ -1,0 +1,47 @@
+operations:
+    marello_product_duplicate:
+        label: marello.product.ui.duplicate
+        applications: [default]
+        routes:
+            - marello_product_view
+        datagrids:
+            - marello-products-grid
+        acl_resource: marello_product_create
+        order: 10
+        button_options:
+            icon: fa-files-o
+        actions:
+            - '@run_action_group':
+                results:
+                    product_copy_id: $.productCopy.id
+                action_group: marello_product_duplicate
+                parameters_mapping:
+                    data: $.data
+            - '@call_service_method':
+                attribute: $.hasSuccessMessage
+                service: session.flash_bag
+                method: has
+                method_parameters: ['success']
+            - '@flash_message':
+                conditions:
+                    '@equal': [$.hasSuccessMessage, false]
+                parameters:
+                    message: marello.product.ui.product.duplicated.message
+                    type: 'success'
+            - '@redirect':
+                route: marello_product_view
+                route_parameters:
+                    id: $.product_copy_id
+
+action_groups:
+    marello_product_duplicate:
+        parameters:
+            data:
+                type: Marello\Bundle\ProductBundle\Entity\Product
+        acl_resource: marello_product_create
+        actions:
+            - '@call_service_method':
+                service: marello_product.service.duplicator
+                method: duplicate
+                method_parameters: [$.data]
+                attribute: $.productCopy

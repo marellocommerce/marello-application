@@ -2,15 +2,16 @@
 
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
+use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber;
 use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Oro\Bundle\AttachmentBundle\Form\Type\ImageType;
+use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 class ProductType extends AbstractType
 {
@@ -101,7 +102,7 @@ class ProductType extends AbstractType
             )
             ->add(
                 'addSalesChannels',
-                'oro_entity_identifier',
+                EntityIdentifierType::NAME,
                 [
                     'class'    => 'MarelloSalesBundle:SalesChannel',
                     'required' => false,
@@ -111,7 +112,7 @@ class ProductType extends AbstractType
             )
             ->add(
                 'removeSalesChannels',
-                'oro_entity_identifier',
+                EntityIdentifierType::NAME,
                 [
                     'class'    => 'MarelloSalesBundle:SalesChannel',
                     'required' => false,
@@ -143,8 +144,27 @@ class ProductType extends AbstractType
                     'label' => 'marello.product.image.label',
                     'required' => false
                 ]
+            )
+            ->add(
+                'appendCategories',
+                EntityIdentifierType::NAME,
+                [
+                    'class'    => Category::class,
+                    'required' => false,
+                    'mapped'   => false,
+                    'multiple' => true,
+                ]
+            )
+            ->add(
+                'removeCategories',
+                EntityIdentifierType::NAME,
+                [
+                    'class'    => Category::class,
+                    'required' => false,
+                    'mapped'   => false,
+                    'multiple' => true,
+                ]
             );
-        ;
 
         $builder->addEventSubscriber($this->defaultSalesChannelSubscriber);
         $builder->addEventSubscriber($this->pricingSubscriber);
@@ -157,7 +177,7 @@ class ProductType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\ProductBundle\Entity\Product',
+            'data_class'         => Product::class,
             'intention'          => 'product',
             'single_form'        => true,
             'cascade_validation' => true,

@@ -47,4 +47,42 @@ class ProductRepository extends EntityRepository
 
         return $this->aclHelper->apply($qb->getQuery())->getResult();
     }
+    /**
+     * @param string $sku
+     *
+     * @return null|Product
+     */
+    public function findOneBySku($sku)
+    {
+        $queryBuilder = $this->createQueryBuilder('product');
+
+        $queryBuilder->andWhere('UPPER(product.sku) = :sku')
+            ->setParameter('sku', strtoupper($sku));
+
+        return $queryBuilder->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @param string $pattern
+     *
+     * @return string[]
+     */
+    public function findAllSkuByPattern($pattern)
+    {
+        $matchedSku = [];
+
+        $results = $this
+            ->createQueryBuilder('product')
+            ->select('product.sku')
+            ->where('product.sku LIKE :pattern')
+            ->setParameter('pattern', $pattern)
+            ->getQuery()
+            ->getResult();
+
+        foreach ($results as $result) {
+            $matchedSku[] = $result['sku'];
+        }
+
+        return $matchedSku;
+    }
 }
