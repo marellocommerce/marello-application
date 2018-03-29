@@ -7,6 +7,7 @@ use Marello\Bundle\CatalogBundle\Formatter\CategoryCodeFormatter;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -38,6 +39,9 @@ class CategoryType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('code', TextType::class)
+            ->add('description', TextareaType::class, [
+                'required' => false
+            ])
             ->add(
                 'appendProducts',
                 EntityIdentifierType::NAME,

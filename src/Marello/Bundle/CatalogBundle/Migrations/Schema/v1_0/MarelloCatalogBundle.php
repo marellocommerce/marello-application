@@ -48,6 +48,7 @@ class MarelloCatalogBundle implements Migration, ActivityExtensionAwareInterface
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('code', 'string', ['length' => 255]);
+        $table->addColumn('description', 'text', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
