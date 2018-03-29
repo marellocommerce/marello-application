@@ -3,7 +3,9 @@
 namespace Marello\Bundle\ProductBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
@@ -359,6 +361,13 @@ class Product extends ExtendProduct implements
      */
     protected $replenishment;
 
+    /**
+     * @var ArrayCollection|Category[]
+     *
+     * @ORM\ManyToMany(targetEntity="Marello\Bundle\CatalogBundle\Entity\Category", mappedBy="products")
+     */
+    private $categories;
+
     public function __construct()
     {
         $this->prices               = new ArrayCollection();
@@ -367,6 +376,20 @@ class Product extends ExtendProduct implements
         $this->inventoryItems       = new ArrayCollection();
         $this->suppliers            = new ArrayCollection();
         $this->salesChannelTaxCodes = new ArrayCollection();
+        $this->categories           = new ArrayCollection();
+    }
+    
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id                   = null;
+            $this->prices               = new ArrayCollection();
+            $this->channelPrices        = new ArrayCollection();
+            $this->channels             = new ArrayCollection();
+            $this->inventoryItems       = new ArrayCollection();
+            $this->suppliers            = new ArrayCollection();
+            $this->salesChannelTaxCodes = new ArrayCollection();
+        }
     }
 
     /**
@@ -785,6 +808,7 @@ class Product extends ExtendProduct implements
     {
         if (!$this->suppliers->contains($supplier)) {
             $this->suppliers->add($supplier);
+            $supplier->setProduct($this);
         }
 
         return $this;
@@ -813,8 +837,7 @@ class Product extends ExtendProduct implements
 
         return $this;
     }
-
-
+    
     /**
      * @return Supplier
      */
@@ -886,6 +909,7 @@ class Product extends ExtendProduct implements
     {
         if (!$this->salesChannelTaxCodes->contains($salesChannelTaxCode)) {
             $this->salesChannelTaxCodes->add($salesChannelTaxCode);
+            $salesChannelTaxCode->setProduct($this);
         }
 
         return $this;
@@ -959,5 +983,50 @@ class Product extends ExtendProduct implements
         }
 
         return null;
+    }
+    
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param Category $category
+     * @return $this
+     */
+    public function addCategory(Category $category)
+    {
+        if (!$this->hasCategory($category)) {
+            $this->categories->add($category);
+            $category->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Category $category
+     * @return $this
+     */
+    public function removeCategory(Category $category)
+    {
+        if ($this->hasCategory($category)) {
+            $this->categories->removeElement($category);
+            $category->removeProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Category $category
+     * @return bool
+     */
+    public function hasCategory(Category $category)
+    {
+        return $this->categories->contains($category);
     }
 }

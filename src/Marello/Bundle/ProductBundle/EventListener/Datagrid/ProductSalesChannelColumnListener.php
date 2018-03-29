@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\EventListener\Datagrid;
 
-use Marello\Bundle\ProductBundle\Util\Datagrid\DatagridHelper;
+use Marello\Bundle\DataGridBundle\Helper\DatagridHelper;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 
