@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -73,7 +74,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      */
     protected $items;
 
-
     /**
      * @var Supplier
      *
@@ -90,13 +90,20 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      */
     protected $organization;
 
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="due_date", type="datetime", nullable=true)
      */
     protected $dueDate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
+     * @ORM\JoinColumn(name="warehouse_id", referencedColumnName="id", nullable=false)
+     *
+     * @var Warehouse
+     */
+    protected $warehouse;
 
     /**
      * Creates order using products
@@ -270,6 +277,25 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     public function getDueDate()
     {
         return $this->dueDate;
+    }
+
+    /**
+     * @return Warehouse
+     */
+    public function getWarehouse()
+    {
+        return $this->warehouse;
+    }
+
+    /**
+     * @param Warehouse $warehouse
+     * @return $this
+     */
+    public function setWarehouse($warehouse)
+    {
+        $this->warehouse = $warehouse;
+
+        return $this;
     }
 
     /**

@@ -24,6 +24,7 @@ marello:
         billing_and_shipping.label:                     Billing & Shipping Info
         supplier.label:                                 Supplier
         organization.label:                             Organization
+        shipping_address.label:                         Shipping Address
 
         ui:
             continue:                                   Continue
