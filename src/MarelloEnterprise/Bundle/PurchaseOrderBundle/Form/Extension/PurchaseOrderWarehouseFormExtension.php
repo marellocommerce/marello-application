@@ -15,6 +15,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class PurchaseOrderWarehouseFormExtension extends AbstractTypeExtension
 {
@@ -31,6 +32,7 @@ class PurchaseOrderWarehouseFormExtension extends AbstractTypeExtension
             [
                 'label' => 'marello.purchaseorder.warehouse.label',
                 'required' => true,
+                'constraints' => new NotNull()
             ]
         );
     }
