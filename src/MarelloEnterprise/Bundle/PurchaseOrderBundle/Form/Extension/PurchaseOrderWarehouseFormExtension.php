@@ -2,19 +2,10 @@
 
 namespace MarelloEnterprise\Bundle\PurchaseOrderBundle\Form\Extension;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseSelectType;
-use Oro\Bundle\PricingBundle\Entity\ProductPrice;
-use Oro\Bundle\PricingBundle\Entity\Repository\ProductPriceRepository;
-use Oro\Bundle\PricingBundle\Form\Type\ProductPriceCollectionType;
-use Oro\Bundle\PricingBundle\Validator\Constraints\UniqueProductPrices;
-use Oro\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\ProductBundle\Form\Type\ProductType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class PurchaseOrderWarehouseFormExtension extends AbstractTypeExtension
