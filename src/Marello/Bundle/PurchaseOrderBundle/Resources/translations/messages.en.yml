@@ -8,6 +8,7 @@ marello:
         supplier.label:                                 Supplier
         purchase_order_number.label:                    PO Number
         purchase_order_supplier.label:                  Supplier
+        warehouse.label:                                Warehouse
         status.label:                                   Purchase Order Status
         purchase_order_date.label:                      Purchase Order Date
         purchase_order_due_date.label:                  Purchase Order Due Date
