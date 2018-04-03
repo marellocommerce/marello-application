@@ -18,7 +18,7 @@ class SalesChannelMultiSelectType extends AbstractSalesChannelMultiSelectType
             'autocomplete_alias' => 'saleschannels',
             'configs' => [
                 'multiple' => true,
-                'placeholder' => 'marello.magebridge.saleschannel.form.select_saleschannels',
+                'placeholder' => 'marello.magebridge.magento.form.sales_channel.info',
                 'allowClear' => true
             ],
         ]);

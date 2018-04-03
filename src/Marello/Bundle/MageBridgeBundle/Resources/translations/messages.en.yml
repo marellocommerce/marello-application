@@ -35,6 +35,7 @@ marello:
                     description: 'Not manually filled in Leave empty - will be filled in upon authentication completion'
                 sales_channel:
                     label: 'Magento Sales Channel'
+                    info: 'Select sales channel here'
                     description: 'Magento Sales Channel related to this integration'
 
             integration:
