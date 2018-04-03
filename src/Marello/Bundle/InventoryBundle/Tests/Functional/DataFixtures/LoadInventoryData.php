@@ -7,8 +7,10 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancer;
 use Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
@@ -63,7 +65,7 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
     {
         return [
             LoadProductData::class,
-            LoadSalesChannelGroupData::class
+            LoadWarehouseChannelLinkData::class
         ];
     }
 
@@ -132,6 +134,7 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
             if (!$inventoryItem) {
                 return;
             }
+
             $inventoryItem->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
             $this->handleInventoryUpdate($product, $inventoryItem, $data['inventory_qty'], 0, null);
             $this->balanceInventory($product);
@@ -163,27 +166,18 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
     }
 
     /**
-     * @param Product $product
+     * @param $product
+     * @throws \Exception
      */
     public function balanceInventory($product)
     {
-        /** @var SalesChannel[] $salesChannels */
-        $salesChannels = $product->getChannels();
-        foreach ($salesChannels as $salesChannel) {
-            $salesChannelGroups[$salesChannel->getGroup()->getId()] = $salesChannel->getGroup();
-        }
-
-        /** @var VirtualInventoryHandler $handler */
-        $handler = $this->container->get('marello_inventory.model.virtualinventory.virtual_inventory_handler');
-
-        foreach ($salesChannelGroups as $salesChannelGroup) {
-            /** @var VirtualInventoryLevel $level */
-            $level = $handler->findExistingVirtualInventory($product, $salesChannelGroup);
-            if (!$level) {
-                $level = $handler->createVirtualInventory($product, $salesChannelGroup);
-            }
-
-            $handler->saveVirtualInventory($level, true, true);
+        /** @var InventoryBalancer $balancer */
+        $balancer = $this->container->get('marello_inventory.model.balancer.inventory_balancer');
+        try {
+            $balancer->balanceInventory($product, false, true);
+        } catch (\Exception $exception) {
+            var_dump($exception->getTraceAsString());
+            throw new \Exception($exception->getMessage());
         }
     }
 

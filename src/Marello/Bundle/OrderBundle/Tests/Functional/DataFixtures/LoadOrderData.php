@@ -22,8 +22,6 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 {
     const DEFAULT_WAREHOUSE_REF = 'marello_warehouse_default';
-    /** flush manager count */
-    const FLUSH_MAX = 25;
 
     /**
      * @var ObjectManager
@@ -70,7 +68,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
             LoadSalesData::class,
             LoadProductData::class,
             LoadProductChannelPricingData::class,
-            LoadInventoryData::class,
+            LoadInventoryData::class
         ];
     }
 
@@ -117,10 +115,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 $this->setReference('marello_order_' . $createdOrders, $order);
                 $createdOrders++;
 
-                if (!($createdOrders % self::FLUSH_MAX)) {
-                    $manager->flush();
-                }
-
                 $order = null;
             }
 
@@ -133,6 +127,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
             $item = $this->createOrderItem($itemRow);
             $order->addItem($item);
+            $manager->flush();
         }
 
         $manager->persist($order);

@@ -76,6 +76,7 @@ class InventoryBalancer
         $inventoryLevels = $inventoryItem->getInventoryLevels();
 
         $filteredInventoryLevels = $this->filterInventoryLevels($inventoryLevels, $isFixed);
+
         $sortedWhgLevels = $this->sortInventoryLevels($filteredInventoryLevels, $isFixed);
         $linkedWhgToScgs = $this->getLinkedWarehouseGroupsToSalesChannelGroups($filteredInventoryLevels);
 

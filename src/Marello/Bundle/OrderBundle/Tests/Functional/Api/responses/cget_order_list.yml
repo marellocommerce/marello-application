@@ -1,0 +1,431 @@
+data:
+    -
+        type: orders
+        id: '<toString(@marello_order_0->id)>'
+        attributes:
+            orderNumber: '000000001'
+            orderReference: null
+            invoiceReference: null
+            subtotal: '280.0000'
+            totalTax: '48.5950'
+            grandTotal: '280.0000'
+            currency: USD
+            paymentMethod: 'Credit Card'
+            paymentReference: null
+            paymentDetails: 'American Express refnr. 371449635398431'
+            shippingAmountInclTax: '0.0000'
+            shippingAmountExclTax: '0.0000'
+            shippingMethod: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel2
+            data: []
+            locale: null
+        relationships:
+            customer:
+                data:
+                    type: customers
+                    id: '<toString(@customer0->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '17'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '17'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            localization:
+                data: null
+    -
+        type: orders
+        id: '<toString(@marello_order_1->id)>'
+        attributes:
+            orderNumber: '000000002'
+            orderReference: '300000896'
+            invoiceReference: null
+            subtotal: '1501.0000'
+            totalTax: '260.5040'
+            grandTotal: '1511.0000'
+            currency: GBP
+            paymentMethod: Paypal
+            paymentReference: null
+            paymentDetails: null
+            shippingAmountInclTax: '10.0000'
+            shippingAmountExclTax: '10.0000'
+            shippingMethod: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel3
+            data: []
+            locale: null
+        relationships:
+            customer:
+                data:
+                    type: customers
+                    id: '<toString(@customer1->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '18'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '18'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            localization:
+                data: null
+    -
+        type: orders
+        id: '<toString(@marello_order_2->id)>'
+        attributes:
+            orderNumber: '000000003'
+            orderReference: '200000072'
+            invoiceReference: null
+            subtotal: '1110.0000'
+            totalTax: '192.6447'
+            grandTotal: '1110.0000'
+            currency: USD
+            paymentMethod: 'Credit Card'
+            paymentReference: null
+            paymentDetails: 'American Express refnr. 371449635398431'
+            shippingAmountInclTax: '0.0000'
+            shippingAmountExclTax: '0.0000'
+            shippingMethod: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel2
+            data: []
+            locale: null
+        relationships:
+            customer:
+                data:
+                    type: customers
+                    id: '<toString(@customer2->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '19'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '19'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            localization:
+                data: null
+    -
+        type: orders
+        id: '<toString(@marello_order_3->id)>'
+        attributes:
+            orderNumber: '000000004'
+            orderReference: null
+            invoiceReference: null
+            subtotal: '2030.0000'
+            totalTax: '352.3141'
+            grandTotal: '2030.0000'
+            currency: GBP
+            paymentMethod: Paypal
+            paymentReference: null
+            paymentDetails: null
+            shippingAmountInclTax: '0.0000'
+            shippingAmountExclTax: '0.0000'
+            shippingMethod: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel3
+            data: []
+            locale: null
+        relationships:
+            customer:
+                data:
+                    type: customers
+                    id: '<toString(@customer3->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '20'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '20'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            localization:
+                data: null
+    -
+        type: orders
+        id: '<toString(@marello_order_4->id)>'
+        attributes:
+            orderNumber: '000000005'
+            orderReference: '400000004'
+            invoiceReference: null
+            subtotal: '450.0000'
+            totalTax: '78.0992'
+            grandTotal: '455.0000'
+            currency: GBP
+            paymentMethod: 'Credit Card'
+            paymentReference: null
+            paymentDetails: 'Visa refnr. 4012888888881881'
+            shippingAmountInclTax: '5.0000'
+            shippingAmountExclTax: '5.0000'
+            shippingMethod: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel3
+            data: []
+            locale: null
+        relationships:
+            customer:
+                data:
+                    type: customers
+                    id: '<toString(@customer4->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '21'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '21'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            localization:
+                data: null
+    -
+        type: orders
+        id: '<toString(@marello_order_5->id)>'
+        attributes:
+            orderNumber: '000000006'
+            orderReference: '300000288'
+            invoiceReference: null
+            subtotal: '920.2500'
+            totalTax: '159.7128'
+            grandTotal: '920.2500'
+            currency: GBP
+            paymentMethod: Paypal
+            paymentReference: null
+            paymentDetails: null
+            shippingAmountInclTax: '0.0000'
+            shippingAmountExclTax: '0.0000'
+            shippingMethod: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel3
+            data: []
+            locale: null
+        relationships:
+            customer:
+                data:
+                    type: customers
+                    id: '<toString(@customer5->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '22'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '22'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            localization:
+                data: null
+    -
+        type: orders
+        id: '<toString(@marello_order_6->id)>'
+        attributes:
+            orderNumber: '000000007'
+            orderReference: null
+            invoiceReference: null
+            subtotal: '1590.0000'
+            totalTax: '275.9504'
+            grandTotal: '1595.0000'
+            currency: GBP
+            paymentMethod: Paypal
+            paymentReference: null
+            paymentDetails: null
+            shippingAmountInclTax: '5.0000'
+            shippingAmountExclTax: '5.0000'
+            shippingMethod: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel3
+            data: []
+            locale: null
+        relationships:
+            customer:
+                data:
+                    type: customers
+                    id: '<toString(@customer6->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '23'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '23'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            localization:
+                data: null
+    -
+        type: orders
+        id: '<toString(@marello_order_7->id)>'
+        attributes:
+            orderNumber: '000000008'
+            orderReference: null
+            invoiceReference: null
+            subtotal: '630.0000'
+            totalTax: '109.3388'
+            grandTotal: '635.0000'
+            currency: USD
+            paymentMethod: 'Credit Card'
+            paymentReference: null
+            paymentDetails: 'Visa refnr. 4012888888881881'
+            shippingAmountInclTax: '5.0000'
+            shippingAmountExclTax: '5.0000'
+            shippingMethod: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel2
+            data: []
+            locale: null
+        relationships:
+            customer:
+                data:
+                    type: customers
+                    id: '<toString(@customer7->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '24'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '24'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            localization:
+                data: null
+    -
+        type: orders
+        id: '<toString(@marello_order_8->id)>'
+        attributes:
+            orderNumber: '000000009'
+            orderReference: '200000095'
+            invoiceReference: null
+            subtotal: '425.0000'
+            totalTax: '73.7603'
+            grandTotal: '430.0000'
+            currency: USD
+            paymentMethod: 'Credit Card'
+            paymentReference: null
+            paymentDetails: 'Visa refnr. 4012888888881881'
+            shippingAmountInclTax: '5.0000'
+            shippingAmountExclTax: '5.0000'
+            shippingMethod: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel2
+            data: []
+            locale: null
+        relationships:
+            customer:
+                data:
+                    type: customers
+                    id: '<toString(@customer8->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '25'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '25'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            localization:
+                data: null
+    -
+        type: orders
+        id: '10'
+        attributes:
+            orderNumber: '000000010'
+            orderReference: '100000334'
+            invoiceReference: null
+            subtotal: '0.0000'
+            totalTax: '0.0000'
+            grandTotal: '0.0000'
+            currency: EUR
+            paymentMethod: 'Credit Card'
+            paymentReference: null
+            paymentDetails: 'Master Card refnr. 5105105105105100'
+            shippingAmountInclTax: '10.0000'
+            shippingAmountExclTax: '10.0000'
+            shippingMethod: null
+            discountAmount: null
+            discountPercent: null
+            couponCode: null
+            invoicedAt: null
+            salesChannelName: channel1
+            data: []
+            locale: null
+        relationships:
+            customer:
+                data:
+                    type: customers
+                    id: '<toString(@customer9->id)>'
+            billingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '26'
+            shippingAddress:
+                data:
+                    type: marelloaddresses
+                    id: '26'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            localization:
+                data: null

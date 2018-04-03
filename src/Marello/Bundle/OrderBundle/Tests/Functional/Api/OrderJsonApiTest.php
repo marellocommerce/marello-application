@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller\Api\Rest;
+namespace Marello\Bundle\OrderBundle\Tests\Functional\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,6 +14,9 @@ class OrderJsonApiTest extends RestJsonApiTestCase
     protected function setUp()
     {
         parent::setUp();
+        $this->loadFixtures([
+            LoadOrderData::class
+        ]);
     }
 
     /**
@@ -22,7 +25,12 @@ class OrderJsonApiTest extends RestJsonApiTestCase
      */
     public function testGetListOfOrders()
     {
-        $this->markTestSkipped('Loading Orders with fixtures doesn\'t work properly');
+        $response = $this->cget(['entity' => self::TESTING_ENTITY], []);
+
+        $this->assertJsonResponse($response);
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
+        $this->assertResponseCount(10, $response);
+        $this->assertResponseContains('cget_order_list.yml', $response);
     }
 
     /**
@@ -30,6 +38,13 @@ class OrderJsonApiTest extends RestJsonApiTestCase
      */
     public function testGetOrderById()
     {
-        $this->markTestSkipped('Loading Orders with fixtures doesn\'t work properly');
+        $order = $this->getReference('marello_order_1');
+        $response = $this->get(
+            ['entity' => self::TESTING_ENTITY, 'id' => $order->getId()],
+            []
+        );
+
+        $this->assertJsonResponse($response);
+        $this->assertResponseContains('get_order_by_id.yml', $response);
     }
 }
