@@ -8,15 +8,15 @@ parameters:
 services:
     #Export readers
     marello_magebridge.importexport.product_reader:
-        class: '%marello_magebridge.export.product_reader.class%'
+        class: '%marello_magebridge.importexport.product_reader.class%'
         public: false
-#        parent: 'oro_importexport.reader.entity'
+        parent: 'oro_importexport.reader.entity'
         calls:
             - [setSourceEntityName, ['%marello_product.entity.class%']]
 
     #Export converters
     marello_magebridge.importexport.product_converter:
-        class: '%marello_magebridge.export.product_converter.class%'
+        class: '%marello_magebridge.importexport.product_converter.class%'
         public: false
         arguments:
             - '@doctrine.orm.entity_manager'
@@ -26,12 +26,12 @@ services:
         parent: oro_integration.importexport.processor.export
         public: false
         calls:
-             - [setDataConverter, ["@marello_magebridge.export.product_converter"]]
+             - [setDataConverter, ["@marello_magebridge.importexport.product_converter"]]
         tags:
             - name: oro_importexport.processor
               type: export
               entity: '%marello_product.entity.class%'
-              alias: marello_magebridge.export.product_processor
+              alias: marello_magebridge_importexport_product_processor
 
     # Export writers
     marello_magebridge.importexport.writer.abstract_export:

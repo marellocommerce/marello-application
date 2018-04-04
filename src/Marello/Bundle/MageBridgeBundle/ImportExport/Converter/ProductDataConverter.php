@@ -10,7 +10,7 @@ namespace Marello\Bundle\MageBridgeBundle\ImportExport\Converter;
 
 use Oro\Bundle\ImportExportBundle\Converter\DefaultDataConverter;
 
-class ProductDataCoverter extends DefaultDataConverter
+class ProductDataConverter extends DefaultDataConverter
 {
 
 }
