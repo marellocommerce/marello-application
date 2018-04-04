@@ -20,7 +20,7 @@ class MarelloCatalogBundleInstaller implements Installation, ActivityExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -37,20 +37,20 @@ class MarelloCatalogBundleInstaller implements Installation, ActivityExtensionAw
     public function up(Schema $schema, QueryBag $queries)
     {
         /** Tables generation **/
-        $this->createOroCatalogCategoryTable($schema);
-        $this->createOroCategoryToProductTable($schema);
+        $this->createCatalogCategoryTable($schema);
+        $this->createCategoryToProductTable($schema);
 
         /** Foreign keys generation **/
-        $this->addOroCatalogCategoryForeignKeys($schema);
-        $this->addOroCategoryToProductForeignKeys($schema);
+        $this->addCatalogCategoryForeignKeys($schema);
+        $this->addCategoryToProductForeignKeys($schema);
     }
 
     /**
-     * Create oro_catalog_category table
+     * Create marello_catalog_category table
      *
      * @param Schema $schema
      */
-    protected function createOroCatalogCategoryTable(Schema $schema)
+    protected function createCatalogCategoryTable(Schema $schema)
     {
         $table = $schema->createTable('marello_catalog_category');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
@@ -67,11 +67,11 @@ class MarelloCatalogBundleInstaller implements Installation, ActivityExtensionAw
     }
 
     /**
-     * Create oro_category_to_product table
+     * Create marello_category_to_product table
      *
      * @param Schema $schema
      */
-    protected function createOroCategoryToProductTable(Schema $schema)
+    protected function createCategoryToProductTable(Schema $schema)
     {
         $table = $schema->createTable('marello_category_to_product');
         $table->addColumn('category_id', 'integer', []);
@@ -80,11 +80,11 @@ class MarelloCatalogBundleInstaller implements Installation, ActivityExtensionAw
     }
 
     /**
-     * Add oro_catalog_category foreign keys.
+     * Add marello_catalog_category foreign keys.
      *
      * @param Schema $schema
      */
-    protected function addOroCatalogCategoryForeignKeys(Schema $schema)
+    protected function addCatalogCategoryForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_catalog_category');
         $table->addForeignKeyConstraint(
@@ -96,11 +96,11 @@ class MarelloCatalogBundleInstaller implements Installation, ActivityExtensionAw
     }
 
     /**
-     * Add oro_category_to_product foreign keys.
+     * Add marello_category_to_product foreign keys.
      *
      * @param Schema $schema
      */
-    protected function addOroCategoryToProductForeignKeys(Schema $schema)
+    protected function addCategoryToProductForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_category_to_product');
         $table->addForeignKeyConstraint(
