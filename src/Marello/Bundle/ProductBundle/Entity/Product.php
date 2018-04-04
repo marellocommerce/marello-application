@@ -366,7 +366,7 @@ class Product extends ExtendProduct implements
      *
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\CatalogBundle\Entity\Category", mappedBy="products")
      */
-    private $categories;
+    protected $categories;
 
     public function __construct()
     {
