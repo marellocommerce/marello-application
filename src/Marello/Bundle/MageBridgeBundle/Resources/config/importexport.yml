@@ -1,0 +1,50 @@
+parameters:
+    marello_magebridge.importexport.product_reader.class: Marello\Bundle\MageBridgeBundle\Provider\Reader\ProductReader
+    marello_magebridge.importexport.product_converter.class: Marello\Bundle\MageBridgeBundle\ImportExport\Converter\ProductDataConverter
+    marello_magebridge.importexport.product_processor.class: Marello\Bundle\MageBridgeBundle\ImportExport\Processor\ProductProcessor
+    marello_magebridge.importexport.writer.abstract_export.class: Marello\Bundle\MageBridgeBundle\ImportExport\Writer\AbstractWriter
+    marello_magebridge.importexport.product_writer.class: Marello\Bundle\MageBridgeBundle\ImportExport\Writer\ProductWriter
+
+services:
+    #Export readers
+    marello_magebridge.importexport.product_reader:
+        class: '%marello_magebridge.export.product_reader.class%'
+        public: false
+#        parent: 'oro_importexport.reader.entity'
+        calls:
+            - [setSourceEntityName, ['%marello_product.entity.class%']]
+
+    #Export converters
+    marello_magebridge.importexport.product_converter:
+        class: '%marello_magebridge.export.product_converter.class%'
+        public: false
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    # Export processors
+    marello_magebridge.importexport.product_processor:
+        parent: oro_integration.importexport.processor.export
+        public: false
+        calls:
+             - [setDataConverter, ["@marello_magebridge.export.product_converter"]]
+        tags:
+            - name: oro_importexport.processor
+              type: export
+              entity: '%marello_product.entity.class%'
+              alias: marello_magebridge.export.product_processor
+
+    # Export writers
+    marello_magebridge.importexport.writer.abstract_export:
+        class: '%marello_magebridge.importexport.writer.abstract_export.class%'
+        parent: oro_integration.writer.persistent_batch_writer
+        abstract: true
+        calls:
+            - [setTransport, ["@marello_magebridge.transport.rest_transport"]]
+            - [setChannelClassName, [%oro_integration.entity.class%]]
+
+    marello_magebridge.importexport.product_writer:
+        class: '%marello_magebridge.importexport.product_writer.class%'
+        parent: marello_magebridge.importexport.writer.abstract_export
+#        calls:
+#            - [setStrategy, ["@oro_magento.provider.strategy.two_way_sync.customer"]]
+#            - [setStateHandler, ["@oro_magento.customer_state_handler"]]

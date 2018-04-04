@@ -43,18 +43,16 @@ trait IntegrationChannelTrait
         $this->options['client_secret'] = $integrationChannel->getClientSecret();
 
         //url's
-        $apiUrl = $this->removeTraiingSlash($integrationChannel->getApiUrl());
-        $adminUrl = $this->removeTraiingSlash($integrationChannel->getAdminUrl());
-
-
-//        var_dump($apiUrl);
-//        var_dump($adminUrl);
-//        die();
+        $apiUrl = $this->removeTrailSlash($integrationChannel->getApiUrl());
+        $adminUrl = $this->removeTrailSlash($integrationChannel->getAdminUrl());
 
         $this->options['request_token_url'] = $apiUrl . '/oauth/initiate';
         $this->options['authorization_url'] = $adminUrl . "/oauth_authorize";
         $this->options['access_token_url'] = $apiUrl . '/oauth/token';
         $this->options['infos_url'] = $apiUrl;
+
+        //several M1 api
+        $this->options['products'] = $apiUrl . '/api/rest/products';
 
         return $this;
     }
@@ -63,7 +61,7 @@ trait IntegrationChannelTrait
      * @param $url
      * @return string
      */
-    private function removeTraiingSlash($url)
+    private function removeTrailSlash($url)
     {
         return $url;
     }

@@ -1,0 +1,16 @@
+connector:
+    name: oro_importexport
+    jobs:
+        magento_product_export:
+            title: 'Export Magento Product to Magento'
+            type: export
+            steps:
+                export:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magebridge.importexport.product_reader
+                        processor: marello_magebridge.importexport.product_processor
+                        writer:    marello_magebridge.importexport.product_writer
+                    parameters:
+                        batch_size: 25

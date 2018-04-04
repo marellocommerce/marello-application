@@ -44,7 +44,6 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             'request_token_url' => 'https://magento_domain.com/oauth/initiate',
             'authorization_url' => 'https://magento_domain.com/admin/oauth_authorize',
             'access_token_url' => 'https://magento_domain.com/oauth/token',
-            'products' => 'https://magento_domain.com/api/rest/products',
             'infos_url' => 'https://magento_domain.com/',
             'client_id' => 'magento_consumer_key',
             'client_secret' => 'magento_consumer_secret',
@@ -147,10 +146,6 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
         );
 
         $content = $this->httpRequest($this->options['products'], null, $parameters, array('Content-Type' => 'application/json', 'Accept' => '*/*'))->getContent();
-
-//        TODO FIX ME:
-//        echo($content);
-//        die(__METHOD__ . '####'. __LINE__);
 
         $response = $this->getUserResponse();
         $response->setResponse($content);
