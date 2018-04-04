@@ -6,6 +6,7 @@ marello:
             entity_label:           Category
             name.label:             Name
             code.label:             Code
+            description.label:      Description
             sections.additional:    Additional Information
         product:
             in_category.label: In category

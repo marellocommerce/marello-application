@@ -61,6 +61,13 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
      * @var string
      *
      * @ORM\Column(type="string")
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
 
@@ -68,8 +75,29 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
      * @var string
      *
      * @ORM\Column(type="string", nullable=false)
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $code;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $description;
     
     /**
      * @var Collection|Product[]
@@ -147,6 +175,25 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
     {
         $this->code = $code;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        
         return $this;
     }
 

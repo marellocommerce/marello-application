@@ -3,7 +3,6 @@
 namespace Marello\Bundle\CatalogBundle\Controller;
 
 use Marello\Bundle\CatalogBundle\Entity\Category;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
