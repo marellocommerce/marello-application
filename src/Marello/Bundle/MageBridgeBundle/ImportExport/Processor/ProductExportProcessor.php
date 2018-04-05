@@ -9,7 +9,7 @@
 namespace Marello\Bundle\MageBridgeBundle\ImportExport\Processor;
 
 
-class ProductProcessor
+class ProductExportProcessor
 {
 
 }

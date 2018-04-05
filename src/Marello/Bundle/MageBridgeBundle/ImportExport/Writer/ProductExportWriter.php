@@ -9,7 +9,7 @@
 namespace Marello\Bundle\MageBridgeBundle\ImportExport\Writer;
 
 
-class ProductWriter extends AbstractWriter
+class ProductExportWriter extends AbstractWriter
 {
 
 }

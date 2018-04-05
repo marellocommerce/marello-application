@@ -10,7 +10,7 @@ connector:
                     class: Oro\Bundle\BatchBundle\Step\ItemStep
                     services:
                         reader:    marello_magebridge.importexport.product_reader
-                        processor: marello_magebridge.importexport.product_processor
-                        writer:    marello_magebridge.importexport.product_writer
+                        processor: marello_magebridge.importexport.product_export_processor
+                        writer:    marello_magebridge.importexport.product_export_writer
                     parameters:
                         batch_size: 25
