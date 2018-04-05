@@ -22,6 +22,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  */
 class ProductStatus
 {
+    const ENABLED = 'enabled';
+    const DISABLED = 'disabled';
+    
     /**
      * @ORM\Column(name="name", type="string", length=32)
      * @ORM\Id

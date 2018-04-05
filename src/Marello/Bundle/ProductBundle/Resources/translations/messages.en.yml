@@ -81,3 +81,9 @@ marello:
             shortcut_new_product.description: Create new product instance
             shortcut_list_products.label: Show product list
             shortcut_list_products.description: List of products
+
+        ui:
+            duplicate: Duplicate
+            save_and_duplicate: Save And Duplicate
+            product.duplicated.message: Product has been duplicated
+            product.saved_and_duplicated.message: Product has been saved and duplicated

@@ -45,6 +45,14 @@
     {{ UI.cancelButton(path('marello_product_index')) }}
 
     {% set html = UI.saveAndCloseButton() %}
+
+    {% if resource_granted('marello_product_create') %}
+        {% set saveAndDuplicateButton = UI.saveActionButton({
+        'label': 'marello.product.ui.save_and_duplicate'|trans,
+        'action': 'save_and_duplicate'
+        }) %}
+        {% set html = html ~ saveAndDuplicateButton %}
+    {% endif %}
     {% if form.vars.value.id or resource_granted('marello_product_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
@@ -182,6 +190,18 @@
                 'title': '',
                 'data': [
                     suppliers
+                ]
+            }]
+        },
+        {
+            'title' : 'marello.catalog.category.entity_plural_label'|trans,
+            'subblocks': [{
+                'title' : null,
+                'useSpan': false,
+                'data' : [
+                    form_widget(form.appendCategories, {'id': 'productAppendCategories'}),
+                    form_widget(form.removeCategories, {'id': 'productRemoveCategories'}),
+                    dataGrid.renderGrid('marello-product-categories-extend-grid', { product_id: entity.id ? entity.id : 0 }, { cssClass: 'inner-grid' })
                 ]
             }]
         }

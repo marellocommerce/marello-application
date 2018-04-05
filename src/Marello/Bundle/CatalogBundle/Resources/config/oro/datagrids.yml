@@ -1,0 +1,181 @@
+datagrids:
+    marello-categories-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - c
+                from:
+                    - { table: MarelloCatalogBundle:Category, alias: c }
+        columns:
+            name:
+                label:              marello.catalog.category.name.label
+                frontend_type:      string
+            code:
+                label:              marello.catalog.category.code.label
+                frontend_type:      string
+            createdAt:
+                label:              oro.ui.created_at
+                frontend_type:      datetime
+            updatedAt:
+                label:              oro.ui.updated_at
+                frontend_type:      datetime
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: c.name
+                code:
+                    type: string
+                    data_name: c.code
+        sorters:
+            columns:
+                name:           {data_name: c.name}
+                code:           {data_name: c.code}
+                createdAt:      { data_name: c.createdAt }
+                updatedAt:      { data_name: c.updatedAt }
+            default:
+                name: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        properties:
+            id: ~
+            view_link:
+                type:   url
+                route:  marello_category_view
+                params: [ id ]
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_resource:   marello_category_view
+                rowAction:      true
+        options:
+            entityHint: category
+            entity_pagination: true
+
+    marello-category-products-base-grid:
+        acl_resource: marello_product_update
+        extended_entity_name: %marello_product.entity.class%
+        source:
+            type:         orm
+            query:
+                select:
+                    - product.id
+                    - product.sku
+                    - product.name
+                    - product.createdAt
+                    - product.updatedAt
+                from:
+                    - { table: %marello_product.entity.class%, alias: product }
+        columns:
+            sku:
+                label:         marello.product.sku.label
+            name:
+                label:         marello.product.name.label
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+        sorters:
+            columns:
+                sku:
+                    data_name: product.sku
+                name:
+                    data_name: product.name
+                createdAt:
+                    data_name: product.createdAt
+                updatedAt:
+                    data_name: product.updatedAt
+        filters:
+            columns:
+                sku:
+                    type:      string
+                    data_name: product.sku
+                name:
+                    type:      string
+                    data_name: product.name
+                createdAt:
+                    type:      datetime
+                    data_name: product.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: product.updatedAt
+        options:
+            entity_pagination: true
+
+    marello-category-products-grid:
+        extends: marello-category-products-base-grid
+        source:
+            query:
+                where:
+                    and:
+                        - product.id IN(:products)
+            bind_parameters:
+                - products
+        sorters:
+            default:
+                sku: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+
+    marello-category-products-extend-grid:
+        extends: marello-category-products-base-grid
+        source:
+            query:
+                select:
+                    - >
+                        (
+                            CASE WHEN (:category_id IS NOT NULL) THEN
+                                CASE WHEN
+                                    product MEMBER OF productCategory.products
+                                    OR product.id IN (:data_in) AND product.id NOT IN (:data_not_in)
+                                THEN true ELSE false END
+                            ELSE
+                                CASE WHEN product.id IN (:data_in) AND product.id NOT IN (:data_not_in)
+                                THEN true ELSE false END
+                            END
+                        ) as inCategory
+                join:
+                    left:
+                        -
+                            join: %marello_catalog.category.entity.class%
+                            alias: productCategory
+                            conditionType: WITH
+                            condition: 'productCategory = :category_id'
+            bind_parameters:
+                -
+                    name: category_id
+                    default: null
+                    type: integer
+        columns:
+            inCategory:
+                label:         marello.catalog.product.in_category.label
+                editable:      true
+                frontend_type: boolean
+                add_before:    true
+        properties:
+            id: ~
+        sorters:
+            columns:
+                inCategory:
+                    data_name: inCategory
+            default:
+                inCategory: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                inCategory:
+                    type:      boolean
+                    data_name: inCategory
+        options:
+            entityHint:        products
+            entity_pagination: true
+            rowSelection:
+                dataField: id
+                columnName: inCategory
+                selectAll: true
+                selectors:
+                    included: '#categoryAppendProducts'
+                    excluded: '#categoryRemoveProducts'
