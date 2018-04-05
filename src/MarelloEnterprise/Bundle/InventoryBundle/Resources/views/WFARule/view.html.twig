@@ -25,7 +25,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
-
+    {% set id = 'marello-wfa-rule-view' %}
     {%- set wfaRuleInformation -%}
         <div class="row-fluid form-horizontal">
             <div class="responsive-block">
@@ -61,7 +61,6 @@
         }
     ] %}
 
-    {% set id = 'wfa-rule-view' %}
     {% set data = {'dataBlocks': dataBlocks} %}
 
     {{ parent() }}
