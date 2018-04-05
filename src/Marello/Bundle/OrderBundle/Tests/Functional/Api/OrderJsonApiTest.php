@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Api;
 
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Symfony\Component\HttpFoundation\Response;
 
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
@@ -38,6 +39,7 @@ class OrderJsonApiTest extends RestJsonApiTestCase
      */
     public function testGetOrderById()
     {
+        /** @var Order $order */
         $order = $this->getReference('marello_order_1');
         $response = $this->get(
             ['entity' => self::TESTING_ENTITY, 'id' => $order->getId()],
@@ -46,5 +48,23 @@ class OrderJsonApiTest extends RestJsonApiTestCase
 
         $this->assertJsonResponse($response);
         $this->assertResponseContains('get_order_by_id.yml', $response);
+    }
+
+    /**
+     * Test get order by orderNumber
+     */
+    public function testGetOrderByOrderNumber()
+    {
+        /** @var Order $order */
+        $order = $this->getReference('marello_order_1');
+        $response = $this->get(
+            ['entity' => self::TESTING_ENTITY, 'id' => $order->getId()],
+            [
+                'filter' => ['orderNumber' =>  $order->getOrderNumber() ]
+            ]
+        );
+
+        $this->assertJsonResponse($response);
+        $this->assertResponseContains('get_order_by_orderNumber.yml', $response);
     }
 }

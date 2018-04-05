@@ -1,0 +1,43 @@
+data:
+    type: orders
+    id: '<toString(@marello_order_1->id)>'
+    attributes:
+        orderNumber: '000000002'
+        orderReference: '300000896'
+        invoiceReference: null
+        subtotal: '1501.0000'
+        totalTax: '260.5040'
+        grandTotal: '1511.0000'
+        currency: GBP
+        paymentMethod: Paypal
+        paymentReference: null
+        paymentDetails: null
+        shippingAmountInclTax: '10.0000'
+        shippingAmountExclTax: '10.0000'
+        shippingMethod: null
+        discountAmount: null
+        discountPercent: null
+        couponCode: null
+        invoicedAt: null
+        salesChannelName: channel3
+        data: []
+        locale: null
+    relationships:
+        customer:
+            data:
+                type: customers
+                id: '<toString(@customer1->id)>'
+        billingAddress:
+            data:
+                type: marelloaddresses
+                id: '18'
+        shippingAddress:
+            data:
+                type: marelloaddresses
+                id: '18'
+        organization:
+            data:
+                type: organizations
+                id: '1'
+        localization:
+            data: null
