@@ -17,8 +17,7 @@
     ],
     "require": {
         "php": ">=7.0",
-        "marellocommerce/marello": "1.3.*",
-        "oro/commerce": "1.5.*"
+        "marellocommerce/marello": "1.3.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
