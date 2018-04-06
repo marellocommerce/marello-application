@@ -89,7 +89,7 @@ This part of the documentation will cover the setup of both a single instance an
 
 In order to create a successful integration between Marello and OroCommerce, there are at least two additional components necessary next to Marello and OroCommerce to create the Integration. 
 
-####MarelloOroCommerce Bridge and Bundle
+#### MarelloOroCommerce Bridge and Bundle
 
 The MarelloOroCommerce Bridge and Bundle will provide you with the integration and services need in order to create an integration. This package does not include the extension of the OroCommerce API and or disabling of the Order notification emails.
 
