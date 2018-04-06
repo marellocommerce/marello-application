@@ -36,6 +36,7 @@ Configuration
 In order to configure the integration, make sure you have setup the applications correctly. Please advice with your implementation partner to verify your setup, or see the technical overview below.
 
 ### Configuration prerequisites
+
 * A user which has an API key generated (https://oroinc.com/orocrm/doc/current/dev-guide/cookbook/how-to-use-wsse-authentication#api-key); 
 * A user which has permissions to create, update and view Products, Product Prices, Inventory and Tax related entities (TaxRules, TaxCodes and Tax Jurisdictions) (https://oroinc.com/orocrm/doc/2.3/admin-guide/security/access-management-roles#action-on-entity-permissions);
 * A user which has permissions to view and update Orders (https://oroinc.com/orocrm/doc/2.3/admin-guide/security/access-management-roles#action-on-entity-permissions)
@@ -43,6 +44,7 @@ In order to configure the integration, make sure you have setup the applications
 __Above prerequisites should be met before configuring your integration in Marello.__
 
 ### Integration Configuration
+
 The configuration for the integration should be done in the Marello Application. __If the setup is done with multiple instances, this is especially important!__
 The integration can be created on the 'Integration' page and can be found in Marello in:
 * _System → Integrations → Manage Integrations → Create Integration._
@@ -70,7 +72,8 @@ _*The configured name of the integration will be used to create a SalesChannel w
 
 _**Only a single currency is supported per integration. The value is also being used for the creation of the SalesChannel._
 
-#####A few notes about the integration and events happening.
+##### A few notes about the integration and events happening.
+
 * After the integration is saved, a new SalesChannel will be created based on this integration;
 * Every product which will be assigned to this SalesChannel will be synchronised to OroCommerce (only if the balanced inventory is greater than 0)
 * When a TaxRule,TaxRate,TaxCode or TaxJurisdiction is created, updated or deleted products assigned to this SalesChannel, will be trigger synchronisation of all products assigned to this SalesChannel (so it is recommended to fill correct tax information before assigning products to SalesChannel based on the integration);
@@ -82,25 +85,30 @@ Technical overview
 ------------
 This part of the documentation will cover the setup of both a single instance and multiple instance setup of the integration with OroCommerce. It will describe the (required) components needed in order to make the single and or multiple instance setup work correctly.
 
-###Components
+### Components
+
 In order to create a successful integration between Marello and OroCommerce, there are at least two additional components necessary next to Marello and OroCommerce to create the Integration. 
 
 ####MarelloOroCommerce Bridge and Bundle
+
 The MarelloOroCommerce Bridge and Bundle will provide you with the integration and services need in order to create an integration. This package does not include the extension of the OroCommerce API and or disabling of the Order notification emails.
 
 This package will provide you with the code in order to create the integration, cleanup and clarification of the Admin Navigation and clarification of the widgets in the Admin Dashboard.
 
-####MarelloOroCommerce Api Bridge
+#### MarelloOroCommerce Api Bridge
+
 This Bridge will provide you with the necessary code and configuration to extend the current OroCommerce (1.5.x)  API endpoints in order to facilitate Tax related entity creation, updating the Order and Payment status of entities in OroCommerce. Another feature this api bridge will provide is the disabling of the Order notification emails being send through OroCommerce since this responsibility will be handled by Marello. Without this component the Integration will not work properly and will leave you in disappointment.
 
-#####Single Instance Setup
+##### Single Instance Setup
+
 A single instance setup would be a setup where all the required components and applications are installed together on the same server while sharing the code base and database. Even though they are being installed together, the integration still operates through API calls on OroCommerce, meaning the url (admin url) needed to configure will be the same as where the application is actually running on. The diagram below shows a setup of the Marello-OroCommerce integration as a single instance setup.
 
 ![Marello-OroCommerce Single Instance overview](src/Marello/Bundle/OroCommerceBundle/Resources/doc/images/Marello-OroCommerce-Single-Instance-overview.png "Marello-OroCommerce Single Instance overview")
 
 The single instance setup will share a repository and we've configured a repository to do exact that. The public repository will only feature the Community Editions of Marello and OroCommerce without the CRM. However it is possible to install OroCRM Community edition with the setup, but does require additional dependencies. The repository can be found at https://github.com/marellocommerce/marello-orocommerce.
 
-#####Multiple Instance Setup
+##### Multiple Instance Setup
+
 If Marello and OroCommerce are not installed together in a single application; we are talking about a multi instance setup where the applications are not sharing the same code base and database. The integration can coop with a multi instance setup since the integration is communicating via the API of OroCommerce, whether it's installed together or apart from each other. The multi instance setup will look something like the diagram below from a high level perspective. The respective components needed for the integration have been drawn in the instance where they should be installed.
 
 ![Marello-OroCommerce Multi Instance overview](src/Marello/Bundle/OroCommerceBundle/Resources/doc/images/Marello-OroCommerce-Multi-Instance-overview.png "Marello-OroCommerce Multi Instance overview")
