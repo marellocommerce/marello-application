@@ -1,5 +1,5 @@
 services:
-    marello_orocommerce.form.type.ebay_settings:
+    marello_orocommerce.form.type.orocommerce_settings:
         class: 'Marello\Bundle\OroCommerceBundle\Form\Type\OroCommerceSettingsType'
         arguments:
             - '@marello_orocommerce.cache'
