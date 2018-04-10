@@ -30,7 +30,7 @@ navigation:
                     system_tab:
                         children:
                             warehouses: ~
-                    products:
+                    products_tab:
                         children:
                             inventory_management:
                                 children:

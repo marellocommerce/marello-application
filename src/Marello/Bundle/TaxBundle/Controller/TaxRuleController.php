@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 /**
  * Class TaxRuleController
  * @package Marello\Bundle\TaxBundle\Controller
- * @Config\Route("/rule")
  */
 class TaxRuleController extends Controller
 {
@@ -25,7 +24,7 @@ class TaxRuleController extends Controller
     }
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_tax_taxrule_view")
      * @Config\Template
      * @Security\Acl(
      *      id="marello_tax_taxrule_view",
@@ -44,7 +43,7 @@ class TaxRuleController extends Controller
     }
 
     /**
-     * @Config\Route("/create")
+     * @Config\Route("/create", name="marello_tax_taxrule_create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\Acl(
@@ -62,7 +61,7 @@ class TaxRuleController extends Controller
     }
 
     /**
-     * @Config\Route("/update/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_tax_taxrule_update")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\Acl(

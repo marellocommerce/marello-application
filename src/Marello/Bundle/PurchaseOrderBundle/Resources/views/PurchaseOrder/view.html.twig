@@ -27,6 +27,7 @@
 {% endblock pageHeader %}
 
 {% block content_data %}
+    {% set id = 'marello-purchase-order-view' %}
     {% set data %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -53,6 +54,7 @@
             </div>
         </div>
     {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'General'|trans,
@@ -70,7 +72,6 @@
         }
     ] %}
 
-    {% set id = 'vehicleView' %}
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

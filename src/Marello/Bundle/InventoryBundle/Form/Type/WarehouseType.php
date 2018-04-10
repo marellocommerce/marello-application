@@ -66,7 +66,7 @@ class WarehouseType extends AbstractType
             $form->add('createOwnGroup', CheckboxType::class, [
                 'required' => false,
                 'mapped' => false,
-                'label' => 'marelloenterprise.inventory.warehouse.form.create_own_group'
+                'label' => 'marello.inventory.warehouse.form.create_own_group'
             ]);
         }
     }

@@ -35,13 +35,17 @@ services:
         tags:
             - { name: twig.extension }
 
-    marello_product.util.datagrid.datagridhelper:
-        class: Marello\Bundle\ProductBundle\Util\Datagrid\DatagridHelper
+    marello_product.listener.datagrid.product_categories_column_listener:
+        class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductCategoriesColumnListener
+        arguments:
+            - '@marello_datagrid.datagridhelper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-categories-extend-grid, method: buildBefore }
 
     marello_product.listener.datagrid.product_saleschannel_column_listener:
         class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSalesChannelColumnListener
         arguments:
-            - '@marello_product.util.datagrid.datagridhelper'
+            - '@marello_datagrid.datagridhelper'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-saleschannel-extended-grid, method: buildBefore }
 
@@ -66,3 +70,20 @@ services:
             - 'Marello\Bundle\ProductBundle\Entity\Product'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_product.service.duplicator:
+        class: 'Marello\Bundle\ProductBundle\Duplicator\ProductDuplicator'
+        arguments:
+            - "@oro_entity.doctrine_helper"
+            - "@event_dispatcher"
+            - "@oro_attachment.file_manager"
+            - "@oro_attachment.provider.attachment"
+        calls:
+            - [setSkuIncrementor,  ["@marello_product.service.sku_incrementor"]]
+
+    marello_product.service.sku_incrementor:
+        class: 'Marello\Bundle\ProductBundle\Duplicator\SkuIncrementor'
+        public: false
+        arguments:
+            - "@oro_entity.doctrine_helper"
+            - '%marello_product.entity.class%'

@@ -42,6 +42,20 @@ class TaxCode
     protected $description;
 
     /**
+     * @var array $data
+     *
+     * @ORM\Column(name="data", type="json_array", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $data;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -105,5 +119,24 @@ class TaxCode
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @param array $data
+     * @return TaxCode
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 }

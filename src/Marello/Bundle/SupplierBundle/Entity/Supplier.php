@@ -3,22 +3,32 @@
 namespace Marello\Bundle\SupplierBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * Supplier
  *
  * @ORM\Entity(repositoryClass="Marello\Bundle\SupplierBundle\Entity\Repository\SupplierRepository")
  * @ORM\Table(name="marello_supplier_supplier")
- * @Oro\Config()
+ * @Oro\Config(
+ *      routeView="marello_supplier_supplier_view",
+ *      defaultValues={
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
+ *          },
+ *      }
+ * )
  * @ORM\HasLifecycleCallbacks()
  */
 class Supplier
 {
-    use EntityCreatedUpdatedAtTrait;
-
+    use EntityCreatedUpdatedAtTrait, AuditableOrganizationAwareTrait;
     /**
      * @var integer
      *

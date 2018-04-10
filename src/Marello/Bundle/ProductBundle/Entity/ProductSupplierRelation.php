@@ -229,4 +229,11 @@ class ProductSupplierRelation
     {
         return $this->canDropship;
     }
+
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+        }
+    }
 }

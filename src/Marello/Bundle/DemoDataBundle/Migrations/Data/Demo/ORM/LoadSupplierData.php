@@ -5,6 +5,8 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
@@ -26,13 +28,28 @@ class LoadSupplierData extends AbstractFixture
             'is_active' => true,
             'address'=>
                 [
-                    'street_address' => 'Torenallee 20',
-                    'zipcode' => '5617 BC',
-                    'city'=> 'Eindhoven',
-                    'country'=> 'NL',
-                    'state' => 'NB'
+                    'street_address' => '70 Bowman St.',
+                    'zipcode' => '06074',
+                    'city'=> 'South Windsor',
+                    'country'=> 'US',
+                    'state' => 'CT'
                 ],
             'email' => 'supplier1@email.com'
+        ],
+        [
+            'name' => 'BIC Sport North America, Inc.',
+            'priority' => 2,
+            'can_dropship' => false,
+            'is_active' => true,
+            'address'=>
+                [
+                    'street_address' => '71 Pilgrim Avenue',
+                    'zipcode' => '60185',
+                    'city'=> 'West Chicago',
+                    'country'=> 'US',
+                    'state' => 'IL'
+                ],
+            'email' => 'supplier2@bicsport.com'
         ]
     ];
 
@@ -74,7 +91,10 @@ class LoadSupplierData extends AbstractFixture
                     ->findOneBy(['combinedCode' => $values['address']['country'] . '-' . $values['address']['state']])
             );
             $this->manager->persist($address);
-            
+            $organization = $this->manager
+                ->getRepository(Organization::class)
+                ->getFirst();
+            $supplier->setOrganization($organization);
             $supplier->setAddress($address);
             $this->manager->persist($supplier);
             $this->setReference('marello_supplier_' . $i, $supplier);

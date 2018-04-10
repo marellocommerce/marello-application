@@ -64,6 +64,13 @@ class Variant
         $this->products = new ArrayCollection();
     }
 
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+        }
+    }
+
     /**
      * @return int
      */
@@ -101,7 +108,7 @@ class Variant
      *
      * @param Product $item
      *
-     * @return Product
+     * @return Variant
      */
     public function addProduct(Product $item)
     {
@@ -118,7 +125,7 @@ class Variant
      *
      * @param Product $item
      *
-     * @return Product
+     * @return Variant
      */
     public function removeProduct(Product $item)
     {

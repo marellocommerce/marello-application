@@ -101,6 +101,20 @@ class TaxJurisdiction implements DatesAwareInterface
     protected $zipCodes;
 
     /**
+     * @var array $data
+     *
+     * @ORM\Column(name="data", type="json_array", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $data;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -288,6 +302,26 @@ class TaxJurisdiction implements DatesAwareInterface
     public function getZipCodes()
     {
         return $this->zipCodes;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return TaxJurisdiction
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
