@@ -14,6 +14,7 @@
 - currency
 - value
 
+### Product Category Assignment / Linking
 
 #### QUESTIONS:
 - Should marello over-write data on the store ? create / update
