@@ -11,8 +11,23 @@ services:
         class: '%marello_magebridge.importexport.product_reader.class%'
         public: false
         parent: 'oro_importexport.reader.entity'
+        arguments:
+            - '@oro_importexport.context_registry'
+            - '@doctrine'
+            - '@oro_security.owner.ownership_metadata_provider'
+            - '@marello_magebridge.transport.rest_transport'
+            - '@oro_integration.logger.strategy'
         calls:
             - [setSourceEntityName, ['%marello_product.entity.class%']]
+
+
+#    #customer - customer_user
+#    madia_mconnect.import.reader.customer_user:
+#        class:  '%madia_mconnect.import.reader.customer_user.class%'
+#        public: false
+#        parent: 'oro_importexport.reader.entity'
+#        calls:
+#            - [setSourceEntityName,["%oro_customer.entity.customer.class%"]]
 
     #Export converters
     marello_magebridge.importexport.product_converter:
@@ -40,7 +55,7 @@ services:
         abstract: true
         calls:
             - [setTransport, ["@marello_magebridge.transport.rest_transport"]]
-            - [setChannelClassName, [%oro_integration.entity.class%]]
+#            - [setChannelClassName, [%oro_integration.entity.class%]]
 
     marello_magebridge.importexport.product_export_writer:
         class: '%marello_magebridge.importexport.product_export_writer.class%'

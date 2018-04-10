@@ -9,7 +9,19 @@
 namespace Marello\Bundle\MageBridgeBundle\ImportExport\Writer;
 
 
-class AbstractWriter
-{
+use Marello\Bundle\MageBridgeBundle\Provider\Transport\RestTransport;
+use Oro\Bundle\IntegrationBundle\ImportExport\Writer\PersistentBatchWriter;
 
+class AbstractWriter extends PersistentBatchWriter
+{
+    /** @var MagentoTransportInterface */
+    protected $transport;
+
+    /**
+     * @param RestTransport $transport
+     */
+    public function setTransport(RestTransport $transport)
+    {
+        $this->transport = $transport;
+    }
 }

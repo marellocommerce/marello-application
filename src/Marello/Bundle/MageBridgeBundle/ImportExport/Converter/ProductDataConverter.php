@@ -12,5 +12,20 @@ use Oro\Bundle\ImportExportBundle\Converter\DefaultDataConverter;
 
 class ProductDataConverter extends DefaultDataConverter
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function convertToExportFormat(array $exportedRecord, $skipNullValues = true)
+    {
+        return $this->convertToPlainData($exportedRecord, $skipNullValues);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
+    {
+        return $this->convertToComplexData($importedRecord, $skipNullValues);
+    }
 
 }

@@ -122,6 +122,7 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
 
 
     /**
+     * e.g /api/rest/products?page=2&limit=20
      * Retrieve products
      */
     public function getProducts(array $accessToken, array $extraParameters = array())
