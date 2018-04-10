@@ -21,7 +21,7 @@ class InstoreUserAuthenticateJsonApiTest extends RestJsonApiTestCase
      */
     protected function setUp()
     {
-        // setup the original first, than replace the initalized client
+        // setup the original first, than replace the initialized client
         parent::setUp();
 
         $this->initClient(

@@ -12,9 +12,9 @@ use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options\Option
 class CorsOptionsController extends AbstractRestApiController
 {
     /**
-     * Process Pre-Flight CORS requests
-     *
+     * {@inheritdoc}
      * @param Request $request
+     *
      * @return Response
      */
     public function optionsAction(Request $request)
@@ -23,7 +23,6 @@ class CorsOptionsController extends AbstractRestApiController
         /** @var OptionsContext $context */
         $context = $this->getContext($processor, $request);
         $processor->process($context);
-        $context->setResult($context->getResponseHeaders());
 
         return $this->buildResponse($context);
     }
