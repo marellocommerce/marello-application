@@ -3,8 +3,8 @@
 namespace Marello\Bundle\SalesBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Marello\Bundle\PricingBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\SalesBundle\Form\EventListener\SalesChannelFormSubscriber;
 use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -19,16 +19,16 @@ class SalesChannelType extends AbstractType
     const NAME = 'marello_sales_channel';
 
     /**
-     * @var SalesChannelFormSubscriber
+     * @var CurrencySubscriber
      */
-    protected $salesChannelFormSubscriber;
+    protected $currencySubscriber;
 
     /**
-     * @param SalesChannelFormSubscriber $salesChannelFormSubscriber
+     * @param CurrencySubscriber $currencySubscriber
      */
-    public function __construct(SalesChannelFormSubscriber $salesChannelFormSubscriber)
+    public function __construct(CurrencySubscriber $currencySubscriber)
     {
-        $this->salesChannelFormSubscriber = $salesChannelFormSubscriber;
+        $this->currencySubscriber = $currencySubscriber;
     }
 
     /**
@@ -36,7 +36,7 @@ class SalesChannelType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventSubscriber($this->salesChannelFormSubscriber);
+        $builder->addEventSubscriber($this->currencySubscriber);
         $builder
             ->add('name')
             ->add('code')

@@ -15,8 +15,10 @@ define(['backbone'],
                 isDefault: false,
                 sku: null,
                 name: null,
+                value: null,
                 orderAmount: null,
-                extraData: []
+                purchasePrice: null,
+                currency: null
             }
         });
     });

@@ -15,6 +15,7 @@ services:
         class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType
         arguments:
             - "@router"
+            - "@oro_currency.helper.currency_name"
         tags:
             - { name: form.type, alias: marello_purchase_order_create_step_two }
 
