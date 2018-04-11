@@ -156,7 +156,7 @@ datagrids:
                         - i.replenishment = 'never_out_of_stock'
                         - srel.supplier = :supplierId
 
- #               having: SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory  # Only products with virtual stock lower than required purchase stock level
+                having: SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory  # Only products with virtual stock lower than required purchase stock level
                 groupBy: p.sku
 
             bind_parameters:
