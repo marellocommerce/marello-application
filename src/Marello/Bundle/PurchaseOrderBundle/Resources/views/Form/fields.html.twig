@@ -39,11 +39,19 @@
         </div>
         {{ form_errors(form.product) }}
     </td>
-    <td class="purchase=order-line-item-ordered-amount">
+    <td class="purchase-order-line-item-ordered-amount">
         <div class="fields-row">
             {{ form_widget(form.orderedAmount) }}
         </div>
         {{ form_errors(form.orderedAmount) }}
+    </td>
+    <td class="purchase-order-line-item-purchase-price">
+        <div class="fields-row">
+            {{ form_widget(form.purchasePrice) }}
+        </div>
+        {{ form_errors(form.purchasePrice) }}
+    </td>
+    <td class="purchase-order-line-item-row-total">
     </td>
 {% endblock %}
 
@@ -54,11 +62,19 @@
         </div>
         {{ form_errors(form.product) }}
     </td>
-    <td class="purchase=order-line-item-ordered-amount">
+    <td class="purchase-order-line-item-ordered-amount">
         <div class="fields-row">
             {{ form_widget(form.orderedAmount) }}
         </div>
         {{ form_errors(form.orderedAmount) }}
+    </td>
+    <td class="purchase-order-line-item-purchase-price">
+        <div class="fields-row">
+            {{ form_widget(form.purchasePrice) }}
+        </div>
+        {{ form_errors(form.purchasePrice) }}
+    </td>
+    <td class="purchase-order-line-item-row-total">
     </td>
 {% endblock %}
 
@@ -169,6 +185,8 @@
                         <tr>
                             <th class="purchase-order-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
                             <th class="purchase-order-line-item-ordered-quantity"><span>{{ 'marello.purchaseorder.purchaseorderitem.order_amount.label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-purchase-price"><span>{{ 'marello.purchaseorder.purchaseorderitem.purchase_price.label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-row-total"><span>{{ 'marello.purchaseorder.purchaseorderitem.row_total.label'|trans }}</span></th>
                             <th class="purchase-order-line-item-notifications"></th>
                             {% if form.vars.allow_delete %}
                                 <th class="purchase-order-row-item-actions"></th>
@@ -210,6 +228,8 @@
                         <tr>
                             <th class="purchase-order-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
                             <th class="purchase-order-line-item-ordered-quantity"><span>{{ 'marello.purchaseorder.purchaseorderitem.order_amount.label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-purchase-price"><span>{{ 'marello.purchaseorder.purchaseorderitem.purchase_price.label'|trans }}</span></th>
+                            <th class="purchase-order-line-item-row-total"><span>{{ 'marello.purchaseorder.purchaseorderitem.row_total.label'|trans }}</span></th>
                             <th class="purchase-order-line-item-notifications"></th>
                             {% if form.vars.allow_delete %}
                                 <th class="purchase-order-row-item-actions"></th>

@@ -6,6 +6,7 @@ datagrids:
                 select:
                     - po
                     - sup.name as supplier
+                    - sup.currency as currency
                 from:
                     - { table: MarelloPurchaseOrderBundle:PurchaseOrder, alias: po }
                 join:
@@ -29,6 +30,11 @@ datagrids:
                 type:               twig
                 template:           MarelloPurchaseOrderBundle:Datagrid:Column/dueDate.html.twig
                 frontend_type:      html
+            orderTotal:
+                label:              marello.purchaseorder.order_total.label
+                type:               twig
+                template:           MarelloPurchaseOrderBundle:Datagrid:Column/orderTotal.html.twig
+                frontend_type:      html
         sorters:
             columns:
                 purchaseOrderNumber:
@@ -41,6 +47,8 @@ datagrids:
                     data_name:      po.updatedAt
                 dueDate:
                     data_name:      po.dueDate
+                orderTotal:
+                    data_name:      po.orderTotal
             default:
                 purchaseOrderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         filters:
@@ -122,6 +130,7 @@ datagrids:
                     - p.name
                     - sup.id AS preferredSupplierId
                     - sup.name AS preferredSupplier
+                    - srel.cost AS purchasePrice
                     - i.desiredInventory
                     - i.purchaseInventory
                     - COALESCE(SUM(l.inventory - l.allocatedInventory), 0) AS virtualInventory
@@ -138,14 +147,16 @@ datagrids:
                         - { join: i.inventoryLevels, alias: l }
                         - { join: p.status, alias: s }
                         - { join: p.preferredSupplier, alias: sup }
+                        - { join: p.suppliers, alias: srel }
                 where:
                     and:
                         - sup.name <> ''
                         - sup.id = :supplierId
                         - s.name = 'enabled'                                          # Only select product with enabled status
                         - i.replenishment = 'never_out_of_stock'
+                        - srel.supplier = :supplierId
 
-                having: SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory  # Only products with virtual stock lower than required purchase stock level
+ #               having: SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory  # Only products with virtual stock lower than required purchase stock level
                 groupBy: p.sku
 
             bind_parameters:
@@ -219,6 +230,7 @@ datagrids:
                     filter_by_having: true
         properties:
             id: ~
+            purchasePrice: ~
             view_link:
                 type: url
                 route: marello_product_view

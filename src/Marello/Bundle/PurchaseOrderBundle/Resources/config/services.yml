@@ -47,3 +47,10 @@ services:
             - '@oro_workflow.manager'
         tags:
             - { name: twig.extension }
+
+    marello_purchaseorder.listener.doctrine.warehouse_listener:
+        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderWarehouseListener
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }

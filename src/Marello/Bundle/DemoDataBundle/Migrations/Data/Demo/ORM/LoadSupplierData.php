@@ -26,6 +26,7 @@ class LoadSupplierData extends AbstractFixture
             'priority' => 1,
             'can_dropship' => true,
             'is_active' => true,
+            'currency' => 'USD',
             'address'=>
                 [
                     'street_address' => '70 Bowman St.',
@@ -41,6 +42,7 @@ class LoadSupplierData extends AbstractFixture
             'priority' => 2,
             'can_dropship' => false,
             'is_active' => true,
+            'currency' => 'EUR',
             'address'=>
                 [
                     'street_address' => '71 Pilgrim Avenue',
@@ -76,6 +78,7 @@ class LoadSupplierData extends AbstractFixture
             $supplier->setCanDropship($values['can_dropship']);
             $supplier->setIsActive($values['is_active']);
             $supplier->setEmail($values['email']);
+            $supplier->setCurrency($values['currency']);
 
             $address = new MarelloAddress();
             $address->setStreet($values['address']['street_address']);

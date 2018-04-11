@@ -14,7 +14,7 @@ services:
     marello_sales_form_type.saleschannel:
         class: '%marello_sales.form_type.saleschannel.class%'
         arguments:
-            - '@marello_sales.form.event_listener.sales_channel_form_subscriber'
+            - '@marello_productprice.pricing.form.event_listener.currency_subscriber'
         tags:
             - { name: form.type, alias: marello_sales_channel }
 

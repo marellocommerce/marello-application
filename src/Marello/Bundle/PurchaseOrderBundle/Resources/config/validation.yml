@@ -21,3 +21,5 @@ Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem:
             - NotBlank:
         orderedAmount:
             - NotBlank: ~
+        purchasePrice:
+            - NotBlank: ~
