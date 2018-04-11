@@ -18,11 +18,22 @@ class ProductPriceType extends AbstractType
         $builder
             ->add('currency', 'hidden', [
                 'required' => true,
-            ])
-            ->add('value', 'oro_money', [
-                'required' => true,
-                'label'    => 'marello.pricing.productprice.value.label',
             ]);
+        if ($options['currency'] && $options['currency_symbol']) {
+            $builder
+                ->add('value', 'oro_money', [
+                'required' => true,
+                'label' => 'marello.pricing.productprice.value.label',
+                'currency' => $options['currency'],
+                'currency_symbol' => $options['currency_symbol'],
+            ]);
+        } else {
+            $builder
+                ->add('value', 'oro_money', [
+                    'required' => true,
+                    'label' => 'marello.pricing.productprice.value.label',
+                ]);
+        }
     }
 
     /**
@@ -34,6 +45,8 @@ class ProductPriceType extends AbstractType
             'data_class'        => 'Marello\Bundle\PricingBundle\Entity\ProductPrice',
             'intention'         => 'productprice',
             'single_form'       => true,
+            'currency'          => null,
+            'currency_symbol'   => null,
         ]);
     }
 

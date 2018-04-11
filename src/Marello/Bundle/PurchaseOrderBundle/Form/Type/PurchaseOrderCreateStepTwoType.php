@@ -2,24 +2,20 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderConstraint;
+use Oro\Bundle\CurrencyBundle\Utils\CurrencyNameHelper;
+use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
-use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
-use Oro\Bundle\FormBundle\Form\Type\OroDateType;
-
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 
 class PurchaseOrderCreateStepTwoType extends AbstractType
 {
@@ -31,11 +27,18 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
     protected $router;
 
     /**
-     * @param Router $router
+     * @var CurrencyNameHelper
      */
-    public function __construct(Router $router)
+    protected $currencyNameHelper;
+
+    /**
+     * @param Router $router
+     * @param CurrencyNameHelper $currencyNameHelper
+     */
+    public function __construct(Router $router, CurrencyNameHelper $currencyNameHelper)
     {
         $this->router = $router;
+        $this->currencyNameHelper = $currencyNameHelper;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -88,23 +91,72 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                 ]
             )
         ;
-
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            /** @var PurchaseOrder $purchaseOrder */
+            $purchaseOrder = $event->getData();
+            $form = $event->getForm();
+            if ($purchaseOrder && $supplier = $purchaseOrder->getSupplier()) {
+                if ($currency = $supplier->getCurrency()) {
+                    $currencySymbol = $this->currencyNameHelper->getCurrencyName($currency);
+                    $form->remove('itemsAdditional');
+                    $form->add(
+                        'itemsAdditional',
+                        PurchaseOrderItemCollectionType::NAME,
+                        [
+                            'mapped' => false,
+                            'cascade_validation' => true,
+                            'entry_options' => [
+                                'currency' => $currency,
+                                'currency_symbol' => $currencySymbol
+                            ]
+                        ]
+                    );
+                    $form->remove('items');
+                    $form->add(
+                        'items',
+                        PurchaseOrderItemCollectionType::NAME,
+                        [
+                            'mapped' => false,
+                            'cascade_validation' => true,
+                            'entry_options' => [
+                                'currency' => $currency,
+                                'currency_symbol' => $currencySymbol
+                            ]
+                        ]
+                    );
+                }
+            }
+        });
         /**
          * Add purchase order items that are not mapped in the form
          */
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
             $form = $event->getForm();
+            /** @var PurchaseOrder $purchaseOrder */
             $purchaseOrder = $event->getData();
-
+            $orderTotal = 0.00;
             /** @var PurchaseOrderItem $item */
             foreach ($form->get('items')->getData() as $item) {
-                $purchaseOrder->addItem($item);
+                if ($item->getProduct()) {
+                    $price = $item->getPurchasePrice();
+                    $price->setProduct($item->getProduct())->setCurrency($purchaseOrder->getSupplier()->getCurrency());
+                    $item->setRowTotal($item->getPurchasePrice()->getValue() * $item->getOrderedAmount());
+                    $orderTotal += $item->getRowTotal();
+                    $purchaseOrder->addItem($item);
+                }
             }
 
             /** @var PurchaseOrderItem $item */
             foreach ($form->get('itemsAdditional')->getData() as $item) {
-                $purchaseOrder->addItem($item);
+                if ($item->getProduct()) {
+                    $price = $item->getPurchasePrice();
+                    $price->setProduct($item->getProduct())->setCurrency($purchaseOrder->getSupplier()->getCurrency());
+                    $item->setRowTotal($item->getPurchasePrice()->getValue() * $item->getOrderedAmount());
+                    $orderTotal += $item->getRowTotal();
+                    $purchaseOrder->addItem($item);
+                }
             }
+            $purchaseOrder->setOrderTotal($orderTotal);
         });
     }
 

@@ -106,6 +106,13 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     protected $warehouse;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="order_total", type="decimal")
+     */
+    protected $orderTotal;
+
+    /**
      * Creates order using products
      *
      * @param array|Product[] $products
@@ -295,6 +302,25 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     {
         $this->warehouse = $warehouse;
 
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getOrderTotal()
+    {
+        return $this->orderTotal;
+    }
+
+    /**
+     * @param float $orderTotal
+     * @return $this
+     */
+    public function setOrderTotal($orderTotal)
+    {
+        $this->orderTotal = $orderTotal;
+        
         return $this;
     }
 

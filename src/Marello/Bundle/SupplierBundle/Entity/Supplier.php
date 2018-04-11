@@ -4,6 +4,7 @@ namespace Marello\Bundle\SupplierBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -26,7 +27,7 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Supplier
+class Supplier implements CurrencyAwareInterface
 {
     use EntityCreatedUpdatedAtTrait, AuditableOrganizationAwareTrait;
     /**
@@ -80,6 +81,12 @@ class Supplier
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
     protected $isActive = true;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="currency", type="string", length=3, nullable=false)
+     */
+    protected $currency;
 
     /**
      * @return string
@@ -241,5 +248,24 @@ class Supplier
     public function getIsActive()
     {
         return $this->isActive;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     * @return $this
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
     }
 }
