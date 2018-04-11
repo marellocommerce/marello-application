@@ -9,7 +9,9 @@
 namespace Marello\Bundle\MageBridgeBundle\Provider\Reader;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query\Expr\Join;
 use Marello\Bundle\MageBridgeBundle\Provider\Transport\RestTransport;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Logger\LoggerStrategy;
@@ -20,6 +22,8 @@ use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
 
 class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader
 {
+    const MAGENTO_REST_TYPE = 'magento';
+
     /** @var MagentoTransportInterface */
     protected $transport;
 
@@ -46,31 +50,25 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader
     protected $extensionUsed = true;
 
     /**
-     * @param ContextRegistry $contextRegistry
-     * @param LoggerStrategy $logger
-     * @param ConnectorContextMediator $contextMediator
-     */
-    public function __construct(
-        ContextRegistry $contextRegistry,
-        ManagerRegistry $registry,
-        OwnershipMetadataProviderInterface $ownershipMetadata,
-        RestTransport $transport,
-        LoggerStrategy $logger
-    ) {
-        parent::__construct($contextRegistry, $registry, $ownershipMetadata);
-
-        $this->logger = $logger;
-        $this->transport = $transport;
-
-        $this->logger->info("xxxxxx");
-    }
-
-    /**
      * @param RestTransport $transport
+     * @return $this
      */
     public function setTransport(RestTransport $transport)
     {
         $this->transport = $transport;
+
+        return $this;
+    }
+
+    /**
+     * @param LoggerStrategy $logger
+     * @return $this
+     */
+    public function setLogger(LoggerStrategy $logger)
+    {
+        $this->logger = $logger;
+
+        return $this;
     }
 
     /**
@@ -78,9 +76,51 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader
      */
     protected function createSourceEntityQueryBuilder($entityName, Organization $organization = null, array $ids = [])
     {
-        //TODO: filter product based on sales channel related to the magento intergration
+    $queryBuilder = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
 
-        $qb = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
-        return $qb;
+        $queryBuilder->where($queryBuilder->expr()->in("o.type", ":type"))
+            ->setParameter('type', self::MAGENTO_REST_TYPE);
+
+    return $queryBuilder;
     }
+
+
+    /**
+     * @param $entityName
+     * @param $salesChannels
+     */
+    public function setProductSourceEntityName($entityName, $salesChannels)
+    {
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->registry
+            ->getManagerForClass($entityName);
+
+        $queryBuilder = $entityManager
+            ->getRepository($entityName)
+            ->createQueryBuilder('product');
+
+        $queryBuilder
+            ->where(
+                $queryBuilder->expr()->isMemberOf(':salesChannel', 'product.channels')
+            )
+            ->setParameter('salesChannel', $salesChannels);
+
+        $this->setSourceQuery($this->applyAcl($queryBuilder));
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function read()
+    {
+        $entity = parent::read();
+
+        $salesChannels = $entity->getTransport()->getSalesChannels();
+
+        $this->setProductSourceEntityName(Product::class, $salesChannels);
+
+         return parent::read();
+    }
+
 }

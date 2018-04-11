@@ -13,4 +13,4 @@ connector:
                         processor: marello_magebridge.importexport.product_export_processor
                         writer:    marello_magebridge.importexport.product_export_writer
                     parameters:
-                        batch_size: 25
+                        batch_size: 1

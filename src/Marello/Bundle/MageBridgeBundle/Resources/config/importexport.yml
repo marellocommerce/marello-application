@@ -4,6 +4,8 @@ parameters:
     marello_magebridge.importexport.product_export_processor.class: Marello\Bundle\MageBridgeBundle\ImportExport\Processor\ProductExportProcessor
     marello_magebridge.importexport.writer.abstract_export.class: Marello\Bundle\MageBridgeBundle\ImportExport\Writer\AbstractWriter
     marello_magebridge.importexport.product_export_writer.class: Marello\Bundle\MageBridgeBundle\ImportExport\Writer\ProductExportWriter
+    marello_magebridge.importexport.serializer.product_normalizer.class: Marello\Bundle\MageBridgeBundle\ImportExport\Serializer\ProductNormalizer
+
 
 services:
     #Export readers
@@ -11,23 +13,9 @@ services:
         class: '%marello_magebridge.importexport.product_reader.class%'
         public: false
         parent: 'oro_importexport.reader.entity'
-        arguments:
-            - '@oro_importexport.context_registry'
-            - '@doctrine'
-            - '@oro_security.owner.ownership_metadata_provider'
-            - '@marello_magebridge.transport.rest_transport'
-            - '@oro_integration.logger.strategy'
         calls:
-            - [setSourceEntityName, ['%marello_product.entity.class%']]
-
-
-#    #customer - customer_user
-#    madia_mconnect.import.reader.customer_user:
-#        class:  '%madia_mconnect.import.reader.customer_user.class%'
-#        public: false
-#        parent: 'oro_importexport.reader.entity'
-#        calls:
-#            - [setSourceEntityName,["%oro_customer.entity.customer.class%"]]
+            - [setSourceEntityName, ['%oro_integration.entity.class%']]
+            - [setLogger, ['@oro_integration.logger.strategy']]
 
     #Export converters
     marello_magebridge.importexport.product_converter:
@@ -35,6 +23,16 @@ services:
         public: false
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    #Normalizer
+    marello_magebridge.importexport.serializer.product_normalizer:
+        class: '%marello_magebridge.importexport.serializer.product_normalizer.class%'
+        parent: oro_importexport.serializer.configurable_entity_normalizer
+        calls:
+            - [setEntityClass, ['%marello_product.entity.class%']]
+        tags:
+            - { name: oro_importexport.normalizer }
+
 
     # Export processors
     marello_magebridge.importexport.product_export_processor:
@@ -45,7 +43,7 @@ services:
         tags:
             - name: oro_importexport.processor
               type: export
-              entity: '%marello_product.entity.class%'
+              entity: '%oro_integration.entity.class%'
               alias: marello_magebridge_importexport_product_processor
 
     # Export writers
