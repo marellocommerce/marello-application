@@ -108,7 +108,7 @@ class Variant
      *
      * @param Product $item
      *
-     * @return Product
+     * @return Variant
      */
     public function addProduct(Product $item)
     {
@@ -125,7 +125,7 @@ class Variant
      *
      * @param Product $item
      *
-     * @return Product
+     * @return Variant
      */
     public function removeProduct(Product $item)
     {

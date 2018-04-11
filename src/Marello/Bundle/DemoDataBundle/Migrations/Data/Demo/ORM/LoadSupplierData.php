@@ -26,15 +26,32 @@ class LoadSupplierData extends AbstractFixture
             'priority' => 1,
             'can_dropship' => true,
             'is_active' => true,
+            'currency' => 'USD',
             'address'=>
                 [
-                    'street_address' => 'Torenallee 20',
-                    'zipcode' => '5617 BC',
-                    'city'=> 'Eindhoven',
-                    'country'=> 'NL',
-                    'state' => 'NB'
+                    'street_address' => '70 Bowman St.',
+                    'zipcode' => '06074',
+                    'city'=> 'South Windsor',
+                    'country'=> 'US',
+                    'state' => 'CT'
                 ],
             'email' => 'supplier1@email.com'
+        ],
+        [
+            'name' => 'BIC Sport North America, Inc.',
+            'priority' => 2,
+            'can_dropship' => false,
+            'is_active' => true,
+            'currency' => 'EUR',
+            'address'=>
+                [
+                    'street_address' => '71 Pilgrim Avenue',
+                    'zipcode' => '60185',
+                    'city'=> 'West Chicago',
+                    'country'=> 'US',
+                    'state' => 'IL'
+                ],
+            'email' => 'supplier2@bicsport.com'
         ]
     ];
 
@@ -61,6 +78,7 @@ class LoadSupplierData extends AbstractFixture
             $supplier->setCanDropship($values['can_dropship']);
             $supplier->setIsActive($values['is_active']);
             $supplier->setEmail($values['email']);
+            $supplier->setCurrency($values['currency']);
 
             $address = new MarelloAddress();
             $address->setStreet($values['address']['street_address']);

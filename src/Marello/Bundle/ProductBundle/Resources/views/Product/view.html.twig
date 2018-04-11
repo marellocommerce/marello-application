@@ -61,8 +61,8 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    <div class="visual">
-                        <img src="{{ productImage }}" alt="{{ entity.name }}" width="250" />
+                    <div class="visual marello-product-image">
+                        <img src="{{ productImage }}" alt="{{ entity.name }}" />
                     </div>
                 </div>
             </div>
@@ -124,6 +124,15 @@
         </div>
     {% endset %}
 
+    {% set productCategoriesWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-product-categories-grid', {'categories': entity.categories}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
 
     {% set dataBlocks = dataBlocks|merge([{
         'title' : 'marello.pricing.header.label'|trans,
@@ -182,6 +191,17 @@
             'useSpan': false,
             'data' : [
                 productSupplierWidget
+            ]
+        }]
+    }]) %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'marello.catalog.category.entity_plural_label'|trans,
+        'subblocks': [{
+            'title' : null,
+            'useSpan': false,
+            'data' : [
+                productCategoriesWidget
             ]
         }]
     }]) %}

@@ -26,7 +26,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     {
         return [
             LoadSalesData::class,
-            LoadTaxCodeData::class
+            LoadTaxCodeData::class,
+            LoadSupplierData::class
         ];
     }
 
@@ -84,7 +85,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setSku($data['sku']);
         $product->setName($data['name']);
         $product->setOrganization($this->defaultOrganization);
-        $product->setWeight(mt_rand(50, 300) / 100);
+        $product->setWeight($data['weight']);
 
         $status = $this->manager
             ->getRepository('MarelloProductBundle:ProductStatus')
@@ -120,7 +121,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         /**
          * add suppliers per product
          */
-        $this->addProductSuppliers($product);
+        $this->addProductSuppliers($product, $data);
 
         $this->manager->persist($product);
 
@@ -147,11 +148,13 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
      * Add product suppliers to product
      * @param Product $product
      */
-    protected function addProductSuppliers(Product $product)
+    protected function addProductSuppliers(Product $product, $data)
     {
         $suppliers = $this->manager
             ->getRepository('MarelloSupplierBundle:Supplier')
-            ->findAll();
+            ->findBy([
+                'name' => $data['supplier']
+            ]);
 
         foreach ($suppliers as $supplier) {
             $productSupplierRelation = new ProductSupplierRelation();
