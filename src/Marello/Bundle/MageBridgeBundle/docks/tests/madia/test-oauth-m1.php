@@ -9,11 +9,11 @@ set_time_limit(0);
 
 use Symfony\Component\Debug\Debug;
 
-$loader = require __DIR__.'/../../app/autoload.php';
-require_once __DIR__.'/../../app/bootstrap.php.cache';
+$loader = require __DIR__ . '/../../app/autoload.php';
+require_once __DIR__ . '/../../app/bootstrap.php.cache';
 Debug::enable();
 
-require_once __DIR__.'/../../app/AppKernel.php';
+require_once __DIR__ . '/../../app/AppKernel.php';
 
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();
@@ -82,17 +82,17 @@ die();
 
 // - Create
 $productData = json_encode(array(
-    'type_id'           => 'simple',
-    'attribute_set_id'  => 4,
-    'sku'               => 'simple'.uniqid(),
-    'weight'            => 1,
-    'status'            => 1,
-    'visibility'        => 4,
-    'name'              => 'Simple Product',
-    'description'       => 'Simple Description',
+    'type_id' => 'simple',
+    'attribute_set_id' => 4,
+    'sku' => 'simple' . uniqid(),
+    'weight' => 1,
+    'status' => 1,
+    'visibility' => 4,
+    'name' => 'Simple Product',
+    'description' => 'Simple Description',
     'short_description' => 'Simple Short Description',
-    'price'             => 99.95,
-    'tax_class_id'      => 2,
+    'price' => 99.95,
+    'tax_class_id' => 2,
 ));
 
 //echo $productData;die();

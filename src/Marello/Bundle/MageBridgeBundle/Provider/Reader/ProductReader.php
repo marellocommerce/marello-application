@@ -76,12 +76,12 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader
      */
     protected function createSourceEntityQueryBuilder($entityName, Organization $organization = null, array $ids = [])
     {
-    $queryBuilder = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
+        $queryBuilder = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
 
         $queryBuilder->where($queryBuilder->expr()->in("o.type", ":type"))
             ->setParameter('type', self::MAGENTO_REST_TYPE);
 
-    return $queryBuilder;
+        return $queryBuilder;
     }
 
 
@@ -120,7 +120,7 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader
 
         $this->setProductSourceEntityName(Product::class, $salesChannels);
 
-         return parent::read();
+        return parent::read();
     }
 
 }

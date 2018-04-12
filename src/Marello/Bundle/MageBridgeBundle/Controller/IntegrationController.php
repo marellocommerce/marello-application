@@ -85,15 +85,15 @@ class IntegrationController extends Controller
             $magentoResourceOwner = $this->getMagentoResourceOwner();
 
             $magentoResourceOwner
-            ->setIntegrationChannel($integration)
-            ->setSession($request->getSession())
-            ->configureCredentials();
+                ->setIntegrationChannel($integration)
+                ->setSession($request->getSession())
+                ->configureCredentials();
 
             $accessTokens = $magentoResourceOwner->getAccessToken($request, $this->getCallBackUrl());
 
             $this->get('marello_magebrdige.action_handler.transport_authentication')
-            ->setTokens($accessTokens)
-            ->handleAction($integration);
+                ->setTokens($accessTokens)
+                ->handleAction($integration);
         } catch (\Exception $e) {
             //TODO: log exception
         }

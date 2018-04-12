@@ -23,9 +23,9 @@ class RestTransportSettingsFormType extends AbstractType
             'apiUrl',
             'text',
             [
-                'label'     => 'marello.magebridge.magento.form.api_url.label',
-                'tooltip'   => 'marello.magebridge.magento.form.api_url.description',
-                'required'  => true,
+                'label' => 'marello.magebridge.magento.form.api_url.label',
+                'tooltip' => 'marello.magebridge.magento.form.api_url.description',
+                'required' => true,
                 'constraints' => [new NotBlank()],
             ]
         );
@@ -34,9 +34,9 @@ class RestTransportSettingsFormType extends AbstractType
             'adminUrl',
             'text',
             [
-                'label'     => 'marello.magebridge.magento.form.admin_url.label',
-                'tooltip'   => 'marello.magebridge.magento.form.admin_url.description',
-                'required'  => true,
+                'label' => 'marello.magebridge.magento.form.admin_url.label',
+                'tooltip' => 'marello.magebridge.magento.form.admin_url.description',
+                'required' => true,
                 'constraints' => [new NotBlank()],
             ]
         );
@@ -45,9 +45,9 @@ class RestTransportSettingsFormType extends AbstractType
             'clientId',
             'text',
             [
-                'label'     => 'marello.magebridge.magento.form.client_id.label',
-                'tooltip'   => 'marello.magebridge.magento.form.client_id.description',
-                'required'  => true,
+                'label' => 'marello.magebridge.magento.form.client_id.label',
+                'tooltip' => 'marello.magebridge.magento.form.client_id.description',
+                'required' => true,
                 'constraints' => [new NotBlank()],
             ]
         );
@@ -56,9 +56,9 @@ class RestTransportSettingsFormType extends AbstractType
             'clientSecret',
             'text',
             [
-                'label'     => 'marello.magebridge.magento.form.client_secret.label',
-                'tooltip'   => 'marello.magebridge.magento.form.client_secret.description',
-                'required'  => true,
+                'label' => 'marello.magebridge.magento.form.client_secret.label',
+                'tooltip' => 'marello.magebridge.magento.form.client_secret.description',
+                'required' => true,
                 'constraints' => [new NotBlank()],
             ]
         );
@@ -78,11 +78,11 @@ class RestTransportSettingsFormType extends AbstractType
             'tokenKey',
             'text',
             [
-                'label'     => 'marello.magebridge.magento.form.token.label',
-                'tooltip'   => 'marello.magebridge.magento.form.token.description',
-                'required'  => true,
+                'label' => 'marello.magebridge.magento.form.token.label',
+                'tooltip' => 'marello.magebridge.magento.form.token.description',
+                'required' => true,
                 'constraints' => [new NotBlank()],
-                'disabled'  => true,
+                'disabled' => true,
             ]
         );
 
@@ -90,11 +90,11 @@ class RestTransportSettingsFormType extends AbstractType
             'tokenSecret',
             'text',
             [
-                'label'     => 'marello.magebridge.magento.form.token_secret.label',
-                'tooltip'   => 'marello.magebridge.magento.form.token_secret.description',
-                'required'  => true,
+                'label' => 'marello.magebridge.magento.form.token_secret.label',
+                'tooltip' => 'marello.magebridge.magento.form.token_secret.description',
+                'required' => true,
                 'constraints' => [new NotBlank()],
-                'disabled'  => true,
+                'disabled' => true,
             ]
         );
 
