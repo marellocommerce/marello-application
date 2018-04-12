@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: muhsin
- * Date: 03/04/2018
- * Time: 14:56
- */
 
 namespace Marello\Bundle\MageBridgeBundle\Provider\Reader;
 
@@ -103,6 +97,9 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader i
         $entity = parent::read();
 
         if ($entity instanceof Channel) {
+
+            $this->logger->info("#product reader");
+
             $salesChannels = $entity->getTransport()->getSalesChannels();
 
             $this->setProductSourceEntityName(Product::class, $salesChannels);

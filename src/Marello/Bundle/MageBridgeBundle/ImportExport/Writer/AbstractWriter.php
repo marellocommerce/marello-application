@@ -1,27 +1,62 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: muhsin
- * Date: 04/04/2018
- * Time: 09:52
- */
 
 namespace Marello\Bundle\MageBridgeBundle\ImportExport\Writer;
 
+use Doctrine\ORM\EntityManager;
 
-use Marello\Bundle\MageBridgeBundle\Provider\Transport\RestTransport;
 use Oro\Bundle\IntegrationBundle\ImportExport\Writer\PersistentBatchWriter;
+
+use Marello\Bundle\MageBridgeBundle\OAuth\ResourceOwner\MagentoResourceOwner;
 
 class AbstractWriter extends PersistentBatchWriter
 {
-    /** @var MagentoTransportInterface */
-    protected $transport;
+    /** @var MagentoResourceOwner */
+    protected $magentoResourceOwner;
 
     /**
-     * @param RestTransport $transport
+     * @param MagentoResourceOwner $transport
+     * @return $this
      */
-    public function setTransport(RestTransport $transport)
+    public function setMagentoResourceOwner(MagentoResourceOwner $transport)
     {
-        $this->transport = $transport;
+        $this->magentoResourceOwner = $transport;
+
+        return $this;
+    }
+
+    public function getChannel()
+    {
+        $channelId = $this->getContextOption('mage_channel_id');
+
+        $channel = $this->getEm()
+            ->getRepository('OroIntegrationBundle:Channel')
+            ->getOrLoadById($channelId);
+
+        return $channel;
+    }
+
+    public function getTransport()
+    {
+        return $this->getChannel()->getTransport();
+    }
+
+    /**
+     * @param $code
+     * @return mixed
+     */
+    protected function getContextOption($code)
+    {
+        $context = $this->contextRegistry
+            ->getByStepExecution($this->stepExecution);
+
+        return $context->getValue($code);
+    }
+
+    /**
+     * @return EntityManager
+     */
+    private function getEm()
+    {
+        return $this->registry->getManager();
     }
 }

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: muhsin
- * Date: 16-3-18
- * Time: 10:48
- */
 
 namespace Marello\Bundle\MageBridgeBundle\OAuth\ResourceOwner;
 

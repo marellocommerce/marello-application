@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: muhsin
- * Date: 1-3-18
- * Time: 11:14
- */
 
 namespace Marello\Bundle\MageBridgeBundle\Provider\Transport;
 

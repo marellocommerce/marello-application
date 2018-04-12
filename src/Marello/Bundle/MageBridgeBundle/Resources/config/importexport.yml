@@ -52,8 +52,7 @@ services:
         parent: oro_integration.writer.persistent_batch_writer
         abstract: true
         calls:
-            - [setTransport, ["@marello_magebridge.transport.rest_transport"]]
-#            - [setChannelClassName, [%oro_integration.entity.class%]]
+            - [setMagentoResourceOwner, ["@hwi_oauth.resource_owner.magento"]]
 
     marello_magebridge.importexport.product_export_writer:
         class: '%marello_magebridge.importexport.product_export_writer.class%'
