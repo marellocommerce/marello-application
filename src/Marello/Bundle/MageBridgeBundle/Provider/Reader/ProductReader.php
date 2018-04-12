@@ -57,29 +57,6 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader i
      */
     protected $extensionUsed = true;
 
-//    /**
-//     * @param RestTransport $transport
-//     * @return $this
-//     */
-//    public function setTransport(RestTransport $transport)
-//    {
-//        $this->transport = $transport;
-//
-//        return $this;
-//    }
-
-//    /**
-//     * @param LoggerStrategy $logger
-//     * @return $this
-//     */
-//    public function setLogger(LoggerStrategy $logger)
-//    {
-//        $this->logger = $logger;
-//        $this->logger->setDebug(true);
-//
-//        return $this;
-//    }
-
     /**
      * {@inheritdoc}
      */
@@ -125,10 +102,15 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader i
     {
         $entity = parent::read();
 
-        if ($entity instanceof MagentoRestTransport) {
+        if ($entity instanceof Channel) {
             $salesChannels = $entity->getTransport()->getSalesChannels();
 
             $this->setProductSourceEntityName(Product::class, $salesChannels);
+
+            $stepExecution = $this->contextRegistry->getByStepExecution($this->getStepExecution());
+
+            $stepExecution->setValue('mage_transport_id', $entity->getTransport()->getId());
+            $stepExecution->setValue('mage_channel_id', $entity->getId());
 
             return parent::read();
         }

@@ -36,6 +36,24 @@ class ProductNormalizer extends ConfigurableEntityNormalizer
      */
     protected function isFieldSkippedForNormalization($entityName, $fieldName, array $context)
     {
+        /*
+        $allowedFields = [
+            'sku',
+            'name',
+            'prices',
+            'weight',
+            'status',
+            'taxCode',
+            'salesChannelTaxCodes',
+            'variant',
+            'image',
+            'categories',
+            'cost',
+            'channels'
+        ];
+        if (in_array($fieldName, $allowedFields)) {
+            return parent::isFieldSkippedForNormalization($entityName, $fieldName, $context);
+        }*/
         // Do not normalize non identity fields for short mode
         $isNotIdentity = $this->getMode($context) === self::SHORT_MODE
             && !$this->fieldHelper->getConfigValue($entityName, $fieldName, 'identity');
