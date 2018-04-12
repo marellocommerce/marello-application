@@ -10,8 +10,10 @@ namespace Marello\Bundle\MageBridgeBundle\Provider\Reader;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr\Join;
-use Marello\Bundle\MageBridgeBundle\Provider\Transport\RestTransport;
-use Marello\Bundle\ProductBundle\Entity\Product;
+
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Logger\LoggerStrategy;
@@ -20,8 +22,14 @@ use Oro\Bundle\IntegrationBundle\Provider\ConnectorContextMediator;
 use Oro\Bundle\MagentoBundle\Provider\Transport\MagentoTransportInterface;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
 
-class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader
+use Marello\Bundle\MageBridgeBundle\Entity\MagentoRestTransport;
+use Marello\Bundle\MageBridgeBundle\Provider\Transport\RestTransport;
+use Marello\Bundle\ProductBundle\Entity\Product;
+
+class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     const MAGENTO_REST_TYPE = 'magento';
 
     /** @var MagentoTransportInterface */
@@ -49,27 +57,28 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader
      */
     protected $extensionUsed = true;
 
-    /**
-     * @param RestTransport $transport
-     * @return $this
-     */
-    public function setTransport(RestTransport $transport)
-    {
-        $this->transport = $transport;
+//    /**
+//     * @param RestTransport $transport
+//     * @return $this
+//     */
+//    public function setTransport(RestTransport $transport)
+//    {
+//        $this->transport = $transport;
+//
+//        return $this;
+//    }
 
-        return $this;
-    }
-
-    /**
-     * @param LoggerStrategy $logger
-     * @return $this
-     */
-    public function setLogger(LoggerStrategy $logger)
-    {
-        $this->logger = $logger;
-
-        return $this;
-    }
+//    /**
+//     * @param LoggerStrategy $logger
+//     * @return $this
+//     */
+//    public function setLogger(LoggerStrategy $logger)
+//    {
+//        $this->logger = $logger;
+//        $this->logger->setDebug(true);
+//
+//        return $this;
+//    }
 
     /**
      * {@inheritdoc}
@@ -116,11 +125,15 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader
     {
         $entity = parent::read();
 
-        $salesChannels = $entity->getTransport()->getSalesChannels();
+        if ($entity instanceof MagentoRestTransport) {
+            $salesChannels = $entity->getTransport()->getSalesChannels();
 
-        $this->setProductSourceEntityName(Product::class, $salesChannels);
+            $this->setProductSourceEntityName(Product::class, $salesChannels);
 
-        return parent::read();
+            return parent::read();
+        }
+
+        $this->logger->debug("No integration has been configured");
     }
 
 }

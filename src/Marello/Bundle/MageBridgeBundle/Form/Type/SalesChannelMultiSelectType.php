@@ -17,7 +17,7 @@ class SalesChannelMultiSelectType extends AbstractSalesChannelMultiSelectType
         $resolver->setDefaults([
             'autocomplete_alias' => 'saleschannels',
             'configs' => [
-                'multiple' => false,
+                'multiple' => true,
                 'placeholder' => 'marello.magebridge.magento.form.sales_channel.info',
                 'allowClear' => true
             ],
