@@ -12,6 +12,7 @@ marello:
             datablock.general:                  General
             datablock.taxcode_information:      Tax Code Information
             form.select_taxcode:                Select Tax Code
+            data.label:                         Data
         taxrate:
             id.label:                           Id
             entity_label:                       Tax Rate
@@ -20,6 +21,7 @@ marello:
             rate.label:                         Rate
             datablock.general:                  General
             datablock.taxrate_information:      Tax Rate Information
+            data.label:                         Data
         taxrule:
             id.label:                           Id
             entity_label:                       Tax Rule
@@ -29,7 +31,7 @@ marello:
             tax_jurisdiction.label:             Tax Jurisdiction
             datablock.general:                  General
             datablock.taxrule_information:      Tax Rule Information
-
+            data.label:                         Data
         taxjurisdiction:
             entity_label:                       Tax Jurisdiction
             entity_plural_label:                Tax Jurisdictions
@@ -41,7 +43,7 @@ marello:
             region.label:                       State
             region_text.label:                  State
             zip_codes.label:                    Zip Codes
-
+            data.label:                         Data
         zipcode:
             entity_label:                       Zip Code
             entity_plural_label:                Zip Codes
