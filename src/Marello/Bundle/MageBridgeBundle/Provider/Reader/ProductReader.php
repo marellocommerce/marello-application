@@ -26,31 +26,6 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader i
 
     const MAGENTO_REST_TYPE = 'magento';
 
-    /** @var MagentoTransportInterface */
-    protected $transport;
-
-    /** @var Channel */
-    protected $channel;
-
-    /** @var LoggerStrategy */
-    protected $logger;
-
-    /** @var ConnectorContextMediator */
-    protected $contextMediator;
-
-    /** @var bool[] */
-    protected $loaded = [];
-
-    /** @var array */
-    protected $ids = [];
-
-    /**
-     * Flag to control if read entity is used by the bridge extension
-     *
-     * @var bool
-     */
-    protected $extensionUsed = true;
-
     /**
      * {@inheritdoc}
      */
@@ -111,6 +86,6 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader i
             return parent::read();
         }
 
-        $this->logger->debug("No integration has been configured");
+        return $entity;
     }
 }
