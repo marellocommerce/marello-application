@@ -139,7 +139,7 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             'oauth_token' => $accessToken['oauth_token'],
         ), $extraParameters);
 
-        $url = $this->options['product_api_resource'];
+        $url = $this->options['product_api_resource']. "?page=2&limit=20";
         $parameters['oauth_signature'] = OAuthUtils::signRequest(
             HttpRequestInterface::METHOD_GET,
             $url,
@@ -149,7 +149,7 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             $this->options['signature_method']
         );
 
-        $content = $this->httpRequest($this->options['product_api_resource'], null, $parameters, array('Content-Type' => 'application/json', 'Accept' => '*/*'))->getContent();
+        $content = $this->httpRequest($url, null, $parameters, array('Content-Type' => 'application/json', 'Accept' => '*/*'))->getContent();
 
         $response = $this->getUserResponse();
         $response->setResponse($content);
@@ -165,21 +165,22 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
      */
     public function createProduct($content)
     {
-        $response = $this->processTransport('product_api_resource', $content, null, HttpRequestInterface::METHOD_POST);
+        $url = $this->options['product_api_resource'];
+        $response = $this->processTransport($url, $content, [], HttpRequestInterface::METHOD_POST);
         //TODO: process response
 
         return $this;
     }
 
     /**
-     * @param $apiResource
+     * @param $apiResourceUrl
      * @param null $bodyContent
      * @param array $extraParameters
      * @param string $method
      * @return \HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface
      */
     public function processTransport(
-        $apiResource,
+        $apiResourceUrl,
         $bodyContent = null,
         $extraParameters = [],
         $method = HttpRequestInterface::METHOD_GET
@@ -199,10 +200,9 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             'oauth_token' => $accessToken['oauth_token'],
         ), $extraParameters);
 
-        $url = $this->options[$apiResource];
         $parameters['oauth_signature'] = OAuthUtils::signRequest(
             $method,
-            $url,
+            $apiResourceUrl,
             $parameters,
             $this->options['client_secret'],
             $accessToken['oauth_token_secret'],
@@ -210,7 +210,7 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
         );
 
         $content = $this->httpRequest(
-            $url,
+            $apiResourceUrl,
             $bodyContent,
             $parameters,
             ['Content-Type' => 'application/json', 'Accept' => '*/*'],
