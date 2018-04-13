@@ -60,5 +60,4 @@ class ProductNormalizer extends ConfigurableEntityNormalizer
 
         return $isNotIdentity;
     }
-
 }

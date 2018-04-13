@@ -97,7 +97,6 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader i
         $entity = parent::read();
 
         if ($entity instanceof Channel) {
-
             $this->logger->info("#product reader");
 
             $salesChannels = $entity->getTransport()->getSalesChannels();
@@ -114,5 +113,4 @@ class ProductReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader i
 
         $this->logger->debug("No integration has been configured");
     }
-
 }

@@ -35,9 +35,17 @@ class AbstractWriter extends PersistentBatchWriter
         return $channel;
     }
 
-    public function getTransport()
+    /**
+     * @return $this
+     */
+    public function initTransport()
     {
-        return $this->getChannel()->getTransport();
+        if (!$this->magentoResourceOwner->getIntegrationChannel()) {
+            $transport = $this->getChannel()->getTransport();
+
+            $this->magentoResourceOwner->setIntegrationChannel($transport)->configureCredentials();
+        }
+        return $this;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\MageBridgeBundle\ImportExport\Writer;
 
-
 class ProductExportWriter extends AbstractWriter
 {
     /**
@@ -10,11 +9,11 @@ class ProductExportWriter extends AbstractWriter
      */
     public function write(array $items)
     {
-        $context = $this->contextRegistry
-            ->getByStepExecution($this->stepExecution);
+        $this->initTransport();
 
-        $transportId = $context->getValue('mage_transport_id');
-        $channelId = $context->getValue('mage_channel_id');
+        foreach ($items as $item) {
+            $this->magentoResourceOwner->createProduct($item);
+        }
 
 
         die();

@@ -39,7 +39,7 @@ class ProductDataConverter extends DefaultDataConverter
             'price'             => (float)$exportedRecord['price']['value'],
             'tax_class_id'      => self::DEFAULT_TAX_CLASS_ID,
         ];
-        return $productData;
+        return json_encode($productData);
     }
 
     /**
@@ -49,5 +49,4 @@ class ProductDataConverter extends DefaultDataConverter
     {
         return $this->convertToComplexData($importedRecord, $skipNullValues);
     }
-
 }

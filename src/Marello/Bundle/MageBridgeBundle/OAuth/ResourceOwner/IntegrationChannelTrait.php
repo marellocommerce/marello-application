@@ -36,6 +36,9 @@ trait IntegrationChannelTrait
         $this->options['client_id'] = $integrationChannel->getClientId();
         $this->options['client_secret'] = $integrationChannel->getClientSecret();
 
+        $this->options['oauth_token'] = $integrationChannel->getTokenKey();
+        $this->options['oauth_token_secret'] = $integrationChannel->getTokenSecret();
+
         //url's
         $apiUrl = $this->removeTrailSlash($integrationChannel->getApiUrl());
         $adminUrl = $this->removeTrailSlash($integrationChannel->getAdminUrl());
@@ -45,10 +48,22 @@ trait IntegrationChannelTrait
         $this->options['access_token_url'] = $apiUrl . '/oauth/token';
         $this->options['infos_url'] = $apiUrl;
 
+
         //several M1 api
-        $this->options['products'] = $apiUrl . '/api/rest/products';
+        $this->options['product_api_resource'] = $this->options['infos_url'] . self::PRODUCT_API_RESOURCE;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    private function getAccessTokenKeys()
+    {
+        $accessTokens = [
+            'oauth_token' => $this->options['oauth_token'],
+            'oauth_token_secret' => $this->options['oauth_token_secret']];
+        return $accessTokens;
     }
 
     /**

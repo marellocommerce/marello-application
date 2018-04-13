@@ -22,6 +22,8 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
     use IntegrationChannelTrait;
     use SessionTrait;
 
+    const PRODUCT_API_RESOURCE = '/api/rest/products';
+
     /**
      * {@inheritdoc}
      */
@@ -125,8 +127,9 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
      * e.g /api/rest/products?page=2&limit=20
      * Retrieve products
      */
-    public function getProducts(array $accessToken, array $extraParameters = array())
+    public function getProducts(array $extraParameters = array())
     {
+        $accessToken = $this->getAccessTokenKeys();
         $parameters = array_merge(array(
             'oauth_consumer_key' => $this->options['client_id'],
             'oauth_timestamp' => time(),
@@ -136,7 +139,7 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             'oauth_token' => $accessToken['oauth_token'],
         ), $extraParameters);
 
-        $url = $this->options['products'];
+        $url = $this->options['product_api_resource'];
         $parameters['oauth_signature'] = OAuthUtils::signRequest(
             HttpRequestInterface::METHOD_GET,
             $url,
@@ -146,7 +149,7 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             $this->options['signature_method']
         );
 
-        $content = $this->httpRequest($this->options['products'], null, $parameters, array('Content-Type' => 'application/json', 'Accept' => '*/*'))->getContent();
+        $content = $this->httpRequest($this->options['product_api_resource'], null, $parameters, array('Content-Type' => 'application/json', 'Accept' => '*/*'))->getContent();
 
         $response = $this->getUserResponse();
         $response->setResponse($content);
@@ -157,10 +160,36 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
     }
 
     /**
-     * Retrieve products
+     * @param $content
+     * @return $this
      */
-    public function createProducts(array $accessToken, $content, $extraParameters = array())
+    public function createProduct($content)
     {
+        $response = $this->processTransport('product_api_resource', $content, null, HttpRequestInterface::METHOD_POST);
+        //TODO: process response
+
+        return $this;
+    }
+
+    /**
+     * @param $apiResource
+     * @param null $bodyContent
+     * @param array $extraParameters
+     * @param string $method
+     * @return \HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface
+     */
+    public function processTransport(
+        $apiResource,
+        $bodyContent = null,
+        $extraParameters = [],
+        $method = HttpRequestInterface::METHOD_GET
+    ) {
+        $accessToken = [
+            'oauth_token' => $this->getIntegrationChannel()->getTokenKey(),
+            'oauth_token_secret' => $this->getIntegrationChannel()->getTokenSecret()
+        ];
+        $extraParameters = !empty($extraParameters)
+                            ? $extraParameters : [];
         $parameters = array_merge(array(
             'oauth_consumer_key' => $this->options['client_id'],
             'oauth_timestamp' => time(),
@@ -170,9 +199,9 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             'oauth_token' => $accessToken['oauth_token'],
         ), $extraParameters);
 
-        $url = $this->options['products'];
+        $url = $this->options[$apiResource];
         $parameters['oauth_signature'] = OAuthUtils::signRequest(
-            HttpRequestInterface::METHOD_POST,
+            $method,
             $url,
             $parameters,
             $this->options['client_secret'],
@@ -180,7 +209,13 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
             $this->options['signature_method']
         );
 
-        $content = $this->httpRequest($url, $content, $parameters, array('Content-Type' => 'application/json'), HttpRequestInterface::METHOD_POST)->getContent();
+        $content = $this->httpRequest(
+            $url,
+            $bodyContent,
+            $parameters,
+            ['Content-Type' => 'application/json', 'Accept' => '*/*'],
+            $method
+        )->getContent();
 
         $response = $this->getUserResponse();
         $response->setResponse($content);
