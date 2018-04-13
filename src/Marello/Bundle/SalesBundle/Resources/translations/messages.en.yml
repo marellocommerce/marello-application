@@ -23,11 +23,11 @@ marello:
             localization.label:                 Localization
             group.label:                        Group
             create_own_group.label:             Create Sales Channel Group
+            integration_channel.label:          Integration Channel
             messages:
                 success:
                     saved:                      Sales Channel has been saved successfully
                 sales_channel_has_associations: Sales Channel has associations
-
             menu:
                 shortcut_new_saleschannel.label: Create new sales channel
                 shortcut_new_saleschannel.description: Create new sales channel instance

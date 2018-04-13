@@ -25,7 +25,7 @@ marello:
         replenishment.label:        Replenishment
         manufacturing_code.label:   Manufacturing Code
         image.label:                Image
-
+        categories.label:           Categories
         variant:
             label:                    Variant
             entity_plural_label:      Variants
