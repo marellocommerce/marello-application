@@ -36,6 +36,7 @@ marello:
         status.label:               Order Status
         localization.label:         Localization
         shipment.label:             Shipment
+        data.label:                 Data
         billing_address:
             label:                  Billing Address
             name.label:             Bill to Name
