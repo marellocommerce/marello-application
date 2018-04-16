@@ -74,11 +74,11 @@ class CategoryControllerTest extends WebTestCase
     /**
      * @param string $name
      *
-     * @depends testCreateCategory
+     * @depends testCategoryCreate
      *
      * @return string
      */
-    public function testUpdateCategory($name)
+    public function testCategoryUpdate($name)
     {
         $response = $this->client->requestGrid(
             self::GRID_NAME,
@@ -116,7 +116,7 @@ class CategoryControllerTest extends WebTestCase
     /**
      * @param array $resultData
      *
-     * @depends testUpdateCategory
+     * @depends testCategoryUpdate
      *
      * @return string
      */
@@ -124,7 +124,7 @@ class CategoryControllerTest extends WebTestCase
     {
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('marello_product_view', ['id' => $resultData['id']])
+            $this->getUrl('marello_category_view', ['id' => $resultData['id']])
         );
 
         $result = $this->client->getResponse();

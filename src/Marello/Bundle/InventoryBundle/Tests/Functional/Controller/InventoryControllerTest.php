@@ -96,11 +96,11 @@ class InventoryControllerTest extends WebTestCase
                     [
                         'warehouse' => 1,
                         'adjustmentOperator' => InventoryLevelCalculator::OPERATOR_INCREASE,
-                        'quantity' => 10,
-                        'desiredInventory' => 20,
-                        'purchaseInventory' => 30
+                        'quantity' => 10
                     ]
                 ],
+                'desiredInventory' => 20,
+                'purchaseInventory' => 30,
                 'replenishment' => 'never_out_of_stock',
                 '_token' => $token,
             ],
@@ -143,7 +143,9 @@ class InventoryControllerTest extends WebTestCase
         $formData = [
             'marello_inventory_item' => [
                 'inventoryLevels' => [],
-                'replenishment' => 'never_out_of_stock',
+                'desiredInventory' => $inventoryItem->getDesiredInventory(),
+                'purchaseInventory' => $inventoryItem->getPurchaseInventory(),
+                'replenishment' => $inventoryItem->getReplenishment(),
                 '_token' => $token,
             ],
         ];
