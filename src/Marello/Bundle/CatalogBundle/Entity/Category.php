@@ -15,7 +15,14 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 
 /**
  * @ORM\Entity()
- * @ORM\Table(name="marello_catalog_category")
+ * @ORM\Table(name="marello_catalog_category",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="marello_catalog_category_codeidx",
+ *              columns={"code"}
+ *          )
+ *      }
+ * )
  * @Config(
  *      routeName="marello_category_index",
  *      routeView="marello_category_view",
@@ -41,7 +48,6 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * )
  * @ORM\HasLifecycleCallbacks()
  *
- * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class Category extends ExtendCategory implements OrganizationAwareInterface
 {
@@ -81,7 +87,7 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
      *          @ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")
      *      },
      *      inverseJoinColumns={
-     *          @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE", unique=true)
+     *          @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      *      }
      * )
      * @ConfigField(

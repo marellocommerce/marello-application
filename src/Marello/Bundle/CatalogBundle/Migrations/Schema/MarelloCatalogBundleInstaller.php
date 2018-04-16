@@ -60,7 +60,7 @@ class MarelloCatalogBundleInstaller implements Installation, ActivityExtensionAw
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['code']);
+        $table->addUniqueIndex(['code'], 'marello_catalog_category_codeidx');
 
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_catalog_category');
     }
