@@ -2,7 +2,7 @@ parameters:
   marello_magebridge.transport.rest_transport.class: Marello\Bundle\MageBridgeBundle\Provider\Transport\RestTransport
   marello_magebridge.provider.magento_channel_type.class: Marello\Bundle\MageBridgeBundle\Provider\MagentoChannelType
   marello_magebridge.form.type.rest_transport_setting.class: Marello\Bundle\MageBridgeBundle\Form\Type\RestTransportSettingsFormType
-  marello_magebrdige_saleschannel_multi_select.class: Marello\Bundle\MageBridgeBundle\Form\Type\SalesChannelMultiSelectType
+  marello_magebrdige.saleschannel_multi_select.class: Marello\Bundle\MageBridgeBundle\Form\Type\SalesChannelMultiSelectType
 
 services:
 
@@ -36,7 +36,7 @@ services:
             - { name: form.type, alias: marello_magebridge_rest_transport_setting_form_type }
 
     marello_magebrdige.saleschannel_multi_select:
-        class: '%marello_magebrdige_saleschannel_multi_select.class%'
+        class: '%marello_magebrdige.saleschannel_multi_select.class%'
         arguments:
             - '@marello_sales.form.data_transformer.sales_channel'
         tags:

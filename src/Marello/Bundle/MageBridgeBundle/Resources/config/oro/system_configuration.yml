@@ -1,0 +1,35 @@
+system_configuration:
+    groups:
+        magebridge:
+            title: marello.marello_mage_bridge.system_configuration.groups.magebridge.title
+        magebridge_soap:
+            title: marello.marello_mage_bridge.system_configuration.groups.magebridge.magebridge_soap.title
+        magebridge_soap_general:
+            title: marello.marello_mage_bridge.system_configuration.groups.magebridge.balacing.magebridge_soap_general.label
+
+    fields:
+        marello_mage_bridge.magento_soap_api_user:
+            data_type: string
+            type: text
+            priority: 20
+            options:
+                label: marello.magebridge.system_configuration.fields.magento_soap_api_user.label
+        marello_mage_bridge.magento_soap_api_key:
+            data_type: string
+            type: text
+            priority: 20
+            options:
+                label: marello.magebridge.system_configuration.fields.magento_soap_api_key.label
+
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    magebridge:
+                        children:
+                            magebridge_soap:
+                                children:
+                                    magebridge_soap_general:
+                                        children:
+                                            - marello_mage_bridge.magento_soap_api_user
+                                            - marello_mage_bridge.magento_soap_api_key

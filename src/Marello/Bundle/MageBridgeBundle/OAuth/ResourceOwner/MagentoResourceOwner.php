@@ -123,39 +123,17 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
         return $response;
     }
 
-
     /**
      * e.g /api/rest/products?page=2&limit=20
      * Retrieve products
+     * @param int $page
+     * @param int $limit
+     * @return \HWI\Bundle\OAuthBundle\OAuth\Response\UserResponseInterface
      */
-    public function getProducts(array $extraParameters = array())
+    public function getProducts($page = 1, $limit = 10)
     {
-        $accessToken = $this->getAccessTokenKeys();
-        $parameters = array_merge(array(
-            'oauth_consumer_key' => $this->options['client_id'],
-            'oauth_timestamp' => time(),
-            'oauth_nonce' => $this->generateNonce(),
-            'oauth_version' => '1.0',
-            'oauth_signature_method' => $this->options['signature_method'],
-            'oauth_token' => $accessToken['oauth_token'],
-        ), $extraParameters);
-
-        $url = $this->options['product_api_resource']. "?page=2&limit=20";
-        $parameters['oauth_signature'] = OAuthUtils::signRequest(
-            HttpRequestInterface::METHOD_GET,
-            $url,
-            $parameters,
-            $this->options['client_secret'],
-            $accessToken['oauth_token_secret'],
-            $this->options['signature_method']
-        );
-
-        $content = $this->httpRequest($url, null, $parameters, array('Content-Type' => 'application/json', 'Accept' => '*/*'))->getContent();
-
-        $response = $this->getUserResponse();
-        $response->setResponse($content);
-        $response->setResourceOwner($this);
-        $response->setOAuthToken(new OAuthToken($accessToken));
+        $url = $this->options['product_api_resource'] . "?page={$page}&limit={$limit}";
+        $response = $this->processTransport($url);
 
         return $response;
     }
@@ -171,6 +149,14 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
         //TODO: process response
 
         return $this;
+    }
+
+    public function getWebsites($content) //product_id
+    {
+//        $response = $this->processTransport($this->options['infos_url'] .'/api/rest/products/2130/store/2', json_encode(['price' => 20.99]), [],HttpRequestInterface::METHOD_PUT);
+        $response = $this->processTransport($this->options['infos_url'] .'/api/rest/stores', json_encode(['price' => 20.99]), [],HttpRequestInterface::METHOD_PUT);
+
+        die();
     }
 
     /**

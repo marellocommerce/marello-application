@@ -12,6 +12,12 @@ class ProductExportWriter extends AbstractWriter
         $this->initTransport();
 
         foreach ($items as $item) {
+
+            //TODO: Fix me
+            $this->magentoResourceOwner->getWebsites(json_encode($item));
+            die(__METHOD__ .'####'. __LINE__);
+
+
             $this->magentoResourceOwner->createProduct(json_encode($item));
         }
     }
