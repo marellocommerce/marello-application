@@ -14,7 +14,14 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * @ORM\Entity
- * @ORM\Table("marello_tax_tax_jurisdiction")
+ * @ORM\Table("marello_tax_tax_jurisdiction",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="marello_tax_jurisdiction_codeidx",
+ *              columns={"code"}
+ *          )
+ *      }
+ * )
  * @ORM\HasLifecycleCallbacks
  * @Config(
  *     mode="hidden",
