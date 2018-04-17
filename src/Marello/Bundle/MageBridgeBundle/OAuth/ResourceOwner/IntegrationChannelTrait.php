@@ -51,6 +51,7 @@ trait IntegrationChannelTrait
 
         //several M1 api
         $this->options['product_api_resource'] = $this->options['infos_url'] . self::PRODUCT_API_RESOURCE;
+        $this->options['inventory_api_resource'] = $this->options['infos_url'] . self::INVENTORY_API_RESOURCE;
 
         return $this;
     }

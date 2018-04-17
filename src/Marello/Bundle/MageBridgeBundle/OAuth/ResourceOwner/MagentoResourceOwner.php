@@ -23,6 +23,7 @@ class MagentoResourceOwner extends BaseGenericOAuth1ResourceOwner
     use SessionTrait;
 
     const PRODUCT_API_RESOURCE = '/api/rest/products';
+    const INVENTORY_API_RESOURCE = '/api/rest/stockitems';
 
     /**
      * {@inheritdoc}
