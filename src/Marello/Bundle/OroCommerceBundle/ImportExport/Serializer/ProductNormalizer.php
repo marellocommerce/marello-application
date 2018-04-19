@@ -6,7 +6,6 @@ use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxCodeExportCreateWriter;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\AttachmentBundle\Entity\File;
 
 class ProductNormalizer extends AbstractNormalizer
 {
@@ -175,7 +174,7 @@ class ProductNormalizer extends AbstractNormalizer
                         'id' => '6abcd',
                         'attributes' => [
                             'fallback' => null,
-                            'scalarValue' => '0',
+                            'scalarValue' => $transport->isBackOrder(),
                             'arrayValue' => null
                         ]
                     ],

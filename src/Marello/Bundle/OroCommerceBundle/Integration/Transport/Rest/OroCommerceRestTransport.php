@@ -38,7 +38,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     /**
      * @param OroCommerceRestClientFactoryInterface $restClientFactory
      */
-    public function __construct(OroCommerceRestClientFactoryInterface $restClientFactory)
+    public function setRestClientFactory(OroCommerceRestClientFactoryInterface $restClientFactory)
     {
         $this->restClientFactory = $restClientFactory;
     }
@@ -344,7 +344,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request->getHeaders()
         );
         foreach ($json['included'] as $included) {
-            if ($included['type'] = 'producttaxcodex' &&
+            if ($included['type'] === 'producttaxcode' &&
                 (int)$included['id'] === (int)$json['data']['relationships']['taxCode']['data']['id']) {
                 $json['data']['relationships']['taxCode']['data']['attributes'] = $included['attributes'];
             }
@@ -1131,9 +1131,9 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 $request->getHeaders()
             );
         } catch (RestException $e) {
-            return false;
+            return ['result' => false, 'message' => $e->getMessage()];
         }
 
-        return true;
+        return ['result' => true, 'message' => 'Connection is valid'];
     }
 }

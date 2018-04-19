@@ -1,0 +1,408 @@
+{
+  "data": {
+    "type": "products",
+    "id": "68",
+    "attributes": {
+      "availability_date": null,
+      "sku": "p1",
+      "status": "enabled",
+      "variantFields": [],
+      "productType": "simple",
+      "featured": true,
+      "newArrival": false
+    },
+    "relationships": {
+      "owner": {
+        "data": {
+          "type": "businessunits",
+          "id": "1"
+        }
+      },
+      "organization": {
+        "data": {
+          "type": "organizations",
+          "id": "1"
+        }
+      },
+      "unitPrecisions": {
+        "data": [
+          {
+            "type": "productunitprecisions",
+            "id": "132"
+          }
+        ]
+      },
+      "primaryUnitPrecision": {
+        "data": {
+          "type": "productunitprecisions",
+          "id": "132"
+        }
+      },
+      "names": {
+        "data": [
+          {
+            "type": "localizedfallbackvalues",
+            "id": "848"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "849"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "853"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "851"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "852"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "850"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "857"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "854"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "855"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "856"
+          }
+        ]
+      },
+      "descriptions": {
+        "data": [
+          {
+            "type": "localizedfallbackvalues",
+            "id": "867"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "858"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "862"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "860"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "861"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "859"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "866"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "863"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "864"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "865"
+          }
+        ]
+      },
+      "variantLinks": {
+        "data": []
+      },
+      "shortDescriptions": {
+        "data": [
+          {
+            "type": "localizedfallbackvalues",
+            "id": "877"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "868"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "872"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "870"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "871"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "869"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "876"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "873"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "874"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "875"
+          }
+        ]
+      },
+      "images": {
+        "data": []
+      },
+      "attributeFamily": {
+        "data": {
+          "type": "attributefamilies",
+          "id": "1"
+        }
+      },
+      "brand": {
+        "data": null
+      },
+      "slugPrototypes": {
+        "data": []
+      },
+      "pageTemplate": {
+        "data": null
+      },
+      "taxCode": {
+        "data": {
+          "type": "producttaxcodes",
+          "id": "4"
+        }
+      },
+      "manageInventory": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "729"
+        }
+      },
+      "highlightLowInventory": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "731"
+        }
+      },
+      "inventoryThreshold": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "730"
+        }
+      },
+      "lowInventoryThreshold": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "732"
+        }
+      },
+      "minimumQuantityToOrder": {
+        "data": null
+      },
+      "maximumQuantityToOrder": {
+        "data": null
+      },
+      "decrementQuantity": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "734"
+        }
+      },
+      "backOrder": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "735"
+        }
+      },
+      "isUpcoming": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "733"
+        }
+      },
+      "metaTitles": {
+        "data": [
+          {
+            "type": "localizedfallbackvalues",
+            "id": "897"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "888"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "892"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "890"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "891"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "889"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "896"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "893"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "894"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "895"
+          }
+        ]
+      },
+      "metaDescriptions": {
+        "data": [
+          {
+            "type": "localizedfallbackvalues",
+            "id": "907"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "898"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "902"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "900"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "901"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "899"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "906"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "903"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "904"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "905"
+          }
+        ]
+      },
+      "metaKeywords": {
+        "data": [
+          {
+            "type": "localizedfallbackvalues",
+            "id": "917"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "908"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "912"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "910"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "911"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "909"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "916"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "913"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "914"
+          },
+          {
+            "type": "localizedfallbackvalues",
+            "id": "915"
+          }
+        ]
+      },
+      "inventory_status": {
+        "data": {
+          "type": "prodinventorystatuses",
+          "id": "out_of_stock"
+        }
+      },
+      "category": {
+        "data": null
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "producttaxcodes",
+      "id": "4",
+      "attributes": {
+        "code": "TAX_HIGH",
+        "description": "High tax",
+        "createdAt": "2018-04-19T07:53:48Z",
+        "updatedAt": "2018-04-19T07:53:48Z"
+      },
+      "relationships": {
+        "taxCode": {
+          "data": null
+        }
+      }
+    }
+  ]
+}

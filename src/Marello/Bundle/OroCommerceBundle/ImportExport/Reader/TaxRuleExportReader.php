@@ -4,7 +4,6 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Reader;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
-use Marello\Bundle\TaxBundle\Entity\TaxRate;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;

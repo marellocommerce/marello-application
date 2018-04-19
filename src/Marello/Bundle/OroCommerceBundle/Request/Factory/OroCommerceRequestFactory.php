@@ -69,7 +69,7 @@ class OroCommerceRequestFactory implements OroCommerceRequestFactoryInterface
      * @param ParameterBag $settingsBag
      * @return array
      */
-    protected function getHeaders(ParameterBag $settingsBag)
+    protected static function getHeaders(ParameterBag $settingsBag)
     {
         $nonce = base64_encode(substr(md5(uniqid()), 0, 16));
         $created  = date('c');

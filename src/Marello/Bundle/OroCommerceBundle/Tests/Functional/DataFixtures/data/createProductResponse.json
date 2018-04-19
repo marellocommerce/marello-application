@@ -1,0 +1,297 @@
+{
+  "data": {
+    "type": "products",
+    "id": "1",
+    "attributes": {
+      "availability_date": null,
+      "sku": "p1",
+      "status": "enabled",
+      "variantFields": [],
+      "productType": "simple",
+      "featured": true,
+      "newArrival": false
+    },
+    "relationships": {
+      "owner": {
+        "data": {
+          "type": "businessunits",
+          "id": "1"
+        }
+      },
+      "organization": {
+        "data": {
+          "type": "organizations",
+          "id": "1"
+        }
+      },
+      "unitPrecisions": {
+        "data": [
+          {
+            "type": "productunitprecisions",
+            "id": "132"
+          }
+        ]
+      },
+      "primaryUnitPrecision": {
+        "data": {
+          "type": "productunitprecisions",
+          "id": "132"
+        }
+      },
+      "names": {
+        "data": [
+          {
+            "type": "localizedfallbackvalues",
+            "id": "848"
+          }
+        ]
+      },
+      "descriptions": {
+        "data": []
+      },
+      "variantLinks": {
+        "data": []
+      },
+      "shortDescriptions": {
+        "data": []
+      },
+      "images": {
+        "data": []
+      },
+      "attributeFamily": {
+        "data": {
+          "type": "attributefamilies",
+          "id": "1"
+        }
+      },
+      "brand": {
+        "data": null
+      },
+      "slugPrototypes": {
+        "data": []
+      },
+      "pageTemplate": {
+        "data": null
+      },
+      "taxCode": {
+        "data": {
+          "type": "producttaxcodes",
+          "id": "4"
+        }
+      },
+      "manageInventory": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "729"
+        }
+      },
+      "highlightLowInventory": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "731"
+        }
+      },
+      "inventoryThreshold": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "730"
+        }
+      },
+      "lowInventoryThreshold": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "732"
+        }
+      },
+      "minimumQuantityToOrder": {
+        "data": null
+      },
+      "maximumQuantityToOrder": {
+        "data": null
+      },
+      "decrementQuantity": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "734"
+        }
+      },
+      "backOrder": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "735"
+        }
+      },
+      "isUpcoming": {
+        "data": {
+          "type": "entityfieldfallbackvalues",
+          "id": "733"
+        }
+      },
+      "metaTitles": {
+        "data": []
+      },
+      "metaDescriptions": {
+        "data": []
+      },
+      "metaKeywords": {
+        "data": []
+      },
+      "inventory_status": {
+        "data": {
+          "type": "prodinventorystatuses",
+          "id": "out_of_stock"
+        }
+      },
+      "category": {
+        "data": null
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "entityfieldfallbackvalues",
+      "id": "729",
+      "meta": {
+        "includeId": "1abcd"
+      },
+      "attributes": {
+        "fallback": "systemConfig",
+        "scalarValue": null,
+        "arrayValue": null
+      }
+    },
+    {
+      "type": "entityfieldfallbackvalues",
+      "id": "730",
+      "meta": {
+        "includeId": "2abcd"
+      },
+      "attributes": {
+        "fallback": null,
+        "scalarValue": "1",
+        "arrayValue": null
+      }
+    },
+    {
+      "type": "entityfieldfallbackvalues",
+      "id": "731",
+      "meta": {
+        "includeId": "low1abcd"
+      },
+      "attributes": {
+        "fallback": "systemConfig",
+        "scalarValue": null,
+        "arrayValue": null
+      }
+    },
+    {
+      "type": "entityfieldfallbackvalues",
+      "id": "732",
+      "meta": {
+        "includeId": "low2abcd"
+      },
+      "attributes": {
+        "fallback": null,
+        "scalarValue": "1",
+        "arrayValue": null
+      }
+    },
+    {
+      "type": "entityfieldfallbackvalues",
+      "id": "733",
+      "meta": {
+        "includeId": "product-is-upcoming"
+      },
+      "attributes": {
+        "fallback": null,
+        "scalarValue": "0",
+        "arrayValue": null
+      }
+    },
+    {
+      "type": "entityfieldfallbackvalues",
+      "id": "734",
+      "meta": {
+        "includeId": "5abcd"
+      },
+      "attributes": {
+        "fallback": null,
+        "scalarValue": "1",
+        "arrayValue": null
+      }
+    },
+    {
+      "type": "entityfieldfallbackvalues",
+      "id": "735",
+      "meta": {
+        "includeId": "6abcd"
+      },
+      "attributes": {
+        "fallback": null,
+        "scalarValue": "1",
+        "arrayValue": null
+      }
+    },
+    {
+      "type": "localizedfallbackvalues",
+      "id": "848",
+      "meta": {
+        "includeId": "names-1"
+      },
+      "attributes": {
+        "fallback": null,
+        "string": "product1",
+        "text": null
+      },
+      "relationships": {
+        "localization": {
+          "data": null
+        }
+      }
+    },
+    {
+      "type": "productunitprecisions",
+      "id": "132",
+      "meta": {
+        "includeId": "product-unit-precision-id-1"
+      },
+      "attributes": {
+        "precision": 0,
+        "conversionRate": 1,
+        "sell": true
+      },
+      "relationships": {
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "68"
+          }
+        },
+        "unit": {
+          "data": {
+            "type": "productunits",
+            "id": "each"
+          }
+        }
+      }
+    },
+    {
+      "type": "producttaxcodes",
+      "id": "4",
+      "meta": {
+        "includeId": "product-tax-code-id-1"
+      },
+      "attributes": {
+        "code": "TAX_HIGH",
+        "description": "High tax",
+        "createdAt": "2018-04-19T07:53:48Z",
+        "updatedAt": "2018-04-19T07:53:48Z"
+      },
+      "relationships": {
+        "taxCode": {
+          "data": null
+        }
+      }
+    }
+  ]
+}
