@@ -4,10 +4,8 @@
   "homepage": "https://github.com/marellocommerce/marello-orocommerce-ee-application",
   "license": "OSL-3.0",
   "autoload": {
-    "autoload": {
-      "psr-4": {"": "src/"},
-      "exclude-from-classmap": ["**/Tests/"]
-    }
+    "psr-4": {"": "src/"},
+    "exclude-from-classmap": ["**/Tests/"]
   },
   "repositories": {
     "ldap-bundle": {
@@ -101,6 +99,12 @@
     }
   },
   "scripts": {
+    "marello-reset": [
+      "rm -rf app/cache/*",
+      "rm -rf app/logs/*",
+      "sed -i -e 's/installed:.*/installed: ~/g' app/config/parameters.yml",
+      "app/console oro:install --timeout 3600 --sample-data=n --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --application-url=http://marello-orocommerce.docker:11080/"
+    ],
     "post-install-cmd": [
       "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
       "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
