@@ -30,7 +30,7 @@ class MarelloPurchaseOrderBundle implements Migration
     {
         $table = $schema->getTable('marello_purchase_order');
 
-        $table->addColumn('warehouse_id', 'integer', []);
+        $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
     }
 
     /**

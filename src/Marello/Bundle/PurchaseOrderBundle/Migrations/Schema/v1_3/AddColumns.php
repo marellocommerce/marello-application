@@ -30,7 +30,6 @@ class AddColumns implements Migration, OrderedMigrationInterface
     {
         $table = $schema->getTable('marello_purchase_order');
 
-        $table->addColumn('warehouse_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
     }
 
