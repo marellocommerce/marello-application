@@ -5,11 +5,14 @@ namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\DataFixtures;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+
+use Oro\Bundle\CalendarBundle\Tests\Functional\DataFixtures\LoadOrganizationData;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
-use Oro\Bundle\CalendarBundle\Tests\Functional\DataFixtures\LoadOrganizationData;
 
 class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -25,23 +28,28 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
     protected $data = [
         self::PURCHASE_ORDER_1_REF => [
             'supplier' => LoadSupplierData::SUPPLIER_1_REF,
+            'orderTotal' => 190,
             'items' => [
                 0 => [
                     'product' => LoadProductData::PRODUCT_1_REF,
-                    'orderedAmount' => 4
+                    'orderedAmount' => 4,
+                    'rowTotal' => 40
                 ],
                 1 => [
                     'product' => LoadProductData::PRODUCT_2_REF,
-                    'orderedAmount' => 6
+                    'orderedAmount' => 6,
+                    'rowTotal' => 150
                 ]
             ]
         ],
         self::PURCHASE_ORDER_2_REF => [
             'supplier' => LoadSupplierData::SUPPLIER_2_REF,
+            'orderTotal' => 1000,
             'items' => [
                 0 => [
                     'product' => LoadProductData::PRODUCT_3_REF,
-                    'orderedAmount' => 20
+                    'orderedAmount' => 20,
+                    'rowTotal' => 1000
                 ]
             ]
         ]
@@ -96,13 +104,18 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
         $purchaseOrder
             ->setOrganization($this->getReference('oro_calendar:organization:foo'))
             ->setSupplier($this->getReference($data['supplier']))
+            ->setOrderTotal($data['orderTotal'])
         ;
 
         foreach ($data['items'] as $item) {
             $purchaseOrderItem = new PurchaseOrderItem();
+            /** @var Product $product */
+            $product = $this->getReference($item['product']);
             $purchaseOrderItem
-                ->setProduct($this->getReference($item['product']))
+                ->setProduct($product)
                 ->setOrderedAmount($item['orderedAmount'])
+                ->setRowTotal($item['rowTotal'])
+                ->setPurchasePrice($product->getPrices()->first())
             ;
 
 //            $this->manager->persist($purchaseOrderItem);

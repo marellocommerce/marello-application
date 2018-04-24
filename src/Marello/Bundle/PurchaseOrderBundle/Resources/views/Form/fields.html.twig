@@ -118,7 +118,8 @@
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
         class="purchase-order-line-item display-values marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
-        data-page-component-options="{{ {view: 'marellopurchaseorder/js/app/views/purchaseorder-item-view'}|json_encode }}">
+        data-page-component-options="{{ {view: 'marellopurchaseorder/js/app/views/purchaseorder-item-view'}|json_encode }}"
+        data-layout="separate">
         {{ form_widget(form) }}
 
         <td class="purchase-order-line-item-notifications">
@@ -152,7 +153,8 @@
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
         class="purchase-order-line-item display-values marello-line-item"
         data-page-component-module="oroui/js/app/components/view-component"
-        data-page-component-options="{{ {view: 'marellopurchaseorder/js/app/views/purchaseorder-item-view'}|json_encode }}">
+        data-page-component-options="{{ {view: 'marellopurchaseorder/js/app/views/purchaseorder-item-view'}|json_encode }}"
+        data-layout="separate">
         {{ form_widget(form) }}
 
         <td class="purchase-order-line-item-notifications">
