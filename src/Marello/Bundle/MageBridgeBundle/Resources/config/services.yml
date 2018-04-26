@@ -7,6 +7,7 @@ parameters:
   marello_magebrdige.saleschannel_multi_select.class: Marello\Bundle\MageBridgeBundle\Form\Type\SalesChannelMultiSelectType
   marello_magebrdige.form.type.magento_website_sales_channel_grid.class: Marello\Bundle\MageBridgeBundle\Form\Type\WebsiteSalesChannelType
   marello_magebrdige.handler.website_sales_channel_handler.class: Marello\Bundle\MageBridgeBundle\Form\Handler\WebsiteChannelHandler
+  marello_magebrdige.magento_saleschannel_config_provider.class: Marello\Bundle\MageBridgeBundle\Provider\WebsiteSaleschannelConfigProvider
 
 services:
 
@@ -95,3 +96,11 @@ services:
             - '@marello_magebridge.provider.sales_channel_list'
         tags:
             - { name: form.type, alias: website_sales_channel_grid }
+
+    #website - sales-channel provider
+    marello_magebrdige.magento_saleschannel_config_provider:
+        class: '%marello_magebrdige.magento_saleschannel_config_provider.class%'
+        arguments:
+            - '@oro_config.global'
+            - '@marello_magebrdige.provider.magento_store_list'
+            - '@marello_magebridge.provider.sales_channel_list'
