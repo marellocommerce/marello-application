@@ -9,7 +9,14 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * TaxRate
  *
  * @ORM\Entity(repositoryClass="Marello\Bundle\TaxBundle\Entity\Repository\TaxRateRepository")
- * @ORM\Table(name="marello_tax_tax_rate")
+ * @ORM\Table(name="marello_tax_tax_rate",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="marello_tax_rate_codeidx",
+ *              columns={"code"}
+ *          )
+ *      }
+ * )
  * @Oro\Config(
  *      routeName="marello_tax_taxrate_index",
  *      routeView="marello_tax_taxrate_view",
