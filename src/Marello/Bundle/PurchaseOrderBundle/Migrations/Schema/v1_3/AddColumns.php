@@ -44,3 +44,4 @@ class AddColumns implements Migration, OrderedMigrationInterface
         $table->addColumn('row_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
     }
 }
+

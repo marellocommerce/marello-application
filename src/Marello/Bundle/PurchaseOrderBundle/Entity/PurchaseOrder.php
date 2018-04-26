@@ -108,7 +108,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     /**
      * @var float
      *
-     * @ORM\Column(name="order_total", type="decimal")
+     * @ORM\Column(name="order_total", type="money", nullable=false)
      */
     protected $orderTotal;
 

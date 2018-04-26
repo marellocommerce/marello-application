@@ -54,13 +54,13 @@ marello:
             virtual_stock_level.label:                  Virtual Level
             product.label:                              Product
             purchase_price.label:                       Purchase Price
+            purchase_price_value.label:                 Purchase Price
             row_total.label:                            Row Total
             order.label:                                Order
             supplier.label:                             Supplier
             product_sku.label:                          Product Sku
             product_name.label:                         Product Name
             data.label:                                 Data
-
             validation:
                 received_amount:                        Total amount received can only be as many items as ordered amount.
 

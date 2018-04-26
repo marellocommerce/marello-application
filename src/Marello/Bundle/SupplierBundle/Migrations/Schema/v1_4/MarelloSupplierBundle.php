@@ -29,6 +29,6 @@ class MarelloSupplierBundle implements Migration
     protected function updateMarelloSupplierSupplierTable(Schema $schema)
     {
         $table = $schema->getTable('marello_supplier_supplier');
-        $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 3]);
+        $table->addColumn('currency', 'string', ['length' => 3]);
     }
 }
