@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\SupplierBundle\Form\Type;
 
+use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,7 +44,7 @@ class SupplierType extends AbstractType
             ->add('canDropship')
             ->add('isActive')
             ->add('email')
-        ;
+            ->add('currency', CurrencyType::class);
 
         $this->removeNonStreetFieldsFromAddress($builder, 'address');
     }

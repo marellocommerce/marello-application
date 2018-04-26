@@ -12,6 +12,7 @@ marello:
         address.label:                Address
         email.label:                  Email
         organization.label:           Organization
+        currency.label:               Currency
         datablock:
             general:                  General
             supplier_information:     Supplier Information

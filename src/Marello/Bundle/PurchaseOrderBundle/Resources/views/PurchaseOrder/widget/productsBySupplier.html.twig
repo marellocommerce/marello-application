@@ -59,18 +59,14 @@
                             addedModels[id] = new MultipleEntityModel({
                                 'id': model.get('id'),
                                 'link': routing.generate('marello_product_view', {id: model.get('id')}),
-                                'label': nameFormatter.format(model.toJSON()),
                                 'isDefault': false,
-                                'extraData': [
-                                    {
-                                        'id': model.get('id'),
-                                        'label': 'product',
-                                        'value': model.get('sku') + ' - ' + model.get('name'),
-                                        'name': model.get('name'),
-                                        'sku': model.get('sku'),
-                                        'orderAmount': model.get('orderAmount'),
-                                    }
-                                ]
+                                'label': 'product',
+                                'value': model.get('sku') + ' - ' + model.get('name'),
+                                'name': model.get('name'),
+                                'sku': model.get('sku'),
+                                'orderAmount': model.get('orderAmount'),
+                                'purchasePrice': model.get('purchasePrice'),
+                                'currency': '{{ currency }}'
                             });
                         } else if (addedModels.hasOwnProperty(id)) {
                             delete addedModels[id];
