@@ -1,8 +1,12 @@
 parameters:
   marello_magebridge.transport.rest_transport.class: Marello\Bundle\MageBridgeBundle\Provider\Transport\RestTransport
+  marello_magebrdige.provider.magento_store_list.class: Marello\Bundle\MageBridgeBundle\Provider\MagentoStoreList
+  marello_magebridge.provider.sales_channel_list.class: Marello\Bundle\MageBridgeBundle\Provider\SalesChannelProvider
   marello_magebridge.provider.magento_channel_type.class: Marello\Bundle\MageBridgeBundle\Provider\MagentoChannelType
   marello_magebridge.form.type.rest_transport_setting.class: Marello\Bundle\MageBridgeBundle\Form\Type\RestTransportSettingsFormType
   marello_magebrdige.saleschannel_multi_select.class: Marello\Bundle\MageBridgeBundle\Form\Type\SalesChannelMultiSelectType
+  marello_magebrdige.form.type.magento_website_sales_channel_grid.class: Marello\Bundle\MageBridgeBundle\Form\Type\WebsiteSalesChannelType
+  marello_magebrdige.handler.website_sales_channel_handler.class: Marello\Bundle\MageBridgeBundle\Form\Handler\WebsiteChannelHandler
 
 services:
 
@@ -67,3 +71,27 @@ services:
 #            - '@oro_magento.provider.website_choices'
 #            - '@oro_magento.provider.connector_choices'
             - '@request'
+
+    marello_magebrdige.handler.website_sales_channel_handler:
+          class: '%marello_magebrdige.handler.website_sales_channel_handler.class%'
+          arguments:
+            - '@doctrine.orm.entity_manager'
+
+    marello_magebrdige.provider.magento_store_list:
+        class: '%marello_magebrdige.provider.magento_store_list.class%'
+        arguments:
+            - '@oro_config.global'
+
+    marello_magebridge.provider.sales_channel_list:
+        class: '%marello_magebridge.provider.sales_channel_list.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    marello_magebrdige.form.type.magento_website_sales_channel_grid:
+        class: '%marello_magebrdige.form.type.magento_website_sales_channel_grid.class%'
+        arguments:
+            - '@oro_config.global'
+            - '@marello_magebrdige.provider.magento_store_list'
+            - '@marello_magebridge.provider.sales_channel_list'
+        tags:
+            - { name: form.type, alias: website_sales_channel_grid }

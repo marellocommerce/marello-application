@@ -48,3 +48,8 @@ marello:
                     message: 'You are about to be linking your store with Marello'
                     confirm_ok: 'Confirm authorization'
 
+        system_configuration:
+            sales_channel:
+                label: 'Marello Sales Channel'
+            magento_website:
+                label: 'Magento Website (regardless of store name)'

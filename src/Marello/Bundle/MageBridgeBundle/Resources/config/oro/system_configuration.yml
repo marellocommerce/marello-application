@@ -1,25 +1,45 @@
 system_configuration:
     groups:
         magebridge:
-            title: marello.marello_mage_bridge.system_configuration.groups.magebridge.title
+            title: marello.marello_mage_bridge.system_configuration.groups.title
+            handler: '@marello_magebrdige.handler.website_sales_channel_handler::process'
         magebridge_soap:
-            title: marello.marello_mage_bridge.system_configuration.groups.magebridge.magebridge_soap.title
+            title: marello.marello_mage_bridge.system_configuration.groups.magebridge_soap.title
+            handler: '@marello_magebrdige.handler.website_sales_channel_handler::process'
         magebridge_soap_general:
-            title: marello.marello_mage_bridge.system_configuration.groups.magebridge.balacing.magebridge_soap_general.label
+            title: marello.marello_mage_bridge.system_configuration.groups.magebridge_soap_general.label
+            handler: '@marello_magebrdige.handler.website_sales_channel_handler::process'
 
     fields:
+        marello_mage_bridge.magento_website_sales_channel:
+            data_type: array
+            type: website_sales_channel_grid
+            priority: 20
+            options:
+                label: marello.magebridge.system_configuration.fields.magento_website_sales_channel.label
+                required: false
+                resettable: false
+
         marello_mage_bridge.magento_soap_api_user:
             data_type: string
             type: text
             priority: 20
             options:
                 label: marello.magebridge.system_configuration.fields.magento_soap_api_user.label
+
         marello_mage_bridge.magento_soap_api_key:
             data_type: string
             type: text
             priority: 20
             options:
                 label: marello.magebridge.system_configuration.fields.magento_soap_api_key.label
+
+        marello_mage_bridge.magento_base_url:
+            data_type: string
+            type: text
+            priority: 20
+            options:
+                label: marello.magebridge.system_configuration.fields.magento_base_url.label
 
     tree:
         system_configuration:
@@ -31,5 +51,7 @@ system_configuration:
                                 children:
                                     magebridge_soap_general:
                                         children:
+                                            - marello_mage_bridge.magento_website_sales_channel
+                                            - marello_mage_bridge.magento_base_url
                                             - marello_mage_bridge.magento_soap_api_user
                                             - marello_mage_bridge.magento_soap_api_key
