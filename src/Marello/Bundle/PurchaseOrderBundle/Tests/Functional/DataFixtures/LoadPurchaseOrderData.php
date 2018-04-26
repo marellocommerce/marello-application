@@ -118,7 +118,6 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
                 ->setPurchasePrice($product->getPrices()->first())
             ;
 
-//            $this->manager->persist($purchaseOrderItem);
             $purchaseOrder->addItem($purchaseOrderItem);
         }
 

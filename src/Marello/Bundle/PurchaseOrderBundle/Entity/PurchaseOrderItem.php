@@ -99,7 +99,7 @@ class PurchaseOrderItem implements
     /**
      * @var float
      *
-     * @ORM\Column(name="row_total", type="decimal")
+     * @ORM\Column(name="row_total", type="money", nullable=false)
      */
     protected $rowTotal;
     
