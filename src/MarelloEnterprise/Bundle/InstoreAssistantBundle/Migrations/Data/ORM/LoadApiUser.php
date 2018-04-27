@@ -75,11 +75,23 @@ class LoadApiUser extends AbstractFixture implements ContainerAwareInterface, De
             $this->em = $manager;
         }
         $this->userManager  = $this->container->get('oro_user.manager');
-        $this->organization = $this->getReference('default_organization');
+
+        /** @var OrganizationInterface $organization */
+        if ($this->hasReference('default_organization')) {
+            $this->organization = $this->getReference('default_organization');
+        } else {
+            /**
+             * Get first organization when install Marello over OroCommerce or OroCRM
+             */
+            $this->organization = $manager
+                ->getRepository('OroOrganizationBundle:Organization')
+                ->getFirst();
+        }
         $this->role = $this->em->getRepository('OroUserBundle:Role')->findOneBy(
             array('role' => LoadApiUserRole::ROLE_INSTORE_ASSISTANT_API_USER)
         );
-        $this->businessUnit = $this->em->getRepository('OroOrganizationBundle:BusinessUnit')->findOneBy(['name' => 'Main']);
+        $this->businessUnit = $this->em->getRepository('OroOrganizationBundle:BusinessUnit')
+            ->getFirst();
     }
 
     /**
