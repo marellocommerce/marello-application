@@ -1,0 +1,12 @@
+services:
+     marelloenterprise_purchaseorder.form.extension.warehouse:
+        class: 'MarelloEnterprise\Bundle\PurchaseOrderBundle\Form\Extension\PurchaseOrderWarehouseFormExtension'
+        tags:
+            - { name: form.type_extension, extended_type: 'Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType' }
+
+     marelloenterprise_purchaseorder.form.view.listener:
+        class: 'MarelloEnterprise\Bundle\PurchaseOrderBundle\Form\Listener\PurchaseOrderFormViewListener'
+        arguments:
+            - '@translator'
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-purchase-order-create-step-two, method: onPurchaseOrderCreateStepTwo }
