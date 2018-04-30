@@ -17,6 +17,8 @@ class ProductDataConverter extends DefaultDataConverter
     const DEFAULT_ATTRIBUTE_SET_ID = 4;
     const DEFAULT_CATALOG_VISIBILITY = 4;
     const DEFAULT_TAX_CLASS_ID = 2;
+    const DEFAULT_PRODUCT_STATUS = 2; //disabled in magento
+
 
     protected $mageStatus = [ 'enabled' => 1, 'disabled' => 2];
 
@@ -31,12 +33,11 @@ class ProductDataConverter extends DefaultDataConverter
             'attribute_set_id'  => self::DEFAULT_ATTRIBUTE_SET_ID,
             'sku'               => $exportedRecord['sku'],
             'weight'            => $exportedRecord['weight'],
-            'status'            => $this->mageStatus[$exportedRecord['status']['name']],
+            'status'            => self::DEFAULT_PRODUCT_STATUS,
             'visibility'        => self::DEFAULT_CATALOG_VISIBILITY,
             'name'              => $exportedRecord['name'],
             'description'       => $name,
             'short_description' => $name,
-            'price'             => (float)$exportedRecord['price']['value'],
             'tax_class_id'      => self::DEFAULT_TAX_CLASS_ID,
         ];
         return $productData;

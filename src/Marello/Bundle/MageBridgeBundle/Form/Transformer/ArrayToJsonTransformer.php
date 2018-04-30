@@ -17,7 +17,6 @@ class ArrayToJsonTransformer extends BaseArrayToJsonTransformer
      */
     public function transform($value)
     {
-        $value = ['x' => 'y'];
         file_put_contents('/app/app/logs/debug.log', print_r($value, true), FILE_APPEND | LOCK_EX);
         file_put_contents('/app/app/logs/debug.log', PHP_EOL, FILE_APPEND | LOCK_EX);
         file_put_contents('/app/app/logs/debug.log', print_r(__METHOD__ .'###'. __LINE__, true), FILE_APPEND | LOCK_EX);
@@ -39,7 +38,6 @@ class ArrayToJsonTransformer extends BaseArrayToJsonTransformer
      */
     public function reverseTransform($value)
     {
-        return ['x' => 'y'];
         file_put_contents('/app/app/logs/debug.log', print_r($value, true), FILE_APPEND | LOCK_EX);
         file_put_contents('/app/app/logs/debug.log', PHP_EOL, FILE_APPEND | LOCK_EX);
         file_put_contents('/app/app/logs/debug.log', print_r(__METHOD__ .'###'. __LINE__, true), FILE_APPEND | LOCK_EX);
