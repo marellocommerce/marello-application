@@ -8,7 +8,7 @@ use Oro\Bundle\IntegrationBundle\ImportExport\Writer\PersistentBatchWriter;
 
 use Marello\Bundle\MageBridgeBundle\OAuth\ResourceOwner\MagentoResourceOwner;
 
-class AbstractWriter extends PersistentBatchWriter
+class AbstractExportWriter extends PersistentBatchWriter
 {
     /** @var MagentoResourceOwner */
     protected $magentoResourceOwner;

@@ -14,3 +14,29 @@ connector:
                         writer:    marello_magebridge.importexport.product_export_writer
                     parameters:
                         batch_size: 25
+        magento_website_import:
+            title: "Website import from Magento"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magebridge.magento.website
+                        processor: marello_magebridge.importexport.website_import_processor
+                        writer:    marello_magebridge.writer.proxy_entity_writer
+                    parameters:
+                        batch_size: 25
+        magento_store_import:
+            title: "Store import from Magento"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magebridge.magento.store
+                        processor: marello_magebridge.importexport.store_import_processor
+                        writer:    marello_magebridge.writer.proxy_entity_writer
+                    parameters:
+                        batch_size: 25
