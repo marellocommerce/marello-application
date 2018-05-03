@@ -97,6 +97,7 @@ define(function(require) {
             var val = this.$checkbox.prop('checked');
             this.model.set(column.get("name"), val);
             this.model.trigger('backgrid:selected', this.model, $(e.target).prop('checked'));
+            mediator.trigger('select-all-header:reset-select-all-status');
             this.$el.focus();
         },
 
@@ -109,9 +110,11 @@ define(function(require) {
             var rawData = model.get(column.get("name"));
             var stateData = rawData !== '0';
             var state = {selected: stateData};
+            mediator.trigger('select-all-header:get-status', model, state);
             this.$el.html(this.template({
                 checked: state.selected
             }));
+            model.attributes[column.get("name")] = state.selected;
             this.$checkbox = this.$el.find(this.checkboxSelector);
             mediator.trigger('boolean-select-row:rendered', model);
             return this;

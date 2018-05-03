@@ -9,4 +9,5 @@ services:
     marello_datagrid.event_listener.row_selection_select_all:
         class: '%marello_datagrid.event_listener.datagrid.row_selection_select_all.class%'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter, priority: 256 }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter, priority: 250 }
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after, method: onResultAfter }
