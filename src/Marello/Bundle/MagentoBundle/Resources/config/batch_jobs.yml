@@ -1,0 +1,58 @@
+connector:
+    name: oro_importexport
+    jobs:
+        mage_store_import:
+            title: "Store import from Magento"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.mage.store
+                        processor: marello_magento.importexport.processor.store
+                        writer:    marello_magento.writer.proxy_entity_writer
+                    parameters:
+                        batch_size: 25
+
+        mage_store_rest_import:
+            title: "Store import from Magento"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.mage.rest.store
+                        processor: marello_magento.importexport.processor.rest.store
+                        writer:    marello_magento.writer.proxy_entity_writer
+                    parameters:
+                        batch_size: 25
+
+        mage_website_import:
+            title: "Website import from Magento"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.mage.website
+                        processor: marello_magento.importexport.processor.website
+                        writer:    marello_magento.writer.proxy_entity_writer
+                    parameters:
+                        batch_size: 25
+
+        mage_website_rest_import:
+            title: "Website import from Magento"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.mage.rest.website
+                        processor: marello_magento.importexport.processor.rest.website
+                        writer:    marello_magento.writer.proxy_entity_writer
+                    parameters:
+                        batch_size: 25

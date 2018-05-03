@@ -1,0 +1,62 @@
+oro_entity:
+    entity_aliases:
+#        Marello\Bundle\MagentoBundle\Entity\Address:
+#            alias:        magentoaddress
+#            plural_alias: magentoaddresses
+#        Marello\Bundle\MagentoBundle\Entity\Cart:
+#            alias:        magentocart
+#            plural_alias: magentocarts
+#        Marello\Bundle\MagentoBundle\Entity\CartAddress:
+#            alias:        magentocartaddress
+#            plural_alias: magentocartaddresses
+#        Marello\Bundle\MagentoBundle\Entity\CartItem:
+#            alias:        magentocartitem
+#            plural_alias: magentocartitems
+#        Marello\Bundle\MagentoBundle\Entity\CartStatus:
+#            alias:        magentocartstatus
+#            plural_alias: magentocartstatuses
+#        Marello\Bundle\MagentoBundle\Entity\Customer:
+#            alias:        magentocustomer
+#            plural_alias: magentocustomers
+#        Marello\Bundle\MagentoBundle\Entity\CustomerGroup:
+#            alias:        magentocustomergroup
+#            plural_alias: magentocustomergroups
+#        Marello\Bundle\MagentoBundle\Entity\NewsletterSubscriber:
+#            alias:        magentonewslettersubscriber
+#            plural_alias: magentonewslettersubscribers
+#        Marello\Bundle\MagentoBundle\Entity\Order:
+#            alias:        magentoorder
+#            plural_alias: magentoorders
+#        Marello\Bundle\MagentoBundle\Entity\OrderAddress:
+#            alias:        magentoorderaddress
+#            plural_alias: magentoorderaddresses
+#        Marello\Bundle\MagentoBundle\Entity\OrderItem:
+#            alias:        magentoorderitem
+#            plural_alias: magentoorderitems
+#        Marello\Bundle\MagentoBundle\Entity\CreditMemo:
+#            alias:        magentocreditmemo
+#            plural_alias: magentocreditmemos
+#        Marello\Bundle\MagentoBundle\Entity\CreditMemoItem:
+#            alias:        magentocreditmemoitem
+#            plural_alias: magentocreditmemoitems
+#        Marello\Bundle\MagentoBundle\Entity\Product:
+#            alias:        magentoproduct
+#            plural_alias: magentoproducts
+#        Marello\Bundle\MagentoBundle\Entity\Region:
+#            alias:        magentoregion
+#            plural_alias: magentoregions
+        Marello\Bundle\MagentoBundle\Entity\Store:
+            alias:        magentostore
+            plural_alias: magentostores
+        Marello\Bundle\MagentoBundle\Entity\Website:
+            alias:        magentowebsite
+            plural_alias: magentowebsites
+#        Extend\Entity\EV_Mage_Subscr_Status:
+#            alias:        magentonewslettersubscriberstatus
+#            plural_alias: magentonewslettersubscriberstatuses
+#        Extend\Entity\EV_Creditmemo_Status:
+#            alias:        magentocreditmemostatus
+#            plural_alias: magentocreditmemostatuses
+#        Marello\Bundle\MagentoBundle\Entity\OrderNote:
+#            alias:        magentoordernote
+#            plural_alias: magentoordernotes

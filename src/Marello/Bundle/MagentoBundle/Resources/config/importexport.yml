@@ -1,0 +1,878 @@
+parameters:
+    # entities
+    marello_magento.customer.entity.class:                                       Marello\Bundle\MagentoBundle\Entity\Customer
+    marello_magento.region.entity.class:                                         Marello\Bundle\MagentoBundle\Entity\Region
+    marello_magento.cart.entity.class:                                           Marello\Bundle\MagentoBundle\Entity\Cart
+    marello_magento.order.entity.class:                                          Marello\Bundle\MagentoBundle\Entity\Order
+    marello_magento.credit_memo.entity.class:                                    Marello\Bundle\MagentoBundle\Entity\CreditMemo
+
+    # converter
+    marello_magento.importexport.data_converter.cart.class:                      Marello\Bundle\MagentoBundle\ImportExport\Converter\CartDataConverter
+    marello_magento.importexport.data_converter.cartitem.class:                  Marello\Bundle\MagentoBundle\ImportExport\Converter\CartItemDataConverter
+    marello_magento.importexport.data_converter.order.class:                     Marello\Bundle\MagentoBundle\ImportExport\Converter\OrderDataConverter
+    marello_magento.importexport.data_converter.order_address.class:             Marello\Bundle\MagentoBundle\ImportExport\Converter\OrderAddressDataConverter
+    marello_magento.importexport.data_converter.order_item.class:                Marello\Bundle\MagentoBundle\ImportExport\Converter\OrderItemDataConverter
+    marello_magento.importexport.data_converter.cart_address.class:              Marello\Bundle\MagentoBundle\ImportExport\Converter\CartAddressDataConverter
+    marello_magento.importexport.data_converter.customer_address.class:          Marello\Bundle\MagentoBundle\ImportExport\Converter\CustomerAddressDataConverter
+    marello_magento.importexport.data_converter.customer.class:                  Marello\Bundle\MagentoBundle\ImportExport\Converter\CustomerDataConverter
+    marello_magento.importexport.data_converter.guest_customer.class:            Marello\Bundle\MagentoBundle\ImportExport\Converter\GuestCustomerDataConverter
+    marello_magento.importexport.data_converter.website.class:                   Marello\Bundle\MagentoBundle\ImportExport\Converter\WebsiteDataConverter
+    marello_magento.importexport.data_converter.store.class:                     Marello\Bundle\MagentoBundle\ImportExport\Converter\StoreDataConverter
+    marello_magento.importexport.data_converter.customer_group.class:            Marello\Bundle\MagentoBundle\ImportExport\Converter\CustomerGroupDataConverter
+    marello_magento.importexport.data_converter.newsletter_subscriber.class:     Marello\Bundle\MagentoBundle\ImportExport\Converter\NewsletterSubscriberDataConverter
+
+    # connectors
+    marello_magento.mage.abstract.class:                                         Marello\Bundle\MagentoBundle\Provider\Connector\AbstractMagentoConnector
+    marello_magento.mage.store.class:                                            Marello\Bundle\MagentoBundle\Provider\Connector\StoreConnector
+    marello_magento.mage.website.class:                                          Marello\Bundle\MagentoBundle\Provider\Connector\WebsiteConnector
+#    marello_magento.mage.customer_group.class:                                   Marello\Bundle\MagentoBundle\Provider\Connector\CustomerGroupConnector
+
+#    marello_magento.mage.region_connector.class:                                 Marello\Bundle\MagentoBundle\Provider\Connector\RegionConnector
+#    marello_magento.mage.customer_connector.class:                               Marello\Bundle\MagentoBundle\Provider\Connector\CustomerConnector
+#    marello_magento.mage.cart_connector.class:                                   Marello\Bundle\MagentoBundle\Provider\Connector\CartConnector
+#    marello_magento.mage.order_connector.class:                                  Marello\Bundle\MagentoBundle\Provider\Connector\OrderConnector
+#    marello_magento.mage.newsletter_subscriber_connector.class:                  Marello\Bundle\MagentoBundle\Provider\Connector\NewsletterSubscriberConnector
+#
+#    marello_magento.mage.order_connector_initial.class:                          Marello\Bundle\MagentoBundle\Provider\Connector\InitialOrderConnector
+#    marello_magento.mage.cart_connector_initial.class:                           Marello\Bundle\MagentoBundle\Provider\Connector\InitialCartConnector
+#    marello_magento.mage.customer_connector_initial.class:                       Marello\Bundle\MagentoBundle\Provider\Connector\InitialCustomerConnector
+#    marello_magento.mage.newsletter_subscriber_connector_initial.class:          Marello\Bundle\MagentoBundle\Provider\Connector\InitialNewsletterSubscriberConnector
+
+    # normalizers
+#    marello_magento.importexport.denormalizer.region.class:                      Marello\Bundle\MagentoBundle\ImportExport\Serializer\RegionDenormalizer
+#    marello_magento.importexport.normalizer.payment_details.class:               Marello\Bundle\MagentoBundle\ImportExport\Serializer\Normalizer\PaymentDetailsNormalizer
+#    marello_magento.importexport.denormalizer.order_item.class:                  Marello\Bundle\MagentoBundle\ImportExport\Serializer\OrderItemDenormalizer
+
+    marello_magento.importexport.normalizer.datetime.class:                      Marello\Bundle\MagentoBundle\ImportExport\Serializer\Normalizer\DateTimeNormalizer
+
+    # strategies
+    marello_magento.import.strategy.abstract.class:                              Marello\Bundle\MagentoBundle\ImportExport\Strategy\AbstractImportStrategy
+#    marello_magento.import_strategy.customer.add_or_update.class:                Marello\Bundle\MagentoBundle\ImportExport\Strategy\CustomerStrategy
+#    marello_magento.import_strategy.guest_customer.add_or_update.class:          Marello\Bundle\MagentoBundle\ImportExport\Strategy\GuestCustomerStrategy
+#    marello_magento.import_strategy.newsletter_subscriber.add_or_update.class:   Marello\Bundle\MagentoBundle\ImportExport\Strategy\NewsletterSubscriberStrategy
+#    marello_magento.import_strategy.region.add_or_update.class:                  Marello\Bundle\MagentoBundle\ImportExport\Strategy\RegionStrategy
+#    marello_magento.import_strategy.cart.add_or_update.class:                    Marello\Bundle\MagentoBundle\ImportExport\Strategy\CartStrategy
+#    marello_magento.import_strategy.order.add_or_update.class:                   Marello\Bundle\MagentoBundle\ImportExport\Strategy\OrderStrategy
+#    marello_magento.import.strategy.order_with_customer.add_or_update.class:     Marello\Bundle\MagentoBundle\ImportExport\Strategy\OrderWithExistingCustomerStrategy
+#    marello_magento.import.strategy.cart_with_customer.add_or_update.class:      Marello\Bundle\MagentoBundle\ImportExport\Strategy\CartWithExistingCustomerStrategy
+#    marello_magento.import.strategy.customer_address.add_or_update.class:        Marello\Bundle\MagentoBundle\ImportExport\Strategy\CustomerAddressStrategy
+#    marello_magento.import_strategy.newsletter_subscriber_with_customer.add_or_update.class: Marello\Bundle\MagentoBundle\ImportExport\Strategy\NewsletterSubscriberWithExistingCustomerStrategy
+    marello_magento.import_strategy.default_magento_import.class:                Marello\Bundle\MagentoBundle\ImportExport\Strategy\DefaultMagentoImportStrategy
+
+    # processors
+    marello_magento.provider.initial_processor.class:                            Marello\Bundle\MagentoBundle\Provider\AbstractInitialProcessor
+    marello_magento.provider.initial_sync_processor.class:                       Marello\Bundle\MagentoBundle\Provider\InitialSyncProcessor
+    marello_magento.provider.initial_schedule_processor.class:                   Marello\Bundle\MagentoBundle\Provider\InitialScheduleProcessor
+#    marello_magento.provider.newsletter_subscriber.initial_sync_processor.class: Marello\Bundle\MagentoBundle\Provider\NewsletterSubscriberInitialSyncProcessor
+
+    # writers
+    marello_magento.writer.proxy_entity_writer.class:                            Marello\Bundle\MagentoBundle\ImportExport\Writer\ProxyEntityWriter
+    marello_magento.importexport.writer.abstract_export.class:                   Marello\Bundle\MagentoBundle\ImportExport\Writer\AbstractExportWriter
+#    marello_magento.importexport.writer.customer.class:                          Marello\Bundle\MagentoBundle\ImportExport\Writer\CustomerExportWriter
+#    marello_magento.importexport.writer.customer_address.class:                  Marello\Bundle\MagentoBundle\ImportExport\Writer\CustomerAddressExportWriter
+#    marello_magento.importexport.writer.newsletter_subscriber.class:             Marello\Bundle\MagentoBundle\ImportExport\Writer\NewsletterSubscriberExportWriter
+#    marello_magento.importexport.writer.initial_sync.newsletter_subscriber.class: Marello\Bundle\MagentoBundle\ImportExport\Writer\NewsletterSubscriberInitialWriter
+
+    # Readers
+#    marello_magento.reader.context_customer.class:                               Marello\Bundle\MagentoBundle\Provider\Reader\ContextCustomerReader
+    marello_magento.reader.context.class:                                        Marello\Bundle\MagentoBundle\Provider\Reader\ContextReader
+#    marello_magento.reader.order_info.class:                                     Marello\Bundle\MagentoBundle\Provider\Reader\OrderInfoReader
+#    marello_magento.reader.customer_info.class:                                  Marello\Bundle\MagentoBundle\Provider\Reader\CustomerInfoReader
+#    marello_magento.reader.context_cart.order.class:                             Marello\Bundle\MagentoBundle\Provider\Reader\ContextCartReader
+    marello_magento.importexport.reader.entity.class:                            Marello\Bundle\MagentoBundle\Provider\Reader\ContextOptionReader
+
+    # ImportExport Processor
+    marello_magento.importexport.processor.context.class:                        Marello\Bundle\MagentoBundle\ImportExport\Processor\ContextProcessor
+
+    marello_magento.provider.strategy.two_way_sync.class:                        Marello\Bundle\MagentoBundle\Provider\Strategy\TwoWaySyncStrategy
+services:
+    # Data converter
+#    marello_magento.importexport.data_converter.cartitem:
+#        class: %marello_magento.importexport.data_converter.cartitem.class%
+#
+#    marello_magento.importexport.data_converter.cart_address:
+#        class: %marello_magento.importexport.data_converter.cart_address.class%
+#        parent: marello_magento.importexport.data_converter.abstract_address
+#
+#    marello_magento.importexport.data_converter.cart:
+#        class: %marello_magento.importexport.data_converter.cart.class%
+#        calls:
+#            - [addNodeDataConverter, ['shipping_address', "@marello_magento.importexport.data_converter.cart_address"]]
+#            - [addNodeDataConverter, ['billing_address', "@marello_magento.importexport.data_converter.cart_address"]]
+#            - [addNodeDataConverter, ['items', "@marello_magento.importexport.data_converter.cartitem", true]]
+#
+#    marello_magento.importexport.data_converter.order_address:
+#        class: %marello_magento.importexport.data_converter.order_address.class%
+#        parent: marello_magento.importexport.data_converter.abstract_address
+#
+#    marello_magento.importexport.data_converter.order_item:
+#        class: %marello_magento.importexport.data_converter.order_item.class%
+#
+#    marello_magento.importexport.data_converter.order_notes:
+#        class: Marello\Bundle\MagentoBundle\ImportExport\Converter\OrderNotesDataConverter
+#        public: false
+#
+#    marello_magento.importexport.data_converter.order:
+#        class: %marello_magento.importexport.data_converter.order.class%
+#        calls:
+#            - [addNodeDataConverter, ['shipping_address', "@marello_magento.importexport.data_converter.order_address"]]
+#            - [addNodeDataConverter, ['billing_address', "@marello_magento.importexport.data_converter.order_address"]]
+#            - [addNodeDataConverter, ['items', "@marello_magento.importexport.data_converter.order_item", true]]
+#            - [addNodeDataConverter, ['status_history', "@marello_magento.importexport.data_converter.order_notes", true]]
+#
+#    marello_magento.importexport.data_converter.customer_address:
+#        class: %marello_magento.importexport.data_converter.customer_address.class%
+#        parent: marello_magento.importexport.data_converter.abstract_address
+
+    marello_magento.importexport.data_converter.website:
+        class: %marello_magento.importexport.data_converter.website.class%
+
+    marello_magento.importexport.data_converter.store:
+        class: %marello_magento.importexport.data_converter.store.class%
+
+    marello_magento.importexport.data_converter.rest.store:
+        class: Marello\Bundle\MagentoBundle\ImportExport\Converter\Rest\StoreDataConverter
+#
+#    marello_magento.importexport.data_converter.customer_group:
+#        class: %marello_magento.importexport.data_converter.customer_group.class%
+#
+#    marello_magento.importexport.data_converter.customer:
+#        class: %marello_magento.importexport.data_converter.customer.class%
+#        arguments:
+#            - "@oro_entity.helper.field_helper"
+#        calls:
+#            - [addNodeDataConverter, ['addresses', "@marello_magento.importexport.data_converter.customer_address", true]]
+#            - [addNodeDataConverter, ['group', "@marello_magento.importexport.data_converter.customer_group"]]
+#
+#    marello_magento.importexport.data_converter.newsletter_subscriber:
+#        class: %marello_magento.importexport.data_converter.newsletter_subscriber.class%
+#        calls:
+#            - [addNodeDataConverter, ['store', "@marello_magento.importexport.data_converter.store"]]
+#
+#    marello_magento.importexport.data_converter.guest_customer:
+#        class: %marello_magento.importexport.data_converter.guest_customer.class%
+#
+#    marello_magento.importexport.data_converter.credit_memo_item:
+#        class: 'Marello\Bundle\MagentoBundle\ImportExport\Converter\CreditMemoItemDataConverter'
+#
+#    marello_magento.importexport.data_converter.credit_memo:
+#        class: 'Marello\Bundle\MagentoBundle\ImportExport\Converter\CreditMemoDataConverter'
+#        calls:
+#            - [addNodeDataConverter, ['items', "@marello_magento.importexport.data_converter.credit_memo_item", true]]
+
+    # Connectors
+    marello_magento.connector.abstract:
+        class: %marello_magento.mage.abstract.class%
+        abstract: true
+        arguments:
+            - "@oro_importexport.context_registry"
+            - "@oro_integration.logger.strategy"
+            - "@oro_integration.provider.connector_context_mediator"
+            - []
+        calls:
+            - [setManagerRegistry, ["@doctrine"]]
+
+    marello_magento.mage.website:
+        class: %marello_magento.mage.website.class%
+        parent: marello_magento.connector.abstract
+        calls:
+            - [setClassName, [%marello_magento.entity.website.class%]]
+        tags:
+            - { name: oro_integration.connector, type: website_dictionary, channel_type: magento }
+            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+
+    marello_magento.mage.rest.website:
+        class: Marello\Bundle\MagentoBundle\Provider\Connector\Rest\WebsiteConnector
+        parent: marello_magento.connector.abstract
+        calls:
+            - [setClassName, [%marello_magento.entity.website.class%]]
+        tags:
+            - { name: oro_integration.connector, type: website_dictionary, channel_type: magento2 }
+            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+
+    marello_magento.mage.store:
+        class: %marello_magento.mage.store.class%
+        parent: marello_magento.connector.abstract
+        calls:
+            - [setClassName, [%marello_magento.entity.store.class%]]
+        tags:
+            - { name: oro_integration.connector, type: store_dictionary, channel_type: magento }
+            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+
+    marello_magento.mage.rest.store:
+        class: Marello\Bundle\MagentoBundle\Provider\Connector\Rest\StoreConnector
+        parent: marello_magento.connector.abstract
+        calls:
+            - [setClassName, [%marello_magento.entity.store.class%]]
+        tags:
+            - { name: oro_integration.connector, type: store_dictionary, channel_type: magento2 }
+            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.customer_group:
+#        class: %marello_magento.mage.customer_group.class%
+#        parent: marello_magento.connector.abstract
+#        calls:
+#            - [setClassName, [%marello_magento.entity.customer_group.class%]]
+#        tags:
+#            - { name: oro_integration.connector, type: customer_group_dictionary, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.order_connector_initial:
+#        class: %marello_magento.mage.order_connector_initial.class%
+#        parent: marello_magento.mage.order_connector
+#        calls:
+#            - [setClassName, [%marello_magento.order.entity.class%]]
+#        tags:
+#            - { name: oro_integration.connector, type: order_initial, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.cart_connector_initial:
+#        class: %marello_magento.mage.cart_connector_initial.class%
+#        parent: marello_magento.mage.cart_connector
+#        calls:
+#            - [setClassName, [%marello_magento.cart.entity.class%]]
+#        tags:
+#            - { name: oro_integration.connector, type: cart_initial, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.customer_connector_initial:
+#        class: %marello_magento.mage.customer_connector_initial.class%
+#        parent: marello_magento.mage.customer_connector
+#        calls:
+#            - [setClassName, [%marello_magento.customer.entity.class%]]
+#        tags:
+#            - { name: oro_integration.connector, type: customer_initial, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.newsletter_subscriber_connector_initial:
+#        class: %marello_magento.mage.newsletter_subscriber_connector_initial.class%
+#        parent: marello_magento.mage.newsletter_subscriber_connector
+#        tags:
+#            - { name: oro_integration.connector, type: newsletter_subscriber_initial, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.customer_connector:
+#        class: %marello_magento.mage.customer_connector.class%
+#        parent: marello_magento.connector.abstract
+#        tags:
+#            - { name: oro_integration.connector, type: customer, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.cart_connector:
+#        class: %marello_magento.mage.cart_connector.class%
+#        parent: marello_magento.connector.abstract
+#        tags:
+#            - { name: oro_integration.connector, type: cart, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.order_connector:
+#        class: %marello_magento.mage.order_connector.class%
+#        parent: marello_magento.connector.abstract
+#        tags:
+#            - { name: oro_integration.connector, type: order, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.credit_memo_connector:
+#        class: 'Marello\Bundle\MagentoBundle\Provider\Connector\CreditMemoConnector'
+#        parent: marello_magento.connector.abstract
+#        tags:
+#            - { name: oro_integration.connector, type: credit_memo, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.credit_memo_connector_initial:
+#        class: 'Marello\Bundle\MagentoBundle\Provider\Connector\InitialCreditMemoConnector'
+#        parent: marello_magento.mage.credit_memo_connector
+#        calls:
+#            - [setClassName, [%marello_magento.credit_memo.entity.class%]]
+#        tags:
+#            - { name: oro_integration.connector, type: credit_memo_initial, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.region_connector:
+#        class: %marello_magento.mage.region_connector.class%
+#        parent: marello_magento.connector.abstract
+#        tags:
+#            - { name: oro_integration.connector, type: region_dictionary, channel_type: magento }
+#            - { name: oro_integration.connector, type: region_dictionary, channel_type: magento2 }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.mage.newsletter_subscriber_connector:
+#        class: %marello_magento.mage.newsletter_subscriber_connector.class%
+#        parent: marello_magento.connector.abstract
+#        calls:
+#            - [setClassName, [%marello_magento.entity.newsletter_subscriber.class%]]
+#        tags:
+#            - { name: oro_integration.connector, type: newsletter_subscriber, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+
+    # Normalizers / Denormalizers
+#    marello_magento.importexport.denormalizer.order:
+#        class: %marello_magento.importexport.normalizer.payment_details.class%
+#        parent: oro_importexport.serializer.configurable_entity_normalizer
+#        calls:
+#            - [setSupportedClass, [%marello_magento.entity.order.class%]]
+#        tags:
+#            - { name: oro_importexport.normalizer }
+#
+#    marello_magento.importexport.denormalizer.region:
+#        class: %marello_magento.importexport.denormalizer.region.class%
+#        tags:
+#            - { name: oro_importexport.normalizer }
+#
+#    marello_magento.importexport.normalizer.cart:
+#        class: %marello_magento.importexport.normalizer.payment_details.class%
+#        parent: oro_importexport.serializer.configurable_entity_normalizer
+#        calls:
+#            - [setSupportedClass, [%marello_magento.entity.cart.class%]]
+#        tags:
+#            - { name: oro_importexport.normalizer }
+#
+#    marello_magento.importexport.denormalizer.order_item:
+#        class: %marello_magento.importexport.denormalizer.order_item.class%
+#        parent: oro_importexport.serializer.configurable_entity_normalizer
+#        tags:
+#            - { name: oro_importexport.normalizer }
+
+    marello_magento.importexport.denormalizer.default_configurable_entity:
+        class: Marello\Bundle\MagentoBundle\ImportExport\Serializer\DefaultConfigurableEntityDenormalizer
+        arguments:
+            - "@oro_entity.helper.field_helper"
+            - "@logger"
+        tags:
+            - { name: oro_importexport.normalizer, priority: -200 }
+
+#    marello_magento.importexport.denormalizer.credit_memo:
+#        class: %marello_magento.importexport.normalizer.payment_details.class%
+#        parent: oro_importexport.serializer.configurable_entity_normalizer
+#        calls:
+#            - [setSupportedClass, [%marello_magento.credit_memo.entity.class%]]
+#        tags:
+#            - { name: oro_importexport.normalizer }
+#
+    # Strategies
+    marello_magento.import_strategy.default_magento_import:
+        class: %marello_magento.import_strategy.default_magento_import.class%
+        parent: oro_importexport.strategy.configurable_add_or_replace
+        calls:
+            - [setPropertyAccessor, ["@property_accessor"]]
+
+    marello_magento.import.strategy.abstract:
+        class: %marello_magento.import.strategy.abstract.class%
+        parent: marello_magento.import_strategy.default_magento_import
+        absract: true
+        calls:
+            - [setLogger, ["@oro_integration.logger.strategy"]]
+            - [setOwnerHelper, ["@oro_integration.helper.default_owner_helper"]]
+#            - [setAddressHelper, ["@marello_magento.importexport.address_import_helper"]]
+#            - [setChannelHelper, ["@oro_channel.importexport.helper.channel"]]
+
+#    marello_magento.import.strategy.customer.add_or_update:
+#        parent: marello_magento.import.strategy.abstract
+#        class: %marello_magento.import_strategy.customer.add_or_update.class%
+#        calls:
+#            - [setChannelHelper, ["@oro_channel.importexport.helper.channel"]]
+#            - [setAddressHelper, ["@marello_magento.importexport.address_import_helper"]]
+#
+#    marello_magento.import.strategy.newsletter_subscriber.add_or_update:
+#        parent: marello_magento.import.strategy.abstract
+#        class: %marello_magento.import_strategy.newsletter_subscriber.add_or_update.class%
+#
+#    marello_magento.import.strategy.guest_customer.add_or_update:
+#        parent: marello_magento.import.strategy.abstract
+#        class: %marello_magento.import_strategy.guest_customer.add_or_update.class%
+#        calls:
+#            - [setGuestCustomerStrategyHelper, ["@marello_magento.importexport.guest_customer_strategy_helper"]]
+#
+#    marello_magento.import.strategy.region.add_or_update:
+#        class: %marello_magento.import_strategy.region.add_or_update.class%
+#        parent: marello_magento.import.strategy.abstract
+#        calls:
+#            - [setDoctrineHelper, ["@marello_magento.importexport.doctrine_helper"]]
+
+    marello_magento.import.strategy.store:
+        parent: marello_magento.import_strategy.default_magento_import
+
+    marello_magento.import.strategy.website:
+        parent: marello_magento.import_strategy.default_magento_import
+
+#    marello_magento.import.strategy.customer_group:
+#        parent: marello_magento.import_strategy.default_magento_import
+#
+#    marello_magento.import.strategy.cart.add_or_update:
+#        class: %marello_magento.import_strategy.cart.add_or_update.class%
+#        parent: marello_magento.import.strategy.abstract
+#        calls:
+#            - [setGuestCustomerStrategyHelper, ["@marello_magento.importexport.guest_customer_strategy_helper"]]
+#
+#    marello_magento.import.strategy.order.add_or_update:
+#        class: %marello_magento.import_strategy.order.add_or_update.class%
+#        parent: marello_magento.import.strategy.abstract
+#        calls:
+#            - [setGuestCustomerStrategyHelper, ["@marello_magento.importexport.guest_customer_strategy_helper"]]
+#            - [setOrderNotesProcessor, ["@marello_magento.importexport.processor.order_notes.chain_processor"]]
+#
+#    marello_magento.import.strategy.order_with_customer.add_or_update:
+#        parent: marello_magento.import.strategy.order.add_or_update
+#        class: %marello_magento.import.strategy.order_with_customer.add_or_update.class%
+#
+#    marello_magento.import.strategy.cart_with_customer.add_or_update:
+#        parent: marello_magento.import.strategy.cart.add_or_update
+#        class: %marello_magento.import.strategy.cart_with_customer.add_or_update.class%
+#
+#    marello_magento.import_strategy.newsletter_subscriber_with_customer.add_or_update:
+#        parent: marello_magento.import.strategy.newsletter_subscriber.add_or_update
+#        class: %marello_magento.import_strategy.newsletter_subscriber_with_customer.add_or_update.class%
+#
+#    marello_magento.import.strategy.customer_address.add_or_update:
+#        class: %marello_magento.import.strategy.customer_address.add_or_update.class%
+#        parent: marello_magento.import.strategy.abstract
+#
+#    marello_magento.import.strategy.credit_memo.add_or_update:
+#        class: 'Marello\Bundle\MagentoBundle\ImportExport\Strategy\CreditMemoStrategy'
+#        parent: marello_magento.import.strategy.abstract
+#        calls:
+#            - [setEntityName, [%marello_magento.credit_memo.entity.class%]]
+#
+#    marello_magento.import.strategy.credit_memo_with_order.add_or_update:
+#        class: 'Marello\Bundle\MagentoBundle\ImportExport\Strategy\CreditMemoWithExistingOrderStrategy'
+#        parent: marello_magento.import.strategy.credit_memo.add_or_update
+
+    # Processors
+#    marello_magento.importexport.processor.import_newsletter_subscriber:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.newsletter_subscriber"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.newsletter_subscriber.add_or_update"]]
+#            - [setEntityName, [%marello_magento.entity.newsletter_subscriber.class%]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.newsletter_subscriber.class%, alias: marello_magento.add_or_update_newsletter_subscriber }
+#
+#    marello_magento.importexport.processor.import_customer:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.customer"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.customer.add_or_update"]]
+#            - [setEntityName, [%marello_magento.entity.customer.class%]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.customer.entity.class%, alias: marello_magento.add_or_update_customer }
+#
+#    marello_magento.importexport.processor.import_guest_customer:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.guest_customer"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.guest_customer.add_or_update"]]
+#            - [setEntityName, [%marello_magento.entity.customer.class%]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.customer.entity.class%, alias: marello_magento.import_guest_customer }
+#
+#    marello_magento.importexport.processor.import_customer_address:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.customer_address"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.customer_address.add_or_update"]]
+#            - [setEntityName, [%marello_magento.entity.address.class%]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.address.class%, alias: marello_magento.add_or_update_customer_address }
+#
+#    marello_magento.importexport.processor.import_region:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@oro_importexport.data_converter.default"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.region.add_or_update"]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.region.entity.class%, alias: marello_magento.add_or_update_region }
+#
+#    marello_magento.importexport.processor.import_cart:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.cart"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.cart.add_or_update"]]
+#            - [setEntityName, [%marello_magento.entity.cart.class%]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.cart.entity.class%, alias: marello_magento.add_or_update_cart }
+#
+#    marello_magento.importexport.processor.import_order:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.order"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.order.add_or_update"]]
+#            - [setEntityName, [%marello_magento.entity.order.class%]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.order.entity.class%, alias: marello_magento.add_or_update_order }
+#
+#    marello_magento.importexport.processor.import_order_with_customer:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.order"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.order_with_customer.add_or_update"]]
+#            - [setEntityName, [%marello_magento.entity.order.class%]]
+#            - [setContextRegistry, ["@oro_importexport.context_registry"]]
+#
+#    marello_magento.importexport.processor.import_cart_with_customer:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.cart"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.cart_with_customer.add_or_update"]]
+#            - [setEntityName, [%marello_magento.entity.cart.class%]]
+#            - [setContextRegistry, ["@oro_importexport.context_registry"]]
+#
+#    marello_magento.importexport.processor.import_newsletter_subscriber_with_customer:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.newsletter_subscriber"]]
+#            - [setStrategy, ["@marello_magento.import_strategy.newsletter_subscriber_with_customer.add_or_update"]]
+#            - [setEntityName, [%marello_magento.entity.newsletter_subscriber.class%]]
+#            - [setContextRegistry, ["@oro_importexport.context_registry"]]
+#
+#    marello_magento.importexport.processor.order_notes.validation_note_processor:
+#        class: Marello\Bundle\MagentoBundle\ImportExport\Processor\OrderNotes\ValidationNoteProcessor
+#        public: false
+#        arguments:
+#            - '@oro_importexport.strategy.import.helper'
+#            - '@oro_entity.doctrine_helper'
+#
+#    marello_magento.importexport.processor.order_notes.note_fields_processor:
+#        class: Marello\Bundle\MagentoBundle\ImportExport\Processor\OrderNotes\NoteFieldsProcessor
+#        public: false
+#        arguments:
+#            - '@oro_ui.html_tag_helper'
+#
+#    marello_magento.importexport.processor.order_notes.chain_processor:
+#        class: Marello\Bundle\MagentoBundle\ImportExport\Processor\OrderNotes\ChainProcessor
+#        public: false
+#        calls:
+#            - [addProcessor, ['@marello_magento.importexport.processor.order_notes.validation_note_processor']]
+#            - [addProcessor, ['@marello_magento.importexport.processor.order_notes.note_fields_processor']]
+
+    marello_magento.importexport.normalizer.datetime:
+        class: %marello_magento.importexport.normalizer.datetime.class%
+        tags:
+            - { name: oro_importexport.normalizer }
+
+    marello_magento.provider.sync.processor:
+        class: Marello\Bundle\MagentoBundle\Provider\MagentoSyncProcessor
+        parent: oro_integration.sync.processor
+        abstract: true
+        tags:
+            - { name: marello_magento.bundle_config.aware }
+        calls:
+            - [setChannelClassName, [%oro_integration.entity.class%]]
+
+    marello_magento.provider.initial_processor:
+        class: %marello_magento.provider.initial_processor.class%
+        parent: marello_magento.provider.sync.processor
+        abstract: true
+
+#    marello_magento.provider.newsletter_subscriber.initial_sync_processor:
+#        class: %marello_magento.provider.newsletter_subscriber.initial_sync_processor.class%
+#        parent: marello_magento.provider.initial_processor
+
+    marello_magento.provider.initial_sync_processor:
+        class: %marello_magento.provider.initial_sync_processor.class%
+        parent: marello_magento.provider.initial_processor
+#        calls:
+#            - [addPostProcessor, ['newsletter_subscriber_initial', "@marello_magento.provider.newsletter_subscriber.initial_sync_processor"]]
+        tags:
+            - { name: marello_magento.bundle_config.aware }
+
+    marello_magento.provider.initial_schedule_processor:
+        class: %marello_magento.provider.initial_schedule_processor.class%
+        parent: marello_magento.provider.initial_processor
+        calls:
+            - [setDoctrineHelper, ["@oro_entity.doctrine_helper"]]
+            - [setMessageProducer, ["@oro_message_queue.message_producer"]]
+        tags:
+            - { name: oro_integration.sync_processor, integration: magento }
+            - { name: oro_integration.sync_processor, integration: magento2 }
+
+    marello_magento.importexport.processor.context:
+        class: %marello_magento.importexport.processor.context.class%
+        parent: oro_integration.importexport.processor.import
+
+#    marello_magento.importexport.processor.context_order:
+#        parent: marello_magento.importexport.processor.context
+#        calls:
+#            - [setStrategy, ["@marello_magento.import.strategy.order.add_or_update"]]
+#            - [setEntityName, [%marello_magento.entity.order.class%]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.order.class%, alias: marello_magento.order_context }
+#
+#    marello_magento.importexport.processor.context_cart:
+#        parent: marello_magento.importexport.processor.context
+#        calls:
+#            - [setStrategy, ["@marello_magento.import.strategy.cart.add_or_update"]]
+#
+#    marello_magento.importexport.processor.context_credit_memo:
+#        parent: marello_magento.importexport.processor.context
+#        calls:
+#            - [setStrategy, ["@marello_magento.import.strategy.credit_memo.add_or_update"]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.credit_memo.class%, alias: marello_magento.credit_memo_context }
+#
+#    marello_magento.importexport.processor.context_newsletter_subscriber:
+#        parent: marello_magento.importexport.processor.context
+#        calls:
+#            - [setStrategy, ["@marello_magento.import.strategy.newsletter_subscriber.add_or_update"]]
+
+    marello_magento.importexport.processor.store:
+        parent: oro_integration.importexport.processor.import
+        calls:
+            - [setDataConverter, ["@marello_magento.importexport.data_converter.store"]]
+            - [setStrategy, ["@marello_magento.import.strategy.store"]]
+            - [setEntityName, [%marello_magento.entity.store.class%]]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.store.class%, alias: marello_magento.store }
+
+    marello_magento.importexport.processor.rest.store:
+        parent: oro_integration.importexport.processor.import
+        calls:
+            - [setDataConverter, ["@marello_magento.importexport.data_converter.rest.store"]]
+            - [setStrategy, ["@marello_magento.import.strategy.store"]]
+            - [setEntityName, [%marello_magento.entity.store.class%]]
+
+    marello_magento.importexport.processor.website:
+        parent: oro_integration.importexport.processor.import
+        calls:
+            - [setDataConverter, ["@marello_magento.importexport.data_converter.website"]]
+            - [setStrategy, ["@marello_magento.import.strategy.website"]]
+            - [setEntityName, [%marello_magento.entity.website.class%]]
+        tags:
+            - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.website.class%, alias: marello_magento.website }
+
+    marello_magento.importexport.processor.rest.website:
+        parent: oro_integration.importexport.processor.import
+        calls:
+            - [setDataConverter, ["@marello_magento.importexport.data_converter.website"]]
+            - [setStrategy, ["@marello_magento.import.strategy.website"]]
+            - [setEntityName, [%marello_magento.entity.website.class%]]
+
+#    marello_magento.importexport.processor.customer_group:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.customer_group"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.customer_group"]]
+#            - [setEntityName, [%marello_magento.entity.customer_group.class%]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.customer_group.class%, alias: marello_magento.customer_group }
+#
+#    marello_magento.importexport.processor.import_credit_memo:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.credit_memo"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.credit_memo.add_or_update"]]
+#            - [setEntityName, [%marello_magento.credit_memo.entity.class%]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.credit_memo.entity.class%, alias: marello_magento.add_or_update_credit_memo }
+#
+#    marello_magento.importexport.processor.import_credit_memo_with_existing_order:
+#        parent: oro_integration.importexport.processor.import
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.credit_memo"]]
+#            - [setStrategy, ["@marello_magento.import.strategy.credit_memo_with_order.add_or_update"]]
+#            - [setEntityName, [%marello_magento.credit_memo.entity.class%]]
+#        tags:
+#            - { name: oro_importexport.processor, type: import, entity: %marello_magento.credit_memo.entity.class%, alias: marello_magento.add_or_update_credit_memo_with_existing_order }
+
+    # Export processor
+#    marello_magento.importexport.processor.customer_export:
+#        parent: oro_integration.importexport.processor.export
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.customer"]]
+#        tags:
+#            - { name: oro_importexport.processor, type: export, entity: %marello_magento.entity.customer.class%, alias: marello_magento.customer_export }
+#
+#    marello_magento.importexport.processor.customer_address_export:
+#        parent: oro_integration.importexport.processor.export
+#        calls:
+#             - [setDataConverter, ["@marello_magento.importexport.data_converter.customer_address"]]
+#
+#    marello_magento.importexport.processor.customer_address_export.job:
+#        class: Marello\Bundle\MagentoBundle\ImportExport\Processor\CustomerAddressExportProcessor
+#        parent: oro_integration.importexport.processor.export
+#        calls:
+#             - [setDataConverter, ["@marello_magento.importexport.data_converter.customer_address"]]
+#             - [setStateHandler, ["@marello_magento.customer_state_handler"]]
+#             - [setTransport, ["@marello_magento.transport.soap_transport"]]
+#        tags:
+#            - { name: oro_importexport.processor, type: export, entity: %marello_magento.entity.address.class%, alias: marello_magento.customer_address_export }
+#
+#    marello_magento.importexport.processor.newsletter_subscriber_export:
+#        parent: oro_integration.importexport.processor.export
+#        calls:
+#            - [setDataConverter, ["@marello_magento.importexport.data_converter.newsletter_subscriber"]]
+#        tags:
+#            - { name: oro_importexport.processor, type: export, entity: %marello_magento.entity.newsletter_subscriber.class%, alias: marello_magento.newsletter_subscriber_export }
+
+    # Writers
+    marello_magento.writer.proxy_entity_writer:
+        class: %marello_magento.writer.proxy_entity_writer.class%
+        arguments:
+            - "@oro_integration.writer.persistent_batch_writer"
+            - "@oro_importexport.field.database_helper"
+        calls:
+            - [setLogger, ["@oro_integration.logger.strategy"]]
+#            - [setGuestCustomerStrategyHelper, ["@marello_magento.importexport.guest_customer_strategy_helper"]]
+
+    marello_magento.importexport.writer.abstract_export:
+        class: %marello_magento.importexport.writer.abstract_export.class%
+        parent: oro_integration.writer.persistent_batch_writer
+        abstract: true
+        calls:
+            - [setTransport, ["@marello_magento.transport.soap_transport"]]
+            - [setChannelClassName, [%oro_integration.entity.class%]]
+
+#    marello_magento.importexport.writer.customer:
+#        class: %marello_magento.importexport.writer.customer.class%
+#        parent: marello_magento.importexport.writer.abstract_export
+#        calls:
+#            - [setStrategy, ["@marello_magento.provider.strategy.two_way_sync.customer"]]
+#            - [setStateHandler, ["@marello_magento.customer_state_handler"]]
+#
+#    marello_magento.importexport.writer.customer_address:
+#        class: %marello_magento.importexport.writer.customer_address.class%
+#        parent: marello_magento.importexport.writer.abstract_export
+#        calls:
+#            - [setMagentoRegionClass, [%marello_magento.entity.region.class%]]
+#            - [setStrategy, ["@marello_magento.provider.strategy.two_way_sync.customer_address"]]
+#            - [setStateHandler, ["@marello_magento.customer_state_handler"]]
+#
+#    marello_magento.importexport.writer.newsletter_subscriber:
+#        class: %marello_magento.importexport.writer.newsletter_subscriber.class%
+#        parent: marello_magento.importexport.writer.abstract_export
+
+#    marello_magento.importexport.writer.initial_sync.newsletter_subscriber:
+#        class: %marello_magento.importexport.writer.initial_sync.newsletter_subscriber.class%
+#        parent: marello_magento.writer.proxy_entity_writer
+
+    # readers
+    marello_magento.importexport.reader.entity:
+        class: %marello_magento.importexport.reader.entity.class%
+        parent: marello_magento.reader.context
+        calls:
+            - [setContextKey, ['entity']]
+
+#    marello_magento.reader.context_customer:
+#        class: %marello_magento.reader.context_customer.class%
+#        parent: marello_magento.mage.customer_connector
+#        tags:
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.reader.context_customer.order:
+#        parent: marello_magento.reader.context_customer
+#
+#    marello_magento.reader.context_customer.cart:
+#        parent: marello_magento.reader.context_customer
+
+#    marello_magento.reader.context_customer.newsletter_subscriber:
+#        parent: marello_magento.reader.context_customer
+
+#    marello_magento.reader.context_cart.order:
+#        class: %marello_magento.reader.context_cart.order.class%
+#        parent: marello_magento.mage.cart_connector
+#        tags:
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#
+#    marello_magento.reader.context_order.credit_memo:
+#        class: 'Marello\Bundle\MagentoBundle\Provider\Reader\ContextOrderReader'
+#        parent: marello_magento.mage.order_connector
+#        tags:
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+
+    marello_magento.reader.context:
+        class: %marello_magento.reader.context.class%
+        abstract: true
+        arguments:
+            - "@oro_importexport.context_registry"
+
+#    marello_magento.reader.context_guest_customer:
+#        parent: marello_magento.reader.context
+#        calls:
+#            - [setContextKey, ['postProcessGuestCustomers']]
+#
+#    marello_magento.reader.context_order:
+#        parent: marello_magento.reader.context
+#        calls:
+#            - [setContextKey, ['postProcessOrders']]
+#
+#    marello_magento.reader.context_credit_memo:
+#        parent: marello_magento.reader.context
+#        calls:
+#            - [setContextKey, ['postProcessCreditMemos']]
+#
+#    marello_magento.reader.context_customer_export:
+#        parent: marello_magento.reader.context
+#        calls:
+#            - [setContextKey, ['postProcessCustomer']]
+#
+#    marello_magento.reader.context_customer_address_export:
+#        parent: marello_magento.reader.context
+#        calls:
+#            - [setContextKey, ['postProcessCustomerAddress']]
+#
+#    marello_magento.reader.context_cart:
+#        parent: marello_magento.reader.context
+#        calls:
+#            - [setContextKey, ['postProcessCarts']]
+#
+#    marello_magento.reader.context_newsletter_subscriber:
+#        parent: marello_magento.reader.context
+#        calls:
+#            - [setContextKey, ['postProcessSubscribers']]
+#
+#    marello_magento.reader.context_newsletter_subscriber_export:
+#        parent: marello_magento.reader.context
+#        calls:
+#            - [setContextKey, ['postProcessNewsletterSubscribers']]
+#
+#    marello_magento.reader.order_info:
+#        class: %marello_magento.reader.order_info.class%
+#        arguments:
+#            - "@oro_importexport.context_registry"
+#            - "@oro_integration.logger.strategy"
+#            - "@oro_integration.provider.connector_context_mediator"
+#        calls:
+#            - [setContextKey, ['postProcessOrderIds']]
+#
+#    marello_magento.reader.customer_info:
+#        class: %marello_magento.reader.customer_info.class%
+#        arguments:
+#            - "@oro_importexport.context_registry"
+#            - "@oro_integration.logger.strategy"
+#            - "@oro_integration.provider.connector_context_mediator"
+#        calls:
+#            - [setContextKey, ['postProcessCustomerIds']]
+#
+#    marello_magento.reader.credit_memo_info:
+#        class: 'Marello\Bundle\MagentoBundle\Provider\Reader\CreditMemoInfoReader'
+#        arguments:
+#            - "@oro_importexport.context_registry"
+#            - "@oro_integration.logger.strategy"
+#            - "@oro_integration.provider.connector_context_mediator"
+#        calls:
+#            - [setContextKey, ['postProcessCreditMemoIds']]
+#
+    # strategy
+#    marello_magento.provider.strategy.two_way_sync.customer:
+#        class: %marello_magento.provider.strategy.two_way_sync.class%
+#        arguments:
+#            - "@marello_magento.importexport.processor.import_customer"
+#            - "@marello_magento.importexport.processor.customer_export"
+#            - "@oro_entity.doctrine_helper"
+#
+#    marello_magento.provider.strategy.two_way_sync.customer_address:
+#        class: %marello_magento.provider.strategy.two_way_sync.class%
+#        arguments:
+#            - "@marello_magento.importexport.processor.import_customer_address"
+#            - "@marello_magento.importexport.processor.customer_address_export"
+#            - "@oro_entity.doctrine_helper"
+#
+#    marello_magento.importexport.data_converter.abstract_address:
+#        abstract: true
+#        class: Marello\Bundle\MagentoBundle\ImportExport\Converter\AbstractAddressDataConverter
+#        calls:
+#            - [setIso2CodeProvider, ['@marello_magento.provider.iso2_code']]
+
+    # utils
+    marello_magento.post_job_executor:
+        class: 'Marello\Bundle\MagentoBundle\ImportExport\Job\PostJobExecutor'
+        parent: oro_importexport.job_executor
