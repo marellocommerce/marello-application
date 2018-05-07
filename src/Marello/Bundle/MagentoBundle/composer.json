@@ -1,8 +1,8 @@
 {
-    "name": "orocrm/magento-bundle",
+    "name": "marello/magento-bundle",
     "type": "symfony-bundle",
-    "description": "Oro CRM Magento Bundle",
-    "keywords": ["CRM", "Magento", "Customers"],
+    "description": "Marello Magento Bundle",
+    "keywords": ["Marello", "Magento", "Product"],
     "license": "MIT",
     "require": {
         "php": "7.1.*",
@@ -11,17 +11,14 @@
         "oro/log": "dev-master",
         "oro/ui-bundle": "dev-master",
         "oro/business-entities-bundle": "dev-master",
-        "orocrm/contact-bundle": "dev-master",
-        "orocrm/account-bundle": "dev-master",
-        "orocrm/integration-bundle": "dev-master",
-        "orocrm/analytics-bundle": "dev-master"
+        "marello/integration-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": {
             "": "src/"
         }
     },
-    "target-dir": "Oro/Bundle/MagentoBundle",
+    "target-dir": "Marello/Bundle/MagentoBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
