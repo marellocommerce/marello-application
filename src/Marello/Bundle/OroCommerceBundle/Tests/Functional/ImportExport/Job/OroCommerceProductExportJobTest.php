@@ -33,22 +33,28 @@ class OroCommerceProductExportJobTest extends AbstractOroCommerceJobTest
             ->expects(static::once())
             ->method('getStatusCode')
             ->willReturn(201);
+
+        $createProductResponseFile = file_get_contents(__DIR__ . '/../../DataFixtures/data/createProductResponse.json');
         $response
             ->expects(static::once())
             ->method('json')
-            ->willReturn(json_decode(file_get_contents(__DIR__ . '/../../DataFixtures/data/createProductResponse.json'), true));
+            ->willReturn(json_decode($createProductResponseFile, true));
         $this->restClient
             ->expects(static::once())
             ->method('post')
             ->willReturn($response);
+        $productWithTaxCodeResponseFile =
+            file_get_contents(__DIR__ . '/../../DataFixtures/data/getProductWithTaxCodeResponse.json');
         $this->restClient
             ->expects(static::at(1))
             ->method('getJSON')
-            ->willReturn(json_decode(file_get_contents(__DIR__ . '/../../DataFixtures/data/getProductWithTaxCodeResponse.json'), true));
+            ->willReturn(json_decode($productWithTaxCodeResponseFile, true));
+        $productInventoryLevelResponseFile =
+            file_get_contents(__DIR__ . '/../../DataFixtures/data/getProductInventoryLevelResponse.json');
         $this->restClient
             ->expects(static::at(2))
             ->method('getJSON')
-            ->willReturn(json_decode(file_get_contents(__DIR__ . '/../../DataFixtures/data/getProductInventoryLevelResponse.json'), true));
+            ->willReturn(json_decode($productInventoryLevelResponseFile, true));
 
         $this->runImportExportConnectorsJob(
             self::REVERSE_SYNC_PROCESSOR,

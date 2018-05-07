@@ -13,22 +13,33 @@ class OroCommerceOrderImportJobTest extends AbstractOroCommerceJobTest
     protected function setUp()
     {
         parent::setUp();
+
+        $orderResponseFile = file_get_contents(__DIR__ . '/../../DataFixtures/data/getOrdersResponse.json');
         $this->restClient
             ->expects(static::at(0))
             ->method('getJSON')
-            ->willReturn(json_decode(file_get_contents(__DIR__ . '/../../DataFixtures/data/getOrdersResponse.json'), true));
+            ->willReturn(json_decode($orderResponseFile, true));
+
+        $orderTaxValuesResponseFile =
+            file_get_contents(__DIR__ . '/../../DataFixtures/data/getOrderTaxValuesResponse.json');
         $this->restClient
             ->expects(static::at(1))
             ->method('getJSON')
-            ->willReturn(json_decode(file_get_contents(__DIR__ . '/../../DataFixtures/data/getOrderTaxValuesResponse.json'), true));
+            ->willReturn(json_decode($orderTaxValuesResponseFile, true));
+
+        $paymentStatusResponseFile =
+            file_get_contents(__DIR__ . '/../../DataFixtures/data/getPaymentStatusesResponse.json');
         $this->restClient
             ->expects(static::at(2))
             ->method('getJSON')
-            ->willReturn(json_decode(file_get_contents(__DIR__ . '/../../DataFixtures/data/getPaymentStatuseResponse.json'), true));
+            ->willReturn(json_decode($paymentStatusResponseFile, true));
+
+        $orderLineItemsTaxValuesResponseFile =
+            file_get_contents(__DIR__ . '/../../DataFixtures/data/getOrderLineItemsTaxValuesResponse.json');
         $this->restClient
             ->expects(static::at(3))
             ->method('getJSON')
-            ->willReturn(json_decode(file_get_contents(__DIR__ . '/../../DataFixtures/data/getOrderLineItemsTaxValuesResponse.json'), true));
+            ->willReturn(json_decode($orderLineItemsTaxValuesResponseFile, true));
     }
 
     public function testImportOrdersWithNotExistentProducts()

@@ -158,24 +158,24 @@ class ReverseSyncTaxRuleListener
                         TaxRuleExportReader::TAXJURISDICTION_FILTER => $entity->getTaxJurisdiction()->getCode(),
                     ];
                 } elseif (AbstractExportWriter::UPDATE_ACTION === $action) {
-                        if (isset($data[TaxRuleExportCreateWriter::TAX_RULE_ID]) &&
-                            isset($data[TaxRuleExportCreateWriter::TAX_RULE_ID][$channelId]) &&
-                            $data[TaxRuleExportCreateWriter::TAX_RULE_ID][$channelId] !== null
-                        ) {
-                            $connector_params = [
-                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
-                                TaxRuleExportReader::TAXCODE_FILTER => $entity->getTaxCode()->getCode(),
-                                TaxRuleExportReader::TAXRATE_FILTER => $entity->getTaxRate()->getCode(),
-                                TaxRuleExportReader::TAXJURISDICTION_FILTER => $entity->getTaxJurisdiction()->getCode(),
-                            ];
-                        } else {
-                            $connector_params = [
-                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                                TaxRuleExportReader::TAXCODE_FILTER => $entity->getTaxCode()->getCode(),
-                                TaxRuleExportReader::TAXRATE_FILTER => $entity->getTaxRate()->getCode(),
-                                TaxRuleExportReader::TAXJURISDICTION_FILTER => $entity->getTaxJurisdiction()->getCode(),
-                            ];
-                        }
+                    if (isset($data[TaxRuleExportCreateWriter::TAX_RULE_ID]) &&
+                        isset($data[TaxRuleExportCreateWriter::TAX_RULE_ID][$channelId]) &&
+                        $data[TaxRuleExportCreateWriter::TAX_RULE_ID][$channelId] !== null
+                    ) {
+                        $connector_params = [
+                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
+                            TaxRuleExportReader::TAXCODE_FILTER => $entity->getTaxCode()->getCode(),
+                            TaxRuleExportReader::TAXRATE_FILTER => $entity->getTaxRate()->getCode(),
+                            TaxRuleExportReader::TAXJURISDICTION_FILTER => $entity->getTaxJurisdiction()->getCode(),
+                        ];
+                    } else {
+                        $connector_params = [
+                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
+                            TaxRuleExportReader::TAXCODE_FILTER => $entity->getTaxCode()->getCode(),
+                            TaxRuleExportReader::TAXRATE_FILTER => $entity->getTaxRate()->getCode(),
+                            TaxRuleExportReader::TAXJURISDICTION_FILTER => $entity->getTaxJurisdiction()->getCode(),
+                        ];
+                    }
                 } elseif (AbstractExportWriter::DELETE_ACTION === $action) {
                     if (isset($data[TaxRuleExportCreateWriter::TAX_RULE_ID]) &&
                         isset($data[TaxRuleExportCreateWriter::TAX_RULE_ID][$channelId]) &&
@@ -193,7 +193,8 @@ class ReverseSyncTaxRuleListener
                     $this->syncScheduler->getService()->schedule(
                         $integrationChannel->getId(),
                         OroCommerceTaxRuleConnector::TYPE,
-                        $connector_params);
+                        $connector_params
+                    );
 
                     $this->processedEntities[] = $entity;
                 }

@@ -102,7 +102,8 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'currency',
                     $this->settings->get(OroCommerceSettings::CURRENCY_FIELD),
-                    ComparisonFilter::EQ),
+                    ComparisonFilter::EQ
+                ),
                 new FilterValue(
                     'updatedAt',
                     $lastSyncStr,
@@ -153,7 +154,6 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             if ($attributes['currency'] === $currency) {
                 $orderIds[] = $order['id'];
                 foreach ($order['relationships'] as &$relationship) {
-
                     foreach ($ordersResponse['included'] as $included) {
                         if (!isset($relationship['data']['type'])) {
                             foreach ($relationship['data'] as $key => $data) {
@@ -174,12 +174,13 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                     unset($relationship);
                 }
                 foreach ($taxValuesData as $taxValue) {
-                       if (isset($taxValue['attributes']['entityClass']) &&
-                           isset($taxValue['attributes']['entityId']) &&
-                           $taxValue['attributes']['entityClass'] === 'Oro\Bundle\OrderBundle\Entity\Order' &&
-                           (int)$taxValue['attributes']['entityId'] === (int)$order['id']) {
-                           $order['relationships']['taxvalues']['data'] = $taxValue;
-                       }
+                    if (isset($taxValue['attributes']['entityClass']) &&
+                        isset($taxValue['attributes']['entityId']) &&
+                        $taxValue['attributes']['entityClass'] === 'Oro\Bundle\OrderBundle\Entity\Order' &&
+                        (int)$taxValue['attributes']['entityId'] === (int)$order['id']
+                    ) {
+                        $order['relationships']['taxvalues']['data'] = $taxValue;
+                    }
                 }
                 $orders[] = $order;
             }
@@ -328,7 +329,8 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
      * @param array $data
      * @return array
      */
-    public function getProductWithTaxCodeData(array $data){
+    public function getProductWithTaxCodeData(array $data)
+    {
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_GET,
             $this->settings,
@@ -380,7 +382,6 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 $data['data']['relationships']['taxCode']['data']['id'] ===
                 TaxCodeNormalizer::NEW_PRODUCT_TAX_CODE_ID) {
                 $json = $this->getProductWithTaxCodeData($json);
-
             }
             $productId = $json['data']['id'];
             $unitPrecisionId = $json['data']['relationships']['primaryUnitPrecision']['data']['id'];
@@ -446,7 +447,6 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 $data['data']['relationships']['taxCode']['data']['id'] ===
                 TaxCodeNormalizer::NEW_PRODUCT_TAX_CODE_ID) {
                 $json = $this->getProductWithTaxCodeData($json);
-
             }
         }
 
@@ -465,7 +465,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             'products',
             [],
             [],
-            [ 
+            [
                 'data' => [
                     'id' => $id
                 ]
@@ -764,7 +764,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         );
 
         foreach ($json['data'] as $key => $item) {
-            foreach($json['included'] as $included) {
+            foreach ($json['included'] as $included) {
                 if ((int)$included['id'] === (int)$item['relationships']['labels']['data'][0]['id']) {
                     $json['data'][$key]['attributes']['label'] = $included['attributes']['string'];
                 }

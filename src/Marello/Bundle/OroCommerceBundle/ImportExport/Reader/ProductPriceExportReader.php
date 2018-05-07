@@ -77,8 +77,7 @@ class ProductPriceExportReader extends EntityReader
      */
     protected function initializeFromContext(ContextInterface $context)
     {
-        if (in_array($context->getOption('entityName'),
-            [ProductPrice::class, ProductChannelPrice::class])) {
+        if (in_array($context->getOption('entityName'), [ProductPrice::class, ProductChannelPrice::class])) {
             if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action) {
                 $this->sku = $context->getOption(self::SKU_FILTER);
                 $this->value = $context->getOption('value');

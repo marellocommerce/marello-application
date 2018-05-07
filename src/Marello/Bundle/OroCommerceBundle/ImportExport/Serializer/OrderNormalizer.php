@@ -60,12 +60,10 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     public function normalize($object, $format = null, array $context = array())
     {
         if ($object instanceof Order && $object->getOrderReference()) {
-            if (
-                in_array(
-                    $context[AbstractExportWriter::ACTION_FIELD],
-                    [OrderExportWriter::CANCEL_ACTION, OrderExportWriter::SHIPPED_ACTION]
-                )
-            ) {
+            if (in_array(
+                $context[AbstractExportWriter::ACTION_FIELD],
+                [OrderExportWriter::CANCEL_ACTION, OrderExportWriter::SHIPPED_ACTION]
+            )) {
                 return [
                     'data' => [
                         'type' => 'orders',
@@ -92,7 +90,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
                     ]
                 ];
             }
-        } 
+        }
 
         return null;
     }

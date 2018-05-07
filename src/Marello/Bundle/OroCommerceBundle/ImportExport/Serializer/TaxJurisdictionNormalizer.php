@@ -72,7 +72,7 @@ class TaxJurisdictionNormalizer extends AbstractNormalizer
             }
 
             return $data;
-            }
+        }
 
         return null;
     }

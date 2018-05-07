@@ -105,7 +105,7 @@ class ReverseSyncProductPriceListener
             }
         }
         
-        usort($result, function($a, $b){
+        usort($result, function ($a, $b) {
             if ($a instanceof ProductChannelPrice && $b instanceof ProductPrice) {
                 return -1;
             } elseif ($b instanceof ProductChannelPrice && $a instanceof ProductPrice) {
@@ -132,7 +132,6 @@ class ReverseSyncProductPriceListener
         
         foreach (array_keys($changeSet) as $fieldName) {
             if (in_array($fieldName, $this->syncFields)) {
-
                 $oldValue = $changeSet[$fieldName][0];
                 $newValue = $changeSet[$fieldName][1];
                 if ($fieldName === 'value') {
@@ -192,7 +191,8 @@ class ReverseSyncProductPriceListener
                         $this->syncScheduler->getService()->schedule(
                             $integrationChannel->getId(),
                             OroCommerceProductPriceConnector::TYPE,
-                            $connector_params);
+                            $connector_params
+                        );
 
                         $this->processedEntities[] = $entity;
                     }

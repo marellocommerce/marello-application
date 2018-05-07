@@ -213,20 +213,20 @@ class ReverseSyncProductListener
                         ProductExportCreateReader::SKU_FILTER => $entity->getSku(),
                     ];
                 } elseif (AbstractExportWriter::UPDATE_ACTION === $action) {
-                        if (isset($data[AbstractProductExportWriter::PRODUCT_ID_FIELD]) &&
-                            isset($data[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId]) &&
-                            $data[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId] !== null
-                        ) {
-                            $connector_params = [
-                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
-                                EntityReaderById::ID_FILTER => $entity->getId(),
-                            ];
-                        } else {
-                            $connector_params = [
-                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                                ProductExportCreateReader::SKU_FILTER => $entity->getSku(),
-                            ];
-                        }
+                    if (isset($data[AbstractProductExportWriter::PRODUCT_ID_FIELD]) &&
+                        isset($data[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId]) &&
+                        $data[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId] !== null
+                    ) {
+                        $connector_params = [
+                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
+                            EntityReaderById::ID_FILTER => $entity->getId(),
+                        ];
+                    } else {
+                        $connector_params = [
+                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
+                            ProductExportCreateReader::SKU_FILTER => $entity->getSku(),
+                        ];
+                    }
                 } elseif (AbstractExportWriter::DELETE_ACTION === $action) {
                     if (isset($data[AbstractProductExportWriter::PRODUCT_ID_FIELD]) &&
                         isset($data[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId]) &&
@@ -235,7 +235,7 @@ class ReverseSyncProductListener
                         $connector_params = [
                             AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::DELETE_ACTION,
                             ProductExportCreateReader::SKU_FILTER => $entity->getSku(),
-                            ProductExportUpdateReader::ID_FILTER => 
+                            ProductExportUpdateReader::ID_FILTER =>
                                 $data[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId],
                         ];
                     }
@@ -245,7 +245,8 @@ class ReverseSyncProductListener
                     $this->syncScheduler->getService()->schedule(
                         $integrationChannel->getId(),
                         OroCommerceProductConnector::TYPE,
-                        $connector_params);
+                        $connector_params
+                    );
 
                     $this->processedEntities[] = $entity;
                 }
