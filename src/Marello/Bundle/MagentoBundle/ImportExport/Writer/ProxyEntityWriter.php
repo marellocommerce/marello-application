@@ -52,51 +52,13 @@ class ProxyEntityWriter implements
     }
 
     /**
-     * @param GuestCustomerStrategyHelper $strategyHelper
-     */
-    public function setGuestCustomerStrategyHelper(GuestCustomerStrategyHelper $strategyHelper)
-    {
-        $this->guestCustomerStrategyHelper = $strategyHelper;
-    }
-
-    /**
      * {@inheritdoc}
      *
      * Prepare items for PersistentBatchWriter, filters for duplicates and takes only latest versions
      */
     public function write(array $items)
     {
-        $uniqueItems = [];
-        $uniqueKeys = [];
-        foreach ($items as $item) {
-            if ($item instanceof Customer) {
-                //GuestCustomerStrategy checks both email and channel
-                if ($item->isGuest()) {
-                    $identifier = $this->getGuestCustomerIdentifier($item);
-                } else {
-                    $identifier = $item->getOriginId();
-                }
-                $this->handleIdentifier($uniqueItems, $item, $identifier);
-            } elseif ($item instanceof Cart) {
-                $this->handleIdentifier($uniqueItems, $item, $item->getOriginId());
-            } elseif ($item instanceof Order) {
-                $this->handleIdentifier($uniqueItems, $item, $item->getIncrementId());
-            } elseif ($item instanceof CreditMemo) {
-                $this->handleIdentifier($uniqueItems, $item, $item->getOriginId());
-            } elseif ($item instanceof NewsletterSubscriber) {
-                $identifier = $item->getCustomer() ? $item->getCustomer()->getId() : 0;
-                if ($identifier !== 0 && in_array($identifier, $uniqueKeys)) {
-                    $this->logSkipped($item->getOriginId());
-                } else {
-                    $uniqueKeys[] = $identifier;
-                    $uniqueItems[] = $item;
-                }
-            } else {
-                $uniqueItems[] = $item;
-            }
-        }
-
-        $this->writer->write($uniqueItems);
+        $this->writer->write($items);
 
         // force entity cache clear if clear is skipped
         $this->databaseHelper->onClear();
@@ -148,27 +110,5 @@ class ProxyEntityWriter implements
         $this->logger->info(
             sprintf('[origin_id=%s] Item skipped because of newer version found', (string)$identifier)
         );
-    }
-
-    /**
-     * @param Customer $customer
-     *
-     * @return string
-     */
-    private function getGuestCustomerIdentifier(Customer $customer)
-    {
-        $channel = $customer->getChannel();
-        $identifier = strtolower($customer->getEmail());
-        //set unique identifier: email and channel id
-        if ($channel) {
-            $identifier .= $channel->getId();
-            if ($this->guestCustomerStrategyHelper->isGuestCustomerEmailInSharedList($customer)) {
-                $identifier .= sprintf('%s%s', $customer->getFirstName(), $customer->getLastName());
-            }
-        }
-
-        $identifier = md5($identifier);
-
-        return $identifier;
     }
 }

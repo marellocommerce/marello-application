@@ -13,15 +13,8 @@ use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
  */
 interface MagentoConnectorInterface extends ConnectorInterface
 {
-    const STORE_TYPE   = 'Marello\\Bundle\\MagentoBundle\\Entity\\Store';
-    const WEBSITE_TYPE = 'Marello\\Bundle\\MagentoBundle\\Entity\\Website';
+    const STORE_TYPE                      = 'Marello\\Bundle\\MagentoBundle\\Entity\\Store';
+    const WEBSITE_TYPE                    = 'Marello\\Bundle\\MagentoBundle\\Entity\\Website';
 
-//    const ORDER_TYPE                    = 'Oro\\Bundle\\MagentoBundle\\Entity\\Order';
-//    const CREDIT_MEMO_TYPE              = 'Oro\\Bundle\\MagentoBundle\\Entity\\CreditMemo';
-//    const ORDER_ADDRESS_TYPE            = 'Oro\\Bundle\\MagentoBundle\\Entity\\OrderAddress';
-//    const ORDER_ADDRESS_COLLECTION_TYPE = 'ArrayCollection<Oro\\Bundle\\MagentoBundle\\Entity\\OrderAddress>';
-//    const ORDER_ITEM_TYPE               = 'Oro\\Bundle\\MagentoBundle\\Entity\\OrderItem';
-//    const ORDER_ITEM_COLLECTION_TYPE    = 'ArrayCollection<Oro\\Bundle\\MagentoBundle\\Entity\\OrderItem>';
-//
-//    const REGION_TYPE = 'Oro\\Bundle\\MagentoBundle\\Entity\\Region';
+    const PRODUCT_TYPE                    = 'Oro\\Bundle\\MagentoBundle\\Entity\\Product';
 }

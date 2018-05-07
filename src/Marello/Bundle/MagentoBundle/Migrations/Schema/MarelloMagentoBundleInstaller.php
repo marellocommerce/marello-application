@@ -31,10 +31,7 @@ class MarelloMagentoBundleInstaller implements
     ActivityExtensionAwareInterface,
     ExtendExtensionAwareInterface,
     ActivityListExtensionAwareInterface
-//    CustomerExtensionAwareInterface
 {
-//    use CustomerExtensionTrait;
-
     /** @var ActivityExtension */
     protected $activityExtension;
 
@@ -73,7 +70,7 @@ class MarelloMagentoBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_52';
+        return 'v0_0';
     }
 
     /**
@@ -81,14 +78,19 @@ class MarelloMagentoBundleInstaller implements
      */
     public function up(Schema $schema, QueryBag $queries)
     {
+//        $this->updateIntegrationTransportTable($schema);
+
         /** Tables generation **/
         $this->createMarelloMagentoWebsiteTable($schema);
         $this->createMarelloMagentoStoreTable($schema);
-//        $this->updateIntegrationTransportTable($schema);
+        $this->createMarelloMagentoProductTable($schema);
+        $this->createMarelloMagentoProdToWebsiteTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloMagentoWebsiteForeignKeys($schema);
         $this->addMarelloMagentoStoreForeignKeys($schema);
+        $this->addMarelloMagentoProductForeignKeys($schema);
+        $this->addMarelloMagentoProdToWebsiteForeignKeys($schema);
     }
 
     /**
@@ -177,9 +179,50 @@ class MarelloMagentoBundleInstaller implements
         $table->addUniqueIndex(['store_code', 'channel_id'], 'unq_code_channel_id');
     }
 
+    /**
+     * Create oro_magento_product table
+     *
+     * @param Schema $schema
+     */
+    protected function createMarelloMagentoProductTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_magento_product');
+        $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('channel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('name', 'string', ['length' => 255]);
+        $table->addColumn('sku', 'string', ['length' => 255, 'notnull' => false]);
+        $table->addColumn('type', 'string', ['length' => 255]);
+        $table->addColumn(
+            'special_price',
+            'money',
+            ['notnull' => false]
+        );
+        $table->addColumn('price', 'money', ['notnull' => false]);
+//        $table->addColumn('created_at', 'datetime');
+//        $table->addColumn('updated_at', 'datetime');
+        $table->addColumn('origin_id', 'integer', ['unsigned' => true]);
+        $table->addColumn('cost', 'money', ['notnull' => false]);
+        $table->addIndex(['channel_id'], 'IDX_5A17298272F5A1AA', []);
+        $table->setPrimaryKey(['id']);
+    }
 
     /**
-     * Add oro_magento_website foreign keys.
+     * Create marello_mage_prod_to_website table
+     *
+     * @param Schema $schema
+     */
+    protected function createMarelloMagentoProdToWebsiteTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_mage_prod_to_website');
+        $table->addColumn('product_id', 'integer', []);
+        $table->addColumn('website_id', 'integer', []);
+        $table->addIndex(['product_id'], 'IDX_9BB836554584665A', []);
+        $table->addIndex(['website_id'], 'IDX_9BB8365518F45C82', []);
+        $table->setPrimaryKey(['product_id', 'website_id']);
+    }
+    
+    /**
+     * Add marello_magento_website foreign keys.
      *
      * @param Schema $schema
      */
@@ -196,7 +239,7 @@ class MarelloMagentoBundleInstaller implements
     
 
     /**
-     * Add oro_magento_store foreign keys.
+     * Add marello_magento_store foreign keys.
      *
      * @param Schema $schema
      */
@@ -216,4 +259,43 @@ class MarelloMagentoBundleInstaller implements
             ['onDelete' => 'SET NULL']
         );
     }
+
+    /**
+     * Add marello_magento_product foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloMagentoProductForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_magento_product');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['channel_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL']
+        );
+    }
+
+    /**
+     * Add marello_mage_prod_to_website foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloMagentoProdToWebsiteForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_mage_prod_to_website');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_magento_product'),
+            ['product_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_magento_website'),
+            ['website_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE']
+        );
+    }
+
 }

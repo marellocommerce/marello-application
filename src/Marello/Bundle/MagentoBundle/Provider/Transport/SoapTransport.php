@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Transport;
 
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\ProductSoapIterator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 use Oro\Bundle\IntegrationBundle\Utils\MultiAttemptsConfigTrait;
@@ -66,6 +67,7 @@ class SoapTransport extends BaseSOAPTransport implements
     const ACTION_GROUP_LIST = 'customerGroupList';
     const ACTION_STORE_LIST = 'storeList';
     const ACTION_ORDER_LIST = 'salesOrderList';
+    const ACTION_PRODUCT_LIST = 'catalogProductList';
     const ACTION_ORDER_INFO = 'salesOrderInfo';
     const ACTION_CREDIT_MEMO_LIST = 'salesOrderCreditmemoList';
     const ACTION_CREDIT_MEMO_INFO = 'salesOrderCreditmemoInfo';
@@ -570,6 +572,12 @@ class SoapTransport extends BaseSOAPTransport implements
     public function getWebsites()
     {
         return new WebsiteSoapIterator($this);
+    }
+
+    public function getProducts()
+    {
+        $settings = $this->settings->all();
+        return new ProductSoapIterator($this, $settings);
     }
 
     /**

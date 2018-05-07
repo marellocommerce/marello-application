@@ -56,3 +56,17 @@ connector:
                         writer:    marello_magento.writer.proxy_entity_writer
                     parameters:
                         batch_size: 25
+
+        mage_product_import:
+            title: "Product import from Magento"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.mage.product
+                        processor: marello_magento.importexport.processor.product
+                        writer:    marello_magento.writer.proxy_entity_writer
+                    parameters:
+                        batch_size: 25
