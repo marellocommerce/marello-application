@@ -19,6 +19,6 @@ class Client extends BaseClient
     public function __construct($baseUrl = '', $config = null)
     {
         parent::__construct($baseUrl, $config);
-        $this->setRequestFactory(RequestFactory::getInstance());
+        $this->setRequestFactory(new RequestFactory());
     }
 }

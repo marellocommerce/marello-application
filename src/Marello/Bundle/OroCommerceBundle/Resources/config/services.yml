@@ -129,8 +129,8 @@ services:
     marello_orocommerce.integration.transport:
         class: 'Marello\Bundle\OroCommerceBundle\Integration\Transport\Rest\OroCommerceRestTransport'
         public: true
-        arguments:
-            - '@marello_orocommerce.rest.client_factory'
+        calls:
+            - [setRestClientFactory, ['@marello_orocommerce.rest.client_factory']]
         tags:
             - { name: oro_integration.transport, type: orocommerce, channel_type: orocommerce }
 

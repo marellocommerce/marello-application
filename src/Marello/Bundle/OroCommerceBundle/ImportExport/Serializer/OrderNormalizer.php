@@ -301,12 +301,15 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
     }
 
     /**
-     * @param array $data
+     * @param mixed $data
      * @param $property
      * @return mixed|null
      */
-    private function getProperty(array $data, $property)
+    private function getProperty($data, $property)
     {
+        if (!is_array($data)) {
+            return null;
+        }
         if (isset($data[$property])) {
             return $data[$property];
         }

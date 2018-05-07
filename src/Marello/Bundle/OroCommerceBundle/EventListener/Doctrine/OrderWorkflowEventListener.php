@@ -79,8 +79,13 @@ class OrderWorkflowEventListener
      * @param string $workflow
      * @param string $transition
      */
-    private function transitTo(Order $order, $workflow, $transition){
+    private function transitTo(Order $order, $workflow, $transition)
+    {
         $workflowItem = $this->getCurrentWorkFlowItem($order, $workflow);
+        if (!$workflowItem) {
+            return;
+        }
+
         $this->workflowManager->transitIfAllowed($workflowItem,$transition);
     }
 
@@ -102,5 +107,4 @@ class OrderWorkflowEventListener
         }
         return null;
     }
-
 }

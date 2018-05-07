@@ -83,6 +83,7 @@ class OroCommerceIntegrationEventListener
             ->setActive($channel->isEnabled())
             ->setCurrency($transport->getCurrency())
             ->setDefault(true)
+            ->setOwner($channel->getOrganization())
             ->setIntegrationChannel($channel);
 
         return $salesChannel;

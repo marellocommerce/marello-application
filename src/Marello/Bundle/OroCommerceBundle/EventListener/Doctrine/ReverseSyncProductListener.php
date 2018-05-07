@@ -53,8 +53,6 @@ class ReverseSyncProductListener
         'value',
         'taxCode',
     ];
-    
-    private $changeSet = [];
 
     /**
      * @param TokenStorageInterface $tokenStorage
@@ -146,6 +144,7 @@ class ReverseSyncProductListener
     /**
      * Filter entities by class
      * @param array $entities
+     * @param string $class
      * @return array
      */
     private function filterEntities(array $entities, $class)

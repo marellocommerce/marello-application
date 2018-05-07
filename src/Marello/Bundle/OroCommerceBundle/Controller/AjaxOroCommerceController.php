@@ -197,10 +197,10 @@ class AjaxOroCommerceController extends Controller
             ->init($transport)
             ->ping();
 
-        if ($result === false) {
+        if ($result['result'] === false) {
             return new JsonResponse([
                 'success' => false,
-                'message' => 'Connection error',
+                'message' => $result['message'],
             ]);
         }
 

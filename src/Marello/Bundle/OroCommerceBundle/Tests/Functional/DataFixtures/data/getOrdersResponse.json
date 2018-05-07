@@ -1,0 +1,362 @@
+{
+  "data": [
+    {
+      "type": "orders",
+      "id": "1",
+      "attributes": {
+        "lastContactedDate": null,
+        "lastContactedDateIn": null,
+        "lastContactedDateOut": null,
+        "timesContacted": null,
+        "timesContactedIn": null,
+        "timesContactedOut": null,
+        "identifier": "FR1012401",
+        "poNumber": "CV032342USDD",
+        "customerNotes": "Please, call before delivery",
+        "shipUntil": "2018-04-12",
+        "currency": "USD",
+        "subtotalValue": "1839.5900",
+        "totalValue": "2014.3500",
+        "shippingMethod": null,
+        "shippingMethodType": null,
+        "estimatedShippingCostAmount": null,
+        "overriddenShippingCostAmount": null,
+        "sourceEntityClass": null,
+        "sourceEntityId": null,
+        "sourceEntityIdentifier": null,
+        "totalDiscountsAmount": null,
+        "createdAt": "2018-04-12T14:07:23Z",
+        "updatedAt": "2018-04-12T14:07:40Z"
+      },
+      "relationships": {
+        "billingAddress": {
+          "data": {
+            "type": "orderaddresses",
+            "id": "1"
+          }
+        },
+        "shippingAddress": {
+          "data": {
+            "type": "orderaddresses",
+            "id": "2"
+          }
+        },
+        "lineItems": {
+          "data": [
+            {
+              "type": "orderlineitems",
+              "id": "1"
+            },
+            {
+              "type": "orderlineitems",
+              "id": "2"
+            },
+            {
+              "type": "orderlineitems",
+              "id": "3"
+            }
+          ]
+        },
+        "discounts": {
+          "data": []
+        },
+        "shippingTrackings": {
+          "data": []
+        },
+        "owner": {
+          "data": {
+            "type": "users",
+            "id": "1"
+          }
+        },
+        "organization": {
+          "data": {
+            "type": "organizations",
+            "id": "1"
+          }
+        },
+        "customerUser": {
+          "data": {
+            "type": "customer_users",
+            "id": "1"
+          }
+        },
+        "customer": {
+          "data": {
+            "type": "customers",
+            "id": "1"
+          }
+        },
+        "paymentTerm": {
+          "data": {
+            "type": "paymentterms",
+            "id": "2"
+          }
+        },
+        "internal_status": {
+          "data": {
+            "type": "orderinternalstatuses",
+            "id": "open"
+          }
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "type": "orderaddresses",
+      "id": "1",
+      "attributes": {
+        "fromExternalSource": false,
+        "phone": "1234567890",
+        "label": "Billing Address 01",
+        "street": "1215 Caldwell Road",
+        "street2": null,
+        "city": "Rochester",
+        "postalCode": "14608",
+        "organization": null,
+        "namePrefix": null,
+        "firstName": "Amanda",
+        "middleName": null,
+        "lastName": "Cole",
+        "nameSuffix": null,
+        "created": "2018-04-12T14:07:23Z",
+        "updated": "2018-04-12T14:07:23Z"
+      },
+      "relationships": {
+        "customerUserAddress": {
+          "data": null
+        },
+        "country": {
+          "data": {
+            "type": "countries",
+            "id": "US"
+          }
+        },
+        "region": {
+          "data": {
+            "type": "regions",
+            "id": "US-NY"
+          }
+        }
+      }
+    },
+    {
+      "type": "orderaddresses",
+      "id": "2",
+      "attributes": {
+        "fromExternalSource": false,
+        "phone": "1234567890",
+        "label": "Shipping Address 01",
+        "street": "713 Georgina Ave",
+        "street2": null,
+        "city": "Santa Monica",
+        "postalCode": "90402",
+        "organization": null,
+        "namePrefix": null,
+        "firstName": "Amanda",
+        "middleName": null,
+        "lastName": "Cole",
+        "nameSuffix": null,
+        "created": "2018-04-12T14:07:23Z",
+        "updated": "2018-04-12T14:07:23Z"
+      },
+      "relationships": {
+        "customerUserAddress": {
+          "data": null
+        },
+        "country": {
+          "data": {
+            "type": "countries",
+            "id": "US"
+          }
+        },
+        "region": {
+          "data": {
+            "type": "regions",
+            "id": "US-CA"
+          }
+        }
+      }
+    },
+    {
+      "type": "orderlineitems",
+      "id": "1",
+      "attributes": {
+        "productSku": "p1",
+        "freeFormProduct": null,
+        "quantity": 50,
+        "productUnitCode": "piece",
+        "value": 21.07,
+        "currency": "USD",
+        "priceType": 10,
+        "shipBy": "2016-04-30",
+        "fromExternalSource": false,
+        "comment": ""
+      },
+      "relationships": {
+        "order": {
+          "data": {
+            "type": "orders",
+            "id": "1"
+          }
+        },
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "23"
+          }
+        },
+        "parentProduct": {
+          "data": null
+        },
+        "productUnit": {
+          "data": {
+            "type": "productunits",
+            "id": "piece"
+          }
+        }
+      }
+    },
+    {
+      "type": "orderlineitems",
+      "id": "2",
+      "attributes": {
+        "productSku": "p2",
+        "freeFormProduct": null,
+        "quantity": 30,
+        "productUnitCode": "set",
+        "value": 25.91,
+        "currency": "USD",
+        "priceType": 10,
+        "shipBy": "2016-04-30",
+        "fromExternalSource": true,
+        "comment": ""
+      },
+      "relationships": {
+        "order": {
+          "data": {
+            "type": "orders",
+            "id": "1"
+          }
+        },
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "10"
+          }
+        },
+        "parentProduct": {
+          "data": null
+        },
+        "productUnit": {
+          "data": {
+            "type": "productunits",
+            "id": "set"
+          }
+        }
+      }
+    },
+    {
+      "type": "orderlineitems",
+      "id": "3",
+      "attributes": {
+        "productSku": "p3",
+        "freeFormProduct": null,
+        "quantity": 1,
+        "productUnitCode": "piece",
+        "value": 8.79,
+        "currency": "USD",
+        "priceType": 10,
+        "shipBy": null,
+        "fromExternalSource": false,
+        "comment": ""
+      },
+      "relationships": {
+        "order": {
+          "data": {
+            "type": "orders",
+            "id": "1"
+          }
+        },
+        "product": {
+          "data": {
+            "type": "products",
+            "id": "22"
+          }
+        },
+        "parentProduct": {
+          "data": null
+        },
+        "productUnit": {
+          "data": {
+            "type": "productunits",
+            "id": "piece"
+          }
+        }
+      }
+    },
+    {
+      "type": "customer_users",
+      "id": "1",
+      "attributes": {
+        "confirmed": true,
+        "email": "AmandaRCole@example.org",
+        "namePrefix": null,
+        "firstName": "Amanda",
+        "middleName": null,
+        "lastName": "Cole",
+        "nameSuffix": null,
+        "birthday": null,
+        "createdAt": "2018-04-12T14:07:11Z",
+        "updatedAt": "2018-04-12T14:07:11Z",
+        "enabled": true,
+        "loginCount": 2,
+        "username": "AmandaRCole@example.org",
+        "isGuest": false,
+        "lastLogin": "2018-04-18T13:49:32Z",
+        "passwordRequestedAt": null,
+        "passwordChangedAt": null
+      },
+      "relationships": {
+        "roles": {
+          "data": [
+            {
+              "type": "customer_user_roles",
+              "id": "1"
+            }
+          ]
+        },
+        "customer": {
+          "data": {
+            "type": "customers",
+            "id": "1"
+          }
+        },
+        "addresses": {
+          "data": [
+            {
+              "type": "customer_user_addresses",
+              "id": "1"
+            }
+          ]
+        },
+        "owner": {
+          "data": {
+            "type": "users",
+            "id": "1"
+          }
+        },
+        "salesRepresentatives": {
+          "data": []
+        },
+        "organization": {
+          "data": {
+            "type": "organizations",
+            "id": "1"
+          }
+        }
+      }
+    }
+  ]
+}
