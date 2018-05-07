@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\ImportExport\Strategy;
 
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -194,5 +195,36 @@ class DefaultMagentoImportStrategy extends ConfigurableAddOrReplaceStrategy
         }
 
         return $existingEntity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function processEntity(
+        $entity,
+        $isFullData = false,
+        $isPersistNew = false,
+        $itemData = null,
+        array $searchContext = [],
+        $entityIsRelation = false
+    ) {
+        //walk around the cascade issues
+        if (method_exists($entity, 'getChannel')) {
+            if ($channel = $entity->getChannel()) {
+                $manager = $this->doctrineHelper->getEntityManager(Channel::class);
+                $channel = $manager->find(Channel::class, ['id' => $channel->getId()]);
+                $entity->setChannel($channel);
+                $manager->persist($channel);
+            }
+        }
+
+        return parent::processEntity(
+            $entity,
+            $isFullData,
+            $isPersistNew,
+            $itemData,
+            $searchContext,
+            $entityIsRelation
+            );
     }
 }

@@ -58,6 +58,7 @@ parameters:
 #    marello_magento.import.strategy.customer_address.add_or_update.class:        Marello\Bundle\MagentoBundle\ImportExport\Strategy\CustomerAddressStrategy
 #    marello_magento.import_strategy.newsletter_subscriber_with_customer.add_or_update.class: Marello\Bundle\MagentoBundle\ImportExport\Strategy\NewsletterSubscriberWithExistingCustomerStrategy
     marello_magento.import_strategy.default_magento_import.class:                Marello\Bundle\MagentoBundle\ImportExport\Strategy\DefaultMagentoImportStrategy
+    marello_magento.import.strategy.website.class:                               Marello\Bundle\MagentoBundle\ImportExport\Strategy\WebsiteMagentoImportStrategy
 
     # processors
     marello_magento.provider.initial_processor.class:                            Marello\Bundle\MagentoBundle\Provider\AbstractInitialProcessor
@@ -391,9 +392,16 @@ services:
 
     marello_magento.import.strategy.store:
         parent: marello_magento.import_strategy.default_magento_import
-
+#        class: '%marello_magento.import.strategy.website.class%'
+#        parent: marello_magento.import.strategy.abstract
+#        calls:
+#            - [setDoctrineHelper, ["@marello_magento.importexport.doctrine_helper"]]
     marello_magento.import.strategy.website:
         parent: marello_magento.import_strategy.default_magento_import
+#        class: '%marello_magento.import.strategy.website.class%'
+#        parent: marello_magento.import.strategy.abstract
+#        calls:
+#            - [setDoctrineHelper, ["@marello_magento.importexport.doctrine_helper"]]
 
 #    marello_magento.import.strategy.customer_group:
 #        parent: marello_magento.import_strategy.default_magento_import

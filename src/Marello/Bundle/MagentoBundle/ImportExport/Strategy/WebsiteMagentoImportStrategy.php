@@ -4,8 +4,9 @@ namespace Marello\Bundle\MagentoBundle\ImportExport\Strategy;
 
 use Marello\Bundle\MagentoBundle\ImportExport\Strategy\StrategyHelper\DoctrineHelper;
 use Marello\Bundle\MagentoBundle\Provider\Connector\MagentoConnectorInterface;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
-class RegionStrategy extends AbstractImportStrategy
+class WebsiteMagentoImportStrategy extends AbstractImportStrategy
 {
     /**
      * @var DoctrineHelper
@@ -33,12 +34,16 @@ class RegionStrategy extends AbstractImportStrategy
     ) {
         $excluded = [];
 
-        if (!$entity->getName()) {
-            // do not update name if it's empty, due to bug in magento API
-            $excluded = ['name'];
-        }
+        $entity = parent::processEntity(
+            $entity,
+            $isFullData,
+            $isPersistNew,
+            $itemData,
+            $searchContext,
+            $entityIsRelation
+        );
 
         return $this->doctrineHelper
-            ->findAndReplaceEntity($entity, MagentoConnectorInterface::REGION_TYPE, 'combinedCode', $excluded);
+            ->findAndReplaceEntity($entity, MagentoConnectorInterface::WEBSITE_TYPE, 'id', $excluded);
     }
 }

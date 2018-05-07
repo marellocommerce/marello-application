@@ -14,6 +14,7 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+
 //use Marello\Bundle\MagentoBundle\Migrations\Schema\v1_37\CreateActivityAssociation;
 //use Marello\Bundle\MagentoBundle\Migrations\Schema\v1_38\InheritanceActivityTargets;
 
@@ -83,7 +84,7 @@ class MarelloMagentoBundleInstaller implements
         /** Tables generation **/
         $this->createMarelloMagentoWebsiteTable($schema);
         $this->createMarelloMagentoStoreTable($schema);
-        $this->updateIntegrationTransportTable($schema);
+//        $this->updateIntegrationTransportTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloMagentoWebsiteForeignKeys($schema);
@@ -146,6 +147,7 @@ class MarelloMagentoBundleInstaller implements
         $table->addColumn('sort_order', 'integer', ['notnull' => false]);
         $table->addColumn('is_default', 'boolean', ['notnull' => false]);
         $table->addColumn('default_group_id', 'integer', ['notnull' => false]);
+        $table->addColumn('serialized_data', 'text', ['notnull' => false]);
         $table->addIndex(['channel_id'], 'IDX_CE3270C872F5A1AA', []);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['website_name'], 'marello_magento_website_name_idx', []);
@@ -168,6 +170,7 @@ class MarelloMagentoBundleInstaller implements
         $table->addColumn('store_code', 'string', ['length' => 32, 'precision' => 0]);
         $table->addColumn('store_name', 'string', ['length' => 255, 'precision' => 0]);
         $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);
+        $table->addColumn('serialized_data', 'text', ['notnull' => false]);
         $table->addIndex(['website_id'], 'IDX_477738EA18F45C82', []);
         $table->addIndex(['channel_id'], 'IDX_477738EA72F5A1AA', []);
         $table->setPrimaryKey(['id']);
@@ -213,5 +216,4 @@ class MarelloMagentoBundleInstaller implements
             ['onDelete' => 'SET NULL']
         );
     }
-
 }

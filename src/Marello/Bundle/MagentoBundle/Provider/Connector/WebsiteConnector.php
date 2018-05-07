@@ -45,7 +45,7 @@ class WebsiteConnector extends AbstractMagentoConnector implements DictionaryCon
      */
     protected function initializeTransport(ContextInterface $context)
     {
-        $this->contextMediator->resetInitializedTransport();
+//        $this->contextMediator->resetInitializedTransport();
 
         parent::initializeTransport($context);
     }

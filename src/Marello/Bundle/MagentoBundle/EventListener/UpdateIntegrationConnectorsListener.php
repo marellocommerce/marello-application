@@ -5,7 +5,6 @@ namespace Marello\Bundle\MagentoBundle\EventListener;
 use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
 use Oro\Bundle\ChannelBundle\Event\ChannelSaveEvent;
-//use Oro\Bundle\ChannelBundle\EventListener\UpdateIntegrationConnectorsListener as BaseUpdateConnectorsListener;
 use Marello\Bundle\MagentoBundle\Entity\MagentoTransport;
 use Marello\Bundle\MagentoBundle\Provider\Connector\DictionaryConnectorInterface;
 use Marello\Bundle\MagentoBundle\Provider\ExtensionAwareInterface;

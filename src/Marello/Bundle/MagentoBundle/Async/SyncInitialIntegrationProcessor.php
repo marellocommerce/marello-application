@@ -43,11 +43,6 @@ class SyncInitialIntegrationProcessor implements MessageProcessorInterface, Topi
      */
     private $optionalListenerManager;
 
-//    /**
-//     * @var CalculateAnalyticsScheduler
-//     */
-//    private $calculateAnalyticsScheduler;
-
     /**
      * @var JobRunner
      */
@@ -76,7 +71,6 @@ class SyncInitialIntegrationProcessor implements MessageProcessorInterface, Topi
         DoctrineHelper $doctrineHelper,
         InitialSyncProcessor $initialSyncProcessor,
         OptionalListenerManager $optionalListenerManager,
-//        CalculateAnalyticsScheduler $calculateAnalyticsScheduler,
         JobRunner $jobRunner,
         IndexerInterface $indexer,
         TokenStorageInterface $tokenStorage,
@@ -85,7 +79,6 @@ class SyncInitialIntegrationProcessor implements MessageProcessorInterface, Topi
         $this->doctrineHelper = $doctrineHelper;
         $this->initialSyncProcessor = $initialSyncProcessor;
         $this->optionalListenerManager = $optionalListenerManager;
-//        $this->calculateAnalyticsScheduler = $calculateAnalyticsScheduler;
         $this->jobRunner = $jobRunner;
         $this->indexer = $indexer;
         $this->tokenStorage = $tokenStorage;
@@ -185,24 +178,4 @@ class SyncInitialIntegrationProcessor implements MessageProcessorInterface, Topi
             }
         }
     }
-
-//    /**
-//     * @param Integration $integration
-//     */
-//    private function scheduleAnalyticRecalculation(Integration $integration)
-//    {
-//        /** @var Channel $channel */
-//        $channel = $this->doctrineHelper->getEntityRepository(Channel::class)->findOneBy([
-//            'dataSource' => $integration
-//        ]);
-//
-//        if (!$channel) {
-//            throw new \LogicException(sprintf(
-//                'The integration does not have channel associated with it. Integration: %s',
-//                $integration->getId()
-//            ));
-//        }
-//
-//        $this->calculateAnalyticsScheduler->scheduleForChannel($channel->getId());
-//    }
 }

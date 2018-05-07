@@ -113,6 +113,10 @@ abstract class AbstractMagentoConnector extends AbstractConnector implements Mag
      */
     protected function initializeTransport(ContextInterface $context)
     {
+        //TODO: hard-coded channel
+//        $stepExecution = $this->contextRegistry->getByStepExecution($this->getStepExecution());
+//        $stepExecution->setValue('channel', 3);
+
         $this->channel   = $this->contextMediator->getChannel($context);
         $this->transport = $this->contextMediator->getInitializedTransport($this->channel, true);
 
