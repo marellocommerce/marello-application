@@ -78,7 +78,11 @@ abstract class AbstractConnectionValidationTest extends WebTestCase
         $this->realRestClientFactory = $this->getContainer()->get('marello_orocommerce.rest.client_factory');
         $this->client->getContainer()->set('marello_orocommerce.rest.client_factory', $mockRestClientFactory);
 
-        $this->client->request('POST', $this->getUrl('marello_orocommerce_validate_connection', ['channelId' => 0]), $request);
+        $this->client->request(
+            'POST',
+            $this->getUrl('marello_orocommerce_validate_connection', ['channelId' => 0]),
+            $request
+        );
         $response = $this->client->getResponse();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
 

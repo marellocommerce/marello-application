@@ -214,7 +214,7 @@ class ProductNormalizer extends AbstractNormalizer
             $productData = $object->getData();
             if (isset($productData[AbstractProductExportWriter::PRODUCT_ID_FIELD]) &&
                 isset($productData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId])) {
-                $data['data']['id'] = 
+                $data['data']['id'] =
                     $productData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId];
             }
 

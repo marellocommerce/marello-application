@@ -192,20 +192,20 @@ class ReverseSyncTaxJurisdictionListener
                         TaxExportReader::CODE_FILTER => $entity->getCode(),
                     ];
                 } elseif (AbstractExportWriter::UPDATE_ACTION === $action) {
-                        if (isset($data[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID]) &&
-                            isset($data[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID][$channelId]) &&
-                            $data[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID][$channelId] !== null
-                        ) {
-                            $connector_params = [
-                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
-                                TaxExportReader::CODE_FILTER => $entity->getCode(),
-                            ];
-                        } else {
-                            $connector_params = [
-                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                                TaxExportReader::CODE_FILTER => $entity->getCode(),
-                            ];
-                        }
+                    if (isset($data[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID]) &&
+                        isset($data[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID][$channelId]) &&
+                        $data[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID][$channelId] !== null
+                    ) {
+                        $connector_params = [
+                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
+                            TaxExportReader::CODE_FILTER => $entity->getCode(),
+                        ];
+                    } else {
+                        $connector_params = [
+                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
+                            TaxExportReader::CODE_FILTER => $entity->getCode(),
+                        ];
+                    }
                 } elseif (AbstractExportWriter::DELETE_ACTION === $action) {
                     if (isset($data[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID]) &&
                         isset($data[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID][$channelId]) &&
@@ -223,7 +223,8 @@ class ReverseSyncTaxJurisdictionListener
                     $this->syncScheduler->getService()->schedule(
                         $integrationChannel->getId(),
                         OroCommerceTaxJurisdictionConnector::TYPE,
-                        $connector_params);
+                        $connector_params
+                    );
 
                     $this->processedEntities[] = $entity;
                 }

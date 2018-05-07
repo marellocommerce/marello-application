@@ -33,7 +33,7 @@ class TaxRateNormalizer extends AbstractNormalizer
             }
 
             return $data;
-            }
+        }
 
         return null;
     }

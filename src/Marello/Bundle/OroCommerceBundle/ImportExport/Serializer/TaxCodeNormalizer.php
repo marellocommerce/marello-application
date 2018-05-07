@@ -34,7 +34,7 @@ class TaxCodeNormalizer extends AbstractNormalizer
             }
 
             return $data;
-            }
+        }
 
         return null;
     }

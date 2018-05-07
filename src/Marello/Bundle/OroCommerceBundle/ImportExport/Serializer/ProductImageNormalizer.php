@@ -44,6 +44,7 @@ class ProductImageNormalizer extends AbstractNormalizer
                         $productImageId =
                             $productData[AbstractProductExportWriter::IMAGE_ID_FIELD][$context['channel']];
                     }
+                    $productId = $productData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$context['channel']];
                     $data = [
                         'data' => [
                             'type' => 'productimages',
@@ -52,7 +53,7 @@ class ProductImageNormalizer extends AbstractNormalizer
                                 'product' => [
                                     'data' => [
                                         'type' => 'products',
-                                        'id' => $productData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$context['channel']]
+                                        'id' => $productId
                                     ]
                                 ],
                                 'image' => [

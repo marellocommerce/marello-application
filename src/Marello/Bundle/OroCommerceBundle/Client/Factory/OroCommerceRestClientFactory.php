@@ -13,5 +13,4 @@ class OroCommerceRestClientFactory implements OroCommerceRestClientFactoryInterf
     {
         return new OroCommerceRestClient($baseUrl, $defaultOptions);
     }
-
 }

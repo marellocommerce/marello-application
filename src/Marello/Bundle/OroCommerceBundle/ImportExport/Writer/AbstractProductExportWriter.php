@@ -15,7 +15,8 @@ abstract class AbstractProductExportWriter extends AbstractExportWriter
     /**
      * @param array $data
      */
-    protected function processTaxCode(array $data) {
+    protected function processTaxCode(array $data)
+    {
         if (isset($data['data']['relationships']) && isset($data['data']['relationships']['taxCode'])) {
             $taxCode = $data['data']['relationships']['taxCode'];
             if (isset($taxCode['data']) && isset($taxCode['data']['id']) &&

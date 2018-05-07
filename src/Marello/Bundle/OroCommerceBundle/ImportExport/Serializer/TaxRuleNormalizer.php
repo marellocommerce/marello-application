@@ -26,7 +26,6 @@ class TaxRuleNormalizer extends AbstractNormalizer
     {
         parent::__construct($registry);
         $this->taxJurisdictionNormalizer = $taxJurisdictionNormalizer;
-
     }
 
     /**
@@ -59,7 +58,8 @@ class TaxRuleNormalizer extends AbstractNormalizer
             $taxJurisdictionData = $taxJurisdiction->getData();
             if (isset($taxJurisdictionData[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID]) &&
                 isset($taxJurisdictionData[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID][$channelId])) {
-                $taxJurisdictionId = $taxJurisdictionData[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID][$channelId];
+                $taxJurisdictionId =
+                    $taxJurisdictionData[TaxJurisdictionExportCreateWriter::TAX_JURISDICTION_ID][$channelId];
             }
 
             $data = [
@@ -136,7 +136,6 @@ class TaxRuleNormalizer extends AbstractNormalizer
                     }
                     $data['included'][] = $normalizedJurisdictionData;
                 }
-
             }
 
             if (isset($taxData[TaxRuleExportCreateWriter::TAX_RULE_ID]) &&
@@ -147,7 +146,7 @@ class TaxRuleNormalizer extends AbstractNormalizer
             }
 
             return $data;
-            }
+        }
 
         return null;
     }

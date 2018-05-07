@@ -21,7 +21,7 @@ class ProductExportDeleteReader extends IteratorBasedReader
                     [
                         ProductExportCreateReader::SKU_FILTER =>
                             $context->getOption(ProductExportCreateReader::SKU_FILTER),
-                        ProductExportUpdateReader::ID_FILTER => 
+                        ProductExportUpdateReader::ID_FILTER =>
                             $context->getOption(ProductExportUpdateReader::ID_FILTER)
                     ]
                 ];

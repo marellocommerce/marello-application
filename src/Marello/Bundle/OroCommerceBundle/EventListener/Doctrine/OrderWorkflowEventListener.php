@@ -86,7 +86,7 @@ class OrderWorkflowEventListener
             return;
         }
 
-        $this->workflowManager->transitIfAllowed($workflowItem,$transition);
+        $this->workflowManager->transitIfAllowed($workflowItem, $transition);
     }
 
     /**

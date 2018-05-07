@@ -161,7 +161,8 @@ class ReverseSyncInventoryLevelListener
                         $this->syncScheduler->getService()->schedule(
                             $integrationChannel->getId(),
                             OroCommerceInventoryLevelConnector::TYPE,
-                            $connector_params);
+                            $connector_params
+                        );
 
                         $this->processedEntities[] = $entity;
                     }

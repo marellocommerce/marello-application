@@ -148,20 +148,20 @@ class ReverseSyncTaxCodeListener
                         TaxExportReader::CODE_FILTER => $entity->getCode(),
                     ];
                 } elseif (AbstractExportWriter::UPDATE_ACTION === $action) {
-                        if (isset($data[TaxCodeExportCreateWriter::PRODUCT_TAX_CODE_ID]) &&
-                            isset($data[TaxCodeExportCreateWriter::PRODUCT_TAX_CODE_ID][$channelId]) &&
-                            $data[TaxCodeExportCreateWriter::PRODUCT_TAX_CODE_ID][$channelId] !== null
-                        ) {
-                            $connector_params = [
-                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
-                                TaxExportReader::CODE_FILTER => $entity->getCode(),
-                            ];
-                        } else {
-                            $connector_params = [
-                                AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
-                                TaxExportReader::CODE_FILTER => $entity->getCode(),
-                            ];
-                        }
+                    if (isset($data[TaxCodeExportCreateWriter::PRODUCT_TAX_CODE_ID]) &&
+                        isset($data[TaxCodeExportCreateWriter::PRODUCT_TAX_CODE_ID][$channelId]) &&
+                        $data[TaxCodeExportCreateWriter::PRODUCT_TAX_CODE_ID][$channelId] !== null
+                    ) {
+                        $connector_params = [
+                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::UPDATE_ACTION,
+                            TaxExportReader::CODE_FILTER => $entity->getCode(),
+                        ];
+                    } else {
+                        $connector_params = [
+                            AbstractExportWriter::ACTION_FIELD => AbstractExportWriter::CREATE_ACTION,
+                            TaxExportReader::CODE_FILTER => $entity->getCode(),
+                        ];
+                    }
                 } elseif (AbstractExportWriter::DELETE_ACTION === $action) {
                     if (isset($data[TaxCodeExportCreateWriter::PRODUCT_TAX_CODE_ID]) &&
                         isset($data[TaxCodeExportCreateWriter::PRODUCT_TAX_CODE_ID][$channelId]) &&
@@ -179,7 +179,8 @@ class ReverseSyncTaxCodeListener
                     $this->syncScheduler->getService()->schedule(
                         $integrationChannel->getId(),
                         OroCommerceTaxCodeConnector::TYPE,
-                        $connector_params);
+                        $connector_params
+                    );
 
                     $this->processedEntities[] = $entity;
                 }

@@ -132,7 +132,8 @@ class ReverseSyncProductImageListener
                 $this->syncScheduler->getService()->schedule(
                     $integrationChannel->getId(),
                     OroCommerceProductImageConnector::TYPE,
-                    $connector_params);
+                    $connector_params
+                );
             }
         }
     }
