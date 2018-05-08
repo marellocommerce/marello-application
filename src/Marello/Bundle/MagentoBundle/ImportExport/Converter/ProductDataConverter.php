@@ -29,6 +29,11 @@ class ProductDataConverter extends IntegrationAwareDataConverter
 
         $result = parent::convertToImportFormat($importedRecord, $skipNullValues);
 
+        $dateObj = new \DateTime('now', new \DateTimeZone('UTC'));
+        $date = $dateObj->format('Y-m-d H:i:s');
+        $result['createdAt'] = $date;
+        $result['updatedAt'] = $date;
+
         return $result;
     }
 

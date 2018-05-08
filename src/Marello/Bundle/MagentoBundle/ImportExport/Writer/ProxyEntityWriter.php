@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\ImportExport\Writer;
 
+use Marello\Bundle\MagentoBundle\Entity\Product;
 use Psr\Log\NullLogger;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerAwareInterface;
@@ -58,7 +59,20 @@ class ProxyEntityWriter implements
      */
     public function write(array $items)
     {
-        $this->writer->write($items);
+        $uniqueItems = [];
+        $uniqueKeys = [];
+        foreach ($items as $item) {
+            if ($item instanceof Product) {
+                $identifier = $item->getOriginId();
+                if (!in_array($identifier, $uniqueKeys)) {
+                    $uniqueItems[] = $item;
+                    $uniqueKeys[] = $identifier;
+                }
+            } else {
+                $uniqueItems[] = $item;
+            }
+        }
+        $this->writer->write($uniqueItems);
 
         // force entity cache clear if clear is skipped
         $this->databaseHelper->onClear();

@@ -25,13 +25,14 @@ class ProductSoapIterator extends AbstractPageableSoapIterator
     ) {
         $this->applyWebsiteFilters($websiteIds, $storeIds);
 
-//        if ($this->isInitialSync()) {
+        /*
+        if ($this->isInitialSync()) {
             $this->filter->addDateFilter('created_at', 'from', $this->getToDateInitial($date), $format);
             $this->filter->addDateFilter('created_at', 'to', $date, $format);
-//        } else {
-//            $this->filter->addDateFilter('updated_at', 'from', $date);
-//            $this->filter->addDateFilter('updated_at', 'to', $date->add($this->syncRange));
-//        }
+        } else {
+            $this->filter->addDateFilter('updated_at', 'from', $date);
+            $this->filter->addDateFilter('updated_at', 'to', $date->add($this->syncRange));
+        }*/
 
         $this->modifyFilters();
         $this->logAppliedFilters($this->filter);

@@ -21,7 +21,7 @@ class ProductConnector extends AbstractMagentoConnector implements DictionaryCon
      */
     public function getLabel()
     {
-        return 'oro.magento.connector.product.label';
+        return 'marello.magento.connector.product.label';
     }
 
     /**
@@ -41,20 +41,11 @@ class ProductConnector extends AbstractMagentoConnector implements DictionaryCon
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getImportEntityFQCN()
-    {
-        return self::PRODUCT_TYPE;
-    }
-
-
-    /**
      * @param ContextInterface $context
      */
     protected function initializeTransport(ContextInterface $context)
     {
-//        $this->contextMediator->resetInitializedTransport();
+        $this->contextMediator->resetInitializedTransport();
 
         parent::initializeTransport($context);
     }

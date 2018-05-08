@@ -5,6 +5,8 @@ namespace Marello\Bundle\MagentoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareInterface;
+use Oro\Bundle\EntityBundle\EntityProperty\DatesAwareTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Marello\Bundle\MagentoBundle\Model\ExtendProduct;
@@ -75,6 +77,34 @@ class Product extends ExtendProduct implements IntegrationAwareInterface
      * @ORM\Column(name="price", type="money", nullable=true)
      */
     protected $price;
+
+    /**
+     * @var \DateTime $createdAt
+     *
+     * @ORM\Column(type="datetime", name="created_at")
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.created_at"
+     *          }
+     *      }
+     * )
+     */
+    protected $createdAt;
+
+    /**
+     * @var \DateTime $updatedAt
+     *
+     * @ORM\Column(type="datetime", name="updated_at")
+     * @ConfigField(
+     *      defaultValues={
+     *          "entity"={
+     *              "label"="oro.ui.updated_at"
+     *          }
+     *      }
+     * )
+     */
+    protected $updatedAt;
 
     /**
      * @var Website[]|ArrayCollection

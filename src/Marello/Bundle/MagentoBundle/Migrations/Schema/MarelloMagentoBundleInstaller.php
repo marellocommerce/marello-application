@@ -198,8 +198,8 @@ class MarelloMagentoBundleInstaller implements
             ['notnull' => false]
         );
         $table->addColumn('price', 'money', ['notnull' => false]);
-        $table->addColumn('created_at', 'datetime');
-        $table->addColumn('updated_at', 'datetime');
+        $table->addColumn('created_at', 'datetime', []);
+        $table->addColumn('updated_at', 'datetime', []);
         $table->addColumn('origin_id', 'integer', ['unsigned' => true]);
         $table->addColumn('cost', 'money', ['notnull' => false]);
         $table->addIndex(['channel_id'], 'IDX_5A17298272F5A1AA', []);
@@ -297,5 +297,4 @@ class MarelloMagentoBundleInstaller implements
             ['onDelete' => 'CASCADE']
         );
     }
-
 }

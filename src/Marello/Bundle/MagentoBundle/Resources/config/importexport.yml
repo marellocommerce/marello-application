@@ -108,6 +108,8 @@ services:
     marello_magento.mage.product:
         class: %marello_magento.mage.product_connector.class%
         parent: marello_magento.connector.abstract
+        calls:
+            - [setClassName, [%marello_magento.entity.product.class%]]
         tags:
             - { name: oro_integration.connector, type: product, channel_type: magento }
             - { name: marello_magento.bundle_config.aware, argument_number: 3 }
