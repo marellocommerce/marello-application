@@ -48,7 +48,7 @@ class RowSelectionSelectAllListener
         }
 
         if (in_array(self::ROW_SELECTION_JS_MODULE_TO_BE_REPLACED, $requireJsModules)) {
-            $key = array_search (self::ROW_SELECTION_JS_MODULE_TO_BE_REPLACED, $requireJsModules);
+            $key = array_search(self::ROW_SELECTION_JS_MODULE_TO_BE_REPLACED, $requireJsModules);
             $requireJsModules[$key] = self::ROW_SELECTION_JS_MODULE;
         }
 
