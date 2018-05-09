@@ -97,6 +97,13 @@ interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareI
     public function getWebsites();
 
     /**
+     * Retrieve product list from magento
+     *
+     * @return \Iterator
+     */
+    public function getProducts();
+
+    /**
      * Retrieve regions list from magento
      *
      * @return \Iterator

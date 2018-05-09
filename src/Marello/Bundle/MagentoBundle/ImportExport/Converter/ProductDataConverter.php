@@ -33,7 +33,7 @@ class ProductDataConverter extends IntegrationAwareDataConverter
         $date = $dateObj->format('Y-m-d H:i:s');
         $result['createdAt'] = $date;
         $result['updatedAt'] = $date;
-
+        $result['originId'] = (int)$result['originId'];
         return $result;
     }
 

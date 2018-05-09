@@ -16,5 +16,5 @@ interface MagentoConnectorInterface extends ConnectorInterface
     const STORE_TYPE                      = 'Marello\\Bundle\\MagentoBundle\\Entity\\Store';
     const WEBSITE_TYPE                    = 'Marello\\Bundle\\MagentoBundle\\Entity\\Website';
 
-    const PRODUCT_TYPE                    = 'Oro\\Bundle\\MagentoBundle\\Entity\\Product';
+    const PRODUCT_TYPE                    = 'Marello\\Bundle\\MagentoBundle\\Entity\\Product';
 }

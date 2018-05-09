@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\MagentoBundle\ImportExport\Writer;
 
-use Marello\Bundle\MagentoBundle\Entity\Product;
 use Psr\Log\NullLogger;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerAwareInterface;
@@ -14,12 +13,7 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionRestoreInterface;
 use Oro\Bundle\ImportExportBundle\Field\DatabaseHelper;
 
-use Marello\Bundle\MagentoBundle\Entity\Cart;
-use Marello\Bundle\MagentoBundle\Entity\CreditMemo;
-use Marello\Bundle\MagentoBundle\Entity\Order;
-use Marello\Bundle\MagentoBundle\Entity\Customer;
-use Marello\Bundle\MagentoBundle\Entity\NewsletterSubscriber;
-use Marello\Bundle\MagentoBundle\ImportExport\Strategy\StrategyHelper\GuestCustomerStrategyHelper;
+use Marello\Bundle\MagentoBundle\Entity\Product;
 
 class ProxyEntityWriter implements
     ItemWriterInterface,

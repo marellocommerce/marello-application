@@ -4,17 +4,17 @@ namespace Marello\Bundle\MagentoBundle\Provider;
 
 use Marello\Bundle\MagentoBundle\Entity\Customer;
 use Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport;
-use Marello\Bundle\MagentoBundle\Provider\Transport\MagentoSoapTransportInterface;
+use Marello\Bundle\MagentoBundle\Provider\Transport\MagentoTransportInterface;
 
 class UniqueCustomerEmailSoapProvider
 {
     /**
-     * @param MagentoSoapTransportInterface $transport
+     * @param MagentoTransportInterface $transport
      * @param Customer      $customer
      *
      * @return bool
      */
-    public function isCustomerHasUniqueEmail(MagentoSoapTransportInterface $transport, Customer $customer)
+    public function isCustomerHasUniqueEmail(MagentoTransportInterface $transport, Customer $customer)
     {
         $filters = $this->getPreparedFilters($customer);
         $customers = $this->doRequest($transport, $filters);
@@ -44,12 +44,12 @@ class UniqueCustomerEmailSoapProvider
     }
 
     /**
-     * @param MagentoSoapTransportInterface $transport
+     * @param MagentoTransportInterface $transport
      * @param array         $filters
      *
      * @return array | false
      */
-    protected function doRequest(MagentoSoapTransportInterface $transport, array $filters)
+    protected function doRequest(MagentoTransportInterface $transport, array $filters)
     {
         $customers = $transport->call(SoapTransport::ACTION_CUSTOMER_LIST, $filters);
 

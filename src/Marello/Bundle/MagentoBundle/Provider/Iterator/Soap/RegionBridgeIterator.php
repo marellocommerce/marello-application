@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Iterator\Soap;
 
-use Marello\Bundle\MagentoBundle\Provider\Transport\MagentoSoapTransportInterface;
+use Marello\Bundle\MagentoBundle\Provider\Transport\MagentoTransportInterface;
 use Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport;
 
 class RegionBridgeIterator extends AbstractBridgeIterator
@@ -15,7 +15,7 @@ class RegionBridgeIterator extends AbstractBridgeIterator
     /**
      * {@inheritdoc}
      */
-    public function __construct(MagentoSoapTransportInterface $transport, array $settings)
+    public function __construct(MagentoTransportInterface $transport, array $settings)
     {
         parent::__construct($transport, $settings);
 

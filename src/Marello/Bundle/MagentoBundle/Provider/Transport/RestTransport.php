@@ -602,4 +602,10 @@ class RestTransport implements
             $exception
         );
     }
+
+    public function getProducts()
+    {
+        //TODO: impliment product list via REST
+    }
+
 }

@@ -2,19 +2,10 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
-use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
-
-class ProductConnector extends AbstractMagentoConnector implements DictionaryConnectorInterface
+class ProductConnector extends AbstractMagentoConnector
 {
+    const IMPORT_JOB_NAME = 'mage_product_import';
     const TYPE = 'product';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConnectorSource()
-    {
-        return $this->transport->getProducts();
-    }
 
     /**
      * {@inheritdoc}
@@ -27,9 +18,17 @@ class ProductConnector extends AbstractMagentoConnector implements DictionaryCon
     /**
      * {@inheritdoc}
      */
+    public function getImportEntityFQCN()
+    {
+        return self::PRODUCT_TYPE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getImportJobName()
     {
-        return 'mage_product_import';
+        return self::IMPORT_JOB_NAME;
     }
 
     /**
@@ -41,12 +40,18 @@ class ProductConnector extends AbstractMagentoConnector implements DictionaryCon
     }
 
     /**
-     * @param ContextInterface $context
+     * {@inheritdoc}
      */
-    protected function initializeTransport(ContextInterface $context)
+    protected function getConnectorSource()
     {
-        $this->contextMediator->resetInitializedTransport();
+        return $this->transport->getProducts();
+    }
 
-        parent::initializeTransport($context);
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsForceSync()
+    {
+        return true;
     }
 }

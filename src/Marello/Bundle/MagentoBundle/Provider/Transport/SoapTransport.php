@@ -40,7 +40,7 @@ use Marello\Bundle\MagentoBundle\Utils\WSIUtils;
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class SoapTransport extends BaseSOAPTransport implements
-    MagentoSoapTransportInterface,
+    MagentoTransportInterface,
     PingableInterface,
     TransportCacheClearInterface
 {
