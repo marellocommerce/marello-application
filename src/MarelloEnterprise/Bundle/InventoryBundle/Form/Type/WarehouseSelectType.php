@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Form\Type;
 
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,6 +18,7 @@ class WarehouseSelectType extends AbstractType
         $resolver->setDefaults(
             [
                 'autocomplete_alias' => 'warehouses',
+                'entity_class' => Warehouse::class,
                 'configs'            => [
                     'placeholder' => 'marelloenterprise.inventory.warehouse.form.select_warehouse',
                     'result_template_twig' =>
