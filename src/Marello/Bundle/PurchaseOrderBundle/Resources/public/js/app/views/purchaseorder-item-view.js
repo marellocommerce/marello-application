@@ -37,7 +37,6 @@ define(function(require) {
             var end_pos = currencyLabel.indexOf(')',start_pos);
             this.currencySymbol = currencyLabel.substring(start_pos,end_pos)
             this.priceEl.change(_.bind(this.updateRowTotal, this));
-            //this.updateRowTotal();
             PurchaseOrderItemView.__super__.initialize.apply(this, arguments);
         },
         
@@ -48,7 +47,7 @@ define(function(require) {
                     url: routing.generate(this.options.route, {'productId': this.productEl.val(), 'supplierId': this.supplierEl.val()}),
                     type: 'GET',
                     success: function (json) {
-                        self.priceEl.val(json['purchasePrice']).trigger('change');
+                        self.priceEl.val(json['purchasePrice'].toFixed(2)).trigger('change');
                     }
                 });
             } else {

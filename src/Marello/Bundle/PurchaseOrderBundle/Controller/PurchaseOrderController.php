@@ -255,7 +255,7 @@ class PurchaseOrderController extends Controller
         foreach ($product->getSuppliers() as $productSupplierRelation) {
             /** @var ProductSupplierRelation $productSupplierRelation */
             if ($productSupplierRelation->getSupplier()->getId() === $supplier->getId()) {
-                return new JsonResponse(['purchasePrice' => $productSupplierRelation->getCost()]);
+                return new JsonResponse(['purchasePrice' => round($productSupplierRelation->getCost(), 2)]);
             }
         }
 

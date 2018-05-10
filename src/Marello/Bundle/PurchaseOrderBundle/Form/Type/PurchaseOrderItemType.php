@@ -8,6 +8,7 @@ use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderItemCo
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class PurchaseOrderItemType extends AbstractType
@@ -25,13 +26,12 @@ class PurchaseOrderItemType extends AbstractType
                 'create_enabled' => false,
             ])
             ->add('orderedAmount', 'number', [
-                'label' => 'Ordered Amount',
+                'label' => 'Ordered Amount'
             ])
             ->add('purchasePrice', ProductPriceType::class, [
                 'label' => 'Purchase Price',
                 'currency' => $options['currency'],
-                'currency_symbol' => $options['currency_symbol'],
-                'constraints' => new NotNull()
+                'currency_symbol' => $options['currency_symbol']
             ]);
     }
 

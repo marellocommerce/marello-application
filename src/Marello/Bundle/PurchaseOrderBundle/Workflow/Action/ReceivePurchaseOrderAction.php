@@ -79,17 +79,18 @@ class ReceivePurchaseOrderAction extends AbstractAction
         /** @var PurchaseOrderItem $item */
         foreach ($items as $item) {
             $inventoryUpdateQty = null;
+            $data = (array)$item->getData();
             /** @var InventoryItem $inventoryItem */
             if ($isPartial) {
-                $data = (array)$item->getData();
                 if (array_key_exists(self::LAST_PARTIALLY_RECEIVED_QTY, $data)) {
                     $inventoryUpdateQty = $data[self::LAST_PARTIALLY_RECEIVED_QTY];
                     $item->setData(null);
                 }
             } else {
                 if (!$this->isItemFullyReceived($item)) {
+                    $lastReceived = $item->getReceivedAmount();
                     $item->setReceivedAmount($item->getOrderedAmount());
-                    $inventoryUpdateQty = $item->getReceivedAmount();
+                    $inventoryUpdateQty = $item->getReceivedAmount() - $lastReceived;
                 }
             }
 

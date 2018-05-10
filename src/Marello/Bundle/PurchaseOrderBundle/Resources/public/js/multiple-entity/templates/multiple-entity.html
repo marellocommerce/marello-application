@@ -5,7 +5,7 @@
                        id="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_product"
                        name="marello_purchase_order_create_step_two[items][<%= _.escape(id) %>][product]"
                        readonly="" required="required" data-required="data-required"
-                       data-validation="{NotBlank:{message:This value should not be blank.,payload:null}}"
+                       data-validation='{"NotBlank":{"message":"This value should not be blank.","payload":null}}'
                        data-ftid="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_product"
                        data-name="field__ordered-amount"
                        value="<%= _.escape(id) %>"
@@ -43,7 +43,7 @@
                        id="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_orderedAmount"
                        name="marello_purchase_order_create_step_two[items][<%= _.escape(id) %>][orderedAmount]"
                        required="required" data-required="data-required"
-                       data-validation="{NotBlank:{message:This value should not be blank.,payload:null}}"
+                       data-validation='{"NotBlank":{"message":"This value should not be blank.","payload":null},"GreaterThanOrEqual":{"message":"This value should be greater than or equal to {{ compared_value }}.","value":0,"payload":null}}'
                        data-ftid="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_orderedAmount"
                        data-name="field__ordered-amount"
                        value="<%= _.escape(orderAmount) %>"
