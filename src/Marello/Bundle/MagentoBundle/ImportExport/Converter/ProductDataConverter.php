@@ -25,15 +25,13 @@ class ProductDataConverter extends IntegrationAwareDataConverter
      */
     public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
     {
-        $importedRecord['website:channel:id'] = $this->context->getOption('channel');
-
         $result = parent::convertToImportFormat($importedRecord, $skipNullValues);
 
         $dateObj = new \DateTime('now', new \DateTimeZone('UTC'));
         $date = $dateObj->format('Y-m-d H:i:s');
         $result['createdAt'] = $date;
         $result['updatedAt'] = $date;
-        $result['originId'] = (int)$result['originId'];
+
         return $result;
     }
 

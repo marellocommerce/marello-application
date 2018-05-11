@@ -58,10 +58,11 @@ class ProxyEntityWriter implements
         foreach ($items as $item) {
             if ($item instanceof Product) {
                 $identifier = $item->getOriginId();
-                if (!in_array($identifier, $uniqueKeys)) {
-                    $uniqueItems[] = $item;
-                    $uniqueKeys[] = $identifier;
+                if (in_array($identifier, $uniqueKeys)) {
+                    continue;
                 }
+                $uniqueItems[] = $item;
+                $uniqueKeys[] = $identifier;
             } else {
                 $uniqueItems[] = $item;
             }

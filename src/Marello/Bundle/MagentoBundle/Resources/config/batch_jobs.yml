@@ -65,7 +65,7 @@ connector:
                     title: import
                     class: Oro\Bundle\BatchBundle\Step\ItemStep
                     services:
-                        reader:    marello_magento.mage.product
+                        reader:    marello_magento.mage.product_connector
                         processor: marello_magento.importexport.processor.product
                         writer:    marello_magento.writer.proxy_entity_writer
                     parameters:

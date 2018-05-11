@@ -2,34 +2,27 @@
 
 namespace Marello\Bundle\MagentoBundle\ImportExport\Strategy;
 
-use Doctrine\Common\Util\ClassUtils;
+use Marello\Bundle\MagentoBundle\Entity\Product;
 
 class ProductMagentoImportStrategy extends DefaultMagentoImportStrategy
 {
     /**
      * {@inheritdoc}
      */
-    public function process($entity)
+    protected function findExistingEntity($entity, array $searchContext = [])
     {
-        $this->assertEnvironment($entity);
+        $existingEntity = null;
 
-        $this->cachedEntities = [];
-        $this->cachedInverseSingleRelations = [];
-        $this->cachedExistingEntities = [];
-        $this->cachedInverseMultipleRelations = [];
-
-        if (!$entity = $this->beforeProcessEntity($entity)) {
-            return null;
+        if ($entity instanceof Product) {
+            $existingEntity = $this->databaseHelper->findOneBy(
+                Product::class,
+                [
+                    'originId' => $entity->getOriginId(),
+                    'sku' => $entity->getSku()
+                ]
+            );
+            return $existingEntity;
         }
-
-        if (!$entity = $this->processEntity($entity, true, true, $this->context->getValue('itemData'))) {
-            return null;
-        }
-
-        if (!$entity = $this->afterProcessEntity($entity)) {
-            return null;
-        }
-
-        return $this->validateAndUpdateContext($entity);
+        return parent::findExistingEntity($entity, $searchContext);
     }
 }

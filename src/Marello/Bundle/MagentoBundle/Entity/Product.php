@@ -14,7 +14,7 @@ use Marello\Bundle\MagentoBundle\Model\ExtendProduct;
 /**
  * Class Product
  *
- * @package Oro\Bundle\OroMagentoBundle\Entity
+ * @package Marello\Bundle\MarelloMagentoBundle\Entity
  * @ORM\Entity
  * @ORM\Table(name="marello_magento_product")
  * @Config(
@@ -36,9 +36,10 @@ use Marello\Bundle\MagentoBundle\Model\ExtendProduct;
  *      }
  * )
  */
-class Product extends ExtendProduct implements IntegrationAwareInterface
+class Product extends ExtendProduct implements IntegrationAwareInterface, OriginAwareInterface
 {
     use IntegrationEntityTrait;
+    use OriginTrait;
 
     /*
      * FIELDS are duplicated to enable dataaudit only for customer fields
@@ -117,13 +118,6 @@ class Product extends ExtendProduct implements IntegrationAwareInterface
      */
     protected $websites;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(type="integer", options={"unsigned"=true}, name="origin_id")
-     */
-    protected $originId;
-
     public function __construct()
     {
         parent::__construct();
@@ -197,26 +191,6 @@ class Product extends ExtendProduct implements IntegrationAwareInterface
     public function getWebsites()
     {
         return $this->websites;
-    }
-
-    /**
-     * @param int $originId
-     *
-     * @return Product
-     */
-    public function setOriginId($originId)
-    {
-        $this->originId = $originId;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOriginId()
-    {
-        return $this->originId;
     }
 
     /**

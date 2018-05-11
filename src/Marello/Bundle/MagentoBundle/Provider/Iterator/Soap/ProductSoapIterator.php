@@ -5,108 +5,24 @@ namespace Marello\Bundle\MagentoBundle\Provider\Iterator\Soap;
 use Oro\Bundle\IntegrationBundle\Utils\ConverterUtils;
 use Marello\Bundle\MagentoBundle\Entity\Website;
 use Marello\Bundle\MagentoBundle\Provider\BatchFilterBag;
-use Marello\Bundle\MagentoBundle\Provider\Iterator\PredefinedFiltersAwareInterface;
 use Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport;
 
-class ProductSoapIterator extends AbstractPageableSoapIterator implements PredefinedFiltersAwareInterface
+class ProductSoapIterator extends AbstractPageableSoapIterator
 {
-    /**
-     * @var BatchFilterBag
-     */
-    protected $predefinedFilters;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPredefinedFiltersBag(BatchFilterBag $bag)
-    {
-        $this->predefinedFilters = $bag;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function modifyFilters()
-    {
-        if (null !== $this->predefinedFilters) {
-            $this->filter->merge($this->predefinedFilters);
-        }
-
-        parent::modifyFilters();
-    }
-
     /**
      * {@inheritdoc}
      */
     public function getEntityIds()
     {
-        $stores = [];
-        if ($this->websiteId !== Website::ALL_WEBSITES) {
-            $stores = $this->getStoresByWebsiteId($this->websiteId);
-        }
-        $filters = $this->getBatchFilter($this->lastSyncDate, [], $stores);
+        $filters = $this->getBatchFilter($this->lastSyncDate, [$this->websiteId]);
 
-        return $this->loadByFilters($filters);
+        $this->loadByFilters($filters);
+
+        return array_keys($this->entityBuffer);
     }
 
     /**
-     * @param array $filters
-     * @return array
-     */
-    protected function loadByFilters(array $filters)
-    {
-        $result = $this->transport->call(SoapTransport::ACTION_PRODUCT_LIST, $filters);
-        $result = $this->processCollectionResponse($result);
-
-        $this->entityBuffer = array_combine(
-            array_map(
-                function ($item) {
-                    if (is_object($item)) {
-                        return $item->product_id;
-                    } else {
-                        return $item['product_id'];
-                    }
-                },
-                $result
-            ),
-            $result
-        );
-
-        $idFieldName = $this->getIdFieldName();
-        $result      = array_map(
-            function ($item) use ($idFieldName) {
-                $id  = is_object($item) ? $item->product_id : $item['product_id'];
-
-                return (object)[$idFieldName => $id];
-            },
-            $result
-        );
-
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getEntity($id)
-    {
-        if (is_object($id)) {
-            $id = $id->{$this->getIdFieldName()};
-        }
-
-        if (!array_key_exists($id, $this->entityBuffer)) {
-            $this->logger->warning(sprintf('Entity with id "%s" was not found', $id));
-
-            return false;
-        }
-
-        $result = $this->entityBuffer[$id];
-
-        return ConverterUtils::objectToArray($result);
-    }
-
-    /**
-     * {@inheritdoc}
+     * @param array $ids
      */
     protected function loadEntities(array $ids)
     {
@@ -131,6 +47,40 @@ class ProductSoapIterator extends AbstractPageableSoapIterator implements Predef
         }
 
         $this->loadByFilters($filters->getAppliedFilters());
+    }
+
+    /**
+     * @param array $filters
+     */
+    protected function loadByFilters(array $filters)
+    {
+        $result = $this->transport->call(SoapTransport::ACTION_PRODUCT_LIST, $filters);
+        $result = $this->processCollectionResponse($result);
+
+        $ids = array_map(
+            function ($item) {
+                return is_object($item) ? $item->product_id : $item['product_id'];
+            },
+            $result
+        );
+
+        $this->entityBuffer = array_combine($ids, $result);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getEntity($id)
+    {
+        if (!array_key_exists($id, $this->entityBuffer)) {
+            $this->logger->warning(sprintf('Entity with id "%s" was not found', $id));
+
+            return false;
+        }
+
+        $result = $this->entityBuffer[$id];
+
+        return ConverterUtils::objectToArray($result);
     }
 
     /**
