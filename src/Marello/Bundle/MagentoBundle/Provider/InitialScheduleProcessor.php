@@ -62,7 +62,7 @@ class InitialScheduleProcessor extends AbstractInitialProcessor
             $this->forceSync($integration);
         }
 
-//        $this->processDictionaryConnectors($integration);
+        $this->processDictionaryConnectors($integration);
         $integration = $this->reloadEntity($integration);
         $this->scheduleInitialSyncIfRequired($integration);
 
