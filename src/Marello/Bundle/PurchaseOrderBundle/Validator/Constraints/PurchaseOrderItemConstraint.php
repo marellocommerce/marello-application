@@ -9,6 +9,7 @@ class PurchaseOrderItemConstraint extends Constraint
     /** @var string */
     public $productMessage = 'Product can not be null.';
     public $orderedAmountMessage = 'Ordered Amount must be higher than 0.';
+    public $purchasePriceMessage = 'Purchase Price must be higher than 0.';
 
     /**
      * @return string

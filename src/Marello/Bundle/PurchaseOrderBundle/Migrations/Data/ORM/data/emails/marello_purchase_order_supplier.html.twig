@@ -467,7 +467,13 @@
                                         {% if entity.dueDate %}
                                             <p style="font-size: 16px; margin: 1em 0;">Due date {{ entity.dueDate|date('d-m-Y') }}</p>
                                         {% endif %}
-                                        <p style="font-size: 16px; margin: 1em 0;">Shipping Address - {{ entity.warehouse.address|oro_format_address|escape }}</p>
+                                        <div class="control-group attribute-row" style="font-size: 16px; margin: 1em 0;">
+                                            <label class="control-label">Shipping Address:</label>
+                                            <div class="controls">
+                                                <div class="control-label">{{ entity.warehouse.address|oro_format_address|escape|nl2br }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr class="email-information">

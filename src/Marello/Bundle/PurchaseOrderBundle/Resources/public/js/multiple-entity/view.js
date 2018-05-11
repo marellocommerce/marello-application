@@ -73,6 +73,7 @@ define(['underscore', 'backbone', 'oro/dialog-widget'
 
         render: function() {
             var data = this.model.toJSON();
+            data.purchasePrice = parseFloat(data.purchasePrice).toFixed(2)
             this.$el.append(this.template(data));
             this.$el.find('a.entity-info').click(_.bind(this.viewDetails, this));
             this.$el.find('td.purchase-order-line-item-ordered-amount').find('input').change(_.bind(this.updateRowTotal, this));

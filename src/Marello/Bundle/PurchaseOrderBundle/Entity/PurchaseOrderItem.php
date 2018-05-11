@@ -157,7 +157,7 @@ class PurchaseOrderItem implements
     {
         if (($this->receivedAmount < 0) || ($this->receivedAmount > $this->orderedAmount)) {
             $context
-                ->buildViolation('marello.purchaseorder.purchaseorderitem.validation.received_amount')
+                ->buildViolation('marello.purchaseorder.purchaseorderitem.messages.error.received_amount')
                 ->atPath('receivedAmount')
                 ->addViolation();
         }
