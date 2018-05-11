@@ -97,6 +97,7 @@ marello:
             id.label:                         Id
             organization.label:               Organization
             primary_address.label:            Primary Address
+            shipping_address.label:           Shipping Address
             tax_identification_number.label:  Tax Identification Number
             addresses.label:                  Addresses
             email.label:                      Primary Email
