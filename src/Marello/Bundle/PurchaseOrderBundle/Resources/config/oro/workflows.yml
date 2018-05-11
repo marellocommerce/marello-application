@@ -7,6 +7,8 @@ workflows:
         defaults:
             active: true
 
+        applications: ['marello']
+
         attributes:
             received_items:
                 type: entity
