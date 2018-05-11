@@ -30,7 +30,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_4';
+        return 'v1_5';
     }
 
     /**
@@ -80,6 +80,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', []);
         $table->addColumn('primary_address_id', 'integer', ['notnull' => false]);
+        $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('name_prefix', 'string', ['notnull' => false, 'length' => 255]);
@@ -91,6 +92,7 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('tax_identification_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['primary_address_id'], 'UNIQ_75C456C9F5B7AF75');
+        $table->addUniqueIndex(['shipping_address_id'], 'UNIQ_75C456C94D4CFF2B');
         $table->addIndex(['organization_id']);
 
         $this->attachmentExtension->addAttachmentAssociation($schema, $table->getName());
@@ -248,6 +250,12 @@ class MarelloOrderBundleInstaller implements
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),
             ['primary_address_id'],
+            ['id'],
+            ['onDelete' => null, 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_address'),
+            ['shipping_address_id'],
             ['id'],
             ['onDelete' => null, 'onUpdate' => null]
         );

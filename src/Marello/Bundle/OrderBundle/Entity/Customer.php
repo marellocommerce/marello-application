@@ -56,6 +56,14 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     protected $primaryAddress;
 
     /**
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
+     * @ORM\JoinColumn(name="shipping_address_id", nullable=true)
+     *
+     * @var MarelloAddress
+     */
+    protected $shippingAddress;
+
+    /**
      * @ORM\Column(name="tax_identification_number", type="string", nullable=true)
      *
      * @var string
@@ -93,19 +101,26 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
      * @param string  $firstName
      * @param string  $lastName
      * @param string  $email
-     * @param MarelloAddress $address
+     * @param MarelloAddress $primaryAddress
+     * @param MarelloAddress $shippingAddress
      *
      * @return Customer
      */
-    public static function create($firstName, $lastName, $email, MarelloAddress $address)
-    {
+    public static function create(
+        $firstName,
+        $lastName,
+        $email,
+        MarelloAddress $primaryAddress,
+        MarelloAddress $shippingAddress
+    ) {
         $customer = new self();
 
         $customer
             ->setFirstName($firstName)
             ->setLastName($lastName)
             ->setEmail($email)
-            ->setPrimaryAddress($address)
+            ->setPrimaryAddress($primaryAddress)
+            ->setShippingAddress($shippingAddress)
         ;
 
         return $customer;
@@ -180,6 +195,27 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
         $this->primaryAddress = $primaryAddress;
 
         return $this;
+    }
+
+    /**
+     * @param MarelloAddress $shippingAddress
+     *
+     * @return $this
+     */
+    public function setShippingAddress(MarelloAddress $shippingAddress)
+    {
+        $shippingAddress->setCustomer($this);
+        $this->shippingAddress = $shippingAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return MarelloAddress
+     */
+    public function getShippingAddress()
+    {
+        return $this->shippingAddress;
     }
 
     /**
