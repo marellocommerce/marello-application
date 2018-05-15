@@ -58,6 +58,7 @@ class MarelloSupplierBundleInstaller implements
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('currency', 'string', ['length' => 3]);
+        $table->addColumn('po_send_by', 'string', ['length' => 30]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
         $table->addUniqueIndex(['address_id'], 'UNIQ_16532C7BF5B7AF75', []);

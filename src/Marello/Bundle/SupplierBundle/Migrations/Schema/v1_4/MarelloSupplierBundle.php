@@ -30,5 +30,6 @@ class MarelloSupplierBundle implements Migration
     {
         $table = $schema->getTable('marello_supplier_supplier');
         $table->addColumn('currency', 'string', ['length' => 3]);
+        $table->addColumn('po_send_by', 'string', ['length' => 30]);
     }
 }
