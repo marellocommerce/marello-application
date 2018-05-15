@@ -9,6 +9,7 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Model\WarehouseAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -35,7 +36,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      }
  * )
  */
-class PurchaseOrder implements DerivedPropertyAwareInterface
+class PurchaseOrder implements DerivedPropertyAwareInterface, WarehouseAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
 
@@ -287,7 +288,7 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @return Warehouse
+     * {@inheritdoc}
      */
     public function getWarehouse()
     {

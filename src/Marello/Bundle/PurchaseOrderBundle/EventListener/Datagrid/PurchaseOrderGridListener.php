@@ -47,7 +47,7 @@ class PurchaseOrderGridListener
         foreach ($purchaseOrders as $purchaseOrder) {
             $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($purchaseOrder);
             foreach ($workflowItems as $workflowItem) {
-                if ('pending' === $workflowItem->getCurrentStep()->getName()) {
+                if (in_array($workflowItem->getCurrentStep()->getName(), ['not_sent', 'pending'])) {
                     foreach ($purchaseOrder->getItems() as $purchaseOrderItem) {
                         $productsIds[] = $purchaseOrderItem->getProduct()->getId();
                     }
