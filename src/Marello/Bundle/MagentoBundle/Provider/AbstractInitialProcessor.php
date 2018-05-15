@@ -29,6 +29,7 @@ abstract class AbstractInitialProcessor extends MagentoSyncProcessor
      */
     protected function processDictionaryConnectors(Integration $integration)
     {
+        return; //TODO: enable store && website here
         /** @var ConnectorInterface[] $dictionaryConnectors */
         $dictionaryConnectors = $this->registry->getRegisteredConnectorsTypes(
             $integration->getType(),

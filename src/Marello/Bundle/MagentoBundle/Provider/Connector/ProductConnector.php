@@ -2,12 +2,10 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
-use Oro\Bundle\ImportExportBundle\Reader\IteratorBasedReader;
-use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
-
-class ProductConnector extends AbstractMagentoConnector implements TwoWaySyncConnectorInterface
+class ProductConnector extends AbstractMagentoConnector
 {
     const IMPORT_JOB_NAME = 'mage_product_import';
+    const TYPE            = 'product';
 
     /**
      * {@inheritdoc}
@@ -22,7 +20,7 @@ class ProductConnector extends AbstractMagentoConnector implements TwoWaySyncCon
      */
     public function getImportEntityFQCN()
     {
-        return self::PRODUCT_TYPE;
+        return self::MAGENTO_PRODUCT_TYPE;
     }
 
     /**
@@ -36,17 +34,9 @@ class ProductConnector extends AbstractMagentoConnector implements TwoWaySyncCon
     /**
      * {@inheritdoc}
      */
-    public function getExportJobName()
-    {
-        return 'magento_product_export';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
-        return 'product';
+        return self::TYPE;
     }
 
     /**

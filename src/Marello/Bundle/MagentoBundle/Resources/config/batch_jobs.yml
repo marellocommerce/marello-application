@@ -70,3 +70,26 @@ connector:
                         writer:    marello_magento.writer.proxy_entity_writer
                     parameters:
                         batch_size: 25
+                export:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.importexport.reader.product_export
+                        processor: marello_magento.importexport.processor.product_export
+                        writer:    marello_magento.importexport.writer.product
+                    parameters:
+                        batch_size: 1
+
+        mage_product_export:
+            title: "Product export to Magento"
+            type:  import
+            steps:
+                export:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.importexport.reader.product_export
+                        processor: marello_magento.importexport.processor.product_export
+                        writer:    marello_magento.importexport.writer.product
+                    parameters:
+                        batch_size: 1

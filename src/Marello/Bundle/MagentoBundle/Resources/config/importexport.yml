@@ -20,6 +20,7 @@ parameters:
 
     # normalizers
     marello_magento.importexport.normalizer.datetime.class:                      Marello\Bundle\MagentoBundle\ImportExport\Serializer\Normalizer\DateTimeNormalizer
+    marello_magento.importexport.serializer.product_normalizer.class:            Marello\Bundle\MagentoBundle\ImportExport\Serializer\ProductNormalizer
 
     # strategies
     marello_magento.import.strategy.abstract.class:                              Marello\Bundle\MagentoBundle\ImportExport\Strategy\AbstractImportStrategy
@@ -34,15 +35,18 @@ parameters:
     # writers
     marello_magento.writer.proxy_entity_writer.class:                            Marello\Bundle\MagentoBundle\ImportExport\Writer\ProxyEntityWriter
     marello_magento.importexport.writer.abstract_export.class:                   Marello\Bundle\MagentoBundle\ImportExport\Writer\AbstractExportWriter
+    marello_magento.importexport.writer.product.class:                           Marello\Bundle\MagentoBundle\ImportExport\Writer\ProductExportWriter
 
     # Readers
     marello_magento.reader.context.class:                                        Marello\Bundle\MagentoBundle\Provider\Reader\ContextReader
     marello_magento.importexport.reader.entity.class:                            Marello\Bundle\MagentoBundle\Provider\Reader\ContextOptionReader
+    marello_magento.importexport.reader.product_export.class:                    Marello\Bundle\MagentoBundle\Provider\Reader\ProductExportReader
 
     # ImportExport Processor
     marello_magento.importexport.processor.context.class:                        Marello\Bundle\MagentoBundle\ImportExport\Processor\ContextProcessor
 
     marello_magento.provider.strategy.two_way_sync.class:                        Marello\Bundle\MagentoBundle\Provider\Strategy\TwoWaySyncStrategy
+
 services:
     # Data converter
     marello_magento.importexport.data_converter.website:
@@ -238,12 +242,12 @@ services:
             - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.product.class%, alias: marello_magento.product }
 
     # Export processor
-#    marello_magento.importexport.processor.product_export:
-#        parent: oro_integration.importexport.processor.export
-#        calls:
-#            - [setDataConverter, ["@marello_magento.importexport.data_converter.product"]]
-#        tags:
-#            - { name: oro_importexport.processor, type: export, entity: %marello_product.entity.class%, alias: marello_magento.product_export }
+    marello_magento.importexport.processor.product_export:
+        parent: oro_integration.importexport.processor.export
+        calls:
+            - [setDataConverter, ["@marello_magento.importexport.data_converter.product"]]
+        tags:
+            - { name: oro_importexport.processor, type: export, entity: %marello_product.entity.class%, alias: marello_magento.product_export }
 
     # Writers
     marello_magento.writer.proxy_entity_writer:
@@ -262,6 +266,12 @@ services:
             - [setTransport, ["@marello_magento.transport.soap_transport"]]
             - [setChannelClassName, [%oro_integration.entity.class%]]
 
+    marello_magento.importexport.writer.product:
+        class: %marello_magento.importexport.writer.product.class%
+        parent: marello_magento.importexport.writer.abstract_export
+        calls:
+            - [setStrategy, ["@marello_magento.provider.strategy.two_way_sync.product"]]
+
     # readers
     marello_magento.importexport.reader.entity:
         class: %marello_magento.importexport.reader.entity.class%
@@ -275,7 +285,30 @@ services:
         arguments:
             - "@oro_importexport.context_registry"
 
+    marello_magento.importexport.reader.product_export:
+        class: '%marello_magento.importexport.reader.product_export.class%'
+        parent: 'oro_importexport.reader.entity'
+        calls:
+            - [setSourceEntityName, ['%marello_product.entity.class%']]
+            - [setLogger, ['@oro_integration.logger.strategy']]
+
+    #Export Normalizer
+    marello_magento.importexport.serializer.product_normalizer:
+        class: '%marello_magento.importexport.serializer.product_normalizer.class%'
+        parent: oro_importexport.serializer.configurable_entity_normalizer
+        calls:
+            - [setEntityClass, ['%marello_product.entity.class%']]
+        tags:
+            - { name: oro_importexport.normalizer }
+
     # strategy
+    #not used yet
+    marello_magento.provider.strategy.two_way_sync.product:
+        class: %marello_magento.provider.strategy.two_way_sync.class%
+        arguments:
+            - "@marello_magento.importexport.processor.product"
+            - "@marello_magento.importexport.processor.product_export"
+            - "@oro_entity.doctrine_helper"
 
     # utils
     marello_magento.post_job_executor:

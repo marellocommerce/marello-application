@@ -607,5 +607,4 @@ class RestTransport implements
     {
         //TODO: impliment product list via REST
     }
-
 }

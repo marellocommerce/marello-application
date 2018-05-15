@@ -103,6 +103,18 @@ abstract class AbstractExportWriter extends PersistentBatchWriter
         return $this->contextRegistry->getByStepExecution($this->stepExecution);
     }
 
+//    /**
+//     * @param $code
+//     * @return mixed
+//     */
+//    protected function getContextOption($code)
+//    {
+//        $context = $this->contextRegistry
+//            ->getByStepExecution($this->stepExecution);
+//
+//        return $context->getValue($code);
+//    }
+
     /**
      * {@inheritdoc}
      */
