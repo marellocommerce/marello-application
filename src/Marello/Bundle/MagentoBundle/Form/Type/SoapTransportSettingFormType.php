@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class SoapTransportSettingFormType extends AbstractTransportSettingFormType
 {
-    const NAME = 'oro_magento_soap_transport_setting_form_type';
+    const NAME = 'marello_magento_soap_transport_setting_form_type';
 
     /**
      * {@inheritdoc}

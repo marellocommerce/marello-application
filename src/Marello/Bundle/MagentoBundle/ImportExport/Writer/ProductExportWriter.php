@@ -8,33 +8,97 @@
 
 namespace Marello\Bundle\MagentoBundle\ImportExport\Writer;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
-
 class ProductExportWriter extends AbstractExportWriter
 {
+    const CONTEXT_POST_PROCESS_KEY = 'postProcessProduct';
+    const PRODUCT_ID = 'product_id';
+    
     /**
      * {@inheritdoc}
      */
     public function write(array $items)
     {
-        /** @var Product $entity */
-//        $entity = $this->getEntity();
+        $item = reset($items);
 
-//        $item = reset($items);
+        if (!$item) {
+            $this->logger->error('Wrong Product data', (array)$item);
 
-//        if (!$item) {
-//            $this->logger->error('Wrong Product data', (array)$item);
-//
-//            return;
-//        }
-
-        $this->transport->init($this->getChannel()->getTransport());
-        if (empty($itemExistInLocalProduct)) {
-            //TODO: CREATE new product in M1
-        } else {
-            //TODO: UPDATE new product in M1
+            return;
         }
 
-        parent::write([$entity]);
+        $this->transport->init($this->getChannel()->getTransport());
+
+        if (!isset($item[self::PRODUCT_ID])) {
+            $this->writeNewItem($item);
+        } else {
+            //TODO: UPDATE new product in M1
+//            $this->writeExistingItem($item);
+        }
     }
+
+    /**
+     * @param array $item
+     */
+    protected function writeNewItem(array $item)
+    {
+        try {
+            $productId = $this->transport->createProduct($item);
+
+            if ($productId) {
+                $this->stepExecution->getJobExecution()
+                    ->getExecutionContext()
+                    ->put(self::CONTEXT_POST_PROCESS_KEY, $productId);
+
+                $this->logger->info(
+                    sprintf(
+                        'Product with data %s successfully created',
+                        $productId
+                    )
+                );
+            } else {
+                $this->logger->error(sprintf('Product with data %s was not created', json_encode($item)));
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+            $this->stepExecution->addFailureException($e);
+        }
+    }
+
+    /**
+     * @param array $item
+     */
+    protected function writeExistingItem(array $item)
+    {
+        $productId = $item[self::PRODUCT_ID];
+
+        try {
+            $productData = $this->transport->updateProduct($productId, $item);
+
+            if ($productData) {
+                $this->stepExecution->getJobExecution()
+                    ->getExecutionContext()
+                    ->put(self::CONTEXT_POST_PROCESS_KEY, [$productData]);
+
+                $this->logger->info(
+                    sprintf(
+                        'Product with id %s and data %s successfully updated',
+                        $productId,
+                        json_encode($productData)
+                    )
+                );
+            } else {
+                $this->logger->error(
+                    sprintf(
+                        'Product with id %s and data %s was not updated',
+                        $productId,
+                        json_encode($item)
+                    )
+                );
+            }
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+            $this->stepExecution->addFailureException($e);
+        }
+    }
+
 }

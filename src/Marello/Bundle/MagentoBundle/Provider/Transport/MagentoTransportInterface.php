@@ -97,6 +97,25 @@ interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareI
     public function getWebsites();
 
     /**
+     * Create product.
+     *
+     * @param array $productData
+     *
+     * @return int ID of the created product
+     */
+    public function createProduct(array $productData);
+
+    /**
+     * Update product.
+     *
+     * @param int $productId
+     * @param array $productData
+     *
+     * @return bool True if the product is updated
+     */
+    public function updateProduct($productId, array $productData);
+
+    /**
      * Retrieve product list from magento
      *
      * @return \Iterator

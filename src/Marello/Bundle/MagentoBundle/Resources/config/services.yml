@@ -255,7 +255,7 @@ services:
             - "@marello_magento.form.subscriber.transport_setting"
             - "@oro_integration.manager.types_registry"
         tags:
-            - { name: form.type, alias: oro_magento_soap_transport_setting_form_type }
+            - { name: form.type, alias: marello_magento_soap_transport_setting_form_type }
 
     marello_magento.form.type.rest_transport_setting:
         class: Marello\Bundle\MagentoBundle\Form\Type\RestTransportSettingFormType

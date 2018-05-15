@@ -68,6 +68,8 @@ class SoapTransport extends BaseSOAPTransport implements
     const ACTION_STORE_LIST = 'storeList';
     const ACTION_ORDER_LIST = 'salesOrderList';
     const ACTION_PRODUCT_LIST = 'catalogProductList';
+    const ACTION_PRODUCT_CREATE = 'catalogProductCreate';
+    const ACTION_PRODUCT_UPDATE = 'catalogProductUpdate';
     const ACTION_ORDER_INFO = 'salesOrderInfo';
     const ACTION_CREDIT_MEMO_LIST = 'salesOrderCreditmemoList';
     const ACTION_CREDIT_MEMO_INFO = 'salesOrderCreditmemoInfo';
@@ -574,6 +576,28 @@ class SoapTransport extends BaseSOAPTransport implements
         return new WebsiteSoapIterator($this);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function createProduct(array $productData)
+    {
+        return $this->call(
+            SoapTransport::ACTION_PRODUCT_CREATE,
+            $productData
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateProduct($productId, array $item)
+    {
+        return $this->call(
+            SoapTransport::ACTION_PRODUCT_UPDATE,
+            ['productId' => $productId, 'productData' => $item]
+        );
+    }
+
     public function getProducts()
     {
         $settings = $this->settings->all();
@@ -761,7 +785,7 @@ class SoapTransport extends BaseSOAPTransport implements
      */
     public function getSettingsFormType()
     {
-        return 'oro_magento_soap_transport_setting_form_type';
+        return 'marello_magento_soap_transport_setting_form_type';
     }
 
     /**

@@ -52,9 +52,6 @@ class ProductDataConverter extends IntegrationAwareDataConverter
         $sku = $exportedRecord['sku'];
         $name = $exportedRecord['name'];
         $productData = [
-            'type_id'           => self::PRODUCT_TYPE_SIMPLE,
-            'attribute_set_id'  => self::DEFAULT_ATTRIBUTE_SET_ID,
-            'sku'               => $sku,
             'weight'            => $exportedRecord['weight'],
             'status'            => self::DEFAULT_PRODUCT_STATUS,
             'visibility'        => self::DEFAULT_CATALOG_VISIBILITY,
@@ -63,7 +60,13 @@ class ProductDataConverter extends IntegrationAwareDataConverter
             'short_description' => $name,
             'tax_class_id'      => self::DEFAULT_TAX_CLASS_ID,
         ];
-        return $productData;
+
+        return [
+            'productData' => $productData,
+            'sku' => $sku,
+            'set' => self::DEFAULT_ATTRIBUTE_SET_ID,
+            'type' => self::PRODUCT_TYPE_SIMPLE
+        ];
     }
 
     /**

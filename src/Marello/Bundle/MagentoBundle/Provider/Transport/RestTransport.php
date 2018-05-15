@@ -607,4 +607,20 @@ class RestTransport implements
     {
         //TODO: impliment product list via REST
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createProduct(array $productData)
+    {
+        //TODO: impliment product
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateProduct($productId, array $item)
+    {
+        //TODO: impliment product
+    }
 }
