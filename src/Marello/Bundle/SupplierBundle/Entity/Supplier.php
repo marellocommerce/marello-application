@@ -297,5 +297,4 @@ class Supplier implements CurrencyAwareInterface
         
         return $this;
     }
-    
 }

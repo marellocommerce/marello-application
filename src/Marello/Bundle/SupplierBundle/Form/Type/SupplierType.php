@@ -55,7 +55,8 @@ class SupplierType extends AbstractType
                     'mapped' => true,
                     'choices' => [
                         Supplier::SEND_PO_MANUALLY => 'marello.supplier.po_send_by.manual',
-                        Supplier::SEND_PO_BY_EMAIL => 'marello.supplier.po_send_by.email'],
+                        Supplier::SEND_PO_BY_EMAIL => 'marello.supplier.po_send_by.email'
+                    ]
                 ]
             );
 

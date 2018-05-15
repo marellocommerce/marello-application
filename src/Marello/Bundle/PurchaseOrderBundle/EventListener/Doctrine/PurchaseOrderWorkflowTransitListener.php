@@ -4,24 +4,24 @@ namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Marello\Bundle\SupplierBundle\Entity\Supplier;
+
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-    
+
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+
 class PurchaseOrderWorkflowTransitListener
 {
     const WORKFLOW = 'marello_purchase_order_workflow';
     const TRANSIT_TO_STEP = 'send';
 
-    /**
-     * @var WorkflowManager
-     */
+    /** @var WorkflowManager $workflowManager */
     private $workflowManager;
-    /**
-     * @var string
-     */
+
+    /** @var string $purchaseOrderId*/
     private $purchaseOrderId;
+
     /**
      * @param WorkflowManager $workflowManager
      */
@@ -29,6 +29,7 @@ class PurchaseOrderWorkflowTransitListener
     {
         $this->workflowManager = $workflowManager;
     }
+
     /**
      * @param LifecycleEventArgs $args
      */
@@ -39,6 +40,7 @@ class PurchaseOrderWorkflowTransitListener
             $this->purchaseOrderId = $entity->getId();
         }
     }
+
     /**
      * @param PostFlushEventArgs $args
      */
@@ -46,6 +48,7 @@ class PurchaseOrderWorkflowTransitListener
     {
         if ($this->purchaseOrderId) {
             $entityManager = $args->getEntityManager();
+            /** @var PurchaseOrder $entity */
             $entity = $entityManager
                 ->getRepository(PurchaseOrder::class)
                 ->find($this->purchaseOrderId);
@@ -55,6 +58,7 @@ class PurchaseOrderWorkflowTransitListener
             }
         }
     }
+
     /**
      * @param PurchaseOrder $order
      * @param string $workflow
@@ -66,8 +70,10 @@ class PurchaseOrderWorkflowTransitListener
         if (!$workflowItem) {
             return;
         }
+
         $this->workflowManager->transitIfAllowed($workflowItem, $transition);
     }
+
     /**
      * @param PurchaseOrder $order
      * @param string $workflow
