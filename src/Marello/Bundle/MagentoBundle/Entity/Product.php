@@ -123,6 +123,7 @@ class Product extends ExtendProduct implements IntegrationAwareInterface, Origin
         parent::__construct();
 
         $this->websites = new ArrayCollection();
+        $this->prePersist();
     }
 
     /**
@@ -199,5 +200,26 @@ class Product extends ExtendProduct implements IntegrationAwareInterface, Origin
     public function __toString()
     {
         return (string)$this->getName();
+    }
+
+    /**
+     * Pre update event handler
+     *
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * Pre persist event handler
+     *
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

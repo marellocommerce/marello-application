@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Reader;
 
+use Doctrine\ORM\Query\Expr\Join;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -29,15 +30,5 @@ class ProductExportReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityRe
         */
 
         return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function read()
-    {
-        $result = parent::read();
-
-        return $result;
     }
 }

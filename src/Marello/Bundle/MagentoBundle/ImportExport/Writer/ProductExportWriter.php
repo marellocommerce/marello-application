@@ -8,11 +8,13 @@
 
 namespace Marello\Bundle\MagentoBundle\ImportExport\Writer;
 
+use Marello\Bundle\MagentoBundle\Entity\Product;
+
 class ProductExportWriter extends AbstractExportWriter
 {
-    const CONTEXT_POST_PROCESS_KEY = 'postProcessProduct';
-    const PRODUCT_ID = 'product_id';
-    
+    const CONTEXT_POST_PROCESS_KEY = 'postProcessProductExport';
+    const PRODUCT_SKU = 'sku';
+
     /**
      * {@inheritdoc}
      */
@@ -26,14 +28,31 @@ class ProductExportWriter extends AbstractExportWriter
             return;
         }
 
+        $productId = $this->getProduct($item[self::PRODUCT_SKU]);
+
         $this->transport->init($this->getChannel()->getTransport());
 
-        if (!isset($item[self::PRODUCT_ID])) {
+        if (!$productId) {
             $this->writeNewItem($item);
         } else {
-            //TODO: UPDATE new product in M1
-//            $this->writeExistingItem($item);
+            $this->writeExistingItem($productId, $item['productData']);
         }
+    }
+
+    /**
+     * @param $sku
+     * @return mixed
+     */
+    protected function getProduct($sku)
+    {
+        /** @var EntityManager $em */
+        $em = $this->registry->getManager();
+
+        if ($product = $em->getRepository('MarelloMagentoBundle:Product')->findOneBy(['sku' => $sku])) {
+            return $product->getOriginId();
+        }
+
+        return false;
     }
 
     /**
@@ -45,9 +64,17 @@ class ProductExportWriter extends AbstractExportWriter
             $productId = $this->transport->createProduct($item);
 
             if ($productId) {
+
+                $magentoProduct = new Product();
+                $magentoProduct->setChannel($this->getChannel())
+                    ->setSku($item[self::PRODUCT_SKU])
+                    ->setOriginId($productId)
+                    ->setName($item['productData']['name'])
+                    ->setType($item['type']);
+
                 $this->stepExecution->getJobExecution()
                     ->getExecutionContext()
-                    ->put(self::CONTEXT_POST_PROCESS_KEY, $productId);
+                    ->put(self::CONTEXT_POST_PROCESS_KEY, [$magentoProduct]);
 
                 $this->logger->info(
                     sprintf(
@@ -67,10 +94,8 @@ class ProductExportWriter extends AbstractExportWriter
     /**
      * @param array $item
      */
-    protected function writeExistingItem(array $item)
+    protected function writeExistingItem($productId, array $item)
     {
-        $productId = $item[self::PRODUCT_ID];
-
         try {
             $productData = $this->transport->updateProduct($productId, $item);
 
