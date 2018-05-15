@@ -7,8 +7,6 @@ workflows:
         defaults:
             active: true
 
-        applications: ['marello']
-
         attributes:
             payment_reference:
                 type: string

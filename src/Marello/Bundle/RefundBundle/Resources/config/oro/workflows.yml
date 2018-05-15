@@ -7,8 +7,6 @@ workflows:
         defaults:
             active: true
 
-        applications: ['marello']
-
         steps:
             pending:
                 allowed_transitions:
