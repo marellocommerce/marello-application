@@ -10,3 +10,8 @@ services:
             - '@translator'
         tags:
             - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-purchase-order-create-step-two, method: onPurchaseOrderCreateStepTwo }
+
+     marelloenterprise_purchaseorder.inventoty_update_before.listener:
+        class: 'MarelloEnterprise\Bundle\PurchaseOrderBundle\EventListener\InventoryUpdateBeforeListener'
+        tags:
+            - { name: kernel.event_listener, event: marello_inventory.inventory.update_before, method: handleUpdateInventoryBeforeEvent }
