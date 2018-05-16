@@ -33,7 +33,6 @@ define([
             'connectorsEl',
             'extensionVersionEl',
             'magentoVersionEl',
-            'sharedGuestEmailListEl',
             'isDisplayOrderNotesEl',
             'isOrderNoteSupportExtensionVersionEl'
         ],
@@ -172,7 +171,6 @@ define([
                 this.handleExtensionVersion(res);
                 this.handleIsOrderNoteSupportExtensionVersion(res);
                 this.handleMagentoVersion(res);
-                this.handleSharedGuestEmailListEl(res);
 
                 this.renderSuccessMessage(res);
             } else {
@@ -302,14 +300,6 @@ define([
 
         handleMagentoVersion: function(res) {
             $(this.options.magentoVersionEl).val(res.magentoVersion || '');
-        },
-
-        handleSharedGuestEmailListEl: function(res) {
-            var disabledAttrValue = (res.isExtensionInstalled || false) === false;
-            $(this.options.sharedGuestEmailListEl).prop(
-                'disabled',
-                disabledAttrValue
-            );
         },
 
         /**

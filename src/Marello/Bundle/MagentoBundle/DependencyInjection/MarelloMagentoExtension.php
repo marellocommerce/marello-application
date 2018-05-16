@@ -16,7 +16,6 @@ class MarelloMagentoExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('orm.yml');
         $loader->load('importexport.yml');
 
         $config  = $this->processConfiguration(new Configuration(), $configs);

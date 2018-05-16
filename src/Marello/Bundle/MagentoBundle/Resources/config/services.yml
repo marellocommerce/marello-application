@@ -118,9 +118,6 @@ parameters:
     marello_magento.security.acl.voter.organization.class:                   Marello\Bundle\MagentoBundle\Acl\Voter\OrganizationAnnotationVoter
 
     marello_magento.datagrid.customer_actions_provider.class:                Marello\Bundle\MagentoBundle\Datagrid\CustomerActionPermissionProvider
-#    marello_magento.datagrid.newsletter_subscriber_provider.class:           Marello\Bundle\MagentoBundle\Datagrid\NewsletterSubscriberPermissionProvider
-
-#    marello_magento.model.newsletter_subscriber_manager.class:               Marello\Bundle\MagentoBundle\Model\NewsletterSubscriberManager
 
     marello_magento.service.automatic_discovery.class:                       Marello\Bundle\MagentoBundle\Service\AutomaticDiscovery
     marello_magento.strategy.automatic_discovery.default.class:              Marello\Bundle\MagentoBundle\Service\AutomaticDiscovery\DefaultDiscoveryStrategy
@@ -163,11 +160,10 @@ services:
         arguments:
             - "@oro_security.encoder.mcrypt"
             - "@marello_magento.wsdl_manager"
-            - "@marello_magento.provider.soap.unique_customer_email"
             - []
         tags:
             - { name: oro_integration.transport, type: magento_soap, channel_type: magento }
-            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+            - { name: marello_magento.bundle_config.aware, argument_number: 2 }
         calls:
             - [setLogger, ["@oro_integration.logger.strategy"]]
 
@@ -239,8 +235,8 @@ services:
         calls:
             - [setLogger, ["@oro_integration.logger.strategy"]]
 
-    marello_magento.provider.soap.unique_customer_email:
-        class: Marello\Bundle\MagentoBundle\Provider\UniqueCustomerEmailSoapProvider
+#    marello_magento.provider.soap.unique_customer_email:
+#        class: Marello\Bundle\MagentoBundle\Provider\UniqueCustomerEmailSoapProvider
 
     # forms
     marello_magento.form.subscriber.transport_setting:
@@ -266,11 +262,11 @@ services:
         tags:
             - { name: form.type, alias: oro_magento_rest_transport_setting_form_type }
 
-    marello_magento.form.type.shared_guest_email_list:
-        class: Marello\Bundle\MagentoBundle\Form\Type\SharedGuestEmailListType
-        tags:
-           - { name: form.type, alias: oro_magento_shared_guest_email_list_type }
-
+#    marello_magento.form.type.shared_guest_email_list:
+#        class: Marello\Bundle\MagentoBundle\Form\Type\SharedGuestEmailListType
+#        tags:
+#           - { name: form.type, alias: oro_magento_shared_guest_email_list_type }
+#
     marello_magento.form.type.is_display_order_notes:
         class: Marello\Bundle\MagentoBundle\Form\Type\IsDisplayOrderNotesFormType
         tags:
@@ -279,7 +275,7 @@ services:
     marello_magento.form.type.transport_check:
         class: %marello_magento.form.type.transport_check.class%
         tags:
-            - { name: form.type, alias: oro_magento_transport_check_button }
+            - { name: form.type, alias: marello_magento_transport_check_button }
 
     marello_magento.form.type.order_select:
         class: %marello_magento.form.type.order_select.class%
@@ -331,146 +327,6 @@ services:
         tags:
             - { name: form.type, alias: oro_magento_store_select }
 
-#    marello_magento.form.type.customer_channel_selector:
-#        class: %marello_magento.form.type.customer_channel_selector.class%
-#        arguments:
-#            - '@oro_channel.provider.channels_by_entities'
-#        calls:
-#            - [setChannelClass, [%oro_channel.entity.class%]]
-#        tags:
-#            - { name: form.type, alias: oro_magento_customer_channel_select }
-#
-#    marello_magento.form.handler.customer:
-#        class: %marello_magento.form.handler.customer.class%
-#        parent: oro_form.model.update_handler
-#        calls:
-#            - [setStateHandler,  ["@marello_magento.customer_state_handler"]]
-#
-#    marello_magento.form.cart.api:
-#        class: Symfony\Component\Form\Form
-#        factory_method: createNamed
-#        factory_service: form.factory
-#        arguments:
-#            - ~
-#            - 'cart_api_type'
-#
-#    marello_magento.form.type.cart.api:
-#        class: %marello_magento.form.type.cart.api.class%
-#        tags:
-#            - { name: form.type, alias: cart_api_type }
-#
-#    marello_magento.form.type.cart_item_collection:
-#        class: %marello_magento.form.type.cart_item_collection.class%
-#        tags:
-#             - { name: form.type, alias: oro_cart_item_collection }
-#
-#    marello_magento.form.cart_item.api:
-#        class: Symfony\Component\Form\Form
-#        factory_method: createNamed
-#        factory_service: form.factory
-#        arguments:
-#            - ~
-#            - 'cart_item_api_type'
-#
-#    marello_magento.form.type.cart_item.api:
-#        class: %marello_magento.form.type.cart_item.api.class%
-#        tags:
-#            - { name: form.type, alias: cart_item_api_type }
-#
-#    marello_magento.form.cart_address.api:
-#        class: Symfony\Component\Form\Form
-#        factory_method: createNamed
-#        factory_service: form.factory
-#        arguments:
-#            - ~
-#            - 'cart_address_api_type'
-#
-#    marello_magento.form.type.cart_address:
-#        class: %marello_magento.form.type.cart_address.class%
-#        tags:
-#             - { name: form.type, alias: cart_address_api_type }
-#
-#    marello_magento.form.order.api:
-#        class: Symfony\Component\Form\Form
-#        factory_method: createNamed
-#        factory_service: form.factory
-#        arguments:
-#            - ~
-#            - "order_api_type"
-#
-#    marello_magento.form.type.order.api:
-#        class: %marello_magento.form.type.order.api.class%
-#        arguments:
-#            - %marello_magento.entity.order.class%
-#        tags:
-#            - { name: form.type, alias: order_api_type }
-#
-#    marello_magento.form.type.order_item_collection:
-#        class: %marello_magento.form.type.order_item_collection.class%
-#        tags:
-#             - { name: form.type, alias: oro_order_item_collection }
-#
-#    marello_magento.form.type.order_item:
-#        class: %marello_magento.form.type.order_item.class%
-#        tags:
-#             - { name: form.type, alias: oro_order_item }
-#
-#    marello_magento.form.type.order_address.api:
-#        class: %marello_magento.form.type.order_address.api.class%
-#        tags:
-#            - { name: form.type, alias: order_address_api_type }
-#
-#    marello_magento.form.order_address.api:
-#        class: Symfony\Component\Form\Form
-#        factory_method: createNamed
-#        factory_service: form.factory
-#        arguments:
-#            - ~
-#            - 'order_address_api_type'
-#
-#    marello_magento.form.type.order_item.api:
-#        class: %marello_magento.form.type.order_item.api.class%
-#        tags:
-#            - { name: form.type, alias: order_item_api_type }
-#
-#    marello_magento.form.order_item.api:
-#        class: Symfony\Component\Form\Form
-#        factory_method: createNamed
-#        factory_service: form.factory
-#        arguments:
-#            - ~
-#            - 'order_item_api_type'
-#
-#    marello_magento.form.type.customer.api:
-#        class: %marello_magento.form.type.customer.api.class%
-#        arguments:
-#            - %marello_magento.entity.customer.class%
-#        tags:
-#            - { name: form.type, alias: api_customer_type }
-#
-#    marello_magento.form.customer.api:
-#        class: Symfony\Component\Form\Form
-#        factory_method: createNamed
-#        factory_service: form.factory
-#        arguments:
-#            - ~
-#            - "api_customer_type"
-#
-#    marello_magento.form.customer_address.api:
-#        class: Symfony\Component\Form\Form
-#        factory_method: createNamed
-#        factory_service: form.factory
-#        arguments:
-#            - ~
-#            - "customer_address_api_type"
-#
-#    marello_magento.form.type.customer_address.api:
-#        class: %marello_magento.form.type.customer_address.api.class%
-#        arguments:
-#            - %marello_magento.entity.customer.class%
-#        tags:
-#            - { name: form.type, alias: customer_address_api_type }
-
     # Search handler
     marello_magento.form.autocomplete.order.search_handler:
         parent: oro_form.autocomplete.search_handler
@@ -500,20 +356,6 @@ services:
         lazy: true
 
     # event listeners
-#    marello_magento.event_listener.order_grid:
-#        class: Marello\Bundle\MagentoBundle\EventListener\OrderGridListener
-#        arguments:
-#            - "@marello_magento.country.datagrid_helper"
-#        tags:
-#            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.magento-order-grid, method: onBuildBefore }
-#
-#    marello_magento.event_listener.customer_currency:
-#        class: Marello\Bundle\MagentoBundle\EventListener\CustomerCurrencyListener
-#        arguments:
-#            - '@service_container'
-#        tags:
-#            - { name: doctrine.orm.entity_listener, entity: '%marello_magento.entity.customer.class%', event: prePersist }
-#
 #    marello_magento.event_listener.order:
 #        class: Marello\Bundle\MagentoBundle\EventListener\OrderListener
 ##        arguments:
@@ -522,41 +364,6 @@ services:
 #            - { name: doctrine.orm.entity_listener, entity: '%marello_magento.entity.order.class%', event: prePersist }
 #            - { name: doctrine.orm.entity_listener, entity: '%marello_magento.entity.order.class%', event: preUpdate }
 #            - { name: doctrine.event_listener, event: postFlush, priority: 5 }
-#
-#    marello_magento.event_listener.customer_order_grid_listener:
-#        class: %oro.magento.event_listener.account_widgets_data_grid_listener.class%
-#        arguments:
-#            - ['customerId', 'channelId']
-#        tags:
-#            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.magento-customer-order-grid, method: onBuildAfter }
-#            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.magento-customer-cart-grid, method: onBuildAfter }
-#            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.magento-customer-orders-widget-grid, method: onBuildAfter }
-#            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.magento-customer-cart-widget-grid, method: onBuildAfter }
-#            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.magento-customer-recent-purchases-widget-grid, method: onBuildAfter }
-#            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.magento-customer-recent-purchases-grid, method: onBuildAfter }
-#
-#    marello_magento.event_listener.channel_owner_set:
-#        class: %marello_magento.event_listener.channel_owner_set.class%
-#        arguments:
-#            - "@doctrine.orm.default_entity_manager"
-#        tags:
-#            - { name: kernel.event_listener, event: oro_integration.default_owner.set, method: onSet }
-#
-#    marello_magento.event_listener.customer_group_grid_listener:
-#        class: Marello\Bundle\MagentoBundle\EventListener\CustomerGroupGridListener
-#        arguments:
-#            - '@security.authorization_checker'
-#        tags:
-#            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.magento-customers-group-by-channel-grid, method: onBuildAfter }
-#
-#    marello_magento.event_listener.store_grid_listener:
-#        class: Marello\Bundle\MagentoBundle\EventListener\StoreGridListener
-#        arguments:
-#            - '@security.authorization_checker'
-#            - '%oro_channel.entity.class%'
-#            - '@doctrine.orm.entity_manager'
-#        tags:
-#            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.magento-store-by-channel-grid, method: onBuildAfter }
 
     marello_magento.event_listener.update_integration_connectors:
         class: %marello_magento.event_listener.update_integration_connectors.class%
@@ -572,16 +379,6 @@ services:
         class: %marello_magento.event_listener.writer_error.class%
         tags:
             - { name: kernel.event_listener, event: oro_integration.writer_error, method: handleError }
-
-     # This listener implemented to enable/disable marello_magento.event_listener.delayed_search_reindex
-    # for Magento integration only
-#    marello_magento.event_listener.alternative_search_index_switcher:
-#        class: 'Marello\Bundle\MagentoBundle\EventListener\AlternativeSearchIndexSwitcherListener'
-#        arguments:
-#            - '@oro_platform.optional_listeners.manager'
-#        tags:
-#            - { name: kernel.event_listener, event: oro_integration.event.sync_before, method: onStart }
-#            - { name: kernel.event_listener, event: oro_integration.event.sync_after, method: onFinish }
 
     marello_magento.service.magento_url_generator:
         class: %marello_magento.magento_url_generator.class%
@@ -657,56 +454,6 @@ services:
         calls:
             - [setSettingsProvider,  ["@marello_magento.model.channel_settings_provider"]]
 
-#    marello_magento.security.acl.voter.customer:
-#        class: %marello_magento.security.acl.voter.customer.class%
-#        parent: marello_magento.security.acl.voter.two_way_sync
-#        calls:
-#            - [setClassName, [%marello_magento.entity.customer.class%]]
-#        tags:
-#            - { name: security.voter, priority: 500 }
-#
-#    marello_magento.security.acl.voter.newletter_subscriber:
-#        class: %marello_magento.security.acl.voter.newletter_subscriber.class%
-#        parent: marello_magento.security.acl.voter.two_way_sync
-#        calls:
-#            - [setClassName, [%marello_magento.entity.newsletter_subscriber.class%]]
-#        tags:
-#            - { name: security.voter, priority: 500 }
-#
-#    marello_magento.security.acl.voter.organization:
-#        class: %marello_magento.security.acl.voter.organization.class%
-#        parent: marello_magento.security.acl.voter.two_way_sync
-#        calls:
-#            - [setClassName, [%oro_organization.organization.entity.class%]]
-#        tags:
-#            - { name: security.voter, priority: 600 }
-#
-#    marello_magento.datagrid.customer_actions_provider:
-#        class: %marello_magento.datagrid.customer_actions_provider.class%
-#        parent: marello_magento.datagrid.newsletter_subscriber_provider
-#        arguments:
-#            - "@marello_magento.model.channel_settings_provider"
-#
-#    marello_magento.state_manager:
-#        class: %marello_magento.state_manager.class%
-#
-#    marello_magento.customer_state_handler:
-#        class: %marello_magento.customer_state_handler.class%
-#        arguments:
-#            - "@marello_magento.state_manager"
-#
-#    marello_magento.datagrid.newsletter_subscriber_provider:
-#        class: %marello_magento.datagrid.newsletter_subscriber_provider.class%
-#        arguments:
-#            - "@marello_magento.model.channel_settings_provider"
-#        calls:
-#            - [setAuthorizationChecker,  ["@security.authorization_checker"]]
-#
-#    marello_magento.model.newsletter_subscriber_manager:
-#        class: %marello_magento.model.newsletter_subscriber_manager.class%
-#        arguments:
-#            - "@oro_entity.doctrine_helper"
-
     marello_magento.strategy.automatic_discovery.default:
         class: %marello_magento.strategy.automatic_discovery.default.class%
 
@@ -767,158 +514,22 @@ services:
         tags:
             - { name: doctrine.orm.entity_listener, entity: Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport, event: preRemove }
 
+    marello_magento.integration_entity.integration_channel_listener:
+        class: Marello\Bundle\MagentoBundle\EventListener\IntegrationChannelListener
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: Oro\Bundle\IntegrationBundle\Entity\Channel, event: postPersist }
+            - { name: doctrine.orm.entity_listener, entity: Oro\Bundle\IntegrationBundle\Entity\Channel, event: postUpdate }
+            - { name: doctrine.orm.entity_listener, entity: Oro\Bundle\IntegrationBundle\Entity\Channel, event: preRemove }
+
     marello_magento.model.channel_settings_provider:
         class: %marello_magento.model.channel_settings_provider.class%
         arguments:
             - "@oro_entity.doctrine_helper"
             - %oro_integration.entity.class%
 
-#    marello_magento.provider.big_number:
-#        class: %marello_magento.provider.big_number.class%
-#        arguments:
-#            - "@doctrine"
-#            - "@oro_security.acl_helper"
-#            - "@oro_dashboard.provider.big_number.date_helper"
-#            - "@marello_magento.provider.website_visit"
-#        tags:
-#            - { name: oro_dashboard.big_number.provider, alias: magento }
-#
-#    marello_magento.provider.website_visit:
-#        class: %marello_magento.provider.website_visit.class%
-#        arguments:
-#            - "@doctrine"
-#            - "@oro_security.acl_helper"
-#            - "@oro_dashboard.provider.big_number.date_helper"
-#
-#    marello_magento.service.order.information_loader:
-#        class: %marello_magento.service.information_loader.class%
-#        arguments:
-#            - "@oro_importexport.job_executor"
-#            - "@marello_magento.mage.order_connector"
-#            - "marello_magento.add_or_update_order"
-#
-#    marello_magento.service.cart.information_loader:
-#        class: %marello_magento.service.information_loader.class%
-#        arguments:
-#            - "@oro_importexport.job_executor"
-#            - "@marello_magento.mage.cart_connector"
-#            - "marello_magento.add_or_update_cart"
-
     # manager
-#    marello_magento.cart.manager.api:
-#        class: %marello_magento.cart.manager.api.class%
-#        parent: oro_soap.manager.entity_manager.abstract
-#        arguments:
-#            - %marello_magento.entity.cart.class%
-#            - "@doctrine.orm.entity_manager"
-#
-#    marello_magento.cart_address.manager.api:
-#        class: %marello_magento.cart_address.manager.api.class%
-#        parent: oro_soap.manager.entity_manager.abstract
-#        arguments:
-#            - %marello_magento.entity.cart_address.class%
-#            - "@doctrine.orm.entity_manager"
-#
-#    marello_magento.cart_item.manager.api:
-#        class: %marello_magento.cart_item.manager.api.class%
-#        parent: oro_soap.manager.entity_manager.abstract
-#        arguments:
-#            - %marello_magento.entity.cart_item.class%
-#            - "@doctrine.orm.entity_manager"
-#
-#    marello_magento.order.manager.api:
-#        class: %marello_magento.order.manager.api.class%
-#        parent: oro_soap.manager.entity_manager.abstract
-#        arguments:
-#            - %marello_magento.entity.order.class%
-#            - "@doctrine.orm.entity_manager"
-#
-#    marello_magento.order_item.manager.api:
-#        class: %marello_magento.order_item.manager.api.class%
-#        parent: oro_soap.manager.entity_manager.abstract
-#        arguments:
-#            - %marello_magento.entity.order_item.class%
-#            - "@doctrine.orm.entity_manager"
-#
-#    marello_magento.order_address.manager.api:
-#        class: %marello_magento.order_address.manager.api.class%
-#        parent: oro_soap.manager.entity_manager.abstract
-#        arguments:
-#            - %marello_magento.entity.order_address.class%
-#            - "@doctrine.orm.entity_manager"
 
     # handler
-#    marello_magento.form.handler.cart.api:
-#        class: %marello_magento.form.handler.cart.api.class%
-#        scope: request
-#        arguments:
-#            - "@marello_magento.form.cart.api"
-#            - "@request"
-#            - "@doctrine"
-#            - "@oro_security.token_accessor"
-#
-#    marello_magento.form.handler.cart_address:
-#        class: %marello_magento.form.handler.cart_address.class%
-#        scope: request
-#        arguments:
-#            - "@marello_magento.form.cart_address.api"
-#            - "@request"
-#            - "@doctrine"
-#            - "@oro_security.token_accessor"
-#
-#    marello_magento.form.handler.cart_item:
-#        class: %marello_magento.form.handler.cart_item.class%
-#        scope: request
-#        arguments:
-#            - "@marello_magento.form.cart_item.api"
-#            - "@request"
-#            - "@doctrine"
-#
-#    marello_magento.form.handler.order.api:
-#        class: %marello_magento.form.handler.order.class%
-#        scope: request
-#        arguments:
-#            - "@marello_magento.form.order.api"
-#            - "@request"
-#            - "@doctrine"
-#            - "@oro_security.token_accessor"
-#
-#    marello_magento.form.handler.order_item:
-#        class: %marello_magento.form.handler.order_item.class%
-#        scope: request
-#        arguments:
-#            - "@marello_magento.form.order_item.api"
-#            - "@request"
-#            - "@doctrine"
-#
-#    marello_magento.form.handler.order_address.api:
-#        class: %marello_magento.form.handler.order_address.api.class%
-#        scope: request
-#        arguments:
-#            - "@marello_magento.form.order_address.api"
-#            - "@request"
-#            - "@doctrine.orm.entity_manager"
-#            - "@oro_security.token_accessor"
-#
-#    marello_magento.form.handler.customer.api:
-#        class: %marello_magento.form.api.handler.customer.class%
-#        scope: request
-#        arguments:
-#            - "@marello_magento.form.customer.api"
-#            - "@request"
-#            - "@doctrine"
-#            - "@oro_security.token_accessor"
-#            - "@oro_sales.manager.account_customer"
-#
-#    marello_magento.form.api.handler.customer_address:
-#        class: %marello_magento.form.handler.customer_address.class%
-#        scope: request
-#        arguments:
-#            - "@marello_magento.form.customer_address.api"
-#            - "@request"
-#            - "@doctrine"
-#            - "@oro_security.token_accessor"
-
     marello_magento.handler.transport:
         class: Marello\Bundle\MagentoBundle\Handler\TransportHandler
         scope: request
@@ -935,7 +546,6 @@ services:
             - '@oro_entity.doctrine_helper'
             - '@marello_magento.provider.initial_sync_processor'
             - '@oro_platform.optional_listeners.manager'
-#            - '@oro_analytics.calculate_analytics_scheduler'
             - '@oro_message_queue.job.runner'
             - '@oro_search.async.indexer'
             - '@security.token_storage'
@@ -953,54 +563,6 @@ services:
         class: %marello_magento.config_resolver.class%
         arguments:
             - "@service_container"
-
-#    marello_magento.provider.customer.magento_customer_icon:
-#        class: Marello\Bundle\MagentoBundle\Provider\Customer\CustomerIconProvider
-#        arguments:
-#            - '@oro_integration.manager.types_registry'
-#            - '@liip_imagine.cache.manager'
-#        tags:
-#            - { name: oro_sales.customer_icon, priority: 10 }
-#
-#    marello_magento.datagrid.cart_view_list:
-#        class: Marello\Bundle\MagentoBundle\Datagrid\CartViewList
-#        arguments:
-#            - '@translator'
-#
-#    marello_magento.customer_account_change_subscriber:
-#        class: Marello\Bundle\MagentoBundle\EventListener\CustomerAccountChangeSubscriber
-#        tags:
-#            - { name: doctrine.event_subscriber }
-#
-#    marello_magento.provider.customer.account:
-#        class: Marello\Bundle\MagentoBundle\Provider\Customer\AccountProvider
-#        arguments:
-#            - '@marello_magento.provider.customer.account.new_entities_helper'
-#        public: false
-#        calls:
-#            - [setContainer, ["@service_container"]]
-#        tags:
-#         - { name: oro_sales.provider.customer.account_creation, priority: 10 }
-#
-#    marello_magento.provider.customer.account.new_entities_helper:
-#        class: Oro\Bundle\ImportExportBundle\Strategy\Import\NewEntitiesHelper
-#        tags:
-#            - { name: doctrine.event_listener, event: onFlush }
-#            - { name: doctrine.event_listener, event: onClear }
-#
-#    marello_magento.customer.association_checker:
-#        class: Marello\Bundle\MagentoBundle\Customer\AssociationChecker
-#        arguments:
-#            - '@oro_sales.manager.account_customer'
-#            - '@oro_entity.doctrine_helper'
-#
-#    marello_magento.provider.prepare_result_item_provider:
-#        class: Marello\Bundle\MagentoBundle\Provider\Customer\AccountAutocompleteProvider
-#        tags:
-#            - { name: oro_sales.provider.customer.account_autocomplete }
-#
-#    marello_magento.converter.cart_subtotal_to_multicurrency:
-#        class: Marello\Bundle\MagentoBundle\Converter\CartSubtotalToMultiCurrency
 
     marello_magento.provider.iso2_code:
         class: Marello\Bundle\MagentoBundle\Provider\Iso2CodeProvider
@@ -1036,23 +598,6 @@ services:
         class: Marello\Bundle\MagentoBundle\Converter\Rest\WebsiteConverter
         tags:
             - {name: marello_magento.rest_response.converter, type: website }
-
-#    marello_magento.async.upgrade_relations_accounts_contacts_processor:
-#        class: Marello\Bundle\MagentoBundle\Migrations\Schema\v1_49\UpdateRelationsAccountsAndContactsProcessor
-#        arguments:
-#            - '@oro_message_queue.message_producer'
-#            - '@oro_entity.orm.native_query_executor_helper'
-#        tags:
-#            - { name: 'oro_message_queue.client.message_processor', topicName: 'marello_magento.upgrade_relations_accounts_contacts' }
-#
-#    marello_magento.async.schedule_stucked_jobs_processor:
-#        class: Marello\Bundle\MagentoBundle\Migrations\Schema\v1_50\ScheduleStuckedJobsProcessor
-#        arguments:
-#            - '@oro_message_queue.message_producer'
-#            - '@oro_entity.orm.native_query_executor_helper'
-#            - '@oro_workflow.process.logger'
-#        tags:
-#            - { name: 'oro_message_queue.client.message_processor', topicName: 'marello_magento.schedule_stucked_jobs' }
 
     marello_magento.twig.order_notes_extension:
         class: Marello\Bundle\MagentoBundle\Twig\OrderNotesExtension

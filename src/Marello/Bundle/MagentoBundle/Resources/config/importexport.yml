@@ -302,7 +302,6 @@ services:
             - { name: oro_importexport.normalizer }
 
     # strategy
-    #not used yet
     marello_magento.provider.strategy.two_way_sync.product:
         class: %marello_magento.provider.strategy.two_way_sync.class%
         arguments:

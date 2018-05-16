@@ -2,9 +2,12 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
-class ProductConnector extends AbstractMagentoConnector
+use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
+
+class ProductConnector extends AbstractMagentoConnector implements TwoWaySyncConnectorInterface
 {
     const IMPORT_JOB_NAME = 'mage_product_import';
+    const EXPORT_JOB_NAME = 'mage_product_export';
     const TYPE            = 'product';
 
     /**
@@ -29,6 +32,14 @@ class ProductConnector extends AbstractMagentoConnector
     public function getImportJobName()
     {
         return self::IMPORT_JOB_NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportJobName()
+    {
+        return self::EXPORT_JOB_NAME;
     }
 
     /**

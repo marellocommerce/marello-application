@@ -8,12 +8,13 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Marello\Bundle\MagentoBundle\Form\EventListener\SettingsFormSubscriber;
 use Oro\Bundle\FormBundle\Form\DataTransformer\ArrayToJsonTransformer;
 use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
+
+use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
+use Marello\Bundle\MagentoBundle\Form\EventListener\SettingsFormSubscriber;
 use Marello\Bundle\MagentoBundle\Entity\MagentoTransport;
 use Marello\Bundle\MagentoBundle\Form\EventListener\ConnectorsFormSubscriber;
-use Marello\Bundle\MagentoBundle\Form\EventListener\SharedEmailListSubscriber;
 use Marello\Bundle\MagentoBundle\Form\EventListener\IsDisplayOrderNotesSubscriber;
 use Marello\Bundle\MagentoBundle\Provider\Transport\MagentoTransportInterface;
 
@@ -21,7 +22,6 @@ abstract class AbstractTransportSettingFormType extends AbstractType
 {
     /** @var MagentoTransportInterface */
     const NAME = 'oro_magento_transport_setting_form_type';
-    const SHARED_GUEST_EMAIL_FIELD_NAME = 'sharedGuestEmailList';
     const IS_DISPLAY_ORDER_NOTES_FIELD_NAME = 'isDisplayOrderNotes';
 
     /** @var MagentoTransportInterface */
@@ -55,7 +55,6 @@ abstract class AbstractTransportSettingFormType extends AbstractType
     {
         $builder
             ->addEventSubscriber($this->subscriber)
-            ->addEventSubscriber(new SharedEmailListSubscriber())
             ->addEventSubscriber(new IsDisplayOrderNotesSubscriber())
         ;
 
@@ -77,12 +76,11 @@ abstract class AbstractTransportSettingFormType extends AbstractType
         );
 
         $builder->add(
-            'guestCustomerSync',
-            'checkbox',
+        'currency',
+        CurrencyType::class,
             [
-                'label' => 'oro.magento.magentotransport.guest_customer_sync.label',
-                'tooltip' => 'oro.magento.magentotransport.guest_customer_sync.tooltip',
-                'required' => false
+                'label' => 'marello.orocommerce.orocommercesettings.currency.label',
+                'required' => true
             ]
         );
 
@@ -99,7 +97,7 @@ abstract class AbstractTransportSettingFormType extends AbstractType
 
         $builder->add(
             'check',
-            'oro_magento_transport_check_button',
+            'marello_magento_transport_check_button',
             [
                 'label' => 'oro.magento.magentotransport.check_connection.label'
             ]
@@ -124,13 +122,6 @@ abstract class AbstractTransportSettingFormType extends AbstractType
             $builder->create(
                 self::IS_DISPLAY_ORDER_NOTES_FIELD_NAME,
                 IsDisplayOrderNotesFormType::NAME
-            )
-        );
-
-        $builder->add(
-            $builder->create(
-                self::SHARED_GUEST_EMAIL_FIELD_NAME,
-                SharedGuestEmailListType::NAME
             )
         );
 

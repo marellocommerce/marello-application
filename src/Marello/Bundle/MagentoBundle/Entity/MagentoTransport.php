@@ -94,13 +94,6 @@ abstract class MagentoTransport extends Transport
     /**
      * @var boolean
      *
-     * @ORM\Column(name="guest_customer_sync", type="boolean")
-     */
-    protected $guestCustomerSync = true;
-
-    /**
-     * @var boolean
-     *
      * @ORM\Column(name="is_display_order_notes", type="boolean", nullable=true, options={"default"=true})
      */
     protected $isDisplayOrderNotes;
@@ -113,23 +106,17 @@ abstract class MagentoTransport extends Transport
     protected $adminUrl;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="mage_newsl_subscr_synced_to_id", type="integer", nullable=true)
-     */
-    protected $newsletterSubscriberSyncedToId;
-
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="shared_guest_email_list", type="simple_array", nullable=true)
-     */
-    protected $sharedGuestEmailList;
-
-    /**
      * @var ParameterBag
      */
     protected $settings;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="marello_magento_currency", type="string", length=3, nullable=false)
+     */
+    protected $currency;
+
 
     public function __construct()
     {
@@ -355,26 +342,6 @@ abstract class MagentoTransport extends Transport
     }
 
     /**
-     * @param boolean $guestCustomerSync
-     *
-     * @return MagentoTransport
-     */
-    public function setGuestCustomerSync($guestCustomerSync)
-    {
-        $this->guestCustomerSync = $guestCustomerSync;
-
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getGuestCustomerSync()
-    {
-        return $this->guestCustomerSync;
-    }
-
-    /**
      * @param boolean $isDisplayOrderNotes
      *
      * @return MagentoTransport
@@ -435,65 +402,20 @@ abstract class MagentoTransport extends Transport
     }
 
     /**
-     * @return int
-     */
-    public function getNewsletterSubscriberSyncedToId()
-    {
-        return $this->newsletterSubscriberSyncedToId;
-    }
-
-    /**
-     * @param int $newsletterSubscriberSyncedToId
-     *
-     * @return MagentoTransport
-     */
-    public function setNewsletterSubscriberSyncedToId($newsletterSubscriberSyncedToId)
-    {
-        $this->newsletterSubscriberSyncedToId = $newsletterSubscriberSyncedToId;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSharedGuestEmailList()
-    {
-        return $this->sharedGuestEmailList;
-    }
-
-    /**
-     * @param array $sharedGuestEmailList
-     *
-     * @return MagentoTransport
-     */
-    public function setSharedGuestEmailList(array $sharedGuestEmailList)
-    {
-        $this->sharedGuestEmailList = $sharedGuestEmailList;
-
-        return $this;
-    }
-
-    /**
-     * @deprecated since 2.3 version. Use getApiUrl() instead
-     *
      * @return string
      */
-    public function getWsdlUrl()
+    public function getCurrency()
     {
-        return $this->apiUrl;
+        return $this->currency;
     }
 
     /**
-     * @deprecated since 2.3 version. Use setApiUrl() instead
-     *
-     * @param $wsdlUrl
-     *
-     * @return MagentoTransport
+     * @param string $currency
+     * @return $this
      */
-    public function setWsdlUrl($wsdlUrl)
+    public function setCurrency($currency)
     {
-        $this->apiUrl = $wsdlUrl;
+        $this->currency = $currency;
 
         return $this;
     }

@@ -12,22 +12,22 @@ use Oro\Bundle\IntegrationBundle\Provider\TransportCacheClearInterface;
 use Oro\Bundle\IntegrationBundle\Provider\SOAPTransport as BaseSOAPTransport;
 use Oro\Bundle\IntegrationBundle\Utils\ConverterUtils;
 use Oro\Bundle\SecurityBundle\Encoder\Mcrypt;
-use Marello\Bundle\MagentoBundle\Entity\Customer;
+
+//use Marello\Bundle\MagentoBundle\Entity\Customer;
 use Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
 use Marello\Bundle\MagentoBundle\Exception\ExtensionRequiredException;
-use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CreditMemoSoapIterator;
-use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CartsBridgeIterator;
-use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerBridgeIterator;
-use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerGroupSoapIterator;
-use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerSoapIterator;
-use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\NewsletterSubscriberBridgeIterator;
+//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CreditMemoSoapIterator;
+//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CartsBridgeIterator;
+//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerBridgeIterator;
+//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerGroupSoapIterator;
+//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerSoapIterator;
+//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\NewsletterSubscriberBridgeIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\OrderBridgeIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\OrderSoapIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\RegionSoapIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\RegionBridgeIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\StoresSoapIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\WebsiteSoapIterator;
-use Marello\Bundle\MagentoBundle\Provider\UniqueCustomerEmailSoapProvider;
 use Marello\Bundle\MagentoBundle\Service\WsdlManager;
 use Marello\Bundle\MagentoBundle\Utils\WSIUtils;
 
@@ -134,11 +134,6 @@ class SoapTransport extends BaseSOAPTransport implements
     protected $bundleConfig;
 
     /**
-     * @var UniqueCustomerEmailSoapProvider
-     */
-    protected $uniqueCustomerEmailProvider;
-
-    /**
      * @var array
      */
     private $clientAdditionalParams = [];
@@ -146,18 +141,15 @@ class SoapTransport extends BaseSOAPTransport implements
     /**
      * @param Mcrypt                          $encoder
      * @param WsdlManager                     $wsdlManager
-     * @param UniqueCustomerEmailSoapProvider $uniqueCustomerEmailProvider
      * @param array                           $bundleConfig
      */
     public function __construct(
         Mcrypt $encoder,
         WsdlManager $wsdlManager,
-        UniqueCustomerEmailSoapProvider $uniqueCustomerEmailProvider,
         array $bundleConfig = []
     ) {
         $this->encoder = $encoder;
         $this->wsdlManager = $wsdlManager;
-        $this->uniqueCustomerEmailProvider = $uniqueCustomerEmailProvider;
         $this->bundleConfig = $bundleConfig;
     }
 
@@ -171,7 +163,7 @@ class SoapTransport extends BaseSOAPTransport implements
          * This should be done before parent::init as settings will be cached there.
          */
         if ($transportEntity instanceof MagentoSoapTransport) {
-            $wsdlUrl = $transportEntity->getWsdlUrl();
+            $wsdlUrl = $transportEntity->getApiUrl();
 
             // Save auth information to be able to perform requests.
             $urlParts = parse_url($wsdlUrl);
@@ -542,14 +534,6 @@ class SoapTransport extends BaseSOAPTransport implements
         } else {
             return new CustomerSoapIterator($this, $settings);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isCustomerHasUniqueEmail(Customer $customer)
-    {
-        return $this->uniqueCustomerEmailProvider->isCustomerHasUniqueEmail($this, $customer);
     }
 
     /**

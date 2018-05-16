@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TransportCheckButtonType extends ButtonType
 {
-    const NAME = 'oro_magento_transport_check_button';
+    const NAME = 'marello_magento_transport_check_button';
 
     /**
      * {@inheritdoc}

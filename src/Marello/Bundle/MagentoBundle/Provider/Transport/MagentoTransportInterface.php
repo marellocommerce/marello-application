@@ -5,7 +5,7 @@ namespace Marello\Bundle\MagentoBundle\Provider\Transport;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Exception\TransportException;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
-use Marello\Bundle\MagentoBundle\Entity\Customer;
+
 use Marello\Bundle\MagentoBundle\Provider\Iterator\UpdatedLoaderInterface;
 
 interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareInterface
@@ -66,14 +66,14 @@ interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareI
      */
     public function getCustomers();
 
-    /**
-     * Check that customer has unique email
-     *
-     * @param Customer $customer
-     *
-     * @return bool
-     */
-    public function isCustomerHasUniqueEmail(Customer $customer);
+//    /**
+//     * Check that customer has unique email
+//     *
+//     * @param Customer $customer
+//     *
+//     * @return bool
+//     */
+//    public function isCustomerHasUniqueEmail(Customer $customer);
 
     /**
      * Retrieve customer groups list from magento

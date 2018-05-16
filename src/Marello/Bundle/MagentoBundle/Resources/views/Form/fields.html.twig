@@ -9,7 +9,6 @@
         isExtensionInstalledEl: '#' ~ form.isExtensionInstalled.vars.id,
         extensionVersionEl:     '#' ~ form.extensionVersion.vars.id,
         magentoVersionEl:       '#' ~ form.magentoVersion.vars.id,
-        sharedGuestEmailListEl: '#' ~ form.sharedGuestEmailList.vars.id,
         isDisplayOrderNotesEl:  '#' ~ form.isDisplayOrderNotes.vars.id,
         isOrderNoteSupportExtensionVersionEl: '#' ~ form.isOrderNoteSupportExtensionVersion.vars.id,
 
@@ -22,7 +21,7 @@
     {{ soapCheckerOptions|json_encode|raw }}
 {% endmacro %}
 
-{% block oro_magento_transport_check_button_widget %}
+{% block marello_magento_transport_check_button_widget %}
     {% set oroBridgeExtension = form.parent.vars.oroBridgeExtension is defined ? form.parent.vars.oroBridgeExtension : null %}
     <div class="control-group">
         <div class="controls">
@@ -52,11 +51,11 @@
     </div>
 {% endblock %}
 
-{% block oro_magento_transport_check_button_row %}
+{% block marello_magento_transport_check_button_row %}
     {{ block('button_row') }}
 {% endblock %}
 
-{% block oro_magento_website_select_row %}
+{% block marello_magento_website_select_row %}
     {% spaceless %}
         <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
             {% if label is not sameas(false) %}

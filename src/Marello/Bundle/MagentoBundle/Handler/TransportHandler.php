@@ -101,7 +101,7 @@ class TransportHandler
         MagentoTransport $transportEntity
     ) {
         if ($transport instanceof TransportCacheClearInterface) {
-            $transport->cacheClear($transportEntity->getWsdlUrl());
+            $transport->cacheClear($transportEntity->getApiUrl());
         }
 
         $transport->initWithExtraOptions($transportEntity, MultiAttemptsConfigTrait::getMultiAttemptsDisabledConfig());

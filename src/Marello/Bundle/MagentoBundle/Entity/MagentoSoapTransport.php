@@ -36,13 +36,11 @@ class MagentoSoapTransport extends MagentoTransport
                     'api_user' => $this->getApiUser(),
                     'api_key' => $this->getApiKey(),
                     'sync_range' => $this->getSyncRange(),
-                    'guest_customer_sync' => $this->getGuestCustomerSync(),
                     'website_id' => $this->getWebsiteId(),
                     'start_sync_date' => $this->getSyncStartDate(),
                     'initial_sync_start_date' => $this->getInitialSyncStartDate(),
                     'extension_version' => $this->getExtensionVersion(),
                     'magento_version' => $this->getMagentoVersion(),
-                    'newsletter_subscriber_synced_to_id' => $this->getNewsletterSubscriberSyncedToId(),
                     'wsdl_url' => $this->getWsdlPath(),
                     'wsi_mode' => $this->getIsWsiMode(),
                 ]

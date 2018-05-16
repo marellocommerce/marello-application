@@ -550,8 +550,6 @@ oro:
             all_sites:                    All web sites
             id.label:                     Id
             is_extension_installed.label: Is extension installed
-            guest_customer_sync.label:    Guest Customer Sync
-            guest_customer_sync.tooltip:  Selecting this option will combine guest orders under a single customer based on email. If a registered customer exists with this email, all guest orders with such email will be attributed to their account.
             sync_start_date.label:        Sync start date
             sync_start_date.tooltip:      This is the starting date for data synchronization. Only records updated after this date will be synchronized
             sync_range.label:             Sync range

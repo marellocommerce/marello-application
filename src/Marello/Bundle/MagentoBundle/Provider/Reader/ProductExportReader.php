@@ -31,4 +31,14 @@ class ProductExportReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityRe
 
         return $qb;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function read()
+    {
+        $result = parent::read();
+
+        return $result;
+    }
 }

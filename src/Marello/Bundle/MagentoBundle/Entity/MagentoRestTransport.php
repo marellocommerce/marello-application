@@ -32,13 +32,11 @@ class MagentoRestTransport extends MagentoTransport
                     'api_key' => $this->getApiKey(),
                     'api_url' => $this->getApiUrl(),
                     'sync_range' => $this->getSyncRange(),
-                    'guest_customer_sync' => $this->getGuestCustomerSync(),
                     'website_id' => $this->getWebsiteId(),
                     'start_sync_date' => $this->getSyncStartDate(),
                     'initial_sync_start_date' => $this->getInitialSyncStartDate(),
                     'extension_version' => $this->getExtensionVersion(),
                     'magento_version' => $this->getMagentoVersion(),
-                    'newsletter_subscriber_synced_to_id' => $this->getNewsletterSubscriberSyncedToId(),
                     'api_token' => $this->getApiToken(),
                 ]
             );

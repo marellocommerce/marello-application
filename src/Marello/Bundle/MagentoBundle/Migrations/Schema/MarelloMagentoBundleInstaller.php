@@ -8,18 +8,10 @@ use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\ActivityListBundle\Migration\Extension\ActivityListExtension;
 use Oro\Bundle\ActivityListBundle\Migration\Extension\ActivityListExtensionAwareInterface;
-use Oro\Bundle\EntityBundle\EntityConfig\DatagridScope;
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
 use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
-
-//use Marello\Bundle\MagentoBundle\Migrations\Schema\v1_37\CreateActivityAssociation;
-//use Marello\Bundle\MagentoBundle\Migrations\Schema\v1_38\InheritanceActivityTargets;
-
-//use Oro\Bundle\SalesBundle\Migration\Extension\CustomerExtensionAwareInterface;
-//use Oro\Bundle\SalesBundle\Migration\Extension\CustomerExtensionTrait;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -115,8 +107,6 @@ class MarelloMagentoBundleInstaller implements
         $table->addColumn('initial_sync_start_date', 'datetime', ['notnull' => false]);
         $table->addColumn('extension_version', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('magento_version', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('guest_customer_sync', 'boolean', ['notnull' => false]);
-        $table->addColumn('mage_newsl_subscr_synced_to_id', 'integer', ['notnull' => false]);
         $table->addColumn('api_token', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn(
             'is_display_order_notes',
@@ -126,11 +116,7 @@ class MarelloMagentoBundleInstaller implements
                 'default' => true
             ]
         );
-        $table->addColumn(
-            'shared_guest_email_list',
-            'simple_array',
-            ['notnull' => false, 'comment' => '(DC2Type:simple_array)']
-        );
+        $table->addColumn('marello_magento_currency', 'string', ['notnull' => false, 'length' => 3]);
     }
 
     /**
