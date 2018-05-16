@@ -40,10 +40,8 @@ class InventoryUpdateContextFactory
             ->setProduct($entity)
             ->setInventoryItem($inventoryItem)
             ->setRelatedEntity($relatedEntity)
-            ->setIsVirtual($virtual);
-        if ($relatedEntity instanceof WarehouseAwareInterface && $warehouse = $relatedEntity->getWarehouse()) {
-            $context->setValue('warehouse', $warehouse);
-        }
+            ->setIsVirtual($virtual)
+        ;
 
         return $context;
     }
@@ -75,7 +73,8 @@ class InventoryUpdateContextFactory
             ->setInventoryLevel($inventoryLevel)
             ->setInventoryItem($inventoryItem)
             ->setRelatedEntity($relatedEntity)
-            ->setIsVirtual($virtual);
+            ->setIsVirtual($virtual)
+        ;
 
         return $context;
     }
