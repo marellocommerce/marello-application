@@ -30,6 +30,10 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 class Supplier implements CurrencyAwareInterface
 {
     use EntityCreatedUpdatedAtTrait, AuditableOrganizationAwareTrait;
+
+    const SEND_PO_MANUALLY = 'manual';
+    const SEND_PO_BY_EMAIL = 'email';
+
     /**
      * @var integer
      *
@@ -87,6 +91,12 @@ class Supplier implements CurrencyAwareInterface
      * @ORM\Column(name="currency", type="string", length=3, nullable=false)
      */
     protected $currency;
+
+    /**
+     * @var string
+     * @ORM\Column(name="po_send_by", type="string", length=30, nullable=false)
+     */
+    protected $poSendBy;
 
     /**
      * @return string
@@ -266,6 +276,25 @@ class Supplier implements CurrencyAwareInterface
     {
         $this->currency = $currency;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPoSendBy()
+    {
+        return $this->poSendBy;
+    }
+
+    /**
+     * @param string $poSendBy
+     * @return $this
+     */
+    public function setPoSendBy($poSendBy)
+    {
+        $this->poSendBy = $poSendBy;
+        
         return $this;
     }
 }

@@ -2,8 +2,10 @@
 
 namespace Marello\Bundle\SupplierBundle\Form\Type;
 
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -44,7 +46,19 @@ class SupplierType extends AbstractType
             ->add('canDropship')
             ->add('isActive')
             ->add('email')
-            ->add('currency', CurrencyType::class);
+            ->add('currency', CurrencyType::class)
+            ->add(
+                'poSendBy',
+                ChoiceType::class,
+                [
+                    'label' => 'marello.supplier.po_send_by.label',
+                    'mapped' => true,
+                    'choices' => [
+                        Supplier::SEND_PO_MANUALLY => 'marello.supplier.po_send_by.manual',
+                        Supplier::SEND_PO_BY_EMAIL => 'marello.supplier.po_send_by.email'
+                    ]
+                ]
+            );
 
         $this->removeNonStreetFieldsFromAddress($builder, 'address');
     }

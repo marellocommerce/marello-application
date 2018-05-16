@@ -53,7 +53,7 @@ workflows:
         transition_definitions:
             send_definition:
                 post_actions:
-                    - @marello_notification_send:
+                    - @marello_purchase_order_send:
                         entity: $po
                         recipient: $po.supplier.email
                         template: marello_purchase_order_supplier

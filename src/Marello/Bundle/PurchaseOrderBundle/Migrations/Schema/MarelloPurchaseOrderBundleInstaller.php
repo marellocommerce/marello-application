@@ -80,10 +80,18 @@ class MarelloPurchaseOrderBundleInstaller implements
         $table->addColumn('supplier', 'string', ['length' => 255]);
         $table->addColumn('ordered_amount', 'integer', []);
         $table->addColumn('received_amount', 'integer', []);
-        $table->addColumn('purchase_price_value', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('row_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('status', 'string', ['length' => 255]);
+        $table->addColumn(
+            'purchase_price_value',
+            'money',
+            [
+                'precision' => 19,
+                'scale' => 4,
+                'comment' => '(DC2Type:money)'
+            ]
+        );
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
