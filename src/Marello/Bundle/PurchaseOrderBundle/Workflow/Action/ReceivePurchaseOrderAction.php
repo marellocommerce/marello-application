@@ -3,22 +3,18 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Workflow\Action;
 
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Symfony\Component\PropertyAccess\PropertyPathInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
-use Oro\Component\Action\Exception\InvalidParameterException;
-use Oro\Component\Action\Action\AbstractAction;
-use Oro\Component\Action\Action\ActionInterface;
-use Oro\Component\ConfigExpression\ContextAccessor;
-
-use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
+use Oro\Component\Action\Action\AbstractAction;
+use Oro\Component\Action\Action\ActionInterface;
+use Oro\Component\Action\Exception\InvalidParameterException;
+use Oro\Component\ConfigExpression\ContextAccessor;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 class ReceivePurchaseOrderAction extends AbstractAction
 {
@@ -115,6 +111,7 @@ class ReceivePurchaseOrderAction extends AbstractAction
      * handle the inventory update for items which have been received
      * @param PurchaseOrderItem $item
      * @param $inventoryUpdateQty
+     * @param PurchaseOrder $purchaseOrder
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $purchaseOrder)
     {
