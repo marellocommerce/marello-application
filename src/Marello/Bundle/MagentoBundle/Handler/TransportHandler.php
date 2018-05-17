@@ -94,7 +94,8 @@ class TransportHandler
 
     /**
      * @param MagentoTransportInterface $transport
-     * @param MagentoTransport          $transportEntity
+     * @param MagentoTransport $transportEntity
+     * @throws \Oro\Bundle\IntegrationBundle\Exception\TransportException
      */
     protected function initMagentoTransport(
         MagentoTransportInterface $transport,

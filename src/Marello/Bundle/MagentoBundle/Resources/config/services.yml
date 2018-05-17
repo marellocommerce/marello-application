@@ -49,7 +49,6 @@ parameters:
     marello_magento.form.type.store_selector.class:                          Marello\Bundle\MagentoBundle\Form\Type\StoreSelectType
     marello_magento.form.handler.customer.class:                             Marello\Bundle\MagentoBundle\Form\Handler\CustomerHandler
     marello_magento.form.type.customer_address.class:                        Marello\Bundle\MagentoBundle\Form\Type\CustomerAddressType
-#    marello_magento.form.type.customer_channel_selector.class:               Marello\Bundle\MagentoBundle\Form\Type\CustomerChannelSelectType
     marello_magento.form.type.cart.api.class:                                Marello\Bundle\MagentoBundle\Form\Type\CartApiType
     marello_magento.form.type.cart_item.api.class:                           Marello\Bundle\MagentoBundle\Form\Type\CartItemsApiType
     marello_magento.form.type.cart_item_collection.class:                    Marello\Bundle\MagentoBundle\Form\Type\CartItemCollectionType
@@ -113,8 +112,6 @@ parameters:
     marello_magento.validator.start_sync_date.class:                         Marello\Bundle\MagentoBundle\Validator\StartSyncDateValidator
 
     marello_magento.security.acl.voter.two_way_sync.class:                   Marello\Bundle\MagentoBundle\Acl\Voter\AbstractTwoWaySyncVoter
-#    marello_magento.security.acl.voter.newletter_subscriber.class:           Marello\Bundle\MagentoBundle\Acl\Voter\NewsletterSubscriberVoter
-#    marello_magento.security.acl.voter.customer.class:                       Marello\Bundle\MagentoBundle\Acl\Voter\CustomerVoter
     marello_magento.security.acl.voter.organization.class:                   Marello\Bundle\MagentoBundle\Acl\Voter\OrganizationAnnotationVoter
 
     marello_magento.datagrid.customer_actions_provider.class:                Marello\Bundle\MagentoBundle\Datagrid\CustomerActionPermissionProvider
@@ -235,9 +232,6 @@ services:
         calls:
             - [setLogger, ["@oro_integration.logger.strategy"]]
 
-#    marello_magento.provider.soap.unique_customer_email:
-#        class: Marello\Bundle\MagentoBundle\Provider\UniqueCustomerEmailSoapProvider
-
     # forms
     marello_magento.form.subscriber.transport_setting:
         class: Marello\Bundle\MagentoBundle\Form\EventListener\SettingsFormSubscriber
@@ -262,11 +256,6 @@ services:
         tags:
             - { name: form.type, alias: oro_magento_rest_transport_setting_form_type }
 
-#    marello_magento.form.type.shared_guest_email_list:
-#        class: Marello\Bundle\MagentoBundle\Form\Type\SharedGuestEmailListType
-#        tags:
-#           - { name: form.type, alias: oro_magento_shared_guest_email_list_type }
-#
     marello_magento.form.type.is_display_order_notes:
         class: Marello\Bundle\MagentoBundle\Form\Type\IsDisplayOrderNotesFormType
         tags:
@@ -356,14 +345,7 @@ services:
         lazy: true
 
     # event listeners
-#    marello_magento.event_listener.order:
-#        class: Marello\Bundle\MagentoBundle\EventListener\OrderListener
-##        arguments:
-##            - "@oro_channel.event_listener.doctrine"
-#        tags:
-#            - { name: doctrine.orm.entity_listener, entity: '%marello_magento.entity.order.class%', event: prePersist }
-#            - { name: doctrine.orm.entity_listener, entity: '%marello_magento.entity.order.class%', event: preUpdate }
-#            - { name: doctrine.event_listener, event: postFlush, priority: 5 }
+    #TODO: add order export, inventory, price update to magento based on doctrine event
 
     marello_magento.event_listener.update_integration_connectors:
         class: %marello_magento.event_listener.update_integration_connectors.class%

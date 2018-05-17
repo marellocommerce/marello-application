@@ -117,14 +117,14 @@ services:
             - { name: oro_integration.connector, type: product, channel_type: magento }
             - { name: marello_magento.bundle_config.aware, argument_number: 3 }
 
-    marello_magento.mage.product_connector_initial:
-        class: %marello_magento.mage.product_connector_initial.class%
-        parent: marello_magento.mage.product_connector
-        calls:
-            - [setClassName, [%marello_magento.entity.product.class%]]
-        tags:
-            - { name: oro_integration.connector, type: product_initial, channel_type: magento }
-            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+#    marello_magento.mage.product_connector_initial:
+#        class: %marello_magento.mage.product_connector_initial.class%
+#        parent: marello_magento.mage.product_connector
+#        calls:
+#            - [setClassName, [%marello_magento.entity.product.class%]]
+#        tags:
+#            - { name: oro_integration.connector, type: product_initial, channel_type: magento }
+#            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
 
     # Normalizers / Denormalizers
     marello_magento.importexport.denormalizer.default_configurable_entity:
