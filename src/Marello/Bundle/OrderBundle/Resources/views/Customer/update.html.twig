@@ -49,26 +49,21 @@
                 form_row(form.taxIdentificationNumber),
             ]
         }]
-    }, {
-        'title': 'marello.order.customer.primary_address.label'|trans,
-        'class': 'active',
-        'subblocks': [{
-            'title': '',
-            'data': [
-                form_widget(form.primaryAddress),
-            ]
-        }]
-    }, {
-        'title': 'marello.order.customer.shipping_address.label'|trans,
-        'class': 'active',
-        'subblocks': [{
-            'title': '',
-            'data': [
-                form_widget(form.shippingAddress),
-            ]
-        }]
-    }]
-    %}
+    }] %}
+
+    {% set dataBlocks = dataBlocks|merge( [{
+        'title' : 'Addresses'|trans,
+        'subblocks': [
+        {
+            'title': 'marello.order.customer.primary_address.label'|trans,
+            'data': [form_widget(form.primaryAddress)]
+        },
+        {
+            'title': 'marello.order.customer.shipping_address.label'|trans,
+            'data': [form_widget(form.shippingAddress)]
+        },
+        ]
+    }] )%}
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,
         'dataBlocks': dataBlocks,
