@@ -35,5 +35,13 @@ class PurchaseOrderItemValidator extends ConstraintValidator
                 ->addViolation()
             ;
         }
+
+        if ($value->getPurchasePrice() == null || $value->getPurchasePrice()->getValue() <= 0) {
+            $this->context
+                ->buildViolation($constraint->purchasePriceMessage)
+                ->atPath('purchasePrice.value')
+                ->addViolation()
+            ;
+        }
     }
 }

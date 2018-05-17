@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Workflow\Action;
 
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 use Oro\Component\Action\Exception\InvalidParameterException;
@@ -44,7 +45,21 @@ class TransitCompleteAction extends WorkflowTransitAction
         }
 
         if ($items->count() === $completedItems) {
-            parent::executeAction($context);
+            /** @var WorkflowItem $workflowItem */
+            $workflowItem = $context;
+
+            if (!$workflowItem) {
+                throw new \Exception('Invalid configuration of workflow action, expected workflowItem, none given.');
+            }
+
+            if (!$workflowItem instanceof WorkflowItem) {
+                return;
+            }
+
+            $transitionName = $this->contextAccessor->getValue($context, $this->transitionName);
+            if ($transitionName) {
+                $this->workflowManager->transit($workflowItem, $transitionName);
+            }
         }
     }
 
@@ -66,6 +81,12 @@ class TransitCompleteAction extends WorkflowTransitAction
             $this->entity = $this->getOption($options, 'entity');
         }
 
-        parent::initialize($options);
+        if (array_key_exists('transitionName', $options)) {
+            $this->transitionName = $this->getOption($options, 'transitionName');
+        }
+
+        $this->options = $options;
+
+        return $this;
     }
 }

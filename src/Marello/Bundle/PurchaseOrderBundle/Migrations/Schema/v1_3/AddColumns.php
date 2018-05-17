@@ -39,9 +39,15 @@ class AddColumns implements Migration, OrderedMigrationInterface
     protected function updatePurchaseOrderItemTable(Schema $schema)
     {
         $table = $schema->getTable('marello_purchase_order_item');
-
-        $table->addColumn('purchase_price_value', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+        $table->addColumn(
+            'purchase_price_value',
+            'money',
+            [
+                'precision' => 19,
+                'scale' => 4,
+                'comment' => '(DC2Type:money)'
+            ]
+        );
         $table->addColumn('row_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
     }
 }
-
