@@ -16,9 +16,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrderAddressType extends AbstractType
+abstract class AbstractOrderAddressType extends AbstractType
 {
-    const NAME = 'marello_order_address';
+    const NAME = 'marello_order_shipping_address';
 
     /**
      * @var AddressFormatter
@@ -29,7 +29,7 @@ class OrderAddressType extends AbstractType
      * @var OrderCustomerAddressProvider
      */
     protected $orderCustomerAddressProvider;
-    
+
     /**
      * @var Serializer
      */
@@ -49,6 +49,11 @@ class OrderAddressType extends AbstractType
         $this->orderCustomerAddressProvider = $orderCustomerAddressProvider;
         $this->serializer = $serializer;
     }
+
+    /**
+     * @return array
+     */
+    abstract protected function getAddresses(Order $entity);
 
     /**
      * {@inheritdoc}
@@ -156,7 +161,7 @@ class OrderAddressType extends AbstractType
         $isEditEnabled
     ) {
         if ($isEditEnabled) {
-            $addresses = $this->orderCustomerAddressProvider->getCustomerAddresses($entity->getCustomer());
+            $addresses = $this->getAddresses($entity);
 
             $customerAddressOptions = [
                 'label' => false,
@@ -198,6 +203,6 @@ class OrderAddressType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return static::NAME;
     }
 }
