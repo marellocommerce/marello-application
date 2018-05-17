@@ -84,3 +84,31 @@ connector:
                         writer:    marello_magento.importexport.writer.product
                     parameters:
                         batch_size: 1
+
+#        orocommerce_product_import:
+#            title: "Sync products from OroCommerce"
+#            type: import
+#            steps:
+#                import:
+#                    title: import
+#                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+#                    services:
+#                        reader:    marello_orocommerce.integration.connector.product
+#                        processor: oro_importexport.processor.import_delegate
+#                        writer:    oro_integration.writer.persistent_batch_writer
+#                    parameters:
+#                        batch_size: 100
+#
+#        orocommerce_product_export:
+#            title: "Sync products to OroCommerce"
+#            type:  export
+#            steps:
+#                create:
+#                    title: export
+#                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+#                    services:
+#                        reader:    marello_orocommerce.importexport.reader.export.product.create
+#                        processor: oro_importexport.processor.export_delegate
+#                        writer:    marello_orocommerce.importexport.writer.export.product.create
+#                    parameters:
+#                        batch_size: 100

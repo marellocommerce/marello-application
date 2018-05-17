@@ -62,18 +62,15 @@ parameters:
     marello_magento.form.type.customer_address.api.class:                    Marello\Bundle\MagentoBundle\Form\Type\CustomerAddressApiType
 
     # event listeners
-    oro.magento.event_listener.account_widgets_data_grid_listener.class: Marello\Bundle\MagentoBundle\EventListener\AccountWidgetsDataGridListener
     marello_magento.event_listener.channel_owner_set.class:                  Marello\Bundle\MagentoBundle\EventListener\ChannelOwnerSetListener
     marello_magento.event_listener.writer_error.class:                       Marello\Bundle\MagentoBundle\EventListener\IntegrationWriteErrorListener
     marello_magento.event_listener.integration_sync_after.class:             Marello\Bundle\MagentoBundle\EventListener\IntegrationSyncAfterEventListener
-    marello_magento.event_listener.update_integration_connectors.class:      Marello\Bundle\MagentoBundle\EventListener\UpdateIntegrationConnectorsListener
-    marello_magento.event_listener.customer_datagrid_listener.class:         Marello\Bundle\MagentoBundle\EventListener\CustomerDataGridListener
+    marello_magento.integration_entity.integration_channel_listener.class:   Marello\Bundle\MagentoBundle\EventListener\IntegrationChannelListener
+    marello_magento.event_listener.product_export.class:                     Marello\Bundle\MagentoBundle\EventListener\ProductExportListener
 
     # generator
     marello_magento.magento_url_generator.class:                             Marello\Bundle\MagentoBundle\Service\MagentoUrlGenerator
 
-    #marello_magento.customer_address.manager.api.class:                      Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-    marello_magento.customer_address.manager.api.class:                      Marello\Bundle\MagentoBundle\Entity\Manager\CustomerAddressApiEntityManager
     # datagrid helpers
     marello_magento.country.datagrid_helper.class:                           Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
     marello_magento.datagrid_helper.class:                                   Marello\Bundle\MagentoBundle\Datagrid\MagentoDatagridHelper
@@ -347,15 +344,13 @@ services:
     # event listeners
     #TODO: add order export, inventory, price update to magento based on doctrine event
 
-    marello_magento.event_listener.update_integration_connectors:
-        class: %marello_magento.event_listener.update_integration_connectors.class%
+    marello_magento.event_listener.product_export:
+        class: "%marello_magento.event_listener.product_export.class%"
         arguments:
-            - "@marello_magento.provider.settings_provider"
-            - "@doctrine"
-        calls:
-            - [setConnectorsTypeRegistry,  ["@oro_integration.manager.types_registry"]]
+            - '@security.token_storage'
+            - '@oro_integration.sync_scheduler.link'
         tags:
-            - { name: kernel.event_listener, event: oro_channel.channel.save_succeed, method: onChannelSave, priority: -10 }
+            - { name: doctrine.event_listener, event: onFlush, priority: 5 }
 
     marello_magento.event_listener.writer_error:
         class: %marello_magento.event_listener.writer_error.class%
@@ -497,11 +492,11 @@ services:
             - { name: doctrine.orm.entity_listener, entity: Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport, event: preRemove }
 
     marello_magento.integration_entity.integration_channel_listener:
-        class: Marello\Bundle\MagentoBundle\EventListener\IntegrationChannelListener
+        class: '%marello_magento.integration_entity.integration_channel_listener.class%'
         tags:
-            - { name: doctrine.orm.entity_listener, entity: Oro\Bundle\IntegrationBundle\Entity\Channel, event: postPersist }
-            - { name: doctrine.orm.entity_listener, entity: Oro\Bundle\IntegrationBundle\Entity\Channel, event: postUpdate }
-            - { name: doctrine.orm.entity_listener, entity: Oro\Bundle\IntegrationBundle\Entity\Channel, event: preRemove }
+            - { name: doctrine.orm.entity_listener, entity: "%oro_integration.entity.class%", event: postPersist }
+            - { name: doctrine.orm.entity_listener, entity: "%oro_integration.entity.class%", event: postUpdate }
+            - { name: doctrine.orm.entity_listener, entity: "%oro_integration.entity.class%", event: preRemove }
 
     marello_magento.model.channel_settings_provider:
         class: %marello_magento.model.channel_settings_provider.class%
