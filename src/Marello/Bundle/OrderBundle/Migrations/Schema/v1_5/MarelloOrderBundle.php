@@ -3,13 +3,10 @@
 namespace Marello\Bundle\OrderBundle\Migrations\Schema\v1_5;
 
 use Doctrine\DBAL\Schema\Schema;
+
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
-/**
- * @SuppressWarnings(PHPMD.TooManyMethods)
- * @SuppressWarnings(PHPMD.ExcessiveClassLength)
- */
 class MarelloOrderBundle implements Migration
 {
     /**
