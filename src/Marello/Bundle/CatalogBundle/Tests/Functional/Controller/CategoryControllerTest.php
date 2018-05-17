@@ -74,7 +74,7 @@ class CategoryControllerTest extends WebTestCase
     /**
      * @param string $name
      *
-     * @depends testCreateCategory
+     * @depends testCategoryCreate
      *
      * @return string
      */

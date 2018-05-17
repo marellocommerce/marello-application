@@ -33,7 +33,8 @@ class LoadSupplierData extends AbstractFixture
                 'state' => 'NB'
             ],
             'email' => 'supplier1@email.com',
-            'currency' => 'USD'
+            'currency' => 'USD',
+            'sendBy'    => 'email'
         ],
         self::SUPPLIER_2_REF => [
             'name' => 'ActiveFalseSupplier',
@@ -48,7 +49,8 @@ class LoadSupplierData extends AbstractFixture
                 'state'=> 'NB'
             ],
             'email' => 'supplier2@email.com',
-            'currency' => 'EUR'
+            'currency' => 'EUR',
+            'sendBy'    => 'email'
         ],
         self::SUPPLIER_3_REF => [
             'name' => 'ActiveNoDropshipSupplier',
@@ -63,7 +65,8 @@ class LoadSupplierData extends AbstractFixture
                 'state'=> 'NB'
             ],
             'email' => 'supplier3@email.com',
-            'currency' => 'USD'
+            'currency' => 'USD',
+            'sendBy'    => 'email'
         ],
     ];
 
@@ -104,7 +107,7 @@ class LoadSupplierData extends AbstractFixture
             );
 
             $supplier->setAddress($address);
-
+            $supplier->setPoSendBy($values['sendBy']);
             $this->manager->persist($supplier);
             $this->setReference($ref, $supplier);
         }
