@@ -103,7 +103,7 @@ connector:
             title: "Sync inventory levels to Magento"
             type:  export
             steps:
-                update:
+                export:
                     title: export
                     class: Oro\Bundle\BatchBundle\Step\ItemStep
                     services:
