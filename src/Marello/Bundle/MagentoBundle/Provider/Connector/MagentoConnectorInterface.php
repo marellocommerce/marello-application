@@ -18,4 +18,6 @@ interface MagentoConnectorInterface extends ConnectorInterface
 
     const MAGENTO_PRODUCT_TYPE            = 'Marello\\Bundle\\MagentoBundle\\Entity\\Product';
     const MARELLO_PRODUCT_TYPE            = 'Marello\\Bundle\\ProductBundle\\Entity\\Product';
+
+    const MARELLO_VIRTUAL_INVENTORY       = 'Marello\\Bundle\InventoryBundle\\Entity\\VirtualInventoryLevel';
 }

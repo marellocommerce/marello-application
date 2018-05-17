@@ -138,7 +138,6 @@ class ProductExportListener
                 $channelId = $integrationChannel->getId();
 
                 //TODO: schedule the product for export
-
             }
         }
     }

@@ -5,6 +5,7 @@ parameters:
     marello_magento.cart.entity.class:                                           Marello\Bundle\MagentoBundle\Entity\Cart
     marello_magento.order.entity.class:                                          Marello\Bundle\MagentoBundle\Entity\Order
     marello_magento.credit_memo.entity.class:                                    Marello\Bundle\MagentoBundle\Entity\CreditMemo
+    marello_inventory.virtual_inventory.entity.class:                            Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel
 
     # converter
     marello_magento.importexport.data_converter.website.class:                   Marello\Bundle\MagentoBundle\ImportExport\Converter\WebsiteDataConverter
@@ -17,6 +18,7 @@ parameters:
     marello_magento.mage.website.class:                                          Marello\Bundle\MagentoBundle\Provider\Connector\WebsiteConnector
     marello_magento.mage.product_connector.class:                                Marello\Bundle\MagentoBundle\Provider\Connector\ProductConnector
     marello_magento.mage.product_connector_initial.class:                        Marello\Bundle\MagentoBundle\Provider\Connector\InitialProductConnector
+    marello_magento.mage.inventory_level_connector.class:                        Marello\Bundle\MagentoBundle\Provider\Connector\MagentoInventoryLevelConnector
 
     # normalizers
     marello_magento.importexport.normalizer.datetime.class:                      Marello\Bundle\MagentoBundle\ImportExport\Serializer\Normalizer\DateTimeNormalizer
@@ -35,12 +37,14 @@ parameters:
     # writers
     marello_magento.writer.proxy_entity_writer.class:                            Marello\Bundle\MagentoBundle\ImportExport\Writer\ProxyEntityWriter
     marello_magento.importexport.writer.abstract_export.class:                   Marello\Bundle\MagentoBundle\ImportExport\Writer\AbstractExportWriter
-    marello_magento.importexport.writer.product.class:                           Marello\Bundle\MagentoBundle\ImportExport\Writer\ProductExportWriter
+    marello_magento.importexport.writer.product_export.class:                    Marello\Bundle\MagentoBundle\ImportExport\Writer\ProductExportWriter
+    marello_magento.importexport.writer.inventory_level_export.class:            Marello\Bundle\MagentoBundle\ImportExport\Writer\InventoryLevelExportWriter
 
     # Readers
     marello_magento.reader.context.class:                                        Marello\Bundle\MagentoBundle\Provider\Reader\ContextReader
     marello_magento.importexport.reader.entity.class:                            Marello\Bundle\MagentoBundle\Provider\Reader\ContextOptionReader
     marello_magento.importexport.reader.product_export.class:                    Marello\Bundle\MagentoBundle\Provider\Reader\ProductExportReader
+    marello_magento.importexport.reader.inventory_level_export.class:            Marello\Bundle\MagentoBundle\Provider\Reader\ProductExportReader
 
     # ImportExport Processor
     marello_magento.importexport.processor.context.class:                        Marello\Bundle\MagentoBundle\ImportExport\Processor\ContextProcessor
@@ -115,6 +119,13 @@ services:
         parent: marello_magento.connector.abstract
         tags:
             - { name: oro_integration.connector, type: product, channel_type: magento }
+            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+
+    marello_magento.mage.inventory_level_connector:
+        class: "%marello_magento.mage.inventory_level_connector.class%"
+        parent: marello_magento.connector.abstract
+        tags:
+            - { name: oro_integration.connector, type: inventory_level, channel_type: magento }
             - { name: marello_magento.bundle_config.aware, argument_number: 3 }
 
 #    marello_magento.mage.product_connector_initial:
@@ -266,11 +277,15 @@ services:
             - [setTransport, ["@marello_magento.transport.soap_transport"]]
             - [setChannelClassName, [%oro_integration.entity.class%]]
 
-    marello_magento.importexport.writer.product:
-        class: %marello_magento.importexport.writer.product.class%
+    marello_magento.importexport.writer.product_export:
+        class: %marello_magento.importexport.writer.product_export.class%
         parent: marello_magento.importexport.writer.abstract_export
         calls:
             - [setStrategy, ["@marello_magento.provider.strategy.two_way_sync.product"]]
+
+    marello_magento.importexport.writer.inventory_level_export:
+        class: %marello_magento.importexport.writer.inventory_level_export.class%
+        parent: marello_magento.importexport.writer.abstract_export
 
     # readers
     marello_magento.importexport.reader.entity:
@@ -290,6 +305,13 @@ services:
         parent: 'oro_importexport.reader.entity'
         calls:
             - [setSourceEntityName, ['%marello_product.entity.class%']]
+            - [setLogger, ['@oro_integration.logger.strategy']]
+
+    marello_magento.importexport.reader.inventory_level_export:
+        class: '%marello_magento.importexport.reader.inventory_level_export.class%'
+        parent: 'oro_importexport.reader.entity'
+        calls:
+            - [setSourceEntityName, ['%marello_inventory.virtual_inventory.entity.class%']]
             - [setLogger, ['@oro_integration.logger.strategy']]
 
     #Export Normalizer
