@@ -7,8 +7,9 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\ImportExportBundle\Reader\EntityReader;
 
-class ProductExportReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityReader implements LoggerAwareInterface
+class ProductExportReader extends EntityReader implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
@@ -30,15 +31,5 @@ class ProductExportReader extends \Oro\Bundle\ImportExportBundle\Reader\EntityRe
         */
 
         return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function read()
-    {
-        $result = parent::read();
-
-        return $result;
     }
 }
