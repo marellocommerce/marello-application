@@ -23,7 +23,7 @@ class InventoryLevelExportReader extends EntityReader
 //            ->setParameter('groupId', $this->groupId ? : -1);
 
 
-        //TODO: filter based on channel group id
+        //TODO: filter based on channel group_id
 
         return $qb;
     }

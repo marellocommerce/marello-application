@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
-use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
+//use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
 class ProductConnector extends AbstractMagentoConnector implements TwoWaySyncConnectorInterface
 {
@@ -24,6 +24,14 @@ class ProductConnector extends AbstractMagentoConnector implements TwoWaySyncCon
     public function getImportEntityFQCN()
     {
         return self::MAGENTO_PRODUCT_TYPE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportEntityFQCN()
+    {
+        return self::MARELLO_PRODUCT_TYPE;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider;
 
+use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -14,7 +15,10 @@ use Oro\Bundle\IntegrationBundle\Manager\TypesRegistry;
 use Oro\Bundle\IntegrationBundle\Provider\SyncProcessor;
 use Oro\Bundle\IntegrationBundle\Entity\Repository\ChannelRepository;
 use Oro\Bundle\IntegrationBundle\Entity\Status;
+use Oro\Bundle\IntegrationBundle\Event\SyncEvent;
+
 use Marello\Bundle\MagentoBundle\Entity\MagentoTransport;
+use Marello\Bundle\MagentoBundle\Provider\Connector\TwoWaySyncConnectorInterface;
 
 class MagentoSyncProcessor extends SyncProcessor
 {
@@ -278,5 +282,116 @@ class MagentoSyncProcessor extends SyncProcessor
         $lastStatus->setData($statusData);
 
         $this->addConnectorStatusAndFlush($integration, $lastStatus);
+    }
+
+
+    /**
+     * Process integration connector
+     *
+     * @param Integration        $integration Integration object
+     * @param ConnectorInterface $connector   Connector object
+     * @param array              $parameters  Connector additional parameters
+     *
+     * @return Status
+     */
+    protected function processIntegrationConnector(
+        Integration $integration,
+        ConnectorInterface $connector,
+        array $parameters = []
+    ) {
+        $importResult = parent::processIntegrationConnector($integration, $connector, $parameters);
+
+        try {
+            $this->logger->notice(sprintf('Start (export) processing "%s" connector', $connector->getType()));
+
+            $entityName = $connector instanceof TwoWaySyncConnectorInterface
+                ? $connector->getExportEntityFQCN() : $connector->getImportEntityFQCN();
+
+            $processorAliases = $this->processorRegistry->getProcessorAliasesByEntity(
+                ProcessorRegistry::TYPE_EXPORT,
+                $entityName
+            );
+        } catch (\Exception $exception) {
+            // log and continue
+            $this->logger->error($exception->getMessage(), ['exception' => $exception]);
+            $status = $this->createConnectorStatus($connector)
+                ->setCode(Status::STATUS_FAILED)
+                ->setMessage($exception->getMessage());
+            $this->addConnectorStatusAndFlush($integration, $status);
+
+            return $status;
+        }
+
+        $configuration = [
+            ProcessorRegistry::TYPE_EXPORT =>
+                array_merge(
+                    [
+                        'processorAlias' => reset($processorAliases),
+                        'entityName'     => $entityName,
+                        'channel'        => $integration->getId(),
+                        'channelType'    => $integration->getType(),
+                    ],
+                    $parameters
+                ),
+        ];
+
+        $this->processExport($integration, $connector, $configuration);
+
+        return $importResult;
+    }
+
+    /**
+     * @param Integration        $integration
+     * @param ConnectorInterface $connector
+     * @param array              $configuration
+     *
+     * @return Status
+     */
+    protected function processExport(Integration $integration, ConnectorInterface $connector, array $configuration)
+    {
+        $importJobName = $connector->getExportJobName();
+
+        $syncBeforeEvent = $this->dispatchSyncEvent(SyncEvent::SYNC_BEFORE, $importJobName, $configuration);
+
+        $configuration = $syncBeforeEvent->getConfiguration();
+        $jobResult = $this->jobExecutor->executeJob(ProcessorRegistry::TYPE_EXPORT, $importJobName, $configuration);
+
+        $this->dispatchSyncEvent(SyncEvent::SYNC_AFTER, $importJobName, $configuration, $jobResult);
+
+        $context = $jobResult->getContext();
+        $connectorData = $errors = [];
+        if ($context) {
+            $connectorData = $context->getValue(ConnectorInterface::CONTEXT_CONNECTOR_DATA_KEY);
+            $errors = $context->getErrors();
+        }
+        $exceptions = $jobResult->getFailureExceptions();
+        $isSuccess = $jobResult->isSuccessful() && empty($exceptions);
+
+        $status = $this->createConnectorStatus($connector);
+        $status->setData((array)$connectorData);
+
+        $message = $this->formatResultMessage($context);
+        $this->logger->info($message);
+
+        if ($isSuccess) {
+            if ($errors) {
+                $warningsText = 'Some entities were skipped due to warnings:' . PHP_EOL;
+                $warningsText .= implode($errors, PHP_EOL);
+
+                $message .= PHP_EOL . $warningsText;
+            }
+
+            $status->setCode(Status::STATUS_COMPLETED)->setMessage($message);
+        } else {
+            $this->logger->error('Errors were occurred:');
+            $exceptions = implode(PHP_EOL, $exceptions);
+
+            $this->logger->error($exceptions);
+            $status->setCode(Status::STATUS_FAILED)->setMessage($exceptions);
+        }
+
+        $this->addConnectorStatusAndFlush($integration, $status);
+
+        return $status;
     }
 }
