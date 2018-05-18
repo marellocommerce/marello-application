@@ -10,7 +10,8 @@ parameters:
     # converter
     marello_magento.importexport.data_converter.website.class:                   Marello\Bundle\MagentoBundle\ImportExport\Converter\WebsiteDataConverter
     marello_magento.importexport.data_converter.store.class:                     Marello\Bundle\MagentoBundle\ImportExport\Converter\StoreDataConverter
-    marello_magento.importexport.data_converter.product.class:                     Marello\Bundle\MagentoBundle\ImportExport\Converter\ProductDataConverter
+    marello_magento.importexport.data_converter.product.class:                   Marello\Bundle\MagentoBundle\ImportExport\Converter\ProductDataConverter
+    marello_magento.importexport.data_converter.inventory_level.class:           Marello\Bundle\MagentoBundle\ImportExport\Converter\InventoryLevelDataConverter
 
     # connectors
     marello_magento.mage.abstract.class:                                         Marello\Bundle\MagentoBundle\Provider\Connector\AbstractMagentoConnector
@@ -64,6 +65,9 @@ services:
 
     marello_magento.importexport.data_converter.product:
         class: %marello_magento.importexport.data_converter.product.class%
+
+    marello_magento.importexport.data_converter.inventory_level:
+        class: '%marello_magento.importexport.data_converter.inventory_level.class%'
 
 
     # Connectors
@@ -218,7 +222,10 @@ services:
             - [setStrategy, ["@marello_magento.import.strategy.store"]]
             - [setEntityName, [%marello_magento.entity.store.class%]]
         tags:
-            - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.store.class%, alias: marello_magento.store }
+            - name: oro_importexport.processor
+              type: import
+              entity: '%marello_magento.entity.store.class%'
+              alias: marello_magento.store
 
     marello_magento.importexport.processor.rest.store:
         parent: oro_integration.importexport.processor.import
@@ -234,7 +241,21 @@ services:
             - [setStrategy, ["@marello_magento.import.strategy.website"]]
             - [setEntityName, [%marello_magento.entity.website.class%]]
         tags:
-            - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.website.class%, alias: marello_magento.website }
+            - name: oro_importexport.processor
+              type: import
+              entity: '%marello_magento.entity.website.class%'
+              alias: marello_magento.website
+
+    marello_magento.importexport.processor.inventory_level:
+        parent: oro_integration.importexport.processor.import
+        calls:
+            - [setDataConverter, ["@marello_magento.importexport.data_converter.inventory_level"]]
+            - [setEntityName, ['%marello_inventory.virtual_inventory.entity.class%']]
+        tags:
+            - name: oro_importexport.processor
+              type: import
+              entity: '%marello_inventory.virtual_inventory.entity.class%'
+              alias: marello_magento.inventory_level
 
     marello_magento.importexport.processor.rest.website:
         parent: oro_integration.importexport.processor.import
@@ -250,7 +271,10 @@ services:
             - [setStrategy, ['@marello_magento.import.strategy.product']]
             - [setEntityName, ['%marello_magento.entity.product.class%']]
         tags:
-            - { name: oro_importexport.processor, type: import, entity: %marello_magento.entity.product.class%, alias: marello_magento.product }
+            - name: oro_importexport.processor
+              type: import
+              entity: '%marello_magento.entity.product.class%'
+              alias: marello_magento.product
 
     # Export processor
     marello_magento.importexport.processor.product_export:
@@ -258,7 +282,10 @@ services:
         calls:
             - [setDataConverter, ["@marello_magento.importexport.data_converter.product"]]
         tags:
-            - { name: oro_importexport.processor, type: export, entity: %marello_product.entity.class%, alias: marello_magento.product_export }
+            - name: oro_importexport.processor
+              type: export
+              entity: '%marello_product.entity.class%'
+              alias: marello_magento.product_export
 
     # Writers
     marello_magento.writer.proxy_entity_writer:

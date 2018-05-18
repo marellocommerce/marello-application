@@ -64,7 +64,6 @@ class ProductExportWriter extends AbstractExportWriter
             $productId = $this->transport->createProduct($item);
 
             if ($productId) {
-
                 $magentoProduct = new Product();
                 $magentoProduct->setChannel($this->getChannel())
                     ->setSku($item[self::PRODUCT_SKU])
@@ -125,5 +124,4 @@ class ProductExportWriter extends AbstractExportWriter
             $this->stepExecution->addFailureException($e);
         }
     }
-
 }
