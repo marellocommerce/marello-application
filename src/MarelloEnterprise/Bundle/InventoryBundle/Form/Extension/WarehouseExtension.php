@@ -31,7 +31,7 @@ class WarehouseExtension extends AbstractTypeExtension
                 'tooltip'  => 'marelloenterprise.inventory.warehouse.delete',
             ])
             ->add('warehouseType', EntityType::class, [
-                'label'    => 'marello.inventory.warehousetype.entity_label',
+                'label'    => 'marello.inventory.warehouse.warehouse_type.label',
                 'class'    => 'MarelloInventoryBundle:WarehouseType',
                 'property' => 'label',
                 'required' => true,
