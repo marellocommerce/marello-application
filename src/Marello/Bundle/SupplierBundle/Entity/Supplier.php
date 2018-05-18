@@ -23,6 +23,9 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  *              "type"="ACL",
  *              "group_name"=""
  *          },
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()
@@ -47,6 +50,13 @@ class Supplier implements CurrencyAwareInterface
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true, nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
     
@@ -55,6 +65,13 @@ class Supplier implements CurrencyAwareInterface
      *
      * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $address = null;
 
@@ -62,6 +79,13 @@ class Supplier implements CurrencyAwareInterface
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $email;
 
@@ -69,6 +93,13 @@ class Supplier implements CurrencyAwareInterface
      * @var integer
      *
      * @ORM\Column(name="priority", type="integer", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $priority;
     
@@ -76,6 +107,13 @@ class Supplier implements CurrencyAwareInterface
      * @var boolean
      *
      * @ORM\Column(name="can_dropship", type="boolean", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $canDropship = true;
 
@@ -83,18 +121,39 @@ class Supplier implements CurrencyAwareInterface
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $isActive = true;
     
     /**
      * @var string
      * @ORM\Column(name="currency", type="string", length=3, nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $currency;
 
     /**
      * @var string
      * @ORM\Column(name="po_send_by", type="string", length=30, nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $poSendBy;
 

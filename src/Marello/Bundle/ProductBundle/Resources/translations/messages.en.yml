@@ -71,7 +71,7 @@ marello:
         form.add_supplier:          Add Supplier
         product_information:        Product Information
         create_variant.label:       Create Variant
-        add_variant.label:          Add Variant
+        add_variant.label:          Variants
 
         navigation:
             product.label:          Products

@@ -33,7 +33,10 @@ class WarehouseType extends AbstractType
             ->add(
                 'label',
                 TextType::class,
-                ['required' => true]
+                [
+                    'label' => 'marello.inventory.warehouse.label.label',
+                    'required' => true
+                ]
             )
             ->add(
                 'code',

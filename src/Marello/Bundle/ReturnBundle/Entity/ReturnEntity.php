@@ -16,6 +16,7 @@ use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\ReturnBundle\Entity\Repository\ReturnEntityRepository")
@@ -27,7 +28,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *      routeCreate="marello_return_return_create",
  *      defaultValues={
  *          "entity"={
- *              "icon"="fa-history"
+ *              "icon"="fa-undo"
  *          },
  *          "security"={
  *              "type"="ACL",
@@ -38,6 +39,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
  *          },
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
  *      }
  * )
  */
@@ -49,6 +53,7 @@ class ReturnEntity extends ExtendReturnEntity implements
     use HasShipmentTrait;
     use LocalizationTrait;
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
 
     /**
      * @var int
@@ -63,6 +68,13 @@ class ReturnEntity extends ExtendReturnEntity implements
      * @var Order
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $order;
 
@@ -70,6 +82,13 @@ class ReturnEntity extends ExtendReturnEntity implements
      * @var string
      *
      * @ORM\Column(name="return_number", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $returnNumber;
 
@@ -87,6 +106,9 @@ class ReturnEntity extends ExtendReturnEntity implements
      *      defaultValues={
      *          "email"={
      *              "available_in_template"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -98,6 +120,13 @@ class ReturnEntity extends ExtendReturnEntity implements
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      * @ORM\JoinColumn(name="sales_channel_id", onDelete="SET NULL", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $salesChannel;
 
@@ -105,6 +134,13 @@ class ReturnEntity extends ExtendReturnEntity implements
      * @var string
      *
      * @ORM\Column(name="sales_channel_name",type="string", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $salesChannelName;
 
@@ -112,16 +148,15 @@ class ReturnEntity extends ExtendReturnEntity implements
      * @var string
      *
      * @ORM\Column(name="return_reference",type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $returnReference;
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
 
     /**
      * ReturnEntity constructor.
@@ -210,25 +245,6 @@ class ReturnEntity extends ExtendReturnEntity implements
     public function removeReturnItem(ReturnItem $item)
     {
         $this->returnItems->removeElement($item);
-
-        return $this;
-    }
-
-    /**
-     * @return Organization
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * @param Organization $organization
-     * @return $this
-     */
-    public function setOrganization(Organization $organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }

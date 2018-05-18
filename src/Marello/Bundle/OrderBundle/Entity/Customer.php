@@ -12,7 +12,8 @@ use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity
@@ -29,14 +30,18 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *              "owner_type"="ORGANIZATION",
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
  */
-class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInterface
+class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInterface, OrganizationAwareInterface
 {
     use HasFullNameTrait, HasEmailAddressTrait;
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
 
     /**
      * @ORM\Id
@@ -52,11 +57,26 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
      * @ORM\JoinColumn(name="primary_address_id", nullable=true)
      *
      * @var MarelloAddress
+     * 
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $primaryAddress;
 
     /**
      * @ORM\Column(name="tax_identification_number", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */
@@ -68,18 +88,17 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
      *     mappedBy="customer",
      *     cascade={"persist"}
      * )
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var Collection|AbstractAddress[]
      */
     protected $addresses;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", nullable=false)
-     *
-     * @var Organization
-     */
-    protected $organization;
 
     /**
      * Customer constructor.
@@ -119,14 +138,6 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
     }
 
     /**
@@ -178,18 +189,6 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     {
         $primaryAddress->setCustomer($this);
         $this->primaryAddress = $primaryAddress;
-
-        return $this;
-    }
-
-    /**
-     * @param Organization $organization
-     *
-     * @return $this
-     */
-    public function setOrganization($organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }

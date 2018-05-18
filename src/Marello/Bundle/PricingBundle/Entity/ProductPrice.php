@@ -25,6 +25,9 @@ use Marello\Bundle\ProductBundle\Entity\Product;
  *      "security"={
  *          "type"="ACL",
  *          "group_name"=""
+ *      },
+ *      "dataaudit"={
+ *          "auditable"=true
  *      }
  *  }
  * )
@@ -40,10 +43,13 @@ class ProductPrice extends BasePrice
      *      defaultValues={
      *          "importexport"={
      *              "identity"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
-     **/
+     */
     protected $product;
 
     /**
@@ -60,7 +66,7 @@ class ProductPrice extends BasePrice
      */
     public function setProduct(Product $product)
     {
-        $this->product    = $product;
+        $this->product = $product;
 
         return $this;
     }

@@ -7,17 +7,17 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Model\ExtendWarehouseGroup;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository")
  * @ORM\Table(name="marello_inventory_wh_group")
  * @ORM\HasLifecycleCallbacks()
- * @Config(
+ * @Oro\Config(
  *  defaultValues={
  *       "security"={
  *           "type"="ACL",
@@ -27,6 +27,9 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *          "owner_type"="ORGANIZATION",
  *          "owner_field_name"="organization",
  *          "owner_column_name"="organization_id"
+ *      },
+ *      "dataaudit"={
+ *          "auditable"=true
  *      }
  *  }
  * )
@@ -34,6 +37,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
 
     /**
      * @var int
@@ -48,7 +52,7 @@ class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareIn
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -66,7 +70,7 @@ class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareIn
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -83,7 +87,7 @@ class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareIn
      * @var bool
      *
      * @ORM\Column(name="system", type="boolean", nullable=false, options={"default"=false})
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -97,17 +101,16 @@ class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareIn
     protected $system = false;
 
     /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
-
-    /**
      * @var Warehouse[]
      *
      * @ORM\OneToMany(targetEntity="Warehouse", mappedBy="group", cascade={"persist"}, fetch="EAGER")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     *  )
      */
     protected $warehouses;
 
@@ -115,6 +118,13 @@ class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareIn
      * @var WarehouseChannelGroupLink
      *
      * @ORM\OneToOne(targetEntity="WarehouseChannelGroupLink", mappedBy="warehouseGroup")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     *  )
      */
     protected $warehouseChannelGroupLink;
 
@@ -186,25 +196,6 @@ class WarehouseGroup extends ExtendWarehouseGroup implements OrganizationAwareIn
     public function setSystem($system)
     {
         $this->system = $system;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return $this
-     */
-    public function setOrganization(OrganizationInterface $organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }
