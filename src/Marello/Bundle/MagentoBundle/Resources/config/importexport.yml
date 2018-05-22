@@ -45,7 +45,7 @@ parameters:
     marello_magento.reader.context.class:                                        Marello\Bundle\MagentoBundle\Provider\Reader\ContextReader
     marello_magento.importexport.reader.entity.class:                            Marello\Bundle\MagentoBundle\Provider\Reader\ContextOptionReader
     marello_magento.importexport.reader.product_export.class:                    Marello\Bundle\MagentoBundle\Provider\Reader\ProductExportReader
-    marello_magento.importexport.reader.inventory_level_export.class:            Marello\Bundle\MagentoBundle\Provider\Reader\ProductExportReader
+    marello_magento.importexport.reader.inventory_level_export.class:            Marello\Bundle\MagentoBundle\Provider\Reader\InventoryLevelExportReader
 
     # ImportExport Processor
     marello_magento.importexport.processor.context.class:                        Marello\Bundle\MagentoBundle\ImportExport\Processor\ContextProcessor
@@ -249,7 +249,6 @@ services:
     marello_magento.importexport.processor.inventory_level:
         parent: oro_integration.importexport.processor.import
         calls:
-            - [setDataConverter, ["@marello_magento.importexport.data_converter.inventory_level"]]
             - [setEntityName, ['%marello_inventory.virtual_inventory.entity.class%']]
         tags:
             - name: oro_importexport.processor
@@ -286,6 +285,16 @@ services:
               type: export
               entity: '%marello_product.entity.class%'
               alias: marello_magento.product_export
+
+    marello_magento.importexport.processor.inventory_level_export:
+        parent: oro_integration.importexport.processor.export
+        calls:
+            - [setDataConverter, ["@marello_magento.importexport.data_converter.inventory_level"]]
+        tags:
+            - name: oro_importexport.processor
+              type: export
+              entity: '%marello_inventory.virtual_inventory.entity.class%'
+              alias: marello_magento.inventory_level_export
 
     # Writers
     marello_magento.writer.proxy_entity_writer:

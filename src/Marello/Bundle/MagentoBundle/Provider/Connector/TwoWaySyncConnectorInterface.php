@@ -10,7 +10,7 @@ namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
 use \Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface as BaseTwoWaySyncConnectorInterface;
 
-Interface TwoWaySyncConnectorInterface extends BaseTwoWaySyncConnectorInterface
+interface TwoWaySyncConnectorInterface extends BaseTwoWaySyncConnectorInterface
 {
     /**
      * {@inheritdoc}

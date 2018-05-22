@@ -108,7 +108,7 @@ connector:
                     class: Oro\Bundle\BatchBundle\Step\ItemStep
                     services:
                         reader:    marello_magento.importexport.reader.inventory_level_export
-                        processor: marello_magento.importexport.processor.inventory_level
+                        processor: marello_magento.importexport.processor.inventory_level_export
                         writer:    marello_magento.importexport.writer.inventory_level_export
                     parameters:
                         batch_size: 100

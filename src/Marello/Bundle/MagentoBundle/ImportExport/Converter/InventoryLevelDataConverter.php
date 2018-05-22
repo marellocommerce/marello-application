@@ -8,38 +8,18 @@
 
 namespace Marello\Bundle\MagentoBundle\ImportExport\Converter;
 
-use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\IntegrationAwareDataConverter;
+use Doctrine\ORM\EntityManager;
+use Oro\Bundle\ImportExportBundle\Converter\DefaultDataConverter;
 
-class InventoryLevelDataConverter extends IntegrationAwareDataConverter
+use Marello\Bundle\MagentoBundle\Provider\EntityManagerTrait;
+
+class InventoryLevelDataConverter extends DefaultDataConverter
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getHeaderConversionRules()
+    use EntityManagerTrait;
+
+    public function __construct(EntityManager $entityManager)
     {
-        return [
-            'product_id'        => 'originId',
-            'sku'               => 'sku',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getBackendHeader()
-    {
-        return array_values($this->getHeaderConversionRules());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function convertToImportFormat(array $importedRecord, $skipNullValues = true)
-    {
-        $result = parent::convertToImportFormat($importedRecord, $skipNullValues);
-
-
-        return $result;
+        $this->setEntityManager($entityManager);
     }
 
     /**
@@ -49,6 +29,13 @@ class InventoryLevelDataConverter extends IntegrationAwareDataConverter
     {
         $result = parent::convertToExportFormat($exportedRecord, $skipNullValues);
 
-        return $result;
+        $package = [
+            'productId' => $originId,
+            'data' => [
+                'qty' => $result['balancedInventory']
+            ]
+        ];
+
+        return $package;
     }
 }

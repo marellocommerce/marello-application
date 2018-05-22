@@ -349,14 +349,14 @@ class MagentoSyncProcessor extends SyncProcessor
      */
     protected function processExport(Integration $integration, ConnectorInterface $connector, array $configuration)
     {
-        $importJobName = $connector->getExportJobName();
+        $exportJobName = $connector->getExportJobName();
 
-        $syncBeforeEvent = $this->dispatchSyncEvent(SyncEvent::SYNC_BEFORE, $importJobName, $configuration);
+        $syncBeforeEvent = $this->dispatchSyncEvent(SyncEvent::SYNC_BEFORE, $exportJobName, $configuration);
 
         $configuration = $syncBeforeEvent->getConfiguration();
-        $jobResult = $this->jobExecutor->executeJob(ProcessorRegistry::TYPE_EXPORT, $importJobName, $configuration);
+        $jobResult = $this->jobExecutor->executeJob(ProcessorRegistry::TYPE_EXPORT, $exportJobName, $configuration);
 
-        $this->dispatchSyncEvent(SyncEvent::SYNC_AFTER, $importJobName, $configuration, $jobResult);
+        $this->dispatchSyncEvent(SyncEvent::SYNC_AFTER, $exportJobName, $configuration, $jobResult);
 
         $context = $jobResult->getContext();
         $connectorData = $errors = [];

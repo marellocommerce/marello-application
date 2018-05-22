@@ -22,6 +22,6 @@ class Magento2ChannelType implements ChannelInterface, IconAwareIntegrationInter
      */
     public function getIcon()
     {
-        return 'bundles/oromagento/img/magento-logo.png';
+        return 'bundles/marellomagento/img/magento-logo.png';
     }
 }
