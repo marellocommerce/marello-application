@@ -129,6 +129,14 @@
     {% endspaceless %}
 {% endblock %}
 
+{% block marello_order_billing_address_widget %}
+    {{ block('marello_order_address_widget') }}
+{% endblock %}
+
+{% block marello_order_shipping_address_widget %}
+    {{ block('marello_order_address_widget') }}
+{% endblock %}
+
 {% block marello_order_address_widget %}
     {% if form.parent is not empty %}
         <div {{ block('widget_container_attributes') }}>

@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractOrderAddressType extends AbstractType
 {
-    const NAME = 'marello_order_shipping_address';
+    const NAME = 'marello_order_address';
 
     /**
      * @var AddressFormatter
