@@ -301,6 +301,11 @@ class MagentoSyncProcessor extends SyncProcessor
     ) {
         $importResult = parent::processIntegrationConnector($integration, $connector, $parameters);
 
+        if (!$integration->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)) {
+            $this->logger->debug(sprintf('None 2 way sync "%s" connector', $connector->getType()));
+            return $importResult;
+        }
+
         try {
             $this->logger->notice(sprintf('Start (export) processing "%s" connector', $connector->getType()));
 
@@ -347,7 +352,7 @@ class MagentoSyncProcessor extends SyncProcessor
      *
      * @return Status
      */
-    protected function processExport(Integration $integration, ConnectorInterface $connector, array $configuration)
+    private function processExport(Integration $integration, ConnectorInterface $connector, array $configuration)
     {
         $exportJobName = $connector->getExportJobName();
 

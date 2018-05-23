@@ -97,7 +97,7 @@ connector:
                         processor: marello_magento.importexport.processor.inventory_level
                         writer:    oro_integration.writer.persistent_batch_writer
                     parameters:
-                        batch_size: 100
+                        batch_size: 1
 
         mage_inventorylevel_export:
             title: "Sync inventory levels to Magento"
@@ -111,4 +111,4 @@ connector:
                         processor: marello_magento.importexport.processor.inventory_level_export
                         writer:    marello_magento.importexport.writer.inventory_level_export
                     parameters:
-                        batch_size: 100
+                        batch_size: 1

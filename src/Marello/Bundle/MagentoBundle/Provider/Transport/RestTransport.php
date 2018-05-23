@@ -228,15 +228,6 @@ class RestTransport implements
         return new BaseMagentoRestIterator($this, []);
     }
 
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function isCustomerHasUniqueEmail(Customer $customer)
-//    {
-//        /**
-//         * Will be implemented with method `getCustomers`
-//         */
-//    }
 
     /**
      * {@inheritdoc}
@@ -622,5 +613,13 @@ class RestTransport implements
     public function updateProduct($productId, array $item)
     {
         //TODO: impliment product
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateStock(array $stockData)
+    {
+        //TODO: impliment stock update
     }
 }

@@ -26,51 +26,30 @@ class InventoryLevelExportWriter extends AbstractExportWriter
             return;
         }
 
-        $productId = $this->getProduct($item[self::PRODUCT_SKU]);
-
         $this->transport->init($this->getChannel()->getTransport());
 
-        if (!$productId) {
-            //TODO: error here
-        } else {
-            $this->writeExistingItem($productId, $item['stockData']);
-        }
-    }
-
-    /**
-     * @param $sku
-     * @return mixed
-     */
-    protected function getProduct($sku)
-    {
-        /** @var EntityManager $em */
-        $em = $this->registry->getManager();
-
-        if ($product = $em->getRepository('MarelloMagentoBundle:Product')->findOneBy(['sku' => $sku])) {
-            return $product->getOriginId();
-        }
-
-        return false;
+        $this->writeExistingItem($item);
     }
 
     /**
      * @param array $item
      */
-    protected function writeExistingItem($productId, array $item)
+    protected function writeExistingItem(array $item)
     {
         try {
-            $productData = $this->transport->updateProduct($productId, $item);
+            $productId = $item['productId'];
+            $result = $this->transport->updateStock($item);
 
-            if ($productData) {
+            if ($result) {
                 $this->stepExecution->getJobExecution()
                     ->getExecutionContext()
-                    ->put(self::CONTEXT_POST_PROCESS_KEY, [$productData]);
+                    ->put(self::CONTEXT_POST_PROCESS_KEY, [$item]);
 
                 $this->logger->info(
                     sprintf(
                         'Product with id %s and data %s successfully updated',
                         $productId,
-                        json_encode($productData)
+                        json_encode($item)
                     )
                 );
             } else {

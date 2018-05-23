@@ -66,15 +66,6 @@ interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareI
      */
     public function getCustomers();
 
-//    /**
-//     * Check that customer has unique email
-//     *
-//     * @param Customer $customer
-//     *
-//     * @return bool
-//     */
-//    public function isCustomerHasUniqueEmail(Customer $customer);
-
     /**
      * Retrieve customer groups list from magento
      *
@@ -121,6 +112,12 @@ interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareI
      * @return \Iterator
      */
     public function getProducts();
+
+    /**
+     * @param array $stockData
+     * @return mixed
+     */
+    public function updateStock(array $stockData);
 
     /**
      * Retrieve regions list from magento
