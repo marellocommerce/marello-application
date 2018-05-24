@@ -4,7 +4,7 @@ namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
-class MagentoInventoryLevelConnector extends AbstractMagentoConnector implements TwoWaySyncConnectorInterface
+class InventoryLevelConnector extends AbstractMagentoConnector implements TwoWaySyncConnectorInterface
 {
     const TYPE = 'inventory_level';
     const IMPORT_JOB = 'mage_inventorylevel_import';
