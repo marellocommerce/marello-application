@@ -49,6 +49,7 @@ class ProductDataConverter extends IntegrationAwareDataConverter
      */
     public function convertToExportFormat(array $exportedRecord, $skipNullValues = true)
     {
+        //TODO: change $productData specific for update / create e.g status removed for update
         $sku = $exportedRecord['sku'];
         $name = $exportedRecord['name'];
         $productData = [

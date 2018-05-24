@@ -1,26 +1,12 @@
 parameters:
     # entities
-    marello_magento.entity.cart.class:                                       Marello\Bundle\MagentoBundle\Entity\Cart
-    marello_magento.entity.cart_address.class:                               Marello\Bundle\MagentoBundle\Entity\CartAddress
-    marello_magento.entity.cart_item.class:                                  Marello\Bundle\MagentoBundle\Entity\CartItem
-    marello_magento.entity.cart_status.class:                                Marello\Bundle\MagentoBundle\Entity\CartStatus
-
-    marello_magento.entity.customer.class:                                   Marello\Bundle\MagentoBundle\Entity\Customer
-    marello_magento.entity.customer_group.class:                             Marello\Bundle\MagentoBundle\Entity\CustomerGroup
-    marello_magento.entity.address.class:                                    Marello\Bundle\MagentoBundle\Entity\Address
-
-    marello_magento.entity.order.class:                                      Marello\Bundle\MagentoBundle\Entity\Order
-    marello_magento.entity.order_address.class:                              Marello\Bundle\MagentoBundle\Entity\OrderAddress
-    marello_magento.entity.order_item.class:                                 Marello\Bundle\MagentoBundle\Entity\OrderItem
-
-    marello_magento.entity.credit_memo.class:                                Marello\Bundle\MagentoBundle\Entity\CreditMemo
+    marello_inventory.virtual_inventory.entity.class:                        Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel
+    marello_pricing.price.entity.class:                                      Marello\Bundle\PricingBundle\Entity\ProductPrice
 
     marello_magento.entity.product.class:                                    Marello\Bundle\MagentoBundle\Entity\Product
     marello_magento.entity.region.class:                                     Marello\Bundle\MagentoBundle\Entity\Region
     marello_magento.entity.store.class:                                      Marello\Bundle\MagentoBundle\Entity\Store
     marello_magento.entity.website.class:                                    Marello\Bundle\MagentoBundle\Entity\Website
-
-    marello_magento.entity.newsletter_subscriber.class:                      Marello\Bundle\MagentoBundle\Entity\NewsletterSubscriber
 
     # transport
     marello_magento.transport.soap_transport.class:                          Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport
@@ -263,50 +249,50 @@ services:
         tags:
             - { name: form.type, alias: marello_magento_transport_check_button }
 
-    marello_magento.form.type.order_select:
-        class: %marello_magento.form.type.order_select.class%
-        tags:
-            - { name: form.type, alias: oro_order_select }
-
-    marello_magento.form.type.customer_select:
-        class: %marello_magento.form.type.customer_select.class%
-        tags:
-            - { name: form.type, alias: oro_customer_select }
-
-    marello_magento.form.type.cart_select:
-        class: %marello_magento.form.type.cart_select.class%
-        tags:
-            - { name: form.type, alias: oro_cart_select }
+#    marello_magento.form.type.order_select:
+#        class: %marello_magento.form.type.order_select.class%
+#        tags:
+#            - { name: form.type, alias: oro_order_select }
+#
+#    marello_magento.form.type.customer_select:
+#        class: %marello_magento.form.type.customer_select.class%
+#        tags:
+#            - { name: form.type, alias: oro_customer_select }
+#
+#    marello_magento.form.type.cart_select:
+#        class: %marello_magento.form.type.cart_select.class%
+#        tags:
+#            - { name: form.type, alias: oro_cart_select }
 
     marello_magento.form.type.website_select:
         class: %marello_magento.form.type.website_select.class%
         tags:
             - { name: form.type, alias: oro_magento_website_select }
 
-    marello_magento.form.type.order_place:
-        class: %marello_magento.form.type.order_place.class%
-        tags:
-            - { name: form.type, alias: oro_magento_order_place_form_type }
-
-    marello_magento.form.type.customer:
-        class: %marello_magento.form.type.customer.class%
-        arguments:
-            - %marello_magento.entity.customer.class%
-            - %marello_magento.entity.address.class%
-        tags:
-            - { name: form.type, alias: oro_magento_customer }
-
-    marello_magento.form.type.customer_address:
-        class: %marello_magento.form.type.customer_address.class%
-        tags:
-            - { name: form.type, alias: oro_magento_customer_addresses }
-
-    marello_magento.form.type.customer_group_selector:
-        class: %marello_magento.form.type.customer_group_selector.class%
-        arguments:
-            - '@security.authorization_checker'
-        tags:
-            - { name: form.type, alias: oro_magento_customer_group_select }
+#    marello_magento.form.type.order_place:
+#        class: %marello_magento.form.type.order_place.class%
+#        tags:
+#            - { name: form.type, alias: oro_magento_order_place_form_type }
+#
+#    marello_magento.form.type.customer:
+#        class: %marello_magento.form.type.customer.class%
+#        arguments:
+#            - %marello_magento.entity.customer.class%
+#            - %marello_magento.entity.address.class%
+#        tags:
+#            - { name: form.type, alias: oro_magento_customer }
+#
+#    marello_magento.form.type.customer_address:
+#        class: %marello_magento.form.type.customer_address.class%
+#        tags:
+#            - { name: form.type, alias: oro_magento_customer_addresses }
+#
+#    marello_magento.form.type.customer_group_selector:
+#        class: %marello_magento.form.type.customer_group_selector.class%
+#        arguments:
+#            - '@security.authorization_checker'
+#        tags:
+#            - { name: form.type, alias: oro_magento_customer_group_select }
 
     marello_magento.form.type.store_selector:
         class: %marello_magento.form.type.store_selector.class%
@@ -314,33 +300,33 @@ services:
             - { name: form.type, alias: oro_magento_store_select }
 
     # Search handler
-    marello_magento.form.autocomplete.order.search_handler:
-        parent: oro_form.autocomplete.search_handler
-        arguments:
-            - %marello_magento.order.entity.class%
-            - ["incrementId"]
-        tags:
-            - { name: oro_form.autocomplete.search_handler, alias: marello_magento.orders, acl_resource: oro_magento_order_view }
-        lazy: true
-
-    marello_magento.form.autocomplete.customer.search_handler:
-        parent: oro_form.autocomplete.full_name.search_handler
-        arguments:
-            - %marello_magento.customer.entity.class%
-            - ["namePrefix", "firstName", "middleName", "lastName", "nameSuffix"]
-        tags:
-            - { name: oro_form.autocomplete.search_handler, alias: marello_magento.customers, acl_resource: oro_magento_customer_view }
-        lazy: true
-
-    marello_magento.form.autocomplete.cart.search_handler:
-        parent: oro_form.autocomplete.search_handler
-        arguments:
-            - %marello_magento.cart.entity.class%
-            - ["originId"]
-        tags:
-            - { name: oro_form.autocomplete.search_handler, alias: marello_magento.carts, acl_resource: oro_magento_cart_view }
-        lazy: true
-
+#    marello_magento.form.autocomplete.order.search_handler:
+#        parent: oro_form.autocomplete.search_handler
+#        arguments:
+#            - %marello_magento.order.entity.class%
+#            - ["incrementId"]
+#        tags:
+#            - { name: oro_form.autocomplete.search_handler, alias: marello_magento.orders, acl_resource: oro_magento_order_view }
+#        lazy: true
+#
+#    marello_magento.form.autocomplete.customer.search_handler:
+#        parent: oro_form.autocomplete.full_name.search_handler
+#        arguments:
+#            - %marello_magento.customer.entity.class%
+#            - ["namePrefix", "firstName", "middleName", "lastName", "nameSuffix"]
+#        tags:
+#            - { name: oro_form.autocomplete.search_handler, alias: marello_magento.customers, acl_resource: oro_magento_customer_view }
+#        lazy: true
+#
+#    marello_magento.form.autocomplete.cart.search_handler:
+#        parent: oro_form.autocomplete.search_handler
+#        arguments:
+#            - %marello_magento.cart.entity.class%
+#            - ["originId"]
+#        tags:
+#            - { name: oro_form.autocomplete.search_handler, alias: marello_magento.carts, acl_resource: oro_magento_cart_view }
+#        lazy: true
+#
     # event listeners
     #TODO: add order export, inventory, price update to magento based on doctrine event
 
@@ -440,27 +426,27 @@ services:
     marello_magento.strategy.automatic_discovery.email:
         class: %marello_magento.strategy.automatic_discovery.email.class%
 
-    marello_magento.service.automatic_discovery:
-        class: %marello_magento.service.automatic_discovery.class%
-        arguments:
-            - "@oro_entity.doctrine_helper"
-            - "@marello_magento.strategy.automatic_discovery.default"
-            - "@oro_security.owner.ownership_metadata_provider"
-            - %marello_magento.customer.entity.class%
-            - []
-        calls:
-            - [addStrategy, ['addresses', "@marello_magento.strategy.automatic_discovery.addresses"]]
-            - [addStrategy, ['email', "@marello_magento.strategy.automatic_discovery.email"]]
-        tags:
-            - { name: marello_magento.bundle_config.aware, argument_number: 4 }
-
-    marello_magento.action.automatic_discovery:
-        class: 'Marello\Bundle\MagentoBundle\Model\Action\AutomaticDiscoveryAction'
-        arguments:
-            - "@oro_action.expression.context_accessor"
-            - "@marello_magento.service.automatic_discovery"
-        tags:
-            - { name: oro_action.action, alias: automatic_discovery }
+#    marello_magento.service.automatic_discovery:
+#        class: %marello_magento.service.automatic_discovery.class%
+#        arguments:
+#            - "@oro_entity.doctrine_helper"
+#            - "@marello_magento.strategy.automatic_discovery.default"
+#            - "@oro_security.owner.ownership_metadata_provider"
+#            - %marello_magento.customer.entity.class%
+#            - []
+#        calls:
+#            - [addStrategy, ['addresses', "@marello_magento.strategy.automatic_discovery.addresses"]]
+#            - [addStrategy, ['email', "@marello_magento.strategy.automatic_discovery.email"]]
+#        tags:
+#            - { name: marello_magento.bundle_config.aware, argument_number: 4 }
+#
+#    marello_magento.action.automatic_discovery:
+#        class: 'Marello\Bundle\MagentoBundle\Model\Action\AutomaticDiscoveryAction'
+#        arguments:
+#            - "@oro_action.expression.context_accessor"
+#            - "@marello_magento.service.automatic_discovery"
+#        tags:
+#            - { name: oro_action.action, alias: automatic_discovery }
 
     marello_magento.wsdl.guzzle_client:
         class: %marello_magento.wsdl.guzzle_client.class%

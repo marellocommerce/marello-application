@@ -69,7 +69,7 @@ connector:
                         processor: marello_magento.importexport.processor.product
                         writer:    marello_magento.writer.proxy_entity_writer
                     parameters:
-                        batch_size: 25
+                        batch_size: 1
 
         mage_product_export:
             title: "Product export to Magento"
@@ -110,5 +110,33 @@ connector:
                         reader:    marello_magento.importexport.reader.inventory_level_export
                         processor: marello_magento.importexport.processor.inventory_level_export
                         writer:    marello_magento.importexport.writer.inventory_level_export
+                    parameters:
+                        batch_size: 1
+
+        mage_price_import:
+            title: "Sync price from Magento"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.mage.price_connector
+                        processor: marello_magento.importexport.processor.price
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 1
+
+        mage_price_export:
+            title: "Sync price to Magento"
+            type:  export
+            steps:
+                export:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.importexport.reader.price_export
+                        processor: marello_magento.importexport.processor.price_export
+                        writer:    marello_magento.importexport.writer.price_export
                     parameters:
                         batch_size: 1
