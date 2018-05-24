@@ -33,7 +33,7 @@ class PriceConnector extends AbstractMagentoConnector implements TwoWaySyncConne
      */
     public function getImportEntityFQCN()
     {
-        return self::MARELLO_VIRTUAL_INVENTORY;
+        return self::MARELLO_PRODUCT_PRICE;
     }
 
     /**
