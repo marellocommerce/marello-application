@@ -18,12 +18,12 @@ trait EntityManagerTrait
 
     /**
      * @param EntityManager $entityManager
-     * @return $this
+     * @return EntityManager
      */
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
 
-        return $this;
+        return $entityManager;
     }
 }
