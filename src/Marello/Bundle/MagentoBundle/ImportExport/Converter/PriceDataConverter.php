@@ -33,14 +33,15 @@ class PriceDataConverter extends DefaultDataConverter
         return [
             'productId' => $this->getProductOrigin($result['product:sku']),
             'productData' => [
-                'price' => 9.55, //TODO: add real price here
+                'price' => (float)$result['value']
             ]
         ];
     }
 
     /**
      * @param $sku
-     * @return mixed
+     * @return int
+     * @throws \Exception
      */
     protected function getProductOrigin($sku)
     {
