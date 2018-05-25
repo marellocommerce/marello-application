@@ -159,7 +159,8 @@ class ReverseSyncProductListener
                     /** @var SalesChannel $salesChannel */
                     $salesChannel = $entity->getSalesChannel();
                     if ($salesChannel &&
-                        $salesChannel->getIntegrationChannel()->getType() === OroCommerceChannelType::TYPE ) {
+                        $salesChannel->getIntegrationChannel() &&
+                        $salesChannel->getIntegrationChannel()->getType() === OroCommerceChannelType::TYPE) {
                         $result[$product->getSku()] = $product;
                     }
                 } elseif ($class === Product::class) {
