@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Transport;
 
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CategorySoapIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\ProductSoapIterator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
@@ -93,6 +94,8 @@ class SoapTransport extends BaseSOAPTransport implements
     const ACTION_ORO_NEWSLETTER_SUBSCRIBER_UPDATE = 'newsletterSubscriberUpdate';
     const ACTION_ORO_WEBSITE_LIST = 'oroWebsiteList';
     const ACTION_ORO_REGION_LIST = 'oroRegionList';
+
+    const ACTION_MARELLO_CATEGORY_LIST = 'marelloCategoryList';
 
     const SOAP_FAULT_ADDRESS_DOES_NOT_EXIST = 102;
 
@@ -594,10 +597,22 @@ class SoapTransport extends BaseSOAPTransport implements
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getProducts()
     {
         $settings = $this->settings->all();
         return new ProductSoapIterator($this, $settings);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategoryList()
+    {
+        $settings = $this->settings->all();
+        return new CategorySoapIterator($this, $settings);
     }
 
     /**

@@ -594,6 +594,9 @@ class RestTransport implements
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getProducts()
     {
         //TODO: impliment product list via REST
@@ -621,5 +624,13 @@ class RestTransport implements
     public function updateStock(array $stockData)
     {
         //TODO: impliment stock update
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategoryList()
+    {
+        //TODO: impliment category list in M2
     }
 }

@@ -119,6 +119,8 @@ interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareI
      */
     public function updateStock(array $stockData);
 
+    public function getCategoryList();
+
     /**
      * Retrieve regions list from magento
      *
