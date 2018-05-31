@@ -21,7 +21,7 @@ class CategoryConnector extends AbstractMagentoConnector implements TwoWaySyncCo
      */
     public function getImportEntityFQCN()
     {
-        return self::MAGENTO_PRODUCT_TYPE;
+        return self::MAGENTO_CATEGORY_TYPE;
     }
 
     /**
@@ -29,7 +29,7 @@ class CategoryConnector extends AbstractMagentoConnector implements TwoWaySyncCo
      */
     public function getExportEntityFQCN()
     {
-        return self::MARELLO_PRODUCT_TYPE;
+        return self::MARELLO_CATEGORY_TYPE;
     }
 
     /**
