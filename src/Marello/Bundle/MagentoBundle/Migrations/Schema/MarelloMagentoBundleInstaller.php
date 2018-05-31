@@ -70,20 +70,20 @@ class MarelloMagentoBundleInstaller implements
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-//        $this->updateIntegrationTransportTable($schema);
+        $this->updateIntegrationTransportTable($schema);
 
         /** Tables generation **/
-//        $this->createMarelloMagentoWebsiteTable($schema);
-//        $this->createMarelloMagentoStoreTable($schema);
-//        $this->createMarelloMagentoProductTable($schema);
-//        $this->createMarelloMagentoProdToWebsiteTable($schema);
+        $this->createMarelloMagentoWebsiteTable($schema);
+        $this->createMarelloMagentoStoreTable($schema);
+        $this->createMarelloMagentoProductTable($schema);
+        $this->createMarelloMagentoProdToWebsiteTable($schema);
         $this->createMarelloMagentoCategoryTable($schema);
 
         /** Foreign keys generation **/
-//        $this->addMarelloMagentoWebsiteForeignKeys($schema);
-//        $this->addMarelloMagentoStoreForeignKeys($schema);
-//        $this->addMarelloMagentoProductForeignKeys($schema);
-//        $this->addMarelloMagentoProdToWebsiteForeignKeys($schema);
+        $this->addMarelloMagentoWebsiteForeignKeys($schema);
+        $this->addMarelloMagentoStoreForeignKeys($schema);
+        $this->addMarelloMagentoProductForeignKeys($schema);
+        $this->addMarelloMagentoProdToWebsiteForeignKeys($schema);
         $this->addMarelloMagentoCategoryForeignKeys($schema);
     }
 
