@@ -2,18 +2,18 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
-class ProductConnector extends AbstractMagentoConnector implements TwoWaySyncConnectorInterface
+class CategoryConnector extends AbstractMagentoConnector implements TwoWaySyncConnectorInterface
 {
-    const IMPORT_JOB_NAME = 'mage_product_import';
-    const EXPORT_JOB_NAME = 'mage_product_export';
-    const TYPE            = 'product';
+    const IMPORT_JOB_NAME = 'mage_category_import';
+    const EXPORT_JOB_NAME = 'mage_category_export';
+    const TYPE            = 'category';
 
     /**
      * {@inheritdoc}
      */
     public function getLabel()
     {
-        return 'marello.magento.connector.product.label';
+        return 'marello.magento.connector.category.label';
     }
 
     /**
@@ -61,7 +61,7 @@ class ProductConnector extends AbstractMagentoConnector implements TwoWaySyncCon
      */
     protected function getConnectorSource()
     {
-        return $this->transport->getProducts();
+        return $this->transport->getCategoryList();
     }
 
     /**

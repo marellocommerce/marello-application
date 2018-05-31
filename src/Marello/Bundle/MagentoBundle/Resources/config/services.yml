@@ -2,11 +2,11 @@ parameters:
     # entities
     marello_inventory.virtual_inventory.entity.class:                        Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel
     marello_pricing.price.entity.class:                                      Marello\Bundle\PricingBundle\Entity\ProductPrice
-
     marello_magento.entity.product.class:                                    Marello\Bundle\MagentoBundle\Entity\Product
     marello_magento.entity.region.class:                                     Marello\Bundle\MagentoBundle\Entity\Region
     marello_magento.entity.store.class:                                      Marello\Bundle\MagentoBundle\Entity\Store
     marello_magento.entity.website.class:                                    Marello\Bundle\MagentoBundle\Entity\Website
+    marello_magento.entity.category.class:                                   Marello\Bundle\MagentoBundle\Entity\Category
 
     # transport
     marello_magento.transport.soap_transport.class:                          Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport
