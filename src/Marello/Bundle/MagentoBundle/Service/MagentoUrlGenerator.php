@@ -17,8 +17,8 @@ class MagentoUrlGenerator
     const GATEWAY_ROUTE = 'oro_gateway/do';
     const NEW_ORDER_ROUTE = 'oro_sales/newOrder';
     const CHECKOUT_ROUTE = 'oro_sales/checkout';
-    const EXTENSION_REQUIRED_ERROR_MESSAGE = 'oro.magento.controller.extension_required';
-    const DEFAULT_ERROR_MESSAGE = 'oro.magento.controller.transport_not_configure';
+    const EXTENSION_REQUIRED_ERROR_MESSAGE = 'marello.magento.controller.extension_required';
+    const DEFAULT_ERROR_MESSAGE = 'marello.magento.controller.transport_not_configure';
 
     /**
      * @var Channel

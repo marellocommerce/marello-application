@@ -9,12 +9,12 @@ class UniqueCustomerEmailConstraint extends Constraint
     /**
      * @var string
      */
-    public $message = 'oro.magento.unique_customer_email.message';
+    public $message = 'marello.magento.unique_customer_email.message';
 
     /**
      * @var string
      */
-    public $transportMessage = 'oro.magento.unique_customer_email.transport_message';
+    public $transportMessage = 'marello.magento.unique_customer_email.transport_message';
 
     /**
      * {@inheritdoc}

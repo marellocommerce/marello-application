@@ -19,18 +19,18 @@ class SoapTransportSettingFormType extends AbstractTransportSettingFormType
         $builder->add(
             'apiUrl',
             'text',
-            ['label' => 'oro.magento.magentotransport.soap.wsdl_url.label', 'required' => true]
+            ['label' => 'marello.magento.magentotransport.soap.wsdl_url.label', 'required' => true]
         );
         $builder->add(
             'apiUser',
             'text',
-            ['label' => 'oro.magento.magentotransport.soap.api_user.label', 'required' => true]
+            ['label' => 'marello.magento.magentotransport.soap.api_user.label', 'required' => true]
         );
         $builder->add(
             'apiKey',
             'password',
             [
-                'label'       => 'oro.magento.magentotransport.soap.api_key.label',
+                'label'       => 'marello.magento.magentotransport.soap.api_key.label',
                 'required'    => true,
                 'constraints' => [new NotBlank()]
             ]
@@ -38,7 +38,7 @@ class SoapTransportSettingFormType extends AbstractTransportSettingFormType
         $builder->add(
             'isWsiMode',
             'checkbox',
-            ['label' => 'oro.magento.magentotransport.soap.is_wsi_mode.label', 'required' => false]
+            ['label' => 'marello.magento.magentotransport.soap.is_wsi_mode.label', 'required' => false]
         );
 
         $builder->remove('check');
@@ -50,14 +50,14 @@ class SoapTransportSettingFormType extends AbstractTransportSettingFormType
             'check',
             'marello_magento_transport_check_button',
             [
-                'label' => 'oro.magento.magentotransport.check_connection.label'
+                'label' => 'marello.magento.magentotransport.check_connection.label'
             ]
         );
         $builder->add(
             'websiteId',
             'oro_magento_website_select',
             [
-                'label'    => 'oro.magento.magentotransport.website_id.label',
+                'label'    => 'marello.magento.magentotransport.website_id.label',
                 'required' => true,
                 'choices_as_values' => true
             ]
@@ -65,7 +65,7 @@ class SoapTransportSettingFormType extends AbstractTransportSettingFormType
         $builder->add(
             'adminUrl',
             'text',
-            ['label' => 'oro.magento.magentotransport.admin_url.label', 'required' => false]
+            ['label' => 'marello.magento.magentotransport.admin_url.label', 'required' => false]
         );
 
         $builder->add(

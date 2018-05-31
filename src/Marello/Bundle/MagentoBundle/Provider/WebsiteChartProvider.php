@@ -30,9 +30,9 @@ abstract class WebsiteChartProvider
      * @var array Map of events to legend labels
      */
     public static $legendLabelsMap = [
-        TCI::EVENT_CART_ITEM_ADDED => 'oro.magento.website_activity.chart.legend.event_cart_item_added',
-        TCI::EVENT_CHECKOUT_STARTED => 'oro.magento.website_activity.chart.legend.event_checkout_started',
-        TCI::EVENT_VISIT => 'oro.magento.website_activity.chart.legend.event_visit',
+        TCI::EVENT_CART_ITEM_ADDED => 'marello.magento.website_activity.chart.legend.event_cart_item_added',
+        TCI::EVENT_CHECKOUT_STARTED => 'marello.magento.website_activity.chart.legend.event_checkout_started',
+        TCI::EVENT_VISIT => 'marello.magento.website_activity.chart.legend.event_visit',
     ];
 
     /** @var TrackingVisitEventProviderInterface */

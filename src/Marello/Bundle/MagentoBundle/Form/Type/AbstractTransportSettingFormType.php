@@ -88,9 +88,9 @@ abstract class AbstractTransportSettingFormType extends AbstractType
             'syncStartDate',
             'oro_date',
             [
-                'label'      => 'oro.magento.magentotransport.sync_start_date.label',
+                'label'      => 'marello.magento.magentotransport.sync_start_date.label',
                 'required'   => true,
-                'tooltip'    => 'oro.magento.magentotransport.sync_start_date.tooltip',
+                'tooltip'    => 'marello.magento.magentotransport.sync_start_date.tooltip',
                 'empty_data' => new \DateTime('2007-01-01', new \DateTimeZone('UTC'))
             ]
         );
@@ -99,7 +99,7 @@ abstract class AbstractTransportSettingFormType extends AbstractType
             'check',
             'marello_magento_transport_check_button',
             [
-                'label' => 'oro.magento.magentotransport.check_connection.label'
+                'label' => 'marello.magento.magentotransport.check_connection.label'
             ]
         );
 
@@ -107,7 +107,7 @@ abstract class AbstractTransportSettingFormType extends AbstractType
             'websiteId',
             'oro_magento_website_select',
             [
-                'label'    => 'oro.magento.magentotransport.website_id.label',
+                'label'    => 'marello.magento.magentotransport.website_id.label',
                 'required' => true,
                 'choices_as_values' => true
             ]

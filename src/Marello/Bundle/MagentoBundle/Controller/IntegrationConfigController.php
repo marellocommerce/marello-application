@@ -48,7 +48,7 @@ class IntegrationConfigController extends Controller
             $this->logDebugException($e);
 
             return $this->createFailResponse(
-                $this->get('translator')->trans('oro.magento.controller.not_valid_parameters')
+                $this->get('translator')->trans('marello.magento.controller.not_valid_parameters')
             );
         }
 
@@ -56,7 +56,7 @@ class IntegrationConfigController extends Controller
             $this->logDebugException($e);
 
             return $this->createFailResponse(
-                $this->get('translator')->trans('oro.magento.controller.extension_required')
+                $this->get('translator')->trans('marello.magento.controller.extension_required')
             );
         }
 
@@ -64,14 +64,14 @@ class IntegrationConfigController extends Controller
             $this->logCriticalException($e);
 
             return $this->createFailResponse(
-                $this->get('translator')->trans('oro.magento.controller.transport_error')
+                $this->get('translator')->trans('marello.magento.controller.transport_error')
             );
         }
 
         $this->logCriticalException($e);
 
         return $this->createFailResponse(
-            $this->get('translator')->trans('oro.magento.controller.not_valid_parameters')
+            $this->get('translator')->trans('marello.magento.controller.not_valid_parameters')
         );
     }
 

@@ -38,6 +38,6 @@ class WebsiteSelectType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(['tooltip' => 'oro.magento.magentotransport.website_id.tooltip']);
+        $resolver->setDefaults(['tooltip' => 'marello.magento.magentotransport.website_id.tooltip']);
     }
 }

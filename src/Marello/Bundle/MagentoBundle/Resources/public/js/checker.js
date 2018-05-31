@@ -150,7 +150,7 @@ define([
             $.post({
                 url: url,
                 data: data,
-                errorHandlerMessage: __('oro.magento.error')
+                errorHandlerMessage: __('marello.magento.error')
             }).done(_.bind(this.responseHandler, this))
                 .always(function() {
                     mediator.execute('hideLoading');
@@ -185,14 +185,14 @@ define([
             if (res.isExtensionInstalled || false) {
                 if (res.isSupportedVersion || false) {
                     this.renderResult('success', __(
-                        'oro.magento.success_bridge',
+                        'marello.magento.success_bridge',
                         {extension_version: res.extensionVersion}
                     ));
                 } else {
                     this.renderResult(
                         'warning',
                         __(
-                            'oro.magento.outdated_warning',
+                            'marello.magento.outdated_warning',
                             {
                                 extension_version: res.extensionVersion,
                                 required_version: res.requiredExtensionVersion
@@ -201,7 +201,7 @@ define([
                     );
                 }
             } else {
-                this.renderResult('success', __('oro.magento.success'));
+                this.renderResult('success', __('marello.magento.success'));
             }
         },
 
@@ -209,7 +209,7 @@ define([
             if (res.errorMessage) {
                 this.renderResult('error', res.errorMessage);
             } else {
-                this.renderResult('error', __('oro.magento.error'));
+                this.renderResult('error', __('marello.magento.error'));
             }
         },
 

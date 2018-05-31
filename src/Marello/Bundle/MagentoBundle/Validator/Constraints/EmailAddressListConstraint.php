@@ -9,7 +9,7 @@ class EmailAddressListConstraint extends Email
     /**
      * @var string
      */
-    public $message = 'oro.magento.invalid_email_address.message';
+    public $message = 'marello.magento.invalid_email_address.message';
 
     /**
      * {@inheritdoc}

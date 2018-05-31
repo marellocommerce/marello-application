@@ -19,20 +19,20 @@ class RestTransportSettingFormType extends AbstractTransportSettingFormType
         $builder->add(
             'apiUrl',
             'text',
-            ['label' => 'oro.magento.magentotransport.rest.api_url.label', 'required' => true]
+            ['label' => 'marello.magento.magentotransport.rest.api_url.label', 'required' => true]
         );
 
         $builder->add(
             'apiUser',
             'text',
-            ['label' => 'oro.magento.magentotransport.rest.api_user.label', 'required' => true]
+            ['label' => 'marello.magento.magentotransport.rest.api_user.label', 'required' => true]
         );
 
         $builder->add(
             'apiKey',
             'password',
             [
-                'label'       => 'oro.magento.magentotransport.rest.api_key.label',
+                'label'       => 'marello.magento.magentotransport.rest.api_key.label',
                 'required'    => true,
                 'constraints' => [new NotBlank()]
             ]

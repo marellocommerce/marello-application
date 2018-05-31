@@ -35,11 +35,11 @@
             {% if oroBridgeExtension is not null %}
                 {% if oroBridgeExtension.isExtensionInstalled %}
                     {% if not oroBridgeExtension.isSupportExtensionVersion %}
-                        {% set message = 'oro.magento.magentotransport.message.outdated_bridge'|trans({'%extension_version%': oroBridgeExtension.extensionVersion}) %}
+                        {% set message = 'marello.magento.magentotransport.message.outdated_bridge'|trans({'%extension_version%': oroBridgeExtension.extensionVersion}) %}
                         {% set messageType = 'warning' %}
                     {% endif %}
                 {% else %}
-                    {% set message = 'oro.magento.magentotransport.message.native_soap'|trans %}
+                    {% set message = 'marello.magento.magentotransport.message.native_soap'|trans %}
                     {% set messageType = 'info' %}
                 {% endif %}
 
@@ -67,7 +67,7 @@
                 {{ form_widget(form) }}
                 {% if form.vars.disabled is not sameas(true) %}
                     <a href="javascript:void(0)" class="no-hash sync-website-list-link">
-                        <i class="fa-refresh"></i>{{ 'oro.magento.magentotransport.website_refresh.label'|trans }}
+                        <i class="fa-refresh"></i>{{ 'marello.magento.magentotransport.website_refresh.label'|trans }}
                     </a>
                     <script type="text/javascript">
                         require(['marello/magento/checker'], function (Checker) {

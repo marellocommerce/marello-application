@@ -465,7 +465,7 @@ class RestTransport implements
      */
     public function getLabel()
     {
-        return 'oro.magento.transport.rest.label';
+        return 'marello.magento.transport.rest.label';
     }
 
     /**

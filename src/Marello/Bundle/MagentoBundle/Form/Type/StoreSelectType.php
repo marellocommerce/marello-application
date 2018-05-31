@@ -19,7 +19,7 @@ class StoreSelectType extends AbstractType
                 'autocomplete_alias' => 'magento_store',
                 'grid_name' => 'magento-store-by-channel-grid',
                 'configs' => [
-                    'placeholder' => 'oro.magento.store.placeholder'
+                    'placeholder' => 'marello.magento.store.placeholder'
                 ]
             ]
         );

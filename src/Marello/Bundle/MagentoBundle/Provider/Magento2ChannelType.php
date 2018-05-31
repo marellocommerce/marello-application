@@ -14,7 +14,7 @@ class Magento2ChannelType implements ChannelInterface, IconAwareIntegrationInter
      */
     public function getLabel()
     {
-        return 'oro.magento.channel_type.magento2.label';
+        return 'marello.magento.channel_type.magento2.label';
     }
 
     /**

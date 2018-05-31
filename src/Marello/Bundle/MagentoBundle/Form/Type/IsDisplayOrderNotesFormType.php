@@ -15,11 +15,11 @@ class IsDisplayOrderNotesFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'label' => 'oro.magento.magentotransport.is_display_order_notes.label',
-            'tooltip' => 'oro.magento.magentotransport.is_display_order_notes.tooltip',
+            'label' => 'marello.magento.magentotransport.is_display_order_notes.label',
+            'tooltip' => 'marello.magento.magentotransport.is_display_order_notes.tooltip',
             'choices' => [
-                'oro.magento.magentotransport.is_display_order_notes.value.true.label' => true,
-                'oro.magento.magentotransport.is_display_order_notes.value.false.label' => false,
+                'marello.magento.magentotransport.is_display_order_notes.value.true.label' => true,
+                'marello.magento.magentotransport.is_display_order_notes.value.false.label' => false,
             ],
             'placeholder' => false,
             'choices_as_values' => true,

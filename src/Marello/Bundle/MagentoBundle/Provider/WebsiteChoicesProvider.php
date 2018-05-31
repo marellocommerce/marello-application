@@ -61,7 +61,7 @@ class WebsiteChoicesProvider
             $websites,
             [
                 'id' => Website::ALL_WEBSITES,
-                'label' => $this->translator->trans('oro.magento.magentotransport.all_sites')
+                'label' => $this->translator->trans('marello.magento.magentotransport.all_sites')
             ]
         );
 

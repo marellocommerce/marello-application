@@ -17,7 +17,7 @@ following data:
 channels:
    channel_types:
         magento2:
-            label: oro.magento.channel_type.magento2.label
+            label: marello.magento.channel_type.magento2.label
             entities:
                 - Marello\Bundle\MagentoBundle\Entity\Website
             integration_type: magento2

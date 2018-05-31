@@ -789,7 +789,7 @@ class SoapTransport extends BaseSOAPTransport implements
      */
     public function getLabel()
     {
-        return 'oro.magento.transport.soap.label';
+        return 'marello.magento.transport.soap.label';
     }
 
     /**

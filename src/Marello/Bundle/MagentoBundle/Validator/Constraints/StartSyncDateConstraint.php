@@ -9,7 +9,7 @@ class StartSyncDateConstraint extends Constraint
     /**
      * @var string
      */
-    public $message = 'oro.magento.start_sync_date.message';
+    public $message = 'marello.magento.start_sync_date.message';
 
     /**
      * {@inheritdoc}

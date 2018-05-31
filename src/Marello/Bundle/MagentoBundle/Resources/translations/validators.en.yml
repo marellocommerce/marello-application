@@ -1,4 +1,4 @@
-oro:
+marello:
     magento:
         unique_customer_email.message: This email address already in use. Please, provide another one.
         unique_customer_email.transport_message: Unable to communicate with the Magento instance. Please check integration settings.
