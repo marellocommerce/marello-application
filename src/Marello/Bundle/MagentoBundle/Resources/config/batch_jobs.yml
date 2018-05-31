@@ -85,6 +85,34 @@ connector:
                     parameters:
                         batch_size: 1
 
+        mage_category_import:
+            title: "Category import from Magento"
+            type:  import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.mage.category_connector
+                        processor: marello_magento.importexport.processor.category
+                        writer:    marello_magento.writer.proxy_entity_writer
+                    parameters:
+                        batch_size: 1
+
+        mage_category_export:
+            title: "Category export to Magento (product assignments only)"
+            type:  export
+            steps:
+                export:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.importexport.reader.product_category_export
+                        processor: marello_magento.importexport.processor.product_category_export
+                        writer:    marello_magento.importexport.writer.product_category_export
+                    parameters:
+                        batch_size: 1
+
         mage_inventorylevel_import:
             title: "Sync inventory levels from Magento"
             type: import
