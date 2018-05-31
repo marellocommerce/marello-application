@@ -10,7 +10,7 @@ use Marello\Bundle\MagentoBundle\Model\ExtendWebsite;
 /**
  * Class Website
  *
- * @package Oro\Bundle\OroMagentoBundle\Entity
+ * @package Marello\Bundle\MarelloMagentoBundle\Entity
  * @ORM\Entity
  * @ORM\Table(
  *  name="marello_magento_website",

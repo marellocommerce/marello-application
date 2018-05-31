@@ -11,7 +11,7 @@ use Marello\Bundle\MagentoBundle\Model\ExtendStore;
 /**
  * Class Store
  *
- * @package Oro\Bundle\OroMagentoBundle\Entity
+ * @package Marello\Bundle\MarelloMagentoBundle\Entity
  * @ORM\Entity
  * @ORM\Table(
  *  name="marello_magento_store",

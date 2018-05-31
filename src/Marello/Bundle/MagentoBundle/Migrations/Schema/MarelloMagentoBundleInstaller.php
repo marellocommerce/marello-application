@@ -70,19 +70,21 @@ class MarelloMagentoBundleInstaller implements
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $this->updateIntegrationTransportTable($schema);
+//        $this->updateIntegrationTransportTable($schema);
 
         /** Tables generation **/
-        $this->createMarelloMagentoWebsiteTable($schema);
-        $this->createMarelloMagentoStoreTable($schema);
-        $this->createMarelloMagentoProductTable($schema);
-        $this->createMarelloMagentoProdToWebsiteTable($schema);
+//        $this->createMarelloMagentoWebsiteTable($schema);
+//        $this->createMarelloMagentoStoreTable($schema);
+//        $this->createMarelloMagentoProductTable($schema);
+//        $this->createMarelloMagentoProdToWebsiteTable($schema);
+        $this->createMarelloMagentoCategoryTable($schema);
 
         /** Foreign keys generation **/
-        $this->addMarelloMagentoWebsiteForeignKeys($schema);
-        $this->addMarelloMagentoStoreForeignKeys($schema);
-        $this->addMarelloMagentoProductForeignKeys($schema);
-        $this->addMarelloMagentoProdToWebsiteForeignKeys($schema);
+//        $this->addMarelloMagentoWebsiteForeignKeys($schema);
+//        $this->addMarelloMagentoStoreForeignKeys($schema);
+//        $this->addMarelloMagentoProductForeignKeys($schema);
+//        $this->addMarelloMagentoProdToWebsiteForeignKeys($schema);
+        $this->addMarelloMagentoCategoryForeignKeys($schema);
     }
 
     /**
@@ -120,7 +122,7 @@ class MarelloMagentoBundleInstaller implements
     }
 
     /**
-     * Create oro_magento_website table
+     * Create marello_magento_website table
      *
      * @param Schema $schema
      */
@@ -145,7 +147,7 @@ class MarelloMagentoBundleInstaller implements
 
 
     /**
-     * Create oro_magento_store table
+     * Create marello_magento_store table
      *
      * @param Schema $schema
      */
@@ -166,7 +168,7 @@ class MarelloMagentoBundleInstaller implements
     }
 
     /**
-     * Create oro_magento_product table
+     * Create marello_magento_product table
      *
      * @param Schema $schema
      */
@@ -206,7 +208,43 @@ class MarelloMagentoBundleInstaller implements
         $table->addIndex(['website_id'], 'IDX_9BB8365518F45C82', []);
         $table->setPrimaryKey(['product_id', 'website_id']);
     }
-    
+
+    /**
+     * Create marello_magento_category table
+     *
+     * @param Schema $schema
+     */
+    protected function createMarelloMagentoCategoryTable(Schema $schema)
+    {
+        $table = $schema->createTable('marello_magento_category');
+        $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
+        $table->addColumn('channel_id', 'integer', ['notnull' => false]);
+        $table->addColumn('category_code', 'string', ['length' => 32, 'precision' => 0]);
+        $table->addColumn('category_name', 'string', ['length' => 255, 'precision' => 0]);
+        $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);
+        $table->addColumn('serialized_data', 'text', ['notnull' => false]);
+        $table->addIndex(['channel_id'], 'IDX_CE3270C872F5A1AA', []);
+        $table->setPrimaryKey(['id']);
+        $table->addIndex(['category_name'], 'marello_magento_category_name_idx', []);
+        $table->addUniqueIndex(['category_code', 'origin_id', 'channel_id'], 'unq_site_idx');
+    }
+
+    /**
+     * Add marello_magento_category foreign keys.
+     *
+     * @param Schema $schema
+     */
+    protected function addMarelloMagentoCategoryForeignKeys(Schema $schema)
+    {
+        $table = $schema->getTable('marello_magento_category');
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_integration_channel'),
+            ['channel_id'],
+            ['id'],
+            ['onDelete' => 'SET NULL']
+        );
+    }
+
     /**
      * Add marello_magento_website foreign keys.
      *
