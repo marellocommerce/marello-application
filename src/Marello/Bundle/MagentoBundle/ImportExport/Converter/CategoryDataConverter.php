@@ -14,6 +14,7 @@ class CategoryDataConverter extends IntegrationAwareDataConverter
         return [
             'category_id'       => 'originId',
             'name'              => 'name',
+            'code'              => 'code',
         ];
     }
 

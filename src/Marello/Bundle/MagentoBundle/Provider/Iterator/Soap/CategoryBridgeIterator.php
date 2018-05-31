@@ -5,12 +5,12 @@ namespace Marello\Bundle\MagentoBundle\Provider\Iterator\Soap;
 use Marello\Bundle\MagentoBundle\Provider\Transport\MagentoTransportInterface;
 use Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport;
 
-class RegionBridgeIterator extends AbstractBridgeIterator
+class CategoryBridgeIterator extends AbstractBridgeIterator
 {
     /**
      * Those are very small objects (4 properties), so we can afford for bigger page size
      */
-    const DEFAULT_REGION_PAGE_SIZE = 500;
+    const DEFAULT_REGION_PAGE_SIZE = 1;
 
     /**
      * {@inheritdoc}
@@ -40,7 +40,7 @@ class RegionBridgeIterator extends AbstractBridgeIterator
      */
     protected function loadByFilters(array $filters)
     {
-        $result = $this->transport->call(SoapTransport::ACTION_ORO_REGION_LIST, $filters);
+        $result = $this->transport->call(SoapTransport::ACTION_MARELLO_CATEGORY_LIST, $filters);
         $result = $this->processCollectionResponse($result);
 
         $this->entityBuffer = [];
@@ -54,7 +54,7 @@ class RegionBridgeIterator extends AbstractBridgeIterator
      */
     protected function getIdFieldName()
     {
-        return 'region_id';
+        return 'category_id';
     }
 
     /**
@@ -62,7 +62,7 @@ class RegionBridgeIterator extends AbstractBridgeIterator
      */
     public function current()
     {
-        $this->logger->info(sprintf('Loading Region by id: %s', $this->key()));
+        $this->logger->info(sprintf('Loading Category by id: %s', $this->key()));
 
         return $this->current;
     }

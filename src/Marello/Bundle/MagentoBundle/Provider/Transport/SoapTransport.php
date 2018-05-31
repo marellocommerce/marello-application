@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Transport;
 
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CategoryBridgeIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CategorySoapIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\ProductSoapIterator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -612,7 +613,7 @@ class SoapTransport extends BaseSOAPTransport implements
     public function getCategoryList()
     {
         $settings = $this->settings->all();
-        return new CategorySoapIterator($this, $settings);
+        return new CategoryBridgeIterator($this, $settings);
     }
 
     /**
