@@ -219,8 +219,8 @@ class MarelloMagentoBundleInstaller implements
         $table = $schema->createTable('marello_magento_category');
         $table->addColumn('id', 'integer', ['precision' => 0, 'autoincrement' => true]);
         $table->addColumn('channel_id', 'integer', ['notnull' => false]);
-        $table->addColumn('category_code', 'string', ['length' => 32, 'precision' => 0]);
-        $table->addColumn('category_name', 'string', ['length' => 255, 'precision' => 0]);
+        $table->addColumn('category_code', 'string', ['notnull' => false, 'length' => 32, 'precision' => 0]);
+        $table->addColumn('category_name', 'string', ['notnull' => false, 'length' => 255, 'precision' => 0]);
         $table->addColumn('origin_id', 'integer', ['notnull' => false, 'precision' => 0, 'unsigned' => true]);
         $table->addColumn('serialized_data', 'text', ['notnull' => false]);
         $table->addIndex(['channel_id'], 'IDX_CE3270C872F5A1AA', []);
