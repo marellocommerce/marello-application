@@ -24,28 +24,9 @@ parameters:
     marello_magento.config_resolver.class:                                   Oro\Component\Config\Resolver\SystemAwareResolver
 
     # forms
-    marello_magento.form.type.order_place.class:                             Marello\Bundle\MagentoBundle\Form\Type\OrderPlaceType
     marello_magento.form.type.transport_check.class:                         Marello\Bundle\MagentoBundle\Form\Type\TransportCheckButtonType
-    marello_magento.form.type.order_select.class:                            Marello\Bundle\MagentoBundle\Form\Type\OrderSelectType
-    marello_magento.form.type.customer_select.class:                         Marello\Bundle\MagentoBundle\Form\Type\CustomerSelectType
-    marello_magento.form.type.cart_select.class:                             Marello\Bundle\MagentoBundle\Form\Type\CartSelectType
     marello_magento.form.type.website_select.class:                          Marello\Bundle\MagentoBundle\Form\Type\WebsiteSelectType
-    marello_magento.form.type.customer.class:                                Marello\Bundle\MagentoBundle\Form\Type\CustomerType
-    marello_magento.form.type.customer_group_selector.class:                 Marello\Bundle\MagentoBundle\Form\Type\CustomerGroupSelectType
     marello_magento.form.type.store_selector.class:                          Marello\Bundle\MagentoBundle\Form\Type\StoreSelectType
-    marello_magento.form.handler.customer.class:                             Marello\Bundle\MagentoBundle\Form\Handler\CustomerHandler
-    marello_magento.form.type.customer_address.class:                        Marello\Bundle\MagentoBundle\Form\Type\CustomerAddressType
-    marello_magento.form.type.cart.api.class:                                Marello\Bundle\MagentoBundle\Form\Type\CartApiType
-    marello_magento.form.type.cart_item.api.class:                           Marello\Bundle\MagentoBundle\Form\Type\CartItemsApiType
-    marello_magento.form.type.cart_item_collection.class:                    Marello\Bundle\MagentoBundle\Form\Type\CartItemCollectionType
-    marello_magento.form.type.cart_address.class:                            Marello\Bundle\MagentoBundle\Form\Type\CartAddressApiType
-    marello_magento.form.type.order.api.class:                               Marello\Bundle\MagentoBundle\Form\Type\OrderApiType
-    marello_magento.form.type.order_item_collection.class:                   Marello\Bundle\MagentoBundle\Form\Type\OrderItemCollectionType
-    marello_magento.form.type.order_item.class:                              Marello\Bundle\MagentoBundle\Form\Type\OrderItemType
-    marello_magento.form.type.order_address.api.class:                       Marello\Bundle\MagentoBundle\Form\Type\OrderAddressApiType
-    marello_magento.form.type.order_item.api.class:                          Marello\Bundle\MagentoBundle\Form\Type\OrderItemsApiType
-    marello_magento.form.type.customer.api.class:                            Marello\Bundle\MagentoBundle\Form\Type\CustomerApiType
-    marello_magento.form.type.customer_address.api.class:                    Marello\Bundle\MagentoBundle\Form\Type\CustomerAddressApiType
 
     # event listeners
     marello_magento.event_listener.channel_owner_set.class:                  Marello\Bundle\MagentoBundle\EventListener\ChannelOwnerSetListener
@@ -56,10 +37,6 @@ parameters:
 
     # generator
     marello_magento.magento_url_generator.class:                             Marello\Bundle\MagentoBundle\Service\MagentoUrlGenerator
-
-    # datagrid helpers
-    marello_magento.country.datagrid_helper.class:                           Oro\Bundle\AddressBundle\Datagrid\CountryDatagridHelper
-    marello_magento.datagrid_helper.class:                                   Marello\Bundle\MagentoBundle\Datagrid\MagentoDatagridHelper
 
     # magento related records delete provider
     marello_magento.manager.magento_delete_provider.class:                   Marello\Bundle\MagentoBundle\Manager\MagentoDeleteProvider
@@ -249,84 +226,16 @@ services:
         tags:
             - { name: form.type, alias: marello_magento_transport_check_button }
 
-#    marello_magento.form.type.order_select:
-#        class: %marello_magento.form.type.order_select.class%
-#        tags:
-#            - { name: form.type, alias: oro_order_select }
-#
-#    marello_magento.form.type.customer_select:
-#        class: %marello_magento.form.type.customer_select.class%
-#        tags:
-#            - { name: form.type, alias: oro_customer_select }
-#
-#    marello_magento.form.type.cart_select:
-#        class: %marello_magento.form.type.cart_select.class%
-#        tags:
-#            - { name: form.type, alias: oro_cart_select }
-
     marello_magento.form.type.website_select:
         class: %marello_magento.form.type.website_select.class%
         tags:
             - { name: form.type, alias: oro_magento_website_select }
-
-#    marello_magento.form.type.order_place:
-#        class: %marello_magento.form.type.order_place.class%
-#        tags:
-#            - { name: form.type, alias: oro_magento_order_place_form_type }
-#
-#    marello_magento.form.type.customer:
-#        class: %marello_magento.form.type.customer.class%
-#        arguments:
-#            - %marello_magento.entity.customer.class%
-#            - %marello_magento.entity.address.class%
-#        tags:
-#            - { name: form.type, alias: oro_magento_customer }
-#
-#    marello_magento.form.type.customer_address:
-#        class: %marello_magento.form.type.customer_address.class%
-#        tags:
-#            - { name: form.type, alias: oro_magento_customer_addresses }
-#
-#    marello_magento.form.type.customer_group_selector:
-#        class: %marello_magento.form.type.customer_group_selector.class%
-#        arguments:
-#            - '@security.authorization_checker'
-#        tags:
-#            - { name: form.type, alias: oro_magento_customer_group_select }
 
     marello_magento.form.type.store_selector:
         class: %marello_magento.form.type.store_selector.class%
         tags:
             - { name: form.type, alias: oro_magento_store_select }
 
-    # Search handler
-#    marello_magento.form.autocomplete.order.search_handler:
-#        parent: oro_form.autocomplete.search_handler
-#        arguments:
-#            - %marello_magento.order.entity.class%
-#            - ["incrementId"]
-#        tags:
-#            - { name: oro_form.autocomplete.search_handler, alias: marello_magento.orders, acl_resource: oro_magento_order_view }
-#        lazy: true
-#
-#    marello_magento.form.autocomplete.customer.search_handler:
-#        parent: oro_form.autocomplete.full_name.search_handler
-#        arguments:
-#            - %marello_magento.customer.entity.class%
-#            - ["namePrefix", "firstName", "middleName", "lastName", "nameSuffix"]
-#        tags:
-#            - { name: oro_form.autocomplete.search_handler, alias: marello_magento.customers, acl_resource: oro_magento_customer_view }
-#        lazy: true
-#
-#    marello_magento.form.autocomplete.cart.search_handler:
-#        parent: oro_form.autocomplete.search_handler
-#        arguments:
-#            - %marello_magento.cart.entity.class%
-#            - ["originId"]
-#        tags:
-#            - { name: oro_form.autocomplete.search_handler, alias: marello_magento.carts, acl_resource: oro_magento_cart_view }
-#        lazy: true
-#
     # event listeners
     #TODO: add order export, inventory, price update to magento based on doctrine event
 
@@ -357,15 +266,6 @@ services:
     # Customer API
     marello_magento.customer_birthday_type_transformer:
         class: Marello\Bundle\MagentoBundle\Form\DataTransformer\BirthdayTypeApiTransformer
-
-    marello_magento.datagrid_helper:
-        class: %marello_magento.datagrid_helper.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@oro_security.acl_helper'
-
-    marello_magento.country.datagrid_helper:
-        class: %marello_magento.country.datagrid_helper.class%
 
     marello_magento.manager.magento_delete_provider:
         class: %marello_magento.manager.magento_delete_provider.class%
@@ -416,37 +316,6 @@ services:
             - "@oro_entity.doctrine_helper"
         calls:
             - [setSettingsProvider,  ["@marello_magento.model.channel_settings_provider"]]
-
-    marello_magento.strategy.automatic_discovery.default:
-        class: %marello_magento.strategy.automatic_discovery.default.class%
-
-    marello_magento.strategy.automatic_discovery.addresses:
-        class: %marello_magento.strategy.automatic_discovery.addresses.class%
-
-    marello_magento.strategy.automatic_discovery.email:
-        class: %marello_magento.strategy.automatic_discovery.email.class%
-
-#    marello_magento.service.automatic_discovery:
-#        class: %marello_magento.service.automatic_discovery.class%
-#        arguments:
-#            - "@oro_entity.doctrine_helper"
-#            - "@marello_magento.strategy.automatic_discovery.default"
-#            - "@oro_security.owner.ownership_metadata_provider"
-#            - %marello_magento.customer.entity.class%
-#            - []
-#        calls:
-#            - [addStrategy, ['addresses', "@marello_magento.strategy.automatic_discovery.addresses"]]
-#            - [addStrategy, ['email', "@marello_magento.strategy.automatic_discovery.email"]]
-#        tags:
-#            - { name: marello_magento.bundle_config.aware, argument_number: 4 }
-#
-#    marello_magento.action.automatic_discovery:
-#        class: 'Marello\Bundle\MagentoBundle\Model\Action\AutomaticDiscoveryAction'
-#        arguments:
-#            - "@oro_action.expression.context_accessor"
-#            - "@marello_magento.service.automatic_discovery"
-#        tags:
-#            - { name: oro_action.action, alias: automatic_discovery }
 
     marello_magento.wsdl.guzzle_client:
         class: %marello_magento.wsdl.guzzle_client.class%
