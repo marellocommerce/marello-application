@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Reader;
 
+use Doctrine\ORM\Query\Expr\Join;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
@@ -19,20 +20,14 @@ class ProductCategoryExportReader extends EntityReader implements LoggerAwareInt
     {
         $qb = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
 
-        /*
-        $qb->where(
+        $qb->join(
+            'MarelloMagentoBundle:Category',
+            "magentoCategory",
+            Join::WITH,
             $qb->expr()->andX(
-                $qb->expr()->neq("salesChannel.channelType", ":channelType"),
-                $qb->expr()->isNotNull("salesChannel.integrationChannel")
+                $qb->expr()->eq('magentoCategory.code', 'o.code')
             )
         );
-        $qb->setParameter("channelType", MagentoChannelType::TYPE);
-        */
-
-        //TODO: filter based on channel
-
-//        echo $qb->getQuery()->getSQL();
-//        die("xxxxx");
 
         return $qb;
     }
