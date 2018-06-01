@@ -8,27 +8,21 @@ use Psr\Log\LoggerAwareTrait;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\ImportExportBundle\Reader\EntityReader;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 
-class ProductExportReader extends EntityReader implements LoggerAwareInterface
+class ProductExportReader extends AbstractExportReader
 {
-    use LoggerAwareTrait;
-
     /**
      * {@inheritdoc}
      */
     protected function createSourceEntityQueryBuilder($entityName, Organization $organization = null, array $ids = [])
     {
         $qb = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
-
-        //TODO: filter based on sales channels relation
-
-        /*
-        $queryBuilder
+        $qb
             ->where(
-                $queryBuilder->expr()->isMemberOf(':salesChannel', 'product.channels')
+                $qb->expr()->isMemberOf(':salesChannel', 'o.channels')
             )
-            ->setParameter('salesChannel', $salesChannels);
-        */
+            ->setParameter('salesChannel', $this->salesChannel);
 
         return $qb;
     }
