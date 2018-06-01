@@ -2,7 +2,13 @@
 
 namespace Marello\Bundle\MagentoBundle\ImportExport\Converter;
 
+use Doctrine\ORM\EntityManager;
+
+use Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\IntegrationAwareDataConverter;
+
+use Marello\Bundle\MagentoBundle\Provider\EntityManagerTrait;
 
 class ProductDataConverter extends IntegrationAwareDataConverter
 {
@@ -15,6 +21,14 @@ class ProductDataConverter extends IntegrationAwareDataConverter
 
 
     protected $mageStatus = [ 'enabled' => 1, 'disabled' => 2];
+
+    use EntityManagerTrait;
+
+    public function __construct(EntityManager $entityManager)
+    {
+        $this->setEntityManager($entityManager);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -60,6 +74,7 @@ class ProductDataConverter extends IntegrationAwareDataConverter
             'description'       => $name,
             'short_description' => $name,
             'tax_class_id'      => self::DEFAULT_TAX_CLASS_ID,
+            'website_ids'       => $this->getWebsiteIds()
         ];
 
         return [
@@ -76,5 +91,40 @@ class ProductDataConverter extends IntegrationAwareDataConverter
     protected function getBackendHeader()
     {
         return array_values($this->getHeaderConversionRules());
+    }
+
+    public function getWebsiteIds()
+    {
+        $integrationChannel = $this->getIntegrationChannel();
+
+        /** @var MagentoSoapTransport $transport */
+        $transport = $integrationChannel->getTransport();
+
+        $websiteId = $transport->getWebsiteId();
+        $websiteIds = [];
+        switch ($websiteId) {
+            case -1:
+                foreach ($transport->getWebsites() as $website) {
+                    if ($website['id'] >= 1) {
+                        $websiteIds[] = $website['id'];
+                    }
+                }
+                break;
+            default:
+                $websiteIds[] = $websiteId;
+                break;
+        }
+        return $websiteIds;
+    }
+
+    /**
+     * @param $integrationChannelId
+     * @return Channel
+     */
+    protected function getIntegrationChannel()
+    {
+        return $this->getEntityManager()
+            ->getRepository(Channel::class)
+            ->findOneBy(['id' => $this->context->getOption('channel')]);
     }
 }

@@ -65,6 +65,8 @@ services:
 
     marello_magento.importexport.data_converter.product:
         class: %marello_magento.importexport.data_converter.product.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
 
     marello_magento.importexport.data_converter.category:
         class: '%marello_magento.importexport.data_converter.category.class%'
