@@ -4,10 +4,10 @@ namespace Marello\Bundle\MagentoBundle\ImportExport\Converter;
 
 use Doctrine\ORM\EntityManager;
 
-use Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\IntegrationAwareDataConverter;
 
+use Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
 use Marello\Bundle\MagentoBundle\Provider\EntityManagerTrait;
 
 class ProductDataConverter extends IntegrationAwareDataConverter
