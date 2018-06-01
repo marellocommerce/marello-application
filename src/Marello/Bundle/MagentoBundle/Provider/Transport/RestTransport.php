@@ -633,4 +633,20 @@ class RestTransport implements
     {
         //TODO: impliment category list in M2
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function catalogCategoryUpdateProduct(array $categoryLinkData)
+    {
+        //TODO: impliment category linking in M2
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function catalogCategoryAssignProduct(array $categoryLinkData)
+    {
+        //TODO: impliment category linking in M2
+    }
 }

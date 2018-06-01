@@ -119,7 +119,23 @@ interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareI
      */
     public function updateStock(array $stockData);
 
+    /**
+     * Retrieve marello catalog codes
+     * @return mixed
+     */
     public function getCategoryList();
+
+    /**
+     * Update already assigned product to categories
+     * @return mixed
+     */
+    public function catalogCategoryUpdateProduct(array $categoryLinkData);
+
+    /**
+     * Assign product to categories
+     * @return mixed
+     */
+    public function catalogCategoryAssignProduct(array $categoryLinkData);
 
     /**
      * Retrieve regions list from magento

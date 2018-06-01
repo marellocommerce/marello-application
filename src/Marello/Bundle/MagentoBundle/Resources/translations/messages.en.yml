@@ -42,6 +42,7 @@ marello:
             check_connection.label:       Check connection
             website_refresh.label:        Sync website list
             initial_sync_start_date.label: Initial sync start date
+            currency.label:               Currency
             is_display_order_notes:
                 label:    Import Order Comments as Order Notes
                 tooltip:  When this option is disabled the order notes can be viewed only on Magento Order view page. When enabled, the order notes will also be visible on the Magento Customer view and Account view page.

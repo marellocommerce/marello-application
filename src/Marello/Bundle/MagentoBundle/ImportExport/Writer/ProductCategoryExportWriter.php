@@ -27,7 +27,9 @@ class ProductCategoryExportWriter extends AbstractExportWriter
 
         $this->transport->init($this->getChannel()->getTransport());
 
-        $this->writeExistingItem($item);
+        foreach ($item['products'] as $productId) {
+            $this->writeExistingItem(['categoryId' => $item['categoryId'], 'productId' => $productId]);
+        }
     }
 
     /**
@@ -37,7 +39,7 @@ class ProductCategoryExportWriter extends AbstractExportWriter
     {
         try {
             $productId = $item['productId'];
-            $result = $this->transport->catalogCategoryUpdateProduct($item);
+            $result = $this->transport->catalogCategoryAssignProduct($item);
 
             if ($result) {
                 $this->stepExecution->getJobExecution()

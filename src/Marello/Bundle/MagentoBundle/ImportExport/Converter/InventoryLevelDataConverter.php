@@ -9,6 +9,7 @@
 namespace Marello\Bundle\MagentoBundle\ImportExport\Converter;
 
 use Doctrine\ORM\EntityManager;
+
 use Oro\Bundle\ImportExportBundle\Converter\DefaultDataConverter;
 
 use Marello\Bundle\MagentoBundle\Entity\Product;

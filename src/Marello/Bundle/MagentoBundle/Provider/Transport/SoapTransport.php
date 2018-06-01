@@ -73,6 +73,8 @@ class SoapTransport extends BaseSOAPTransport implements
     const ACTION_PRODUCT_CREATE = 'catalogProductCreate';
     const ACTION_PRODUCT_UPDATE = 'catalogProductUpdate';
     const ACTION_STOCK_UPDATE = 'catalogInventoryStockItemUpdate';
+    const ACTION_PRODUCT_CATEGORY_LINK = 'catalogCategoryUpdateProduct';
+    const ACTION_PRODUCT_CATEGORY_ASSIGN_LINK = 'catalogCategoryAssignProduct';
     const ACTION_ORDER_INFO = 'salesOrderInfo';
     const ACTION_CREDIT_MEMO_LIST = 'salesOrderCreditmemoList';
     const ACTION_CREDIT_MEMO_INFO = 'salesOrderCreditmemoInfo';
@@ -614,6 +616,28 @@ class SoapTransport extends BaseSOAPTransport implements
     {
         $settings = $this->settings->all();
         return new CategoryBridgeIterator($this, $settings);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function catalogCategoryUpdateProduct(array $categoryLinkData)
+    {
+        return $this->call(
+            SoapTransport::ACTION_PRODUCT_CATEGORY_LINK,
+            $categoryLinkData
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function catalogCategoryAssignProduct(array $categoryLinkData)
+    {
+        return $this->call(
+            SoapTransport::ACTION_PRODUCT_CATEGORY_ASSIGN_LINK,
+            $categoryLinkData
+        );
     }
 
     /**

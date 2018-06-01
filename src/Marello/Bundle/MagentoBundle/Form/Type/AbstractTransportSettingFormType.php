@@ -79,7 +79,7 @@ abstract class AbstractTransportSettingFormType extends AbstractType
         'currency',
         CurrencyType::class,
             [
-                'label' => 'marello.orocommerce.orocommercesettings.currency.label',
+                'label' => 'marello.magento.magentotransport.currency.label',
                 'required' => true
             ]
         );
