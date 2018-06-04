@@ -8,6 +8,7 @@ parameters:
     marello_magento.entity.website.class:                                    Marello\Bundle\MagentoBundle\Entity\Website
     marello_magento.entity.category.class:                                   Marello\Bundle\MagentoBundle\Entity\Category
     marello_catalog.entity.category.class:                                   Marello\Bundle\CatalogBundle\Entity\Category
+    marello_magento.entity.order.class:                                      Marello\Bundle\OrderBundle\Entity\Order
 
     # transport
     marello_magento.transport.soap_transport.class:                          Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport

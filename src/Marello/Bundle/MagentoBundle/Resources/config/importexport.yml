@@ -6,6 +6,7 @@ parameters:
     marello_magento.importexport.data_converter.category.class:                  Marello\Bundle\MagentoBundle\ImportExport\Converter\CategoryDataConverter
     marello_magento.importexport.data_converter.inventory_level.class:           Marello\Bundle\MagentoBundle\ImportExport\Converter\InventoryLevelDataConverter
     marello_magento.importexport.data_converter.price.class:                     Marello\Bundle\MagentoBundle\ImportExport\Converter\PriceDataConverter
+    marello_magento.importexport.data_converter.order.class:                     Marello\Bundle\MagentoBundle\ImportExport\Converter\OrderDataConverter
 
     # connectors
     marello_magento.mage.abstract.class:                                         Marello\Bundle\MagentoBundle\Provider\Connector\AbstractMagentoConnector
@@ -15,6 +16,9 @@ parameters:
     marello_magento.mage.category_connector.class:                               Marello\Bundle\MagentoBundle\Provider\Connector\CategoryConnector
     marello_magento.mage.inventory_level_connector.class:                        Marello\Bundle\MagentoBundle\Provider\Connector\InventoryLevelConnector
     marello_magento.mage.price_connector.class:                                  Marello\Bundle\MagentoBundle\Provider\Connector\PriceConnector
+    marello_magento.mage.rest.store.class:                                       Marello\Bundle\MagentoBundle\Provider\Connector\Rest\StoreConnector
+    marello_magento.mage.rest.website.class:                                     Marello\Bundle\MagentoBundle\Provider\Connector\Rest\WebsiteConnector
+    marello_magento.mage.order_connector.class:                                  Marello\Bundle\MagentoBundle\Provider\Connector\OrderConnector
 
     # normalizers
     marello_magento.importexport.normalizer.datetime.class:                      Marello\Bundle\MagentoBundle\ImportExport\Serializer\Normalizer\DateTimeNormalizer
@@ -55,16 +59,16 @@ parameters:
 services:
     # Data converter
     marello_magento.importexport.data_converter.website:
-        class: %marello_magento.importexport.data_converter.website.class%
+        class: '%marello_magento.importexport.data_converter.website.class%'
 
     marello_magento.importexport.data_converter.store:
-        class: %marello_magento.importexport.data_converter.store.class%
+        class: '%marello_magento.importexport.data_converter.store.class%'
 
     marello_magento.importexport.data_converter.rest.store:
         class: Marello\Bundle\MagentoBundle\ImportExport\Converter\Rest\StoreDataConverter
 
     marello_magento.importexport.data_converter.product:
-        class: %marello_magento.importexport.data_converter.product.class%
+        class: '%marello_magento.importexport.data_converter.product.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
 
@@ -83,9 +87,14 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
+    marello_magento.importexport.data_converter.order:
+        class: '%marello_magento.importexport.data_converter.order.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
     # Connectors
     marello_magento.connector.abstract:
-        class: %marello_magento.mage.abstract.class%
+        class: '%marello_magento.mage.abstract.class%'
         abstract: true
         arguments:
             - "@oro_importexport.context_registry"
@@ -96,7 +105,7 @@ services:
             - [setManagerRegistry, ["@doctrine"]]
 
     marello_magento.mage.website:
-        class: %marello_magento.mage.website.class%
+        class: '%marello_magento.mage.website.class%'
         parent: marello_magento.connector.abstract
         calls:
             - [setClassName, [%marello_magento.entity.website.class%]]
@@ -105,7 +114,7 @@ services:
             - { name: marello_magento.bundle_config.aware, argument_number: 3 }
 
     marello_magento.mage.rest.website:
-        class: Marello\Bundle\MagentoBundle\Provider\Connector\Rest\WebsiteConnector
+        class: '%marello_magento.mage.rest.website.class%'
         parent: marello_magento.connector.abstract
         calls:
             - [setClassName, [%marello_magento.entity.website.class%]]
@@ -114,7 +123,7 @@ services:
             - { name: marello_magento.bundle_config.aware, argument_number: 3 }
 
     marello_magento.mage.store:
-        class: %marello_magento.mage.store.class%
+        class: '%marello_magento.mage.store.class%'
         parent: marello_magento.connector.abstract
         calls:
             - [setClassName, [%marello_magento.entity.store.class%]]
@@ -123,7 +132,7 @@ services:
             - { name: marello_magento.bundle_config.aware, argument_number: 3 }
 
     marello_magento.mage.rest.store:
-        class: Marello\Bundle\MagentoBundle\Provider\Connector\Rest\StoreConnector
+        class: '%marello_magento.mage.rest.store.class%'
         parent: marello_magento.connector.abstract
         calls:
             - [setClassName, [%marello_magento.entity.store.class%]]
@@ -132,14 +141,21 @@ services:
             - { name: marello_magento.bundle_config.aware, argument_number: 3 }
 
     marello_magento.mage.product_connector:
-        class: %marello_magento.mage.product_connector.class%
+        class: '%marello_magento.mage.product_connector.class%'
         parent: marello_magento.connector.abstract
         tags:
             - { name: oro_integration.connector, type: product, channel_type: magento }
             - { name: marello_magento.bundle_config.aware, argument_number: 3 }
 
+    marello_magento.mage.order_connector:
+        class: '%marello_magento.mage.order_connector.class%'
+        parent: marello_magento.connector.abstract
+        tags:
+            - { name: oro_integration.connector, type: order, channel_type: magento }
+            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+
     marello_magento.mage.category_connector:
-        class: %marello_magento.mage.category_connector.class%
+        class: '%marello_magento.mage.category_connector.class%'
         parent: marello_magento.connector.abstract
         tags:
             - { name: oro_integration.connector, type: category, channel_type: magento }
@@ -176,7 +192,7 @@ services:
             - [setPropertyAccessor, ["@property_accessor"]]
 
     marello_magento.import.strategy.abstract:
-        class: %marello_magento.import.strategy.abstract.class%
+        class: '%marello_magento.import.strategy.abstract.class%'
         parent: marello_magento.import_strategy.default_magento_import
         absract: true
         calls:
@@ -187,6 +203,9 @@ services:
         parent: marello_magento.import_strategy.default_magento_import
 
     marello_magento.import.strategy.website:
+        parent: marello_magento.import_strategy.default_magento_import
+
+    marello_magento.import.strategy.order:
         parent: marello_magento.import_strategy.default_magento_import
 
     marello_magento.import.strategy.product:
@@ -254,19 +273,31 @@ services:
         calls:
             - [setDataConverter, ["@marello_magento.importexport.data_converter.rest.store"]]
             - [setStrategy, ["@marello_magento.import.strategy.store"]]
-            - [setEntityName, [%marello_magento.entity.store.class%]]
+            - [setEntityName, ['%marello_magento.entity.store.class%']]
 
     marello_magento.importexport.processor.website:
         parent: oro_integration.importexport.processor.import
         calls:
             - [setDataConverter, ["@marello_magento.importexport.data_converter.website"]]
             - [setStrategy, ["@marello_magento.import.strategy.website"]]
-            - [setEntityName, [%marello_magento.entity.website.class%]]
+            - [setEntityName, ['%marello_magento.entity.website.class%']]
         tags:
             - name: oro_importexport.processor
               type: import
               entity: '%marello_magento.entity.website.class%'
               alias: marello_magento.website
+
+    marello_magento.importexport.processor.order:
+        parent: oro_integration.importexport.processor.import
+        calls:
+            - [setDataConverter, ["@marello_magento.importexport.data_converter.order"]]
+            - [setStrategy, ["@marello_magento.import.strategy.order"]]
+            - [setEntityName, ['%marello_magento.entity.order.class%']]
+        tags:
+            - name: oro_importexport.processor
+              type: import
+              entity: '%marello_magento.entity.order.class%'
+              alias: marello_magento.order
 
     marello_magento.importexport.processor.inventory_level:
         parent: oro_integration.importexport.processor.import
@@ -293,7 +324,7 @@ services:
         calls:
             - [setDataConverter, ["@marello_magento.importexport.data_converter.website"]]
             - [setStrategy, ["@marello_magento.import.strategy.website"]]
-            - [setEntityName, [%marello_magento.entity.website.class%]]
+            - [setEntityName, ['%marello_magento.entity.website.class%']]
 
     marello_magento.importexport.processor.product:
         parent: oro_integration.importexport.processor.import
@@ -375,14 +406,14 @@ services:
         abstract: true
         calls:
             - [setTransport, ["@marello_magento.transport.soap_transport"]]
-            - [setChannelClassName, [%oro_integration.entity.class%]]
+            - [setChannelClassName, ['%oro_integration.entity.class%']]
 
     marello_magento.importexport.writer.product_export:
         class: %marello_magento.importexport.writer.product_export.class%
         parent: marello_magento.importexport.writer.abstract_export
 
     marello_magento.importexport.writer.inventory_level_export:
-        class: %marello_magento.importexport.writer.inventory_level_export.class%
+        class: '%marello_magento.importexport.writer.inventory_level_export.class%'
         parent: marello_magento.importexport.writer.abstract_export
 
     marello_magento.importexport.writer.product_category_export:
@@ -390,18 +421,18 @@ services:
         parent: marello_magento.importexport.writer.abstract_export
 
     marello_magento.importexport.writer.price_export:
-        class: %marello_magento.importexport.writer.price_export.class%
+        class: '%marello_magento.importexport.writer.price_export.class%'
         parent: marello_magento.importexport.writer.abstract_export
 
     # readers
     marello_magento.importexport.reader.entity:
-        class: %marello_magento.importexport.reader.entity.class%
+        class: '%marello_magento.importexport.reader.entity.class%'
         parent: marello_magento.reader.context
         calls:
             - [setContextKey, ['entity']]
 
     marello_magento.reader.context:
-        class: %marello_magento.reader.context.class%
+        class: '%marello_magento.reader.context.class%'
         abstract: true
         arguments:
             - "@oro_importexport.context_registry"
@@ -445,7 +476,7 @@ services:
 
     # strategy
     marello_magento.provider.strategy.two_way_sync.product:
-        class: %marello_magento.provider.strategy.two_way_sync.class%
+        class: '%marello_magento.provider.strategy.two_way_sync.class%'
         arguments:
             - "@marello_magento.importexport.processor.product"
             - "@marello_magento.importexport.processor.product_export"

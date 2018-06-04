@@ -301,7 +301,8 @@ class MagentoSyncProcessor extends SyncProcessor
     ) {
         $importResult = parent::processIntegrationConnector($integration, $connector, $parameters);
 
-        if (!$integration->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)) {
+        if (!$integration->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)
+            || !$connector instanceof TwoWaySyncConnectorInterface) {
             $this->logger->debug(sprintf('None 2 way sync "%s" connector', $connector->getType()));
             return $importResult;
         }

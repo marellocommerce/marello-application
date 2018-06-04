@@ -168,3 +168,17 @@ connector:
                         writer:    marello_magento.importexport.writer.price_export
                     parameters:
                         batch_size: 1
+
+        mage_order_import:
+            title: "Sync Orders from Magento"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.mage.order_connector
+                        processor: marello_magento.importexport.processor.order
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 25

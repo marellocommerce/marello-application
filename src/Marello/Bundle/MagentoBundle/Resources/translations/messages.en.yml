@@ -24,6 +24,8 @@ marello:
                 label: Inventory Level Connector
             price:
                 label: Price Connector
+            order:
+                label: Order Connector
 
         magentotransport:
             entity_label:                 Magento Integration Channel Transport
