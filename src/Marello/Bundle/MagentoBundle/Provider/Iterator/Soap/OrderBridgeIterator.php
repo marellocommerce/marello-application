@@ -8,6 +8,8 @@ use Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport;
 
 class OrderBridgeIterator extends AbstractBridgeIterator
 {
+    const DEFAULT_SYNC_RANGE = '1 day';
+
     /**
      * {@inheritdoc}
      */
@@ -17,6 +19,16 @@ class OrderBridgeIterator extends AbstractBridgeIterator
             $this->filter->addStoreFilter($this->getStoresByWebsiteId($this->websiteId));
         }
         parent::applyFilter();
+
+        /**
+         * orders of the past 24 hrs only
+         */
+        $dateField = 'updated_at';
+        $fromDate = new \DateTime('now');
+        $fromDate->sub(\DateInterval::createFromDateString(self::DEFAULT_SYNC_RANGE));
+
+        $this->filter->addDateFilter($dateField, 'from', $fromDate);
+        $this->filter->addDateFilter($dateField, 'to', $this->getToDate(new \DateTime('now')));
     }
 
     /**
