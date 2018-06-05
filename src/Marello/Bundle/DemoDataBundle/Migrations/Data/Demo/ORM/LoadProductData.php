@@ -86,6 +86,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setName($data['name']);
         $product->setOrganization($this->defaultOrganization);
         $product->setWeight($data['weight']);
+        $product->setManufacturingCode($this->generateManufacturingCode($data['sku']));
 
         $status = $this->manager
             ->getRepository('MarelloProductBundle:ProductStatus')
@@ -212,5 +213,20 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     protected function getDictionary($name)
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'dictionaries' . DIRECTORY_SEPARATOR . $name;
+    }
+
+    /**
+     * @param string $sku
+     * @return string
+     */
+    private function generateManufacturingCode($sku)
+    {
+        return sprintf(
+            '%s-%s-%s-%s',
+            substr(str_shuffle("ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 3),
+            substr(str_shuffle("0123456789"), 0, 3),
+            substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 3),
+            substr(str_shuffle(strtolower(str_replace('-', '', $sku))), 0, 3)
+        );
     }
 }

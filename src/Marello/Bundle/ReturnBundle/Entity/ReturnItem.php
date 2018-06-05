@@ -14,7 +14,13 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @ORM\Entity()
  * @ORM\Table(name="marello_return_item")
  * @ORM\HasLifecycleCallbacks()
- * @Oro\Config()
+ * @Oro\Config(
+ *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
+ *      }
+ * )
  */
 class ReturnItem extends ExtendReturnItem implements
     CurrencyAwareInterface,
@@ -36,6 +42,13 @@ class ReturnItem extends ExtendReturnItem implements
      *
      * @ORM\ManyToOne(targetEntity="ReturnEntity", inversedBy="returnItems")
      * @ORM\JoinColumn(name="return_id", onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $return;
 
@@ -44,6 +57,13 @@ class ReturnItem extends ExtendReturnItem implements
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\OrderItem", inversedBy="returnItems")
      * @ORM\JoinColumn(name="order_item_id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $orderItem;
 
@@ -51,6 +71,13 @@ class ReturnItem extends ExtendReturnItem implements
      * @var int
      *
      * @ORM\Column(name="quantity", type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $quantity;
 

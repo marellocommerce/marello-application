@@ -4,7 +4,7 @@ system_configuration:
             title: marello.return.system_configuration.groups.return.title
         return_configuration:
             title: marello.return.system_configuration.groups.return_configuration.title
-            icon: fa-history
+            icon: fa-undo
             priority: 50
 
         ror_settings:

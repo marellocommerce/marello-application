@@ -21,6 +21,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      routeName="marello_tax_taxcode_index",
  *      routeView="marello_tax_taxcode_view",
  *      routeUpdate="marello_tax_taxcode_update",
+ *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
+ *      }
  * )
  */
 class TaxCode
@@ -38,6 +43,13 @@ class TaxCode
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=32, unique=true, nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $code;
 
@@ -45,6 +57,13 @@ class TaxCode
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $description;
 

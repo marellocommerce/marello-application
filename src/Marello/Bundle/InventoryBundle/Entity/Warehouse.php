@@ -25,6 +25,9 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *              "owner_type"="ORGANIZATION",
  *              "owner_field_name"="owner",
  *              "owner_column_name"="owner_id"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
@@ -43,6 +46,14 @@ class Warehouse extends ExtendWarehouse
      * @ORM\Column(type="string", name="label", nullable=false)
      *
      * @var string
+     * 
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $label;
 
@@ -50,6 +61,14 @@ class Warehouse extends ExtendWarehouse
      * @ORM\Column(type="string", name="code", nullable=false)
      *
      * @var string
+     *
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $code;
 
@@ -59,6 +78,9 @@ class Warehouse extends ExtendWarehouse
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -75,6 +97,9 @@ class Warehouse extends ExtendWarehouse
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -91,6 +116,9 @@ class Warehouse extends ExtendWarehouse
      *          "importexport"={
      *              "order"=40,
      *              "full"=true,
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -107,6 +135,9 @@ class Warehouse extends ExtendWarehouse
      *          "importexport"={
      *              "order"=50,
      *              "full"=true,
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -121,6 +152,9 @@ class Warehouse extends ExtendWarehouse
      *          "importexport"={
      *              "order"=60,
      *              "full"=true,
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )

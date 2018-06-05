@@ -27,11 +27,10 @@ class RowSelectionSelectAllListener
 
         $rowSelectionConfig = $config->offsetGetByPath(self::ROW_SELECTION_OPTION_PATH, []);
         $columns = $config->offsetGetByPath('columns', []);
-
-        if (!is_array($rowSelectionConfig) || empty($rowSelectionConfig['columnName']) ||
-            empty($rowSelectionConfig['selectAll']) || $rowSelectionConfig['selectAll'] === false) {
+        if (!$this->isApplicable($rowSelectionConfig)) {
             return;
         }
+
         foreach ($columns as $name => $attributes) {
             if ($name === $rowSelectionConfig['columnName']) {
                 $columns[$name]['frontend_type'] = self::BOOLEAN_SELECT_ALL_COLUMN_TYPE;
@@ -69,11 +68,10 @@ class RowSelectionSelectAllListener
         $config = $datagrid->getConfig();
 
         $rowSelectionConfig = $config->offsetGetByPath(self::ROW_SELECTION_OPTION_PATH, []);
-
-        if (!is_array($rowSelectionConfig) || empty($rowSelectionConfig['columnName']) ||
-            empty($rowSelectionConfig['selectAll']) || $rowSelectionConfig['selectAll'] === false) {
+        if (!$this->isApplicable($rowSelectionConfig)) {
             return;
         }
+
         $properties = $config->offsetGetByPath('properties', []);
         $rowSelectionColumnName = $rowSelectionConfig['columnName'];
         /** @var Query $query */
@@ -81,6 +79,7 @@ class RowSelectionSelectAllListener
         $query
             ->setFirstResult(0)
             ->setMaxResults(null);
+
         $allResults = $query->getResult();
         $selectedAll = null;
         $selectedCnt = 0;
@@ -94,6 +93,7 @@ class RowSelectionSelectAllListener
                 $selectedRows[] = $result;
             }
         }
+
         if ($selectedCnt === 0) {
             $selectedAll = false;
         } elseif (count($allResults) === $selectedCnt) {
@@ -121,5 +121,15 @@ class RowSelectionSelectAllListener
             PropertyInterface::FRONTEND_TYPE_KEY => 'row_array'
         ];
         $config->offsetSetByPath('properties', $properties);
+    }
+
+    /**
+     * @param $rowSelectionConfig
+     * @return bool
+     */
+    protected function isApplicable($rowSelectionConfig)
+    {
+        return (!is_array($rowSelectionConfig) || !empty($rowSelectionConfig['columnName']) ||
+            !empty($rowSelectionConfig['selectAll']) || (bool)$rowSelectionConfig['selectAll']);
     }
 }
