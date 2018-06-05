@@ -11,7 +11,13 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity()
- * @Oro\Config()
+ * @Oro\Config(
+ *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
+ *      }
+ * )
  * @ORM\Table(name="marello_packing_pack_slip_item")
  * @ORM\HasLifecycleCallbacks()
  */
@@ -33,6 +39,13 @@ class PackingSlipItem extends ExtendPackingSlipItem
      *
      * @ORM\ManyToOne(targetEntity="PackingSlip", inversedBy="items")
      * @ORM\JoinColumn(name="packing_slip_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $packingSlip;
 
@@ -41,6 +54,13 @@ class PackingSlipItem extends ExtendPackingSlipItem
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $product;
 
@@ -48,6 +68,13 @@ class PackingSlipItem extends ExtendPackingSlipItem
      * @var string
      *
      * @ORM\Column(name="product_sku",type="string", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $productSku;
 
@@ -55,12 +82,26 @@ class PackingSlipItem extends ExtendPackingSlipItem
      * @var string
      *
      * @ORM\Column(name="product_name",type="string", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $productName;
 
     /**
      * @ORM\OneToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\OrderItem")
      * @ORM\JoinColumn(name="order_item_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $orderItem;
 
@@ -68,6 +109,13 @@ class PackingSlipItem extends ExtendPackingSlipItem
      * @var float
      *
      * @ORM\Column(name="weight",type="float",nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $weight;
 
@@ -75,11 +123,25 @@ class PackingSlipItem extends ExtendPackingSlipItem
      * @var float
      *
      * @ORM\Column(name="quantity",type="float",nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $quantity;
 
     /**
      * @ORM\Column(name="comment", type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */

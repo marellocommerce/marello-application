@@ -18,7 +18,13 @@ use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
  * @ORM\Entity(repositoryClass="Marello\Bundle\PurchaseOrderBundle\Entity\Repository\PurchaseOrderItemRepository")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_purchase_order_item")
- * @Oro\Config()
+ * @Oro\Config(
+ *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
+ *      }
+ * )
  */
 class PurchaseOrderItem implements
     ProductAwareInterface
@@ -38,6 +44,13 @@ class PurchaseOrderItem implements
      * @var ProductInterface
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $product;
 
@@ -46,6 +59,13 @@ class PurchaseOrderItem implements
      *
      * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="items")
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $order;
 
@@ -53,6 +73,13 @@ class PurchaseOrderItem implements
      * @var string
      *
      * @ORM\Column(name="product_sku", type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $productSku;
 
@@ -60,6 +87,13 @@ class PurchaseOrderItem implements
      * @var string
      *
      * @ORM\Column(name="product_name", type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $productName;
 
@@ -67,6 +101,13 @@ class PurchaseOrderItem implements
      * @var string
      *
      * @ORM\Column(name="supplier", type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $supplier;
 
@@ -74,6 +115,13 @@ class PurchaseOrderItem implements
      * @var int
      *
      * @ORM\Column(name="ordered_amount", type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $orderedAmount;
 
@@ -81,6 +129,13 @@ class PurchaseOrderItem implements
      * @var int
      *
      * @ORM\Column(name="received_amount", type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $receivedAmount = 0;
 
@@ -88,6 +143,13 @@ class PurchaseOrderItem implements
      * @var float
      *
      * @ORM\Column(name="purchase_price_value", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $purchasePriceValue;
 
@@ -100,6 +162,13 @@ class PurchaseOrderItem implements
      * @var float
      *
      * @ORM\Column(name="row_total", type="money", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $rowTotal;
     
@@ -114,6 +183,13 @@ class PurchaseOrderItem implements
      * @var string
      *
      * @ORM\Column(name="status", type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $status = 'pending';
 

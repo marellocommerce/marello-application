@@ -15,6 +15,11 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      routeName="marello_tax_taxrule_index",
  *      routeView="marello_tax_taxrule_view",
  *      routeUpdate="marello_tax_taxrule_update",
+ *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
+ *      }
  * )
  * @ORM\HasLifecycleCallbacks()
  */
@@ -36,6 +41,13 @@ class TaxRule
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
      * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $taxCode;
 
@@ -44,6 +56,13 @@ class TaxRule
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxRate")
      * @ORM\JoinColumn(name="tax_rate_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $taxRate;
 
@@ -52,6 +71,13 @@ class TaxRule
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxJurisdiction")
      * @ORM\JoinColumn(name="tax_jurisdiction_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $taxJurisdiction;
 
