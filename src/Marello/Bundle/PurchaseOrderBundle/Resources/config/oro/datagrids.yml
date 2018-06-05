@@ -256,6 +256,7 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasProduct
+                selectAll: true
                 selectors:
                     included: '#appendProducts'
                     excluded: '#removeProducts'

@@ -227,6 +227,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             substr(str_shuffle("0123456789"), 0, 3),
             substr(str_shuffle("abcdefghijklmnopqrstuvwxyz"), 0, 3),
             substr(str_shuffle(strtolower(str_replace('-', '', $sku))), 0, 3)
-            );
+        );
     }
 }
