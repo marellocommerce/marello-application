@@ -24,10 +24,15 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
  * )
  * @ORM\HasLifecycleCallbacks
  * @Config(
- *     mode="hidden",
- *     routeName="marello_tax_taxjurisdiction_index",
- *     routeView="marello_tax_taxjurisdiction_view",
- *     routeUpdate="marello_tax_taxjurisdiction_update"
+ *      mode="hidden",
+ *      routeName="marello_tax_taxjurisdiction_index",
+ *      routeView="marello_tax_taxjurisdiction_view",
+ *      routeUpdate="marello_tax_taxjurisdiction_update",
+ *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
+ *      }
  * )
  */
 class TaxJurisdiction implements DatesAwareInterface
@@ -52,6 +57,9 @@ class TaxJurisdiction implements DatesAwareInterface
      *          "importexport"={
      *              "order"=10,
      *              "identity"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -77,6 +85,13 @@ class TaxJurisdiction implements DatesAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Country")
      * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $country;
 
@@ -85,6 +100,13 @@ class TaxJurisdiction implements DatesAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Region")
      * @ORM\JoinColumn(name="region_code", referencedColumnName="combined_code")
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $region;
 
@@ -92,6 +114,13 @@ class TaxJurisdiction implements DatesAwareInterface
      * @var string
      *
      * @ORM\Column(name="region_text", type="string", length=255, nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $regionText;
 
@@ -103,6 +132,13 @@ class TaxJurisdiction implements DatesAwareInterface
      *      mappedBy="taxJurisdiction",
      *      cascade={"all"},
      *      orphanRemoval=true
+     * )
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
      * )
      */
     protected $zipCodes;

@@ -88,6 +88,9 @@ class Product extends ExtendProduct implements
      * @ORM\Column(name="name", type="string", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -102,6 +105,9 @@ class Product extends ExtendProduct implements
      * @ORM\Column(name="sku", type="string", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "order"=10,
      *              "header"="SKU",
@@ -118,6 +124,9 @@ class Product extends ExtendProduct implements
      * @ORM\Column(name="manufacturing_code", type="string", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -133,6 +142,9 @@ class Product extends ExtendProduct implements
      * @ORM\JoinColumn(name="product_status", referencedColumnName="name")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -147,6 +159,9 @@ class Product extends ExtendProduct implements
      * @ORM\Column(name="type", type="string", length=255, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -161,6 +176,9 @@ class Product extends ExtendProduct implements
      * @ORM\Column(name="cost", type="money", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -173,6 +191,9 @@ class Product extends ExtendProduct implements
      * @ORM\Column(type="float", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -189,6 +210,9 @@ class Product extends ExtendProduct implements
      * @ORM\Column(name="warranty", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -204,7 +228,9 @@ class Product extends ExtendProduct implements
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\ConfigField(
      *  defaultValues={
-     *      "dataaudit"={"auditable"=true},
+     *      "dataaudit"={
+     *          "auditable"=true
+     *      },
      *      "importexport"={
      *          "excluded"=true
      *      }
@@ -225,6 +251,9 @@ class Product extends ExtendProduct implements
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -245,6 +274,9 @@ class Product extends ExtendProduct implements
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -260,6 +292,9 @@ class Product extends ExtendProduct implements
      * @ORM\JoinTable(name="marello_product_saleschannel")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -275,6 +310,9 @@ class Product extends ExtendProduct implements
      * @ORM\JoinColumn(name="variant_id", referencedColumnName="id", onDelete="SET NULL")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -295,6 +333,9 @@ class Product extends ExtendProduct implements
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -326,6 +367,16 @@ class Product extends ExtendProduct implements
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $suppliers;
 
@@ -333,6 +384,16 @@ class Product extends ExtendProduct implements
      * @var Supplier
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
      * @ORM\JoinColumn(name="preferred_supplier_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $preferredSupplier;
 
@@ -341,6 +402,16 @@ class Product extends ExtendProduct implements
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
      * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $taxCode;
 
@@ -352,6 +423,16 @@ class Product extends ExtendProduct implements
      *     mappedBy="product",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
+     * )
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
      * )
      */
     protected $salesChannelTaxCodes;
@@ -365,6 +446,16 @@ class Product extends ExtendProduct implements
      * @var ArrayCollection|Category[]
      *
      * @ORM\ManyToMany(targetEntity="Marello\Bundle\CatalogBundle\Entity\Category", mappedBy="products")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
      */
     protected $categories;
 

@@ -8,6 +8,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity()
@@ -29,6 +30,9 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *              "owner_type"="ORGANIZATION",
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
@@ -36,6 +40,8 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  */
 class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInterface
 {
+    use AuditableOrganizationAwareTrait;
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -62,6 +68,9 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *          },
      *          "importexport"={
      *              "full"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -78,6 +87,9 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *          "importexport"={
      *              "order"=20,
      *              "full"=true,
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -92,6 +104,9 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *      defaultValues={
      *          "importexport"={
      *              "header"="Inventory Qty"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -106,6 +121,9 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *      defaultValues={
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -123,6 +141,9 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *          },
      *          "importexport"={
      *              "excluded"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -139,19 +160,14 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
      *      defaultValues={
      *          "entity"={
      *              "label"="oro.ui.updated_at"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
      */
     protected $updatedAt;
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
 
     /**
      * @return int
@@ -243,25 +259,6 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
     public function getWarehouse()
     {
         return $this->warehouse;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return $this
-     */
-    public function setOrganization(OrganizationInterface $organization)
-    {
-        $this->organization = $organization;
-
-        return $this;
     }
 
     /**

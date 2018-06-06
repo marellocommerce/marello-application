@@ -22,7 +22,13 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")
- * @Oro\Config()
+ * @Oro\Config(
+ *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
+ *      }
+ * )
  * @ORM\Table(name="marello_order_order_item")
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")
@@ -50,7 +56,13 @@ class OrderItem extends ExtendOrderItem implements
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
      * @ORM\JoinColumn(onDelete="SET NULL")
-     *
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      * @JMS\Expose
      */
     protected $product;
@@ -59,6 +71,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var string
      *
      * @ORM\Column(name="product_name",type="string", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $productName;
 
@@ -66,6 +85,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var string
      *
      * @ORM\Column(name="product_sku",type="string", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $productSku;
 
@@ -78,6 +104,9 @@ class OrderItem extends ExtendOrderItem implements
      *      defaultValues={
      *          "importexport"={
      *              "full"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -88,6 +117,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var int
      *
      * @ORM\Column(name="quantity",type="integer",nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @JMS\Expose
      */
@@ -97,6 +133,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var int
      *
      * @ORM\Column(name="price",type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @JMS\Expose
      */
@@ -106,6 +149,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var int
      *
      * @ORM\Column(name="original_price_incl_tax",type="money", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @JMS\Expose
      */
@@ -115,6 +165,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var int
      *
      * @ORM\Column(name="original_price_excl_tax",type="money", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @JMS\Expose
      */
@@ -124,6 +181,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var int
      *
      * @ORM\Column(name="purchase_price_incl",type="money", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @JMS\Expose
      */
@@ -133,6 +197,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var int
      *
      * @ORM\Column(name="tax",type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @JMS\Expose
      */
@@ -142,6 +213,14 @@ class OrderItem extends ExtendOrderItem implements
      * @var float
      *
      * @ORM\Column(name="tax_percent", type="percent", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
      * @JMS\Expose
      */
     protected $taxPercent;
@@ -150,6 +229,14 @@ class OrderItem extends ExtendOrderItem implements
      * @var float
      *
      * @ORM\Column(name="discount_percent", type="percent", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
      * @JMS\Expose
      */
     protected $discountPercent;
@@ -158,6 +245,14 @@ class OrderItem extends ExtendOrderItem implements
      * @var double
      *
      * @ORM\Column(name="discount_amount", type="money", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
      * @JMS\Expose
      */
     protected $discountAmount;
@@ -166,6 +261,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var int
      *
      * @ORM\Column(name="row_total_incl_tax",type="money", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @JMS\Expose
      */
@@ -175,6 +277,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var int
      *
      * @ORM\Column(name="row_total_excl_tax",type="money", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @JMS\Expose
      */
@@ -184,6 +293,13 @@ class OrderItem extends ExtendOrderItem implements
      * @var ReturnItem[]|Collection
      *
      * @ORM\OneToMany(targetEntity="Marello\Bundle\ReturnBundle\Entity\ReturnItem", mappedBy="orderItem", cascade={})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $returnItems;
 
@@ -192,6 +308,13 @@ class OrderItem extends ExtendOrderItem implements
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
      * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="SET NULL")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @JMS\Expose
      */

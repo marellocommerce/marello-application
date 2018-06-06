@@ -13,6 +13,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity
@@ -31,6 +32,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *              "owner_type"="ORGANIZATION",
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
@@ -38,6 +42,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 class PurchaseOrder implements DerivedPropertyAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
 
     /**
      * @ORM\Id
@@ -50,6 +55,13 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
 
     /**
      * @ORM\Column(name="purchase_order_number", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */
@@ -68,6 +80,9 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      *      defaultValues={
      *          "email"={
      *              "available_in_template"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -79,28 +94,40 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
      * @ORM\JoinColumn(name="supplier_id", onDelete="CASCADE", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $supplier;
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", nullable=false)
-     */
-    protected $organization;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="due_date", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $dueDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
      * @ORM\JoinColumn(name="warehouse_id", referencedColumnName="id", nullable=false)
-     *
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      * @var Warehouse
      */
     protected $warehouse;
@@ -109,6 +136,13 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      * @var float
      *
      * @ORM\Column(name="order_total", type="money", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $orderTotal;
 
@@ -230,26 +264,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     public function setSupplier(Supplier $supplier)
     {
         $this->supplier = $supplier;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * @param Organization $organization
-     *
-     * @return $this
-     */
-    public function setOrganization($organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }
