@@ -1,0 +1,62 @@
+<?php
+
+namespace Marello\Bundle\OrderBundle\Entity\Repository;
+
+use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+
+class OrderItemRepository extends EntityRepository
+{
+    /**
+     * @var AclHelper
+     */
+    private $aclHelper;
+
+    /**
+     * @param AclHelper $aclHelper
+     */
+    public function setAclHelper(AclHelper $aclHelper)
+    {
+        $this->aclHelper = $aclHelper;
+    }
+    
+    /**
+     * @param int $quantity
+     * @param string $currency
+     *
+     * @return array
+     */
+    public function getTopProductsByRevenue($quantity, $currency)
+    {
+        $select = 'oi.productSku as SKU, SUM(oi.quantity * oi.price) as revenue, o.currency as currency';
+        $qb     = $this->createQueryBuilder('oi');
+        $qb
+            ->select($select)
+            ->innerJoin('oi.order', 'o')
+            ->groupBy('oi.productSku, o.currency')
+            ->orderBy('currency, revenue', 'DESC')
+            ->where('o.currency = :currency')
+            ->setParameter('currency', $currency)
+            ->setMaxResults($quantity);
+
+        return $this->aclHelper->apply($qb)->getArrayResult();
+    }
+
+    /**
+     * @param int $quantity
+     *
+     * @return array
+     */
+    public function getTopProductsByItemsSold($quantity)
+    {
+        $select = 'o.productSku as SKU, SUM(o.quantity) as quantity';
+        $qb     = $this->createQueryBuilder('o');
+        $qb
+            ->select($select)
+            ->groupBy('o.productSku')
+            ->orderBy('quantity', 'DESC')
+            ->setMaxResults($quantity);
+
+        return $this->aclHelper->apply($qb)->getArrayResult();
+    }
+}

@@ -1,0 +1,6 @@
+<span class="title">{{ item.label|trans }}</span>
+<ol>
+    {% for val in item.value %}
+        <li>{{ val.SKU }}: {{ val.quantity }}</li>
+    {% endfor %}
+</ol>

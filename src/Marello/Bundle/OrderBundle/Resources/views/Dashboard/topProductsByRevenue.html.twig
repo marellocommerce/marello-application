@@ -1,0 +1,12 @@
+<span class="title">{{ item.label|trans }}</span>
+<ul>
+    {% for key, value in item.value %}
+        <li>{{ key }}:</li>
+        <ol>
+            {% for val in value %}
+                <li>{{ val.SKU }}: {{ val.revenue|oro_format_currency({'currency': val.currency}) }}</li>
+            {% endfor %}
+        </ol>
+
+    {% endfor %}
+</ul>

@@ -21,7 +21,7 @@ use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderItemRepository")
  * @Oro\Config()
  * @ORM\Table(name="marello_order_order_item")
  * @ORM\HasLifecycleCallbacks()
