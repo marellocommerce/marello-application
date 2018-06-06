@@ -20,6 +20,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * })
  * @Oro\Config(
  *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          },
  *          "security"={
  *              "type"="ACL",
  *              "group_name"=""
@@ -34,6 +37,13 @@ class MarelloAddress extends ExtendMarelloAddress
      * @var string
      *
      * @ORM\Column(type="string", length=32, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $phone;
 
@@ -41,6 +51,13 @@ class MarelloAddress extends ExtendMarelloAddress
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $company;
 
@@ -50,6 +67,13 @@ class MarelloAddress extends ExtendMarelloAddress
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      *
      * @var Customer
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $customer;
 

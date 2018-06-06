@@ -72,8 +72,8 @@ class OrderType extends AbstractType
             ->add('items', OrderItemCollectionType::class)
             ->add('shippingMethod', ShippingMethodSelectType::class);
 
-        $this->addAddress($builder, 'billing', $options);
-        $this->addAddress($builder, 'shipping', $options);
+        $this->addBillingAddress($builder, $options);
+        $this->addShippingAddress($builder, $options);
 
         $builder->addEventSubscriber(new OrderTotalsSubscriber());
         $builder->addEventSubscriber(new CurrencySubscriber());
@@ -81,20 +81,39 @@ class OrderType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param string $type
      * @param array $options
      */
-    protected function addAddress(FormBuilderInterface $builder, $type, $options)
+    protected function addBillingAddress(FormBuilderInterface $builder, $options)
     {
         $builder
             ->add(
-                sprintf('%sAddress', $type),
-                OrderAddressType::NAME,
+                'billingAddress',
+                OrderBillingAddressType::NAME,
                 [
-                    'label' => sprintf('oro.order.%s_address.label', $type),
+                    'label' => 'oro.order.billing_address.label',
                     'object' => $options['data'],
                     'required' => false,
-                    'addressType' => $type,
+                    'addressType' => 'billing',
+                    'isEditEnabled' => true
+                ]
+            );
+    }
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    protected function addShippingAddress(FormBuilderInterface $builder, $options)
+    {
+        $builder
+            ->add(
+                'shippingAddress',
+                OrderShippingAddressType::NAME,
+                [
+                    'label' => 'oro.order.shipping_address.label',
+                    'object' => $options['data'],
+                    'required' => false,
+                    'addressType' => 'shipping',
                     'isEditEnabled' => true
                 ]
             );

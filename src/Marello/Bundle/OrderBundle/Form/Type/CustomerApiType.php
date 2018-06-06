@@ -67,7 +67,14 @@ class CustomerApiType extends AbstractType
                 'constraints' => [
                     new NotNull,
                 ],
-            ]);
+            ])
+            ->add('shippingAddress', AddressType::NAME, [
+                'required'    => true,
+                'constraints' => [
+                    new NotNull,
+                ],
+            ])
+        ;
 
         $builder
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {

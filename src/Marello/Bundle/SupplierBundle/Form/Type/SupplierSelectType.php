@@ -1,6 +1,7 @@
 <?php
 namespace Marello\Bundle\SupplierBundle\Form\Type;
 
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,6 +16,7 @@ class SupplierSelectType extends AbstractType
         $resolver->setDefaults(
             [
                 'autocomplete_alias'    => 'suppliers',
+                'entity_class'          => Supplier::class,
                 'create_enabled'        => false,
                 'grid_name'             => 'marello-supplier-extended-no-actions-grid',
                 'grid_parameters'       => [ 'isActive' => 1],

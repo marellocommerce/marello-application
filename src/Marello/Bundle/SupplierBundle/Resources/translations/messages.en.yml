@@ -12,6 +12,11 @@ marello:
         address.label:                Address
         email.label:                  Email
         organization.label:           Organization
+        currency.label:               Currency
+        po_send_by:
+            label:                    Send Purchase Orders By
+            manual:                   Manually
+            email:                    By Email
         datablock:
             general:                  General
             supplier_information:     Supplier Information

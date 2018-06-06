@@ -51,6 +51,8 @@
                         {{ UI.renderProperty('marello.supplier.supplier_priority.label'|trans, entity.priority) }}
                         {{ UI.renderProperty('marello.supplier.supplier_can_dropship.label'|trans, entity.canDropship ? 'marello.supplier.supplier_can_dropship.value.yes'|trans : 'marello.supplier.supplier_can_dropship.value.no'|trans) }}
                         {{ UI.renderProperty('marello.supplier.supplier_is_active.label'|trans, entity.isActive ? 'marello.supplier.supplier_is_active.value.yes'|trans : 'marello.supplier.supplier_is_active.value.no'|trans) }}
+                        {{ UI.renderProperty('marello.supplier.currency.label'|trans, entity.currency) }}
+                        {{ UI.renderProperty('marello.supplier.po_send_by.label'|trans, entity.poSendBy) }}
                         {% set supplierViewGranted = resource_granted('marello_supplier_update') %}
                         {%- if supplierViewGranted -%}
                             {%- set supplierData -%}

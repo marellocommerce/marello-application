@@ -9,3 +9,5 @@ Marello\Bundle\SupplierBundle\Entity\Supplier:
     properties:
         name:
             - NotBlank: ~
+        currency:
+            - NotBlank: ~

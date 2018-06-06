@@ -286,6 +286,7 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasVariant
+                selectAll: true
                 selectors:
                     included: '#addVariants'
                     excluded: '#removeVariants'
@@ -416,6 +417,7 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasChannel
+                selectAll: true
                 selectors:
                     included: '#addSalesChannels'
                     excluded: '#removeSalesChannels'
@@ -473,6 +475,7 @@ datagrids:
                     - p.id
                     - p.sku
                     - p.name
+                    - p.manufacturingCode
                 from:
                     - { table: MarelloProductBundle:Product, alias: p }
         columns:
@@ -481,6 +484,9 @@ datagrids:
                 frontend_type:      string
             name:
                 label:              marello.product.name.label
+                frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
                 frontend_type:      string
         filters:
             columns:
@@ -492,10 +498,15 @@ datagrids:
                     label:            marello.product.name.label
                     type:             string
                     data_name:        p.name
+                manufacturingCode:
+                    label:            marello.product.manufacturing_code.label
+                    type:             string
+                    data_name:        p.manufacturingCode
         sorters:
             columns:
-                sku:            { data_name: p.sku }
-                name:           { data_name: p.name }
+                sku:                  { data_name: p.sku }
+                name:                 { data_name: p.name }
+                manufacturingCode:    { data_name: p.manufacturingCode }
             default:
                 sku:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         properties:
@@ -507,7 +518,7 @@ datagrids:
         acl_resource: marello_category_update
         extended_entity_name: %marello_catalog.category.entity.class%
         source:
-            type:         orm
+            type: orm
             query:
                 select:
                     - category.id
@@ -621,6 +632,7 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: inCategory
+                selectAll: true
                 selectors:
                     included: '#productAppendCategories'
                     excluded: '#productRemoveCategories'

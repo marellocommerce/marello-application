@@ -32,7 +32,9 @@ class LoadSupplierData extends AbstractFixture
                 'country'=> 'NL',
                 'state' => 'NB'
             ],
-            'email' => 'supplier1@email.com'
+            'email' => 'supplier1@email.com',
+            'currency' => 'USD',
+            'sendBy'    => 'email'
         ],
         self::SUPPLIER_2_REF => [
             'name' => 'ActiveFalseSupplier',
@@ -46,7 +48,9 @@ class LoadSupplierData extends AbstractFixture
                 'country'=> 'NL',
                 'state'=> 'NB'
             ],
-            'email' => 'supplier2@email.com'
+            'email' => 'supplier2@email.com',
+            'currency' => 'EUR',
+            'sendBy'    => 'email'
         ],
         self::SUPPLIER_3_REF => [
             'name' => 'ActiveNoDropshipSupplier',
@@ -60,7 +64,9 @@ class LoadSupplierData extends AbstractFixture
                 'country'=> 'NL',
                 'state'=> 'NB'
             ],
-            'email' => 'supplier3@email.com'
+            'email' => 'supplier3@email.com',
+            'currency' => 'USD',
+            'sendBy'    => 'email'
         ],
     ];
 
@@ -85,6 +91,7 @@ class LoadSupplierData extends AbstractFixture
             $supplier->setCanDropship($values['can_dropship']);
             $supplier->setIsActive($values['is_active']);
             $supplier->setEmail($values['email']);
+            $supplier->setCurrency($values['currency']);
 
             $address = new MarelloAddress();
             $address->setStreet($values['address']['street_address']);
@@ -100,7 +107,7 @@ class LoadSupplierData extends AbstractFixture
             );
 
             $supplier->setAddress($address);
-
+            $supplier->setPoSendBy($values['sendBy']);
             $this->manager->persist($supplier);
             $this->setReference($ref, $supplier);
         }

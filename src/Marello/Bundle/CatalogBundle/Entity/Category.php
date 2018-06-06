@@ -8,8 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CatalogBundle\Model\ExtendCategory;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -23,7 +22,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *          )
  *      }
  * )
- * @Config(
+ * @Oro\Config(
  *      routeName="marello_category_index",
  *      routeView="marello_category_view",
  *      routeUpdate="marello_category_update",
@@ -67,6 +66,13 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
 
@@ -74,7 +80,7 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
      * @var string
      *
      * @ORM\Column(type="string", nullable=false, unique=true)
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -83,6 +89,20 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
      * )
      */
     protected $code;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $description;
     
     /**
      * @var Collection|Product[]
@@ -97,7 +117,7 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
      *          @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      *      }
      * )
-     * @ConfigField(
+     * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
      *              "auditable"=true
@@ -160,6 +180,25 @@ class Category extends ExtendCategory implements OrganizationAwareInterface
     {
         $this->code = $code;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        
         return $this;
     }
 

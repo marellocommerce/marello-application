@@ -68,6 +68,9 @@ class CustomerApiHandler implements FormAwareInterface
     protected function onSuccess(Customer $entity)
     {
         $this->manager->persist($entity->getPrimaryAddress());
+        if ($entity->getShippingAddress()) {
+            $this->manager->persist($entity->getShippingAddress());
+        }
         $this->manager->persist($entity);
         $this->manager->flush();
     }

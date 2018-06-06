@@ -28,6 +28,13 @@ class BasePrice implements CurrencyAwareInterface
      * @var float
      *
      * @ORM\Column(name="value", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $value;
 
@@ -39,6 +46,9 @@ class BasePrice implements CurrencyAwareInterface
      *      defaultValues={
      *          "importexport"={
      *              "identity"=true,
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )

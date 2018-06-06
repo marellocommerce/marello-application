@@ -23,6 +23,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *          "type"="ACL",
  *          "group_name"=""
  *      },
+ *      "dataaudit"={
+ *            "auditable"=true
+ *      }
  *  }
  * )
  */
@@ -43,6 +46,13 @@ class Variant
      * @var string
      *
      * @ORM\Column(name="variant_code", type="string", nullable=true, unique=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $variantCode;
 
@@ -53,6 +63,13 @@ class Variant
      *
      * @ORM\OneToMany(targetEntity="Product", cascade={"persist"}, mappedBy="variant")
      * @ORM\JoinTable(name="marello_product_to_variant")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $products;
 

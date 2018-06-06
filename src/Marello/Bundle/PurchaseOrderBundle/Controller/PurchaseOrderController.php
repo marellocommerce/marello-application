@@ -2,13 +2,17 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Controller;
 
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateStepOneHandler;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepOneType;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -222,9 +226,39 @@ class PurchaseOrderController extends Controller
      */
     public function productsBySupplierAction(PurchaseOrder $purchaseOrder = null)
     {
+        $supplier = $this->get('doctrine')
+            ->getManagerForClass(Supplier::class)
+            ->getRepository(Supplier::class)
+            ->find($this->get('request')->get('supplierId'));
+
         return [
             'purchaseOrder' => $purchaseOrder,
-            'supplierId' => $this->get('request')->get('supplierId')
+            'supplierId' => $supplier->getId(),
+            'currency' => $this->get('oro_currency.helper.currency_name')->getCurrencyName($supplier->getCurrency())
+            
         ];
+    }
+
+    /**
+     * @Config\Route("/supplier-product-price/{productId}/{supplierId}", name="marello_purchase_order_supplier_product_price")
+     * @Config\ParamConverter("product", options={"mapping": {"productId" : "id"}})
+     * @Config\ParamConverter("supplier", options={"mapping": {"supplierId"   : "id"}})
+     * @Config\Method({"GET"})
+     * @Security\AclAncestor("marello_product_view")
+     *
+     * @param Product $product
+     * @param Supplier $supplier
+     * @return JsonResponse
+     */
+    public function getSupplierProductPriceAction(Product $product, Supplier $supplier)
+    {
+        foreach ($product->getSuppliers() as $productSupplierRelation) {
+            /** @var ProductSupplierRelation $productSupplierRelation */
+            if ($productSupplierRelation->getSupplier()->getId() === $supplier->getId()) {
+                return new JsonResponse(['purchasePrice' => round($productSupplierRelation->getCost(), 2)]);
+            }
+        }
+
+        return new JsonResponse(['purchasePrice' => null]);
     }
 }

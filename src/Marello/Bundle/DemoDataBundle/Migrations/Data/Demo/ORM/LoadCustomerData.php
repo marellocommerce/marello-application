@@ -114,9 +114,17 @@ class LoadCustomerData extends AbstractFixture
 
         $primaryAddress->setPhone($row['phone']);
 
+        $shippingAddress = clone $primaryAddress;
+        $this->manager->persist($shippingAddress);
         $this->manager->persist($primaryAddress);
 
-        $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $primaryAddress);
+        $customer = Customer::create(
+            $row['firstname'],
+            $row['lastname'],
+            $row['email'],
+            $primaryAddress,
+            $shippingAddress
+        );
         $customer->setNamePrefix($row['title']);
         $customer->setOrganization($organization);
         $this->manager->persist($customer);

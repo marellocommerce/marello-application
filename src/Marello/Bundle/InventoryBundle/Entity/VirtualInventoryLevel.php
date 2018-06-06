@@ -3,16 +3,13 @@
 namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository")
@@ -45,6 +42,7 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInventoryLevelInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
 
     /**
      * @ORM\Id
@@ -69,6 +67,9 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      *      defaultValues={
      *          "entity"={
      *              "label"="marello.product.entity_label"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -84,6 +85,9 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      *      defaultValues={
      *          "entity"={
      *              "label"="marello.sales.saleschannelgroup.entity_label"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -98,6 +102,9 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      *      defaultValues={
      *          "entity"={
      *              "label"="marello.inventory.virtualinventorylevel.inventory.label"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -112,6 +119,9 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      *      defaultValues={
      *          "entity"={
      *              "label"="marello.inventory.virtualinventorylevel.balanced_inventory_qty.label"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -127,6 +137,9 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      *      defaultValues={
      *          "entity"={
      *              "label"="marello.inventory.virtualinventorylevel.reserved_inventory_qty.label"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -134,14 +147,6 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      * @var int
      */
     protected $reservedInventory;
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
-     */
-    protected $organization;
 
     /**
      * VirtualInventoryLevel constructor.
@@ -255,25 +260,6 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
     public function setBalancedInventoryQty($balancedInventory)
     {
         $this->balancedInventory = $balancedInventory;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * @param OrganizationInterface $organization
-     * @return $this
-     */
-    public function setOrganization(OrganizationInterface $organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }

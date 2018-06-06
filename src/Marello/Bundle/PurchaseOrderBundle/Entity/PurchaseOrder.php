@@ -8,10 +8,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity
@@ -30,6 +32,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *              "owner_type"="ORGANIZATION",
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
@@ -37,6 +42,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 class PurchaseOrder implements DerivedPropertyAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
 
     /**
      * @ORM\Id
@@ -49,6 +55,13 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
 
     /**
      * @ORM\Column(name="purchase_order_number", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */
@@ -67,36 +80,71 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
      *      defaultValues={
      *          "email"={
      *              "available_in_template"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
      */
     protected $items;
 
-
     /**
      * @var Supplier
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SupplierBundle\Entity\Supplier")
      * @ORM\JoinColumn(name="supplier_id", onDelete="CASCADE", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $supplier;
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", nullable=false)
-     */
-    protected $organization;
-
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="due_date", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $dueDate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
+     * @ORM\JoinColumn(name="warehouse_id", referencedColumnName="id", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     * @var Warehouse
+     */
+    protected $warehouse;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="order_total", type="money", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $orderTotal;
 
     /**
      * Creates order using products
@@ -221,26 +269,6 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     }
 
     /**
-     * @return Organization
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * @param Organization $organization
-     *
-     * @return $this
-     */
-    public function setOrganization($organization)
-    {
-        $this->organization = $organization;
-
-        return $this;
-    }
-
-    /**
      * @param $id
      */
     public function setDerivedProperty($id)
@@ -270,6 +298,44 @@ class PurchaseOrder implements DerivedPropertyAwareInterface
     public function getDueDate()
     {
         return $this->dueDate;
+    }
+
+    /**
+     * @return Warehouse
+     */
+    public function getWarehouse()
+    {
+        return $this->warehouse;
+    }
+
+    /**
+     * @param Warehouse $warehouse
+     * @return $this
+     */
+    public function setWarehouse($warehouse)
+    {
+        $this->warehouse = $warehouse;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getOrderTotal()
+    {
+        return $this->orderTotal;
+    }
+
+    /**
+     * @param float $orderTotal
+     * @return $this
+     */
+    public function setOrderTotal($orderTotal)
+    {
+        $this->orderTotal = $orderTotal;
+        
+        return $this;
     }
 
     /**
