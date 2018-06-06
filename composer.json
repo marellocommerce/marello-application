@@ -29,15 +29,15 @@
         }
     },
     "require": {
-        "php": ">=7.0",
-        "oro/platform-enterprise": "2.5.*",
+        "php": "7.1.*",
+        "oro/platform-enterprise": "2.6.*",
         "marellocommerce/marello": "1.3.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1.x-dev"
+            "dev-master": "1.x-dev"
         }
     }
 }
