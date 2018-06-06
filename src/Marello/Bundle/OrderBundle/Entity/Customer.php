@@ -138,7 +138,7 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
         $lastName,
         $email,
         MarelloAddress $primaryAddress,
-        MarelloAddress $shippingAddress
+        MarelloAddress $shippingAddress = null
     ) {
         $customer = new self();
 
@@ -147,8 +147,11 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
             ->setLastName($lastName)
             ->setEmail($email)
             ->setPrimaryAddress($primaryAddress)
-            ->setShippingAddress($shippingAddress)
         ;
+
+        if ($shippingAddress) {
+            $customer->setShippingAddress($shippingAddress);
+        }
 
         return $customer;
     }
