@@ -9,6 +9,7 @@ use MarelloEnterprise\Bundle\InventoryBundle\Model\ExtendWFARule;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository")
@@ -35,6 +36,8 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  */
 class WFARule extends ExtendWFARule implements RuleOwnerInterface, OrganizationAwareInterface
 {
+    use AuditableOrganizationAwareTrait;
+    
     /**
      * @var integer
      *
@@ -79,6 +82,9 @@ class WFARule extends ExtendWFARule implements RuleOwnerInterface, OrganizationA
      * @ORM\JoinColumn(name="rule_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -86,14 +92,6 @@ class WFARule extends ExtendWFARule implements RuleOwnerInterface, OrganizationA
      * )
      */
     protected $rule;
-
-    /**
-     * @var OrganizationInterface
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
 
     /**
      * @return int
@@ -137,25 +135,6 @@ class WFARule extends ExtendWFARule implements RuleOwnerInterface, OrganizationA
     public function setRule(RuleInterface $rule)
     {
         $this->rule = $rule;
-
-        return $this;
-    }
-
-    /**
-     * @return OrganizationInterface
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * @param OrganizationInterface $organization
-     * @return $this
-     */
-    public function setOrganization(OrganizationInterface $organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }

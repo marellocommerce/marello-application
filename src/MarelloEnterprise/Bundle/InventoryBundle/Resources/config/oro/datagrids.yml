@@ -19,7 +19,7 @@ datagrids:
             code:
                 label:              marello.inventory.warehouse.code.label
             warehouseType:
-                label:              marello.inventory.warehousetype.entity_label
+                label:              marello.inventory.warehouse.warehouse_type.label
                 frontend_type:      string
             default:
                 label:              marello.inventory.warehouse.default.label
@@ -284,6 +284,7 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasLink
+                selectAll: true
                 selectors:
                     included: '#addSalesChannelGroups'
                     excluded: '#removeSalesChannelGroups'

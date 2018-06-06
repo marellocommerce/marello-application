@@ -19,6 +19,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *          "security"={
  *              "type"="ACL",
  *              "group_name"=""
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
@@ -42,6 +45,13 @@ class MarelloEnterpriseAddress extends ExtendMarelloEnterpriseAddress implements
      *
      * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress")
      * @ORM\JoinColumn(name="address_id", referencedColumnName="id", onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $address;
 
