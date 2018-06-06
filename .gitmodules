@@ -1,6 +1,0 @@
-[submodule "src/Marello"]
-	path = src/Marello
-	url = https://github.com/marellocommerce/marello-dev.git
-[submodule "src/MarelloEnterprise"]
-	path = src/MarelloEnterprise
-	url = https://github.com/marellocommerce/marello-ee-dev.git
