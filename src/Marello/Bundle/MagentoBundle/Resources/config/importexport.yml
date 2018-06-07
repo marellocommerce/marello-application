@@ -457,7 +457,7 @@ services:
         class: '%marello_magento.importexport.reader.inventory_level_export.class%'
         parent: 'oro_importexport.reader.entity'
         calls:
-            - [setSourceEntityName, ['%marello_inventory.virtual_inventory.entity.class%']]
+            - [setEntityName, ['%marello_inventory.virtual_inventory.entity.class%']]
             - [setLogger, ['@oro_integration.logger.strategy']]
 
     marello_magento.importexport.reader.price_export:

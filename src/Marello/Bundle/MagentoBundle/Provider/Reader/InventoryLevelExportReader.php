@@ -41,7 +41,7 @@ class InventoryLevelExportReader extends AbstractExportReader
             )
         );
 
-        $qb->setParameter("integrationChannel", $this->integrationChannelId);
+        $qb->setParameter("integrationChannel", $this->getIntegrationChannelId());
 
         return $qb;
     }
