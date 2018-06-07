@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
-use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
-
 class PriceConnector extends AbstractMagentoConnector implements TwoWaySyncConnectorInterface
 {
     const TYPE = 'price';
@@ -32,6 +30,14 @@ class PriceConnector extends AbstractMagentoConnector implements TwoWaySyncConne
      * {@inheritdoc}
      */
     public function getImportEntityFQCN()
+    {
+        return self::MARELLO_PRODUCT_PRICE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportEntityFQCN()
     {
         return self::MARELLO_PRODUCT_PRICE;
     }

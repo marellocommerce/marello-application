@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
-use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
-
 class InventoryLevelConnector extends AbstractMagentoConnector implements TwoWaySyncConnectorInterface
 {
     const TYPE = 'inventory_level';
@@ -32,6 +30,14 @@ class InventoryLevelConnector extends AbstractMagentoConnector implements TwoWay
      * {@inheritdoc}
      */
     public function getImportEntityFQCN()
+    {
+        return self::MARELLO_VIRTUAL_INVENTORY;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportEntityFQCN()
     {
         return self::MARELLO_VIRTUAL_INVENTORY;
     }
