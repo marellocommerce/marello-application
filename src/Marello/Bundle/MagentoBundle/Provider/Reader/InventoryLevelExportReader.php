@@ -10,10 +10,8 @@ use Psr\Log\LoggerAwareTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\ImportExportBundle\Reader\EntityReader;
 
-class InventoryLevelExportReader extends EntityReader implements LoggerAwareInterface
+class InventoryLevelExportReader extends AbstractExportReader
 {
-    use LoggerAwareTrait;
-
     /**
      * @param $code
      * @return mixed
@@ -38,24 +36,12 @@ class InventoryLevelExportReader extends EntityReader implements LoggerAwareInte
             "sc",
             Join::WITH,
             $qb->expr()->andX(
-                $qb->expr()->eq('sc.group', '_salesChannelGroup.id')
+                $qb->expr()->eq('sc.group', '_salesChannelGroup.id'),
+                $qb->expr()->eq("sc.integrationChannel", ":integrationChannel")
             )
         );
 
-        /*
-        $qb->where(
-            $qb->expr()->andX(
-                $qb->expr()->neq("salesChannel.channelType", ":channelType"),
-                $qb->expr()->isNotNull("salesChannel.integrationChannel")
-            )
-        );
-        $qb->setParameter("channelType", MagentoChannelType::TYPE);
-        */
-
-        //TODO: filter based on channel
-
-//        echo $qb->getQuery()->getSQL();
-//        die("xxxxx");
+        $qb->setParameter("integrationChannel", $this->integrationChannelId);
 
         return $qb;
     }

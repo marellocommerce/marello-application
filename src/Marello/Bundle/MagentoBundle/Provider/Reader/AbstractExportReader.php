@@ -20,12 +20,18 @@ abstract class AbstractExportReader extends EntityReader implements LoggerAwareI
     protected $salesChannel;
 
     /**
+     * @var integrationChannelId
+     */
+    protected $integrationChannelId;
+
+    /**
      * {@inheritdoc}
      */
     protected function initializeFromContext(ContextInterface $context)
     {
         if ($context->hasOption('channel')) {
             $channelId = $context->getOption('channel');
+            $this->integrationChannelId = $channelId;
             $this->salesChannel = $this->getSalesChannel($channelId);
             $context->setValue('salesChannel', $this->salesChannel);
         }
