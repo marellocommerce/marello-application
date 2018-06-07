@@ -41,6 +41,8 @@ class OrderImportStrategy extends AbstractImportStrategy
      */
     protected function processCustomer(Order $order, Customer $entity = null)
     {
+        $existingPrimaryAddress = null;
+
         $manager = $this->doctrineHelper->getEntityRepository(Customer::class);
         $customer = $manager->findOneBy(['email' => $entity->getEmail()]);
 
@@ -59,7 +61,7 @@ class OrderImportStrategy extends AbstractImportStrategy
 
         $customer->setOrganization($order->getOrganization());
 
-        $primaryAddress = $order->getBillingAddress(); //$this->getPrimaryAddress($customer, $order->getBillingAddress());
+        $primaryAddress = $order->getBillingAddress();
 
         if (!$existingPrimaryAddress) {
             $customer->setPrimaryAddress($this->processAddress($primaryAddress));
