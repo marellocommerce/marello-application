@@ -29,6 +29,7 @@ parameters:
     marello_magento.import_strategy.default_magento_import.class:                Marello\Bundle\MagentoBundle\ImportExport\Strategy\DefaultMagentoImportStrategy
     marello_magento.import.strategy.product.class:                               Marello\Bundle\MagentoBundle\ImportExport\Strategy\ProductMagentoImportStrategy
     marello_magento.import.strategy.category.class:                              Marello\Bundle\MagentoBundle\ImportExport\Strategy\CategoryMagentoImportStrategy
+    marello_magento.import.strategy.order.class:                                 Marello\Bundle\MagentoBundle\ImportExport\Strategy\OrderImportStrategy
 
     # processors
     marello_magento.provider.initial_processor.class:                            Marello\Bundle\MagentoBundle\Provider\AbstractInitialProcessor
@@ -206,6 +207,7 @@ services:
         parent: marello_magento.import_strategy.default_magento_import
 
     marello_magento.import.strategy.order:
+        class: '%marello_magento.import.strategy.order.class%'
         parent: marello_magento.import_strategy.default_magento_import
 
     marello_magento.import.strategy.product:

@@ -125,7 +125,7 @@ class DefaultMagentoImportStrategy extends ConfigurableAddOrReplaceStrategy
             $searchContext = $this->getCustomerSearchContext($customer);
         } else {
             $searchContext = [
-                'channel' => $entity->getChannel()
+                'channel' => $entity->getSalesChannel()
             ];
         }
 

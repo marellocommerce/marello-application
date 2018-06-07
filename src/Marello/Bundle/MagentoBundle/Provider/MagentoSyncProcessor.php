@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider;
 
+use Oro\Bundle\IntegrationBundle\Provider\AbstractSyncProcessor;
 use Oro\Bundle\IntegrationBundle\Provider\ConnectorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -16,6 +17,7 @@ use Oro\Bundle\IntegrationBundle\Provider\SyncProcessor;
 use Oro\Bundle\IntegrationBundle\Entity\Repository\ChannelRepository;
 use Oro\Bundle\IntegrationBundle\Entity\Status;
 use Oro\Bundle\IntegrationBundle\Event\SyncEvent;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 
 use Marello\Bundle\MagentoBundle\Entity\MagentoTransport;
 use Marello\Bundle\MagentoBundle\Provider\Connector\TwoWaySyncConnectorInterface;
@@ -376,7 +378,7 @@ class MagentoSyncProcessor extends SyncProcessor
         $status = $this->createConnectorStatus($connector);
         $status->setData((array)$connectorData);
 
-        $message = $this->formatResultMessage($context);
+        $message = $this->formatExportResultMessage($context);
         $this->logger->info($message);
 
         if ($isSuccess) {
@@ -399,5 +401,17 @@ class MagentoSyncProcessor extends SyncProcessor
         $this->addConnectorStatusAndFlush($integration, $status);
 
         return $status;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function formatExportResultMessage(ContextInterface $context = null)
+    {
+        return sprintf(
+            '[%s] %s',
+            strtoupper(ProcessorRegistry::TYPE_EXPORT),
+            AbstractSyncProcessor::formatResultMessage($context)
+        );
     }
 }
