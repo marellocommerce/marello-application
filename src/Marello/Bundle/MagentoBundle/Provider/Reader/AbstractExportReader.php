@@ -5,7 +5,6 @@ namespace Marello\Bundle\MagentoBundle\Provider\Reader;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
-use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Reader\EntityReader;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 
@@ -15,30 +14,8 @@ abstract class AbstractExportReader extends EntityReader implements LoggerAwareI
 {
     use LoggerAwareTrait;
     use EntityNameTrait;
-
-    /**
-     * @var integrationChannelId
-     */
-    protected $integrationChannelId;
-
-    /**
-     * @return integrationChannelId
-     */
-    public function getIntegrationChannelId()
-    {
-        return $this->integrationChannelId;
-    }
-
-    /**
-     * @param $integrationChannelId
-     * @return $this
-     */
-    public function setIntegrationChannelId($integrationChannelId)
-    {
-        $this->integrationChannelId = $integrationChannelId;
-
-        return $this;
-    }
+    use IntegrationChannelTrait;
+    use SalesChannelTrait;
 
     /**
      * {@inheritdoc}
@@ -49,6 +26,7 @@ abstract class AbstractExportReader extends EntityReader implements LoggerAwareI
             $channelId = $context->getOption('channel');
             $this->setIntegrationChannelId($channelId);
             $salesChannel = $this->getSalesChannel($channelId);
+            $this->setSalesChannel($salesChannel);
             $context->setValue('salesChannel', $salesChannel);
         }
 

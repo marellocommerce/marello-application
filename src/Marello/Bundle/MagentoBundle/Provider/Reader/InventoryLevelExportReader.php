@@ -9,18 +9,6 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
 class InventoryLevelExportReader extends AbstractExportReader
 {
     /**
-     * @param $code
-     * @return mixed
-     */
-    protected function getContextOption($code)
-    {
-        $context = $this->contextRegistry
-            ->getByStepExecution($this->stepExecution);
-
-        return $context->getValue($code);
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function createSourceEntityQueryBuilder(

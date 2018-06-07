@@ -23,6 +23,7 @@ parameters:
     # normalizers
     marello_magento.importexport.normalizer.datetime.class:                      Marello\Bundle\MagentoBundle\ImportExport\Serializer\Normalizer\DateTimeNormalizer
     marello_magento.importexport.serializer.product_normalizer.class:            Marello\Bundle\MagentoBundle\ImportExport\Serializer\ProductNormalizer
+    marello_magento.importexport.serializer.price_normalizer.class:              Marello\Bundle\MagentoBundle\ImportExport\Serializer\PriceNormalizer
 
     # strategies
     marello_magento.import.strategy.abstract.class:                              Marello\Bundle\MagentoBundle\ImportExport\Strategy\AbstractImportStrategy
@@ -464,7 +465,7 @@ services:
         class: '%marello_magento.importexport.reader.price_export.class%'
         parent: 'oro_importexport.reader.entity'
         calls:
-            - [setSourceEntityName, ['%marello_pricing.price.entity.class%']]
+            - [setEntityName, ['%marello_pricing.price.entity.class%']]
             - [setLogger, ['@oro_integration.logger.strategy']]
 
     #Export Normalizer
@@ -473,6 +474,14 @@ services:
         parent: oro_importexport.serializer.configurable_entity_normalizer
         calls:
             - [setEntityClass, ['%marello_product.entity.class%']]
+        tags:
+            - { name: oro_importexport.normalizer }
+
+    marello_magento.importexport.serializer.price_normalizer:
+        class: '%marello_magento.importexport.serializer.price_normalizer.class%'
+        parent: oro_importexport.serializer.configurable_entity_normalizer
+        calls:
+            - [setEntityClass, ['%marello_pricing.price.entity.class%']]
         tags:
             - { name: oro_importexport.normalizer }
 

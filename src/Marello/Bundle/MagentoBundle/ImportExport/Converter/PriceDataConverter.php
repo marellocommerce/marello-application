@@ -28,14 +28,18 @@ class PriceDataConverter extends DefaultDataConverter
      */
     public function convertToExportFormat(array $exportedRecord, $skipNullValues = true)
     {
-        $result = parent::convertToExportFormat($exportedRecord, $skipNullValues);
-
-        return [
-            'productId' => $this->getProductOrigin($result['product:sku']),
-            'productData' => [
-                'price' => (float)$result['value']
+        $price = (float)$exportedRecord['value'];
+        if (isset($exportedRecord['product']['channel_prices'])) {
+            $price = (float)$exportedRecord['product']['channel_prices']['0']['value'];
+        }
+        $result = [
+            'productId'     => $exportedRecord["product"]['product_id'],
+            'productData'   => [
+                'price'     => $price
             ]
         ];
+
+        return $result;
     }
 
     /**
