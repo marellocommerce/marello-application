@@ -54,6 +54,7 @@ class MagentoSoapTransportTest extends AbstractEntityTestCase
             'api_user' => 'test_user',
             'api_key' => 'test_key',
             'api_url' => 'http://test.url/',
+            'wsdl_url' => 'http://test.url/',
             'sync_range' => new \DateInterval('P1D'),
             'wsi_mode' => true,
             'website_id' => 1,

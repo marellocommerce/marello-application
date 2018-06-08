@@ -42,6 +42,7 @@ class MagentoSoapTransport extends MagentoTransport
                     'extension_version' => $this->getExtensionVersion(),
                     'magento_version' => $this->getMagentoVersion(),
                     'api_url' => $this->getWsdlPath(),
+                    'wsdl_url' => $this->getWsdlPath(),
                     'wsi_mode' => $this->getIsWsiMode(),
                     'currency' => $this->getCurrency(),
                 ]
