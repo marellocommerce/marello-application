@@ -28,18 +28,12 @@ parameters:
     marello_magento.integration_entity.integration_channel_listener.class:   Marello\Bundle\MagentoBundle\EventListener\IntegrationChannelListener
     marello_magento.event_listener.product_export.class:                     Marello\Bundle\MagentoBundle\EventListener\ProductExportListener
 
-    # generator
-    marello_magento.magento_url_generator.class:                             Marello\Bundle\MagentoBundle\Service\MagentoUrlGenerator
-
     # magento related records delete provider
     marello_magento.manager.magento_delete_provider.class:                   Marello\Bundle\MagentoBundle\Manager\MagentoDeleteProvider
 
     # helpers
     marello_magento.importexport.address_import_helper.class:                Marello\Bundle\MagentoBundle\ImportExport\Strategy\StrategyHelper\AddressImportHelper
     marello_magento.importexport.doctrine_helper.class:                      Marello\Bundle\MagentoBundle\ImportExport\Strategy\StrategyHelper\DoctrineHelper
-
-    marello_magento.state_manager.class:                                     Marello\Bundle\MagentoBundle\Service\StateManager
-    marello_magento.customer_state_handler.class:                            Marello\Bundle\MagentoBundle\Service\CustomerStateHandler
 
     # Search handlers
     marello_magento.form.autocomplete.customer_group.search_handler.class:   Marello\Bundle\MagentoBundle\Autocomplete\CustomerGroupSearchHandler
@@ -170,12 +164,6 @@ services:
         class: %marello_magento.event_listener.writer_error.class%
         tags:
             - { name: kernel.event_listener, event: oro_integration.writer_error, method: handleError }
-
-    marello_magento.service.magento_url_generator:
-        class: %marello_magento.magento_url_generator.class%
-        arguments:
-            - "@router"
-        scope: prototype
 
     marello_magento.event_listener.after_job_execution:
         class: %marello_magento.event_listener.integration_sync_after.class%

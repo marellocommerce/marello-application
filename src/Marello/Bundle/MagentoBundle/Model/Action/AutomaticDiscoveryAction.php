@@ -7,7 +7,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\ConfigExpression\ContextAccessor;
-use Marello\Bundle\MagentoBundle\Service\AutomaticDiscovery;
+use Marello\Bundle\MagentoBundle\Service\AutomaticDiscovery_out;
 
 /**
  * Similar entities discovery
