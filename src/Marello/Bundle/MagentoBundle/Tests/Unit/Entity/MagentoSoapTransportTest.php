@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\MagentoBundle\Tests\Unit\Entity;
 
+use Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
 use Marello\Bundle\MagentoBundle\Entity\MagentoTransport;
 use Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport;
 
@@ -15,7 +16,7 @@ class MagentoSoapTransportTest extends AbstractEntityTestCase
      */
     public function getEntityFQCN()
     {
-        return 'Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport';
+        return MagentoSoapTransport::class;
     }
 
     /**
