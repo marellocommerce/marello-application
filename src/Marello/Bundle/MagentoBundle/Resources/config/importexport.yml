@@ -444,7 +444,7 @@ services:
         class: '%marello_magento.importexport.reader.product_export.class%'
         parent: 'oro_importexport.reader.entity'
         calls:
-            - [setSourceEntityName, ['%marello_product.entity.class%']]
+            - [setEntityName, ['%marello_product.entity.class%']]
             - [setLogger, ['@oro_integration.logger.strategy']]
 
     marello_magento.importexport.reader.product_category_export:
