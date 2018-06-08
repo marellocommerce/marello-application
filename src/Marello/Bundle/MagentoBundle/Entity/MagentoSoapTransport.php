@@ -41,8 +41,9 @@ class MagentoSoapTransport extends MagentoTransport
                     'initial_sync_start_date' => $this->getInitialSyncStartDate(),
                     'extension_version' => $this->getExtensionVersion(),
                     'magento_version' => $this->getMagentoVersion(),
-                    'wsdl_url' => $this->getWsdlPath(),
+                    'api_url' => $this->getWsdlPath(),
                     'wsi_mode' => $this->getIsWsiMode(),
+                    'currency' => $this->getCurrency(),
                 ]
             );
         }
