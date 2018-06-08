@@ -99,12 +99,9 @@ interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareI
     /**
      * Update product.
      *
-     * @param int $productId
-     * @param array $productData
-     *
      * @return bool True if the product is updated
      */
-    public function updateProduct($productId, array $productData);
+    public function updateProduct(array $item);
 
     /**
      * Retrieve product list from magento

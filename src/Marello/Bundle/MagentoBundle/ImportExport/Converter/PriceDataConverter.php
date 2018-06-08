@@ -23,8 +23,10 @@ class PriceDataConverter extends DefaultDataConverter
     public function convertToExportFormat(array $exportedRecord, $skipNullValues = true)
     {
         $price = (float)$exportedRecord['value'];
+        $store = false;
         if (isset($exportedRecord['product']['channel_prices'])) {
             $price = (float)$exportedRecord['product']['channel_prices']['0']['value'];
+            $store = 'sales_channel_de_webshop';
         }
         $result = [
             'productId'     => $exportedRecord["product"]['product_id'],
@@ -33,27 +35,10 @@ class PriceDataConverter extends DefaultDataConverter
             ]
         ];
 
-        return $result;
-    }
-
-    /**
-     * @param $sku
-     * @return int
-     * @throws \Exception
-     */
-    protected function getProductOrigin($sku)
-    {
-        $search = ['sku' => $sku];
-
-        /**
-         * @var $product Product
-         */
-        $product = $this->getEntityManager()->getRepository('MarelloMagentoBundle:Product')->findOneBy($search);
-
-        if ($product) {
-            return $product->getOriginId();
+        if ($store) {
+            $result['store'] = $store;
         }
 
-        throw new \Exception("product must already be in magento!");
+        return $result;
     }
 }

@@ -38,7 +38,7 @@ class PriceExportWriter extends AbstractExportWriter
     {
         try {
             $productId = $item['productId'];
-            $result = $this->transport->updateProduct($item['productId'], $item['productData']);
+            $result = $this->transport->updateProduct($item);
 
             if ($result) {
                 $this->stepExecution->getJobExecution()

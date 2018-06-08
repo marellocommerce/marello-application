@@ -4,6 +4,7 @@ namespace Marello\Bundle\MagentoBundle\ImportExport\Converter;
 
 use Doctrine\ORM\EntityManager;
 
+use Marello\Bundle\MagentoBundle\Entity\Product;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\ImportExport\DataConverter\IntegrationAwareDataConverter;
 
@@ -63,7 +64,6 @@ class ProductDataConverter extends IntegrationAwareDataConverter
      */
     public function convertToExportFormat(array $exportedRecord, $skipNullValues = true)
     {
-        //TODO: change $productData specific for update / create e.g status removed for update
         $sku = $exportedRecord['sku'];
         $name = $exportedRecord['name'];
         $productData = [
@@ -77,12 +77,21 @@ class ProductDataConverter extends IntegrationAwareDataConverter
             'website_ids'       => $this->getWebsiteIds()
         ];
 
-        return [
+        $result = [
             'productData' => $productData,
             'sku' => $sku,
             'set' => self::DEFAULT_ATTRIBUTE_SET_ID,
             'type' => self::PRODUCT_TYPE_SIMPLE
         ];
+
+        /**
+         * magento productId
+         */
+        if ($productId = $this->getProductOrigin($sku)) {
+            $result['productId'] = $productId;
+        }
+
+        return $result;
     }
 
     /**
@@ -115,6 +124,27 @@ class ProductDataConverter extends IntegrationAwareDataConverter
                 break;
         }
         return $websiteIds;
+    }
+
+    /**
+     * @param $sku
+     * @return int
+     * @throws \Exception
+     */
+    protected function getProductOrigin($sku)
+    {
+        $search = ['sku' => $sku];
+
+        /**
+         * @var $product Product
+         */
+        $product = $this->getEntityManager()->getRepository('MarelloMagentoBundle:Product')->findOneBy($search);
+
+        if ($product) {
+            return $product->getOriginId();
+        }
+
+        return false;
     }
 
     /**

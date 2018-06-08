@@ -613,7 +613,7 @@ class RestTransport implements
     /**
      * {@inheritdoc}
      */
-    public function updateProduct($productId, array $item)
+    public function updateProduct(array $item)
     {
         //TODO: impliment product
     }

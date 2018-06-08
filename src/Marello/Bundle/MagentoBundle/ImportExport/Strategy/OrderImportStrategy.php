@@ -2,11 +2,12 @@
 
 namespace Marello\Bundle\MagentoBundle\ImportExport\Strategy;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrderImportStrategy extends AbstractImportStrategy
 {

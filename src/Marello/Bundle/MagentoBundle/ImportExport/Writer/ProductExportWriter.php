@@ -28,31 +28,13 @@ class ProductExportWriter extends AbstractExportWriter
             return;
         }
 
-        $productId = $this->getProduct($item[self::PRODUCT_SKU]);
-
         $this->transport->init($this->getChannel()->getTransport());
 
-        if (!$productId) {
+        if (!isset($item['productId'])) {
             $this->writeNewItem($item);
         } else {
-            $this->writeExistingItem($productId, $item['productData']);
+            $this->writeExistingItem($item);
         }
-    }
-
-    /**
-     * @param $sku
-     * @return mixed
-     */
-    protected function getProduct($sku)
-    {
-        /** @var EntityManager $em */
-        $em = $this->registry->getManager();
-
-        if ($product = $em->getRepository('MarelloMagentoBundle:Product')->findOneBy(['sku' => $sku])) {
-            return $product->getOriginId();
-        }
-
-        return false;
     }
 
     /**
@@ -93,10 +75,12 @@ class ProductExportWriter extends AbstractExportWriter
     /**
      * @param array $item
      */
-    protected function writeExistingItem($productId, array $item)
+    protected function writeExistingItem(array $item)
     {
         try {
-            $productData = $this->transport->updateProduct($productId, $item);
+            $productId = $item['productId'];
+
+            $productData = $this->transport->updateProduct($item);
 
             if ($productData) {
                 $this->stepExecution->getJobExecution()

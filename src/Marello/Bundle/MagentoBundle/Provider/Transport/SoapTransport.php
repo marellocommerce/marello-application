@@ -592,11 +592,11 @@ class SoapTransport extends BaseSOAPTransport implements
     /**
      * {@inheritdoc}
      */
-    public function updateProduct($productId, array $item)
+    public function updateProduct(array $item)
     {
         return $this->call(
             SoapTransport::ACTION_PRODUCT_UPDATE,
-            ['productId' => $productId, 'productData' => $item]
+            $item
         );
     }
 
