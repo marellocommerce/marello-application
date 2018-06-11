@@ -129,7 +129,7 @@ class RowSelectionSelectAllListener
      */
     protected function isApplicable($rowSelectionConfig)
     {
-        return (!is_array($rowSelectionConfig) || !empty($rowSelectionConfig['columnName']) ||
-            !empty($rowSelectionConfig['selectAll']) || (bool)$rowSelectionConfig['selectAll']);
+        return !(!is_array($rowSelectionConfig) || empty($rowSelectionConfig['columnName']) ||
+            empty($rowSelectionConfig['selectAll']) || $rowSelectionConfig['selectAll'] === false);
     }
 }
