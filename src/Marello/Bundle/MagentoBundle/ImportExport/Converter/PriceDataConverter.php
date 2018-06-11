@@ -3,20 +3,11 @@ namespace Marello\Bundle\MagentoBundle\ImportExport\Converter;
 
 use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\ImportExportBundle\Converter\DefaultDataConverter;
-
-use Marello\Bundle\MagentoBundle\Entity\Product;
+use Marello\Bundle\MagentoBundle\Entity\Store;
 use Marello\Bundle\MagentoBundle\Provider\EntityManagerTrait;
 
-class PriceDataConverter extends DefaultDataConverter
+class PriceDataConverter extends ProductDataConverter
 {
-    use EntityManagerTrait;
-
-    public function __construct(EntityManager $entityManager)
-    {
-        $this->setEntityManager($entityManager);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -26,7 +17,18 @@ class PriceDataConverter extends DefaultDataConverter
         $store = false;
         if (isset($exportedRecord['product']['channel_prices'])) {
             $price = (float)$exportedRecord['product']['channel_prices']['0']['value'];
-            $store = 'sales_channel_de_webshop';
+
+            /**
+             * multiple websites would update default store
+             */
+            $originIds = $this->getWebsiteIds();
+            if (count($originIds) <= 1) {
+                $mageWebsiteId = $this->getIntegrationChannel()->getTransport()->getWebsiteId();
+                $storeObj = $this->getMagentoStore($mageWebsiteId);
+                if ($storeObj) {
+                    $store = $storeObj->getCode();
+                }
+            }
         }
         $result = [
             'productId'     => $exportedRecord["product"]['product_id'],
@@ -40,5 +42,16 @@ class PriceDataConverter extends DefaultDataConverter
         }
 
         return $result;
+    }
+
+    /**
+     * @param $websiteId
+     * @return Store
+     */
+    protected function getMagentoStore($websiteId)
+    {
+        return $this->getEntityManager()
+            ->getRepository(Store::class)
+            ->findOneBy(['originId' => $websiteId]);
     }
 }

@@ -397,5 +397,8 @@ marello:
         communications: Communications
         entity_number: "%entityName% %entityNumber%"
         customer_tabs_title: Customers
+    product:
+        categories:
+            label: "Product Categories"
 
 "E-commerce": "E-commerce"
