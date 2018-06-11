@@ -1,10 +1,7 @@
 <?php
 namespace Marello\Bundle\MagentoBundle\ImportExport\Converter;
 
-use Doctrine\ORM\EntityManager;
-
 use Marello\Bundle\MagentoBundle\Entity\Store;
-use Marello\Bundle\MagentoBundle\Provider\EntityManagerTrait;
 
 class PriceDataConverter extends ProductDataConverter
 {
@@ -19,7 +16,7 @@ class PriceDataConverter extends ProductDataConverter
             $price = (float)$exportedRecord['product']['channel_prices']['0']['value'];
 
             /**
-             * multiple websites would update default store
+             * multiple websites would not set price on website level
              */
             $originIds = $this->getWebsiteIds();
             if (count($originIds) <= 1) {
