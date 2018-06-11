@@ -20,6 +20,8 @@ marello:
                 label: Category Connector
             product:
                 label: Product Connector
+            product_initial:
+                label: Initial Product Connector
             inventory_level:
                 label: Inventory Level Connector
             price:

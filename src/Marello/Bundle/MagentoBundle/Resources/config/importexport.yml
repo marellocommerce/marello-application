@@ -13,6 +13,7 @@ parameters:
     marello_magento.mage.store.class:                                            Marello\Bundle\MagentoBundle\Provider\Connector\StoreConnector
     marello_magento.mage.website.class:                                          Marello\Bundle\MagentoBundle\Provider\Connector\WebsiteConnector
     marello_magento.mage.product_connector.class:                                Marello\Bundle\MagentoBundle\Provider\Connector\ProductConnector
+    marello_magento.mage.product_connector_initial.class:                        Marello\Bundle\MagentoBundle\Provider\Connector\InitialProductConnector
     marello_magento.mage.category_connector.class:                               Marello\Bundle\MagentoBundle\Provider\Connector\CategoryConnector
     marello_magento.mage.inventory_level_connector.class:                        Marello\Bundle\MagentoBundle\Provider\Connector\InventoryLevelConnector
     marello_magento.mage.price_connector.class:                                  Marello\Bundle\MagentoBundle\Provider\Connector\PriceConnector
@@ -145,8 +146,19 @@ services:
     marello_magento.mage.product_connector:
         class: '%marello_magento.mage.product_connector.class%'
         parent: marello_magento.connector.abstract
+        calls:
+            - [setClassName, ['%marello_magento.entity.product.class%']]
         tags:
             - { name: oro_integration.connector, type: product, channel_type: magento }
+            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+
+    marello_magento.mage.product_connector_initial:
+        class: '%marello_magento.mage.product_connector_initial.class%'
+        parent: marello_magento.connector.abstract
+        calls:
+            - [setClassName, ['%marello_magento.entity.product.class%']]
+        tags:
+            - { name: oro_integration.connector, type: product_initial, channel_type: magento }
             - { name: marello_magento.bundle_config.aware, argument_number: 3 }
 
     marello_magento.mage.order_connector:

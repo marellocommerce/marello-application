@@ -11,7 +11,7 @@ class InitialProductConnector extends AbstractMagentoConnector implements Initia
      */
     public function getLabel()
     {
-        return 'marello.magento.connector.product.initial.label';
+        return 'marello.magento.connector.product_initial.label';
     }
 
     /**

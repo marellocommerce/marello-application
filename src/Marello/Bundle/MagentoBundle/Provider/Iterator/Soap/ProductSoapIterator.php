@@ -10,11 +10,37 @@ use Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport;
 class ProductSoapIterator extends AbstractPageableSoapIterator
 {
     /**
+     * @param \DateTime $date
+     * @param array $websiteIds
+     * @param array $storeIds
+     * @param string $format
+     *
+     * @return array
+     */
+    protected function getBatchFilter(
+        \DateTime $date,
+        array $websiteIds = [],
+        array $storeIds = [],
+        $format = 'Y-m-d H:i:s'
+    ) {
+        $this->filter->addDateFilter('created_at', 'from', $date);
+        $this->filter->addDateFilter('created_at', 'to', $date->add($this->syncRange));
+
+        $this->modifyFilters();
+        $this->logAppliedFilters($this->filter);
+
+        return $this->filter->getAppliedFilters();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getEntityIds()
     {
-        $filters = $this->getBatchFilter($this->lastSyncDate, [$this->websiteId]);
+        $date = new \DateTime('now');
+        $date->sub($this->syncRange);
+
+        $filters = $this->getBatchFilter($date, [$this->websiteId]);
 
         $this->loadByFilters($filters);
 

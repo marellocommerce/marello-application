@@ -85,10 +85,21 @@ class ProductDataConverter extends IntegrationAwareDataConverter
         ];
 
         /**
-         * magento productId
+         * magento productId - update
          */
         if ($productId = $this->getProductOrigin($sku)) {
             $result['productId'] = $productId;
+
+            $updateNotSupported = [
+                'status',
+                'visibility',
+                'description',
+                'short_description',
+            ];
+
+            foreach($updateNotSupported as $code) {
+                unset($result['productData'][$code]);
+            }
         }
 
         return $result;
