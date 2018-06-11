@@ -39,6 +39,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      "security"={
  *          "type"="ACL",
  *          "group_name"=""
+ *      },
+ *      "dataaudit"={
+ *          "auditable"=true
  *      }
  *  }
  * )
@@ -65,6 +68,13 @@ class SalesChannel extends ExtendSalesChannel implements
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
 
@@ -72,12 +82,26 @@ class SalesChannel extends ExtendSalesChannel implements
      * @var string
      *
      * @ORM\Column(type="string", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $code;
 
     /**
      * @var string
      * @ORM\Column(name="currency", type="string", length=5, nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $currency;
 
@@ -85,6 +109,13 @@ class SalesChannel extends ExtendSalesChannel implements
      * @var boolean
      *
      * @ORM\Column(type="boolean", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $active = true;
 
@@ -92,6 +123,13 @@ class SalesChannel extends ExtendSalesChannel implements
      * @var boolean
      * mark a channel as a default channel
      * @ORM\Column(name="is_default", type="boolean", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $default = true;
 
@@ -100,6 +138,13 @@ class SalesChannel extends ExtendSalesChannel implements
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
      * @ORM\JoinColumn(nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $owner;
 
@@ -110,6 +155,13 @@ class SalesChannel extends ExtendSalesChannel implements
      * @var string
      *
      * @ORM\Column(name="channel_type", type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $channelType = self::DEFAULT_TYPE;
     
@@ -118,12 +170,26 @@ class SalesChannel extends ExtendSalesChannel implements
      *
      * @ORM\ManyToOne(targetEntity="SalesChannelGroup", inversedBy="salesChannels")
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $group;
 
     /**
      * @ORM\OneToOne(targetEntity="Oro\Bundle\IntegrationBundle\Entity\Channel")
      * @ORM\JoinColumn(name="integration_channel_id", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var Channel
      */

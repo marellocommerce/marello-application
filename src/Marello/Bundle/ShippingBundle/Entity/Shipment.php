@@ -6,9 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\ShippingBundle\Model\ExtendShipment;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity
@@ -24,6 +23,9 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *      "security"={
  *          "type"="ACL",
  *          "group_name"=""
+ *      },
+ *      "dataaudit"={
+ *          "auditable"=true
  *      }
  *  }
  * )
@@ -31,6 +33,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 class Shipment extends ExtendShipment implements OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
 
     /**
      * @ORM\Id
@@ -43,28 +46,52 @@ class Shipment extends ExtendShipment implements OrganizationAwareInterface
 
     /**
      * @ORM\Column(name="shipping_service", type="string", length=255)
-     *
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      * @var string
      */
     protected $shippingService;
 
     /**
      * @ORM\Column(name="ups_shipment_digest", type="text", nullable=true)
-     *
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      * @var string
      */
     protected $upsShipmentDigest;
 
     /**
      * @ORM\Column(name="identification_number", type="string", length=255, nullable=true)
-     *
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      * @var string
      */
     protected $identificationNumber;
 
     /**
      * @ORM\Column(name="ups_package_tracking_number", type="string", length=255, nullable=true)
-     *
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      * @var string
      */
     protected $upsPackageTrackingNumber;
@@ -75,14 +102,6 @@ class Shipment extends ExtendShipment implements OrganizationAwareInterface
      * @var string
      */
     protected $base64EncodedLabel;
-    
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
 
     /**
      * @return mixed
@@ -188,25 +207,6 @@ class Shipment extends ExtendShipment implements OrganizationAwareInterface
     public function setBase64EncodedLabel($base64EncodedLabel)
     {
         $this->base64EncodedLabel = $base64EncodedLabel;
-
-        return $this;
-    }
-
-    /**
-     * @return OrganizationInterface
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * @param OrganizationInterface $organization
-     * @return $this
-     */
-    public function setOrganization(OrganizationInterface $organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }

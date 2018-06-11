@@ -11,6 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository")
@@ -30,6 +31,9 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *      "security"={
  *          "type"="ACL",
  *          "group_name"=""
+ *      },
+ *      "dataaudit"={
+ *          "auditable"=true
  *      }
  *  }
  * )
@@ -37,6 +41,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 class SalesChannelGroup extends ExtendSalesChannelGroup
 {
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
     
     /**
      * @ORM\Id
@@ -96,19 +101,18 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
      *  )
      */
     protected $system = false;
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
     
     /**
      * @var SalesChannel[]
      *
      * @ORM\OneToMany(targetEntity="SalesChannel", mappedBy="group", cascade={"persist"}, fetch="EAGER")
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     *  )
      */
     protected $salesChannels;
 
@@ -180,25 +184,6 @@ class SalesChannelGroup extends ExtendSalesChannelGroup
     public function setSystem($system)
     {
         $this->system = $system;
-
-        return $this;
-    }
-
-    /**
-     * @return OrganizationInterface
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * @param OrganizationInterface $organization
-     * @return $this
-     */
-    public function setOrganization(OrganizationInterface $organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }

@@ -286,6 +286,7 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasVariant
+                selectAll: true
                 selectors:
                     included: '#addVariants'
                     excluded: '#removeVariants'
@@ -416,6 +417,7 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasChannel
+                selectAll: true
                 selectors:
                     included: '#addSalesChannels'
                     excluded: '#removeSalesChannels'
@@ -516,7 +518,7 @@ datagrids:
         acl_resource: marello_category_update
         extended_entity_name: %marello_catalog.category.entity.class%
         source:
-            type:         orm
+            type: orm
             query:
                 select:
                     - category.id

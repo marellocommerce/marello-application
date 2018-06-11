@@ -15,7 +15,8 @@ use Marello\Bundle\PackingBundle\Model\ExtendPackingSlip;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -33,15 +34,19 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "owner_type"="ORGANIZATION",
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
  * @ORM\Table(name="marello_packing_packing_slip")
  * @ORM\HasLifecycleCallbacks()
  */
-class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInterface
+class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInterface, OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
     
     /**
      * @var int
@@ -57,6 +62,13 @@ class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInter
      *
      * @ORM\OneToMany(targetEntity="PackingSlipItem", mappedBy="packingSlip", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $items;
 
@@ -65,6 +77,13 @@ class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInter
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order", cascade={"persist"})
      * @ORM\JoinColumn(name="order_id", referencedColumnName="id", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $order;
 
@@ -73,6 +92,13 @@ class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInter
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $billingAddress;
 
@@ -81,30 +107,43 @@ class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInter
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $shippingAddress;
 
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", cascade={"persist"})
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var Customer
      */
     protected $customer;
 
     /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=false)
-     */
-    protected $organization;
-
-    /**
      * @var SalesChannel
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $salesChannel;
 
@@ -113,11 +152,25 @@ class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInter
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InventoryBundle\Entity\Warehouse")
      * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $warehouse;
 
     /**
      * @ORM\Column(name="comment", type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */
@@ -125,6 +178,13 @@ class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInter
 
     /**
      * @ORM\Column(name="packing_slip_number", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */
@@ -258,26 +318,6 @@ class PackingSlip extends ExtendPackingSlip implements DerivedPropertyAwareInter
     public function setCustomer($customer)
     {
         $this->customer = $customer;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * @param Organization $organization
-     *
-     * @return $this
-     */
-    public function setOrganization(Organization $organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }

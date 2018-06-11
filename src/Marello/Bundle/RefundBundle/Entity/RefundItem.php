@@ -13,8 +13,13 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @ORM\Entity
  * @ORM\Table(name="marello_refund_item")
  * @ORM\HasLifecycleCallbacks
-
- * @Oro\Config
+ * @Oro\Config(
+ *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
+ *      }
+ * )
  */
 class RefundItem implements CurrencyAwareInterface
 {
@@ -31,6 +36,13 @@ class RefundItem implements CurrencyAwareInterface
 
     /**
      * @ORM\Column(name="name", type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */
@@ -38,6 +50,13 @@ class RefundItem implements CurrencyAwareInterface
 
     /**
      * @ORM\Column(name="quantity", type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var int
      */
@@ -45,6 +64,13 @@ class RefundItem implements CurrencyAwareInterface
 
     /**
      * @ORM\Column(name="base_amount", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var int
      */
@@ -52,6 +78,13 @@ class RefundItem implements CurrencyAwareInterface
 
     /**
      * @ORM\Column(name="refund_amount", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var int
      */
@@ -60,6 +93,13 @@ class RefundItem implements CurrencyAwareInterface
     /**
      * @ORM\ManyToOne(targetEntity="Refund", inversedBy="items")
      * @ORM\JoinColumn(name="refund_id", nullable=false, onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var Refund
      */
@@ -68,6 +108,13 @@ class RefundItem implements CurrencyAwareInterface
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\OrderItem")
      * @ORM\JoinColumn(name="order_item_id", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var OrderItem
      */
