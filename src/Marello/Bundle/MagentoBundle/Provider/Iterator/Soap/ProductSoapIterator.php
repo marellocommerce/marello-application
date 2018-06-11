@@ -23,8 +23,13 @@ class ProductSoapIterator extends AbstractPageableSoapIterator
         array $storeIds = [],
         $format = 'Y-m-d H:i:s'
     ) {
-        $this->filter->addDateFilter('created_at', 'from', $date);
-        $this->filter->addDateFilter('created_at', 'to', $date->add($this->syncRange));
+        if ($this->isInitialSync()) {
+            $this->filter->addDateFilter('created_at', 'from', $this->getToDateInitial($date), $format);
+            $this->filter->addDateFilter('created_at', 'to', $date, $format);
+        } else {
+            $this->filter->addDateFilter('updated_at', 'from', $date);
+            $this->filter->addDateFilter('updated_at', 'to', $date->add($this->syncRange));
+        }
 
         $this->modifyFilters();
         $this->logAppliedFilters($this->filter);
@@ -37,10 +42,7 @@ class ProductSoapIterator extends AbstractPageableSoapIterator
      */
     public function getEntityIds()
     {
-        $date = new \DateTime('now');
-        $date->sub($this->syncRange);
-
-        $filters = $this->getBatchFilter($date, [$this->websiteId]);
+        $filters = $this->getBatchFilter($this->lastSyncDate);
 
         $this->loadByFilters($filters);
 
