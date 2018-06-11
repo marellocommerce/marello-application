@@ -6,6 +6,7 @@ use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 
 class WebsiteConnector extends AbstractMagentoConnector implements DictionaryConnectorInterface
 {
+    const IMPORT_JOB_NAME = 'mage_website_import';
     const TYPE = 'website_dictionary';
 
     /**
@@ -29,7 +30,7 @@ class WebsiteConnector extends AbstractMagentoConnector implements DictionaryCon
      */
     public function getImportJobName()
     {
-        return 'mage_website_import';
+        return self::IMPORT_JOB_NAME;
     }
 
     /**

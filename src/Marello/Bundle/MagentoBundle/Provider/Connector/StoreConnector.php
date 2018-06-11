@@ -4,6 +4,7 @@ namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
 class StoreConnector extends AbstractMagentoConnector implements DictionaryConnectorInterface
 {
+    const IMPORT_JOB_NAME = 'mage_store_import';
     const TYPE = 'store_dictionary';
 
     /**
@@ -27,7 +28,7 @@ class StoreConnector extends AbstractMagentoConnector implements DictionaryConne
      */
     public function getImportJobName()
     {
-        return 'mage_store_import';
+        return self::IMPORT_JOB_NAME;
     }
 
     /**
