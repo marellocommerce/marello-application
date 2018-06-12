@@ -9,7 +9,7 @@ using Marello Enterprise.
 
 Marello Enterprise is a Symfony 2 based application with the following requirements:
 
-* PHP 7.0 or above with command line interface
+* PHP 7.1
 * PHP Extensions
     * GD
     * Mcrypt
@@ -20,7 +20,7 @@ Marello Enterprise is a Symfony 2 based application with the following requireme
     * PCRE
     * ICU
 * MySQL 5.1 or above
-* PostgreSQL 9.1 or above
+* PostgreSQL 9.1 or above but lower than 10
 
 ## Installation instructions
 
