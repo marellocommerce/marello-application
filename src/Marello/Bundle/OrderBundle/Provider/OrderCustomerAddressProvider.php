@@ -22,6 +22,16 @@ class OrderCustomerAddressProvider
     /**
      * @param Customer|null $customer
      * @return array
+     * @deprecated since version 1.4.0 use getCustomerBillingAddresses() instead
+     */
+    public function getCustomerAddresses(Customer $customer = null)
+    {
+        return $this->getCustomerBillingAddresses($customer);
+    }
+
+    /**
+     * @param Customer|null $customer
+     * @return array
      */
     public function getCustomerBillingAddresses(Customer $customer = null)
     {
