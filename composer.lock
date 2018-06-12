@@ -4312,16 +4312,16 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "72677a8d52568871c1083efc081eaf7635f19379"
+                "reference": "41fa4118d91fcb8cee84cfbb310cf1d1dde1bcde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/72677a8d52568871c1083efc081eaf7635f19379",
-                "reference": "72677a8d52568871c1083efc081eaf7635f19379",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/41fa4118d91fcb8cee84cfbb310cf1d1dde1bcde",
+                "reference": "41fa4118d91fcb8cee84cfbb310cf1d1dde1bcde",
                 "shasum": ""
             },
             "require": {
@@ -4356,10 +4356,10 @@
             "description": "Marello",
             "homepage": "https://github.com/marellocommerce/marello.git",
             "support": {
-                "source": "https://github.com/marellocommerce/marello/tree/1.4.0",
+                "source": "https://github.com/marellocommerce/marello/tree/1.4.1",
                 "issues": "https://github.com/marellocommerce/marello/issues"
             },
-            "time": "2018-06-06T08:00:10+00:00"
+            "time": "2018-06-12T10:00:34+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -5965,16 +5965,16 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v5.0.21",
+            "version": "v5.0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "eb6266b3b472e4002538610b28a0a04bcf94891a"
+                "reference": "209b11f8cee5bf71986dd703e45e27d3ed7a6d15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/eb6266b3b472e4002538610b28a0a04bcf94891a",
-                "reference": "eb6266b3b472e4002538610b28a0a04bcf94891a",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/209b11f8cee5bf71986dd703e45e27d3ed7a6d15",
+                "reference": "209b11f8cee5bf71986dd703e45e27d3ed7a6d15",
                 "shasum": ""
             },
             "require": {
@@ -6013,7 +6013,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2017-08-25T16:55:44+00:00"
+            "time": "2018-06-07T06:22:12+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -8690,16 +8690,16 @@
         },
         {
             "name": "myclabs/deep-copy",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/myclabs/DeepCopy.git",
-                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6"
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/478465659fd987669df0bd8a9bf22a8710e5f1b6",
-                "reference": "478465659fd987669df0bd8a9bf22a8710e5f1b6",
+                "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
+                "reference": "3e01bdad3e18354c3dce54466b7fbe33a9f9f7f8",
                 "shasum": ""
             },
             "require": {
@@ -8734,7 +8734,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2018-05-29T17:25:09+00:00"
+            "time": "2018-06-11T23:09:50+00:00"
         },
         {
             "name": "nelmio/alice",
