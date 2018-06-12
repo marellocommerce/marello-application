@@ -3,6 +3,7 @@ parameters:
     marello_inventory.virtual_inventory.entity.class:                        Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel
     marello_pricing.price.entity.class:                                      Marello\Bundle\PricingBundle\Entity\ProductPrice
     marello_magento.entity.product.class:                                    Marello\Bundle\MagentoBundle\Entity\Product
+    marello_marello.entity.product.class:                                    Marello\Bundle\ProductBundle\Entity\Product
     marello_magento.entity.region.class:                                     Marello\Bundle\MagentoBundle\Entity\Region
     marello_magento.entity.store.class:                                      Marello\Bundle\MagentoBundle\Entity\Store
     marello_magento.entity.website.class:                                    Marello\Bundle\MagentoBundle\Entity\Website
@@ -26,7 +27,7 @@ parameters:
     marello_magento.event_listener.writer_error.class:                       Marello\Bundle\MagentoBundle\EventListener\IntegrationWriteErrorListener
     marello_magento.event_listener.integration_sync_after.class:             Marello\Bundle\MagentoBundle\EventListener\IntegrationSyncAfterEventListener
     marello_magento.integration_entity.integration_channel_listener.class:   Marello\Bundle\MagentoBundle\EventListener\IntegrationChannelListener
-    marello_magento.event_listener.product_export.class:                     Marello\Bundle\MagentoBundle\EventListener\ProductExportListener
+    marello_magento.integration_sync.product_event_listener.class:           Marello\Bundle\MagentoBundle\EventListener\ProductEventListener
 
     # magento related records delete provider
     marello_magento.manager.magento_delete_provider.class:                   Marello\Bundle\MagentoBundle\Manager\MagentoDeleteProvider
@@ -150,16 +151,6 @@ services:
             - { name: form.type, alias: oro_magento_store_select }
 
     # event listeners
-    #TODO: add order export, inventory, price update to magento based on doctrine event
-
-    marello_magento.event_listener.product_export:
-        class: "%marello_magento.event_listener.product_export.class%"
-        arguments:
-            - '@security.token_storage'
-            - '@oro_integration.sync_scheduler.link'
-        tags:
-            - { name: doctrine.event_listener, event: onFlush, priority: 5 }
-
     marello_magento.event_listener.writer_error:
         class: %marello_magento.event_listener.writer_error.class%
         tags:
@@ -171,8 +162,8 @@ services:
             - { name: kernel.event_listener, event: oro_integration.event.sync_after, method: process }
 
     # Customer API
-    marello_magento.customer_birthday_type_transformer:
-        class: Marello\Bundle\MagentoBundle\Form\DataTransformer\BirthdayTypeApiTransformer
+#    marello_magento.customer_birthday_type_transformer:
+#        class: Marello\Bundle\MagentoBundle\Form\DataTransformer\BirthdayTypeApiTransformer
 
     marello_magento.manager.magento_delete_provider:
         class: %marello_magento.manager.magento_delete_provider.class%
@@ -247,13 +238,20 @@ services:
             - { name: doctrine.orm.entity_listener, entity: "%oro_integration.entity.class%", event: postUpdate }
             - { name: doctrine.orm.entity_listener, entity: "%oro_integration.entity.class%", event: preRemove }
 
+    marello_magento.integration_sync.product_event_listener:
+        class: '%marello_magento.integration_sync.product_event_listener.class%'
+        arguments:
+            - '@oro_message_queue.message_producer'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: "%marello_marello.entity.product.class%", event: postPersist }
+            - { name: doctrine.orm.entity_listener, entity: "%marello_marello.entity.product.class%", event: postUpdate }
+            - { name: doctrine.orm.entity_listener, entity: "%marello_marello.entity.product.class%", event: preRemove }
+
     marello_magento.model.channel_settings_provider:
         class: %marello_magento.model.channel_settings_provider.class%
         arguments:
             - "@oro_entity.doctrine_helper"
-            - %oro_integration.entity.class%
-
-    # manager
+            - '%oro_integration.entity.class%'
 
     # handler
     marello_magento.handler.transport:

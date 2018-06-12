@@ -97,7 +97,7 @@ class ProductDataConverter extends IntegrationAwareDataConverter
                 'short_description',
             ];
 
-            foreach($updateNotSupported as $code) {
+            foreach ($updateNotSupported as $code) {
                 unset($result['productData'][$code]);
             }
         }
