@@ -72,6 +72,7 @@ class SoapTransport extends BaseSOAPTransport implements
     const ACTION_PRODUCT_LIST = 'catalogProductList';
     const ACTION_PRODUCT_CREATE = 'catalogProductCreate';
     const ACTION_PRODUCT_UPDATE = 'catalogProductUpdate';
+    const ACTION_PRODUCT_DELETE = 'catalogProductDelete';
     const ACTION_STOCK_UPDATE = 'catalogInventoryStockItemUpdate';
     const ACTION_PRODUCT_CATEGORY_LINK = 'catalogCategoryUpdateProduct';
     const ACTION_PRODUCT_CATEGORY_ASSIGN_LINK = 'catalogCategoryAssignProduct';
@@ -575,6 +576,17 @@ class SoapTransport extends BaseSOAPTransport implements
         return $this->call(
             SoapTransport::ACTION_PRODUCT_CREATE,
             $productData
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteProduct(array $item)
+    {
+        return $this->call(
+            SoapTransport::ACTION_PRODUCT_DELETE,
+            $item
         );
     }
 

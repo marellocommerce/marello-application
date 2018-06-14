@@ -85,6 +85,20 @@ connector:
                     parameters:
                         batch_size: 1
 
+        product_export_delete:
+            title: "Product delete from Magento"
+            type:  export
+            steps:
+                export:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_magento.importexport.reader.product_export_delete
+                        processor: marello_magento.importexport.processor.product_export_delete
+                        writer:    marello_magento.importexport.writer.product_export_delete
+                    parameters:
+                        batch_size: 1
+
         mage_category_import:
             title: "Category import from Magento"
             type:  import

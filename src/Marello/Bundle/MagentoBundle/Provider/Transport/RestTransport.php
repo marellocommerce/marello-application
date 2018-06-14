@@ -621,6 +621,14 @@ class RestTransport implements
     /**
      * {@inheritdoc}
      */
+    public function deleteProduct(array $item)
+    {
+        // TODO: Implement deleteProduct() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function updateStock(array $stockData)
     {
         //TODO: impliment stock update

@@ -112,20 +112,31 @@ class ProductSyncProcessor implements MessageProcessorInterface, TopicSubscriber
 
         try {
             $ownerId = $message->getMessageId();
-            $jobName = Topics::SYNC_PRODUCT_ENTITY_INTEGRATION .':'.$body['integration_id'];
+            $jobName = Topics::SYNC_PRODUCT_ENTITY_INTEGRATION .':'.$body['integration_id'].':'.$body['id'];
 
             $result = $this->jobRunner->runUnique($ownerId, $jobName, function () use ($integration, $body) {
                 $this->setTemporaryIntegrationToken($integration);
 
+                switch ($body["connector_parameters"]['action']) {
+                    case Topics::SYNC_REMOVE_ACTION:
+                        $integrationJob = ProductConnector::DELETE_JOB_NAME;
+                        $integrationProcessorAlias = ProductConnector::DELETE_PROCESSOR_ALIAS;
+                        break;
+                    default:
+                        $integrationJob = ProductConnector::EXPORT_JOB_NAME;
+                        $integrationProcessorAlias = ProductConnector::EXPORT_PROCESSOR_ALIAS;
+                        break;
+                }
+
                 $jobResult = $this->jobExecutor->executeJob(
                     ProcessorRegistry::TYPE_EXPORT,
-                    ProductConnector::EXPORT_JOB_NAME,
+                    $integrationJob,
                     array_merge(
-                    [
-                        'channel' => $integration,
-                        'writer_skip_clear' => true,
-                        'processorAlias' => 'marello_magento.product_export',
-                    ],
+                        [
+                            'channel' => $integration,
+                            'writer_skip_clear' => true,
+                            'processorAlias' => $integrationProcessorAlias,
+                        ],
                         $body["connector_parameters"]
                     )
                 );

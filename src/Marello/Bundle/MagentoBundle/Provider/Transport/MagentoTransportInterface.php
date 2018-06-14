@@ -104,6 +104,13 @@ interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareI
     public function updateProduct(array $item);
 
     /**
+     * Delete product from Magento
+     * @param array $item
+     * @return mixed
+     */
+    public function deleteProduct(array $item);
+
+    /**
      * Retrieve product list from magento
      *
      * @return \Iterator

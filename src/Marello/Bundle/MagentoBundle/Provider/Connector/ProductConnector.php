@@ -4,9 +4,15 @@ namespace Marello\Bundle\MagentoBundle\Provider\Connector;
 
 class ProductConnector extends AbstractMagentoConnector implements TwoWaySyncConnectorInterface
 {
-    const IMPORT_JOB_NAME = 'mage_product_import';
-    const EXPORT_JOB_NAME = 'mage_product_export';
-    const TYPE            = 'product';
+    const IMPORT_JOB_NAME        = 'mage_product_import';
+
+    const EXPORT_JOB_NAME        = 'mage_product_export';
+    const EXPORT_PROCESSOR_ALIAS = 'marello_magento.product_export';
+
+    const DELETE_JOB_NAME        = 'product_export_delete';
+    const DELETE_PROCESSOR_ALIAS = 'marello_magento.product_export_delete';
+
+    const TYPE                   = 'product';
 
     /**
      * {@inheritdoc}

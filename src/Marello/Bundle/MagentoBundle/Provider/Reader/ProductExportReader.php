@@ -14,10 +14,10 @@ class ProductExportReader extends AbstractExportReader
         $qb = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
 
 
-        if ($this->entityId) {
+        if ($this->productSku) {
             $qb
-                ->andWhere('o.id' . ' = :id')
-                ->setParameter('id', $this->entityId);
+                ->andWhere('o.sku' . ' = :sku')
+                ->setParameter('sku', $this->productSku);
         } else {
             $qb
                 ->where(

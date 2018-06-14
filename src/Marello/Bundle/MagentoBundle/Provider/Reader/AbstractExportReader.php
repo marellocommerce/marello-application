@@ -19,6 +19,8 @@ abstract class AbstractExportReader extends EntityReader implements LoggerAwareI
 
     protected $entityId;
 
+    protected $productSku;
+
     /**
      * {@inheritdoc}
      */
@@ -34,6 +36,10 @@ abstract class AbstractExportReader extends EntityReader implements LoggerAwareI
 
         if ($context->hasOption('id')) {
             $this->entityId = $context->getOption('id');
+        }
+
+        if ($context->hasOption('sku')) {
+            $this->productSku = $context->getOption('sku');
         }
 
         $this->setSourceEntityName($this->getEntityName());

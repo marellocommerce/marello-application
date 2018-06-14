@@ -42,6 +42,7 @@ parameters:
     marello_magento.writer.proxy_entity_writer.class:                            Marello\Bundle\MagentoBundle\ImportExport\Writer\ProxyEntityWriter
     marello_magento.importexport.writer.abstract_export.class:                   Marello\Bundle\MagentoBundle\ImportExport\Writer\AbstractExportWriter
     marello_magento.importexport.writer.product_export.class:                    Marello\Bundle\MagentoBundle\ImportExport\Writer\ProductExportWriter
+    marello_magento.importexport.writer.product_export_delete.class:             Marello\Bundle\MagentoBundle\ImportExport\Writer\ProductExportDeleteWriter
     marello_magento.importexport.writer.product_category_export.class:           Marello\Bundle\MagentoBundle\ImportExport\Writer\ProductCategoryExportWriter
     marello_magento.importexport.writer.inventory_level_export.class:            Marello\Bundle\MagentoBundle\ImportExport\Writer\InventoryLevelExportWriter
     marello_magento.importexport.writer.price_export.class:                      Marello\Bundle\MagentoBundle\ImportExport\Writer\PriceExportWriter
@@ -50,6 +51,7 @@ parameters:
     marello_magento.reader.context.class:                                        Marello\Bundle\MagentoBundle\Provider\Reader\ContextReader
     marello_magento.importexport.reader.entity.class:                            Marello\Bundle\MagentoBundle\Provider\Reader\ContextOptionReader
     marello_magento.importexport.reader.product_export.class:                    Marello\Bundle\MagentoBundle\Provider\Reader\ProductExportReader
+    marello_magento.importexport.reader.product_export_delete.class:             Marello\Bundle\MagentoBundle\Provider\Reader\ProductExportDeleteReader
     marello_magento.importexport.reader.product_category_export.class:           Marello\Bundle\MagentoBundle\Provider\Reader\ProductCategoryExportReader
     marello_magento.importexport.reader.inventory_level_export.class:            Marello\Bundle\MagentoBundle\Provider\Reader\InventoryLevelExportReader
     marello_magento.importexport.reader.price_export.class:                      Marello\Bundle\MagentoBundle\Provider\Reader\PriceExportReader
@@ -376,6 +378,16 @@ services:
               entity: '%marello_product.entity.class%'
               alias: marello_magento.product_export
 
+    marello_magento.importexport.processor.product_export_delete:
+        parent: oro_integration.importexport.processor.export
+        calls:
+            - [setDataConverter, ["@marello_magento.importexport.data_converter.product"]]
+        tags:
+            - name: oro_importexport.processor
+              type: export
+              entity: '%marello_magento.entity.product.class%'
+              alias: marello_magento.product_export_delete
+
     marello_magento.importexport.processor.inventory_level_export:
         parent: oro_integration.importexport.processor.export
         calls:
@@ -427,6 +439,10 @@ services:
         class: %marello_magento.importexport.writer.product_export.class%
         parent: marello_magento.importexport.writer.abstract_export
 
+    marello_magento.importexport.writer.product_export_delete:
+        class: '%marello_magento.importexport.writer.product_export_delete.class%'
+        parent: marello_magento.importexport.writer.abstract_export
+
     marello_magento.importexport.writer.inventory_level_export:
         class: '%marello_magento.importexport.writer.inventory_level_export.class%'
         parent: marello_magento.importexport.writer.abstract_export
@@ -457,6 +473,13 @@ services:
         parent: 'oro_importexport.reader.entity'
         calls:
             - [setEntityName, ['%marello_product.entity.class%']]
+            - [setLogger, ['@oro_integration.logger.strategy']]
+
+    marello_magento.importexport.reader.product_export_delete:
+        class: '%marello_magento.importexport.reader.product_export_delete.class%'
+        parent: 'oro_importexport.reader.entity'
+        calls:
+            - [setEntityName, ['%marello_magento.entity.product.class%']]
             - [setLogger, ['@oro_integration.logger.strategy']]
 
     marello_magento.importexport.reader.product_category_export:
