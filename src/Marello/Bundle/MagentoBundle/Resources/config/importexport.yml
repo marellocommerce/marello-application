@@ -268,15 +268,15 @@ services:
             - { name: oro_integration.sync_processor, integration: magento2 }
 
     marello_magento.importexport.processor.context:
-        class: %marello_magento.importexport.processor.context.class%
-        parent: oro_integration.importexport.processor.import
+        class: '%marello_magento.importexport.processor.context.class%'
+        parent: 'oro_integration.importexport.processor.import'
 
     marello_magento.importexport.processor.store:
-        parent: oro_integration.importexport.processor.import
+        parent: 'oro_integration.importexport.processor.import'
         calls:
             - [setDataConverter, ["@marello_magento.importexport.data_converter.store"]]
             - [setStrategy, ["@marello_magento.import.strategy.store"]]
-            - [setEntityName, [%marello_magento.entity.store.class%]]
+            - [setEntityName, ['%marello_magento.entity.store.class%']]
         tags:
             - name: oro_importexport.processor
               type: import

@@ -17,6 +17,8 @@ abstract class AbstractExportReader extends EntityReader implements LoggerAwareI
     use IntegrationChannelTrait;
     use SalesChannelTrait;
 
+    protected $entityId;
+
     /**
      * {@inheritdoc}
      */
@@ -28,6 +30,10 @@ abstract class AbstractExportReader extends EntityReader implements LoggerAwareI
             $salesChannel = $this->getSalesChannel($channelId);
             $this->setSalesChannel($salesChannel);
             $context->setValue('salesChannel', $salesChannel);
+        }
+
+        if ($context->hasOption('id')) {
+            $this->entityId = $context->getOption('id');
         }
 
         $this->setSourceEntityName($this->getEntityName());

@@ -13,11 +13,18 @@ class ProductExportReader extends AbstractExportReader
     {
         $qb = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
 
-        $qb
-            ->where(
-                $qb->expr()->isMemberOf(':salesChannel', 'o.channels')
-            )
-            ->setParameter('salesChannel', $this->getSalesChannel());
+
+        if ($this->entityId) {
+            $qb
+                ->andWhere('o.id' . ' = :id')
+                ->setParameter('id', $this->entityId);
+        } else {
+            $qb
+                ->where(
+                    $qb->expr()->isMemberOf(':salesChannel', 'o.channels')
+                )
+                ->setParameter('salesChannel', $this->getSalesChannel());
+        }
 
         return $qb;
     }

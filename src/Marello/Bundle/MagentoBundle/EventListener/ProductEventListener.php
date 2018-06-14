@@ -38,7 +38,7 @@ class ProductEventListener
         $connectorParameters = [
             'class' => Product::class,
             'id' => $product->getId(),
-            __METHOD__
+            'action' => Topics::SYNC_UPDATE_ACTION
         ];
         $this->sendMessage($product, ProductConnector::TYPE, $connectorParameters);
     }
@@ -53,7 +53,7 @@ class ProductEventListener
         $connectorParameters = [
             'class' => Product::class,
             'id' => $product->getId(),
-            __METHOD__
+            'action' => Topics::SYNC_UPDATE_ACTION
         ];
         $this->sendMessage($product, ProductConnector::TYPE, $connectorParameters);
     }
@@ -68,7 +68,7 @@ class ProductEventListener
         $connectorParameters = [
             'class' => Product::class,
             'id' => $product->getId(),
-            __METHOD__
+            'action' => Topics::SYNC_REMOVE_ACTION
         ];
         $this->sendMessage($product, ProductConnector::TYPE, $connectorParameters);
     }
@@ -92,7 +92,7 @@ class ProductEventListener
 
         foreach ($integrationIds as $integrationId) {
             $messageProducer->send(
-                Topics::SYNC_ENTITY_INTEGRATION,
+                Topics::SYNC_PRODUCT_ENTITY_INTEGRATION,
                 new Message(
                     [
                         'integration_id'       => $integrationId,
