@@ -35,11 +35,7 @@ class ProductEventListener
      */
     public function postPersist(Product $product, LifecycleEventArgs $args)
     {
-        $connectorParameters = [
-            'class' => Product::class,
-            'id' => $product->getId(),
-            'action' => Topics::SYNC_UPDATE_ACTION
-        ];
+        $connectorParameters = $this->getConnectorParameters($product, Topics::SYNC_CREATE_ACTION);
         $this->sendMessage($product, ProductConnector::TYPE, $connectorParameters);
     }
 
@@ -50,11 +46,7 @@ class ProductEventListener
      */
     public function postUpdate(Product $product, LifecycleEventArgs $args)
     {
-        $connectorParameters = [
-            'class' => Product::class,
-            'id' => $product->getId(),
-            'action' => Topics::SYNC_UPDATE_ACTION
-        ];
+        $connectorParameters = $this->getConnectorParameters($product, Topics::SYNC_UPDATE_ACTION);
         $this->sendMessage($product, ProductConnector::TYPE, $connectorParameters);
     }
 
@@ -65,12 +57,23 @@ class ProductEventListener
      */
     public function preRemove(Product $product, LifecycleEventArgs $args)
     {
-        $connectorParameters = [
-            'class' => Product::class,
-            'id' => $product->getId(),
-            'action' => Topics::SYNC_REMOVE_ACTION
-        ];
+        $connectorParameters = $this->getConnectorParameters($product, Topics::SYNC_REMOVE_ACTION);
         $this->sendMessage($product, ProductConnector::TYPE, $connectorParameters);
+    }
+
+    /**
+     * @param Product $product
+     * @param $action
+     * @return array
+     */
+    protected function getConnectorParameters(Product$product, $action = Topics::SYNC_UPDATE_ACTION)
+    {
+        return [
+            'class'     => Product::class,
+            'id'        => $product->getId(),
+            'sku'       => $product->getSku(),
+            'action'    => $action
+        ];
     }
 
     /**
