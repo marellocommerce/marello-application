@@ -101,7 +101,7 @@ class ProductEventListener
                         'integration_id'       => $integrationId,
                         'connector_parameters' => $connectorParameters,
                         'connector'            => $connector,
-                        'transport_batch_size' => 100,
+                        'transport_batch_size' => 1,
                     ],
                     MessagePriority::VERY_LOW
                 )
