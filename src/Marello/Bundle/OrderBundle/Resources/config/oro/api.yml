@@ -36,8 +36,15 @@ api:
                     exclude: true
                 updatedAt:
                     exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    orders:
+                        data_type: integer
+                        allow_array: true
+                        property_path: order
+                        description: 'Filter by order ID'
             actions:
-                get_list: false
                 delete: false
                 delete_list: false
                 update_relationship: false
