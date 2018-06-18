@@ -12,7 +12,15 @@
         {% endif %}
         {% for itemName, item in items %}
             <li class="widget-item" style="width: {{ itemWidth }}%; text-align: left; vertical-align: top;">
-                {% include widgetDataItems[itemName].template with {item: item}%}
+                {% if item.value|length %}
+                    {% include widgetDataItems[itemName].template with {item: item}%}
+                {% else %}
+                    <div class="container-fluid">
+                        <div class="clearfix no-data">
+                            <span>{{ 'marello.order.dashboard.statistics.no_data'|trans }}</span>
+                        </div>
+                    </div>
+                {% endif %}
             </li>
             {% if not loop.last and loop.index % 3 == 0 %}
             <li class="separator"> &nbsp; </li>

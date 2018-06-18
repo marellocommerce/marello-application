@@ -22,7 +22,8 @@ class OrderItemDashboardStatisticProvider
      * @param OrderItemRepository $orderItemRepository
      * @param OrderRepository $orderRepository
      */
-    public function __construct(OrderItemRepository $orderItemRepository, OrderRepository $orderRepository) {
+    public function __construct(OrderItemRepository $orderItemRepository, OrderRepository $orderRepository)
+    {
         $this->orderItemRepository = $orderItemRepository;
         $this->orderRepository = $orderRepository;
     }

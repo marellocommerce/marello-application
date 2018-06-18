@@ -158,6 +158,9 @@ marello:
                 total_product_revenue.label: Hero Products By Revenue
                 no_available_metrics: No metrics available
 
+            statistics:
+                no_data: No data available
+
         sections:
             general: General
             shipping_information: Shipping Information
