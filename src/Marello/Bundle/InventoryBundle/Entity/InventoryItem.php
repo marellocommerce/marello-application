@@ -2,18 +2,15 @@
 
 namespace Marello\Bundle\InventoryBundle\Entity;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-
 use Marello\Bundle\InventoryBundle\Model\ExtendInventoryItem;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity()
@@ -36,12 +33,17 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *              "owner_type"="ORGANIZATION",
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
  */
 class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface, OrganizationAwareInterface
 {
+    use AuditableOrganizationAwareTrait;
+    
     /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -68,6 +70,9 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * @ORM\OrderBy({"createdAt" = "DESC"})
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -83,6 +88,9 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * @ORM\JoinColumn(name="product_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "order"=10,
      *              "identity"=true,
@@ -98,6 +106,9 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * @ORM\Column(name="desired_inventory", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -112,6 +123,9 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * @ORM\Column(name="purchase_inventory", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -126,6 +140,9 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * @var string
      * @Oro\ConfigField(
      *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
      *          "importexport"={
      *              "excluded"=true
      *          }
@@ -133,14 +150,6 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * )
      */
     protected $replenishment;
-    
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
 
     /**
      * @var Warehouse
@@ -310,24 +319,5 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     public function hasInventoryLevels()
     {
         return ($this->inventoryLevels->count() > 0);
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return $this
-     */
-    public function setOrganization(OrganizationInterface $organization)
-    {
-        $this->organization = $organization;
-
-        return $this;
     }
 }

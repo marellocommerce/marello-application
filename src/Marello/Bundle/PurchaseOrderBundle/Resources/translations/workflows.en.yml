@@ -2,7 +2,7 @@ oro:
     workflow:
         marello_purchase_order_workflow:
             label: 'Purchase Order Workflow'
-            attributes:
+            attribute:
                 received_items:
                     label: 'Received Items'
             step:

@@ -210,10 +210,13 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         );
         $address->setPhone($row['telephone_number']);
         $address->setCompany($row['company']);
+
+        $shippingAddress = clone $address;
         $this->manager->persist($address);
+        $this->manager->persist($shippingAddress);
 
         $orderEntity = new Order($address, $address);
-        $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $address);
+        $customer = Customer::create($row['firstname'], $row['lastname'], $row['email'], $address, $shippingAddress);
         $customer->setOrganization($organization);
         $this->setReference('customer' . $this->customers++, $customer);
         $orderEntity->setCustomer($customer);

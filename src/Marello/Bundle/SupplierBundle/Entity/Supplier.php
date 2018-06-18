@@ -4,6 +4,7 @@ namespace Marello\Bundle\SupplierBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -22,13 +23,20 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  *              "type"="ACL",
  *              "group_name"=""
  *          },
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
  *      }
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Supplier
+class Supplier implements CurrencyAwareInterface
 {
     use EntityCreatedUpdatedAtTrait, AuditableOrganizationAwareTrait;
+
+    const SEND_PO_MANUALLY = 'manual';
+    const SEND_PO_BY_EMAIL = 'email';
+
     /**
      * @var integer
      *
@@ -42,6 +50,13 @@ class Supplier
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true, nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $name;
     
@@ -50,6 +65,13 @@ class Supplier
      *
      * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $address = null;
 
@@ -57,6 +79,13 @@ class Supplier
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, unique=true, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $email;
 
@@ -64,6 +93,13 @@ class Supplier
      * @var integer
      *
      * @ORM\Column(name="priority", type="integer", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $priority;
     
@@ -71,6 +107,13 @@ class Supplier
      * @var boolean
      *
      * @ORM\Column(name="can_dropship", type="boolean", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $canDropship = true;
 
@@ -78,8 +121,41 @@ class Supplier
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $isActive = true;
+    
+    /**
+     * @var string
+     * @ORM\Column(name="currency", type="string", length=3, nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $currency;
+
+    /**
+     * @var string
+     * @ORM\Column(name="po_send_by", type="string", length=30, nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $poSendBy;
 
     /**
      * @return string
@@ -241,5 +317,43 @@ class Supplier
     public function getIsActive()
     {
         return $this->isActive;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @param string $currency
+     * @return $this
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPoSendBy()
+    {
+        return $this->poSendBy;
+    }
+
+    /**
+     * @param string $poSendBy
+     * @return $this
+     */
+    public function setPoSendBy($poSendBy)
+    {
+        $this->poSendBy = $poSendBy;
+        
+        return $this;
     }
 }

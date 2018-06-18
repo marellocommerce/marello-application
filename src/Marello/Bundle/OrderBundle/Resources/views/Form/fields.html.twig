@@ -99,7 +99,7 @@
                         <tr>
                             <th class="order-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
                             <th class="order-line-item-quantity"><span>{{ 'marello.order.orderitem.quantity.label'|trans }}</span></th>
-                            <th class="order-line-item-price"><span>{{ marello_pricing_vat_aware_label('marello.order.orderitem.price.label'|trans) }}</span></th>
+                            <th class="order-line-item-price"><span>{{ marello_pricing_vat_aware_label('marello.order.orderitem.price.per_unit.label'|trans) }}</span></th>
                             <th class="order-line-item-tax"><span>{{ 'marello.order.orderitem.tax.label'|trans }}</span></th>
                             <th class="order-line-item-tax-code"><span>{{ 'marello.order.orderitem.tax_code.label'|trans }}</span></th>
                             <th class="order-line-item-total-price-excl-tax"><span>{{ 'marello.order.orderitem.total_price_excl_tax.label'|trans }}</span></th>
@@ -127,6 +127,14 @@
             {% endif %}
         </div>
     {% endspaceless %}
+{% endblock %}
+
+{% block marello_order_billing_address_widget %}
+    {{ block('marello_order_address_widget') }}
+{% endblock %}
+
+{% block marello_order_shipping_address_widget %}
+    {{ block('marello_order_address_widget') }}
 {% endblock %}
 
 {% block marello_order_address_widget %}

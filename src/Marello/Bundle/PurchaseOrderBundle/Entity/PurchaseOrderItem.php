@@ -4,6 +4,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -17,7 +18,13 @@ use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
  * @ORM\Entity(repositoryClass="Marello\Bundle\PurchaseOrderBundle\Entity\Repository\PurchaseOrderItemRepository")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="marello_purchase_order_item")
- * @Oro\Config()
+ * @Oro\Config(
+ *      defaultValues={
+ *          "dataaudit"={
+ *              "auditable"=true
+ *          }
+ *      }
+ * )
  */
 class PurchaseOrderItem implements
     ProductAwareInterface
@@ -37,6 +44,13 @@ class PurchaseOrderItem implements
      * @var ProductInterface
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\ProductBundle\Entity\Product")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $product;
 
@@ -45,6 +59,13 @@ class PurchaseOrderItem implements
      *
      * @ORM\ManyToOne(targetEntity="PurchaseOrder", inversedBy="items")
      * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $order;
 
@@ -52,6 +73,13 @@ class PurchaseOrderItem implements
      * @var string
      *
      * @ORM\Column(name="product_sku", type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $productSku;
 
@@ -59,6 +87,13 @@ class PurchaseOrderItem implements
      * @var string
      *
      * @ORM\Column(name="product_name", type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $productName;
 
@@ -66,6 +101,13 @@ class PurchaseOrderItem implements
      * @var string
      *
      * @ORM\Column(name="supplier", type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $supplier;
 
@@ -73,6 +115,13 @@ class PurchaseOrderItem implements
      * @var int
      *
      * @ORM\Column(name="ordered_amount", type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $orderedAmount;
 
@@ -80,9 +129,49 @@ class PurchaseOrderItem implements
      * @var int
      *
      * @ORM\Column(name="received_amount", type="integer")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $receivedAmount = 0;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="purchase_price_value", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $purchasePriceValue;
+
+    /**
+     * @var ProductPrice
+     */
+    protected $purchasePrice;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="row_total", type="money", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $rowTotal;
+    
     /**
      * @var array $data
      *
@@ -94,6 +183,13 @@ class PurchaseOrderItem implements
      * @var string
      *
      * @ORM\Column(name="status", type="string")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $status = 'pending';
 
@@ -137,7 +233,7 @@ class PurchaseOrderItem implements
     {
         if (($this->receivedAmount < 0) || ($this->receivedAmount > $this->orderedAmount)) {
             $context
-                ->buildViolation('marello.purchaseorder.purchaseorderitem.validation.received_amount')
+                ->buildViolation('marello.purchaseorder.purchaseorderitem.messages.error.received_amount')
                 ->atPath('receivedAmount')
                 ->addViolation();
         }
@@ -249,6 +345,71 @@ class PurchaseOrderItem implements
         return $this->receivedAmount;
     }
 
+    /**
+     * @return ProductPrice
+     */
+    public function getPurchasePrice()
+    {
+        return $this->purchasePrice;
+    }
+
+    /**
+     * @param ProductPrice $purchasePrice
+     * @return $this
+     */
+    public function setPurchasePrice(ProductPrice $purchasePrice = null)
+    {
+        $this->purchasePrice = $purchasePrice;
+        $this->updatePurchasePrice();
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PostLoad
+     */
+    public function loadPurchasePrice()
+    {
+        $price = new ProductPrice();
+        $price
+            ->setProduct($this->product)
+            ->setCurrency($this->order->getSupplier()->getCurrency())
+            ->setValue($this->purchasePriceValue);
+        $this->purchasePrice = $price;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function updatePurchasePrice()
+    {
+        if ($this->purchasePrice) {
+            $this->purchasePriceValue = $this->purchasePrice->getValue();
+        } else {
+            $this->purchasePriceValue = null;
+        }
+    }
+
+    /**
+     * @return float
+     */
+    public function getRowTotal()
+    {
+        return $this->rowTotal;
+    }
+
+    /**
+     * @param float $rowTotal
+     * @return $this
+     */
+    public function setRowTotal($rowTotal)
+    {
+        $this->rowTotal = $rowTotal;
+        
+        return $this;
+    }
+    
     /**
      * @return array
      */

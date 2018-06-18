@@ -123,7 +123,7 @@ datagrids:
             return:
                 type:       navigate
                 link:       return_link
-                icon:       history
+                icon:       undo
             refund:
                 type:       navigate
                 link:       refund_link
@@ -229,7 +229,7 @@ datagrids:
             return:
                 type:       navigate
                 link:       return_link
-                icon:       history
+                icon:       undo
             refund:
                 type:       navigate
                 link:       refund_link
@@ -275,7 +275,7 @@ datagrids:
                 label:            marello.order.orderitem.quantity.label
                 frontend_type:    number
             price:
-                label:            marello.order.orderitem.price.label
+                label:            marello.order.orderitem.price.per_unit.label
                 type:             localized_number
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
@@ -404,8 +404,6 @@ datagrids:
                 from:
                     - { table: MarelloOrderBundle:Customer, alias: c }
         columns:
-            id:
-                label: marello.order.customer.id.label
             namePrefix:
                 label: marello.order.customer.name_prefix.label
             firstName:
@@ -418,6 +416,12 @@ datagrids:
                 label: marello.order.customer.name_suffix.label
             email:
                 label: marello.order.customer.email.label
+            createdAt:
+                label:            oro.ui.created_at
+                frontend_type:    datetime
+            updatedAt:
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
         filters:
             columns:
                 namePrefix:
@@ -438,10 +442,14 @@ datagrids:
                 email:
                     type: string
                     data_name: c.email
+                createdAt:
+                    type: datetime
+                    data_name: c.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: c.updatedAt
         sorters:
             columns:
-                id:
-                    data_name: c.id
                 namePrefix:
                     data_name: c.namePrefix
                 firstName:
@@ -454,8 +462,12 @@ datagrids:
                     data_name: c.nameSuffix
                 email:
                     data_name: c.email
+                createdAt:
+                    data_name: c.createdAt
+                updatedAt:
+                    data_name: c.updatedAt
             default:
-                id: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                createdAt: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         properties:
             view_link:
                 type:   url

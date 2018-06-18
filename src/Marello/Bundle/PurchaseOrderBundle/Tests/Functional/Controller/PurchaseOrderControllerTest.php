@@ -2,21 +2,28 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
-use Marello\Bundle\PurchaseOrderBundle\Tests\Functional\DataFixtures\LoadPurchaseOrderData;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderConstraint;
-use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderItemConstraint;
-use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
+use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
+use Marello\Bundle\PurchaseOrderBundle\Tests\Functional\DataFixtures\LoadPurchaseOrderData;
 
 class PurchaseOrderControllerTest extends WebTestCase
 {
+    /** @var Warehouse $defaultWarehouse */
+    protected $defaultWarehouse;
+
     protected function setUp()
     {
         $this->initClient([], $this->generateBasicAuthHeader());
         $this->loadFixtures([LoadPurchaseOrderData::class]);
+        $this->defaultWarehouse = $this->getContainer()
+            ->get('marello_inventory.repository.warehouse')
+            ->getDefault();
     }
 
     /** @test */
@@ -91,16 +98,25 @@ class PurchaseOrderControllerTest extends WebTestCase
         $formValues['marello_purchase_order_create_step_two']['supplier'] = $supplier->getId();
         $tomorrow = new \DateTime('tomorrow');
         $formValues['marello_purchase_order_create_step_two']['dueDate'] = $tomorrow->format('Y-m-d');
+        $formValues['marello_purchase_order_create_step_two']['warehouse'] = $this->defaultWarehouse->getId();
         $formValues['marello_purchase_order_create_step_two']['items'] = array();
         $product1 = $this->getReference(LoadProductData::PRODUCT_1_REF);
         $product2 = $this->getReference(LoadProductData::PRODUCT_2_REF);
         $formValues['marello_purchase_order_create_step_two']['items'][] = array(
             'product' => $product1->getId(),
-            'orderedAmount' => 4
+            'orderedAmount' => 4,
+            'purchasePrice' => [
+                'currency' => 'USD',
+                'value'     => 10
+            ]
         );
         $formValues['marello_purchase_order_create_step_two']['items'][] = array(
             'product' => $product2->getId(),
-            'orderedAmount' => 5
+            'orderedAmount' => 5,
+            'purchasePrice' => [
+                'currency' => 'USD',
+                'value'     => 10
+            ]
         );
         $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added']
             = ''. $product1->getid() . ','. $product2->getId();
@@ -110,9 +126,9 @@ class PurchaseOrderControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-
         $html = $crawler->html();
-        $this->assertContains('Purchase Order saved', $html);
+
+        $this->assertContains('Purchase Order saved succesfully', $html);
     }
 
     /** @test */
@@ -207,16 +223,25 @@ class PurchaseOrderControllerTest extends WebTestCase
         $formValues['marello_purchase_order_create_step_two']['supplier'] = $supplier->getId();
         $tomorrow = new \DateTime('tomorrow');
         $formValues['marello_purchase_order_create_step_two']['dueDate'] = $tomorrow->format('Y-m-d');
+        $formValues['marello_purchase_order_create_step_two']['warehouse'] = $this->defaultWarehouse->getId();
         $formValues['marello_purchase_order_create_step_two']['items'] = array();
         $product1 = $this->getReference(LoadProductData::PRODUCT_1_REF);
         $product2 = $this->getReference(LoadProductData::PRODUCT_2_REF);
         $formValues['marello_purchase_order_create_step_two']['items'][] = array(
             'product' => null,
-            'orderedAmount' => 4
+            'orderedAmount' => 4,
+            'purchasePrice' => [
+                'currency' => 'USD',
+                'value'     => 10
+            ]
         );
         $formValues['marello_purchase_order_create_step_two']['items'][] = array(
             'product' => $product2->getId(),
-            'orderedAmount' => 5
+            'orderedAmount' => 5,
+            'purchasePrice' => [
+                'currency' => 'USD',
+                'value'     => 10
+            ]
         );
         $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added']
             = ''. $product1->getid() . ','. $product2->getId();
@@ -259,16 +284,25 @@ class PurchaseOrderControllerTest extends WebTestCase
         $formValues['marello_purchase_order_create_step_two']['supplier'] = $supplier->getId();
         $tomorrow = new \DateTime('tomorrow');
         $formValues['marello_purchase_order_create_step_two']['dueDate'] = $tomorrow->format('Y-m-d');
+        $formValues['marello_purchase_order_create_step_two']['warehouse'] = $this->defaultWarehouse->getId();
         $formValues['marello_purchase_order_create_step_two']['items'] = array();
         $product1 = $this->getReference(LoadProductData::PRODUCT_1_REF);
         $product2 = $this->getReference(LoadProductData::PRODUCT_2_REF);
         $formValues['marello_purchase_order_create_step_two']['items'][] = array(
             'product' => $product1->getId(),
-            'orderedAmount' => 4
+            'orderedAmount' => 4,
+            'purchasePrice' => [
+                'currency' => 'USD',
+                'value'     => 10
+            ]
         );
         $formValues['marello_purchase_order_create_step_two']['items'][] = array(
             'product' => $product2->getId(),
-            'orderedAmount' => 0
+            'orderedAmount' => 0,
+            'purchasePrice' => [
+                'currency' => 'USD',
+                'value'     => 10
+            ]
         );
         $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added']
             = ''. $product1->getid() . ','. $product2->getId();
@@ -311,16 +345,25 @@ class PurchaseOrderControllerTest extends WebTestCase
         $formValues['marello_purchase_order_create_step_two']['supplier'] = $supplier->getId();
         $tomorrow = new \DateTime('yesterday');
         $formValues['marello_purchase_order_create_step_two']['dueDate'] = $tomorrow->format('Y-m-d');
+        $formValues['marello_purchase_order_create_step_two']['warehouse'] = $this->defaultWarehouse->getId();
         $formValues['marello_purchase_order_create_step_two']['items'] = array();
         $product1 = $this->getReference(LoadProductData::PRODUCT_1_REF);
         $product2 = $this->getReference(LoadProductData::PRODUCT_2_REF);
         $formValues['marello_purchase_order_create_step_two']['items'][] = array(
             'product' => $product1->getId(),
-            'orderedAmount' => 4
+            'orderedAmount' => 4,
+            'purchasePrice' => [
+                'currency' => 'USD',
+                'value'     => 10
+            ]
         );
         $formValues['marello_purchase_order_create_step_two']['items'][] = array(
             'product' => $product2->getId(),
-            'orderedAmount' => 5
+            'orderedAmount' => 5,
+            'purchasePrice' => [
+                'currency' => 'USD',
+                'value'     => 10
+            ]
         );
         $formValues['marello_purchase_order_create_step_two']['itemsAdvice']['added']
             = ''. $product1->getid() . ','. $product2->getId();

@@ -12,6 +12,11 @@ services:
         tags:
             - { name: marello_order.order_item_data_provider, type: price, priority: 10 }
 
+    marello_productprice.pricing.form.event_listener.currency_subscriber:
+        class: Marello\Bundle\PricingBundle\Form\EventListener\CurrencySubscriber
+        arguments:
+            - '@oro_locale.settings'
+
     marello_productprice.pricing.form.event_listener.pricing_subscriber:
         class: Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber
         arguments:

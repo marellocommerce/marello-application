@@ -6,13 +6,13 @@ marello:
         warehouse:
             entity_label:               Warehouse
             entity_plural_label:        Warehouses
-            label.label:                Label
+            label.label:                Name
             code.label:                 Code
             default.label:              Default
             address.label:              Address
             id.label:                   Id
             owner.label:                Owner
-            warehouse_type.label:       Warehouse Type
+            warehouse_type.label:       Type
             group.label:                Warehouse Group
             create_group.label:         Create Group
 

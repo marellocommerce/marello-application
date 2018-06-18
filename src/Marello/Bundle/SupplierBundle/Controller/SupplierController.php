@@ -111,7 +111,11 @@ class SupplierController extends Controller
     }
 
     /**
-     * @Config\Route("/widget/address/{id}/{typeId}", requirements={"id"="\d+","typeId"="\d+"}, name="marello_supplier_supplier_address")
+     * @Config\Route(
+     *     "/widget/address/{id}/{typeId}",
+     *     requirements={"id"="\d+","typeId"="\d+"},
+     *     name="marello_supplier_supplier_address"
+     * )
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @Security\AclAncestor("marello_supplier_update")

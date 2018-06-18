@@ -23,6 +23,9 @@ datagrids:
                 label:            marello.supplier.is_active.label
                 frontend_type:    boolean
                 data_name:        isActive
+            currency:
+                label:            marello.supplier.currency.label
+                frontend_type:    string
         sorters:
             columns:
                 name:
@@ -33,6 +36,8 @@ datagrids:
                     data_name: s.canDropship
                 isActive:
                     data_name: s.isActive
+                currency:
+                    data_name: s.currency
             default:
                 priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
         filters:
@@ -49,6 +54,9 @@ datagrids:
                 isActive:
                     type:       boolean
                     data_name:  s.isActive
+                currency:
+                    type:       string
+                    data_name:  s.currency
         properties:
             id: ~
             view_link:

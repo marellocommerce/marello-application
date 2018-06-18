@@ -5,9 +5,10 @@ namespace Marello\Bundle\RefundBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
@@ -15,9 +16,8 @@ use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\RefundBundle\Model\ExtendRefund;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity
@@ -40,6 +40,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *              "owner_type"="ORGANIZATION",
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
@@ -50,6 +53,7 @@ class Refund extends ExtendRefund implements
     LocaleAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
     use LocalizationTrait;
         
     /**
@@ -63,6 +67,13 @@ class Refund extends ExtendRefund implements
 
     /**
      * @ORM\Column(name="refund_number", type="string", unique=true, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */
@@ -70,6 +81,13 @@ class Refund extends ExtendRefund implements
 
     /**
      * @ORM\Column(name="refund_amount", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var int
      */
@@ -78,6 +96,13 @@ class Refund extends ExtendRefund implements
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer")
      * @ORM\JoinColumn(nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var Customer
      */
@@ -85,6 +110,13 @@ class Refund extends ExtendRefund implements
 
     /**
      * @ORM\OneToMany(targetEntity="RefundItem", mappedBy="refund", cascade={"persist"}, orphanRemoval=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var Collection|RefundItem[]
      */
@@ -93,6 +125,13 @@ class Refund extends ExtendRefund implements
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Order")
      * @ORM\JoinColumn(nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var Order
      */
@@ -101,17 +140,15 @@ class Refund extends ExtendRefund implements
     /**
      * @var string
      * @ORM\Column(name="currency", type="string", length=10, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $currency;
-
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", nullable=false)
-     */
-    protected $organization;
 
     /**
      * @param Order $order
@@ -347,26 +384,6 @@ class Refund extends ExtendRefund implements
     public function setCurrency($currency)
     {
         $this->currency = $currency;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * @param Organization $organization
-     *
-     * @return Refund
-     */
-    public function setOrganization($organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }

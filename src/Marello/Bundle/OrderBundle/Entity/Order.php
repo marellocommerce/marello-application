@@ -2,32 +2,30 @@
 
 namespace Marello\Bundle\OrderBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
+use Marello\Bundle\OrderBundle\Model\DiscountAwareInterface;
+use Marello\Bundle\OrderBundle\Model\ExtendOrder;
+use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
+use Marello\Bundle\PricingBundle\Subtotal\Model\LineItemsAwareInterface;
+use Marello\Bundle\PricingBundle\Subtotal\Model\SubtotalAwareInterface;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
+use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
+use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
+use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-
-use Marello\Bundle\OrderBundle\Model\ExtendOrder;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
-use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
-use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
-use Marello\Bundle\OrderBundle\Model\DiscountAwareInterface;
-use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
-use Marello\Bundle\PricingBundle\Subtotal\Model\SubtotalAwareInterface;
-use Marello\Bundle\PricingBundle\Subtotal\Model\LineItemsAwareInterface;
-use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\OrderBundle\Entity\Repository\OrderRepository")
@@ -47,6 +45,9 @@ use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
  *              "owner_type"="ORGANIZATION",
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
@@ -67,11 +68,13 @@ class Order extends ExtendOrder implements
     TaxAwareInterface,
     LineItemsAwareInterface,
     LocaleAwareInterface,
-    ChannelAwareInterface
+    ChannelAwareInterface,
+    OrganizationAwareInterface
 {
     use HasShipmentTrait;
     use LocalizationTrait;
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
     
     /**
      * @var int
@@ -86,6 +89,13 @@ class Order extends ExtendOrder implements
      * @var string
      *
      * @ORM\Column(name="order_number", type="string", unique=true, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $orderNumber;
 
@@ -93,6 +103,13 @@ class Order extends ExtendOrder implements
      * @var string
      *
      * @ORM\Column(name="order_reference", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $orderReference;
 
@@ -100,6 +117,13 @@ class Order extends ExtendOrder implements
      * @var string
      *
      * @ORM\Column(name="invoice_reference", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $invoiceReference;
 
@@ -107,6 +131,13 @@ class Order extends ExtendOrder implements
      * @var int
      *
      * @ORM\Column(name="subtotal", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $subtotal = 0;
 
@@ -114,6 +145,13 @@ class Order extends ExtendOrder implements
      * @var int
      *
      * @ORM\Column(name="total_tax", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $totalTax = 0;
 
@@ -121,24 +159,52 @@ class Order extends ExtendOrder implements
      * @var int
      *
      * @ORM\Column(name="grand_total", type="money")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $grandTotal = 0;
 
     /**
      * @var string
      * @ORM\Column(name="currency", type="string", length=10, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $currency;
 
     /**
      * @var string
      * @ORM\Column(name="payment_method", type="string", length=255, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $paymentMethod;
 
     /**
      * @var string
      * @ORM\Column(name="payment_reference", type="string", length=255, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $paymentReference;
 
@@ -146,6 +212,13 @@ class Order extends ExtendOrder implements
      * @var string
      *
      * @ORM\Column(name="payment_details", type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $paymentDetails;
 
@@ -153,6 +226,13 @@ class Order extends ExtendOrder implements
      * @var double
      *
      * @ORM\Column(name="shipping_amount_incl_tax", type="money", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $shippingAmountInclTax;
 
@@ -160,6 +240,13 @@ class Order extends ExtendOrder implements
      * @var double
      *
      * @ORM\Column(name="shipping_amount_excl_tax", type="money", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $shippingAmountExclTax;
 
@@ -167,6 +254,13 @@ class Order extends ExtendOrder implements
      * @var float
      *
      * @ORM\Column(name="shipping_method", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $shippingMethod;
 
@@ -174,6 +268,13 @@ class Order extends ExtendOrder implements
      * @var double
      *
      * @ORM\Column(name="discount_amount", type="money", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $discountAmount;
 
@@ -181,12 +282,26 @@ class Order extends ExtendOrder implements
      * @var float
      *
      * @ORM\Column(name="discount_percent", type="percent", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $discountPercent;
 
     /**
      * @var string
      * @ORM\Column(name="coupon_code", type="string", length=255, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $couponCode;
 
@@ -199,6 +314,9 @@ class Order extends ExtendOrder implements
      *      defaultValues={
      *          "email"={
      *              "available_in_template"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -208,6 +326,13 @@ class Order extends ExtendOrder implements
     /**
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\OrderBundle\Entity\Customer", cascade={"persist"})
      * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var Customer
      */
@@ -218,6 +343,13 @@ class Order extends ExtendOrder implements
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $billingAddress;
 
@@ -226,6 +358,13 @@ class Order extends ExtendOrder implements
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $shippingAddress;
 
@@ -233,6 +372,13 @@ class Order extends ExtendOrder implements
      * @var \DateTime
      *
      * @ORM\Column(name="invoiced_at", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $invoicedAt;
 
@@ -245,6 +391,9 @@ class Order extends ExtendOrder implements
      *      defaultValues={
      *          "importexport"={
      *              "full"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
      *          }
      *      }
      * )
@@ -255,16 +404,15 @@ class Order extends ExtendOrder implements
      * @var string
      *
      * @ORM\Column(name="saleschannel_name",type="string", nullable=false)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $salesChannelName;
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", nullable=false)
-     */
-    protected $organization;
 
     /**
      * @var array $data
@@ -716,26 +864,6 @@ class Order extends ExtendOrder implements
     public function setPaymentReference($paymentReference)
     {
         $this->paymentReference = $paymentReference;
-
-        return $this;
-    }
-
-    /**
-     * @return Organization
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * @param Organization $organization
-     *
-     * @return $this
-     */
-    public function setOrganization(Organization $organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }

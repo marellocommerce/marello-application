@@ -44,7 +44,7 @@ class MarelloTaxBundle implements Migration
         $table->addColumn('description', 'text', ['notnull' => false]);
         $table->addColumn('region_text', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['code'], 'UNIQ_2CBEF9AE77153098');
+        $table->addUniqueIndex(['code'], 'marello_tax_jurisdiction_codeidx');
     }
 
     /**

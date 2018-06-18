@@ -26,6 +26,8 @@ class LoadSupplierData extends AbstractFixture
             'priority' => 1,
             'can_dropship' => true,
             'is_active' => true,
+            'currency' => 'USD',
+            'po_send_by' => Supplier::SEND_PO_BY_EMAIL,
             'address'=>
                 [
                     'street_address' => '70 Bowman St.',
@@ -41,6 +43,8 @@ class LoadSupplierData extends AbstractFixture
             'priority' => 2,
             'can_dropship' => false,
             'is_active' => true,
+            'currency' => 'EUR',
+            'po_send_by' => Supplier::SEND_PO_MANUALLY,
             'address'=>
                 [
                     'street_address' => '71 Pilgrim Avenue',
@@ -76,6 +80,8 @@ class LoadSupplierData extends AbstractFixture
             $supplier->setCanDropship($values['can_dropship']);
             $supplier->setIsActive($values['is_active']);
             $supplier->setEmail($values['email']);
+            $supplier->setCurrency($values['currency']);
+            $supplier->setPoSendBy($values['po_send_by']);
 
             $address = new MarelloAddress();
             $address->setStreet($values['address']['street_address']);

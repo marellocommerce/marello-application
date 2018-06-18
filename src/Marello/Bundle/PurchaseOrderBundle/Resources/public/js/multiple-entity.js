@@ -1,5 +1,5 @@
-define(['underscore', 'routing', 'backbone', './multiple-entity/view', './multiple-entity/model', 'oro/dialog-widget'
-    ], function(_, routing, Backbone, EntityView, MultipleEntityModel, DialogWidget) {
+define(['underscore', 'routing', 'backbone', './multiple-entity/view', './multiple-entity/model', 'oro/dialog-widget', 'oroui/js/mediator'
+    ], function(_, routing, Backbone, EntityView, MultipleEntityModel, DialogWidget, mediator) {
     'use strict';
 
     var $ = Backbone.$;
@@ -37,6 +37,7 @@ define(['underscore', 'routing', 'backbone', './multiple-entity/view', './multip
             this.listenTo(this.getCollection(), 'add', this.addEntity);
             this.listenTo(this.getCollection(), 'reset', this._onCollectionReset);
             this.listenTo(this.getCollection(), 'remove', this.removeDefault);
+            this.listenTo(this.getCollection(), 'change', this._onCollectionChange);
 
             this.$addedEl = $(this.options.addedElement);
             this.$removedEl = $(this.options.removedElement);
@@ -87,6 +88,7 @@ define(['underscore', 'routing', 'backbone', './multiple-entity/view', './multip
             this.removedCollectionItems = _.clone(this.initialCollectionItems);
             this.$removedEl.val(this.removedCollectionItems.join(','));
             this.getCollection().reset([]);
+            this.triggerTotalsUpdateEvent();
         },
 
         removeDefault: function(item) {
@@ -115,6 +117,10 @@ define(['underscore', 'routing', 'backbone', './multiple-entity/view', './multip
             });
             this.addedCollectionItems = [];
             this.removedCollectionItems = [];
+        },
+
+        _onCollectionChange: function() {
+            this.triggerTotalsUpdateEvent();
         },
 
         _isInitialCollectionItem: function(itemId) {
@@ -161,6 +167,7 @@ define(['underscore', 'routing', 'backbone', './multiple-entity/view', './multip
             });
             entityView.on('removal', _.bind(this.handleRemove, this));
             this.$entitiesContainer.append(entityView.render().$el);
+            this.triggerTotalsUpdateEvent();
         },
 
         addEntities: function(e) {
@@ -241,6 +248,22 @@ define(['underscore', 'routing', 'backbone', './multiple-entity/view', './multip
             }
 
             this.selectorDialog.remove();
+        },
+
+        triggerTotalsUpdateEvent: function() {
+            var total = 0;
+            var currency = null;
+            var self = this;
+            this.getCollection().each(function(model) {
+                if (model.id !== null) {
+                    var rowTotal = parseFloat(model.get('orderAmount')) * parseFloat(model.get('purchasePrice'));
+                    currency = model.get('currency');
+                    if (!isNaN(rowTotal)) {
+                        total = total + rowTotal;
+                    }
+                }
+            });
+            mediator.trigger('po:items:total:changed', {'value': total.toFixed(2), 'currency': currency, 'type': 'advised', 'label': 'Advised items Total'});
         },
 
         render: function() {

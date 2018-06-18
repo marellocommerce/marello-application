@@ -12,7 +12,8 @@ use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity
@@ -29,14 +30,18 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *              "owner_type"="ORGANIZATION",
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
+ *          },
+ *          "dataaudit"={
+ *              "auditable"=true
  *          }
  *      }
  * )
  */
-class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInterface
+class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInterface, OrganizationAwareInterface
 {
     use HasFullNameTrait, HasEmailAddressTrait;
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
 
     /**
      * @ORM\Id
@@ -52,11 +57,42 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
      * @ORM\JoinColumn(name="primary_address_id", nullable=true)
      *
      * @var MarelloAddress
+     * 
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $primaryAddress;
 
     /**
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
+     * @ORM\JoinColumn(name="shipping_address_id", nullable=true)
+     *
+     * @var MarelloAddress
+     *
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $shippingAddress;
+
+    /**
      * @ORM\Column(name="tax_identification_number", type="string", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var string
      */
@@ -68,18 +104,17 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
      *     mappedBy="customer",
      *     cascade={"persist"}
      * )
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      *
      * @var Collection|AbstractAddress[]
      */
     protected $addresses;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", nullable=false)
-     *
-     * @var Organization
-     */
-    protected $organization;
 
     /**
      * Customer constructor.
@@ -93,20 +128,30 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
      * @param string  $firstName
      * @param string  $lastName
      * @param string  $email
-     * @param MarelloAddress $address
+     * @param MarelloAddress $primaryAddress
+     * @param MarelloAddress $shippingAddress
      *
      * @return Customer
      */
-    public static function create($firstName, $lastName, $email, MarelloAddress $address)
-    {
+    public static function create(
+        $firstName,
+        $lastName,
+        $email,
+        MarelloAddress $primaryAddress,
+        MarelloAddress $shippingAddress = null
+    ) {
         $customer = new self();
 
         $customer
             ->setFirstName($firstName)
             ->setLastName($lastName)
             ->setEmail($email)
-            ->setPrimaryAddress($address)
+            ->setPrimaryAddress($primaryAddress)
         ;
+
+        if ($shippingAddress) {
+            $customer->setShippingAddress($shippingAddress);
+        }
 
         return $customer;
     }
@@ -119,14 +164,6 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
     }
 
     /**
@@ -183,15 +220,24 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
     }
 
     /**
-     * @param Organization $organization
+     * @param MarelloAddress $shippingAddress
      *
      * @return $this
      */
-    public function setOrganization($organization)
+    public function setShippingAddress(MarelloAddress $shippingAddress)
     {
-        $this->organization = $organization;
+        $shippingAddress->setCustomer($this);
+        $this->shippingAddress = $shippingAddress;
 
         return $this;
+    }
+
+    /**
+     * @return MarelloAddress
+     */
+    public function getShippingAddress()
+    {
+        return $this->shippingAddress;
     }
 
     /**

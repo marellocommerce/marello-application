@@ -38,7 +38,7 @@ class MarelloTaxBundle implements Migration
         $table->addColumn('code', 'string', ['notnull' => true, 'length' => 32]);
         $table->addColumn('description', 'string', ['notnull' => false, 'length' => 255]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['code']);
+        $table->addUniqueIndex(['code'], 'marello_tax_code_codeidx');
     }
 
     /**
@@ -53,7 +53,7 @@ class MarelloTaxBundle implements Migration
         $table->addColumn('code', 'string', ['notnull' => true, 'length' => 32]);
         $table->addColumn('rate', 'float', ['notnull' => true]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['code']);
+        $table->addUniqueIndex(['code'], 'marello_tax_rate_codeidx');
     }
 
     /**

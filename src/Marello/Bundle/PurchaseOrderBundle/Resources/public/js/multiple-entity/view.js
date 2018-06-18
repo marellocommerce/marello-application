@@ -8,9 +8,10 @@ define(['underscore', 'backbone', 'oro/dialog-widget'
      * @extends Backbone.View
      */
     return Backbone.View.extend({
-        attributes: {
-            'class': ''
-        },
+
+        tagName: "tr",
+
+        className: "purchase-order-line-item display-values marello-line-item",
 
         events: {
             'click .remove-btn': 'removeElement',
@@ -72,13 +73,29 @@ define(['underscore', 'backbone', 'oro/dialog-widget'
 
         render: function() {
             var data = this.model.toJSON();
-            data.hasDefault = this.options.hasDefault;
-            data.name = this.options.name;
-            // this.$el = $('.entities');
+            data.purchasePrice = parseFloat(data.purchasePrice).toFixed(2)
             this.$el.append(this.template(data));
             this.$el.find('a.entity-info').click(_.bind(this.viewDetails, this));
+            this.$el.find('td.purchase-order-line-item-ordered-amount').find('input').change(_.bind(this.updateRowTotal, this));
+            this.$el.find('td.purchase-order-line-item-purchase-price').find('input').change(_.bind(this.updateRowTotal, this));
             this.toggleDefault();
+            this.updateRowTotal();
             return this;
+        },
+
+        updateRowTotal: function() {
+            var amount = this.$el.find('td.purchase-order-line-item-ordered-amount').find('input').val();
+            var price = this.$el.find('td.purchase-order-line-item-purchase-price').find('input[name*="value"]').val();
+            this.model.set('orderAmount', amount);
+            this.model.set('purchasePrice', price);
+            
+            var rowTotal = parseFloat(amount) * parseFloat(price);
+            if (!isNaN(rowTotal)) {
+                var currencySymbol = this.model.get('currency');
+                this.$el.find('td.purchase-order-line-item-row-total').html(currencySymbol + rowTotal.toFixed(2));
+            } else {
+                this.$el.find('td.purchase-order-line-item-row-total').html('');
+            }
         }
     });
 });

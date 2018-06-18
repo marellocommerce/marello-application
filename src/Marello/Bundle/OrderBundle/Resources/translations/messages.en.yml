@@ -67,7 +67,9 @@ marello:
             tax_code.label:         Tax Code
             name.label:             Product
             order.label:            Order
-            price.label:            Price
+            price:
+                label:              Price
+                per_unit.label:     Price Per Unit
             quantity.label:         Quantity
             original_price_excl_tax.label:   Original Price Excl. Tax
             original_price_incl_tax.label:   Original Price Incl. Tax
@@ -98,6 +100,7 @@ marello:
             id.label:                         Id
             organization.label:               Organization
             primary_address.label:            Primary Address
+            shipping_address.label:           Shipping Address
             tax_identification_number.label:  Tax Identification Number
             addresses.label:                  Addresses
             email.label:                      Primary Email

@@ -8,6 +8,8 @@ marello:
         supplier.label:                                 Supplier
         purchase_order_number.label:                    PO Number
         purchase_order_supplier.label:                  Supplier
+        warehouse.label:                                Warehouse
+        order_total.label:                              Order Total
         status.label:                                   Purchase Order Status
         purchase_order_date.label:                      Purchase Order Date
         purchase_order_due_date.label:                  Purchase Order Due Date
@@ -24,6 +26,7 @@ marello:
         billing_and_shipping.label:                     Billing & Shipping Info
         supplier.label:                                 Supplier
         organization.label:                             Organization
+        shipping_address.label:                         Shipping Address
 
         ui:
             continue:                                   Continue
@@ -50,6 +53,9 @@ marello:
             desired_stock_level.label:                  Desired Level
             virtual_stock_level.label:                  Virtual Level
             product.label:                              Product
+            purchase_price.label:                       Purchase Price
+            purchase_price_value.label:                 Purchase Price
+            row_total.label:                            Row Total
             order.label:                                Order
             supplier.label:                             Supplier
             product_sku.label:                          Product Sku

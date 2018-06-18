@@ -45,12 +45,20 @@
         </div>
     {% endset %}
 
-    {% set address %}
+    {% set addressBlock %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    <h5>{{ 'marello.order.customer.primary_address.label' | trans }}</h5>
-                    {{ Address.renderAddress(entity.primaryAddress) }}
+                    <div class="responsive-block">
+                        <h5>{{ 'marello.order.customer.primary_address.label' | trans }}</h5>
+                        {{ Address.renderAddress(entity.primaryAddress) }}
+                    </div>
+                    {% if entity.shippingAddress %}
+                    <div class="responsive-block">
+                        <h5>{{ 'marello.order.customer.shipping_address.label' | trans }}</h5>
+                        {{ Address.renderAddress(entity.shippingAddress) }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="responsive-block">
                     {% placeholder marello_customer_address with {'address' : entity.primaryAddress} %}
@@ -95,7 +103,7 @@
             'class': 'active',
             'subblocks': [
                 { 'data' : [general] },
-                { 'data' : [address] }
+                { 'data' : [addressBlock] }
             ]
         },
         {

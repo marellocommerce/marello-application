@@ -18,7 +18,7 @@ class MarelloTaxBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_3';
+        return 'v1_3_1';
     }
 
     /**
@@ -52,7 +52,7 @@ class MarelloTaxBundleInstaller implements Installation
         $table->addColumn('description', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['code']);
+        $table->addUniqueIndex(['code'], 'marello_tax_code_codeidx');
     }
 
     /**
@@ -68,7 +68,7 @@ class MarelloTaxBundleInstaller implements Installation
         $table->addColumn('rate', 'percent', ['notnull' => true, 'comment' => '(DC2Type:percent)']);
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['code']);
+        $table->addUniqueIndex(['code'], 'marello_tax_rate_codeidx');
     }
 
     /**
@@ -107,7 +107,7 @@ class MarelloTaxBundleInstaller implements Installation
         $table->addColumn('region_text', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['code'], 'UNIQ_2CBEF9AE77153098');
+        $table->addUniqueIndex(['code'], 'marello_tax_jurisdiction_codeidx');
     }
 
     /**

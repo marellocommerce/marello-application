@@ -46,7 +46,11 @@ class CustomerType extends AbstractType
             ])
             ->add('primaryAddress', AddressType::NAME, [
                 'required' => false,
-            ]);
+            ])
+            ->add('shippingAddress', AddressType::NAME, [
+                'required' => false,
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

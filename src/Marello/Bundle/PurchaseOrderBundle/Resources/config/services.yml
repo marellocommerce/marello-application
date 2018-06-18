@@ -20,6 +20,12 @@ services:
         tags:
             - { name: oro_action.action, alias: marello_receive_purchase_order }
 
+    marello_purchaseorder.workflow.send_purchase_order:
+        class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\SendPurchaseOrderAction
+        parent: marello_notification.workflow.send_notification_action
+        tags:
+            - { name: oro_action.action, alias: marello_purchase_order_send }
+
     marello_purchaseorder.workflow.action.transit_complete_action:
         class: Marello\Bundle\PurchaseOrderBundle\Workflow\Action\TransitCompleteAction
         parent: marello_core.workflow.action.workflow_transit_action
@@ -47,3 +53,18 @@ services:
             - '@oro_workflow.manager'
         tags:
             - { name: twig.extension }
+
+    marello_purchaseorder.listener.doctrine.warehouse_listener:
+        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderWarehouseListener
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+
+    marello_purchaseorder.listener.doctrine.workflow_transit:
+        class: Marello\Bundle\PurchaseOrderBundle\EventListener\Doctrine\PurchaseOrderWorkflowTransitListener
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }

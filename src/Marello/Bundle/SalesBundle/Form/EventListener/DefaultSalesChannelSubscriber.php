@@ -28,8 +28,7 @@ class DefaultSalesChannelSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA    => 'preSetData',
-            FormEvents::POST_SET_DATA   => 'postSetData'
+            FormEvents::PRE_SET_DATA    => 'preSetData'
         ];
     }
 
@@ -62,25 +61,5 @@ class DefaultSalesChannelSubscriber implements EventSubscriberInterface
         return $this->em
             ->getRepository('MarelloSalesBundle:SalesChannel')
             ->getDefaultActiveChannels();
-    }
-
-    /**
-     * Add channels to hidden add field
-     * @param FormEvent $event
-     */
-    public function postSetData(FormEvent $event)
-    {
-        $product = $event->getData();
-
-        if ($product &&
-            $product instanceof SalesChannelAwareInterface &&
-            !$product->getId() &&
-            $product->hasChannels()
-        ) {
-            $form = $event->getForm();
-            if ($form->has('addSalesChannels')) {
-                $form->get('addSalesChannels')->setData($product->getChannels());
-            }
-        }
     }
 }

@@ -8,16 +8,17 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\InventoryBundle\Model\ExtendWarehouseChannelGroupLink;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
  * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository"))
  * @ORM\Table(name="marello_inventory_wh_chg_link")
  * @ORM\HasLifecycleCallbacks()
- * @Config(
+ * @Oro\Config(
  *  defaultValues={
  *      "security"={
  *          "type"="ACL",
@@ -27,6 +28,9 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *          "owner_type"="ORGANIZATION",
  *          "owner_field_name"="organization",
  *          "owner_column_name"="organization_id"
+ *      },
+ *      "dataaudit"={
+ *          "auditable"=true
  *      }
  *  }
  * )
@@ -34,6 +38,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 class WarehouseChannelGroupLink extends ExtendWarehouseChannelGroupLink implements OrganizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
+    use AuditableOrganizationAwareTrait;
 
     /**
      * @var int
@@ -48,22 +53,28 @@ class WarehouseChannelGroupLink extends ExtendWarehouseChannelGroupLink implemen
      * @var bool
      *
      * @ORM\Column(name="system", type="boolean", nullable=false, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $system = false;
-
-    /**
-     * @var Organization
-     *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\Organization")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $organization;
 
     /**
      * @var WarehouseGroup
      *
      * @ORM\OneToOne(targetEntity="WarehouseGroup", inversedBy="warehouseChannelGroupLink")
      * @ORM\JoinColumn(name="warehouse_group_id", referencedColumnName="id")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $warehouseGroup;
 
@@ -75,6 +86,13 @@ class WarehouseChannelGroupLink extends ExtendWarehouseChannelGroupLink implemen
      *      joinColumns={@ORM\JoinColumn(name="link_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="channel_group_id", referencedColumnName="id", unique=true)}
      *      )
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
      */
     protected $salesChannelGroups;
 
@@ -108,25 +126,6 @@ class WarehouseChannelGroupLink extends ExtendWarehouseChannelGroupLink implemen
     public function setSystem($system)
     {
         $this->system = $system;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrganization()
-    {
-        return $this->organization;
-    }
-
-    /**
-     * {@inheritdoc}
-     * @return $this
-     */
-    public function setOrganization(OrganizationInterface $organization)
-    {
-        $this->organization = $organization;
 
         return $this;
     }
