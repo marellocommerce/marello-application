@@ -30,6 +30,19 @@ api:
                 update_relationship: false
                 delete_relationship: false
 
+        Marello\Bundle\OrderBundle\Entity\OrderItem:
+            fields:
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            actions:
+                get_list: false
+                delete: false
+                delete_list: false
+                update_relationship: false
+                delete_relationship: false
+
         Marello\Bundle\OrderBundle\Entity\Customer:
             fields:
                 createdAt:
