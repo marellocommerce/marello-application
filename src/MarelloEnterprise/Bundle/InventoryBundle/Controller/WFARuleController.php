@@ -12,9 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Route("/wfa-rule")
- */
 class WFARuleController extends Controller
 {
     /**

@@ -10,9 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-/**
- * @Config\Route("/warehouse")
- */
 class WarehouseController extends BaseController
 {
     /**
@@ -29,7 +26,7 @@ class WarehouseController extends BaseController
     }
 
     /**
-     * @Config\Route("/create")
+     * @Config\Route("/create", name="marelloenterprise_inventory_warehouse_create")
      * @Config\Method({"GET", "POST"})
      * @Config\Template("@MarelloEnterpriseInventory/Warehouse/update.html.twig")
      * @AclAncestor("marelloenterprise_inventory_warehouse_create")
@@ -44,7 +41,7 @@ class WarehouseController extends BaseController
     }
 
     /**
-     * @Config\Route("/update/{id}")
+     * @Config\Route("/update/{id}", name="marelloenterprise_inventory_warehouse_update")
      * @Config\Method({"GET", "POST"})
      * @Config\Template
      * @AclAncestor("marelloenterprise_inventory_warehouse_update")
@@ -61,7 +58,7 @@ class WarehouseController extends BaseController
 
 
     /**
-     * @Config\Route("/view/{id}", requirements={"id"="\d+"})
+     * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marelloenterprise_inventory_warehouse_view")
      * @Config\Method({"GET"})
      * @Config\Template
      * @AclAncestor("marelloenterprise_inventory_warehouse_view")
