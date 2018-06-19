@@ -34,6 +34,9 @@ class ProductControllerTest extends WebTestCase
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testIndex()
     {
         $this->client->request('GET', $this->getUrl('marello_product_index'));
@@ -41,6 +44,9 @@ class ProductControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testCreateProduct()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_product_create'));
@@ -64,6 +70,9 @@ class ProductControllerTest extends WebTestCase
         return $name;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testUpdateProductSuppliers()
     {
         /** @var Product $product */
@@ -107,7 +116,10 @@ class ProductControllerTest extends WebTestCase
             'input_action' => 'save_and_stay',
             'marello_product_form' => [
                 '_token' => $form['marello_product_form[_token]']->getValue(),
-                'suppliers' => $productSuppliers,
+                'name' => $form['marello_product_form[name]']->getValue(),
+                'sku' => $form['marello_product_form[sku]']->getValue(),
+                'status' => $form['marello_product_form[status]']->getValue(),
+                'suppliers' => $productSuppliers
             ]
         ];
 
@@ -119,6 +131,9 @@ class ProductControllerTest extends WebTestCase
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testUpdateProductTaxCodes()
     {
         /** @var Product $product */
@@ -146,6 +161,9 @@ class ProductControllerTest extends WebTestCase
             'input_action' => 'save_and_stay',
             'marello_product_form' => [
                 '_token' => $form['marello_product_form[_token]']->getValue(),
+                'name' => $form['marello_product_form[name]']->getValue(),
+                'sku' => $form['marello_product_form[sku]']->getValue(),
+                'status' => $form['marello_product_form[status]']->getValue(),
                 'taxCode' => $taxCode,
                 'salesChannelTaxCodes' => $salesChannelTaxCodes,
             ]
@@ -207,10 +225,7 @@ class ProductControllerTest extends WebTestCase
 
     /**
      * @param array $resultData
-     *
      * @depends testUpdateProduct
-     *
-     * @return string
      */
     public function testProductView($resultData)
     {
@@ -227,10 +242,7 @@ class ProductControllerTest extends WebTestCase
 
     /**
      * @param array $resultData
-     *
      * @depends testUpdateProduct
-     *
-     * @return string
      */
     public function testProductInfo($resultData)
     {
