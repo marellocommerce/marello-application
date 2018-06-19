@@ -11,7 +11,7 @@ class ReportControllerTest extends WebTestCase
     const ORDERS_GRID_NAME = 'marello_report-orders';
 
     const PRODUCTS_REPORT_GROUP = 'products';
-    const PRODUCTS_REPORT_NAME = 'low_stock_products';
+    const PRODUCTS_REPORT_NAME = 'low_inventory_products';
     const PRODUCTS_GRID_NAME = 'marello_report-products';
 
     public function setUp()
@@ -84,7 +84,7 @@ class ReportControllerTest extends WebTestCase
                 self::PRODUCTS_GRID_NAME,
                 self::PRODUCTS_REPORT_NAME,
                 self::PRODUCTS_REPORT_GROUP,
-                'Low Stock Products'
+                'Low Inventory Products'
             ],
         ];
     }
