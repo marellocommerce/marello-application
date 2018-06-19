@@ -14,6 +14,9 @@ class ReportControllerTest extends WebTestCase
     const PRODUCTS_REPORT_NAME = 'low_inventory_products';
     const PRODUCTS_GRID_NAME = 'marello_report-products';
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->initClient(
@@ -71,6 +74,10 @@ class ReportControllerTest extends WebTestCase
         $this->assertJsonResponseStatusCodeEquals($response, 200);
     }
 
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
     public function reportsProvider()
     {
         return [
