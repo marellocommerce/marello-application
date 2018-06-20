@@ -23,6 +23,20 @@ data:
         data: []
         locale: null
     relationships:
+        items:
+            data:
+                -
+                    type: orderitems
+                    id: '2'
+                -
+                    type: orderitems
+                    id: '3'
+                -
+                    type: orderitems
+                    id: '4'
+                -
+                    type: orderitems
+                    id: '5'
         customer:
             data:
                 type: customers
@@ -30,14 +44,14 @@ data:
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '18'
+                id: '22'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '18'
+                id: '22'
+        localization:
+            data: null
         organization:
             data:
                 type: organizations
                 id: '1'
-        localization:
-            data: null

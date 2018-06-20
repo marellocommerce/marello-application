@@ -1,10 +1,10 @@
 data:
     -
         type: products
-        id: '<toString(@product1->id)>'
+        id: p1
         attributes:
+            productId: 1
             name: product1
-            sku: p1
             manufacturingCode: null
             productType: null
             cost: null
@@ -12,12 +12,23 @@ data:
             warranty: null
             data: []
             price: {  }
+        relationships:
+            status:
+                data:
+                    type: productstatuses
+                    id: enabled
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            image:
+                data: null
     -
         type: products
-        id: '<toString(@product2->id)>'
+        id: p2
         attributes:
+            productId: 2
             name: 'product 2'
-            sku: p2
             manufacturingCode: null
             productType: null
             cost: null
@@ -25,12 +36,23 @@ data:
             warranty: null
             data: []
             price: {  }
+        relationships:
+            status:
+                data:
+                    type: productstatuses
+                    id: disabled
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            image:
+                data: null
     -
         type: products
-        id: '<toString(@product3->id)>'
+        id: p3
         attributes:
+            productId: 3
             name: 'product 3'
-            sku: p3
             manufacturingCode: null
             productType: null
             cost: null
@@ -38,12 +60,23 @@ data:
             warranty: null
             data: []
             price: {  }
+        relationships:
+            status:
+                data:
+                    type: productstatuses
+                    id: disabled
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            image:
+                data: null
     -
         type: products
-        id: '<toString(@product4->id)>'
+        id: p4
         attributes:
+            productId: 4
             name: 'product 4'
-            sku: p4
             manufacturingCode: null
             productType: null
             cost: null
@@ -51,3 +84,14 @@ data:
             warranty: null
             data: []
             price: {  }
+        relationships:
+            status:
+                data:
+                    type: productstatuses
+                    id: enabled
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            image:
+                data: null

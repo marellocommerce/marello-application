@@ -1,9 +1,9 @@
 data:
     type: products
-    id: '<toString(@product1->id)>'
+    id: p1
     attributes:
+        productId: 1
         name: product1
-        sku: p1
         manufacturingCode: null
         productType: null
         cost: null
@@ -11,3 +11,14 @@ data:
         warranty: null
         data: []
         price: {  }
+    relationships:
+        status:
+            data:
+                type: productstatuses
+                id: enabled
+        organization:
+            data:
+                type: organizations
+                id: '1'
+        image:
+            data: null

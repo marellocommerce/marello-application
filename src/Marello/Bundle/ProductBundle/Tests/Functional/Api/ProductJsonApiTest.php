@@ -41,10 +41,9 @@ class ProductJsonApiTest extends RestJsonApiTestCase
         /** @var Product $product */
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
         $response = $this->get(
-            ['entity' => self::TESTING_ENTITY, 'id' => $product->getId()],
+            ['entity' => self::TESTING_ENTITY, 'id' => $product->getSku()],
             []
         );
-
         $this->assertJsonResponse($response);
         $this->assertResponseContains('get_product_by_id.yml', $response);
     }
@@ -62,7 +61,6 @@ class ProductJsonApiTest extends RestJsonApiTestCase
                 'filter' => ['sku' =>  $product->getSku() ]
             ]
         );
-
         $this->assertJsonResponse($response);
         $this->assertResponseCount(1, $response);
         $this->assertResponseContains('get_product_by_sku.yml', $response);
