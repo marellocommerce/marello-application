@@ -114,7 +114,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 $manager->persist($order);
                 $this->setReference('marello_order_' . $createdOrders, $order);
                 $createdOrders++;
-
                 $order = null;
             }
 
