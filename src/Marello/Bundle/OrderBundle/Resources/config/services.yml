@@ -101,6 +101,31 @@ services:
         tags:
             - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: totals, priority: 40 }
 
+    marello_order.provider.form_changes.possible_shipping_methods:
+        class: Marello\Bundle\OrderBundle\Provider\PossibleShippingMethodsProvider
+        arguments:
+            - '@marello_order.factory.shipping_context'
+            - '@marello_order.converter.shipping_prices'
+            - '@marello_shipping.shipping_price.provider'
+        tags:
+            - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: possible_shipping_methods, priority: 50 }
+
+    marello_order.factory.shipping_context:
+        class: 'Marello\Bundle\OrderBundle\Factory\OrderShippingContextFactory'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@marello_order.shipping_line_item.converter_basic'
+            - '@marello_shipping.context.builder_factory_basic'
+
+    marello_order.shipping_line_item.converter_basic:
+        class: 'Marello\Bundle\OrderBundle\Converter\BasicOrderShippingLineItemConverter'
+        arguments:
+            - '@marello_shipping.context.doctrine_line_item_collection_factory'
+            - '@marello_shipping.line_item.factory_basic'
+
+    marello_order.converter.shipping_prices:
+        class: Marello\Bundle\OrderBundle\Converter\ShippingPricesConverter
+
     marello_order.subtotal_provider.order_items:
         class: Marello\Bundle\OrderBundle\Provider\OrderItemsSubtotalProvider
         arguments:
@@ -121,6 +146,15 @@ services:
             - '@oro_currency.config.currency'
         tags:
             - { name: marello_pricing.subtotal_provider, priority: 40 }
+
+    marello_order.subtotal_provider.shipping_cost:
+        class: Marello\Bundle\OrderBundle\Provider\ShippingCostSubtotalProvider
+        arguments:
+            - '@translator'
+            - '@oro_currency.rounding.price_rounding_service'
+            - '@oro_currency.config.currency'
+        tags:
+            - { name: marello_pricing.subtotal_provider, priority: 35 }
 
     marello_order.search_handler.customer:
         parent: oro_form.autocomplete.search_handler

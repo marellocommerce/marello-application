@@ -70,7 +70,7 @@ define(function(require) {
                 if (this.getItems().length === 0 || this._getSalesChannel().length ===0 ) {
                     return;
                 }
-                mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals']});
+                mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'possible_shipping_methods']});
             }, this));
 
             this.initChannelHistory();

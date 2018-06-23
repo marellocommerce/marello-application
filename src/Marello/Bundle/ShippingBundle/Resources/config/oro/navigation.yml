@@ -1,0 +1,21 @@
+navigation:
+    menu_config:
+        items:
+            marello_shipping_rules:
+                label:           'marello.shipping.shippingmethodsconfigsrule.entity_plural_label'
+                route:           'marello_shipping_methods_configs_rule_index'
+                extras:
+                    routes:      ['/^marello_shipping_methods_configs_rule/']
+                    description: 'marello.shipping.menu.shipping_rule.description'
+        tree:
+            application_menu:
+                children:
+                    system_tab:
+                        children:
+                            marello_shipping_rules: ~
+
+    titles:
+        marello_shipping_methods_configs_rule_index: ~
+        marello_shipping_methods_configs_rule_view:  '%label%'
+        marello_shipping_methods_configs_rule_update: 'Shipping Rule %id% - Edit'
+        marello_shipping_methods_configs_rule_create: 'Create Shipping Rule'

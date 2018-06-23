@@ -1,0 +1,14 @@
+marello_shipping_methods_configs_rule:
+    resource:     "@MarelloShippingBundle/Controller/ShippingMethodsConfigsRuleController.php"
+    type:         annotation
+    prefix:       /shippingrule
+
+marello_shipping_bundle_api:
+    resource: "@MarelloShippingBundle/Controller/Api/Rest/ShippingMethodsConfigsRuleController.php"
+    type:     rest
+    prefix:   api/rest/{version}/
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version: latest

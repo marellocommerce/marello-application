@@ -25,8 +25,9 @@ datagrids:
                 data_name:        salesChannelName
             shippingMethod:
                 label:            marello.order.shipping_method.label
-                frontend_type:    string
-                data_name:        shippingMethod
+                type:             twig
+                frontend_type:    html
+                template:         MarelloOrderBundle:Order/Datagrid/Property:shippingMethod.html.twig
             orderReference:
                 label:            marello.order.order_reference.label
                 frontend_type:    string
