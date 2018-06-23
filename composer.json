@@ -16,10 +16,10 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
-        "oro/platform": "2.5.*",
-        "oro/platform-serialised-fields": "2.5.*",
-        "oro/calendar-bundle": "2.5.*"
+        "php": ">=7.1",
+        "oro/platform": "2.6.*",
+        "oro/platform-serialised-fields": "2.6.*",
+        "oro/calendar-bundle": "2.6.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

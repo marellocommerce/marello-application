@@ -21,6 +21,9 @@ class OrderCustomerAddressProviderTest extends \PHPUnit_Framework_TestCase
         $this->orderCustomerAddressProvider = new OrderCustomerAddressProvider();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testGetCustomerAddress()
     {
         $primaryAddress = $this->getEntity(MarelloAddress::class, ['id' => 7]);
@@ -29,6 +32,34 @@ class OrderCustomerAddressProviderTest extends \PHPUnit_Framework_TestCase
         static::assertEquals(
             [7 => $primaryAddress],
             $this->orderCustomerAddressProvider->getCustomerAddresses($customer)
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testGetCustomerPrimaryAddress()
+    {
+        $primaryAddress = $this->getEntity(MarelloAddress::class, ['id' => 7]);
+        $customer = $this->getEntity(Customer::class, ['id' => 1, 'primaryAddress' => $primaryAddress]);
+
+        static::assertEquals(
+            [7 => $primaryAddress],
+            $this->orderCustomerAddressProvider->getCustomerBillingAddresses($customer)
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function testGetCustomerShippingAddress()
+    {
+        $shippingAddress = $this->getEntity(MarelloAddress::class, ['id' => 8]);
+        $customer = $this->getEntity(Customer::class, ['id' => 1, 'shippingAddress' => $shippingAddress]);
+
+        static::assertEquals(
+            [8 => $shippingAddress],
+            $this->orderCustomerAddressProvider->getCustomerShippingAddresses($customer)
         );
     }
 }

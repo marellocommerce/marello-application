@@ -124,7 +124,7 @@ class CategoryControllerTest extends WebTestCase
     {
         $crawler = $this->client->request(
             'GET',
-            $this->getUrl('marello_product_view', ['id' => $resultData['id']])
+            $this->getUrl('marello_category_view', ['id' => $resultData['id']])
         );
 
         $result = $this->client->getResponse();
