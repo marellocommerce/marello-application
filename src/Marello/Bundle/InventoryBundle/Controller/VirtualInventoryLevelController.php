@@ -6,7 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Marello\Bundle\InventoryBundle\Async\Topics;
 use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
@@ -15,7 +16,7 @@ class VirtualInventoryLevelController extends Controller
 {
     /**
      * @Config\Route("/", name="marello_inventory_virtualinventorylevel_index")
-     * @Security\AclAncestor("marello_inventory_inventory_view")
+     * @AclAncestor("marello_inventory_inventory_view")
      * @Config\Template
      *
      * @return array
@@ -29,7 +30,7 @@ class VirtualInventoryLevelController extends Controller
 
     /**
      * @Config\Route("/recalculate", name="marello_inventory_virtualinventorylevel_recalculate")
-     * @Security\Acl(
+     * @Acl(
      *      id="marello_inventory_inventory_recalculate_update",
      *      type="entity",
      *      class="MarelloInventoryBundle:VirtualInventoryLevel",
