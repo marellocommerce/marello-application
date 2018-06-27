@@ -66,7 +66,7 @@
                 "translatable",
                 "translation"
             ],
-            "time": "2016-08-05 18:11:57"
+            "time": "2016-08-05T18:11:57+00:00"
         },
         {
             "name": "akeneo/batch-bundle",
@@ -488,7 +488,7 @@
                 "shasum": null
             },
             "type": "bower-asset",
-            "time": "2014-07-21 18:45:41"
+            "time": "2014-07-21T18:45:41+00:00"
         },
         {
             "name": "bower-asset/font-awesome",
@@ -723,7 +723,7 @@
                 "shasum": null
             },
             "type": "bower-asset",
-            "time": "2018-04-29 21:14:49"
+            "time": "2018-04-29T21:14:49+00:00"
         },
         {
             "name": "bower-asset/jsplumb",
@@ -4059,7 +4059,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "Knplabs",
+                    "name": "KnpLabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -4468,16 +4468,16 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "1.4.1",
+            "version": "1.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "41fa4118d91fcb8cee84cfbb310cf1d1dde1bcde"
+                "reference": "58fe4f5e37258b4d68949db1ac6b7cdaa49b3c9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/41fa4118d91fcb8cee84cfbb310cf1d1dde1bcde",
-                "reference": "41fa4118d91fcb8cee84cfbb310cf1d1dde1bcde",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/58fe4f5e37258b4d68949db1ac6b7cdaa49b3c9e",
+                "reference": "58fe4f5e37258b4d68949db1ac6b7cdaa49b3c9e",
                 "shasum": ""
             },
             "require": {
@@ -4512,20 +4512,20 @@
             ],
             "description": "Marello",
             "homepage": "https://github.com/marellocommerce/marello.git",
-            "time": "2018-06-12T10:00:34+00:00"
+            "time": "2018-06-27T10:15:49+00:00"
         },
         {
             "name": "marellocommerce/marello-enterprise",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "git@github.com:marellocommerce/marello-enterprise.git",
-                "reference": "079114079ef4064876582917189ce2db9527a37a"
+                "reference": "e33447ea95c07e8a4a7790389241414e9932e134"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello-enterprise/zipball/079114079ef4064876582917189ce2db9527a37a",
-                "reference": "079114079ef4064876582917189ce2db9527a37a",
+                "url": "https://api.github.com/repos/marellocommerce/marello-enterprise/zipball/e33447ea95c07e8a4a7790389241414e9932e134",
+                "reference": "e33447ea95c07e8a4a7790389241414e9932e134",
                 "shasum": ""
             },
             "require": {
@@ -4556,10 +4556,10 @@
             "description": "Marello Enterprise ERP for Commerce",
             "homepage": "https://github.com/marellocommerce/marello-enterprise.git",
             "support": {
-                "source": "https://github.com/marellocommerce/marello-enterprise/tree/1.2.0",
+                "source": "https://github.com/marellocommerce/marello-enterprise/tree/1.2.1",
                 "issues": "https://github.com/marellocommerce/marello-enterprise/issues"
             },
-            "time": "2018-06-06T07:53:46+00:00"
+            "time": "2018-06-27T14:06:35+00:00"
         },
         {
             "name": "michelf/php-markdown",
@@ -5176,16 +5176,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "2.6.14",
+            "version": "2.6.16",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform.git",
-                "reference": "7d2c3cac18e68e16a0084a9aa70769e561367ada"
+                "reference": "cb6cf0d5d6b13f0b7383bae514d45130cbb18ed7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform/zipball/7d2c3cac18e68e16a0084a9aa70769e561367ada",
-                "reference": "7d2c3cac18e68e16a0084a9aa70769e561367ada",
+                "url": "https://api.github.com/repos/oroinc/platform/zipball/cb6cf0d5d6b13f0b7383bae514d45130cbb18ed7",
+                "reference": "cb6cf0d5d6b13f0b7383bae514d45130cbb18ed7",
                 "shasum": ""
             },
             "require": {
@@ -5339,7 +5339,7 @@
             ],
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/oroinc/platform.git",
-            "time": "2018-06-04T12:37:53+00:00"
+            "time": "2018-06-21T17:03:07+00:00"
         },
         {
             "name": "oro/platform-enterprise",
@@ -5442,17 +5442,17 @@
         },
         {
             "name": "oro/redis-config",
-            "version": "2.1.3",
+            "version": "2.1.4",
             "target-dir": "Oro/Bundle/RedisConfigBundle",
             "source": {
                 "type": "git",
                 "url": "git@github.com:orocrm/redis-config.git",
-                "reference": "facc5b360ff4ed66ceeabe47928f84b1378476c0"
+                "reference": "0065697501673684fd9016045ed3d4b15a6cb9d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orocrm/redis-config/zipball/facc5b360ff4ed66ceeabe47928f84b1378476c0",
-                "reference": "facc5b360ff4ed66ceeabe47928f84b1378476c0",
+                "url": "https://api.github.com/repos/orocrm/redis-config/zipball/0065697501673684fd9016045ed3d4b15a6cb9d6",
+                "reference": "0065697501673684fd9016045ed3d4b15a6cb9d6",
                 "shasum": ""
             },
             "require": {
@@ -5485,28 +5485,27 @@
                 "OroPlatform",
                 "Redis"
             ],
-            "time": "2018-03-19T13:56:26+00:00"
+            "time": "2018-06-13T08:31:31+00:00"
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.99.99",
+            "version": "v2.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "35469243ebbb9be5086cff57538cac6da2c36852"
+                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/35469243ebbb9be5086cff57538cac6da2c36852",
-                "reference": "35469243ebbb9be5086cff57538cac6da2c36852",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/10bcb46e8f3d365170f6de9d05245aa066b81f09",
+                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09",
                 "shasum": ""
             },
             "require": {
-                "php": "^7"
+                "php": ">=5.2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*|5.*",
-                "vimeo/psalm": "^1"
+                "phpunit/phpunit": "4.*|5.*"
             },
             "suggest": {
                 "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
@@ -5535,7 +5534,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-06-06T05:12:00+00:00"
+            "time": "2018-06-08T15:26:40+00:00"
         },
         {
             "name": "php-amqplib/php-amqplib",
@@ -6006,16 +6005,16 @@
         },
         {
             "name": "react/promise",
-            "version": "v2.6.0",
+            "version": "v2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/promise.git",
-                "reference": "5e60e5596a5422287f9d2205f405bef2ae0cef4b"
+                "reference": "f4edc2581617431aea50430749db55cc3fc031b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/promise/zipball/5e60e5596a5422287f9d2205f405bef2ae0cef4b",
-                "reference": "5e60e5596a5422287f9d2205f405bef2ae0cef4b",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/f4edc2581617431aea50430749db55cc3fc031b3",
+                "reference": "f4edc2581617431aea50430749db55cc3fc031b3",
                 "shasum": ""
             },
             "require": {
@@ -6048,7 +6047,7 @@
                 "promise",
                 "promises"
             ],
-            "time": "2018-06-11T11:05:43+00:00"
+            "time": "2018-06-13T15:59:06+00:00"
         },
         {
             "name": "react/socket",
@@ -7857,7 +7856,7 @@
             ],
             "authors": [
                 {
-                    "name": "William Durand",
+                    "name": "William DURAND",
                     "email": "william.durand1@gmail.com"
                 }
             ],
