@@ -78,7 +78,7 @@ class MarelloOrderBundleInstaller implements
     {
         $table = $schema->createTable('marello_order_customer');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('organization_id', 'integer', []);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('primary_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
@@ -108,7 +108,7 @@ class MarelloOrderBundleInstaller implements
     {
         $table = $schema->createTable('marello_order_order');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('organization_id', 'integer', []);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('customer_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('order_reference', 'string', ['notnull' => false, 'length' => 255]);
@@ -245,7 +245,7 @@ class MarelloOrderBundleInstaller implements
             $schema->getTable('oro_organization'),
             ['organization_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),
@@ -273,7 +273,7 @@ class MarelloOrderBundleInstaller implements
             $schema->getTable('oro_organization'),
             ['organization_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),

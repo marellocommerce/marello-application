@@ -52,7 +52,7 @@ class MarelloPackingBundleInstaller implements Installation, ActivityExtensionAw
     {
         $table = $schema->createTable(self::MARELLO_PACKING_SLIP_TABLE);
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('organization_id', 'integer', ['notnull' => true]);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('customer_id', 'integer', ['notnull' => true]);
         $table->addColumn('order_id', 'integer', ['notnull' => true]);
         $table->addColumn('billing_address_id', 'integer', ['notnull' => false]);
@@ -102,7 +102,7 @@ class MarelloPackingBundleInstaller implements Installation, ActivityExtensionAw
             $schema->getTable('oro_organization'),
             ['organization_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_order_customer'),

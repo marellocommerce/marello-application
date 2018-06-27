@@ -146,6 +146,7 @@ class OrderControllerTest extends WebTestCase
     }
 
     /**
+     * {@inheritdoc
      */
     public function testCreateWithCustomerData()
     {
@@ -256,6 +257,7 @@ class OrderControllerTest extends WebTestCase
     }
 
     /**
+     * {@inheritdoc}
      * @depends testCreateWithCustomerData
      */
     public function testGetNewlyCreatedOrderById($response)
@@ -271,6 +273,7 @@ class OrderControllerTest extends WebTestCase
     }
 
     /**
+     * {@inheritdoc}
      * @depends testCreateWithCustomerData
      */
     public function testUpdateOrderAddressAndInvoiceData($orderCreateResponse)
@@ -325,7 +328,7 @@ class OrderControllerTest extends WebTestCase
         $this->assertEquals(333456, $order->getOrderReference());
 
         $this->assertEquals($data['paymentReference'], $order->getPaymentReference());
-        $this->assertEquals($time, $order->getInvoicedAt());
+        $this->assertEquals($time->format('d-m-Y H:i:s'), $order->getInvoicedAt()->format('d-m-Y H:i:s'));
         $this->assertEquals($data['invoiceReference'], $order->getInvoiceReference());
 
         $this->assertNotEquals($order->getBillingAddress()->getCity(), $order->getShippingAddress()->getCity());
@@ -359,6 +362,10 @@ class OrderControllerTest extends WebTestCase
         }
     }
 
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
     public function getFields()
     {
         $addressConfig = [
