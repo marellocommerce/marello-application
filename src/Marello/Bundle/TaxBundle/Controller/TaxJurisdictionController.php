@@ -4,7 +4,8 @@ namespace Marello\Bundle\TaxBundle\Controller;
 
 use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
 use Marello\Bundle\TaxBundle\Form\Type\TaxJurisdictionType;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,7 +20,7 @@ class TaxJurisdictionController extends Controller
     /**
      * @Config\Route("/", name="marello_tax_taxjurisdiction_index")
      * @Config\Template
-     * @Security\AclAncestor("marello_tax_taxjurisdiction_view")
+     * @AclAncestor("marello_tax_taxjurisdiction_view")
      *
      * @return array
      */
@@ -33,7 +34,7 @@ class TaxJurisdictionController extends Controller
     /**
      * @Config\Route("/view/{id}", name="marello_tax_taxjurisdiction_view", requirements={"id"="\d+"})
      * @Config\Template
-     * @Security\Acl(
+     * @Acl(
      *      id="marello_tax_taxjurisdiction_view",
      *      type="entity",
      *      class="MarelloTaxBundle:TaxJurisdiction",
@@ -53,7 +54,7 @@ class TaxJurisdictionController extends Controller
     /**
      * @Config\Route("/create", name="marello_tax_taxjurisdiction_create")
      * @Config\Template("MarelloTaxBundle:TaxJurisdiction:update.html.twig")
-     * @Security\Acl(
+     * @Acl(
      *      id="marello_tax_taxjurisdiction_create",
      *      type="entity",
      *      class="MarelloTaxBundle:TaxJurisdiction",
@@ -71,7 +72,7 @@ class TaxJurisdictionController extends Controller
     /**
      * @Config\Route("/update/{id}", name="marello_tax_taxjurisdiction_update", requirements={"id"="\d+"})
      * @Config\Template
-     * @Security\Acl(
+     * @Acl(
      *      id="marello_tax_taxjurisdiction_update",
      *      type="entity",
      *      class="MarelloTaxBundle:TaxJurisdiction",
