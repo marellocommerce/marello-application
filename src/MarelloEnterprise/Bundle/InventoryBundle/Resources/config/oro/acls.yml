@@ -13,3 +13,13 @@ acls:
         type:       entity
         class:      MarelloInventoryBundle:Warehouse
         permission: DELETE
+
+    marelloenterprise_inventory_warehousechannelgrouplink_delete:
+        type:       entity
+        class:      MarelloInventoryBundle:WarehouseChannelGroupLink
+        permission: DELETE
+
+    marelloenterprise_inventory_warehousegroup_delete:
+        type:       entity
+        class:      MarelloInventoryBundle:WarehouseGroup
+        permission: DELETE
