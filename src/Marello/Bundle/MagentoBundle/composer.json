@@ -11,7 +11,7 @@
         "oro/log": "dev-master",
         "oro/ui-bundle": "dev-master",
         "oro/business-entities-bundle": "dev-master",
-        "marello/integration-bundle": "dev-master"
+        "oro/integration-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": {
