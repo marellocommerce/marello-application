@@ -44,7 +44,6 @@ parameters:
     marello_magento.validator.start_sync_date.class:                         Marello\Bundle\MagentoBundle\Validator\StartSyncDateValidator
 
     marello_magento.security.acl.voter.two_way_sync.class:                   Marello\Bundle\MagentoBundle\Acl\Voter\AbstractTwoWaySyncVoter
-    marello_magento.security.acl.voter.organization.class:                   Marello\Bundle\MagentoBundle\Acl\Voter\OrganizationAnnotationVoter
 
     marello_magento.datagrid.customer_actions_provider.class:                Marello\Bundle\MagentoBundle\Datagrid\CustomerActionPermissionProvider
 
