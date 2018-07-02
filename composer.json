@@ -15,7 +15,7 @@
         "exclude-from-classmap": ["/Tests/"]
     },
     "require": {
-        "php": "7.1.*",
+        "php": "7.0.*",
         "marellocommerce/marello": "1.x-dev"
     },
     "repositories": {
