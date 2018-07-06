@@ -142,6 +142,21 @@ interface MagentoTransportInterface extends TransportInterface, ServerTimeAwareI
     public function catalogCategoryAssignProduct(array $categoryLinkData);
 
     /**
+     * @param $categoryId
+     * @param null $store
+     * @return mixed
+     */
+    public function catalogCategoryAssignedProducts($categoryId, $store = null);
+
+    /**
+     * @param $categoryId
+     * @param $productId
+     * @param null $identifierType
+     * @return mixed
+     */
+    public function catalogCategoryRemoveProduct($categoryId, $productId, $identifierType = null);
+
+    /**
      * Retrieve regions list from magento
      *
      * @return \Iterator

@@ -3,6 +3,7 @@
 namespace Marello\Bundle\MagentoBundle\Provider\Transport;
 
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CategoryBridgeIterator;
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CategoryProductIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CategorySoapIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\ProductSoapIterator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -15,15 +16,14 @@ use Oro\Bundle\IntegrationBundle\Provider\SOAPTransport as BaseSOAPTransport;
 use Oro\Bundle\IntegrationBundle\Utils\ConverterUtils;
 use Oro\Bundle\SecurityBundle\Encoder\Mcrypt;
 
-//use Marello\Bundle\MagentoBundle\Entity\Customer;
 use Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
 use Marello\Bundle\MagentoBundle\Exception\ExtensionRequiredException;
-//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CreditMemoSoapIterator;
-//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CartsBridgeIterator;
-//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerBridgeIterator;
-//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerGroupSoapIterator;
-//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerSoapIterator;
-//use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\NewsletterSubscriberBridgeIterator;
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CreditMemoSoapIterator;
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CartsBridgeIterator;
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerBridgeIterator;
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerGroupSoapIterator;
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerSoapIterator;
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\NewsletterSubscriberBridgeIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\OrderBridgeIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\OrderSoapIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\RegionSoapIterator;
@@ -76,6 +76,8 @@ class SoapTransport extends BaseSOAPTransport implements
     const ACTION_STOCK_UPDATE = 'catalogInventoryStockItemUpdate';
     const ACTION_PRODUCT_CATEGORY_LINK = 'catalogCategoryUpdateProduct';
     const ACTION_PRODUCT_CATEGORY_ASSIGN_LINK = 'catalogCategoryAssignProduct';
+    const ACTION_PRODUCT_CATEGORY_ASSIGNED_LINKS = 'catalogCategoryAssignedProducts';
+    const ACTION_CATALOG_CATEGORY_REMOVE_PRODUCT = 'catalogCategoryRemoveProduct';
     const ACTION_ORDER_INFO = 'salesOrderInfo';
     const ACTION_CREDIT_MEMO_LIST = 'salesOrderCreditmemoList';
     const ACTION_CREDIT_MEMO_INFO = 'salesOrderCreditmemoInfo';
@@ -655,6 +657,36 @@ class SoapTransport extends BaseSOAPTransport implements
     /**
      * {@inheritdoc}
      */
+    public function catalogCategoryAssignedProducts($categoryId, $store = null)
+    {
+        $results = $this->call(self::ACTION_PRODUCT_CATEGORY_ASSIGNED_LINKS, ['categoryId' => $categoryId]);
+        $links = WSIUtils::processCollectionResponse($results);
+
+        $categoryProductLinks =  ConverterUtils::objectToArray($links);
+        $linkCollection = [];
+        if ($categoryProductLinks) {
+            foreach ($categoryProductLinks as $link) {
+                $linkCollection[$link['product_id']] = $link['sku'];
+            }
+        }
+
+        return $linkCollection;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function catalogCategoryRemoveProduct($categoryId, $productId, $identifierType = null)
+    {
+        return $this->call(
+            SoapTransport::ACTION_CATALOG_CATEGORY_REMOVE_PRODUCT,
+            ['categoryId' => $categoryId, 'productId' => $productId]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRegions()
     {
         $settings = $this->settings->all();
@@ -763,6 +795,7 @@ class SoapTransport extends BaseSOAPTransport implements
 
     /**
      * {@inheritdoc}
+     *
      */
     public function getNewsletterSubscribers()
     {
