@@ -2,10 +2,6 @@
 
 namespace Marello\Bundle\MagentoBundle\Provider\Transport;
 
-use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CategoryBridgeIterator;
-use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CategoryProductIterator;
-use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CategorySoapIterator;
-use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\ProductSoapIterator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 use Oro\Bundle\IntegrationBundle\Utils\MultiAttemptsConfigTrait;
@@ -18,6 +14,8 @@ use Oro\Bundle\SecurityBundle\Encoder\Mcrypt;
 
 use Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
 use Marello\Bundle\MagentoBundle\Exception\ExtensionRequiredException;
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CategoryBridgeIterator;
+use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\ProductSoapIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CreditMemoSoapIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CartsBridgeIterator;
 use Marello\Bundle\MagentoBundle\Provider\Iterator\Soap\CustomerBridgeIterator;
