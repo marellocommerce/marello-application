@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: muhsin
- * Date: 07/06/2018
- * Time: 14:21
- */
-
 namespace Marello\Bundle\MagentoBundle\Provider\Reader;
 
 trait IntegrationChannelTrait

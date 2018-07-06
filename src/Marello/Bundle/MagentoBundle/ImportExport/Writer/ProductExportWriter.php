@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: muhsin
- * Date: 11/05/2018
- * Time: 14:12
- */
 
 namespace Marello\Bundle\MagentoBundle\ImportExport\Writer;
 
