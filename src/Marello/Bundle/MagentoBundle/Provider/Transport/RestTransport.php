@@ -655,6 +655,22 @@ class RestTransport implements
      */
     public function catalogCategoryAssignProduct(array $categoryLinkData)
     {
-        //TODO: impliment category linking in M2
+        // TODO: Implement catalogCategoryAssignProduct() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function catalogCategoryAssignedProducts($categoryId, $store = null)
+    {
+        // TODO: Implement catalogCategoryAssignedProducts() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function catalogCategoryRemoveProduct($categoryId, $productId, $identifierType = null)
+    {
+        // TODO: Implement catalogCategoryRemoveProduct() method.
     }
 }
