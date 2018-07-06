@@ -16,7 +16,7 @@
     },
     "require": {
         "php": "7.1.*",
-        "marellocommerce/marello": "1.4.*"
+        "marellocommerce/marello": "1.x-dev"
     },
     "repositories": {
         "oro": {
