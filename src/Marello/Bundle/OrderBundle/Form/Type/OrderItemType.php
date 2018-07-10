@@ -6,6 +6,7 @@ use Marello\Bundle\OrderBundle\Form\DataTransformer\TaxCodeToCodeTransformer;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderItemPurchasePriceSubscriber;
 use Marello\Bundle\ProductBundle\Form\Type\ProductSalesChannelAwareSelectType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -39,6 +40,9 @@ class OrderItemType extends AbstractType
             ])
             ->add('quantity', 'number', [
                 'data' => 1,
+            ])->add('availableInventory', NumberType::class, [
+                'mapped' => false,
+                'read_only' => true
             ])
             ->add('price', 'text', [
                 'read_only' => true,
@@ -67,7 +71,7 @@ class OrderItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\OrderBundle\Entity\OrderItem',
+            'data_class' => 'Marello\Bundle\OrderBundle\Entity\OrderItem'
         ]);
     }
 

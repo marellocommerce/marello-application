@@ -170,6 +170,19 @@ services:
             - '@marello_inventory.balancer_strategy.registry'
             - '@translator'
 
+    marello_inventory.provider.available_inventory_provider:
+        class: 'Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@translator'
+
+    marello_inventory.provider.available_inventory_form_provider:
+        class: 'Marello\Bundle\InventoryBundle\Provider\AvailableInventoryFormProvider'
+        arguments:
+            - '@marello_inventory.provider.available_inventory_provider'
+        tags:
+            - { name: marello_order.order_item_data_provider, type: inventory, priority: 15 }
+
     marello_inventory.model.virtualinventory.virtual_inventory_handler:
         class: 'Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler'
         arguments:

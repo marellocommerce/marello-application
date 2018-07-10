@@ -11,6 +11,12 @@
         </div>
         {{ form_errors(form.quantity) }}
     </td>
+    <td class="order-line-item-quantity order-line-item-inventory">
+        <div class="fields-row">
+            {{ form_widget(form.availableInventory) }}
+        </div>
+        {{ form_errors(form.availableInventory) }}
+    </td>
     <td class="order-line-item-price">
         <div class="fields-row">
             {{ form_widget(form.price) }}
@@ -23,19 +29,19 @@
         </div>
         {{ form_errors(form.tax) }}
     </td>
-    <td class="order-line-item-tax-code">
+    <td class="order-line-item-tax order-line-item-tax-code">
         <div class="fields-row">
             {{ form_widget(form.taxCode) }}
         </div>
         {{ form_errors(form.taxCode) }}
     </td>
-    <td class="order-line-item-total-price-excl-tax">
+    <td class="order-line-item-total-price order-line-item-total-price-excl-tax">
         <div class="fields-row">
             {{ form_widget(form.rowTotalExclTax) }}
         </div>
         {{ form_errors(form.rowTotalExclTax) }}
     </td>
-    <td class="order-line-item-total-price-incl-tax">
+    <td class="order-line-item-total-price order-line-item-total-price-incl-tax">
         <div class="fields-row">
             {{ form_widget(form.rowTotalInclTax) }}
         </div>
@@ -63,7 +69,7 @@
     {% set page_component_options = { 'disabled': not allow_delete } %}
 
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
-        class="marello-line-item"
+        class="marello-line-item display-values"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marelloorder/js/app/views/order-item-view'}|json_encode }}"
         data-layout="separate">
@@ -99,6 +105,7 @@
                         <tr>
                             <th class="order-line-item-product"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
                             <th class="order-line-item-quantity"><span>{{ 'marello.order.orderitem.quantity.label'|trans }}</span></th>
+                            <th class="order-line-item-available-inventory"><span>{{ 'marello.order.orderitem.inventory.label'|trans }}</span></th>
                             <th class="order-line-item-price"><span>{{ marello_pricing_vat_aware_label('marello.order.orderitem.price.per_unit.label'|trans) }}</span></th>
                             <th class="order-line-item-tax"><span>{{ 'marello.order.orderitem.tax.label'|trans }}</span></th>
                             <th class="order-line-item-tax-code"><span>{{ 'marello.order.orderitem.tax_code.label'|trans }}</span></th>

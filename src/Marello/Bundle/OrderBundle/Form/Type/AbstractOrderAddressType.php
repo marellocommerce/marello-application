@@ -104,7 +104,7 @@ abstract class AbstractOrderAddressType extends AbstractType
             ->setRequired(['object','addressType'])
             ->setDefaults([
                 'data_class' => MarelloAddress::class,
-                'isEditEnabled' => true,
+                'isEditEnabled' => true
             ])
             ->setAllowedValues('addressType', [AddressType::TYPE_BILLING, AddressType::TYPE_SHIPPING]);
     }

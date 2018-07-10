@@ -25,13 +25,16 @@ define(function(require) {
             this.options = _.defaults(options || {}, this.options);
             this.$valueElement = $(this.options._sourceElement).find(this.options.valueSelector);
 
-            this.$valueElement.on('change', _.bind(this.onChange, this));
+            this.$valueElement.on('change', _.bind(this.updateChannelData, this));
+            if (this.$valueElement.val()) {
+                this.updateChannelData();
+            }
         },
 
         /**
-         * Handle change select
+         * Handle channel selection
          */
-        onChange: function() {
+        updateChannelData: function() {
             var value = this.$valueElement.val();
             var changes = {};
             changes.from = this.getData() || {};

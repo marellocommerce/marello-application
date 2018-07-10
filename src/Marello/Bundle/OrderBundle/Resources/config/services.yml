@@ -161,3 +161,11 @@ services:
             - 'Marello\Bundle\OrderBundle\Entity\Order'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_order.form.available_inventory_validator:
+        class: 'Marello\Bundle\OrderBundle\Validator\AvailableInventoryValidator'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@marello_inventory.provider.available_inventory_provider'
+        tags:
+            - { name: validator.constraint_validator, alias: available_inventory }

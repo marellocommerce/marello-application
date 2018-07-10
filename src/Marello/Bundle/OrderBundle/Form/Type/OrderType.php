@@ -126,6 +126,7 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => 'Marello\Bundle\OrderBundle\Entity\Order',
+            'cascade_validation'   => true
         ]);
     }
 
