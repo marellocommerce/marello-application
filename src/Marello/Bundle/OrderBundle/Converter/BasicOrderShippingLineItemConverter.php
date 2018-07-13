@@ -51,6 +51,10 @@ class BasicOrderShippingLineItemConverter implements OrderShippingLineItemConver
 
             if (null !== $orderLineItem->getProduct()) {
                 $builder->setProduct($orderLineItem->getProduct());
+                $builder->setProductSku($orderLineItem->getProduct()->getSku());
+                if ($weight = $orderLineItem->getProduct()->getWeight()) {
+                    $builder->setWeight($weight);
+                }
             }
 
             if (null !== $orderLineItem->getPrice()) {

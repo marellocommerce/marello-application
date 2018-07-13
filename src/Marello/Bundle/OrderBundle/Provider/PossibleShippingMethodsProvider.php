@@ -7,6 +7,7 @@ use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
 use Marello\Bundle\OrderBundle\Converter\ShippingPricesConverter;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextFactoryInterface;
+use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
 use Marello\Bundle\ShippingBundle\Provider\Price\ShippingPriceProviderInterface;
 
 class PossibleShippingMethodsProvider implements FormChangesProviderInterface
@@ -29,6 +30,11 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
     protected $priceConverter;
 
     /**
+     * @var ShippingServiceRegistry
+     */
+    protected $registry;
+
+    /**
      * @param ShippingContextFactoryInterface $factory
      * @param ShippingPricesConverter $priceConverter
      * @param ShippingPriceProviderInterface|null $priceProvider
@@ -36,11 +42,13 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
     public function __construct(
         ShippingContextFactoryInterface $factory,
         ShippingPricesConverter $priceConverter,
-        ShippingPriceProviderInterface $priceProvider = null
+        ShippingPriceProviderInterface $priceProvider = null,
+        ShippingServiceRegistry $registry
     ) {
         $this->factory = $factory;
         $this->priceConverter = $priceConverter;
         $this->priceProvider = $priceProvider;
+        $this->registry = $registry;
     }
     
     /**
@@ -61,6 +69,7 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
      */
     private function getPossibleShippingMethods(Order $order)
     {
+        //$this->testUps($order);
         $data = [];
         if ($this->priceProvider) {
             $shippingContext = $this->factory->create($order);
@@ -71,5 +80,16 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
         }
         
         return $data;
+    }
+    
+    private function testUps(Order $entity)
+    {
+        $dataFactory = $this->registry->getDataFactory('ups');
+        $integration = $this->registry->getIntegration('ups');
+        $dataProvider = $this->registry->getDataProvider(Order::class);
+
+        $data = $dataFactory->createData($dataProvider->setEntity($entity));
+
+        $integration->createShipment($entity, $data);
     }
 }

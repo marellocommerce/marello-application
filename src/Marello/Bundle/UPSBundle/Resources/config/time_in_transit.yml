@@ -1,0 +1,47 @@
+services:
+    marello_ups.time_in_transit.request.builder_factory:
+        class: 'Marello\Bundle\UPSBundle\TimeInTransit\Request\Factory\TimeInTransitRequestBuilderFactory'
+        public: false
+        arguments:
+            - '@oro_security.encoder.mcrypt'
+
+    marello_ups.time_in_transit.request.factory:
+        class: 'Marello\Bundle\UPSBundle\TimeInTransit\Request\Factory\BasicTimeInTransitRequestFactory'
+        public: false
+        arguments:
+            - '@marello_ups.time_in_transit.request.builder_factory'
+
+    marello_ups.time_in_transit.result.factory.estimated_arrival:
+        class: 'Marello\Bundle\UPSBundle\TimeInTransit\Result\Factory\EstimatedArrivalFactory'
+        public: false
+
+    marello_ups.time_in_transit.result.factory:
+        class: 'Marello\Bundle\UPSBundle\TimeInTransit\Result\Factory\TimeInTransitResultFactory'
+        public: false
+        arguments:
+            - '@marello_ups.time_in_transit.result.factory.estimated_arrival'
+
+    marello_ups.provider.time_in_transit:
+        class: 'Marello\Bundle\UPSBundle\TimeInTransit\TimeInTransitProvider'
+        arguments:
+            - '@marello_ups.time_in_transit.request.factory'
+            - '@marello_ups.client.factory_basic'
+            - '@marello_ups.time_in_transit.result.factory'
+            - '@logger'
+
+    marello_ups.cache.time_in_transit:
+        public: false
+        parent: oro.cache.abstract
+
+    marello_ups.time_in_transit.cache_provider.factory:
+        class: 'Marello\Bundle\UPSBundle\TimeInTransit\CacheProvider\Factory\TimeInTransitCacheProviderFactory'
+        arguments:
+            - '@marello_ups.cache.time_in_transit'
+            - '@marello_ups.cache.lifetime_provider'
+
+    marello_ups.provider.cacheable_time_in_transit:
+        class: 'Marello\Bundle\UPSBundle\TimeInTransit\CacheableTimeInTransitProvider'
+        decorates: marello_ups.provider.time_in_transit
+        arguments:
+            - '@marello_ups.provider.cacheable_time_in_transit.inner'
+            - '@marello_ups.time_in_transit.cache_provider.factory'

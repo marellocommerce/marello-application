@@ -114,12 +114,4 @@ class ShippingContext extends ParameterBag implements ShippingContextInterface
     {
         return $this->get(self::FIELD_SOURCE_ENTITY_ID);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getWebsite()
-    {
-        return $this->get(self::FIELD_WEBSITE);
-    }
 }

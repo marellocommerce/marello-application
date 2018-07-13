@@ -239,3 +239,44 @@ services:
         arguments:
             - '%marello_shipping.entity.shipping_methods_configs_rule.class%'
             - "@doctrine.orm.entity_manager"
+
+    marello_shipping.validator.enabled_type_config_validation_group:
+        class: 'Marello\Bundle\ShippingBundle\Validator\Constraints\EnabledTypeConfigsValidationGroupValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_shipping_enabled_type_config_validation_group_validator }
+
+    marello_shipping.validator.shipping_rule_enabled:
+        class: 'Marello\Bundle\ShippingBundle\Validator\Constraints\ShippingRuleEnableValidator'
+        arguments:
+            - '@marello_shipping.checker.shipping_rule_enabled'
+        tags:
+            - { name: validator.constraint_validator, alias: oro_shipping_rule_enabled_validator }
+
+    marello_shipping.method_validator.result_factory_common_parameter_bag:
+        class: 'Marello\Bundle\ShippingBundle\Method\Validator\Result\Factory\Common\ParameterBag\ParameterBagCommonShippingMethodValidatorResultFactory'
+
+    marello_shipping.method_validator.result_error_factory_common_parameter_bag:
+        class: 'Marello\Bundle\ShippingBundle\Method\Validator\Result\Error\Factory\Common\ParameterBag\ParameterBagCommonShippingMethodValidatorResultErrorFactory'
+
+    marello_shipping.method_validator_result_error_collection_builder_common:
+        class: 'Marello\Bundle\ShippingBundle\Method\Validator\Result\Error\Collection\Builder\Common\Doctrine\DoctrineCommonShippingMethodValidatorResultErrorCollectionBuilder'
+
+    marello_shipping.method_validator.main:
+        parent: marello_shipping.method_validator.basic
+
+    marello_shipping.method_validator.basic:
+        class: 'Marello\Bundle\ShippingBundle\Method\Validator\Basic\BasicShippingMethodValidator'
+        arguments:
+            - '@marello_shipping.method_validator.result_factory_common_parameter_bag'
+
+#    marello_shipping.method_validator.decorator.basic_enabled_shipping_methods_by_rules:
+#        class: 'Marello\Bundle\ShippingBundle\Method\Validator\EnabledShippingMethodsByRules\EnabledShippingMethodsByRulesShippingMethodValidatorDecorator'
+#        public: false
+#        decorates: marello_shipping.method_validator.main
+#        arguments:
+#            - '@marello_shipping.method_validator.decorator.basic_enabled_shipping_methods_by_rules.inner'
+#            - '@marello_shipping.method_validator.result_error_factory_common_parameter_bag'
+#            - '@marello_shipping.method.provider.type.non_deletable.shipping_rules_method_type_identifier_provider'
+#            - '@marello_shipping.method.provider.type.label.provider'
+#            - '@translator'
+#            - '@logger'

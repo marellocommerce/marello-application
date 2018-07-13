@@ -114,6 +114,7 @@ define(function(require) {
 
         onOrderChange: function(e) {
             if (e.totals && _.size(e) === 1) {
+                this.orderHasChanged = false;
                 return;
             }
 

@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\OrderBundle\Factory;
 
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Marello\Bundle\OrderBundle\Converter\OrderShippingLineItemConverterInterface;
@@ -69,6 +71,11 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
             ->setCurrency($order->getCurrency());
 
         $convertedLineItems = $this->shippingLineItemConverter->convertLineItems($order->getItems());
+        $shippingOrigin = $this->getShippingOrigin();
+
+        if (null !== $shippingOrigin) {
+            $shippingContextBuilder->setShippingOrigin($shippingOrigin);
+        }
 
         if (null !== $order->getShippingAddress()) {
             $shippingContextBuilder->setShippingAddress($order->getShippingAddress());
@@ -102,5 +109,19 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
                 is_object($entity) ? get_class($entity) : gettype($entity)
             ));
         }
+    }
+
+    /**
+     * @return MarelloAddress|null
+     */
+    protected function getShippingOrigin()
+    {
+        /** @var Warehouse $warehouse */
+        $warehouse = $this->doctrineHelper
+            ->getEntityManagerForClass(Warehouse::class)
+            ->getRepository(Warehouse::class)
+            ->getDefault();
+        
+        return $warehouse->getAddress();
     }
 }

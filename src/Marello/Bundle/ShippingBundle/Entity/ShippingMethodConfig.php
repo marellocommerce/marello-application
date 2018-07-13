@@ -5,10 +5,10 @@ namespace Marello\Bundle\ShippingBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\ShippingBundle\Method\ShippingMethodTypeInterface;
+use Marello\Bundle\ShippingBundle\Model\ExtendShippingMethodConfig;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
-use Oro\Bundle\ShippingBundle\Method\ShippingMethodTypeInterface;
-use Marello\Bundle\ShippingBundle\Model\ExtendShippingMethodConfig;
 
 /**
  * @ORM\Table(name="marello_ship_method_config")

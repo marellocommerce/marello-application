@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\ShippingBundle\Context;
 
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\ShippingBundle\Context\LineItem\Collection\ShippingLineItemCollectionInterface;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Oro\Bundle\LocaleBundle\Model\AddressInterface;
 
 interface ShippingContextInterface
 {
@@ -15,17 +15,17 @@ interface ShippingContextInterface
     public function getLineItems();
 
     /**
-     * @return AddressInterface|null
+     * @return MarelloAddress|null
      */
     public function getBillingAddress();
 
     /**
-     * @return AddressInterface
+     * @return MarelloAddress
      */
     public function getShippingAddress();
 
     /**
-     * @return AddressInterface
+     * @return MarelloAddress
      */
     public function getShippingOrigin();
 

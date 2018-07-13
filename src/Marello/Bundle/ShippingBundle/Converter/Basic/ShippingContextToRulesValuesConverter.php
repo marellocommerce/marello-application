@@ -41,8 +41,7 @@ class ShippingContextToRulesValuesConverter implements ShippingContextToRulesVal
             'paymentMethod' => $context->getPaymentMethod(),
             'currency' => $context->getCurrency(),
             'subtotal' => $context->getSubtotal(),
-            'customer' => $context->getCustomer(),
-            'customerUser' => $context->getCustomerUser(),
+            'customer' => $context->getCustomer()
         ];
     }
 }

@@ -107,6 +107,7 @@ services:
             - '@marello_order.factory.shipping_context'
             - '@marello_order.converter.shipping_prices'
             - '@marello_shipping.shipping_price.provider'
+            - '@marello_shipping.integration.shipping_service_registry'
         tags:
             - { name: marello.form_changes_data_provider, class: '%marello_order.entity.order.class%', type: possible_shipping_methods, priority: 50 }
 

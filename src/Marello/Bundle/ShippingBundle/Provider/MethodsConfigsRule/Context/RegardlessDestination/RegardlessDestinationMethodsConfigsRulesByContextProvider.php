@@ -1,11 +1,11 @@
 <?php
 
-namespace Oro\Bundle\ShippingBundle\Provider\MethodsConfigsRule\Context\RegardlessDestination;
+namespace Marello\Bundle\ShippingBundle\Provider\MethodsConfigsRule\Context\RegardlessDestination;
 
-use Oro\Bundle\ShippingBundle\Context\ShippingContextInterface;
-use Oro\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository;
-use Oro\Bundle\ShippingBundle\Provider\MethodsConfigsRule\Context\MethodsConfigsRulesByContextProviderInterface;
-use Oro\Bundle\ShippingBundle\RuleFiltration\MethodsConfigsRulesFiltrationServiceInterface;
+use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
+use Marello\Bundle\ShippingBundle\Entity\Repository\ShippingMethodsConfigsRuleRepository;
+use Marello\Bundle\ShippingBundle\Provider\MethodsConfigsRule\Context\MethodsConfigsRulesByContextProviderInterface;
+use Marello\Bundle\ShippingBundle\RuleFiltration\MethodsConfigsRulesFiltrationServiceInterface;
 
 class RegardlessDestinationMethodsConfigsRulesByContextProvider implements MethodsConfigsRulesByContextProviderInterface
 {
@@ -37,15 +37,13 @@ class RegardlessDestinationMethodsConfigsRulesByContextProvider implements Metho
     public function getShippingMethodsConfigsRules(ShippingContextInterface $context)
     {
         if ($context->getShippingAddress()) {
-            $methodsConfigsRules = $this->repository->getByDestinationAndCurrencyAndWebsite(
+            $methodsConfigsRules = $this->repository->getByDestinationAndCurrency(
                 $context->getShippingAddress(),
-                $context->getCurrency(),
-                $context->getWebsite()
+                $context->getCurrency()
             );
         } else {
-            $methodsConfigsRules = $this->repository->getByCurrencyAndWebsite(
-                $context->getCurrency(),
-                $context->getWebsite()
+            $methodsConfigsRules = $this->repository->getByCurrency(
+                $context->getCurrency()
             );
         }
 

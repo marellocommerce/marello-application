@@ -55,7 +55,7 @@ class UPSShippingServiceIntegration implements ShippingServiceIntegrationInterfa
     }
 
     /**
-     *
+     * @param ShippingAwareInterface $shippingAwareInterface
      * @param array $data
      *
      * @return Shipment

@@ -169,10 +169,8 @@ class BasicShippingContextBuilder implements ShippingContextBuilderInterface
      */
     protected function getMandatoryParams()
     {
-        $shippingOrigin = null;
-
         $params = [
-            ShippingContext::FIELD_SHIPPING_ORIGIN => $shippingOrigin,
+            ShippingContext::FIELD_SHIPPING_ORIGIN => $this->shippingOrigin,
             ShippingContext::FIELD_SOURCE_ENTITY => $this->sourceEntity,
             ShippingContext::FIELD_SOURCE_ENTITY_ID => $this->sourceEntityIdentifier,
             ShippingContext::FIELD_LINE_ITEMS => $this->lineItems,

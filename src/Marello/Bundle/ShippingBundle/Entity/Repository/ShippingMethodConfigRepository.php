@@ -3,7 +3,7 @@
 namespace Marello\Bundle\ShippingBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\ShippingBundle\Entity\ShippingMethodConfig;
+use Marello\Bundle\ShippingBundle\Entity\ShippingMethodConfig;
 
 class ShippingMethodConfigRepository extends EntityRepository
 {

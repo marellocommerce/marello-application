@@ -2,11 +2,9 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\UPS;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
+use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Address;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package;
 use Marello\Bundle\ShippingBundle\Integration\UPS\Model\Package\PackagingType;
