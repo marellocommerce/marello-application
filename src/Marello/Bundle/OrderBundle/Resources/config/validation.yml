@@ -6,7 +6,13 @@ Marello\Bundle\AddressBundle\Entity\MarelloAddress:
             - NotBlank: ~
         postalCode:
             - NotBlank: ~
-    constraints: ~
+        country:
+            - NotBlank: ~
+        phone:
+            - Length:
+                max: 255
+    constraints:
+        - Oro\Bundle\AddressBundle\Validator\Constraints\ValidRegion: ~
 
 Marello\Bundle\OrderBundle\Entity\OrderItem:
     properties:
@@ -22,7 +28,10 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
             - NotBlank: ~
         rowTotalExclTax:
             - NotBlank: ~
-    constraints: ~
+    constraints:
+        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory:
+            fields: [quantity, order, product]
+            errorPath: quantity
 
 Marello\Bundle\OrderBundle\Entity\Order:
     properties:
@@ -30,3 +39,9 @@ Marello\Bundle\OrderBundle\Entity\Order:
             - NotBlank: ~
         salesChannel:
             - NotBlank: ~
+        billingAddress:
+            - NotBlank:
+                message: 'marello.order.address.validation.billing_not_blank'
+        shippingAddress:
+            - NotBlank:
+                message: 'marello.order.address.validation.shipping_not_blank'

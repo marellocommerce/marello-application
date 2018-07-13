@@ -11,9 +11,8 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 
-
-use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @Rest\RouteResource("product")
@@ -40,7 +39,7 @@ class ProductController extends RestController implements ClassResourceInterface
      *     description="Get a list of all Product Entities",
      *     resource=true
      * )
-     * @Security\AclAncestor("marello_product_view")
+     * @AclAncestor("marello_product_view")
      *
      * @param Request $request
      *
@@ -63,7 +62,7 @@ class ProductController extends RestController implements ClassResourceInterface
      *     description="Get one Product entity by id",
      *     resource=true
      * )
-     * @Security\AclAncestor("marello_product_view")
+     * @AclAncestor("marello_product_view")
      * @return Response
      */
     public function getAction($id)
@@ -80,7 +79,7 @@ class ProductController extends RestController implements ClassResourceInterface
      *     description="Delete Product from application",
      *     resource=true
      * )
-     * @Security\AclAncestor("marello_product_delete")
+     * @AclAncestor("marello_product_delete")
      * @return Response
      */
     public function deleteAction($id)
@@ -95,7 +94,7 @@ class ProductController extends RestController implements ClassResourceInterface
      *     description="Create a new Product via the Api",
      *     resource=true
      * )
-     * @Security\AclAncestor("marello_product_create")
+     * @AclAncestor("marello_product_create")
      */
     public function postAction()
     {
@@ -111,7 +110,7 @@ class ProductController extends RestController implements ClassResourceInterface
      *     description="Update Product via Rest api",
      *     resource=true
      * )
-     * @Security\AclAncestor("marello_product_update")
+     * @AclAncestor("marello_product_update")
      * @return Response
      */
     public function putAction($id)

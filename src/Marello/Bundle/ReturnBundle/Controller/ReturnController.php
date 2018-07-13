@@ -5,7 +5,7 @@ namespace Marello\Bundle\ReturnBundle\Controller;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Form\Type\ReturnUpdateType;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +15,7 @@ class ReturnController extends Controller
     /**
      * @Config\Route("/", name="marello_return_return_index")
      * @Config\Template
-     * @Security\AclAncestor("marello_return_view")
+     * @AclAncestor("marello_return_view")
      */
     public function indexAction()
     {
@@ -25,7 +25,7 @@ class ReturnController extends Controller
     /**
      * @Config\Route("/create/{id}", requirements={"id"="\d+"}, name="marello_return_return_create")
      * @Config\Template
-     * @Security\AclAncestor("marello_return_create")
+     * @AclAncestor("marello_return_create")
      *
      * @param Order   $order
      * @param Request $request
@@ -77,7 +77,7 @@ class ReturnController extends Controller
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_return_return_view")
      * @Config\Template
-     * @Security\AclAncestor("marello_return_view")
+     * @AclAncestor("marello_return_view")
      *
      * @param ReturnEntity $return
      *
@@ -91,7 +91,7 @@ class ReturnController extends Controller
     /**
      * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_return_return_update")
      * @Config\Template
-     * @Security\AclAncestor("marello_return_update")
+     * @AclAncestor("marello_return_update")
      *
      * @param ReturnEntity $return
      * @param Request      $request

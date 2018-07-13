@@ -5,7 +5,7 @@ namespace Marello\Bundle\ReportBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class ReportController extends Controller
 {
@@ -17,7 +17,7 @@ class ReportController extends Controller
      *      defaults={"_format" = "html"}
      * )
      * @Config\Template
-     * @Security\AclAncestor("oro_report_view")
+     * @AclAncestor("oro_report_view")
      *
      * @param string $reportGroupName
      * @param string $reportName

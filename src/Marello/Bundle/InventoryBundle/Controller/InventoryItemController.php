@@ -7,7 +7,8 @@ use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Symfony\Component\HttpFoundation\Request;
 
 class InventoryItemController extends Controller
@@ -15,7 +16,7 @@ class InventoryItemController extends Controller
     /**
      * @Config\Route("/", name="marello_inventory_inventory_index")
      * @Config\Template("MarelloInventoryBundle:Inventory:index.html.twig")
-     * @Security\AclAncestor("marello_inventory_inventory_view")
+     * @AclAncestor("marello_inventory_inventory_view")
      */
     public function indexAction()
     {
@@ -27,7 +28,7 @@ class InventoryItemController extends Controller
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_view")
      * @Config\Template("MarelloInventoryBundle:Inventory:view.html.twig")
-     * @Security\Acl(
+     * @Acl(
      *      id="marello_inventory_inventory_view",
      *      type="entity",
      *      class="MarelloInventoryBundle:InventoryItem",
@@ -48,7 +49,7 @@ class InventoryItemController extends Controller
     /**
      * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_inventory_inventory_update")
      * @Config\Template("MarelloInventoryBundle:Inventory:update.html.twig")
-     * @Security\Acl(
+     * @Acl(
      *      id="marello_inventory_inventory_update",
      *      type="entity",
      *      class="MarelloInventoryBundle:InventoryItem",

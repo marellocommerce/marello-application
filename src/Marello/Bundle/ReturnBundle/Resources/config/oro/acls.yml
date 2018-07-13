@@ -8,3 +8,8 @@ acls:
         type:       entity
         class:      MarelloReturnBundle:ReturnEntity
         permission: CREATE
+
+    marello_return_update:
+        type:       entity
+        class:      MarelloReturnBundle:ReturnEntity
+        permission: EDIT
