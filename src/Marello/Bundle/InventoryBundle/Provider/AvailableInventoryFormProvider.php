@@ -9,6 +9,9 @@ use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesPr
 
 class AvailableInventoryFormProvider extends AbstractOrderItemFormChangesProvider
 {
+    const PRODUCT_FIELD = 'product';
+    const INVENTORY_FIELD = 'inventory';
+
     /** @var AvailableInventoryProvider $availableInventoryProvider */
     protected $availableInventoryProvider;
 
@@ -36,14 +39,24 @@ class AvailableInventoryFormProvider extends AbstractOrderItemFormChangesProvide
             return;
         }
         $productIds = [];
-        $requestedQuantities = [];
+
+        if (!array_key_exists(self::ITEMS_FIELD, $submittedData)) {
+            return;
+        }
+
         foreach ($submittedData[self::ITEMS_FIELD] as $item) {
-            $productIds[] = (int)$item['product'];
-            $requestedQuantities[$this->getIdentifier((int)$item['product'])] = (int)$item['quantity'];
+            if (!array_key_exists(self::PRODUCT_FIELD, $item)) {
+                continue;
+            }
+            $productIds[] = (int)$item[self::PRODUCT_FIELD];
         }
 
         $data = [];
         $products = $this->availableInventoryProvider->getProducts($salesChannel->getId(), $productIds);
+
+        if (0 === count($products)) {
+            return;
+        }
 
         /** @var Product $product */
         foreach ($products as $product) {
@@ -54,20 +67,9 @@ class AvailableInventoryFormProvider extends AbstractOrderItemFormChangesProvide
         }
 
         $result = $context->getResult();
-        $result[self::ITEMS_FIELD]['inventory'] = $data;
+        $result[self::ITEMS_FIELD][self::INVENTORY_FIELD] = $data;
         $context->setResult($result);
     }
-
-    protected function isValidRequestedQuantity($productIdentifier, $requestedQuantities, $availableInventory)
-    {
-        $requestedQuantities[$productIdentifier];
-        if (!array_key_exists($productIdentifier, $requestedQuantities)) {
-            return false;
-        }
-
-        return ($requestedQuantities[$productIdentifier] <= (int)$availableInventory);
-    }
-
 
     /**
      * Get entity identifier by combining the id and prefix

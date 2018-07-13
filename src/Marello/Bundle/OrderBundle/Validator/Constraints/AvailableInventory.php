@@ -21,12 +21,17 @@ class AvailableInventory extends Constraint
     public $fields = array();
     public $errorPath = null;
 
-
+    /**
+     * @return array
+     */
     public function getRequiredOptions()
     {
         return array('fields');
     }
 
+    /**
+     * @return string
+     */
     public function getDefaultOption()
     {
         return 'fields';
@@ -37,7 +42,7 @@ class AvailableInventory extends Constraint
      */
     public function validatedBy()
     {
-        return 'available_inventory';
+        return 'marello_order.available_inventory_validator';
     }
 
     /**

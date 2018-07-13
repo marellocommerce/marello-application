@@ -168,4 +168,4 @@ services:
             - '@oro_entity.doctrine_helper'
             - '@marello_inventory.provider.available_inventory_provider'
         tags:
-            - { name: validator.constraint_validator, alias: available_inventory }
+            - { name: validator.constraint_validator, alias: marello_order.available_inventory_validator }
