@@ -11,8 +11,6 @@ Marello\Bundle\AddressBundle\Entity\MarelloAddress:
         phone:
             - Length:
                 max: 255
-    constraints:
-        - Oro\Bundle\AddressBundle\Validator\Constraints\ValidRegion: ~
 
 Marello\Bundle\OrderBundle\Entity\OrderItem:
     properties:

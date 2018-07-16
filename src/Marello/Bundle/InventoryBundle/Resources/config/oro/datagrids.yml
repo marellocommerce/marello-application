@@ -293,5 +293,9 @@ datagrids:
                     data_name:  productName
                 productSku:
                     data_name:  productSku
+                inventoryQty:
+                    data_name:  vrtIl.inventory
+                balancedInventoryQty:
+                    data_name:  vrtIl.balancedInventory
             default:
                 createdAt:      DESC

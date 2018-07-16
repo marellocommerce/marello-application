@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\InventoryBundle\Provider;
 
-use Symfony\Component\Translation\TranslatorInterface;
-
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -17,20 +15,13 @@ class AvailableInventoryProvider
     /** @var DoctrineHelper $doctrineHelper */
     protected $doctrineHelper;
 
-    /** @var TranslatorInterface $translator */
-    protected $translator;
-
     /**
      * {@inheritdoc}
      * @param DoctrineHelper $doctrineHelper
-     * @param TranslatorInterface $translator
      */
-    public function __construct(
-        DoctrineHelper $doctrineHelper,
-        TranslatorInterface $translator
-    ){
+    public function __construct(DoctrineHelper $doctrineHelper)
+    {
         $this->doctrineHelper = $doctrineHelper;
-        $this->translator = $translator;
     }
 
     /**
@@ -48,25 +39,10 @@ class AvailableInventoryProvider
     }
 
     /**
-     * @param $productIdentifier
-     * @param $requestedQuantities
-     * @param $availableInventory
-     * @return bool
-     */
-    public function isValidRequestedQuantity($productIdentifier, $requestedQuantities, $availableInventory)
-    {
-        if (!array_key_exists($productIdentifier, $requestedQuantities)) {
-            return false;
-        }
-
-        return ($requestedQuantities[$productIdentifier] <= (int)$availableInventory);
-    }
-
-    /**
      * Get products by saleschannel
      * @param int $channelId
      * @param array $productIds
-     * @return ProductInterface|null
+     * @return ProductInterface[]|null
      */
     public function getProducts($channelId, $productIds)
     {

@@ -13,6 +13,7 @@
 
 namespace Marello\Bundle\OrderBundle\Validator;
 
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -24,10 +25,13 @@ use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory;
-use Marello\Bundle\OrderBundle\Validator\Exception\InvalidMethodException;
 
 class AvailableInventoryValidator extends ConstraintValidator
 {
+    const SALES_CHANNEL_FIELD = 'salesChannel';
+    const PRODUCT_FIELD = 'product';
+    const QUANTITY_FIELD = 'quantity';
+
     /** @var DoctrineHelper $doctrineHelper */
     private $doctrineHelper;
 
@@ -72,19 +76,20 @@ class AvailableInventoryValidator extends ConstraintValidator
             throw new ConstraintDefinitionException('At least one field has to be specified.');
         }
 
-        $values = $this->entityGetFieldValues($entity, $fields, $constraint);
-        if ((!isset($values['product']) && $values['product'] === null) ||
-            (!isset($values['order']) && $values['order'] === null)) {
+        $values = $this->entityGetFieldValues($entity, $fields);
+        if ((!isset($values[self::PRODUCT_FIELD]) && $values[self::PRODUCT_FIELD] === null) ||
+            (!isset($values[self::SALES_CHANNEL_FIELD]) && $values[self::SALES_CHANNEL_FIELD] === null)) {
             throw new ConstraintDefinitionException('Cannot get inventory when not all required values are set');
         }
 
-        $result = $this->availableInventoryProvider->getAvailableInventory($values['product'], $values['order']);
+        $result = $this->availableInventoryProvider
+            ->getAvailableInventory($values[self::PRODUCT_FIELD], $values[self::SALES_CHANNEL_FIELD]);
 
-        if (!isset($values['quantity']) || !$result) {
+        if (!isset($values[self::QUANTITY_FIELD])) {
             throw new ConstraintDefinitionException('Cannot compare values if because there nothing to compare');
         }
 
-        if (!$this->compareValues($result, $values['quantity'])) {
+        if (!$this->compareValues($result, $values[self::QUANTITY_FIELD])) {
             $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
             $this->context->buildViolation($constraint->message)
                 ->atPath($errorPath)
@@ -116,10 +121,10 @@ class AvailableInventoryValidator extends ConstraintValidator
      * Get the values from the entity config or throw exception if the field doesn't exist
      * @param $entity
      * @param $fields
-     * @throws ConstraintDefinitionException|InvalidMethodException
+     * @throws ConstraintDefinitionException
      * @return array
      */
-    private function entityGetFieldValues($entity, $fields, $constraint)
+    private function entityGetFieldValues($entity, $fields)
     {
         $className = get_class($entity);
         $em = $this->doctrineHelper->getEntityManagerForClass($className);
@@ -143,12 +148,20 @@ class AvailableInventoryValidator extends ConstraintValidator
 
             $accessor = $this->getPropertyAccessor();
             $value = $accessor->getValue($entity, $fieldName);
-
+            if (null === $value) {
+                continue;
+            }
             if (is_object($value)) {
                 if ($value instanceof Order && $value->getSalesChannel()) {
                     $value = $value->getSalesChannel();
+                    $fieldName = self::SALES_CHANNEL_FIELD;
+                }
+
+                if ($value instanceof ProductInterface) {
+                    $fieldName = self::PRODUCT_FIELD;
                 }
             }
+
 
             $results[$fieldName] = $value;
         }
