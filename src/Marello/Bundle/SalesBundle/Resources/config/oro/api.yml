@@ -1,10 +1,7 @@
 api:
     entities:
-        Marello\Bundle\ProductBundle\Entity\Product:
-            identifier_field_names: [sku]
+        Marello\Bundle\SalesBundle\Entity\SalesChannel:
             fields:
-                price:
-                    exclude: true
                 createdAt:
                     exclude: true
                 updatedAt:
@@ -12,11 +9,6 @@ api:
             filters:
                 exclusion_policy: all
                 fields:
-                    sku:
-                        data_type: string
-                        allow_array: true
-                        property_path: sku
-                        description: 'Filter by sku'
                     createdAt:
                         exclude: true
                     updatedAt:

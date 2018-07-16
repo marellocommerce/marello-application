@@ -1,0 +1,29 @@
+api:
+    entities:
+        Marello\Bundle\PricingBundle\Entity\ProductPrice:
+            fields:
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    createdAt:
+                        exclude: true
+                    updatedAt:
+                        exclude: true
+
+        Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
+            fields:
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    createdAt:
+                        exclude: true
+                    updatedAt:
+                        exclude: true

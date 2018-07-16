@@ -1,0 +1,9 @@
+oro_entity:
+    entity_aliases:
+        Marello\Bundle\PricingBundle\Entity\ProductPrice:
+            alias: productprice
+            plural_alias: productprices
+
+        Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
+            alias: productchannelprice
+            plural_alias: productchannelprices
