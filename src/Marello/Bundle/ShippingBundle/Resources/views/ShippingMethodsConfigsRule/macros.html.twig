@@ -5,19 +5,19 @@
                 {%- set typeConfigData = [] -%}
                 {%- for typeConfig in methodConfig.typeConfigs -%}
                     {% set typeConfigData = typeConfigData|merge([{
-                    'identifier': typeConfig.type,
-                    'options': typeConfig.options,
-                    'enabled': typeConfig.enabled,
+                        'identifier': typeConfig.type,
+                        'options': typeConfig.options,
+                        'enabled': typeConfig.enabled,
                     }]) %}
                 {%- endfor -%}
                 {%- set shippingMethodData = {
-                'identifier': methodConfig.method,
-                'types': typeConfigData,
-                'options': methodConfig.options,
+                    'identifier': methodConfig.method,
+                    'types': typeConfigData,
+                    'options': methodConfig.options,
                 } -%}
                 {%- include marello_shipping_method_config_template(methodConfig.method) with {
-                'currency': currency,
-                'methodData': shippingMethodData
+                    'currency': currency,
+                    'methodData': shippingMethodData
                 } -%}
             {%- endfor -%}
         </ol>

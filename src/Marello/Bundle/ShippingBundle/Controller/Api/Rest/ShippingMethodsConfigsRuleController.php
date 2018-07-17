@@ -32,7 +32,7 @@ class ShippingMethodsConfigsRuleController extends RestController implements Cla
      *      defaults={"version"="latest", "_format"="json"}
      * )
      * @ApiDoc(description="Enable Shipping Rule", resource=true)
-     * @AclAncestor("oro_shipping_methods_configs_rule_update")
+     * @AclAncestor("marello_shipping_methods_configs_rule_update")
      *
      * @param int $id
      *
@@ -81,7 +81,7 @@ class ShippingMethodsConfigsRuleController extends RestController implements Cla
      *      defaults={"version"="latest", "_format"="json"}
      * )
      * @ApiDoc(description="Disable Shipping Rule", resource=true)
-     * @AclAncestor("oro_shipping_methods_configs_rule_update")
+     * @AclAncestor("marello_shipping_methods_configs_rule_update")
      *
      * @param int $id
      *

@@ -32,7 +32,7 @@ class RateUpsConnectionValidatorRequestFactoryTest extends \PHPUnit_Framework_Te
         ;
 
         $expected = new UpsClientRequest([
-            UpsClientRequest::FIELD_URL => 'Rate',
+            UpsClientRequest::FIELD_URL => 'rest/Rate',
             UpsClientRequest::FIELD_REQUEST_DATA => $this->getRequestData(),
         ]);
 

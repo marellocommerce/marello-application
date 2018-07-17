@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\UPSBundle\Migrations\Data\ORM\Config;
 
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class UPSConfig
@@ -73,13 +74,21 @@ class UPSConfig
      */
     public function getPickupType()
     {
-        return $this->getConfigValue($this->keysProvider->getPickupTypeKey());
+        return UPSSettings::PICKUP_TYPE_ONE_TIME;
     }
 
     /**
      * @return null|string
      */
-    public function getCountry()
+    public function getShippingServiceCode()
+    {
+        return '11';
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getCountryCode()
     {
         return $this->getConfigValue($this->keysProvider->getCountryKey());
     }
@@ -89,7 +98,7 @@ class UPSConfig
      */
     public function getUnitOfWeight()
     {
-        return $this->getConfigValue($this->keysProvider->getUnitOfWeightKey());
+        return UPSSettings::UNIT_OF_WEIGHT_KGS;
     }
 
     /**
@@ -112,9 +121,10 @@ class UPSConfig
             $this->getShippingAccountName(),
             $this->getShippingAccountNumber(),
             $this->getPickupType(),
-            $this->getCountry(),
+            $this->getCountryCode(),
             $this->getUnitOfWeight(),
             $this->getBaseUrl(),
+            $this->getShippingServiceCode()
         ];
 
         foreach ($fields as $field) {

@@ -73,24 +73,8 @@ class UPSConfigKeysProvider extends ParameterBag
     /**
      * @return string
      */
-    public function getPickupTypeKey()
-    {
-        return $this->get(self::PICKUP_TYPE_KEY);
-    }
-
-    /**
-     * @return string
-     */
     public function getCountryKey()
     {
         return $this->get(self::COUNTRY_KEY);
-    }
-
-    /**
-     * @return string
-     */
-    public function getUnitOfWeightKey()
-    {
-        return $this->get(self::UNIT_OF_WEIGHT_KEY);
     }
 }

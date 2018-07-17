@@ -3,14 +3,14 @@
 {% spaceless %}
     {% set methodLabel = marello_get_shipping_method_label(methodData.identifier)|trans %}
     {% if methodLabel|length > 0 %}
-        <li>{{ methodLabel }}
+    <li>{{ methodLabel }}
         <ul>
     {% endif %}
-    {% for type in methodData.types %}
-        <li>{{ marello_get_shipping_method_type_label(methodData.identifier, type.identifier)|trans }} {{ ShipRuleMacro.renderShippingMethodDisabledFlag(methodData.identifier) }}</li>
-    {% endfor %}
+        {% for type in methodData.types %}
+            <li>{{ marello_get_shipping_method_type_label(methodData.identifier, type.identifier)|trans }} {{ ShipRuleMacro.renderShippingMethodDisabledFlag(methodData.identifier) }}</li>
+        {% endfor %}
     {% if methodLabel|length > 0 %}
         </ul>
-        </li>
+    </li>
     {% endif %}
 {% endspaceless %}

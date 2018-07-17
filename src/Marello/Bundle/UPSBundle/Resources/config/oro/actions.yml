@@ -1,5 +1,6 @@
 operations:
     oro_integration_deactivate:
+        label: oro.integration.deactivate
         preactions:
             - '@assign_constant_value':
                 attribute: $.upsType
@@ -9,6 +10,7 @@ operations:
                 - '@not_equal': [$type, $.upsType]
 
     oro_integration_delete:
+        label: oro.integration.delete
         preactions:
             - '@assign_constant_value':
                 attribute: $.upsType
@@ -40,6 +42,7 @@ operations:
             '@equal': [$type, $.upsType]
 
     marello_ups_integration_deactivate:
+        label: oro.integration.deactivate
         extends: oro_integration_deactivate
         for_all_entities: false
         for_all_datagrids: false
@@ -68,7 +71,7 @@ operations:
                 method_parameters:  [{'methodConfigs': $.methodIdentifier}]
         preconditions:
             '@and':
-                - '@shipping_method_has_enabled_shipping_rules':
+                - '@marello_shipping_method_has_enabled_shipping_rules':
                     parameters:
                         method_identifier: $.methodIdentifier
                 - '@equal': [$type, $.upsType]
@@ -76,14 +79,15 @@ operations:
                 - '@equal': [$.data.enabled, true]
         frontend_options:
             confirmation:
-                title: oro.shipping.integration.deactivate.title
-                okText: oro.shipping.integration.deactivate.button.okText
-                message: oro.shipping.integration.deactivate.message
+                title: marello.shipping.integration.deactivate.title
+                okText: marello.shipping.integration.deactivate.button.okText
+                message: marello.shipping.integration.deactivate.message
                 message_parameters:
                     linkGrid: $.linkGrid
                 component: oroui/js/standart-confirmation
 
     marello_ups_integration_deactivate_without_rules:
+        label: oro.integration.deactivate
         extends: marello_ups_integration_deactivate
         for_all_entities: false
         for_all_datagrids: false
@@ -93,7 +97,7 @@ operations:
         preconditions:
             '@and':
                 - '@not':
-                    - '@shipping_method_has_enabled_shipping_rules':
+                    - '@marello_shipping_method_has_enabled_shipping_rules':
                         parameters:
                             method_identifier: $.methodIdentifier
                 - '@equal': [$type, $.upsType]
@@ -102,6 +106,7 @@ operations:
         frontend_options: ~
 
     marello_ups_integration_delete:
+        label: oro.integration.delete
         extends: oro_integration_delete
         for_all_entities: false
         for_all_datagrids: false
@@ -130,21 +135,22 @@ operations:
                 method_parameters:  [{'methodConfigs': $.methodIdentifier}]
         preconditions:
             '@and':
-                - '@shipping_method_has_shipping_rules':
+                - '@marello_shipping_method_has_shipping_rules':
                     parameters:
                         method_identifier: $.methodIdentifier
                 - '@equal': [$type, $.upsType]
                 - '@equal': [$.actionAllowed, true]
         frontend_options:
             confirmation:
-                title: oro.shipping.integration.delete.title
-                okText: oro.shipping.integration.delete.button.okText
-                message: oro.shipping.integration.delete.message
+                title: marello.shipping.integration.delete.title
+                okText: marello.shipping.integration.delete.button.okText
+                message: marello.shipping.integration.delete.message
                 message_parameters:
                     linkGrid: $.linkGrid
                 component: oroui/js/standart-confirmation
 
     marello_ups_integration_delete_without_rules:
+        label: oro.integration.delete
         extends: marello_ups_integration_delete
         for_all_entities: false
         for_all_datagrids: false
@@ -154,7 +160,7 @@ operations:
         preconditions:
             '@and':
                 - '@not':
-                    - '@shipping_method_has_shipping_rules':
+                    - '@marello_shipping_method_has_shipping_rules':
                         parameters:
                             method_identifier: $.methodIdentifier
                 - '@equal': [$type, $.upsType]

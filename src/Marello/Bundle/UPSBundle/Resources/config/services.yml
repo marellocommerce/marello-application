@@ -123,7 +123,6 @@ services:
             - "@oro_entity.doctrine_helper"
             - "@marello_ups.shipping_price_cache"
             - "@marello_shipping.shipping_price.provider.cache"
-            - "@marello_ups.time_in_transit.cache_provider.factory"
 
     marello_ups.shipping_price_cache:
         class: 'Marello\Bundle\UPSBundle\Cache\ShippingPriceCache'

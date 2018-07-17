@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class ShippingContext extends ParameterBag implements ShippingContextInterface
 {
     const FIELD_CUSTOMER = 'customer';
-    const FIELD_CUSTOMER_USER = 'customer_user';
     const FIELD_LINE_ITEMS = 'line_items';
     const FIELD_BILLING_ADDRESS = 'billing_address';
     const FIELD_SHIPPING_ADDRESS = 'shipping_address';
@@ -17,7 +16,6 @@ class ShippingContext extends ParameterBag implements ShippingContextInterface
     const FIELD_SUBTOTAL = 'subtotal';
     const FIELD_SOURCE_ENTITY = 'source_entity';
     const FIELD_SOURCE_ENTITY_ID = 'source_entity_id';
-    const FIELD_WEBSITE = 'website';
 
     /**
      * @param array $params
@@ -33,14 +31,6 @@ class ShippingContext extends ParameterBag implements ShippingContextInterface
     public function getCustomer()
     {
         return $this->get(self::FIELD_CUSTOMER);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getCustomerUser()
-    {
-        return $this->get(self::FIELD_CUSTOMER_USER);
     }
 
     /**

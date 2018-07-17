@@ -1,5 +1,7 @@
 parameters:
     marello_shipping.entity.shipping_methods_configs_rule.class:  Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule
+    marello_shipping.rule_grid_route_name: 'marello_shipping_methods_configs_rule_index'
+    marello_shipping.rule_grid_name: 'marello-shipping-methods-configs-rule-grid'
 services:
     marello_shipping.integration.shipping_service_registry:
         class: Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry
@@ -250,7 +252,7 @@ services:
         arguments:
             - '@marello_shipping.checker.shipping_rule_enabled'
         tags:
-            - { name: validator.constraint_validator, alias: oro_shipping_rule_enabled_validator }
+            - { name: validator.constraint_validator, alias: marello_shipping_rule_enabled_validator }
 
     marello_shipping.method_validator.result_factory_common_parameter_bag:
         class: 'Marello\Bundle\ShippingBundle\Method\Validator\Result\Factory\Common\ParameterBag\ParameterBagCommonShippingMethodValidatorResultFactory'
@@ -269,14 +271,35 @@ services:
         arguments:
             - '@marello_shipping.method_validator.result_factory_common_parameter_bag'
 
-#    marello_shipping.method_validator.decorator.basic_enabled_shipping_methods_by_rules:
-#        class: 'Marello\Bundle\ShippingBundle\Method\Validator\EnabledShippingMethodsByRules\EnabledShippingMethodsByRulesShippingMethodValidatorDecorator'
-#        public: false
-#        decorates: marello_shipping.method_validator.main
-#        arguments:
-#            - '@marello_shipping.method_validator.decorator.basic_enabled_shipping_methods_by_rules.inner'
-#            - '@marello_shipping.method_validator.result_error_factory_common_parameter_bag'
-#            - '@marello_shipping.method.provider.type.non_deletable.shipping_rules_method_type_identifier_provider'
-#            - '@marello_shipping.method.provider.type.label.provider'
-#            - '@translator'
-#            - '@logger'
+
+    marello_shipping.condition.has_applicable_shipping_methods:
+        class: 'Marello\Bundle\ShippingBundle\Condition\HasApplicableShippingMethods'
+        arguments:
+            - '@marello_shipping.shipping_method_provider'
+            - '@marello_shipping.shipping_price.provider'
+        tags:
+            - { name: oro_workflow.condition, alias: 'marello_has_applicable_shipping_methods' }
+            - { name: oro_action.condition, alias: 'marello_has_applicable_shipping_methods' }
+
+    marello_shipping.condition.shipping_method_has_shipping_rules:
+        class: 'Marello\Bundle\ShippingBundle\Condition\ShippingMethodHasShippingRules'
+        arguments:
+            - '@marello_shipping.repository.shipping_methods_configs_rule'
+        tags:
+            - { name: oro_workflow.condition, alias: 'marello_shipping_method_has_shipping_rules' }
+            - { name: oro_action.condition, alias: 'marello_shipping_method_has_shipping_rules' }
+
+    marello_shipping.condition.shipping_method_has_enabled_shipping_rules:
+        class: 'Marello\Bundle\ShippingBundle\Condition\ShippingMethodHasEnabledShippingRules'
+        arguments:
+            - '@marello_shipping.repository.shipping_methods_configs_rule'
+        tags:
+            - { name: oro_workflow.condition, alias: 'marello_shipping_method_has_enabled_shipping_rules' }
+            - { name: oro_action.condition, alias: 'marello_shipping_method_has_enabled_shipping_rules' }
+
+    marello_shipping.helper.filtered_datagrid_route:
+        class: 'Marello\Bundle\ShippingBundle\Tools\FilteredDatagridRouteHelper'
+        arguments:
+                - '%marello_shipping.rule_grid_route_name%'
+                - '%marello_shipping.rule_grid_name%'
+                - '@oro_datagrid.helper.route'

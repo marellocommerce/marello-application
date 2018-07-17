@@ -22,6 +22,6 @@ class ManualShippingChannelType implements ChannelInterface, IconAwareIntegratio
      */
     public function getIcon()
     {
-        return 'bundles/marellomanualshipping/img/manual-shipping-logo.png';
+        return 'bundles/marellomanualshipping/img/manual-shipping-logo.jpg';
     }
 }

@@ -2,13 +2,11 @@
 
 namespace Marello\Bundle\UPSBundle\Handler;
 
+use Marello\Bundle\ShippingBundle\Provider\Cache\ShippingPriceCache;
+use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache as UPSShippingPriceCache;
 use Oro\Bundle\CacheBundle\Action\Handler\InvalidateCacheActionHandlerInterface;
 use Oro\Bundle\CacheBundle\DataStorage\DataStorageInterface;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Marello\Bundle\ShippingBundle\Provider\Cache\ShippingPriceCache;
-use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache as UPSShippingPriceCache;
-use Marello\Bundle\UPSBundle\TimeInTransit\CacheProvider\Factory\TimeInTransitCacheProviderFactoryInterface;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 
 class InvalidateCacheActionHandler implements InvalidateCacheActionHandlerInterface
 {
@@ -30,26 +28,18 @@ class InvalidateCacheActionHandler implements InvalidateCacheActionHandlerInterf
     private $shippingPriceCache;
 
     /**
-     * @var TimeInTransitCacheProviderFactoryInterface
-     */
-    private $timeInTransitCacheProviderFactory;
-
-    /**
-     * @param DoctrineHelper                             $doctrineHelper
-     * @param UPSShippingPriceCache                      $upsPriceCache
-     * @param ShippingPriceCache                         $shippingPriceCache
-     * @param TimeInTransitCacheProviderFactoryInterface $timeInTransitCacheProviderFactory
+     * @param DoctrineHelper $doctrineHelper
+     * @param UPSShippingPriceCache $upsPriceCache
+     * @param ShippingPriceCache $shippingPriceCache
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
         UPSShippingPriceCache $upsPriceCache,
-        ShippingPriceCache $shippingPriceCache,
-        TimeInTransitCacheProviderFactoryInterface $timeInTransitCacheProviderFactory
+        ShippingPriceCache $shippingPriceCache
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->upsPriceCache = $upsPriceCache;
         $this->shippingPriceCache = $shippingPriceCache;
-        $this->timeInTransitCacheProviderFactory = $timeInTransitCacheProviderFactory;
     }
 
     /**
@@ -61,23 +51,5 @@ class InvalidateCacheActionHandler implements InvalidateCacheActionHandlerInterf
 
         $this->upsPriceCache->deleteAll($transportId);
         $this->shippingPriceCache->deleteAllPrices();
-
-        $settings = $this->findSettings($transportId);
-
-        if ($settings !== null) {
-            $this->timeInTransitCacheProviderFactory
-                ->createCacheProviderForTransport($settings)
-                ->deleteAll();
-        }
-    }
-
-    /**
-     * @param int $settingsId
-     *
-     * @return UPSSettings|null|object
-     */
-    private function findSettings($settingsId)
-    {
-        return $this->doctrineHelper->getEntityRepository(UPSSettings::class)->find($settingsId);
     }
 }

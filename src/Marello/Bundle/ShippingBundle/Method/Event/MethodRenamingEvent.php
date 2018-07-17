@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 class MethodRenamingEvent extends Event
 {
-    const NAME = 'oro_shipping.method_renaming';
+    const NAME = 'marello_shipping.method_renaming';
 
     /**
      * @var string

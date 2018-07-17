@@ -2,14 +2,14 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Provider;
 
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientFactoryInterface;
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
 use Marello\Bundle\UPSBundle\Client\Url\Provider\UpsClientUrlProviderInterface;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Form\Type\UPSTransportSettingsType;
 use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
 use Marello\Bundle\UPSBundle\Provider\UPSTransport;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientFactoryInterface;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
 use Oro\Component\Testing\Unit\EntityTrait;
 use Psr\Log\LoggerInterface;
 
@@ -57,7 +57,7 @@ class UPSTransportTest extends \PHPUnit_Framework_TestCase
 
         $this->upsClientUrlProviderMock = $this->createMock(UpsClientUrlProviderInterface::class);
 
-        $this->transport = new UPSSettings($this->upsClientUrlProviderMock, $this->logger);
+        $this->transport = new UPSTransport($this->upsClientUrlProviderMock, $this->logger);
         $this->transport->setRestClientFactory($this->clientFactory);
     }
 
@@ -105,7 +105,7 @@ class UPSTransportTest extends \PHPUnit_Framework_TestCase
                    }
                 }';
 
-        $restResponse->expects(static::once())
+        $restResponse->expects(static::any())
             ->method('json')
             ->willReturn($json);
 
@@ -122,6 +122,7 @@ class UPSTransportTest extends \PHPUnit_Framework_TestCase
         $rateRequest = $this->createMock(PriceRequest::class);
 
         $integration = new Channel();
+        /** @var UPSSettings $transportEntity */
         $transportEntity = $this->getEntity(UPSSettings::class, ['id' => '123']);
         $integration->setTransport($transportEntity);
 
@@ -151,7 +152,7 @@ class UPSTransportTest extends \PHPUnit_Framework_TestCase
 
         $jsonArr = json_decode($json, true);
 
-        $restResponse->expects(static::once())
+        $restResponse->expects(static::any())
             ->method('json')
             ->willReturn($jsonArr)
         ;

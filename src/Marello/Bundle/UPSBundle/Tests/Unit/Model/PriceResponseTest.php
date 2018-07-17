@@ -4,6 +4,7 @@ namespace Marello\Bundle\UPSBundle\Tests\Unit\Model;
 
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Marello\Bundle\UPSBundle\Model\Response\PriceResponse;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
 
 class PriceResponseTest extends \PHPUnit_Framework_TestCase
 {
@@ -19,8 +20,11 @@ class PriceResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testParseResponseSinglePrice()
     {
-        $this->priceResponse->parse(
-            [
+        $restResponse = $this->createMock(RestResponseInterface::class);
+        $restResponse
+            ->expects(static::once())
+            ->method('json')
+            ->willReturn([
                 'RateResponse' => [
                     'RatedShipment' => [
                         'Service' => [
@@ -32,8 +36,8 @@ class PriceResponseTest extends \PHPUnit_Framework_TestCase
                         ]
                     ]
                 ]
-            ]
-        );
+            ]);
+        $this->priceResponse->parse($restResponse);
         $expected = [
             '02' => Price::create('8.60', 'USD'),
         ];
@@ -42,8 +46,11 @@ class PriceResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testParseResponseMultiplePrices()
     {
-        $this->priceResponse->parse(
-            [
+        $restResponse = $this->createMock(RestResponseInterface::class);
+        $restResponse
+            ->expects(static::once())
+            ->method('json')
+            ->willReturn([
                 'RateResponse' => [
                     'RatedShipment' => [
                         [
@@ -66,8 +73,8 @@ class PriceResponseTest extends \PHPUnit_Framework_TestCase
                         ],
                     ]
                 ]
-            ]
-        );
+            ]);
+        $this->priceResponse->parse($restResponse);
 
         $pricesExpected = [
             '02' => Price::create('8.60', 'USD'),
@@ -85,7 +92,12 @@ class PriceResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testParseEmptyResponse()
     {
-        $this->priceResponse->parse([]);
+        $restResponse = $this->createMock(RestResponseInterface::class);
+        $restResponse
+            ->expects(static::once())
+            ->method('json')
+            ->willReturn([]);
+        $this->priceResponse->parse($restResponse);
     }
 
     /**

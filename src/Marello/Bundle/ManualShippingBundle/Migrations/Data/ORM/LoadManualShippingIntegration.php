@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ManualShippingBundle\Migrations\Data\Demo\ORM;
+namespace Marello\Bundle\ManualShippingBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -8,10 +8,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ManualShippingBundle\Entity\ManualShippingSettings;
 use Marello\Bundle\ManualShippingBundle\Integration\ManualShippingChannelType;
 use Marello\Bundle\ManualShippingBundle\Method\ManualShippingMethodType;
-use Marello\Bundle\RuleBundle\Entity\Rule;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodConfig;
-use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodTypeConfig;
+use Marello\Bundle\ShippingBundle\Migrations\Data\ORM\CreateDefaultShippingRule;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -29,7 +28,7 @@ class LoadManualShippingIntegration extends AbstractFixture implements Dependent
     public function getDependencies()
     {
         return [
-            LoadOrganizationAndBusinessUnitData::class,
+            CreateDefaultShippingRule::class,
         ];
     }
 
@@ -48,7 +47,7 @@ class LoadManualShippingIntegration extends AbstractFixture implements Dependent
 
         $channel = $this->loadIntegration($manager);
 
-        $this->loadShippingRule($manager, $channel);
+        $this->addMethodConfigToDefaultShippingRule($manager, $channel);
     }
 
     /**
@@ -80,13 +79,13 @@ class LoadManualShippingIntegration extends AbstractFixture implements Dependent
      * @param ObjectManager $manager
      * @param Channel       $channel
      */
-    private function loadShippingRule(ObjectManager $manager, Channel $channel)
+    private function addMethodConfigToDefaultShippingRule(ObjectManager $manager, Channel $channel)
     {
         $typeConfig = new ShippingMethodTypeConfig();
         $typeConfig->setEnabled(true);
         $typeConfig->setType(ManualShippingMethodType::IDENTIFIER)
             ->setOptions([
-                ManualShippingMethodType::PRICE_OPTION => 10,
+                ManualShippingMethodType::PRICE_OPTION => 0.0,
                 ManualShippingMethodType::TYPE_OPTION => ManualShippingMethodType::PER_ORDER_TYPE,
             ]);
 
@@ -94,19 +93,10 @@ class LoadManualShippingIntegration extends AbstractFixture implements Dependent
         $methodConfig->setMethod($this->getIdentifier($channel))
             ->addTypeConfig($typeConfig);
 
-        $rule = new Rule();
-        $rule->setName('Default')
-            ->setEnabled(true)
-            ->setSortOrder(1);
+        $defaultShippingRule = $this->getReference(CreateDefaultShippingRule::DEFAULT_RULE_REFERENCE);
+        $defaultShippingRule->addMethodConfig($methodConfig);
 
-        $shippingRule = new ShippingMethodsConfigsRule();
-
-        $shippingRule->setRule($rule)
-            ->setOrganization($this->getOrganization($manager))
-            ->setCurrency('USD')
-            ->addMethodConfig($methodConfig);
-
-        $manager->persist($shippingRule);
+        $manager->persist($defaultShippingRule);
         $manager->flush();
     }
 

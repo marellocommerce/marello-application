@@ -3,7 +3,7 @@
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Model;
 
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
-use Oro\Bundle\LocaleBundle\Tests\Unit\Formatter\Stubs\AddressStub;
+use Marello\Bundle\AddressBundle\Tests\Stubs\AddressStub;
 use Marello\Bundle\UPSBundle\Model\Package;
 use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
 

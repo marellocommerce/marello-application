@@ -18,7 +18,6 @@ class MarelloUPSExtension extends Extension
         $loader->load('services.yml');
         $loader->load('form_types.yml');
         $loader->load('connection.yml');
-        $loader->load('time_in_transit.yml');
         $loader->load('validators.yml');
     }
 }

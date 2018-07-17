@@ -18,6 +18,11 @@ abstract class AbstractMoveConfigValuesToSettings extends AbstractFixture implem
     const SECTION_NAME = '';
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * @var ManagerRegistry
      */
     protected $doctrine;
@@ -37,6 +42,7 @@ abstract class AbstractMoveConfigValuesToSettings extends AbstractFixture implem
      */
     public function setContainer(ContainerInterface $container = null)
     {
+        $this->container = $container;
         $this->doctrine = $container->get('doctrine');
         $this->installed = $container->hasParameter('installed') && $container->getParameter('installed');
         $this->dispatcher = $container->get('marello_shipping.method.event.dispatcher.method_renaming');

@@ -3,14 +3,12 @@
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Handler;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Oro\Bundle\CacheBundle\Action\DataStorage\InvalidateCacheDataStorage;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Marello\Bundle\ShippingBundle\Provider\Cache\ShippingPriceCache;
 use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache as UPSShippingPriceCache;
-use Marello\Bundle\UPSBundle\Handler\InvalidateCacheActionHandler;
-use Marello\Bundle\UPSBundle\TimeInTransit\CacheProvider\Factory\TimeInTransitCacheProviderFactoryInterface;
-use Marello\Bundle\UPSBundle\TimeInTransit\CacheProvider\TimeInTransitCacheProviderInterface;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Handler\InvalidateCacheActionHandler;
+use Oro\Bundle\CacheBundle\Action\DataStorage\InvalidateCacheDataStorage;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class InvalidateCacheActionHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,16 +18,6 @@ class InvalidateCacheActionHandlerTest extends \PHPUnit_Framework_TestCase
      * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
      */
     private $doctrineHelper;
-
-    /**
-     * @var TimeInTransitCacheProviderInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $timeInTransitCacheProvider;
-
-    /**
-     * @var TimeInTransitCacheProviderFactoryInterface|\PHPUnit_Framework_MockObject_MockObject
-     */
-    private $timeInTransitCacheProviderFactory;
 
     /**
      * @var UPSShippingPriceCache|\PHPUnit_Framework_MockObject_MockObject
@@ -51,14 +39,11 @@ class InvalidateCacheActionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->doctrineHelper = $this->createMock(DoctrineHelper::class);
         $this->upsPriceCache = $this->createMock(UPSShippingPriceCache::class);
         $this->shippingPriceCache = $this->createMock(ShippingPriceCache::class);
-        $this->timeInTransitCacheProviderFactory = $this->createMock(TimeInTransitCacheProviderFactoryInterface::class);
-        $this->timeInTransitCacheProvider = $this->createMock(TimeInTransitCacheProviderInterface::class);
 
         $this->handler = new InvalidateCacheActionHandler(
             $this->doctrineHelper,
             $this->upsPriceCache,
-            $this->shippingPriceCache,
-            $this->timeInTransitCacheProviderFactory
+            $this->shippingPriceCache
         );
     }
 
@@ -89,16 +74,6 @@ class InvalidateCacheActionHandlerTest extends \PHPUnit_Framework_TestCase
         $this->shippingPriceCache
             ->expects(static::once())
             ->method('deleteAllPrices');
-
-        $this->timeInTransitCacheProviderFactory
-            ->expects(static::once())
-            ->method('createCacheProviderForTransport')
-            ->with($settings)
-            ->willReturn($this->timeInTransitCacheProvider);
-
-        $this->timeInTransitCacheProvider
-            ->expects(static::once())
-            ->method('deleteAll');
 
         $this->handler->handle($dataStorage);
     }

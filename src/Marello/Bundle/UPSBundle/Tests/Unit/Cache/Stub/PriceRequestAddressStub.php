@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Cache\Stub;
 
-use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
-class PriceRequestAddressStub extends AbstractAddress
+class PriceRequestAddressStub extends MarelloAddress
 {
 }

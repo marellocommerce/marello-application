@@ -1,5 +1,6 @@
 operations:
     oro_integration_deactivate:
+        label: oro.integration.deactivate
         preactions:
             - '@assign_constant_value':
                 attribute: $.manualShippingType
@@ -9,6 +10,7 @@ operations:
                 - '@not_equal': [$type, $.manualShippingType]
 
     oro_integration_delete:
+        label: oro.integration.delete
         preactions:
             - '@assign_constant_value':
                 attribute: $.manualShippingType
@@ -18,6 +20,7 @@ operations:
                 - '@not_equal': [$type, $.manualShippingType]
 
     marello_manual_shipping_integration_deactivate:
+        label: oro.integration.deactivate
         extends: oro_integration_deactivate
         for_all_entities: false
         for_all_datagrids: false
@@ -41,12 +44,12 @@ operations:
                 method_parameters: [$.data]
             - '@call_service_method':
                 attribute: $.linkGrid
-                service: oro_shipping.helper.filtered_datagrid_route
+                service: marello_shipping.helper.filtered_datagrid_route
                 method: generate
                 method_parameters:  [{'methodConfigs': $.methodIdentifier}]
         preconditions:
             '@and':
-                - '@shipping_method_has_enabled_shipping_rules':
+                - '@marello_shipping_method_has_enabled_shipping_rules':
                     parameters:
                         method_identifier: $.methodIdentifier
                 - '@equal': [$type, $.manualShippingType]
@@ -62,6 +65,7 @@ operations:
                 component: oroui/js/standart-confirmation
 
     marello_manual_shipping_integration_deactivate_without_rules:
+        label: oro.integration.deactivate
         extends: marello_manual_shipping_integration_deactivate
         for_all_entities: false
         for_all_datagrids: false
@@ -71,7 +75,7 @@ operations:
         preconditions:
             '@and':
                 - '@not':
-                    - '@shipping_method_has_enabled_shipping_rules':
+                    - '@marello_shipping_method_has_enabled_shipping_rules':
                         parameters:
                             method_identifier: $.methodIdentifier
                 - '@equal': [$type, $.manualShippingType]
@@ -80,6 +84,7 @@ operations:
         frontend_options: ~
 
     marello_manual_shipping_integration_delete:
+        label: oro.integration.delete
         extends: oro_integration_delete
         for_all_entities: false
         for_all_datagrids: false
@@ -103,12 +108,12 @@ operations:
                 method_parameters: [$.data]
             - '@call_service_method':
                 attribute: $.linkGrid
-                service: oro_shipping.helper.filtered_datagrid_route
+                service: marello_shipping.helper.filtered_datagrid_route
                 method: generate
                 method_parameters:  [{'methodConfigs': $.methodIdentifier}]
         preconditions:
             '@and':
-                - '@shipping_method_has_shipping_rules':
+                - '@marello_shipping_method_has_shipping_rules':
                     parameters:
                         method_identifier: $.methodIdentifier
                 - '@equal': [$type, $.manualShippingType]
@@ -123,6 +128,7 @@ operations:
                 component: oroui/js/standart-confirmation
 
     marello_manual_shipping_integration_delete_without_rules:
+        label: oro.integration.delete
         extends: marello_manual_shipping_integration_delete
         for_all_entities: false
         for_all_datagrids: false
@@ -132,7 +138,7 @@ operations:
         preconditions:
             '@and':
                 - '@not':
-                    - '@shipping_method_has_shipping_rules':
+                    - '@marello_shipping_method_has_shipping_rules':
                         parameters:
                             method_identifier: $.methodIdentifier
                 - '@equal': [$type, $.manualShippingType]

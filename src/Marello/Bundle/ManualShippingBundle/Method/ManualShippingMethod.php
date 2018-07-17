@@ -36,12 +36,14 @@ class ManualShippingMethod implements ShippingMethodInterface, ShippingMethodIco
     /**
      * @param string $identifier
      * @param string $label
+     * @param string $icon
      * @param bool   $enabled
      */
-    public function __construct($identifier, $label, $enabled)
+    public function __construct($identifier, $label, $icon, $enabled)
     {
         $this->identifier = $identifier;
         $this->label = $label;
+        $this->icon = $icon;
         $this->type = new ManualShippingMethodType($label);
         $this->enabled = $enabled;
     }

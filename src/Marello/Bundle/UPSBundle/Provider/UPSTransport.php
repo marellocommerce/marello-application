@@ -100,8 +100,9 @@ class UPSTransport extends AbstractRestTransport
     public function getPriceResponse(PriceRequest $priceRequest, Transport $transportEntity)
     {
         try {
-            $this->client = $this->createRestClient($transportEntity, self::API_JSON_PREFIX);
-            $response = $this->client->post(static::API_RATES_PREFIX, $priceRequest->stringify());
+            $apiPrefix = sprintf('%s/%s', self::API_JSON_PREFIX, static::API_RATES_PREFIX);
+            $this->client = $this->createRestClient($transportEntity);
+            $response = $this->client->post($apiPrefix, $priceRequest->stringify());
 
             if (!is_array($response->json())) {
                 return null;
@@ -142,8 +143,9 @@ class UPSTransport extends AbstractRestTransport
             'Content-Type'                 => 'Application/x-www-form-urlencoded',
         ];
         try {
-            $this->client = $this->createRestClient($transportEntity, self::API_XML_PREFIX);
-            $response = $this->client->post(static::API_SHIP_CONFIRM_PREFIX, $request->stringify(), $headers);
+            $apiPrefix = sprintf('%s/%s', self::API_XML_PREFIX, static::API_SHIP_CONFIRM_PREFIX);
+            $this->client = $this->createRestClient($transportEntity);
+            $response = $this->client->post($apiPrefix, $request->stringify(), $headers);
 
             return (new ShipmentConfirmResponse())->parse($response);
         } catch (\LogicException $e) {
@@ -180,8 +182,9 @@ class UPSTransport extends AbstractRestTransport
             'Content-Type'                 => 'Application/x-www-form-urlencoded',
         ];
         try {
-            $this->client = $this->createRestClient($transportEntity, self::API_XML_PREFIX);
-            $response = $this->client->post(static::API_SHIP_ACCEPT_PREFIX, $request->stringify(), $headers);
+            $apiPrefix = sprintf('%s/%s', self::API_XML_PREFIX, static::API_SHIP_ACCEPT_PREFIX);
+            $this->client = $this->createRestClient($transportEntity);
+            $response = $this->client->post($apiPrefix, $request->stringify(), $headers);
 
             return (new ShipmentAcceptResponse())->parse($response);
         } catch (\LogicException $e) {

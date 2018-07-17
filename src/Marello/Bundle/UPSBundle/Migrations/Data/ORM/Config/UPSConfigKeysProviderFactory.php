@@ -14,9 +14,9 @@ class UPSConfigKeysProviderFactory
             UPSConfigKeysProvider::USER_KEY => 'ups_username',
             UPSConfigKeysProvider::PASSWORD_KEY => 'ups_password',
             UPSConfigKeysProvider::LICENSE_KEY => 'ups_access_license_key',
-            UPSConfigKeysProvider::SHIPPING_ACCOUNT_NUMBER_KEY => 'ups_shipper_number',
-            UPSConfigKeysProvider::SHIPPING_ACCOUNT_NAME_KEY => 'ups_shipper_name',
-            UPSConfigKeysProvider::COUNTRY_KEY => 'ups_country'
+            UPSConfigKeysProvider::SHIPPING_ACCOUNT_NUMBER_KEY => 'ups_account_number',
+            UPSConfigKeysProvider::SHIPPING_ACCOUNT_NAME_KEY => 'shipper_name',
+            UPSConfigKeysProvider::COUNTRY_KEY => 'shipper_address_country_code'
         ]);
     }
 }

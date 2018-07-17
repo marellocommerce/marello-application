@@ -2,22 +2,19 @@
 
 namespace Marello\Bundle\UPSBundle\Form\Type;
 
-use Oro\Bundle\AddressBundle\Form\Type\CountryType;
-use Oro\Bundle\EntityBundle\Exception\NotManageableEntityException;
-use Oro\Bundle\FormBundle\Form\Type\OroEncodedPlaceholderPasswordType;
-use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
-use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use Marello\Bundle\UPSBundle\Entity\Repository\ShippingServiceRepository;
 use Marello\Bundle\UPSBundle\Entity\ShippingService;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Oro\Bundle\AddressBundle\Form\Type\CountryType;
+use Oro\Bundle\FormBundle\Form\Type\OroEncodedPlaceholderPasswordType;
+use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
+use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\Exception\AccessException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -151,45 +148,9 @@ class UPSTransportSettingsType extends AbstractType
         );
         $builder->add(
             'applicableShippingServices',
-            EntityType::class,
+            'entity',
             $this->getApplicableShippingServicesOptions()
         );
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetData']);
-    }
-
-    /**
-     * @param FormEvent $event
-     * @throws NotManageableEntityException
-     */
-    public function onPreSetData(FormEvent $event)
-    {
-        //$this->setDefaultCountry($event);
-
-        //$this->setApplicableShippingServicesChoicesByCountry($event);
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    protected function setDefaultCountry(FormEvent $event)
-    {
-        /** @var UPSSettings $transport */
-        $transport = $event->getData();
-
-        if (!$transport) {
-            return;
-        }
-
-        /*if ($transport && null === $transport->getUpsCountry()) {
-            $country = $this
-                ->shippingOriginProvider
-                ->getSystemShippingOrigin()
-                ->getCountry();
-
-            if (null !== $country) {
-                $transport->setUpsCountry($country);
-            }
-        }*/
     }
 
     /**
