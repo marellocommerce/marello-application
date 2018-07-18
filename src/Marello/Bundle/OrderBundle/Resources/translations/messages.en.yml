@@ -29,9 +29,12 @@ marello:
         payment_details.label:      Payment Details
         payment_reference.label:    Payment Reference
         shipping_method.label:      Shipping Method
+        shipping_method_type.label: Shipping Method Type
         shipment.label:             Shipment
         shipping_amount_incl_tax.label:      Shipping Costs Incl. tax
         shipping_amount_excl_tax.label:      Shipping Costs Excl. tax
+        estimated_shipping_cost_amount.label: Estimated Shipping Costs
+        overridden_shipping_cost_amount.label: Overridden Shipping Cost Amount
         status.label:               Order Status
         localization.label:         Localization
         shipment.label:             Shipment
