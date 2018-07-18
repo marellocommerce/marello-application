@@ -485,7 +485,7 @@
                                                 {% if entity.shippingMethod is not null %}
                                                     <td class="method-info" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
                                                         <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Shipping method:</h3>
-                                                        <p style="font-size: 16px; margin: 1em 0;">{{ entity.shippingMethod }}</p>
+                                                        <p style="font-size: 16px; margin: 1em 0;">{{ marello_shipping_method_with_type_label(entity.shippingMethod, entity.shippingMethodType) }}</p>
                                                     </td>
                                                 {% endif %}
                                             </tr>

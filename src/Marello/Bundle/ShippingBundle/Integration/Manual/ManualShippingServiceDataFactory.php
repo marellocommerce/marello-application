@@ -2,10 +2,8 @@
 
 namespace Marello\Bundle\ShippingBundle\Integration\Manual;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
+use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class ManualShippingServiceDataFactory implements ShippingServiceDataFactoryInterface

@@ -25,7 +25,7 @@ class ManualShippingServiceIntegration implements ShippingServiceIntegrationInte
     }
 
     /**
-     *
+     * @param ShippingAwareInterface $shippingAwareInterface
      * @param array $data
      *
      * @return Shipment

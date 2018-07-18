@@ -8,7 +8,11 @@ use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
 use Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodSelectType;
+use Oro\Bundle\CurrencyBundle\Entity\Price;
+use Oro\Bundle\CurrencyBundle\Form\Type\PriceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -69,9 +73,8 @@ class OrderType extends AbstractType
                     'required' => false,
                 ]
             )
-            ->add('items', OrderItemCollectionType::class)
-            ->add('shippingMethod', ShippingMethodSelectType::class);
-
+            ->add('items', OrderItemCollectionType::class);
+        $this->addShippingFields($builder, $options['data']);
         $this->addBillingAddress($builder, $options);
         $this->addShippingAddress($builder, $options);
 
@@ -117,6 +120,38 @@ class OrderType extends AbstractType
                     'isEditEnabled' => true
                 ]
             );
+    }
+
+    /**
+     * @param FormBuilderInterface $builder
+     * @param Order $order
+     * @return $this
+     */
+    protected function addShippingFields(FormBuilderInterface $builder, Order $order)
+    {
+        $builder
+            ->add('calculateShipping', HiddenType::class, [
+                'mapped' => false
+            ])
+            ->add('shippingMethod', HiddenType::class)
+            ->add('shippingMethodType', HiddenType::class)
+            ->add('estimatedShippingCostAmount', HiddenType::class)
+            ->add('overriddenShippingCostAmount', PriceType::class, [
+                'required' => false,
+                'validation_groups' => ['Optional'],
+                'hide_currency' => true,
+            ])
+            ->get('overriddenShippingCostAmount')->addModelTransformer(new CallbackTransformer(
+                function ($amount) use ($order) {
+                    return $amount ? Price::create($amount, $order->getCurrency()) : null;
+                },
+                function ($price) {
+                    return $price instanceof Price ? $price->getValue() : $price;
+                }
+            ))
+        ;
+
+        return $this;
     }
 
     /**

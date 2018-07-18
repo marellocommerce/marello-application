@@ -1,0 +1,29 @@
+services:
+    marello_shipping.mass_action.status.enable:
+        class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\Actions\StatusEnableMassAction'
+        arguments:
+            - 'marello_shipping.mass_action.status_handler'
+            - 'marello_status_shipping_rule_massaction'
+            - true
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: shippingruleenable }
+
+    marello_shipping.mass_action.status.disable:
+        class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\Actions\StatusEnableMassAction'
+        arguments:
+            - 'marello_shipping.mass_action.status_handler'
+            - 'marello_status_shipping_rule_massaction'
+            - false
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: shippingruledisable }
+
+    marello_shipping.mass_action.status_handler:
+        class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\StatusMassActionHandler'
+        arguments:
+            - 'marello.shipping.datagrid.status.success_message'
+            - 'MarelloShippingBundle:ShippingMethodsConfigsRule'
+            - '@doctrine.orm.entity_manager'
+            - '@translator'
+            - '@oro_security.security_facade.link'

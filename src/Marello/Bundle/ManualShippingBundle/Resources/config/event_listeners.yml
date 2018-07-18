@@ -1,0 +1,29 @@
+parameters:
+    marello_manual_shipping.admin_view.method_template: 'MarelloManualShippingBundle::method/manualShippingMethodWithOptions.html.twig'
+
+services:
+    marello_manual_shipping.event_listener.shipping_method_config_data:
+        parent: marello_shipping.admin_view.method_template.listener
+        arguments:
+            - '%marello_manual_shipping.admin_view.method_template%'
+            - '@marello_manual_shipping.method.provider'
+        tags:
+            - { name: kernel.event_listener, event: marello_shipping_method.config_data, method: onGetConfigData }
+
+    marello_manual_shipping.entity_listener.integration:
+        parent: marello_shipping.remove_integration_listener
+        arguments:
+            - '%marello_manual_shipping.integration.channel.type%'
+            - '@marello_manual_shipping.method.identifier_generator.method'
+            - '@marello_shipping.method.event.dispatcher.method_removal'
+        tags:
+            - { name: kernel.event_listener, event: oro_integration.channel_delete, method: onRemove }
+
+    marello_manual_shipping.disable_integration_listener:
+         parent: marello_shipping.disable_integration_listener
+         arguments:
+             - '%marello_manual_shipping.integration.channel.type%'
+             - '@marello_manual_shipping.method.identifier_generator.method'
+             - '@marello_shipping.method_disable_handler.decorator'
+         tags:
+             - { name: kernel.event_listener, event: oro_integration.channel_disable, method: onIntegrationDisable }

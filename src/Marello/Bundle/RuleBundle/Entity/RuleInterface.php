@@ -58,6 +58,18 @@ interface RuleInterface
     public function setStopProcessing($stopProcessing);
 
     /**
+     * @return string
+     */
+    public function getExpression();
+
+    /**
+     * @param string $expression
+     *
+     * @return $this
+     */
+    public function setExpression($expression);
+
+    /**
      * @return bool
      */
     public function isSystem();

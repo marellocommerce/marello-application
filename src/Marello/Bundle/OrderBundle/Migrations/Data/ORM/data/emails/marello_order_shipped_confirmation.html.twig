@@ -472,7 +472,7 @@
                                         {% endif %}
                                         {% if entity.shippingMethod is not null %}
                                             <p class="greeting" style="font-size: 16px; margin: 1em 0;">
-                                                Your order will be delivered by {{ entity.shippingMethod }}.</p>
+                                                Your order will be delivered by {{ marello_shipping_method_with_type_label(entity.shippingMethod, entity.shippingMethodType) }}.</p>
                                         {% endif %}
 
                                     </td>

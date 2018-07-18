@@ -1,0 +1,25 @@
+{% import 'MarelloShippingBundle:ShippingMethodsConfigsRule:macros.html.twig' as ShipRuleMacro %}
+
+{% spaceless %}
+    {% set methodLabel = marello_get_shipping_method_label(methodData.identifier)|trans %}
+    {% if methodLabel|length > 0 %}
+    <li>{{ methodLabel }} {{ ShipRuleMacro.renderShippingMethodDisabledFlag(methodData.identifier) }}
+        {%- if methodData.options.surcharge is not empty -%}
+            &nbsp;({{ 'marello.ups.form.shipping_method_config_options.surcharge.label'|trans}}: {{ methodData.options.surcharge|oro_format_currency({'currency': currency}) }})
+        {%- endif -%}
+        <ul>
+    {% endif %}
+    {%- for type in methodData.types -%}
+        {%- if type.enabled -%}
+            <li>{{ marello_get_shipping_method_type_label(methodData.identifier, type.identifier)|trans }}
+                {%- if type.options.surcharge is not empty -%}
+                    &nbsp;({{ 'marello.ups.form.shipping_method_config_options.surcharge.label'|trans}}: {{ type.options.surcharge|oro_format_currency({'currency': currency}) }})
+                {%- endif -%}
+            </li>
+        {%- endif -%}
+    {%- endfor -%}
+    {% if methodLabel|length > 0 %}
+        </ul>
+    </li>
+    {% endif %}
+{% endspaceless %}

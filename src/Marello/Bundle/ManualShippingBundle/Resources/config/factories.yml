@@ -1,0 +1,8 @@
+services:
+    marello_manual_shipping.factory.method:
+        class: 'Marello\Bundle\ManualShippingBundle\Factory\ManualShippingMethodFromChannelFactory'
+        public: false
+        arguments:
+            - '@marello_manual_shipping.method.identifier_generator.method'
+            - '@oro_locale.helper.localization'
+            - '@oro_integration.provider.integration_icon'

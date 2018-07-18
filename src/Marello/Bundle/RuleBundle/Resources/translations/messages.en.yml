@@ -10,5 +10,6 @@ marello:
             no.label: No
         sort_order.label: Sort Order
         stop_processing.label: Stop Further Rule Processing
+        expression.label: Expression
         system.label: System
         methods_configs_rule.label: Methods Configs Rule

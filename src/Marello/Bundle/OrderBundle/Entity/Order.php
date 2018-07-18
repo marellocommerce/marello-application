@@ -21,6 +21,7 @@ use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
 use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
+use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
@@ -251,7 +252,7 @@ class Order extends ExtendOrder implements
     protected $shippingAmountExclTax;
 
     /**
-     * @var float
+     * @var string
      *
      * @ORM\Column(name="shipping_method", type="string", nullable=true)
      * @Oro\ConfigField(
@@ -263,7 +264,28 @@ class Order extends ExtendOrder implements
      * )
      */
     protected $shippingMethod;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="shipping_method_type", type="string", length=255, nullable=true)
+     */
+    protected $shippingMethodType;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="estimated_shipping_cost_amount", type="money", nullable=true)
+     */
+    protected $estimatedShippingCostAmount;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="override_shipping_cost_amount", type="money", nullable=true)
+     */
+    protected $overriddenShippingCostAmount;
+    
     /**
      * @var double
      *
@@ -927,7 +949,7 @@ class Order extends ExtendOrder implements
      */
     public function getShippingAmountInclTax()
     {
-        return $this->shippingAmountInclTax;
+        return $this->shippingAmountInclTax ? : $this->getShippingCostAmount();
     }
 
     /**
@@ -951,7 +973,7 @@ class Order extends ExtendOrder implements
      */
     public function getShippingAmountExclTax()
     {
-        return $this->shippingAmountExclTax;
+        return $this->shippingAmountExclTax ? : $this->getShippingCostAmount();
     }
 
     /**
@@ -981,6 +1003,105 @@ class Order extends ExtendOrder implements
                 ->addViolation();
         }
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    public function getShippingMethodType()
+    {
+        return $this->shippingMethodType;
+    }
+
+    /**
+     * @param string $shippingMethodType
+     * @return Order
+     */
+    public function setShippingMethodType($shippingMethodType)
+    {
+        $this->shippingMethodType = (string) $shippingMethodType;
+
+        return $this;
+    }
+
+    /**
+     * @return Price|null
+     */
+    public function getShippingCost()
+    {
+        $amount = $this->estimatedShippingCostAmount;
+        if ($this->overriddenShippingCostAmount) {
+            $amount = $this->overriddenShippingCostAmount;
+        }
+        if ($amount && $this->currency) {
+            return Price::create($amount, $this->currency);
+        }
+        return null;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getShippingCostAmount()
+    {
+        $amount = $this->estimatedShippingCostAmount;
+        if ($this->overriddenShippingCostAmount) {
+            $amount = $this->overriddenShippingCostAmount;
+        }
+        if ($amount) {
+            return $amount;
+        }
+        return null;
+    }
+
+    /**
+     * @return Price|null
+     */
+    public function getEstimatedShippingCost()
+    {
+        if ($this->estimatedShippingCostAmount && $this->currency) {
+            return Price::create($this->estimatedShippingCostAmount, $this->currency);
+        }
+        return null;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getEstimatedShippingCostAmount()
+    {
+        return $this->estimatedShippingCostAmount;
+    }
+
+    /**
+     * @param float $amount
+     * @return Order
+     */
+    public function setEstimatedShippingCostAmount($amount)
+    {
+        $this->estimatedShippingCostAmount = $amount;
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getOverriddenShippingCostAmount()
+    {
+        return $this->overriddenShippingCostAmount;
+    }
+
+    /**
+     * @param float $amount
+     * @return Order
+     */
+    public function setOverriddenShippingCostAmount($amount)
+    {
+        $this->overriddenShippingCostAmount = $amount;
+
+        return $this;
+    }
+
 
     /**
      * @param array $data
