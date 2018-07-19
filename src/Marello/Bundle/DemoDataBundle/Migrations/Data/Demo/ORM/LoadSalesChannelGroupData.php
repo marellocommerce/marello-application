@@ -74,7 +74,6 @@ class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixt
             $this->setReference($values['name'], $group);
         }
         $this->manager->flush();
-
     }
 
     /**

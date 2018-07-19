@@ -157,7 +157,6 @@ class EntitySerializer extends BaseEntitySerializer
                     $propertyPath,
                     $entityMetadata
                 );
-
             } elseif ($propertyPath === self::WORKFLOW_ITEM_FIELD) {
                 if ($this->hasWorkflowAssociation($entity) && $this->hasWorkflowItemField($config)) {
                     $workflowItems = $this->workflowManager->getWorkflowItemsByEntity($entity);
@@ -168,7 +167,13 @@ class EntitySerializer extends BaseEntitySerializer
                         $targetConfig,
                         $context
                     );
-                    $result[$field] = $this->serializationHelper->transformValue($entityClass, $field, $value, $context, $fieldConfig);
+                    $result[$field] = $this->serializationHelper->transformValue(
+                        $entityClass,
+                        $field,
+                        $value,
+                        $context,
+                        $fieldConfig
+                    );
                 }
             }
         }

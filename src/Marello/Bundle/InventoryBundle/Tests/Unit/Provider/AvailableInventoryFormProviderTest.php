@@ -113,7 +113,6 @@ class AvailableInventoryFormProviderTest extends \PHPUnit_Framework_TestCase
             ->willReturn($this->getSalesChannelMock());
 
         return $orderMock;
-
     }
 
     /**
