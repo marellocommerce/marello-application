@@ -7,7 +7,7 @@ Marello (Enterprise) contains the possibility to integrate with the B2B Commerce
 Requirements
 ------------
 
-Marello OroCommerce Bridge requires Marello CE 1.3.* or Marello EE 1.1.* and OroCommerce (EE) 1.5.* installed in order to function correctly. 
+Marello OroCommerce Bridge requires Marello (EE) 1.3.x or above and OroCommerce (EE) 1.5.x or above installed, with the exception of 3.0 version, in order to function correctly. 
 
 Terminology
 ------------
@@ -20,7 +20,7 @@ Terminology
 General information
 ------------
 
-The integration between Marello (Enterprise) and OroCommerce can be setup in either a single (Marello and OroCommerce installed together) or multiple instances (Marello and OroCommerce are installed on separate servers). Both setups are currently supported. The integration is using the OroCommerce API in order to perform synchronisations between the two systems which allows us to use both setups with a single solution. 
+The integration between Marello (Enterprise) and OroCommerce (Enterprise) can be setup in either a single (Marello and OroCommerce installed together) or multiple instances (Marello and OroCommerce are installed on separate servers). Both setups are currently supported. The integration is using the OroCommerce API in order to perform synchronisations between the two systems which allows us to use both setups with a single solution. 
 
 The integration will allow business owners to synchronise:
 
@@ -44,6 +44,27 @@ In order to configure the integration, make sure you have setup the applications
 __Above prerequisites should be met before configuring your integration in Marello.__
 
 ### Integration Configuration
+
+### Using Composer
+
+If you don't have Composer yet, download it and follow the instructions on
+https://getcomposer.org/ or just run the following command:
+
+```bash
+    curl -s https://getcomposer.org/installer | php
+```
+
+If you're using Composer to install the Marello OroCommerce Api Bridge, you will need to add the package as a dependency in the composer.json.
+In order to add the dependency the following command should be executed from the (OroCommerce/Marello)installation directory: 
+```bash
+    php composer.phar require marellocommerce/marello-orocommerce-api-bridge
+```
+
+After adding the Marello OroCommerce Api Bridge as an new dependency, you should update in order to get the latest versions and updating the composer.lock file
+
+```bash
+    php composer.phar update
+```
 
 The configuration for the integration should be done in the Marello Application. __If the setup is done with multiple instances, this is especially important!__
 The integration can be created on the 'Integration' page and can be found in Marello in:
