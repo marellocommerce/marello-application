@@ -85,7 +85,8 @@ class HasValidIntegration extends AbstractCondition implements ContextAccessorAw
                     if (false === $pingResult) {
                         $this->setMessage(
                             'Integration connection test for this Sales Channel was failed,
-                             please check settings or internet connection before proceed');
+                             please check settings or internet connection before proceed'
+                        );
                     }
 
                     return $pingResult;

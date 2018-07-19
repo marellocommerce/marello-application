@@ -68,7 +68,9 @@ class AvailableInventoryValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $constraint = $this->getConstraint(['fields' => 'test']);
         $this->expectException(UnexpectedTypeException::class);
-        $this->expectExceptionMessage(sprintf('Expected argument of type "array", "%s" given', gettype($constraint->fields)));
+        $this->expectExceptionMessage(
+            sprintf('Expected argument of type "array", "%s" given', gettype($constraint->fields))
+        );
         $this->getValidator()->validate(null, $constraint);
     }
 

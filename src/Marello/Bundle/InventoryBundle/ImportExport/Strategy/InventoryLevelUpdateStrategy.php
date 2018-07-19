@@ -84,7 +84,11 @@ class InventoryLevelUpdateStrategy extends ConfigurableAddOrReplaceStrategy
             $inventoryItem = $this->getInventoryItem($product);
             $inventoryUpdateQty = $entity->getInventoryQty();
 
-            $newEntityKey = $this->createSerializedEntityKey($entity, $entity->getInventoryItem(), $warehouse->getCode());
+            $newEntityKey = $this->createSerializedEntityKey(
+                $entity,
+                $entity->getInventoryItem(),
+                $warehouse->getCode()
+            );
             if ($this->newEntitiesHelper->getEntity($newEntityKey)) {
                 return $this->addDuplicateValidationError($itemData);
             }

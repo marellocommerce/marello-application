@@ -76,7 +76,6 @@ class LoadProductVariantData extends AbstractFixture implements DependentFixture
                 }
             }
         }
-
     }
 
     /**
