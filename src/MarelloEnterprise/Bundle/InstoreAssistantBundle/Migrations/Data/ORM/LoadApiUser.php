@@ -114,7 +114,7 @@ class LoadApiUser extends AbstractFixture implements ContainerAwareInterface, De
         $firstName = $this->data['firstname'];
         $lastName = $this->data['lastname'];
         $username = $this->data['username'];
-        $email = sprintf('%s@%s',$this->data['username'], gethostname());
+        $email = sprintf('%s@%s', $this->data['username'], gethostname());
 
         $user = $this->createUser(
             $username,

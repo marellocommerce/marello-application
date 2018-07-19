@@ -35,12 +35,12 @@ class ApiUserLoadedTest extends WebTestCase
         $user = $userManager->loadUserByUsername(LoadApiUser::INSTORE_API_USERNAME);
 
         $this->assertTrue(
-            (bool)$user->getRole(LoadApiUserRole::ROLE_INSTORE_ASSISTANT_API_USER), 'User has the custom assigned role'
+            (bool)$user->getRole(LoadApiUserRole::ROLE_INSTORE_ASSISTANT_API_USER),
+            'User has the custom assigned role'
         );
         $this->assertTrue($user->isEnabled(), 'User is ready and enabled');
         $this->assertNotNull($user, 'Api User is loaded Correctly');
         $this->assertNotEmpty($user->getApiKeys(), 'Api User has a generated API key');
-
     }
 
     /**
@@ -59,15 +59,18 @@ class ApiUserLoadedTest extends WebTestCase
             $this->updateUserSecurityToken($user->getEmail());
         }
         $this->assertTrue(
-            $securityContext->isGranted('oro_user_user_view', $user), 'User CAN view other users'
+            $securityContext->isGranted('oro_user_user_view', $user),
+            'User CAN view other users'
         );
 
         $this->assertFalse(
-            $securityContext->isGranted('oro_user_user_create', $user), 'User CANNOT create other users'
+            $securityContext->isGranted('oro_user_user_create', $user),
+            'User CANNOT create other users'
         );
 
         $this->assertFalse(
-            $securityContext->isGranted('oro_user_user_update', $user), 'User CANNOT update other users'
+            $securityContext->isGranted('oro_user_user_update', $user),
+            'User CANNOT update other users'
         );
     }
 }
