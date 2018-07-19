@@ -34,7 +34,11 @@ class MarelloManualShippingBundle implements Migration
 
             $table->setPrimaryKey(['transport_id', 'localized_value_id']);
             $table->addIndex(['transport_id'], 'marello_manual_ship_transport_label_transport_id', []);
-            $table->addUniqueIndex(['localized_value_id'], 'marello_manual_ship_transport_label_localized_value_id', []);
+            $table->addUniqueIndex(
+                ['localized_value_id'],
+                'marello_manual_ship_transport_label_localized_value_id',
+                []
+            );
         }
     }
 

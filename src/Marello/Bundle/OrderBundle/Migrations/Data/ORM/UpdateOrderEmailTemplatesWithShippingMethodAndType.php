@@ -7,7 +7,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
 use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 
-class UpdateOrderEmailTemplatesWithShippingMethodAndType extends AbstractEmailFixture implements VersionedFixtureInterface
+class UpdateOrderEmailTemplatesWithShippingMethodAndType extends AbstractEmailFixture implements
+    VersionedFixtureInterface
 {
     /**
      * {@inheritdoc}

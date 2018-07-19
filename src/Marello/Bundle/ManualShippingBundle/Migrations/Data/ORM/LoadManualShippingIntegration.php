@@ -18,7 +18,9 @@ use Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\LoadOrganizationAndBusines
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class LoadManualShippingIntegration extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
+class LoadManualShippingIntegration extends AbstractFixture implements
+    DependentFixtureInterface,
+    ContainerAwareInterface
 {
     use ContainerAwareTrait;
 

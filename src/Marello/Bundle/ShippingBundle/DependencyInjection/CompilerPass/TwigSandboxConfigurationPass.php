@@ -30,7 +30,9 @@ class TwigSandboxConfigurationPass implements CompilerPassInterface
             $securityPolicyDef->replaceArgument(4, $functions);
 
             $rendererDef = $container->getDefinition(BaseTwigSandboxPass::EMAIL_TEMPLATE_RENDERER_SERVICE_KEY);
-            $rendererDef->addMethodCall('addExtension', [new Reference('marello_shipping.twig.shipping_method_extension')]);
+            $rendererDef->addMethodCall('addExtension', [
+                new Reference('marello_shipping.twig.shipping_method_extension')
+            ]);
         }
     }
 }

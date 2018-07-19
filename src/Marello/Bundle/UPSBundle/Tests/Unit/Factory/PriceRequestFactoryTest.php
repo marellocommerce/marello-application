@@ -120,7 +120,14 @@ class PriceRequestFactoryTest extends \PHPUnit_Framework_TestCase
         $manager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::any())->method('getRepository')->willReturn($repository);
 
-        $request = $this->priceRequestFactory->create($this->transport, $context, [PriceRequestFactory::REQUEST_OPTION_FIELD => 'Rate'], $this->shippingService);
+        $request = $this->priceRequestFactory->create(
+            $this->transport,
+            $context,
+            [
+                PriceRequestFactory::REQUEST_OPTION_FIELD => 'Rate'
+            ],
+            $this->shippingService
+        );
 
         static::assertEquals($expectedRequest, $request);
     }

@@ -33,7 +33,7 @@ class CompositeUPSRequestFactory implements UPSRequestFactoryInterface
         array $extraParameters = [],
         ShippingService $shippingService = null
     ) {
-        if (!isset($extraParameters[self::REQUEST_CLASS_FIELD]))  {
+        if (!isset($extraParameters[self::REQUEST_CLASS_FIELD])) {
             throw new \UnexpectedValueException('RequestClass is not defined');
         }
 
@@ -41,5 +41,4 @@ class CompositeUPSRequestFactory implements UPSRequestFactoryInterface
             ->factories[$extraParameters[self::REQUEST_CLASS_FIELD]]
             ->create($transport, $context, $extraParameters, $shippingService);
     }
-
 }

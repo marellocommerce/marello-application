@@ -150,7 +150,11 @@ class UPSTransport extends AbstractRestTransport
             return (new ShipmentConfirmResponse())->parse($response);
         } catch (\LogicException $e) {
             $this->logger->error(
-                sprintf('ShipmentConfirm request failed for transport #%s. %s', $transportEntity->getId(), $e->getMessage())
+                sprintf(
+                    'ShipmentConfirm request failed for transport #%s. %s',
+                    $transportEntity->getId(),
+                    $e->getMessage()
+                )
             );
         } catch (RestException $restException) {
             $this->logger->error(
@@ -189,7 +193,11 @@ class UPSTransport extends AbstractRestTransport
             return (new ShipmentAcceptResponse())->parse($response);
         } catch (\LogicException $e) {
             $this->logger->error(
-                sprintf('ShipmentAccept request failed for transport #%s. %s', $transportEntity->getId(), $e->getMessage())
+                sprintf(
+                    'ShipmentAccept request failed for transport #%s. %s',
+                    $transportEntity->getId(),
+                    $e->getMessage()
+                )
             );
         } catch (RestException $restException) {
             $this->logger->error(

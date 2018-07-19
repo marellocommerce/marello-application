@@ -68,7 +68,7 @@ class MoveConfigValuesToSettings extends AbstractMoveConfigValuesToSettings impl
                 $container->get('doctrine'),
                 $container->get('oro_security.encoder.mcrypt')
             );
-        $this->shippingMethodIdentifierByChannelGenerator = 
+        $this->shippingMethodIdentifierByChannelGenerator =
             $container->get('marello_ups.method.identifier_generator.method');
     }
 
@@ -96,7 +96,8 @@ class MoveConfigValuesToSettings extends AbstractMoveConfigValuesToSettings impl
     /**
      * @param Channel $upsChannel
      */
-    protected function getDispatchShippingMethodRenamingEvent(Channel $upsChannel) {
+    protected function getDispatchShippingMethodRenamingEvent(Channel $upsChannel)
+    {
         $this->dispatcher->dispatch(
             self::UPS_TYPE,
             $this->shippingMethodIdentifierByChannelGenerator->generateIdentifier($upsChannel)

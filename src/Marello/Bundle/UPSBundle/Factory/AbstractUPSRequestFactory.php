@@ -148,7 +148,6 @@ abstract class AbstractUPSRequestFactory implements UPSRequestFactoryInterface
         $productsParamsByUnit = [];
 
         foreach ($lineItems as $lineItem) {
-
             $upsWeight = $lineItem->getWeight();
 
             if (!$upsWeight) {

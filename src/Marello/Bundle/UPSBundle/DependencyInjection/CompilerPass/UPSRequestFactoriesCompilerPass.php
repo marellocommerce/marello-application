@@ -29,7 +29,9 @@ class UPSRequestFactoriesCompilerPass implements CompilerPassInterface
         foreach ($taggedServices as $factory => $tags) {
             foreach ($tags as $tag) {
                 if (!array_key_exists('request_class', $tag)) {
-                    throw new \Exception('Parameter "request_class" is mandatory for "marello_ups_request_factory" tag');
+                    throw new \Exception(
+                        'Parameter "request_class" is mandatory for "marello_ups_request_factory" tag'
+                    );
                 }
                 $definition->addMethodCall('addFactory', [new Reference($factory), $tag['request_class']]);
             }
