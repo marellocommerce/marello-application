@@ -22,11 +22,11 @@ class ProductPriceType extends AbstractType
         if ($options['currency'] && $options['currency_symbol']) {
             $builder
                 ->add('value', 'oro_money', [
-                'required' => true,
-                'label' => 'marello.pricing.productprice.value.label',
-                'currency' => $options['currency'],
-                'currency_symbol' => $options['currency_symbol'],
-            ]);
+                    'required' => true,
+                    'label' => 'marello.pricing.productprice.value.label',
+                    'currency' => $options['currency'],
+                    'currency_symbol' => $options['currency_symbol']
+                ]);
         } else {
             $builder
                 ->add('value', 'oro_money', [

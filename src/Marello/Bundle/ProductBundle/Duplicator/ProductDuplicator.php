@@ -106,8 +106,7 @@ class ProductDuplicator
         $baseName = $this->defineBaseValue($product->getName(), 'name');
         $productCopy
             ->setSku($newSku)
-            ->setName(sprintf('%s-%s', $baseName, substr($newSku, strlen($baseSku) + 1))
-            );
+            ->setName(sprintf('%s-%s', $baseName, substr($newSku, strlen($baseSku) + 1)));
         $disabledStatus = $this->doctrineHelper
             ->getEntityManagerForClass(ProductStatus::class)
             ->getRepository(ProductStatus::class)

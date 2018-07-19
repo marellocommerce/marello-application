@@ -8,6 +8,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -137,7 +138,11 @@ class OrderController extends Controller
     }
 
     /**
-     * @Config\Route("/widget/address/{id}/{typeId}", requirements={"id"="\d+","typeId"="\d+"}, name="marello_order_order_address")
+     * @Config\Route(
+     *     "/widget/address/{id}/{typeId}",
+     *     requirements={"id"="\d+","typeId"="\d+"},
+     *     name="marello_order_order_address"
+     * )
      * @Config\Method({"GET", "POST"})
      * @Config\Template("MarelloOrderBundle:Order/widget:address.html.twig")
      * @AclAncestor("marello_order_view")

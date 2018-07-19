@@ -22,7 +22,7 @@ class ModifyReplenishmentData extends AbstractFixture implements DependentFixtur
     /**
      * {@inheritdoc}
      */
-    function getDependencies()
+    public function getDependencies()
     {
         return [
             LoadReplenishmentData::class
@@ -45,10 +45,13 @@ class ModifyReplenishmentData extends AbstractFixture implements DependentFixtur
 
             $enumValue = $enumRepo->findOneBy(['name' => $enumData['oldName']]);
             if ($enumValue) {
-                $newEnumValue = $enumRepo->createEnumValue($enumData['newName'], $enumValue->getPriority(), $enumValue->isDefault());
+                $newEnumValue = $enumRepo->createEnumValue(
+                    $enumData['newName'],
+                    $enumValue->getPriority(),
+                    $enumValue->isDefault()
+                );
                 $manager->persist($newEnumValue);
                 $manager->remove($enumValue);
-                
             }
             $invItems = $invItemRepo->findBy(['replenishment' => $oldId]);
             if (!empty($invItems)) {
@@ -58,7 +61,6 @@ class ModifyReplenishmentData extends AbstractFixture implements DependentFixtur
                 }
             }
         }
-
         $manager->flush();
     }
 }

@@ -19,7 +19,7 @@ class LoadCategoryData extends AbstractFixture implements DependentFixtureInterf
      */
     protected $manager;
 
-    function getDependencies()
+    public function getDependencies()
     {
         return [
             LoadProductData::class
@@ -55,7 +55,6 @@ class LoadCategoryData extends AbstractFixture implements DependentFixtureInterf
             $this->closeFiles($handle);
         }
         $this->manager->flush();
-
     }
 
     /**

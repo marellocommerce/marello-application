@@ -47,7 +47,7 @@ class OrderCustomerAddressProvider
 
             $result[$primaryAddress->getId()] = $primaryAddress;
 
-            foreach($customer->getAddresses() as $address) {
+            foreach ($customer->getAddresses() as $address) {
                 $result[$address->getId()] = $address;
             }
             $this->cache[self::CACHE_KEY_BILLING][$key] = $result;
@@ -77,7 +77,7 @@ class OrderCustomerAddressProvider
                 $result[$shippingAddress->getId()] = $shippingAddress;
             }
 
-            foreach($customer->getAddresses() as $address) {
+            foreach ($customer->getAddresses() as $address) {
                 $result[$address->getId()] = $address;
             }
             $this->cache[self::CACHE_KEY_SHIPPING][$key] = $result;
