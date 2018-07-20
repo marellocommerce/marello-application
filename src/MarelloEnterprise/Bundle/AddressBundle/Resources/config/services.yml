@@ -13,11 +13,15 @@ services:
         class: 'MarelloEnterprise\Bundle\AddressBundle\Command\Cron\AddressGeocodingCommand'
         tags:
             - { name: console.command }
+    marelloenterprise_address.distance_calculator.chain_element.address_based:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AddressBased\AddressBasedAddressesDistanceCalculatorChainElement'
 
     marelloenterprise_address.distance_calculator.chain_element.straight_line:
         class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalculatorChainElement'
         arguments:
             - '@oro_entity.doctrine_helper'
+        calls:
+            - [setSuccessor, ['@marelloenterprise_address.distance_calculator.chain_element.address_based']]
 
     marelloenterprise_address.distance_calculator.chain_element.matrix_based:
         class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\MatrixBasedAddressesDistanceCalculatorChainElement'
