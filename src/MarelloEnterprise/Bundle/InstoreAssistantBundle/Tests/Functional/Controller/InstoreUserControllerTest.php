@@ -29,7 +29,6 @@ class InstoreUserControllerTest extends RestJsonApiTestCase
                 ['CONTENT_TYPE' => self::JSON_API_CONTENT_TYPE]
             )
         );
-
     }
 
     /**

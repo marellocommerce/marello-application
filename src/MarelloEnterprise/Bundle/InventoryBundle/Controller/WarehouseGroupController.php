@@ -71,7 +71,7 @@ class WarehouseGroupController extends Controller
      * @Route("/update/{id}", name="marelloenterprise_inventory_warehousegroup_update", requirements={"id"="\d+"})
      * @Template
      * @Acl(
-     *     id="marello_sales_saleschannelgroup_update",
+     *     id="marelloenterprise_inventory_warehousegroup_update",
      *     type="entity",
      *     permission="EDIT",
      *     class="MarelloInventoryBundle:WarehouseGroup"
