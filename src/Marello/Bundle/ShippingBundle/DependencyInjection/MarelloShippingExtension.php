@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class MarelloShippingExtension extends Extension
 {
-
     /**
      * Loads a specific configuration.
      *

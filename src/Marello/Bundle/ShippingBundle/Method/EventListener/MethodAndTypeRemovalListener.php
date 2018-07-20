@@ -101,7 +101,7 @@ class MethodAndTypeRemovalListener
      */
     private function getEntityManager()
     {
-        return $this->doctrineHelper->getEntityManagerForClass('OroShippingBundle:ShippingMethodsConfigsRule');
+        return $this->doctrineHelper->getEntityManagerForClass('MarelloShippingBundle:ShippingMethodsConfigsRule');
     }
 
     /**
@@ -109,7 +109,7 @@ class MethodAndTypeRemovalListener
      */
     private function getShippingMethodConfigRepository()
     {
-        return $this->doctrineHelper->getEntityRepository('OroShippingBundle:ShippingMethodConfig');
+        return $this->doctrineHelper->getEntityRepository('MarelloShippingBundle:ShippingMethodConfig');
     }
 
     /**
@@ -117,7 +117,7 @@ class MethodAndTypeRemovalListener
      */
     private function getShippingMethodTypeConfigRepository()
     {
-        return $this->doctrineHelper->getEntityRepository('OroShippingBundle:ShippingMethodTypeConfig');
+        return $this->doctrineHelper->getEntityRepository('MarelloShippingBundle:ShippingMethodTypeConfig');
     }
 
 
@@ -126,6 +126,6 @@ class MethodAndTypeRemovalListener
      */
     private function getShippingMethodsConfigsRuleRepository()
     {
-        return $this->doctrineHelper->getEntityRepository('OroShippingBundle:ShippingMethodsConfigsRule');
+        return $this->doctrineHelper->getEntityRepository('MarelloShippingBundle:ShippingMethodsConfigsRule');
     }
 }

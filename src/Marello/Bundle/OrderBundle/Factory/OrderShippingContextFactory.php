@@ -3,22 +3,22 @@
 namespace Marello\Bundle\OrderBundle\Factory;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Converter\OrderShippingLineItemConverterInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\ShippingBundle\Context\ShippingContextFactoryInterface;
 use Marello\Bundle\ShippingBundle\Context\Builder\Factory\ShippingContextBuilderFactoryInterface;
+use Marello\Bundle\ShippingBundle\Context\ShippingContextFactoryInterface;
 use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
+use Oro\Bundle\CurrencyBundle\Entity\Price;
 
 class OrderShippingContextFactory implements ShippingContextFactoryInterface
 {
     /**
-     * @var DoctrineHelper
+     * @var OrderWarehousesProviderInterface
      */
-    protected $doctrineHelper;
-
+    private $orderWarehouseProvider;
+    
     /**
      * @var OrderShippingLineItemConverterInterface
      */
@@ -30,16 +30,16 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
     private $shippingContextBuilderFactory;
 
     /**
-     * @param DoctrineHelper $doctrineHelper
+     * @param OrderWarehousesProviderInterface $orderWarehouseProvider
      * @param OrderShippingLineItemConverterInterface $shippingLineItemConverter
      * @param null|ShippingContextBuilderFactoryInterface $shippingContextBuilderFactory
      */
     public function __construct(
-        DoctrineHelper $doctrineHelper,
+        OrderWarehousesProviderInterface $orderWarehouseProvider,
         OrderShippingLineItemConverterInterface $shippingLineItemConverter,
         ShippingContextBuilderFactoryInterface $shippingContextBuilderFactory = null
     ) {
-        $this->doctrineHelper = $doctrineHelper;
+        $this->orderWarehouseProvider = $orderWarehouseProvider;
         $this->shippingLineItemConverter = $shippingLineItemConverter;
         $this->shippingContextBuilderFactory = $shippingContextBuilderFactory;
     }
@@ -71,7 +71,7 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
             ->setCurrency($order->getCurrency());
 
         $convertedLineItems = $this->shippingLineItemConverter->convertLineItems($order->getItems());
-        $shippingOrigin = $this->getShippingOrigin();
+        $shippingOrigin = $this->getShippingOrigin($order);
 
         if (null !== $shippingOrigin) {
             $shippingContextBuilder->setShippingOrigin($shippingOrigin);
@@ -112,16 +112,19 @@ class OrderShippingContextFactory implements ShippingContextFactoryInterface
     }
 
     /**
+     * @param Order $order
      * @return MarelloAddress|null
      */
-    protected function getShippingOrigin()
+    protected function getShippingOrigin(Order $order)
     {
-        /** @var Warehouse $warehouse */
-        $warehouse = $this->doctrineHelper
-            ->getEntityManagerForClass(Warehouse::class)
-            ->getRepository(Warehouse::class)
-            ->getDefault();
+        $orderWarehouseResults = $this->orderWarehouseProvider->getWarehousesForOrder($order);
+        if (!empty($orderWarehouseResults)) {
+            /** @var OrderWarehouseResult $orderWarehouseResult */
+            $orderWarehouseResult = reset($orderWarehouseResults);
+
+            return $orderWarehouseResult->getWarehouse()->getAddress();
+        }
         
-        return $warehouse->getAddress();
+        return null;
     }
 }

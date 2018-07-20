@@ -77,8 +77,8 @@ class AvailableInventoryValidator extends ConstraintValidator
         }
 
         $values = $this->entityGetFieldValues($entity, $fields);
-        if ((!isset($values[self::PRODUCT_FIELD]) && $values[self::PRODUCT_FIELD] === null) ||
-            (!isset($values[self::SALES_CHANNEL_FIELD]) && $values[self::SALES_CHANNEL_FIELD] === null)) {
+        if ((!isset($values[self::PRODUCT_FIELD]) || $values[self::PRODUCT_FIELD] === null) ||
+            (!isset($values[self::SALES_CHANNEL_FIELD]) || $values[self::SALES_CHANNEL_FIELD] === null)) {
             throw new ConstraintDefinitionException('Cannot get inventory when not all required values are set');
         }
 

@@ -28,11 +28,11 @@ class UPSTransportEntityListenerTest extends WebTestCase
         $toBeDeletedService = $applShipServices->first();
 
         $configuredMethods = $em
-            ->getRepository('OroShippingBundle:ShippingMethodConfig')
+            ->getRepository('MarelloShippingBundle:ShippingMethodConfig')
             ->findBy([
                 'method' => UPSShippingMethod::IDENTIFIER . '_' . $ups_channel->getId()]);
         $typesBefore = $em
-            ->getRepository('OroShippingBundle:ShippingMethodTypeConfig')
+            ->getRepository('MarelloShippingBundle:ShippingMethodTypeConfig')
             ->findBy(['methodConfig' => $configuredMethods, 'type' => $toBeDeletedService->getCode()]);
 
         static::assertNotEmpty($typesBefore);
@@ -42,7 +42,7 @@ class UPSTransportEntityListenerTest extends WebTestCase
         $em->flush();
 
         $typesAfter = $em
-            ->getRepository('OroShippingBundle:ShippingMethodTypeConfig')
+            ->getRepository('MarelloShippingBundle:ShippingMethodTypeConfig')
             ->findBy(['methodConfig' => $configuredMethods, 'type' => $toBeDeletedService->getCode()]);
 
         static::assertEmpty($typesAfter);

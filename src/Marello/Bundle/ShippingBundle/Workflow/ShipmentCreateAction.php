@@ -61,11 +61,15 @@ class ShipmentCreateAction extends AbstractAction
     public function initialize(array $options)
     {
         if (empty($options['context'])) {
-            throw new InvalidParameterException('Context name parameter is required');
+            throw new InvalidParameterException('context parameter is required');
         }
 
         if (empty($options['method'])) {
-            throw new InvalidParameterException('Method name parameter is required');
+            throw new InvalidParameterException('method parameter is required');
+        }
+
+        if (empty($options['methodType'])) {
+            throw new InvalidParameterException('methodType parameter is required');
         }
 
         $this->shippingContext = $options['context'];
@@ -93,8 +97,9 @@ class ShipmentCreateAction extends AbstractAction
         if ($shippingMethod = $this->shippingMethodProvider->getShippingMethod($method)) {
             if ($shippingMethodType = $shippingMethod->getType($methodType)) {
                 if ($shipment = $shippingMethodType->createShipment($shippingContext, $method, $methodType)) {
-                    $this->getShipmentManager()->persist($shipment);
-                    $this->getShipmentManager()->flush();
+                    $shipmentManager = $this->getShipmentManager();
+                    $shipmentManager->persist($shipment);
+                    $shipmentManager->flush();
                 }
             }
         }

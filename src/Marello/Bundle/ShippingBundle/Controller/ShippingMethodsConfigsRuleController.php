@@ -99,7 +99,7 @@ class ShippingMethodsConfigsRuleController extends Controller
         if ($this->get('marello_shipping.form.handler.shipping_methods_configs_rule')->process($form, $entity)) {
             $this->get('session')->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('oro.shipping.controller.rule.saved.message')
+                $this->get('translator')->trans('marello.shipping.controller.rule.saved.message')
             );
 
             return $this->get('oro_ui.router')->redirect($entity);
