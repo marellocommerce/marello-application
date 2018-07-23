@@ -13,7 +13,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class EnabledShippingMethodsByRulesShippingMethodValidatorDecorator implements ShippingMethodValidatorInterface
 {
-    const USED_SHIPPING_METHODS_ERROR = 'oro.shipping.method_type.used.error';
+    const USED_SHIPPING_METHODS_ERROR = 'marello.shipping.method_type.used.error';
 
     /**
      * @var ShippingMethodValidatorInterface

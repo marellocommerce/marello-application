@@ -25,13 +25,4 @@ class UPSShippingServiceIntegrationTest extends WebTestCase
         $this->dataFactory = $this->getContainer()->get('marello_shipping.integration.ups.service_data_factory');
         $this->integration = $this->getContainer()->get('marello_shipping.integration.ups.service_integration');
     }
-
-    /**
-     * @test
-     * @covers UPSShippingServiceIntegration::createShipment
-     */
-    public function requestShipmentThrowsException()
-    {
-        $this->markTestSkipped();
-    }
 }

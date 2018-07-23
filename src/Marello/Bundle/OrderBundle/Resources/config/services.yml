@@ -114,7 +114,7 @@ services:
     marello_order.factory.shipping_context:
         class: 'Marello\Bundle\OrderBundle\Factory\OrderShippingContextFactory'
         arguments:
-            - '@oro_entity.doctrine_helper'
+            - '@marello_inventory.provider.order_warehouse'
             - '@marello_order.shipping_line_item.converter_basic'
             - '@marello_shipping.context.builder_factory_basic'
 
