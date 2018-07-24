@@ -35,10 +35,14 @@ class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddres
             ->getRepository(MarelloEnterpriseAddress::class);
         $originGeocodedAddress = $repository->findOneBy(['address' => $originAddress]);
         $destinationGeocodedAddress = $repository->findOneBy(['address' => $destinationAddress]);
+        if (!$originGeocodedAddress || !$destinationGeocodedAddress) {
+            return null;
+        }
         $this->checkCoordinates([$originGeocodedAddress, $destinationGeocodedAddress]);
         
         
         $lat1 = $originGeocodedAddress->getLatitude();
+
         $lon1 = $originGeocodedAddress->getLongitude();
         $lat2 = $destinationGeocodedAddress->getLatitude();
         $lon2 = $destinationGeocodedAddress->getLongitude();

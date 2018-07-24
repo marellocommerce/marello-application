@@ -63,6 +63,9 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface, FeatureTogglea
         }
 
         $destinationAddress = $order->getShippingAddress();
+        if (!$destinationAddress) {
+            return $initialResults;
+        }
         $distances = [];
         foreach ($initialResults as $key => $warehousesSet) {
             $distance = 0;
