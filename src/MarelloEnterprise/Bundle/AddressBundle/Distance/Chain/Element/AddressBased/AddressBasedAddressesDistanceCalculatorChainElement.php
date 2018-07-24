@@ -5,7 +5,7 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AddressB
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistanceCalculatorChainElement;
 
-class AddressBasedAddressesDistanceCalculatorChainElement  extends AbstractAddressesDistanceCalculatorChainElement
+class AddressBasedAddressesDistanceCalculatorChainElement extends AbstractAddressesDistanceCalculatorChainElement
 {
     const COUNTRY_RATE = 10000;
     const REGION_RATE = 1000;
@@ -19,8 +19,7 @@ class AddressBasedAddressesDistanceCalculatorChainElement  extends AbstractAddre
         MarelloAddress $originAddress,
         MarelloAddress $destinationAddress,
         $unit = 'metric'
-    )
-    {
+    ) {
         $distance = 0;
         if ($originAddress->getCountry() !== $destinationAddress->getCountry()) {
             return self::COUNTRY_RATE;
