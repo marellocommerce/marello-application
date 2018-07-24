@@ -54,7 +54,11 @@ class ShipmentCreateActionTest extends \PHPUnit_Framework_TestCase
         /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject $eventDispatcher */
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $this->action = new ShipmentCreateAction($this->contextAccessor, $this->doctrine, $this->shippingMethodProvider);
+        $this->action = new ShipmentCreateAction(
+            $this->contextAccessor,
+            $this->doctrine,
+            $this->shippingMethodProvider
+        );
         $this->action->setDispatcher($eventDispatcher);
     }
 
