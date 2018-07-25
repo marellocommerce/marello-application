@@ -3,49 +3,60 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterface
+class LoadMinDistanceWFARule extends AbstractFixture implements ContainerAwareInterface, DependentFixtureInterface
 {
-    const RULES_DATA = [
-        MinimumQuantityWFAStrategy::IDENTIFIER =>
-            [
-                'enabled'          => true,
-                'name'             => 'WFA Rule #1',
-                'sortOrder'        => 0,
-                'stopProcessing'   => false,
-                'strategy'         => MinimumQuantityWFAStrategy::IDENTIFIER
-            ],
-        MinimumDistanceWFAStrategy::IDENTIFIER =>
-            [
-                'enabled'          => true,
-                'name'             => 'WFA Rule #2',
-                'sortOrder'        => 10,
-                'stopProcessing'   => false,
-                'strategy'         => MinimumDistanceWFAStrategy::IDENTIFIER
-            ],
-    ];
-    
     /**
      * @var DoctrineHelper
      */
     protected $doctrineHelper;
 
     /**
+     * @inheritDoc
+     */
+    function getDependencies()
+    {
+        return [
+            LoadSystemWFARules::class
+        ];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
+        $ruleData = LoadSystemWFARules::RULES_DATA[MinimumDistanceWFAStrategy::IDENTIFIER];
         foreach ($this->getOrganizations() as $organization) {
-            foreach (self::RULES_DATA as $ruleData) {
+            $existingWFARule = $manager
+                ->getRepository(WFARule::class)
+                ->findOneBy([
+                    'strategy' => $ruleData['strategy'],
+                    'organization' => $organization
+                ]);
+            if ($existingWFARule) {
+                $rule = $existingWFARule->getRule();
+                $rule
+                    ->setEnabled($ruleData['enabled'])
+                    ->setName($ruleData['name'])
+                    ->setSortOrder($ruleData['sortOrder'])
+                    ->setStopProcessing($ruleData['stopProcessing'])
+                    ->setSystem(true);
+
+                $existingWFARule->setRule($rule);
+
+                $manager->persist($rule);
+                $manager->persist($existingWFARule);
+            } else {
                 $rule = (new Rule())
                     ->setEnabled($ruleData['enabled'])
                     ->setName($ruleData['name'])

@@ -6,15 +6,11 @@ use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureCheckerHolderTrait;
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
 
-class MinimumDistanceWFAStrategy implements WFAStrategyInterface, FeatureToggleableInterface
+class MinimumDistanceWFAStrategy implements WFAStrategyInterface
 {
     const IDENTIFIER = 'min_distance';
     const LABEL = 'marelloenterprise.inventory.strategies.min_distance';
-
-    use FeatureCheckerHolderTrait;
 
     /**
      * @var AddressesDistanceCalculatorInterface
@@ -42,7 +38,7 @@ class MinimumDistanceWFAStrategy implements WFAStrategyInterface, FeatureTogglea
      */
     public function isEnabled()
     {
-        return $this->featureChecker->isFeatureEnabled('address_geocoding');
+        return true;
     }
 
     /**

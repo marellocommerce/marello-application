@@ -34,6 +34,19 @@ class AddressBasedAddressesDistanceCalculatorChainElement  extends AbstractAddre
         if ($originAddress->getPostalCode() !== $destinationAddress->getPostalCode()) {
             return self::POSTAL_CODE_RATE;
         }
+        $streetMatchedParts = array_intersect(
+            explode(
+                ' ',
+                sprintf('%s %s', $originAddress->getStreet(), $originAddress->getStreet2())
+            ),
+            explode(
+                ' ',
+                sprintf('%s %s', $destinationAddress->getStreet(), $destinationAddress->getStreet2())
+            )
+        );
+        if (!empty($streetMatchedParts)) {
+            return $distance - count($streetMatchedParts);
+        }
 
         return $distance;
     }
