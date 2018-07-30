@@ -44,15 +44,15 @@ class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddres
         $originGeocodedAddress = $repository->findOneBy(['address' => $originAddress]);
         $destinationGeocodedAddress = $repository->findOneBy(['address' => $destinationAddress]);
 
-        if (!$originGeocodedAddress || $destinationGeocodedAddress) {
+        if (!$originGeocodedAddress || !$destinationGeocodedAddress) {
             return null;
         }
-        
+
         $coordinatesValid = $this->checkCoordinates([$originGeocodedAddress, $destinationGeocodedAddress]);
         if (!$coordinatesValid) {
             return null;
         }
-        
+
         $lat1 = $originGeocodedAddress->getLatitude();
 
         $lon1 = $originGeocodedAddress->getLongitude();
