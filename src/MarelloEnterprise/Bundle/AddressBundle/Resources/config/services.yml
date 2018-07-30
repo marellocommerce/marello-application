@@ -20,6 +20,7 @@ services:
         class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalculatorChainElement'
         arguments:
             - '@oro_entity.doctrine_helper'
+            - '@logger'
         calls:
             - [setSuccessor, ['@marelloenterprise_address.distance_calculator.chain_element.address_based']]
 
@@ -27,6 +28,7 @@ services:
         class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\MatrixBasedAddressesDistanceCalculatorChainElement'
         arguments:
             - '@marelloenterprise.google_api.result_provider.distance_matrix'
+            - '@logger'
         calls:
             - [setFeatureChecker, ['@oro_featuretoggle.checker.feature_checker']]
             - [setSuccessor, ['@marelloenterprise_address.distance_calculator.chain_element.straight_line']]

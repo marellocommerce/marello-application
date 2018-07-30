@@ -6,6 +6,7 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistanceCalculatorChainElement;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Psr\Log\LoggerInterface;
 
 class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddressesDistanceCalculatorChainElement
 {
@@ -15,11 +16,18 @@ class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddres
     protected $doctrineHelper;
 
     /**
-     * @param DoctrineHelper $doctrineHelper
+     * @var LoggerInterface
      */
-    public function __construct(DoctrineHelper $doctrineHelper)
+    protected $logger;
+
+    /**
+     * @param DoctrineHelper $doctrineHelper
+     * @param LoggerInterface $logger
+     */
+    public function __construct(DoctrineHelper $doctrineHelper, LoggerInterface $logger)
     {
         $this->doctrineHelper = $doctrineHelper;
+        $this->logger = $logger;
     }
     
     /**
@@ -35,11 +43,15 @@ class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddres
             ->getRepository(MarelloEnterpriseAddress::class);
         $originGeocodedAddress = $repository->findOneBy(['address' => $originAddress]);
         $destinationGeocodedAddress = $repository->findOneBy(['address' => $destinationAddress]);
-        if (!$originGeocodedAddress || !$destinationGeocodedAddress) {
+
+        if (!$originGeocodedAddress || $destinationGeocodedAddress) {
             return null;
         }
-        $this->checkCoordinates([$originGeocodedAddress, $destinationGeocodedAddress]);
         
+        $coordinatesValid = $this->checkCoordinates([$originGeocodedAddress, $destinationGeocodedAddress]);
+        if (!$coordinatesValid) {
+            return null;
+        }
         
         $lat1 = $originGeocodedAddress->getLatitude();
 
@@ -48,7 +60,7 @@ class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddres
         $lon2 = $destinationGeocodedAddress->getLongitude();
         
         $theta = $lon1 - $lon2;
-        $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2))
+        $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2))
             * cos(deg2rad($theta));
         $dist = acos($dist);
         $dist = rad2deg($dist);
@@ -64,14 +76,17 @@ class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddres
     
     /**
      * @param MarelloEnterpriseAddress[] $eeAddresses
-     * @throws \Exception
+     * @return bool
      */
     protected function checkCoordinates(array $eeAddresses)
     {
         foreach ($eeAddresses as $eeAddress) {
-            if (null === $eeAddress->getLatitude() || null === $eeAddress->getLongitude()) {
-                throw new \Exception(sprintf('No coordinates found for "%s"', $eeAddress->getAddress()));
+            if (null === $eeAddress || null === $eeAddress->getLatitude() || null === $eeAddress->getLongitude()) {
+                $this->logger->error(sprintf('No coordinates found for "%s"', $eeAddress->getAddress()));
+                return false;
             }
         }
+        
+        return true;
     }
 }

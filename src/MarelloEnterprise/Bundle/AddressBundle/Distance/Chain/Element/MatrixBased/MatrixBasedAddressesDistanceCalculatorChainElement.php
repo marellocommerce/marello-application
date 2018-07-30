@@ -10,6 +10,7 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderIn
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\DistanceMatrixApiResultFactory;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureCheckerHolderTrait;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
+use Psr\Log\LoggerInterface;
 
 class MatrixBasedAddressesDistanceCalculatorChainElement extends AbstractAddressesDistanceCalculator implements
     FeatureToggleableInterface
@@ -20,16 +21,27 @@ class MatrixBasedAddressesDistanceCalculatorChainElement extends AbstractAddress
      * @var GoogleApiResultsProviderInterface
      */
     private $distanceMatrixResultsProvider;
+    
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * @param GoogleApiResultsProviderInterface $distanceMatrixResultsProvider
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        GoogleApiResultsProviderInterface $distanceMatrixResultsProvider
+        GoogleApiResultsProviderInterface $distanceMatrixResultsProvider,
+        LoggerInterface $logger
     ) {
         $this->distanceMatrixResultsProvider = $distanceMatrixResultsProvider;
+        $this->logger = $logger;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getDistance(
         MarelloAddress $originAddress,
         MarelloAddress $destinationAddress,
@@ -41,8 +53,8 @@ class MatrixBasedAddressesDistanceCalculatorChainElement extends AbstractAddress
             );
             if ($results->getStatus() === true && $results->getResult()) {
                 return $results->getResult()[DistanceMatrixApiResultFactory::DISTANCE]/1000;
-            } else {
-                throw new \Exception($results->getErrorMessage(), $results->getErrorCode());
+            } elseif ($results->getErrorMessage() && $results->getErrorCode()) {
+                $this->logger->error(sprintf('%s: %s', $results->getErrorCode(), $results->getErrorMessage()));
             }
         }
         
