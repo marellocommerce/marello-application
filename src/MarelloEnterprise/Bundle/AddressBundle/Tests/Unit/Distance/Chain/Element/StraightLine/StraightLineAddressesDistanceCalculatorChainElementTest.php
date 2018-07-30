@@ -4,11 +4,15 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Tests\Unit\Distance\Chain\Eleme
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+
+use Psr\Log\LoggerInterface;
+
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\
 StraightLineAddressesDistanceCalculatorChainElement;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class StraightLineAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,8 +34,10 @@ class StraightLineAddressesDistanceCalculatorChainElementTest extends \PHPUnit_F
         $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
             ->disableOriginalConstructor()
             ->getMock();
+        /** @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject $logger */
+        $logger = $this->createMock(LoggerInterface::class);
         $this->distanceCalculator =
-            new StraightLineAddressesDistanceCalculatorChainElement($this->doctrineHelper);
+            new StraightLineAddressesDistanceCalculatorChainElement($this->doctrineHelper, $logger);
     }
 
     /**
