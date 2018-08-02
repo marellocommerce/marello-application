@@ -2,10 +2,12 @@
 
 namespace Marello\Bundle\UPSBundle\Method\Factory;
 
+use Marello\Bundle\UPSBundle\Event\MethodTypesBeforeCreateEvent;
 use Marello\Bundle\UPSBundle\Factory\UPSRequestFactoryInterface;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Generator\IntegrationIdentifierGeneratorInterface;
 use Oro\Bundle\IntegrationBundle\Provider\IntegrationIconProviderInterface;
+use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Marello\Bundle\ShippingBundle\Method\Factory\IntegrationShippingMethodFactoryInterface;
 use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
@@ -13,6 +15,7 @@ use Marello\Bundle\UPSBundle\Entity\ShippingService;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
 use Marello\Bundle\UPSBundle\Provider\UPSTransport;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class UPSShippingMethodFactory implements IntegrationShippingMethodFactoryInterface
 {
@@ -52,22 +55,29 @@ class UPSShippingMethodFactory implements IntegrationShippingMethodFactoryInterf
     private $integrationIconProvider;
 
     /**
-     * @param UPSTransport                            $transport
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * @param TransportInterface                      $transport
      * @param UPSRequestFactoryInterface              $requestFactory
      * @param LocalizationHelper                      $localizationHelper
      * @param IntegrationIconProviderInterface        $integrationIconProvider
      * @param ShippingPriceCache                      $shippingPriceCache
      * @param IntegrationIdentifierGeneratorInterface $integrationIdentifierGenerator
      * @param UPSShippingMethodTypeFactoryInterface   $methodTypeFactory
+     * @param EventDispatcherInterface                $eventDispatcher
      */
     public function __construct(
-        UPSTransport $transport,
+        TransportInterface $transport,
         UPSRequestFactoryInterface $requestFactory,
         LocalizationHelper $localizationHelper,
         IntegrationIconProviderInterface $integrationIconProvider,
         ShippingPriceCache $shippingPriceCache,
         IntegrationIdentifierGeneratorInterface $integrationIdentifierGenerator,
-        UPSShippingMethodTypeFactoryInterface $methodTypeFactory
+        UPSShippingMethodTypeFactoryInterface $methodTypeFactory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->transport = $transport;
         $this->requestFactory = $requestFactory;
@@ -76,6 +86,7 @@ class UPSShippingMethodFactory implements IntegrationShippingMethodFactoryInterf
         $this->integrationIdentifierGenerator = $integrationIdentifierGenerator;
         $this->methodTypeFactory = $methodTypeFactory;
         $this->integrationIconProvider = $integrationIconProvider;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -133,9 +144,12 @@ class UPSShippingMethodFactory implements IntegrationShippingMethodFactoryInterf
     {
         $applicableShippingServices = $this->getSettings($channel)->getApplicableShippingServices()->toArray();
 
+        $event = new MethodTypesBeforeCreateEvent($channel, $applicableShippingServices);
+        $this->eventDispatcher->dispatch(MethodTypesBeforeCreateEvent::NAME, $event);
+        
         return array_map(function (ShippingService $shippingService) use ($channel) {
             return $this->methodTypeFactory->create($channel, $shippingService);
-        }, $applicableShippingServices);
+        }, $event->getShippingServices());
     }
 
     /**

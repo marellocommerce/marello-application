@@ -52,6 +52,7 @@ services:
             - '@marello_ups.shipping_price_cache'
             - '@marello_ups.method.identifier_generator.method'
             - '@marello_ups.method.factory.type'
+            - '@event_dispatcher'
 
     marello_ups.method.factory.type:
         class: 'Marello\Bundle\UPSBundle\Method\Factory\UPSShippingMethodTypeFactory'

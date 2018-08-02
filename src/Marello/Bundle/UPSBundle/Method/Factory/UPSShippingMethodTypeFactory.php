@@ -11,6 +11,7 @@ use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Method\Identifier\UPSMethodTypeIdentifierGeneratorInterface;
 use Marello\Bundle\UPSBundle\Method\UPSShippingMethodType;
 use Marello\Bundle\UPSBundle\Provider\UPSTransport;
+use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 
 class UPSShippingMethodTypeFactory implements UPSShippingMethodTypeFactoryInterface
 {
@@ -42,14 +43,14 @@ class UPSShippingMethodTypeFactory implements UPSShippingMethodTypeFactoryInterf
     /**
      * @param UPSMethodTypeIdentifierGeneratorInterface $typeIdentifierGenerator
      * @param IntegrationIdentifierGeneratorInterface   $integrationIdentifierGenerator
-     * @param UPSTransport                              $transport
+     * @param TransportInterface                        $transport
      * @param UPSRequestFactoryInterface                $requestFactory
      * @param ShippingPriceCache                        $shippingPriceCache
      */
     public function __construct(
         UPSMethodTypeIdentifierGeneratorInterface $typeIdentifierGenerator,
         IntegrationIdentifierGeneratorInterface $integrationIdentifierGenerator,
-        UPSTransport $transport,
+        TransportInterface $transport,
         UPSRequestFactoryInterface $requestFactory,
         ShippingPriceCache $shippingPriceCache
     ) {

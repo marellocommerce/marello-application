@@ -19,7 +19,7 @@ operations:
             '@and':
                 - '@not_equal': [$type, $.upsType]
 
-    oro_integration_invalidate_cache:
+    marello_ups_integration_invalidate_cache:
         extends: oro_cache_invalidate
         routes:
             - oro_integration_update

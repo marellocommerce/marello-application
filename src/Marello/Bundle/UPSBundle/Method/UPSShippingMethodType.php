@@ -19,6 +19,7 @@ use Marello\Bundle\UPSBundle\Model\Request\ShipmentConfirmRequest;
 use Marello\Bundle\UPSBundle\Model\Response\ShipmentAcceptResponse;
 use Marello\Bundle\UPSBundle\Model\Response\ShipmentConfirmResponse;
 use Marello\Bundle\UPSBundle\Provider\UPSTransport as UPSTransportProvider;
+use Oro\Bundle\IntegrationBundle\Entity\Transport;
 
 class UPSShippingMethodType implements ShippingMethodTypeInterface
 {
@@ -52,7 +53,7 @@ class UPSShippingMethodType implements ShippingMethodTypeInterface
      * @param string $identifier
      * @param string $label
      * @param string $methodId
-     * @param UPSSettings $transport
+     * @param Transport $transport
      * @param UPSTransportProvider $transportProvider
      * @param ShippingService $shippingService
      * @param UPSRequestFactoryInterface $requestFactory
@@ -63,7 +64,7 @@ class UPSShippingMethodType implements ShippingMethodTypeInterface
         $label,
         $methodId,
         ShippingService $shippingService,
-        UPSSettings $transport,
+        Transport $transport,
         UPSTransportProvider $transportProvider,
         UPSRequestFactoryInterface $requestFactory,
         ShippingPriceCache $cache
