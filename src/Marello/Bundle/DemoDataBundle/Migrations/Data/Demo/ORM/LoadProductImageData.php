@@ -124,7 +124,6 @@ class LoadProductImageData extends AbstractFixture implements DependentFixtureIn
                 && strpos($pathName, $skuType) !== false) {
                     return $file->getRealPath();
                 }
-
             }
         }
     }

@@ -9,7 +9,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 
 /**
@@ -27,7 +27,7 @@ class SupplierController extends RestController implements ClassResourceInterfac
      *     description="Delete Supplier from application",
      *     resource=true
      * )
-     * @Security\AclAncestor("marello_supplier_delete")
+     * @AclAncestor("marello_supplier_delete")
      * @return Response
      */
     public function deleteAction($id)

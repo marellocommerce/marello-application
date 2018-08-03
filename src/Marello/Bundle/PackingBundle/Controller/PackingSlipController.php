@@ -6,17 +6,18 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Form\Type\ReturnUpdateType;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class PackingSlipController extends Controller
 {
     /**
      * @Config\Route("/", name="marello_packing_packingslip_index")
      * @Config\Template
-     * @Security\AclAncestor("marello_packing_slip_view")
+     * @AclAncestor("marello_packing_slip_view")
      */
     public function indexAction()
     {
@@ -26,7 +27,7 @@ class PackingSlipController extends Controller
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_packing_packingslip_view")
      * @Config\Template
-     * @Security\AclAncestor("marello_packing_slip_view")
+     * @AclAncestor("marello_packing_slip_view")
      *
      * @param PackingSlip $packingSlip
      *

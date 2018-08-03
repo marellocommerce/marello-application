@@ -52,10 +52,11 @@ class CategoryControllerTest extends WebTestCase
         $name    = 'Category 1';
         $code     = 'category1';
         $form    = $crawler->selectButton('Save and Close')->form();
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
         $form['marello_catalog_category[name]']               = $name;
         $form['marello_catalog_category[code]']                = $code;
-        $form['marello_catalog_category[appendProducts]'] = $this->getReference(LoadProductData::PRODUCT_1_REF)->getId();
+        $form['marello_catalog_category[appendProducts]'] = $product->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -78,7 +79,7 @@ class CategoryControllerTest extends WebTestCase
      *
      * @return string
      */
-    public function testCategoryUpdate($name)
+    public function testUpdateCategory($name)
     {
         $response = $this->client->requestGrid(
             self::GRID_NAME,
@@ -116,9 +117,7 @@ class CategoryControllerTest extends WebTestCase
     /**
      * @param array $resultData
      *
-     * @depends testCategoryUpdate
-     *
-     * @return string
+     * @depends testUpdateCategory
      */
     public function testCategoryView($resultData)
     {

@@ -1,0 +1,18 @@
+services:
+    marello_ups.connection.validator.request.factory.rate_request:
+        class: 'Marello\Bundle\UPSBundle\Connection\Validator\Request\Factory\RateUpsConnectionValidatorRequestFactory'
+        public: false
+        arguments:
+            - '@oro_security.encoder.mcrypt'
+
+    marello_ups.connection.validator.result.factory:
+        class: 'Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionValidatorResultFactory'
+        public: false
+
+    marello_ups.connection.validator:
+        class: 'Marello\Bundle\UPSBundle\Connection\Validator\UpsConnectionValidator'
+        arguments:
+            - '@marello_ups.connection.validator.request.factory.rate_request'
+            - '@marello_ups.client.factory_basic'
+            - '@marello_ups.connection.validator.result.factory'
+            - '@logger'

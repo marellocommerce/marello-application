@@ -5,7 +5,7 @@ namespace Marello\Bundle\SalesBundle\Controller\Api\Rest;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,7 +23,7 @@ class SalesChannelGroupController extends RestController implements ClassResourc
      * @ApiDoc(
      *      description="Delete SalesChannelGroup from application"
      * )
-     * @Security\AclAncestor("marello_sales_saleschannelgroup_delete")
+     * @AclAncestor("marello_sales_saleschannelgroup_delete")
      * @return Response
      */
     public function deleteAction($id)

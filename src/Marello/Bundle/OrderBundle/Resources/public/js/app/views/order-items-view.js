@@ -67,13 +67,11 @@ define(function(require) {
 
             this.$salesChannel.change(_.bind(function() {
                 this.setChannelHistory(this._getSalesChannel());
-                if (this.getItems().length === 0 || this._getSalesChannel().length ===0 ) {
-                    return;
-                }
-                mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals']});
+                this.initLineItemAdditionalData();
             }, this));
 
             this.initChannelHistory();
+            this.initLineItemAdditionalData();
         },
 
         /**
@@ -164,6 +162,21 @@ define(function(require) {
         },
 
         /**
+         * trigger additional data changes when the form is loaded
+         */
+        initLineItemAdditionalData: function() {
+            // for some reason we need to trigger the Billing and Shipping addresses here in order to 'reload' the
+            // customer addresses in the select boxes...
+            mediator.trigger('order:form-changes:trigger', {updateFields: ['billingAddress', 'shippingAddress','totals']});
+
+            if (this.getItems().length === 0 || this._getSalesChannel().length === 0 ) {
+                return;
+            }
+            
+            mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'inventory','totals', 'possible_shipping_methods']});
+        },
+
+        /**
          * get sales channel value
          * @returns {string}
          * @private
@@ -193,7 +206,7 @@ define(function(require) {
 
             return items;
         },
-        
+
         /**
          * Show loading view
          */

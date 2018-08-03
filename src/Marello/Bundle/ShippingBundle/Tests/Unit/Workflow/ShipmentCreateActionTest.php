@@ -4,12 +4,18 @@ namespace Marello\Bundle\ShippingBundle\Tests\Unit\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
+use Marello\Bundle\ShippingBundle\Entity\Shipment;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;
 use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
+use Marello\Bundle\ShippingBundle\Method\ShippingMethodInterface;
+use Marello\Bundle\ShippingBundle\Method\ShippingMethodProviderInterface;
+use Marello\Bundle\ShippingBundle\Method\ShippingMethodTypeInterface;
 use Marello\Bundle\ShippingBundle\Workflow\ShipmentCreateAction;
 use Oro\Bundle\ActionBundle\Model\ActionData;
 use Oro\Component\ConfigExpression\ContextAccessor;
@@ -24,9 +30,9 @@ class ShipmentCreateActionTest extends \PHPUnit_Framework_TestCase
     protected $contextAccessor;
 
     /**
-     * @var ShippingServiceRegistry|\PHPUnit_Framework_MockObject_MockObject
+     * @var ShippingMethodProviderInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $registry;
+    protected $shippingMethodProvider;
 
     /**
      * @var Registry|\PHPUnit_Framework_MockObject_MockObject
@@ -41,22 +47,27 @@ class ShipmentCreateActionTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->contextAccessor = new ContextAccessor();
-        $this->registry = $this->createMock(ShippingServiceRegistry::class);
+        $this->shippingMethodProvider = $this->createMock(ShippingMethodProviderInterface::class);
         $this->doctrine = $this->getMockBuilder(Registry::class)
             ->disableOriginalConstructor()
             ->getMock();
         /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject $eventDispatcher */
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $this->action = new ShipmentCreateAction($this->contextAccessor, $this->registry, $this->doctrine);
+        $this->action = new ShipmentCreateAction(
+            $this->contextAccessor,
+            $this->doctrine,
+            $this->shippingMethodProvider
+        );
         $this->action->setDispatcher($eventDispatcher);
     }
 
     public function testInitialize()
     {
         $options = [
-            'entity' => new PropertyPath('entity'),
-            'service' => new PropertyPath('service'),
+            'context' => new PropertyPath('context'),
+            'method' => new PropertyPath('method'),
+            'methodType' => new PropertyPath('methodType'),
         ];
 
         $this->assertInstanceOf(
@@ -64,18 +75,20 @@ class ShipmentCreateActionTest extends \PHPUnit_Framework_TestCase
             $this->action->initialize($options)
         );
 
-        $this->assertAttributeEquals($options['entity'], 'entity', $this->action);
-        $this->assertAttributeEquals($options['service'], 'service', $this->action);
+        $this->assertAttributeEquals($options['context'], 'shippingContext', $this->action);
+        $this->assertAttributeEquals($options['method'], 'method', $this->action);
+        $this->assertAttributeEquals($options['methodType'], 'methodType', $this->action);
     }
 
     /**
      * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage Entity parameter is required
+     * @expectedExceptionMessage context parameter is required
      */
-    public function testInitializeNoEntityOption()
+    public function testInitializeNoContextOption()
     {
         $options = [
-            'service' => new PropertyPath('service'),
+            'method' => new PropertyPath('method'),
+            'methodType' => new PropertyPath('methodType'),
         ];
 
         $this->action->initialize($options);
@@ -83,112 +96,77 @@ class ShipmentCreateActionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
-     * @expectedExceptionMessage Service parameter is required
+     * @expectedExceptionMessage method parameter is required
      */
-    public function testInitializeNoServiceOption()
+    public function testInitializeNoMethodOption()
     {
         $options = [
-            'entity' => new PropertyPath('entity'),
+            'context' => new PropertyPath('context'),
+            'methodType' => new PropertyPath('methodType'),
         ];
 
         $this->action->initialize($options);
     }
 
     /**
-     * @dataProvider executeDataProvider
-     *
-     * @param $registryHasService
-     * @param $inputService
-     * @param $expectedService
+     * @expectedException \Oro\Component\Action\Exception\InvalidParameterException
+     * @expectedExceptionMessage methodType parameter is required
+     */
+    public function testInitializeNoMethodTypeOption()
+    {
+        $options = [
+            'context' => new PropertyPath('context'),
+            'method' => new PropertyPath('method'),
+        ];
+
+        $this->action->initialize($options);
+    }
+
+    /**
      * @throws \Oro\Component\Action\Exception\InvalidParameterException
      */
-    public function testExecute($registryHasService, $inputService, $expectedService)
+    public function testExecute()
     {
-        $entity = new Order();
-
-        $metaData = $this->createMock(ClassMetadata::class);
-        $metaData->expects(static::once())
-            ->method('getName')
-            ->willReturn('name');
-
-        $em = $this->createMock(EntityManagerInterface::class);
-        $em->expects(static::once())
-            ->method('getClassMetadata')
-            ->willReturn($metaData);
-
-        $this->doctrine->expects(static::once())
-            ->method('getManager')
-            ->willReturn($em);
-
+        $entity = $this->createMock(ShippingContextInterface::class);
         $context = new ActionData(
             [
-                'entity' => $entity,
-                'service' => $inputService,
+                'context' => $entity,
+                'method' => 'manual_shipping',
+                'methodType' => 'primary'
             ]
         );
-        $dataProvider = $this->createMock(ShippingServiceDataProviderInterface::class);
-        $dataProvider->expects(static::once())
-            ->method('setEntity')
-            ->with($entity)
-            ->willReturnSelf();
-        $dataFactory = $this->createMock(ShippingServiceDataFactoryInterface::class);
-        $dataFactory->expects(static::once())
-            ->method('createData')
-            ->with($dataProvider)
-            ->willReturn([]);
-        $integration = $this->createMock(ShippingServiceIntegrationInterface::class);
-        $integration->expects(static::once())
+
+        $entityManager = $this->createMock(ObjectManager::class);
+        $shippingMethod = $this->createMock(ShippingMethodInterface::class);
+        $shippingMethodType = $this->createMock(ShippingMethodTypeInterface::class);
+        $shipment = new Shipment();
+
+        $entityManager->expects(static::once())
+            ->method('persist')
+            ->with($shipment);
+        $entityManager->expects(static::once())
+            ->method('flush');
+        $shippingMethod->expects(static::once())
+            ->method('getType')
+            ->willReturn($shippingMethodType);
+        $shippingMethodType->expects(static::once())
             ->method('createShipment')
-            ->with($entity, []);
-
-        $this->registry->expects(static::any())
-            ->method('hasDataFactory')
-            ->with($inputService)
-            ->willReturn($registryHasService);
-
-        $this->registry->expects(static::any())
-            ->method('hasIntegration')
-            ->with($inputService)
-            ->willReturn($registryHasService);
-
-        $this->registry->expects(static::once())
-            ->method('getDataFactory')
-            ->with($expectedService)
-            ->willReturn($dataFactory);
-
-        $this->registry->expects(static::once())
-            ->method('getIntegration')
-            ->with($expectedService)
-            ->willReturn($integration);
-
-        $this->registry->expects(static::once())
-            ->method('getDataProvider')
-            ->with('name')
-            ->willReturn($dataProvider);
+            ->willReturn($shipment);
+        $this->shippingMethodProvider->expects(static::once())
+            ->method('getShippingMethod')
+            ->willReturn($shippingMethod);
+        $this->doctrine->expects(static::once())
+            ->method('getManagerForClass')
+            ->willReturn($entityManager);
 
         $this->action->initialize(
             [
-                'entity' => new PropertyPath('entity'),
-                'service' => new PropertyPath('service'),
+                'context' => new PropertyPath('context'),
+                'method' => new PropertyPath('method'),
+                'methodType' => new PropertyPath('methodType'),
             ]
         );
 
         $this->action->execute($context);
-    }
-
-    public function executeDataProvider()
-    {
-        return [
-            [
-                'registryHasService' => true,
-                'inputService' => 'ups',
-                'expectedService' => 'ups',
-            ],
-            [
-                'registryHasService' => false,
-                'inputService' => 'ups',
-                'expectedService' => ShipmentCreateAction::DEFAULT_SHIPPING_SERVICE,
-            ]
-        ];
     }
 }

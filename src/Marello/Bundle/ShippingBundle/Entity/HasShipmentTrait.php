@@ -2,8 +2,6 @@
 
 namespace Marello\Bundle\ShippingBundle\Entity;
 
-use Marello\Bundle\ShippingBundle\Entity\Shipment;
-
 use Doctrine\ORM\Mapping as ORM;
 
 trait HasShipmentTrait

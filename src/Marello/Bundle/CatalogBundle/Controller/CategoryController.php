@@ -2,11 +2,10 @@
 
 namespace Marello\Bundle\CatalogBundle\Controller;
 
-use Marello\Bundle\CatalogBundle\Entity\Category;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
-use Oro\Bundle\UIBundle\Route\Router;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Marello\Bundle\CatalogBundle\Entity\Category;
 
 class CategoryController extends Controller
 {
@@ -17,7 +16,7 @@ class CategoryController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format"="html"}
      * )
-     * @Security\AclAncestor("marello_category_view")
+     * @AclAncestor("marello_category_view")
      * @Config\Template
      */
     public function indexAction()
@@ -27,7 +26,7 @@ class CategoryController extends Controller
 
     /**
      * @Config\Route("/create", name="marello_category_create")
-     * @Security\AclAncestor("marello_category_create")
+     * @AclAncestor("marello_category_create")
      * @Config\Template("MarelloCatalogBundle:Category:update.html.twig")
      *
      * @return array
@@ -39,7 +38,7 @@ class CategoryController extends Controller
 
     /**
      * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_category_update")
-     * @Security\AclAncestor("marello_category_update")
+     * @AclAncestor("marello_category_update")
      * @Config\Template("MarelloCatalogBundle:Category:update.html.twig")
      *
      * @param Category $category
@@ -77,7 +76,7 @@ class CategoryController extends Controller
 
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_category_view")
-     * @Security\AclAncestor("marello_category_view")
+     * @AclAncestor("marello_category_view")
      * @Config\Template("MarelloCatalogBundle:Category:view.html.twig")
      *
      * @param Category $category

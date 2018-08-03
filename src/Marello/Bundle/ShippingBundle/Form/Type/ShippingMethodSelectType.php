@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ShippingBundle\Form\Type;
 
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
+use Marello\Bundle\ShippingBundle\Provider\ShippingMethodChoicesProviderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,16 +12,16 @@ class ShippingMethodSelectType extends AbstractType
     const NAME = 'marello_shipping_method_select';
     
     /**
-     * @var ShippingServiceRegistry
+     * @var ShippingMethodChoicesProviderInterface
      */
-    protected $shippingServiceRegistry;
+    protected $shippingMethodChoicesProvider;
 
     /**
-     * @param ShippingServiceRegistry $shippingServiceRegistry
+     * @param ShippingMethodChoicesProviderInterface $shippingMethodChoicesProvider
      */
-    public function __construct(ShippingServiceRegistry $shippingServiceRegistry)
+    public function __construct(ShippingMethodChoicesProviderInterface $shippingMethodChoicesProvider)
     {
-        $this->shippingServiceRegistry = $shippingServiceRegistry;
+        $this->shippingMethodChoicesProvider = $shippingMethodChoicesProvider;
     }
 
     /**
@@ -41,12 +41,7 @@ class ShippingMethodSelectType extends AbstractType
      */
     protected function getChoices()
     {
-        $choices = [];
-        foreach (array_keys($this->shippingServiceRegistry->getIntegrations()) as $method) {
-            $choices[$method] = strtoupper($method);
-        }
-
-        return $choices;
+        return $this->shippingMethodChoicesProvider->getMethods();
     }
 
     /**

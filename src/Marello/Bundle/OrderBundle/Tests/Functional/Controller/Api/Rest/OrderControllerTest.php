@@ -241,7 +241,6 @@ class OrderControllerTest extends WebTestCase
             $data
         );
         $response = json_decode($this->client->getResponse()->getContent(), true);
-
         $this->assertArrayHasKey('id', $response);
 
         /** @var Order $order */

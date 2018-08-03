@@ -137,7 +137,7 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
 
             $inventoryItem->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
             $this->handleInventoryUpdate($product, $inventoryItem, $data['inventory_qty'], 0, null);
-            $this->balanceInventory($product);
+            $this->balanceInventory($product, $data['inventory_qty']);
         }
     }
 
@@ -166,18 +166,26 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
     }
 
     /**
-     * @param $product
-     * @throws \Exception
+     * @param Product $product
+     * @param $inventoryQty $int
      */
-    public function balanceInventory($product)
+    public function balanceInventory($product, $inventoryQty)
     {
-        /** @var InventoryBalancer $balancer */
-        $balancer = $this->container->get('marello_inventory.model.balancer.inventory_balancer');
-        try {
-            $balancer->balanceInventory($product, false, true);
-        } catch (\Exception $exception) {
-            var_dump($exception->getTraceAsString());
-            throw new \Exception($exception->getMessage());
+        /** @var SalesChannel[] $salesChannels */
+        $salesChannels = $product->getChannels();
+        foreach ($salesChannels as $salesChannel) {
+            $salesChannelGroups[$salesChannel->getGroup()->getId()] = $salesChannel->getGroup();
+        }
+        /** @var VirtualInventoryHandler $handler */
+        $handler = $this->container->get('marello_inventory.model.virtualinventory.virtual_inventory_handler');
+        $balancedQty = ($inventoryQty / count($salesChannelGroups));
+        foreach ($salesChannelGroups as $salesChannelGroup) {
+            /** @var VirtualInventoryLevel $level */
+            $level = $handler->findExistingVirtualInventory($product, $salesChannelGroup);
+            if (!$level) {
+                $level = $handler->createVirtualInventory($product, $salesChannelGroup, $balancedQty);
+            }
+            $handler->saveVirtualInventory($level, true, true);
         }
     }
 

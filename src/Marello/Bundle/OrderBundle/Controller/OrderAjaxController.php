@@ -11,13 +11,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class OrderAjaxController extends Controller
 {
     /**
      * @Config\Route("/form-changes/{id}", name="marello_order_form_changes", defaults={"id" = 0})
      * @Config\Method({"POST"})
-     * @Security\AclAncestor("marello_order_create")
+     * @AclAncestor("marello_order_create")
      *
      * @param Request $request
      * @param Order|null $order

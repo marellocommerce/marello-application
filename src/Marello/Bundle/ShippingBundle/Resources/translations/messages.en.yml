@@ -11,7 +11,32 @@ marello:
             ups_shipment_digest.label:         UPS Shipment Digest
             shipping_label.label:              Shipping Label
             organization.label:                Organization
-
+        shippingmethodsconfigsrule:
+            entity_label: Shipping Rule
+            entity_plural_label: Shipping Rules
+            id.label: Id
+            rule.label: Rule
+            destinations.label: Destinations
+            address.label: Address
+            method_configs.label: Configurations
+            currency.label: Currency
+            organization.label: Organization
+        shippingmethodconfig:
+            entity_label: Shipping Rule Method Config
+            entity_plural_label: Shipping Rule Methods Configs
+            id.label: Id
+            method.label: Method
+            options.label: Options
+            method_configs_rule.label: Shipping Rule
+            type_configs.label: Types
+        shippingmethodtypeconfig:
+            entity_label: Shipping Rule Method Type Config
+            entity_plural_label: Shipping Rule Method Types Configs
+            id.label: Id
+            type.label: Type
+            enabled.label: Enabled
+            options.label: Options
+            method_config.label: Method Config
         system_configuration:
             ups_username:               'API Username'
             ups_password:               'API Password'
@@ -41,3 +66,32 @@ marello:
             ups_package_tracking_number.label: Ups Tracking number
             ups_shipment_digest.label: Ups Shipment Digest
             shipping_label.label: Shipping Label
+
+        notification:
+            channel:
+                enabled: Shipping rule has been enabled successfully
+                disabled: Shipping rule has been disabled successfully
+
+        sections:
+            general: 'General Information'
+            shippingrule_destination: 'Destinations'
+            shippingrule_conditions: 'Conditions'
+            shippingrule_configurations:
+                no_methods.message: 'Please enable at least one shipping integration.'
+                label: 'Shipping Method Configurations'
+                placeholder.label: 'Choose a Method...'
+
+        controller:
+            rule.saved.message: 'Shipping rule has been saved'
+
+        shipping_methods_table:
+            method.label: Method
+            options.label: Options
+            additional_options.label: Additional Options
+            option.label: Option
+            status.label: Status
+            active.label: Active
+
+        datagrid:
+            action.enable: Enable
+            action.disable: Disable
