@@ -3,10 +3,14 @@
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Method\Factory;
 
 use Doctrine\Common\Collections\Collection;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Generator\IntegrationIdentifierGeneratorInterface;
 use Oro\Bundle\IntegrationBundle\Provider\IntegrationIconProviderInterface;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
+
 use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
 use Marello\Bundle\UPSBundle\Entity\ShippingService;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
@@ -59,12 +63,16 @@ class UPSShippingMethodFactoryTest extends \PHPUnit_Framework_TestCase
      */
     private $factory;
 
+    /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject $dispatcher */
+    private $dispatcher;
+
     /**
      * {@inheritDoc}
      */
     protected function setUp()
     {
         $this->transport = $this->createMock(UPSTransport::class);
+        $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
         $this->priceRequestFactory = $this->createMock(PriceRequestFactory::class);
         $this->localizationHelper = $this->createMock(LocalizationHelper::class);
         $this->shippingPriceCache = $this->createMock(ShippingPriceCache::class);
@@ -79,7 +87,8 @@ class UPSShippingMethodFactoryTest extends \PHPUnit_Framework_TestCase
             $this->integrationIconProvider,
             $this->shippingPriceCache,
             $this->integrationIdentifierGenerator,
-            $this->methodTypeFactory
+            $this->methodTypeFactory,
+            $this->dispatcher
         );
     }
 
