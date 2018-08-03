@@ -14,7 +14,7 @@ class ManualShippingServiceIntegration implements ShippingServiceIntegrationInte
     public $doctrine;
 
     /**
-     * UPSShippingServiceIntegration constructor.
+     * ManualShippingServiceIntegration constructor.
      *
      * @param Registry $doctrine
      */
