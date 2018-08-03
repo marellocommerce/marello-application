@@ -8,7 +8,6 @@ use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy;
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 
 class MinimumDistanceWFAStrategyTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,17 +21,10 @@ class MinimumDistanceWFAStrategyTest extends \PHPUnit_Framework_TestCase
      */
     protected $minimumDistanceWFAStrategy;
 
-    /**
-     * @var FeatureChecker|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $featureChecker;
-
     protected function setUp()
     {
-        $this->featureChecker = $this->createMock(FeatureChecker::class);
         $this->distanceCalculator = $this->createMock(AddressesDistanceCalculatorInterface::class);
         $this->minimumDistanceWFAStrategy = new MinimumDistanceWFAStrategy($this->distanceCalculator);
-        $this->minimumDistanceWFAStrategy->setFeatureChecker($this->featureChecker);
     }
 
     public function testGetIdentifier()
@@ -52,33 +44,11 @@ class MinimumDistanceWFAStrategyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider isEnabledDataProvider
-     *
-     * @param bool $isFeatureEnabled
-     * @param bool $isEnabled
+     * {@inheritdoc}
      */
-    public function testIsEnabled($isFeatureEnabled, $isEnabled)
+    public function testIsEnabled()
     {
-        $this->featureChecker
-            ->expects(static::once())
-            ->method('isFeatureEnabled')
-            ->willReturn($isFeatureEnabled);
-
-        static::assertEquals($isEnabled, $this->minimumDistanceWFAStrategy->isEnabled());
-    }
-
-    public function isEnabledDataProvider()
-    {
-        return [
-            [
-                'isFeatureEnabled' => true,
-                'isEnabled' => true,
-            ],
-            [
-                'isFeatureEnabled' => false,
-                'isEnabled' => false,
-            ]
-        ];
+        static::assertEquals(true, $this->minimumDistanceWFAStrategy->isEnabled());
     }
 
     /**
@@ -144,10 +114,6 @@ class MinimumDistanceWFAStrategyTest extends \PHPUnit_Framework_TestCase
                 $distances[2],
                 $distances[1]
             );
-        $this->featureChecker
-            ->expects(static::once())
-            ->method('isFeatureEnabled')
-            ->willReturn(true);
 
         static::assertEquals(
             [$initialResults[$resultIndex]],

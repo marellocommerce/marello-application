@@ -10,7 +10,7 @@ use FOS\RestBundle\View\View;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +34,7 @@ class WFARuleController extends RestController implements ClassResourceInterface
      *      defaults={"version"="latest", "_format"="json"}
      * )
      * @ApiDoc(description="Enable WFA Rule", resource=true)
-     * @Security\AclAncestor("marelloenterprise_inventory_wfa_rule_update")
+     * @AclAncestor("marelloenterprise_inventory_wfa_rule_update")
      *
      * @param WFARule $wfaRule
      * @return Response
@@ -56,7 +56,7 @@ class WFARuleController extends RestController implements ClassResourceInterface
      *      defaults={"version"="latest", "_format"="json"}
      * )
      * @ApiDoc(description="Disable WFA Rule", resource=true)
-     * @Security\AclAncestor("marelloenterprise_inventory_wfa_rule_update")
+     * @AclAncestor("marelloenterprise_inventory_wfa_rule_update")
      *
      * @param WFARule $wfaRule
      * @return Response
@@ -75,7 +75,7 @@ class WFARuleController extends RestController implements ClassResourceInterface
      *      requirements={"version"="latest|v1"},
      *      defaults={"version"="latest", "_format"="json"}
      * )
-     * @Security\AclAncestor("marelloenterprise_inventory_wfa_rule_update")
+     * @AclAncestor("marelloenterprise_inventory_wfa_rule_update")
      *
      * @param string $gridName
      * @param string $actionName

@@ -7,7 +7,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy;
+use MarelloEnterprise\Bundle\InventoryBundle\Migrations\Data\ORM\LoadSystemWFARules;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 class OrganizationCreateListener
@@ -41,7 +41,7 @@ class OrganizationCreateListener
         if ($this->installed) {
             $this->entityManager = $args->getEntityManager();
             $this->createSystemWarehouseGroupForOrganization($organization);
-            $this->createSystemWFARuleForOrganization($organization);
+            $this->createSystemWFARulesForOrganization($organization);
         }
     }
 
@@ -64,19 +64,39 @@ class OrganizationCreateListener
     /**
      * @param Organization $organization
      */
-    private function createSystemWFARuleForOrganization(Organization $organization)
+    private function createSystemWFARulesForOrganization(Organization $organization)
     {
-        $rule = $this->entityManager
+        
+        $rules = $this->entityManager
             ->getRepository(Rule::class)
-            ->findOneBy(['system' => true]);
+            ->findBy(['system' => true]);
 
-        $wfaRule = new WFARule();
-        $wfaRule
-            ->setRule($rule)
-            ->setStrategy(MinimumQuantityWFAStrategy::IDENTIFIER)
-            ->setOrganization($organization);
+        foreach ($rules as $rule) {
+            if ($strategyIdentifier = $this->getStrategyIdentifier($rule)) {
+                $wfaRule = new WFARule();
+                $wfaRule
+                    ->setRule($rule)
+                    ->setStrategy($strategyIdentifier)
+                    ->setOrganization($organization);
 
-        $this->entityManager->persist($wfaRule);
+                $this->entityManager->persist($wfaRule);
+            }
+        }
         $this->entityManager->flush();
+    }
+
+    /**
+     * @param Rule $rule
+     * @return string|null
+     */
+    private function getStrategyIdentifier(Rule $rule)
+    {
+        foreach (LoadSystemWFARules::RULES_DATA as $ruleData) {
+            if ($ruleData['name'] === $rule->getName()) {
+                return $ruleData['strategy'];
+            }
+        }
+        
+        return null;
     }
 }

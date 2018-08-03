@@ -166,8 +166,6 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy'
         arguments:
             - '@marelloenterprise_address.distance_calculator.main'
-        calls:
-            - [setFeatureChecker, ['@oro_featuretoggle.checker.feature_checker']]
         tags:
             - { name: marello_inventory_wfa_strategy }
 
@@ -179,6 +177,7 @@ services:
 
     marelloenterprise_inventory.provider.order_warehouse:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+        decorates: marello_inventory.provider.order_warehouse
         arguments:
             - '@marelloenterprise_inventory.wfa_strategy.registry'
             - '@marello_rule.rule_filtration.service'
