@@ -17,6 +17,7 @@ use Marello\Bundle\UPSBundle\Form\Type\UPSShippingMethodOptionsType;
 use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
 use Marello\Bundle\UPSBundle\Provider\UPSTransport as UPSTransportProvider;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\IntegrationBundle\Entity\Transport;
 
 class UPSShippingMethod implements
     ShippingMethodInterface,
@@ -90,7 +91,7 @@ class UPSShippingMethod implements
      * @param string                      $label
      * @param string|null                 $icon
      * @param array                       $types
-     * @param UPSSettings                 $transport
+     * @param Transport                   $transport
      * @param UPSTransportProvider        $transportProvider
      * @param UPSRequestFactoryInterface  $requestFactory
      * @param ShippingPriceCache          $cache
@@ -101,7 +102,7 @@ class UPSShippingMethod implements
         $label,
         $icon,
         array $types,
-        UPSSettings $transport,
+        Transport $transport,
         UPSTransportProvider $transportProvider,
         UPSRequestFactoryInterface  $requestFactory,
         ShippingPriceCache $cache,

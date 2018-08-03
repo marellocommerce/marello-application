@@ -10,6 +10,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class MarelloShippingBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
