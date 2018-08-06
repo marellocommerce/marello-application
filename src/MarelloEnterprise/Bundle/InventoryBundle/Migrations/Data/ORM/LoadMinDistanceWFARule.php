@@ -23,7 +23,7 @@ class LoadMinDistanceWFARule extends AbstractFixture implements ContainerAwareIn
     /**
      * @inheritDoc
      */
-    function getDependencies()
+    public function getDependencies()
     {
         return [
             LoadSystemWFARules::class
