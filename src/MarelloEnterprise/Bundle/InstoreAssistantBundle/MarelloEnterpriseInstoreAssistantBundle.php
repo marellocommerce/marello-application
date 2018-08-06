@@ -9,13 +9,4 @@ use MarelloEnterprise\Bundle\InstoreAssistantBundle\DependencyInjection\Compiler
 
 class MarelloEnterpriseInstoreAssistantBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-
-        $container->addCompilerPass(new AddOroProcessorsCompilerPass());
-    }
 }
