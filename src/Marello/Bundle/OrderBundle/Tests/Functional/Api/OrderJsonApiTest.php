@@ -67,4 +67,23 @@ class OrderJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseContains('get_order_by_orderNumber.yml', $response);
     }
+
+
+    /**
+     * Create a new order
+     */
+    public function testCreateNewOrder()
+    {
+        $response = $this->post(
+            ['entity' => self::TESTING_ENTITY],
+            'order_create.yml'
+        );
+
+        $this->assertJsonResponse($response);
+
+        $responseContent = json_decode($response->getContent());
+        /** @var Order $order */
+        $order = $this->getEntityManager()->find(Order::class, $responseContent->data->id);
+        $this->assertEquals($order->getOrderNumber(), $responseContent->data->attributes->orderNumber);
+    }
 }
