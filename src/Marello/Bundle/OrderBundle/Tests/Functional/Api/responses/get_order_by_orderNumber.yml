@@ -15,6 +15,9 @@ data:
         shippingAmountInclTax: '10.0000'
         shippingAmountExclTax: '10.0000'
         shippingMethod: null
+        shippingMethodType: null
+        estimatedShippingCostAmount: null
+        overriddenShippingCostAmount: null
         discountAmount: null
         discountPercent: null
         couponCode: null
@@ -44,11 +47,15 @@ data:
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '22'
+                id: '19'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '22'
+                id: '19'
+        salesChannel:
+            data:
+                type: saleschannels
+                id: '<toString(@channel3->id)>'
         localization:
             data: null
         organization:

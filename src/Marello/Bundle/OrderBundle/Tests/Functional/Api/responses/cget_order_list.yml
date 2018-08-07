@@ -16,6 +16,9 @@ data:
             shippingAmountInclTax: '0.0000'
             shippingAmountExclTax: '0.0000'
             shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
             discountAmount: null
             discountPercent: null
             couponCode: null
@@ -36,11 +39,15 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '20'
+                    id: '17'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '20'
+                    id: '17'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel2->id)>'
             localization:
                 data: null
             organization:
@@ -64,6 +71,9 @@ data:
             shippingAmountInclTax: '10.0000'
             shippingAmountExclTax: '10.0000'
             shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
             discountAmount: null
             discountPercent: null
             couponCode: null
@@ -93,11 +103,15 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '22'
+                    id: '19'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '22'
+                    id: '19'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel3->id)>'
             localization:
                 data: null
             organization:
@@ -121,6 +135,9 @@ data:
             shippingAmountInclTax: '0.0000'
             shippingAmountExclTax: '0.0000'
             shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
             discountAmount: null
             discountPercent: null
             couponCode: null
@@ -147,11 +164,15 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '24'
+                    id: '21'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '24'
+                    id: '21'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel2->id)>'
             localization:
                 data: null
             organization:
@@ -175,6 +196,9 @@ data:
             shippingAmountInclTax: '0.0000'
             shippingAmountExclTax: '0.0000'
             shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
             discountAmount: null
             discountPercent: null
             couponCode: null
@@ -204,11 +228,15 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '26'
+                    id: '23'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '26'
+                    id: '23'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel3->id)>'
             localization:
                 data: null
             organization:
@@ -232,6 +260,9 @@ data:
             shippingAmountInclTax: '5.0000'
             shippingAmountExclTax: '5.0000'
             shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
             discountAmount: null
             discountPercent: null
             couponCode: null
@@ -252,11 +283,15 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '28'
+                    id: '25'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '28'
+                    id: '25'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel3->id)>'
             localization:
                 data: null
             organization:
@@ -280,6 +315,9 @@ data:
             shippingAmountInclTax: '0.0000'
             shippingAmountExclTax: '0.0000'
             shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
             discountAmount: null
             discountPercent: null
             couponCode: null
@@ -303,11 +341,15 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '30'
+                    id: '27'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '30'
+                    id: '27'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel3->id)>'
             localization:
                 data: null
             organization:
@@ -331,6 +373,9 @@ data:
             shippingAmountInclTax: '5.0000'
             shippingAmountExclTax: '5.0000'
             shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
             discountAmount: null
             discountPercent: null
             couponCode: null
@@ -360,11 +405,15 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '32'
+                    id: '29'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '32'
+                    id: '29'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel3->id)>'
             localization:
                 data: null
             organization:
@@ -388,6 +437,9 @@ data:
             shippingAmountInclTax: '5.0000'
             shippingAmountExclTax: '5.0000'
             shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
             discountAmount: null
             discountPercent: null
             couponCode: null
@@ -408,11 +460,15 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '34'
+                    id: '31'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '34'
+                    id: '31'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel2->id)>'
             localization:
                 data: null
             organization:
@@ -436,6 +492,9 @@ data:
             shippingAmountInclTax: '5.0000'
             shippingAmountExclTax: '5.0000'
             shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
             discountAmount: null
             discountPercent: null
             couponCode: null
@@ -459,11 +518,15 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '36'
+                    id: '33'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '36'
+                    id: '33'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel2->id)>'
             localization:
                 data: null
             organization:
@@ -487,6 +550,9 @@ data:
             shippingAmountInclTax: '10.0000'
             shippingAmountExclTax: '10.0000'
             shippingMethod: null
+            shippingMethodType: null
+            estimatedShippingCostAmount: null
+            overriddenShippingCostAmount: null
             discountAmount: null
             discountPercent: null
             couponCode: null
@@ -510,11 +576,15 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '38'
+                    id: '35'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '38'
+                    id: '35'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel1->id)>'
             localization:
                 data: null
             organization:
