@@ -49,7 +49,6 @@ class LoadCustomerData extends AbstractFixture
             $this->closeFiles($handle);
         }
         $this->manager->flush();
-
     }
 
     /**
