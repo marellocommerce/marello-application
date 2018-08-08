@@ -3,7 +3,7 @@ data:
         type: products
         id: p1
         attributes:
-            productId: 1
+            productId: 901
             name: product1
             manufacturingCode: null
             productType: null
@@ -11,7 +11,6 @@ data:
             weight: 0
             warranty: null
             data: []
-            price: {  }
         relationships:
             status:
                 data:
@@ -21,13 +20,27 @@ data:
                 data:
                     type: organizations
                     id: '1'
+            prices:
+                data:
+                    -
+                        type: productprices
+                        id: '2661'
+            channelPrices:
+                data: []
+            channels:
+                data:
+                    -
+                        type: saleschannels
+                        id: '<toString(@channel1->id)>'
+            categories:
+                data: []
             image:
                 data: null
     -
         type: products
         id: p2
         attributes:
-            productId: 2
+            productId: 902
             name: 'product 2'
             manufacturingCode: null
             productType: null
@@ -35,7 +48,6 @@ data:
             weight: 2
             warranty: null
             data: []
-            price: {  }
         relationships:
             status:
                 data:
@@ -45,13 +57,33 @@ data:
                 data:
                     type: organizations
                     id: '1'
+            prices:
+                data:
+                    -
+                        type: productprices
+                        id: '2662'
+                    -
+                        type: productprices
+                        id: '2663'
+            channelPrices:
+                data: []
+            channels:
+                data:
+                    -
+                        type: saleschannels
+                        id: '<toString(@channel1->id)>'
+                    -
+                        type: saleschannels
+                        id: '<toString(@channel2->id)>'
+            categories:
+                data: []
             image:
                 data: null
     -
         type: products
         id: p3
         attributes:
-            productId: 3
+            productId: 903
             name: 'product 3'
             manufacturingCode: null
             productType: null
@@ -59,7 +91,6 @@ data:
             weight: 5
             warranty: null
             data: []
-            price: {  }
         relationships:
             status:
                 data:
@@ -69,13 +100,33 @@ data:
                 data:
                     type: organizations
                     id: '1'
+            prices:
+                data:
+                    -
+                        type: productprices
+                        id: '2664'
+                    -
+                        type: productprices
+                        id: '2665'
+            channelPrices:
+                data: []
+            channels:
+                data:
+                    -
+                        type: saleschannels
+                        id: '<toString(@channel1->id)>'
+                    -
+                        type: saleschannels
+                        id: '<toString(@channel3->id)>'
+            categories:
+                data: []
             image:
                 data: null
     -
         type: products
         id: p4
         attributes:
-            productId: 4
+            productId: 904
             name: 'product 4'
             manufacturingCode: null
             productType: null
@@ -83,7 +134,6 @@ data:
             weight: 10
             warranty: null
             data: []
-            price: {  }
         relationships:
             status:
                 data:
@@ -93,5 +143,31 @@ data:
                 data:
                     type: organizations
                     id: '1'
+            prices:
+                data:
+                    -
+                        type: productprices
+                        id: '2666'
+                    -
+                        type: productprices
+                        id: '2667'
+                    -
+                        type: productprices
+                        id: '2668'
+            channelPrices:
+                data: []
+            channels:
+                data:
+                    -
+                        type: saleschannels
+                        id: '<toString(@channel1->id)>'
+                    -
+                        type: saleschannels
+                        id: '<toString(@channel2->id)>'
+                    -
+                        type: saleschannels
+                        id: '<toString(@channel3->id)>'
+            categories:
+                data: []
             image:
                 data: null

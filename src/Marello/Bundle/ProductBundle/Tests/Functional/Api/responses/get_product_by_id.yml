@@ -2,7 +2,7 @@ data:
     type: products
     id: p1
     attributes:
-        productId: 1
+        productId: 901
         name: product1
         manufacturingCode: null
         productType: null
@@ -10,7 +10,6 @@ data:
         weight: 0
         warranty: null
         data: []
-        price: {  }
     relationships:
         status:
             data:
@@ -20,5 +19,19 @@ data:
             data:
                 type: organizations
                 id: '1'
+        prices:
+            data:
+                -
+                    type: productprices
+                    id: '2661'
+        channelPrices:
+            data: []
+        channels:
+            data:
+                -
+                    type: saleschannels
+                    id: '<toString(@channel1->id)>'
+        categories:
+            data: []
         image:
             data: null
