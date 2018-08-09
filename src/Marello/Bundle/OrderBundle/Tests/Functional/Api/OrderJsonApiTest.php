@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Api;
 
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -72,11 +73,11 @@ class OrderJsonApiTest extends RestJsonApiTestCase
     /**
      * Create a new order
      */
-    public function testCreateNewOrder()
+    public function testCreateNewOrderWithExistingCustomer()
     {
         $response = $this->post(
             ['entity' => self::TESTING_ENTITY],
-            'order_create.yml'
+            'order_create_with_existing_customer.yml'
         );
 
         $this->assertJsonResponse($response);
@@ -84,6 +85,33 @@ class OrderJsonApiTest extends RestJsonApiTestCase
         $responseContent = json_decode($response->getContent());
         /** @var Order $order */
         $order = $this->getEntityManager()->find(Order::class, $responseContent->data->id);
-        $this->assertEquals($order->getOrderNumber(), $responseContent->data->attributes->orderNumber);
+        $this->assertCount($order->getItems()->count(), $responseContent->data->relationships->items->data);
+    }
+
+    /**
+     * Create a new order
+     */
+    public function testCreateNewOrderWithNewCustomer()
+    {
+        $response = $this->post(
+            ['entity' => self::TESTING_ENTITY],
+            'order_create_with_new_customer.yml'
+        );
+
+        $this->assertJsonResponse($response);
+
+        $responseContent = json_decode($response->getContent());
+        /** @var Order $order */
+        $order = $this->getEntityManager()->find(Order::class, $responseContent->data->id);
+        $this->assertEquals($order->getCustomer()->getId(), $responseContent->data->relationships->customer->data->id);
+
+        /** @var Customer $customer */
+        $customer = $this->getEntityManager()->find(
+            Customer::class,
+            $responseContent->data->relationships->customer->data->id
+        );
+        $this->assertEquals($order->getCustomer()->getEmail(), $customer->getEmail());
+        $this->assertNull($customer->getPrimaryAddress());
+        $this->assertNull($customer->getShippingAddress());
     }
 }

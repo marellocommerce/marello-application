@@ -30,16 +30,16 @@ data:
             data:
                 -
                     type: orderitems
-                    id: '26'
+                    id: '2'
                 -
                     type: orderitems
-                    id: '27'
+                    id: '3'
                 -
                     type: orderitems
-                    id: '28'
+                    id: '4'
                 -
                     type: orderitems
-                    id: '29'
+                    id: '5'
         customer:
             data:
                 type: customers
@@ -47,15 +47,15 @@ data:
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '54'
+                id: '19'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '54'
+                id: '19'
         salesChannel:
             data:
                 type: saleschannels
-                id: '<toString(@channel3->id)>'
+                id: chan_gbp
         localization:
             data: null
         organization:

@@ -1,6 +1,7 @@
 api:
     entities:
         Marello\Bundle\SalesBundle\Entity\SalesChannel:
+            identifier_field_names: [code]
             fields:
                 createdAt:
                     exclude: true

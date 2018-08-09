@@ -26,10 +26,10 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
             - NotBlank: ~
         rowTotalExclTax:
             - NotBlank: ~
-    constraints:
-        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory:
-            fields: [quantity, order, product]
-            errorPath: quantity
+#    constraints:
+#        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory:
+#            fields: [quantity, order, product]
+#            errorPath: quantity
 
 Marello\Bundle\OrderBundle\Entity\Order:
     properties:

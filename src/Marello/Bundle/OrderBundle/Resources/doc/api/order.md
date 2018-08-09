@@ -18,7 +18,7 @@ The list of records that will be returned, could be limited by <a href="https://
 
 ### create
 
-Create a new customer record.
+Create a new order record.
 
 The created record is returned in the response.
 
@@ -32,14 +32,78 @@ Example without address:
 
 ```JSON
 {
-   "data":{
-      "type":"orders",
-      "attributes":{
-         "firstName":"Firstname",
-         "lastName":"Lastname",
-         "email":"new_customer@example.com"
+  "data": [
+    {
+      "type": "orders",
+      "id": "1",
+      "attributes": {
+        "orderReference": null,
+        "invoiceReference": null,
+        "subtotal": "50.5000",
+        "totalTax": "0.0000",
+        "grandTotal": "60.5000",
+        "currency": "EUR",
+        "paymentMethod": null,
+        "paymentReference": null,
+        "paymentDetails": null,
+        "shippingAmountInclTax": "10.0000",
+        "shippingAmountExclTax": "10.0000",
+        "shippingMethod": null,
+        "shippingMethodType": null,
+        "estimatedShippingCostAmount": null,
+        "overriddenShippingCostAmount": "10.0000",
+        "discountAmount": null,
+        "discountPercent": null,
+        "couponCode": null,
+        "invoicedAt": null,
+        "data": [],
+        "locale": null
+      },
+      "relationships": {
+        "items": {
+          "data": [
+            {
+              "type": "orderitems",
+              "id": "1"
+            }
+          ]
+        },
+        "customer": {
+          "data": {
+            "type": "customers",
+            "id": "4"
+          }
+        },
+        "billingAddress": {
+          "data": {
+            "type": "marelloaddresses",
+            "id": "2010"
+          }
+        },
+        "shippingAddress": {
+          "data": {
+            "type": "marelloaddresses",
+            "id": "2011"
+          }
+        },
+        "salesChannel": {
+          "data": {
+            "type": "saleschannels",
+            "id": "6"
+          }
+        },
+        "localization": {
+          "data": null
+        },
+        "organization": {
+          "data": {
+            "type": "organizations",
+            "id": "1"
+          }
+        }
       }
-   }
+    }
+  ]
 }
 ```
 

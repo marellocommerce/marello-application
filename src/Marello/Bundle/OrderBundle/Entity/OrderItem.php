@@ -304,7 +304,7 @@ class OrderItem extends ExtendOrderItem implements
     protected $returnItems;
 
     /**
-     * @var Product
+     * @var TaxCode
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\TaxBundle\Entity\TaxCode")
      * @ORM\JoinColumn(name="tax_code_id", referencedColumnName="id", onDelete="SET NULL")
