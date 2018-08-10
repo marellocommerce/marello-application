@@ -3,7 +3,7 @@ data:
         type: products
         id: p1
         attributes:
-            productId: 5
+            productId: 905
             name: product1
             manufacturingCode: null
             productType: null
@@ -24,7 +24,7 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '9'
+                        id: '2669'
             channelPrices:
                 data: []
             channels:
@@ -44,7 +44,7 @@ data:
         type: products
         id: p2
         attributes:
-            productId: 6
+            productId: 906
             name: 'product 2'
             manufacturingCode: null
             productType: null
@@ -65,10 +65,10 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '10'
+                        id: '2670'
                     -
                         type: productprices
-                        id: '11'
+                        id: '2671'
             channelPrices:
                 data: []
             channels:
@@ -91,7 +91,7 @@ data:
         type: products
         id: p3
         attributes:
-            productId: 7
+            productId: 907
             name: 'product 3'
             manufacturingCode: null
             productType: null
@@ -112,10 +112,10 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '12'
+                        id: '2672'
                     -
                         type: productprices
-                        id: '13'
+                        id: '2673'
             channelPrices:
                 data: []
             channels:
@@ -138,7 +138,7 @@ data:
         type: products
         id: p4
         attributes:
-            productId: 8
+            productId: 908
             name: 'product 4'
             manufacturingCode: null
             productType: null
@@ -159,13 +159,13 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '14'
+                        id: '2674'
                     -
                         type: productprices
-                        id: '15'
+                        id: '2675'
                     -
                         type: productprices
-                        id: '16'
+                        id: '2676'
             channelPrices:
                 data: []
             channels:

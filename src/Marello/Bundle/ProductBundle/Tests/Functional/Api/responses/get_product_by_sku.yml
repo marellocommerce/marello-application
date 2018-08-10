@@ -3,7 +3,7 @@ data:
         type: products
         id: p1
         attributes:
-            productId: 5
+            productId: 905
             name: product1
             manufacturingCode: null
             productType: null
@@ -24,7 +24,7 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '9'
+                        id: '2669'
             channelPrices:
                 data: []
             channels:

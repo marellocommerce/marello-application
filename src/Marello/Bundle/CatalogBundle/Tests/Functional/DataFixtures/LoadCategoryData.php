@@ -26,6 +26,9 @@ class LoadCategoryData extends AbstractFixture implements DependentFixtureInterf
     /** @var ObjectManager $manager */
     protected $manager;
 
+    /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
+    protected $defaultOrganization;
+
     protected $data = [
         self::CATEGORY_1_REF => [
             'name'          => 'category with multiple products',
@@ -62,6 +65,14 @@ class LoadCategoryData extends AbstractFixture implements DependentFixtureInterf
     public function load(ObjectManager $manager)
     {
         $this->manager = $manager;
+        $organizations = $this->manager
+            ->getRepository('OroOrganizationBundle:Organization')
+            ->findAll();
+
+        if (is_array($organizations) && count($organizations) > 0) {
+            $this->defaultOrganization = array_shift($organizations);
+        }
+
         $this->loadCategories();
     }
 
@@ -87,6 +98,7 @@ class LoadCategoryData extends AbstractFixture implements DependentFixtureInterf
         $category = new Category();
         $category->setName($data['name']);
         $category->setCode($data['code']);
+        $category->setOrganization($this->defaultOrganization);
 
         if (isset($data['products'])) {
             foreach ($data['products'] as $productRef) {

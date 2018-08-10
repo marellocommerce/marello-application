@@ -30,6 +30,7 @@ class ProductJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(4, $response);
+        $this->dumpYmlTemplate('cget_product_list.yml', $response);
         $this->assertResponseContains('cget_product_list.yml', $response);
     }
 
@@ -45,6 +46,7 @@ class ProductJsonApiTest extends RestJsonApiTestCase
             []
         );
         $this->assertJsonResponse($response);
+        $this->dumpYmlTemplate('get_product_by_id.yml', $response);
         $this->assertResponseContains('get_product_by_id.yml', $response);
     }
 
@@ -63,6 +65,7 @@ class ProductJsonApiTest extends RestJsonApiTestCase
         );
         $this->assertJsonResponse($response);
         $this->assertResponseCount(1, $response);
+        $this->dumpYmlTemplate('get_product_by_sku.yml', $response);
         $this->assertResponseContains('get_product_by_sku.yml', $response);
     }
 

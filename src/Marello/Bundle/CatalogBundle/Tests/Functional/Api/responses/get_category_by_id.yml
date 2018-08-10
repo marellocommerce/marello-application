@@ -1,0 +1,20 @@
+data:
+    type: categories
+    id: '<toString(@category1->id)>'
+    attributes:
+        name: 'category with multiple products'
+        code: category_1
+        description: null
+    relationships:
+        products:
+            data:
+                -
+                    type: products
+                    id: p1
+                -
+                    type: products
+                    id: p2
+        organization:
+            data:
+                type: organizations
+                id: '1'
