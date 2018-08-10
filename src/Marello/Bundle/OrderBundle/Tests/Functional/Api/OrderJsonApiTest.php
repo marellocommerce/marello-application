@@ -32,6 +32,7 @@ class OrderJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(10, $response);
+//        $this->dumpYmlTemplate('cget_order_list.yml', $response);
         $this->assertResponseContains('cget_order_list.yml', $response);
     }
 
@@ -48,6 +49,7 @@ class OrderJsonApiTest extends RestJsonApiTestCase
         );
 
         $this->assertJsonResponse($response);
+//        $this->dumpYmlTemplate('get_order_by_id.yml', $response);
         $this->assertResponseContains('get_order_by_id.yml', $response);
     }
 
@@ -66,6 +68,7 @@ class OrderJsonApiTest extends RestJsonApiTestCase
         );
 
         $this->assertJsonResponse($response);
+//        $this->dumpYmlTemplate('get_order_by_orderNumber.yml', $response);
         $this->assertResponseContains('get_order_by_orderNumber.yml', $response);
     }
 

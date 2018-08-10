@@ -3,7 +3,7 @@ data:
         type: products
         id: p1
         attributes:
-            productId: 901
+            productId: 5
             name: product1
             manufacturingCode: null
             productType: null
@@ -24,14 +24,18 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '2661'
+                        id: '9'
             channelPrices:
                 data: []
             channels:
                 data:
                     -
                         type: saleschannels
-                        id: '<toString(@channel1->id)>'
+                        id: chan_eur
+            taxCode:
+                data:
+                    type: marellotaxcodes
+                    id: TAX_HIGH
             categories:
                 data: []
             image:
@@ -40,7 +44,7 @@ data:
         type: products
         id: p2
         attributes:
-            productId: 902
+            productId: 6
             name: 'product 2'
             manufacturingCode: null
             productType: null
@@ -61,20 +65,24 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '2662'
+                        id: '10'
                     -
                         type: productprices
-                        id: '2663'
+                        id: '11'
             channelPrices:
                 data: []
             channels:
                 data:
                     -
                         type: saleschannels
-                        id: '<toString(@channel1->id)>'
+                        id: chan_eur
                     -
                         type: saleschannels
-                        id: '<toString(@channel2->id)>'
+                        id: chan_usd
+            taxCode:
+                data:
+                    type: marellotaxcodes
+                    id: TAX_HIGH
             categories:
                 data: []
             image:
@@ -83,7 +91,7 @@ data:
         type: products
         id: p3
         attributes:
-            productId: 903
+            productId: 7
             name: 'product 3'
             manufacturingCode: null
             productType: null
@@ -104,20 +112,24 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '2664'
+                        id: '12'
                     -
                         type: productprices
-                        id: '2665'
+                        id: '13'
             channelPrices:
                 data: []
             channels:
                 data:
                     -
                         type: saleschannels
-                        id: '<toString(@channel1->id)>'
+                        id: chan_eur
                     -
                         type: saleschannels
-                        id: '<toString(@channel3->id)>'
+                        id: chan_gbp
+            taxCode:
+                data:
+                    type: marellotaxcodes
+                    id: TAX_HIGH
             categories:
                 data: []
             image:
@@ -126,7 +138,7 @@ data:
         type: products
         id: p4
         attributes:
-            productId: 904
+            productId: 8
             name: 'product 4'
             manufacturingCode: null
             productType: null
@@ -147,26 +159,30 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '2666'
+                        id: '14'
                     -
                         type: productprices
-                        id: '2667'
+                        id: '15'
                     -
                         type: productprices
-                        id: '2668'
+                        id: '16'
             channelPrices:
                 data: []
             channels:
                 data:
                     -
                         type: saleschannels
-                        id: '<toString(@channel1->id)>'
+                        id: chan_eur
                     -
                         type: saleschannels
-                        id: '<toString(@channel2->id)>'
+                        id: chan_usd
                     -
                         type: saleschannels
-                        id: '<toString(@channel3->id)>'
+                        id: chan_gbp
+            taxCode:
+                data:
+                    type: marellotaxcodes
+                    id: TAX_HIGH
             categories:
                 data: []
             image:

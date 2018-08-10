@@ -1,6 +1,7 @@
 api:
     entities:
         Marello\Bundle\ProductBundle\Entity\Product:
+            documentation_resource: '@MarelloProductBundle/Resources/doc/api/product.md'
             identifier_field_names: [sku]
             fields:
                 price:

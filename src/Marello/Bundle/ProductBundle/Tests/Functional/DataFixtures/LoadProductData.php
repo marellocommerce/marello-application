@@ -6,7 +6,6 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -23,6 +22,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     const PRODUCT_2_REF = 'product2';
     const PRODUCT_3_REF = 'product3';
     const PRODUCT_4_REF = 'product4';
+
+    const PRICE_REF_SUFFIX = '-price';
 
     /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
     protected $defaultOrganization;
@@ -229,7 +230,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             } else {
                 $price->setValue($defaultPrice);
             }
-
             $product->addPrice($price);
         }
     }

@@ -3,8 +3,10 @@ api:
         Marello\Bundle\TaxBundle\Entity\TaxCode:
             alias: marellotaxcode
             plural_alias: marellotaxcodes
+
     entities:
         Marello\Bundle\TaxBundle\Entity\TaxCode:
+            documentation_resource: '@MarelloTaxBundle/Resources/doc/api/taxcode.md'
             identifier_field_names: [code]
             fields:
                 id:
@@ -18,9 +20,8 @@ api:
                 updatedAt:
                     exclude: true
             filters:
-                exclusion_policy: all
+                exclusion_policy: none
             actions:
-                get_list: false
                 create: false
                 update: false
                 delete: false

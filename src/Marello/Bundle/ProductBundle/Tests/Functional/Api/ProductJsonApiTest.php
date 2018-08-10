@@ -65,4 +65,44 @@ class ProductJsonApiTest extends RestJsonApiTestCase
         $this->assertResponseCount(1, $response);
         $this->assertResponseContains('get_product_by_sku.yml', $response);
     }
+
+    /**
+     * Test Create new Product
+     */
+    public function testCreateNewProduct()
+    {
+        $response = $this->post(
+            ['entity' => self::TESTING_ENTITY],
+            'product_create.yml'
+        );
+
+        $this->assertJsonResponse($response);
+        $responseContent = json_decode($response->getContent());
+
+        /** @var Product $product */
+        $productRepo = $this->getEntityManager()->getRepository(Product::class);
+        $product = $productRepo->findOneBySku($responseContent->data->id);
+        $this->assertEquals($product->getName(), $responseContent->data->attributes->name);
+    }
+
+    public function testUpdateProduct()
+    {
+        /** @var Product $existingProduct */
+        $existingProduct = $this->getReference(LoadProductData::PRODUCT_1_REF);
+        $response = $this->patch(
+            [
+                'entity' => self::TESTING_ENTITY,
+                'id' => $existingProduct->getSku()
+            ],
+            'product_update.yml'
+        );
+
+        $this->assertJsonResponse($response);
+        $responseContent = json_decode($response->getContent());
+
+        /** @var Product $product */
+        $productRepo = $this->getEntityManager()->getRepository(Product::class);
+        $product = $productRepo->findOneBySku($responseContent->data->id);
+        $this->assertEquals($product->getName(), $responseContent->data->attributes->name);
+    }
 }

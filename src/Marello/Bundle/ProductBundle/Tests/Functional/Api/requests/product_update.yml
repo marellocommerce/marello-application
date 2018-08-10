@@ -1,0 +1,5 @@
+data:
+      type: products
+      id: '<toString(@product1->sku)>'
+      attributes:
+          name: 'new_name'

@@ -2,7 +2,7 @@ data:
     type: products
     id: p1
     attributes:
-        productId: 901
+        productId: 5
         name: product1
         manufacturingCode: null
         productType: null
@@ -23,14 +23,18 @@ data:
             data:
                 -
                     type: productprices
-                    id: '2661'
+                    id: '9'
         channelPrices:
             data: []
         channels:
             data:
                 -
                     type: saleschannels
-                    id: '<toString(@channel1->id)>'
+                    id: chan_eur
+        taxCode:
+            data:
+                type: marellotaxcodes
+                id: TAX_HIGH
         categories:
             data: []
         image:
