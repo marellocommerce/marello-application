@@ -88,6 +88,9 @@ class ProductJsonApiTest extends RestJsonApiTestCase
         $this->assertEquals($product->getName(), $responseContent->data->attributes->name);
     }
 
+    /**
+     * test Update existing Product with new name
+     */
     public function testUpdateProduct()
     {
         /** @var Product $existingProduct */

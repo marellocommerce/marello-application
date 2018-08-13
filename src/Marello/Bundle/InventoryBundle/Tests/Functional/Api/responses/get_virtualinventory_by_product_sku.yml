@@ -1,0 +1,22 @@
+data:
+    -
+        type: virtualinventorylevels
+        id: '1'
+        attributes:
+            inventory: 100
+            balancedInventory: 100
+            reservedInventory: null
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p1
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            channels:
+                data:
+                    -
+                        type: saleschannels
+                        id: chan_eur

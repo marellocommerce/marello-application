@@ -47,11 +47,11 @@ data:
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '57'
+                id: '60'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '57'
+                id: '60'
         salesChannel:
             data:
                 type: saleschannels

@@ -3,7 +3,7 @@ data:
         type: products
         id: p1
         attributes:
-            productId: 905
+            productId: 909
             name: product1
             manufacturingCode: null
             productType: null
@@ -24,7 +24,7 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '2669'
+                        id: '2677'
             channelPrices:
                 data: []
             channels:
@@ -44,7 +44,7 @@ data:
         type: products
         id: p2
         attributes:
-            productId: 906
+            productId: 910
             name: 'product 2'
             manufacturingCode: null
             productType: null
@@ -65,10 +65,10 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '2670'
+                        id: '2678'
                     -
                         type: productprices
-                        id: '2671'
+                        id: '2679'
             channelPrices:
                 data: []
             channels:
@@ -91,7 +91,7 @@ data:
         type: products
         id: p3
         attributes:
-            productId: 907
+            productId: 911
             name: 'product 3'
             manufacturingCode: null
             productType: null
@@ -112,10 +112,10 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '2672'
+                        id: '2680'
                     -
                         type: productprices
-                        id: '2673'
+                        id: '2681'
             channelPrices:
                 data: []
             channels:
@@ -138,7 +138,7 @@ data:
         type: products
         id: p4
         attributes:
-            productId: 908
+            productId: 912
             name: 'product 4'
             manufacturingCode: null
             productType: null
@@ -159,13 +159,13 @@ data:
                 data:
                     -
                         type: productprices
-                        id: '2674'
+                        id: '2682'
                     -
                         type: productprices
-                        id: '2675'
+                        id: '2683'
                     -
                         type: productprices
-                        id: '2676'
+                        id: '2684'
             channelPrices:
                 data: []
             channels:
