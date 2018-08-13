@@ -1,5 +1,31 @@
 api:
     entities:
+        Marello\Bundle\InventoryBundle\Entity\InventoryLevel:
+            fields:
+                adjustmentOperator:
+                    form_options:
+                        mapped: false
+                quantity:
+                    form_options:
+                        mapped: false
+                allocatedInventory:
+                    exclude: true
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+            actions:
+                get_subresource: false
+                create: false
+                delete: false
+                delete_list: false
+                add_relationship: false
+                get_relationship: false
+                update_relationship: false
+                delete_relationship: false
+
         Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel:
             fields:
                 channels:

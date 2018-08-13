@@ -1,0 +1,5 @@
+data:
+      type: inventorylevels
+      attributes:
+          inventory: 20
+          allocatedInventory: 20

@@ -1,7 +1,7 @@
 data:
     -
         type: virtualinventorylevels
-        id: '1'
+        id: '9'
         attributes:
             inventory: 100
             balancedInventory: 100

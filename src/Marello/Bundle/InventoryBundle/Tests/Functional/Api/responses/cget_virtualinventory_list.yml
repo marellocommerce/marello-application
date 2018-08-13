@@ -1,7 +1,7 @@
 data:
     -
         type: virtualinventorylevels
-        id: '1'
+        id: '9'
         attributes:
             inventory: 100
             balancedInventory: 100
@@ -22,7 +22,7 @@ data:
                         id: chan_eur
     -
         type: virtualinventorylevels
-        id: '2'
+        id: '10'
         attributes:
             inventory: 50
             balancedInventory: 50
@@ -43,7 +43,7 @@ data:
                         id: chan_eur
     -
         type: virtualinventorylevels
-        id: '3'
+        id: '11'
         attributes:
             inventory: 50
             balancedInventory: 50
@@ -64,7 +64,7 @@ data:
                         id: chan_usd
     -
         type: virtualinventorylevels
-        id: '4'
+        id: '12'
         attributes:
             inventory: 50
             balancedInventory: 50
@@ -85,7 +85,7 @@ data:
                         id: chan_eur
     -
         type: virtualinventorylevels
-        id: '5'
+        id: '13'
         attributes:
             inventory: 50
             balancedInventory: 50
@@ -106,7 +106,7 @@ data:
                         id: chan_gbp
     -
         type: virtualinventorylevels
-        id: '6'
+        id: '14'
         attributes:
             inventory: 33
             balancedInventory: 33
@@ -127,7 +127,7 @@ data:
                         id: chan_eur
     -
         type: virtualinventorylevels
-        id: '7'
+        id: '15'
         attributes:
             inventory: 33
             balancedInventory: 33
@@ -148,7 +148,7 @@ data:
                         id: chan_usd
     -
         type: virtualinventorylevels
-        id: '8'
+        id: '16'
         attributes:
             inventory: 33
             balancedInventory: 33

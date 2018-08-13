@@ -81,7 +81,7 @@ class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
     {
         $response = $this->post(
             ['entity' => self::TESTING_ENTITY],
-            'level_create.yml',
+            'virtualinventorylevel_create.yml',
             [],
             false
         );
