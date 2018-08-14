@@ -1,6 +1,0 @@
-data:
-      type: inventorylevels
-      id: '1'
-      attributes:
-          adjustmentOperator: 'increase'
-          quantity: 20
