@@ -8,8 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\ProductBundle\Model\ExtendProduct;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -240,10 +241,10 @@ class Product extends ExtendProduct implements
     protected $organization;
 
     /**
-     * @var ArrayCollection|ProductPrice[]
+     * @var ArrayCollection|AssembledPriceList[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice",
+     *     targetEntity="Marello\Bundle\PricingBundle\Entity\AssembledPriceList",
      *     mappedBy="product",
      *     cascade={"persist"},
      *     orphanRemoval=true
@@ -263,10 +264,10 @@ class Product extends ExtendProduct implements
     protected $prices;
 
     /**
-     * @var ArrayCollection|ProductChannelPrice[]
+     * @var ArrayCollection|AssembledChannelPriceList[]
      *
      * @ORM\OneToMany(
-     *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductChannelPrice",
+     *     targetEntity="Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList",
      *     mappedBy="product",
      *     cascade={"persist"},
      *     orphanRemoval=true
@@ -569,15 +570,15 @@ class Product extends ExtendProduct implements
 
     /**
      * @param string $currency
-     * @return ProductPrice
+     * @return AssembledPriceList
      */
     public function getPrice($currency = null)
     {
         if ($currency) {
-            /** @var ProductPrice $productPrice */
+            /** @var AssembledPriceList $productPrice */
             $productPrice = $this->getPrices()
                 ->filter(function ($productPrice) use ($currency) {
-                    /** @var ProductPrice $productPrice */
+                    /** @var AssembledPriceList $productPrice */
                     return $productPrice->getCurrency() === $currency;
                 })
                 ->first();
@@ -591,7 +592,7 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|AssembledPriceList[]
      */
     public function getPrices()
     {
@@ -601,11 +602,11 @@ class Product extends ExtendProduct implements
     /**
      * Add item
      *
-     * @param ProductPrice $price
+     * @param AssembledPriceList $price
      *
      * @return Product
      */
-    public function addPrice(ProductPrice $price)
+    public function addPrice(AssembledPriceList $price)
     {
         if (!$this->prices->contains($price)) {
             $this->prices->add($price);
@@ -618,11 +619,11 @@ class Product extends ExtendProduct implements
     /**
      * Remove item
      *
-     * @param ProductPrice $price
+     * @param AssembledPriceList $price
      *
      * @return Product
      */
-    public function removePrice(ProductPrice $price)
+    public function removePrice(AssembledPriceList $price)
     {
         if ($this->prices->contains($price)) {
             $this->prices->removeElement($price);
@@ -641,7 +642,7 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|AssembledChannelPriceList[]
      */
     public function getChannelPrices()
     {
@@ -651,11 +652,11 @@ class Product extends ExtendProduct implements
     /**
      * Add item
      *
-     * @param ProductChannelPrice $channelPrice
+     * @param AssembledChannelPriceList $channelPrice
      *
      * @return Product
      */
-    public function addChannelPrice(ProductChannelPrice $channelPrice)
+    public function addChannelPrice(AssembledChannelPriceList $channelPrice)
     {
         if (!$this->channelPrices->contains($channelPrice)) {
             $this->channelPrices->add($channelPrice);
@@ -668,11 +669,11 @@ class Product extends ExtendProduct implements
     /**
      * Remove item
      *
-     * @param ProductChannelPrice $channelPrice
+     * @param AssembledChannelPriceList $channelPrice
      *
      * @return Product
      */
-    public function removeChannelPrice(ProductChannelPrice $channelPrice)
+    public function removeChannelPrice(AssembledChannelPriceList $channelPrice)
     {
         if ($this->channelPrices->contains($channelPrice)) {
             $this->channelPrices->removeElement($channelPrice);

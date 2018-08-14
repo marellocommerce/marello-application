@@ -21,6 +21,7 @@ services:
         class: Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber
         arguments:
             - '@marello_productprice.pricing.provider.currency_provider'
+            - '@doctrine'
 
     marello_productprice.pricing.form.event_listener.channel_pricing_subscriber:
         class: Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber

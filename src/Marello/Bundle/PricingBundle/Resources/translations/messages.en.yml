@@ -1,6 +1,26 @@
 marello:
     pricing:
         header.label:                   Prices
+        assembledpricelist:
+            entity_plural_label:        Assembled Price Lists
+            entity_label:               Assembled Price List
+            currency.label:             Currency
+            id.label:                   Id
+            default_price.label:        Default Price
+            special_price.label:        Special Price
+            msrp_price.label:           MSRP Price
+            product.label:              Product
+
+        assembledchannelpricelist:
+            entity_plural_label:        Assembled Channel Price Lists
+            entity_label:               Assembled Channel Price List
+            currency.label:             Currency
+            id.label:                   Id
+            default_price.label:        Default Price
+            special_price.label:        Special Price
+            product.label:              Product
+            channel.label:              Channel
+
         productprice:
             entity_plural_label:        Default Prices
             entity_label:               Default Price
