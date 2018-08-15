@@ -15,21 +15,21 @@ Marello\Bundle\AddressBundle\Entity\MarelloAddress:
 Marello\Bundle\OrderBundle\Entity\OrderItem:
     properties:
         product:
-            - NotBlank: ~
+            - NotBlank: { groups: [api, Default] }
         price:
-            - NotBlank: ~
+            - NotBlank: { groups: [api, Default] }
         tax:
-            - NotBlank: ~
+            - NotBlank: { groups: [api, Default] }
         taxCode:
-            - NotBlank: ~
+            - NotBlank: { groups: [api, Default] }
         rowTotalInclTax:
-            - NotBlank: ~
+            - NotBlank: { groups: [api, Default] }
         rowTotalExclTax:
-            - NotBlank: ~
-#    constraints:
-#        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory:
-#            fields: [quantity, order, product]
-#            errorPath: quantity
+            - NotBlank: { groups: [api, Default] }
+    constraints:
+        - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory:
+            fields: [quantity, order, product]
+            errorPath: quantity
 
 Marello\Bundle\OrderBundle\Entity\Order:
     properties:

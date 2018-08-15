@@ -6,18 +6,6 @@ api:
                     exclude: true
                 updatedAt:
                     exclude: true
-                workflowItem:
-                    fields:
-                        __class__:
-                            property_path: sourceEntityClass
-                        id:
-                            property_path: sourceEntityId
-                    data_type: nestedAssociation
-                    fields:
-                        __class__:
-                            Oro\Bundle\WorkflowBundle\Entity\WorkflowItem
-                        id:
-                            id
             filters:
                 exclusion_policy: all
                 fields:
@@ -43,6 +31,8 @@ api:
                 delete_relationship: false
 
         Marello\Bundle\OrderBundle\Entity\OrderItem:
+            form_options:
+                validation_groups: ['api']
             fields:
                 createdAt:
                     exclude: true
