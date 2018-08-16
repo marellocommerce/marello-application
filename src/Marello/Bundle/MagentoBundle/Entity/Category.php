@@ -13,11 +13,20 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  * @package Marello\Bundle\MarelloMagentoBundle\Entity
  * @ORM\Entity
  * @ORM\Table(
- *  name="marello_magento_category",
- *  uniqueConstraints={@ORM\UniqueConstraint(name="unq_site_idx", columns={"category_code", "origin_id", "channel_id"})},
- *  indexes={
- *       @ORM\Index(name="marello_magento_category_name_idx",columns={"category_name"})
- *  }
+ *      name="marello_magento_category",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(
+ *              name="unq_site_idx",
+ *              columns={
+ *                  "category_code",
+ *                  "origin_id",
+ *                  "channel_id"
+ *              }
+ *         )
+ *      },
+ *      indexes={
+ *          @ORM\Index(name="marello_magento_category_name_idx",columns={"category_name"})
+ *      }
  * )
  * @Config(
  *      defaultValues={

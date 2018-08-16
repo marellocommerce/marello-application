@@ -76,8 +76,8 @@ abstract class AbstractTransportSettingFormType extends AbstractType
         );
 
         $builder->add(
-        'currency',
-        CurrencyType::class,
+            'currency',
+            CurrencyType::class,
             [
                 'label' => 'marello.magento.magentotransport.currency.label',
                 'required' => true
