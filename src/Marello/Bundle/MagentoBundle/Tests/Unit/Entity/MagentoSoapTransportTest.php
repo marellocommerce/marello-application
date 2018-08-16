@@ -3,12 +3,11 @@
 namespace Marello\Bundle\MagentoBundle\Tests\Unit\Entity;
 
 use Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport;
-use Marello\Bundle\MagentoBundle\Entity\MagentoTransport;
 use Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport;
 
 class MagentoSoapTransportTest extends AbstractEntityTestCase
 {
-    /** @var MagentoTransport */
+    /** @var MagentoSoapTransport */
     protected $entity;
 
     /**

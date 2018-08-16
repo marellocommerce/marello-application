@@ -49,14 +49,14 @@ class Category extends ExtendCategory implements OriginAwareInterface, Integrati
     /**
      * @var string
      *
-     * @ORM\Column(name="category_code", type="string", length=32, nullable=false)
+     * @ORM\Column(name="category_code", type="string", length=32, nullable=true)
      */
     protected $code;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="category_name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="category_name", type="string", length=255, nullable=true)
      */
     protected $name;
 
