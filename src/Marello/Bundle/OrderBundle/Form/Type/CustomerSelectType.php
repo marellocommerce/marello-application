@@ -17,7 +17,7 @@ class CustomerSelectType extends AbstractType
             [
                 'autocomplete_alias' => 'marello_customers',
                 'create_form_route'  => 'marello_order_customer_create',
-                'grid_name'          => 'marello-customer',
+                'grid_name'          => 'marello-customer-select-grid',
                 'create_enabled'     => true,
                 'configs'            => [
                     'placeholder' => 'marello.order.customer.form.choose',
