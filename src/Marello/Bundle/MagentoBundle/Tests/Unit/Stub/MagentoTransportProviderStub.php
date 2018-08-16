@@ -353,38 +353,83 @@ class MagentoTransportProviderStub implements MagentoTransportInterface
         // @todo: Implement getSettingsEntityFQCN() method.
     }
 
+    /**
+     * @inheritdoc
+     */
     public function createProduct(array $productData)
     {
         // TODO: Implement createProduct() method.
     }
 
+    /**
+     * @inheritdoc
+     */
     public function updateProduct(array $item)
     {
         // TODO: Implement updateProduct() method.
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getProducts()
     {
         // TODO: Implement getProducts() method.
     }
 
+    /**
+     * @inheritdoc
+     */
     public function updateStock(array $stockData)
     {
         // TODO: Implement updateStock() method.
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getCategoryList()
     {
         // TODO: Implement getCategoryList() method.
     }
 
+    /**
+     * @inheritdoc
+     */
     public function catalogCategoryUpdateProduct(array $categoryLinkData)
     {
         // TODO: Implement catalogCategoryUpdateProduct() method.
     }
 
+    /**
+     * @inheritdoc
+     */
     public function catalogCategoryAssignProduct(array $categoryLinkData)
     {
         // TODO: Implement catalogCategoryAssignProduct() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function deleteProduct(array $item)
+    {
+        // TODO: Implement deleteProduct() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function catalogCategoryRemoveProduct($categoryId, $productId, $identifierType = null)
+    {
+        // TODO: Implement catalogCategoryRemoveProduct() method.
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function catalogCategoryAssignedProducts($categoryId, $store = null)
+    {
+        // TODO: Implement catalogCategoryAssignedProducts() method.
     }
 }
