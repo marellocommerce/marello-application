@@ -490,3 +490,11 @@ datagrids:
                 type:       navigate
                 link:       update_link
                 icon:       edit
+        options:
+            entityHint: customer
+
+    marello-customer-select-grid:
+        extends: marello-customer
+        properties:
+            id: ~
+        actions: ~
