@@ -1,0 +1,295 @@
+data:
+    -
+        type: returns
+        id: '<toString(@return0->id)>'
+        attributes:
+            returnNumber: '000000001'
+            salesChannelName: channel1
+            returnReference: 0000000025b75925981718
+            locale: null
+        relationships:
+            order:
+                data:
+                    type: orders
+                    id: '<toString(@marello_order_1->id)>'
+            returnItems:
+                data:
+                    -
+                        type: returnitems
+                        id: '1'
+                    -
+                        type: returnitems
+                        id: '2'
+                    -
+                        type: returnitems
+                        id: '3'
+                    -
+                        type: returnitems
+                        id: '4'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: returns
+        id: '<toString(@return1->id)>'
+        attributes:
+            returnNumber: '000000002'
+            salesChannelName: channel1
+            returnReference: 0000000035b75925982986
+            locale: null
+        relationships:
+            order:
+                data:
+                    type: orders
+                    id: '<toString(@marello_order_2->id)>'
+            returnItems:
+                data:
+                    -
+                        type: returnitems
+                        id: '5'
+                    -
+                        type: returnitems
+                        id: '6'
+                    -
+                        type: returnitems
+                        id: '7'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: returns
+        id: '<toString(@return2->id)>'
+        attributes:
+            returnNumber: '000000003'
+            salesChannelName: channel1
+            returnReference: 0000000045b75925982e1d
+            locale: null
+        relationships:
+            order:
+                data:
+                    type: orders
+                    id: '<toString(@marello_order_3->id)>'
+            returnItems:
+                data:
+                    -
+                        type: returnitems
+                        id: '8'
+                    -
+                        type: returnitems
+                        id: '9'
+                    -
+                        type: returnitems
+                        id: '10'
+                    -
+                        type: returnitems
+                        id: '11'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: returns
+        id: '<toString(@return3->id)>'
+        attributes:
+            returnNumber: '000000004'
+            salesChannelName: channel1
+            returnReference: 0000000055b7592598329a
+            locale: null
+        relationships:
+            order:
+                data:
+                    type: orders
+                    id: '<toString(@marello_order_4->id)>'
+            returnItems:
+                data:
+                    -
+                        type: returnitems
+                        id: '12'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: returns
+        id: '<toString(@return4->id)>'
+        attributes:
+            returnNumber: '000000005'
+            salesChannelName: channel1
+            returnReference: 0000000065b7592598353e
+            locale: null
+        relationships:
+            order:
+                data:
+                    type: orders
+                    id: '<toString(@marello_order_5->id)>'
+            returnItems:
+                data:
+                    -
+                        type: returnitems
+                        id: '13'
+                    -
+                        type: returnitems
+                        id: '14'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: returns
+        id: '<toString(@return5->id)>'
+        attributes:
+            returnNumber: '000000006'
+            salesChannelName: channel1
+            returnReference: 0000000075b75925983877
+            locale: null
+        relationships:
+            order:
+                data:
+                    type: orders
+                    id: '<toString(@marello_order_6->id)>'
+            returnItems:
+                data:
+                    -
+                        type: returnitems
+                        id: '15'
+                    -
+                        type: returnitems
+                        id: '16'
+                    -
+                        type: returnitems
+                        id: '17'
+                    -
+                        type: returnitems
+                        id: '18'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: returns
+        id: '<toString(@return6->id)>'
+        attributes:
+            returnNumber: '000000007'
+            salesChannelName: channel1
+            returnReference: 0000000085b75925983cd4
+            locale: null
+        relationships:
+            order:
+                data:
+                    type: orders
+                    id: '<toString(@marello_order_7->id)>'
+            returnItems:
+                data:
+                    -
+                        type: returnitems
+                        id: '19'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: returns
+        id: '<toString(@return7->id)>'
+        attributes:
+            returnNumber: '000000008'
+            salesChannelName: channel1
+            returnReference: 0000000095b75925983fd4
+            locale: null
+        relationships:
+            order:
+                data:
+                    type: orders
+                    id: '<toString(@marello_order_8->id)>'
+            returnItems:
+                data:
+                    -
+                        type: returnitems
+                        id: '20'
+                    -
+                        type: returnitems
+                        id: '21'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: returns
+        id: '<toString(@return8->id)>'
+        attributes:
+            returnNumber: '000000009'
+            salesChannelName: channel1
+            returnReference: 0000000105b7592598431e
+            locale: null
+        relationships:
+            order:
+                data:
+                    type: orders
+                    id: '10'
+            returnItems:
+                data:
+                    -
+                        type: returnitems
+                        id: '22'
+                    -
+                        type: returnitems
+                        id: '23'
+            salesChannel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            localization:
+                data: null
+            organization:
+                data:
+                    type: organizations
+                    id: '1'

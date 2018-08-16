@@ -1,0 +1,34 @@
+data:
+    type: returns
+    id: '<toString(@return1->id)>'
+    attributes:
+        returnNumber: '000000002'
+        salesChannelName: channel1
+        returnReference: 0000000035b75925982986
+        locale: null
+    relationships:
+        order:
+            data:
+                type: orders
+                id: '<toString(@marello_order_2->id)>'
+        returnItems:
+            data:
+                -
+                    type: returnitems
+                    id: '5'
+                -
+                    type: returnitems
+                    id: '6'
+                -
+                    type: returnitems
+                    id: '7'
+        salesChannel:
+            data:
+                type: saleschannels
+                id: chan_eur
+        localization:
+            data: null
+        organization:
+            data:
+                type: organizations
+                id: '1'
