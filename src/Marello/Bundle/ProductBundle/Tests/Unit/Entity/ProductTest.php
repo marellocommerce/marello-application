@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Entity;
 
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 use Oro\Component\Testing\Unit\EntityTrait;
@@ -53,18 +55,18 @@ class ProductTest extends \PHPUnit_Framework_TestCase
             ['updatedAt', new \DateTime()]
         ]);
         $this->assertPropertyCollections(new Product(), [
-            ['prices', new ProductPrice()],
+            ['prices', new AssembledPriceList()],
             ['channels', new SalesChannel()],
-            ['channelPrices', new ProductChannelPrice()],
+            ['channelPrices', new AssembledChannelPriceList()],
             ['suppliers', new ProductSupplierRelation()],
             ['salesChannelTaxCodes', new ProductChannelTaxRelation()],
         ]);
     }
 
-    public function testGetPrise()
+    public function testGetPrice()
     {
-        $price1 = new ProductPrice();
-        $price2 = new ProductPrice();
+        $price1 = new AssembledPriceList();
+        $price2 = new AssembledPriceList();
 
         $product = new Product();
 
@@ -78,33 +80,13 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the getPrice of product to returnt the first price
+     * Test the getPrice of product to return the first price
      * of the ProductPrices Collection
      */
     public function testGetFirstPriceFromCollection()
     {
-        /** @var ProductPrice $firstProductPrice */
-        $firstProductPrice = $this->getEntity(
-            ProductPrice::class,
-            [
-                'id' => 1,
-                'value' => 10,
-                'currency' => 'EUR',
-                'product' => $this->entity
-            ]
-        );
-
-        /** @var ProductPrice $secondProductPrice */
-        $secondProductPrice = $this->getEntity(
-            ProductPrice::class,
-            [
-                'id' => 2,
-                'value' => 15,
-                'currency' => 'EUR',
-                'product' => $this->entity
-            ]
-        );
-
+        $firstProductPrice = new AssembledPriceList();
+        $secondProductPrice = new AssembledPriceList();
         $this->entity
             ->addPrice($firstProductPrice)
             ->addPrice($secondProductPrice);
