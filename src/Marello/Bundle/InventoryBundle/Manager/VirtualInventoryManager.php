@@ -103,7 +103,7 @@ class VirtualInventoryManager implements InventoryManagerInterface
         if (!$inventoryQty && ($allocQty > 0)) {
             $newInventoryQty = ($level->getInventoryQty() - $allocQty);
         } elseif (!$inventoryQty && $allocQty < 0) {
-            $newInventoryQty = ($level->getInventoryQty() + ( -1 * $allocQty));
+            $newInventoryQty = ($level->getInventoryQty() + (-1 * $allocQty));
         } else {
             $newInventoryQty = $level->getInventoryQty();
         }

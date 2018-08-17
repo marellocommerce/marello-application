@@ -30,7 +30,6 @@ class AssembledPriceListType extends AbstractType
             ->add('msrpPrice', ProductPriceType::class, [
                 'required' => false,
             ]);
-        
     }
 
     /**

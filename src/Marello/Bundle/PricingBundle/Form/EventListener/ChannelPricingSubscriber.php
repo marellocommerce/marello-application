@@ -150,7 +150,7 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
             if ($assembledChannelPriceList->getSpecialPrice() !== null &&
                 $assembledChannelPriceList->getSpecialPrice()->getValue() === null) {
                 $assembledChannelPriceList->setSpecialPrice(null);
-            } else if ($assembledChannelPriceList->getSpecialPrice() !== null) {
+            } elseif ($assembledChannelPriceList->getSpecialPrice() !== null) {
                 $assembledChannelPriceList->getSpecialPrice()
                     ->setType($this->getPriceType(LoadPriceTypes::SPECIAL_PRICE))
                     ->setCurrency($assembledChannelPriceList->getCurrency());
@@ -245,7 +245,8 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
      * @param $name
      * @return PriceType
      */
-    private function getPriceType($name) {
+    private function getPriceType($name)
+    {
         if (!isset($this->priceTypes[$name])) {
             $this->priceTypes[$name] = $this->em
                 ->getRepository(PriceType::class)

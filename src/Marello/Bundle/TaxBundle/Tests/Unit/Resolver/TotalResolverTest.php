@@ -42,7 +42,6 @@ class TotalResolverTest extends \PHPUnit_Framework_TestCase
         ResultElement $shippingResult = null,
         ResultElement $expectedTotalResult
     ) {
-
         $taxable = new Taxable();
         if ($shippingResult) {
             $taxable->getResult()->offsetSet(Result::SHIPPING, $shippingResult);
