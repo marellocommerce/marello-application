@@ -121,7 +121,7 @@ class ProductControllerTest extends WebTestCase
             'prices'    => [
                 [
                     'currency' => 'CHF',
-                    'value' => 100.0000
+                    'defaultPrice' => [ 'value' => 100.00 ],
                 ]
             ],
         ];

@@ -2,8 +2,6 @@ Marello\Bundle\PricingBundle\Entity\ProductPrice:
     properties:
         product:
             - NotBlank: ~
-        currency:
-            - NotBlank: ~
         type:
             - NotBlank: ~
 
@@ -17,8 +15,6 @@ Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
         product:
             - NotBlank: ~
         channel:
-            - NotBlank: ~
-        currency:
             - NotBlank: ~
         type:
             - NotBlank: ~

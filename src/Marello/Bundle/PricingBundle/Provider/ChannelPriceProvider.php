@@ -7,10 +7,10 @@ use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\BasePrice;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
-use Marello\Bundle\PricingBundle\Entity\Repository\ProductChannelPriceRepository;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -83,16 +83,23 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     public function getChannelPrice($channel, $product)
     {
         $data = ['hasPrice' => false];
-        $price = $this->getProductChannelPriceRepository()->findOneBySalesChannel(
-            $channel->getId(),
-            $product->getId()
+        $assembledChannelPriceList = $this->getAssembledChannelPriceListRepository()->findOneBy(
+            [
+                'channel' => $channel->getId(),
+                'product' => $product->getId(),
+                'currency' => $channel->getCurrency()
+            ]
         );
-        $pricesCount = count($price);
 
-        if ($pricesCount > 0 && $pricesCount < 2) {
-            $price = array_shift($price);
-            $data['hasPrice'] = true;
-            $data['price'] = (float)$price['price_value'];
+
+        if ($assembledChannelPriceList) {
+            /** @var ProductChannelPrice $price */
+            $price = $assembledChannelPriceList->getSpecialPrice() ?: $assembledChannelPriceList->getDefaultPrice();
+
+            if ($price instanceof BasePrice) {
+                $data['hasPrice'] = true;
+                $data['price'] = (float)$price->getValue();
+            }
         }
 
         return $data;
@@ -107,9 +114,16 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     public function getDefaultPrice($channel, $product)
     {
         $currency = $channel->getCurrency();
-        $price = $this->getProductPriceRepository()->findOneBy(
+        /** @var AssembledPriceList $assembledPriceList */
+        $assembledPriceList = $this->getAssembledPriceListRepository()->findOneBy(
             ['product' => $product->getId(), 'currency' => $currency]
         );
+
+        if (!$assembledPriceList) {
+            return null;
+        }
+
+        $price = $assembledPriceList->getSpecialPrice() ? : $assembledPriceList->getDefaultPrice();
 
         return $price instanceof BasePrice ? (float)$price->getValue() : null;
     }
@@ -125,17 +139,17 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     /**
      * @return EntityRepository
      */
-    protected function getProductPriceRepository()
+    protected function getAssembledPriceListRepository()
     {
-        return $this->getRepository(ProductPrice::class);
+        return $this->getRepository(AssembledPriceList::class);
     }
 
     /**
-     * @return ProductChannelPriceRepository
+     * @return EntityRepository
      */
-    protected function getProductChannelPriceRepository()
+    protected function getAssembledChannelPriceListRepository()
     {
-        return $this->getRepository(ProductChannelPrice::class);
+        return $this->getRepository(AssembledChannelPriceList::class);
     }
 
     /**

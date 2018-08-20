@@ -28,6 +28,8 @@ services:
 
     marello_product.product_form.type.product_api:
         class: '%marello_product.product_form.type.product_api.class%'
+        arguments:
+            - '@marello_productprice.pricing.form.event_listener.pricing_subscriber'
         tags:
             - { name: form.type, alias: marello_product_api_form }
 

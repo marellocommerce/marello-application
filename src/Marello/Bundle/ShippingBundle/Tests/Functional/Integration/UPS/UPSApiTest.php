@@ -41,6 +41,7 @@ class UPSApiTest extends WebTestCase
      */
     public function apiShouldReturnValidResponse()
     {
+        $this->markTestSkipped('this service is not used anymore');
         /** @var Order $order */
         $order = $this->getReference('marello_order_1');
 

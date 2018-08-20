@@ -6,6 +6,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
+use Marello\Bundle\PricingBundle\Entity\PriceType;
+use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
@@ -87,19 +90,27 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
     private function createProductPrice(array $data)
     {
         /** @var Product $product */
-        $product                = $this->getReference($data['product']);
+        $product = $this->getReference($data['product']);
         /** @var SalesChannel $channel */
-        $channel                = $this->getReference($data['channel']);
-        $productChannelPrice    = new ProductChannelPrice();
-        $productData            = $product->getData();
+        $channel = $this->getReference($data['channel']);
+        $productChannelPrice = new ProductChannelPrice();
+        $productData = $product->getData();
+        $type = $this->manager->getRepository(PriceType::class)->find(LoadPriceTypes::DEFAULT_PRICE);
 
         $productData[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
         $product->setData($productData);
-        $productChannelPrice->setProduct($product);
-        $productChannelPrice->setCurrency($channel->getCurrency());
-        $productChannelPrice->setValue((float)$data['price']);
-        $productChannelPrice->setChannel($channel);
+        $productChannelPrice
+            ->setProduct($product)
+            ->setCurrency($channel->getCurrency())
+            ->setValue((float)$data['price'])
+            ->setChannel($channel)
+            ->setType($type);
+        
+        $assembledChannelPriceList = new AssembledChannelPriceList();
+        $assembledChannelPriceList
+            ->setCurrency($channel->getCurrency())
+            ->setDefaultPrice($productChannelPrice);
+        
         $this->manager->persist($product);
-        $this->manager->persist($productChannelPrice);
     }
 }
