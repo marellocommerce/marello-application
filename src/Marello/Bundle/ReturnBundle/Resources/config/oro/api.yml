@@ -9,16 +9,6 @@ api:
             filters:
                 exclusion_policy: all
                 fields:
-#                    orderNumber:
-#                        data_type: string
-#                        allow_array: true
-#                        property_path: orderNumber
-#                        description: 'Filter by order number'
-#                    orderReference:
-#                        data_type: string
-#                        allow_array: true
-#                        property_path: orderReference
-#                        description: 'Filter by order reference'
                     createdAt:
                         exclude: true
                     updatedAt:

@@ -66,9 +66,24 @@ class ReturnJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
 
         $responseContent = json_decode($response->getContent());
-        var_dump($responseContent);
         /** @var ReturnEntity $return */
         $return = $this->getEntityManager()->find(ReturnEntity::class, $responseContent->data->id);
-        $this->assertCount($return->getReturnItems()->count(), $responseContent->data->relationships->items->data);
+        $this->assertCount(
+            $return->getReturnItems()->count(),
+            $responseContent->data->relationships->returnItems->data
+        );
+    }
+
+    public function testGetNotFound()
+    {
+        $response = $this->get(
+            ['entity' => self::TESTING_ENTITY, 'id' => 1000],
+            [],
+            [],
+            false
+        );
+
+        $this->assertJsonResponse($response);
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_NOT_FOUND);
     }
 }

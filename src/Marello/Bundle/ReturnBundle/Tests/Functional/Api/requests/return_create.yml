@@ -11,7 +11,7 @@ data:
               data:
                   type: saleschannels
                   id: '<toString(@marello_order_unreturned->salesChannel->code)>'
-          items:
+          returnItems:
               data:
                   -
                       type: returnitems
@@ -26,9 +26,12 @@ included:
         id: '8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v'
         attributes:
             quantity: 1
-#            orderItem: '<toString(@marello_order_unreturned->items->first()->id)>'
         relationships:
             reason:
                 data:
                     type: marelloreturnreasons
                     id: 'damaged'
+            orderItem:
+                data:
+                    type: orderitems
+                    id: '<toString(@marello_order_unreturned->items->first()->id)>'
