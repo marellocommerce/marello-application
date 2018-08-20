@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class WarehouseChannelGroupLinkControllerTest extends WebTestCase
 {
-     const SAVE_MESSAGE = 'Warehouse Channel Group Link has been saved successfully';
+    const SAVE_MESSAGE = 'Warehouse Channel Group Link has been saved successfully';
 
     /**
      * {@inheritdoc}

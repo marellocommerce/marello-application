@@ -2,6 +2,7 @@
 
 // @codingStandardsIgnoreStart
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumQuantity\Calculator\Chain\Element\SingleWarehouse;
+
 // @codingStandardsIgnoreEnd
 
 use Doctrine\Common\Collections\ArrayCollection;
