@@ -33,6 +33,13 @@ marello:
                                     No configured channels found for the current product.
                                     Please make sure Sales Channels exist and linked.
             no_prices_configured:       No prices configured for current product
+            type.label:                 Price Type
+
+        pricetype:
+            entity_label:               Price Type
+            entity_plural_label:        Price Types
+            name.label:                 Name
+            label.label:                Label
 
         productchannelprice:
             entity_plural_label:        Product Channel Prices
@@ -43,7 +50,7 @@ marello:
             value.label:                Price
             channel.label:              Sales Channel
             product.label:              Product
-
+            type.label:                 Price Type
             form:
                 pricing_enabled.label:  Enable Sales Channel Pricing
                 add_channel_price:      Add Channel Price

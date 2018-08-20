@@ -207,6 +207,18 @@ class MarelloPricingBundleInstaller implements Installation
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_channel_price'),
+            ['default_price_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_channel_price'),
+            ['special_price_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
     }
 
     /**
@@ -220,6 +232,24 @@ class MarelloPricingBundleInstaller implements Installation
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_product_product'),
             ['product_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_price'),
+            ['default_price_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_price'),
+            ['special_price_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_price'),
+            ['msrp_price_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );

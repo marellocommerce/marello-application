@@ -18,7 +18,12 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *          }
  *      }
  * )
- * @ORM\Table(name="marello_assembled_price_list")
+ * @ORM\Table(
+ *      name="marello_assembled_price_list",
+ *      uniqueConstraints={
+ *          @ORM\UniqueConstraint(columns={"product_id", "currency"})
+ *      }
+ * )
  **/
 class AssembledPriceList extends ExtendAssembledPriceList
 {
