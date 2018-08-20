@@ -6,7 +6,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Marello\Bundle\PricingBundle\Entity\PriceType;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
+use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
@@ -77,6 +79,9 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
         /** @var SalesChannel $channel */
         $channel                = $this->getReference($data['channel']);
         $productChannelPrice    = new ProductChannelPrice();
+        $productChannelPrice->setType(
+            $this->manager->getRepository(PriceType::class)->find(LoadPriceTypes::DEFAULT_PRICE)
+        );
         $productData            = $product->getData();
 
         $productData[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;

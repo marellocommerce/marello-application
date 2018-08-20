@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductControllerTest extends WebTestCase
 {
-
     protected function setUp()
     {
         $this->initClient([], $this->generateWsseAuthHeader());

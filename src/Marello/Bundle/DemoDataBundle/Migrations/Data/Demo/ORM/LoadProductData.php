@@ -6,6 +6,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
+use Marello\Bundle\PricingBundle\Entity\PriceType;
+use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
@@ -109,9 +112,21 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             // add prices
             $price = new ProductPrice();
             $price->setCurrency($currency);
+            $price->setType(
+                $this->manager->getRepository(PriceType::class)->find(LoadPriceTypes::DEFAULT_PRICE)
+            );
             $priceValue = $this->getValuePerCurrency($data, $currency);
-            $price->setValue($priceValue);
-            $product->addPrice($price);
+            $price
+                ->setValue($priceValue)
+                ->setProduct($product);
+
+            $assembledPriceList = new AssembledPriceList();
+            $assembledPriceList
+                ->setCurrency($currency)
+                ->setProduct($product)
+                ->setDefaultPrice($price);
+
+            $product->addPrice($assembledPriceList);
         }
 
         /**
@@ -199,8 +214,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     private function calculateSupplierCost(Product $product)
     {
         $percentage = LoadSupplierData::SUPPLIER_COST_PERCENTAGE;
-        $defaultPrice = $product->getPrice();
-        $supplierCost = $defaultPrice->getValue() * $percentage;
+        $assembledPriceList = $product->getPrice();
+        $supplierCost = $assembledPriceList->getDefaultPrice()->getValue() * $percentage;
 
         return $supplierCost;
     }
