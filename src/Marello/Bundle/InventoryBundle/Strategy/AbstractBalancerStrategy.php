@@ -25,7 +25,7 @@ abstract class AbstractBalancerStrategy implements BalancerStrategyInterface
         ArrayAccess $salesChannelGroups,
         $inventoryTotal
     ) {
-       //Function should be overridden by the derived BalancerStrategy
+        //Function should be overridden by the derived BalancerStrategy
     }
 
     /**

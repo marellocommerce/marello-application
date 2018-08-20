@@ -20,7 +20,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      }
  * )
  * @ORM\Table(name="marello_assembled_ch_pr_list")
- **/
+ */
 class AssembledChannelPriceList extends ExtendAssembledChannelPriceList
 {
     use EntityCreatedUpdatedAtTrait;
@@ -87,7 +87,11 @@ class AssembledChannelPriceList extends ExtendAssembledChannelPriceList
     /**
      * @var ProductChannelPrice
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\PricingBundle\Entity\ProductChannelPrice", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToOne(
+     *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductChannelPrice",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
      * @ORM\JoinColumn(name="default_price_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -105,7 +109,11 @@ class AssembledChannelPriceList extends ExtendAssembledChannelPriceList
     /**
      * @var ProductChannelPrice
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\PricingBundle\Entity\ProductChannelPrice", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToOne(
+     *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductChannelPrice",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
      * @ORM\JoinColumn(name="special_price_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={

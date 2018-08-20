@@ -19,7 +19,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      }
  * )
  * @ORM\Table(name="marello_assembled_price_list")
- **/
+ */
 class AssembledPriceList extends ExtendAssembledPriceList
 {
     use EntityCreatedUpdatedAtTrait;
@@ -71,7 +71,11 @@ class AssembledPriceList extends ExtendAssembledPriceList
     /**
      * @var ProductPrice
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToOne(
+     *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
      * @ORM\JoinColumn(name="default_price_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -89,7 +93,11 @@ class AssembledPriceList extends ExtendAssembledPriceList
     /**
      * @var ProductPrice
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToOne(
+     *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
      * @ORM\JoinColumn(name="special_price_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -107,7 +115,11 @@ class AssembledPriceList extends ExtendAssembledPriceList
     /**
      * @var ProductPrice
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToOne(
+     *     targetEntity="Marello\Bundle\PricingBundle\Entity\ProductPrice",
+     *     cascade={"persist"},
+     *     orphanRemoval=true
+     * )
      * @ORM\JoinColumn(name="msrp_price_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={

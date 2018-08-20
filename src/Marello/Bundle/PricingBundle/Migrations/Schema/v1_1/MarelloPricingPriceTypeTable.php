@@ -44,11 +44,13 @@ class MarelloPricingPriceTypeTable implements Migration, OrderedMigrationInterfa
         $table->addColumn('label', 'string');
         $table->setPrimaryKey(['name']);
 
+        $defaultPriceLabel = sprintf('%s Price', ucfirst(LoadPriceTypes::DEFAULT_PRICE));
+        $specialPriceLabel = sprintf('%s Price', ucfirst(LoadPriceTypes::SPECIAL_PRICE));
         $query = "
             INSERT INTO marello_pricing_price_type (`name`, `label`)
             VALUES 
-            (" . LoadPriceTypes::DEFAULT_PRICE . ", '" . sprintf('%s Price', ucfirst(LoadPriceTypes::DEFAULT_PRICE)) . "'),
-            (" . LoadPriceTypes::SPECIAL_PRICE . ", '" . sprintf('%s Price', ucfirst(LoadPriceTypes::SPECIAL_PRICE)) . "')
+            ('" . LoadPriceTypes::DEFAULT_PRICE . "', '" . $defaultPriceLabel . "'),
+            ('" . LoadPriceTypes::SPECIAL_PRICE . "', '" . $specialPriceLabel . "')
         ";
         $queries->addQuery($query);
     }

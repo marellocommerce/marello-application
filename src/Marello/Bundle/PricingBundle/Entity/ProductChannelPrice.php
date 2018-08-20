@@ -16,7 +16,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(
  *              name="marello_product_channel_price_uidx",
- *              columns={"product_id", "channel_id", "currency"}
+ *              columns={"product_id", "channel_id", "currency", "type"}
  *          )
  *      }
  * )

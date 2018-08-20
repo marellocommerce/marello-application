@@ -43,7 +43,6 @@ class TotalResolver implements ResolverInterface
      */
     protected function mergeData(ResultElement $target, ResultElement $source)
     {
-
         if ($source->getIncludingTax() < $source->getExcludingTax()) {
             return $target;
         }

@@ -31,7 +31,9 @@ class LoadPriceTypes extends AbstractFixture
     private function createPriceType($name, ObjectManager $manager)
     {
         $price = new PriceType($name, sprintf('%s Price', ucfirst($name)));
-        $manager->persist($price);
+        if (!$manager->getRepository(PriceType::class)->find($name)) {
+            $manager->persist($price);
+        }
         $this->setReference(sprintf('marello-%s-price-type', $name), $price);
     }
 }

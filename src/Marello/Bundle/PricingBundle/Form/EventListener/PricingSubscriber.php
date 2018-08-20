@@ -118,7 +118,7 @@ class PricingSubscriber implements EventSubscriberInterface
             if ($assembledPriceList->getSpecialPrice() !== null &&
                 $assembledPriceList->getSpecialPrice()->getValue() === null) {
                 $assembledPriceList->setSpecialPrice(null);
-            } else if ($assembledPriceList->getSpecialPrice() !== null) {
+            } elseif ($assembledPriceList->getSpecialPrice() !== null) {
                 $assembledPriceList->getSpecialPrice()
                     ->setType($this->getPriceType(LoadPriceTypes::SPECIAL_PRICE))
                     ->setCurrency($assembledPriceList->getCurrency());
@@ -126,7 +126,7 @@ class PricingSubscriber implements EventSubscriberInterface
             if ($assembledPriceList->getMsrpPrice() !== null &&
                 $assembledPriceList->getMsrpPrice()->getValue() === null) {
                 $assembledPriceList->setMsrpPrice(null);
-            } else if ($assembledPriceList->getMsrpPrice() !== null) {
+            } elseif ($assembledPriceList->getMsrpPrice() !== null) {
                 $assembledPriceList->getMsrpPrice()
                     ->setType($this->getPriceType(LoadPriceTypes::MSRP_PRICE))
                     ->setCurrency($assembledPriceList->getCurrency());
@@ -180,7 +180,8 @@ class PricingSubscriber implements EventSubscriberInterface
      * @param $name
      * @return PriceType
      */
-    private function getPriceType($name) {
+    private function getPriceType($name)
+    {
         if (!isset($this->priceTypes[$name])) {
             $this->priceTypes[$name] = $this->doctrine
                 ->getManagerForClass(PriceType::class)

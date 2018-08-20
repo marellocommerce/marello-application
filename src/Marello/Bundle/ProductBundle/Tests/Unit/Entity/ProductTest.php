@@ -60,7 +60,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         ]);
     }
 
-    public function testGetPrise()
+    public function testGetPrice()
     {
         $price1 = new AssembledPriceList();
         $price2 = new AssembledPriceList();
@@ -77,14 +77,13 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the getPrice of product to returnt the first price
+     * Test the getPrice of product to return the first price
      * of the ProductPrices Collection
      */
     public function testGetFirstPriceFromCollection()
     {
         $firstProductPrice = new AssembledPriceList();
         $secondProductPrice = new AssembledPriceList();
-
         $this->entity
             ->addPrice($firstProductPrice)
             ->addPrice($secondProductPrice);

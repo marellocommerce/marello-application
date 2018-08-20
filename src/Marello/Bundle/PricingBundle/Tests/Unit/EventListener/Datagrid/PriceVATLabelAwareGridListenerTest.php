@@ -25,7 +25,6 @@ class PriceVATLabelAwareGridListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-
         $this->vatLabelFormatter = $this->getMockBuilder(LabelVATAwareFormatter::class)
             ->disableOriginalConstructor()
             ->getMock();

@@ -11,7 +11,7 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloPricingUpdateTabelsWithForeignKeys implements Migration, OrderedMigrationInterface
+class MarelloPricingUpdateTablesWithForeignKeys implements Migration, OrderedMigrationInterface
 {
     public function getOrder()
     {

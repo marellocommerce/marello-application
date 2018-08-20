@@ -31,7 +31,6 @@ class AssembledChannelPriceListType extends AbstractType
             ->add('specialPrice', ProductChannelPriceType::class, [
                 'required' => false,
             ]);
-        
     }
 
     /**

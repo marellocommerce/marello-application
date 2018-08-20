@@ -3,7 +3,6 @@
 namespace Marello\Bundle\PricingBundle\Migrations\Schema\v1_1;
 
 use Doctrine\DBAL\Schema\Schema;
-use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\OrderedMigrationInterface;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
@@ -12,7 +11,7 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloPricingUpdateTabelsWithDefaultPriceType implements Migration, OrderedMigrationInterface
+class MarelloPricingUpdateTablesWithDefaultPriceType implements Migration, OrderedMigrationInterface
 {
     public function getOrder()
     {
