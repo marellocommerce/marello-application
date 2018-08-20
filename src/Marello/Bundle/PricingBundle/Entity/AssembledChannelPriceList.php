@@ -19,13 +19,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *          }
  *      }
  * )
- * @ORM\Table(
- *      name="marello_assembled_ch_pr_list",
- *      uniqueConstraints={
- *          @ORM\UniqueConstraint(columns={"product_id", "channel_id", "currency"})
- *      }
- * )
- **/
+ * @ORM\Table(name="marello_assembled_ch_pr_list")
+ */
 class AssembledChannelPriceList extends ExtendAssembledChannelPriceList
 {
     use EntityCreatedUpdatedAtTrait;

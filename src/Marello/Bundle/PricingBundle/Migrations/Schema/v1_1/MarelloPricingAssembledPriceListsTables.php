@@ -51,8 +51,10 @@ class MarelloPricingAssembledPriceListsTables implements Migration, OrderedMigra
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['product_id', 'currency'], 'marello_assembled_price_list_uidx');
-        $table->addIndex(['product_id'], 'IDX_E7DDE13A4584665AE3', []);
+        $table->addUniqueIndex(['default_price_id'], 'marello_assembled_pr_dfp_uidx');
+        $table->addUniqueIndex(['special_price_id'], 'marello_assembled_pr_sfp_uidx');
+        $table->addUniqueIndex(['msrp_price_id'], 'marello_assembled_pr_mfp_uidx');
+        $table->addIndex(['product_id']);
     }
 
     /**
@@ -72,9 +74,10 @@ class MarelloPricingAssembledPriceListsTables implements Migration, OrderedMigra
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['product_id', 'channel_id' , 'currency'], 'marello_assembled_ch_pr_list_uidx');
-        $table->addIndex(['channel_id'], 'IDX_E7DDE13A72F5A1AAF1', []);
-        $table->addIndex(['product_id'], 'IDX_E7DDE13A4584665AD1', []);
+        $table->addUniqueIndex(['default_price_id'], 'marello_assembled_ch_pr_dfp_uidx');
+        $table->addUniqueIndex(['special_price_id'], 'marello_assembled_ch_pr_sfp_uidx');
+        $table->addIndex(['channel_id']);
+        $table->addIndex(['product_id']);
     }
     
     /**
@@ -97,6 +100,18 @@ class MarelloPricingAssembledPriceListsTables implements Migration, OrderedMigra
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_channel_price'),
+            ['default_price_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_channel_price'),
+            ['special_price_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
     }
 
     /**
@@ -110,6 +125,24 @@ class MarelloPricingAssembledPriceListsTables implements Migration, OrderedMigra
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_product_product'),
             ['product_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_price'),
+            ['default_price_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_price'),
+            ['special_price_id'],
+            ['id'],
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
+        );
+        $table->addForeignKeyConstraint(
+            $schema->getTable('marello_product_price'),
+            ['msrp_price_id'],
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
