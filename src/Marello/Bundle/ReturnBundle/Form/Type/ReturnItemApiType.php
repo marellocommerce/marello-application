@@ -41,8 +41,7 @@ class ReturnItemApiType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'  => 'Marello\Bundle\ReturnBundle\Entity\ReturnItem',
-            'constraints' => new ReturnItemConstraint(),
+            'data_class'  => 'Marello\Bundle\ReturnBundle\Entity\ReturnItem'
         ]);
     }
 

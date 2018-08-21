@@ -1,6 +1,7 @@
 api:
     entities:
         Marello\Bundle\ReturnBundle\Entity\ReturnEntity:
+            documentation_resource: '@MarelloReturnBundle/Resources/doc/api/return.md'
             fields:
                 createdAt:
                     exclude: true
@@ -14,9 +15,21 @@ api:
                     updatedAt:
                         exclude: true
             actions:
+                create:
+                    fields:
+                        returnNumber:
+                            exclude: true
+                        salesChannelName:
+                            exclude: true
+                        locale:
+                            exclude: true
+                        localization:
+                            exclude: true
                 update: false
                 delete: false
                 delete_list: false
+                get_relationship: false
+                add_relationship: false
                 update_relationship: false
                 delete_relationship: false
 
@@ -29,7 +42,11 @@ api:
             filters:
                 exclusion_policy: all
             actions:
+                create: false
+                update: false
                 delete: false
                 delete_list: false
+                get_relationship: false
+                add_relationship: false
                 update_relationship: false
                 delete_relationship: false

@@ -29,26 +29,104 @@ The created record is returned in the response.
 `</web_backend_prefix/api/returns>`
 
 ```JSON
-
+{
+  "data": {
+    "type": "returns",
+    "attributes": {
+      "returnReference": "2345678"
+    },
+    "relationships": {
+      "order": {
+        "data": {
+          "type": "orders",
+          "id": "1"
+        }
+      },
+      "returnItems": {
+        "data": [
+          {
+            "type": "returnitems",
+            "id": "8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v"
+          }
+        ]
+      },
+      "salesChannel": {
+        "data": {
+          "type": "saleschannels",
+          "id": "chan_usd"
+        }
+      },
+      "organization": {
+        "data": {
+          "type": "organizations",
+          "id": "1"
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "returnitems",
+      "id": "8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v",
+      "attributes": {
+        "quantity": 1
+      },
+      "relationships": {
+         "orderItem": {
+          "data": {
+            "type": "orderitems",
+            "id": "1"
+          }
+        },
+        "reason": {
+          "data": {
+            "type": "marelloreturnreasons",
+            "id": "damaged"
+          }
+        }
+      }
+    }
+  ]
+}
 ```
 {@/request}
 
 ## FIELDS
 
-### firstName
-### lastName
-### email
+### returnReference
 
 #### create
 
 {@inheritdoc}
 
-**The required field**
+### order
 
-#### update
+#### create
 
 {@inheritdoc}
 
-**Please note:**
+**Required field**
 
-*This field is **required** and must remain defined.*
+### returnItems
+
+#### create
+
+{@inheritdoc}
+
+**Required field**
+
+### salesChannel
+
+#### create
+
+{@inheritdoc}
+
+**Required field**
+
+### organization
+
+#### create
+
+{@inheritdoc}
+
+**Required field**

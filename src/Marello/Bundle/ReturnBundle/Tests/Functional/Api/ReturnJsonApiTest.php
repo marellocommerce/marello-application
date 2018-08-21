@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\ReturnBundle\Tests\Functional\Api;
 
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Symfony\Component\HttpFoundation\Response;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
