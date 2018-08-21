@@ -17,13 +17,19 @@ class ProductType extends AbstractType
 {
     const NAME = 'marello_product_form';
 
-    /** @var DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber*/
+    /**
+     * @var DefaultSalesChannelSubscriber
+     */
     protected $defaultSalesChannelSubscriber;
 
-    /** @var PricingSubscriber $pricingSubscriber */
+    /**
+     * @var PricingSubscriber
+     */
     protected $pricingSubscriber;
 
-    /** @var ChannelPricingSubscriber $channelPricingSubscriber */
+    /**
+     * @var ChannelPricingSubscriber
+     */
     protected $channelPricingSubscriber;
 
     /**

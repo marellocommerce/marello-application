@@ -5,6 +5,7 @@ namespace Marello\Bundle\ShippingBundle\Method\Validator\Result\Error\Factory\Co
 use Marello\Bundle\ShippingBundle\Method\Validator\Result\Error\Factory;
 // @codingStandardsIgnoreStart
 use Marello\Bundle\ShippingBundle\Method\Validator\Result\Error\ParameterBag\ParameterBagShippingMethodValidatorResultError;
+
 // @codingStandardsIgnoreEnd
 
 class ParameterBagCommonShippingMethodValidatorResultErrorFactory implements

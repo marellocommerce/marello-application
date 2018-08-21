@@ -3,8 +3,9 @@
 namespace Marello\Bundle\PricingBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
-use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 
 interface PricingAwareInterface
 {
@@ -19,19 +20,21 @@ interface PricingAwareInterface
 
     /**
      * Add channel price to collection
-     * @param ProductChannelPrice $channelPrice
-     * @return mixed
+     * @param AssembledChannelPriceList $channelPrice
+     * @return $this
      */
-    public function addChannelPrice(ProductChannelPrice $channelPrice);
+    public function addChannelPrice(AssembledChannelPriceList $channelPrice);
 
     /**
      * Remove channel price from collection
-     * @param ProductChannelPrice $channelPrice
-     * @return mixed
+     * @param AssembledChannelPriceList $channelPrice
+     * @return $this
      */
-    public function removeChannelPrice(ProductChannelPrice $channelPrice);
+    public function removeChannelPrice(AssembledChannelPriceList $channelPrice);
 
-    /** @return bool */
+    /**
+     * @return bool
+     */
     public function hasChannelPrices();
 
     /**
@@ -42,18 +45,20 @@ interface PricingAwareInterface
 
     /**
      * Add price to collection
-     * @param ProductPrice $price
-     * @return mixed
+     * @param AssembledPriceList $price
+     * @return $this
      */
-    public function addPrice(ProductPrice $price);
+    public function addPrice(AssembledPriceList $price);
 
     /**
      * Remove price from collection
-     * @param ProductPrice $price
-     * @return mixed
+     * @param AssembledPriceList $price
+     * @return $this
      */
-    public function removePrice(ProductPrice $price);
+    public function removePrice(AssembledPriceList $price);
 
-    /** @return bool */
+    /**
+     * @return bool
+     */
     public function hasPrices();
 }

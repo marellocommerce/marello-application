@@ -56,6 +56,21 @@ class BasePrice implements CurrencyAwareInterface
     protected $currency;
 
     /**
+     * @var PriceType
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\PricingBundle\Entity\PriceType")
+     * @ORM\JoinColumn(name="type", referencedColumnName="name", nullable=false, onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $type;
+
+    /**
      * @return int
      */
     public function getId()
@@ -98,6 +113,25 @@ class BasePrice implements CurrencyAwareInterface
     {
         $this->currency = $currency;
 
+        return $this;
+    }
+
+    /**
+     * @return PriceType
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param PriceType $type
+     * @return $this
+     */
+    public function setType(PriceType $type)
+    {
+        $this->type = $type;
+        
         return $this;
     }
 

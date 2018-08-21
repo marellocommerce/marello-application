@@ -8,6 +8,8 @@ use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider;
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\PricingBundle\Entity\Repository\ProductChannelPriceRepository;
@@ -46,12 +48,15 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider processFormChangesDataProvider
      *
-     * @param array $channelPrices
-     * @param ProductPrice $defaultPrice
+     * @param AssembledChannelPriceList $assembledChannelPriceList
+     * @param AssembledPriceList $assembledPriceList
      * @param int $expectedValue
      */
-    public function testProcessFormChanges($channelPrices, ProductPrice $defaultPrice, $expectedValue)
-    {
+    public function testProcessFormChanges(
+        AssembledChannelPriceList $assembledChannelPriceList = null,
+        AssembledPriceList $assembledPriceList = null,
+        $expectedValue
+    ) {
         /** @var SalesChannel $channel */
         $channel = $this->getEntity(SalesChannel::class, ['id' => 1, 'currency' => 'EUR']);
         /** @var Order $order */
@@ -77,14 +82,18 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
             ->expects(static::once())
             ->method('findOneBy')
             ->with(['product' => $product->getId(), 'currency' => $channel->getCurrency()])
-            ->willReturn($defaultPrice);
+            ->willReturn($assembledPriceList);
 
-        $productChannelPriceRepository = $this->createMock(ProductChannelPriceRepository::class);
+        $productChannelPriceRepository = $this->createMock(EntityRepository::class);
         $productChannelPriceRepository
             ->expects(static::once())
-            ->method('findOneBySalesChannel')
-            ->with($channel->getId(), $product->getId())
-            ->willReturn($channelPrices);
+            ->method('findOneBy')
+            ->with([
+                'channel' => $channel->getId(),
+                'product' => $product->getId(),
+                'currency' => $channel->getCurrency()
+            ])
+            ->willReturn($assembledChannelPriceList);
 
         $this->registry
             ->expects(static::at(0))
@@ -100,23 +109,23 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
         $this->registry
             ->expects(static::at(2))
             ->method('getManagerForClass')
-            ->with(ProductPrice::class)
+            ->with(AssembledPriceList::class)
             ->willReturnSelf();
         $this->registry
             ->expects(static::at(3))
             ->method('getRepository')
-            ->with(ProductPrice::class)
+            ->with(AssembledPriceList::class)
             ->willReturn($productPriceRepository);
 
         $this->registry
             ->expects(static::at(4))
             ->method('getManagerForClass')
-            ->with(ProductChannelPrice::class)
+            ->with(AssembledChannelPriceList::class)
             ->willReturnSelf();
         $this->registry
             ->expects(static::at(5))
             ->method('getRepository')
-            ->with(ProductChannelPrice::class)
+            ->with(AssembledChannelPriceList::class)
             ->willReturn($productChannelPriceRepository);
 
         $expectedData = [
@@ -146,17 +155,64 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
     public function processFormChangesDataProvider()
     {
         $defaultPrice = $this->getEntity(ProductPrice::class, ['id' => 1, 'value' => 100, 'currency' => 'EUR']);
+        $specialPrice = $this->getEntity(ProductPrice::class, ['id' => 2, 'value' => 50, 'currency' => 'EUR']);
+
+        $defaultChannelPrice = $this->getEntity(
+            ProductChannelPrice::class,
+            [
+                'id' => 1,
+                'value' => 40,
+                'currency' => 'EUR'
+            ]
+        );
+
+        $specialChannelPrice = $this->getEntity(
+            ProductChannelPrice::class,
+            [
+                'id' => 2,
+                'value' => 30,
+                'currency' => 'EUR'
+            ]
+        );
 
         return [
-            'noChannelPrice' => [
-                'channelPrices' => [],
-                'defaultPrice' => $defaultPrice,
+            'noChannelPriceNoSpecialPrice' => [
+                'assembledChannelPriceList' => null,
+                'assembledPriceList' => $this->getEntity(
+                    AssembledPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultPrice]
+                ),
                 'expectedValue' => 100
             ],
-            'withChannelPrice' => [
-                'channelPrices' => [['price_value' => 50]],
-                'defaultPrice' => $defaultPrice,
+            'noChannelPriceWithSpecialPrice' => [
+                'assembledChannelPriceList' => null,
+                'assembledPriceList' => $this->getEntity(
+                    AssembledPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultPrice, 'specialPrice' => $specialPrice]
+                ),
                 'expectedValue' => 50
+            ],
+            'withChannelPriceNoSpecialPrice' => [
+                'channelPrices' => $this->getEntity(
+                    AssembledChannelPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultChannelPrice]
+                ),
+                'defaultPrice' => $this->getEntity(
+                    AssembledPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultPrice, 'specialPrice' => $specialPrice]
+                ),
+                'expectedValue' => 40
+            ],
+            'withChannelPriceWithSpecialPrice' => [
+                'channelPrices' => $this->getEntity(
+                    AssembledChannelPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultChannelPrice, 'specialPrice' => $specialChannelPrice]
+                ),
+                'defaultPrice' => $this->getEntity(
+                    AssembledPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultPrice, 'specialPrice' => $specialPrice]
+                ),
+                'expectedValue' => 30
             ]
         ];
     }
@@ -164,50 +220,78 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getChannelPriceDataProvider
      *
-     * @param array $prices
+     * @param AssembledChannelPriceList $assembledChannelPriceList
      * @param array $expectedData
      */
-    public function testGetChannelPrice($prices, $expectedData)
+    public function testGetChannelPrice(AssembledChannelPriceList $assembledChannelPriceList = null, $expectedData)
     {
         /** @var SalesChannel $channel */
         $channel = $this->getEntity(SalesChannel::class, ['id' => 1, 'currency' => 'EUR']);
         /** @var Product $product */
         $product = $this->getEntity(Product::class, ['id' => 1]);
-        $repository = $this->createMock(ProductChannelPriceRepository::class);
+        $repository = $this->createMock(EntityRepository::class);
 
         $this->registry
             ->expects(static::once())
             ->method('getManagerForClass')
-            ->with(ProductChannelPrice::class)
+            ->with(AssembledChannelPriceList::class)
             ->willReturnSelf();
         $this->registry
             ->expects(static::once())
             ->method('getRepository')
-            ->with(ProductChannelPrice::class)
+            ->with(AssembledChannelPriceList::class)
             ->willReturn($repository);
         $repository
             ->expects(static::once())
-            ->method('findOneBySalesChannel')
-            ->with($channel->getId(), $product->getId())
-            ->willReturn($prices);
+            ->method('findOneBy')
+            ->with([
+                'channel' => $channel->getId(),
+                'product' => $product->getId(),
+                'currency' => $channel->getCurrency()
+            ])
+            ->willReturn($assembledChannelPriceList);
 
         static::assertEquals($expectedData, $this->channelPriceProvider->getChannelPrice($channel, $product));
     }
 
     public function getChannelPriceDataProvider()
     {
+        $defaultChannelPrice = $this->getEntity(
+            ProductChannelPrice::class,
+            [
+                'id' => 1,
+                'value' => 40,
+                'currency' => 'EUR'
+            ]
+        );
+        $specialChannelPrice = $this->getEntity(
+            ProductChannelPrice::class,
+            [
+                'id' => 2,
+                'value' => 30,
+                'currency' => 'EUR'
+            ]
+        );
+
+
         return [
             'noPrice' => [
-                'prices' => [],
+                'assembledChannelPriceList' => null,
                 'expectedData' => ['hasPrice' => false]
             ],
-            'onePrice' => [
-                'prices' => [['price_value' => 50]],
-                'expectedData' => ['hasPrice' => true, 'price' => 50]
+            'withoutSpecialPrice' => [
+                'assembledChannelPriceList' =>  $this->getEntity(
+                    AssembledChannelPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultChannelPrice]
+                ),
+                'expectedData' => ['hasPrice' => true, 'price' => 40]
             ],
-            'twoPrices' => [
-                'prices' => [['price_value' => 50], ['price_value' => 60]],
-                'expectedData' => ['hasPrice' => false]
+            'withSpecialPrice' => [
+                'assembledChannelPriceList' =>  $this->getEntity(
+                    AssembledChannelPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultChannelPrice, 'specialPrice' => $specialChannelPrice]
+                ),
+                'expectedData' => ['hasPrice' => true, 'price' => 30]
             ]
         ];
     }
@@ -215,10 +299,10 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getDefaultPriceDataProvider
      *
-     * @param mixed $price
+     * @param AssembledPriceList $assembledPriceList
      * @param int|null $expectedValue
      */
-    public function testGetDefaultPrice($price, $expectedValue)
+    public function testGetDefaultPrice(AssembledPriceList $assembledPriceList = null, $expectedValue)
     {
         /** @var SalesChannel $channel */
         $channel = $this->getEntity(SalesChannel::class, ['id' => 1, 'currency' => 'EUR']);
@@ -230,17 +314,17 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
             ->expects(static::once())
             ->method('findOneBy')
             ->with(['product' => $product->getId(), 'currency' => $channel->getCurrency()])
-            ->willReturn($price);
+            ->willReturn($assembledPriceList);
 
         $this->registry
             ->expects(static::at(0))
             ->method('getManagerForClass')
-            ->with(ProductPrice::class)
+            ->with(AssembledPriceList::class)
             ->willReturnSelf();
         $this->registry
             ->expects(static::at(1))
             ->method('getRepository')
-            ->with(ProductPrice::class)
+            ->with(AssembledPriceList::class)
             ->willReturn($productPriceRepository);
 
         static::assertEquals($expectedValue, $this->channelPriceProvider->getDefaultPrice($channel, $product));
@@ -248,18 +332,27 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
 
     public function getDefaultPriceDataProvider()
     {
+        $defaultPrice = $this->getEntity(ProductPrice::class, ['id' => 1, 'value' => 100, 'currency' => 'EUR']);
+        $specialPrice = $this->getEntity(ProductPrice::class, ['id' => 2, 'value' => 50, 'currency' => 'EUR']);
+
         return [
-            'noPriceObject' => [
-                'price' => [],
+            'noPrice' => [
+                'assembledChannelPriceList' => null,
                 'expectedValue' => null
             ],
-            'correctPriceObject' => [
-                'price' => $this->getEntity(ProductPrice::class, ['id' => 1, 'value' => 50, 'currency' => 'EUR']),
+            'withoutSpecialPrice' => [
+                'assembledChannelPriceList' =>  $this->getEntity(
+                    AssembledPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultPrice]
+                ),
+                'expectedValue' => 100
+            ],
+            'withSpecialPrice' => [
+                'assembledChannelPriceList' =>  $this->getEntity(
+                    AssembledPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultPrice, 'specialPrice' => $specialPrice]
+                ),
                 'expectedValue' => 50
-            ],
-            'notCorrectPriceObject' => [
-                'price' => $this->getEntity(Product::class, ['id' => 1]),
-                'expectedValue' => null
             ]
         ];
     }

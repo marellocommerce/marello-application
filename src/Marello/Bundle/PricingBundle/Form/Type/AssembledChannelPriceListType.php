@@ -2,17 +2,16 @@
 
 namespace Marello\Bundle\PricingBundle\Form\Type;
 
-use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
-use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductChannelPriceType extends AbstractType
+class AssembledChannelPriceListType extends AbstractType
 {
-    const NAME = 'marello_product_channel_price';
+    const NAME = 'marello_assembled_channel_price_list';
 
     /**
      * {@inheritdoc}
@@ -21,14 +20,16 @@ class ProductChannelPriceType extends AbstractType
     {
         $builder
             ->add('channel', SalesChannelSelectType::class, [
-                  'excluded'    => $options['excluded_channels']
+                'excluded'    => $options['excluded_channels']
             ])
             ->add('currency', HiddenType::class, [
-                'required' => true
+                'required' => true,
             ])
-            ->add('value', OroMoneyType::class, [
+            ->add('defaultPrice', ProductChannelPriceType::class, [
+                'required' => true,
+            ])
+            ->add('specialPrice', ProductChannelPriceType::class, [
                 'required' => false,
-                'label'    => 'marello.pricing.productprice.value.label',
             ]);
     }
 
@@ -38,8 +39,8 @@ class ProductChannelPriceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'        => ProductChannelPrice::class,
-            'intention'         => 'productchannelprice',
+            'data_class'        => AssembledChannelPriceList::class,
+            'intention'         => 'assembledchannelpricelist',
             'single_form'       => true,
             'excluded_channels' => []
         ]);
@@ -49,14 +50,6 @@ class ProductChannelPriceType extends AbstractType
      * {@inheritdoc}
      */
     public function getName()
-    {
-        return self::NAME;
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
     {
         return self::NAME;
     }

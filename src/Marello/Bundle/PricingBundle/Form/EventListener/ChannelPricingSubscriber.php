@@ -3,29 +3,40 @@
 namespace Marello\Bundle\PricingBundle\Form\EventListener;
 
 use Doctrine\ORM\EntityManager;
-
+use Marello\Bundle\PricingBundle\Entity\PriceType;
+use Marello\Bundle\PricingBundle\Form\Type\AssembledChannelPriceListCollectionType;
+use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
+use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
-use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 
 class ChannelPricingSubscriber implements EventSubscriberInterface
 {
-    /** @var EntityManager $em */
+    /**
+     * @var EntityManager
+     */
     protected $em;
 
-    /** @var string $interface  */
+    /**
+     * @var string
+     */
     protected $interface;
 
-    /** @var ChannelProvider $provider  */
+    /**
+     * @var ChannelProvider
+     */
     protected $provider;
+    
+    /**
+     * @var PriceType[]
+     */
+    protected $priceTypes = [];
 
     /**
-     * ChannelPricingSubscriber constructor.
      * @param EntityManager $em
      * @param string $interface
      * @param ChannelProvider $provider
@@ -44,8 +55,9 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA    => 'addChannelPricingData',
-            FormEvents::POST_SUBMIT     => 'handleEnabledState'
+            FormEvents::PRE_SET_DATA    => 'preSetData',
+            FormEvents::PRE_SUBMIT          => 'submit',
+            FormEvents::POST_SUBMIT     => 'postSubmit'
         ];
     }
 
@@ -53,7 +65,7 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
      *
      * @param FormEvent $event
      */
-    public function addChannelPricingData(FormEvent $event)
+    public function preSetData(FormEvent $event)
     {
         $product = $event->getData();
 
@@ -78,7 +90,7 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
         $channels = $this->provider->getExcludedSalesChannelsIds($product);
         $form->add(
             'channelPrices',
-            'marello_product_channel_price_collection',
+            AssembledChannelPriceListCollectionType::class,
             [
                 'options' => [
                     'excluded_channels' => $channels
@@ -90,9 +102,29 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
     }
 
     /**
+     *
      * @param FormEvent $event
      */
-    public function handleEnabledState(FormEvent $event)
+    public function submit(FormEvent $event)
+    {
+        $data = $event->getData();
+        if (isset($data['channelPrices'])) {
+            foreach ($data['channelPrices'] as $k => $channelPrice) {
+                $channelPrice['defaultPrice']['channel'] = $channelPrice['channel'];
+                $channelPrice['defaultPrice']['currency'] = $channelPrice['currency'];
+                $channelPrice['specialPrice']['channel'] = $channelPrice['channel'];
+                $channelPrice['specialPrice']['currency'] = $channelPrice['currency'];
+
+                $data['channelPrices'][$k] = $channelPrice;
+            }
+            $event->setData($data);
+        }
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function postSubmit(FormEvent $event)
     {
         /** @var Product $product */
         $product = $event->getData();
@@ -109,6 +141,20 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
         $data = $product->getData();
         if (!$data) {
             $data = [];
+        }
+
+        foreach ($product->getChannelPrices() as $assembledChannelPriceList) {
+            $assembledChannelPriceList->getDefaultPrice()
+                ->setType($this->getPriceType(LoadPriceTypes::DEFAULT_PRICE))
+                ->setCurrency($assembledChannelPriceList->getCurrency());
+            if ($assembledChannelPriceList->getSpecialPrice() !== null &&
+                $assembledChannelPriceList->getSpecialPrice()->getValue() === null) {
+                $assembledChannelPriceList->setSpecialPrice(null);
+            } elseif ($assembledChannelPriceList->getSpecialPrice() !== null) {
+                $assembledChannelPriceList->getSpecialPrice()
+                    ->setType($this->getPriceType(LoadPriceTypes::SPECIAL_PRICE))
+                    ->setCurrency($assembledChannelPriceList->getCurrency());
+            }
         }
 
         if ($form->has('removeSalesChannels') && !empty($form->get('removeSalesChannels')->getData())) {
@@ -157,7 +203,7 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
      * Remove channel prices from the collection on product
      * @param Product $product
      */
-    protected function clearChannelPricingCollection($product)
+    protected function clearChannelPricingCollection(Product $product)
     {
         if (count($product->getChannelPrices()) > 0) {
             foreach ($product->getChannelPrices() as $_price) {
@@ -166,7 +212,7 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
         }
     }
 
-    protected function removePricesByChannels(array $channels, $product)
+    protected function removePricesByChannels(array $channels, Product $product)
     {
         $ids = [];
         foreach ($channels as $channel) {
@@ -193,5 +239,20 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
         }
 
         return in_array($this->interface, class_implements($product), true);
+    }
+
+    /**
+     * @param $name
+     * @return PriceType
+     */
+    private function getPriceType($name)
+    {
+        if (!isset($this->priceTypes[$name])) {
+            $this->priceTypes[$name] = $this->em
+                ->getRepository(PriceType::class)
+                ->find($name);
+        }
+
+        return $this->priceTypes[$name];
     }
 }

@@ -8,7 +8,7 @@
         </h5>
         <div class="narrow-divider"></div>
         {% if product.prices|length > 0 %}
-            {{ dataGrid.renderGrid('marello-productprice-grid', { productId: product.id }, { cssClass: 'inner-grid' })  }}
+            {{ dataGrid.renderGrid('marello-assembled-price-list-grid', { productId: product.id }, { cssClass: 'inner-grid' })  }}
         {% else %}
             <div class="no-data">
                 <span>{{ 'marello.pricing.productprice.no_prices_configured'|trans }}</span>
@@ -21,7 +21,7 @@
             </h5>
             <div class="narrow-divider"></div>
             {% if product.channelPrices|length > 0 %}
-                {{ dataGrid.renderGrid('marello-productchannelprice-grid', { productId: product.id }, { cssClass: 'inner-grid' })  }}
+                {{ dataGrid.renderGrid('marello-assembled-channel-price-list-grid', { productId: product.id }, { cssClass: 'inner-grid' })  }}
             {% else %}
                 <div class="no-data">
                     <span>{{ 'marello.pricing.productchannelprice.no_channel_prices_configured'|trans }}</span>

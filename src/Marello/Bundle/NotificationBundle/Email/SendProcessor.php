@@ -79,7 +79,7 @@ class SendProcessor
             );
         }
 
-        list ($subjectRendered, $templateRendered) = $this->renderer->compileMessage(
+        list($subjectRendered, $templateRendered) = $this->renderer->compileMessage(
             $template,
             compact('entity')
         );

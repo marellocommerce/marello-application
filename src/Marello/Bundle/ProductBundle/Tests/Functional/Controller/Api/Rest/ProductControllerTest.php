@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductControllerTest extends WebTestCase
 {
-
     protected function setUp()
     {
         $this->initClient([], $this->generateWsseAuthHeader());
@@ -121,7 +120,7 @@ class ProductControllerTest extends WebTestCase
             'prices'    => [
                 [
                     'currency' => 'CHF',
-                    'value' => 100.0000
+                    'defaultPrice' => [ 'value' => 100.00 ],
                 ]
             ],
         ];

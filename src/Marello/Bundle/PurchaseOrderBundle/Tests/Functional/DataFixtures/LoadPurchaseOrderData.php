@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -112,11 +113,13 @@ class LoadPurchaseOrderData extends AbstractFixture implements DependentFixtureI
             $purchaseOrderItem = new PurchaseOrderItem();
             /** @var Product $product */
             $product = $this->getReference($item['product']);
+            /** @var AssembledPriceList $assembledPriceList */
+            $assembledPriceList = $product->getPrices()->first();
             $purchaseOrderItem
                 ->setProduct($product)
                 ->setOrderedAmount($item['orderedAmount'])
                 ->setRowTotal($item['rowTotal'])
-                ->setPurchasePrice($product->getPrices()->first())
+                ->setPurchasePrice($assembledPriceList->getDefaultPrice())
             ;
 
             $purchaseOrder->addItem($purchaseOrderItem);

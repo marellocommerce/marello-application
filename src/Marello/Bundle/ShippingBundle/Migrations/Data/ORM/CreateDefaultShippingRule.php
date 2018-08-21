@@ -30,7 +30,6 @@ class CreateDefaultShippingRule extends AbstractFixture implements DependentFixt
      */
     public function load(ObjectManager $manager)
     {
-
         $rule = new Rule();
         $rule->setName(self::DEFAULT_RULE_NAME)
             ->setEnabled(true)

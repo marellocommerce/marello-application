@@ -47,7 +47,11 @@ define(function(require) {
                     url: routing.generate(this.options.route, {'productId': this.productEl.val(), 'supplierId': this.supplierEl.val()}),
                     type: 'GET',
                     success: function (json) {
-                        self.priceEl.val(json['purchasePrice'].toFixed(2)).trigger('change');
+                        if (json['purchasePrice'] !== null) {
+                            self.priceEl.val(json['purchasePrice'].toFixed(2)).trigger('change');
+                        } else {
+                            self.priceEl.val('').trigger('change');
+                        }
                     }
                 });
             } else {
