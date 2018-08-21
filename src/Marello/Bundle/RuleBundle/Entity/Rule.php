@@ -122,7 +122,24 @@ class Rule extends ExtendRule implements DatesAwareInterface, RuleInterface
      *  )
      */
     private $stopProcessing = false;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     * @ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "order"=50
+     *          }
+     *      }
+     *  )
+     */
+    private $expression;
+    
     /**
      * @var bool
      *
@@ -138,7 +155,7 @@ class Rule extends ExtendRule implements DatesAwareInterface, RuleInterface
      *      }
      *  )
      */
-    private $system;
+    private $system = false;
 
     /**
      * @ORM\PrePersist
@@ -242,7 +259,26 @@ class Rule extends ExtendRule implements DatesAwareInterface, RuleInterface
 
         return $this;
     }
+    
+    /**
+     * @return string
+     */
+    public function getExpression()
+    {
+        return $this->expression;
+    }
 
+    /**
+     * @param string $expression
+     * @return $this
+     */
+    public function setExpression($expression)
+    {
+        $this->expression = $expression;
+
+        return $this;
+    }
+    
     /**
      * @param bool $isSystem
      * @return $this

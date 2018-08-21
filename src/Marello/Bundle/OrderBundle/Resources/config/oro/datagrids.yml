@@ -25,8 +25,9 @@ datagrids:
                 data_name:        salesChannelName
             shippingMethod:
                 label:            marello.order.shipping_method.label
-                frontend_type:    string
-                data_name:        shippingMethod
+                type:             twig
+                frontend_type:    html
+                template:         MarelloOrderBundle:Order/Datagrid/Property:shippingMethod.html.twig
             orderReference:
                 label:            marello.order.order_reference.label
                 frontend_type:    string
@@ -404,8 +405,6 @@ datagrids:
                 from:
                     - { table: MarelloOrderBundle:Customer, alias: c }
         columns:
-            id:
-                label: marello.order.customer.id.label
             namePrefix:
                 label: marello.order.customer.name_prefix.label
             firstName:
@@ -418,6 +417,12 @@ datagrids:
                 label: marello.order.customer.name_suffix.label
             email:
                 label: marello.order.customer.email.label
+            createdAt:
+                label:            oro.ui.created_at
+                frontend_type:    datetime
+            updatedAt:
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
         filters:
             columns:
                 namePrefix:
@@ -438,10 +443,14 @@ datagrids:
                 email:
                     type: string
                     data_name: c.email
+                createdAt:
+                    type: datetime
+                    data_name: c.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: c.updatedAt
         sorters:
             columns:
-                id:
-                    data_name: c.id
                 namePrefix:
                     data_name: c.namePrefix
                 firstName:
@@ -454,8 +463,12 @@ datagrids:
                     data_name: c.nameSuffix
                 email:
                     data_name: c.email
+                createdAt:
+                    data_name: c.createdAt
+                updatedAt:
+                    data_name: c.updatedAt
             default:
-                id: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                createdAt: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         properties:
             view_link:
                 type:   url
@@ -477,3 +490,11 @@ datagrids:
                 type:       navigate
                 link:       update_link
                 icon:       edit
+        options:
+            entityHint: customer
+
+    marello-customer-select-grid:
+        extends: marello-customer
+        properties:
+            id: ~
+        actions: ~

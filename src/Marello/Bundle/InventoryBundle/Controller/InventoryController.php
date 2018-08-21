@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 

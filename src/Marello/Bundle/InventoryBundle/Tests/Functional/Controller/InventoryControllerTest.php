@@ -2,15 +2,15 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Functional\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryData;
-use Symfony\Component\HttpFoundation\Response;
-
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
 use Marello\Bundle\PricingBundle\Tests\Functional\DataFixtures\LoadProductChannelPricingData;
 
 class InventoryControllerTest extends WebTestCase
@@ -96,11 +96,11 @@ class InventoryControllerTest extends WebTestCase
                     [
                         'warehouse' => 1,
                         'adjustmentOperator' => InventoryLevelCalculator::OPERATOR_INCREASE,
-                        'quantity' => 10,
-                        'desiredInventory' => 20,
-                        'purchaseInventory' => 30
+                        'quantity' => 10
                     ]
                 ],
+                'desiredInventory' => $inventoryItem->getDesiredInventory(),
+                'purchaseInventory' => $inventoryItem->getPurchaseInventory(),
                 'replenishment' => 'never_out_of_stock',
                 '_token' => $token,
             ],
@@ -117,6 +117,9 @@ class InventoryControllerTest extends WebTestCase
         $this->assertContains('never_out_of_stock', $crawler->html());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testUpdateInventoryItemRemoveLevels()
     {
         /** @var InventoryItemManager $manager */
@@ -143,6 +146,8 @@ class InventoryControllerTest extends WebTestCase
         $formData = [
             'marello_inventory_item' => [
                 'inventoryLevels' => [],
+                'desiredInventory' => $inventoryItem->getDesiredInventory(),
+                'purchaseInventory' => $inventoryItem->getPurchaseInventory(),
                 'replenishment' => 'never_out_of_stock',
                 '_token' => $token,
             ],

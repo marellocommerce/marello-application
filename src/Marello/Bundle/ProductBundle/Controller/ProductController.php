@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
 class ProductController extends Controller
 {
     const ACTION_SAVE_AND_DUPLICATE = 'save_and_duplicate';
@@ -22,7 +24,7 @@ class ProductController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format"="html"}
      * )
-     * @Security\AclAncestor("marello_product_view")
+     * @AclAncestor("marello_product_view")
      * @Config\Template
      */
     public function indexAction()
@@ -32,7 +34,7 @@ class ProductController extends Controller
 
     /**
      * @Config\Route("/create", name="marello_product_create")
-     * @Security\AclAncestor("marello_product_create")
+     * @AclAncestor("marello_product_create")
      * @Config\Template("MarelloProductBundle:Product:update.html.twig")
      *
      * @param Request $request
@@ -46,7 +48,7 @@ class ProductController extends Controller
 
     /**
      * @Config\Route("/update/{id}", requirements={"id"="\d+"}, name="marello_product_update")
-     * @Security\AclAncestor("marello_product_update")
+     * @AclAncestor("marello_product_update")
      * @Config\Template
      *
      * @param Product $product
@@ -116,7 +118,7 @@ class ProductController extends Controller
 
     /**
      * @Config\Route("/view/{id}", requirements={"id"="\d+"}, name="marello_product_view")
-     * @Security\AclAncestor("marello_product_view")
+     * @AclAncestor("marello_product_view")
      * @Config\Template("MarelloProductBundle:Product:view.html.twig")
      *
      * @param Product $product
@@ -132,7 +134,7 @@ class ProductController extends Controller
 
     /**
      * @Config\Route("/widget/info/{id}", name="marello_product_widget_info", requirements={"id"="\d+"})
-     * @Security\AclAncestor("marello_product_view")
+     * @AclAncestor("marello_product_view")
      * @Config\Template
      *
      * @param Product $product
@@ -148,7 +150,7 @@ class ProductController extends Controller
 
     /**
      * @Config\Route("/widget/price/{id}", name="marello_product_widget_price", requirements={"id"="\d+"})
-     * @Security\AclAncestor("marello_product_view")
+     * @AclAncestor("marello_product_view")
      * @Config\Template
      *
      * @param Product $product

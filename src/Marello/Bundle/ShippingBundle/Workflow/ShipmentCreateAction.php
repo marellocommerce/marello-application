@@ -3,89 +3,113 @@
 namespace Marello\Bundle\ShippingBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
+use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
+use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Marello\Bundle\ShippingBundle\Method\ShippingMethodProviderInterface;
 use Oro\Component\Action\Action\AbstractAction;
-use Oro\Component\Action\Action\ActionInterface;
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\ConfigExpression\ContextAccessor;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 class ShipmentCreateAction extends AbstractAction
 {
-    const DEFAULT_SHIPPING_SERVICE = 'manual';
-
-    /** @var ShippingServiceRegistry */
-    protected $registry;
-
-    protected $entity;
-
-    /** @var PropertyPathInterface */
-    protected $service;
-
-    /** @var Registry */
+    /**
+     * @var Registry
+     */
     protected $doctrine;
+    
+    /**
+     * @var ShippingMethodProviderInterface
+     */
+    protected $shippingMethodProvider;
 
     /**
-     * ShipmentCreateAction constructor.
-     *
-     * @param ContextAccessor         $contextAccessor
-     * @param ShippingServiceRegistry $registry
-     * @param Registry                $doctrine
+     * @var ShippingContextInterface
      */
-    public function __construct(ContextAccessor $contextAccessor, ShippingServiceRegistry $registry, Registry $doctrine)
-    {
+    protected $shippingContext;
+
+    /**
+     * @var PropertyPathInterface
+     */
+    protected $method;
+    
+    /**
+     * @var PropertyPathInterface
+     */
+    protected $methodType;
+
+    /**
+     * @param ContextAccessor $contextAccessor
+     * @param Registry $doctrine
+     * @param ShippingMethodProviderInterface $shippingMethodProvider
+     */
+    public function __construct(
+        ContextAccessor $contextAccessor,
+        Registry $doctrine,
+        ShippingMethodProviderInterface $shippingMethodProvider
+    ) {
         parent::__construct($contextAccessor);
-
-        $this->registry = $registry;
+        
         $this->doctrine = $doctrine;
+        $this->shippingMethodProvider = $shippingMethodProvider;
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize(array $options)
+    {
+        if (empty($options['context'])) {
+            throw new InvalidParameterException('context parameter is required');
+        }
 
+        if (empty($options['method'])) {
+            throw new InvalidParameterException('method parameter is required');
+        }
+
+        if (empty($options['methodType'])) {
+            throw new InvalidParameterException('methodType parameter is required');
+        }
+
+        $this->shippingContext = $options['context'];
+        $this->method = $options['method'];
+        $this->methodType = $options['methodType'];
+
+        return $this;
+    }
+    
     /**
      * @param mixed $context
      */
     protected function executeAction($context)
     {
-        /** @var string $service */
-        $service = strtolower($this->contextAccessor->getValue($context, $this->service));
-        /** @var ShippingAwareInterface $entity */
-        $entity = $this->contextAccessor->getValue($context, $this->entity);
-        $entityClass = $this->doctrine->getManager()->getClassMetadata(get_class($entity))->getName();
 
-        if (!$service || !$this->registry->hasIntegration($service) || !$this->registry->hasDataFactory($service)) {
-            $service = self::DEFAULT_SHIPPING_SERVICE;
+        /** @var ShippingContextInterface $entity */
+        $shippingContext = $this->contextAccessor->getValue($context, $this->shippingContext);
+
+        /** @var string $method */
+        $method = $this->contextAccessor->getValue($context, $this->method);
+        
+        /** @var string $methodType */
+        $methodType = $this->contextAccessor->getValue($context, $this->methodType);
+
+        if ($shippingMethod = $this->shippingMethodProvider->getShippingMethod($method)) {
+            if ($shippingMethodType = $shippingMethod->getType($methodType)) {
+                if ($shipment = $shippingMethodType->createShipment($shippingContext, $method, $methodType)) {
+                    $shipmentManager = $this->getShipmentManager();
+                    $shipmentManager->persist($shipment);
+                    $shipmentManager->flush();
+                }
+            }
         }
-
-        $dataFactory = $this->registry->getDataFactory($service);
-        $integration = $this->registry->getIntegration($service);
-        $dataProvider = $this->registry->getDataProvider($entityClass);
-
-        $data = $dataFactory->createData($dataProvider->setEntity($entity));
-
-        $integration->createShipment($entity, $data);
     }
-
+    
     /**
-     * Initialize action based on passed options.
-     *
-     * @param array $options
-     *
-     * @return ActionInterface
-     * @throws InvalidParameterException
+     * @return ObjectManager|null|object
      */
-    public function initialize(array $options)
+    private function getShipmentManager()
     {
-        if (empty($options['entity']) || !($options['entity'] instanceof PropertyPathInterface)) {
-            throw new InvalidParameterException('Entity parameter is required');
-        }
-
-        if (empty($options['service'])) {
-            throw new InvalidParameterException('Service parameter is required');
-        }
-
-        $this->entity = $options['entity'];
-        $this->service = $options['service'];
-
-        return $this;
+        return $this->doctrine->getManagerForClass(Shipment::class);
     }
 }

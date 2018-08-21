@@ -46,7 +46,7 @@ class Warehouse extends ExtendWarehouse
      * @ORM\Column(type="string", name="label", nullable=false)
      *
      * @var string
-     * 
+     *
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

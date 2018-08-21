@@ -57,7 +57,7 @@ class Customer implements FullNameInterface, EmailHolderInterface, EmailOwnerInt
      * @ORM\JoinColumn(name="primary_address_id", nullable=true)
      *
      * @var MarelloAddress
-     * 
+     *
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

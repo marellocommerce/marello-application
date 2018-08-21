@@ -46,6 +46,9 @@ class SalesChannelControllerTest extends WebTestCase
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testIndex()
     {
         $crawler = $this->client->request(
@@ -58,6 +61,7 @@ class SalesChannelControllerTest extends WebTestCase
     }
 
     /**
+     * {@inheritdoc}
      * @return int
      */
     public function testCreate()
@@ -92,6 +96,7 @@ class SalesChannelControllerTest extends WebTestCase
     }
 
     /**
+     * {@inheritdoc}
      * @param int $id
      * @return int
      * @depends testCreate
@@ -121,6 +126,7 @@ class SalesChannelControllerTest extends WebTestCase
     }
 
     /**
+     * {@inheritdoc}
      * @depends testUpdate
      * @param int $id
      */
@@ -146,24 +152,26 @@ class SalesChannelControllerTest extends WebTestCase
     }
     
     /**
+     * {@inheritdoc}
      * @depends testUpdate
      * @param int $id
      */
     public function testDelete($id)
     {
+        $operationName = 'DELETE';
         $this->client->request(
-            'GET',
+            'POST',
             $this->getUrl(
                 'oro_action_operation_execute',
                 [
-                    'operationName' => 'DELETE',
-                    'entityId'      => $id,
+                    'operationName' => $operationName,
                     'entityClass'   => SalesChannel::class,
+                    'entityId'      => $id,
                 ]
             ),
+            $this->getOperationExecuteParams($operationName, $id, SalesChannel::class),
             [],
-            [],
-            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
         $this->assertJsonResponseStatusCodeEquals($this->client->getResponse(), 200);
         $this->assertEquals(
@@ -184,6 +192,7 @@ class SalesChannelControllerTest extends WebTestCase
     }
 
     /**
+     * {@inheritdoc}
      * @param Crawler $crawler
      * @param string $name
      * @param string $code
@@ -237,6 +246,7 @@ class SalesChannelControllerTest extends WebTestCase
     }
     
     /**
+     * {@inheritdoc}
      * @param string $html
      * @param string $name
      * @param string $code
@@ -263,5 +273,30 @@ class SalesChannelControllerTest extends WebTestCase
         $this->assertContains($default ? 'Yes' : 'No', $html);
         $this->assertContains($active ? 'Yes' : 'No', $html);
         $this->assertContains($locale, $html);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param $operationName
+     * @param $entityId
+     * @param $entityClass
+     *
+     * @return array
+     */
+    protected function getOperationExecuteParams($operationName, $entityId, $entityClass)
+    {
+        $actionContext = [
+            'entityId'    => $entityId,
+            'entityClass' => $entityClass
+        ];
+        $container = self::getContainer();
+        $operation = $container->get('oro_action.operation_registry')->findByName($operationName);
+        $actionData = $container->get('oro_action.helper.context')->getActionData($actionContext);
+
+        $tokenData = $container->get('oro_action.operation.execution.form_provider')
+            ->createTokenData($operation, $actionData);
+        $container->get('session')->save();
+
+        return $tokenData;
     }
 }

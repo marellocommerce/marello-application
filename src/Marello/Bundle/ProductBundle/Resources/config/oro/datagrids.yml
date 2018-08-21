@@ -102,19 +102,20 @@ datagrids:
                 rowAction:      true
             update:
                 type:           navigate
-                acl_resource:   marello_product_update
+#                acl_resource:   marello_product_update
                 label:          oro.grid.action.update
                 icon:           edit
                 link:           update_link
             delete:
                 type:           delete
                 link:           delete_link
-                acl_resource:   marello_product_delete
+#                acl_resource:   marello_product_delete
                 icon:           trash
                 label:          oro.grid.action.delete
             inventory:
                 type:           navigate
                 link:           inventory_link
+                acl_recource:   marello_inventory_inventory_update
                 icon:           cubes
                 label:          marello.inventory.management.label
         options:
@@ -417,7 +418,6 @@ datagrids:
             rowSelection:
                 dataField: id
                 columnName: hasChannel
-                selectAll: true
                 selectors:
                     included: '#addSalesChannels'
                     excluded: '#removeSalesChannels'

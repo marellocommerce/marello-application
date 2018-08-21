@@ -1,0 +1,145 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+
+{% oro_title_set({params : {"%id%": entity.id|default('N/A'|trans)} }) %}
+
+{% set formAction = entity.id ? path('marello_shipping_methods_configs_rule_update', { 'id': entity.id }) : path('marello_shipping_methods_configs_rule_create')  %}
+
+{% block pageHeader %}
+    {% if entity.id %}
+        {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_shipping_methods_configs_rule_index'),
+        'indexLabel': 'marello.shipping.shippingmethodsconfigsrule.entity_plural_label'|trans,
+        'entityTitle': entity.rule.name|slice(0, 50)
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set breadcrumbs = {
+        'indexLabel': 'Create',
+        'entityTitle': 'Shipping Rule',
+        'indexPath': path('marello_shipping_methods_configs_rule_create')
+        } %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.shipping.shippingmethodsconfigsrule.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {{ parent() }}
+
+    {{ UI.cancelButton(path('marello_shipping_methods_configs_rule_index')) }}
+    {% if entity.id and is_granted('marello_shipping_methods_configs_rule_update') or is_granted('marello_shipping_methods_configs_rule_create') %}
+        {% set html = '' %}
+        {% if is_granted('marello_shipping_methods_configs_rule_view') %}
+            {% set html = UI.saveAndCloseButton({
+            'route': 'marello_shipping_methods_configs_rule_view',
+            'params': {'id': '$id'}
+            }) %}
+        {% endif %}
+        {% set html = html ~ UI.saveAndStayButton({
+        'route': 'marello_shipping_methods_configs_rule_update',
+        'params': {'id': '$id'}
+        }) %}
+
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block marello_shipping_rule_methods %}
+    {% set updateFlag = constant('Marello\\Bundle\\ShippingBundle\\Form\\Handler\\ShippingMethodsConfigsRuleHandler::UPDATE_FLAG') %}
+    <div data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ {
+             view: 'marelloshipping/js/app/views/shipping-rule-method-view',
+             updateFlag: updateFlag,
+             focus: app.request.get(updateFlag) ? true : false
+         }|json_encode }}"
+    >
+        {{ block('marello_shipping_rule_add_method_widget') }}
+
+        {% if form.method.vars.choices|length == 0 %}
+            <div class="no-data">
+                <span>
+                    {{ 'marello.shipping.sections.shippingrule_configurations.no_methods.message'|trans }}
+                </span>
+            </div>
+        {% endif %}
+
+        {{ form_widget(form.methodConfigs) }}
+    </div>
+{% endblock %}
+
+{% block marello_shipping_rule_add_method_widget %}
+    <div>
+        <div class="marello-shipping-rule-add-method-select">
+            {{ form_row(form.method, {'attr': {'class': ' no-uniform '}}) }}
+        </div>
+        <a class="btn add-method" href="javascript: void(0);">
+            {{ form.vars.add_label|default('oro.form.collection.add')|trans }}
+        </a>
+        <a class="btn add-all-methods btn-primary" href="javascript: void(0);">
+            {{ form.vars.add_label|default('oro.form.collection.add_all')|trans }}
+        </a>
+    </div>
+{% endblock %}
+
+{% block content_data %}
+    {% set id = 'shipping-rule-edit' %}
+
+    {% set dataBlocks = [
+    {
+    'title': 'marello.shipping.sections.general'|trans,
+    'class': 'active',
+    'subblocks': [
+    {
+    'data': [
+    form_row(form.rule.enabled),
+    form_row(form.rule.name),
+    form_row(form.rule.sortOrder),
+    form_row(form.currency),
+    form_row(form.rule.stopProcessing),
+    ]
+    },
+    ]
+    },
+    {
+    'title': 'marello.shipping.sections.shippingrule_destination'|trans,
+    'subblocks': [
+    {
+    'data': [
+    form_widget(form.destinations, {'attr': {'class': 'marello-shipping-rule-collection marello-shipping-rule-destinations-collection row-oro'}}),
+    ]
+    }
+    ]
+    },
+    {
+    'title': 'marello.shipping.sections.shippingrule_conditions'|trans,
+    'subblocks': [
+    {
+    'data': [
+
+    ]
+    }
+    ]
+    },
+    {
+    'title': 'marello.shipping.sections.shippingrule_configurations.label'|trans,
+    'content_attr': {
+    'class': 'shipping-rule-methods-wrapper'
+    },
+    'subblocks': [
+    {
+    'data': [
+    block('marello_shipping_rule_methods')
+    ]
+    }
+    ]
+    },
+    ] %}
+
+    {% set data = {
+    'formErrors': form_errors(form),
+    'dataBlocks': dataBlocks
+    } %}
+
+    {{ parent() }}
+{% endblock %}

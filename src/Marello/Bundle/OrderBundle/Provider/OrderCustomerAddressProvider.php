@@ -22,6 +22,16 @@ class OrderCustomerAddressProvider
     /**
      * @param Customer|null $customer
      * @return array
+     * @deprecated since version 1.4.0 use getCustomerBillingAddresses() instead
+     */
+    public function getCustomerAddresses(Customer $customer = null)
+    {
+        return $this->getCustomerBillingAddresses($customer);
+    }
+
+    /**
+     * @param Customer|null $customer
+     * @return array
      */
     public function getCustomerBillingAddresses(Customer $customer = null)
     {
@@ -37,7 +47,7 @@ class OrderCustomerAddressProvider
 
             $result[$primaryAddress->getId()] = $primaryAddress;
 
-            foreach($customer->getAddresses() as $address) {
+            foreach ($customer->getAddresses() as $address) {
                 $result[$address->getId()] = $address;
             }
             $this->cache[self::CACHE_KEY_BILLING][$key] = $result;
@@ -67,7 +77,7 @@ class OrderCustomerAddressProvider
                 $result[$shippingAddress->getId()] = $shippingAddress;
             }
 
-            foreach($customer->getAddresses() as $address) {
+            foreach ($customer->getAddresses() as $address) {
                 $result[$address->getId()] = $address;
             }
             $this->cache[self::CACHE_KEY_SHIPPING][$key] = $result;

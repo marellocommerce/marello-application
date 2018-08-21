@@ -3,7 +3,6 @@
 namespace Marello\Bundle\ShippingBundle\Integration;
 
 use Marello\Bundle\ShippingBundle\Entity\Shipment;
-use Marello\Bundle\ShippingBundle\Integration\ShippingAwareInterface;
 
 interface ShippingServiceIntegrationInterface
 {

@@ -30,7 +30,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_5';
+        return 'v1_6';
     }
 
     /**
@@ -78,7 +78,7 @@ class MarelloOrderBundleInstaller implements
     {
         $table = $schema->createTable('marello_order_customer');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('organization_id', 'integer', []);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('primary_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
@@ -108,7 +108,7 @@ class MarelloOrderBundleInstaller implements
     {
         $table = $schema->createTable('marello_order_order');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
-        $table->addColumn('organization_id', 'integer', []);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('customer_id', 'integer', ['notnull' => false]);
         $table->addColumn('order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('order_reference', 'string', ['notnull' => false, 'length' => 255]);
@@ -136,6 +136,17 @@ class MarelloOrderBundleInstaller implements
             ]
         );
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('shipping_method_type', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn(
+            'estimated_shipping_cost_amount',
+            'money',
+            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
+        );
+        $table->addColumn(
+            'override_shipping_cost_amount',
+            'money',
+            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
+        );
         $table->addColumn(
             'discount_amount',
             'money',
@@ -245,7 +256,7 @@ class MarelloOrderBundleInstaller implements
             $schema->getTable('oro_organization'),
             ['organization_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),
@@ -273,7 +284,7 @@ class MarelloOrderBundleInstaller implements
             $schema->getTable('oro_organization'),
             ['organization_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_address'),

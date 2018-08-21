@@ -18,3 +18,8 @@ acls:
         type: entity
         class: MarelloSalesBundle:SalesChannel
         permission: DELETE
+
+    marello_sales_saleschannelgroup_delete:
+        type: entity
+        class: MarelloSalesBundle:SalesChannelGroup
+        permission: DELETE

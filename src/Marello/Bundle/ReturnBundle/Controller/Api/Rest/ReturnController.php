@@ -10,7 +10,7 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Oro\Bundle\SecurityBundle\Annotation as Security;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 
@@ -41,7 +41,7 @@ class ReturnController extends RestController implements ClassResourceInterface
      *     description="Get a list of all Return Entities",
      *     resource=true
      * )
-     * @Security\AclAncestor("marello_return_view")
+     * @AclAncestor("marello_return_view")
      *
      * @param Request $request
      *
@@ -64,7 +64,7 @@ class ReturnController extends RestController implements ClassResourceInterface
      *     description="Get one Return entity by id",
      *     resource=true
      * )
-     * @Security\AclAncestor("marello_return_view")
+     * @AclAncestor("marello_return_view")
      *
      * @return Response
      */
@@ -80,7 +80,7 @@ class ReturnController extends RestController implements ClassResourceInterface
      *     description="Create a new Return via the Api",
      *     resource=true
      * )
-     * @Security\AclAncestor("marello_return_create")
+     * @AclAncestor("marello_return_create")
      *
      * @return Response
      */

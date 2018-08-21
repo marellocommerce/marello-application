@@ -132,9 +132,10 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
             if (!$inventoryItem) {
                 return;
             }
+
             $inventoryItem->setReplenishment($this->replenishments[rand(0, count($this->replenishments) - 1)]);
             $this->handleInventoryUpdate($product, $inventoryItem, $data['inventory_qty'], 0, null);
-            $this->balanceInventory($product);
+            $this->balanceInventory($product, $data['inventory_qty']);
         }
     }
 
@@ -164,8 +165,9 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
 
     /**
      * @param Product $product
+     * @param $inventoryQty $int
      */
-    public function balanceInventory($product)
+    public function balanceInventory($product, $inventoryQty)
     {
         /** @var SalesChannel[] $salesChannels */
         $salesChannels = $product->getChannels();
@@ -175,14 +177,13 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
 
         /** @var VirtualInventoryHandler $handler */
         $handler = $this->container->get('marello_inventory.model.virtualinventory.virtual_inventory_handler');
-
+        $balancedQty = ($inventoryQty / count($salesChannelGroups));
         foreach ($salesChannelGroups as $salesChannelGroup) {
             /** @var VirtualInventoryLevel $level */
             $level = $handler->findExistingVirtualInventory($product, $salesChannelGroup);
             if (!$level) {
-                $level = $handler->createVirtualInventory($product, $salesChannelGroup);
+                $level = $handler->createVirtualInventory($product, $salesChannelGroup, $balancedQty);
             }
-
             $handler->saveVirtualInventory($level, true, true);
         }
     }

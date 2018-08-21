@@ -51,7 +51,7 @@ class MarelloPurchaseOrderBundleInstaller implements
         $table = $schema->createTable('marello_purchase_order');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('supplier_id', 'integer', ['notnull' => true]);
-        $table->addColumn('organization_id', 'integer', []);
+        $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('purchase_order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('warehouse_id', 'integer', []);
         $table->addColumn('order_total', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
@@ -109,7 +109,7 @@ class MarelloPurchaseOrderBundleInstaller implements
             $schema->getTable('oro_organization'),
             ['organization_id'],
             ['id'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('marello_supplier_supplier'),

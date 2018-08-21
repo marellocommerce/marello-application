@@ -1,0 +1,168 @@
+parameters:
+    marello_ups.integration.channel.type: 'ups'
+    marello_ups.integration.transport.type: 'ups'
+    marello_ups.api.url.production: 'https://onlinetools.ups.com'
+    marello_ups.api.url.test: 'https://wwwcie.ups.com'
+    marello_ups.admin_view.method_template: 'MarelloUPSBundle::UPSMethodWithOptions.html.twig'
+
+services:
+    # Providers
+    marello_ups.provider.channel:
+        class: 'Marello\Bundle\UPSBundle\Provider\ChannelType'
+        tags:
+            - { name: oro_integration.channel, type: '%marello_ups.integration.channel.type%'}
+
+    marello_ups.provider.transport:
+        class: 'Marello\Bundle\UPSBundle\Provider\UPSTransport'
+        arguments:
+            - '@marello_ups.client.url_provider_basic'
+            - '@logger'
+        calls:
+            - [setRestClientFactory, ['@oro_integration.transport.rest.client_factory']]
+        tags:
+            - { name: oro_integration.transport, type: '%marello_ups.integration.transport.type%', channel_type: '%marello_ups.integration.channel.type%' }
+
+    marello_ups.shipping_method_provider.ups:
+        class: 'Marello\Bundle\UPSBundle\Method\UPSShippingMethodProvider'
+        arguments:
+            - '%marello_ups.integration.channel.type%'
+            - '@oro_entity.doctrine_helper'
+            - '@marello_ups.method.factory.method'
+        tags:
+            - { name: marello_shipping_method_provider }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: postLoad }
+
+    marello_ups.method.identifier_generator.method:
+        parent: oro_integration.generator.prefixed_identifier_generator
+        arguments:
+            - '%marello_ups.integration.channel.type%'
+
+    marello_ups.method.identifier_generator.type:
+        class: 'Marello\Bundle\UPSBundle\Method\Identifier\UPSMethodTypeIdentifierGenerator'
+        public: false
+
+    marello_ups.method.factory.method:
+        class: 'Marello\Bundle\UPSBundle\Method\Factory\UPSShippingMethodFactory'
+        public: false
+        arguments:
+            - '@marello_ups.provider.transport'
+            - '@marello_ups.request_factory'
+            - '@oro_locale.helper.localization'
+            - '@oro_integration.provider.integration_icon'
+            - '@marello_ups.shipping_price_cache'
+            - '@marello_ups.method.identifier_generator.method'
+            - '@marello_ups.method.factory.type'
+            - '@event_dispatcher'
+
+    marello_ups.method.factory.type:
+        class: 'Marello\Bundle\UPSBundle\Method\Factory\UPSShippingMethodTypeFactory'
+        public: false
+        arguments:
+            - '@marello_ups.method.identifier_generator.type'
+            - '@marello_ups.method.identifier_generator.method'
+            - '@marello_ups.provider.transport'
+            - '@marello_ups.request_factory'
+            - '@marello_ups.shipping_price_cache'
+
+    marello_ups.entity_listener.channel:
+        parent: marello_shipping.remove_integration_listener
+        arguments:
+            - '%marello_ups.integration.channel.type%'
+            - '@marello_ups.method.identifier_generator.method'
+            - '@marello_shipping.method.event.dispatcher.method_removal'
+        tags:
+            - { name: kernel.event_listener, event: oro_integration.channel_delete, method: onRemove }
+
+    marello_ups.entity_listener.transport:
+        class: 'Marello\Bundle\UPSBundle\EventListener\UPSTransportEntityListener'
+        arguments:
+            - '@marello_ups.method.identifier_generator.method'
+            - '@marello_ups.method.identifier_generator.type'
+            - '@marello_shipping.method.event.dispatcher.type_removal'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\UPSBundle\Entity\UPSSettings', event: postUpdate }
+
+    marello_ups.request_factory:
+        class: 'Marello\Bundle\UPSBundle\Factory\CompositeUPSRequestFactory'
+        public: false
+
+    marello_ups.request_factory.price:
+        class: 'Marello\Bundle\UPSBundle\Factory\PriceRequestFactory'
+        public: false
+        arguments:
+            - '@oro_security.encoder.mcrypt'
+        tags:
+            - { name: marello_ups_request_factory, request_class: 'Marello\Bundle\UPSBundle\Model\Request\PriceRequest' }
+
+    marello_ups.request_factory.shipment_confirm:
+        class: 'Marello\Bundle\UPSBundle\Factory\ShipmentConfirmRequestFactory'
+        public: false
+        arguments:
+            - '@oro_security.encoder.mcrypt'
+        tags:
+            - { name: marello_ups_request_factory, request_class: 'Marello\Bundle\UPSBundle\Model\Request\ShipmentConfirmRequest' }
+
+    marello_ups.request_factory.shipment_accept:
+        class: 'Marello\Bundle\UPSBundle\Factory\ShipmentAcceptRequestFactory'
+        public: false
+        arguments:
+            - '@oro_security.encoder.mcrypt'
+        tags:
+            - { name: marello_ups_request_factory, request_class: 'Marello\Bundle\UPSBundle\Model\Request\ShipmentAcceptRequest' }
+
+    marello_ups.event_listener.shipping_method_config_data:
+        parent: marello_shipping.admin_view.method_template.listener
+        arguments:
+            - '%marello_ups.admin_view.method_template%'
+            - '@marello_ups.shipping_method_provider.ups'
+        tags:
+            - { name: kernel.event_listener, event: marello_shipping_method.config_data, method: onGetConfigData }
+
+    marello_ups.handler.action.invalidate_cache:
+        class: 'Marello\Bundle\UPSBundle\Handler\InvalidateCacheActionHandler'
+        arguments:
+            - "@oro_entity.doctrine_helper"
+            - "@marello_ups.shipping_price_cache"
+            - "@marello_shipping.shipping_price.provider.cache"
+
+    marello_ups.shipping_price_cache:
+        class: 'Marello\Bundle\UPSBundle\Cache\ShippingPriceCache'
+        public: false
+        arguments:
+            - "@marello_ups.cache.shipping_price"
+            - "@marello_ups.cache.lifetime_provider"
+
+    marello_ups.cache.shipping_price:
+        public: false
+        parent: oro.cache.abstract
+
+    marello_ups.cache.lifetime_provider:
+        class: 'Marello\Bundle\UPSBundle\Cache\Lifetime\UPSSettings\LifetimeByInvalidateCacheAtFieldProvider'
+        public: false
+
+    marello_ups.disable_integration_listener:
+        parent: marello_shipping.disable_integration_listener
+        arguments:
+            - '%marello_ups.integration.channel.type%'
+            - '@marello_ups.method.identifier_generator.method'
+            - '@marello_shipping.method_disable_handler.decorator'
+        tags:
+            - { name: kernel.event_listener, event: oro_integration.channel_disable, method: onIntegrationDisable }
+
+    marello_ups.client.url_provider_basic:
+        class: 'Marello\Bundle\UPSBundle\Client\Url\Provider\Basic\BasicUpsClientUrlProvider'
+        arguments:
+            - '%marello_ups.api.url.production%'
+            - '%marello_ups.api.url.test%'
+
+    marello_ups.client.factory_basic:
+        class: 'Marello\Bundle\UPSBundle\Client\Factory\Basic\BasicUpsClientFactory'
+        arguments:
+            - '@oro_integration.transport.rest.client_factory'
+            - '@marello_ups.client.url_provider_basic'
+
+    marello_ups.repository.shipping_service:
+        class: 'Marello\Bundle\UPSBundle\Entity\Repository\ShippingServiceRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\UPSBundle\Entity\ShippingService'

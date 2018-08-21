@@ -68,7 +68,7 @@ define(function(require) {
             if (this.options.selectors.subtotalsFields.length > 0) {
                 _.each(this.options.selectors.subtotalsFields, function(field) {
                     $(field).on('change', function() {
-                        mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals']});
+                        mediator.trigger('order:form-changes:trigger', {updateFields: ['items', 'totals', 'possible_shipping_methods']});
                     });
                 });
             }
