@@ -157,14 +157,30 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
         $defaultPrice = $this->getEntity(ProductPrice::class, ['id' => 1, 'value' => 100, 'currency' => 'EUR']);
         $specialPrice = $this->getEntity(ProductPrice::class, ['id' => 2, 'value' => 50, 'currency' => 'EUR']);
 
-        $defaultChannelPrice = $this->getEntity(ProductChannelPrice::class, ['id' => 1, 'value' => 40, 'currency' => 'EUR']);
-        $specialChannelPrice = $this->getEntity(ProductChannelPrice::class, ['id' => 2, 'value' => 30, 'currency' => 'EUR']);
+        $defaultChannelPrice = $this->getEntity(
+            ProductChannelPrice::class,
+            [
+                'id' => 1,
+                'value' => 40,
+                'currency' => 'EUR'
+            ]
+        );
+
+        $specialChannelPrice = $this->getEntity(
+            ProductChannelPrice::class,
+            [
+                'id' => 2,
+                'value' => 30,
+                'currency' => 'EUR'
+            ]
+        );
 
         return [
             'noChannelPriceNoSpecialPrice' => [
                 'assembledChannelPriceList' => null,
                 'assembledPriceList' => $this->getEntity(
-                    AssembledPriceList::class, ['id' => 1, 'defaultPrice' => $defaultPrice]
+                    AssembledPriceList::class,
+                    ['id' => 1, 'defaultPrice' => $defaultPrice]
                 ),
                 'expectedValue' => 100
             ],
@@ -240,8 +256,22 @@ class ChannelPriceProviderTest extends \PHPUnit_Framework_TestCase
 
     public function getChannelPriceDataProvider()
     {
-        $defaultChannelPrice = $this->getEntity(ProductChannelPrice::class, ['id' => 1, 'value' => 40, 'currency' => 'EUR']);
-        $specialChannelPrice = $this->getEntity(ProductChannelPrice::class, ['id' => 2, 'value' => 30, 'currency' => 'EUR']);
+        $defaultChannelPrice = $this->getEntity(
+            ProductChannelPrice::class,
+            [
+                'id' => 1,
+                'value' => 40,
+                'currency' => 'EUR'
+            ]
+        );
+        $specialChannelPrice = $this->getEntity(
+            ProductChannelPrice::class,
+            [
+                'id' => 2,
+                'value' => 30,
+                'currency' => 'EUR'
+            ]
+        );
 
 
         return [
