@@ -42,7 +42,6 @@ api:
             filters:
                 exclusion_policy: all
             actions:
-                create: false
                 update: false
                 delete: false
                 delete_list: false

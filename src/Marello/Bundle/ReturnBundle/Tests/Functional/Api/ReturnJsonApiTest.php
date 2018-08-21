@@ -2,10 +2,8 @@
 
 namespace Marello\Bundle\ReturnBundle\Tests\Functional\Api;
 
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Symfony\Component\HttpFoundation\Response;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
 use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
