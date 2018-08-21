@@ -1,11 +1,22 @@
-<span class="title">{{ item.label|trans }}</span>
-<ul>
 {% for key, value in item.value %}
-    <li>{{ key }}:</li>
-        <ol>
-            {% for val in value %}
-                <li>{{ val.SKU }}: {{ val.revenue|oro_format_currency({'currency': val.currency}) }}</li>
-            {% endfor %}
-        </ol>
+    <span class="title">{{ item.label|trans }} ({{ key }})</span>
+    <table style="width: 98%; margin: 10px">
+        {% for k, val in value %}
+            {% set productImage = asset('bundles/marelloproduct/img/no_image_available.jpg') %}
+            {% if val.image is not null %}
+                {% set productImage = file_url(val.product, 'image', val.image) %}
+            {% endif %}
+            <tr {% if k is even %} style="background-color: #f1f1f1;" {% endif %}>
+                <td style="text-align: center;">
+                    <img style="height: 25px; width: 25px;" src="{{ asset(val.medal) }}" />
+                </td>
+                <td>
+                    <img style="height: 45px; width: 40px;" src="{{ productImage }}" alt="{{ val.name }}" />
+                </td>
+                <td><a href="{{ path('marello_product_view', {'id': val.id}) }}">{{ val.sku }}</a></td>
+                <td>{{ val.name }}</td>
+                <td style="width: 88px; text-align: center;">{{ val.revenue|oro_format_currency({'currency': val.currency}) }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endfor %}
-</ul>

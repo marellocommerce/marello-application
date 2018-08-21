@@ -28,12 +28,13 @@ class OrderItemRepository extends EntityRepository
      */
     public function getTopProductsByRevenue($quantity, $currency)
     {
-        $select = 'oi.productSku as SKU, SUM(oi.quantity * oi.price) as revenue, o.currency as currency';
+        $select = 'p.id as id, oi.productSku as sku, oi.productName as name, SUM(oi.quantity * oi.price) as revenue, o.currency as currency';
         $qb     = $this->createQueryBuilder('oi');
         $qb
             ->select($select)
             ->innerJoin('oi.order', 'o')
-            ->groupBy('oi.productSku, o.currency')
+            ->innerJoin('oi.product', 'p')
+            ->groupBy('p.id, oi.productSku, oi.productName, o.currency')
             ->orderBy('currency, revenue', 'DESC')
             ->where('o.currency = :currency')
             ->setParameter('currency', $currency)
@@ -49,11 +50,12 @@ class OrderItemRepository extends EntityRepository
      */
     public function getTopProductsByItemsSold($quantity)
     {
-        $select = 'o.productSku as SKU, SUM(o.quantity) as quantity';
-        $qb     = $this->createQueryBuilder('o');
+        $select = 'p.id as id, oi.productSku as sku, oi.productName as name, SUM(oi.quantity) as quantity';
+        $qb     = $this->createQueryBuilder('oi');
         $qb
             ->select($select)
-            ->groupBy('o.productSku')
+            ->innerJoin('oi.product', 'p')
+            ->groupBy('p.id, oi.productSku, oi.productName')
             ->orderBy('quantity', 'DESC')
             ->setMaxResults($quantity);
 

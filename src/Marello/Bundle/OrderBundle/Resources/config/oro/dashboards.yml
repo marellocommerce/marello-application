@@ -98,13 +98,6 @@ dashboards:
                     acl:           marello_order_view
                     template:      MarelloOrderBundle:Dashboard:topProductsByItemsSold.html.twig
             configuration:
-                quantity:
-                    type: integer
-                    options:
-                       label: marello.order.dashboard.hero_products.products_quantity
-                       required: true
-                       empty_data: 3
-                    show_on_widget: false
                 subWidgets:
                     type: oro_type_widget_items
                     options:

@@ -4,14 +4,8 @@
 
 {% block content %}
     {% if items|length %}
-        <ul class="quick-launchpad-toolbar with-widget-items">
-        {% if (items|length > 3) %}
-            {% set itemWidth = (100 / 3)|round(2)%}
-        {% else %}
-            {% set itemWidth = (100 / items|length)|round(1) %}
-        {% endif %}
         {% for itemName, item in items %}
-            <li class="widget-item" style="width: {{ itemWidth }}%; text-align: left; vertical-align: top;">
+            <div class="widget-item" style="width: 100%; text-align: left; vertical-align: top;">
                 {% if item.value|length %}
                     {% include widgetDataItems[itemName].template with {item: item}%}
                 {% else %}
@@ -21,12 +15,11 @@
                         </div>
                     </div>
                 {% endif %}
-            </li>
+            </div>
             {% if not loop.last and loop.index % 3 == 0 %}
-            <li class="separator"> &nbsp; </li>
+            <div class="separator"> &nbsp; </div>
             {% endif %}
         {% endfor %}
-        </ul>
     {% else %}
         <div class="container-fluid">
             <div class="clearfix no-data">

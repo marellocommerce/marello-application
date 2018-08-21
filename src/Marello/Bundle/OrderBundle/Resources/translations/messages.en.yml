@@ -158,8 +158,8 @@ marello:
                 title: Hero Products
                 description: Hero Products
                 products_quantity: Products Quantity
-                total_items_sold.label: Hero Products By Items Sold
-                total_product_revenue.label: Hero Products By Revenue
+                total_items_sold.label: By Items Sold
+                total_product_revenue.label: By Revenue
                 no_available_metrics: No metrics available
 
             statistics:
