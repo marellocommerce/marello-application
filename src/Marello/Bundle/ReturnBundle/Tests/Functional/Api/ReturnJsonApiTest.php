@@ -64,7 +64,6 @@ class ReturnJsonApiTest extends RestJsonApiTestCase
         );
 
         $this->assertJsonResponse($response);
-
         $responseContent = json_decode($response->getContent());
         /** @var ReturnEntity $return */
         $return = $this->getEntityManager()->find(ReturnEntity::class, $responseContent->data->id);
@@ -74,6 +73,9 @@ class ReturnJsonApiTest extends RestJsonApiTestCase
         );
     }
 
+    /**
+     * Test get not found
+     */
     public function testGetNotFound()
     {
         $response = $this->get(
