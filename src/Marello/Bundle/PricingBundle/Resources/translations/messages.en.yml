@@ -1,6 +1,7 @@
 marello:
     pricing:
         header.label:                   Prices
+
         assembledpricelist:
             entity_plural_label:        Assembled Price Lists
             entity_label:               Assembled Price List
@@ -29,6 +30,7 @@ marello:
             created_at.label:           Created At
             value.label:                Price
             product.label:              Product
+            type.label:                 Price Type
             no_channels_enabled_or_configured: >
                                     No configured channels found for the current product.
                                     Please make sure Sales Channels exist and linked.
@@ -51,6 +53,7 @@ marello:
             channel.label:              Sales Channel
             product.label:              Product
             type.label:                 Price Type
+
             form:
                 pricing_enabled.label:  Enable Sales Channel Pricing
                 add_channel_price:      Add Channel Price

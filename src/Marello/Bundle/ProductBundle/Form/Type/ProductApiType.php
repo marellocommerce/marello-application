@@ -2,17 +2,30 @@
 
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
-use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemApiType;
-use Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemUpdateApiTransformer;
+use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
+use Marello\Bundle\PricingBundle\Form\Type\AssembledPriceListCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 class ProductApiType extends AbstractType
 {
     const NAME = 'marello_product_api_form';
-
+    
+    /**
+     * @var PricingSubscriber
+     */
+    protected $pricingSubscriber;
+    
+    /**
+     * @param PricingSubscriber $pricingSubscriber
+     */
+    public function __construct(
+        PricingSubscriber $pricingSubscriber
+    ) {
+        $this->pricingSubscriber         = $pricingSubscriber;
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -32,9 +45,10 @@ class ProductApiType extends AbstractType
                     'scale' => 2,
                 ]
             )
-            ->add('prices', 'marello_product_price_collection')
-            ->add('channels')
-        ;
+            ->add('prices', AssembledPriceListCollectionType::class)
+            ->add('channels');
+        
+        $builder->addEventSubscriber($this->pricingSubscriber);
     }
 
     /**
