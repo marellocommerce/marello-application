@@ -3,17 +3,18 @@
 namespace Marello\Bundle\PricingBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityRepository;
-use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
-use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
-use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
-use Marello\Bundle\PricingBundle\Entity\BasePrice;
-use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Marello\Bundle\PricingBundle\Entity\BasePrice;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
+use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
 
 class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
 {
@@ -91,7 +92,6 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
             ]
         );
 
-
         if ($assembledChannelPriceList) {
             /** @var ProductChannelPrice $price */
             $price = $assembledChannelPriceList->getSpecialPrice() ?: $assembledChannelPriceList->getDefaultPrice();
@@ -129,7 +129,7 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     }
 
     /**
-     * @return ProductRepository
+     * @return ObjectRepository|ProductRepository
      */
     protected function getProductRepository()
     {
@@ -137,7 +137,7 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     }
 
     /**
-     * @return EntityRepository
+     * @return ObjectRepository
      */
     protected function getAssembledPriceListRepository()
     {
@@ -145,7 +145,7 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
     }
 
     /**
-     * @return EntityRepository
+     * @return ObjectRepository
      */
     protected function getAssembledChannelPriceListRepository()
     {
@@ -154,7 +154,7 @@ class ChannelPriceProvider extends AbstractOrderItemFormChangesProvider
 
     /**
      * @param string $className
-     * @return EntityRepository
+     * @return ObjectRepository
      */
     protected function getRepository($className)
     {

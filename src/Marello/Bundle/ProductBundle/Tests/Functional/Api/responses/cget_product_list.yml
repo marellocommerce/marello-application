@@ -20,13 +20,6 @@ data:
                 data:
                     type: organizations
                     id: '1'
-            prices:
-                data:
-                    -
-                        type: productprices
-                        id: '2677'
-            channelPrices:
-                data: []
             channels:
                 data:
                     -
@@ -61,16 +54,6 @@ data:
                 data:
                     type: organizations
                     id: '1'
-            prices:
-                data:
-                    -
-                        type: productprices
-                        id: '2678'
-                    -
-                        type: productprices
-                        id: '2679'
-            channelPrices:
-                data: []
             channels:
                 data:
                     -
@@ -108,16 +91,6 @@ data:
                 data:
                     type: organizations
                     id: '1'
-            prices:
-                data:
-                    -
-                        type: productprices
-                        id: '2680'
-                    -
-                        type: productprices
-                        id: '2681'
-            channelPrices:
-                data: []
             channels:
                 data:
                     -
@@ -155,19 +128,6 @@ data:
                 data:
                     type: organizations
                     id: '1'
-            prices:
-                data:
-                    -
-                        type: productprices
-                        id: '2682'
-                    -
-                        type: productprices
-                        id: '2683'
-                    -
-                        type: productprices
-                        id: '2684'
-            channelPrices:
-                data: []
             channels:
                 data:
                     -

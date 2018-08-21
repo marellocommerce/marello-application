@@ -19,13 +19,6 @@ data:
             data:
                 type: organizations
                 id: '1'
-        prices:
-            data:
-                -
-                    type: productprices
-                    id: '2677'
-        channelPrices:
-            data: []
         channels:
             data:
                 -

@@ -244,7 +244,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
                 ->setDefaultPrice($price);
 
             $product->addPrice($assembledPriceList);
-
         }
     }
 
