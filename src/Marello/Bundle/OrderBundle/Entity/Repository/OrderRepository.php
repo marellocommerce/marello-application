@@ -86,4 +86,17 @@ class OrderRepository extends EntityRepository
 
         return $value['revenue'] ? $value['revenue'] / $value['ordersCount'] : 0;
     }
+
+    /**
+     * @return array
+     */
+    public function getOrdersCurrencies()
+    {
+        $qb = $this->createQueryBuilder('o');
+        $qb
+            ->distinct(true)
+            ->select('o.currency');
+
+        return $this->aclHelper->apply($qb)->getArrayResult();
+    }
 }
