@@ -212,6 +212,7 @@ services:
             - 'Marello\Bundle\OrderBundle\Entity\OrderItem'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+            - [setDateFilterProcessor, ['@oro_dashboard.filter.date_filter_processor']]
 
     marello_order.form.available_inventory_validator:
         class: 'Marello\Bundle\OrderBundle\Validator\AvailableInventoryValidator'
