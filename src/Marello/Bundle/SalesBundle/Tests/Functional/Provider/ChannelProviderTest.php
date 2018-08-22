@@ -3,11 +3,13 @@
 namespace Marello\Bundle\SalesBundle\Tests\Provider;
 
 use Doctrine\ORM\EntityManager;
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
 class ChannelProviderTest extends WebTestCase
 {
@@ -40,7 +42,7 @@ class ChannelProviderTest extends WebTestCase
         /** @var ChannelProvider $provider */
         $provider = new ChannelProvider($this->em);
         /** @var Product $product */
-        $product = $this->getReference('marello-product-0');
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
         $actual = $provider->getSalesChannelsIds($product);
 
@@ -63,7 +65,7 @@ class ChannelProviderTest extends WebTestCase
     public function testGetNotAssociatedSalesChannelIds()
     {
         /** @var Product $product */
-        $product = $this->getReference('marello-product-0');
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
         $provider = new ChannelProvider($this->em);
 

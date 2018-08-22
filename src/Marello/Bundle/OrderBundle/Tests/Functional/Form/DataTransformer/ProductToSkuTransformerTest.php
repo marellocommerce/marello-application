@@ -2,10 +2,11 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Form\DataTransformer;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadProductData;
-use Marello\Bundle\OrderBundle\Form\DataTransformer\ProductToSkuTransformer;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\OrderBundle\Form\DataTransformer\ProductToSkuTransformer;
+use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
 /**
  * Test if transformer is properly configured.
@@ -34,7 +35,7 @@ class ProductToSkuTransformerTest extends WebTestCase
     public function testTransform()
     {
         /** @var Product $product */
-        $product = $this->getReference('marello-product-0');
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
         $result = $this->transformer->transform($product);
 
@@ -47,7 +48,7 @@ class ProductToSkuTransformerTest extends WebTestCase
     public function testReverseTransformSuccess()
     {
         /** @var Product $product */
-        $product = $this->getReference('marello-product-0');
+        $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
         $result = $this->transformer->reverseTransform($product->getSku());
 
