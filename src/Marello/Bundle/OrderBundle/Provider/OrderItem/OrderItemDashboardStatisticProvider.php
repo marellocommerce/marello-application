@@ -47,7 +47,7 @@ class OrderItemDashboardStatisticProvider
 
     /**
      * @param WidgetOptionBag $widgetOptions
-     * @return int
+     * @return array
      */
     public function getTopProductsByRevenue(WidgetOptionBag $widgetOptions)
     {
@@ -59,7 +59,7 @@ class OrderItemDashboardStatisticProvider
             $currency = $currency['currency'];
             $items = $this->orderItemRepository->getTopProductsByRevenue($quantity, $currency);
             if (!empty($items)) {
-                foreach ($items as $key => $item){
+                foreach ($items as $key => $item) {
                     $product = $this->productRepository->find($item['id']);
                     $items[$key]['medal'] = $this->medalImages[$key];
                     $items[$key]['product'] = $product;
@@ -74,14 +74,14 @@ class OrderItemDashboardStatisticProvider
 
     /**
      * @param WidgetOptionBag $widgetOptions
-     * @return int
+     * @return array
      */
     public function getTopProductsByItemsSold(WidgetOptionBag $widgetOptions)
     {
         $quantity = $widgetOptions->get('quantity') ? : 3;
         $items = $this->orderItemRepository->getTopProductsByItemsSold($quantity);
         if (!empty($items)) {
-            foreach ($items as $key => $item){
+            foreach ($items as $key => $item) {
                 $product = $this->productRepository->find($item['id']);
                 $items[$key]['medal'] = $this->medalImages[$key];
                 $items[$key]['product'] = $product;

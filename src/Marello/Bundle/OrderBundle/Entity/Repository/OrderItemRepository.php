@@ -28,7 +28,9 @@ class OrderItemRepository extends EntityRepository
      */
     public function getTopProductsByRevenue($quantity, $currency)
     {
-        $select = 'p.id as id, oi.productSku as sku, oi.productName as name, SUM(oi.quantity * oi.price) as revenue, o.currency as currency';
+        $select = 'p.id as id, oi.productSku as sku, oi.productName as name,
+                SUM(oi.quantity * oi.price) as revenue, o.currency as currency';
+
         $qb     = $this->createQueryBuilder('oi');
         $qb
             ->select($select)
