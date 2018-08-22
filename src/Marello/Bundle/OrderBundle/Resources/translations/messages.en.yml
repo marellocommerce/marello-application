@@ -154,6 +154,17 @@ marello:
                 title: Order revenue per sales channel
                 description: Order revenue per sales channel
 
+            hero_products:
+                title: Hero Products
+                description: Hero Products
+                products_quantity: Products Quantity
+                total_items_sold.label: By Items Sold
+                total_product_revenue.label: By Revenue
+                no_available_metrics: No metrics available
+
+            statistics:
+                no_data: No data available
+
         sections:
             general: General
             shipping_information: Shipping Information
