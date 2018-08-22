@@ -66,7 +66,6 @@ class OrganizationCreateListener
      */
     private function createSystemWFARulesForOrganization(Organization $organization)
     {
-        
         $rules = $this->entityManager
             ->getRepository(Rule::class)
             ->findBy(['system' => true]);

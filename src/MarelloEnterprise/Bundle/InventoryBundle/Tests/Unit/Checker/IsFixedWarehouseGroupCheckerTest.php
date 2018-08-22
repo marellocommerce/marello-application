@@ -45,7 +45,6 @@ class IsFixedWarehouseGroupCheckerTest extends \PHPUnit_Framework_TestCase
      */
     public function checkDataProvider()
     {
-
         return [
             [
                 'warehouseTypes' => [
