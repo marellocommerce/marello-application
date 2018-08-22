@@ -3,7 +3,7 @@ data:
         type: products
         id: p1
         attributes:
-            productId: 909
+            productId: 53
             name: product1
             manufacturingCode: null
             productType: null
@@ -37,7 +37,7 @@ data:
         type: products
         id: p2
         attributes:
-            productId: 910
+            productId: 54
             name: 'product 2'
             manufacturingCode: null
             productType: null
@@ -74,7 +74,7 @@ data:
         type: products
         id: p3
         attributes:
-            productId: 911
+            productId: 55
             name: 'product 3'
             manufacturingCode: null
             productType: null
@@ -111,7 +111,7 @@ data:
         type: products
         id: p4
         attributes:
-            productId: 912
+            productId: 56
             name: 'product 4'
             manufacturingCode: null
             productType: null

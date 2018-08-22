@@ -3,7 +3,7 @@ data:
         type: products
         id: p1
         attributes:
-            productId: 909
+            productId: 53
             name: product1
             manufacturingCode: null
             productType: null
