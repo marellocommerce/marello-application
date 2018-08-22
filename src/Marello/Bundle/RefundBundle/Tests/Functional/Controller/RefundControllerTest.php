@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\RefundBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM\LoadRefundData;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
+use Marello\Bundle\RefundBundle\Tests\Functional\DataFixtures\LoadRefundData;
 
 class RefundControllerTest extends WebTestCase
 {
@@ -16,10 +18,13 @@ class RefundControllerTest extends WebTestCase
         );
 
         $this->loadFixtures([
-            LoadRefundData::class,
+            LoadRefundData::class
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testIndex()
     {
         $this->client->request(
