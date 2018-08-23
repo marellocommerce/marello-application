@@ -1,8 +1,9 @@
 api:
     entities:
         Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel:
+            documentation_resource: '@MarelloInventoryBundle/Resources/doc/api/virtualinventorylevels.md'
             fields:
-                channels:
+                saleschannels:
                     property_path: salesChannelGroup.salesChannels
                 salesChannelGroup:
                     exclude: true
@@ -15,13 +16,12 @@ api:
                 fields:
                     product:
                         data_type: string
-                        allow_array: true
                         property_path: product.sku
                         description: 'Filter by product sku'
-                    salesChannel:
+                    saleschannel:
                         data_type: string
                         property_path: salesChannelGroup.salesChannels.code
-                        description: 'Filter levels by SalesChannels'
+                        description: 'Filter levels by SalesChannel'
                     createdAt:
                         exclude: true
                     updatedAt:
