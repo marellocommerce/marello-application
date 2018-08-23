@@ -1,7 +1,7 @@
 api:
     entities:
         Marello\Bundle\SalesBundle\Entity\SalesChannel:
-            documentation_resource: '@MarelloSalesBundle/Resources/doc/api/saleschannels.md'
+            documentation_resource: '@MarelloSalesBundle/Resources/doc/api/saleschannel.md'
             identifier_field_names: [code]
             fields:
                 createdAt:

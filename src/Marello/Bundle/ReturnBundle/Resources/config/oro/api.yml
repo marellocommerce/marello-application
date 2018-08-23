@@ -34,7 +34,10 @@ api:
                 delete_relationship: false
 
         Marello\Bundle\ReturnBundle\Entity\ReturnItem:
+            documentation_resource: '@MarelloReturnBundle/Resources/doc/api/return_item.md'
             fields:
+                orderitem:
+                    property_path: orderItem
                 createdAt:
                     exclude: true
                 updatedAt:
@@ -42,6 +45,10 @@ api:
             filters:
                 exclusion_policy: all
             actions:
+                create:
+                    fields:
+                        status:
+                            exclude: true
                 update: false
                 delete: false
                 delete_list: false
@@ -49,3 +56,4 @@ api:
                 add_relationship: false
                 update_relationship: false
                 delete_relationship: false
+                get_subresource: false

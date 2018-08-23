@@ -1,7 +1,7 @@
 api:
     entities:
         Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel:
-            documentation_resource: '@MarelloInventoryBundle/Resources/doc/api/virtualinventorylevels.md'
+            documentation_resource: '@MarelloInventoryBundle/Resources/doc/api/virtualinventorylevel.md'
             fields:
                 saleschannels:
                     property_path: salesChannelGroup.salesChannels
