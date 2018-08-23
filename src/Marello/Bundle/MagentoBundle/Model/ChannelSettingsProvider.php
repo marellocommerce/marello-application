@@ -110,9 +110,6 @@ class ChannelSettingsProvider
      */
     public function hasOrganizationApplicableChannels(Organization $organization, $checkExtension = true)
     {
-        /**
-        * @todo Remove dependency on exact magento channel type in CRM-8153
-        */
         $channels = $this->doctrineHelper
             ->getEntityRepository($this->channelClassName)
             ->findBy(['type' => MagentoChannelType::TYPE, 'enabled' => true, 'organization' => $organization]);

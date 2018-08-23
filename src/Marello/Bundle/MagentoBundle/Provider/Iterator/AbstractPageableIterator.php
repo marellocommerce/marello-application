@@ -221,7 +221,6 @@ abstract class AbstractPageableIterator implements \Iterator, UpdatedLoaderInter
     }
 
     /**
-     * @TODO refactor class to remove empty methods. According to CRM-8211
      * @param array $ids
      */
     protected function loadEntities(array $ids)
@@ -429,7 +428,6 @@ abstract class AbstractPageableIterator implements \Iterator, UpdatedLoaderInter
     }
 
     /**
-     * @TODO refactor class to remove empty methods. According to CRM-8211
      * Modify filters before applying.
      */
     protected function modifyFilters()
