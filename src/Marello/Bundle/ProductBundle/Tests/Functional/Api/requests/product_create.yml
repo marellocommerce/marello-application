@@ -19,3 +19,11 @@ data:
                   -
                       type: saleschannels
                       id: '<toString(@channel3->code)>'
+          productstatus:
+              data:
+                  type: productstatuses
+                  id: 'enabled'
+          taxcode:
+              data:
+                  type: marellotaxcodes
+                  id: '<toString(@product1->taxCode->code)>'

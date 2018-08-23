@@ -7,3 +7,15 @@ oro_entity:
         Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
             alias: productchannelprice
             plural_alias: productchannelprices
+
+        Marello\Bundle\PricingBundle\Entity\PriceType:
+            alias: pricetype
+            plural_alias: pricetypes
+
+        Marello\Bundle\PricingBundle\Entity\AssembledPriceList:
+            alias: assembledpricelist
+            plural_alias: assembledpricelists
+
+        Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList:
+            alias: assembledchannelpricelist
+            plural_alias: assembledchannelpricelists

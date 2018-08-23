@@ -1,5 +1,9 @@
 api:
     entities:
+        Marello\Bundle\PricingBundle\Entity\AssembledPriceList: ~
+        Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList: ~
+        Marello\Bundle\PricingBundle\Entity\PriceType: ~
+
         Marello\Bundle\PricingBundle\Entity\ProductPrice:
             fields:
                 createdAt:
@@ -27,3 +31,4 @@ api:
                         exclude: true
                     updatedAt:
                         exclude: true
+

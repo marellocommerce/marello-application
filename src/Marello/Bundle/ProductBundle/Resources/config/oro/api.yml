@@ -4,6 +4,10 @@ api:
             documentation_resource: '@MarelloProductBundle/Resources/doc/api/product.md'
             identifier_field_names: [sku]
             fields:
+                taxcode:
+                    property_path: taxCode
+                productstatus:
+                    property_path: status
                 price:
                     exclude: true
                 createdAt:
@@ -22,3 +26,10 @@ api:
                         exclude: true
                     updatedAt:
                         exclude: true
+            actions:
+                create:
+                    fields:
+                        prices:
+                            exclude: true
+                        channelPrices:
+                            exclude: true

@@ -3,7 +3,7 @@ data:
         type: products
         id: p1
         attributes:
-            productId: 53
+            productId: 1
             name: product1
             manufacturingCode: null
             productType: null
@@ -12,7 +12,7 @@ data:
             warranty: null
             data: []
         relationships:
-            status:
+            productstatus:
                 data:
                     type: productstatuses
                     id: enabled
@@ -20,12 +20,19 @@ data:
                 data:
                     type: organizations
                     id: '1'
+            prices:
+                data:
+                    -
+                        type: assembledpricelists
+                        id: '1'
+            channelPrices:
+                data: []
             channels:
                 data:
                     -
                         type: saleschannels
                         id: chan_eur
-            taxCode:
+            taxcode:
                 data:
                     type: marellotaxcodes
                     id: TAX_HIGH
@@ -37,7 +44,7 @@ data:
         type: products
         id: p2
         attributes:
-            productId: 54
+            productId: 2
             name: 'product 2'
             manufacturingCode: null
             productType: null
@@ -46,7 +53,7 @@ data:
             warranty: null
             data: []
         relationships:
-            status:
+            productstatus:
                 data:
                     type: productstatuses
                     id: disabled
@@ -54,6 +61,16 @@ data:
                 data:
                     type: organizations
                     id: '1'
+            prices:
+                data:
+                    -
+                        type: assembledpricelists
+                        id: '2'
+                    -
+                        type: assembledpricelists
+                        id: '3'
+            channelPrices:
+                data: []
             channels:
                 data:
                     -
@@ -62,7 +79,7 @@ data:
                     -
                         type: saleschannels
                         id: chan_usd
-            taxCode:
+            taxcode:
                 data:
                     type: marellotaxcodes
                     id: TAX_HIGH
@@ -74,7 +91,7 @@ data:
         type: products
         id: p3
         attributes:
-            productId: 55
+            productId: 3
             name: 'product 3'
             manufacturingCode: null
             productType: null
@@ -83,7 +100,7 @@ data:
             warranty: null
             data: []
         relationships:
-            status:
+            productstatus:
                 data:
                     type: productstatuses
                     id: disabled
@@ -91,6 +108,16 @@ data:
                 data:
                     type: organizations
                     id: '1'
+            prices:
+                data:
+                    -
+                        type: assembledpricelists
+                        id: '4'
+                    -
+                        type: assembledpricelists
+                        id: '5'
+            channelPrices:
+                data: []
             channels:
                 data:
                     -
@@ -99,7 +126,7 @@ data:
                     -
                         type: saleschannels
                         id: chan_gbp
-            taxCode:
+            taxcode:
                 data:
                     type: marellotaxcodes
                     id: TAX_HIGH
@@ -111,7 +138,7 @@ data:
         type: products
         id: p4
         attributes:
-            productId: 56
+            productId: 4
             name: 'product 4'
             manufacturingCode: null
             productType: null
@@ -120,7 +147,7 @@ data:
             warranty: null
             data: []
         relationships:
-            status:
+            productstatus:
                 data:
                     type: productstatuses
                     id: enabled
@@ -128,6 +155,19 @@ data:
                 data:
                     type: organizations
                     id: '1'
+            prices:
+                data:
+                    -
+                        type: assembledpricelists
+                        id: '6'
+                    -
+                        type: assembledpricelists
+                        id: '7'
+                    -
+                        type: assembledpricelists
+                        id: '8'
+            channelPrices:
+                data: []
             channels:
                 data:
                     -
@@ -139,7 +179,7 @@ data:
                     -
                         type: saleschannels
                         id: chan_gbp
-            taxCode:
+            taxcode:
                 data:
                     type: marellotaxcodes
                     id: TAX_HIGH

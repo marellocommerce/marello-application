@@ -2,7 +2,7 @@ data:
     type: products
     id: p1
     attributes:
-        productId: 53
+        productId: 1
         name: product1
         manufacturingCode: null
         productType: null
@@ -11,7 +11,7 @@ data:
         warranty: null
         data: []
     relationships:
-        status:
+        productstatus:
             data:
                 type: productstatuses
                 id: enabled
@@ -19,12 +19,19 @@ data:
             data:
                 type: organizations
                 id: '1'
+        prices:
+            data:
+                -
+                    type: assembledpricelists
+                    id: '1'
+        channelPrices:
+            data: []
         channels:
             data:
                 -
                     type: saleschannels
                     id: chan_eur
-        taxCode:
+        taxcode:
             data:
                 type: marellotaxcodes
                 id: TAX_HIGH
