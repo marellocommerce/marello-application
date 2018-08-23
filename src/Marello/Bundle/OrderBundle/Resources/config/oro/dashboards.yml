@@ -85,7 +85,7 @@ dashboards:
             route_parameters: { bundle: MarelloOrderBundle, name: heroProducts }
             acl:         marello_order_view
             description: marello.order.dashboard.hero_products.description
-            icon:        bundles/orodashboard/img/no_icon.png
+            icon:        bundles/marelloorder/img/first.svg
             data_items:
                 total_product_revenue:
                     data_provider: @marello_order.provider.order_item_statistic_provider->getTopProductsByRevenue($widgetOptions$)
