@@ -4,6 +4,7 @@
 
 {% block content %}
     {% if items|length %}
+        <div style="margin-top: 10px;">
         {% for itemName, item in items %}
             <div class="widget-item" style="width: 100%; text-align: left; vertical-align: top;">
                 {% if item.value|length %}
@@ -20,6 +21,7 @@
             <div class="separator"> &nbsp; </div>
             {% endif %}
         {% endfor %}
+        </div>
     {% else %}
         <div class="container-fluid">
             <div class="clearfix no-data">
