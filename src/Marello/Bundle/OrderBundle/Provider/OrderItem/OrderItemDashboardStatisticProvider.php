@@ -52,12 +52,13 @@ class OrderItemDashboardStatisticProvider
     public function getTopProductsByRevenue(WidgetOptionBag $widgetOptions)
     {
         $quantity = $widgetOptions->get('quantity') ? : 3;
+        $dateRange = $widgetOptions->get('dateRange');
         $currencies = $this->orderRepository->getOrdersCurrencies();
 
         $result = [];
         foreach ($currencies as $currency) {
             $currency = $currency['currency'];
-            $items = $this->orderItemRepository->getTopProductsByRevenue($quantity, $currency);
+            $items = $this->orderItemRepository->getTopProductsByRevenue($quantity, $currency, $dateRange);
             if (!empty($items)) {
                 foreach ($items as $key => $item) {
                     $product = $this->productRepository->find($item['id']);
@@ -79,7 +80,8 @@ class OrderItemDashboardStatisticProvider
     public function getTopProductsByItemsSold(WidgetOptionBag $widgetOptions)
     {
         $quantity = $widgetOptions->get('quantity') ? : 3;
-        $items = $this->orderItemRepository->getTopProductsByItemsSold($quantity);
+        $dateRange = $widgetOptions->get('dateRange');
+        $items = $this->orderItemRepository->getTopProductsByItemsSold($quantity, $dateRange);
         if (!empty($items)) {
             foreach ($items as $key => $item) {
                 $product = $this->productRepository->find($item['id']);
