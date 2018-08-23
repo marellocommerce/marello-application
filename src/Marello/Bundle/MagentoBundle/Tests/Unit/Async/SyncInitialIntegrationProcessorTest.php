@@ -101,7 +101,6 @@ class SyncInitialIntegrationProcessorTest extends \PHPUnit_Framework_TestCase
             $doctrine,
             $this->initialSyncProcessor,
             $this->optionalListenerManager,
-//            $this->createMock(CalculateAnalyticsScheduler::class),
             $this->jobRunner,
             $this->createMock(IndexerInterface::class),
             $this->createMock(TokenStorageInterface::class),

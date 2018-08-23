@@ -225,6 +225,6 @@ class DefaultMagentoImportStrategy extends ConfigurableAddOrReplaceStrategy
             $itemData,
             $searchContext,
             $entityIsRelation
-            );
+        );
     }
 }

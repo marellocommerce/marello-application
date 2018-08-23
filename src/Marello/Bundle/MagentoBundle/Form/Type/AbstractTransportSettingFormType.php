@@ -76,8 +76,8 @@ abstract class AbstractTransportSettingFormType extends AbstractType
         );
 
         $builder->add(
-        'currency',
-        CurrencyType::class,
+            'currency',
+            CurrencyType::class,
             [
                 'label' => 'marello.magento.magentotransport.currency.label',
                 'required' => true
@@ -170,7 +170,6 @@ abstract class AbstractTransportSettingFormType extends AbstractType
          */
         $transportEntity = $form->getData();
         if ($transportEntity instanceof MagentoTransport && $transportEntity->getId()) {
-            // todo: use transport entity to get required values. It will be changed in scope of CRM-8339
             $isExtensionInstalled = $transportEntity->getIsExtensionInstalled();
             $extensionVersion = $transportEntity->getExtensionVersion();
 

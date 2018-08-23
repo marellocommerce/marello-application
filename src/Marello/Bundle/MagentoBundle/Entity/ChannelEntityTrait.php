@@ -25,8 +25,6 @@ trait ChannelEntityTrait
     /**
      * @param Channel|null $channel
      * @return self
-     *
-     * @TODO remove null after BAP-5248
      */
     public function setDataChannel(Channel $channel = null)
     {

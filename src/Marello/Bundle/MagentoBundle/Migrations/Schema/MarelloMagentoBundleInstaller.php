@@ -13,6 +13,8 @@ use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterf
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
+use MarelloMagentoBundle\src\Marello\Bundle\MagentoBundle\Migrations\Schema\v1_0\MarelloMagentoBundle;
+
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
@@ -62,7 +64,7 @@ class MarelloMagentoBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v0_0';
+        return 'v1_0';
     }
 
     /**
@@ -85,6 +87,8 @@ class MarelloMagentoBundleInstaller implements
         $this->addMarelloMagentoProductForeignKeys($schema);
         $this->addMarelloMagentoProdToWebsiteForeignKeys($schema);
         $this->addMarelloMagentoCategoryForeignKeys($schema);
+
+        MarelloMagentoBundle::updateProductOriginId($schema);
     }
 
     /**

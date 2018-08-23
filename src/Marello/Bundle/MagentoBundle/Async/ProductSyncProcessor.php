@@ -101,7 +101,8 @@ class ProductSyncProcessor implements MessageProcessorInterface, TopicSubscriber
             return self::REJECT;
         }
 
-        if (! is_array($integration->getConnectors()) || ! in_array(ProductConnector::TYPE, $integration->getConnectors())) {
+        if (! is_array($integration->getConnectors())
+            || ! in_array(ProductConnector::TYPE, $integration->getConnectors())) {
             $this->logger->error(
                 sprintf('The integration should have product in connectors: %s', $body['integration_id']),
                 ['integration' => $integration]
