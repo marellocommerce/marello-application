@@ -58,6 +58,32 @@ Help:
   Runs synchronization for integration
 ```
 
+### Using Composer
+
+If you don't have Composer yet, download it and follow the instructions on
+https://getcomposer.org/ or just run the following command:
+
+```bash
+    curl -s https://getcomposer.org/installer | php
+```
+
+If you're using Composer to install the Marello Magento Integration, you will need to add the package as a dependency in the composer.json.
+In order to add the dependency the following command should be executed from the (OroCommerce/Marello)installation directory: 
+
+* Notice:
+Where needed please add the repository in your composer.json:
+
+```
+    "marello-magento-bundle": {
+        "type": "vcs",
+        "url": "https://github.com/marellocommerce/marello-magento-bundle.git"
+    }
+```
+
+```bash
+    php -dmemory_limit=-1 $(which composer) require marellocommerce/marello-magento-bundle dev-master -vvv
+```
+
 * Admin GUI:
 `System → Integrations → Manage Integrations `
 
