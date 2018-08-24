@@ -10,10 +10,14 @@ class PriceDataConverter extends ProductDataConverter
      */
     public function convertToExportFormat(array $exportedRecord, $skipNullValues = true)
     {
-        $price = (float)$exportedRecord['value'];
+        $price = $exportedRecord["product"]["general_prices"]["default"]["value"];
+        $specialPrice = $exportedRecord["product"]["general_prices"]["special"]["value"];
+        $msrpPrice = $exportedRecord["product"]["general_prices"]["msrp"]["value"];
+
         $store = false;
         if (isset($exportedRecord['product']['channel_prices'])) {
-            $price = (float)$exportedRecord['product']['channel_prices']['0']['value'];
+            $price = $exportedRecord["product"]["channel_prices"]["default"]["value"];
+            $specialPrice = $exportedRecord["product"]["channel_prices"]["special"]["value"];
 
             /**
              * multiple websites would not set price on website level
@@ -28,9 +32,11 @@ class PriceDataConverter extends ProductDataConverter
             }
         }
         $result = [
-            'productId'     => $exportedRecord["product"]['product_id'],
-            'productData'   => [
-                'price'     => $price
+            'productId'         => $exportedRecord["product"]['product_id'],
+            'productData'       => [
+                'price'         => $price,
+                'special_price' => $specialPrice,
+                'msrp'          => $msrpPrice
             ]
         ];
 

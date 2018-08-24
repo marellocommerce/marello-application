@@ -4,7 +4,7 @@ MarelloMagentoBundle
 Bundle provides integration with Magento e-commerce solution.
 
 ### GENERAL INFO
-The integration will Magento store ownder to sync the following data-entities with Marello instance:
+The bundle will provide integration per Magento Website/Store to sync the following data-entities with Marello instance:
 
 * Orders
 * Products
