@@ -1,10 +1,6 @@
 api:
     entities:
-        Marello\Bundle\PricingBundle\Entity\AssembledPriceList: ~
-        Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList: ~
-        Marello\Bundle\PricingBundle\Entity\PriceType: ~
-
-        Marello\Bundle\PricingBundle\Entity\ProductPrice:
+        Marello\Bundle\PricingBundle\Entity\AssembledPriceList:
             fields:
                 createdAt:
                     exclude: true
@@ -13,6 +9,76 @@ api:
             filters:
                 exclusion_policy: all
                 fields:
+                    product:
+                        data_type: string
+                        property_path: product.sku
+                        description: 'Filter prices by Product SKU'
+                    createdAt:
+                        exclude: true
+                    updatedAt:
+                        exclude: true
+            actions:
+                delete: false
+                delete_list: false
+                get_relationship: false
+                add_relationship: false
+                update_relationship: false
+                delete_relationship: false
+                get_subresource: false
+
+        Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList:
+            fields:
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    product:
+                        data_type: string
+                        property_path: product.sku
+                        description: 'Filter prices by Product SKU'
+                    createdAt:
+                        exclude: true
+                    updatedAt:
+                        exclude: true
+            actions:
+                delete: false
+                delete_list: false
+                get_relationship: false
+                add_relationship: false
+                update_relationship: false
+                delete_relationship: false
+                get_subresource: false
+
+        Marello\Bundle\PricingBundle\Entity\PriceType:
+            actions:
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+                get_relationship: false
+                add_relationship: false
+                update_relationship: false
+                delete_relationship: false
+                get_subresource: false
+
+        Marello\Bundle\PricingBundle\Entity\ProductPrice:
+            fields:
+                pricetype:
+                    property_path: type
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    pricetype:
+                        data_type: string
+                        property_path: type
+                        description: 'Filter prices by PriceType'
                     createdAt:
                         exclude: true
                     updatedAt:
@@ -20,6 +86,8 @@ api:
 
         Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
             fields:
+                pricetype:
+                    property_path: type
                 createdAt:
                     exclude: true
                 updatedAt:
@@ -27,6 +95,10 @@ api:
             filters:
                 exclusion_policy: all
                 fields:
+                    pricetype:
+                        data_type: string
+                        property_path: type
+                        description: 'Filter prices by PriceType'
                     createdAt:
                         exclude: true
                     updatedAt:

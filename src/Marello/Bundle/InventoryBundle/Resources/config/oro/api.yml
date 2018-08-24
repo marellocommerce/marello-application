@@ -36,3 +36,6 @@ api:
                 get_relationship: false
                 update_relationship: false
                 delete_relationship: false
+
+        Marello\Bundle\InventoryBundle\Entity\WarehouseType:
+            actions: false

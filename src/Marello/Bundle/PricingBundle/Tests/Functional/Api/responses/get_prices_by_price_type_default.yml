@@ -1,0 +1,121 @@
+data:
+    -
+        type: productprices
+        id: '10'
+        attributes:
+            value: '10.0000'
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p1
+            pricetype:
+                data:
+                    type: pricetypes
+                    id: default
+    -
+        type: productprices
+        id: '11'
+        attributes:
+            value: '25.0000'
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p2
+            pricetype:
+                data:
+                    type: pricetypes
+                    id: default
+    -
+        type: productprices
+        id: '12'
+        attributes:
+            value: '28.0000'
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p2
+            pricetype:
+                data:
+                    type: pricetypes
+                    id: default
+    -
+        type: productprices
+        id: '13'
+        attributes:
+            value: '50.0000'
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p3
+            pricetype:
+                data:
+                    type: pricetypes
+                    id: default
+    -
+        type: productprices
+        id: '14'
+        attributes:
+            value: '50.0000'
+            currency: GBP
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p3
+            pricetype:
+                data:
+                    type: pricetypes
+                    id: default
+    -
+        type: productprices
+        id: '15'
+        attributes:
+            value: '100.0000'
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p4
+            pricetype:
+                data:
+                    type: pricetypes
+                    id: default
+    -
+        type: productprices
+        id: '16'
+        attributes:
+            value: '112.0000'
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p4
+            pricetype:
+                data:
+                    type: pricetypes
+                    id: default
+    -
+        type: productprices
+        id: '17'
+        attributes:
+            value: '100.0000'
+            currency: GBP
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p4
+            pricetype:
+                data:
+                    type: pricetypes
+                    id: default

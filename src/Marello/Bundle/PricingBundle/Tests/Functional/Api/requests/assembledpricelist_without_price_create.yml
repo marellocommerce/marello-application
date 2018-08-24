@@ -1,0 +1,9 @@
+data:
+      type: assembledpricelists
+      attributes:
+          currency: '<toString(@channel1->currency)>'
+      relationships:
+          product:
+              data:
+                  type: products
+                  id: '<toString(@product1->sku)>'

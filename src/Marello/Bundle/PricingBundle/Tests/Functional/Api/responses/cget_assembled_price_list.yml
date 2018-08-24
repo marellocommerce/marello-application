@@ -1,0 +1,145 @@
+data:
+    -
+        type: assembledpricelists
+        id: '1'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p1
+            defaultPrice:
+                data:
+                    type: productprices
+                    id: '1'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: assembledpricelists
+        id: '2'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p2
+            defaultPrice:
+                data:
+                    type: productprices
+                    id: '2'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: assembledpricelists
+        id: '3'
+        attributes:
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p2
+            defaultPrice:
+                data:
+                    type: productprices
+                    id: '3'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: assembledpricelists
+        id: '4'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p3
+            defaultPrice:
+                data:
+                    type: productprices
+                    id: '4'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: assembledpricelists
+        id: '5'
+        attributes:
+            currency: GBP
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p3
+            defaultPrice:
+                data:
+                    type: productprices
+                    id: '5'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: assembledpricelists
+        id: '6'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p4
+            defaultPrice:
+                data:
+                    type: productprices
+                    id: '6'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: assembledpricelists
+        id: '7'
+        attributes:
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p4
+            defaultPrice:
+                data:
+                    type: productprices
+                    id: '7'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: assembledpricelists
+        id: '8'
+        attributes:
+            currency: GBP
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p4
+            defaultPrice:
+                data:
+                    type: productprices
+                    id: '8'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
