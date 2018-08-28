@@ -4,30 +4,35 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\Straight
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistanceCalculatorChainElement;
-use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Psr\Log\LoggerInterface;
+use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Exception\GoogleApiException;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureCheckerHolderTrait;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
-class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddressesDistanceCalculatorChainElement
+class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddressesDistanceCalculatorChainElement implements
+    FeatureToggleableInterface
 {
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
+    use FeatureCheckerHolderTrait;
 
     /**
-     * @var LoggerInterface
+     * @var AddressCoordinatesProviderInerface
      */
-    protected $logger;
+    private $coordinatesProvider;
 
     /**
-     * @param DoctrineHelper $doctrineHelper
-     * @param LoggerInterface $logger
+     * @var Session
      */
-    public function __construct(DoctrineHelper $doctrineHelper, LoggerInterface $logger)
-    {
-        $this->doctrineHelper = $doctrineHelper;
-        $this->logger = $logger;
+    protected $session;
+
+    /**
+     * @param AddressCoordinatesProviderInerface $coordinatesProvider
+     * @param Session $session
+     */
+    public function __construct(AddressCoordinatesProviderInerface $coordinatesProvider, Session $session) {
+        $this->coordinatesProvider = $coordinatesProvider;
+        $this->session = $session;
     }
     
     /**
@@ -38,55 +43,40 @@ class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddres
         MarelloAddress $destinationAddress,
         $unit = 'metric'
     ) {
-        $repository = $this->doctrineHelper
-            ->getEntityManagerForClass(MarelloEnterpriseAddress::class)
-            ->getRepository(MarelloEnterpriseAddress::class);
-        $originGeocodedAddress = $repository->findOneBy(['address' => $originAddress]);
-        $destinationGeocodedAddress = $repository->findOneBy(['address' => $destinationAddress]);
+        if ($this->featureChecker->isFeatureEnabled('address_geocoding')) {
+            try {
+                $originCoordinates = $this->coordinatesProvider->getCoordinates($originAddress);
+                $destinationCoordinates = $this->coordinatesProvider->getCoordinates($destinationAddress);
 
-        if (!$originGeocodedAddress || !$destinationGeocodedAddress) {
-            return null;
-        }
+                if (!$originCoordinates || !$destinationCoordinates ||
+                    empty($originCoordinates || empty($destinationCoordinates))
+                ) {
+                    return null;
+                }
 
-        $coordinatesValid = $this->checkCoordinates([$originGeocodedAddress, $destinationGeocodedAddress]);
-        if (!$coordinatesValid) {
-            return null;
-        }
+                $lat1 = $originCoordinates[GeocodingApiResultFactory::LATITUDE];
+                $lon1 = $originCoordinates[GeocodingApiResultFactory::LONGITUDE];
+                $lat2 = $destinationCoordinates[GeocodingApiResultFactory::LATITUDE];
+                $lon2 = $destinationCoordinates[GeocodingApiResultFactory::LONGITUDE];
 
-        $lat1 = $originGeocodedAddress->getLatitude();
+                $theta = $lon1 - $lon2;
+                $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2))
+                    * cos(deg2rad($theta));
+                $dist = acos($dist);
+                $dist = rad2deg($dist);
+                $miles = $dist * 60 * 1.1515;
+                $unit = strtolower($unit);
 
-        $lon1 = $originGeocodedAddress->getLongitude();
-        $lat2 = $destinationGeocodedAddress->getLatitude();
-        $lon2 = $destinationGeocodedAddress->getLongitude();
-        
-        $theta = $lon1 - $lon2;
-        $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2))
-            * cos(deg2rad($theta));
-        $dist = acos($dist);
-        $dist = rad2deg($dist);
-        $miles = $dist * 60 * 1.1515;
-        $unit = strtolower($unit);
-
-        if ($unit == "metric") {
-            return ($miles * 1.609344);
-        } else {
-            return $miles;
-        }
-    }
-    
-    /**
-     * @param MarelloEnterpriseAddress[] $eeAddresses
-     * @return bool
-     */
-    protected function checkCoordinates(array $eeAddresses)
-    {
-        foreach ($eeAddresses as $eeAddress) {
-            if (null === $eeAddress || null === $eeAddress->getLatitude() || null === $eeAddress->getLongitude()) {
-                $this->logger->error(sprintf('No coordinates found for "%s"', $eeAddress->getAddress()));
-                return false;
+                if ($unit == "metric") {
+                    return ($miles * 1.609344);
+                } else {
+                    return $miles;
+                }
+            } catch (GoogleApiException $e) {
+                $this->session->getFlashBag()->add('warning', $e->getMessage());
             }
         }
-        
-        return true;
+
+        return null;
     }
 }

@@ -2,13 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Request\Factory;
 
-use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
+use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Request\GoogleApiRequest;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class DistanceMatrixApiRequestFactory implements GoogleApiRequestFactoryInterface
 {
@@ -23,29 +22,25 @@ class DistanceMatrixApiRequestFactory implements GoogleApiRequestFactoryInterfac
     const MODE_CONFIG_FIELD = 'marello_enterprise_google_api.google_distance_matrix_mode';
 
     /**
-     * @var DoctrineHelper
-     */
-    private $doctrineHelper;
-
-    /**
      * @var ConfigManager
      */
     private $configManager;
 
     /**
-     * @var EntityRepository
+     * @var AddressCoordinatesProviderInerface
      */
-    private $repository;
+    private $coordinatesProvider;
 
     /**
-     * @param DoctrineHelper $doctrineHelper
      * @param ConfigManager $configManager
+     * @param AddressCoordinatesProviderInerface $coordinatesProvider
      */
-    public function __construct(DoctrineHelper $doctrineHelper, ConfigManager $configManager)
-    {
-        $this->doctrineHelper = $doctrineHelper;
+    public function __construct(
+        ConfigManager $configManager,
+        AddressCoordinatesProviderInerface $coordinatesProvider
+    ) {
         $this->configManager = $configManager;
-        $this->repository = $this->getRepository();
+        $this->coordinatesProvider = $coordinatesProvider;
     }
 
     /**
@@ -65,26 +60,16 @@ class DistanceMatrixApiRequestFactory implements GoogleApiRequestFactoryInterfac
 
     /**
      * @param MarelloAddress $address
-     * @return mixed
+     * @return string|null
      * @throws \Exception
      */
     private function getCoordinates(MarelloAddress $address)
     {
-        $eeAddress = $this->repository->findOneBy(['address' => $address]);
-        if ($eeAddress && null !== $eeAddress->getLatitude() && null !== $eeAddress->getLongitude()) {
-            return sprintf('%s,%s', $eeAddress->getLatitude(), $eeAddress->getLongitude());
+        $coordinates = $this->coordinatesProvider->getCoordinates($address);
+        if (isset($coordinates[GeocodingApiResultFactory::LATITUDE]) && isset($coordinates[GeocodingApiResultFactory::LONGITUDE])) {
+            return sprintf('%s,%s', $coordinates[GeocodingApiResultFactory::LATITUDE], $coordinates[GeocodingApiResultFactory::LONGITUDE]);
         }
-
-        throw new \Exception(sprintf('No coordinates found for "%s"', $address));
-    }
-
-    /**
-     * @return EntityRepository
-     */
-    private function getRepository()
-    {
-        return $this->doctrineHelper
-            ->getEntityManagerForClass(MarelloEnterpriseAddress::class)
-            ->getRepository(MarelloEnterpriseAddress::class);
+        
+        return null;
     }
 }

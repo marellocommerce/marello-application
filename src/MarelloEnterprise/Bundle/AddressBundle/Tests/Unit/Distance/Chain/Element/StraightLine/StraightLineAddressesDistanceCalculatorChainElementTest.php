@@ -3,23 +3,20 @@
 namespace MarelloEnterprise\Bundle\AddressBundle\Tests\Unit\Distance\Chain\Element\StraightLine;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-
-use Psr\Log\LoggerInterface;
-
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\
-StraightLineAddressesDistanceCalculatorChainElement;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalculatorChainElement;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
+use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class StraightLineAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
+     * @var AddressCoordinatesProviderInerface|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $doctrineHelper;
+    private $coordinatesProvider;
 
     /**
      * @var StraightLineAddressesDistanceCalculatorChainElement
@@ -31,13 +28,13 @@ class StraightLineAddressesDistanceCalculatorChainElementTest extends \PHPUnit_F
      */
     protected function setUp()
     {
-        $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
+        $this->coordinatesProvider = $this->getMockBuilder(AddressCoordinatesProviderInerface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        /** @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject $logger */
-        $logger = $this->createMock(LoggerInterface::class);
+        /** @var Session|\PHPUnit_Framework_MockObject_MockObject $session */
+        $session = $this->createMock(Session::class);
         $this->distanceCalculator =
-            new StraightLineAddressesDistanceCalculatorChainElement($this->doctrineHelper, $logger);
+            new StraightLineAddressesDistanceCalculatorChainElement($this->coordinatesProvider, $session);
     }
 
     /**
@@ -51,19 +48,27 @@ class StraightLineAddressesDistanceCalculatorChainElementTest extends \PHPUnit_F
      */
     public function testCalculate($originLat, $originLon, $destinationLat, $destinationLon, $expectedDistance)
     {
-        $repository = $this->createMock(EntityRepository::class);
-        $em = $this->createMock(EntityManager::class);
-        $this->doctrineHelper
-            ->expects(static::once())
-            ->method('getEntityManagerForClass')
-            ->with(MarelloEnterpriseAddress::class)
-            ->willReturn($em);
-        $em
-            ->expects(static::once())
-            ->method('getRepository')
-            ->with(MarelloEnterpriseAddress::class)
-            ->willReturn($repository);
+        /** @var FeatureChecker|\PHPUnit_Framework_MockObject_MockObject $featureChecker */
+        $featureChecker = $this->getMockBuilder(FeatureChecker::class)->disableOriginalConstructor()->getMock();
+        $featureChecker->expects(static::once())
+            ->method('isFeatureEnabled')
+            ->willReturn(true);
 
+        $this->distanceCalculator->setFeatureChecker($featureChecker);
+
+        $this->coordinatesProvider
+            ->expects(static::exactly(2))
+            ->method('getCoordinates')
+            ->willReturnOnConsecutiveCalls(
+                [
+                    GeocodingApiResultFactory::LATITUDE => $originLat,
+                    GeocodingApiResultFactory::LONGITUDE => $originLon
+                ],
+                [
+                    GeocodingApiResultFactory::LATITUDE => $destinationLat,
+                    GeocodingApiResultFactory::LONGITUDE => $destinationLon
+                ]
+            );
         $originAddress = new MarelloAddress();
         $destinationAddress = new MarelloAddress();
 
@@ -78,17 +83,6 @@ class StraightLineAddressesDistanceCalculatorChainElementTest extends \PHPUnit_F
             ->setAddress($destinationAddress)
             ->setLatitude($destinationLat)
             ->setLongitude($destinationLon);
-        
-        $repository->expects(static::exactly(2))
-            ->method('findOneBy')
-            ->withConsecutive(
-                [['address' => $originAddress]],
-                [['address' => $destinationAddress]]
-            )
-            ->willReturnOnConsecutiveCalls(
-                $geocodedOriginAddress,
-                $geocodedDestinationAddress
-            );
 
         static::assertEquals(
             $expectedDistance,
