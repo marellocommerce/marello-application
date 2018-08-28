@@ -6,11 +6,6 @@ Marello\Bundle\PricingBundle\Entity\ProductPrice:
             - NotBlank: ~
 
 Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
-    constraints:
-        - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
-            fields: [channel, currency, type]
-            errorPath: channel
-            message: 'marello.pricing.productchannelprice.messages.error.unique_channel_price'
     properties:
         product:
             - NotBlank: ~
@@ -18,3 +13,10 @@ Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
             - NotBlank: ~
         type:
             - NotBlank: ~
+
+Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList:
+    constraints:
+        - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
+            fields: [channel, currency]
+            errorPath: channel
+            message: 'marello.pricing.productchannelprice.messages.error.unique_channel_price'

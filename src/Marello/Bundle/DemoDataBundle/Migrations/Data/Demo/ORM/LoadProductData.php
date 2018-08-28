@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceType;
-use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
+use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
@@ -113,7 +113,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $price = new ProductPrice();
             $price->setCurrency($currency);
             $price->setType(
-                $this->manager->getRepository(PriceType::class)->find(LoadPriceTypes::DEFAULT_PRICE)
+                $this->manager->getRepository(PriceType::class)->find(PriceTypeInterface::DEFAULT_PRICE)
             );
             $priceValue = $this->getValuePerCurrency($data, $currency);
             $price

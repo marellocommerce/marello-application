@@ -1,7 +1,7 @@
 data:
     -
         type: productprices
-        id: '42'
+        id: '114'
         attributes:
             value: '10.0000'
             currency: EUR
@@ -16,7 +16,7 @@ data:
                     id: default
     -
         type: productprices
-        id: '43'
+        id: '115'
         attributes:
             value: '25.0000'
             currency: EUR
@@ -31,7 +31,7 @@ data:
                     id: default
     -
         type: productprices
-        id: '44'
+        id: '116'
         attributes:
             value: '28.0000'
             currency: USD
@@ -46,7 +46,7 @@ data:
                     id: default
     -
         type: productprices
-        id: '45'
+        id: '117'
         attributes:
             value: '50.0000'
             currency: EUR
@@ -61,7 +61,7 @@ data:
                     id: default
     -
         type: productprices
-        id: '46'
+        id: '118'
         attributes:
             value: '50.0000'
             currency: GBP
@@ -76,7 +76,7 @@ data:
                     id: default
     -
         type: productprices
-        id: '47'
+        id: '119'
         attributes:
             value: '100.0000'
             currency: EUR
@@ -91,7 +91,7 @@ data:
                     id: default
     -
         type: productprices
-        id: '48'
+        id: '120'
         attributes:
             value: '112.0000'
             currency: USD
@@ -106,7 +106,7 @@ data:
                     id: default
     -
         type: productprices
-        id: '49'
+        id: '121'
         attributes:
             value: '100.0000'
             currency: GBP

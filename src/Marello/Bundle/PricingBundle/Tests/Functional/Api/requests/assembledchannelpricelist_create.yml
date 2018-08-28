@@ -1,0 +1,61 @@
+data:
+      type: assembledchannelpricelists
+      attributes:
+          currency: '<toString(@channel1->currency)>'
+      relationships:
+          product:
+              data:
+                  type: products
+                  id: 'my-sku'
+          saleschannel:
+              data:
+                  type: saleschannels
+                  id: '<toString(@channel1->code)>'
+          defaultPrice:
+              data:
+                  type: productchannelprices
+                  id: '8da4d8e7-6b25-4c5c-8075-b510f7bbb84f'
+          specialPrice:
+              data:
+                  type: productchannelprices
+                  id: '8da4d8e7-6b25-4c5c-8075-b5617bc'
+
+included:
+    -
+        type: productchannelprices
+        id: '8da4d8e7-6b25-4c5c-8075-b510f7bbb84f'
+        attributes:
+            value: 10
+            currency: '<toString(@channel1->currency)>'
+        relationships:
+            saleschannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel1->code)>'
+            product:
+                data:
+                    type: products
+                    id: 'my-sku'
+            pricetype:
+                data:
+                    type: pricetypes
+                    id: 'default'
+    -
+        type: productchannelprices
+        id: '8da4d8e7-6b25-4c5c-8075-b5617bc'
+        attributes:
+            value: 10
+            currency: '<toString(@channel1->currency)>'
+        relationships:
+            saleschannel:
+                data:
+                    type: saleschannels
+                    id: '<toString(@channel1->code)>'
+            product:
+                data:
+                    type: products
+                    id: 'my-sku'
+            pricetype:
+                data:
+                    type: pricetypes
+                    id: 'special'

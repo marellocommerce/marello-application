@@ -1,7 +1,7 @@
 data:
     -
         type: assembledchannelpricelists
-        id: '6'
+        id: '36'
         attributes:
             currency: EUR
         relationships:
@@ -9,19 +9,19 @@ data:
                 data:
                     type: products
                     id: p1
-            channel:
+            saleschannel:
                 data:
                     type: saleschannels
                     id: chan_eur
             defaultPrice:
                 data:
                     type: productchannelprices
-                    id: '6'
+                    id: '36'
             specialPrice:
                 data: null
     -
         type: assembledchannelpricelists
-        id: '7'
+        id: '37'
         attributes:
             currency: EUR
         relationships:
@@ -29,19 +29,19 @@ data:
                 data:
                     type: products
                     id: p2
-            channel:
+            saleschannel:
                 data:
                     type: saleschannels
                     id: chan_eur
             defaultPrice:
                 data:
                     type: productchannelprices
-                    id: '7'
+                    id: '37'
             specialPrice:
                 data: null
     -
         type: assembledchannelpricelists
-        id: '8'
+        id: '38'
         attributes:
             currency: EUR
         relationships:
@@ -49,19 +49,19 @@ data:
                 data:
                     type: products
                     id: p3
-            channel:
+            saleschannel:
                 data:
                     type: saleschannels
                     id: chan_eur
             defaultPrice:
                 data:
                     type: productchannelprices
-                    id: '8'
+                    id: '38'
             specialPrice:
                 data: null
     -
         type: assembledchannelpricelists
-        id: '9'
+        id: '39'
         attributes:
             currency: EUR
         relationships:
@@ -69,19 +69,19 @@ data:
                 data:
                     type: products
                     id: p4
-            channel:
+            saleschannel:
                 data:
                     type: saleschannels
                     id: chan_eur
             defaultPrice:
                 data:
                     type: productchannelprices
-                    id: '9'
+                    id: '39'
             specialPrice:
                 data: null
     -
         type: assembledchannelpricelists
-        id: '10'
+        id: '40'
         attributes:
             currency: USD
         relationships:
@@ -89,13 +89,13 @@ data:
                 data:
                     type: products
                     id: p4
-            channel:
+            saleschannel:
                 data:
                     type: saleschannels
                     id: chan_usd
             defaultPrice:
                 data:
                     type: productchannelprices
-                    id: '10'
+                    id: '40'
             specialPrice:
                 data: null

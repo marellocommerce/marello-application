@@ -29,6 +29,8 @@ api:
 
         Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList:
             fields:
+                saleschannel:
+                    property_path: channel
                 createdAt:
                     exclude: true
                 updatedAt:
@@ -101,6 +103,8 @@ api:
 
         Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
             fields:
+                saleschannel:
+                    property_path: channel
                 pricetype:
                     property_path: type
                 createdAt:
@@ -114,6 +118,10 @@ api:
                         data_type: string
                         property_path: type
                         description: 'Filter prices by PriceType'
+                    saleschannel:
+                        data_type: string
+                        property_path: channel.code
+                        description: 'Filter prices by SalesChannel'
                     createdAt:
                         exclude: true
                     updatedAt:

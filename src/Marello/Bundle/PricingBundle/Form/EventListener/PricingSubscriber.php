@@ -2,21 +2,22 @@
 
 namespace Marello\Bundle\PricingBundle\Form\EventListener;
 
-use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
-use Marello\Bundle\PricingBundle\Entity\PriceType;
-use Marello\Bundle\PricingBundle\Form\Type\AssembledPriceListCollectionType;
-use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\EntityBundle\ORM\Registry;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+use Oro\Bundle\EntityBundle\ORM\Registry;
 
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
+use Marello\Bundle\PricingBundle\Entity\PriceType;
+use Marello\Bundle\PricingBundle\Form\Type\AssembledPriceListCollectionType;
+use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class PricingSubscriber implements EventSubscriberInterface
 {
@@ -113,14 +114,14 @@ class PricingSubscriber implements EventSubscriberInterface
         
         foreach ($product->getPrices() as $assembledPriceList) {
             $assembledPriceList->getDefaultPrice()
-                ->setType($this->getPriceType(LoadPriceTypes::DEFAULT_PRICE))
+                ->setType($this->getPriceType(PriceTypeInterface::DEFAULT_PRICE))
                 ->setCurrency($assembledPriceList->getCurrency());
             if ($assembledPriceList->getSpecialPrice() !== null &&
                 $assembledPriceList->getSpecialPrice()->getValue() === null) {
                 $assembledPriceList->setSpecialPrice(null);
             } elseif ($assembledPriceList->getSpecialPrice() !== null) {
                 $assembledPriceList->getSpecialPrice()
-                    ->setType($this->getPriceType(LoadPriceTypes::SPECIAL_PRICE))
+                    ->setType($this->getPriceType(PriceTypeInterface::SPECIAL_PRICE))
                     ->setCurrency($assembledPriceList->getCurrency());
             }
             if ($assembledPriceList->getMsrpPrice() !== null &&
@@ -128,7 +129,7 @@ class PricingSubscriber implements EventSubscriberInterface
                 $assembledPriceList->setMsrpPrice(null);
             } elseif ($assembledPriceList->getMsrpPrice() !== null) {
                 $assembledPriceList->getMsrpPrice()
-                    ->setType($this->getPriceType(LoadPriceTypes::MSRP_PRICE))
+                    ->setType($this->getPriceType(PriceTypeInterface::MSRP_PRICE))
                     ->setCurrency($assembledPriceList->getCurrency());
             }
         }

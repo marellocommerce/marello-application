@@ -3,10 +3,12 @@
 namespace Marello\Bundle\PricingBundle\Migrations\Schema\v1_1;
 
 use Doctrine\DBAL\Schema\Schema;
-use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
+
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\OrderedMigrationInterface;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
+
+use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -44,13 +46,13 @@ class MarelloPricingPriceTypeTable implements Migration, OrderedMigrationInterfa
         $table->addColumn('label', 'string');
         $table->setPrimaryKey(['name']);
 
-        $defaultPriceLabel = sprintf('%s Price', ucfirst(LoadPriceTypes::DEFAULT_PRICE));
-        $specialPriceLabel = sprintf('%s Price', ucfirst(LoadPriceTypes::SPECIAL_PRICE));
+        $defaultPriceLabel = sprintf('%s Price', ucfirst(PriceTypeInterface::DEFAULT_PRICE));
+        $specialPriceLabel = sprintf('%s Price', ucfirst(PriceTypeInterface::SPECIAL_PRICE));
         $query = "
             INSERT INTO marello_pricing_price_type (`name`, `label`)
             VALUES 
-            ('" . LoadPriceTypes::DEFAULT_PRICE . "', '" . $defaultPriceLabel . "'),
-            ('" . LoadPriceTypes::SPECIAL_PRICE . "', '" . $specialPriceLabel . "')
+            ('" . PriceTypeInterface::DEFAULT_PRICE . "', '" . $defaultPriceLabel . "'),
+            ('" . PriceTypeInterface::SPECIAL_PRICE . "', '" . $specialPriceLabel . "')
         ";
         $queries->addQuery($query);
     }

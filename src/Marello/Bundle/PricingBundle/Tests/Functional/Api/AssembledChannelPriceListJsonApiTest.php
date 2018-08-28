@@ -74,51 +74,43 @@ class AssembledChannelPriceListJsonApiTest extends RestJsonApiTestCase
         $this->assertResponseContains('cget_channel_pricelist_by_channel.yml', $response);
     }
 
-//    /**
-//     * test create of new pricelist without a price
-//     */
-//    public function testCreateNewPriceListWithoutPrice()
-//    {
-//        $response = $this->post(
-//            ['entity' => self::TESTING_ENTITY],
-//            'assembledpricelist_without_price_create.yml',
-//            [],
-//            false
-//        );
-//
-//        $this->assertJsonResponse($response);
-//        $this->assertResponseStatusCodeEquals($response, Response::HTTP_INTERNAL_SERVER_ERROR);
-//    }
-//
-//    /**
-//     * test create of new pricelist with a price
-//     */
-    public function testCreateNewPriceListWithDefaultPrice()
+    /**
+     * test create of new pricelist with a price
+     */
+    public function testCreateNewPriceListWithPrices()
     {
-//        $productResponse =  $this->post(
-//            ['entity' => 'products'],
-//            'product_without_prices.yml'
-//        );
-//        $this->assertJsonResponse($productResponse);
-//
-//        $response = $this->post(
-//            ['entity' => self::TESTING_ENTITY],
-//            'assembledpricelist_create.yml'
-//        );
-//
-//        $this->assertJsonResponse($response);
-//        $responseContent = json_decode($response->getContent());
-//        /** @var AssembledPriceList $assembledPriceList */
-//        $assembledPriceList = $this->getEntityManager()->find(AssembledPriceList::class, $responseContent->data->id);
-//        $this->assertEquals(
-//            $assembledPriceList->getDefaultPrice()->getValue(),
-//            $responseContent->included[0]->attributes->value
-//        );
-//
-//        $responseContent = json_decode($productResponse->getContent());
-//        /** @var Product $product */
-//        $productRepo = $this->getEntityManager()->getRepository(Product::class);
-//        $product = $productRepo->findOneBySku($responseContent->data->id);
-//        $this->assertCount(1, $product->getPrices());
+        $productResponse =  $this->post(
+            ['entity' => 'products'],
+            'product_without_prices.yml'
+        );
+        $this->assertJsonResponse($productResponse);
+
+        $response = $this->post(
+            ['entity' => self::TESTING_ENTITY],
+            'assembledchannelpricelist_create.yml'
+        );
+
+        $this->assertJsonResponse($response);
+        $responseContent = json_decode($response->getContent());
+        /** @var AssembledChannelPriceList $assembledChannelPriceList */
+        $assembledChannelPriceList = $this->getEntityManager()->find(
+            AssembledChannelPriceList::class,
+            $responseContent->data->id
+        );
+        $this->assertEquals(
+            $assembledChannelPriceList->getDefaultPrice()->getValue(),
+            $responseContent->included[0]->attributes->value
+        );
+
+        $this->assertEquals(
+            $assembledChannelPriceList->getSpecialPrice()->getValue(),
+            $responseContent->included[1]->attributes->value
+        );
+
+        $responseContent = json_decode($productResponse->getContent());
+        /** @var Product $product */
+        $productRepo = $this->getEntityManager()->getRepository(Product::class);
+        $product = $productRepo->findOneBySku($responseContent->data->id);
+        $this->assertCount(1, $product->getChannelPrices());
     }
 }

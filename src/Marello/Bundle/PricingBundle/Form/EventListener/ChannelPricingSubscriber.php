@@ -5,7 +5,7 @@ namespace Marello\Bundle\PricingBundle\Form\EventListener;
 use Doctrine\ORM\EntityManager;
 use Marello\Bundle\PricingBundle\Entity\PriceType;
 use Marello\Bundle\PricingBundle\Form\Type\AssembledChannelPriceListCollectionType;
-use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
+use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
@@ -145,14 +145,14 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
 
         foreach ($product->getChannelPrices() as $assembledChannelPriceList) {
             $assembledChannelPriceList->getDefaultPrice()
-                ->setType($this->getPriceType(LoadPriceTypes::DEFAULT_PRICE))
+                ->setType($this->getPriceType(PriceTypeInterface::DEFAULT_PRICE))
                 ->setCurrency($assembledChannelPriceList->getCurrency());
             if ($assembledChannelPriceList->getSpecialPrice() !== null &&
                 $assembledChannelPriceList->getSpecialPrice()->getValue() === null) {
                 $assembledChannelPriceList->setSpecialPrice(null);
             } elseif ($assembledChannelPriceList->getSpecialPrice() !== null) {
                 $assembledChannelPriceList->getSpecialPrice()
-                    ->setType($this->getPriceType(LoadPriceTypes::SPECIAL_PRICE))
+                    ->setType($this->getPriceType(PriceTypeInterface::SPECIAL_PRICE))
                     ->setCurrency($assembledChannelPriceList->getCurrency());
             }
         }

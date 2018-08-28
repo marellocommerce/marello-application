@@ -3,7 +3,7 @@ data:
         type: products
         id: p1
         attributes:
-            productId: 26
+            productId: 67
             name: product1
             manufacturingCode: null
             productType: null
@@ -24,7 +24,7 @@ data:
                 data:
                     -
                         type: assembledpricelists
-                        id: '50'
+                        id: '130'
             channelPrices:
                 data: []
             saleschannels:
@@ -44,7 +44,7 @@ data:
         type: products
         id: p2
         attributes:
-            productId: 27
+            productId: 68
             name: 'product 2'
             manufacturingCode: null
             productType: null
@@ -65,10 +65,10 @@ data:
                 data:
                     -
                         type: assembledpricelists
-                        id: '51'
+                        id: '131'
                     -
                         type: assembledpricelists
-                        id: '52'
+                        id: '132'
             channelPrices:
                 data: []
             saleschannels:
@@ -91,7 +91,7 @@ data:
         type: products
         id: p3
         attributes:
-            productId: 28
+            productId: 69
             name: 'product 3'
             manufacturingCode: null
             productType: null
@@ -112,10 +112,10 @@ data:
                 data:
                     -
                         type: assembledpricelists
-                        id: '53'
+                        id: '133'
                     -
                         type: assembledpricelists
-                        id: '54'
+                        id: '134'
             channelPrices:
                 data: []
             saleschannels:
@@ -138,7 +138,7 @@ data:
         type: products
         id: p4
         attributes:
-            productId: 29
+            productId: 70
             name: 'product 4'
             manufacturingCode: null
             productType: null
@@ -159,13 +159,13 @@ data:
                 data:
                     -
                         type: assembledpricelists
-                        id: '55'
+                        id: '135'
                     -
                         type: assembledpricelists
-                        id: '56'
+                        id: '136'
                     -
                         type: assembledpricelists
-                        id: '57'
+                        id: '137'
             channelPrices:
                 data: []
             saleschannels:

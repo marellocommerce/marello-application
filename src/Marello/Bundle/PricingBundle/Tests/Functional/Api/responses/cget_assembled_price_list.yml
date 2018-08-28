@@ -1,7 +1,7 @@
 data:
     -
         type: assembledpricelists
-        id: '33'
+        id: '105'
         attributes:
             currency: EUR
         relationships:
@@ -12,14 +12,14 @@ data:
             defaultPrice:
                 data:
                     type: productprices
-                    id: '33'
+                    id: '105'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: assembledpricelists
-        id: '34'
+        id: '106'
         attributes:
             currency: EUR
         relationships:
@@ -30,14 +30,14 @@ data:
             defaultPrice:
                 data:
                     type: productprices
-                    id: '34'
+                    id: '106'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: assembledpricelists
-        id: '35'
+        id: '107'
         attributes:
             currency: USD
         relationships:
@@ -48,14 +48,14 @@ data:
             defaultPrice:
                 data:
                     type: productprices
-                    id: '35'
+                    id: '107'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: assembledpricelists
-        id: '36'
+        id: '108'
         attributes:
             currency: EUR
         relationships:
@@ -66,14 +66,14 @@ data:
             defaultPrice:
                 data:
                     type: productprices
-                    id: '36'
+                    id: '108'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: assembledpricelists
-        id: '37'
+        id: '109'
         attributes:
             currency: GBP
         relationships:
@@ -84,14 +84,14 @@ data:
             defaultPrice:
                 data:
                     type: productprices
-                    id: '37'
+                    id: '109'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: assembledpricelists
-        id: '38'
+        id: '110'
         attributes:
             currency: EUR
         relationships:
@@ -102,14 +102,14 @@ data:
             defaultPrice:
                 data:
                     type: productprices
-                    id: '38'
+                    id: '110'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: assembledpricelists
-        id: '39'
+        id: '111'
         attributes:
             currency: USD
         relationships:
@@ -120,14 +120,14 @@ data:
             defaultPrice:
                 data:
                     type: productprices
-                    id: '39'
+                    id: '111'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: assembledpricelists
-        id: '40'
+        id: '112'
         attributes:
             currency: GBP
         relationships:
@@ -138,7 +138,7 @@ data:
             defaultPrice:
                 data:
                     type: productprices
-                    id: '40'
+                    id: '112'
             specialPrice:
                 data: null
             msrpPrice:
