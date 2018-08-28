@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Functional\Api;
 
-use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Symfony\Component\HttpFoundation\Response;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 

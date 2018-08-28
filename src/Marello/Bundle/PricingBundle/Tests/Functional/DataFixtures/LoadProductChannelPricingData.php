@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceType;
-use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
+use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
@@ -95,7 +95,7 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
         $channel = $this->getReference($data['channel']);
         $productChannelPrice = new ProductChannelPrice();
         $productData = $product->getData();
-        $type = $this->manager->getRepository(PriceType::class)->find(LoadPriceTypes::DEFAULT_PRICE);
+        $type = $this->manager->getRepository(PriceType::class)->find(PriceTypeInterface::DEFAULT_PRICE);
 
         $productData[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
         $product->setData($productData);
@@ -105,12 +105,15 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
             ->setValue((float)$data['price'])
             ->setChannel($channel)
             ->setType($type);
-        
+
         $assembledChannelPriceList = new AssembledChannelPriceList();
         $assembledChannelPriceList
             ->setCurrency($channel->getCurrency())
-            ->setDefaultPrice($productChannelPrice);
-        
+            ->setDefaultPrice($productChannelPrice)
+            ->setChannel($channel)
+            ->setProduct($product);
+
+        $this->manager->persist($assembledChannelPriceList);
         $this->manager->persist($product);
     }
 }

@@ -3,10 +3,13 @@
 namespace Marello\Bundle\PricingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\PricingBundle\Model\ExtendAssembledPriceList;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity()
@@ -23,7 +26,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 class AssembledPriceList extends ExtendAssembledPriceList
 {
     use EntityCreatedUpdatedAtTrait;
-    
+
     /**
      * @var integer
      *
@@ -187,6 +190,25 @@ class AssembledPriceList extends ExtendAssembledPriceList
         }
 
         return $this;
+    }
+
+    /**
+     * Get a Price from the price list
+     * By default, get the default price
+     * @param string $type
+     * @return ProductPrice
+     */
+    public function getPrice($type = PriceTypeInterface::DEFAULT_PRICE)
+    {
+        if ($type === PriceTypeInterface::SPECIAL_PRICE) {
+            return $this->getSpecialPrice();
+        }
+
+        if ($type === PriceTypeInterface::MSRP_PRICE) {
+            return $this->getMsrpPrice();
+        }
+
+        return $this->getDefaultPrice();
     }
 
     /**

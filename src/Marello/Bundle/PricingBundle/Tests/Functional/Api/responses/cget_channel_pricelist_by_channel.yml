@@ -1,0 +1,81 @@
+data:
+    -
+        type: assembledchannelpricelists
+        id: '6'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p1
+            channel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: productchannelprices
+                    id: '6'
+            specialPrice:
+                data: null
+    -
+        type: assembledchannelpricelists
+        id: '7'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p2
+            channel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: productchannelprices
+                    id: '7'
+            specialPrice:
+                data: null
+    -
+        type: assembledchannelpricelists
+        id: '8'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p3
+            channel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: productchannelprices
+                    id: '8'
+            specialPrice:
+                data: null
+    -
+        type: assembledchannelpricelists
+        id: '9'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p4
+            channel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: productchannelprices
+                    id: '9'
+            specialPrice:
+                data: null

@@ -2,7 +2,7 @@ data:
     type: products
     id: p1
     attributes:
-        productId: 1
+        productId: 26
         name: product1
         manufacturingCode: null
         productType: null
@@ -23,10 +23,10 @@ data:
             data:
                 -
                     type: assembledpricelists
-                    id: '1'
+                    id: '50'
         channelPrices:
             data: []
-        channels:
+        saleschannels:
             data:
                 -
                     type: saleschannels

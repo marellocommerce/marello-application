@@ -66,7 +66,7 @@ class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
         $response = $this->cget(
             ['entity' => self::TESTING_ENTITY],
             [
-                'filter' => ['salesChannel' =>  $salesChannel->getCode()]
+                'filter' => ['saleschannel' =>  $salesChannel->getCode()]
             ]
         );
         $this->assertJsonResponse($response);

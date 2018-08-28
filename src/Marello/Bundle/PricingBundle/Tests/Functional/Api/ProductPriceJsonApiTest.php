@@ -2,10 +2,9 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Functional\Api;
 
-use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
 use Symfony\Component\HttpFoundation\Response;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
@@ -43,7 +42,7 @@ class ProductPriceJsonApiTest extends RestJsonApiTestCase
         $response = $this->cget(
             ['entity' => self::TESTING_ENTITY],
             [
-                'filter' => ['pricetype' =>  LoadPriceTypes::DEFAULT_PRICE ]
+                'filter' => ['pricetype' =>  PriceTypeInterface::DEFAULT_PRICE ]
             ]
         );
         $this->assertJsonResponse($response);

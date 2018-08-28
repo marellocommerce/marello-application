@@ -15,7 +15,7 @@ data:
                 data:
                     type: organizations
                     id: '1'
-            channels:
+            saleschannels:
                 data:
                     -
                         type: saleschannels
@@ -36,7 +36,7 @@ data:
                 data:
                     type: organizations
                     id: '1'
-            channels:
+            saleschannels:
                 data:
                     -
                         type: saleschannels
@@ -57,7 +57,7 @@ data:
                 data:
                     type: organizations
                     id: '1'
-            channels:
+            saleschannels:
                 data:
                     -
                         type: saleschannels
@@ -78,7 +78,7 @@ data:
                 data:
                     type: organizations
                     id: '1'
-            channels:
+            saleschannels:
                 data:
                     -
                         type: saleschannels

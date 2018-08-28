@@ -4,6 +4,8 @@ api:
             documentation_resource: '@MarelloProductBundle/Resources/doc/api/product.md'
             identifier_field_names: [sku]
             fields:
+                saleschannels:
+                    property_path: channels
                 taxcode:
                     property_path: taxCode
                 productstatus:

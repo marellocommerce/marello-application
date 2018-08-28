@@ -3,7 +3,7 @@ data:
         type: products
         id: p1
         attributes:
-            productId: 1
+            productId: 26
             name: product1
             manufacturingCode: null
             productType: null
@@ -24,10 +24,10 @@ data:
                 data:
                     -
                         type: assembledpricelists
-                        id: '1'
+                        id: '50'
             channelPrices:
                 data: []
-            channels:
+            saleschannels:
                 data:
                     -
                         type: saleschannels
@@ -44,7 +44,7 @@ data:
         type: products
         id: p2
         attributes:
-            productId: 2
+            productId: 27
             name: 'product 2'
             manufacturingCode: null
             productType: null
@@ -65,13 +65,13 @@ data:
                 data:
                     -
                         type: assembledpricelists
-                        id: '2'
+                        id: '51'
                     -
                         type: assembledpricelists
-                        id: '3'
+                        id: '52'
             channelPrices:
                 data: []
-            channels:
+            saleschannels:
                 data:
                     -
                         type: saleschannels
@@ -91,7 +91,7 @@ data:
         type: products
         id: p3
         attributes:
-            productId: 3
+            productId: 28
             name: 'product 3'
             manufacturingCode: null
             productType: null
@@ -112,13 +112,13 @@ data:
                 data:
                     -
                         type: assembledpricelists
-                        id: '4'
+                        id: '53'
                     -
                         type: assembledpricelists
-                        id: '5'
+                        id: '54'
             channelPrices:
                 data: []
-            channels:
+            saleschannels:
                 data:
                     -
                         type: saleschannels
@@ -138,7 +138,7 @@ data:
         type: products
         id: p4
         attributes:
-            productId: 4
+            productId: 29
             name: 'product 4'
             manufacturingCode: null
             productType: null
@@ -159,16 +159,16 @@ data:
                 data:
                     -
                         type: assembledpricelists
-                        id: '6'
+                        id: '55'
                     -
                         type: assembledpricelists
-                        id: '7'
+                        id: '56'
                     -
                         type: assembledpricelists
-                        id: '8'
+                        id: '57'
             channelPrices:
                 data: []
-            channels:
+            saleschannels:
                 data:
                     -
                         type: saleschannels

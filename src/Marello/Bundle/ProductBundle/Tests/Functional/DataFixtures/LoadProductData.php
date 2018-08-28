@@ -8,7 +8,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceType;
-use Marello\Bundle\PricingBundle\Migrations\Data\ORM\LoadPriceTypes;
+use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
@@ -221,7 +221,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
      */
     protected function addDefaultPricesForCurrencies(Product $product, array $currencies, $defaultPrice)
     {
-        $defaultPriceType = $this->manager->getRepository(PriceType::class)->find(LoadPriceTypes::DEFAULT_PRICE);
+        $defaultPriceType = $this->manager->getRepository(PriceType::class)->find(PriceTypeInterface::DEFAULT_PRICE);
 
         /**
          * add default prices for all currencies

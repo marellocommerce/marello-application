@@ -3,11 +3,14 @@
 namespace Marello\Bundle\PricingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\PricingBundle\Model\ExtendAssembledChannelPriceList;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\PricingBundle\Model\ExtendAssembledChannelPriceList;
 
 /**
  * @ORM\Entity()
@@ -211,6 +214,21 @@ class AssembledChannelPriceList extends ExtendAssembledChannelPriceList
     public function getDefaultPrice()
     {
         return $this->defaultPrice;
+    }
+
+    /**
+     * Get a Price from the price list
+     * By default, get the default price
+     * @param string $type
+     * @return ProductChannelPrice
+     */
+    public function getPrice($type = PriceTypeInterface::DEFAULT_PRICE)
+    {
+        if ($type === PriceTypeInterface::SPECIAL_PRICE) {
+            return $this->getSpecialPrice();
+        }
+
+        return $this->getDefaultPrice();
     }
 
     /**

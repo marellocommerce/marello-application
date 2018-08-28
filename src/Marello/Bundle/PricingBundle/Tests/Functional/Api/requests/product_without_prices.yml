@@ -4,7 +4,7 @@ data:
       attributes:
           name: 'My name'
       relationships:
-          channels:
+          saleschannels:
               data:
                   -
                       type: saleschannels

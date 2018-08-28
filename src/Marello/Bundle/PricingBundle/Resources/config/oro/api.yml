@@ -1,6 +1,7 @@
 api:
     entities:
         Marello\Bundle\PricingBundle\Entity\AssembledPriceList:
+            documentation_resource: '@MarelloPricingBundle/Resources/doc/api/assembledpricelist.md'
             fields:
                 createdAt:
                     exclude: true
@@ -39,6 +40,10 @@ api:
                         data_type: string
                         property_path: product.sku
                         description: 'Filter prices by Product SKU'
+                    saleschannel:
+                        data_type: string
+                        property_path: channel.code
+                        description: 'Filter prices by SalesChannel'
                     createdAt:
                         exclude: true
                     updatedAt:
@@ -53,6 +58,7 @@ api:
                 get_subresource: false
 
         Marello\Bundle\PricingBundle\Entity\PriceType:
+            documentation_resource: '@MarelloPricingBundle/Resources/doc/api/pricetype.md'
             actions:
                 create: false
                 update: false
@@ -65,6 +71,7 @@ api:
                 get_subresource: false
 
         Marello\Bundle\PricingBundle\Entity\ProductPrice:
+            documentation_resource: '@MarelloPricingBundle/Resources/doc/api/productprice.md'
             fields:
                 pricetype:
                     property_path: type
@@ -83,6 +90,14 @@ api:
                         exclude: true
                     updatedAt:
                         exclude: true
+            actions:
+                delete: false
+                delete_list: false
+                get_relationship: false
+                add_relationship: false
+                update_relationship: false
+                delete_relationship: false
+                get_subresource: false
 
         Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
             fields:
@@ -103,4 +118,11 @@ api:
                         exclude: true
                     updatedAt:
                         exclude: true
-
+            actions:
+                delete: false
+                delete_list: false
+                get_relationship: false
+                add_relationship: false
+                update_relationship: false
+                delete_relationship: false
+                get_subresource: false

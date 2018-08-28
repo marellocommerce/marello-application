@@ -1,7 +1,7 @@
 data:
     -
-        type: assembledpricelists
-        id: '33'
+        type: assembledchannelpricelists
+        id: '6'
         attributes:
             currency: EUR
         relationships:
@@ -9,11 +9,13 @@ data:
                 data:
                     type: products
                     id: p1
+            channel:
+                data:
+                    type: saleschannels
+                    id: chan_eur
             defaultPrice:
                 data:
-                    type: productprices
-                    id: '33'
+                    type: productchannelprices
+                    id: '6'
             specialPrice:
-                data: null
-            msrpPrice:
                 data: null

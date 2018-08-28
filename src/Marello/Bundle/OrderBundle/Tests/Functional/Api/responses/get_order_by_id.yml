@@ -30,16 +30,16 @@ data:
             data:
                 -
                     type: orderitems
-                    id: '26'
+                    id: '2'
                 -
                     type: orderitems
-                    id: '27'
+                    id: '3'
                 -
                     type: orderitems
-                    id: '28'
+                    id: '4'
                 -
                     type: orderitems
-                    id: '29'
+                    id: '5'
         customer:
             data:
                 type: customers
@@ -47,11 +47,11 @@ data:
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '60'
+                id: '28'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '60'
+                id: '28'
         salesChannel:
             data:
                 type: saleschannels

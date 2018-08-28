@@ -31,7 +31,7 @@ included:
                 data:
                     type: marelloreturnreasons
                     id: 'damaged'
-            orderItem:
+            orderitem:
                 data:
                     type: orderitems
                     id: '<toString(@marello_order_unreturned->items->first()->id)>'

@@ -575,7 +575,7 @@ class Product extends ExtendProduct implements
     public function getPrice($currency = null)
     {
         if ($currency) {
-            /** @var AssembledPriceList $productPrice */
+            /** @var  $productPrice */
             $productPrice = $this->getPrices()
                 ->filter(function ($productPrice) use ($currency) {
                     /** @var AssembledPriceList $productPrice */
