@@ -69,7 +69,6 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
      */
     private function getPossibleShippingMethods(Order $order)
     {
-        //$this->testUps($order);
         $data = [];
         if ($this->priceProvider) {
             $shippingContext = $this->factory->create($order);
@@ -80,16 +79,5 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
         }
         
         return $data;
-    }
-    
-    private function testUps(Order $entity)
-    {
-        $dataFactory = $this->registry->getDataFactory('ups');
-        $integration = $this->registry->getIntegration('ups');
-        $dataProvider = $this->registry->getDataProvider(Order::class);
-
-        $data = $dataFactory->createData($dataProvider->setEntity($entity));
-
-        $integration->createShipment($entity, $data);
     }
 }
