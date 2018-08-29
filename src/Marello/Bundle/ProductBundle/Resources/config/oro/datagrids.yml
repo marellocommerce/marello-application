@@ -16,6 +16,11 @@ datagrids:
                         - { join: p.inventoryItems, alias: i }
                 groupBy: p.id, s.label
         columns:
+            image:
+                label:            marello.product.image.label
+                type:             twig
+                frontend_type:    html
+                template:         MarelloProductBundle:Product/Datagrid/Property:image.html.twig
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
