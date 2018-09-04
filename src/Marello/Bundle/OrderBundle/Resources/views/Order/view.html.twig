@@ -38,7 +38,8 @@
                             <span class="widget-title">{{ 'marello.order.datablock.order_information'|trans }}</span>
                         </div>
                         {{ UI.renderProperty('marello.order.order_number.label'|trans, entity.orderNumber) }}
-                        {{ UI.renderProperty('marello.order.order_date.label'|trans, entity.createdAt|oro_format_datetime) }}
+                        {{ UI.renderProperty('marello.order.create_date.label'|trans, entity.createdAt|oro_format_datetime) }}
+                        {{ UI.renderProperty('marello.order.purchase_date.label'|trans, entity.purchaseDate|oro_format_datetime) }}
 
                         {% set steps = marello_core_get_current_workflow_steps(entity) %}
                         {% for stepLabel, stepName in steps %}

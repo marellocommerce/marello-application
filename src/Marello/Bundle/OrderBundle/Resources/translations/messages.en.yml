@@ -8,7 +8,8 @@ marello:
         items.label:                Items
         subtotal.label:             Subtotal
         total_tax.label:            TAX Total
-        order_date.label:           Order Date
+        create_date.label:          Order Create Date
+        purchase_date.label:        Order Purchase Date
         grand_total.label:          Grand Total
         order_number.label:         Order Number
         sales_channel.label:        Sales Channel

@@ -7,9 +7,9 @@ use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
-use Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodSelectType;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\CurrencyBundle\Form\Type\PriceType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -69,6 +69,13 @@ class OrderType extends AbstractType
             ->add(
                 'locale',
                 TextType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'purchaseDate',
+                OroDateTimeType::class,
                 [
                     'required' => false,
                 ]

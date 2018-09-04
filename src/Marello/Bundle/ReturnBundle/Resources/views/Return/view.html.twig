@@ -55,7 +55,8 @@
                         {{ UI.renderProperty('marello.order.sales_channel.label'|trans, entity.order.salesChannel|default(entity.order.salesChannelName)) }}
                     {%- endif -%}
                     {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.order.orderReference) }}
-                    {{ UI.renderProperty('marello.order.order_date.label'|trans, entity.order.createdAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('marello.order.create_date.label'|trans, entity.order.createdAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('marello.order.purchase_date.label'|trans, entity.order.purchaseDate|oro_format_datetime) }}
                 </div>
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.order.subtotal.label'|trans, entity.order.subtotal|oro_format_currency({'currency':entity.order.currency})) }}
