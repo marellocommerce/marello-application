@@ -1,0 +1,8 @@
+api:
+    entity_aliases:
+        Marello\Bundle\OrderBundle\Entity\Order:
+            alias: marelloorder
+            plural_alias: marelloorders
+    entities:
+        Marello\Bundle\OrderBundle\Entity\Order:
+            documentation_resource: '@MarelloOrderBundle/Resources/doc/api/order.md'

@@ -222,3 +222,16 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: marello_order.available_inventory_validator }
 
+    marello_order.api.add_workflow_step_config:
+        class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowStepConfig'
+        tags:
+            - { name: oro.api.processor, action: get_config,  class: Marello\Bundle\OrderBundle\Entity\Order }
+
+    marello_order.api.add_workflow_step:
+        class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowStep'
+        arguments:
+            - '@oro_workflow.manager'
+            - '@oro_entity.doctrine_helper'
+            - '@translator.default'
+        tags:
+            - { name: oro.api.processor, action: customize_loaded_data,  class: Marello\Bundle\OrderBundle\Entity\Order }
