@@ -437,6 +437,20 @@ class Order extends ExtendOrder implements
     protected $salesChannelName;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="purchase_date", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $purchaseDate;
+
+    /**
      * @var array $data
      *
      * @ORM\Column(name="data", type="json_array", nullable=true)
@@ -1102,7 +1116,25 @@ class Order extends ExtendOrder implements
         return $this;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getPurchaseDate()
+    {
+        return $this->purchaseDate ? : $this->createdAt;
+    }
 
+    /**
+     * @param \DateTime|null $purchaseDate
+     * @return $this
+     */
+    public function setPurchaseDate(\DateTime $purchaseDate = null)
+    {
+        $this->purchaseDate = $purchaseDate;
+        
+        return $this;
+    }
+    
     /**
      * @param array $data
      *

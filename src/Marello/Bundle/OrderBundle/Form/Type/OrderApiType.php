@@ -7,6 +7,7 @@ use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectApiType;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
+use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -58,6 +59,7 @@ class OrderApiType extends AbstractType
             ->add('shippingMethod', TextType::class)
             ->add('shippingAmountInclTax', OroMoneyType::class)
             ->add('shippingAmountExclTax', OroMoneyType::class)
+            ->add('purchaseDate', OroDateTimeType::class)
             ->add('items', OrderItemCollectionType::NAME, [
                 'type'      => OrderItemApiType::NAME,
                 'allow_add' => true,
