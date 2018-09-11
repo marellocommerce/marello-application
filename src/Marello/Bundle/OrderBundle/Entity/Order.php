@@ -484,6 +484,9 @@ class Order extends ExtendOrder implements
      */
     public function prePersist()
     {
+        if (is_null($this->purchaseDate)) {
+            $this->purchaseDate = new \DateTime('now', new \DateTimeZone('UTC'));
+        }
         $this->salesChannelName = $this->salesChannel->getName();
     }
 
