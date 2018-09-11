@@ -127,6 +127,7 @@ define(function(require) {
             var message = __('You cannot save this order, there are errors in the Order Items, please correct them before saving the order');
             var confirm = new DeleteConfirmation({
                 content: message,
+                title: __('Your order needs changes'),
                 okText: __('OK')
             });
 
