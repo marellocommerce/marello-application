@@ -38,7 +38,7 @@ abstract class AbstractAddressCoordinatesProviderChainElement implements Address
         $coordinates = $this->collectCoordinates($address);
         if (!empty($coordinates)) {
             return $coordinates;
-        } elseif($this->getSuccessor()) {
+        } elseif ($this->getSuccessor()) {
             return $this->getSuccessor()->collectCoordinates($address);
         }
         

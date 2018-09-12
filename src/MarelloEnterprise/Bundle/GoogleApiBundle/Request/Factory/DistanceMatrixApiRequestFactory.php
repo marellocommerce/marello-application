@@ -66,8 +66,14 @@ class DistanceMatrixApiRequestFactory implements GoogleApiRequestFactoryInterfac
     private function getCoordinates(MarelloAddress $address)
     {
         $coordinates = $this->coordinatesProvider->getCoordinates($address);
-        if (isset($coordinates[GeocodingApiResultFactory::LATITUDE]) && isset($coordinates[GeocodingApiResultFactory::LONGITUDE])) {
-            return sprintf('%s,%s', $coordinates[GeocodingApiResultFactory::LATITUDE], $coordinates[GeocodingApiResultFactory::LONGITUDE]);
+        if (isset($coordinates[GeocodingApiResultFactory::LATITUDE]) &&
+            isset($coordinates[GeocodingApiResultFactory::LONGITUDE])
+        ) {
+            return sprintf(
+                '%s,%s',
+                $coordinates[GeocodingApiResultFactory::LATITUDE],
+                $coordinates[GeocodingApiResultFactory::LONGITUDE]
+            );
         }
         
         return null;

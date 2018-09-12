@@ -2,14 +2,16 @@
 
 namespace MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistanceCalculatorChainElement;
-use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Exception\GoogleApiException;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
+use Symfony\Component\HttpFoundation\Session\Session;
+
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureCheckerHolderTrait;
 use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Exception\GoogleApiException;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
+use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistanceCalculatorChainElement;
 
 class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddressesDistanceCalculatorChainElement implements
     FeatureToggleableInterface
@@ -30,7 +32,8 @@ class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddres
      * @param AddressCoordinatesProviderInerface $coordinatesProvider
      * @param Session $session
      */
-    public function __construct(AddressCoordinatesProviderInerface $coordinatesProvider, Session $session) {
+    public function __construct(AddressCoordinatesProviderInerface $coordinatesProvider, Session $session)
+    {
         $this->coordinatesProvider = $coordinatesProvider;
         $this->session = $session;
     }
