@@ -23,8 +23,8 @@ services:
     marelloenterprise.google_api.request.factory.distance_matrix:
         class: 'MarelloEnterprise\Bundle\GoogleApiBundle\Request\Factory\DistanceMatrixApiRequestFactory'
         arguments:
-            - '@oro_entity.doctrine_helper'
             - '@oro_config.manager'
+            - '@marelloenterprise_address.coordinates_provider.main'
 
     marelloenterprise.google_api.result.factory.geocoding:
         class: 'MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory'

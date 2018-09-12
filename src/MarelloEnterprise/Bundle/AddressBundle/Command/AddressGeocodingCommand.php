@@ -1,41 +1,22 @@
 <?php
 
-namespace MarelloEnterprise\Bundle\AddressBundle\Command\Cron;
+namespace MarelloEnterprise\Bundle\AddressBundle\Command;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\Factory\GoogleApiContextFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
-use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AddressGeocodingCommand extends ContainerAwareCommand implements CronCommandInterface
+class AddressGeocodingCommand extends ContainerAwareCommand
 {
     /**
      * Command name
      */
-    const COMMAND_NAME = 'oro:cron:address-geocoding';
-
-    /**
-     * @inheritdoc
-     */
-    public function getDefaultDefinition()
-    {
-        return '*/1 * * * *';
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive()
-    {
-        $featureChecker = $this->getContainer()->get('oro_featuretoggle.checker.feature_checker');
-
-        return $featureChecker->isResourceEnabled(self::COMMAND_NAME, 'cron_jobs');
-    }
+    const COMMAND_NAME = 'marello:address-geocoding';
 
     /**
      * {@internaldoc}
