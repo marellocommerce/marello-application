@@ -106,7 +106,7 @@ class ProcessWorkflowStep implements ProcessorInterface
         $workflowNames = array_keys($workflows);
         $workflowItem = $this->workflowManager->getWorkflowItem($entity, reset($workflowNames));
 
-        if(!$workflowItem) {
+        if (!$workflowItem) {
             return null;
         }
 
