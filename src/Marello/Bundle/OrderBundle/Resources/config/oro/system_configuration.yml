@@ -1,0 +1,20 @@
+system_configuration:
+    fields:
+        marello_order.order_notification:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: marello.order.system_configuration.fields.order_notification.label
+                required: false
+
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    notification:
+                        children:
+                            notification_configuration:
+                                children:
+                                    notification_general:
+                                        children:
+                                            - marello_order.order_notification

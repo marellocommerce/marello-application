@@ -43,6 +43,13 @@ system_configuration:
                     - NotNull: ~
                     - Range:
                         min: 1
+
+        marello_return.return_notification:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: marello.return.system_configuration.fields.return_notification.label
+                required: false
     tree:
         system_configuration:
             marello:
@@ -57,3 +64,10 @@ system_configuration:
                                     warranty_settings:
                                         children:
                                             - marello_return.warranty_period
+                    notification:
+                        children:
+                            notification_configuration:
+                                children:
+                                    notification_general:
+                                        children:
+                                            - marello_return.return_notification

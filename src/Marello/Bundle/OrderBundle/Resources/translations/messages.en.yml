@@ -186,3 +186,7 @@ marello:
 
         btn:
             calculate_shipping: Calculate Shipping
+
+        system_configuration:
+            fields:
+                order_notification.label: Order Notification

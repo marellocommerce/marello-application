@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ReturnBundle\DependencyInjection;
+namespace Marello\Bundle\OrderBundle\DependencyInjection;
 
 use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -17,14 +17,12 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode    = $treeBuilder->root('marello_return');
+        $rootNode    = $treeBuilder->root('marello_order');
 
         SettingsBuilder::append(
             $rootNode,
             [
-                'ror_period'          => ['value' => 30],
-                'warranty_period'     => ['value' => 24],
-                'return_notification' => ['value' => true]
+                'order_notification' => ['value' => true]
             ]
         );
 

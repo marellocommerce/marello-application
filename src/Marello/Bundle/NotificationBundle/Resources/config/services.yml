@@ -7,6 +7,7 @@ services:
             - '@oro_activity.manager'
             - '@oro_email.email_renderer'
             - '@marello_locale.manager.email_template'
+            - '@marello_notification.provider.entity_notification_configuration'
 
     marello_notification.workflow.send_notification_action:
         class: Marello\Bundle\NotificationBundle\Workflow\SendNotificationAction
@@ -29,3 +30,6 @@ services:
     marello_notification.link.entity_manager:
         tags:
             - { name: oro_service_link, service: doctrine.orm.entity_manager }
+
+    marello_notification.provider.entity_notification_configuration:
+        class: Marello\Bundle\NotificationBundle\Provider\EntityNotificationConfigurationProvider
