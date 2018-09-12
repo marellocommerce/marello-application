@@ -2,9 +2,10 @@
 
 namespace Marello\Bundle\ReturnBundle\Provider;
 
-use Marello\Bundle\NotificationBundle\Provider\EntityNotificationConfigurationProviderInterface;
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\NotificationBundle\Provider\EntityNotificationConfigurationProviderInterface;
 
 class ReturnNotificationConfigurationProvider implements EntityNotificationConfigurationProviderInterface
 {
@@ -22,11 +23,11 @@ class ReturnNotificationConfigurationProvider implements EntityNotificationConfi
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function isNotificationEnabled($entityClass)
     {
-        if (Order::class === $entityClass) {
+        if (ReturnEntity::class === $entityClass) {
             return (bool)$this->configManager->get('marello_return.return_notification');
         }
 

@@ -37,7 +37,9 @@ class ReturnCreatedNotificationSender
     {
         $entity = $event->getEntity();
 
-        if ($entity instanceof ReturnEntity && $this->configManager->get('marello_return.return_notification') === true) {
+        if ($entity instanceof ReturnEntity &&
+            $this->configManager->get('marello_return.return_notification') === true
+        ) {
             $this->sendNotification($entity);
         }
     }

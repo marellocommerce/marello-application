@@ -2,9 +2,10 @@
 
 namespace Marello\Bundle\OrderBundle\Provider;
 
-use Marello\Bundle\NotificationBundle\Provider\EntityNotificationConfigurationProviderInterface;
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\NotificationBundle\Provider\EntityNotificationConfigurationProviderInterface;
 
 class OrderNotificationConfigurationProvider implements EntityNotificationConfigurationProviderInterface
 {
@@ -22,7 +23,7 @@ class OrderNotificationConfigurationProvider implements EntityNotificationConfig
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function isNotificationEnabled($entityClass)
     {

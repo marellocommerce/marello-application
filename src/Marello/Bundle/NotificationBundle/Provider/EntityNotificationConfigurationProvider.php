@@ -20,7 +20,7 @@ class EntityNotificationConfigurationProvider implements EntityNotificationConfi
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function isNotificationEnabled($entityClass)
     {
