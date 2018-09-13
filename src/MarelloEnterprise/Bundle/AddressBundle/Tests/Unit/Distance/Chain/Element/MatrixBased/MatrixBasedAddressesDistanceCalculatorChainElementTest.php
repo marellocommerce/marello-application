@@ -13,6 +13,7 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderIn
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\DistanceMatrixApiResultFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class MatrixBasedAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Framework_TestCase
 {
@@ -34,8 +35,14 @@ class MatrixBasedAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Fr
         $this->distanceMatrixResultsProvider = $this->createMock(GoogleApiResultsProviderInterface::class);
         /** @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject $logger */
         $logger = $this->createMock(LoggerInterface::class);
+        /** @var Session|\PHPUnit_Framework_MockObject_MockObject $session */
+        $session = $this->createMock(Session::class);
         $this->distanceCalculator =
-            new MatrixBasedAddressesDistanceCalculatorChainElement($this->distanceMatrixResultsProvider, $logger);
+            new MatrixBasedAddressesDistanceCalculatorChainElement(
+                $this->distanceMatrixResultsProvider,
+                $logger,
+                $session
+            );
     }
 
     /**
