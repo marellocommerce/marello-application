@@ -1,0 +1,18 @@
+oro_api:
+    actions:
+        start_workflow:
+            processing_groups:
+                normalize_result:
+                    priority: -80
+        transit_workflow:
+            processing_groups:
+                normalize_result:
+                    priority: -80
+        activate_workflow:
+            processing_groups:
+                normalize_result:
+                    priority: -80
+        deactivate_workflow:
+            processing_groups:
+                normalize_result:
+                    priority: -80

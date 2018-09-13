@@ -5,15 +5,14 @@ namespace Marello\Bundle\ExtendWorkflowBundle\Api\Processor;
 use Oro\Bundle\ApiBundle\Processor\CustomizeLoadedData\CustomizeLoadedDataContext;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\TranslationBundle\Translation\Translator;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Helper\WorkflowTranslationHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Component\ChainProcessor\ContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
 
-class ProcessWorkflowStep implements ProcessorInterface
+class ProcessWorkflowItem implements ProcessorInterface
 {
-    const CONFIG_WORKFLOW_STEP = 'workflowStep';
-
     /**
      * @var WorkflowManager
      */
@@ -59,10 +58,10 @@ class ProcessWorkflowStep implements ProcessorInterface
 
         $config = $context->getConfig();
 
-        $workflowStepFieldName = $config->findFieldNameByPropertyPath(ProcessWorkflowStepConfig::CONFIG_WORKFLOW_STEP);
-        if (!$workflowStepFieldName
-            || $config->getField($workflowStepFieldName)->isExcluded()
-            || array_key_exists($workflowStepFieldName, $data)
+        $workflowItemFieldName = $config->findFieldNameByPropertyPath(ProcessWorkflowItemConfig::CONFIG_WORKFLOW_ITEM);
+        if (!$workflowItemFieldName
+            || $config->getField($workflowItemFieldName)->isExcluded()
+            || array_key_exists($workflowItemFieldName, $data)
         ) {
             // the workflowStep field is undefined, excluded or already added
             return;
@@ -78,9 +77,20 @@ class ProcessWorkflowStep implements ProcessorInterface
             return;
         };
 
-        $workflowStep = $this->getWorkflowStep($data[$idFieldName], $entityClass);
-        if (null !== $workflowStep) {
-            $data[$workflowStepFieldName] = $workflowStep;
+        $workflowItem = $this->getWorkflowItem($data[$idFieldName], $entityClass);
+        if (null !== $workflowItem) {
+            $currentStep = $workflowItem->getCurrentStep();
+            $data[$workflowItemFieldName] = [
+                'id' => $workflowItem->getId(),
+                'currentStep' => [
+                    'name' => $currentStep->getName(),
+                    'label' => $this->translator->trans(
+                        $currentStep->getLabel(),
+                        [],
+                        WorkflowTranslationHelper::TRANSLATION_DOMAIN
+                    )
+                ]
+            ];
             $context->setResult($data);
         }
     }
@@ -88,9 +98,9 @@ class ProcessWorkflowStep implements ProcessorInterface
     /**
      * @param int $entityId
      * @param string $entityClass
-     * @return string|null
+     * @return WorkflowItem|null
      */
-    protected function getWorkflowStep($entityId, $entityClass)
+    protected function getWorkflowItem($entityId, $entityClass)
     {
         $entity = $this->doctrineHelper
             ->getEntityManagerForClass($entityClass)
@@ -104,19 +114,7 @@ class ProcessWorkflowStep implements ProcessorInterface
             return null;
         }
         $workflowNames = array_keys($workflows);
-        $workflowItem = $this->workflowManager->getWorkflowItem($entity, reset($workflowNames));
-
-        if(!$workflowItem) {
-            return null;
-        }
-
-        if ($currentStep = $workflowItem->getCurrentStep()) {
-            return $this->translator->trans(
-                $currentStep->getLabel(),
-                [],
-                WorkflowTranslationHelper::TRANSLATION_DOMAIN
-            );
-        }
-        return null;
+        
+        return $this->workflowManager->getWorkflowItem($entity, reset($workflowNames));
     }
 }

@@ -1,4 +1,4 @@
-# Marello\Bundle\OrderBundle\Entity\Order
+# Marello\Bundle\RefundBundle\Entity\Refund
 
 ## FIELDS
 

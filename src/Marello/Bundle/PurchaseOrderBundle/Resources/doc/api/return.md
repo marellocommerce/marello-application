@@ -1,4 +1,4 @@
-# Marello\Bundle\OrderBundle\Entity\Order
+# Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
 
 ## FIELDS
 

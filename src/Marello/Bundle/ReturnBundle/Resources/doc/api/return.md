@@ -2,6 +2,6 @@
 
 ## FIELDS
 
-### workflowStep
+### workflowItem
 
-Current step in workflow
+Workflow Item related to entity
