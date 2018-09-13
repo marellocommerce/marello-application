@@ -21,6 +21,7 @@ services:
         class: Marello\Bundle\OrderBundle\EventListener\OrderCreatedNotificationSender
         arguments:
             - '@marello_order.email_processor_link'
+            - '@oro_config.manager'
         tags:
             - { name: kernel.event_listener, event: "marello.core.derived_property_set", method: derivedPropertySet }
 
@@ -221,6 +222,13 @@ services:
             - '@marello_inventory.provider.available_inventory_provider'
         tags:
             - { name: validator.constraint_validator, alias: marello_order.available_inventory_validator }
+
+    marello_order.provider.order_notification_configuration:
+        class: Marello\Bundle\OrderBundle\Provider\OrderNotificationConfigurationProvider
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: marello_entity_notification_configuration_provider, class: Marello\Bundle\OrderBundle\Entity\Order }
 
     marello_order.api.add_workflow_item_config:
         class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowItemConfig'

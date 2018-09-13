@@ -40,5 +40,6 @@ marello:
                 ror_settings.title:         Right of Return Settings
                 warranty_settings.title:    Product Warranty Settings
             fields:
-                ror_period:             Right of return period
-                warranty_period:        Warranty period
+                ror_period:                 Right of return period
+                warranty_period:            Warranty period
+                return_notification.label:  Return Notification

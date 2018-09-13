@@ -30,6 +30,7 @@ services:
         class: Marello\Bundle\ReturnBundle\EventListener\ReturnCreatedNotificationSender
         arguments:
             - '@marello_return.email_processor_link'
+            - '@oro_config.manager'
         tags:
             - { name: kernel.event_listener, event: 'marello.core.derived_property_set', method: derivedPropertySet }
 
@@ -58,6 +59,13 @@ services:
             - '@oro_config.manager'
         tags:
             - { name: marello_return.manager.rules.businessrule, alias: marello_product_warranty }
+
+    marello_return.provider.return_notification_configuration:
+        class: Marello\Bundle\ReturnBundle\Provider\ReturnNotificationConfigurationProvider
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: marello_entity_notification_configuration_provider, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
 
     marello_return.api.add_workflow_item_config:
         class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowItemConfig'
