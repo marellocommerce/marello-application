@@ -22,8 +22,9 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             [
-                'ror_period'        => ['value' => 30],
-                'warranty_period'   => ['value' => 24]
+                'ror_period'          => ['value' => 30],
+                'warranty_period'     => ['value' => 24],
+                'return_notification' => ['value' => true]
             ]
         );
 

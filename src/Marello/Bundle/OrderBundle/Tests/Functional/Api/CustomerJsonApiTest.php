@@ -10,7 +10,7 @@ use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadCustomerData;
 
 class CustomerJsonApiTest extends RestJsonApiTestCase
 {
-    const TESTING_ENTITY = 'customers';
+    const TESTING_ENTITY = 'marellocustomers';
 
     protected function setUp()
     {
@@ -30,6 +30,7 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(10, $response);
+        $this->dumpYmlTemplate('cget_customer_list.yml', $response);
         $this->assertResponseContains('cget_customer_list.yml', $response);
     }
 
@@ -45,6 +46,7 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
         );
 
         $this->assertJsonResponse($response);
+        $this->dumpYmlTemplate('get_customer_by_id.yml', $response);
         $this->assertResponseContains('get_customer_by_id.yml', $response);
     }
 
@@ -64,6 +66,7 @@ class CustomerJsonApiTest extends RestJsonApiTestCase
 
         $this->assertJsonResponse($response);
         $this->assertResponseCount(1, $response);
+        $this->dumpYmlTemplate('get_customer_by_email.yml', $response);
         $this->assertResponseContains('get_customer_by_email.yml', $response);
     }
 

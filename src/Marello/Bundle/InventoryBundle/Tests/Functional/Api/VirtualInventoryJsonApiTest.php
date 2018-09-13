@@ -13,7 +13,7 @@ use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryDa
 
 class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
 {
-    const TESTING_ENTITY = 'virtualinventorylevels';
+    const TESTING_ENTITY = 'marellovirtualinventorylevels';
 
     protected function setUp()
     {

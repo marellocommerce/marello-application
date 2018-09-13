@@ -1,17 +1,17 @@
 data:
     -
-        type: assembledpricelists
+        type: marelloassembledpricelists
         id: '105'
         attributes:
             currency: EUR
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p1
             defaultPrice:
                 data:
-                    type: productprices
+                    type: marelloproductprices
                     id: '105'
             specialPrice:
                 data: null

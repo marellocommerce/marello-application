@@ -1,5 +1,5 @@
 data:
-      type: products
+      type: marelloproducts
       id: 'my-sku'
       attributes:
           cost: 10
@@ -11,17 +11,17 @@ data:
           saleschannels:
               data:
                   -
-                      type: saleschannels
+                      type: marellosaleschannels
                       id: '<toString(@channel1->code)>'
                   -
-                      type: saleschannels
+                      type: marellosaleschannels
                       id: '<toString(@channel2->code)>'
                   -
-                      type: saleschannels
+                      type: marellosaleschannels
                       id: '<toString(@channel3->code)>'
           productstatus:
               data:
-                  type: productstatuses
+                  type: marelloproductstatuses
                   id: 'enabled'
           taxcode:
               data:

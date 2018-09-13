@@ -1,7 +1,7 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroAddressBundle::macros.html.twig' as Address %}
+{% import 'MarelloAddressBundle::macros.html.twig' as Address %}
 
 {% block navButtons %}
     {% if marello_purchaseorder_can_edit(entity)  %}
@@ -39,6 +39,7 @@
                     {{ UI.renderProperty('marello.purchaseorder.purchase_order_due_date.label'|trans, entity.dueDate|oro_format_date) }}
                     {{ UI.renderProperty('marello.purchaseorder.order_total.label'|trans, entity.orderTotal|oro_format_currency({'currency':entity.supplier.currency})) }}
                     {{ UI.renderHtmlProperty('marello.purchaseorder.shipping_address.label'|trans, Address.renderAddress(entity.warehouse.address)) }}
+                    {{ UI.renderProperty('marello.order.address.phone.label'|trans, entity.warehouse.address.phone) }}
 
                     {% set steps = marello_core_get_current_workflow_steps(entity) %}
                     {% for stepLabel, stepName in steps %}

@@ -1,9 +1,9 @@
 oro_entity:
     entity_aliases:
         Marello\Bundle\SalesBundle\Entity\SalesChannel:
-            alias: saleschannel
-            plural_alias: saleschannels
+            alias: marellosaleschannel
+            plural_alias: marellosaleschannels
 
         Marello\Bundle\SalesBundle\Entity\SalesChannelGroup:
-            alias: saleschannelgroup
-            plural_alias: saleschannelgroups
+            alias: marellosaleschannelgroup
+            plural_alias: marellosaleschannelgroups

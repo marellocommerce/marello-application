@@ -1,20 +1,20 @@
 data:
-      type: returns
+      type: marelloreturns
       attributes:
           returnReference: '2345678'
       relationships:
           order:
               data:
-                  type: orders
+                  type: marelloorders
                   id: '<toString(@marello_order_unreturned->id)>'
           salesChannel:
               data:
-                  type: saleschannels
+                  type: marellosaleschannels
                   id: '<toString(@marello_order_unreturned->salesChannel->code)>'
           returnItems:
               data:
                   -
-                      type: returnitems
+                      type: marelloreturnitems
                       id: '8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v'
           organization:
               data:
@@ -22,7 +22,7 @@ data:
                   id: '<toString(@marello_order_unreturned->organization->id)>'
 included:
     -
-        type: returnitems
+        type: marelloreturnitems
         id: '8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v'
         attributes:
             quantity: 1
@@ -33,5 +33,5 @@ included:
                     id: 'damaged'
             orderitem:
                 data:
-                    type: orderitems
+                    type: marelloorderitems
                     id: '<toString(@marello_order_unreturned->items->first()->id)>'

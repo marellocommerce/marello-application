@@ -7,6 +7,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Marello\Bundle\LocaleBundle\Manager\EmailTemplateManager;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
+use Marello\Bundle\NotificationBundle\Provider\EntityNotificationConfigurationProviderInterface;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\NotificationBundle\Manager\EmailNotificationManager;
@@ -28,27 +29,33 @@ class SendProcessor
     /** @var EmailTemplateManager  */
     protected $emailTemplateManager;
 
+    /** @var  EntityNotificationConfigurationProviderInterface */
+    protected $entityNotificationConfigurationProvider;
+
     /**
      * EmailSendProcessor constructor.
      *
-     * @param EmailNotificationManager $emailNotificationManager
-     * @param ObjectManager              $manager
-     * @param ActivityManager            $activityManager
-     * @param EmailRenderer              $renderer
-     * @param EmailTemplateManager       $emailTeplateManager
+     * @param EmailNotificationManager                         $emailNotificationManager
+     * @param ObjectManager                                    $manager
+     * @param ActivityManager                                  $activityManager
+     * @param EmailRenderer                                    $renderer
+     * @param EmailTemplateManager                             $emailTeplateManager
+     * @param EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider
      */
     public function __construct(
         EmailNotificationManager $emailNotificationManager,
         ObjectManager $manager,
         ActivityManager $activityManager,
         EmailRenderer $renderer,
-        EmailTemplateManager $emailTeplateManager
+        EmailTemplateManager $emailTeplateManager,
+        EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider
     ) {
-        $this->emailNotificationManager = $emailNotificationManager;
-        $this->manager                    = $manager;
-        $this->activityManager            = $activityManager;
-        $this->renderer                   = $renderer;
-        $this->emailTemplateManager       = $emailTeplateManager;
+        $this->emailNotificationManager                = $emailNotificationManager;
+        $this->manager                                 = $manager;
+        $this->activityManager                         = $activityManager;
+        $this->renderer                                = $renderer;
+        $this->emailTemplateManager                    = $emailTeplateManager;
+        $this->entityNotificationConfigurationProvider = $entityNotificationConfigurationProvider;
     }
 
     /**
@@ -63,6 +70,10 @@ class SendProcessor
     public function sendNotification($templateName, array $recipients, $entity, array $data = [])
     {
         $entityName = ClassUtils::getRealClass(get_class($entity));
+
+        if ($this->entityNotificationConfigurationProvider->isNotificationEnabled($entityName) === false) {
+            return;
+        }
 
         $template = $this->emailTemplateManager->findTemplate($templateName, $entity);
 

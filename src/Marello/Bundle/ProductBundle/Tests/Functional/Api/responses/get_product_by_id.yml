@@ -1,5 +1,5 @@
 data:
-    type: products
+    type: marelloproducts
     id: p1
     attributes:
         productId: 67
@@ -13,7 +13,7 @@ data:
     relationships:
         productstatus:
             data:
-                type: productstatuses
+                type: marelloproductstatuses
                 id: enabled
         organization:
             data:
@@ -22,14 +22,14 @@ data:
         prices:
             data:
                 -
-                    type: assembledpricelists
+                    type: marelloassembledpricelists
                     id: '130'
         channelPrices:
             data: []
         saleschannels:
             data:
                 -
-                    type: saleschannels
+                    type: marellosaleschannels
                     id: chan_eur
         taxcode:
             data:

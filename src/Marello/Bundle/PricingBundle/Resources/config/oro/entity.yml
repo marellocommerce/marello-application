@@ -1,21 +1,21 @@
 oro_entity:
     entity_aliases:
         Marello\Bundle\PricingBundle\Entity\ProductPrice:
-            alias: productprice
-            plural_alias: productprices
+            alias: marelloproductprice
+            plural_alias: marelloproductprices
 
         Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
-            alias: productchannelprice
-            plural_alias: productchannelprices
+            alias: marelloproductchannelprice
+            plural_alias: marelloproductchannelprices
 
         Marello\Bundle\PricingBundle\Entity\PriceType:
-            alias: pricetype
-            plural_alias: pricetypes
+            alias: marellopricetype
+            plural_alias: marellopricetypes
 
         Marello\Bundle\PricingBundle\Entity\AssembledPriceList:
-            alias: assembledpricelist
-            plural_alias: assembledpricelists
+            alias: marelloassembledpricelist
+            plural_alias: marelloassembledpricelists
 
         Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList:
-            alias: assembledchannelpricelist
-            plural_alias: assembledchannelpricelists
+            alias: marelloassembledchannelpricelist
+            plural_alias: marelloassembledchannelpricelists

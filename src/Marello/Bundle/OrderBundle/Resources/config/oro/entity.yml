@@ -1,13 +1,13 @@
 oro_entity:
     entity_aliases:
         Marello\Bundle\OrderBundle\Entity\Customer:
-            alias: customer
-            plural_alias: customers
+            alias: marellocustomer
+            plural_alias: marellocustomers
 
         Marello\Bundle\OrderBundle\Entity\Order:
-            alias: order
-            plural_alias: orders
+            alias: marelloorder
+            plural_alias: marelloorders
 
         Marello\Bundle\OrderBundle\Entity\OrderItem:
-            alias: orderitem
-            plural_alias: orderitems
+            alias: marelloorderitem
+            plural_alias: marelloorderitems

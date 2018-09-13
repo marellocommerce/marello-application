@@ -1,5 +1,5 @@
 data:
-      type: orders
+      type: marelloorders
       attributes:
           orderReference: '2345678'
           invoiceReference: null
@@ -32,18 +32,18 @@ data:
           items:
               data:
                   -
-                      type: orderitems
+                      type: marelloorderitems
                       id: '8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v'
                   -
-                      type: orderitems
+                      type: marelloorderitems
                       id: '8da4d8e7-6b25-4c5c-8075-e8catjzt95vx7ngp'
           customer:
               data:
-                   type: customers
+                   type: marellocustomers
                    id: '<toString(@marello_order_0->customer->id)>'
           salesChannel:
               data:
-                  type: saleschannels
+                  type: marellosaleschannels
                   id: '<toString(@marello_order_0->salesChannel->code)>'
 
 included:
@@ -98,7 +98,7 @@ included:
                     type: regions
                     id: US-NY
     -
-        type: orderitems
+        type: marelloorderitems
         id: '8da4d8e7-6b25-4c5c-8075-nh3fpu9sca3htc3v'
         attributes:
             quantity: 10
@@ -115,14 +115,14 @@ included:
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: '<toString(@product1->sku)>'
             taxCode:
                 data:
                     type: marellotaxcodes
                     id: 'TAX_HIGH'
     -
-        type: orderitems
+        type: marelloorderitems
         id: '8da4d8e7-6b25-4c5c-8075-e8catjzt95vx7ngp'
         attributes:
             quantity: 10
@@ -139,7 +139,7 @@ included:
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: '<toString(@product2->sku)>'
             taxCode:
                 data:

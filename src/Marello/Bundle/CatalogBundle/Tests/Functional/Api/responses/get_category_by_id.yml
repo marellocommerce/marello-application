@@ -9,10 +9,10 @@ data:
         products:
             data:
                 -
-                    type: products
+                    type: marelloproducts
                     id: p1
                 -
-                    type: products
+                    type: marelloproducts
                     id: p2
         organization:
             data:

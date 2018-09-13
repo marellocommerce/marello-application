@@ -1,5 +1,5 @@
 data:
-    type: orders
+    type: marelloorders
     id: '<toString(@marello_order_1->id)>'
     attributes:
         orderNumber: '000000002'
@@ -23,26 +23,28 @@ data:
         couponCode: null
         invoicedAt: null
         salesChannelName: channel3
+        purchaseDate: '2018-09-13T14:02:12Z'
         data: []
         locale: null
+        workflowStep: 'Pending Order'
     relationships:
         items:
             data:
                 -
-                    type: orderitems
+                    type: marelloorderitems
                     id: '26'
                 -
-                    type: orderitems
+                    type: marelloorderitems
                     id: '27'
                 -
-                    type: orderitems
+                    type: marelloorderitems
                     id: '28'
                 -
-                    type: orderitems
+                    type: marelloorderitems
                     id: '29'
         customer:
             data:
-                type: customers
+                type: marellocustomers
                 id: '<toString(@customer1->id)>'
         billingAddress:
             data:
@@ -54,7 +56,7 @@ data:
                 id: '60'
         salesChannel:
             data:
-                type: saleschannels
+                type: marellosaleschannels
                 id: chan_gbp
         localization:
             data: null

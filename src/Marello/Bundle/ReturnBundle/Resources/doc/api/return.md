@@ -130,3 +130,7 @@ The created record is returned in the response.
 {@inheritdoc}
 
 **Required field**
+
+### workflowStep
+
+Current step in workflow

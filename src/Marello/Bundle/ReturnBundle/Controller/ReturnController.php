@@ -9,6 +9,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
 
 class ReturnController extends Controller
 {
@@ -38,40 +39,44 @@ class ReturnController extends Controller
         $return->setOrder($order);
         $return->setSalesChannel($order->getSalesChannel());
 
-        $form = $this->createForm('marello_return', $return);
-        $form->handleRequest($request);
+        if (null !== $order->getShipment()) {
+            $form = $this->createForm('marello_return', $return);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $manager = $this->getDoctrine()->getManager();
 
-            $manager->persist($return);
-            $manager->flush();
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('marello.return.returnentity.messages.success.returnentity.saved')
-            );
-            return $this->get('oro_ui.router')->redirectAfterSave(
-                [
-                    'route'      => 'marello_return_return_update',
-                    'parameters' => [
-                        'id'                      => $return->getId(),
-                        '_enableContentProviders' => 'mainMenu'
-                    ]
-                ],
-                [
-                    'route'      => 'marello_return_return_view',
-                    'parameters' => [
-                        'id'                      => $return->getId(),
-                        '_enableContentProviders' => 'mainMenu'
-                    ]
-                ],
-                $return
-            );
+                $manager->persist($return);
+                $manager->flush();
+                $this->get('session')->getFlashBag()->add(
+                    'success',
+                    $this->get('translator')->trans('marello.return.returnentity.messages.success.returnentity.saved')
+                );
+                return $this->get('oro_ui.router')->redirectAfterSave(
+                    [
+                        'route' => 'marello_return_return_update',
+                        'parameters' => [
+                            'id' => $return->getId(),
+                            '_enableContentProviders' => 'mainMenu'
+                        ]
+                    ],
+                    [
+                        'route' => 'marello_return_return_view',
+                        'parameters' => [
+                            'id' => $return->getId(),
+                            '_enableContentProviders' => 'mainMenu'
+                        ]
+                    ],
+                    $return
+                );
+            }
+
+            return [
+                'form' => $form->createView(),
+            ];
+        } else {
+            throw new ForbiddenException('An order without shipment cannot be returned');
         }
-
-        return [
-            'form' => $form->createView(),
-        ];
     }
 
     /**

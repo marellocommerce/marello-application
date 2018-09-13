@@ -1,9 +1,9 @@
 data:
-      type: assembledpricelists
+      type: marelloassembledpricelists
       attributes:
           currency: '<toString(@channel1->currency)>'
       relationships:
           product:
               data:
-                  type: products
+                  type: marelloproducts
                   id: '<toString(@product1->sku)>'

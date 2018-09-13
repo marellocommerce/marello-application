@@ -1,143 +1,143 @@
 data:
     -
-        type: assembledpricelists
+        type: marelloassembledpricelists
         id: '105'
         attributes:
             currency: EUR
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p1
             defaultPrice:
                 data:
-                    type: productprices
+                    type: marelloproductprices
                     id: '105'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
-        type: assembledpricelists
+        type: marelloassembledpricelists
         id: '106'
         attributes:
             currency: EUR
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p2
             defaultPrice:
                 data:
-                    type: productprices
+                    type: marelloproductprices
                     id: '106'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
-        type: assembledpricelists
+        type: marelloassembledpricelists
         id: '107'
         attributes:
             currency: USD
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p2
             defaultPrice:
                 data:
-                    type: productprices
+                    type: marelloproductprices
                     id: '107'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
-        type: assembledpricelists
+        type: marelloassembledpricelists
         id: '108'
         attributes:
             currency: EUR
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p3
             defaultPrice:
                 data:
-                    type: productprices
+                    type: marelloproductprices
                     id: '108'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
-        type: assembledpricelists
+        type: marelloassembledpricelists
         id: '109'
         attributes:
             currency: GBP
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p3
             defaultPrice:
                 data:
-                    type: productprices
+                    type: marelloproductprices
                     id: '109'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
-        type: assembledpricelists
+        type: marelloassembledpricelists
         id: '110'
         attributes:
             currency: EUR
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p4
             defaultPrice:
                 data:
-                    type: productprices
+                    type: marelloproductprices
                     id: '110'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
-        type: assembledpricelists
+        type: marelloassembledpricelists
         id: '111'
         attributes:
             currency: USD
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p4
             defaultPrice:
                 data:
-                    type: productprices
+                    type: marelloproductprices
                     id: '111'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
-        type: assembledpricelists
+        type: marelloassembledpricelists
         id: '112'
         attributes:
             currency: GBP
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p4
             defaultPrice:
                 data:
-                    type: productprices
+                    type: marelloproductprices
                     id: '112'
             specialPrice:
                 data: null

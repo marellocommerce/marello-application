@@ -1,5 +1,5 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroAddressBundle::macros.html.twig' as address %}
+{% import 'MarelloAddressBundle::macros.html.twig' as address %}
 {% set label = 'marello.supplier.supplier_address.label' %}
 <div class="widget-content">
     <div class="address-block supplier-address">
@@ -12,6 +12,7 @@
 
             <address>
                 {{ UI.renderHtmlProperty(label|trans, address.renderAddress(supplierAddress)) }}
+                {{ UI.renderProperty('marello.order.address.phone.label'|trans, supplierAddress.phone) }}
             </address>
             <script type="text/javascript">
                 require(['jquery', 'underscore', 'routing', 'marelloaddress/js/address', 'oroui/js/widget-manager'],

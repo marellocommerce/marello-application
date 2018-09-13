@@ -1,20 +1,20 @@
 data:
-      type: assembledpricelists
+      type: marelloassembledpricelists
       attributes:
           currency: '<toString(@channel1->currency)>'
       relationships:
           product:
               data:
-                  type: products
+                  type: marelloproducts
                   id: 'my-sku'
           defaultPrice:
               data:
-                  type: productprices
+                  type: marelloproductprices
                   id: '8da4d8e7-6b25-4c5c-8075-b510f7bbb84f'
 
 included:
     -
-        type: productprices
+        type: marelloproductprices
         id: '8da4d8e7-6b25-4c5c-8075-b510f7bbb84f'
         attributes:
             value: 10
@@ -22,9 +22,9 @@ included:
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: 'my-sku'
             pricetype:
                 data:
-                    type: pricetypes
+                    type: marellopricetypes
                     id: 'default'

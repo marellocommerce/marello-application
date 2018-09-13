@@ -1,6 +1,6 @@
 data:
     -
-        type: virtualinventorylevels
+        type: marellovirtualinventorylevels
         id: '1'
         attributes:
             inventory: 100
@@ -9,7 +9,7 @@ data:
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p1
             organization:
                 data:
@@ -18,5 +18,5 @@ data:
             saleschannels:
                 data:
                     -
-                        type: saleschannels
+                        type: marellosaleschannels
                         id: chan_eur

@@ -10,7 +10,7 @@ use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
 
 class ReturnJsonApiTest extends RestJsonApiTestCase
 {
-    const TESTING_ENTITY = 'returns';
+    const TESTING_ENTITY = 'marelloreturns';
 
     protected function setUp()
     {

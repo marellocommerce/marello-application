@@ -10,7 +10,7 @@ use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
 class ProductPriceJsonApiTest extends RestJsonApiTestCase
 {
-    const TESTING_ENTITY = 'productprices';
+    const TESTING_ENTITY = 'marelloproductprices';
 
     protected function setUp()
     {

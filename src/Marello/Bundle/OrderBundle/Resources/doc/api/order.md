@@ -174,9 +174,9 @@ The updated record is returned in the response.
 
 ## FIELDS
 
-### firstName
-### lastName
-### email
+### workflowStep
+
+Current step in workflow
 
 #### create
 

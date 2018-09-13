@@ -1,6 +1,6 @@
 data:
     -
-        type: customers
+        type: marellocustomers
         id: '<toString(@marello-customer-0->id)>'
         attributes:
             taxIdentificationNumber: null
@@ -10,8 +10,24 @@ data:
             lastName: Earnest
             nameSuffix: null
             email: MarilynREarnest@gustr.com
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '43'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '43'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
     -
-        type: customers
+        type: marellocustomers
         id: '<toString(@marello-customer-1->id)>'
         attributes:
             taxIdentificationNumber: null
@@ -21,8 +37,24 @@ data:
             lastName: Boling
             nameSuffix: null
             email: JamesCBoling@einrot.com
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '44'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '44'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
     -
-        type: customers
+        type: marellocustomers
         id: '<toString(@marello-customer-2->id)>'
         attributes:
             taxIdentificationNumber: null
@@ -32,8 +64,24 @@ data:
             lastName: Gamino
             nameSuffix: null
             email: RandyMGamino@armyspy.com
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '45'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '45'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
     -
-        type: customers
+        type: marellocustomers
         id: '<toString(@marello-customer-3->id)>'
         attributes:
             taxIdentificationNumber: null
@@ -43,8 +91,24 @@ data:
             lastName: Gray
             nameSuffix: null
             email: PriscillaJGray@teleworm.us
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '46'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '46'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
     -
-        type: customers
+        type: marellocustomers
         id: '<toString(@marello-customer-4->id)>'
         attributes:
             taxIdentificationNumber: null
@@ -54,8 +118,24 @@ data:
             lastName: Harman
             nameSuffix: null
             email: MayMHarman@einrot.com
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '47'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '47'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
     -
-        type: customers
+        type: marellocustomers
         id: '<toString(@marello-customer-5->id)>'
         attributes:
             taxIdentificationNumber: null
@@ -65,8 +145,24 @@ data:
             lastName: Ramos
             nameSuffix: null
             email: CatherineERamos@teleworm.us
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '48'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '48'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
     -
-        type: customers
+        type: marellocustomers
         id: '<toString(@marello-customer-6->id)>'
         attributes:
             taxIdentificationNumber: null
@@ -76,8 +172,24 @@ data:
             lastName: Brock
             nameSuffix: null
             email: RichardGBrock@superrito.com
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '49'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '49'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
     -
-        type: customers
+        type: marellocustomers
         id: '<toString(@marello-customer-7->id)>'
         attributes:
             taxIdentificationNumber: null
@@ -87,8 +199,24 @@ data:
             lastName: Hall
             nameSuffix: null
             email: EdwardLHall@superrito.com
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '50'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '50'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
     -
-        type: customers
+        type: marellocustomers
         id: '<toString(@marello-customer-8->id)>'
         attributes:
             taxIdentificationNumber: null
@@ -98,8 +226,24 @@ data:
             lastName: Nguyen
             nameSuffix: null
             email: KellySNguyen@einrot.com
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '51'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '51'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
     -
-        type: customers
+        type: marellocustomers
         id: '<toString(@marello-customer-9->id)>'
         attributes:
             taxIdentificationNumber: null
@@ -109,3 +253,19 @@ data:
             lastName: Orth
             nameSuffix: null
             email: RobertaMOrth@teleworm.us
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '52'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '52'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'

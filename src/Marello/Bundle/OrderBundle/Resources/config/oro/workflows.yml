@@ -159,7 +159,6 @@ workflows:
                 conditions:
                     '@and':
                         - '@not_empty': $order.shippingAddress.country
-                        - '@not_empty': $order.shippingAddress.region
                         - '@not_empty': $order.shippingAddress.postalCode
                         - '@not_empty': $order.shippingAddress.city
                         - '@not_empty': $order.shippingAddress.street
@@ -184,7 +183,6 @@ workflows:
                 conditions:
                     '@and':
                         - '@not_empty': $order.shippingAddress.country
-                        - '@not_empty': $order.shippingAddress.region
                         - '@not_empty': $order.shippingAddress.postalCode
                         - '@not_empty': $order.shippingAddress.city
                         - '@not_empty': $order.shippingAddress.street

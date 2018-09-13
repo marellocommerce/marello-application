@@ -11,7 +11,7 @@ use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 
 class AssembledPriceListJsonApiTest extends RestJsonApiTestCase
 {
-    const TESTING_ENTITY = 'assembledpricelists';
+    const TESTING_ENTITY = 'marelloassembledpricelists';
 
     protected function setUp()
     {
@@ -75,7 +75,7 @@ class AssembledPriceListJsonApiTest extends RestJsonApiTestCase
     public function testCreateNewPriceListWithDefaultPrice()
     {
         $productResponse =  $this->post(
-            ['entity' => 'products'],
+            ['entity' => 'marelloproducts'],
             'product_without_prices.yml'
         );
         $this->assertJsonResponse($productResponse);

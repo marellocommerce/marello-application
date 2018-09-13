@@ -1,0 +1,8 @@
+{% set productImage = asset('bundles/marelloproduct/img/no_image_available.jpg') %}
+{% set image = record.getValue('image') %}
+{% if image is not null %}
+    {% set productImage = file_url(record.getRootEntity(), 'image', image) %}
+{% endif %}
+<div class="product-image">
+    <img src="{{ productImage }}" alt="{{ record.getValue('name') }}" />
+</div>

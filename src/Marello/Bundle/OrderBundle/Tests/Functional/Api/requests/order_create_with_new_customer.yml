@@ -1,5 +1,5 @@
 data:
-      type: orders
+      type: marelloorders
       attributes:
           orderReference: 'NOPENOPE'
           currency: 'USD'
@@ -15,19 +15,19 @@ data:
           items:
               data:
                   -
-                      type: orderitems
+                      type: marelloorderitems
                       id: '<toString(@marello_order_0->items->first()->id)>'
           customer:
               data:
-                   type: customers
+                   type: marellocustomers
                    id: '8da4d8e7-6b25-4c5c-8075-wrv3n8wt8kbxmtgd'
           salesChannel:
               data:
-                  type: saleschannels
+                  type: marellosaleschannels
                   id: '<toString(@marello_order_0->salesChannel->code)>'
 included:
     -
-        type: customers
+        type: marellocustomers
         id: '8da4d8e7-6b25-4c5c-8075-wrv3n8wt8kbxmtgd'
         attributes:
             firstName: 'test'

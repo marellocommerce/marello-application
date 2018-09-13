@@ -1,6 +1,6 @@
 data:
     -
-        type: virtualinventorylevels
+        type: marellovirtualinventorylevels
         id: '1'
         attributes:
             inventory: 100
@@ -9,7 +9,7 @@ data:
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p1
             organization:
                 data:
@@ -18,10 +18,10 @@ data:
             saleschannels:
                 data:
                     -
-                        type: saleschannels
+                        type: marellosaleschannels
                         id: chan_eur
     -
-        type: virtualinventorylevels
+        type: marellovirtualinventorylevels
         id: '2'
         attributes:
             inventory: 50
@@ -30,7 +30,7 @@ data:
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p2
             organization:
                 data:
@@ -39,10 +39,10 @@ data:
             saleschannels:
                 data:
                     -
-                        type: saleschannels
+                        type: marellosaleschannels
                         id: chan_eur
     -
-        type: virtualinventorylevels
+        type: marellovirtualinventorylevels
         id: '4'
         attributes:
             inventory: 50
@@ -51,7 +51,7 @@ data:
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p3
             organization:
                 data:
@@ -60,10 +60,10 @@ data:
             saleschannels:
                 data:
                     -
-                        type: saleschannels
+                        type: marellosaleschannels
                         id: chan_eur
     -
-        type: virtualinventorylevels
+        type: marellovirtualinventorylevels
         id: '6'
         attributes:
             inventory: 33
@@ -72,7 +72,7 @@ data:
         relationships:
             product:
                 data:
-                    type: products
+                    type: marelloproducts
                     id: p4
             organization:
                 data:
@@ -81,5 +81,5 @@ data:
             saleschannels:
                 data:
                     -
-                        type: saleschannels
+                        type: marellosaleschannels
                         id: chan_eur

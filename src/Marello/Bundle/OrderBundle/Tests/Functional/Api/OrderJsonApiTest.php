@@ -11,7 +11,7 @@ use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 
 class OrderJsonApiTest extends RestJsonApiTestCase
 {
-    const TESTING_ENTITY = 'orders';
+    const TESTING_ENTITY = 'marelloorders';
 
     protected function setUp()
     {
