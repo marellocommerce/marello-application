@@ -4,11 +4,11 @@ namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options;
 
 class CorsRequestHeaders
 {
-    CONST PREFLIGHT_REQUEST = 'is_preflight';
+    const PREFLIGHT_REQUEST = 'is_preflight';
 
-    CONST REQUEST_HEADER_ORIGIN = 'origin';
-    CONST REQUEST_HEADER_ACRM = 'access-control-request-method';
-    CONST REQUEST_HEADER_ACRH = 'access-control-request-headers';
+    const REQUEST_HEADER_ORIGIN = 'origin';
+    const REQUEST_HEADER_ACRM = 'access-control-request-method';
+    const REQUEST_HEADER_ACRH = 'access-control-request-headers';
 
     /** @var array $allowedAccessControlRequestHeaders  */
     protected $allowedAccessControlRequestHeaders = [

@@ -54,12 +54,13 @@ class ValidateCorsRequestHeaders implements ProcessorInterface
 
         if (!in_array(
             $this->getRequestHeader(CorsRequestHeaders::REQUEST_HEADER_ACRM),
-            $this->corsRequestHeaders->getAllowedAccessControlRequestMethods())
-        ) {
+            $this->corsRequestHeaders->getAllowedAccessControlRequestMethods()
+        )) {
             $context->addError(
                 Error::createValidationError(
                     Constraint::REQUEST_DATA,
-                    sprintf('%s is not a valid value for "%s" header',
+                    sprintf(
+                        '%s is not a valid value for "%s" header',
                         $this->getRequestHeader(CorsRequestHeaders::REQUEST_HEADER_ACRM),
                         CorsRequestHeaders::REQUEST_HEADER_ACRM
                     ),
@@ -75,7 +76,8 @@ class ValidateCorsRequestHeaders implements ProcessorInterface
             $context->addError(
                 Error::createValidationError(
                     Constraint::REQUEST_DATA,
-                    sprintf('%s is not a valid value for "%s" header',
+                    sprintf(
+                        '%s is not a valid value for "%s" header',
                         $this->getRequestHeader(CorsRequestHeaders::REQUEST_HEADER_ACRH),
                         CorsRequestHeaders::REQUEST_HEADER_ACRH
                     ),
