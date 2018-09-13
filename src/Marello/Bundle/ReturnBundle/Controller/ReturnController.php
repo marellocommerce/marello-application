@@ -39,7 +39,7 @@ class ReturnController extends Controller
         $return->setOrder($order);
         $return->setSalesChannel($order->getSalesChannel());
 
-        if(null !== $order->getShipment()) {
+        if (null !== $order->getShipment()) {
             $form = $this->createForm('marello_return', $return);
             $form->handleRequest($request);
 
