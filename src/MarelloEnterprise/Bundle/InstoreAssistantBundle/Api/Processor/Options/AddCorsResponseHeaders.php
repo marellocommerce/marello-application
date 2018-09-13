@@ -38,11 +38,11 @@ class AddCorsResponseHeaders implements ProcessorInterface
                 $context->removeResult();
                 $context->getResponseHeaders()->set(
                     self::RESPONSE_HEADER_ALLOW_METHODS,
-                    implode(',', $this->corsRequestHeaders->getAllowedAccessControlRequestMethods())
+                    implode(',',$this->corsRequestHeaders->getAllowedAccessControlRequestMethods())
                 );
                 $context->getResponseHeaders()->set(
                     self::RESPONSE_HEADER_ALLOW_HEADERS,
-                    implode(',', $this->corsRequestHeaders->getAllowedAccessControlRequestHeaders())
+                    implode(',',$this->corsRequestHeaders->getAllowedAccessControlRequestHeaders())
                 );
                 $context->getResponseHeaders()->set(
                     self::RESPONSE_HEADER_MAX_AGE,
