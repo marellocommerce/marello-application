@@ -27,7 +27,7 @@
         "oro/platform": "2.6.*",
         "oro/platform-serialised-fields": "2.6.*",
         "oro/calendar-bundle": "2.6.*",
-        "marellocommerce/marello": "1.4.*"
+        "marellocommerce/marello": "1.5.*"
     },
     "require-dev": {
         "sensio/generator-bundle": "3.1.2",
@@ -55,6 +55,12 @@
         }
     },
     "scripts": {
+        "marello-reset": [
+            "rm -rf app/cache/*",
+            "rm -rf app/logs/*",
+            "sed -i -e 's/installed:.*/installed: ~/g' app/config/parameters.yml",
+            "app/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --application-url=http://marello-ee.docker:5080/"
+        ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
