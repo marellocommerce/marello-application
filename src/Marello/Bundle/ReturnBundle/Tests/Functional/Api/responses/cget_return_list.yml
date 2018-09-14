@@ -5,9 +5,13 @@ data:
         attributes:
             returnNumber: '000000001'
             salesChannelName: channel1
-            returnReference: 0000000025b9a6e199d91c
+            returnReference: 0000000025b9b83dd2170f
             locale: null
-            workflowStep: Pending
+            workflowItem:
+                id: 88
+                currentStep:
+                    name: pending
+                    label: Pending
         relationships:
             order:
                 data:
@@ -43,9 +47,13 @@ data:
         attributes:
             returnNumber: '000000002'
             salesChannelName: channel1
-            returnReference: 0000000035b9a6e199f4f3
+            returnReference: 0000000035b9b83dd22f3d
             locale: null
-            workflowStep: Pending
+            workflowItem:
+                id: 89
+                currentStep:
+                    name: pending
+                    label: Pending
         relationships:
             order:
                 data:
@@ -78,9 +86,13 @@ data:
         attributes:
             returnNumber: '000000003'
             salesChannelName: channel1
-            returnReference: 0000000045b9a6e19a0066
+            returnReference: 0000000045b9b83dd236f7
             locale: null
-            workflowStep: Pending
+            workflowItem:
+                id: 90
+                currentStep:
+                    name: pending
+                    label: Pending
         relationships:
             order:
                 data:
@@ -116,9 +128,13 @@ data:
         attributes:
             returnNumber: '000000004'
             salesChannelName: channel1
-            returnReference: 0000000055b9a6e19a120a
+            returnReference: 0000000055b9b83dd23e63
             locale: null
-            workflowStep: Pending
+            workflowItem:
+                id: 91
+                currentStep:
+                    name: pending
+                    label: Pending
         relationships:
             order:
                 data:
@@ -145,9 +161,13 @@ data:
         attributes:
             returnNumber: '000000005'
             salesChannelName: channel1
-            returnReference: 0000000065b9a6e19a1aee
+            returnReference: 0000000065b9b83dd265a1
             locale: null
-            workflowStep: Pending
+            workflowItem:
+                id: 92
+                currentStep:
+                    name: pending
+                    label: Pending
         relationships:
             order:
                 data:
@@ -177,9 +197,13 @@ data:
         attributes:
             returnNumber: '000000006'
             salesChannelName: channel1
-            returnReference: 0000000075b9a6e19a25aa
+            returnReference: 0000000075b9b83dd284ce
             locale: null
-            workflowStep: Pending
+            workflowItem:
+                id: 93
+                currentStep:
+                    name: pending
+                    label: Pending
         relationships:
             order:
                 data:
@@ -215,9 +239,13 @@ data:
         attributes:
             returnNumber: '000000007'
             salesChannelName: channel1
-            returnReference: 0000000085b9a6e19a4448
+            returnReference: 0000000085b9b83dd28c64
             locale: null
-            workflowStep: Pending
+            workflowItem:
+                id: 94
+                currentStep:
+                    name: pending
+                    label: Pending
         relationships:
             order:
                 data:
@@ -244,9 +272,13 @@ data:
         attributes:
             returnNumber: '000000008'
             salesChannelName: channel1
-            returnReference: 0000000095b9a6e19a490d
+            returnReference: 0000000095b9b83dd29e90
             locale: null
-            workflowStep: Pending
+            workflowItem:
+                id: 95
+                currentStep:
+                    name: pending
+                    label: Pending
         relationships:
             order:
                 data:
@@ -276,9 +308,13 @@ data:
         attributes:
             returnNumber: '000000009'
             salesChannelName: channel1
-            returnReference: 0000000105b9a6e19a4c44
+            returnReference: 0000000105b9b83dd2b128
             locale: null
-            workflowStep: Pending
+            workflowItem:
+                id: 96
+                currentStep:
+                    name: pending
+                    label: Pending
         relationships:
             order:
                 data:

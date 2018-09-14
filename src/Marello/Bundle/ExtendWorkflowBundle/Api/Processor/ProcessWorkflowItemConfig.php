@@ -7,9 +7,9 @@ use Oro\Bundle\ApiBundle\Config\EntityDefinitionFieldConfig;
 use Oro\Component\ChainProcessor\ContextInterface;
 use Oro\Component\ChainProcessor\ProcessorInterface;
 
-class ProcessWorkflowStepConfig implements ProcessorInterface
+class ProcessWorkflowItemConfig implements ProcessorInterface
 {
-    const CONFIG_WORKFLOW_STEP = 'workflowStep';
+    const CONFIG_WORKFLOW_ITEM = 'workflowItem';
 
     /**
      * {@inheritdoc}
@@ -21,18 +21,18 @@ class ProcessWorkflowStepConfig implements ProcessorInterface
         if (!$config) {
             return;
         }
-        if ($config->hasField(self::CONFIG_WORKFLOW_STEP)) {
+        if ($config->hasField(self::CONFIG_WORKFLOW_ITEM)) {
             return;
         }
 
         $fieldConfig = new EntityDefinitionFieldConfig();
-        $fieldConfig->set('data_type', 'string');
+        $fieldConfig->set('data_type', 'array');
         $fieldConfig->setFormOptions(
             [
                 'mapped' => false
             ]
         );
 
-        $config->addField(self::CONFIG_WORKFLOW_STEP, $fieldConfig);
+        $config->addField(self::CONFIG_WORKFLOW_ITEM, $fieldConfig);
     }
 }

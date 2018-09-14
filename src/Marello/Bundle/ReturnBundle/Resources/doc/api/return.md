@@ -134,3 +134,7 @@ The created record is returned in the response.
 ### workflowStep
 
 Current step in workflow
+
+### workflowItem
+
+Workflow Item related to entity

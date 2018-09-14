@@ -23,10 +23,14 @@ data:
         couponCode: null
         invoicedAt: null
         salesChannelName: channel3
-        purchaseDate: '2018-09-13T14:02:12Z'
+        purchaseDate: '2018-09-14T09:47:22Z'
         data: []
         locale: null
-        workflowStep: 'Pending Order'
+        workflowItem:
+            id: 12
+            currentStep:
+                name: pending
+                label: 'Pending Order'
     relationships:
         items:
             data:

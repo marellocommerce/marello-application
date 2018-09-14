@@ -24,10 +24,14 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-14T09:47:21Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
+            workflowItem:
+                id: 11
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -81,10 +85,14 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-14T09:47:22Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
+            workflowItem:
+                id: 12
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -147,10 +155,14 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-14T09:47:22Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
+            workflowItem:
+                id: 13
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -210,10 +222,14 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-14T09:47:22Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
+            workflowItem:
+                id: 14
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -276,10 +292,14 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-14T09:47:22Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
+            workflowItem:
+                id: 15
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -333,10 +353,14 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-14T09:47:22Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
+            workflowItem:
+                id: 16
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -393,10 +417,14 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-14T09:47:22Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
+            workflowItem:
+                id: 17
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -459,10 +487,14 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-14T09:47:22Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
+            workflowItem:
+                id: 18
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -516,10 +548,14 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-14T09:47:22Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
+            workflowItem:
+                id: 19
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
         relationships:
             items:
                 data:
@@ -576,10 +612,14 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel1
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-14T09:47:22Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
+            workflowItem:
+                id: 20
+                currentStep:
+                    name: pending
+                    label: 'Pending Order'
         relationships:
             items:
                 data:
