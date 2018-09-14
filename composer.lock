@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f9d3c5ac44759dfe09f125c42bb68e0",
+    "content-hash": "210465e787b4d99babe79bf1b607b1c8",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -4469,16 +4469,16 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "1.4.3",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/marellocommerce/marello.git",
-                "reference": "bb13341eeaa2a27e18bf1c9b589117c5a60c9421"
+                "reference": "0c718019915a71af51ba25ac130a6806659d85ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/bb13341eeaa2a27e18bf1c9b589117c5a60c9421",
-                "reference": "bb13341eeaa2a27e18bf1c9b589117c5a60c9421",
+                "url": "https://api.github.com/repos/marellocommerce/marello/zipball/0c718019915a71af51ba25ac130a6806659d85ff",
+                "reference": "0c718019915a71af51ba25ac130a6806659d85ff",
                 "shasum": ""
             },
             "require": {
@@ -4511,26 +4511,26 @@
                     "homepage": "http://www.marello.com"
                 }
             ],
-            "description": "Marello",
+            "description": "Marello ERP for Commerce",
             "homepage": "https://github.com/marellocommerce/marello.git",
-            "time": "2018-09-11T12:39:34+00:00"
+            "time": "2018-09-14T11:51:58+00:00"
         },
         {
             "name": "marellocommerce/marello-enterprise",
-            "version": "1.2.1",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:marellocommerce/marello-enterprise.git",
-                "reference": "e33447ea95c07e8a4a7790389241414e9932e134"
+                "reference": "fa94e843b2fadfff959cd1ea12f432f01d601644"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/marellocommerce/marello-enterprise/zipball/e33447ea95c07e8a4a7790389241414e9932e134",
-                "reference": "e33447ea95c07e8a4a7790389241414e9932e134",
+                "url": "https://api.github.com/repos/marellocommerce/marello-enterprise/zipball/fa94e843b2fadfff959cd1ea12f432f01d601644",
+                "reference": "fa94e843b2fadfff959cd1ea12f432f01d601644",
                 "shasum": ""
             },
             "require": {
-                "marellocommerce/marello": "1.4.*",
+                "marellocommerce/marello": "1.5.*",
                 "oro/platform-enterprise": "2.6.*",
                 "php": "7.1.*"
             },
@@ -4557,10 +4557,10 @@
             "description": "Marello Enterprise ERP for Commerce",
             "homepage": "https://github.com/marellocommerce/marello-enterprise.git",
             "support": {
-                "source": "https://github.com/marellocommerce/marello-enterprise/tree/1.2.1",
+                "source": "https://github.com/marellocommerce/marello-enterprise/tree/master",
                 "issues": "https://github.com/marellocommerce/marello-enterprise/issues"
             },
-            "time": "2018-06-27T14:06:35+00:00"
+            "time": "2018-09-14T12:02:20+00:00"
         },
         {
             "name": "michelf/php-markdown",
