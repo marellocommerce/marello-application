@@ -1,7 +1,7 @@
 data:
     -
         type: marelloproductprices
-        id: '114'
+        id: '42'
         attributes:
             value: '10.0000'
             currency: EUR
@@ -16,7 +16,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '115'
+        id: '43'
         attributes:
             value: '25.0000'
             currency: EUR
@@ -31,7 +31,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '116'
+        id: '44'
         attributes:
             value: '28.0000'
             currency: USD
@@ -46,7 +46,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '117'
+        id: '45'
         attributes:
             value: '50.0000'
             currency: EUR
@@ -61,7 +61,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '118'
+        id: '46'
         attributes:
             value: '50.0000'
             currency: GBP
@@ -76,7 +76,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '119'
+        id: '47'
         attributes:
             value: '100.0000'
             currency: EUR
@@ -91,7 +91,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '120'
+        id: '48'
         attributes:
             value: '112.0000'
             currency: USD
@@ -106,7 +106,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '121'
+        id: '49'
         attributes:
             value: '100.0000'
             currency: GBP

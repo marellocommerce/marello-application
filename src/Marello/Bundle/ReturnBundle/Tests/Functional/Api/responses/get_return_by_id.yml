@@ -4,10 +4,10 @@ data:
     attributes:
         returnNumber: '000000002'
         salesChannelName: channel1
-        returnReference: 0000000035b9b83dd22f3d
+        returnReference: 0000000035b9b9ebd0775f
         locale: null
         workflowItem:
-            id: 89
+            id: 24
             currentStep:
                 name: pending
                 label: Pending

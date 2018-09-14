@@ -34,7 +34,6 @@ class AssembledChannelPriceListJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(5, $response);
-        $this->dumpYmlTemplate('cget_assembled_channel_price_list.yml', $response);
         $this->assertResponseContains('cget_assembled_channel_price_list.yml', $response);
     }
 
@@ -52,7 +51,6 @@ class AssembledChannelPriceListJsonApiTest extends RestJsonApiTestCase
             ]
         );
         $this->assertJsonResponse($response);
-        $this->dumpYmlTemplate('cget_channel_pricelist_by_sku.yml', $response);
         $this->assertResponseContains('cget_channel_pricelist_by_sku.yml', $response);
     }
 
@@ -70,7 +68,6 @@ class AssembledChannelPriceListJsonApiTest extends RestJsonApiTestCase
             ]
         );
         $this->assertJsonResponse($response);
-        $this->dumpYmlTemplate('cget_channel_pricelist_by_channel.yml', $response);
         $this->assertResponseContains('cget_channel_pricelist_by_channel.yml', $response);
     }
 

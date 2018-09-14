@@ -30,7 +30,6 @@ class ProductPriceJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(8, $response);
-        $this->dumpYmlTemplate('cget_prices.yml', $response);
         $this->assertResponseContains('cget_prices.yml', $response);
     }
 
@@ -46,7 +45,6 @@ class ProductPriceJsonApiTest extends RestJsonApiTestCase
             ]
         );
         $this->assertJsonResponse($response);
-        $this->dumpYmlTemplate('get_prices_by_price_type_default.yml', $response);
         $this->assertResponseContains('get_prices_by_price_type_default.yml', $response);
     }
 }
