@@ -38,7 +38,7 @@
     },
     "require": {
         "php": "7.1.*",
-        "marellocommerce/marello-enterprise": "1.2.*",
+        "marellocommerce/marello-enterprise": "1.3.*",
         "oro/platform-enterprise": "2.6.*",
         "oro/platform-serialised-fields": "2.6.*",
         "oro/calendar-bundle": "2.6.*"
