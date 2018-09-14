@@ -11,7 +11,9 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Model\GeocodeAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(
+ *     repositoryClass="MarelloEnterprise\Bundle\AddressBundle\Entity\Repository\MarelloEnterpriseAddressRepository"
+ * )
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="marelloenterprise_address")
  * @Oro\Config(

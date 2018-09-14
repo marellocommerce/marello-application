@@ -6,6 +6,7 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
@@ -14,23 +15,29 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterface
 {
+    const RULES_DATA = [
+        MinimumQuantityWFAStrategy::IDENTIFIER =>
+            [
+                'enabled'          => true,
+                'name'             => 'WFA Rule #1',
+                'sortOrder'        => 0,
+                'stopProcessing'   => false,
+                'strategy'         => MinimumQuantityWFAStrategy::IDENTIFIER
+            ],
+        MinimumDistanceWFAStrategy::IDENTIFIER =>
+            [
+                'enabled'          => true,
+                'name'             => 'WFA Rule #2',
+                'sortOrder'        => 10,
+                'stopProcessing'   => false,
+                'strategy'         => MinimumDistanceWFAStrategy::IDENTIFIER
+            ],
+    ];
+    
     /**
      * @var DoctrineHelper
      */
     protected $doctrineHelper;
-
-    /**
-     * @var array
-     */
-    protected $rulesData = [
-        [
-            'enabled'          => true,
-            'name'             => 'WFA Rule #1',
-            'sortOrder'        => 0,
-            'stopProcessing'   => false,
-            'strategy'         => MinimumQuantityWFAStrategy::IDENTIFIER
-        ],
-    ];
 
     /**
      * {@inheritdoc}
@@ -38,7 +45,7 @@ class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterf
     public function load(ObjectManager $manager)
     {
         foreach ($this->getOrganizations() as $organization) {
-            foreach ($this->rulesData as $ruleData) {
+            foreach (self::RULES_DATA as $ruleData) {
                 $rule = (new Rule())
                     ->setEnabled($ruleData['enabled'])
                     ->setName($ruleData['name'])

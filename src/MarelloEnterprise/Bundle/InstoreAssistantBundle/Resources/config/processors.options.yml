@@ -1,0 +1,86 @@
+services:
+    marelloenterprise_instoreassistant.api.processor.options.processor:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\CorsOptionsProcessor
+        public: false
+        arguments:
+            - '@oro_api.processor_bag'
+            - options
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    ## initialize
+    marelloenterprise_instoreassistant.api.processor.options.add_cors_headers:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options\ValidateCorsRequestHeaders
+        arguments:
+            - '@marelloenterprise_instoreassistant.api.cors_request_headers'
+        tags:
+            - { name: oro.api.processor, action: options, group: initialize, priority: -20 }
+
+    marelloenterprise_instoreassistant.api.check_request_type:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\JsonApi\CheckRequestType
+        tags:
+            - { name: oro.api.processor, action: options, group: initialize, priority: 250 }
+
+    ## normalize_result
+    marelloenterprise_instoreassistant.api.complete_errors:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\CompleteErrors
+        arguments:
+            - '@oro_api.error_completer_registry'
+        tags:
+            - { name: oro.api.processor, action: options, group: normalize_result, priority: -10 }
+
+    marelloenterprise_instoreassistant.api.normalize_errors:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\NormalizeErrors
+        arguments:
+            - '@translator'
+        tags:
+            - { name: oro.api.processor, action: options, group: normalize_result, priority: -20 }
+
+    marelloenterprise_instoreassistant.api.rest.set_http_response_status_code:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\SetHttpResponseStatusCode
+        tags:
+            - { name: oro.api.processor, action: options, group: normalize_result, requestType: rest, priority: -30 }
+
+    marelloenterprise_instoreassistant.api.build_result_document.single_item:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\BuildSingleItemResultDocument
+        arguments:
+            - '@oro_api.document_builder_factory'
+            - '@oro_api.error_completer_registry'
+            - '@logger'
+        tags:
+            - { name: monolog.logger, channel: api }
+            - { name: oro.api.processor, action: options, group: normalize_result, priority: -50 }
+
+    marelloenterprise_instoreassistant.api.set_result_document:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\SetResultDocument
+        tags:
+            - { name: oro.api.processor, action: options, group: normalize_result, priority: -150 }
+
+    marelloenterprise_instoreassistant.api.process_errors:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\ProcessErrors
+        tags:
+            - { name: oro.api.processor, action: options, group: normalize_result, priority: -190 }
+
+    marelloenterprise_instoreassistant.api.json_api.set_response_content_type:
+        class: Oro\Bundle\ApiBundle\Processor\Shared\JsonApi\SetResponseContentType
+        tags:
+            - { name: oro.api.processor, action: options, group: normalize_result, requestType: json_api, priority: -250 }
+
+    ## finalize
+    marelloenterprise_instoreassistant.api.processor.options.add_cors_response_headers:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options\AddCorsResponseHeaders
+        arguments:
+            - '@marelloenterprise_instoreassistant.api.cors_request_headers'
+        tags:
+            - { name: oro.api.processor, action: get, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: get_list, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: delete, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: delete_list, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: create, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: update, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: get_subresource, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: get_relationship, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: delete_relationship, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: add_relationship, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: update_relationship, group: finalize, requestType: json_api }
+            - { name: oro.api.processor, action: options, group: finalize }

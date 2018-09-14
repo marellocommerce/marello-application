@@ -11,7 +11,7 @@ Retrieve a api key for the logged in Instore User.
 {@request:json_api}
 Example:
 
-`</api/instoreuserapi/authenticate>`
+`<web_backend_prefix/api/instoreuserapi/authenticate>`
 
 ```JSON
 {  
@@ -53,5 +53,6 @@ Password is used to verify the identity of the user.
 
 
 #####NOTE: the specifications are based on proposed specs of a login session
-https://accountjsonapi.docs.apiary.io/#reference/current-user/session/sign-in
-http://discuss.jsonapi.org/t/example-json-api-for-accounts/234/11
+#####Resources:
+* https://accountjsonapi.docs.apiary.io/#reference/current-user/session/sign-in
+* http://discuss.jsonapi.org/t/example-json-api-for-accounts/234/11

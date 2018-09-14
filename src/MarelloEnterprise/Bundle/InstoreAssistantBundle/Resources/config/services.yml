@@ -17,3 +17,6 @@ services:
             - '@oro_api.value_normalizer'
         tags:
             - { name: oro_api.routing_options_resolver, priority: -10 }
+
+    marelloenterprise_instoreassistant.api.cors_request_headers:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options\CorsRequestHeaders

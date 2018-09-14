@@ -5,24 +5,24 @@ namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Request\Factory;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
+use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Request\Factory\DistanceMatrixApiRequestFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Request\GoogleApiRequest;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class DistanceMatrixApiRequestFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $doctrineHelper;
-
-    /**
      * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $configManager;
+
+    /**
+     * @var AddressCoordinatesProviderInerface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $coordinatesProvider;
 
     /**
      * @var EntityRepository|\PHPUnit_Framework_MockObject_MockObject
@@ -36,27 +36,15 @@ class DistanceMatrixApiRequestFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->repository = $this->createMock(EntityRepository::class);
-        $em = $this->createMock(EntityManager::class);
-        $this->doctrineHelper
-            ->expects(static::once())
-            ->method('getEntityManagerForClass')
-            ->with(MarelloEnterpriseAddress::class)
-            ->willReturn($em);
-        $em
-            ->expects(static::once())
-            ->method('getRepository')
-            ->with(MarelloEnterpriseAddress::class)
-            ->willReturn($this->repository);
         $this->configManager = $this->getMockBuilder(ConfigManager::class)
             ->disableOriginalConstructor()
             ->getMock();
+        $this->coordinatesProvider = $this->getMockBuilder(AddressCoordinatesProviderInerface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->distanceMatrixApiRequestFactory = new DistanceMatrixApiRequestFactory(
-            $this->doctrineHelper,
-            $this->configManager
+            $this->configManager,
+            $this->coordinatesProvider
         );
     }
 
@@ -93,34 +81,25 @@ class DistanceMatrixApiRequestFactoryTest extends \PHPUnit_Framework_TestCase
             ->method('getDestinationAddress')
             ->willReturn($destinationAddress);
 
-        $geocodedOriginAddress = new MarelloEnterpriseAddress();
-        $geocodedOriginAddress
-            ->setAddress($originAddress)
-            ->setLatitude($originLat)
-            ->setLongitude($originLon);
-
-        $geocodedDestinationAddress = new MarelloEnterpriseAddress();
-        $geocodedDestinationAddress
-            ->setAddress($destinationAddress)
-            ->setLatitude($destinationLat)
-            ->setLongitude($destinationLon);
-
-        $this->repository->expects(static::exactly(2))
-            ->method('findOneBy')
-            ->withConsecutive(
-                [['address' => $originAddress]],
-                [['address' => $destinationAddress]]
-            )
-            ->willReturnOnConsecutiveCalls(
-                $geocodedOriginAddress,
-                $geocodedDestinationAddress
-            );
         $this->configManager
             ->expects(static::once())
             ->method('get')
             ->with(DistanceMatrixApiRequestFactory::MODE_CONFIG_FIELD)
             ->willReturn($travelMode);
 
+        $this->coordinatesProvider
+            ->expects(static::exactly(2))
+            ->method('getCoordinates')
+            ->willReturnOnConsecutiveCalls(
+                [
+                    GeocodingApiResultFactory::LATITUDE => $originLat,
+                    GeocodingApiResultFactory::LONGITUDE => $originLon
+                ],
+                [
+                    GeocodingApiResultFactory::LATITUDE => $destinationLat,
+                    GeocodingApiResultFactory::LONGITUDE => $destinationLon
+                ]
+            );
         $expectedRequest = new GoogleApiRequest([GoogleApiRequest::FIELD_REQUEST_PARAMETERS => $expectedParams]);
         $actualRequest =  $this->distanceMatrixApiRequestFactory->createRequest($context);
         static::assertEquals($expectedRequest, $actualRequest);

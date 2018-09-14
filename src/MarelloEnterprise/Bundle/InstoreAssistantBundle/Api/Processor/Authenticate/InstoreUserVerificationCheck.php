@@ -33,7 +33,7 @@ class InstoreUserVerificationCheck implements ProcessorInterface
     {
         /** @var AuthenticationContext $context */
         if ($context->getClassName() !== InstoreUserApi::class) {
-           return;
+            return;
         }
 
         $requestData = $context->getRequestData();
@@ -49,7 +49,7 @@ class InstoreUserVerificationCheck implements ProcessorInterface
 
         $username = $requestData[RequestDoc::USERNAME_KEY];
         $credentials = $requestData[RequestDoc::CREDENTIALS_KEY];
-        if(!$this->authenticationProvider->authenticateInstoreUser($username, $credentials)) {
+        if (!$this->authenticationProvider->authenticateInstoreUser($username, $credentials)) {
             $context->addError(
                 Error::createValidationError(
                     Constraint::REQUEST_DATA,

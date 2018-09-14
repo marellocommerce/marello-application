@@ -26,6 +26,7 @@ class MarelloEnterpriseInstoreAssistantExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('processors.options.yml');
         $loader->load('processors.authenticate.yml');
     }
 }

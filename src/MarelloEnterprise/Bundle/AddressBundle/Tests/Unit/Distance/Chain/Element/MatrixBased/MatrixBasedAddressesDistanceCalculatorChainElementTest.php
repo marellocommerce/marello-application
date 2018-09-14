@@ -2,6 +2,9 @@
 
 namespace MarelloEnterprise\Bundle\AddressBundle\Tests\Unit\Distance\Chain\Element\MatrixBased;
 
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use Psr\Log\LoggerInterface;
+
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\
@@ -10,7 +13,7 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderIn
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\DistanceMatrixApiResultFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class MatrixBasedAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,8 +33,16 @@ class MatrixBasedAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Fr
     protected function setUp()
     {
         $this->distanceMatrixResultsProvider = $this->createMock(GoogleApiResultsProviderInterface::class);
+        /** @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject $logger */
+        $logger = $this->createMock(LoggerInterface::class);
+        /** @var Session|\PHPUnit_Framework_MockObject_MockObject $session */
+        $session = $this->createMock(Session::class);
         $this->distanceCalculator =
-            new MatrixBasedAddressesDistanceCalculatorChainElement($this->distanceMatrixResultsProvider);
+            new MatrixBasedAddressesDistanceCalculatorChainElement(
+                $this->distanceMatrixResultsProvider,
+                $logger,
+                $session
+            );
     }
 
     /**

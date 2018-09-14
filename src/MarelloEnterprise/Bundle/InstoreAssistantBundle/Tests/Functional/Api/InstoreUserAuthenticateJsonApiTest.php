@@ -1,17 +1,19 @@
 <?php
 
-namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Tests\Functional\Controller;
+namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Tests\Functional\Api;
+
+use Symfony\Component\HttpFoundation\Response;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\ApiBundle\Request\Constraint;
+use Oro\Bundle\UserProBundle\Security\LoginAttemptsProvider;
 use Oro\Bundle\ApiBundle\Tests\Functional\RestJsonApiTestCase;
 
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi;
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Migrations\Data\ORM\LoadApiUser;
-use Oro\Bundle\UserProBundle\Security\LoginAttemptsProvider;
 
-class InstoreUserControllerTest extends RestJsonApiTestCase
+class InstoreUserAuthenticateJsonApiTest extends RestJsonApiTestCase
 {
     /**
      * setup with WSSE header generated from the InstoreAssistantUser instead
@@ -19,7 +21,7 @@ class InstoreUserControllerTest extends RestJsonApiTestCase
      */
     protected function setUp()
     {
-        // setup the original first, than replace the initalized client
+        // setup the original first, than replace the initialized client
         parent::setUp();
 
         $this->initClient(
@@ -29,7 +31,6 @@ class InstoreUserControllerTest extends RestJsonApiTestCase
                 ['CONTENT_TYPE' => self::JSON_API_CONTENT_TYPE]
             )
         );
-
     }
 
     /**
@@ -57,7 +58,7 @@ class InstoreUserControllerTest extends RestJsonApiTestCase
             $request
         );
 
-        self::assertResponseStatusCodeEquals($response, 201);
+        self::assertResponseStatusCodeEquals($response, Response::HTTP_CREATED);
         self::assertResponseContentTypeEquals($response, self::JSON_API_CONTENT_TYPE);
         $result = self::jsonToArray($response->getContent());
         self::assertEquals(
@@ -100,7 +101,7 @@ class InstoreUserControllerTest extends RestJsonApiTestCase
             $request
         );
 
-        self::assertResponseStatusCodeEquals($response, 201);
+        self::assertResponseStatusCodeEquals($response, Response::HTTP_CREATED);
         self::assertResponseContentTypeEquals($response, self::JSON_API_CONTENT_TYPE);
         $result = self::jsonToArray($response->getContent());
         self::assertEquals(
@@ -150,14 +151,14 @@ class InstoreUserControllerTest extends RestJsonApiTestCase
             $request
         );
 
-        self::assertResponseStatusCodeEquals($response, 400);
+        self::assertResponseStatusCodeEquals($response, Response::HTTP_BAD_REQUEST);
         self::assertResponseContentTypeEquals($response, self::JSON_API_CONTENT_TYPE);
         $result = self::jsonToArray($response->getContent());
         self::assertArrayHasKey('errors', $result);
 
         foreach ($result['errors'] as $error) {
             self::assertEquals(
-                "400",
+                Response::HTTP_BAD_REQUEST,
                 $error['status']
             );
 

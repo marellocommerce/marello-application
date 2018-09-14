@@ -20,7 +20,6 @@ class NormalizeCredentialsData implements ProcessorInterface
     public function process(ContextInterface $context)
     {
         /** @var AuthenticationContext $context */
-
         $requestData = $context->getRequestData();
         if (array_key_exists(JsonApiDoc::DATA, $requestData)) {
             // the request data is not yet normalized by Oro API Processors

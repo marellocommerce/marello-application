@@ -40,7 +40,11 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
      */
     public function testSubmit($submittedData, $expectedData, $defaultData = null)
     {
-        $form = $this->factory->createNamed(PurchaseOrderCreateStepTwoType::NAME, PurchaseOrderCreateStepTwoType::NAME, $defaultData);
+        $form = $this->factory->createNamed(
+            PurchaseOrderCreateStepTwoType::NAME,
+            PurchaseOrderCreateStepTwoType::NAME,
+            $defaultData
+        );
         $form->submit($submittedData);
         $this->assertEquals($expectedData['isValid'], $form->isValid());
     }
@@ -210,28 +214,31 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
                 $searchRegistry,
                 $configProvider
             ),
-            new PreloadedExtension([
-                OroEntitySelectOrCreateInlineType::class => new OroEntitySelectOrCreateInlineType(
-                    $authorizationChecker,
-                    $configManager,
-                    $entityManager,
-                    $searchRegistry
-                ),
-                SupplierSelectType::class => new SupplierSelectType(),
-                OroDateType::class => new OroDateType(),
-                MultipleEntityType::class => new MultipleEntityType($doctrineHelper, $authorizationChecker),
-                new EntityIdentifierType([]),
-                PurchaseOrderItemCollectionType::class => new PurchaseOrderItemCollectionType(),
-                CollectionType::class => new CollectionType(),
-                PurchaseOrderItemType::class => new PurchaseOrderItemType(),
-                ProductSupplierSelectType::class => new ProductSupplierSelectType(),
-                ProductPriceType::class => new ProductPriceType(),
-                OroMoneyType::class => new OroMoneyType($localeSettings, $numberFormatter),
-                PurchaseOrderCreateStepTwoType::class => new PurchaseOrderCreateStepTwoType(
-                    $this->createMock(Router::class),
-                    new CurrencyNameHelperStub()
-                )
-            ],
+            new PreloadedExtension(
+                [
+                    OroEntitySelectOrCreateInlineType::class =>
+                        new OroEntitySelectOrCreateInlineType(
+                            $authorizationChecker,
+                            $configManager,
+                            $entityManager,
+                            $searchRegistry
+                        ),
+                    SupplierSelectType::class => new SupplierSelectType(),
+                    OroDateType::class => new OroDateType(),
+                    MultipleEntityType::class => new MultipleEntityType($doctrineHelper, $authorizationChecker),
+                    new EntityIdentifierType([]),
+                    PurchaseOrderItemCollectionType::class => new PurchaseOrderItemCollectionType(),
+                    CollectionType::class => new CollectionType(),
+                    PurchaseOrderItemType::class => new PurchaseOrderItemType(),
+                    ProductSupplierSelectType::class => new ProductSupplierSelectType(),
+                    ProductPriceType::class => new ProductPriceType(),
+                    OroMoneyType::class => new OroMoneyType($localeSettings, $numberFormatter),
+                    PurchaseOrderCreateStepTwoType::class =>
+                        new PurchaseOrderCreateStepTwoType(
+                            $this->createMock(Router::class),
+                            new CurrencyNameHelperStub()
+                        )
+                ],
                 [
                     PurchaseOrderCreateStepTwoType::NAME => [new PurchaseOrderWarehouseFormExtension()]
                 ]
