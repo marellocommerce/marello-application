@@ -1,7 +1,7 @@
 data:
     -
         type: marelloassembledchannelpricelists
-        id: '36'
+        id: '122'
         attributes:
             currency: EUR
         relationships:
@@ -16,12 +16,12 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '36'
+                    id: '123'
             specialPrice:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '37'
+        id: '123'
         attributes:
             currency: EUR
         relationships:
@@ -36,12 +36,12 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '37'
+                    id: '124'
             specialPrice:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '38'
+        id: '124'
         attributes:
             currency: EUR
         relationships:
@@ -56,12 +56,12 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '38'
+                    id: '125'
             specialPrice:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '39'
+        id: '125'
         attributes:
             currency: EUR
         relationships:
@@ -76,12 +76,12 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '39'
+                    id: '126'
             specialPrice:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '40'
+        id: '126'
         attributes:
             currency: USD
         relationships:
@@ -96,6 +96,6 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '40'
+                    id: '127'
             specialPrice:
                 data: null

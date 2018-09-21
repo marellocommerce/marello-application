@@ -2,24 +2,24 @@
 
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\ReturnBundle\Form\EventListener\ReturnTypeSubscriber;
+use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnEntityConstraint;
+use Oro\Bundle\FormBundle\Form\Type\Select2ChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
-use Marello\Bundle\ReturnBundle\Form\EventListener\ReturnTypeSubscriber;
-use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnEntityConstraint;
-
 class ReturnType extends AbstractType
 {
-    const NAME = 'marello_return';
+    const BLOCK_PREFIX = 'marello_return';
 
-    /** @var ReturnTypeSubscriber */
+    /**
+     * @var ReturnTypeSubscriber
+     */
     protected $returnTypeSubscriber;
 
     /**
-     * ReturnType constructor.
-     *
      * @param ReturnTypeSubscriber $returnTypeSubscriber
      */
     public function __construct(ReturnTypeSubscriber $returnTypeSubscriber)
@@ -34,13 +34,13 @@ class ReturnType extends AbstractType
     {
         $builder->add(
             'salesChannel',
-            'genemu_jqueryselect2_entity',
+            Select2ChoiceType::class,
             [
                 'class' => 'MarelloSalesBundle:SalesChannel',
             ]
         );
 
-        $builder->add('returnItems', ReturnItemCollectionType::NAME);
+        $builder->add('returnItems', ReturnItemCollectionType::class);
 
         $builder->addEventSubscriber($this->returnTypeSubscriber);
     }
@@ -59,12 +59,10 @@ class ReturnType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

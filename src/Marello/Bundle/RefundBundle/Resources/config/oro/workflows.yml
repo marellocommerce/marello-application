@@ -29,7 +29,7 @@ workflows:
             approve_definition: []
             complete_definition:
                 post_actions:
-                    - @marello_notification_send:
+                    - '@marello_notification_send':
                         entity: $refund
                         recipient: $refund.order.customer.email
                         template: marello_refund_credited

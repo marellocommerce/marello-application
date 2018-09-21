@@ -4,12 +4,16 @@ namespace Marello\Bundle\OrderBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\OrderBundle\Entity\Customer;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Bundle\SoapBundle\Controller\Api\FormAwareInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CustomerApiHandler implements FormAwareInterface
 {
+    use RequestHandlerTrait;
+
     /** @var FormInterface */
     protected $form;
 
@@ -21,16 +25,16 @@ class CustomerApiHandler implements FormAwareInterface
 
     /**
      * @param FormInterface $form
-     * @param Request       $request
+     * @param RequestStack  $requestStack
      * @param ObjectManager $manager
      */
     public function __construct(
         FormInterface $form,
-        Request $request,
+        RequestStack  $requestStack,
         ObjectManager $manager
     ) {
         $this->form    = $form;
-        $this->request = $request;
+        $this->request = $requestStack->getCurrentRequest();
         $this->manager = $manager;
     }
 
@@ -48,7 +52,7 @@ class CustomerApiHandler implements FormAwareInterface
         $form->setData($entity);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            $form->submit($this->request);
+            $this->submitPostPutRequest($form, $this->request);
 
             if ($form->isValid()) {
                 $this->onSuccess($entity);

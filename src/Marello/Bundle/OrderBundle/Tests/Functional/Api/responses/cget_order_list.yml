@@ -24,16 +24,15 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-20T19:47:26Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
         relationships:
             items:
                 data:
                     -
                         type: marelloorderitems
-                        id: '25'
+                        id: '367'
             customer:
                 data:
                     type: marellocustomers
@@ -41,11 +40,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '58'
+                    id: '527'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '58'
+                    id: '527'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -81,25 +80,24 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-20T19:47:26Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
         relationships:
             items:
                 data:
                     -
                         type: marelloorderitems
-                        id: '26'
+                        id: '368'
                     -
                         type: marelloorderitems
-                        id: '27'
+                        id: '369'
                     -
                         type: marelloorderitems
-                        id: '28'
+                        id: '370'
                     -
                         type: marelloorderitems
-                        id: '29'
+                        id: '371'
             customer:
                 data:
                     type: marellocustomers
@@ -107,11 +105,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '60'
+                    id: '529'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '60'
+                    id: '529'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -147,22 +145,21 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-20T19:47:26Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
         relationships:
             items:
                 data:
                     -
                         type: marelloorderitems
-                        id: '30'
+                        id: '372'
                     -
                         type: marelloorderitems
-                        id: '31'
+                        id: '373'
                     -
                         type: marelloorderitems
-                        id: '32'
+                        id: '374'
             customer:
                 data:
                     type: marellocustomers
@@ -170,11 +167,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '62'
+                    id: '531'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '62'
+                    id: '531'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -210,25 +207,24 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-20T19:47:27Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
         relationships:
             items:
                 data:
                     -
                         type: marelloorderitems
-                        id: '33'
+                        id: '375'
                     -
                         type: marelloorderitems
-                        id: '34'
+                        id: '376'
                     -
                         type: marelloorderitems
-                        id: '35'
+                        id: '377'
                     -
                         type: marelloorderitems
-                        id: '36'
+                        id: '378'
             customer:
                 data:
                     type: marellocustomers
@@ -236,11 +232,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '64'
+                    id: '533'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '64'
+                    id: '533'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -276,16 +272,15 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-20T19:47:27Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
         relationships:
             items:
                 data:
                     -
                         type: marelloorderitems
-                        id: '37'
+                        id: '379'
             customer:
                 data:
                     type: marellocustomers
@@ -293,11 +288,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '66'
+                    id: '535'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '66'
+                    id: '535'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -333,19 +328,18 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-20T19:47:27Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
         relationships:
             items:
                 data:
                     -
                         type: marelloorderitems
-                        id: '38'
+                        id: '380'
                     -
                         type: marelloorderitems
-                        id: '39'
+                        id: '381'
             customer:
                 data:
                     type: marellocustomers
@@ -353,11 +347,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '68'
+                    id: '537'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '68'
+                    id: '537'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -393,25 +387,24 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-20T19:47:27Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
         relationships:
             items:
                 data:
                     -
                         type: marelloorderitems
-                        id: '40'
+                        id: '382'
                     -
                         type: marelloorderitems
-                        id: '41'
+                        id: '383'
                     -
                         type: marelloorderitems
-                        id: '42'
+                        id: '384'
                     -
                         type: marelloorderitems
-                        id: '43'
+                        id: '385'
             customer:
                 data:
                     type: marellocustomers
@@ -419,11 +412,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '70'
+                    id: '539'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '70'
+                    id: '539'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -459,16 +452,15 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-20T19:47:27Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
         relationships:
             items:
                 data:
                     -
                         type: marelloorderitems
-                        id: '44'
+                        id: '386'
             customer:
                 data:
                     type: marellocustomers
@@ -476,11 +468,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '72'
+                    id: '541'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '72'
+                    id: '541'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -516,19 +508,18 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-20T19:47:27Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
         relationships:
             items:
                 data:
                     -
                         type: marelloorderitems
-                        id: '45'
+                        id: '387'
                     -
                         type: marelloorderitems
-                        id: '46'
+                        id: '388'
             customer:
                 data:
                     type: marellocustomers
@@ -536,11 +527,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '74'
+                    id: '543'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '74'
+                    id: '543'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -553,7 +544,7 @@ data:
                     id: '1'
     -
         type: marelloorders
-        id: '20'
+        id: '164'
         attributes:
             orderNumber: '000000010'
             orderReference: '100000334'
@@ -576,19 +567,18 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel1
-            purchaseDate: '2018-09-13T14:02:12Z'
+            purchaseDate: '2018-09-20T19:47:27Z'
             data: []
             locale: null
-            workflowStep: 'Pending Order'
         relationships:
             items:
                 data:
                     -
                         type: marelloorderitems
-                        id: '47'
+                        id: '389'
                     -
                         type: marelloorderitems
-                        id: '48'
+                        id: '390'
             customer:
                 data:
                     type: marellocustomers
@@ -596,11 +586,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '76'
+                    id: '545'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '76'
+                    id: '545'
             salesChannel:
                 data:
                     type: marellosaleschannels

@@ -5,6 +5,8 @@ namespace Marello\Bundle\OrderBundle\Form\Type;
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
@@ -12,42 +14,42 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class CustomerType extends AbstractType
 {
-    const NAME = 'marello_customer';
+    const BLOCK_PREFIX = 'marello_customer';
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('namePrefix', 'text', [
+            ->add('namePrefix', TextType::class, [
                 'required' => false,
             ])
-            ->add('firstName', 'text', [
+            ->add('firstName', TextType::class, [
                 'required'    => true,
                 'constraints' => new NotNull,
             ])
-            ->add('middleName', 'text', [
+            ->add('middleName', TextType::class, [
                 'required' => false,
             ])
-            ->add('lastName', 'text', [
+            ->add('lastName', TextType::class, [
                 'required'    => true,
                 'constraints' => new NotNull,
             ])
-            ->add('nameSuffix', 'text', [
+            ->add('nameSuffix', TextType::class, [
                 'required' => false,
             ])
-            ->add('email', 'email', [
+            ->add('email', EmailType::class, [
                 'required'    => true,
                 'constraints' => [
                     new NotNull,
                     new Email,
                 ],
             ])
-            ->add('taxIdentificationNumber', 'text', [
+            ->add('taxIdentificationNumber', TextType::class, [
                 'required' => false,
             ])
-            ->add('primaryAddress', AddressType::NAME, [
+            ->add('primaryAddress', AddressType::class, [
                 'required' => false,
             ])
-            ->add('shippingAddress', AddressType::NAME, [
+            ->add('shippingAddress', AddressType::class, [
                 'required' => false,
             ])
         ;
@@ -65,12 +67,10 @@ class CustomerType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

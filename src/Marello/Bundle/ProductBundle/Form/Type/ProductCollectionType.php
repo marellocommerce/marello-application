@@ -2,21 +2,20 @@
 
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\AbstractType;
-
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductCollectionType extends AbstractType
 {
-    const NAME = 'marello_product_collection';
+    const BLOCK_PREFIX = 'marello_product_collection';
 
     /**
      * {@inheritdoc}
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 
     /**
@@ -26,7 +25,7 @@ class ProductCollectionType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'type'                 => ProductType::NAME,
+                'entry_type'           => ProductType::class,
                 'show_form_when_empty' => true,
                 'error_bubbling'       => false,
                 'cascade_validation'   => true,
@@ -40,8 +39,8 @@ class ProductCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

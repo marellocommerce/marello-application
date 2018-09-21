@@ -63,7 +63,7 @@ class ShippingMethodsConfigsRuleType extends AbstractType
             ])
             ->add('method', ChoiceType::class, [
                 'mapped' => false,
-                'choices' => $this->provider->getMethods()
+                'choices' => array_flip($this->provider->getMethods())
             ]);
     }
 
@@ -76,7 +76,7 @@ class ShippingMethodsConfigsRuleType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

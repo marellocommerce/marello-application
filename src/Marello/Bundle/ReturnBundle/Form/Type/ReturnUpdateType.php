@@ -12,11 +12,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReturnUpdateType extends AbstractType
 {
-    const NAME = 'marello_return_update';
+    const BLOCK_PREFIX = 'marello_return_update';
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('returnItems', ReturnItemCollectionType::NAME, [
+        $builder->add('returnItems', ReturnItemCollectionType::class, [
             'update' => true,
         ]);
 
@@ -39,6 +42,9 @@ class ReturnUpdateType extends AbstractType
         });
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -47,12 +53,10 @@ class ReturnUpdateType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

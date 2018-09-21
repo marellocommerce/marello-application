@@ -8,14 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderItemCollectionType extends AbstractType
 {
-    const NAME = 'marello_order_item_collection';
+    const BLOCK_PREFIX = 'marello_order_item_collection';
 
     /**
      * {@inheritdoc}
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 
     /**
@@ -24,7 +24,7 @@ class OrderItemCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'                 => OrderItemType::NAME,
+            'entry_type'           => OrderItemType::class,
             'show_form_when_empty' => false,
             'error_bubbling'       => false,
             'cascade_validation'   => true,
@@ -37,8 +37,8 @@ class OrderItemCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

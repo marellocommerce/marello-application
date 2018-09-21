@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\CatalogBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Marello\Bundle\CatalogBundle\Entity\Category;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CategoryController extends Controller
 {

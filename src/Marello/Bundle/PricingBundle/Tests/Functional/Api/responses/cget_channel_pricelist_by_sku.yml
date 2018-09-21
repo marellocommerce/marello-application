@@ -1,7 +1,7 @@
 data:
     -
         type: marelloassembledchannelpricelists
-        id: '36'
+        id: '122'
         attributes:
             currency: EUR
         relationships:
@@ -16,6 +16,6 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '36'
+                    id: '123'
             specialPrice:
                 data: null

@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductSalesChannelAwareSelectType extends AbstractType
 {
-    const NAME = 'marello_product_sales_channel_aware_select';
+    const BLOCK_PREFIX = 'marello_product_sales_channel_aware_select';
 
     /**
      * {@inheritdoc}
@@ -42,14 +42,14 @@ class ProductSalesChannelAwareSelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'marello_product_select';
+        return ProductSelectType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class ReturnApiType extends AbstractType
 {
-    const NAME = 'marello_return_api';
+    const BLOCK_PREFIX = 'marello_return_api';
 
     /**
      * @var OrderToOrderNumberTransformer
@@ -60,7 +60,7 @@ class ReturnApiType extends AbstractType
                 'constraints' => new NotNull(),
             ])
             ->add('returnItems', CollectionType::class, [
-                'type'         => ReturnItemApiType::NAME,
+                'entry_type'         => ReturnItemApiType::class,
                 'allow_add'    => true,
                 'by_reference' => false,
             ]);
@@ -82,16 +82,8 @@ class ReturnApiType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

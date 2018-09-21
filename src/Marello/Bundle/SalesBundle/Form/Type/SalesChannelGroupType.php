@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesChannelGroupType extends AbstractType
 {
-    const NAME = 'marello_sales_channel_group';
+    const BLOCK_PREFIX = 'marello_sales_channel_group';
 
     /**
      * {@inheritdoc}
@@ -58,16 +58,8 @@ class SalesChannelGroupType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

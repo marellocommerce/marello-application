@@ -8,14 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssembledPriceListCollectionType extends AbstractType
 {
-    const NAME = 'marello_assembled_price_list_collection';
+    const BLOCK_PREFIX = 'marello_assembled_price_list_collection';
 
     /**
      * {@inheritdoc}
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 
     /**
@@ -25,7 +25,7 @@ class AssembledPriceListCollectionType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'type'                 => AssembledPriceListType::NAME,
+                'entry_type'           => AssembledPriceListType::class,
                 'show_form_when_empty' => false,
                 'error_bubbling'       => false,
                 'cascade_validation'   => true,
@@ -39,8 +39,8 @@ class AssembledPriceListCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

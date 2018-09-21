@@ -3,6 +3,7 @@
 namespace Marello\Bundle\PricingBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
@@ -61,10 +62,10 @@ class ProductPrice extends BasePrice
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      * @return $this
      */
-    public function setProduct(Product $product)
+    public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
 

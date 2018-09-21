@@ -61,36 +61,36 @@ workflows:
         transition_definitions:
             send_reminder_def:
                 post_actions:
-                    - @marello_notification_send:
+                    - '@marello_notification_send':
                         entity: $return
                         recipient: $return.order.customer.email
                         template: marello_return_reminder
             receive_def:
                 post_actions:
-                    - @marello_notification_send:
+                    - '@marello_notification_send':
                         entity: $return
                         recipient: $return.order.customer.email
                         template: marello_return_received
             contents_verified_def:
                 post_actions:
-                    - @return_inspection_ok: ~
+                    - '@return_inspection_ok': ~
             contents_not_verified_def:
                 post_actions:
-                    - @marello_notification_send:
+                    - '@marello_notification_send':
                         entity: $return
                         recipient: $return.order.customer.email
                         template: marello_return_not_verified
             continue_received_def: ~
             inspection_not_ok_def:
                 post_actions:
-                    - @marello_notification_send:
+                    - '@marello_notification_send':
                         entity: $return
                         recipient: $return.order.customer.email
                         template: marello_return_inspection_not_ok
             credit_def:
                 post_actions:
-                    - @marello_create_refund:
+                    - '@marello_create_refund':
                           entity: $return
-                    - @flash_message:
+                    - '@flash_message':
                         message: 'A Refund has been created.'
             ship_back_def: ~

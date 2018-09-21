@@ -2,26 +2,26 @@
 
 namespace Marello\Bundle\ReturnBundle\Form\Type;
 
-use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\ReturnBundle\Form\EventListener\ReturnItemTypeSubscriber;
-
+use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
+use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReturnItemType extends AbstractType
 {
-    const NAME = 'marello_return_item';
+    const BLOCK_PREFIX = 'marello_return_item';
 
-    /** @var ReturnItemTypeSubscriber $returnItemTypeSubscriber */
+    /**
+     * @var ReturnItemTypeSubscriber
+     */
     protected $returnItemTypeSubscriber;
 
     /**
-     * ReturnType constructor.
-     *
      * @param ReturnItemTypeSubscriber $returnItemTypeSubscriber
      */
     public function __construct(ReturnItemTypeSubscriber $returnItemTypeSubscriber)
@@ -35,13 +35,13 @@ class ReturnItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['update']) {
-            $builder->add('quantity', 'number');
+            $builder->add('quantity', NumberType::class);
         } else {
-            $builder->add('quantity', 'number', [
+            $builder->add('quantity', NumberType::class, [
                 'data' => 0,
             ]);
         }
-        $builder->add('reason', 'oro_enum_choice', [
+        $builder->add('reason', EnumChoiceType::class, [
             'enum_code' => 'marello_return_reason',
             'required'  => true,
             'label'     => 'marello.return.returnitem.reason.label',
@@ -56,7 +56,7 @@ class ReturnItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\ReturnBundle\Entity\ReturnItem',
+            'data_class'         => ReturnItem::class,
             'update'             => false,
             'constraints'        => function (Options $options) {
                 return new ReturnItemConstraint(!$options['update']);
@@ -66,12 +66,10 @@ class ReturnItemType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

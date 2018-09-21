@@ -40,7 +40,7 @@ workflows:
                 form_options:
                     attribute_fields:
                         received_items:
-                            form_type: marello_po_partial_receive
+                            form_type: Marello\Bundle\PurchaseOrderBundle\Form\Type\PartialReceiveType
                             options:
                                 required: true
                                 data: $po
@@ -53,22 +53,22 @@ workflows:
         transition_definitions:
             send_definition:
                 post_actions:
-                    - @marello_purchase_order_send:
+                    - '@marello_purchase_order_send':
                         entity: $po
                         recipient: $po.supplier.email
                         template: marello_purchase_order_supplier
             partially_receive_definition:
                 post_actions:
-                    - @marello_receive_purchase_order:
+                    - '@marello_receive_purchase_order':
                         entity: $received_items
                         is_partial: true
-                    - @marello_purchase_order_transit_complete_action:
+                    - '@marello_purchase_order_transit_complete_action':
                         transitionName: 'complete_purchase_order'
                         entity: $received_items
             complete_purchase_order_definition:
                 post_actions:
-                    - @marello_receive_purchase_order:
+                    - '@marello_receive_purchase_order':
                         entity: $po
-                    - @marello_purchase_order_transit_complete_action:
+                    - '@marello_purchase_order_transit_complete_action':
                         entity: $po
             cancel_purchase_order_definition: ~

@@ -8,14 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductChannelPriceCollectionType extends AbstractType
 {
-    const NAME = 'marello_product_channel_price_collection';
+    const BLOCK_PREFIX = 'marello_product_channel_price_collection';
 
     /**
      * {@inheritdoc}
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 
     /**
@@ -25,7 +25,7 @@ class ProductChannelPriceCollectionType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'type'                 => ProductChannelPriceType::NAME,
+                'entry_type'           => ProductChannelPriceType::class,
                 'show_form_when_empty' => false,
                 'error_bubbling'       => false,
                 'cascade_validation'   => true,
@@ -39,8 +39,8 @@ class ProductChannelPriceCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

@@ -4,13 +4,17 @@ namespace Marello\Bundle\ProductBundle\Form\Type;
 
 use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
 use Marello\Bundle\PricingBundle\Form\Type\AssembledPriceListCollectionType;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductApiType extends AbstractType
 {
-    const NAME = 'marello_product_api_form';
+    const BLOCK_PREFIX = 'marello_product_api_form';
     
     /**
      * @var PricingSubscriber
@@ -20,10 +24,9 @@ class ProductApiType extends AbstractType
     /**
      * @param PricingSubscriber $pricingSubscriber
      */
-    public function __construct(
-        PricingSubscriber $pricingSubscriber
-    ) {
-        $this->pricingSubscriber         = $pricingSubscriber;
+    public function __construct(PricingSubscriber $pricingSubscriber)
+    {
+        $this->pricingSubscriber = $pricingSubscriber;
     }
     
     /**
@@ -34,12 +37,12 @@ class ProductApiType extends AbstractType
         $builder
             ->add('name')
             ->add('sku')
-            ->add('status', 'entity', [
-                'class' => 'Marello\Bundle\ProductBundle\Entity\ProductStatus',
+            ->add('status', EntityType::class, [
+                'class' => ProductStatus::class,
             ])
             ->add(
                 'weight',
-                'number',
+                NumberType::class,
                 [
                     'required' => false,
                     'scale' => 2,
@@ -58,7 +61,7 @@ class ProductApiType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'         => 'Marello\Bundle\ProductBundle\Entity\Product',
+                'data_class'         => Product::class,
                 'cascade_validation' => true,
                 'csrf_protection'    => false,
             ]
@@ -68,8 +71,8 @@ class ProductApiType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

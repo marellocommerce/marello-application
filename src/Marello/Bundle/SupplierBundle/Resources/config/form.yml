@@ -2,21 +2,19 @@ services:
     marello_supplier.form.type.supplier:
         class: Marello\Bundle\SupplierBundle\Form\Type\SupplierType
         tags:
-            - { name: form.type, alias: marello_supplier_form }
+            - { name: form.type }
 
     marello_supplier.form.type.supplier_select:
         class: Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType
         tags:
-            - { name: form.type, alias: marello_supplier_select_form }
+            - { name: form.type }
 
     ## forms
     marello_supplier.supplier.form:
         class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
+        factory: ['@form.factory', 'create']
         arguments:
-            - 'marello_supplier_form'
-            - 'marello_supplier_form'
+            - Marello\Bundle\SupplierBundle\Form\Type\SupplierType
 
     ## handlers
     marello_supplier.form.handler.supplier:
@@ -24,7 +22,7 @@ services:
         scope: request
         arguments:
             - '@marello_supplier.supplier.form'
-            - '@request'
+            - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
     marello_supplier.manager.api:

@@ -2,17 +2,19 @@
 
 namespace Marello\Bundle\SupplierBundle\Form\Type;
 
+use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class SupplierType extends AbstractType
 {
-    const NAME = 'marello_supplier_form';
+    const BLOCK_PREFIX = 'marello_supplier_form';
 
     public static $nonStreetAttributes = [
         'namePrefix',
@@ -30,17 +32,17 @@ class SupplierType extends AbstractType
         $builder
             ->add(
                 'name',
-                'text',
+                TextType::class,
                 ['constraints' => new NotNull()]
             )
             ->add(
                 'address',
-                'marello_address',
+                AddressType::class,
                 ['required' => true]
             )
             ->add(
                 'priority',
-                'text',
+                TextType::class,
                 ['constraints' => new NotNull()]
             )
             ->add('canDropship')
@@ -54,8 +56,8 @@ class SupplierType extends AbstractType
                     'label' => 'marello.supplier.po_send_by.label',
                     'mapped' => true,
                     'choices' => [
-                        Supplier::SEND_PO_MANUALLY => 'marello.supplier.po_send_by.manual',
-                        Supplier::SEND_PO_BY_EMAIL => 'marello.supplier.po_send_by.email'
+                        'marello.supplier.po_send_by.manual' => Supplier::SEND_PO_MANUALLY,
+                        'marello.supplier.po_send_by.email' => Supplier::SEND_PO_BY_EMAIL
                     ]
                 ]
             );
@@ -69,7 +71,7 @@ class SupplierType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\SupplierBundle\Entity\Supplier',
+            'data_class'         => Supplier::class,
             'cascade_validation' => true,
         ]);
     }
@@ -77,9 +79,9 @@ class SupplierType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**

@@ -11,8 +11,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderItemRefundType extends AbstractType
 {
-    const NAME = 'marello_order_item_refund';
+    const BLOCK_PREFIX = 'marello_order_item_refund';
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -38,6 +41,9 @@ class OrderItemRefundType extends AbstractType
             });
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -48,12 +54,10 @@ class OrderItemRefundType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

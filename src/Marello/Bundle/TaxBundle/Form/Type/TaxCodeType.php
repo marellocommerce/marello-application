@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class TaxCodeType extends AbstractType
 {
-    const NAME = 'marello_tax_code_form';
+    const BLOCK_PREFIX = 'marello_tax_code_form';
 
     /**
      * {@inheritdoc}
@@ -51,8 +51,8 @@ class TaxCodeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

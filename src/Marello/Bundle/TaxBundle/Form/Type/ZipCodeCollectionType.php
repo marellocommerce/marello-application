@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ZipCodeCollectionType extends AbstractType
 {
-    const NAME = 'marello_tax_zip_code_collection_type';
+    const BLOCK_PREFIX = 'marello_tax_zip_code_collection_type';
 
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class ZipCodeCollectionType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'type' => ZipCodeType::NAME,
-                'required' => false,
+                'entry_type' => ZipCodeType::class,
+                'required'   => false,
             ]
         );
     }
@@ -26,17 +26,9 @@ class ZipCodeCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**
@@ -44,6 +36,6 @@ class ZipCodeCollectionType extends AbstractType
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 }

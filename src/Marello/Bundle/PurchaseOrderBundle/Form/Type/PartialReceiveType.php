@@ -6,21 +6,26 @@ use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowTransitionType;
 
 class PartialReceiveType extends AbstractType
 {
-    const NAME = 'marello_po_partial_receive';
-
+    const BLOCK_PREFIX = 'marello_po_partial_receive';
+    
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
             'items',
-            PurchaseOrderItemReceiveCollectionType::NAME,
+            PurchaseOrderItemReceiveCollectionType::class,
             ['label' => false]
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -29,12 +34,10 @@ class PartialReceiveType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

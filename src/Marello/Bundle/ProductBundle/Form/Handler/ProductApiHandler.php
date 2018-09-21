@@ -4,13 +4,17 @@ namespace Marello\Bundle\ProductBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ProductApiHandler
 {
+    use RequestHandlerTrait;
+
     /**
      * @var FormInterface
      */
@@ -28,13 +32,13 @@ class ProductApiHandler
 
     /**
      * @param FormInterface $form
-     * @param Request       $request
+     * @param RequestStack  $requestStack
      * @param ObjectManager $manager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    public function __construct(FormInterface $form, RequestStack $requestStack, ObjectManager $manager)
     {
         $this->form    = $form;
-        $this->request = $request;
+        $this->request = $requestStack->getCurrentRequest();
         $this->manager = $manager;
     }
 
@@ -50,7 +54,7 @@ class ProductApiHandler
         $this->form->setData($entity);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($this->request);
+            $this->submitPostPutRequest($this->form, $this->request);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($entity);

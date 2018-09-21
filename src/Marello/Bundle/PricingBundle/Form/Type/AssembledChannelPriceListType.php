@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssembledChannelPriceListType extends AbstractType
 {
-    const NAME = 'marello_assembled_channel_price_list';
+    const BLOCK_PREFIX = 'marello_assembled_channel_price_list';
 
     /**
      * {@inheritdoc}
@@ -49,8 +49,8 @@ class AssembledChannelPriceListType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

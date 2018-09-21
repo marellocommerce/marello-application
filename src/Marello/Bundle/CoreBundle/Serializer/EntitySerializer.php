@@ -19,7 +19,7 @@ use Oro\Component\EntitySerializer\SerializationHelper;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityExtendBundle\Serializer\ExtendEntityFieldFilter;
-use Oro\Bundle\SoapBundle\Serializer\AclProtectedQueryFactory;
+use Oro\Component\EntitySerializer\QueryFactory;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 class EntitySerializer extends BaseEntitySerializer
@@ -35,7 +35,7 @@ class EntitySerializer extends BaseEntitySerializer
      * @param ConfigManager                $configManager
      * @param BaseDataAccessorInterface    $dataAccessor
      * @param BaseDataTransformerInterface $dataTransformer
-     * @param AclProtectedQueryFactory     $queryFactory
+     * @param QueryFactory                 $queryFactory
      * @param WorkflowManager              $workflowManager
      */
     public function __construct(
@@ -43,7 +43,7 @@ class EntitySerializer extends BaseEntitySerializer
         ConfigManager $configManager,
         BaseDataAccessorInterface $dataAccessor,
         BaseDataTransformerInterface $dataTransformer,
-        AclProtectedQueryFactory $queryFactory,
+        QueryFactory $queryFactory,
         WorkflowManager $workflowManager
     ) {
         $doctrineHelper = new DoctrineHelper($doctrine);

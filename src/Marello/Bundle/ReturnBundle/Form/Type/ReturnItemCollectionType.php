@@ -9,16 +9,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ReturnItemCollectionType extends AbstractType
 {
-    const NAME = 'marello_return_item_collection';
+    const BLOCK_PREFIX = 'marello_return_item_collection';
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**
@@ -27,7 +25,7 @@ class ReturnItemCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'                 => ReturnItemType::NAME,
+            'entry_type'           => ReturnItemType::class,
             'options'              => function (Options $options) {
                 return ['update' => $options['update']];
             },
@@ -47,6 +45,6 @@ class ReturnItemCollectionType extends AbstractType
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 }

@@ -6,6 +6,8 @@ use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Oro\Bundle\SecurityBundle\Authentication\Token\UsernamePasswordOrganizationToken;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -16,14 +18,14 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class CustomerApiType extends AbstractType
 {
-    const NAME = 'marello_customer_api';
+    const BLOCK_PREFIX = 'marello_customer_api';
 
-    /** @var TokenStorageInterface */
+    /**
+     * @var TokenStorageInterface
+     */
     protected $tokenStorage;
 
     /**
-     * CustomerApiType constructor.
-     *
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(TokenStorageInterface $tokenStorage)
@@ -38,37 +40,37 @@ class CustomerApiType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('namePrefix', 'text', [
+            ->add('namePrefix', TextType::class, [
                 'required' => false,
             ])
-            ->add('firstName', 'text', [
+            ->add('firstName', TextType::class, [
                 'required'    => true,
                 'constraints' => new NotNull,
             ])
-            ->add('middleName', 'text', [
+            ->add('middleName', TextType::class, [
                 'required' => false,
             ])
-            ->add('lastName', 'text', [
+            ->add('lastName', TextType::class, [
                 'required'    => true,
                 'constraints' => new NotNull,
             ])
-            ->add('nameSuffix', 'text', [
+            ->add('nameSuffix', TextType::class, [
                 'required' => false,
             ])
-            ->add('email', 'email', [
+            ->add('email', EmailType::class, [
                 'required'    => true,
                 'constraints' => [
                     new NotNull,
                     new Email,
                 ],
             ])
-            ->add('primaryAddress', AddressType::NAME, [
+            ->add('primaryAddress', AddressType::class, [
                 'required'    => true,
                 'constraints' => [
                     new NotNull,
                 ],
             ])
-            ->add('shippingAddress', AddressType::NAME, [
+            ->add('shippingAddress', AddressType::class, [
                 'required'    => true,
                 'constraints' => [
                     new NotNull,
@@ -101,12 +103,10 @@ class CustomerApiType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

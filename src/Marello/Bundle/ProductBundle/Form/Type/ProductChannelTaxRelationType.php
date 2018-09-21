@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductChannelTaxRelationType extends AbstractType
 {
-    const NAME = 'marello_product_channel_tax_relation_form';
+    const BLOCK_PREFIX = 'marello_product_channel_tax_relation_form';
 
     /**
      * {@inheritdoc}
@@ -38,16 +38,8 @@ class ProductChannelTaxRelationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

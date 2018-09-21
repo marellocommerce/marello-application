@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\TaxBundle\Form\Type;
 
+use Marello\Bundle\TaxBundle\Entity\ZipCode;
 use Marello\Bundle\TaxBundle\Form\DataTransformer\ZipCodeTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -10,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ZipCodeType extends AbstractType
 {
-    const NAME = 'marello_tax_zip_code_type';
+    const BLOCK_PREFIX = 'marello_tax_zip_code_type';
 
     /**
      * {@inheritdoc}
@@ -33,16 +34,8 @@ class ZipCodeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\TaxBundle\Entity\ZipCode',
+            'data_class' => ZipCode::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**
@@ -50,6 +43,6 @@ class ZipCodeType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

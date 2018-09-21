@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesChannelSelectType extends AbstractType
 {
-    const NAME = 'marello_sales_saleschannel_select';
+    const BLOCK_PREFIX = 'marello_sales_saleschannel_select';
 
     /**
      * {@inheritdoc}
@@ -33,20 +33,12 @@ class SalesChannelSelectType extends AbstractType
     {
         return OroJquerySelect2HiddenType::class;
     }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return self::NAME;
-    }
-    
+
     /**
      * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

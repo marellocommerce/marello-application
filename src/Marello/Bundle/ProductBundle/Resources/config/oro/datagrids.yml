@@ -72,7 +72,7 @@ datagrids:
                 createdAt:      { data_name: p.createdAt }
                 updatedAt:      { data_name: p.updatedAt }
             default:
-                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                name: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 sku:
@@ -95,7 +95,7 @@ datagrids:
                     data_name:          p.weight
                     type:               number
                     options:
-                        data_type:      %oro_filter.form.type.filter.number.class%::DATA_DECIMAL
+                        data_type:      '%oro_filter.form.type.filter.number.class%::DATA_DECIMAL'
                     enabled:            false
         actions:
             view:
@@ -401,7 +401,7 @@ datagrids:
         sorters:
             columns:
                 hasChannel:           { data_name: hasChannel }
-            default:                  { hasChannel: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC }
+            default:                  { hasChannel: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC' }
         filters:
             columns:
                 hasChannel:
@@ -513,7 +513,7 @@ datagrids:
                 name:                 { data_name: p.name }
                 manufacturingCode:    { data_name: p.manufacturingCode }
             default:
-                sku:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                sku:  '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         properties:
             id: ~
         options:
@@ -521,7 +521,7 @@ datagrids:
 
     marello-product-categories-base-grid:
         acl_resource: marello_category_update
-        extended_entity_name: %marello_catalog.category.entity.class%
+        extended_entity_name: '%marello_catalog.category.entity.class%'
         source:
             type: orm
             query:
@@ -532,7 +532,7 @@ datagrids:
                     - category.createdAt
                     - category.updatedAt
                 from:
-                    - { table: %marello_catalog.category.entity.class%, alias: category }
+                    - { table: '%marello_catalog.category.entity.class%', alias: category }
         columns:
             code:
                 label:         marello.catalog.category.code.label
@@ -584,7 +584,7 @@ datagrids:
                 - categories
         sorters:
             default:
-                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
 
     marello-product-categories-extend-grid:
         extends: marello-product-categories-base-grid
@@ -606,7 +606,7 @@ datagrids:
                 join:
                     left:
                         -
-                            join: %marello_product.entity.class%
+                            join: '%marello_product.entity.class%'
                             alias: categoryProduct
                             conditionType: WITH
                             condition: 'categoryProduct = :product_id'
@@ -625,7 +625,7 @@ datagrids:
                 inCategory:
                     data_name: inCategory
             default:
-                inCategory: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                inCategory: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 inCategory:

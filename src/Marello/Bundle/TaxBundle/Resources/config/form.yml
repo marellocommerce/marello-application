@@ -10,49 +10,49 @@ services:
     marello_tax.form.type.tax_code:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxCodeType
         tags:
-            - { name: form.type, alias: marello_tax_code_form }
+            - { name: form.type }
 
     marello_tax.form.type.tax_rate:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxRateType
         tags:
-            - { name: form.type, alias: marello_tax_rate_form }
+            - { name: form.type }
 
     marello_tax.form.type.tax_rate_select:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxRateSelectType
         tags:
-            - { name: form.type, alias: marello_tax_rate_select }
+            - { name: form.type }
 
     marello_tax.form.type.tax_rule:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxRuleType
         tags:
-            - { name: form.type, alias: marello_tax_rule_form }
+            - { name: form.type }
 
     marello_tax.form.type.tax_code_select:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxCodeSelectType
         tags:
-            - { name: form.type, alias: marello_tax_taxcode_select }
+            - { name: form.type }
 
     marello_tax.form.type.tax_jurisdiction:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxJurisdictionType
         arguments:
             - '@oro_address.form.listener.address'
         tags:
-            - { name: form.type, alias: marello_tax_jurisdiction_type }
+            - { name: form.type }
 
     marello_tax.form.type.tax_jurisdiction_select:
         class: Marello\Bundle\TaxBundle\Form\Type\TaxJurisdictionSelectType
         tags:
-            - { name: form.type, alias: marello_tax_jurisdiction_select }
+            - { name: form.type }
 
     marello_tax.form.type.zip_code_collection:
         class: Marello\Bundle\TaxBundle\Form\Type\ZipCodeCollectionType
         tags:
-            - { name: form.type, alias: marello_tax_zip_code_collection_type }
+            - { name: form.type }
 
     marello_tax.form.type.zip_code:
         class: Marello\Bundle\TaxBundle\Form\Type\ZipCodeType
         tags:
-            - { name: form.type, alias: marello_tax_zip_code_type }
+            - { name: form.type }
 
     # Autocomplete search handler
     marello_tax.taxcode.form.autocomplete.search_handler:
@@ -82,24 +82,21 @@ services:
     ## factory
     marello_tax.taxcode.form:
         class: Symfony\Component\Form\Form
-        factory: ['@form.factory', 'createNamed']
+        factory: ['@form.factory', 'create']
         arguments:
-            - 'marello_tax_code_form'
-            - 'marello_tax_code_form'
+            - Marello\Bundle\TaxBundle\Form\Type\TaxCodeType
 
     marello_tax.taxrate.form:
         class: Symfony\Component\Form\Form
-        factory: ['@form.factory', 'createNamed']
+        factory: ['@form.factory', 'create']
         arguments:
-            - 'marello_tax_rate_form'
-            - 'marello_tax_rate_form'
+            - Marello\Bundle\TaxBundle\Form\Type\TaxRateType
 
     marello_tax.taxrule.form:
         class: Symfony\Component\Form\Form
-        factory: ['@form.factory', 'createNamed']
+        factory: ['@form.factory', 'create']
         arguments:
-            - 'marello_tax_rule_form'
-            - 'marello_tax_rule_form'
+            - Marello\Bundle\TaxBundle\Form\Type\TaxRuleType
 
     ## handlers
     marello_tax.form.handler.taxcode:
@@ -107,7 +104,7 @@ services:
         scope: request
         arguments:
             - '@marello_tax.taxcode.form'
-            - '@request'
+            - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
     marello_tax.form.handler.taxrate:
@@ -115,7 +112,7 @@ services:
         scope: request
         arguments:
             - '@marello_tax.taxrate.form'
-            - '@request'
+            - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
     marello_tax.form.handler.taxrule:
@@ -123,7 +120,7 @@ services:
         scope: request
         arguments:
             - '@marello_tax.taxrule.form'
-            - '@request'
+            - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
     ## manager

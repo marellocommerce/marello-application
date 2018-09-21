@@ -2,17 +2,19 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Form\DataTransformer\TaxCodeToCodeTransformer;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderItemPurchasePriceSubscriber;
 use Marello\Bundle\ProductBundle\Form\Type\ProductSalesChannelAwareSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderItemType extends AbstractType
 {
-    const NAME = 'marello_order_item';
+    const BLOCK_PREFIX = 'marello_order_item';
 
     /**
      * @var TaxCodeToCodeTransformer
@@ -38,26 +40,38 @@ class OrderItemType extends AbstractType
                 'label'          => 'marello.product.entity_label',
                 'create_enabled' => false,
             ])
-            ->add('quantity', 'number', [
+            ->add('quantity', NumberType::class, [
                 'data' => 1,
             ])->add('availableInventory', NumberType::class, [
                 'mapped' => false,
-                'read_only' => true
+                'attr' => [
+                    'readonly' => true,
+                ]
             ])
-            ->add('price', 'text', [
-                'read_only' => true,
+            ->add('price', TextType::class, [
+                'attr' => [
+                        'readonly' => true,
+                    ]
             ])
-            ->add('tax', 'text', [
-                'read_only' => true,
+            ->add('tax', TextType::class, [
+                'attr' => [
+                    'readonly' => true,
+                ]
             ])
-            ->add('taxCode', 'text', [
-                'read_only' => true,
+            ->add('taxCode', TextType::class, [
+                'attr' => [
+                    'readonly' => true,
+                ]
             ])
-            ->add('rowTotalExclTax', 'text', [
-                'read_only' => true,
+            ->add('rowTotalExclTax', TextType::class, [
+                'attr' => [
+                    'readonly' => true,
+                ]
             ])
-            ->add('rowTotalInclTax', 'text', [
-                'read_only' => true,
+            ->add('rowTotalInclTax', TextType::class, [
+                'attr' => [
+                    'readonly' => true,
+                ]
             ])
         ;
 
@@ -71,15 +85,15 @@ class OrderItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\OrderBundle\Entity\OrderItem'
+            'data_class' => OrderItem::class
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

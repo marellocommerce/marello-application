@@ -6,21 +6,20 @@ services:
         arguments:
             - '@marello_catalog.formatter.category_code'
         tags:
-            - { name: form.type, alias: marello_catalog_category }
+            - { name: form.type }
 
     marello_catalog.category.form:
         class: Symfony\Component\Form\Form
-        factory: ['@form.factory', 'createNamed']
+        factory: ['@form.factory', 'create']
         arguments:
-            - 'marello_catalog_category'
-            - 'marello_catalog_category'
+            - Marello\Bundle\CatalogBundle\Form\Type\CategoryType
 
     marello_catalog.category.form.handler:
         class: Marello\Bundle\CatalogBundle\Form\Handler\CategoryHandler
         scope: request
         arguments:
             - '@marello_catalog.category.form'
-            - '@request'
+            - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
     marello_catalog.listener.datagrid.category_products_column_listener:

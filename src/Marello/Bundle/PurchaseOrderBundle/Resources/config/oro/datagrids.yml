@@ -214,7 +214,7 @@ datagrids:
                 virtualInventory:       { data_name: virtualInventory }
                 orderAmount:            { data_name: orderAmount }
             default:
-                hasProduct: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                hasProduct: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 hasProduct:

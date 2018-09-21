@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderType extends AbstractType
 {
-    const NAME = 'marello_order_order';
+    const BLOCK_PREFIX = 'marello_order_order';
 
     /**
      * @var SalesChannelRepository
@@ -39,7 +39,7 @@ class OrderType extends AbstractType
         $builder
             ->add(
                 'customer',
-                CustomerSelectType::NAME,
+                CustomerSelectType::class,
                 [
                     'required' => true,
                 ]
@@ -98,7 +98,7 @@ class OrderType extends AbstractType
         $builder
             ->add(
                 'billingAddress',
-                OrderBillingAddressType::NAME,
+                OrderBillingAddressType::class,
                 [
                     'label' => 'oro.order.billing_address.label',
                     'object' => $options['data'],
@@ -118,7 +118,7 @@ class OrderType extends AbstractType
         $builder
             ->add(
                 'shippingAddress',
-                OrderShippingAddressType::NAME,
+                OrderShippingAddressType::class,
                 [
                     'label' => 'oro.order.shipping_address.label',
                     'object' => $options['data'],
@@ -167,7 +167,7 @@ class OrderType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\OrderBundle\Entity\Order',
+            'data_class' => Order::class,
             'cascade_validation'   => true
         ]);
     }
@@ -175,8 +175,8 @@ class OrderType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

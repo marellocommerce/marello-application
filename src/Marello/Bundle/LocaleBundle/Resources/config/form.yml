@@ -5,4 +5,4 @@ services:
     marello_locale.form.type.locale:
         class: '%marello_locale.form.type.locale.class%'
         tags:
-            - { name: form.type, alias: marello_locale }
+            - { name: form.type }

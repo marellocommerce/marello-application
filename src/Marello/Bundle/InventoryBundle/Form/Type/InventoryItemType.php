@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 class InventoryItemType extends AbstractType
 {
-    const NAME = 'marello_inventory_item';
+    const BLOCK_PREFIX = 'marello_inventory_item';
 
     /**
      * {@inheritdoc}
@@ -63,16 +63,8 @@ class InventoryItemType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

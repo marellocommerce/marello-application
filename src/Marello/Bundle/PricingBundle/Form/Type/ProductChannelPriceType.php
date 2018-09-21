@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductChannelPriceType extends AbstractType
 {
-    const NAME = 'marello_product_channel_price';
+    const BLOCK_PREFIX = 'marello_product_channel_price';
 
     /**
      * {@inheritdoc}
@@ -46,18 +46,10 @@ class ProductChannelPriceType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return self::NAME;
-    }
-    
-    /**
      * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

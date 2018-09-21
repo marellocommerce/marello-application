@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\AddressBundle\Form\Type\AddressType as MarelloAddressType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Provider\OrderCustomerAddressProvider;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
@@ -15,10 +16,11 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Oro\Bundle\FormBundle\Form\Type\Select2ChoiceType;
 
 abstract class AbstractOrderAddressType extends AbstractType
 {
-    const NAME = 'marello_order_address';
+    const BLOCK_PREFIX = 'marello_order_address';
 
     /**
      * @var AddressFormatter
@@ -51,6 +53,7 @@ abstract class AbstractOrderAddressType extends AbstractType
     }
 
     /**
+     * @param Order $entity
      * @return array
      */
     abstract protected function getAddresses(Order $entity);
@@ -115,18 +118,18 @@ abstract class AbstractOrderAddressType extends AbstractType
      */
     protected function getChoices(array $addresses = [])
     {
+        $choices = [];
+        $choices['marello.order.form.address.manual'] = 0;
         array_walk_recursive(
             $addresses,
-            function (&$item) {
+            function ($item, $key) use (&$choices)  {
                 if ($item instanceof MarelloAddress) {
-                    $item = $this->addressFormatter->format($item, null, ', ');
+                    $choices[$this->addressFormatter->format($item, null, ', ')] = $key;
                 }
-
-                return $item;
             }
         );
 
-        return $addresses;
+        return $choices;
     }
 
     /**
@@ -174,11 +177,9 @@ abstract class AbstractOrderAddressType extends AbstractType
                 ],
             ];
 
-            $customerAddressOptions['choices'][0] = 'marello.order.form.address.manual';
-            ksort($customerAddressOptions['choices']);
             $customerAddressOptions['configs']['placeholder'] = 'marello.order.form.address.choose_or_create';
 
-            $builder->add('customerAddress', 'genemu_jqueryselect2_choice', $customerAddressOptions);
+            $builder->add('customerAddress', Select2ChoiceType::class, $customerAddressOptions);
         }
     }
 
@@ -187,15 +188,7 @@ abstract class AbstractOrderAddressType extends AbstractType
      */
     public function getParent()
     {
-        return 'marello_address';
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
+        return MarelloAddressType::class;
     }
 
     /**
@@ -203,6 +196,6 @@ abstract class AbstractOrderAddressType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return static::NAME;
+        return static::BLOCK_PREFIX;
     }
 }

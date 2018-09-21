@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CategoryType extends AbstractType
 {
-    const NAME = 'marello_catalog_category';
+    const BLOCK_PREFIX = 'marello_catalog_category';
 
     /**
      * @var CategoryCodeFormatter
@@ -44,7 +44,7 @@ class CategoryType extends AbstractType
             ])
             ->add(
                 'appendProducts',
-                EntityIdentifierType::NAME,
+                EntityIdentifierType::class,
                 [
                     'class'    => Product::class,
                     'required' => false,
@@ -54,7 +54,7 @@ class CategoryType extends AbstractType
             )
             ->add(
                 'removeProducts',
-                EntityIdentifierType::NAME,
+                EntityIdentifierType::class,
                 [
                     'class'    => Product::class,
                     'required' => false,
@@ -91,16 +91,8 @@ class CategoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

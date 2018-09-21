@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductSupplierRelationCollectionType extends AbstractType
 {
-    const NAME = 'marello_product_supplier_relation_collection_form';
+    const BLOCK_PREFIX = 'marello_product_supplier_relation_collection_form';
 
     /**
      * @param OptionsResolver $resolver
@@ -16,7 +16,7 @@ class ProductSupplierRelationCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'                 => ProductSupplierRelationType::NAME,
+            'entry_type'           => ProductSupplierRelationType::class,
             'show_form_when_empty' => false,
             'error_bubbling'       => false,
             'cascade_validation'   => true,
@@ -29,17 +29,9 @@ class ProductSupplierRelationCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**
@@ -47,6 +39,6 @@ class ProductSupplierRelationCollectionType extends AbstractType
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 }

@@ -56,7 +56,7 @@ workflows:
                 form_options:
                     attribute_fields:
                         note:
-                            form_type: textarea
+                            form_type: Symfony\Component\Form\Extension\Core\Type\TextAreaType
                             options:
                                 required: false
             un_hold_pending:
@@ -68,7 +68,7 @@ workflows:
                 form_options:
                     attribute_fields:
                         note:
-                            form_type: textarea
+                            form_type: Symfony\Component\Form\Extension\Core\Type\TextAreaType
                             options:
                                 required: false
             un_hold_invoice:
@@ -80,19 +80,19 @@ workflows:
                 form_options:
                     attribute_fields:
                         payment_reference:
-                            form_type: text
+                            form_type: Symfony\Component\Form\Extension\Core\Type\TextType
                             options:
                                 required: true
                                 constraints:
                                   - NotBlank: ~
                         payment_details:
-                            form_type: text
+                            form_type: Symfony\Component\Form\Extension\Core\Type\TextType
                             options:
                                 required: true
                                 constraints:
                                   - NotBlank: ~
                         invoiced_at:
-                            form_type: oro_datetime
+                            form_type: Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
                             options:
                                 required: true
                                 constraints:
@@ -121,8 +121,8 @@ workflows:
                     - '@extendable':
                         events: [extendable_action.order_cancel]
                 post_actions:
-                    - @marello_cancel_order: ~
-                    - @marello_notification_send:
+                    - '@marello_cancel_order': ~
+                    - '@marello_notification_send':
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_cancelled
@@ -134,16 +134,16 @@ workflows:
                         - '@sales_channel_has_valid_integration':
                             salesChannel: $order.salesChannel
                 post_actions:
-                    - @assign_value:
+                    - '@assign_value':
                         attribute: $order.paymentReference
                         value: $payment_reference
-                    - @assign_value:
+                    - '@assign_value':
                         attribute: $order.paymentDetails
                         value: $payment_details
-                    - @assign_value:
+                    - '@assign_value':
                         attribute: $order.invoicedAt
                         value: $invoiced_at
-                    - @marello_notification_send:
+                    - '@marello_notification_send':
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_invoiced
@@ -151,7 +151,7 @@ workflows:
                         events: [extendable_action.order_paid]
             credit_definition:
                 post_actions:
-                    - @marello_notification_send:
+                    - '@marello_notification_send':
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_credited
@@ -168,14 +168,14 @@ workflows:
                         method: create
                         method_parameters: [$order]
                         attribute: $.result.orderShippingContext
-                    - @marello_shipment_create:
+                    - '@marello_shipment_create':
                         context: $.result.orderShippingContext
                         method: $order.shippingMethod
                         methodType: $order.shippingMethodType
                     - '@extendable':
                        events: [extendable_action.create_packingslip]
-                    - @marello_pick_pack_order: ~
-                    - @marello_notification_send:
+                    - '@marello_pick_pack_order': ~
+                    - '@marello_notification_send':
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_shipping_prepared
@@ -189,8 +189,8 @@ workflows:
                         - '@sales_channel_has_valid_integration':
                             salesChannel: $order.salesChannel
                 post_actions:
-                    - @marello_ship_order: ~
-                    - @marello_notification_send:
+                    - '@marello_ship_order': ~
+                    - '@marello_notification_send':
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_shipped_confirmation
@@ -198,11 +198,11 @@ workflows:
                        events: [extendable_action.order_shipped]
             payment_reminder_definition:
                 post_actions:
-                    - @marello_notification_send:
+                    - '@marello_notification_send':
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_payment_reminder
-                    - @flash_message:
+                    - '@flash_message':
                         message: 'Reminder has been sent.'
 #
 #    marello_order_b2c_workflow_2:

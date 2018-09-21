@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 class InventoryLevelType extends AbstractType
 {
-    const NAME = 'marello_inventory_inventorylevel';
+    const BLOCK_PREFIX = 'marello_inventory_inventorylevel';
 
     /**
      * @var EventSubscriberInterface
@@ -56,8 +56,8 @@ class InventoryLevelType extends AbstractType
                 [
                     'choices' =>
                         [
-                            InventoryLevelCalculator::OPERATOR_INCREASE => 'increase',
-                            InventoryLevelCalculator::OPERATOR_DECREASE => 'decrease',
+                            'increase' => InventoryLevelCalculator::OPERATOR_INCREASE,
+                            'decrease' => InventoryLevelCalculator::OPERATOR_DECREASE,
                         ],
                     'translation_domain' => 'MarelloInventoryChangeDirection',
                     'mapped' => false
@@ -97,16 +97,8 @@ class InventoryLevelType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

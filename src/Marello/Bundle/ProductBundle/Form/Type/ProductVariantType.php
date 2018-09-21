@@ -2,15 +2,17 @@
 
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
+use Marello\Bundle\ProductBundle\Entity\Variant;
+use Marello\Bundle\ProductBundle\Form\EventListener\VariantSubscriber;
+use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Marello\Bundle\ProductBundle\Form\EventListener\VariantSubscriber;
-
 class ProductVariantType extends AbstractType
 {
-    const NAME = 'marello_product_variant_form';
+    const BLOCK_PREFIX = 'marello_product_variant_form';
 
     /**
      * {@inheritdoc}
@@ -18,10 +20,10 @@ class ProductVariantType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('variantCode', 'hidden')
+            ->add('variantCode', HiddenType::class)
             ->add(
                 'addVariants',
-                'oro_entity_identifier',
+                EntityIdentifierType::class,
                 [
                     'class'    => 'MarelloProductBundle:Product',
                     'required' => false,
@@ -31,7 +33,7 @@ class ProductVariantType extends AbstractType
             )
             ->add(
                 'removeVariants',
-                'oro_entity_identifier',
+                EntityIdentifierType::class,
                 [
                     'class'    => 'MarelloProductBundle:Product',
                     'required' => false,
@@ -49,7 +51,7 @@ class ProductVariantType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\ProductBundle\Entity\Variant',
+            'data_class'         => Variant::class,
             'intention'          => 'variant',
             'single_form'        => false,
             'cascade_validation' => true,
@@ -59,8 +61,8 @@ class ProductVariantType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

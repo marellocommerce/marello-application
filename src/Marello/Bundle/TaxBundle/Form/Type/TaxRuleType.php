@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaxRuleType extends AbstractType
 {
-    const NAME = 'marello_tax_rule_form';
+    const BLOCK_PREFIX = 'marello_tax_rule_form';
 
     /**
      * {@inheritdoc}
@@ -45,8 +45,8 @@ class TaxRuleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

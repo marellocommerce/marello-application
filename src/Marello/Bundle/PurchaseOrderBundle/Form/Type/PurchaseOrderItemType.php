@@ -3,17 +3,17 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
 use Marello\Bundle\PricingBundle\Form\Type\ProductPriceType;
+use Marello\Bundle\ProductBundle\Form\Type\ProductSupplierSelectType;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderItemConstraint;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
-use Symfony\Component\Validator\Constraints\NotNull;
 
 class PurchaseOrderItemType extends AbstractType
 {
-    const NAME = 'marello_purchase_order_item';
+    const BLOCK_PREFIX = 'marello_purchase_order_item';
 
     /**
      * {@inheritdoc}
@@ -21,11 +21,11 @@ class PurchaseOrderItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('product', 'marello_product_supplier_select', [
+            ->add('product', ProductSupplierSelectType::class, [
                 'label'          => 'marello.product.entity_label',
                 'create_enabled' => false,
             ])
-            ->add('orderedAmount', 'number', [
+            ->add('orderedAmount', NumberType::class, [
                 'label' => 'Ordered Amount'
             ])
             ->add('purchasePrice', ProductPriceType::class, [
@@ -53,8 +53,8 @@ class PurchaseOrderItemType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

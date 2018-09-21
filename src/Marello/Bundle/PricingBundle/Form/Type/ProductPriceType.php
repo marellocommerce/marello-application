@@ -2,13 +2,16 @@
 
 namespace Marello\Bundle\PricingBundle\Form\Type;
 
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductPriceType extends AbstractType
 {
-    const NAME = 'marello_product_price';
+    const BLOCK_PREFIX = 'marello_product_price';
 
     /**
      * {@inheritdoc}
@@ -16,12 +19,12 @@ class ProductPriceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('currency', 'hidden', [
+            ->add('currency', HiddenType::class, [
                 'required' => true,
             ]);
         if ($options['currency'] && $options['currency_symbol']) {
             $builder
-                ->add('value', 'oro_money', [
+                ->add('value', OroMoneyType::class, [
                     'required' => false,
                     'label' => 'marello.pricing.productprice.value.label',
                     'currency' => $options['currency'],
@@ -29,7 +32,7 @@ class ProductPriceType extends AbstractType
                 ]);
         } else {
             $builder
-                ->add('value', 'oro_money', [
+                ->add('value', OroMoneyType::class, [
                     'required' => false,
                     'label' => 'marello.pricing.productprice.value.label',
                 ]);
@@ -42,7 +45,7 @@ class ProductPriceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'        => 'Marello\Bundle\PricingBundle\Entity\ProductPrice',
+            'data_class'        => ProductPrice::class,
             'intention'         => 'productprice',
             'single_form'       => true,
             'currency'          => null,
@@ -53,8 +56,8 @@ class ProductPriceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

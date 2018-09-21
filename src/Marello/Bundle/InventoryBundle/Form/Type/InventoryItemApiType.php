@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InventoryItemApiType extends AbstractType
 {
-    const NAME = 'marello_inventory_item_api';
+    const BLOCK_PREFIX = 'marello_inventory_item_api';
 
     /**
      * @var InventoryItemUpdateApiTransformer
@@ -55,16 +55,8 @@ class InventoryItemApiType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

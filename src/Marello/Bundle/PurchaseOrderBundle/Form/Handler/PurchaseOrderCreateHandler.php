@@ -3,16 +3,18 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Handler;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class PurchaseOrderCreateHandler
 {
+    use RequestHandlerTrait;
+
     /** @var FormInterface */
     private $form;
 
@@ -29,20 +31,20 @@ class PurchaseOrderCreateHandler
      * Constructor.
      *
      * @param FormInterface         $form
-     * @param Request               $request
+     * @param RequestStack          $requestStack
      * @param Registry              $doctrine
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         FormInterface $form,
-        Request $request,
+        RequestStack  $requestStack,
         Registry $doctrine,
         TokenStorageInterface $tokenStorage
     ) {
         $this->form         = $form;
         $this->doctrine     = $doctrine;
         $this->tokenStorage = $tokenStorage;
-        $this->request      = $request;
+        $this->request      = $requestStack->getCurrentRequest();
     }
 
     /**
@@ -84,7 +86,7 @@ class PurchaseOrderCreateHandler
         unset($keys['itemsAdvice']);
         $this->request->request->set('marello_purchase_order_create_step_two', $keys);
 
-        $this->form->handleRequest($this->request);
+        $this->submitPostPutRequest($this->form, $this->request);
 
         if ($this->form->isSubmitted() && $this->form->isValid()) {
             $this->onSuccess();

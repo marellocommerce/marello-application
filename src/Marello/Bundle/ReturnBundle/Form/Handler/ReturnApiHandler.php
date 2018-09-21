@@ -4,12 +4,16 @@ namespace Marello\Bundle\ReturnBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Bundle\SoapBundle\Controller\Api\FormAwareInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ReturnApiHandler implements FormAwareInterface
 {
+    use RequestHandlerTrait;
+
     /**
      * @var FormInterface
      */
@@ -27,13 +31,13 @@ class ReturnApiHandler implements FormAwareInterface
 
     /**
      * @param FormInterface $form
-     * @param Request       $request
+     * @param RequestStack  $requestStack
      * @param ObjectManager $manager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager)
+    public function __construct(FormInterface $form, RequestStack $requestStack, ObjectManager $manager)
     {
         $this->form    = $form;
-        $this->request = $request;
+        $this->request = $requestStack->getCurrentRequest();
         $this->manager = $manager;
     }
 
@@ -49,7 +53,7 @@ class ReturnApiHandler implements FormAwareInterface
         $this->form->setData($entity);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($this->request);
+            $this->submitPostPutRequest($this->form, $this->request);
             if ($this->form->isValid()) {
                 $this->onSuccess($entity);
 

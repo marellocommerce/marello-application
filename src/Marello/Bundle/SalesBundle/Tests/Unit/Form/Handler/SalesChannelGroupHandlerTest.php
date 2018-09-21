@@ -9,6 +9,7 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Form\Handler\SalesChannelGroupHandler;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class SalesChannelGroupHandlerTest extends \PHPUnit_Framework_TestCase
@@ -94,7 +95,12 @@ class SalesChannelGroupHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects(static::once())
             ->method('getMethod')
             ->willReturn('POST');
-
+        $request
+            ->expects(static::once())
+            ->method('getMethod')
+            ->willReturn('POST');
+        $request->request = new ParameterBag();
+        $request->files = new ParameterBag();
         $this->form
             ->expects(static::once())
             ->method('setData')
@@ -102,7 +108,7 @@ class SalesChannelGroupHandlerTest extends \PHPUnit_Framework_TestCase
         $this->form
             ->expects(static::once())
             ->method('submit')
-            ->with($request);
+            ->with([]);
         $this->form
             ->expects(static::once())
             ->method('isValid')

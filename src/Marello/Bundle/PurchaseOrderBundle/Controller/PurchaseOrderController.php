@@ -121,13 +121,13 @@ class PurchaseOrderController extends Controller
      */
     protected function createStepTwo(Request $request, PurchaseOrder $purchaseOrder)
     {
-        if ($request->get('input_action') === 'marello_purchaseorder_purchaseorder_create') {
-            $form = $this->createForm(PurchaseOrderCreateStepOneType::NAME, $purchaseOrder);
+        if ($request->request->get('input_action') === 'marello_purchaseorder_purchaseorder_create') {
+            $form = $this->createForm(PurchaseOrderCreateStepOneType::class, $purchaseOrder);
             $form->handleRequest($request);
             $formData = $form->all();
 
             if (!empty($formData)) {
-                $form = $this->createForm(PurchaseOrderCreateStepTwoType::NAME, $purchaseOrder);
+                $form = $this->createForm(PurchaseOrderCreateStepTwoType::class, $purchaseOrder);
                 foreach ($formData as $key => $item) {
                     $data = $item->getData();
                     $form->get($key)->setData($data);
@@ -167,8 +167,10 @@ class PurchaseOrderController extends Controller
             $this->get('translator')->trans('marello.purchaseorder.messages.purchaseorder.not_saved')
         );
 
-        if (($e = $form->getErrorsAsString()) != '') {
-            $this->addFlash('error', $e);
+        if ($form->getErrors()->count() > 0) {
+            foreach ($form->getErrors() as $error) {
+                $this->addFlash('error', $error->getMessage());
+            }
         }
 
         return [
@@ -231,7 +233,7 @@ class PurchaseOrderController extends Controller
         $supplier = $this->get('doctrine')
             ->getManagerForClass(Supplier::class)
             ->getRepository(Supplier::class)
-            ->find($this->get('request')->get('supplierId'));
+            ->find($this->get('request_stack')->getCurrentRequest()->get('supplierId'));
 
         return [
             'purchaseOrder' => $purchaseOrder,

@@ -9,6 +9,7 @@ use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectApiType;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer;
 use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class OrderApiType extends AbstractType
 {
-    const NAME = 'marello_order_api';
+    const BLOCK_PREFIX = 'marello_order_api';
 
     /**
      * @var EntityToIdTransformer
@@ -60,8 +61,8 @@ class OrderApiType extends AbstractType
             ->add('shippingAmountInclTax', OroMoneyType::class)
             ->add('shippingAmountExclTax', OroMoneyType::class)
             ->add('purchaseDate', OroDateTimeType::class)
-            ->add('items', OrderItemCollectionType::NAME, [
-                'type'      => OrderItemApiType::NAME,
+            ->add('items', OrderItemCollectionType::class, [
+                'entry_type' => OrderItemApiType::class,
                 'allow_add' => true,
             ]);
 
@@ -72,11 +73,11 @@ class OrderApiType extends AbstractType
             $form = $event->getForm();
 
             if (is_int($data['customer'])) {
-                $form->add('customer', 'entity', [
+                $form->add('customer', EntityType::class, [
                     'class' => Customer::class
                 ]);
             } else {
-                $form->add('customer', CustomerApiType::NAME);
+                $form->add('customer', CustomerApiType::class);
             }
         });
     }
@@ -84,9 +85,9 @@ class OrderApiType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**

@@ -8,14 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssembledChannelPriceListCollectionType extends AbstractType
 {
-    const NAME = 'marello_assembled_channel_price_list_collection';
+    const BLOCK_PREFIX = 'marello_assembled_channel_price_list_collection';
 
     /**
      * {@inheritdoc}
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 
     /**
@@ -25,13 +25,14 @@ class AssembledChannelPriceListCollectionType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'type'                 => AssembledChannelPriceListType::NAME,
+                'entry_type'           => AssembledChannelPriceListType::class,
                 'show_form_when_empty' => false,
                 'error_bubbling'       => false,
                 'cascade_validation'   => true,
                 'prototype_name'       => '__nameproductprice__',
                 'prototype'            => true,
                 'handle_primary'       => false,
+                'excluded_channels'    => []
             ]
         );
     }
@@ -39,8 +40,8 @@ class AssembledChannelPriceListCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

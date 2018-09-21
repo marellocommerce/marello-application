@@ -8,29 +8,33 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderItemRefundCollectionType extends AbstractType
 {
-    const NAME = 'marello_order_item_refund_collection';
+    const BLOCK_PREFIX = 'marello_order_item_refund_collection';
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type' => OrderItemRefundType::NAME,
+            'entry_type' => OrderItemRefundType::class,
             'allow_add' => false,
             'allow_delete' => false,
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }
