@@ -2,6 +2,7 @@
 
 namespace MarelloEnterprise\Bundle\PurchaseOrderBundle\Tests\Unit\Form\Type;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\PricingBundle\Form\Type\ProductPriceType;
@@ -15,16 +16,23 @@ use Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType;
 use MarelloEnterprise\Bundle\PurchaseOrderBundle\Form\Extension\PurchaseOrderWarehouseFormExtension;
 use Oro\Bundle\CurrencyBundle\Tests\Unit\Utils\CurrencyNameHelperStub;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\FormBundle\Autocomplete\SearchRegistry;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
+use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Oro\Bundle\FormBundle\Form\Type\OroMoneyType;
-use Oro\Bundle\FormBundle\Tests\Unit\Form\Stub\EntityIdentifierType;
+use Oro\Bundle\FormBundle\Tests\Unit\Form\Stub\EntityIdentifierType as EntityIdentifierStubType;
 use Oro\Bundle\FormBundle\Tests\Unit\Form\Type\EntitySelectOrCreateInlineFormExtension;
+use Oro\Bundle\LocaleBundle\Formatter\NumberFormatter;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Oro\Component\Testing\Unit\FormIntegrationTestCase;
+use Oro\Component\Testing\Unit\PreloadedExtension;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
-use Symfony\Component\Form\PreloadedExtension;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validation;
@@ -40,9 +48,8 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
      */
     public function testSubmit($submittedData, $expectedData, $defaultData = null)
     {
-        $form = $this->factory->createNamed(
-            PurchaseOrderCreateStepTwoType::NAME,
-            PurchaseOrderCreateStepTwoType::NAME,
+        $form = $this->factory->create(
+            PurchaseOrderCreateStepTwoType::class,
             $defaultData
         );
         $form->submit($submittedData);
@@ -122,14 +129,15 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
      */
     public function getExtensions()
     {
+        /** @var AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject $authorizationChecker */
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
-
-        $configManager = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Config\ConfigManager')
+        /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
+        $configManager = $this->getMockBuilder(ConfigManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-
-        $configProvider = $this->getMockBuilder('Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider')
+        /** @var ConfigProvider|\PHPUnit_Framework_MockObject_MockObject $configProvider */
+        $configProvider = $this->getMockBuilder(ConfigProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -138,14 +146,16 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
             ->method('getProvider')
             ->will($this->returnValue($configProvider));
 
-        $config = $this->createMock('Oro\Bundle\EntityConfigBundle\Config\ConfigInterface');
+        /** @var ConfigInterface|\PHPUnit_Framework_MockObject_MockObject $config */
+        $config = $this->createMock(ConfigInterface::class);
 
         $configProvider
             ->expects($this->any())
             ->method('getConfig')
             ->will($this->returnValue($config));
 
-        $searchRegistry = $this->getMockBuilder('Oro\Bundle\FormBundle\Autocomplete\SearchRegistry')
+        /** @var SearchRegistry|\PHPUnit_Framework_MockObject_MockObject $searchRegistry */
+        $searchRegistry = $this->getMockBuilder(SearchRegistry::class)
             ->disableOriginalConstructor()
             ->setMethods(['hasSearchHandler', 'getSearchHandler'])
             ->getMock();
@@ -179,7 +189,8 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
                     }
                 }
             );
-        $entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+        /** @var EntityManager|\PHPUnit_Framework_MockObject_MockObject $entityManager */
+        $entityManager = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();
         $entityManager->expects($this->any())
@@ -196,17 +207,23 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
             ->method('getClassMetadata')
             ->will($this->returnValue($metadata));
 
+        /** @var LocaleSettings|\PHPUnit_Framework_MockObject_MockObject $localeSettings */
         $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
             ->setMethods(array('getLocale', 'getCurrency', 'getCurrencySymbolByCurrency'))
             ->getMock();
 
+        /** @var NumberFormatter|\PHPUnit_Framework_MockObject_MockObject $numberFormatter */
         $numberFormatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\NumberFormatter')
             ->disableOriginalConstructor()
             ->setMethods(array('isCurrencySymbolPrepend', 'getAttribute'))
             ->getMock();
 
+        /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
         $doctrineHelper = $this->createMock(DoctrineHelper::class);
+
+        /** @var Router|\PHPUnit_Framework_MockObject_MockObject $router */
+        $router = $this->createMock(Router::class);
 
         return [
             new EntitySelectOrCreateInlineFormExtension(
@@ -226,7 +243,7 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
                     SupplierSelectType::class => new SupplierSelectType(),
                     OroDateType::class => new OroDateType(),
                     MultipleEntityType::class => new MultipleEntityType($doctrineHelper, $authorizationChecker),
-                    new EntityIdentifierType([]),
+                    EntityIdentifierType::class => new EntityIdentifierStubType([]),
                     PurchaseOrderItemCollectionType::class => new PurchaseOrderItemCollectionType(),
                     CollectionType::class => new CollectionType(),
                     PurchaseOrderItemType::class => new PurchaseOrderItemType(),
@@ -235,12 +252,12 @@ class PurchaseOrderCreateStepTwoTypeTest extends FormIntegrationTestCase
                     OroMoneyType::class => new OroMoneyType($localeSettings, $numberFormatter),
                     PurchaseOrderCreateStepTwoType::class =>
                         new PurchaseOrderCreateStepTwoType(
-                            $this->createMock(Router::class),
+                            $router,
                             new CurrencyNameHelperStub()
                         )
                 ],
                 [
-                    PurchaseOrderCreateStepTwoType::NAME => [new PurchaseOrderWarehouseFormExtension()]
+                    PurchaseOrderCreateStepTwoType::class => [new PurchaseOrderWarehouseFormExtension()]
                 ]
             ),
             new ValidatorExtension(Validation::createValidator()),

@@ -6,7 +6,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WarehouseMultiSelectType extends AbstractWarehouseMultiSelectType
 {
-    const NAME = 'marello_warehouse_multi_select';
+    const BLOCK_PREFIX = 'marello_warehouse_multi_select';
 
     /**
      * {@inheritdoc}
@@ -30,16 +30,8 @@ class WarehouseMultiSelectType extends AbstractWarehouseMultiSelectType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

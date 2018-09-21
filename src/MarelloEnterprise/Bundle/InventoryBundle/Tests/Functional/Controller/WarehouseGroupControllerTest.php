@@ -148,7 +148,7 @@ class WarehouseGroupControllerTest extends WebTestCase
     protected function assertWarehouseGroupSave(Crawler $crawler, $name, $description, array $warehouses)
     {
         $token = $this->getContainer()->get('security.csrf.token_manager')
-            ->getToken(WarehouseGroupType::NAME)->getValue();
+            ->getToken(WarehouseGroupType::BLOCK_PREFIX)->getValue();
 
         $warehouseIds = array_map(
             function (Warehouse $warehouse) {
@@ -166,7 +166,7 @@ class WarehouseGroupControllerTest extends WebTestCase
 
         $formData = [
             'input_action' => '{"route":"marelloenterprise_inventory_warehousegroup_view","params":{"id":"$id"}}',
-            WarehouseGroupType::NAME => [
+            WarehouseGroupType::BLOCK_PREFIX => [
                 'name' => $name,
                 'description' => $description,
                 'warehouses' => implode(',', $warehouseIds),

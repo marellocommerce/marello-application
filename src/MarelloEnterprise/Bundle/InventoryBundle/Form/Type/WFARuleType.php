@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WFARuleType extends AbstractType
 {
-    const NAME = 'marello_inventory_wfarule_type';
+    const BLOCK_PREFIX = 'marello_inventory_wfarule_type';
 
     /**
      * @var WFAStrategyChoicesProvider
@@ -68,7 +68,7 @@ class WFARuleType extends AbstractType
         $choices = [];
         foreach ($this->choicesProvider->getChoices() as $identifier => $label) {
             if (!in_array($identifier, $usedStrategies)) {
-                $choices[$identifier] = $label;
+                $choices[$label] = $identifier;
             }
         }
         $form = $event->getForm();
@@ -100,6 +100,6 @@ class WFARuleType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

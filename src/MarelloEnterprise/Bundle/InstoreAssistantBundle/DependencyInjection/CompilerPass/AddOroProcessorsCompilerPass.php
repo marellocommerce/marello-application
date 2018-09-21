@@ -2,20 +2,20 @@
 
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\DependencyInjection\CompilerPass;
 
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-
 use Oro\Bundle\ApiBundle\Util\DependencyInjectionUtil;
-use Oro\Component\ChainProcessor\ProcessorBagConfigBuilder;
-use Oro\Bundle\ApiBundle\DependencyInjection\OroApiExtension;
 use Oro\Component\ChainProcessor\DependencyInjection\ProcessorsLoader;
-use Oro\Bundle\ApiBundle\DependencyInjection\Compiler\ConfigurationCompilerPass;
+use Oro\Component\ChainProcessor\ProcessorBagConfigBuilder;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 class AddOroProcessorsCompilerPass implements CompilerPassInterface
 {
     const ORO_PROCESSOR_TAG = 'oro.api.processor';
     const AUTH_ACTION_NAME = 'authenticate';
+
+    const ACTION_PROCESSOR_BAG_SERVICE_ID = 'oro_api.action_processor_bag';
+    const PROCESSOR_BAG_CONFIG_PROVIDER_SERVICE_ID = 'oro_api.processor_bag_config_provider';
 
     protected $processors = [
         'marelloenterprise_instoreassistant.api.processor.authenticate.processor',
@@ -41,6 +41,7 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
 
     protected $ignoreProcessorIds = [
         'oro_api.create.json_api.extract_entity_id',
+        'oro_api.create.json_api.validate_request_data',
         'oro_api.create.rest.normalize_entity_id',
         'oro_api.restore_default_form_extension',
         'oro_api.create.create_entity',
@@ -51,6 +52,9 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
         'oro_api.create.set_entity_id',
         'oro_api.create.load_normalized_entity',
         'oro_api.load_normalized_included_entities',
+        'oro_api.initialize_entity_mapper',
+        'oro_api.convert_entity_to_model',
+        'oro_api.remove_entity_mapper'
     ];
 
     /**
@@ -60,7 +64,7 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
     {
         $actionProcessorBagServiceDef = DependencyInjectionUtil::findDefinition(
             $container,
-            OroApiExtension::ACTION_PROCESSOR_BAG_SERVICE_ID
+            self::ACTION_PROCESSOR_BAG_SERVICE_ID
         );
 
         if (null !== $actionProcessorBagServiceDef) {
@@ -124,7 +128,7 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
         $config = DependencyInjectionUtil::getConfig($container);
         $processorBagConfigProviderServiceDef = DependencyInjectionUtil::findDefinition(
             $container,
-            ConfigurationCompilerPass::PROCESSOR_BAG_CONFIG_PROVIDER_SERVICE_ID
+            self::PROCESSOR_BAG_CONFIG_PROVIDER_SERVICE_ID
         );
 
         if (null !== $processorBagConfigProviderServiceDef) {

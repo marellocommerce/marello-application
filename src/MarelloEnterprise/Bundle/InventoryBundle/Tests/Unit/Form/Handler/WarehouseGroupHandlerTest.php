@@ -9,6 +9,7 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class WarehouseGroupHandlerTest extends \PHPUnit_Framework_TestCase
@@ -94,7 +95,8 @@ class WarehouseGroupHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects(static::once())
             ->method('getMethod')
             ->willReturn('POST');
-
+        $request->request = new ParameterBag([]);
+        $request->files = new ParameterBag([]);
         $this->form
             ->expects(static::once())
             ->method('setData')
@@ -102,7 +104,7 @@ class WarehouseGroupHandlerTest extends \PHPUnit_Framework_TestCase
         $this->form
             ->expects(static::once())
             ->method('submit')
-            ->with($request);
+            ->with([]);
         $this->form
             ->expects(static::once())
             ->method('isValid')

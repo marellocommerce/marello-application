@@ -2,10 +2,9 @@
 
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor;
 
-use Oro\Component\ChainProcessor\ContextInterface as ComponentContextInterface;
-use Oro\Bundle\ApiBundle\Processor\RequestActionProcessor;
-
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options\OptionsContext;
+use Oro\Bundle\ApiBundle\Processor\NormalizeResultContext;
+use Oro\Bundle\ApiBundle\Processor\RequestActionProcessor;
 
 class CorsOptionsProcessor extends RequestActionProcessor
 {
@@ -20,7 +19,7 @@ class CorsOptionsProcessor extends RequestActionProcessor
     /**
      * {@inheritdoc}
      */
-    protected function getLogContext(ComponentContextInterface $context)
+    protected function getLogContext(NormalizeResultContext $context): array
     {
         // remove id from result
         $result = parent::getLogContext($context);

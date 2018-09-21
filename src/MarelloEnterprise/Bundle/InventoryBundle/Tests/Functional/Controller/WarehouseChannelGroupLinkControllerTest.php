@@ -115,7 +115,7 @@ class WarehouseChannelGroupLinkControllerTest extends WebTestCase
         array $addChannelGroups
     ) {
         $token = $this->getContainer()->get('security.csrf.token_manager')
-            ->getToken(WarehouseChannelGroupLinkType::NAME)->getValue();
+            ->getToken(WarehouseChannelGroupLinkType::BLOCK_PREFIX)->getValue();
 
         $addChannelGroupIds = array_map(
             function (SalesChannelGroup $channelGroup) {
@@ -133,7 +133,7 @@ class WarehouseChannelGroupLinkControllerTest extends WebTestCase
         $formData = [
             'input_action' =>
                 '{"route":"marelloenterprise_inventory_warehousechannelgrouplink_index"}',
-            WarehouseChannelGroupLinkType::NAME => [
+            WarehouseChannelGroupLinkType::BLOCK_PREFIX => [
                 'warehouseGroup' => $warehouseGroup,
                 'addSalesChannelGroups' => implode(',', $addChannelGroupIds),
                 'removeSalesChannelGroups' => implode(',', $removeChannelGroupIds),

@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class WarehouseChannelGroupLinkType extends AbstractType
 {
-    const NAME = 'marello_warehouse_channel_group_link';
+    const BLOCK_PREFIX = 'marello_warehouse_channel_group_link';
 
     /**
      * {@inheritdoc}
@@ -75,16 +75,8 @@ class WarehouseChannelGroupLinkType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

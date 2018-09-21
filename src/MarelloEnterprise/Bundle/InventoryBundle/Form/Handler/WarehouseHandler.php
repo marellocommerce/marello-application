@@ -8,11 +8,14 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class WarehouseHandler implements FormHandlerInterface
 {
+    use RequestHandlerTrait;
+
     /**
      * @var EntityManagerInterface
      */
@@ -42,7 +45,7 @@ class WarehouseHandler implements FormHandlerInterface
         $form->setData($data);
 
         if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-            $form->submit($request);
+            $this->submitPostPutRequest($form, $request);
             $createOwnGroup = false;
             if ($form->has('createOwnGroup')) {
                 $createOwnGroup = $form->get('createOwnGroup')->getData();

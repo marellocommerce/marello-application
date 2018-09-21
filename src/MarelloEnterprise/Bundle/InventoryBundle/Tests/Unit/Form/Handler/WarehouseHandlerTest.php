@@ -13,6 +13,7 @@ use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseHandler;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Component\Testing\Unit\EntityTrait;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
 class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
@@ -60,6 +61,8 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects(static::once())
             ->method('getMethod')
             ->willReturn('POST');
+        $this->request->request = new ParameterBag([]);
+        $this->request->files = new ParameterBag([]);
         $organization = $this->createMock(OrganizationInterface::class);
         $this->entity
             ->expects(static::any())
@@ -73,7 +76,7 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
         $this->form
             ->expects(static::once())
             ->method('submit')
-            ->with($this->request);
+            ->with([]);
         $this->form
             ->expects(static::once())
             ->method('isValid')

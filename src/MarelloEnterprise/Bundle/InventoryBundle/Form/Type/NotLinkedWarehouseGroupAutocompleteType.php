@@ -8,23 +8,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NotLinkedWarehouseGroupAutocompleteType extends AbstractType
 {
-    const NAME = 'marello_not_linked_warehousegroup_autocomplete';
+    const BLOCK_PREFIX = 'marello_not_linked_warehousegroup_autocomplete';
     const AUTOCOMPLETE_ALIAS = 'not_linked_warehouse_groups';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
-    }
 
     /**
      * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**
@@ -32,7 +24,7 @@ class NotLinkedWarehouseGroupAutocompleteType extends AbstractType
      */
     public function getParent()
     {
-        return OroEntitySelectOrCreateInlineType::NAME;
+        return OroEntitySelectOrCreateInlineType::class;
     }
 
     /**

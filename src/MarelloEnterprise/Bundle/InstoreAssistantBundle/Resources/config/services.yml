@@ -20,3 +20,11 @@ services:
 
     marelloenterprise_instoreassistant.api.cors_request_headers:
         class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options\CorsRequestHeaders
+
+    marelloenterprise_instoreassistant.api.handler.request_action_handler:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Handler\InstoreAssistantRequestActionHandler
+        arguments:
+            - ['rest']
+            - '@oro_api.action_processor_bag'
+            - '@oro_api.rest.filter_value_accessor_factory'
+            - '@fos_rest.view_handler'
