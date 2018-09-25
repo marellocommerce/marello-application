@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bridge\MarelloOroCommerce\MarelloOroCommerceBridgeBundle, priority: 60 }

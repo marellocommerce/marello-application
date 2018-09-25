@@ -1,0 +1,371 @@
+connector:
+    name: oro_importexport
+    jobs:
+        orocommerce_order_import:
+            title: "Sync orders from OroCommerce"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.integration.connector.order
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_order_export:
+            title: "Sync orders to OroCommerce"
+            type: export
+            steps:
+                export:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_integration.reader.entity.by_id
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.order
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_product_import:
+            title: "Sync products from OroCommerce"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.integration.connector.product
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_product_export:
+            title: "Sync products to OroCommerce"
+            type:  export
+            steps:
+                create:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.product.create
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.product.create
+                    parameters:
+                        batch_size: 100
+                update:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.product.update
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.product.update
+                    parameters:
+                        batch_size: 100
+                delete:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.product.delete
+                        processor: marello_orocommerce.importexport.processor.export.product.delete
+                        writer:    marello_orocommerce.importexport.writer.export.product.delete
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_productprice_import:
+            title: "Sync product prices from OroCommerce"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.integration.connector.product_price
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_productprice_export:
+            title: "Sync product prices to OroCommerce"
+            type:  export
+            steps:
+                create:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.product_price.create
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.product_price.create
+                    parameters:
+                        batch_size: 100
+                update:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.product_price.update
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.product_price.update
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_productimage_import:
+            title: "Sync product imagess from OroCommerce"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.integration.connector.product_image
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_productimage_export:
+            title: "Sync product images to OroCommerce"
+            type:  export
+            steps:
+                create:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.product_image.create
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.product_image.create
+                    parameters:
+                        batch_size: 100
+                update:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.product_image.update
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.product_image.update
+                    parameters:
+                        batch_size: 100
+                delete:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.product_image.delete
+                        processor: marello_orocommerce.importexport.processor.export.product_image.delete
+                        writer:    marello_orocommerce.importexport.writer.export.product_image.delete
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_inventorylevel_import:
+            title: "Sync inventory levels from OroCommerce"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.integration.connector.inventory_level
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_inventorylevel_export:
+            title: "Sync inventory levels to OroCommerce"
+            type:  export
+            steps:
+                update:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.inventory_level.update
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.inventory_level.update
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_taxcode_import:
+            title: "Sync tax codes from OroCommerce"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.integration.connector.tax_code
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_taxcode_export:
+            title: "Sync tax codes to OroCommerce"
+            type:  export
+            steps:
+                create:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_code.create
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.tax_code.create
+                    parameters:
+                        batch_size: 100
+                update:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_code.update
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.tax_code.update
+                    parameters:
+                        batch_size: 100
+                delete:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_code.delete
+                        processor: marello_orocommerce.importexport.processor.export.tax_code.delete
+                        writer:    marello_orocommerce.importexport.writer.export.tax_code.delete
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_taxjurisdiction_import:
+            title: "Sync tax jurisdictions from OroCommerce"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.integration.connector.tax_jurisdiction
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_taxjurisdiction_export:
+            title: "Sync tax jurisdictions to OroCommerce"
+            type:  export
+            steps:
+                create:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_jurisdiction.create
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.tax_jurisdiction.create
+                    parameters:
+                        batch_size: 100
+                update:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_jurisdiction.update
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.tax_jurisdiction.update
+                    parameters:
+                        batch_size: 100
+                delete:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_jurisdiction.delete
+                        processor: marello_orocommerce.importexport.processor.export.tax_jurisdiction.delete
+                        writer:    marello_orocommerce.importexport.writer.export.tax_jurisdiction.delete
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_taxrate_import:
+            title: "Sync tax rates from OroCommerce"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.integration.connector.tax_rate
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_taxrate_export:
+            title: "Sync tax rates to OroCommerce"
+            type:  export
+            steps:
+                create:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_rate.create
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.tax_rate.create
+                    parameters:
+                        batch_size: 100
+                update:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_rate.update
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.tax_rate.update
+                    parameters:
+                        batch_size: 100
+                delete:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_rate.delete
+                        processor: marello_orocommerce.importexport.processor.export.tax_rate.delete
+                        writer:    marello_orocommerce.importexport.writer.export.tax_rate.delete
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_taxrule_import:
+            title: "Sync tax rules from OroCommerce"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.integration.connector.tax_rule
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 100
+
+        orocommerce_taxrule_export:
+            title: "Sync tax rates to OroCommerce"
+            type:  export
+            steps:
+                create:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_rule.create
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.tax_rule.create
+                    parameters:
+                        batch_size: 100
+                update:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_rule.update
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    marello_orocommerce.importexport.writer.export.tax_rule.update
+                    parameters:
+                        batch_size: 100
+                delete:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    marello_orocommerce.importexport.reader.export.tax_rule.delete
+                        processor: marello_orocommerce.importexport.processor.export.tax_rule.delete
+                        writer:    marello_orocommerce.importexport.writer.export.tax_rule.delete
+                    parameters:
+                        batch_size: 100

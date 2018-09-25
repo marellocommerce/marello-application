@@ -1,0 +1,13 @@
+services:
+    marello_commerce_bridge.event_listener.widget_items_load_data:
+        class: Marello\Bridge\MarelloOroCommerce\EventListener\WidgetConfigurationLoadListener
+        arguments:
+            - '@translator.default'
+        tags:
+            - { name: kernel.event_listener, event: oro_dashboard.widget_configuration_load, method: onConfigurationLoad, priority: -100 }
+
+    marello_commerce_bridge.entity_alias_provider:
+        class: Marello\Bridge\MarelloOroCommerce\Provider\MarelloEntityAliasProvider
+        public: false
+        tags:
+            - { name: oro_entity.alias_provider }
