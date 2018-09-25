@@ -1,3 +1,13 @@
+oro:
+    auth:
+        description:
+            logo: Marello
+            main: Marello
+            text: |
+                Welcome to Marello!
+                Marello is an easy-to-use, open source ERP for your ecommerce business. learn more at www.marello.com
+        copy: © 2018 Marello, Inc. All Rights Reserved
+
 marello:
     core:
         yes.label: Yes

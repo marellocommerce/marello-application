@@ -19,12 +19,13 @@ oro_theme:
     themes:
         oro:
             icon: bundles/marellolayout/images/marello.ico
+            logo: bundles/marellocore/img/marello-logo.png
 
 oro_sidebar:
     sidebar_widgets:
         sticky_note:
-#            icon: "bundles/marellolayout/images/marello.ico"
-            iconClass: "marello-icon"
+            icon: "bundles/marellolayout/images/marello.ico"
+            iconClass: ~
             settings:
                 content: |
                     Welcome to Marello!
