@@ -1,0 +1,61 @@
+api:
+    entities:
+        Extend\Entity\EV_Order_Internal_Status:
+            actions:
+                get: true
+                get_list: true
+                create: false
+                delete: false
+                delete_list: false
+                update: false
+        Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily:
+            filters:
+                fields:
+                    entityClass:
+                        data_type: string
+        Oro\Bundle\OrderBundle\Entity\Order:
+            filters:
+                fields:
+                    currency:
+                        data_type: string
+                    updatedAt:
+                        data_type: datetime
+        Oro\Bundle\PaymentBundle\Entity\PaymentStatus:
+            actions:
+                delete: false
+                delete_list: false
+            filters:
+                fields:
+                    entityIdentifier:
+                        data_type: string
+                        allow_array: true
+                    entityClass:
+                        data_type: string
+        Oro\Bundle\TaxBundle\Entity\CustomerTaxCode:
+            actions:
+                create: false
+                delete: false
+                delete_list: false
+                update: false
+        Oro\Bundle\TaxBundle\Entity\ProductTaxCode:
+            actions:
+                create: true
+                delete: true
+                update: true
+        Oro\Bundle\TaxBundle\Entity\TaxJurisdiction: ~
+        Oro\Bundle\TaxBundle\Entity\ZipCode: ~
+        Oro\Bundle\TaxBundle\Entity\Tax: ~
+        Oro\Bundle\TaxBundle\Entity\TaxRule: ~
+        Oro\Bundle\TaxBundle\Entity\TaxValue:
+            actions:
+                create: false
+                delete: false
+                delete_list: false
+                update: false
+            filters:
+                fields:
+                    entityId:
+                        data_type: string
+                        allow_array: true
+                    updatedAt:
+                        data_type: datetime

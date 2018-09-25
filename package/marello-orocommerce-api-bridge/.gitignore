@@ -1,0 +1,10 @@
+/.settings
+/.buildpath
+/.project
+/.idea
+/composer.phar
+composer.lock
+/vendor
+/components
+phpunit.xml
+*~
