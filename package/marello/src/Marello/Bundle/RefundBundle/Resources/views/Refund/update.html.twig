@@ -1,0 +1,114 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% if form.vars.value.id %}
+    {% set formAction = path('marello_refund_update', { 'id': form.vars.value.id }) %}
+{% else %}
+    {% set formAction = path('marello_refund_create', { 'id': form.vars.value.order.id }) %}
+{% endif %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_refund_index')) }}
+    {% set html = UI.saveAndCloseButton() %}
+    {% if resource_granted('marello_refund_update') %}
+        {% set html = html ~ UI.saveAndStayButton() %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({ 'html': html }) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+            'entity':      form.vars.value,
+            'indexPath':   path('marello_refund_index'),
+            'indexLabel': 'marello.refund.entity_plural_label'|trans,
+            'entityTitle': form.vars.value.refundNumber
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.refund.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% set additionalItems %}
+    <div class="refund-line-items"
+         data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ {
+             view: 'marellolayout/js/app/views/abstract-items-view',
+             prices: prices|default({})
+         }|json_encode }}"
+         data-layout="separate">
+        {{ form_widget(form.additionalItems) }}
+        {{ form_errors(form.additionalItems) }}
+    </div>
+{% endset %}
+
+
+{% set totals %}
+    <div class="responsive-block">
+        {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
+        {{ UI.renderProperty('marello.refund.refund_amount.label'|trans, entity.refundAmount|oro_format_currency({'currency':entity.order.currency})) }}
+        {{ UI.renderProperty('marello.refund.refund_balance.label'|trans, (entity.order.grandTotal - entity.refundAmount)|oro_format_currency({'currency':entity.order.currency})) }}
+    </div>
+{% endset %}
+{% set data %}
+    <div class="widget-content">
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ UI.renderProperty('marello.refund.refund_number.label'|trans, entity.refundNumber) }}
+                {{ UI.renderProperty('marello.refund.refund_status.label'|trans, entity.workflowStep) }}
+                {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
+                {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date) }}
+                {{ UI.renderProperty('marello.order.payment_method.label'|trans, entity.order.paymentMethod) }}
+                {{ UI.renderProperty('marello.order.payment_reference.label'|trans, entity.order.paymentReference) }}
+            </div>
+            {{ totals }}
+        </div>
+    </div>
+{% endset %}
+
+{% block content_data %}
+    {% set id = 'marello-refund-update' %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    data
+                ]
+            }]
+        },
+        {
+            'title': 'marello.refund.ordered_items.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_widget(form.items),
+                ]
+            }]
+        },
+        {
+            'title': 'marello.refund.additional_items.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    additionalItems,
+                ]
+            }]
+        }
+    ] %}
+
+    {% set data = {
+        'formErrors': form_errors(form) ? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+
+    {{ parent() }}
+{% endblock content_data %}

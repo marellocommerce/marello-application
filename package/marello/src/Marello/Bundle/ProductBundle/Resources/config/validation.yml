@@ -1,0 +1,38 @@
+Marello\Bundle\ProductBundle\Entity\Product:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: sku
+            message: 'marello.product.messages.error.sku'
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        sku:
+            - NotBlank: ~
+        prices:
+            - NotBlank: ~
+
+Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation:
+    constraints:
+        - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
+            fields: [salesChannel, taxCode]
+            errorPath: channel
+            message: 'marello.productchanneltaxrelation.messages.error.unique_product_channel_tax_relation'
+    properties:
+        salesChannel:
+            - NotBlank: ~
+        taxCode:
+            - NotBlank: ~
+
+Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation:
+    constraints:
+        - Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection:
+            fields: [supplier, quantityOfUnit]
+            errorPath: channel
+            message: 'marello.product.productsupplierrelation.messages.error.unique_product_supplier_relation'
+    properties:
+        supplier:
+            - NotBlank: ~
+        quantityOfUnit:
+            - NotBlank: ~

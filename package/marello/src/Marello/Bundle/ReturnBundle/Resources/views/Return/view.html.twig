@@ -1,0 +1,125 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroAddressBundle::macros.html.twig' as address %}
+
+{% oro_title_set({params : {"%id%": entity.returnNumber }}) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity':      entity,
+    'indexPath':   path('marello_return_return_index'),
+    'indexLabel': 'marello.return.returnentity.entity_plural_label'|trans,
+    'entityTitle': entity.returnNumber
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if resource_granted('EDIT', entity) and marello_return_is_on_hold(entity) %}
+        {{ UI.buttonSeparator() }}
+        {{ UI.editButton({
+            'path': path('marello_return_return_update', {'id': entity.id}),
+            'entity_label': 'marello.return.returnentity.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block content_data %}
+    {% set id = 'marello-return-view' %}
+    {% set order %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {% set orderViewGranted = resource_granted('marello_order_view') %}
+                    {%- if orderViewGranted -%}
+                        {%- set orderNumberData -%}
+                            <a href="{{ path('marello_order_order_view', {'id': entity.order.id}) }}">
+                                {{ entity.order.orderNumber }}
+                            </a>
+                        {%- endset -%}
+                        {{ UI.renderHtmlProperty('marello.order.order_number.label'|trans,orderNumberData)}}
+                    {%- else -%}
+                        {{ UI.renderProperty('marello.order.order_number.label'|trans, entity.order.orderNumber) }}
+                    {%- endif -%}
+                    {{ UI.renderProperty('marello.order.currency.label'|trans, entity.order.currency) }}
+                    {% set channelViewGranted = resource_granted('marello_saleschannel_update') %}
+                    {%- if channelViewGranted -%}
+                        {%- set channelData -%}
+                            <a href="{{ path('marello_sales_saleschannel_update', {'id': entity.order.salesChannel.id}) }}">
+                                {{ entity.order.salesChannel|default(entity.order.salesChannelName) }}
+                            </a>
+                        {%- endset -%}
+                        {{ UI.renderHtmlProperty('marello.order.sales_channel.label'|trans,channelData)}}
+                    {%- else -%}
+                        {{ UI.renderProperty('marello.order.sales_channel.label'|trans, entity.order.salesChannel|default(entity.order.salesChannelName)) }}
+                    {%- endif -%}
+                    {{ UI.renderProperty('marello.order.order_reference.label'|trans, entity.order.orderReference) }}
+                    {{ UI.renderProperty('marello.order.create_date.label'|trans, entity.order.createdAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('marello.order.purchase_date.label'|trans, entity.order.purchaseDate|oro_format_datetime) }}
+                </div>
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.subtotal.label'|trans, entity.order.subtotal|oro_format_currency({'currency':entity.order.currency})) }}
+                    {{ UI.renderProperty('marello.order.total_tax.label'|trans, entity.order.totalTax|oro_format_currency({'currency':entity.order.currency})) }}
+                    {{ UI.renderProperty('marello.order.discount_amount.label'|trans, entity.order.discountAmount|oro_format_currency({'currency':entity.order.currency})) }}
+                    {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set return %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.return.returnentity.return_number.label'|trans, entity.returnNumber) }}
+                    {{ UI.renderProperty('marello.return.returnentity.return_reference.label'|trans, entity.returnReference) }}
+                    {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|oro_format_datetime) }}
+
+                    {% set steps = marello_core_get_current_workflow_steps(entity) %}
+                    {% for stepLabel, stepName in steps %}
+                        {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set items %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-return-items', {'returnId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.return.returnentity.entity_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [return] }
+            ]
+        },
+        {
+            'title': 'marello.order.entity_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [order] }
+            ]
+        },
+        {
+            'title': 'marello.return.returnitem.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [items] }
+            ]
+        }
+    ] %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

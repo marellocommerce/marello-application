@@ -1,0 +1,226 @@
+parameters:
+    marello_inventory.entity.warehouse.class: Marello\Bundle\InventoryBundle\Entity\Warehouse
+    marello_inventory.entity.warehousegroup.class: Marello\Bundle\InventoryBundle\Entity\WarehouseGroup
+    marello_inventory.entity.warehousechannelgrouplink.class: Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink
+
+services:
+    marello_product.widget_provider.actions.variant_mass_inventory:
+        parent: oro_ui.widget_provider.action_button.abstract
+        arguments:
+            - marello_variant_mass_inventory_button
+            - marello_variant_mass_inventory_link
+        tags:
+            - { name: oro_ui.view_action_provider, group: product }
+
+    marello_inventory.logging.chart_builder:
+        class: Marello\Bundle\InventoryBundle\Logging\ChartBuilder
+        arguments:
+            - '@doctrine'
+            - '@oro_dashboard.datetime.helper'
+            - '@translator'
+
+    marello_inventory.listener.doctrine.stock_level_hydration:
+        class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectHydrationSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    marello_inventory.listener.doctrine.stock_level_author_fill:
+        class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelAuthorFillSubscriber
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    marello_inventory.listener.doctrine.stock_level_subject_delayed_assign:
+        class: Marello\Bundle\InventoryBundle\EventListener\Doctrine\StockLevelSubjectAssignSubscriber
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    marello_inventory.event_listener.inventory_update_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryUpdateEventListener'
+        arguments:
+            - '@marello_inventory.manager.inventory_manager'
+            - '@marello_inventory.manager.virtualinventory_manager'
+        tags:
+            - { name: kernel.event_listener, event: marello_inventory.inventory.update, method: handleUpdateInventoryEvent }
+
+    marello_inventory.event_listener.virtualinventory_update_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\VirtualInventoryLevelUpdateAfterEventListener'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+            - '@marello_inventory.model.balancer.inventorybalancer_trigger_calculator'
+            - '@marello_inventory.repository.virtualinventory'
+        tags:
+            - { name: kernel.event_listener, event: marello_inventory.virtualinventory.update_after, method: handleInventoryUpdateAfterEvent }
+
+    marello_inventory.event_listener.inventorylevel_update_after_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryLevelUpdateAfterEventListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: marello_inventory.inventory.update_after, method: handleInventoryLevelUpdateAfterEvent }
+
+    marello_inventory.event_listener.inventoryitem_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryItemEventListener'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    marello_inventory.event_listener.on_product_create_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\OnProductCreateEventListener'
+        arguments:
+            - '@marello_inventory.manager.inventory_item_manager'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    marello_inventory.event_listener.on_product_delete_event_listener:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\OnProductDeleteEventListener'
+        arguments:
+            - '@marello_inventory.manager.inventory_item_manager'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
+    marello_inventory.manager.inventory_manager:
+        class: 'Marello\Bundle\InventoryBundle\Manager\InventoryManager'
+        calls:
+            - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
+            - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
+            - [setEventDispatcher, ['@event_dispatcher']]
+        lazy: true
+
+    marello_inventory.validator.inventory_update_context:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator'
+
+    marello_inventory.manager.inventory_item_manager:
+        class: 'Marello\Bundle\InventoryBundle\Manager\InventoryItemManager'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        lazy: true
+
+    marello_inventory.model.inventory_level_calculator:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator'
+
+    marello_inventory.model.inventory_level_totals_calculator:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator'
+
+    marello_inventory.twig.inventory_total_extension:
+        class: 'Marello\Bundle\InventoryBundle\Twig\InventoryTotalExtension'
+        arguments:
+            - '@marello_inventory.model.inventory_level_totals_calculator'
+        tags:
+            - { name: twig.extension }
+
+    marello_inventory.provider.order_warehouse:
+        class: 'Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
+    marello_inventory.repository.warehouse:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\Warehouse'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_inventory.repository.warehousegroup:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\WarehouseGroup'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_inventory.repository.warehousechannelgrouplink:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_inventory.balancer_strategy.registry:
+        class: 'Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry'
+
+    marello_inventory.balancer_strategy.equal_division_strategy:
+        class: 'Marello\Bundle\InventoryBundle\Strategy\EqualDivision\EqualDivisionBalancerStrategy'
+        tags:
+            - { name: marello_inventory_balancer_strategy }
+
+    marello_inventory.model.balancer.inventory_balancer:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancer'
+        arguments:
+            - '@marello_inventory.balancer_strategy.registry'
+            - '@marello_inventory.manager.inventory_item_manager'
+            - '@marello_inventory.model.virtualinventory.virtual_inventory_handler'
+            - '@oro_config.manager'
+
+    marello_inventory.model.balancer.inventorybalancer_trigger_calculator:
+        class: 'Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator'
+        arguments:
+            - '@oro_config.manager'
+
+    marello_inventory.provider.balancer.balancing_strategy_choices_provider:
+        class: 'Marello\Bundle\InventoryBundle\Provider\BalancingStrategyChoicesProvider'
+        arguments:
+            - '@marello_inventory.balancer_strategy.registry'
+            - '@translator'
+
+    marello_inventory.provider.available_inventory_provider:
+        class: 'Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
+    marello_inventory.provider.available_inventory_form_provider:
+        class: 'Marello\Bundle\InventoryBundle\Provider\AvailableInventoryFormProvider'
+        arguments:
+            - '@marello_inventory.provider.available_inventory_provider'
+        tags:
+            - { name: marello_order.order_item_data_provider, type: inventory, priority: 15 }
+
+    marello_inventory.model.virtualinventory.virtual_inventory_handler:
+        class: 'Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler'
+        arguments:
+            - '@doctrine'
+            - '@marello_inventory.model.virtualinventory.virtual_inventory_factory'
+
+    marello_inventory.model.virtualinventory.virtual_inventory_factory:
+        class: 'Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryFactory'
+
+    marello_inventory.manager.virtualinventory_manager:
+        class: 'Marello\Bundle\InventoryBundle\Manager\VirtualInventoryManager'
+        calls:
+            - [setVirtualInventoryHandler, ['@marello_inventory.model.virtualinventory.virtual_inventory_handler']]
+            - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
+            - [setEventDispatcher, ['@event_dispatcher']]
+        lazy: true
+
+    marello_inventory.async.inventory_rebalance_products_processor:
+        class: 'Marello\Bundle\InventoryBundle\Async\InventoryRebalanceProductsProcessor'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+            - '@logger'
+            - '@marello_product.repository.product'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    marello_inventory.async.inventory_rebalance_product_processor:
+        class: 'Marello\Bundle\InventoryBundle\Async\InventoryRebalanceProductProcessor'
+        arguments:
+            - '@marello_inventory.model.balancer.inventory_balancer'
+            - '@logger'
+            - '@doctrine'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    marello_inventory.repository.virtualinventory:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]

@@ -1,0 +1,140 @@
+datagrids:
+    marello-shipping-methods-configs-rule-grid:
+        acl_resource: marello_shipping_methods_configs_rule_view
+        extended_entity_name: '%marello_shipping.entity.shipping_methods_configs_rule.class%'
+        options:
+            entityHint:        shipping rules
+            entity_pagination: true
+        source:
+            type:         orm
+            query:
+                select:
+                    - shipping_methods_configs_rule
+                    - shipping_methods_configs_rule.id
+                    - rule.name
+                    - rule.enabled
+                    - rule.sortOrder
+                    - shipping_methods_configs_rule.currency
+                    - rule.expression
+                from:
+                    - { table: '%marello_shipping.entity.shipping_methods_configs_rule.class%', alias: shipping_methods_configs_rule }
+                join:
+                    inner:
+                        - { join: shipping_methods_configs_rule.rule, alias: rule }
+                    left:
+                        - { join: shipping_methods_configs_rule.methodConfigs, alias: methodConfig }
+
+        columns:
+            id:
+                label:         marello.shipping.shippingmethodsconfigsrule.id.label
+            name:
+                label:         marello.rule.name.label
+            enabled:
+                label:         marello.rule.enabled.label
+                frontend_type: boolean
+            sortOrder:
+                label:         marello.rule.sort_order.label
+            currency:
+                label:         marello.shipping.shippingmethodsconfigsrule.currency.label
+            expression:
+                label:         marello.rule.expression.label
+            methodConfigs:
+                label:         marello.shipping.shippingmethodsconfigsrule.method_configs.label
+                type:          twig
+                frontend_type: html
+                template:      MarelloShippingBundle:ShippingMethodsConfigsRule:Datagrid/configurations.html.twig
+            destinations:
+                label:         marello.shipping.shippingmethodsconfigsrule.destinations.label
+                type:          twig
+                frontend_type: html
+                template:      MarelloShippingBundle:ShippingMethodsConfigsRule:Datagrid/destinations.html.twig
+        properties:
+            id: ~
+            view_link:
+                type:    url
+                route:   marello_shipping_methods_configs_rule_view
+                params:  [ id ]
+            enable_link:
+                type:       url
+                route:      marello_api_enable_shippingrules
+                params:     [ id ]
+            disable_link:
+                type:       url
+                route:      marello_api_disable_shippingrules
+                params:     [ id ]
+        sorters:
+            columns:
+                id:
+                    data_name: shipping_methods_configs_rule.id
+                name:
+                    data_name: rule.name
+                enabled:
+                    data_name: rule.enabled
+                sortOrder:
+                    data_name: rule.sortOrder
+                currency:
+                    data_name: shipping_methods_configs_rule.currency
+            disable_default_sorting: true
+        filters:
+            columns:
+                id:
+                    type:      number
+                    data_name: shipping_methods_configs_rule.id
+                name:
+                    type:      string
+                    data_name: rule.name
+                enabled:
+                    type:      boolean
+                    data_name: rule.enabled
+                sortOrder:
+                    type:      number
+                    data_name: rule.sortOrder
+                currency:
+                    type:      string
+                    data_name: shipping_methods_configs_rule.currency
+                expression:
+                    type:      string
+                    data_name: rule.expression
+                methodConfigs:
+                    type: choice
+                    data_name: methodConfig.method
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: '@marello_shipping.provider.basic_shipping_methods_choices->getMethods()'
+        actions:
+            view:
+                type:          navigate
+                link:          view_link
+                acl_resource:  marello_shipping_methods_configs_rule_view
+                icon:          eye
+                label:         oro.grid.action.view
+                rowAction:     true
+            enable:
+                type:         ajax
+                acl_resource: marello_shipping_methods_configs_rule_update
+                label:        marello.shipping.datagrid.action.enable
+                icon:         check
+                link:         enable_link
+            disable:
+                type:         ajax
+                acl_resource: marello_shipping_methods_configs_rule_update
+                label:        marello.shipping.datagrid.action.disable
+                icon:         close
+                link:         disable_link
+        action_configuration: ['@marello_shipping.datagrid.shipping_rule_actions_visibility_provider', getActionsVisibility]
+        mass_actions:
+            enable:
+                type:         shippingruleenable
+                acl_resource: marello_shipping_methods_configs_rule_update
+                label:        marello.shipping.datagrid.action.enable
+                icon:         check
+                entity_name:  '%marello_shipping.entity.shipping_methods_configs_rule.class%'
+                data_identifier: shipping_methods_configs_rule.id
+            disable:
+                type:         shippingruledisable
+                acl_resource: marello_shipping_methods_configs_rule_update
+                label:        marello.shipping.datagrid.action.disable
+                icon:         close
+                entity_name:  '%marello_shipping.entity.shipping_methods_configs_rule.class%'
+                data_identifier: shipping_methods_configs_rule.id

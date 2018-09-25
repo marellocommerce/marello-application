@@ -1,0 +1,23 @@
+marello_order:
+    resource: "@MarelloOrderBundle/Controller/OrderController.php"
+    type:     annotation
+    prefix:   /marello/order
+
+marello_order_customer:
+    resource: "@MarelloOrderBundle/Controller/CustomerController.php"
+    type:     annotation
+    prefix:   /marello/order/customer
+
+marello_order_ajax:
+    resource: "@MarelloOrderBundle/Controller/OrderAjaxController.php"
+    type:     annotation
+    prefix:   /marello/order
+
+marello_order_bundle_api:
+    resource: "@MarelloOrderBundle/Resources/config/oro/routing_api.yml"
+    type: rest
+    prefix: api/rest/{version}
+    requirements:
+        version:  latest|v1
+    defaults:
+        version:  latest

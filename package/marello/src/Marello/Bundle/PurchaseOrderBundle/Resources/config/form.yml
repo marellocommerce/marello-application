@@ -1,0 +1,92 @@
+services:
+    # Form Event Listeners / Subscribers
+    marello_purchase_order.form.event_listener.purchase_order_item_subscriber:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\EventListener\PurchaseOrderItemSubscriber
+        arguments:
+            - '@translator'
+
+    # Form Types
+    marello_purchase_order.form.type.purchase_order:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderType
+        tags:
+            - { name: form.type, alias: marello_purchase_order }
+
+    marello_purchase_order.form.type.purchase_order_create_step_two:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType
+        arguments:
+            - "@router"
+            - "@oro_currency.helper.currency_name"
+        tags:
+            - { name: form.type, alias: marello_purchase_order_create_step_two }
+
+    marello_purchase_order.form.type.purchase_order_supplier:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderSupplierType
+        tags:
+            - { name: form.type, alias: marello_purchase_order_supplier }
+
+    marello_purchase_order.form.type.purchase_order_item:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemType
+        tags:
+            - { name: form.type, alias: marello_purchase_order_item }
+
+    marello_purchase_order.form.type.purchase_order_item_collection:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemCollectionType
+        tags:
+            - { name: form.type, alias: marello_purchase_order_item_collection }
+
+    marello_purchase_order.form.type.partial_receive:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PartialReceiveType
+        tags:
+            - { name: form.type, alias: marello_po_partial_receive }
+
+    marello_purchase_order.form.type.po_item_receive:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemReceiveType
+        arguments:
+            - '@marello_purchase_order.form.event_listener.purchase_order_item_subscriber'
+        tags:
+            - { name: form.type, alias: marello_purchase_order_item_receive }
+
+    marello_purchase_order.form.type.po_item_receive_collection:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderItemReceiveCollectionType
+        tags:
+            - { name: form.type, alias: marello_purchase_order_item_receive_collection }
+
+    # Forms
+    marello_purchase_order.form.purchase_order:
+        class: Symfony\Component\Form\FormInterface
+        factory: ["@form.factory", create]
+        scope: request
+        arguments:
+            - "marello_purchase_order"
+
+    marello_purchase_order.form.purchase_order_create_step_two:
+        class: Symfony\Component\Form\FormInterface
+        factory: ["@form.factory", create]
+        scope: request
+        arguments:
+            - "marello_purchase_order_create_step_two"
+
+    marello_purchase_order.form.purchase_order_supplier:
+        class: Symfony\Component\Form\FormInterface
+        factory: ["@form.factory", create]
+        scope: request
+        arguments:
+            - "marello_purchase_order_supplier"
+
+    # Handlers
+    marello_purchase_order.form.handler.purchase_order_create:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateHandler
+        scope: request
+        arguments:
+            - "@marello_purchase_order.form.purchase_order_create_step_two"
+            - "@request"
+            - "@doctrine"
+            - "@security.token_storage"
+
+    marello_purchase_order.form.handler.purchase_order_update:
+        class: Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderUpdateHandler
+        scope: request
+        arguments:
+            - '@marello_purchase_order.form.purchase_order'
+            - '@request'
+            - '@doctrine.orm.entity_manager'

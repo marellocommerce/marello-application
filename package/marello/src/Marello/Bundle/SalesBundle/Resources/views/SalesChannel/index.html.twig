@@ -1,0 +1,13 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridName = 'marello-sales-channel' %}
+{% set pageTitle = 'marello.sales.saleschannel.entity_plural_label'|trans %}
+
+{% block navButtons %}
+    <div class="btn-group">
+        {{ UI.addButton({
+            'path': path('marello_sales_saleschannel_create'),
+            'entity_label': 'marello.sales.saleschannel.entity_label'|trans
+        }) }}
+    </div>
+{% endblock %}

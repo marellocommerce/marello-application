@@ -1,0 +1,5 @@
+assets:
+    css:
+        marelloorder:
+            - 'bundles/marelloorder/less/styles.less'
+            - 'bundles/marelloorder/less/map.less'

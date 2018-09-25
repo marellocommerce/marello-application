@@ -1,0 +1,189 @@
+data:
+    -
+        type: marelloproducts
+        id: p1
+        attributes:
+            productId: 27
+            name: product1
+            manufacturingCode: null
+            productType: null
+            cost: null
+            weight: 0
+            warranty: null
+            data: []
+        relationships:
+            productstatus:
+                data:
+                    type: marelloproductstatuses
+                    id: enabled
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            prices:
+                data:
+                    -
+                        type: marelloassembledpricelists
+                        id: '50'
+            channelPrices:
+                data: []
+            saleschannels:
+                data:
+                    -
+                        type: marellosaleschannels
+                        id: chan_eur
+            taxcode:
+                data:
+                    type: marellotaxcodes
+                    id: TAX_HIGH
+            categories:
+                data: []
+            image:
+                data: null
+    -
+        type: marelloproducts
+        id: p2
+        attributes:
+            productId: 28
+            name: 'product 2'
+            manufacturingCode: null
+            productType: null
+            cost: null
+            weight: 2
+            warranty: null
+            data: []
+        relationships:
+            productstatus:
+                data:
+                    type: marelloproductstatuses
+                    id: disabled
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            prices:
+                data:
+                    -
+                        type: marelloassembledpricelists
+                        id: '51'
+                    -
+                        type: marelloassembledpricelists
+                        id: '52'
+            channelPrices:
+                data: []
+            saleschannels:
+                data:
+                    -
+                        type: marellosaleschannels
+                        id: chan_eur
+                    -
+                        type: marellosaleschannels
+                        id: chan_usd
+            taxcode:
+                data:
+                    type: marellotaxcodes
+                    id: TAX_HIGH
+            categories:
+                data: []
+            image:
+                data: null
+    -
+        type: marelloproducts
+        id: p3
+        attributes:
+            productId: 29
+            name: 'product 3'
+            manufacturingCode: null
+            productType: null
+            cost: null
+            weight: 5
+            warranty: null
+            data: []
+        relationships:
+            productstatus:
+                data:
+                    type: marelloproductstatuses
+                    id: disabled
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            prices:
+                data:
+                    -
+                        type: marelloassembledpricelists
+                        id: '53'
+                    -
+                        type: marelloassembledpricelists
+                        id: '54'
+            channelPrices:
+                data: []
+            saleschannels:
+                data:
+                    -
+                        type: marellosaleschannels
+                        id: chan_eur
+                    -
+                        type: marellosaleschannels
+                        id: chan_gbp
+            taxcode:
+                data:
+                    type: marellotaxcodes
+                    id: TAX_HIGH
+            categories:
+                data: []
+            image:
+                data: null
+    -
+        type: marelloproducts
+        id: p4
+        attributes:
+            productId: 30
+            name: 'product 4'
+            manufacturingCode: null
+            productType: null
+            cost: null
+            weight: 10
+            warranty: null
+            data: []
+        relationships:
+            productstatus:
+                data:
+                    type: marelloproductstatuses
+                    id: enabled
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            prices:
+                data:
+                    -
+                        type: marelloassembledpricelists
+                        id: '55'
+                    -
+                        type: marelloassembledpricelists
+                        id: '56'
+                    -
+                        type: marelloassembledpricelists
+                        id: '57'
+            channelPrices:
+                data: []
+            saleschannels:
+                data:
+                    -
+                        type: marellosaleschannels
+                        id: chan_eur
+                    -
+                        type: marellosaleschannels
+                        id: chan_usd
+                    -
+                        type: marellosaleschannels
+                        id: chan_gbp
+            taxcode:
+                data:
+                    type: marellotaxcodes
+                    id: TAX_HIGH
+            categories:
+                data: []
+            image:
+                data: null

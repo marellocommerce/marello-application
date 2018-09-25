@@ -1,0 +1,65 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% if form.vars.value.id %}
+    {% set formAction = path('marello_order_order_update', { 'id': form.vars.value.id }) %}
+    {% oro_title_set({params : {"%id%": entity.orderNumber }}) %}
+{% else %}
+    {% set formAction = path('marello_order_order_create') %}
+{% endif %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_order_order_index')) }}
+    {% set html = UI.saveAndCloseButton() %}
+    {% set html = html ~ UI.saveAndStayButton() %}
+    {{ UI.dropdownSaveButton({ 'html': html }) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('marello_order_order_index'),
+        'indexLabel': 'marello.order.entity_plural_label'|trans,
+        'entityTitle': form.vars.value.orderNumber
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.order.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-order-update' %}
+
+    {% set billingAddress = form_widget(form.billingAddress) %}
+    {% set shippingAddress = form_widget(form.shippingAddress) %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.order.billing_address.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    billingAddress
+                ]
+            }]
+        },
+        {
+            'title': 'marello.order.shipping_address.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    shippingAddress
+                ]
+            }]
+        }
+    ] %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

@@ -1,0 +1,21 @@
+data:
+    -
+        type: marelloassembledchannelpricelists
+        id: '6'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p1
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '6'
+            specialPrice:
+                data: null

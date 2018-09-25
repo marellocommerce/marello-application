@@ -1,0 +1,82 @@
+marello:
+    pricing:
+        header.label:                   Prices
+
+        assembledpricelist:
+            entity_plural_label:        Assembled Price Lists
+            entity_label:               Assembled Price List
+            currency.label:             Currency
+            id.label:                   Id
+            default_price.label:        Default Price
+            special_price.label:        Special Price
+            msrp_price.label:           MSRP Price
+            product.label:              Product
+
+        assembledchannelpricelist:
+            entity_plural_label:        Assembled Channel Price Lists
+            entity_label:               Assembled Channel Price List
+            currency.label:             Currency
+            id.label:                   Id
+            default_price.label:        Default Price
+            special_price.label:        Special Price
+            product.label:              Product
+            channel.label:              Channel
+
+        productprice:
+            entity_plural_label:        Default Prices
+            entity_label:               Default Price
+            currency.label:             Currency
+            id.label:                   Id
+            created_at.label:           Created At
+            value.label:                Price
+            product.label:              Product
+            type.label:                 Price Type
+            no_channels_enabled_or_configured: >
+                                    No configured channels found for the current product.
+                                    Please make sure Sales Channels exist and linked.
+            no_prices_configured:       No prices configured for current product
+            type.label:                 Price Type
+
+        pricetype:
+            entity_label:               Price Type
+            entity_plural_label:        Price Types
+            name.label:                 Name
+            label.label:                Label
+
+        productchannelprice:
+            entity_plural_label:        Product Channel Prices
+            entity_label:               Product Channel Price
+            currency.label:             Currency
+            id.label:                   Id
+            created_at.label:           Created At
+            value.label:                Price
+            channel.label:              Sales Channel
+            product.label:              Product
+            type.label:                 Price Type
+
+            form:
+                pricing_enabled.label:  Enable Sales Channel Pricing
+                add_channel_price:      Add Channel Price
+
+            messages:
+                product_not_salable:    Product cannot be sold in the chosen Sales Channel
+
+            no_channel_prices_configured: No channel prices configured for current product
+
+        subtotals:
+            total.label:                Grand Total
+
+        vat:
+            included.label:             incl. VAT
+            excluded.label:             excl. VAT
+
+        system_configuration:
+            groups:
+                pricing.title:          Pricing
+                general.title:          General
+                vat.label:              VAT
+            fields:
+                vat:
+                    label:              Price includes VAT
+                    included.label:     Include
+                    excluded.label:     Exclude

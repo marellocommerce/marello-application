@@ -1,0 +1,56 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%id%": entity.id }}) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity':      entity,
+    'indexPath':   path('marello_tax_taxrule_index'),
+    'indexLabel': 'marello.tax.taxrule.entity_plural_label'|trans,
+    'entityTitle': entity.id
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-taxrule-view' %}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        <div class="title">
+                            <span class="widget-title">{{ 'marello.tax.taxrule.datablock.taxrule_information'|trans }}</span>
+                        </div>
+                        {{ UI.renderProperty('marello.tax.taxrule.tax_code.label'|trans, entity.taxCode) }}
+                        {{ UI.renderHtmlProperty('marello.tax.taxrule.tax_rate.label'|trans, entity.taxRate.code ~  '(' ~ entity.taxRate.rate|oro_format_percent ~ ')' ) }}
+                        {{ UI.renderProperty('marello.tax.taxrule.tax_jurisdiction.label'|trans, entity.taxJurisdiction) }}
+                        {% set taxRateViewGranted = resource_granted('marello_tax_taxrule_update') %}
+                        {%- if taxRateViewGranted -%}
+                            {%- set taxRateData -%}
+                                <a href="{{ path('marello_tax_taxrule_update', {'id': entity.id}) }}">
+                                    {{ entity.id|default(entity.id) }}
+                                </a>
+                            {%- endset -%}
+                        {%- endif -%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.tax.taxrule.datablock.general'|trans,
+            'class': 'active',
+            'subblocks': generalSubblocks
+        }
+    ] %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

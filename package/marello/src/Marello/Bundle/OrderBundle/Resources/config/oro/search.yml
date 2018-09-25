@@ -1,0 +1,27 @@
+search:
+    Marello\Bundle\OrderBundle\Entity\Customer:
+        alias:                  marello_customer
+        label:                  marello.order.customer.entity_plural_label
+        title_fields:           [namePrefix, firstName, middleName, lastName, nameSuffix]
+        search_template:        MarelloOrderBundle:Customer:searchResult.html.twig
+        fields:
+            -
+                name: namePrefix
+                target_type: text
+                target_fields: [namePrefix]
+            -
+                name: firstName
+                target_type: text
+                target_fields: [firstName]
+            -
+                name: middleName
+                target_type: text
+                target_fields: [middleName]
+            -
+                name: lastName
+                target_type: text
+                target_fields: [lastName]
+            -
+                name: nameSuffix
+                target_type: text
+                target_fields: [nameSuffix]

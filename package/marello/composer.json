@@ -1,0 +1,39 @@
+{
+    "name": "marellocommerce/marello",
+    "description": "Marello ERP for Commerce",
+    "homepage": "https://github.com/marellocommerce/marello.git",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Madia B.V.",
+            "homepage": "http://www.marello.com"
+        }
+    ],
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.orocrm.com"
+        }
+    },
+    "require": {
+        "php": "7.1.*",
+        "oro/platform": "2.6.*",
+        "oro/platform-serialised-fields": "2.6.*",
+        "oro/calendar-bundle": "2.6.*"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.5.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {"": "src/"},
+        "exclude-from-classmap": ["/Tests/"]
+    }
+}

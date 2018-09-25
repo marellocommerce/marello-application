@@ -1,0 +1,264 @@
+datagrids:
+    marello-purchase-order:
+        source:
+            type: orm
+            query:
+                select:
+                    - po
+                    - sup.name as supplier
+                    - sup.currency as currency
+                from:
+                    - { table: MarelloPurchaseOrderBundle:PurchaseOrder, alias: po }
+                join:
+                    left:
+                        - { join: po.supplier, alias: sup }
+        columns:
+            purchaseOrderNumber:
+                label:              marello.purchaseorder.purchase_order_number.label
+                frontend_type:      string
+            supplier:
+                label:              marello.supplier.entity_label
+                frontend_type:      string
+            createdAt:
+                label:              oro.ui.created_at
+                frontend_type:      datetime
+            updatedAt:
+                label:              oro.ui.updated_at
+                frontend_type:      datetime
+            dueDate:
+                label:              marello.purchaseorder.due_date.label
+                type:               twig
+                template:           MarelloPurchaseOrderBundle:Datagrid:Column/dueDate.html.twig
+                frontend_type:      html
+            orderTotal:
+                label:              marello.purchaseorder.order_total.label
+                type:               twig
+                template:           MarelloPurchaseOrderBundle:Datagrid:Column/orderTotal.html.twig
+                frontend_type:      html
+        sorters:
+            columns:
+                purchaseOrderNumber:
+                    data_name:      po.purchaseOrderNumber
+                supplier:
+                    data_name:      supplier
+                createdAt:
+                    data_name:      po.createdAt
+                updatedAt:
+                    data_name:      po.updatedAt
+                dueDate:
+                    data_name:      po.dueDate
+                orderTotal:
+                    data_name:      po.orderTotal
+            default:
+                purchaseOrderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        filters:
+            columns:
+                purchaseOrderNumber:
+                    type: string
+                    data_name: po.purchaseOrderNumber
+                supplier:
+                    type: string
+                    data_name: supplier
+                createdAt:
+                    type: datetime
+                    data_name: po.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: po.updatedAt
+                dueDate:
+                    type: datetime
+                    data_name: po.dueDate
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: marello_purchaseorder_purchaseorder_view
+                params:
+                    - id
+        actions:
+            view:
+                type:          navigate
+                label:         oro.grid.action.view
+                link:          view_link
+                icon:          eye
+                acl_resource:  marello_purchase_order_view
+                rowAction:     true
+        action_configuration:
+            view: true
+            delete: false
+
+    marello-purchase-order-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - poi
+                    - product.manufacturingCode
+                from:
+                    - { table: MarelloPurchaseOrderBundle:PurchaseOrderItem, alias: poi }
+                join:
+                    left:
+                        - { join: poi.product, alias: product }
+                where:
+                    and:
+                        - IDENTITY(poi.order) = :order_id
+            bind_parameters:
+                order_id: order_id
+        columns:
+            productSku:
+                label: marello.product.sku.label
+                frontend_type: string
+            productName:
+                label: marello.product.name.label
+                frontend_type: string
+            manufacturingCode:
+                label: marello.product.manufacturing_code.label
+                frontend_type: string
+            supplier:
+                label: marello.supplier.entity_label
+                frontend_type: string
+            status:
+                label: marello.purchaseorder.purchaseorderitem.status.label
+                frontend_type: string
+            orderedAmount:
+                label: marello.purchaseorder.purchaseorderitem.ordered_amount.label
+                frontend_type: number
+            receivedAmount:
+                label: marello.purchaseorder.purchaseorderitem.received_amount.label
+                frontend_type: number
+
+    marello-purchase-order-item-candidates:
+        source:
+            type: orm
+            query:
+                select:
+                    - p.id
+                    - p.sku
+                    - p.name
+                    - p.manufacturingCode
+                    - sup.id AS preferredSupplierId
+                    - sup.name AS preferredSupplier
+                    - srel.cost AS purchasePrice
+                    - i.desiredInventory
+                    - i.purchaseInventory
+                    - COALESCE(SUM(l.inventory - l.allocatedInventory), 0) AS virtualInventory
+                    - (i.desiredInventory - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount
+                    - >
+                      (CASE WHEN p.id IN (:data_in) AND p.id NOT IN (:data_not_in)
+                        THEN true ELSE false
+                      END) as hasProduct
+                from:
+                    - { table: MarelloProductBundle:Product, alias: p }
+                join:
+                    left:
+                        - { join: p.inventoryItems, alias: i }
+                        - { join: i.inventoryLevels, alias: l }
+                        - { join: p.status, alias: s }
+                        - { join: p.preferredSupplier, alias: sup }
+                        - { join: p.suppliers, alias: srel }
+                where:
+                    and:
+                        - sup.name <> ''
+                        - sup.id = :supplierId
+                        - s.name = 'enabled'                                          # Only select product with enabled status
+                        - i.replenishment = 'never_out_of_stock'
+                        - srel.supplier = :supplierId
+
+                having: SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory  # Only products with virtual stock lower than required purchase stock level
+                groupBy: p.sku
+
+            bind_parameters:
+                - supplierId
+
+        columns:
+            hasProduct:
+                label:              marello.purchaseorder.has_item.label
+                editable:           true
+                frontend_type:      boolean
+            sku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
+                frontend_type:      string
+            preferredSupplier:
+                label:              marello.product.preferred_supplier.label
+                frontend_type:      string
+                data_name:          preferredSupplier
+            purchaseInventory:
+                label:              marello.purchaseorder.purchaseorderitem.purchase_stock_level.label
+                frontend_type:      number
+            desiredInventory:
+                label:              marello.purchaseorder.purchaseorderitem.desired_stock_level.label
+                frontend_type:      number
+            virtualInventory:
+                label:              marello.purchaseorder.purchaseorderitem.virtual_stock_level.label
+                frontend_type:      number
+                data_name:          virtualInventory
+            orderAmount:
+                label:              marello.purchaseorder.purchaseorderitem.order_amount.label
+                frontend_type:      number
+                data_name:          orderAmount
+        sorters:
+            columns:
+                hasProduct:             { data_name: hasProduct }
+                sku:                    { data_name: p.sku }
+                name:                   { data_name: p.name }
+                manufacturingCode:      { data_name: p.manufacturingCode }
+                preferredSupplier:      { data_name: preferredSupplier }
+                purchaseInventory:      { data_name: i.purchaseInventory }
+                desiredInventory:       { data_name: i.desiredInventory }
+                virtualInventory:       { data_name: virtualInventory }
+                orderAmount:            { data_name: orderAmount }
+            default:
+                hasProduct: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                hasProduct:
+                    data_name:        hasProduct
+                    type:             boolean
+                sku:
+                    type:             string
+                    data_name:        p.sku
+                name:
+                    type:             string
+                    data_name:        p.name
+                manufacturingCode:
+                    type:             string
+                    data_name:        p.manufacturingCode
+                purchaseInventory:
+                    type:             number
+                    data_name:        i.purchaseInventory
+                desiredInventory:
+                    type:             number
+                    data_name:        i.desiredInventory
+                virtualInventory:
+                    type:             number
+                    data_name:        virtualInventory
+                    filter_by_having: true
+                orderAmount:
+                    type:             number
+                    data_name:        orderAmount
+                    filter_by_having: true
+        properties:
+            id: ~
+            purchasePrice: ~
+            view_link:
+                type: url
+                route: marello_product_view
+                params:
+                    - id
+        options:
+            entityHint: p
+            rowSelection:
+                dataField: id
+                columnName: hasProduct
+                selectAll: true
+                selectors:
+                    included: '#appendProducts'
+                    excluded: '#removeProducts'
+            requireJSModules:
+                - marellopurchaseorder/js/datagrid/marello-purchase-order-item-candidates-builder

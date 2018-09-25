@@ -1,0 +1,23 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      product,
+        'indexPath':   path('marello_product_index'),
+        'indexLabel':  'marello.product.entity_plural_label'|trans,
+        'entityTitle': product.name|default('N/A')
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% set pageTitle = 'marello.inventory.inventorylevel.log.label'|trans %}
+{% set gridName  = 'marello-inventory-log-extended' %}
+
+{% block content %}
+    {% set params  = {
+        inventoryItemId: inventoryItem.id
+    } %}
+    {{ parent() }}
+{% endblock %}

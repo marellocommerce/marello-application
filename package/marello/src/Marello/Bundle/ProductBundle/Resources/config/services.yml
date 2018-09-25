@@ -1,0 +1,107 @@
+parameters:
+    marello_product.entity.class: Marello\Bundle\ProductBundle\Entity\Product
+
+services:
+    # Autocomplete search handler
+    marello_product.form.autocomplete.product.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_product.entity.class%'
+            - ["name", "sku"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: products, acl_resource: marello_product_view }
+
+    marello_product.form.autocomplete.sales_channel_product.search_handler:
+        class: 'Marello\Bundle\ProductBundle\Autocomplete\SalesChannelProductHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_product.entity.class%'
+            - ["name", "sku"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: sales_channel_products, acl_resource: marello_product_view }
+
+    marello_product.widget_provider.actions.add_variant:
+        parent: oro_ui.widget_provider.action_button.abstract
+        arguments:
+            - marello_add_variant_button
+            - marello_add_variant_link
+        tags:
+            - { name: oro_ui.view_action_provider, group: product }
+
+    marello_product.twig.product_extension:
+        class: Marello\Bundle\ProductBundle\Twig\ProductExtension
+        arguments:
+            - '@marello_sales.saleschannel.provider.channel_provider'
+        tags:
+            - { name: twig.extension }
+
+    marello_product.listener.datagrid.product_categories_column_listener:
+        class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductCategoriesColumnListener
+        arguments:
+            - '@marello_datagrid.datagridhelper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-categories-extend-grid, method: buildBefore }
+
+    marello_product.listener.datagrid.product_saleschannel_column_listener:
+        class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSalesChannelColumnListener
+        arguments:
+            - '@marello_datagrid.datagridhelper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-saleschannel-extended-grid, method: buildBefore }
+
+    marello_product.listener.datagrid.product_supplier_grid_listener:
+        class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductSupplierGridListener
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-supplier-grid, method: buildBeforeProductsBySupplier }
+
+    marello_product.provider.tax_code_provider:
+        class: Marello\Bundle\ProductBundle\Provider\ProductTaxCodeProvider
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: marello_order.order_item_data_provider, type: tax_code, priority: 20 }
+
+    marello_product.repository.product:
+        class: 'Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\ProductBundle\Entity\Product'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_product.service.duplicator:
+        class: 'Marello\Bundle\ProductBundle\Duplicator\ProductDuplicator'
+        arguments:
+            - "@oro_entity.doctrine_helper"
+            - "@event_dispatcher"
+            - "@oro_attachment.file_manager"
+            - "@oro_attachment.provider.attachment"
+        calls:
+            - [setSkuIncrementor,  ["@marello_product.service.sku_incrementor"]]
+
+    marello_product.service.sku_incrementor:
+        class: 'Marello\Bundle\ProductBundle\Duplicator\SkuIncrementor'
+        public: false
+        arguments:
+            - "@oro_entity.doctrine_helper"
+            - '%marello_product.entity.class%'
+
+    marello_product.virtual_fields.decorator_factory:
+        class: 'Marello\Bundle\ProductBundle\VirtualFields\VirtualFieldsProductDecoratorFactory'
+        public: false
+        arguments:
+            - '@oro_entity.entity_field_provider'
+            - '@marello_product.virtual_fields.select_query_converter'
+            - '@doctrine'
+            - '@oro_entity.helper.field_helper'
+
+    marello_product.virtual_fields.select_query_converter:
+            class: 'Marello\Bundle\ProductBundle\VirtualFields\QueryDesigner\VirtualFieldsSelectQueryConverter'
+            arguments:
+                - '@oro_query_designer.query_designer.manager'
+                - '@oro_entity.virtual_field_provider.chain'
+                - '@doctrine'
+            calls:
+                - [setVirtualRelationProvider, ['@oro_entity.virtual_relation_provider.chain']]

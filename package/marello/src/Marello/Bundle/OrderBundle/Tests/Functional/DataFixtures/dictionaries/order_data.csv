@@ -1,0 +1,11 @@
+title;firstname;lastname;street_address;city;state;zipcode;country;email;telephone_number;company;channel;order_ref;payment_method;payment_details;shipping_method;shipping_amount
+Ms.;Marilyn;Earnest;2511 Lighthouse Drive;Branson;MO;65616;US;MarilynREarnest@gustr.com;417-252-7522;Twin Electronics;channel2;NULL;Credit Card;American Express refnr. 371449635398431;UPS;0
+Mr.;Randy;Gamino;4123 Walnut Hill Drive;Cincinnati;OH;45214;US;RandyMGamino@armyspy.com;513-305-7103;Independent Wealth Management;channel3;300000896;Paypal;NULL;DHL;10
+Ms.;Priscilla;Gray;4170 Spruce Drive;Pittsburgh;PA;15203;US;PriscillaJGray@teleworm.us;724-918-6140;King Carol;channel2;200000072;Credit Card;American Express refnr. 371449635398431;UPS;0
+Mrs.;May;Harman;2673 Isaacs Creek Road;Danville;IL;61832;US;MayMHarman@einrot.com;217-504-6112;Dreamscape Garden Care;channel3;NULL;Paypal;NULL;UPS;0
+Ms.;Catherine;Ramos;661 Laurel Lane;Odessa;TX;79762;US;CatherineERamos@teleworm.us;432-366-5899;Lazysize;channel3;400000004;Credit Card;Visa refnr. 4012888888881881;UPS;5
+Mr.;Richard;Brock;988 Sunburst Drive;Fort Myers;FL;33901;US;RichardGBrock@superrito.com;239-336-0832;Rainbow Bay Crafts;channel3;300000288;Paypal;NULL;DHL;0
+Mr.;Edward;Hall;1293 Deer Ridge Drive;Newark;NJ;7102;US;EdwardLHall@superrito.com;973-549-8659;Megatronic Plus;channel3;NULL;Paypal;NULL;UPS;5
+Mrs.;Kelly;Nguyen;3161 Palmer Road;Columbus;OH;43212;US;KellySNguyen@einrot.com;614-729-8389;PriceRite Warehouse Club;channel2;NULL;Credit Card;Visa refnr. 4012888888881881;DHL;5
+Ms.;Roberta;Orth;1877 Ford Street;San Francisco;CA;94108;US;RobertaMOrth@teleworm.us;408-505-5179;Pleasures and Pasttimes;channel2;200000095;Credit Card;Visa refnr. 4012888888881881;UPS;5
+Mrs.;Christina;Thomas;388 Sycamore Lake Road;Horicon;WI;53032;US;ChristinaJThomas@gustr.com;920-485-9825;DGS VolMAX;channel1;100000334;Credit Card;Master Card refnr. 5105105105105100;UPS;10

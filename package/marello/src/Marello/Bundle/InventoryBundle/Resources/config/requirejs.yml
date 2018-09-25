@@ -1,0 +1,3 @@
+config:
+    paths:
+        'marelloinventory/js/app/components/marelloinventory-chart-component': 'bundles/marelloinventory/js/app/components/marelloinventory-chart-component.js'

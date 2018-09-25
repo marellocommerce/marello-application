@@ -1,0 +1,327 @@
+datagrids:
+    marello_report-orders-revenue_per_sales_channel:
+        pageTitle: marello.report.title.revenue_per_sales_channel
+        source:
+            type: orm
+            acl_resource: oro_report_view
+            query:
+                select:
+                    - channel.name as salesChannelName
+                    - channel.currency
+                    - COUNT(o.orderNumber) as totalOrders
+                    - SUM(o.grandTotal) as totalRevenue
+                from:
+                    - { table: MarelloOrderBundle:Order, alias: o }
+                join:
+                    left:
+                        - { join: o.salesChannel, alias: channel }
+                groupBy: salesChannelName
+        columns:
+            salesChannelName:
+                label: marello.order.sales_channel.label
+                frontend_type: string
+                data_name: salesChannelName
+            totalOrders:
+                label: marello.report.datagrid.columns.total_orders.label
+                frontend_type: string
+            totalRevenue:
+                label: marello.report.datagrid.columns.total_revenue.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
+        sorters:
+            columns:
+                salesChannelName:       { data_name: salesChannelName }
+                totalOrders:            { data_name: totalOrders }
+                totalRevenue:           { data_name: totalRevenue }
+            default:
+                totalRevenue: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        options:
+            entityHint: report data
+            export: false
+
+    marello_report-products-low_inventory_products:
+        pageTitle: marello.report.title.low_inventory_products
+        source:
+            type: orm
+            acl_resource: oro_report_view
+            query:
+                select:
+                    - i.id
+                    - p.name as productName
+                    - p.sku as productSku
+                    - s.label as status
+                    - COALESCE(SUM(il.inventory), 0) AS inventoryQty
+                from:
+                    - { table: MarelloInventoryBundle:InventoryItem, alias: i }
+                join:
+                    left:
+                        - { join: i.product, alias: p }
+                        - { join: i.inventoryLevels, alias: il }
+                        - { join: p.status, alias: s }
+                groupBy: p.sku
+        columns:
+            productSku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            productName:
+                label:              marello.product.name.label
+                frontend_type:      string
+            inventoryQty:
+                label:              marello.inventory.inventorylevel.inventory.label
+                frontend_type:      number
+                data_name:          inventoryQty
+            status:
+                label:              marello.product.status.label
+                frontend_type:      string
+        sorters:
+            columns:
+                productSku:     { data_name: p.sku }
+                productName:    { data_name: p.name }
+                inventoryQty:   { data_name: inventoryQty }
+                status:         { data_name: s.label }
+            default:
+                inventoryQty:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        options:
+            entityHint: report data
+            export: false
+
+    marello_report-orders-best_selling_items:
+            pageTitle: marello.report.title.best_selling_items
+            source:
+                type: orm
+                acl_resource: oro_report_view
+                query:
+                    select:
+                        - oi.productName
+                        - oi.productSku
+                        - product.createdAt as createdAt
+                        - SUM(oi.quantity) AS quantitySold
+                    from:
+                        - { table: MarelloOrderBundle:OrderItem, alias: oi }
+                    join:
+                        left:
+                            - { join: oi.product, alias: product }
+                    groupBy: oi.productSku, oi.productName
+            columns:
+                productSku:
+                    label:              marello.product.sku.label
+                    frontend_type:      string
+                productName:
+                    label:              marello.product.name.label
+                    frontend_type:      string
+                createdAt:
+                    label:              oro.ui.created_at
+                    frontend_type:      datetime
+                quantitySold:
+                    label:              marello.report.datagrid.columns.quantity_sold.label
+                    frontend_type:      number
+                    data_name:          quantitySold
+            sorters:
+                columns:
+                    productSku:            { data_name: oi.productSku }
+                    productName:           { data_name: oi.productName }
+                    createdAt:             { data_name: createdAt }
+                    quantitySold:          { data_name: quantitySold }
+                default:
+                    quantitySold:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+            options:
+                entityHint: report data
+                export: false
+                toolbarOptions:
+                    hide: true
+                    pageSize:
+                        items: [5]
+                        default_per_page: 5
+
+    marello_report-orders-worst_selling_items:
+            pageTitle: marello.report.title.worst_selling_items
+            source:
+                type: orm
+                acl_resource: oro_report_view
+                query:
+                    select:
+                        - oi.productName
+                        - oi.productSku
+                        - product.createdAt as createdAt
+                        - SUM(oi.quantity) AS quantitySold
+                    from:
+                        - { table: MarelloOrderBundle:OrderItem, alias: oi }
+                    join:
+                        left:
+                            - { join: oi.product, alias: product }
+                    groupBy: oi.productSku, oi.productName
+            columns:
+                productSku:
+                    label:              marello.product.sku.label
+                    frontend_type:      string
+                productName:
+                    label:              marello.product.name.label
+                    frontend_type:      string
+                createdAt:
+                    label:              oro.ui.created_at
+                    frontend_type:      datetime
+                quantitySold:
+                    label:              marello.report.datagrid.columns.quantity_sold.label
+                    frontend_type:      number
+                    data_name:          quantitySold
+            sorters:
+                columns:
+                    productSku:            { data_name: oi.productSku }
+                    productName:           { data_name: oi.productName }
+                    createdAt:             { data_name: createdAt }
+                    quantitySold:          { data_name: quantitySold }
+                default:
+                    quantitySold: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+            options:
+                entityHint: report data
+                export: false
+                toolbarOptions:
+                    hide: true
+                    pageSize:
+                        items: [5]
+                        default_per_page: 5
+
+    # All non aggregated columns are being added to the group by,
+    # meaning that they will be added by default if no aggregated columns
+    # are specifically grouped by
+    #see https://github.com/orocrm/platform/issues/241#issuecomment-83146700
+    marello_report-returns-returned_qty_by_reason:
+            pageTitle: marello.report.title.returned_qty_by_reason
+            source:
+                type: orm
+                acl_resource: oro_report_view
+                query:
+                    select:
+                        - rre.name as returnReason
+                        - oi.productSku
+                        - oi.productName
+                        - SUM(ri.quantity) AS quantityReturned
+                        - SUM(oi.quantity) AS quantityOrdered
+                        - COALESCE(((ri.quantity / oi.quantity)), 0) AS percentageReturned
+                    from:
+                        - { table: MarelloReturnBundle:ReturnItem, alias: ri }
+                    join:
+                        left:
+                            - { join: ri.orderItem, alias: oi }
+                            - { join: ri.reason, alias: rre }
+                            - { join: oi.order, alias: o }
+            columns:
+                productSku:
+                    label:              marello.product.sku.label
+                    frontend_type:      string
+                productName:
+                    label:              marello.product.name.label
+                    frontend_type:      string
+                returnReason:
+                    data_name:          returnReason
+                    label:              marello.return.returnitem.reason.label
+                    frontend_type:      string
+                quantityReturned:
+                    data_name:          quantityReturned
+                    label:              marello.report.datagrid.columns.quantity_returned.label
+                    frontend_type:      number
+                    align:              center
+                quantityOrdered:
+                    data_name:          quantityOrdered
+                    label:              marello.report.datagrid.columns.quantity_ordered.label
+                    frontend_type:      number
+                    align:              center
+                percentageReturned:
+                    data_name:          percentageReturned
+                    label:              marello.report.datagrid.columns.returned.label
+                    frontend_type:      percent
+                    align:              left
+            sorters:
+                columns:
+                    productSku:             { data_name: oi.productSku }
+                    productName:            { data_name: oi.productName }
+                    quantityReturned:       { data_name: quantityReturned }
+                    quantityOrdered:        { data_name: quantityOrdered }
+                    returnReason:           { data_name: returnReason }
+                    percentageReturned:     { data_name: percentageReturned }
+                default:
+                    productSku: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+            filters:
+                columns:
+                    productSku:
+                        type:           string
+                        data_name:      oi.productSku
+                    productName:
+                        type:           string
+                        data_name:      oi.productName
+                    percentageReturned:
+                        type:           percent
+                        data_name:      percentageReturned
+            options:
+                entityHint: report data
+                export: false
+
+    # All non aggregated columns are being added to the group by,
+    # meaning that they will be added by default if no aggregated columns
+    # are specifically grouped by
+    #see https://github.com/orocrm/platform/issues/241#issuecomment-83146700
+    marello_report-returns-returned_qty:
+            pageTitle: marello.report.title.returned_qty_by_reason
+            source:
+                type: orm
+                acl_resource: oro_report_view
+                query:
+                    select:
+                        - oi.productSku
+                        - oi.productName
+                        - SUM(ri.quantity) AS quantityReturned
+                        - SUM(oi.quantity) AS quantityOrdered
+                        - COALESCE(((ri.quantity / oi.quantity)), 0) AS percentageReturned
+                    from:
+                        - { table: MarelloReturnBundle:ReturnItem, alias: ri }
+                    join:
+                        left:
+                            - { join: ri.orderItem, alias: oi }
+                            - { join: oi.order, alias: o }
+            columns:
+                productSku:
+                    label:              marello.product.sku.label
+                    frontend_type:      string
+                productName:
+                    label:              marello.product.name.label
+                    frontend_type:      string
+                quantityReturned:
+                    data_name:          quantityReturned
+                    label:              marello.report.datagrid.columns.quantity_returned.label
+                    frontend_type:      number
+                    align:              center
+                quantityOrdered:
+                    data_name:          quantityOrdered
+                    label:              marello.report.datagrid.columns.quantity_ordered.label
+                    frontend_type:      number
+                    align:              center
+                percentageReturned:
+                    data_name:          percentageReturned
+                    label:              marello.report.datagrid.columns.returned.label
+                    frontend_type:      percent
+                    align:              left
+            sorters:
+                columns:
+                    productSku:             { data_name: oi.productSku }
+                    productName:            { data_name: oi.productName }
+                    quantityReturned:       { data_name: quantityReturned }
+                    quantityOrdered:        { data_name: quantityOrdered }
+                    percentageReturned:     { data_name: percentageReturned }
+                default:
+                    productSku: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+            filters:
+                columns:
+                    productSku:
+                        type:           string
+                        data_name:      oi.productSku
+                    productName:
+                        type:           string
+                        data_name:      oi.productName
+                    percentageReturned:
+                        type:           percent
+                        data_name:      percentageReturned
+            options:
+                entityHint: report data
+                export: false

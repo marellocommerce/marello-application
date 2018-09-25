@@ -1,0 +1,145 @@
+data:
+    -
+        type: marelloassembledpricelists
+        id: '33'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p1
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '33'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: marelloassembledpricelists
+        id: '34'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p2
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '34'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: marelloassembledpricelists
+        id: '35'
+        attributes:
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p2
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '35'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: marelloassembledpricelists
+        id: '36'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p3
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '36'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: marelloassembledpricelists
+        id: '37'
+        attributes:
+            currency: GBP
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p3
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '37'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: marelloassembledpricelists
+        id: '38'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p4
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '38'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: marelloassembledpricelists
+        id: '39'
+        attributes:
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p4
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '39'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: marelloassembledpricelists
+        id: '40'
+        attributes:
+            currency: GBP
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p4
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '40'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null

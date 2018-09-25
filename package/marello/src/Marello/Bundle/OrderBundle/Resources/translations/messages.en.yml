@@ -1,0 +1,193 @@
+marello:
+    order:
+        # Order entity
+        entity_plural_label:        Orders
+        entity_label:               Order
+        id.label:                   Id
+        customer.label:             Customer
+        items.label:                Items
+        subtotal.label:             Subtotal
+        total_tax.label:            TAX Total
+        create_date.label:          Order Create Date
+        purchase_date.label:        Order Purchase Date
+        grand_total.label:          Grand Total
+        order_number.label:         Order Number
+        sales_channel.label:        Sales Channel
+        sales_channel_name.label:   Sales Channel
+        order_reference.label:      Order Reference
+        locale.label:               Order Locale
+        localization.label:         Localization
+        workflow_item.label:        Workflow Item
+        workflow_step.label:        Workflow Step
+        organization.label:         Organization
+        currency.label:             Currency
+        coupon_code.label:          Coupon Code
+        discount_amount.label:      Discount Amount
+        discount_percent.label:     Discount Percent
+        invoiced_at.label:          Invoiced At
+        invoice_reference.label:    Invoice Reference
+        payment_method.label:       Payment Method
+        payment_details.label:      Payment Details
+        payment_reference.label:    Payment Reference
+        shipping_method.label:      Shipping Method
+        shipping_method_type.label: Shipping Method Type
+        shipment.label:             Shipment
+        data.label:                 Data
+        shipping_amount_incl_tax.label:      Shipping Costs Incl. tax
+        shipping_amount_excl_tax.label:      Shipping Costs Excl. tax
+        estimated_shipping_cost_amount.label: Estimated Shipping Costs
+        overridden_shipping_cost_amount.label: Overridden Shipping Cost Amount
+        status.label:               Order Status
+        localization.label:         Localization
+        shipment.label:             Shipment
+        data.label:                 Data
+        billing_address:
+            label:                  Billing Address
+            name.label:             Bill to Name
+        shipping_address:
+            label:                  Shipping Address
+            name.label:             Ship to Name
+        address:
+            email.label:            E-Mail
+            phone.label:            Phone
+            edit_action:            Edit Address
+        datablock:
+            general:                General
+            billing_and_payment:    Billing & Payment
+            delivery:               Delivery
+            order_items:            Order Items
+            activity:               Activity
+            order_information:      Order Information
+            customer_information:   Customer Information
+            order_totals:           Order Totals
+            packing_slips:          Packing Slips
+        # OrderItem entity
+        orderitem:
+            entity_label:           Ordered Item
+            entity_plural_label:    Ordered Items
+            id.label:               Id
+            sku.label:              SKU
+            tax.label:              Tax
+            tax_code.label:         Tax Code
+            name.label:             Product
+            order.label:            Order
+            price:
+                label:              Price
+                per_unit.label:     Price Per Unit
+            quantity.label:         Quantity
+            original_price_excl_tax.label:   Original Price Excl. Tax
+            original_price_incl_tax.label:   Original Price Incl. Tax
+            total_price_excl_tax.label:      Total Price Excl. Tax
+            total_price_incl_tax.label:      Total Price Incl. Tax
+            purchase_price_incl.label:       Purchase Price Incl. Tax
+            row_total_excl_tax.label:        Row Total Excl. Tax
+            row_total_incl_tax.label:        Row Total Incl. Tax
+            tax_code.label:         Tax Code
+            product_name.label:     Product Name
+            product_sku.label:      Product SKU
+            product.label:          Product
+            discount_amount.label:  Discount Amount
+            discount_percent.label: Discount Percent
+            tax_percent.label:      Tax Percent
+            return_items.label:     Returned items
+            purchase_price_incl.label:   Purchase Price Incl. Tax
+            row_total_excl_tax.label:    Row Total Excl. Tax
+            row_total_incl_tax.label:    Row Total Incl. Tax
+            inventory.label:     Inventory Available
+
+            messages:
+                product_not_salable:    Product cannot be sold in the chosen Sales Channel
+
+        # Customer Entity
+        customer:
+            entity_label:                     Customer
+            entity_plural_label:              Customers
+            id.label:                         Id
+            organization.label:               Organization
+            primary_address.label:            Primary Address
+            shipping_address.label:           Shipping Address
+            tax_identification_number.label:  Tax Identification Number
+            addresses.label:                  Addresses
+            email.label:                      Primary Email
+            emails.label:                     Email Addresses
+            name_prefix.label:                Name Prefix
+            first_name.label:                 First Name
+            middle_name.label:                Middle Name
+            last_name.label:                  Last Name
+            name_suffix.label:                Name Suffix
+            company.label:                    Company
+            phone.label:                      Phone
+            organization.label:               Organization
+            label:                            Customer
+            form:
+                choose:             Choose customer
+
+        messages:
+            success:
+                order:
+                    saved:          Order saved
+                customer:
+                    saved:          Customer saved
+
+        navigation:
+            customers.label: Customers
+
+        menu:
+            shortcut_new_order.label: Create new order
+            shortcut_new_order.description: Create new order instance
+            shortcut_list_orders.label: Show order list
+            shortcut_list_orders.description: List of orders
+
+        dashboard:
+            order_statistics:
+                title: Order Statistics
+                description: Statistics of all orders
+                orders_number.label: Total Orders
+                revenue.label: Total Order Revenue
+                average_order_value.label: Average Order Value
+                no_available_metrics: No metrics available
+
+            latest_orders:
+                title: Latest orders
+                description: 5 Latest orders from all sales channels
+                view_all: View all
+
+            top_revenue_channels:
+                title: Order revenue per sales channel
+                description: Order revenue per sales channel
+
+            hero_products:
+                title: Hero Products
+                description: Hero Products
+                products_quantity: Products Quantity
+                total_items_sold.label: By Items Sold
+                total_product_revenue.label: By Revenue
+                no_available_metrics: No metrics available
+
+            statistics:
+                no_data: No data available
+
+        sections:
+            general: General
+            shipping_information: Shipping Information
+            subtotals: Order Totals
+
+        form:
+            address:
+                choose: Select an address
+                choose_or_create: Select an existing address or enter a new address below
+                manual: Enter address manually
+            shipping_options.label: Shipping Options
+            override_shipping_cost.label: Override Shipping Cost
+
+        subtotals:
+            discount.label: Discount Amount
+            shipping_cost.label: Shipping Cost Amount
+            subtotal.label: Subtotal
+
+        btn:
+            calculate_shipping: Calculate Shipping
+
+        system_configuration:
+            fields:
+                order_notification.label: Order Notification

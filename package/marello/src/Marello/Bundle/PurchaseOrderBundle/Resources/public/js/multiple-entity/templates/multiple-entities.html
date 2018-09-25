@@ -1,0 +1,33 @@
+<div class="actions clearfix">
+    <table class="grid table-hover table table-bordered table-condensed">
+        <thead>
+        <tr>
+            <th class="purchase-order-line-item-product" style="border-right: 0;">
+                <span>Product</span>
+            </th>
+            <th class="purchase-order-line-item-order-amount" style="border-left: 0; border-right: 0;">
+                <span>Order Amount</span>
+            </th>
+            <th class="purchase-order-line-item-purchase-price" style="border-left: 0; border-right: 0;">
+                <span>Purchase Price</span>
+            </th>
+            <th class="purchase-order-line-item-row-total" style="border-left: 0; border-right: 0;">
+                <span>Row Total</span>
+            </th>
+            <th class="purchase-order-line-item-notifications" style="border-left: 0; border-right: 0;"></th>
+            <th class="purchase-order-row-item-actions" style="border-left: 0;"></th>
+        </tr>
+        </thead>
+        <tbody class="entities">
+        </tbody>
+    </table>
+
+    <div class="pull-left">
+        <button type="button"
+                class="btn btn-medium add-btn"
+                data-purpose="open-dialog-widget">
+            <i class="fa-plus"></i>
+            <%= _.__('marello.purchaseorder.form.add_products_from_advice') %>
+        </button>
+    </div>
+</div>

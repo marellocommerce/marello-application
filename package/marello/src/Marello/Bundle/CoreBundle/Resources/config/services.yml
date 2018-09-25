@@ -1,0 +1,63 @@
+parameters:
+    marello_core.entity_serializer.class:             Marello\Bundle\CoreBundle\Serializer\EntitySerializer
+
+services:
+    marello_core.workflow.action.workflow_transit_action:
+        class: Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@oro_workflow.manager'
+        tags:
+            - { name: oro_action.action, alias: marello_core_transit_complete_action }
+
+    marello_core.validator.unique.unique_entity_collection:
+        class: Marello\Bundle\CoreBundle\Validator\UniqueEntityCollectionValidator
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: validator.constraint_validator, alias: unique_entity_collection }
+
+    marello_core.validator.greater_than_date:
+        class: Marello\Bundle\CoreBundle\Validator\GreaterThanDateValidator
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: validator.constraint_validator, alias: greater_than_date }
+
+    marello_core.greater_than_or_equal_to_value_validator:
+        class: Marello\Bundle\CoreBundle\Validator\GreaterThanOrEqualToValueValidator
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_core.greater_than_or_equal_to_value_validator }
+
+    marello_core.twig.workflow_extension:
+        class: Marello\Bundle\CoreBundle\Twig\WorkflowExtension
+        arguments:
+            - '@oro_workflow.manager'
+        tags:
+            - { name: twig.extension }
+
+    marello_core.extension.translation_packages_provider:
+        class: Marello\Bundle\CoreBundle\Provider\TranslationPackagesProviderExtension
+        tags:
+            - { name: oro_translation.extension.packages_provider }
+
+    marello_core.form.url_generator:
+        class: Marello\Bundle\CoreBundle\Form\UrlGenerator
+        arguments:
+            - '@oro_platform.provider.package'
+            - '@oro_platform.url.cache'
+            - '@request_stack'
+
+    marello_core.entity_serializer:
+        class: '%marello_core.entity_serializer.class%'
+        arguments:
+            - '@doctrine'
+            - '@oro_entity_config.config_manager'
+            - '@oro_soap.entity_accessor'
+            - '@oro_soap.entity_data_transformer'
+            - '@oro_soap.entity_serializer.acl_protected_query_factory'
+            - '@oro_workflow.manager'
+        calls:
+            - ["setFieldsFilter", ['@oro_security.serializer.filter_chain']]

@@ -1,0 +1,130 @@
+parameters:
+    marello_tax.entity.tax_code.class: Marello\Bundle\TaxBundle\Entity\TaxCode
+    marello_tax.entity.tax_rate.class: Marello\Bundle\TaxBundle\Entity\TaxRate
+    marello_tax.entity.tax_rule.class: Marello\Bundle\TaxBundle\Entity\TaxRule
+    marello_tax.entity.tax_jurisdiction.class: Marello\Bundle\TaxBundle\Entity\TaxJurisdiction
+services:
+    marello_tax.tax_rule.matcher.composite:
+        class: Marello\Bundle\TaxBundle\Matcher\CompositeTaxRuleMatcher
+
+    marello_tax.tax_rule.matcher.country:
+        class: Marello\Bundle\TaxBundle\Matcher\CountryTaxRuleMatcher
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: marello_tax.tax_rule.matcher, priority: 30 }
+
+    marello_tax.tax_rule.matcher.region:
+        class: Marello\Bundle\TaxBundle\Matcher\RegionTaxRuleMatcher
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: marello_tax.tax_rule.matcher, priority: 20 }
+
+    marello_tax.tax_rule.matcher.zip_code:
+        class: Marello\Bundle\TaxBundle\Matcher\ZipCodeTaxRuleMatcher
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: marello_tax.tax_rule.matcher, priority: 10 }
+
+    marello_tax.calculator.included_tax:
+        class: Marello\Bundle\TaxBundle\Calculator\IncludedTaxCalculator
+        arguments:
+            - '@oro_currency.rounding.price_rounding_service'
+
+    marello_tax.calculator.excluded_tax:
+        class: Marello\Bundle\TaxBundle\Calculator\ExcludedTaxCalculator
+        arguments:
+            - '@oro_currency.rounding.price_rounding_service'
+
+    marello_tax.calculator:
+        class: Marello\Bundle\TaxBundle\Calculator\TaxCalculator
+        arguments:
+            - '@oro_config.manager'
+            - '@marello_tax.calculator.included_tax'
+            - '@marello_tax.calculator.excluded_tax'
+
+    marello_tax.provider.tax_order_item_row_totals:
+        class: Marello\Bundle\TaxBundle\Provider\OrderItemRowTotalsProvider
+        arguments:
+            - '@marello_tax.calculator'
+            - '@marello_tax.tax_rule.matcher.composite'
+        tags:
+            - { name: marello_order.order_item_data_provider, type: row_totals, priority: 30 }
+
+    marello_tax.provider.tax_subtotal:
+        class: 'Marello\Bundle\TaxBundle\Provider\TaxSubtotalProvider'
+        arguments:
+            - '@translator'
+            - '@marello_tax.event.tax_event_dispatcher'
+            - '@marello_tax.factory.tax'
+        tags:
+            - { name: marello_pricing.subtotal_provider, priority: 10 }
+
+    marello_tax.provider.tax_subtotal_operation:
+        class: 'Marello\Bundle\TaxBundle\Provider\TaxSubtotalOperationProvider'
+        arguments:
+            - '@oro_config.manager'
+
+    marello_tax.factory.tax:
+        class: Marello\Bundle\TaxBundle\Factory\TaxFactory
+
+    marello_tax.resolver.row_total:
+        class: 'Marello\Bundle\TaxBundle\Resolver\RowTotalResolver'
+        public: false
+        arguments:
+            - '@marello_tax.calculator'
+
+    marello_tax.resolver.customer_address.item:
+        class: 'Marello\Bundle\TaxBundle\Resolver\CustomerAddressItemResolver'
+        public: false
+        arguments:
+            - "@marello_tax.resolver.row_total"
+            - "@marello_tax.tax_rule.matcher.composite"
+        tags:
+            - { name: marello_tax.resolver, event: marello_tax.resolve, priority: -32 }
+
+    marello_tax.resolver.customer_address:
+        class: 'Marello\Bundle\TaxBundle\Resolver\CustomerAddressResolver'
+        public: false
+        arguments:
+            - "@marello_tax.resolver.customer_address.item"
+        tags:
+            - { name: marello_tax.resolver, event: marello_tax.resolve, priority: -32 }
+
+    marello_tax.resolver.total:
+        class: 'Marello\Bundle\TaxBundle\Resolver\TotalResolver'
+        public: false
+        tags:
+            - { name: marello_tax.resolver, event: marello_tax.resolve_after, priority: -128 }
+
+    marello_tax.resolver.currency:
+        class: 'Marello\Bundle\TaxBundle\Resolver\CurrencyResolver'
+        public: false
+        tags:
+            - { name: marello_tax.resolver, event: marello_tax.resolve_after, priority: -255 }
+
+    marello_tax.event.tax_event_dispatcher:
+        class: 'Marello\Bundle\TaxBundle\Event\TaxEventDispatcher'
+        public: false
+        arguments:
+            - "@event_dispatcher"
+
+    marello_tax.order_tax.mapper.order_item_mapper:
+        class: 'Marello\Bundle\TaxBundle\OrderTax\Mapper\OrderItemMapper'
+        public: false
+        arguments:
+            - '%marello_order.entity.order_item.class%'
+        tags:
+            - { name: marello_tax.tax_mapper }
+
+    marello_tax.order_tax.mapper.order_mapper:
+        class: 'Marello\Bundle\TaxBundle\OrderTax\Mapper\OrderMapper'
+        public: false
+        arguments:
+            - '%marello_order.entity.order.class%'
+        calls:
+            - ['setOrderItemMapper',  ['@marello_tax.order_tax.mapper.order_item_mapper']]
+        tags:
+            - { name: marello_tax.tax_mapper }

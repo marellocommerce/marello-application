@@ -1,0 +1,5 @@
+data:
+      type: marelloproducts
+      id: '<toString(@product1->sku)>'
+      attributes:
+          name: 'new_name'

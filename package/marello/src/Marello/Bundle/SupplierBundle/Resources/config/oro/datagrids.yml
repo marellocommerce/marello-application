@@ -1,0 +1,192 @@
+datagrids:
+    marello-supplier-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - s
+                from:
+                    - { table: MarelloSupplierBundle:Supplier, alias: s }
+        columns:
+            name:
+                label:            marello.supplier.name.label
+                frontend_type:    string
+            priority:
+                label:            marello.supplier.priority.label
+                frontend_type:    string
+                data_name:        priority
+            canDropship:
+                label:            marello.supplier.can_dropship.label
+                frontend_type:    boolean
+                data_name:        canDropship
+            isActive:
+                label:            marello.supplier.is_active.label
+                frontend_type:    boolean
+                data_name:        isActive
+            currency:
+                label:            marello.supplier.currency.label
+                frontend_type:    string
+        sorters:
+            columns:
+                name:
+                    data_name: s.name
+                priority:
+                    data_name: s.priority
+                canDropship:
+                    data_name: s.canDropship
+                isActive:
+                    data_name: s.isActive
+                currency:
+                    data_name: s.currency
+            default:
+                priority: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        filters:
+            columns:
+                name:
+                    type:       string
+                    data_name:  s.name
+                priority:
+                    type:       number
+                    data_name:  s.priority
+                canDropship:
+                    type:       boolean
+                    data_name:  s.canDropship
+                isActive:
+                    type:       boolean
+                    data_name:  s.isActive
+                currency:
+                    type:       string
+                    data_name:  s.currency
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      marello_supplier_supplier_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      marello_supplier_supplier_update
+                params:     [ id ]
+            delete_link:
+                type:       url
+                route:      marello_supplier_api_delete_supplier
+                params:     [ id ]
+        actions:
+            view:
+                type:           navigate
+                link:           view_link
+                icon:           eye
+                rowAction:      true
+            update:
+                type:           navigate
+                label:          marello.supplier.update
+                icon:           edit
+                link:           update_link
+            delete:
+                type:           delete
+                link:           delete_link
+                acl_resource:   marello_supplier_delete
+                icon:           trash
+                label:          oro.grid.action.delete
+                defaultMessages:
+                    confirm_content: marello.supplier.action.delete.content
+        options:
+            export: true
+
+    marello-supplier-extended-grid:
+        extends: marello-supplier-grid
+        source:
+            type: orm
+            query:
+                where:
+                    and:
+                        - s.isActive = :isActive
+            bind_parameters:
+                -
+                    name: isActive
+                    default: 0
+                    type: integer
+
+    marello-supplier-extended-no-actions-grid:
+        extends: marello-supplier-extended-grid
+        actions: ~
+
+    marello-supplier-products-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - p.id
+                    - p.name
+                    - p.sku
+                    - psr.quantityOfUnit
+                    - psr.cost
+                from:
+                    - { table: MarelloProductBundle:ProductSupplierRelation, alias: psr }
+                join:
+                    inner:
+                        - { join: psr.product, alias: p }
+                where:
+                    and:
+                        - psr.product = p.id
+                        - psr.supplier = :supplierId
+            bind_parameters:
+                - supplierId
+        columns:
+            sku:
+                data_name:        sku
+                label:            marello.product.sku.label
+                frontend_type:    string
+            name:
+                data_name:        name
+                label:            marello.product.name.label
+                frontend_type:    string
+            quantityOfUnit:
+                data_name:        quantityOfUnit
+                label:            marello.supplier.quantity_of_unit.label
+                frontend_type:    string
+            cost:
+                data_name:        cost
+                label:            marello.supplier.cost.label
+                frontend_type:    currency
+        sorters:
+            columns:
+                sku:
+                    data_name:    p.sku
+                name:
+                    data_name:    p.name
+                quantityOfUnit:
+                    data_name:    psr.quantityOfUnit
+                cost:
+                    data_name:    psr.cost
+            default:
+                sku: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        filters:
+            columns:
+                sku:
+                    type:       string
+                    data_name:  p.sku
+                name:
+                    type:       string
+                    data_name:  p.name
+                quantityOfUnit:
+                    type:       string
+                    data_name:  psr.quantityOfUnit
+                cost:
+                    type:       currency
+                    data_name:  psr.cost
+        properties:
+            id:                 [ p.id ]
+            view_link:
+                type:           url
+                route:          marello_product_view
+                params:         [ id ]
+        actions:
+            view:
+                type:           navigate
+                link:           view_link
+                acl_resource:   marello_product_view
+                icon:           eye
+                rowAction:      true
+        options:
+            export: true

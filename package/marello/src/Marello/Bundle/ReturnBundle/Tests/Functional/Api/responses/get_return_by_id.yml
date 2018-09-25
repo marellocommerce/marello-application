@@ -1,0 +1,39 @@
+data:
+    type: marelloreturns
+    id: '<toString(@return1->id)>'
+    attributes:
+        returnNumber: '000000002'
+        salesChannelName: channel1
+        returnReference: 0000000035b9b9ebd0775f
+        locale: null
+        workflowItem:
+            id: 24
+            currentStep:
+                name: pending
+                label: Pending
+    relationships:
+        order:
+            data:
+                type: marelloorders
+                id: '<toString(@marello_order_2->id)>'
+        returnItems:
+            data:
+                -
+                    type: marelloreturnitems
+                    id: '5'
+                -
+                    type: marelloreturnitems
+                    id: '6'
+                -
+                    type: marelloreturnitems
+                    id: '7'
+        salesChannel:
+            data:
+                type: marellosaleschannels
+                id: chan_eur
+        localization:
+            data: null
+        organization:
+            data:
+                type: organizations
+                id: '1'

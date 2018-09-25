@@ -1,0 +1,13 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridName = 'marello-order' %}
+{% set pageTitle = 'marello.order.entity_plural_label'|trans %}
+
+{% block navButtons %}
+    {% if resource_granted('marello_order_create') and marello_sales_has_active_channels() %}
+        {{ UI.addButton({
+            'path': path('marello_order_order_create'),
+            'entity_label': 'marello.order.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}

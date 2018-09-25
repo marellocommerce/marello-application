@@ -1,0 +1,31 @@
+oro:
+    workflow:
+        marello_purchase_order_workflow:
+            label: 'Purchase Order Workflow'
+            attribute:
+                received_items:
+                    label: 'Received Items'
+            step:
+                not_sent:
+                    label: 'Ready to be sent'
+                pending:
+                    label: 'Pending'
+                partially_received:
+                    label: 'Partially received'
+                fully_received:
+                    label: 'Fully received'
+                complete_purchase_order:
+                    label: 'Complete'
+                cancelled_purchase_order:
+                    label: 'Cancelled'
+            transition:
+                send:
+                    label: 'Send to supplier'
+                partially_receive:
+                    label: 'Receive partially'
+                fully_receive:
+                    label: 'Receive fully'
+                complete_purchase_order:
+                    label: 'Complete'
+                cancel_purchase_order:
+                    label: 'Cancel'

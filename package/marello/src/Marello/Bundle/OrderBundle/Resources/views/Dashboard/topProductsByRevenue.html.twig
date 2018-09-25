@@ -1,0 +1,24 @@
+{% for key, value in item.value %}
+    <span class="title">{{ item.label|trans }} ({{ key }})</span>
+    <table class="hero-products-table">
+        {% for k, val in value %}
+            {% set productImage = asset('bundles/marelloproduct/img/no_image_available.jpg') %}
+            {% if val.image is not null %}
+                {% set productImage = file_url(val.product, 'image', val.image) %}
+            {% endif %}
+            <tr {% if k is even %} class="row-even" {% endif %}>
+                <td class="medal">
+                    <img src="{{ asset(val.medal) }}" />
+                </td>
+                <td class="product-image">
+                    <div>
+                        <img src="{{ productImage }}" alt="{{ val.name }}" />
+                    </div>
+                </td>
+                <td><a href="{{ path('marello_product_view', {'id': val.id}) }}">{{ val.sku }}</a></td>
+                <td>{{ val.name }}</td>
+                <td class="value">{{ val.revenue|oro_format_currency({'currency': val.currency}) }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endfor %}

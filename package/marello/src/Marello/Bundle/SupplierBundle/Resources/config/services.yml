@@ -1,0 +1,24 @@
+parameters:
+    marello_supplier.supplier.entity.class:  Marello\Bundle\SupplierBundle\Entity\Supplier
+
+services:
+    # Autocomplete search handler
+    marello_supplier.supplier.form.autocomplete.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_supplier.supplier.entity.class%'
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: suppliers, acl_resource: marello_product_view }
+
+    marello_supplier.provider.supplier:
+        class: Marello\Bundle\SupplierBundle\Provider\SupplierProvider
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    marello_supplier.twig.supplier_extension:
+        class: Marello\Bundle\SupplierBundle\Twig\SupplierExtension
+        arguments:
+            - '@marello_supplier.provider.supplier'
+        tags:
+            - { name: twig.extension }

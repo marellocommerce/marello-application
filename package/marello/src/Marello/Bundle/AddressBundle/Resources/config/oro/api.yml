@@ -1,0 +1,27 @@
+api:
+    entity_aliases:
+        Marello\Bundle\AddressBundle\Entity\MarelloAddress:
+            alias: marelloaddress
+            plural_alias: marelloaddresses
+
+        # add entity aliases for country and region since they will be 'lost' when used in API for some reason...
+        Oro\Bundle\AddressBundle\Entity\Country:
+            alias: country
+            plural_alias: countries
+        Oro\Bundle\AddressBundle\Entity\Region:
+            alias: regions
+            plural_alias: regions
+
+    entities:
+        Marello\Bundle\AddressBundle\Entity\MarelloAddress:
+            fields:
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            actions:
+                delete_list: false
+                get_subresource: false
+                get_relationship: false
+                update_relationship: false
+                delete_relationship: false

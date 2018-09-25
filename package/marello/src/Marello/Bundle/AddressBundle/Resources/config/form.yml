@@ -1,0 +1,5 @@
+services:
+    marello_address.form.type.address:
+        class: Marello\Bundle\AddressBundle\Form\Type\AddressType
+        tags:
+            - { name: form.type, alias: marello_address }

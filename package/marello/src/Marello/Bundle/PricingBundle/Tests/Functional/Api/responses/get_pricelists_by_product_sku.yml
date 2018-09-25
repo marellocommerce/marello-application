@@ -1,0 +1,19 @@
+data:
+    -
+        type: assembledpricelists
+        id: '1'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: products
+                    id: p1
+            defaultPrice:
+                data:
+                    type: productprices
+                    id: '1'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null

@@ -1,0 +1,73 @@
+system_configuration:
+    groups:
+        return:
+            title: marello.return.system_configuration.groups.return.title
+        return_configuration:
+            title: marello.return.system_configuration.groups.return_configuration.title
+            icon: fa-undo
+            priority: 50
+
+        ror_settings:
+            title: marello.return.system_configuration.groups.ror_settings.title
+            icon: fa-info
+            priority: 100
+
+        warranty_settings:
+            title: marello.return.system_configuration.groups.warranty_settings.title
+            icon: fa-info
+            priority: 50
+
+    fields:
+        marello_return.ror_period:
+            type: text
+            data_type: integer
+            priority: 120
+            options:
+                label: marello.return.system_configuration.fields.ror_period
+                resettable: true
+                required: true
+                constraints:
+                    - NotNull: ~
+                    - Range:
+                        min: 1
+
+        marello_return.warranty_period:
+            type: text
+            data_type: integer
+            priority: 120
+            options:
+                label: marello.return.system_configuration.fields.warranty_period
+                resettable: true
+                required: true
+                constraints:
+                    - NotNull: ~
+                    - Range:
+                        min: 1
+
+        marello_return.return_notification:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: marello.return.system_configuration.fields.return_notification.label
+                required: false
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    return:
+                        children:
+                            return_configuration:
+                                children:
+                                    ror_settings:
+                                        children:
+                                            - marello_return.ror_period
+                                    warranty_settings:
+                                        children:
+                                            - marello_return.warranty_period
+                    notification:
+                        children:
+                            notification_configuration:
+                                children:
+                                    notification_general:
+                                        children:
+                                            - marello_return.return_notification

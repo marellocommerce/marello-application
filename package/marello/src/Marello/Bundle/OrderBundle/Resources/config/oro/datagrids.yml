@@ -1,0 +1,520 @@
+datagrids:
+    marello-order:
+        source:
+            type: orm
+            query:
+                select:
+                    - o
+                from:
+                    - { table: MarelloOrderBundle:Order, alias: o }
+                join:
+                    left:
+                        billingAddress:
+                            join: o.billingAddress
+                            alias: ba
+                        shippingAddress:
+                            join: o.shippingAddress
+                            alias: sa
+        columns:
+            orderNumber:
+                label:            marello.order.order_number.label
+                frontend_type:    string
+            salesChannel:
+                label:            marello.order.sales_channel.label
+                frontend_type:    string
+                data_name:        salesChannelName
+            shippingMethod:
+                label:            marello.order.shipping_method.label
+                type:             twig
+                frontend_type:    html
+                template:         MarelloOrderBundle:Order/Datagrid/Property:shippingMethod.html.twig
+            orderReference:
+                label:            marello.order.order_reference.label
+                frontend_type:    string
+            billingAddress:
+                frontend_type:    string
+                data_name:        billingName # This alias is generated using OrderGridAddressFilterListener
+                label:            marello.order.billing_address.name.label
+            shippingAddress:
+                frontend_type:    string
+                data_name:        shippingName # This alias is generated using OrderGridAddressFilterListener
+                label:            marello.order.shipping_address.name.label
+            grandTotal:
+                label:            marello.order.grand_total.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
+            purchaseDate:
+                frontend_type:    datetime
+                label:            marello.order.purchase_date.label
+                renderable:       false
+            createdAt:
+                label:            oro.ui.created_at
+                frontend_type:    datetime
+            updatedAt:
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
+        sorters:
+            columns:
+                orderNumber:
+                    data_name: o.orderNumber
+                salesChannel:
+                    data_name: o.salesChannel
+                shippingMethod:
+                    data_name: o.shippingMethod
+                orderReference:
+                    data_name: o.orderReference
+                billingAddress:
+                    data_name: billingName
+                shippingAddress:
+                    data_name: shippingName
+                grandTotal:
+                    data_name: o.grandTotal
+                purchaseDate:
+                    data_name: o.purchaseDate
+                createdAt:
+                    data_name: o.createdAt
+                updatedAt:
+                    data_name: o.updatedAt
+            default:
+                orderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        filters:
+            columns:
+                orderNumber:
+                    type: string
+                    data_name: o.orderNumber
+                salesChannel:
+                    type: string
+                    data_name: o.salesChannelName
+                shippingMethod:
+                    type: string
+                    data_name: o.shippingMethod
+                orderReference:
+                    type: number
+                    data_name: o.orderReference
+                billingAddress:
+                    type: string
+                    data_name: billingName              # This alias is generated using OrderGrdiAddressFilterListener
+                shippingAddress:
+                    type: string
+                    data_name: shippingName             # This alias is generated using OrderGrdiAddressFilterListener
+                purchaseDate:
+                    type: datetime
+                    data_name: o.purchaseDate
+                    enabled: false
+                createdAt:
+                    type: datetime
+                    data_name: o.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: o.updatedAt
+        properties:
+            view_link:
+                type:   url
+                route:  marello_order_order_view
+                params:
+                    id: id
+            return_link:
+                type:   url
+                route:  marello_return_return_create
+                params:
+                    id: id
+            refund_link:
+                type:   url
+                route:  marello_refund_create
+                params:
+                    id: id
+        actions:
+            view:
+                type:       navigate
+                link:       view_link
+                icon:       eye
+                rowAction:  true
+            return:
+                type:       navigate
+                link:       return_link
+                icon:       undo
+            refund:
+                type:       navigate
+                link:       refund_link
+                icon:       eur
+        action_configuration: [@marello_order.datagrid.action_permission_provider, "getActionPermissions"]
+        options:
+            export: true
+            mass_actions:
+                delete:
+                    enabled: false
+
+    marello-order-customer:
+        source:
+            type: orm
+            query:
+                select:
+                    - o
+                from:
+                    - { table: MarelloOrderBundle:Order, alias: o }
+                where:
+                    and:
+                        - o.customer = :customer_id
+            bind_parameters:
+                customer_id: customerId
+        columns:
+            orderNumber:
+                label:            marello.order.order_number.label
+                frontend_type:    string
+            salesChannel:
+                label:            marello.order.sales_channel.label
+                frontend_type:    string
+                data_name:        salesChannelName
+            orderReference:
+                label:            marello.order.order_reference.label
+                frontend_type:    string
+            grandTotal:
+                label:            marello.order.grand_total.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
+            purchaseDate:
+                frontend_type:    datetime
+                label:            marello.order.purchase_date.label
+                renderable:       false
+            createdAt:
+                label:            oro.ui.created_at
+                frontend_type:    datetime
+            updatedAt:
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
+        sorters:
+            columns:
+                orderNumber:
+                    data_name: o.orderNumber
+                salesChannel:
+                    data_name: o.salesChannel
+                orderReference:
+                    data_name: o.orderReference
+                grandTotal:
+                    data_name: o.grandTotal
+                purchaseDate:
+                    data_name: o.purchaseDate
+                createdAt:
+                    data_name: o.createdAt
+                updatedAt:
+                    data_name: o.updatedAt
+            default:
+                orderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        filters:
+            columns:
+                orderNumber:
+                    type: string
+                    data_name: o.orderNumber
+                salesChannel:
+                    type: string
+                    data_name: o.salesChannelName
+                orderReference:
+                    type: number
+                    data_name: o.orderReference
+                purchaseDate:
+                    type: datetime
+                    data_name: o.purchaseDate
+                    enabled: false
+                createdAt:
+                    type: datetime
+                    data_name: o.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: o.updatedAt
+        properties:
+            view_link:
+                type:   url
+                route:  marello_order_order_view
+                params:
+                    id: id
+            return_link:
+                type:   url
+                route:  marello_return_return_create
+                params:
+                    id: id
+            refund_link:
+                type:   url
+                route:  marello_refund_create
+                params:
+                    id: id
+        actions:
+            view:
+                type:       navigate
+                link:       view_link
+                icon:       eye
+                rowAction:  true
+            return:
+                type:       navigate
+                link:       return_link
+                icon:       undo
+            refund:
+                type:       navigate
+                link:       refund_link
+                icon:       eur
+        action_configuration: ['@marello_order.datagrid.action_permission_provider', 'getActionPermissions']
+        options:
+            export: false
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
+
+
+    marello-order-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - i
+                from:
+                    - { table: MarelloOrderBundle:OrderItem, alias: i}
+                join:
+                    left:
+                        product:
+                            join: i.product
+                            alias: product
+                where:
+                    and:
+                        - i.order = :order_id
+            bind_parameters:
+                order_id: orderId
+        columns:
+            productSKU:
+                label:            marello.product.sku.label
+                frontend_type:    string
+                data_name:        productSku
+            productName:
+                label:            marello.product.name.label
+                frontend_type:    string
+                data_name:        productName
+            quantity:
+                label:            marello.order.orderitem.quantity.label
+                frontend_type:    number
+            price:
+                label:            marello.order.orderitem.price.per_unit.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            originalPriceInclTax:
+                label:            marello.order.orderitem.original_price_incl_tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            originalPriceExclTax:
+                label:            marello.order.orderitem.original_price_excl_tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            tax:
+                label:            marello.order.orderitem.tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            rowTotalInclTax:
+                label:            marello.order.orderitem.total_price_incl_tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            rowTotalExclTax:
+                label:            marello.order.orderitem.total_price_excl_tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+
+    dashboard-latest-orders-grid:
+            source:
+                type: orm
+                query:
+                    select:
+                        - o
+                    from:
+                        - { table: MarelloOrderBundle:Order, alias: o }
+            columns:
+                orderNumber:
+                    label: marello.order.order_number.label
+                    frontend_type: string
+                salesChannel:
+                    label: marello.order.sales_channel.label
+                    frontend_type: string
+                    data_name: salesChannelName
+                orderReference:
+                    label: marello.order.order_reference.label
+                    frontend_type: string
+                grandTotal:
+                    label: marello.order.grand_total.label
+                    type:             localized_number
+                    method:           formatCurrency
+                    context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                    align:            right
+            sorters:
+                columns:
+                    orderNumber:
+                        data_name: o.orderNumber
+                default:
+                    orderNumber: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+            options:
+                export: false
+                toolbarOptions:
+                    hide: true
+                    pageSize:
+                        items: [5]
+                        default_per_page: 5
+
+    dashboard-order-revenue-saleschannels-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - channel.name as salesChannelName
+                    - channel.currency
+                    - COUNT(o.orderNumber) as totalOrders
+                    - SUM(o.grandTotal) as totalRevenue
+                from:
+                    - { table: MarelloOrderBundle:Order, alias: o }
+                join:
+                    left:
+                        - { join: o.salesChannel, alias: channel }
+                groupBy: salesChannelName
+        columns:
+            salesChannelName:
+                label: marello.order.sales_channel.label
+                frontend_type: string
+                data_name: salesChannelName
+            totalOrders:
+                label: marello.report.datagrid.columns.total_orders.label
+                frontend_type: string
+            totalRevenue:
+                label: marello.report.datagrid.columns.total_revenue.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
+        sorters:
+            columns:
+                salesChannelName:       { data_name: salesChannelName }
+                totalOrders:            { data_name: totalOrders }
+                totalRevenue:           { data_name: totalRevenue }
+            default:
+                totalOrders: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        options:
+            entityHint: orders
+            export: false
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [5]
+                    default_per_page: 5
+
+    marello-customer:
+        source:
+            type: orm
+            query:
+                select:
+                    - c
+                from:
+                    - { table: MarelloOrderBundle:Customer, alias: c }
+        columns:
+            namePrefix:
+                label: marello.order.customer.name_prefix.label
+            firstName:
+                label: marello.order.customer.first_name.label
+            middleName:
+                label: marello.order.customer.middle_name.label
+            lastName:
+                label: marello.order.customer.last_name.label
+            nameSuffix:
+                label: marello.order.customer.name_suffix.label
+            email:
+                label: marello.order.customer.email.label
+            createdAt:
+                label:            oro.ui.created_at
+                frontend_type:    datetime
+            updatedAt:
+                label:            oro.ui.updated_at
+                frontend_type:    datetime
+        filters:
+            columns:
+                namePrefix:
+                    type: string
+                    data_name: c.namePrefix
+                firstName:
+                    type: string
+                    data_name: c.firstName
+                middleName:
+                    type: string
+                    data_name: c.middleName
+                lastName:
+                    type: string
+                    data_name: c.lastName
+                nameSuffix:
+                    type: string
+                    data_name: c.nameSuffix
+                email:
+                    type: string
+                    data_name: c.email
+                createdAt:
+                    type: datetime
+                    data_name: c.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: c.updatedAt
+        sorters:
+            columns:
+                namePrefix:
+                    data_name: c.namePrefix
+                firstName:
+                    data_name: c.firstName
+                middleName:
+                    data_name: c.middleName
+                lastName:
+                    data_name: c.lastName
+                nameSuffix:
+                    data_name: c.nameSuffix
+                email:
+                    data_name: c.email
+                createdAt:
+                    data_name: c.createdAt
+                updatedAt:
+                    data_name: c.updatedAt
+            default:
+                createdAt: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        properties:
+            view_link:
+                type:   url
+                route:  marello_order_customer_view
+                params:
+                    id: id
+            update_link:
+                type:   url
+                route:  marello_order_customer_update
+                params:
+                    id: id
+        actions:
+            view:
+                type:       navigate
+                link:       view_link
+                icon:       eye
+                rowAction:  true
+            update:
+                type:       navigate
+                link:       update_link
+                icon:       edit
+        options:
+            entityHint: customer
+
+    marello-customer-select-grid:
+        extends: marello-customer
+        properties:
+            id: ~
+        actions: ~

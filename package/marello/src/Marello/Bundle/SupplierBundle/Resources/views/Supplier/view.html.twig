@@ -1,0 +1,114 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%id%": entity.id }}) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity':      entity,
+    'indexPath':   path('marello_supplier_supplier_index'),
+    'indexLabel': 'marello.supplier.entity_plural_label'|trans,
+    'entityTitle': entity.name
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if resource_granted('DELETE', entity) %}
+        {{ UI.buttonSeparator() }}
+        {{ UI.deleteButton({
+            'dataUrl': path('marello_supplier_api_delete_supplier', {'id': entity.id}),
+            'dataRedirect': path('marello_supplier_supplier_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-channel',
+            'dataId': entity.id,
+            'entity_label': 'marello.supplier.entity_label'|trans,
+        }) }}
+    {% endif %}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.buttonSeparator() }}
+        {{ UI.editButton({
+            'path': path('marello_supplier_supplier_update', {'id': entity.id}),
+            'entity_label': 'marello.supplier.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}
+
+{% block content_data %}
+    {% set id = 'marello-supplier-view' %}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        <div class="title">
+                            <span class="widget-title">{{ 'marello.supplier.datablock.supplier_information'|trans }}</span>
+                        </div>
+                        {{ UI.renderProperty('marello.supplier.supplier_name.label'|trans, entity.name) }}
+                        {{ UI.renderProperty('marello.supplier.supplier_email.label'|trans, entity.email) }}
+                        {{ UI.renderProperty('marello.supplier.supplier_priority.label'|trans, entity.priority) }}
+                        {{ UI.renderProperty('marello.supplier.supplier_can_dropship.label'|trans, entity.canDropship ? 'marello.supplier.supplier_can_dropship.value.yes'|trans : 'marello.supplier.supplier_can_dropship.value.no'|trans) }}
+                        {{ UI.renderProperty('marello.supplier.supplier_is_active.label'|trans, entity.isActive ? 'marello.supplier.supplier_is_active.value.yes'|trans : 'marello.supplier.supplier_is_active.value.no'|trans) }}
+                        {{ UI.renderProperty('marello.supplier.currency.label'|trans, entity.currency) }}
+                        {{ UI.renderProperty('marello.supplier.po_send_by.label'|trans, entity.poSendBy) }}
+                        {% set supplierViewGranted = resource_granted('marello_supplier_update') %}
+                        {%- if supplierViewGranted -%}
+                            {%- set supplierData -%}
+                                <a href="{{ path('marello_supplier_supplier_update', {'id': entity.id}) }}">
+                                    {{ entity.id|default(entity.name) }}
+                                </a>
+                            {%- endset -%}
+                        {%- endif -%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+
+    {% set addressSubblocks = [] %}
+    {% set addressWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('marello_supplier_supplier_address', {id: entity.address.id, typeId: 1}),
+        }) }}
+    {% endset %}
+    {% set addressSubblocks = addressSubblocks|merge([{'data' : [addressWidget] }]) %}
+
+    {% set linkedProductsGrid %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-supplier-products-grid', {'supplierId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.supplier.datablock.general'|trans,
+            'class': 'active',
+            'subblocks': generalSubblocks
+        },
+        {
+            'title': 'marello.supplier.datablock.address'|trans,
+            'subblocks': addressSubblocks
+        },
+        {
+            'title': 'marello.supplier.datablock.linked_products'|trans,
+            'subblocks': [{
+                'title' : null,
+                'useSpan': false,
+                'data' : [
+                    linkedProductsGrid
+                ]
+            }]
+        }
+    ] %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

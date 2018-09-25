@@ -1,0 +1,32 @@
+{% extends 'OroDashboardBundle:Dashboard:widget.html.twig' %}
+
+{% set widgetType = 'quick-launchpad' %}
+
+{% block content %}
+    {% if items|length %}
+        <div style="margin-top: 10px;">
+        {% for itemName, item in items %}
+            <div class="widget-item" style="width: 100%; text-align: left; vertical-align: top;">
+                {% if item.value|length %}
+                    {% include widgetDataItems[itemName].template with {item: item}%}
+                {% else %}
+                    <div class="container-fluid">
+                        <div class="clearfix no-data">
+                            <span>{{ 'marello.order.dashboard.statistics.no_data'|trans }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            {% if not loop.last and loop.index % 3 == 0 %}
+            <div class="separator"> &nbsp; </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    {% else %}
+        <div class="container-fluid">
+            <div class="clearfix no-data">
+                <span>{{ 'marello.order.dashboard.hero_products.no_available_metrics'|trans }}</span>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

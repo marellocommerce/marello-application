@@ -1,0 +1,19 @@
+data:
+    -
+        type: marelloassembledpricelists
+        id: '33'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p1
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '33'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null

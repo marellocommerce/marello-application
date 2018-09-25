@@ -1,0 +1,134 @@
+marello:
+    inventory:
+        label:                          Inventory
+        variant_inventory_label:        Variant Inventory
+
+        warehouse:
+            entity_label:               Warehouse
+            entity_plural_label:        Warehouses
+            label.label:                Name
+            code.label:                 Code
+            default.label:              Default
+            address.label:              Address
+            id.label:                   Id
+            owner.label:                Owner
+            warehouse_type.label:       Type
+            group.label:                Warehouse Group
+            create_group.label:         Create Group
+
+            form:
+                create_own_group:       Create Warehouse Group
+
+        warehousetype:
+            entity_label:               Warehouse Type
+            entity_plural_label:        Warehouse Types
+            label.label:                Label
+            name.label:                 Name
+
+        warehousegroup:
+            entity_label:                       Warehouse Group
+            entity_plural_label:                Warehouse Groups
+            description.label:                  Description
+            id.label:                           Id
+            name.label:                         Name
+            system.label:                       System
+            organization.label:                 Organization
+            warehouses.label:                   Warehouses
+            warehouse_channel_group_link.label: Warehouse Channel Group Link
+
+        warehousechannelgrouplink:
+            entity_label:               Warehouse Channel Group Link
+            entity_plural_label:        Warehouse Channel Group Links
+            id.label:                   Id
+            system.label:               System
+            organization.label:         Organization
+            sales_channel_groups.label: Sales Channel (Groups)
+            warehouse_group.label:      Warehouse (Group)
+
+        model:
+            warehouse:
+                adjustment.label:       Adjustment
+
+        inventoryitem:
+            entity_label:               Inventory Item
+            entity_plural_label:        Inventory Items
+            id.label:                   Id
+            product.label:              Product
+            replenishment.label:        Replenishment
+            desired_inventory.label:    Desired Inventory Level
+            purchase_inventory.label:   Purchase Inventory Level
+            inventory_levels.label:     Inventory Levels
+            organization.label:         Organization
+            warehouse.label:            Warehouse
+
+        inventorylevel:
+            entity_label:                   Inventory Level
+            entity_plural_label:            Inventory Levels
+            id.label:                       Id
+            inventory.label:                Inventory Qty
+            allocated_inventory.label:      Allocated Inventory Qty
+            virtual_inventory.label:        Virtual Inventory Qty
+            inventory_diff.label:           Inventory Qty Change
+            allocated_inventory_diff.label: Allocated Inventory Qty Change
+            virtual_inventory_diff.label:   Virtual Inventory Qty Change
+            current_inventory_level.label:  Current Inventory Level
+            totals.label:                   Inventory Level Totals
+            subject_id.label:               Subject Id
+            subject_type.label:             Subject Type
+            log.label:                      Inventory Level Log
+            warehouse.label:                Warehouse
+            organization.label:             Organization
+
+        inventorylevellogrecord:
+            id.label:                       Id
+            entity_label:                   Inventory Level Logrecord
+            entity_plural_label:            Inventory Level Logrecord
+            allocated_inventory_alteration.label: Allocated Inventory Alteration
+            change_trigger.label:           Trigger
+            inventory_alteration.label:     Inventory Alteration
+            subject_id.label:               Subject
+            subject_type.label:             Related Subject
+            user.label:                     User
+
+        virtualinventorylevel:
+            id.label:                       Id
+            entity_label:                   Virtual Inventory Level
+            entity_plural_label:            Virtual Inventory Levels
+            product.label:                  Product
+            saleschannelgroup:              SalesChannel Group
+            inventory.label:                Inventory Qty
+            balanced_inventory_qty.label:   Balanced Inventory Qty
+            reserved_inventory_qty.label:   Reserved Inventory Qty
+            organization.label:             Organization
+
+        information.label:                  Inventory Information
+        movements.label:                    Inventory Movements
+        balancing:
+            strategies:
+                equal_division:             Equal Division
+
+        management:
+            menu:
+                label:                      Inventory
+                balanced_inventory.label:   Balanced Inventory
+            label:                          Inventory Management
+            add_to_warehouse.label:         Add to Warehouse
+        system_configuration:
+            groups:
+                inventory:
+                    title:                  Inventory
+                    balacing:
+                        title:              Inventory Balancer
+                        general.label:      General
+                        strategy.label:     Balancing Strategy
+            fields:
+                balancing_strategy.label:             Strategy
+                balance_threshold_percentage.label:   Threshhold Percentage
+        messages:
+            success:
+                warehouse.saved:        Warehouse has been saved successfully
+                inventoryitem.saved:    Inventory Item has been saved successfully
+                inventory_rebalance.started: Rebalance started successfully. You will receive email notification upon completion.
+            error:
+                warehouse.not_found:    No warehouse found, cannot update a new level without existing warehouse
+                inventorylevel.duplicate_entry: Duplicate entry found for entity "%entity_sku%", please correct the import file before continuing.

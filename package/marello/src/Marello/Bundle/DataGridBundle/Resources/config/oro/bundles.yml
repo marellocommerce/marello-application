@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bundle\DataGridBundle\MarelloDataGridBundle, priority: 25 }

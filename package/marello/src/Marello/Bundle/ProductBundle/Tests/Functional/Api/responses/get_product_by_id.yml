@@ -1,0 +1,41 @@
+data:
+    type: marelloproducts
+    id: p1
+    attributes:
+        productId: 27
+        name: product1
+        manufacturingCode: null
+        productType: null
+        cost: null
+        weight: 0
+        warranty: null
+        data: []
+    relationships:
+        productstatus:
+            data:
+                type: marelloproductstatuses
+                id: enabled
+        organization:
+            data:
+                type: organizations
+                id: '1'
+        prices:
+            data:
+                -
+                    type: marelloassembledpricelists
+                    id: '50'
+        channelPrices:
+            data: []
+        saleschannels:
+            data:
+                -
+                    type: marellosaleschannels
+                    id: chan_eur
+        taxcode:
+            data:
+                type: marellotaxcodes
+                id: TAX_HIGH
+        categories:
+            data: []
+        image:
+            data: null

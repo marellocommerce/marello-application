@@ -1,0 +1,42 @@
+services:
+    marello_productprice.form.type.productprice:
+        class: Marello\Bundle\PricingBundle\Form\Type\ProductPriceType
+        arguments:
+            - '@oro_locale.settings'
+        tags:
+            - { name: form.type, alias: marello_product_price }
+
+    marello_productprice.form.type.product_price_collection:
+        class: Marello\Bundle\PricingBundle\Form\Type\ProductPriceCollectionType
+        tags:
+            - { name: form.type, alias: marello_product_price_collection }
+
+    marello_productprice.form.type.productchannelprice:
+        class: Marello\Bundle\PricingBundle\Form\Type\ProductChannelPriceType
+        tags:
+            - { name: form.type, alias: marello_product_channel_price }
+
+    marello_productprice.form.type.product_channel_price_collection:
+        class: Marello\Bundle\PricingBundle\Form\Type\ProductChannelPriceCollectionType
+        tags:
+            - { name: form.type, alias: marello_product_channel_price_collection }
+
+    marello_productprice.form.type.assembled_price_list:
+        class: Marello\Bundle\PricingBundle\Form\Type\AssembledPriceListType
+        tags:
+            - { name: form.type, alias: marello_assembled_price_list }
+
+    marello_productprice.form.type.assembled_price_list_collection:
+        class: Marello\Bundle\PricingBundle\Form\Type\AssembledPriceListCollectionType
+        tags:
+            - { name: form.type, alias: marello_assembled_price_list_collection }
+
+    marello_productprice.form.type.assembled_channel_price_list:
+        class: Marello\Bundle\PricingBundle\Form\Type\AssembledChannelPriceListType
+        tags:
+            - { name: form.type, alias: marello_assembled_channel_price_list }
+
+    marello_productprice.form.type.assembled_channel_price_list_collection:
+        class: Marello\Bundle\PricingBundle\Form\Type\AssembledChannelPriceListCollectionType
+        tags:
+            - { name: form.type, alias: marello_assembled_channel_price_list_collection }

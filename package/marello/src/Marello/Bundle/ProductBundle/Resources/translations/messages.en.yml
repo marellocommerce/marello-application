@@ -1,0 +1,89 @@
+marello:
+    product:
+        id.label:                   Id
+        entity_plural_label:        Products
+        entity_label:               Product
+        name.label:                 Name
+        sku.label:                  SKU
+        weight.label:               Weight (in Kg)
+        warranty.label:             Product Warranty
+        price.label:                Default price
+        status.label:               Status
+        cost.label:                 Cost
+        data.label:                 Data
+        type.label:                 Product Type
+        preferred_supplier.label:   Preferred Supplier
+        stock_level.label:          Total Stock
+        channel_prices.label:       Product Channel Prices
+        tax_code.label:             Tax Code
+        channels.label:             Sales Channels
+        sales_channel_tax_codes.label:  Sales Channel Tax Code
+        inventory_items.label:      Inventory Items
+        organization.label:         Organization
+        variant.label:              Variant
+        prices.label:               Product Prices
+        replenishment.label:        Replenishment
+        manufacturing_code.label:   Manufacturing Code
+        image.label:                Image
+        categories.label:           Categories
+        variant:
+            label:                    Variant
+            entity_plural_label:      Variants
+            entity_label:             Variant
+            id.label:                 Id
+            variant_code.label:       Variant code
+            products.label:           Products
+            selected_variants.label:  Selected Variants
+
+        productstatus:
+            entity_label:           Product Status
+            entity_plural_label:    Product Statuses
+            label.label:            Label
+            name.label:             Name
+
+        productchanneltaxrelation:
+            id.label:                           Id
+            entity_label:                       Product Channel Tax Code Relation
+            entity_plural_label:                Product Channel Tax Code Relations
+            widget_title:                       Sales Channel Tax Codes
+            product.label:                      Product
+            sales_channel.label:                Sales Channel
+            tax_code.label:                     Tax Code
+            form.add_productchanneltaxrelation: Add Sales Channel Tax Code
+
+
+        messages:
+            success:
+                product:
+                    saved:          Product saved
+                variant:
+                    saved:          Variant saved
+            error:
+                sku:                SKU already exists, please provide a unique SKU
+
+        sections:
+            general:                General Information
+            additional:             Additional
+
+        form.choose_product:        Select Product
+        form.add_product:           Add Product
+        form.add_variant:           Add Variant
+        form.add_supplier:          Add Supplier
+        product_information:        Product Information
+        create_variant.label:       Create Variant
+        add_variant.label:          Variants
+
+        navigation:
+            product.label:          Products
+
+        menu:
+            shortcut_new_product.label: Create new product
+            shortcut_new_product.description: Create new product instance
+            shortcut_list_products.label: Show product list
+            shortcut_list_products.description: List of products
+
+        ui:
+            duplicate: Duplicate
+            save_and_duplicate: Save And Duplicate
+            product.duplicated.message: Product has been duplicated
+            product.saved_and_duplicated.message: Product has been saved and duplicated

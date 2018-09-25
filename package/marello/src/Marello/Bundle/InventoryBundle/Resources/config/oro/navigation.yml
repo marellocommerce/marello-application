@@ -1,0 +1,45 @@
+navigation:
+    menu_config:
+        items:
+            warehouses:
+                label: marello.inventory.warehouse.entity_label
+                route: marello_inventory_warehouse_updatedefault
+                extras:
+                    routes: ['marello_inventory_warehouse_*']
+            inventory_management:
+                label: marello.inventory.management.menu.label
+                uri:  '#'
+                extras:
+                    position: 20
+            inventory:
+                label: marello.inventory.management.menu.label
+                route: marello_inventory_inventory_index
+                extras:
+                    routes: ['marello_inventory_inventory_*', 'marello_inventory_inventorylevel_*']
+                    position: 20
+
+            balanced_inventory:
+                label: marello.inventory.management.menu.balanced_inventory.label
+                route: marello_inventory_virtualinventorylevel_index
+                extras:
+                    routes: ['marello_inventory_virtualinventorylevel_index*']
+                    position: 30
+        tree:
+            application_menu:
+                children:
+                    system_tab:
+                        children:
+                            warehouses: ~
+                    products_tab:
+                        children:
+                            inventory_management:
+                                children:
+                                    inventory: ~
+                                    balanced_inventory: ~
+
+    titles:
+        marello_inventory_warehouse_updatedefault: 'Default Warehouse - Update'
+        marello_inventory_inventory_index: 'marello.inventory.label'
+        marello_inventory_inventory_update: 'Update Inventory'
+        marello_inventory_inventorylevel_index: 'marello.inventory.stocklevel.log.label'
+        marello_inventory_virtualinventorylevel_index: 'marello.inventory.management.menu.balanced_inventory.label'

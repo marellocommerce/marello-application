@@ -1,0 +1,67 @@
+services:
+    marello_return.form.type.return:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnType
+        arguments:
+            - '@marello_return.form.event_listener.return_type_subscriber'
+        tags:
+            - { name: form.type, alias: marello_return }
+
+    marello_return.form.type.return_update:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnUpdateType
+        tags:
+            - { name: form.type, alias: marello_return_update }
+
+    marello_return.form.type.return_api:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnApiType
+        arguments:
+            - '@marello_return.form.data_transformer.order_to_order_number'
+            - '@marello_order.form.data_transformer.sales_channel_to_id'
+        tags:
+            - { name: form.type, alias: marello_return_api }
+
+    marello_return.form.type.return_item:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemType
+        tags:
+            - { name: form.type, alias: marello_return_item }
+        arguments:
+            - '@marello_return.form.event_listener.return_item_type_subscriber'
+
+    marello_return.form.type.return_item_api:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemApiType
+        tags:
+            - { name: form.type, alias: marello_return_item_api }
+
+    marello_return.form.type.return_item_collection:
+        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemCollectionType
+        tags:
+            - { name: form.type, alias: marello_return_item_collection }
+
+    marello_return.form.event_listener.return_type_subscriber:
+        class: Marello\Bundle\ReturnBundle\Form\EventListener\ReturnTypeSubscriber
+
+    marello_return.form.event_listener.return_item_type_subscriber:
+        class: Marello\Bundle\ReturnBundle\Form\EventListener\ReturnItemTypeSubscriber
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    marello_return.form.return_api:
+        class: Symfony\Component\Form\Form
+        factory: ["@form.factory", createNamed]
+        scope: request
+        arguments:
+            - ~
+            - 'marello_return_api'
+
+    marello_return.form.handler.return_api:
+        class: Marello\Bundle\ReturnBundle\Form\Handler\ReturnApiHandler
+        scope: request
+        arguments:
+            - '@marello_return.form.return_api'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_entity.routing_helper'
+
+    marello_return.form.data_transformer.order_to_order_number:
+        class: Marello\Bundle\ReturnBundle\Form\DataTransformer\OrderToOrderNumberTransformer
+        arguments:
+            - '@doctrine.orm.entity_manager'

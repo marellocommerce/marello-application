@@ -1,0 +1,19 @@
+data:
+      type: marelloproducts
+      id: 'my-sku'
+      attributes:
+          name: 'My name'
+      relationships:
+          saleschannels:
+              data:
+                  -
+                      type: marellosaleschannels
+                      id: '<toString(@channel1->code)>'
+          productstatus:
+              data:
+                  type: marelloproductstatuses
+                  id: 'enabled'
+          taxcode:
+              data:
+                  type: marellotaxcodes
+                  id: '<toString(@product1->taxCode->code)>'

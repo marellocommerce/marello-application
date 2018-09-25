@@ -1,0 +1,5 @@
+data:
+      type: marellovirtualinventorylevels
+      attributes:
+          inventory: 20
+          balancedInventory: 20

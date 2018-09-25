@@ -1,0 +1,14 @@
+marello:
+    tax:
+        taxcode:
+            action:
+                delete:
+                    content: Are you sure you want to delete this Tax Code?
+        taxrate:
+            action:
+                delete:
+                    content: Are you sure you want to delete this Tax Rate?
+        taxrule:
+            action:
+                delete:
+                    content: Are you sure you want to delete this Tax Rule?

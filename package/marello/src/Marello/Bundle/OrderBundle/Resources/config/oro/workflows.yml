@@ -1,0 +1,367 @@
+workflows:
+    marello_order_b2c_workflow_1:
+        entity:       Marello\Bundle\OrderBundle\Entity\Order
+        entity_attribute: order
+        start_step:   pending
+        exclusive_active_groups: [order_b2c]
+        defaults:
+            active: true
+
+        attributes:
+            payment_reference:
+                type: string
+            payment_details:
+                type: string
+            invoiced_at:
+                type: object
+                options:
+                    class: \DateTime
+            note:
+                type: string
+        steps:
+            pending:
+                allowed_transitions:
+                    - payment_reminder
+                    - invoice
+                    - hold_pending
+                    - cancel
+            cancelled:
+                allowed_transitions: []
+            pending_on_hold:
+                allowed_transitions:
+                    - un_hold_pending
+            invoice_on_hold:
+                allowed_transitions:
+                    - un_hold_invoice
+            invoice:
+                allowed_transitions:
+                    - hold_invoice
+                    - credit
+                    - prepare_shipping
+            credit:
+                allowed_transitions: []
+            pick_and_pack:
+                allowed_transitions:
+                    - ship
+            shipped:
+                allowed_transitions: []
+
+        transitions:
+            cancel:
+                step_to:  cancelled
+                transition_definition: cancel_definition
+            hold_pending:
+                step_to:  pending_on_hold
+                transition_definition: hold_definition
+                form_options:
+                    attribute_fields:
+                        note:
+                            form_type: textarea
+                            options:
+                                required: false
+            un_hold_pending:
+                step_to:  pending
+                transition_definition: un_hold_definition
+            hold_invoice:
+                step_to:  invoice_on_hold
+                transition_definition: hold_definition
+                form_options:
+                    attribute_fields:
+                        note:
+                            form_type: textarea
+                            options:
+                                required: false
+            un_hold_invoice:
+                step_to:  invoice
+                transition_definition: un_hold_definition
+            invoice:
+                step_to:  invoice
+                transition_definition: invoice_definition
+                form_options:
+                    attribute_fields:
+                        payment_reference:
+                            form_type: text
+                            options:
+                                required: true
+                                constraints:
+                                  - NotBlank: ~
+                        payment_details:
+                            form_type: text
+                            options:
+                                required: true
+                                constraints:
+                                  - NotBlank: ~
+                        invoiced_at:
+                            form_type: oro_datetime
+                            options:
+                                required: true
+                                constraints:
+                                  - NotBlank: ~
+                                  - DateTime: ~
+            ship:
+                step_to:  shipped
+                transition_definition: ship_definition
+            credit:
+                step_to:  credit
+                transition_definition: credit_definition
+            prepare_shipping:
+                step_to:  pick_and_pack
+                transition_definition: prepare_shipping_definition
+            payment_reminder:
+                step_to:  pending
+                transition_definition: payment_reminder_definition
+
+        transition_definitions:
+            cancel_definition:
+                conditions:
+                    '@and':
+                        - '@sales_channel_has_valid_integration':
+                            salesChannel: $order.salesChannel
+                actions:
+                    - '@extendable':
+                        events: [extendable_action.order_cancel]
+                post_actions:
+                    - @marello_cancel_order: ~
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.customer.email
+                        template: marello_order_cancelled
+            hold_definition: []
+            un_hold_definition: []
+            invoice_definition:
+                conditions:
+                    '@and':
+                        - '@sales_channel_has_valid_integration':
+                            salesChannel: $order.salesChannel
+                post_actions:
+                    - @assign_value:
+                        attribute: $order.paymentReference
+                        value: $payment_reference
+                    - @assign_value:
+                        attribute: $order.paymentDetails
+                        value: $payment_details
+                    - @assign_value:
+                        attribute: $order.invoicedAt
+                        value: $invoiced_at
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.customer.email
+                        template: marello_order_invoiced
+                    - '@extendable':
+                        events: [extendable_action.order_paid]
+            credit_definition:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.customer.email
+                        template: marello_order_credited
+            prepare_shipping_definition:
+                conditions:
+                    '@and':
+                        - '@not_empty': $order.shippingAddress.country
+                        - '@not_empty': $order.shippingAddress.postalCode
+                        - '@not_empty': $order.shippingAddress.city
+                        - '@not_empty': $order.shippingAddress.street
+                post_actions:
+                    - '@call_service_method':
+                        service: marello_order.factory.shipping_context
+                        method: create
+                        method_parameters: [$order]
+                        attribute: $.result.orderShippingContext
+                    - @marello_shipment_create:
+                        context: $.result.orderShippingContext
+                        method: $order.shippingMethod
+                        methodType: $order.shippingMethodType
+                    - '@extendable':
+                       events: [extendable_action.create_packingslip]
+                    - @marello_pick_pack_order: ~
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.customer.email
+                        template: marello_order_shipping_prepared
+            ship_definition:
+                conditions:
+                    '@and':
+                        - '@not_empty': $order.shippingAddress.country
+                        - '@not_empty': $order.shippingAddress.postalCode
+                        - '@not_empty': $order.shippingAddress.city
+                        - '@not_empty': $order.shippingAddress.street
+                        - '@sales_channel_has_valid_integration':
+                            salesChannel: $order.salesChannel
+                post_actions:
+                    - @marello_ship_order: ~
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.customer.email
+                        template: marello_order_shipped_confirmation
+                    - '@extendable':
+                       events: [extendable_action.order_shipped]
+            payment_reminder_definition:
+                post_actions:
+                    - @marello_notification_send:
+                        entity: $order
+                        recipient: $order.customer.email
+                        template: marello_order_payment_reminder
+                    - @flash_message:
+                        message: 'Reminder has been sent.'
+#
+#    marello_order_b2c_workflow_2:
+#        entity:       Marello\Bundle\OrderBundle\Entity\Order
+#        entity_attribute: order
+#        exclusive_active_groups: [order_b2c]
+#        start_step:   pending
+#        attributes:
+#            payment_reference:
+#                type: string
+#            payment_details:
+#                type: string
+#            invoiced_at:
+#                type: object
+#                options:
+#                    class: \DateTime
+#            note:
+#                type: string
+#        steps:
+#            pending:
+#                allowed_transitions:
+#                    - payment_reminder
+#                    - prepare_shipping
+#                    - hold_pending
+#                    - cancel
+#            cancelled:
+#                allowed_transitions: []
+#            pending_on_hold:
+#                allowed_transitions:
+#                    - un_hold_pending
+#            shipped_on_hold:
+#                allowed_transitions:
+#                    - un_hold_shipped
+#            invoice:
+#                allowed_transitions:
+#                    - credit
+#            credit:
+#                allowed_transitions: []
+#            pick_and_pack:
+#                allowed_transitions:
+#                    - ship
+#            shipped:
+#                allowed_transitions:
+#                    - invoice
+#                    - hold_shipped
+#
+#        transitions:
+#            cancel:
+#                step_to:  cancelled
+#                transition_definition: cancel_definition
+#            hold_pending:
+#                step_to:  pending_on_hold
+#                transition_definition: hold_definition
+#                form_options:
+#                    attribute_fields:
+#                        note:
+#                            form_type: textarea
+#                            options:
+#                                required: false
+#            un_hold_pending:
+#                step_to:  pending
+#                transition_definition: un_hold_definition
+#            hold_shipped:
+#                step_to:  shipped_on_hold
+#                transition_definition: hold_definition
+#                form_options:
+#                    attribute_fields:
+#                        note:
+#                            form_type: textarea
+#                            options:
+#                                required: false
+#            un_hold_shipped:
+#                step_to:  shipped
+#                transition_definition: un_hold_definition
+#            invoice:
+#                step_to:  invoice
+#                transition_definition: invoice_definition
+#                form_options:
+#                    attribute_fields:
+#                        payment_reference:
+#                            form_type: text
+#                            options:
+#                                required: true
+#                                constraints:
+#                                  - NotBlank: ~
+#                        payment_details:
+#                            form_type: text
+#                            options:
+#                                required: true
+#                                constraints:
+#                                  - NotBlank: ~
+#                        invoiced_at:
+#                            form_type: oro_datetime
+#                            options:
+#                                required: true
+#                                constraints:
+#                                  - NotBlank: ~
+#                                  - DateTime: ~
+#            ship:
+#                step_to:  shipped
+#                transition_definition: ship_definition
+#            credit:
+#                step_to:  credit
+#                transition_definition: credit_definition
+#            prepare_shipping:
+#                step_to:  pick_and_pack
+#                transition_definition: prepare_shipping_definition
+#            payment_reminder:
+#                step_to:  pending
+#                transition_definition: payment_reminder_definition
+#
+#        transition_definitions:
+#            cancel_definition:
+#                post_actions:
+#                    - @marello_cancel_order: ~
+#                    - @marello_notification_send:
+#                        entity: $order
+#                        recipient: $order.customer.email
+#                        template: marello_order_cancelled
+#            hold_definition: []
+#            un_hold_definition: []
+#            invoice_definition:
+#                post_actions:
+#                    - @assign_value:
+#                        attribute: $order.paymentReference
+#                        value: payment_reference
+#                    - @assign_value:
+#                        attribute: $order.paymentDetails
+#                        value: payment_details
+#                    - @assign_value:
+#                        attribute: $order.invoicedAt
+#                        value: invoiced_at
+#                    - @marello_notification_send:
+#                        entity: $order
+#                        recipient: $order.customer.email
+#                        template: marello_order_invoiced
+#            credit_definition:
+#                post_actions:
+#                    - @marello_notification_send:
+#                        entity: $order
+#                        recipient: $order.customer.email
+#                        template: marello_order_credited
+#            ship_definition:
+#                post_actions:
+#                    - @marello_ship_order: ~
+#                    - @marello_notification_send:
+#                        entity: $order
+#                        recipient: $order.customer.email
+#                        template: marello_order_shipped_confirmation
+#            prepare_shipping_definition:
+#                post_actions:
+#                    - @marello_shipment_create:
+#                        entity: $order
+#                        service: $order.shippingMethod
+#            payment_reminder_definition:
+#                post_actions:
+#                    - @marello_notification_send:
+#                        entity: $order
+#                        recipient: $order.customer.email
+#                        template: marello_order_payment_reminder
+#                    - @flash_message:
+#                        message: 'Reminder has been sent.'

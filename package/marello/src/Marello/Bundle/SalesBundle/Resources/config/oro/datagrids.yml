@@ -1,0 +1,173 @@
+datagrids:
+    marello-sales-channel:
+        source:
+            type: orm
+            query:
+                select:
+                    - sc
+                from:
+                    - { table: MarelloSalesBundle:SalesChannel, alias: sc }
+        columns:
+            name:
+                label:                marello.sales.saleschannel.name.label
+                frontend_type:        string
+            code:
+                label:                marello.sales.saleschannel.code.label
+                frontend_type:        string
+            channelType:
+                label:                marello.sales.saleschannel.channel_type.label
+                frontend_type:        string
+            currency:
+                label:                marello.sales.saleschannel.currency.label
+                frontend_type:        string
+            active:
+                label:                marello.sales.saleschannel.active.label
+                frontend_type:        boolean
+            default:
+                label:                marello.sales.saleschannel.default.label
+                frontend_type:        boolean
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: sc.name
+                code:
+                    type: string
+                    data_name: sc.code
+                channelType:
+                    type: string
+                    data_name: sc.channelType
+                currency:
+                    type: string
+                    data_name: sc.currency
+                active:
+                    type: boolean
+                    data_name: sc.active
+                default:
+                    type: boolean
+                    data_name: sc.default
+        sorters:
+            columns:
+                name:
+                    data_name: sc.name
+                code:
+                    data_name: sc.code
+                channelType:
+                    data_name: sc.channelType
+                currency:
+                    data_name: sc.currency
+                active:
+                    data_name: sc.active
+                default:
+                    data_name: sc.default
+            default:
+                name: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC"
+        properties:
+            id: ~
+            view_link:
+                type:   url
+                route:  marello_sales_saleschannel_view
+                params: [ id ]
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_resource:   marello_sales_saleschannel_view
+                rowAction:      true
+        options:
+            entityHint: sales_channel
+            entity_pagination: true
+
+    marello-sales-channel-groups:
+        source:
+            type: orm
+            query:
+                select:
+                    - scg
+                from:
+                    - { table: MarelloSalesBundle:SalesChannelGroup, alias: scg }
+                join:
+                    left:
+                        - { join: scg.salesChannels, alias: sc }
+                where:
+                    and:
+                        - scg.system != true
+        columns:
+            name:
+                label:                marello.sales.saleschannelgroup.name.label
+                frontend_type:        string
+            description:
+                label:                marello.sales.saleschannelgroup.description.label
+                frontend_type:        string
+            salesChannels:
+                label:                marello.sales.saleschannelgroup.sales_channels.label
+                type:                 twig
+                frontend_type:        html
+                template:             MarelloSalesBundle:SalesChannelGroup/Datagrid:salesChannels.html.twig
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: sc.name
+        sorters:
+            columns:
+                name:
+                    data_name: scg.name
+                description:
+                    data_name: sc.description
+        properties:
+            id: ~
+            view_link:
+                type:   url
+                route:  marello_sales_saleschannelgroup_view
+                params: [ id ]
+            update_link:
+                type:   url
+                route:  marello_sales_saleschannelgroup_update
+                params: [ id ]
+            delete_link:
+                type:   url
+                route:  marello_sales_api_delete_saleschannelgroup
+                params: [ id ]
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_resource:   marello_sales_saleschannelgroup_view
+                rowAction:      true
+            update:
+                type:           navigate
+                label:          oro.grid.action.update
+                link:           update_link
+                icon:           edit
+                acl_resource:   marello_sales_saleschannelgroup_update
+                rowAction:      true
+            delete:
+                type:           delete
+                label:          oro.grid.action.delete
+                link:           delete_link
+                icon:           trash
+                rowAction:      true
+                confirmation:   true
+        action_configuration: ['@marello_sales.datagrid.saleschannelgroup.action_permission_provider', "getActionPermissions"]
+        options:
+            entity_pagination: true
+
+    marello-group-sales-channels:
+        extends: marello-sales-channel
+        source:
+            query:
+                join:
+                    left:
+                        - { join: sc.group, alias: scg }
+                where:
+                    and:
+                        - scg.id = :id
+            bind_parameters:
+                - id
+        filters: ~
+        actions: ~

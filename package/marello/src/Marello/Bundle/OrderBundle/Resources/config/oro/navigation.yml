@@ -1,0 +1,59 @@
+navigation:
+    menu_config:
+        items:
+            customers_tab:
+                label: marello.order.navigation.customers.label
+                uri: '#'
+                extras:
+                    icon: fa-users
+                    position: 40
+
+            customers:
+                label: marello.order.customer.entity_plural_label
+                route: marello_order_customer_index
+                extras:
+                    routes: ['marello_order_customer_*']
+                    position: 10
+
+            orders:
+                label: marello.order.entity_plural_label
+                route: marello_order_order_index
+                extras:
+                    routes: ['marello_order_order_*']
+                    position: 10
+
+            shortcut_new_order:
+                label: 'marello.order.menu.shortcut_new_order.label'
+                route: 'marello_order_order_create'
+                extras:
+                    description: 'marello.order.menu.shortcut_new_order.description'
+                    isCustomAction: true
+
+            shortcut_list_orders:
+                label: 'marello.order.menu.shortcut_list_orders.label'
+                route: 'marello_order_order_index'
+                extras:
+                    description: 'marello.order.menu.shortcut_list_orders.description'
+                    isCustomAction: true
+
+        tree:
+            application_menu:
+                children:
+                    sales_tab:
+                        children:
+                            orders: ~
+                    customers_tab:
+                        children:
+                            customers: ~
+            shortcuts:
+                children:
+                    shortcut_new_order: ~
+                    shortcut_list_orders: ~
+
+    titles:
+        marello_order_order_index: marello.order.entity_plural_label
+        marello_order_order_view: 'Order #%id%'
+        marello_order_order_update: 'Order #%id% - Update'
+        marello_order_order_create: 'New order'
+        marello_order_customer_index: marello.order.customer.entity_plural_label
+        marello_order_customer_view: 'Customer - %name%'

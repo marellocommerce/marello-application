@@ -1,0 +1,14 @@
+services:
+    marello_ups.form.type.transport_settings:
+        class: 'Marello\Bundle\UPSBundle\Form\Type\UPSTransportSettingsType'
+        arguments:
+            - "@marello_ups.provider.transport"
+        tags:
+            - { name: form.type, alias: marello_ups_transport_settings_type }
+
+    marello_ups.form.type.shipping_method_config_options:
+        class: Marello\Bundle\UPSBundle\Form\Type\UPSShippingMethodOptionsType
+        arguments:
+            - '@oro_currency.rounding.price_rounding_service'
+        tags:
+            - { name: form.type }

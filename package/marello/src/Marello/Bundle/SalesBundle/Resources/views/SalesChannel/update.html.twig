@@ -1,0 +1,67 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% oro_title_set({params : {'%name%': entity.name, '%entityName%': 'marello.sales.saleschannel.entity_label'|trans }}) %}
+
+{% if form.vars.value.id %}
+    {% set formAction = path('marello_sales_saleschannel_update', { 'id': form.vars.value.id }) %}
+{% else %}
+    {% set formAction = path('marello_sales_saleschannel_create') %}
+{% endif %}
+
+{% block navButtons %}
+    {{ parent() }}
+
+    {{ UI.cancelButton(path('marello_sales_saleschannel_index')) }}
+    {% if entity.id and resource_granted('marello_sales_saleschannel_update') or resource_granted('marello_sales_saleschannel_create') %}
+        {% set html = '' %}
+        {% if resource_granted('marello_sales_saleschannel_view') %}
+            {% set html = UI.saveAndCloseButton({
+            'route': 'marello_sales_saleschannel_view',
+            'params': {'id': '$id'}
+            }) %}
+        {% endif %}
+        {% set html = html ~ UI.saveAndStayButton({
+        'route': 'marello_sales_saleschannel_update',
+        'params': {'id': '$id'}
+        }) %}
+
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
+{% endblock %}
+
+{% block pageHeader %}
+    {% if form.vars.value.id %}
+        {% set breadcrumbs = {
+        'entity':      form.vars.value,
+        'indexPath':   path('marello_sales_saleschannel_index'),
+        'indexLabel': 'marello.sales.saleschannel.entity_plural_label'|trans,
+        'entityTitle': form.vars.value.name
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.sales.saleschannel.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-saleschannel-update' %}
+
+    {% set dataBlocks = [{
+    'title': 'General'|trans,
+    'class': 'active',
+        'subblocks': [{
+            'title': '',
+            'formErrors': form_errors(form)? form_errors(form) : null,
+            'data': [
+                form_rest(form)
+            ]
+        }]
+    }]
+    %}
+    {% set data = {
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

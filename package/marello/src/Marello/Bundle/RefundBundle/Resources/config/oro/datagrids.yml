@@ -1,0 +1,256 @@
+datagrids:
+    marello-refund:
+        source:
+            type: orm
+            query:
+                select:
+                    - r
+                from:
+                    - { table: MarelloRefundBundle:Refund, alias: r }
+        columns:
+            refundNumber:
+                label: marello.refund.refund_number.label
+                frontend_type: string
+            customer:
+                label: marello.order.customer.entity_label
+                frontend_type: string
+            orderNumber:
+                data_name: order.orderNumber
+                label: marello.order.order_number.label
+                type: twig
+                frontend_type: html
+                template: MarelloOrderBundle:Order:Datagrid/Property/orderNumber.html.twig
+            orderReference:
+                data_name: order.orderReference
+                label: marello.order.order_reference.label
+                frontend_type:    string
+            refundAmount:
+                label:            marello.refund.refund_amount.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            createdAt:
+                label: oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label: oro.ui.updated_at
+                frontend_type: datetime
+        sorters:
+            columns:
+                refundNumber:
+                    data_name: r.refundNumber
+                orderNumber:
+                    data_name: order.orderNumber
+                orderReference:
+                    data_name: order.orderReference
+                createdAt:
+                    data_name: r.createdAt
+                updatedAt:
+                    data_name: r.updatedAt
+            default:
+                refundNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        filters:
+            columns:
+                refundNumber:
+                    type: string
+                    data_name: r.refundNumber
+                orderNumber:
+                    type: string
+                    data_name: order.orderNumber
+                orderReference:
+                    type: number
+                    data_name: order.orderReference
+                createdAt:
+                    type: datetime
+                    data_name: r.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: r.updatedAt
+        properties:
+            view_link:
+                type:   url
+                route:  marello_refund_view
+                params:
+                    id: id
+            update_link:
+                type:   url
+                route:  marello_refund_update
+                params:
+                    id: id
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_recource:   marello_refund_view
+                rowAction:      true
+            update:
+                type:           navigate
+                acl_resource:   marello_refund_update
+                label:          oro.grid.action.update
+                icon:           edit
+                link:           update_link
+
+    marello-refund-customer:
+        source:
+            type: orm
+            query:
+                select:
+                    - r
+                from:
+                    - { table: MarelloRefundBundle:Refund, alias: r }
+                where:
+                    and:
+                        - r.customer = :customer_id
+            bind_parameters:
+                customer_id: customerId
+        columns:
+            refundNumber:
+                label: marello.refund.refund_number.label
+                frontend_type: string
+            orderNumber:
+                data_name: order.orderNumber
+                label: marello.order.order_number.label
+                type: twig
+                frontend_type: html
+                template: MarelloOrderBundle:Order:Datagrid/Property/orderNumber.html.twig
+            orderReference:
+                data_name: order.orderReference
+                label: marello.order.order_reference.label
+                frontend_type:    string
+            refundAmount:
+                label:            marello.refund.refund_amount.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            createdAt:
+                label: oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label: oro.ui.updated_at
+                frontend_type: datetime
+        sorters:
+            columns:
+                refundNumber:
+                    data_name: r.refundNumber
+                orderNumber:
+                    data_name: order.orderNumber
+                orderReference:
+                    data_name: order.orderReference
+                createdAt:
+                    data_name: r.createdAt
+                updatedAt:
+                    data_name: r.updatedAt
+            default:
+                refundNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        filters:
+            columns:
+                refundNumber:
+                    type: string
+                    data_name: r.refundNumber
+                orderNumber:
+                    type: string
+                    data_name: order.orderNumber
+                orderReference:
+                    type: number
+                    data_name: order.orderReference
+                createdAt:
+                    type: datetime
+                    data_name: r.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: r.updatedAt
+        properties:
+            view_link:
+                type:   url
+                route:  marello_refund_view
+                params:
+                    id: id
+            update_link:
+                type:   url
+                route:  marello_refund_update
+                params:
+                    id: id
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_recource:   marello_refund_view
+                rowAction:      true
+            update:
+                type:           navigate
+                acl_resource:   marello_refund_update
+                label:          oro.grid.action.update
+                icon:           edit
+                link:           update_link
+        options:
+            export: false
+            toolbarOptions:
+                hide: true
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
+
+    marello-refund-additional-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - i
+                from:
+                    - { table: MarelloRefundBundle:RefundItem, alias: i}
+                where:
+                    and:
+                        - i.refund = :refund_id
+                        - i.orderItem IS NULL
+            bind_parameters:
+                refund_id: refundId
+        columns:
+            name:
+                label:      marello.refund.refunditem.name.label
+            refundAmount:
+                label:              marello.refund.refunditem.refund_amount.label
+                type:               localized_number
+                method:             formatCurrency
+                context_resolver:   Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+
+    marello-refund-ordered-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - i
+                from:
+                    - { table: MarelloRefundBundle:RefundItem, alias: i}
+                join:
+                    left:
+                        orderItem:
+                            join: i.orderItem
+                            alias: oi
+                where:
+                    and:
+                        - i.refund = :refund_id
+                        - i.orderItem IS NOT NULL
+            bind_parameters:
+                refund_id: refundId
+        columns:
+            sku:
+                label: marello.product.sku.label
+                data_name: orderItem.productSku
+            product:
+                label: marello.product.name.label
+                data_name: orderItem.productName
+            quantity:
+                label: marello.refund.refunditem.quantity.label
+                frontend_type: number
+            refundAmount:
+                label:              marello.refund.refunditem.refund_amount.label
+                type:               localized_number
+                method:             formatCurrency
+                context_resolver:   Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+

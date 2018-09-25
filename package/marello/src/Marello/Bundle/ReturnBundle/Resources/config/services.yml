@@ -1,0 +1,82 @@
+parameters:
+    marello_return.entity.return.class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
+
+services:
+    marello_return.manager.return.api:
+        class: Marello\Bundle\ReturnBundle\Entity\Manager\ReturnApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %marello_return.entity.return.class%
+            - '@doctrine.orm.entity_manager'
+        calls:
+            - [setEntitySerializer, ['@marello_core.entity_serializer']]
+
+    marello_return.util.return_helper:
+        class: Marello\Bundle\ReturnBundle\Util\ReturnHelper
+
+    marello_return.twig.return_extension:
+        class: Marello\Bundle\ReturnBundle\Twig\ReturnExtension
+        arguments:
+            - '@marello_return.util.return_helper'
+            - '@oro_workflow.manager'
+        tags:
+            - { name: twig.extension }
+
+    marello_return.email_processor_link:
+        tags:
+            - { name: oro_service_link, service: marello_notification.email.send_processor }
+
+    marello_return.listener.return_created_notification_sender:
+        class: Marello\Bundle\ReturnBundle\EventListener\ReturnCreatedNotificationSender
+        arguments:
+            - '@marello_return.email_processor_link'
+            - '@oro_config.manager'
+        tags:
+            - { name: kernel.event_listener, event: 'marello.core.derived_property_set', method: derivedPropertySet }
+
+    marello_return.manager.return_businessrule_registry:
+        class: Marello\Bundle\ReturnBundle\Manager\ReturnBusinessRuleRegistry
+        arguments:
+            - '@service_container'
+
+    marello_return.manager.businessrule_manager:
+        class: Marello\Bundle\ReturnBundle\Manager\BusinessRuleManager
+        arguments:
+            - '@marello_return.manager.return_businessrule_registry'
+
+    marello_return.manager.rules.businessrule.marello_ror_warranty:
+        class: Marello\Bundle\ReturnBundle\Manager\Rules\MarelloRorWarranty
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@oro_config.manager'
+        tags:
+            - { name: marello_return.manager.rules.businessrule, alias: marello_ror_warranty }
+
+    marello_return.manager.rules.businessrule.marello_product_warranty:
+        class: Marello\Bundle\ReturnBundle\Manager\Rules\MarelloProductWarranty
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@oro_config.manager'
+        tags:
+            - { name: marello_return.manager.rules.businessrule, alias: marello_product_warranty }
+
+    marello_return.provider.return_notification_configuration:
+        class: Marello\Bundle\ReturnBundle\Provider\ReturnNotificationConfigurationProvider
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: marello_entity_notification_configuration_provider, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
+
+    marello_return.api.add_workflow_item_config:
+        class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowItemConfig'
+        tags:
+            - { name: oro.api.processor, action: get_config,  class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
+
+    marello_return.api.add_workflow_item:
+        class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowItem'
+        arguments:
+            - '@oro_workflow.manager'
+            - '@oro_entity.doctrine_helper'
+            - '@translator.default'
+        tags:
+            - { name: oro.api.processor, action: customize_loaded_data,  class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }

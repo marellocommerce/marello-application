@@ -1,0 +1,52 @@
+data:
+    -
+        type: categories
+        id: '<toString(@category1->id)>'
+        attributes:
+            name: 'category with multiple products'
+            code: category_1
+            description: null
+        relationships:
+            products:
+                data:
+                    -
+                        type: marelloproducts
+                        id: p1
+                    -
+                        type: marelloproducts
+                        id: p2
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: categories
+        id: '<toString(@category2->id)>'
+        attributes:
+            name: 'category with a single product'
+            code: category_2
+            description: null
+        relationships:
+            products:
+                data:
+                    -
+                        type: marelloproducts
+                        id: p3
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+    -
+        type: categories
+        id: '<toString(@category3->id)>'
+        attributes:
+            name: 'category without products'
+            code: category_3
+            description: null
+        relationships:
+            products:
+                data: []
+            organization:
+                data:
+                    type: organizations
+                    id: '1'

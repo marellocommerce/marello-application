@@ -1,0 +1,19 @@
+search:
+    Marello\Bundle\ProductBundle\Entity\Product:
+        alias: marello_product
+        label: marello.product.entity_plural_label
+        title_fields: [name]
+        route:
+            name: marello_product_view
+            parameters:
+                id: id
+        search_template: MarelloProductBundle:Product:searchResult.html.twig
+        fields:
+            -
+                name: name
+                target_type: text
+                target_fields: [name]
+            -
+                name: sku
+                target_type: text
+                target_fields: [sku]

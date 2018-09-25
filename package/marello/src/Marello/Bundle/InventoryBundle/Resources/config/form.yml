@@ -1,0 +1,52 @@
+services:
+    marello_inventory.form.type.warehouse:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\WarehouseType'
+        tags:
+            - { name: form.type, alias: marello_warehouse }
+
+    marello_inventory.form.type.inventory_item:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType'
+        tags:
+             - { name: form.type, alias: marello_inventory_item }
+
+    marello_inventory.form.type.variant_inventory:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\VariantInventoryType'
+        tags:
+             - { name: form.type, alias: marello_variant_inventory }
+
+    marello_inventory.form.type.inventory_inventorylevel_collection:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelCollectionType'
+        tags:
+            - { name: form.type, alias: marello_inventory_inventorylevel_collection }
+
+    marello_inventory.form.inventory_item_update_api_transformer:
+        class: 'Marello\Bundle\InventoryBundle\Form\DataTransformer\InventoryItemUpdateApiTransformer'
+        arguments:
+            - '@event_dispatcher'
+
+    marello_inventory.form.type.inventory_inventorylevel:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelType'
+        arguments:
+            - '@marello_inventory.form.event_listener.inventory_level_subscriber'
+        tags:
+            - { name: form.type, alias: marello_inventory_inventorylevel }
+
+    marello_inventory.form.type.inventory_item_api:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\InventoryItemApiType'
+        arguments:
+            - '@marello_inventory.form.inventory_item_update_api_transformer'
+        tags:
+            - { name: form.type, alias: marello_inventory_item_api }
+
+    marello_inventory.form.event_listener.inventory_level_subscriber:
+        class: 'Marello\Bundle\InventoryBundle\Form\EventListener\InventoryLevelSubscriber'
+        arguments:
+            - '@marello_inventory.model.inventory_level_calculator'
+            - '@event_dispatcher'
+
+    marello_inventory.form.type.inventory_balancer_strategy_choice:
+        class: 'Marello\Bundle\InventoryBundle\Form\Type\BalancerStrategyChoiceType'
+        arguments:
+            - '@marello_inventory.provider.balancer.balancing_strategy_choices_provider'
+        tags:
+            - { name: form.type, alias: marello_inventory_balancer_strategy_choice }

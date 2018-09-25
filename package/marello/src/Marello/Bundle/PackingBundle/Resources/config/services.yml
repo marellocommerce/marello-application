@@ -1,0 +1,22 @@
+services:
+    marello_packing.mapper.order_to_packingslip:
+        class: 'Marello\Bundle\PackingBundle\Mapper\OrderToPackingSlipMapper'
+        arguments:
+            - '@oro_entity.entity_field_provider'
+            - '@property_accessor'
+            - '@marello_inventory.provider.order_warehouse'
+
+    marello_packing.event_listener.create_packing_slip:
+        class: 'Marello\Bundle\PackingBundle\EventListener\CreatePackingSlipEventListener'
+        arguments:
+            - '@marello_packing.mapper.order_to_packingslip'
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: extendable_action.create_packingslip, method: onCreatePackingSlip, priority: 10 }
+
+    marello_packing.listener.datagrid.packing_slip_grid_address_filter_listener:
+        class: Marello\Bundle\PackingBundle\EventListener\Datagrid\GridAddressFilterListener
+        arguments:
+            - '@oro_locale.dql.formatter.name'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-packingslips, method: onBuildBefore }

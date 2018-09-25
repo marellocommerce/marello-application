@@ -1,0 +1,70 @@
+data:
+    type: marelloorders
+    id: '<toString(@marello_order_1->id)>'
+    attributes:
+        orderNumber: '000000002'
+        orderReference: '300000896'
+        invoiceReference: null
+        subtotal: '1501.0000'
+        totalTax: '260.5040'
+        grandTotal: '1511.0000'
+        currency: GBP
+        paymentMethod: Paypal
+        paymentReference: null
+        paymentDetails: null
+        shippingAmountInclTax: '10.0000'
+        shippingAmountExclTax: '10.0000'
+        shippingMethod: null
+        shippingMethodType: null
+        estimatedShippingCostAmount: null
+        overriddenShippingCostAmount: null
+        discountAmount: null
+        discountPercent: null
+        couponCode: null
+        invoicedAt: null
+        salesChannelName: channel3
+        purchaseDate: '2018-09-14T11:38:09Z'
+        data: []
+        locale: null
+        workflowItem:
+            id: 2
+            currentStep:
+                name: pending
+                label: 'Pending Order'
+    relationships:
+        items:
+            data:
+                -
+                    type: marelloorderitems
+                    id: '2'
+                -
+                    type: marelloorderitems
+                    id: '3'
+                -
+                    type: marelloorderitems
+                    id: '4'
+                -
+                    type: marelloorderitems
+                    id: '5'
+        customer:
+            data:
+                type: marellocustomers
+                id: '<toString(@customer1->id)>'
+        billingAddress:
+            data:
+                type: marelloaddresses
+                id: '28'
+        shippingAddress:
+            data:
+                type: marelloaddresses
+                id: '28'
+        salesChannel:
+            data:
+                type: marellosaleschannels
+                id: chan_gbp
+        localization:
+            data: null
+        organization:
+            data:
+                type: organizations
+                id: '1'

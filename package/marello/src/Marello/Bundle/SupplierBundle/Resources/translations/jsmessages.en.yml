@@ -1,0 +1,5 @@
+marello:
+    supplier:
+        action:
+            delete:
+                content: Deleting this supplier will remove the supplier from all linked products, are you sure you want to delete this supplier?

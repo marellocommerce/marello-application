@@ -1,0 +1,20 @@
+acls:
+    marello_inventory_warehouse_update:
+        type:       entity
+        class:      MarelloInventoryBundle:Warehouse
+        permission: EDIT
+
+    marello_inventory_product_stock_modify:
+        type:       entity
+        class:      MarelloInventoryBundle:InventoryItem
+        permission: EDIT
+
+    marello_inventory_product_stock_view:
+        type:       entity
+        class:      MarelloInventoryBundle:InventoryItem
+        permission: VIEW
+
+    marello_inventory_inventory_recalculate_update:
+        type:       entity
+        class:      MarelloInventoryBundle:VirtualInventoryLevel
+        permission: EDIT

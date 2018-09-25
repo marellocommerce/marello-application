@@ -1,0 +1,149 @@
+parameters:
+    marello_tax.taxcode.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxCode
+    marello_tax.taxrate.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxRate
+    marello_tax.taxrule.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxRule
+    marello_tax.taxjurisdiction.entity.class:  Marello\Bundle\TaxBundle\Entity\TaxJurisdiction
+    marello_tax.zipcode.entity.class:  Marello\Bundle\TaxBundle\Entity\ZipCode
+
+services:
+    ## forms
+    marello_tax.form.type.tax_code:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxCodeType
+        tags:
+            - { name: form.type, alias: marello_tax_code_form }
+
+    marello_tax.form.type.tax_rate:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxRateType
+        tags:
+            - { name: form.type, alias: marello_tax_rate_form }
+
+    marello_tax.form.type.tax_rate_select:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxRateSelectType
+        tags:
+            - { name: form.type, alias: marello_tax_rate_select }
+
+    marello_tax.form.type.tax_rule:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxRuleType
+        tags:
+            - { name: form.type, alias: marello_tax_rule_form }
+
+    marello_tax.form.type.tax_code_select:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxCodeSelectType
+        tags:
+            - { name: form.type, alias: marello_tax_taxcode_select }
+
+    marello_tax.form.type.tax_jurisdiction:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxJurisdictionType
+        arguments:
+            - '@oro_address.form.listener.address'
+        tags:
+            - { name: form.type, alias: marello_tax_jurisdiction_type }
+
+    marello_tax.form.type.tax_jurisdiction_select:
+        class: Marello\Bundle\TaxBundle\Form\Type\TaxJurisdictionSelectType
+        tags:
+            - { name: form.type, alias: marello_tax_jurisdiction_select }
+
+    marello_tax.form.type.zip_code_collection:
+        class: Marello\Bundle\TaxBundle\Form\Type\ZipCodeCollectionType
+        tags:
+            - { name: form.type, alias: marello_tax_zip_code_collection_type }
+
+    marello_tax.form.type.zip_code:
+        class: Marello\Bundle\TaxBundle\Form\Type\ZipCodeType
+        tags:
+            - { name: form.type, alias: marello_tax_zip_code_type }
+
+    # Autocomplete search handler
+    marello_tax.taxcode.form.autocomplete.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_tax.taxcode.entity.class%'
+            - ["code"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: taxcodes, acl_resource: marello_tax_taxcode_view }
+
+    marello_tax.taxrate.form.autocomplete.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_tax.taxrate.entity.class%'
+            - ['code']
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: taxrates, acl_resource: marello_tax_taxrate_view }
+
+    marello_tax.taxjurisdiction.form.autocomplete.search_handler:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_tax.taxjurisdiction.entity.class%'
+            - ['code']
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: taxjurisdictions, acl_resource: marello_tax_taxjurisdiction_view }
+
+    ## factory
+    marello_tax.taxcode.form:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', 'createNamed']
+        arguments:
+            - 'marello_tax_code_form'
+            - 'marello_tax_code_form'
+
+    marello_tax.taxrate.form:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', 'createNamed']
+        arguments:
+            - 'marello_tax_rate_form'
+            - 'marello_tax_rate_form'
+
+    marello_tax.taxrule.form:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', 'createNamed']
+        arguments:
+            - 'marello_tax_rule_form'
+            - 'marello_tax_rule_form'
+
+    ## handlers
+    marello_tax.form.handler.taxcode:
+        class: Marello\Bundle\TaxBundle\Form\Handler\TaxCodeHandler
+        scope: request
+        arguments:
+            - '@marello_tax.taxcode.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    marello_tax.form.handler.taxrate:
+        class: Marello\Bundle\TaxBundle\Form\Handler\TaxRateHandler
+        scope: request
+        arguments:
+            - '@marello_tax.taxrate.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    marello_tax.form.handler.taxrule:
+        class: Marello\Bundle\TaxBundle\Form\Handler\TaxRuleHandler
+        scope: request
+        arguments:
+            - '@marello_tax.taxrule.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    ## manager
+    marello_tax.taxcode.manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - '%marello_tax.taxcode.entity.class%'
+            - "@doctrine.orm.entity_manager"
+
+    marello_tax.taxrate.manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - '%marello_tax.taxrate.entity.class%'
+            - "@doctrine.orm.entity_manager"
+
+    marello_tax.taxrule.manager.api:
+        class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - '%marello_tax.taxrule.entity.class%'
+            - "@doctrine.orm.entity_manager"

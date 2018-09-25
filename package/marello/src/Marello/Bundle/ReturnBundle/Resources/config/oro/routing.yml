@@ -1,0 +1,13 @@
+marello_return_return:
+    resource: "@MarelloReturnBundle/Controller/ReturnController.php"
+    type:     annotation
+    prefix:   /marello/return
+
+marello_return_bundle_api:
+    resource: "@MarelloReturnBundle/Resources/config/oro/routing_api.yml"
+    type: rest
+    prefix: api/rest/{version}
+    requirements:
+        version:  latest|v1
+    defaults:
+        version:  latest

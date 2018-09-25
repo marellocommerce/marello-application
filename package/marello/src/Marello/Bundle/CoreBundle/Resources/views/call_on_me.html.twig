@@ -1,0 +1,21 @@
+<script>
+    require(['jquery'], function ($) {
+        $(function () {
+            var options = {
+                dataType: 'script',
+                cache:     true,
+                url:       '{{ data }}',
+                timeout:   2000
+
+            };
+
+            $.ajax(options).then(function() {
+                console.log(options);
+            }, function() {
+                if (typeof(console) != 'undefined' && console.hasOwnProperty('error')) {
+                    console.error('Unable to load external script.');
+                }
+            });
+        });
+    });
+</script>

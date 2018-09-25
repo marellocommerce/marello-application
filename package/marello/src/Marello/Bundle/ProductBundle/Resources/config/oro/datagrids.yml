@@ -1,0 +1,643 @@
+datagrids:
+    marello-products-grid:
+        extended_entity_name: Marello\Bundle\ProductBundle\Entity\Product
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - p
+                    - s.label as status
+                from:
+                    - { table: MarelloProductBundle:Product, alias: p }
+                join:
+                    left:
+                        - { join: p.status, alias: s }
+                        - { join: p.inventoryItems, alias: i }
+                groupBy: p.id, s.label
+        columns:
+            image:
+                label:            marello.product.image.label
+                type:             twig
+                frontend_type:    html
+                template:         MarelloProductBundle:Product/Datagrid/Property:image.html.twig
+            sku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string
+            status:
+                label:              marello.product.status.label
+                frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
+                frontend_type:      string
+                renderable:         false
+            weight:
+                label:              marello.product.weight.label
+                frontend_type:      number
+                renderable:         false
+            createdAt:
+                label:              oro.ui.created_at
+                frontend_type:      datetime
+            updatedAt:
+                label:              oro.ui.updated_at
+                frontend_type:      datetime
+                renderable:         false
+        properties:
+            id: ~
+            view_link:
+                type:       url
+                route:      marello_product_view
+                params:     [ id ]
+            update_link:
+                type:       url
+                route:      marello_product_update
+                params:     [ id ]
+            delete_link:
+                type:       url
+                route:      marello_product_api_delete_product
+                params:     [ id ]
+            inventory_link:
+                type:       url
+                route:      marello_inventory_inventory_update
+                params:     [ id ]
+        sorters:
+            columns:
+                sku:            { data_name: p.sku }
+                name:           { data_name: p.name }
+                status:         { data_name: s.label }
+                weight:         { data_name: p.weight }
+                createdAt:      { data_name: p.createdAt }
+                updatedAt:      { data_name: p.updatedAt }
+            default:
+                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                sku:
+                    type:             string
+                    data_name:        p.sku
+                name:
+                    type:             string
+                    data_name:        p.name
+                status:
+                    type: entity
+                    data_name: s
+                    options:
+                        field_options:
+                            class: Marello\Bundle\ProductBundle\Entity\ProductStatus
+                manufacturingCode:
+                    data_name:          p.manufacturingCode
+                    type:               string
+                    enabled:            false
+                weight:
+                    data_name:          p.weight
+                    type:               number
+                    options:
+                        data_type:      %oro_filter.form.type.filter.number.class%::DATA_DECIMAL
+                    enabled:            false
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_recource:   marello_product_view
+                rowAction:      true
+            update:
+                type:           navigate
+#                acl_resource:   marello_product_update
+                label:          oro.grid.action.update
+                icon:           edit
+                link:           update_link
+            delete:
+                type:           delete
+                link:           delete_link
+#                acl_resource:   marello_product_delete
+                icon:           trash
+                label:          oro.grid.action.delete
+            inventory:
+                type:           navigate
+                link:           inventory_link
+                acl_recource:   marello_inventory_inventory_update
+                icon:           cubes
+                label:          marello.inventory.management.label
+        options:
+            entityHint: product
+            export: true
+            entity_pagination: true
+
+    marello-products-extended-no-actions-grid:
+        extends: marello-products-grid
+        actions: ~
+
+    marello-products-sales-channel-aware-grid:
+        extends: marello-products-extended-no-actions-grid
+        source:
+            query:
+                join:
+                    left:
+                        - { join: p.channels, alias: ch }
+                where:
+                    and:
+                        - ch.id = :channelId
+            bind_parameters:
+                - channelId
+        sorters:
+            default:
+                name: ASC
+                sku: ASC
+
+    marello-products-supplier-no-actions-grid:
+        extends: marello-products-grid
+        actions: ~
+
+    marello-product-variant-grid:
+        extended_entity_name: Marello\Bundle\ProductBundle\Entity\Product
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - p.name
+                    - p.sku
+                    - s.label as status
+                    - COALESCE(SUM(il.inventory), 0) AS inventoryQty
+                from:
+                    - { table: MarelloProductBundle:Product, alias: p }
+                join:
+                    left:
+                        - { join: p.status, alias: s }
+                        - { join: p.inventoryItems, alias: i }
+                        - { join: i.inventoryLevels, alias: il }
+                where:
+                    and:
+                        - p.variant = :variantId
+                        - p.id != :productId
+                groupBy: p.id, p.sku, s.label
+            bind_parameters:
+                - variantId
+                - productId
+        columns:
+            sku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string
+            inventoryQty:
+                label:              marello.inventory.inventorylevel.inventory.label
+                frontend_type:      number
+                data_name:          inventoryQty
+            status:
+                label:              marello.product.status.label
+                frontend_type:      string
+        sorters:
+            columns:
+                name:           { data_name: p.name }
+                sku:            { data_name: p.sku }
+                inventoryQty:   { data_name: inventoryQty }
+            default:
+                inventoryQty:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        options:
+            entityHint: product
+            toolbarOptions:
+                hide: true
+                pagination:
+                    hide: true
+
+    marello-product-variant-extended-grid:
+        extended_entity_name: Marello\Bundle\ProductBundle\Entity\Product
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - p.id
+                    - >
+                        (CASE WHEN (:variant IS NOT NULL) THEN
+                            CASE WHEN (p.variant = :variant OR p.variant IN (:data_in)) AND p.variant NOT IN (:data_not_in)
+                            THEN true ELSE false END
+                        ELSE
+                            false
+                        END) as hasVariant
+                    - p.name
+                    - p.sku
+                    - s.label as status
+                    - COALESCE(SUM(il.inventory), 0) AS inventoryQty
+                from:
+                    - { table: Marello\Bundle\ProductBundle\Entity\Product, alias: p }
+                join:
+                    left:
+                        - { join: p.status, alias: s }
+                        - { join: p.inventoryItems, alias: i }
+                        - { join: i.inventoryLevels, alias: il }
+                where:
+                    and:
+                        - p.id != :product
+                groupBy: p.id
+            bind_parameters:
+                -
+                    name: variant
+                    default: null
+                    type: integer
+                -
+                    name: product
+                    default: null
+                    type: integer
+        columns:
+            hasVariant:
+                label:              ~
+                editable:           true
+                frontend_type:      boolean
+            sku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string
+            inventoryQty:
+                label:              marello.inventory.inventorylevel.inventory.label
+                frontend_type:      number
+                data_name:          inventoryQty
+            status:
+                label:              marello.product.status.label
+                frontend_type:      string
+        filters:
+            columns:
+                hasVariant:
+                    label:            marello.product.variant.selected_variants.label
+                    type:             boolean
+                    data_name:        hasVariant
+                name:
+                    label:            marello.product.name.label
+                    type:             string
+                    data_name:        p.name
+                sku:
+                    label:            marello.product.sku.label
+                    type:             string
+                    data_name:        p.sku
+        sorters:
+            columns:
+                name:           { data_name: p.name }
+                sku:            { data_name: p.sku }
+                hasVariant:     { data_name: hasVariant }
+            default:
+                hasVariant:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+        properties:
+            id: ~
+        options:
+            entityHint: product
+            rowSelection:
+                dataField: id
+                columnName: hasVariant
+                selectAll: true
+                selectors:
+                    included: '#addVariants'
+                    excluded: '#removeVariants'
+            toolbarOptions:
+                pageSize:
+                    default_per_page: 10
+
+    marello-product-saleschannel-grid:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - sc
+                from:
+                    - { table: MarelloSalesBundle:SalesChannel, alias: sc }
+                where:
+                    and:
+                        - sc.id IN(:channels)
+            bind_parameters:
+                - channels
+        columns:
+            name:
+                label:                marello.sales.saleschannel.name.label
+                frontend_type:        string
+            code:
+                label:                marello.sales.saleschannel.code.label
+                frontend_type:        string
+            channelType:
+                label:                marello.sales.saleschannel.channel_type.label
+                frontend_type:        string
+            currency:
+                label:                marello.sales.saleschannel.currency.label
+                frontend_type:        string
+            active:
+                label:                marello.sales.saleschannel.active.label
+                frontend_type:        boolean
+            default:
+                label:                marello.sales.saleschannel.default.label
+                frontend_type:        boolean
+        properties:
+            id: ~
+        options:
+            entityHint: sc
+
+    marello-product-saleschannel-tax-grid:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - pctr
+                    - salesChannel.name as salesChannelName
+                    - taxCode.code as taxCodeCode
+                from:
+                    - { table: MarelloProductBundle:ProductChannelTaxRelation, alias: pctr }
+                join:
+                    left:
+                        salesChannel:
+                            join: pctr.salesChannel
+                            alias: salesChannel
+                        taxCode:
+                            join: pctr.taxCode
+                            alias: taxCode
+                where:
+                    and:
+                        - pctr.product = :product_id
+            bind_parameters:
+                product_id: productId
+        columns:
+            salesChannelName:
+                label:                marello.sales.saleschannel.name.label
+                frontend_type:        string
+            taxCodeCode:
+                label:                marello.tax.taxcode.code.label
+                frontend_type:        string
+        properties:
+            id: ~
+        options:
+            entityHint: pctr
+
+    marello-product-saleschannel-extended-grid:
+        extends: marello-product-saleschannel-grid
+        source:
+            query:
+                select:
+                    - >
+                        (CASE WHEN (:product IS NOT NULL) THEN
+                            CASE WHEN (sc.id IN (:channels) OR sc.id IN (:data_in)) AND sc.id NOT IN (:data_not_in)
+                            THEN true ELSE false END
+                        ELSE
+                            CASE WHEN sc.id IN (:channels) AND sc.id NOT IN (:data_not_in)
+                            THEN true ELSE false END
+                        END) as hasChannel
+            bind_parameters:
+                -
+                    name: product
+                    default: null
+                    type: integer
+        columns:
+            hasChannel:
+                label:                ~
+                editable:             true
+                frontend_type:        boolean
+                add_before:           true
+        sorters:
+            columns:
+                hasChannel:           { data_name: hasChannel }
+            default:                  { hasChannel: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC }
+        filters:
+            columns:
+                hasChannel:
+                    label:            marello.sales.saleschannel.selected_channels.label
+                    type:             boolean
+                    data_name:        hasChannel
+                currency:
+                    label:            marello.sales.saleschannel.currency.label
+                    type:             string
+                    data_name:        sc.currency
+            default:
+                hasChannel:
+                    value:            1
+        properties:
+            id: ~
+        options:
+            entityHint: product
+            removeWhereClause: true
+            rowSelection:
+                dataField: id
+                columnName: hasChannel
+                selectors:
+                    included: '#addSalesChannels'
+                    excluded: '#removeSalesChannels'
+            toolbarOptions:
+                pageSize:
+                    items: [10]
+                    default_per_page: 10
+
+    marello-product-suppliers-grid:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select: [ psr, supplier.name ]
+                from:
+                    - { table: MarelloProductBundle:ProductSupplierRelation, alias: psr }
+                join:
+                    left:
+                        supplier:
+                            join: psr.supplier
+                            alias: supplier
+                where:
+                    and:
+                        - psr.id IN(:suppliers)
+            bind_parameters:
+                - suppliers
+        columns:
+            name:
+                label:                marello.supplier.name.label
+                frontend_type:        string
+                data_name:            supplier.name
+            quantityOfUnit:
+                label:                marello.supplier.quantity_of_unit.label
+                frontend_type:        string
+            priority:
+                label:                marello.supplier.priority.label
+                frontend_type:        number
+            cost:
+                label:                marello.supplier.cost.label
+                frontend_type:        currency
+            canDropship:
+                label:                marello.supplier.can_dropship.label
+                frontend_type:        boolean
+        properties:
+            id: ~
+        options:
+            entityHint: psr
+
+    marello-product-supplier-grid:
+        source:
+            type: orm
+            acl_resource: marello_product_view
+            query:
+                select:
+                    - p.id
+                    - p.sku
+                    - p.name
+                    - p.manufacturingCode
+                from:
+                    - { table: MarelloProductBundle:Product, alias: p }
+        columns:
+            sku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
+                frontend_type:      string
+        filters:
+            columns:
+                sku:
+                    label:            marello.product.sku.label
+                    type:             string
+                    data_name:        p.sku
+                name:
+                    label:            marello.product.name.label
+                    type:             string
+                    data_name:        p.name
+                manufacturingCode:
+                    label:            marello.product.manufacturing_code.label
+                    type:             string
+                    data_name:        p.manufacturingCode
+        sorters:
+            columns:
+                sku:                  { data_name: p.sku }
+                name:                 { data_name: p.name }
+                manufacturingCode:    { data_name: p.manufacturingCode }
+            default:
+                sku:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        properties:
+            id: ~
+        options:
+            entityHint: p
+
+    marello-product-categories-base-grid:
+        acl_resource: marello_category_update
+        extended_entity_name: %marello_catalog.category.entity.class%
+        source:
+            type: orm
+            query:
+                select:
+                    - category.id
+                    - category.code
+                    - category.name
+                    - category.createdAt
+                    - category.updatedAt
+                from:
+                    - { table: %marello_catalog.category.entity.class%, alias: category }
+        columns:
+            code:
+                label:         marello.catalog.category.code.label
+            name:
+                label:         marello.catalog.category.name.label
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            id: ~
+        sorters:
+            columns:
+                code:
+                    data_name: category.code
+                name:
+                    data_name: category.name
+                createdAt:
+                    data_name: category.createdAt
+                updatedAt:
+                    data_name: category.updatedAt
+        filters:
+            columns:
+                code:
+                    type:      string
+                    data_name: category.code
+                name:
+                    type:      string
+                    data_name: category.name
+                createdAt:
+                    type:      datetime
+                    data_name: product.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: product.updatedAt
+        options:
+            entity_pagination: true
+
+    marello-product-categories-grid:
+        extends: marello-product-categories-base-grid
+        source:
+            query:
+                where:
+                    and:
+                        - category.id IN(:categories)
+            bind_parameters:
+                - categories
+        sorters:
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+
+    marello-product-categories-extend-grid:
+        extends: marello-product-categories-base-grid
+        source:
+            query:
+                select:
+                    - >
+                        (
+                            CASE WHEN (:product_id IS NOT NULL) THEN
+                                CASE WHEN
+                                    category MEMBER OF categoryProduct.categories
+                                    OR category.id IN (:data_in) AND category.id NOT IN (:data_not_in)
+                                THEN true ELSE false END
+                            ELSE
+                                CASE WHEN category.id IN (:data_in) AND category.id NOT IN (:data_not_in)
+                                THEN true ELSE false END
+                            END
+                        ) as inCategory
+                join:
+                    left:
+                        -
+                            join: %marello_product.entity.class%
+                            alias: categoryProduct
+                            conditionType: WITH
+                            condition: 'categoryProduct = :product_id'
+            bind_parameters:
+                - product_id
+        columns:
+            inCategory:
+                label:         marello.catalog.product.in_category.label
+                editable:      true
+                frontend_type: boolean
+                add_before:    true
+        properties:
+            id: ~
+        sorters:
+            columns:
+                inCategory:
+                    data_name: inCategory
+            default:
+                inCategory: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                inCategory:
+                    type:      boolean
+                    data_name: inCategory
+        options:
+            entityHint:        categories
+            entity_pagination: true
+            rowSelection:
+                dataField: id
+                columnName: inCategory
+                selectAll: true
+                selectors:
+                    included: '#productAppendCategories'
+                    excluded: '#productRemoveCategories'

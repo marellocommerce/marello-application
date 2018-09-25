@@ -1,0 +1,20 @@
+marello_inventory_inventory:
+    resource: "@MarelloInventoryBundle/Controller/InventoryItemController.php"
+    type:     annotation
+    prefix:   /marello/inventory/inventory-item
+
+marello_inventory_inventorylevel:
+    resource: "@MarelloInventoryBundle/Controller/InventoryLevelController.php"
+    type:     annotation
+    prefix:   /marello/inventory/inventory-level
+
+marello_inventory_virtualinventorylevel:
+    resource: "@MarelloInventoryBundle/Controller/VirtualInventoryLevelController.php"
+    type:     annotation
+    prefix:   /marello/inventory/virtual-inventory-level
+
+marello_inventory_warehouse:
+    resource: "@MarelloInventoryBundle/Controller/WarehouseController.php"
+    type:     annotation
+    prefix:   /marello/inventory/warehouse
+

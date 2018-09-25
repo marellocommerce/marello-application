@@ -1,0 +1,41 @@
+api:
+    entities:
+        Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel:
+            documentation_resource: '@MarelloInventoryBundle/Resources/doc/api/virtualinventorylevel.md'
+            fields:
+                saleschannels:
+                    property_path: salesChannelGroup.salesChannels
+                salesChannelGroup:
+                    exclude: true
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    product:
+                        data_type: string
+                        property_path: product.sku
+                        description: 'Filter by product sku'
+                    saleschannel:
+                        data_type: string
+                        property_path: salesChannelGroup.salesChannels.code
+                        description: 'Filter levels by SalesChannel'
+                    createdAt:
+                        exclude: true
+                    updatedAt:
+                        exclude: true
+            actions:
+                get_subresource: false
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+                add_relationship: false
+                get_relationship: false
+                update_relationship: false
+                delete_relationship: false
+
+        Marello\Bundle\InventoryBundle\Entity\WarehouseType:
+            actions: false

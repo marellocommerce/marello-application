@@ -1,0 +1,5 @@
+data:
+      type: categories
+      id: '<toString(@category1->id)>'
+      attributes:
+          name: 'new category name'

@@ -1,0 +1,5 @@
+config:
+    paths:
+        'marellolayout/js/app/views/abstract-items-view': 'bundles/marellolayout/js/app/views/abstract-items-view.js'
+        'marellolayout/js/app/views/abstract-item-view': 'bundles/marellolayout/js/app/views/abstract-item-view.js'
+        'marellolayout/js/app/components/form-changes-component': 'bundles/marellolayout/js/app/components/form-changes-component.js'

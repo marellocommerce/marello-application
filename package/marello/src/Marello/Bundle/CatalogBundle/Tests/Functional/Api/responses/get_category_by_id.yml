@@ -1,0 +1,20 @@
+data:
+    type: categories
+    id: '<toString(@category1->id)>'
+    attributes:
+        name: 'category with multiple products'
+        code: category_1
+        description: null
+    relationships:
+        products:
+            data:
+                -
+                    type: marelloproducts
+                    id: p1
+                -
+                    type: marelloproducts
+                    id: p2
+        organization:
+            data:
+                type: organizations
+                id: '1'

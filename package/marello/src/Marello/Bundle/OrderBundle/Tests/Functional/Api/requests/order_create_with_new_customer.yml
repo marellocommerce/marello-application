@@ -1,0 +1,35 @@
+data:
+      type: marelloorders
+      attributes:
+          orderReference: 'NOPENOPE'
+          currency: 'USD'
+      relationships:
+          billingAddress:
+              data:
+                  type: marelloaddresses
+                  id: '<toString(@marello_order_0->billingAddress->id)>'
+          shippingAddress:
+              data:
+                  type: marelloaddresses
+                  id: '<toString(@marello_order_0->shippingAddress->id)>'
+          items:
+              data:
+                  -
+                      type: marelloorderitems
+                      id: '<toString(@marello_order_0->items->first()->id)>'
+          customer:
+              data:
+                   type: marellocustomers
+                   id: '8da4d8e7-6b25-4c5c-8075-wrv3n8wt8kbxmtgd'
+          salesChannel:
+              data:
+                  type: marellosaleschannels
+                  id: '<toString(@marello_order_0->salesChannel->code)>'
+included:
+    -
+        type: marellocustomers
+        id: '8da4d8e7-6b25-4c5c-8075-wrv3n8wt8kbxmtgd'
+        attributes:
+            firstName: 'test'
+            lastName: 'user'
+            email: 'new_customer@example.com'

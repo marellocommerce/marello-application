@@ -1,0 +1,232 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form
+    'MarelloPricingBundle:Form:fields.html.twig'
+    'MarelloSupplierBundle:Form:fields.html.twig'
+    'MarelloProductBundle:Form:fields.html.twig'
+%}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% set gridName = 'marello-product-saleschannel-extended-grid' %}
+
+{% set entity = form.vars.value %}
+{% set formAction = entity.id ? path('marello_product_update', { id: entity.id }) : path('marello_product_create') %}
+
+{% if entity.id %}
+    {% oro_title_set({params : {"%name%": entity.name } }) %}
+{% endif %}
+
+{% block pageHeader %}
+    {% if entity.id %}
+        {% set breadcrumbs = {
+            'entity':      entity,
+            'indexPath':   path('marello_product_index'),
+            'indexLabel':  'marello.product.entity_plural_label'|trans,
+            'entityTitle': entity.name|default('N/A')
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.product.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title }%}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if entity.id and resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('marello_product_api_delete_product', {'id': entity.id}),
+            'dataRedirect': path('marello_product_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-channel',
+            'dataId': entity.id,
+            'entity_label': 'marello.product.entity_label'|trans,
+        }) }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+
+    {{ UI.cancelButton(path('marello_product_index')) }}
+
+    {% set html = UI.saveAndCloseButton() %}
+
+    {% if resource_granted('marello_product_create') %}
+        {% set saveAndDuplicateButton = UI.saveActionButton({
+        'label': 'marello.product.ui.save_and_duplicate'|trans,
+        'action': 'save_and_duplicate'
+        }) %}
+        {% set html = html ~ saveAndDuplicateButton %}
+    {% endif %}
+    {% if form.vars.value.id or resource_granted('marello_product_update') %}
+        {% set html = html ~ UI.saveAndStayButton() %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock %}
+
+
+{% block content_data %}
+    {% set id = 'marello-product-update' %}
+    {% set productChannelPrices %}
+        {% set pricingEnabled = form.vars.value.data.pricing_enabled is defined and form.vars.value.data.pricing_enabled %}
+        {% set priceEnableElement = { pricing_enable_id: form.pricing_enabled.vars.id } %}
+        <h5 class="user-fieldset">
+            <span>{{ 'marello.pricing.productchannelprice.entity_plural_label'|trans }}</span>
+        </h5>
+        <div class="pricing-line-items {% if pricingEnabled %}pricing-enabled{% endif %}"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellopricing/js/app/views/channel-pricing-items-view',
+                 options: priceEnableElement|default({})
+             }|json_encode }}"
+             data-layout="separate">
+            {{ form_widget(form.channelPrices) }}
+            {{ form_errors(form.channelPrices) }}
+        </div>
+    {% endset %}
+
+    {% set productPrices %}
+        <h5 class="user-fieldset">
+            <span>{{ 'marello.pricing.productprice.entity_plural_label'|trans }}</span>
+        </h5>
+        {% if form.prices|length > 0 %}
+            <div class="row-divider"></div>
+            <div class="pricing-line-items pricing-enabled"
+                 data-page-component-module="oroui/js/app/components/view-component"
+                 data-page-component-options="{{ {
+                     view: 'marellolayout/js/app/views/abstract-items-view',
+                     options: {}
+                 }|json_encode }}"
+                 data-layout="separate">
+                {{ form_widget(form.prices) }}
+                {{ form_errors(form.prices) }}
+            </div>
+        {% else %}
+            <div class="no-data">
+                <span>{{ 'marello.pricing.productprice.no_channels_enabled_or_configured'|trans }}</span>
+            </div>
+        {% endif %}
+        <div class="row-divider"></div>
+    {% endset %}
+
+    {% set salesChannelTaxCodes %}
+        <h5 class="user-fieldset">
+            <span>{{ 'marello.product.productchanneltaxrelation.widget_title'|trans }}</span>
+        </h5>
+        <div class="tax-line-items"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marelloproduct/js/app/views/product-channel-taxcodes-view'
+             }|json_encode }}"
+             data-layout="separate">
+            {{ form_widget(form.salesChannelTaxCodes) }}
+            {{ form_errors(form.salesChannelTaxCodes) }}
+        </div>
+    {% endset %}
+
+    {% set suppliers %}
+        <div class="product-suppliers"
+             data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'marellosupplier/js/app/views/product-suppliers-view',
+                 suppliers: suppliers|default({})
+             }|json_encode }}"
+             data-layout="separate">
+            {{ form_widget(form.suppliers) }}
+            {{ form_errors(form.suppliers) }}
+        </div>
+    {% endset %}
+
+    {% set channelIds = marello_sales_get_saleschannel_ids(entity)|length > 0 ? marello_sales_get_saleschannel_ids(entity) : 0 %}
+    {% set dataBlocks = [
+        {
+            'title': 'marello.product.sections.general'|trans,
+            'subblocks': [{
+                'title': 'General',
+                'data':  [
+                    form_row(form.name),
+                    form_row(form.sku),
+                    form_row(form.status),
+                    form_row(form.weight),
+                    form_row(form.warranty),
+                    form_row(form.manufacturingCode),
+                    form_row(form.image),
+                ]
+            }]
+        },
+        {
+            'title': 'marello.pricing.header.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    productPrices,
+                    productChannelPrices
+                ]
+            }]
+        },
+        {
+            'title': 'marello.tax.taxcode.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': 'marello.tax.taxcode.widget_title'|trans,
+                'data': [
+                    form_row(form.taxCode),
+                    salesChannelTaxCodes
+                ]
+            }]
+        },
+        {
+            'title': 'marello.sales.saleschannel.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': 'marello.sales.saleschannel.header.label'|trans,
+                'data': [
+                    form_widget(form.addSalesChannels, {'id': 'addSalesChannels'}),
+                    form_widget(form.removeSalesChannels, {'id': 'removeSalesChannels'}),
+                    dataGrid.renderGrid(gridName, { product: form.vars.value.id ? : null, channels: channelIds })
+                ]
+            }]
+        },
+        {
+            'title': 'marello.supplier.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    suppliers
+                ]
+            }]
+        },
+        {
+            'title' : 'marello.catalog.category.entity_plural_label'|trans,
+            'subblocks': [{
+                'title' : null,
+                'useSpan': false,
+                'data' : [
+                    form_widget(form.appendCategories, {'id': 'productAppendCategories'}),
+                    form_widget(form.removeCategories, {'id': 'productRemoveCategories'}),
+                    dataGrid.renderGrid('marello-product-categories-extend-grid', { product_id: entity.id ? entity.id : 0 }, { cssClass: 'inner-grid' })
+                ]
+            }]
+        }
+    ] %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'marello.product.sections.additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }] ) %}
+    {% endif %}
+
+    {% set data = {
+        'formErrors': form_errors(form) ? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+
+    {{ parent() }}
+{% endblock %}

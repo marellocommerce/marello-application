@@ -1,0 +1,73 @@
+services:
+    marello_shipping.form.type.shipping_method_select:
+        class: Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodSelectType
+        arguments:
+            - '@marello_shipping.provider.basic_shipping_methods_choices'
+        tags:
+            - { name: form.type }
+
+    marello_shipping.form.type.shipping_methods_configs_rule:
+        class: Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodsConfigsRuleType
+        arguments:
+            - '@marello_shipping.provider.basic_shipping_methods_choices'
+            - '@translator'
+        tags:
+            - { name: form.type }
+
+    marello_shipping.form.type.shipping_method_type_config_collection:
+        class: Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodTypeConfigCollectionType
+        arguments:
+            - '@marello_shipping.form_event_subscriber.method_type_config_collection_subscriber'
+        tags:
+            - { name: form.type }
+
+    marello_shipping.form.type.shipping_methods_configs_rule_destination:
+        class: Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodsConfigsRuleDestinationType
+        arguments:
+            - '@marello_shipping.form.listener.rule_destination'
+        tags:
+            - { name: form.type}
+
+    marello_shipping.form.type.shipping_method_config:
+        class: Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodConfigType
+        arguments:
+            - '@marello_shipping.form_event_subscriber.method_config_subscriber'
+            - '@marello_shipping.shipping_method_provider'
+        tags:
+            - { name: form.type }
+
+    marello_shipping.form.listener.rule_destination:
+        class: Oro\Bundle\AddressBundle\Form\EventListener\AddressCountryAndRegionSubscriber
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+
+    marello_shipping.form_event_subscriber.method_type_config_collection_subscriber:
+        class: Marello\Bundle\ShippingBundle\Form\EventSubscriber\MethodTypeConfigCollectionSubscriber
+        arguments:
+            - '@marello_shipping.shipping_method_provider'
+
+    marello_shipping.form_event_subscriber.method_config_collection_subscriber:
+        class: Marello\Bundle\ShippingBundle\Form\EventSubscriber\MethodConfigCollectionSubscriber
+        arguments:
+            - '@marello_shipping.shipping_method_provider'
+
+    marello_shipping.form_event_subscriber.method_config_subscriber:
+        class: Marello\Bundle\ShippingBundle\Form\EventSubscriber\MethodConfigSubscriber
+        arguments:
+            - '@form.factory'
+            - '@marello_shipping.shipping_method_provider'
+
+    marello_shipping.form.type.shipping_method_config_collection:
+        class: Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodConfigCollectionType
+        arguments:
+            - '@marello_shipping.form_event_subscriber.method_config_collection_subscriber'
+        tags:
+            - { name: form.type }
+
+    marello_shipping.form.handler.shipping_methods_configs_rule:
+        class: Marello\Bundle\ShippingBundle\Form\Handler\ShippingMethodsConfigsRuleHandler
+        scope: request
+        arguments:
+            - '@request'
+            - '@doctrine.orm.entity_manager'

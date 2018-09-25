@@ -1,0 +1,101 @@
+data:
+    -
+        type: marelloassembledchannelpricelists
+        id: '6'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p1
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '6'
+            specialPrice:
+                data: null
+    -
+        type: marelloassembledchannelpricelists
+        id: '7'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p2
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '7'
+            specialPrice:
+                data: null
+    -
+        type: marelloassembledchannelpricelists
+        id: '8'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p3
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '8'
+            specialPrice:
+                data: null
+    -
+        type: marelloassembledchannelpricelists
+        id: '9'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p4
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '9'
+            specialPrice:
+                data: null
+    -
+        type: marelloassembledchannelpricelists
+        id: '10'
+        attributes:
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p4
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_usd
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '10'
+            specialPrice:
+                data: null

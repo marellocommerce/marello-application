@@ -1,0 +1,22 @@
+data:
+    -
+        type: marellovirtualinventorylevels
+        id: '1'
+        attributes:
+            inventory: 100
+            balancedInventory: 100
+            reservedInventory: null
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p1
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            saleschannels:
+                data:
+                    -
+                        type: marellosaleschannels
+                        id: chan_eur

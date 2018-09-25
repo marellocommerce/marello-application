@@ -1,0 +1,77 @@
+parameters:
+    #form types
+    marello_sales.form_type.saleschannel.class:                                Marello\Bundle\SalesBundle\Form\Type\SalesChannelType
+    marello_sales.form_type.saleschannel.select.class:                         Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType
+    marello_sales.form_type.saleschannel.select.api.class:                     Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectApiType
+    marello_sales.form_type.saleschannel.multiselect.class:                    Marello\Bundle\SalesBundle\Form\Type\SalesChannelMultiselectType
+    marello_sales.form_type.system_group_saleschannel.multiselect.class:       Marello\Bundle\SalesBundle\Form\Type\SystemGroupSalesChannelMultiselectType
+    marello_sales.form_type.saleschannelgroup.class:                           Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType
+    #form handlers
+    marello_sales.form_handler.saleschannel.class:                             Marello\Bundle\SalesBundle\Form\Handler\SalesChannelHandler
+    marello_sales.form_handler.saleschannelgroup.class:                        Marello\Bundle\SalesBundle\Form\Handler\SalesChannelGroupHandler
+services:
+    #form types
+    marello_sales_form_type.saleschannel:
+        class: '%marello_sales.form_type.saleschannel.class%'
+        arguments:
+            - '@marello_productprice.pricing.form.event_listener.currency_subscriber'
+        tags:
+            - { name: form.type, alias: marello_sales_channel }
+
+    marello_sales_form_type.saleschannelgroup:
+        class: '%marello_sales.form_type.saleschannelgroup.class%'
+        tags:
+            - { name: form.type, alias: marello_sales_channel_group }
+             
+    marello_sales_form_type.saleschannel_multi_select:
+        class: '%marello_sales.form_type.saleschannel.multiselect.class%'
+        arguments:
+            - '@marello_sales.form.data_transformer.sales_channel'
+        tags:
+            - { name: form.type, alias: marello_sales_saleschannel_multi_select }
+
+    marello_sales_form_type.system_group_saleschannel_multi_select:
+        class: '%marello_sales.form_type.system_group_saleschannel.multiselect.class%'
+        arguments:
+            - '@marello_sales.form.data_transformer.sales_channel'
+        tags:
+            - { name: form.type, alias: marello_system_group_sales_saleschannel_multi_select }
+
+    marello_sales_form_type.saleschannel_select:
+        class: '%marello_sales.form_type.saleschannel.select.class%'
+        tags:
+            - { name: form.type, alias: marello_sales_saleschannel_select }
+
+    marello_sales.form.type.sales_channel_select_api:
+        class: '%marello_sales.form_type.saleschannel.select.api.class%'
+        arguments:
+            - '@marello_sales.form.data_transformer.sales_channel_to_code'
+        tags:
+            - { name: form.type, alias: marello_sales_channel_select_api }
+
+    #form handlers
+    marello_sales.saleschannel_form.handler:
+        class: '%marello_sales.form_handler.saleschannel.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_form.form.handler, alias: marello_sales.saleschannel_form.handler }
+
+    marello_sales.saleschannelgroup_form.handler:
+        class: '%marello_sales.form_handler.saleschannelgroup.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_form.form.handler, alias: marello_sales.saleschannelgroup_form.handler }
+
+    #data transformer
+    marello_sales.form.data_transformer.sales_channel:
+        class: Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - 'MarelloSalesBundle:SalesChannel'
+
+    marello_sales.form.data_transformer.sales_channel_to_code:
+        class: Marello\Bundle\SalesBundle\Form\DataTransformer\SalesChannelToCodeTransformer
+        arguments:
+            - '@doctrine.orm.entity_manager'

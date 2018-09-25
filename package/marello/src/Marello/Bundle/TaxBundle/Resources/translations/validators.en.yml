@@ -1,0 +1,8 @@
+marello:
+    tax:
+        taxcode:
+            messages:
+                error.unique_code: This code already exists, please provide a unique code.
+        taxrate:
+            messages:
+                error.unique_code: This code already exists, please provide a unique code.

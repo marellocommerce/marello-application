@@ -1,0 +1,18 @@
+marello_product_product:
+    resource: "@MarelloProductBundle/Controller/ProductController.php"
+    type:     annotation
+    prefix:   /marello/product
+
+marello_product_variant:
+    resource: "@MarelloProductBundle/Controller/VariantController.php"
+    type:     annotation
+    prefix:   /marello/product/variant
+
+marello_product_bundle_api:
+    resource: "@MarelloProductBundle/Resources/config/oro/routing_api.yml"
+    type: rest
+    prefix: api/rest/{version}
+    requirements:
+        version:  latest|v1
+    defaults:
+        version:  latest

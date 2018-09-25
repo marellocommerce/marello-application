@@ -1,0 +1,82 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {'%name%': entity.name, '%entityName%': 'marello.sales.saleschannelgroup.entity_label'|trans} }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity':      entity,
+    'indexPath':   path('marello_sales_saleschannelgroup_index'),
+    'indexLabel': 'marello.sales.saleschannelgroup.entity_plural_label'|trans,
+    'entityTitle': entity.name
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if entity.id and not entity.system %}
+        {% if resource_granted('marello_sales_saleschannelgroup_update') or resource_granted('marello_sales_saleschannelgroup_create') %}
+            {{ UI.editButton({
+                'path' : path('marello_sales_saleschannelgroup_update', { id: entity.id }),
+                'entity_label': 'marello.sales.saleschannelgroup.entity_label'|trans
+            }) }}
+        {% endif %}
+        {% if resource_granted('DELETE', entity) %}
+            {{ UI.deleteButton({
+                'dataUrl': path('marello_sales_api_delete_saleschannelgroup', {'id': entity.id}),
+                'dataRedirect': path('marello_sales_saleschannelgroup_index'),
+                'aCss': 'no-hash remove-button',
+                'id': 'btn-remove-tag',
+                'dataId': entity.id,
+                'entity_label': 'marello.sales.saleschannelgroup.entity_label'|trans
+            }) }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block content_data %}
+    {% set id = 'marello-saleschannel-group-view' %}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        {{ UI.renderProperty('marello.sales.saleschannelgroup.name.label'|trans, entity.name) }}
+                        {{ UI.renderProperty('marello.sales.saleschannelgroup.description.label'|trans, entity.description) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set sales_channels %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-group-sales-channels', {id: entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marello.sales.saleschannelgroup.datablock.general'|trans,
+            'class': 'active',
+            'subblocks': generalSubblocks
+        },
+        {
+            'title': 'marello.sales.saleschannelgroup.datablock.sales_channels'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [sales_channels] }
+            ]
+        }
+    ] %}
+
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

@@ -1,0 +1,140 @@
+parameters:
+    ## form types
+    marello_product.product_form.type.class:                                    Marello\Bundle\ProductBundle\Form\Type\ProductType
+    marello_product.product_form.type.product_api.class:                        Marello\Bundle\ProductBundle\Form\Type\ProductApiType
+    marello_product.product_form.type.product_select.class:                     Marello\Bundle\ProductBundle\Form\Type\ProductSelectType
+    marello_product.product_form.type.product_sales_channel_aware_select.class: Marello\Bundle\ProductBundle\Form\Type\ProductSalesChannelAwareSelectType
+    marello_product.form.type.product_collection.class:                         Marello\Bundle\ProductBundle\Form\Type\ProductCollectionType
+    marello_product.product_variant_form.type.class:                            Marello\Bundle\ProductBundle\Form\Type\ProductVariantType
+    marello_product.form.type.product_supplier_select.class:                    Marello\Bundle\ProductBundle\Form\Type\ProductSupplierSelectType
+
+    ## form handlers
+    marello_product.product_form.handler.class:               Marello\Bundle\ProductBundle\Form\Handler\ProductHandler
+    marello_product.product_form.handler.product_api.class:   Marello\Bundle\ProductBundle\Form\Handler\ProductApiHandler
+    marello_product.product_variant_form.handler.class:       Marello\Bundle\ProductBundle\Form\Handler\ProductVariantHandler
+    ## api manager
+    marello_product.manager.api.class:                        Marello\Bundle\ProductBundle\Entity\Manager\ProductApiEntityManager
+
+services:
+    ## form types
+    marello_product.product_form.type:
+        class: '%marello_product.product_form.type.class%'
+        arguments:
+            - '@marello_sales.form.event_listener.default_sales_channel_subscriber'
+            - '@marello_productprice.pricing.form.event_listener.pricing_subscriber'
+            - '@marello_productprice.pricing.form.event_listener.channel_pricing_subscriber'
+        tags:
+            - { name: form.type, alias: marello_product_form }
+
+    marello_product.product_form.type.product_api:
+        class: '%marello_product.product_form.type.product_api.class%'
+        arguments:
+            - '@marello_productprice.pricing.form.event_listener.pricing_subscriber'
+        tags:
+            - { name: form.type, alias: marello_product_api_form }
+
+    marello_product.product_form.type.product_select:
+        class: '%marello_product.product_form.type.product_select.class%'
+        tags:
+            - { name: form.type, alias: marello_product_select }
+
+    marello_product.product_form.type.product_sales_channel_aware_select:
+        class: '%marello_product.product_form.type.product_sales_channel_aware_select.class%'
+        tags:
+            - { name: form.type, alias: marello_product_sales_channel_aware_select }
+
+    marello_product.form.type.product_supplier_select:
+        class: '%marello_product.form.type.product_supplier_select.class%'
+        tags:
+            - { name: form.type, alias: marello_product_supplier_select }
+
+    marello_product.form.type.product_collection:
+        class: '%marello_product.form.type.product_collection.class%'
+        tags:
+             - { name: form.type, alias: marello_product_collection }
+
+    marello_product.product_variant_form.type:
+        class: '%marello_product.product_variant_form.type.class%'
+        tags:
+             - { name: form.type, alias: marello_product_variant_form }
+
+    marello_product.form.type.product_channel_tax_relation:
+        class: Marello\Bundle\ProductBundle\Form\Type\ProductChannelTaxRelationType
+        tags:
+            - { name: form.type, alias: marello_product_channel_tax_relation_form }
+
+    marello_product.form.type.product_channel_tax_relation_collection:
+        class: Marello\Bundle\ProductBundle\Form\Type\ProductChannelTaxRelationCollectionType
+        tags:
+            - { name: form.type, alias: marello_product_channel_tax_relation_collection_form }
+
+    marello_product.form.type.product_supplier_relation:
+        class: Marello\Bundle\ProductBundle\Form\Type\ProductSupplierRelationType
+        tags:
+            - { name: form.type, alias: marello_product_supplier_relation_form }
+
+    marello_product.form.type.product_supplier_relation_collection:
+        class: Marello\Bundle\ProductBundle\Form\Type\ProductSupplierRelationCollectionType
+        tags:
+            - { name: form.type, alias: marello_product_supplier_relation_collection_form }
+
+    ## forms
+    marello_product.product.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - 'marello_product_form'
+            - 'marello_product_form'
+
+
+    marello_product.product_api.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - ~
+            - 'marello_product_api_form'
+
+
+    marello_product.product_variant.form:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - 'marello_product_variant_form'
+            - 'marello_product_variant_form'
+
+    ## form handlers
+    marello_product.product_form.handler:
+        class: %marello_product.product_form.handler.class%
+        scope: request
+        arguments:
+            - '@marello_product.product.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    marello_product.product_form.handler.product_api:
+        class: %marello_product.product_form.handler.product_api.class%
+        scope: request
+        arguments:
+            - '@marello_product.product_api.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_entity.routing_helper'
+
+    marello_product.product_variant_form.handler:
+        class: %marello_product.product_variant_form.handler.class%
+        scope: request
+        arguments:
+            - '@marello_product.product_variant.form'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+
+    marello_product.manager.api:
+        class: %marello_product.manager.api.class%
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %marello_product.entity.class%
+            - '@doctrine.orm.entity_manager'

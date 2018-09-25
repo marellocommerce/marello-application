@@ -1,0 +1,134 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'MarelloAddressBundle::macros.html.twig' as Address %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%name%": entity.fullName }}) %}
+
+{% block navButtons %}
+    {% if resource_granted('EDIT', entity) %}
+        {{ UI.editButton({
+            'path' : path('marello_order_customer_update', { id: entity.id }),
+            'entity_label': 'marello.order.customer.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_order_customer_index'),
+        'indexLabel': 'marello.order.customer.entity_plural_label'|trans,
+        'entityTitle': entity.fullName
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-customer-view' %}
+    {% set general %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.order.customer.name_prefix.label'|trans, entity.namePrefix) }}
+                    {{ UI.renderProperty('marello.order.customer.first_name.label'|trans, entity.firstName) }}
+                    {{ UI.renderProperty('marello.order.customer.middle_name.label'|trans, entity.middleName) }}
+                    {{ UI.renderProperty('marello.order.customer.last_name.label'|trans, entity.lastName) }}
+                    {{ UI.renderProperty('marello.order.customer.name_suffix.label'|trans, entity.nameSuffix) }}
+                    {{ UI.renderProperty('marello.order.customer.email.label'|trans, entity.email) }}
+                    {{ UI.renderProperty('marello.order.customer.phone.label'|trans, entity.primaryAddress.phone) }}
+                    {{ UI.renderProperty('marello.order.customer.company.label'|trans, entity.primaryAddress.company) }}
+                    {{ UI.renderProperty('oro.ui.created_at'|trans, entity.createdAt|date) }}
+                    {{ UI.renderProperty('oro.ui.updated_at'|trans, entity.updatedAt|date|default('N/A'|trans)) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set addressBlock %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="responsive-block">
+                        <h5>{{ 'marello.order.customer.primary_address.label' | trans }}</h5>
+                        {{ Address.renderAddress(entity.primaryAddress) }}
+                    </div>
+                    {% if entity.shippingAddress %}
+                    <div class="responsive-block">
+                        <h5>{{ 'marello.order.customer.shipping_address.label' | trans }}</h5>
+                        {{ Address.renderAddress(entity.shippingAddress) }}
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="responsive-block">
+                    {% placeholder marello_customer_address with {'address' : entity.primaryAddress} %}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set order %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-order-customer', {'customerId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set return %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-return-customer', {'customerId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set refund %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-refund-customer', {'customerId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [general] },
+                { 'data' : [addressBlock] }
+            ]
+        },
+        {
+            'title': 'marello.order.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data': [order] }
+            ]
+        },
+        {
+            'title': 'marello.return.returnentity.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data': [return] }
+            ]
+        },
+        {
+            'title': 'marello.refund.entity_plural_label'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data': [refund] }
+            ]
+        }
+    ] %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

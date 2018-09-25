@@ -1,0 +1,74 @@
+workflows:
+    marello_purchase_order_workflow:
+        entity: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
+        entity_attribute: po
+        start_step: not_sent
+
+        defaults:
+            active: true
+
+        attributes:
+            received_items:
+                type: entity
+                options:
+                    class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder
+        steps:
+            not_sent:
+                allowed_transitions:
+                    - send
+            pending:
+                allowed_transitions:
+                    - partially_receive
+                    - cancel_purchase_order
+            partially_received:
+                allowed_transitions:
+                    - partially_receive
+                    - complete_purchase_order
+            complete_purchase_order:
+                is_final: true
+            cancelled_purchase_order:
+                is_final: true
+        transitions:
+            send:
+                step_to: pending
+                transition_definition: send_definition
+            partially_receive:
+                step_to: partially_received
+                transition_definition: partially_receive_definition
+                display_type: page
+                page_template: OroWorkflowBundle:Workflow:transitionForm.html.twig
+                form_options:
+                    attribute_fields:
+                        received_items:
+                            form_type: marello_po_partial_receive
+                            options:
+                                required: true
+                                data: $po
+            complete_purchase_order:
+                step_to: complete_purchase_order
+                transition_definition: complete_purchase_order_definition
+            cancel_purchase_order:
+                step_to: cancelled_purchase_order
+                transition_definition: cancel_purchase_order_definition
+        transition_definitions:
+            send_definition:
+                post_actions:
+                    - @marello_purchase_order_send:
+                        entity: $po
+                        recipient: $po.supplier.email
+                        template: marello_purchase_order_supplier
+            partially_receive_definition:
+                post_actions:
+                    - @marello_receive_purchase_order:
+                        entity: $received_items
+                        is_partial: true
+                    - @marello_purchase_order_transit_complete_action:
+                        transitionName: 'complete_purchase_order'
+                        entity: $received_items
+            complete_purchase_order_definition:
+                post_actions:
+                    - @marello_receive_purchase_order:
+                        entity: $po
+                    - @marello_purchase_order_transit_complete_action:
+                        entity: $po
+            cancel_purchase_order_definition: ~

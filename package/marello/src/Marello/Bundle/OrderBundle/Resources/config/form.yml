@@ -1,0 +1,152 @@
+services:
+    marello_order.form.type.order:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderType
+        arguments:
+            - '@marello_sales.repository.sales_channel'
+        tags:
+            - { name: form.type, alias: marello_order_order }
+
+    marello_order.form.type.order_update:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderUpdateType
+        tags:
+            - { name: form.type, alias: marello_order_update }
+
+    marello_order.form.type.order_item:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderItemType
+        arguments:
+            - '@marello_order.form.data_transformer.tax_code_to_code'
+        tags:
+            - { name: form.type, alias: marello_order_item }
+
+    marello_order.form.type.order_item_collection:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderItemCollectionType
+        tags:
+            - { name: form.type, alias: marello_order_item_collection }
+
+    marello_order.form.type.customer:
+        class: Marello\Bundle\OrderBundle\Form\Type\CustomerType
+        tags:
+            - { name: form.type, alias: marello_customer }
+
+    marello_order.form.type.address:
+        arguments:
+            - '@oro_locale.formatter.address'
+            - '@marello_order.provider.customer_address'
+            - '@oro_importexport.serializer'
+        abstract: true
+
+    marello_order.form.type.shipping_address:
+        parent: 'marello_order.form.type.address'
+        class: 'Marello\Bundle\OrderBundle\Form\Type\OrderShippingAddressType'
+        tags:
+            - { name: form.type, alias: marello_order_shipping_address }
+
+    marello_order.form.type.billing_address:
+        parent: 'marello_order.form.type.address'
+        class: 'Marello\Bundle\OrderBundle\Form\Type\OrderBillingAddressType'
+        tags:
+            - { name: form.type, alias: marello_order_billing_address }
+
+    marello_order.form.type.customer_select:
+        class: Marello\Bundle\OrderBundle\Form\Type\CustomerSelectType
+        tags:
+            - { name: form.type, alias: marello_customer_select }
+
+    marello_order.form.type.order_api:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderApiType
+        arguments:
+            - '@marello_order.form.data_transformer.sales_channel_to_id'
+        tags:
+            - { name: form.type, alias: marello_order_api }
+
+    marello_order.form.type.order_update_api:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderApiUpdateType
+        tags:
+            - { name: form.type, alias: marello_order_update_api }
+
+    marello_order.form.type.order_item_api:
+        class: Marello\Bundle\OrderBundle\Form\Type\OrderItemApiType
+        arguments:
+            - '@marello_order.form.data_transformer.product_to_sku'
+            - '@marello_order.form.data_transformer.tax_code_to_code'
+        tags:
+            - { name: form.type, alias: marello_order_item_api }
+
+    marello_order.form.type.customer_api:
+        class: Marello\Bundle\OrderBundle\Form\Type\CustomerApiType
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: form.type, alias: marello_customer_api }
+
+    marello_order.form.order_api:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - ~
+            - 'marello_order_api'
+
+    marello_order.form.order_update_api:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - ~
+            - 'marello_order_update_api'
+
+    marello_order.form.handler.order_api:
+        class: Marello\Bundle\OrderBundle\Form\Handler\OrderApiHandler
+        scope: request
+        arguments:
+            - '@marello_order.form.order_api'
+            - '@marello_order.form.order_update_api'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    marello_order.form.customer:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - ~
+            - 'marello_customer'
+
+    marello_order.form.handler.customer:
+        class: Marello\Bundle\OrderBundle\Form\Handler\CustomerHandler
+        scope: request
+        arguments:
+            - '@marello_order.form.customer'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    marello_order.form.customer_api:
+        class: Symfony\Component\Form\Form
+        factory: ['@form.factory', createNamed]
+        arguments:
+            - ~
+            - 'marello_customer_api'
+
+    marello_order.form.handler.customer_api:
+        class: Marello\Bundle\OrderBundle\Form\Handler\CustomerApiHandler
+        scope: request
+        arguments:
+            - '@marello_order.form.customer_api'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
+    marello_order.form.data_transformer.product_to_sku:
+        class: Marello\Bundle\OrderBundle\Form\DataTransformer\ProductToSkuTransformer
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    marello_order.form.data_transformer.sales_channel_to_id:
+        class: Oro\Bundle\FormBundle\Form\DataTransformer\EntityToIdTransformer
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - MarelloSalesBundle:SalesChannel
+
+    marello_order.form.data_transformer.tax_code_to_code:
+        class: Marello\Bundle\OrderBundle\Form\DataTransformer\TaxCodeToCodeTransformer
+        arguments:
+            - '@doctrine.orm.entity_manager'
