@@ -1,0 +1,83 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {'%name%': entity.name, '%entityName%': 'marello.inventory.warehousegroup.entity_label'|trans} }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity':      entity,
+    'indexPath':   path('marelloenterprise_inventory_warehousegroup_index'),
+    'indexLabel': 'marello.inventory.warehousegroup.entity_plural_label'|trans,
+    'entityTitle': entity.name
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if entity.id and not entity.system %}
+        {% if resource_granted('marelloenterprise_inventory_warehousegroup_update') or resource_granted('marelloenterprise_inventory_warehousegroup_create') %}
+            {{ UI.editButton({
+                'path' : path('marelloenterprise_inventory_warehousegroup_update', { id: entity.id }),
+                'entity_label': 'marello.inventory.warehousegroup.entity_label'|trans
+            }) }}
+        {% endif %}
+        {% if resource_granted('DELETE', entity) and not marello_inventory_is_fixed_warehousegroup(entity) %}
+            {{ UI.deleteButton({
+                'dataUrl': path('marelloenterprise_inventory_api_delete_warehousegroup', {'id': entity.id}),
+                'dataRedirect': path('marelloenterprise_inventory_warehousegroup_index'),
+                'aCss': 'no-hash remove-button',
+                'id': 'btn-remove-tag',
+                'dataId': entity.id,
+                'entity_label': 'marello.inventory.warehousegroup.entity_label'|trans
+            }) }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block content_data %}
+    {% set id = 'marello-warehouse-group-view' %}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        {{ UI.renderProperty('marello.inventory.warehousegroup.name.label'|trans, entity.name) }}
+                        {{ UI.renderProperty('marello.inventory.warehousegroup.description.label'|trans, entity.description) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set warehouses %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marelloenterprise-inventory-group-warehouses-grid', {id: entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+
+    {% set dataBlocks =
+        [
+            {
+                'title': 'marelloenterprise.inventory.warehousegroup.datablock.general'|trans,
+                'class': 'active',
+                'subblocks': generalSubblocks
+            },
+            {
+                'title': 'marelloenterprise.inventory.warehousegroup.datablock.warehouses'|trans,
+                'class': 'active',
+                'subblocks': [
+                    { 'data' : [warehouses] }
+                ]
+            }
+        ]
+    %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

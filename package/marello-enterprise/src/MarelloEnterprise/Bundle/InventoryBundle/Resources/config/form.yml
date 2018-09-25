@@ -1,0 +1,108 @@
+services:
+    marello_enterprise.form.extension.warehouse:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\WarehouseExtension'
+        tags:
+            - { name: form.type_extension, alias: marello_warehouse }
+
+    marello_enterprise.form.extension.inventorylevel:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\InventoryLevelExtension'
+        tags:
+            - { name: form.type_extension, alias: marello_inventory_inventorylevel }
+
+    # Autocomplete search handler
+    marelloenterprise_inventory.form.autocomplete.search_handler.warehouses:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_inventory.entity.warehouse.class%'
+            - ["label"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: warehouses, acl_resource: marello_inventory_inventory_view }
+
+    marelloenterprise_inventory.form.autocomplete.search_handler.system_group_global_warehouses:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Autocomplete\SystemGroupGlobalWarehousesSearchHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_inventory.entity.warehouse.class%'
+            - ["label"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: system_group_global_warehouses, acl_resource: marello_inventory_inventory_view }
+
+    marelloenterprise_inventory.form.autocomplete.search_handler.warehousegroups:
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_inventory.entity.warehousegroup.class%'
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: warehousegroups, acl_resource: marello_inventory_inventory_view }
+
+    marelloenterprise_inventory.form.autocomplete.search_handler.not_linked_warehouse_groups:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Autocomplete\NotLinkedWarehouseGroupsSearchHandler'
+        parent: oro_form.autocomplete.search_handler
+        arguments:
+            - '%marello_inventory.entity.warehousegroup.class%'
+            - ["name"]
+        tags:
+            - { name: oro_form.autocomplete.search_handler, alias: not_linked_warehouse_groups, acl_resource: marello_inventory_inventory_view }
+
+    marelloenterprise_inventory.form.data_transformer.warehouse:
+        class: 'Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - 'MarelloInventoryBundle:Warehouse'
+
+    marelloenterprise_inventory.form_type.warehouse_select:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseSelectType'
+        tags:
+            - { name: form.type, alias: marello_warehouse_select }
+
+    marelloenterprise_inventory.form_type.warehouse_multi_select:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseMultiSelectType'
+        arguments:
+            - '@marelloenterprise_inventory.form.data_transformer.warehouse'
+        tags:
+            - { name: form.type, alias: marello_warehouse_multi_select }
+
+    marelloenterprise_inventory.form_type.system_group_global_warehouse_multi_select:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\SystemGroupGlobalWarehouseMultiSelectType'
+        arguments:
+            - '@marelloenterprise_inventory.form.data_transformer.warehouse'
+        tags:
+            - { name: form.type, alias: marello_system_group_global_warehouse_multi_select }
+
+    marelloenterprise_inventory.form_type.warehousegroup:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGroupType'
+        tags:
+            - { name: form.type, alias: marello_warehouse_group }
+
+    marelloenterprise_inventory.form_type.not_linked_warehousegroup_autocomplete:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\NotLinkedWarehouseGroupAutocompleteType'
+        tags:
+            - { name: form.type, alias: marello_not_linked_warehousegroup_autocomplete }
+
+    marelloenterprise_inventory.form_type.warehousechannelgrouplink:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseChannelGroupLinkType'
+        tags:
+            - { name: form.type, alias: marello_warehouse_channel_group_link }
+
+    marelloenterprise_inventory.form_type.wfarule:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WFARuleType'
+        arguments:
+            - '@marelloenterprise_inventory.provider.wfa_strategy.choices'
+            - '@marelloenterprise_inventory.repository.wfa_rule'
+        tags:
+            - { name: form.type, alias: marello_inventory_wfarule_type }
+
+    #form handlers
+    marelloenterprise_inventory.form_handler.warehouse:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseHandler'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_form.form.handler, alias: marelloenterprise_inventory.form_handler.warehouse }
+
+    marelloenterprise_inventory.form_handler.warehousegroup:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: oro_form.form.handler, alias: marelloenterprise_inventory.form_handler.warehousegroup }

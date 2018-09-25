@@ -1,0 +1,77 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroAddressBundle::macros.html.twig' as address %}
+
+{% if entity.id %}
+    {% oro_title_set({params : {"%warehouse.label%": entity.label|default('N/A'|trans) } }) %}
+{% endif %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+    'entity': entity,
+    'indexPath': path('marelloenterprise_inventory_warehouse_index'),
+    'indexLabel': 'marello.inventory.warehouse.entity_label'|trans,
+    'entityTitle': entity.label|default('N/A'|trans)
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if entity.id %}
+        {% if resource_granted('marelloenterprise_inventory_warehouse_update') or resource_granted('marelloenterprise_inventory_warehouse_create') %}
+            {{ UI.editButton({
+                'path' : path('marelloenterprise_inventory_warehouse_update', { id: entity.id }),
+                'entity_label': 'marello.inventory.warehouse.entity_label'|trans
+            }) }}
+        {% endif %}
+        {% if not entity.default and resource_granted('DELETE', entity) %}
+            {{ UI.deleteButton({
+                'dataUrl': path('marelloenterprise_inventory_api_delete_warehouse', {'id': entity.id}),
+                'dataRedirect': path('marelloenterprise_inventory_warehouse_index'),
+                'aCss': 'no-hash remove-button',
+                'id': 'btn-remove-tag',
+                'dataId': entity.id,
+                'entity_label': 'marello.inventory.warehouse.entity_label'|trans
+            }) }}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block content_data %}
+    {% set id = 'marello-warehouse-view' %}
+
+    {%- set warehouseInformation -%}
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ UI.renderProperty('marello.inventory.warehouse.label.label'|trans, entity.label) }}
+                {{ UI.renderProperty('marello.inventory.warehouse.code.label'|trans, entity.code) }}
+                {{ UI.renderProperty('marello.inventory.warehouse.default.label'|trans, entity.default ?
+                'marello.core.yes.label'|trans
+                :
+                'marello.core.no.label'|trans
+                ) }}
+                {{ UI.renderProperty('marello.inventory.warehouse.warehouse_type.label'|trans, entity.warehouseType) }}
+                {{ UI.renderHtmlProperty('marello.inventory.warehouse.address.label'|trans, address.renderAddress(entity.address)) }}
+                {{ UI.renderProperty('marello.address.marelloaddress.phone.label'|trans, entity.address.phone) }}
+            </div>
+        </div>
+    {%- endset -%}
+
+    {% set dataBlocks = [
+        {
+            'title': 'oro.entity_config.block_titles.general.label'|trans,
+            'class': 'active',
+            'subblocks': [
+                {'data' : [warehouseInformation]},
+            ]
+        }
+    ] %}
+
+        {% set data = {'dataBlocks': dataBlocks} %}
+
+    {{ parent() }}
+{% endblock content_data %}
+
+{% block stats %}
+    {# Must be empty, because parent view uses this block to render dates, which are not implemented in this entity #}
+{% endblock stats %}

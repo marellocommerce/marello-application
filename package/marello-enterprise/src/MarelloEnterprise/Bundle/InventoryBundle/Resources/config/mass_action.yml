@@ -1,0 +1,29 @@
+services:
+    marelloenterprise.inventory.mass_action.status.enable:
+        class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\Actions\StatusEnableMassAction'
+        arguments:
+            - 'marelloenterprise.inventory.mass_action.status_handler'
+            - 'marelloenterprise_inventory_api_mass_wfarule'
+            - true
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: wfaruleenable }
+
+    marelloenterprise.inventory.mass_action.status.disable:
+        class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\Actions\StatusEnableMassAction'
+        arguments:
+            - 'marelloenterprise.inventory.mass_action.status_handler'
+            - 'marelloenterprise_inventory_api_mass_wfarule'
+            - false
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: wfaruledisable }
+
+    marelloenterprise.inventory.mass_action.status_handler:
+        class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\StatusMassActionHandler'
+        arguments:
+            - 'marelloenterprise.inventory.wfarule.datagrid.status.success_message'
+            - 'MarelloEnterpriseInventoryBundle:WFARule'
+            - '@doctrine.orm.entity_manager'
+            - '@translator'
+            - '@oro_security.security_facade.link'

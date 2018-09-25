@@ -1,0 +1,94 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% set gridName = 'marelloenterprise-not-linked-saleschannelgroups-grid' %}
+{% set entity = form.vars.value %}
+{% set formAction = entity.id ? path('marelloenterprise_inventory_warehousechannelgrouplink_update', {id: entity.id}) : path('marelloenterprise_inventory_warehousechannelgrouplink_create') %}
+{% oro_title_set({params : {'%id%': entity.id, '%entityName%': 'marello.inventory.warehousechannelgrouplink.entity_label'|trans} }) %}
+
+{% block navButtons %}
+    {% if entity.id and not entity.system and resource_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('marelloenterprise_inventory_api_delete_warehousechannelgrouplink', {'id': entity.id}),
+            'dataRedirect': path('marelloenterprise_inventory_warehousechannelgrouplink_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-tag',
+            'dataId': entity.id,
+            'entity_label': 'marello.inventory.warehousechannelgrouplink.entity_label'|trans
+        }) }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {{ UI.cancelButton(path('marelloenterprise_inventory_warehousechannelgrouplink_index')) }}
+    {% if entity.id and resource_granted('marelloenterprise_inventory_warehousechannelgrouplink_update') or resource_granted('marelloenterprise_inventory_warehousechannelgrouplink_create') %}
+        {% set html = '' %}
+        {% if resource_granted('marelloenterprise_inventory_warehousechannelgrouplink_view') %}
+            {% set html = UI.saveAndCloseButton({
+                'route': 'marelloenterprise_inventory_warehousechannelgrouplink_index'
+            }) %}
+        {% endif %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'marelloenterprise_inventory_warehousechannelgrouplink_update',
+            'params': {'id': '$id'}
+        }) %}
+
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
+{% endblock %}
+
+{% block pageHeader %}
+    {% if entity.id %}
+        {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marelloenterprise_inventory_warehousechannelgrouplink_index'),
+        'indexLabel': 'marello.inventory.warehousechannelgrouplink.entity_plural_label'|trans,
+        'entityTitle': entity.id|default('N/A'|trans)
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.inventory.warehousechannelgrouplink.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% set channelGroupIds = [] %}
+{% for channelGroup in entity.salesChannelGroups.toArray %}
+    {% set channelGroupIds = channelGroupIds|merge([channelGroup.id]) %}
+{% endfor %}
+
+{% block content_data %}
+    {% set id = 'marello-warehouse-channelgroup-link-update' %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'marelloenterprise.inventory.warehousechannelgrouplink.datablock.general'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'data': [
+                        form_row(form.warehouseGroup),
+                    ]
+                }
+            ]
+        },
+        {
+            'title': 'marelloenterprise.inventory.warehousechannelgrouplink.datablock.channel_groups'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'data': [
+                        form_widget(form.addSalesChannelGroups, {'id': 'addSalesChannelGroups'}),
+                        form_widget(form.removeSalesChannelGroups, {'id': 'removeSalesChannelGroups'}),
+                        dataGrid.renderGrid(gridName, { linkOwner: form.vars.value.id ? : null, channelGroups: channelGroupIds })
+                    ]
+                }
+            ]
+        }
+    ] %}
+
+    {% set data = {
+        'formErrors': form_errors(form),
+        'dataBlocks': dataBlocks
+    }%}
+
+    {{ parent() }}
+{% endblock content_data %}

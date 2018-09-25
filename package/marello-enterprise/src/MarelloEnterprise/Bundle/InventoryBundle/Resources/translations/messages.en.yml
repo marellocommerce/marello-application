@@ -1,0 +1,64 @@
+marelloenterprise:
+    inventory:
+        inventoryitem:
+            inventory_levels:
+                totals:                 Inventory Levels Totals
+        wfarule:
+            entity_label:               Warehouse Fulfillment Allocation Rule
+            entity_plural_label:        Warehouse Fulfillment Allocation Rules
+            entity_short_label:         WFA Rule
+            entity_short_plural_label:  WFA Rules
+            id.label:                   Id
+            strategy.label:             Strategy
+            organization.label:         Organization
+            rule.label:                 Rule
+
+            notification:
+                enabled:                WFA rule has been enabled successfully
+                disabled:               WFA rule has been disabled successfully
+
+            datagrid:
+                action.enable:          Enable
+                action.disable:         Disable
+                status:
+                    success_message:    "{0} No entities status were changed|{1} One entity status was changed|]1,Inf[ %count% entities status were changed"
+
+        messages:
+            warning:
+                wfarule:
+                    is_system_update_attempt:      System WFA Rule can't be updated
+            success:
+                warehouse.saved:                   Warehouse has been saved successfully
+                warehousegroup.saved:              Warehouse Group has been saved successfully
+                warehousechannelgrouplink.saved:   Warehouse Channel Group Link has been saved successfully
+                wfarule.saved:                     WFA Rule has been saved successfully
+        navigation:
+            warehouse:
+                label:                  Warehouses
+                create_label:           Create new Warehouse
+            wfarule:
+                create_label:           Create new WFA Rule
+
+        warehouse:
+            form:
+                select_warehouse:       Select Warehouse
+                create_own_group:       Create Warehouse Group
+
+        warehousegroup:
+            datablock:
+                general:                General
+                warehouses:             Warehouses
+            form:
+                select_warehousegroup:  Select Warehouse (Group)
+
+        warehousechannelgrouplink:
+            datablock:
+                general:                General
+                channel_groups:         Sales Channel (Groups)
+
+        sections:
+            general:                    General
+
+        strategies:
+            min_quantity:               Minimum Quantity
+            min_distance:               Minimum Distance

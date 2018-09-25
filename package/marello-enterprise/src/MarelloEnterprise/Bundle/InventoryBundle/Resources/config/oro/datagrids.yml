@@ -1,0 +1,420 @@
+datagrids:
+    marelloenterprise-inventory-warehouses-grid:
+        source:
+            type: orm
+            acl_resource: marelloenterprise_inventory_warehouse_view
+            query:
+                select:
+                    - w.id
+                    - w
+                    - wt.label as warehouseType
+                from:
+                    - { table: MarelloInventoryBundle:Warehouse, alias: w }
+                join:
+                    left:
+                        - { join: w.warehouseType, alias: wt }
+        columns:
+            label:
+                label:              marello.inventory.warehouse.label.label
+            code:
+                label:              marello.inventory.warehouse.code.label
+            warehouseType:
+                label:              marello.inventory.warehouse.warehouse_type.label
+                frontend_type:      string
+            default:
+                label:              marello.inventory.warehouse.default.label
+                frontend_type:      boolean
+        sorters:
+            columns:
+                label:              { data_name: w.label }
+                code:               { data_name: w.code }
+                warehouseType:      { data_name: wt.label }
+                default:            { data_name: w.default }
+            default:
+                label: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+        filters:
+            columns:
+                label:
+                    type:             string
+                    data_name:        w.label
+                code:
+                    type:             string
+                    data_name:        w.code
+                warehouseType:
+                    type: entity
+                    data_name: wt
+                    options:
+                        field_options:
+                            class: Marello\Bundle\InventoryBundle\Entity\WarehouseType
+                default:
+                    type:             boolean
+                    data_name:        w.default
+        properties:
+            id: ~
+            view_link:
+                type:   url
+                route:  marelloenterprise_inventory_warehouse_view
+                params: [ id ]
+            update_link:
+                type:   url
+                route:  marelloenterprise_inventory_warehouse_update
+                params: [ id ]
+            delete_link:
+                type:   url
+                route:  marelloenterprise_inventory_api_delete_warehouse
+                params: [ id ]
+        actions:
+            view:
+                type: navigate
+                link: view_link
+                icon: eye
+                rowAction: true
+            update:
+                type: navigate
+                link: update_link
+                icon: edit
+                rowAction: true
+            delete:
+                type: delete
+                label: oro.grid.action.delete
+                link: delete_link
+                icon: trash
+                rowAction: true
+                confirmation: true
+        action_configuration: ['@marelloenterprise_inventory.datagrid.warehouse.action_permission_provider', "getActionPermissions"]
+        options:
+            mass_actions:
+                delete:
+                    enabled: false
+
+    marelloenterprise-inventory-warehousegroups-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - whg
+                from:
+                    - { table: MarelloInventoryBundle:WarehouseGroup, alias: whg }
+                join:
+                    left:
+                        - { join: whg.warehouses, alias: wh }
+                where:
+                    and:
+                        - whg.system != true
+        columns:
+            name:
+                label:                marello.inventory.warehousegroup.name.label
+                frontend_type:        string
+            description:
+                label:                marello.inventory.warehousegroup.description.label
+                frontend_type:        string
+            warehouses:
+                label:                marello.inventory.warehousegroup.warehouses.label
+                type:                 twig
+                frontend_type:        html
+                template:             MarelloEnterpriseInventoryBundle:WarehouseGroup/Datagrid:warehouses.html.twig
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: whg.name
+        sorters:
+            columns:
+                name:
+                    data_name: whg.name
+                description:
+                    data_name: whg.description
+        properties:
+            id: ~
+            view_link:
+                type:   url
+                route:  marelloenterprise_inventory_warehousegroup_view
+                params: [ id ]
+            update_link:
+                type:   url
+                route:  marelloenterprise_inventory_warehousegroup_update
+                params: [ id ]
+            delete_link:
+                type:   url
+                route:  marelloenterprise_inventory_api_delete_warehousegroup
+                params: [ id ]
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_resource:   marelloenterprise_inventory_warehouse_view
+                rowAction:      true
+            update:
+                type:           navigate
+                label:          oro.grid.action.update
+                link:           update_link
+                icon:           edit
+                rowAction:      true
+            delete:
+                type:           delete
+                label:          oro.grid.action.delete
+                link:           delete_link
+                icon:           trash
+                rowAction:      true
+                confirmation:   true
+        action_configuration: ['@marelloenterprise_inventory.datagrid.warehousegroup.action_permission_provider', "getActionPermissions"]
+        options:
+            entity_pagination: true
+
+    marelloenterprise-inventory-not-linked-warehousegroups-grid:
+        extends: marelloenterprise-inventory-warehousegroups-grid
+        source:
+            query:
+                join:
+                    left:
+                        - { join: whg.warehouseChannelGroupLink, alias: wcgl }
+                where:
+                    and:
+                        - wcgl.id IS NULL OR wcgl.id = :linkOwner
+            bind_parameters:
+                -
+                    name: linkOwner
+                    default: null
+                    type: integer
+        filters: ~
+        actions: ~
+
+    marelloenterprise-inventory-group-warehouses-grid:
+        extends: marelloenterprise-inventory-warehouses-grid
+        source:
+            query:
+                join:
+                    left:
+                        - { join: w.group, alias: whg }
+                where:
+                    and:
+                        - whg.id = :id
+            bind_parameters:
+                - id
+        filters: ~
+        actions: ~
+
+    marelloenterprise-inventory-warehousechannelgrouplinks-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - wcgl
+                from:
+                    - { table: MarelloInventoryBundle:WarehouseChannelGroupLink, alias: wcgl }
+                join:
+                    left:
+                        - { join: wcgl.warehouseGroup, alias: whg }
+                        - { join: wcgl.salesChannelGroups, alias: scg }
+                where:
+                    and:
+                        - wcgl.system != true
+        columns:
+            warehouseGroup:
+                label:                marello.inventory.warehousechannelgrouplink.warehouse_group.label
+                frontend_type:        string
+            salesChannelGroups:
+                label:                marello.inventory.warehousechannelgrouplink.sales_channel_groups.label
+                type:                 twig
+                frontend_type:        html
+                template:             MarelloEnterpriseInventoryBundle:WarehouseChannelGroupLink/Datagrid:salesChannelGroups.html.twig
+        properties:
+            id: ~
+            update_link:
+                type:   url
+                route:  marelloenterprise_inventory_warehousechannelgrouplink_update
+                params: [ id ]
+            delete_link:
+                type:   url
+                route:  marelloenterprise_inventory_api_delete_warehousechannelgrouplink
+                params: [ id ]
+        actions:
+            update:
+                type:           navigate
+                label:          oro.grid.action.update
+                link:           update_link
+                icon:           edit
+                acl_resource:   marelloenterprise_inventory_warehousechannelgrouplink_update
+                rowAction:      true
+            delete:
+                type:           delete
+                label:          oro.grid.action.delete
+                link:           delete_link
+                icon:           trash
+                rowAction:      true
+                confirmation:   true
+        options:
+            entity_pagination: true
+
+    marelloenterprise-not-linked-saleschannelgroups-grid:
+        source:
+            type: orm
+            query_builder: '@marelloenterprise_inventory.repository.warehousechannelgrouplink->getNotLinkedSalesChannelGroupsGridQueryBuilder'
+            bind_parameters:
+                -
+                    name: linkOwner
+                    default: -1
+                - channelGroups
+        columns:
+            hasLink:
+                label:                ~
+                editable:             true
+                frontend_type:        boolean
+            name:
+                label:                marello.sales.saleschannelgroup.name.label
+                frontend_type:        string
+            description:
+                label:                marello.sales.saleschannelgroup.description.label
+                frontend_type:        string
+        sorters:
+            columns:
+                name:
+                    data_name: name
+                description:
+                    data_name: description
+                hasLink:
+                    data_name: hasLink
+            default:
+                hasLink: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+        properties:
+            id: ~
+        options:
+            rowSelection:
+                dataField: id
+                columnName: hasLink
+                selectAll: true
+                selectors:
+                    included: '#addSalesChannelGroups'
+                    excluded: '#removeSalesChannelGroups'
+
+    marelloenterprise-inventory-wfa-rules-grid:
+        acl_resource: marelloenterprise_inventory_wfa_rule_view
+        source:
+            type:         orm
+            query:
+                select:
+                    - wfarule
+                    - wfarule.id
+                    - rule.name
+                    - rule.enabled
+                    - rule.sortOrder
+                    - rule.stopProcessing
+                    - rule.system
+                    - wfarule.strategy
+                from:
+                    - { table: MarelloEnterpriseInventoryBundle:WFARule, alias: wfarule }
+                join:
+                    inner:
+                        - { join: wfarule.rule, alias: rule }
+        columns:
+            name:
+                label:         marello.rule.name.label
+            enabled:
+                label:         marello.rule.enabled.label
+                frontend_type: boolean
+            sortOrder:
+                label:         marello.rule.sort_order.label
+            stopProcessing:
+                label:         marello.rule.stop_processing.label
+                frontend_type: boolean
+            system:
+                label:         marello.rule.system.label
+                frontend_type: boolean
+            strategy:
+                label:         marelloenterprise.inventory.wfarule.strategy.label
+                type:          twig
+                frontend_type: html
+                template:      MarelloEnterpriseInventoryBundle:WFARule/DataGrid:strategy.html.twig
+        properties:
+            id: ~
+            view_link:
+                type:     url
+                route:    marelloenterprise_inventory_wfa_rule_view
+                params:   [ id ]
+            enable_link:
+                type:     url
+                route:    marelloenterprise_inventory_api_enable_wfarule
+                params:   [ id ]
+            disable_link:
+                type:     url
+                route:    marelloenterprise_inventory_api_disable_wfarule
+                params:   [ id ]
+        sorters:
+            columns:
+                name:
+                    data_name: rule.name
+                enabled:
+                   data_name:  rule.enabled
+                sortOrder:
+                    data_name: rule.sortOrder
+                stopProcessing:
+                    data_name: rule.stopProcessing
+                system:
+                    data_name: rule.system
+        filters:
+            columns:
+                name:
+                    type:      string
+                    data_name: rule.name
+                enabled:
+                    type:      boolean
+                    data_name: rule.enabled
+                sortOrder:
+                    type:      number
+                    data_name: rule.sortOrder
+                stopProcessing:
+                    type:      boolean
+                    data_name: rule.stopProcessing
+                system:
+                    type:      boolean
+                    data_name: rule.system
+                strategy:
+                    type:      choice
+                    data_name: wfarule.strategy
+                    options:
+                        field_options:
+                            multiple:          true
+                            choices:           "@marelloenterprise_inventory.provider.wfa_strategy.choices->getChoices"
+                            translatable_options: false
+        actions:
+            view:
+                type:          navigate
+                link:          view_link
+                acl_resource:  marelloenterprise_inventory_wfa_rule_view
+                icon:          eye
+                label:         oro.grid.action.view
+                rowAction:     true
+            enable:
+                type:         ajax
+                acl_resource: marelloenterprise_inventory_wfa_rule_update
+                label:        marelloenterprise.inventory.wfarule.datagrid.action.enable
+                icon:         check
+                link:         enable_link
+            disable:
+                type:         ajax
+                acl_resource: marelloenterprise_inventory_wfa_rule_update
+                label:        marelloenterprise.inventory.wfarule.datagrid.action.disable
+                icon:         close
+                link:         disable_link
+        action_configuration: ['@marelloenterprise_inventory.datagrid.wfa_rule_actions_visibility_provider', getActionsVisibility]
+        options:
+            mass_actions:
+                delete:
+                    enabled: false
+        mass_actions:
+            enable:
+                type:         wfaruleenable
+                acl_resource: marelloenterprise_inventory_wfa_rule_update
+                label:        marelloenterprise.inventory.wfarule.datagrid.action.enable
+                icon:         check
+                entity_name:  'MarelloEnterpriseInventoryBundle:WFARule'
+                data_identifier: wfarule.id
+            disable:
+                type:         wfaruledisable
+                acl_resource: marelloenterprise_inventory_wfa_rule_update
+                label:        marelloenterprise.inventory.wfarule.datagrid.action.disable
+                icon:         close
+                entity_name:  'MarelloEnterpriseInventoryBundle:WFARule'
+                data_identifier: wfarule.id

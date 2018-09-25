@@ -1,0 +1,16 @@
+services:
+    marelloenterprise_sales.event_listener.doctrine.organization.create:
+        class: 'MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine\OrganizationCreateListener'
+        arguments:
+            - '%installed%'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\OrganizationBundle\Entity\Organization', event: postPersist, priority: 20 }
+
+    marelloenterprise_sales.handler.saleschannelgroup_delete:
+        class:  'MarelloEnterprise\Bundle\SalesBundle\Handler\SalesChannelGroupDeleteHandler'
+        parent: oro_soap.handler.delete.abstract
+        decorates: marello_sales.handler.saleschannelgroup_delete
+        scope: request
+        arguments:
+            - '@oro_security.security_facade'
+            - '@marello_inventory.repository.warehousechannelgrouplink'

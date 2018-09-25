@@ -1,0 +1,22 @@
+services:
+    marelloenterprise_instoreassistant.provider.auth_provider:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Provider\InstoreUserAuthenticationProvider
+        arguments:
+            - '@marelloenterprise_instoreassistant.manager.oro_user_manager'
+            - '@security.encoder_factory'
+            - '@oro_userpro.security.login_attempts_manager'
+
+    marelloenterprise_instoreassistant.manager.oro_user_manager:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Manager\OroUserManager
+        parent: oro_user.manager
+
+    marelloenterprise_instoreassistant.api.rest.api_doc.route_options_resolver.user_profile:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\ApiDoc\InstoreUserRestRouteOptionsResolver
+        public: false
+        arguments:
+            - '@oro_api.value_normalizer'
+        tags:
+            - { name: oro_api.routing_options_resolver, priority: -10 }
+
+    marelloenterprise_instoreassistant.api.cors_request_headers:
+        class: MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options\CorsRequestHeaders

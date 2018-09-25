@@ -1,0 +1,64 @@
+services:
+    marelloenterprise_address.entity_update_geocoding_listener:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\EventListener\Doctrine\AddressGeocodingListener'
+        arguments:
+            - '@marelloenterprise.google_api.result_provider.geocoding'
+            - '@session'
+        calls:
+            - [setFeatureChecker, ['@oro_featuretoggle.checker.feature_checker']]
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\AddressBundle\Entity\MarelloAddress', event: postUpdate }
+
+    marelloenterprise_address.cron.command.address_geocoding:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Command\AddressGeocodingCommand'
+        tags:
+            - { name: console.command }
+
+    marelloenterprise_address.distance_calculator.chain_element.address_based:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AddressBased\AddressBasedAddressesDistanceCalculatorChainElement'
+
+    marelloenterprise_address.distance_calculator.chain_element.straight_line:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalculatorChainElement'
+        arguments:
+            - '@marelloenterprise_address.coordinates_provider.main'
+            - '@session'
+        calls:
+            - [setFeatureChecker, ['@oro_featuretoggle.checker.feature_checker']]
+            - [setSuccessor, ['@marelloenterprise_address.distance_calculator.chain_element.address_based']]
+
+    marelloenterprise_address.distance_calculator.chain_element.matrix_based:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\MatrixBasedAddressesDistanceCalculatorChainElement'
+        arguments:
+            - '@marelloenterprise.google_api.result_provider.distance_matrix'
+            - '@logger'
+            - '@session'
+        calls:
+            - [setFeatureChecker, ['@oro_featuretoggle.checker.feature_checker']]
+            - [setSuccessor, ['@marelloenterprise_address.distance_calculator.chain_element.straight_line']]
+
+    marelloenterprise_address.distance_calculator.main:
+        parent: marelloenterprise_address.distance_calculator.chain_element.matrix_based
+
+    marelloenterprise_address.coordinates_provider.chain_element.saved_coordinates:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\SavedCoordinates\SavedAddressCoordinatesProviderChainElement'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        calls:
+            - [setSuccessor, ['@marelloenterprise_address.coordinates_provider.chain_element.geocoding_api_coordinates']]
+
+    marelloenterprise_address.coordinates_provider.chain_element.geocoding_api_coordinates:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\GeocodingApiCoordinates\GeocodingApiAddressCoordinatesProviderChainElement'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@marelloenterprise.google_api.result_provider.geocoding'
+
+    marelloenterprise_address.coordinates_provider.main:
+        parent: marelloenterprise_address.coordinates_provider.chain_element.saved_coordinates
+
+    marelloenterprise_address.repository.marelloenterpriseaddress:
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Entity\Repository\MarelloEnterpriseAddressRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]

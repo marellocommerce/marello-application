@@ -1,0 +1,55 @@
+navigation:
+    menu_config:
+        items:
+            warehouse_tab:
+                label: 'marelloenterprise.inventory.navigation.warehouse.label'
+                uri: '#'
+                extras:
+                    position: 40
+            warehouses:
+                label: marello.inventory.warehouse.entity_plural_label
+                route: marelloenterprise_inventory_warehouse_index
+                extras:
+                    routes: ['marello_inventory_warehouse_*', 'marelloenterprise_inventory_warehouse_*']
+            warehousegroups:
+                label: marello.inventory.warehousegroup.entity_plural_label
+                route: marelloenterprise_inventory_warehousegroup_index
+                extras:
+                    routes: ['marelloenterprise_inventory_warehousegroup_*']
+            warehousechannelgrouplinks:
+                label: marello.inventory.warehousechannelgrouplink.entity_plural_label
+                route: marelloenterprise_inventory_warehousechannelgrouplink_index
+                extras:
+                    routes: ['marelloenterprise_inventory_warehousechannelgrouplink_*']
+            wfa_rules:
+                label: marelloenterprise.inventory.wfarule.entity_short_plural_label
+                route: marelloenterprise_inventory_wfa_rule_index
+                extras:
+                    routes: ['marelloenterprise_inventory_wfa_rule_*']
+        tree:
+            application_menu:
+                children:
+                    system_tab:
+                        children:
+                            wfa_rules: ~
+                    warehouse_tab:
+                        children:
+                            warehouses: ~
+                            warehousegroups: ~
+                            warehousechannelgrouplinks: ~
+
+    titles:
+        marelloenterprise_inventory_warehouse_index:  'marello.inventory.warehouse.entity_plural_label'
+        marelloenterprise_inventory_warehouse_create: 'oro.ui.create_entity'
+        marelloenterprise_inventory_warehouse_update: '%warehouse.label% - oro.ui.edit'
+        marelloenterprise_inventory_warehouse_view: '%warehouse.label% - oro.ui.view'
+        marelloenterprise_inventory_warehousegroup_index:  'marello.inventory.warehousegroup.entity_plural_label'
+        marelloenterprise_inventory_warehousegroup_create: 'oro.ui.create_entity'
+        marelloenterprise_inventory_warehousegroup_update: '%name% - oro.ui.edit'
+        marelloenterprise_inventory_warehousegroup_view: '%name% - oro.ui.view'
+        marelloenterprise_inventory_warehousechannelgrouplink_index:  'marello.inventory.warehousechannelgrouplink.entity_plural_label'
+        marelloenterprise_inventory_warehousechannelgrouplink_create: 'oro.ui.create_entity'
+        marelloenterprise_inventory_warehousechannelgrouplink_update: '%id% - oro.ui.edit'
+        marelloenterprise_inventory_wfa_rule_create:  'oro.ui.create_entity'
+        marelloenterprise_inventory_wfa_rule_update:  '%wfarule.label% - oro.ui.edit'
+        marelloenterprise_inventory_wfa_rule_view:    '%wfarule.label% - oro.ui.view'

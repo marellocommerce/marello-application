@@ -1,0 +1,10 @@
+placeholders:
+    placeholders:
+        marello_inventory_levels_totals:
+            items:
+                marelloenterprise_inventory_levels_totals:
+                    order: 100
+
+    items:
+        marelloenterprise_inventory_levels_totals:
+            template: MarelloEnterpriseInventoryBundle:InventoryItem:inventoryLevelsTotals.html.twig
