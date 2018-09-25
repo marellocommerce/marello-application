@@ -1,0 +1,90 @@
+{
+    "name": "marellocommerce/marello-application",
+    "description": "Marello ERP for Commerce distribution",
+    "homepage": "https://github.com/marellocommerce/marello-application.git",
+    "license": "OSL-3.0",
+    "autoload": {
+        "psr-4": {"": "src/"},
+        "exclude-from-classmap": ["**/Tests/"]
+    },
+    "repositories": {
+        "oro" : {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.orocrm.com"
+        },
+        "marello" :{
+            "type": "vcs",
+            "url": "https://github.com/marellocommerce/marello.git",
+            "branch": "master"
+        }
+    },
+    "require": {
+        "php": "7.1.*",
+        "oro/platform": "2.6.*",
+        "oro/platform-serialised-fields": "2.6.*",
+        "oro/calendar-bundle": "2.6.*",
+        "marellocommerce/marello": "1.5.*"
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "3.1.2",
+        "behat/behat": "3.2.2",
+        "behat/mink-extension": "2.2.*",
+        "behat/mink-selenium2-driver": "1.*",
+        "behat/symfony2-extension": "2.1.1",
+        "nelmio/alice": "2.2.*",
+        "phpunit/phpunit": "5.7.*",
+        "phpunit/phpunit-selenium": "3.0.*",
+        "johnkary/phpunit-speedtrap": "1.0.*",
+        "mybuilder/phpunit-accelerator": "1.2.*",
+        "squizlabs/php_codesniffer": "2.8.*",
+        "phpmd/phpmd": "2.6.*",
+        "sebastian/phpcpd": "3.0.*",
+        "phpunit/phpcov": "3.1.*",
+        "symfony/phpunit-bridge": "3.2.*",
+        "friendsofphp/php-cs-fixer": "2.1.*"
+    },
+    "config": {
+        "component-dir": "web/bundles/components",
+        "bin-dir": "bin",
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "scripts": {
+        "marello-reset": [
+            "rm -rf app/cache/*",
+            "rm -rf app/logs/*",
+            "sed -i -e 's/installed:.*/installed: ~/g' app/config/parameters.yml",
+            "app/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --application-url=http://marello-ee.docker:5080/"
+        ],
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets",
+            "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        }
+    }
+}
