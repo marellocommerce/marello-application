@@ -1,0 +1,331 @@
+parameters:
+    # entities
+    marello_inventory.virtual_inventory.entity.class:                        Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel
+    marello_pricing.price.entity.class:                                      Marello\Bundle\PricingBundle\Entity\ProductPrice
+    marello_magento.entity.product.class:                                    Marello\Bundle\MagentoBundle\Entity\Product
+    marello_marello.entity.product.class:                                    Marello\Bundle\ProductBundle\Entity\Product
+    marello_magento.entity.region.class:                                     Marello\Bundle\MagentoBundle\Entity\Region
+    marello_magento.entity.store.class:                                      Marello\Bundle\MagentoBundle\Entity\Store
+    marello_magento.entity.website.class:                                    Marello\Bundle\MagentoBundle\Entity\Website
+    marello_magento.entity.category.class:                                   Marello\Bundle\MagentoBundle\Entity\Category
+    marello_catalog.entity.category.class:                                   Marello\Bundle\CatalogBundle\Entity\Category
+    marello_magento.entity.order.class:                                      Marello\Bundle\OrderBundle\Entity\Order
+
+    # transport
+    marello_magento.transport.soap_transport.class:                          Marello\Bundle\MagentoBundle\Provider\Transport\SoapTransport
+
+    # config resolver
+    marello_magento.config_resolver.class:                                   Oro\Component\Config\Resolver\SystemAwareResolver
+
+    # forms
+    marello_magento.form.type.transport_check.class:                         Marello\Bundle\MagentoBundle\Form\Type\TransportCheckButtonType
+    marello_magento.form.type.website_select.class:                          Marello\Bundle\MagentoBundle\Form\Type\WebsiteSelectType
+    marello_magento.form.type.store_selector.class:                          Marello\Bundle\MagentoBundle\Form\Type\StoreSelectType
+
+    # event listeners
+    marello_magento.event_listener.channel_owner_set.class:                  Marello\Bundle\MagentoBundle\EventListener\ChannelOwnerSetListener
+    marello_magento.event_listener.writer_error.class:                       Marello\Bundle\MagentoBundle\EventListener\IntegrationWriteErrorListener
+    marello_magento.event_listener.integration_sync_after.class:             Marello\Bundle\MagentoBundle\EventListener\IntegrationSyncAfterEventListener
+    marello_magento.integration_entity.integration_channel_listener.class:   Marello\Bundle\MagentoBundle\EventListener\IntegrationChannelListener
+    marello_magento.integration_sync.product_event_listener.class:           Marello\Bundle\MagentoBundle\EventListener\ProductEventListener
+
+    # magento related records delete provider
+    marello_magento.manager.magento_delete_provider.class:                   Marello\Bundle\MagentoBundle\Manager\MagentoDeleteProvider
+
+    # helpers
+    marello_magento.importexport.address_import_helper.class:                Marello\Bundle\MagentoBundle\ImportExport\Strategy\StrategyHelper\AddressImportHelper
+    marello_magento.importexport.doctrine_helper.class:                      Marello\Bundle\MagentoBundle\ImportExport\Strategy\StrategyHelper\DoctrineHelper
+
+    # Search handlers
+    marello_magento.form.autocomplete.customer_group.search_handler.class:   Marello\Bundle\MagentoBundle\Autocomplete\CustomerGroupSearchHandler
+    marello_magento.form.autocomplete.store.search_handler.class:            Marello\Bundle\MagentoBundle\Autocomplete\StoreSearchHandler
+
+    marello_magento.validator.unique_customer_email.class:                   Marello\Bundle\MagentoBundle\Validator\UniqueCustomerEmailValidator
+    marello_magento.validator.start_sync_date.class:                         Marello\Bundle\MagentoBundle\Validator\StartSyncDateValidator
+
+    marello_magento.security.acl.voter.two_way_sync.class:                   Marello\Bundle\MagentoBundle\Acl\Voter\AbstractTwoWaySyncVoter
+
+    marello_magento.datagrid.customer_actions_provider.class:                Marello\Bundle\MagentoBundle\Datagrid\CustomerActionPermissionProvider
+
+    marello_magento.service.automatic_discovery.class:                       Marello\Bundle\MagentoBundle\Service\AutomaticDiscovery
+    marello_magento.strategy.automatic_discovery.default.class:              Marello\Bundle\MagentoBundle\Service\AutomaticDiscovery\DefaultDiscoveryStrategy
+    marello_magento.strategy.automatic_discovery.addresses.class:            Marello\Bundle\MagentoBundle\Service\AutomaticDiscovery\AddressDiscoveryStrategy
+    marello_magento.strategy.automatic_discovery.email.class:                Marello\Bundle\MagentoBundle\Service\AutomaticDiscovery\EmailDiscoveryStrategy
+
+    marello_magento.wsdl_manager.class:                                      Marello\Bundle\MagentoBundle\Service\WsdlManager
+    marello_magento.wsdl.cache_clearer.class:                                Marello\Bundle\MagentoBundle\Cache\WsdlCacheClearer
+    marello_magento.wsdl.guzzle_client.class:                                Guzzle\Http\Client
+
+    marello_magento.provider.big_number.class:                               Marello\Bundle\MagentoBundle\Provider\MagentoBigNumberProvider
+    marello_magento.provider.website_visit.class:                            Marello\Bundle\MagentoBundle\Provider\WebsiteVisitProvider
+
+    marello_magento.model.channel_settings_provider.class:                   Marello\Bundle\MagentoBundle\Model\ChannelSettingsProvider
+
+    marello_magento.service.information_loader.class:                        Marello\Bundle\MagentoBundle\Service\InformationLoader
+    marello_magento.provider.product_sync_processor.class:                    Marello\Bundle\MagentoBundle\Async\ProductSyncProcessor
+
+services:
+    marello_magento.transport.soap_transport:
+        class: %marello_magento.transport.soap_transport.class%
+        arguments:
+            - "@oro_security.encoder.mcrypt"
+            - "@marello_magento.wsdl_manager"
+            - []
+        tags:
+            - { name: oro_integration.transport, type: magento_soap, channel_type: magento }
+            - { name: marello_magento.bundle_config.aware, argument_number: 2 }
+        calls:
+            - [setLogger, ["@oro_integration.logger.strategy"]]
+
+    marello_magento.transport.rest_transport:
+        class: Marello\Bundle\MagentoBundle\Provider\Transport\RestTransport
+        arguments:
+            - '@oro_integration.transport.rest.event_dispatchable_client_factory'
+            - '@marello_magento.provider.rest_token_provider'
+            - '@marello_magento.transport.provider.oro_bridge_extension_config_provider'
+            - '@marello_magento.converter.rest.response_converter_manager'
+        calls:
+            - [setLogger, ["@oro_integration.logger.strategy"]]
+        tags:
+            - { name: oro_integration.transport, type: magento_rest, channel_type: magento2 }
+
+    marello_magento.transport.provider.oro_bridge_extension_config_provider:
+        class: Marello\Bundle\MagentoBundle\Provider\Transport\Provider\OroBridgeExtensionConfigProvider
+
+    # Providers
+    marello_magento.provider.magento_channel_type:
+        class: Marello\Bundle\MagentoBundle\Provider\MagentoChannelType
+        tags:
+            - { name: oro_integration.channel, type: magento }
+
+    marello_magento.provider.rest_token_provider:
+        class: Marello\Bundle\MagentoBundle\Provider\RestTokenProvider
+        arguments:
+            - '@doctrine'
+            - '@oro_security.encoder.mcrypt'
+        calls:
+            - [setLogger, ["@oro_integration.logger.strategy"]]
+
+    # forms
+    marello_magento.form.subscriber.transport_setting:
+        class: Marello\Bundle\MagentoBundle\Form\EventListener\SettingsFormSubscriber
+        arguments:
+            - "@oro_security.encoder.mcrypt"
+
+    marello_magento.form.type.soap_transport_setting:
+        class: Marello\Bundle\MagentoBundle\Form\Type\SoapTransportSettingFormType
+        arguments:
+            - "@marello_magento.transport.soap_transport"
+            - "@marello_magento.form.subscriber.transport_setting"
+            - "@oro_integration.manager.types_registry"
+        tags:
+            - { name: form.type, alias: marello_magento_soap_transport_setting_form_type }
+
+    marello_magento.form.type.rest_transport_setting:
+        class: Marello\Bundle\MagentoBundle\Form\Type\RestTransportSettingFormType
+        arguments:
+            - "@marello_magento.transport.rest_transport"
+            - "@marello_magento.form.subscriber.transport_setting"
+            - "@oro_integration.manager.types_registry"
+        tags:
+            - { name: form.type, alias: oro_magento_rest_transport_setting_form_type }
+
+    marello_magento.form.type.is_display_order_notes:
+        class: Marello\Bundle\MagentoBundle\Form\Type\IsDisplayOrderNotesFormType
+        tags:
+           - { name: form.type, alias: oro_magento_is_display_order_notes_type }
+
+    marello_magento.form.type.transport_check:
+        class: %marello_magento.form.type.transport_check.class%
+        tags:
+            - { name: form.type, alias: marello_magento_transport_check_button }
+
+    marello_magento.form.type.website_select:
+        class: %marello_magento.form.type.website_select.class%
+        tags:
+            - { name: form.type, alias: oro_magento_website_select }
+
+    marello_magento.form.type.store_selector:
+        class: %marello_magento.form.type.store_selector.class%
+        tags:
+            - { name: form.type, alias: oro_magento_store_select }
+
+    # event listeners
+    marello_magento.event_listener.writer_error:
+        class: %marello_magento.event_listener.writer_error.class%
+        tags:
+            - { name: kernel.event_listener, event: oro_integration.writer_error, method: handleError }
+
+    marello_magento.event_listener.after_job_execution:
+        class: %marello_magento.event_listener.integration_sync_after.class%
+        tags:
+            - { name: kernel.event_listener, event: oro_integration.event.sync_after, method: process }
+
+    marello_magento.manager.magento_delete_provider:
+        class: %marello_magento.manager.magento_delete_provider.class%
+        arguments:
+            - "@doctrine.orm.entity_manager"
+        tags:
+            - { name: oro_integration.delete_provider }
+
+    marello_magento.importexport.address_import_helper:
+        class: %marello_magento.importexport.address_import_helper.class%
+        arguments:
+            - "@marello_magento.importexport.doctrine_helper"
+
+    marello_magento.importexport.doctrine_helper:
+        class: %marello_magento.importexport.doctrine_helper.class%
+        arguments:
+            - "@oro_importexport.strategy.import.helper"
+
+    marello_magento.validator.email_address_list:
+        class: Marello\Bundle\MagentoBundle\Validator\EmailAddressListValidator
+        tags:
+            - { name: validator.constraint_validator, alias: marello_magento.validator.email_address_list }
+
+    marello_magento.validator.start_sync_date:
+        class: %marello_magento.validator.start_sync_date.class%
+        arguments:
+            - "@doctrine"
+        tags:
+            - { name: validator.constraint_validator, alias: marello_magento.validator.start_sync_date }
+
+    marello_magento.security.acl.voter.two_way_sync:
+        class: %marello_magento.security.acl.voter.two_way_sync.class%
+        abstract: true
+        arguments:
+            - "@oro_entity.doctrine_helper"
+        calls:
+            - [setSettingsProvider,  ["@marello_magento.model.channel_settings_provider"]]
+
+    marello_magento.wsdl.guzzle_client:
+        class: %marello_magento.wsdl.guzzle_client.class%
+        lazy: true
+
+    marello_magento.wsdl_manager:
+        class: %marello_magento.wsdl_manager.class%
+        arguments:
+            - "@filesystem"
+            - "@marello_magento.wsdl.guzzle_client"
+            - %kernel.cache_dir%
+            - []
+        tags:
+            - { name: marello_magento.bundle_config.aware, argument_number: 3 }
+
+    marello_magento.wsdl.cache_clearer:
+        public: false
+        class: %marello_magento.wsdl.cache_clearer.class%
+        arguments:
+            - "@marello_magento.wsdl_manager"
+        tags:
+            - { name: kernel.cache_clearer,  priority: 30 }
+
+    marello_magento.integration_entity.remove_listener:
+        class: Marello\Bundle\MagentoBundle\EventListener\IntegrationRemoveListener
+        arguments:
+            - "@marello_magento.wsdl_manager"
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: Marello\Bundle\MagentoBundle\Entity\MagentoSoapTransport, event: preRemove }
+
+    marello_magento.integration_entity.integration_channel_listener:
+        class: '%marello_magento.integration_entity.integration_channel_listener.class%'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: "%oro_integration.entity.class%", event: postPersist }
+            - { name: doctrine.orm.entity_listener, entity: "%oro_integration.entity.class%", event: postUpdate }
+            - { name: doctrine.orm.entity_listener, entity: "%oro_integration.entity.class%", event: preRemove }
+
+    marello_magento.integration_sync.product_event_listener:
+        class: '%marello_magento.integration_sync.product_event_listener.class%'
+        arguments:
+            - '@oro_message_queue.message_producer'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: "%marello_marello.entity.product.class%", event: postPersist }
+            - { name: doctrine.orm.entity_listener, entity: "%marello_marello.entity.product.class%", event: postUpdate }
+            - { name: doctrine.orm.entity_listener, entity: "%marello_marello.entity.product.class%", event: preRemove }
+
+    marello_magento.provider.product_sync_processor:
+        class: 'Marello\Bundle\MagentoBundle\Async\ProductSyncProcessor'
+        arguments:
+            - '@doctrine'
+            - '@oro_message_queue.job.runner'
+            - '@oro_importexport.job_executor'
+            - '@security.token_storage'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    marello_magento.model.channel_settings_provider:
+        class: %marello_magento.model.channel_settings_provider.class%
+        arguments:
+            - "@oro_entity.doctrine_helper"
+            - '%oro_integration.entity.class%'
+
+    # handler
+    marello_magento.handler.transport:
+        class: Marello\Bundle\MagentoBundle\Handler\TransportHandler
+        scope: request
+        arguments:
+            - '@oro_integration.manager.types_registry'
+            - '@marello_magento.provider.transport_entity'
+            - '@marello_magento.provider.website_choices'
+            - '@marello_magento.provider.connector_choices'
+            - '@request'
+
+    marello_magento.async.sync_initial_integration_processor:
+        class: 'Marello\Bundle\MagentoBundle\Async\SyncInitialIntegrationProcessor'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@marello_magento.provider.initial_sync_processor'
+            - '@oro_platform.optional_listeners.manager'
+            - '@oro_message_queue.job.runner'
+            - '@oro_search.async.indexer'
+            - '@security.token_storage'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    marello_magento.config_resolver:
+        class: %marello_magento.config_resolver.class%
+        arguments:
+            - "@service_container"
+
+    marello_magento.provider.iso2_code:
+        class: Marello\Bundle\MagentoBundle\Provider\Iso2CodeProvider
+        arguments:
+            - '@doctrine'
+
+    marello_magento.provider.website_choices:
+        class: Marello\Bundle\MagentoBundle\Provider\WebsiteChoicesProvider
+        arguments:
+            - '@translator'
+
+    marello_magento.provider.connector_choices:
+        class: Marello\Bundle\MagentoBundle\Provider\ConnectorChoicesProvider
+        arguments:
+            - '@oro_integration.manager.types_registry'
+            - '@translator'
+
+    marello_magento.provider.transport_entity:
+        class: Marello\Bundle\MagentoBundle\Provider\TransportEntityProvider
+        arguments:
+            - '@form.factory'
+            - '@doctrine'
+
+    marello_magento.converter.rest.response_converter_manager:
+        class: Marello\Bundle\MagentoBundle\Converter\Rest\ResponseConverterManager
+
+    marello_magento.converter.rest.region_converter:
+        class: Marello\Bundle\MagentoBundle\Converter\Rest\RegionConverter
+        tags:
+            - {name: marello_magento.rest_response.converter, type: region }
+
+    marello_magento.converter.rest.website_converter:
+        class: Marello\Bundle\MagentoBundle\Converter\Rest\WebsiteConverter
+        tags:
+            - {name: marello_magento.rest_response.converter, type: website }
+
+    marello_magento.twig.order_notes_extension:
+        class: Marello\Bundle\MagentoBundle\Twig\OrderNotesExtension
+        public: false
+        tags:
+            - { name: twig.extension }
