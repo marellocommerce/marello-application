@@ -6,6 +6,7 @@ use Doctrine\Common\Cache\Cache;
 use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\Generator\CacheKeyGenerator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -107,7 +108,7 @@ class AjaxOroCommerceController extends Controller
         }
 
         $form = $this->createForm(
-            $this->get('oro_integration.form.type.channel'),
+            ChannelType::class,
             $channel
         );
         $form->handleRequest($request);
@@ -185,7 +186,7 @@ class AjaxOroCommerceController extends Controller
         }
 
         $form = $this->createForm(
-            $this->get('oro_integration.form.type.channel'),
+            ChannelType::class,
             $channel
         );
         $form->handleRequest($request);

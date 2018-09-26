@@ -22,7 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OroCommerceSettingsType extends AbstractType
 {
-    const NAME = 'marello_orocommerce_settings';
+    const BLOCK_PREFIX = 'marello_orocommerce_settings';
 
     /**
      * @var CacheProvider
@@ -252,16 +252,8 @@ class OroCommerceSettingsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

@@ -6,12 +6,12 @@ services:
             - '@marello_orocommerce.cache_key_generator'
             - '@oro_locale.settings'
         tags:
-            - { name: form.type, alias: marello_orocommerce_settings }
+            - { name: form.type }
 
     marello_orocommerce.form.extension.channel_connectors:
         class: 'Marello\Bundle\OroCommerceBundle\Form\Extension\ChannelConnectorsExtension'
         tags:
-            - { name: form.type_extension, alias: oro_integration_channel_form }
+            - { name: form.type_extension, extended_type: 'Oro\Bundle\IntegrationBundle\Form\Type\ChannelType' }
 
     marello_orocommerce.sync_state:
         class: 'Marello\Bundle\OroCommerceBundle\Model\SyncState'
