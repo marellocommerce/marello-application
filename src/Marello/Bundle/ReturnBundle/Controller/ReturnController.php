@@ -106,7 +106,7 @@ class ReturnController extends Controller
      */
     public function updateAction(ReturnEntity $return, Request $request)
     {
-        $form = $this->createForm(ReturnUpdateType::NAME, $return);
+        $form = $this->createForm(ReturnUpdateType::class, $return);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

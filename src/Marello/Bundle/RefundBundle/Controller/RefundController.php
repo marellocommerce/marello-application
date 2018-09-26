@@ -80,7 +80,7 @@ class RefundController extends Controller
      */
     protected function update(Request $request, Refund $entity = null)
     {
-        $form = $this->createForm(RefundType::NAME, $entity);
+        $form = $this->createForm(RefundType::class, $entity);
 
         $form->handleRequest($request);
 
