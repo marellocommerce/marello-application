@@ -256,9 +256,10 @@ class ReverseSyncProductPriceListener
     private function getFinalPrice(Product $product, SalesChannel $salesChannel)
     {
         if ($channelPrice = $product->getSalesChannelPrice($salesChannel)) {
-            return $channelPrice;
+            return $channelPrice->getSpecialPrice() ? : $channelPrice->getDefaultPrice();
         }
+        $defaultPrice = $product->getPrice($salesChannel->getCurrency());
 
-        return $product->getPrice($salesChannel->getCurrency());
+        return $defaultPrice->getSpecialPrice() ? : $defaultPrice->getDefaultPrice();
     }
 }

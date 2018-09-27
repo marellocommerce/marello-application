@@ -224,7 +224,7 @@ class OroCommerceSettingsType extends AbstractType
             $choices = [];
             $results = $this->cache->fetch($key);
             foreach ($results as $result) {
-                $choices[$result['value']] = $result['label'];
+                $choices[$result['label']] = $result['value'];
             }
             $form->remove($field);
             $form->add(
