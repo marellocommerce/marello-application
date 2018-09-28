@@ -2,7 +2,10 @@
 
 namespace Marello\Bundle\ProductBundle\Duplicator;
 
+use Doctrine\ORM\EntityRepository;
+
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
 class SkuIncrementor implements SkuIncrementorInterface
@@ -58,7 +61,7 @@ class SkuIncrementor implements SkuIncrementorInterface
     }
 
     /**
-     * @return ProductRepository
+     * @return ProductRepository|EntityRepository
      */
     protected function getRepository()
     {
