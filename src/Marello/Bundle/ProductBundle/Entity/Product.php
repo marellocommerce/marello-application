@@ -1058,7 +1058,7 @@ class Product extends ExtendProduct implements
 
     /**
      * @param SalesChannel $salesChannel
-     * @return ProductChannelPrice|null
+     * @return AssembledChannelPriceList|null
      */
     public function getSalesChannelPrice(SalesChannel $salesChannel)
     {
