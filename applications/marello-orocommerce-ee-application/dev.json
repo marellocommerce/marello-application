@@ -1,0 +1,128 @@
+{
+  "name": "marellocommerce/marello-orocommerce-ee-application",
+  "description": "Marello OroCommerce enterprise application",
+  "homepage": "https://github.com/marellocommerce/marello-orocommerce-ee-application",
+  "license": "OSL-3.0",
+  "autoload": {
+    "psr-4": {"": "src/"},
+    "exclude-from-classmap": ["**/Tests/"]
+  },
+  "repositories": {
+    "ldap-bundle": {
+      "type": "vcs",
+      "url": "https://github.com/oroinc/OroCRMProLDAPBundle.git"
+    },
+    "platform-enterprise": {
+      "type": "vcs",
+      "url": "https://github.com/oroinc/platform-enterprise.git"
+    },
+    "platform": {
+      "type": "vcs",
+      "url": "https://github.com/oroinc/platform-er.git"
+    },
+    "commerce-enterprise": {
+      "type": "vcs",
+      "url": "https://github.com/oroinc/commerce-enterprise.git"
+    },
+    "customer-portal": {
+      "type": "vcs",
+      "url": "https://github.com/oroinc/customer-portal-er.git"
+    },
+    "commerce": {
+      "type": "vcs",
+      "url": "https://github.com/oroinc/commerce-er.git"
+    },
+    "composer": {
+      "type": "composer",
+      "url": "https://packagist.orocrm.com"
+    },
+    "asset-packagist": {
+      "type": "composer",
+      "url": "https://asset-packagist.orocrm.com"
+    },
+    "marello-enterprise": {
+      "type": "vcs",
+      "url": "https://github.com/marellocommerce/marello-enterprise.git",
+      "branch": "master"
+    },
+    "marello": {
+      "type": "vcs",
+      "url": "https://github.com/marellocommerce/marello.git",
+      "branch": "master"
+    },
+    "marello-orocommerce-bridge": {
+      "type": "vcs",
+      "url": "https://github.com/marellocommerce/marello-orocommerce-bridge.git",
+      "branch": "master"
+    },
+    "marello-orocommerce-api-bridge": {
+      "type": "vcs",
+      "url": "https://github.com/marellocommerce/marello-orocommerce-api-bridge.git",
+      "branch": "master"
+    }
+  },
+  "require": {
+    "php": ">=7.0",
+    "oro/platform": "2.5.*",
+    "oro/commerce": "1.5.*",
+    "oro/platform-serialised-fields": "2.5.*",
+    "oro/calendar-bundle": "2.5.*",
+    "oro/commerce-enterprise": "1.5.*",
+    "oro/customer-portal": "2.5.*",
+    "marellocommerce/marello-enterprise": "1.1.*",
+    "marellocommerce/marello-orocommerce-bridge": "1.0.*",
+    "marellocommerce/marello-orocommerce-api-bridge": "1.0.*"
+  },
+  "require-dev": {
+    "sensio/generator-bundle": "3.1.2",
+    "behat/behat": "3.2.2",
+    "behat/mink-extension": "2.2.*",
+    "behat/mink-selenium2-driver": "1.*",
+    "behat/symfony2-extension": "2.1.1",
+    "nelmio/alice": "2.2.*",
+    "phpunit/phpunit": "5.7.*",
+    "phpunit/phpunit-selenium": "3.0.*",
+    "johnkary/phpunit-speedtrap": "1.0.*",
+    "mybuilder/phpunit-accelerator": "1.2.*",
+    "squizlabs/php_codesniffer": "2.8.*",
+    "phpmd/phpmd": "2.6.*",
+    "sebastian/phpcpd": "3.0.*",
+    "phpunit/phpcov": "3.1.*",
+    "symfony/phpunit-bridge": "3.2.*",
+    "friendsofphp/php-cs-fixer": "2.1.*"
+  },
+  "config": {
+    "component-dir": "web/bundles/components",
+    "bin-dir": "bin",
+    "fxp-asset": {
+      "enabled": false
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets",
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
+    ],
+    "post-update-cmd": [
+      "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setPermissions",
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::installAssets",
+      "Oro\\Bundle\\InstallerBundle\\Composer\\ScriptHandler::setAssetsVersion"
+    ]
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "symfony-app-dir": "app",
+    "symfony-web-dir": "web",
+    "incenteev-parameters": {
+      "file": "app/config/parameters.yml"
+    }
+  }
+}
