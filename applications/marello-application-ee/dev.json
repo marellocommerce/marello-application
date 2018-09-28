@@ -80,6 +80,10 @@
             "app/console cache:clear --env test",
             "phpunit -c app --tap --testsuite=\"Functional Tests\""
         ],
+        "test-psr": [
+            "bin/phpcs vendor/marellocommerce/marello -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml",
+            "bin/phpcs vendor/marellocommerce/marello-enterprise -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml"
+        ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",

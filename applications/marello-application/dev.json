@@ -61,8 +61,6 @@
             "app/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --application-url=http://marello-ee.docker:5080/"
         ],
         "test": [
-            "rm -rf app/cache/*",
-            "rm -rf app/logs/*",
             "phpunit -c app --tap --testsuite=\"Unit Tests\""
         ],
         "test-extended": [
@@ -78,6 +76,9 @@
             "rm -rf app/logs/*",
             "app/console cache:clear --env test",
             "phpunit -c app --tap --testsuite=\"Functional Tests\""
+        ],
+        "test-psr": [
+            "bin/phpcs vendor/marellocommerce/marello -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml"
         ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
