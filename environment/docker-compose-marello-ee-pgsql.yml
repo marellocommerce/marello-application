@@ -42,7 +42,7 @@ services:
         args:
           - SYMFONY_ENV=prod
           - COMPOSERFILE=dev.json
-          - TIMOEUT=3000
+          - TIMEOUT=3000
         working_dir: /var/www/
         links:
             - "db"

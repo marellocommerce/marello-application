@@ -56,10 +56,6 @@ export DEBIAN_FRONTEND=noninteractive \
 && apt-get -qy autoremove --purge software-properties-common python-software-properties \
 && apt-get autoclean || exit 1
 
-## Install php
-#apt-get install -qqy --no-install-recommends php-fpm php-cli php-common php-dev \
-#php-mysql php-pgsql php-curl php-gd php-mcrypt php-xmlrpc php-ldap \
-#php-xsl php-intl php-soap php-mbstring php-zip php-bz2 php-redis php-tidy || exit 1
 
 # Install nginx
 apt-get install -qqy --reinstall nginx || exit 1

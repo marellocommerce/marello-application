@@ -1,53 +1,57 @@
 {
-    "name": "marellocommerce/marello-application-ee",
+    "name": "marellocommerce\/marello-application-ee",
     "description": "Marello Enterprise ERP for Commerce distribution",
-    "homepage": "https://github.com/marellocommerce/marello-application-ee.git",
+    "homepage": "https:\/\/github.com\/marellocommerce\/marello-application-ee.git",
     "license": "Commercial ",
     "autoload": {
-        "psr-4": {"": "src/"},
-        "exclude-from-classmap": ["**/Tests/"]
+        "psr-4": {
+            "": "src\/"
+        },
+        "exclude-from-classmap": [
+            "**\/Tests\/"
+        ]
     },
     "repositories": {
         "local-packages": {
             "type": "path",
-            "url": "../../package/*"
+            "url": "..\/..\/package\/*"
         },
-        "oro" : {
+        "oro": {
             "type": "composer",
-            "url": "https://packagist.orocrm.com"
+            "url": "https:\/\/packagist.orocrm.com"
         },
         "asset-packagist": {
             "type": "composer",
-            "url": "https://asset-packagist.orocrm.com"
+            "url": "https:\/\/asset-packagist.orocrm.com"
         }
     },
     "require": {
         "php": "7.1.*",
-        "oro/platform": "2.6.*",
-        "oro/platform-serialised-fields": "2.6.*",
-        "oro/calendar-bundle": "2.6.*",
-        "marellocommerce/marello": "1.5.x-dev"
+        "oro\/platform": "2.6.*",
+        "oro\/platform-serialised-fields": "2.6.*",
+        "oro\/calendar-bundle": "2.6.*",
+        "marellocommerce\/marello": "1.5.x-dev"
     },
     "require-dev": {
-        "sensio/generator-bundle": "3.1.2",
-        "behat/behat": "3.2.2",
-        "behat/mink-extension": "2.2.*",
-        "behat/mink-selenium2-driver": "1.*",
-        "behat/symfony2-extension": "2.1.1",
-        "nelmio/alice": "2.2.*",
-        "phpunit/phpunit": "5.7.*",
-        "phpunit/phpunit-selenium": "3.0.*",
-        "johnkary/phpunit-speedtrap": "1.0.*",
-        "mybuilder/phpunit-accelerator": "1.2.*",
-        "squizlabs/php_codesniffer": "2.8.*",
-        "phpmd/phpmd": "2.6.*",
-        "sebastian/phpcpd": "3.0.*",
-        "phpunit/phpcov": "3.1.*",  
-        "symfony/phpunit-bridge": "3.2.*",
-        "friendsofphp/php-cs-fixer": "2.1.*"
+        "sensio\/generator-bundle": "3.1.2",
+        "behat\/behat": "3.2.2",
+        "behat\/mink-extension": "2.2.*",
+        "behat\/mink-selenium2-driver": "1.*",
+        "behat\/symfony2-extension": "2.1.1",
+        "nelmio\/alice": "2.2.*",
+        "phpunit\/phpunit": "5.7.*",
+        "phpunit\/phpunit-selenium": "3.0.*",
+        "johnkary\/phpunit-speedtrap": "1.0.*",
+        "mybuilder\/phpunit-accelerator": "1.2.*",
+        "squizlabs\/php_codesniffer": "2.8.*",
+        "phpmd\/phpmd": "2.6.*",
+        "sebastian\/phpcpd": "3.0.*",
+        "phpunit\/phpcov": "3.1.*",
+        "symfony\/phpunit-bridge": "3.2.*",
+        "friendsofphp\/php-cs-fixer": "2.1.*"
     },
     "config": {
-        "component-dir": "web/bundles/components",
+        "component-dir": "web\/bundles\/components",
         "bin-dir": "bin",
         "fxp-asset": {
             "enabled": false
@@ -55,30 +59,30 @@
     },
     "scripts": {
         "marello-reset": [
-            "rm -rf app/cache/*",
-            "rm -rf app/logs/*",
-            "sed -i -e 's/installed:.*/installed: ~/g' app/config/parameters.yml",
-            "app/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --application-url=http://marello-ee.docker:5080/"
+            "rm -rf app\/cache\/*",
+            "rm -rf app\/logs\/*",
+            "sed -i -e 's\/installed:.*\/installed: ~\/g' app\/config\/parameters.yml",
+            "app\/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello --application-url=http:\/\/marello-ee.docker:5080\/"
         ],
         "test": [
-            "php ./bin/phpunit --color --tap --testsuite=\"unit\""
+            "php .\/bin\/phpunit --color --tap --testsuite=\"unit\""
         ],
         "test-extended": [
-            "rm -rf app/cache/*",
-            "rm -rf app/logs/*",
-            "sed -i -e 's/installed:.*/installed: ~/g' app/config/parameters_test.yml",
-            "app/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600",
-            "php ./bin/phpunit --color --tap --testsuite=\"unit\"",
-            "php ./bin/phpunit --color --tap --testsuite=\"functional\""
+            "rm -rf app\/cache\/*",
+            "rm -rf app\/logs\/*",
+            "sed -i -e 's\/installed:.*\/installed: ~\/g' app\/config\/parameters_test.yml",
+            "app\/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http:\/\/localhost --drop-database --timeout 3600",
+            "php .\/bin\/phpunit --color --tap --testsuite=\"unit\"",
+            "php .\/bin\/phpunit --color --tap --testsuite=\"functional\""
         ],
         "test-functional": [
-            "rm -rf app/cache/*",
-            "rm -rf app/logs/*",
-            "app/console cache:clear --env test",
-            "php ./bin/phpunit --color --tap --testsuite=\"functional\""
+            "rm -rf app\/cache\/*",
+            "rm -rf app\/logs\/*",
+            "app\/console cache:clear --env test",
+            "php .\/bin\/phpunit --color --tap --testsuite=\"functional\""
         ],
         "test-psr": [
-            "php ./bin/phpcs vendor/marellocommerce/marello -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml"
+            "php .\/bin\/phpcs vendor\/marellocommerce\/marello -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app\/logs\/phpcs.xml"
         ],
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -103,7 +107,26 @@
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
+            "file": "app\/config\/parameters.yml",
+            "env-map": {
+                "database_driver": "APP_DB_DRIVER",
+                "database_host": "APP_DB_HOST",
+                "database_port": "APP_DB_PORT",
+                "database_name": "APP_DB_NAME",
+                "database_user": "APP_DB_USER",
+                "database_password": "APP_DB_PASSWORD",
+                "mailer_transport": "APP_MAILER_TRANSPORT",
+                "mailer_host": "APP_MAILER_HOST",
+                "mailer_port": "APP_MAILER_PORT",
+                "mailer_encryption": "APP_MAILER_ENCRYPTION",
+                "mailer_user": "APP_MAILER_USER",
+                "mailer_password": "APP_MAILER_PASSWORD",
+                "websocket_bind_port": "APP_WEBSOCKET_BIND_PORT",
+                "websocket_backend_port": "APP_WEBSOCKET_BACKEND_PORT",
+                "websocket_frontend_port": "APP_WEBSOCKET_FRONTEND_PORT",
+                "installed": "APP_IS_INSTALLED",
+                "secret": "APP_SECRET"
+            }
         }
     }
 }

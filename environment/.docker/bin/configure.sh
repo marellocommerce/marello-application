@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 
 PHP_VERSION="7.1"
-function info {
-    printf "\033[0;36m===> \033[0;33m${1}\033[0m\n"
-}
 
 localedef -c -f UTF-8 -i en_US en_US.UTF-8
 export DEBIAN_FRONTEND=noninteractive
