@@ -26,7 +26,7 @@ pipeline {
         DEPLOY_PROD_PATH        = ''
         TMP_DIR_PATH            = '~/'
         SLACK_CHANNEL           = ''
-        DOCKER_APP_ROOT         = '/app'
+        DOCKER_APP_ROOT         = '/var/www/'
         DOCKER_COMPOSE          = 'docker-compose -f environment/docker-compose-marello-ce.yml'
         COMPOSE_PROJECT_NAME    = "MARELLO_MONO_REPO"
     }
