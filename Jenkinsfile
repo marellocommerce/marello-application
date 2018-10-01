@@ -56,9 +56,7 @@ pipeline {
     post {
         always {
             sendNotifications currentBuild.result
-            sh '$DOCKER_COMPOSE exec -T web bash -c "rm -rf $DOCKER_APP_ROOT/*;"'
-            sh 'git checkout docker-compose-build.yml'
-            sh "$DOCKER_COMPOSE down || true"
+            sh "$DOCKER_COMPOSE -f docker-compose-build.yml down || true"
             deleteDir()
         }
     }
