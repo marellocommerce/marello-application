@@ -1,6 +1,9 @@
 FROM ubuntu:xenial
 
 ARG PHP_VERSION="7.1"
+ARG SYMFONY_ENV
+ARG COMPOSERFILE
+ARG TIMEOUT
 
 COPY ["bin/setup.sh", "bin/configure.sh", "/opt/bin/"]
 COPY ["bin/sources.list", "/etc/apt/sources.list"]
@@ -25,4 +28,7 @@ EXPOSE 443 80 8080
 
 CMD ["run.sh"]
 
-ENV SYMFONY_ENV=prod
+ENV SYMFONY_ENV=$SYMFONY_ENV
+
+# Inject composer dependencies into the docker image itself to avoid BW usage
+RUN COMPOSER=$COMPOSERFILE COMPOSER_PROCESS_TIMEOUT=$TIMEOUT composer install --no-scripts --no-autoloader --prefer-dist --no-suggest

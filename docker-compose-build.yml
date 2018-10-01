@@ -1,0 +1,46 @@
+version: '2'
+services:
+    data:
+        image: djocker/orodata
+
+    db:
+        image: percona:5.7
+        expose:
+            - "3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=marellocommerce
+            - MYSQL_USER=marellocommerce
+            - MYSQL_PASSWORD=marellocommerce
+        volumes_from:
+            - data
+
+    mailhog:
+        image: mailhog/mailhog
+        ports:
+          - "5083:8025"
+        logging:
+            driver: "none"
+
+    web:
+        build: environment/.docker
+        args:
+          - SYMFONY_ENV=test
+          - COMPOSERFILE=dev.json
+          - TIMOEUT=3000
+          - APP_ROOT=/var/www
+        working_dir: /var/www/
+        links:
+            - "db"
+            - "mailhog"
+        ports:
+            - "5080:80"
+            - "5081:8080"
+        volumes_from:
+            - data
+        volumes:
+            - applications/marello-application:/var/www
+            - package/marello:/package/marello
+        environment:
+            - APP_ROOT=/var/www
+            - VIRTUAL_HOST=marello.docker

@@ -26,8 +26,8 @@ pipeline {
         DEPLOY_PROD_PATH        = ''
         TMP_DIR_PATH            = '~/'
         SLACK_CHANNEL           = ''
-        DOCKER_APP_ROOT         = '/var/www/'
-        DOCKER_COMPOSE          = 'docker-compose -f environment/docker-compose-marello-ce.yml'
+        DOCKER_APP_ROOT         = '/var/www'
+        DOCKER_COMPOSE          = 'docker-compose -f docker-compose-build.yml'
         COMPOSE_PROJECT_NAME    = "MARELLO_MONO_REPO"
     }
     stages {
@@ -44,7 +44,7 @@ pipeline {
             steps {
                 parallel (
                     phpunit: {
-                        sh '$DOCKER_COMPOSE exec -T web bash -c "php ./bin/phpunit -c app --tap --color --testsuite="Unit Tests""'
+                        sh '$DOCKER_COMPOSE exec -T web bash -c "php ./bin/phpunit --tap --color --testsuite="unit"'
                     },
                     phplint: {
                         sh '$DOCKER_COMPOSE exec -T web bash -c "php ./bin/phpcs vendor/marellocommerce/marello -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml"'
@@ -57,7 +57,7 @@ pipeline {
         always {
             sendNotifications currentBuild.result
             sh '$DOCKER_COMPOSE exec -T web bash -c "rm -rf $DOCKER_APP_ROOT/*;"'
-            sh 'git checkout environment/docker-compose-marello-ce.yml'
+            sh 'git checkout docker-compose-build.yml'
             sh "$DOCKER_COMPOSE down || true"
             deleteDir()
         }
