@@ -29,6 +29,3 @@ EXPOSE 443 80 8080
 CMD ["run.sh"]
 
 ENV SYMFONY_ENV=$SYMFONY_ENV
-
-# Inject composer dependencies into the docker image itself to avoid BW usage
-RUN COMPOSER=$COMPOSERFILE COMPOSER_PROCESS_TIMEOUT=$TIMEOUT composer install --no-scripts --no-autoloader --prefer-dist --no-suggest

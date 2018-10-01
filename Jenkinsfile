@@ -44,7 +44,7 @@ pipeline {
             steps {
                 parallel (
                     phpunit: {
-                        sh '$DOCKER_COMPOSE exec -T web bash -c "php ./bin/phpunit --tap --color --testsuite="unit"'
+                        sh '$DOCKER_COMPOSE exec -T web bash -c "php ./bin/phpunit --color --testsuite="unit"'
                     },
                     phplint: {
                         sh '$DOCKER_COMPOSE exec -T web bash -c "php ./bin/phpcs vendor/marellocommerce/marello -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml"'

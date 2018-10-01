@@ -23,12 +23,11 @@ services:
             driver: "none"
 
     web:
-        build: environment/.docker
-        args:
-          - SYMFONY_ENV=test
-          - COMPOSERFILE=dev.json
-          - TIMOEUT=3000
-          - APP_ROOT=/var/www
+        build:
+            context: environment/.docker
+            args:
+              - SYMFONY_ENV=test
+              - APP_ROOT=/var/www
         working_dir: /var/www/
         links:
             - "db"
@@ -39,8 +38,10 @@ services:
         volumes_from:
             - data
         volumes:
-            - applications/marello-application:/var/www
-            - package/marello:/package/marello
+            - ./applications/marello-application:/var/www
+            - ./package/marello:/package/marello
         environment:
             - APP_ROOT=/var/www
             - VIRTUAL_HOST=marello.docker
+            - COMPOSERFILE=dev.json
+            - TIMOEUT=3000

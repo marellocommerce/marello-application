@@ -106,4 +106,11 @@ else
   exec /usr/local/bin/supervisord -n -c /etc/supervisord-1.x.conf
 fi
 
+if [[ ! -z ${COMPOSERFILE} ]]; then
+    info "Running composer install with file: ${COMPOSERFILE}"
+    # Inject composer dependencies into the docker image itself to avoid BW usage
+    COMPOSER=${COMPOSERFILE} COMPOSER_PROCESS_TIMEOUT=${TIMEOUT} composer install --no-scripts --no-autoloader --prefer-dist --no-suggest
+fi
+
+
 
