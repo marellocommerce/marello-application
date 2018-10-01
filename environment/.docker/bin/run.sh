@@ -15,11 +15,12 @@ function info {
 
 # Check and fix ownership if invalid
 
-VOLUMES[0]="/var/www/app/cache"
-VOLUMES[1]="/var/www/web/uploads";
-VOLUMES[2]="/var/www/web/media";
-VOLUMES[3]="/var/www/app/attachment";
-VOLUMES[4]="/var/www/app/import_export";
+VOLUMES[0]="/var/www/app/logs"
+VOLUMES[1]="/var/www/app/cache"
+VOLUMES[2]="/var/www/web/uploads";
+VOLUMES[3]="/var/www/web/media";
+VOLUMES[4]="/var/www/app/attachment";
+VOLUMES[5]="/var/www/app/import_export";
 
 for i in ${!VOLUMES[*]}; do 
   if [[ `stat -c '%u:%g' ${VOLUMES[$i]}` != `getent passwd | grep www-data | awk -F ':' '{print $3 ":" $4}'` ]]; then
