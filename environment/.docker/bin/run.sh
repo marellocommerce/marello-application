@@ -33,7 +33,7 @@ done
 if [[ ! -z ${IS_LOCAL} ]]; then
     # Map environment variables
     info "Map parameters.yml to environment variables"
-    composer-map-env.php ${APP_ROOT}/dev.json
+    /usr/local/bin/composer-map-env.php ${APP_ROOT}/dev.json
 
 #    # Generate parameters.yml
     info "Run composer script 'post-install-cmd'"

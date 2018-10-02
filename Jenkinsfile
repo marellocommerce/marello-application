@@ -39,10 +39,24 @@ pipeline {
             }
         }
 
+        stage('Testing') {
+            steps {
+                parallel (
+                    phpunit: {
+                        sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "php ./bin/phpunit --color --testsuite unit"'
+                    },
+                    phplint: {
+                        sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "php ./bin/phpcs vendor/marellocommerce/marello -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml"'
+                    }
+                )
+            }
+        }
     }
     post {
         always {
             sendNotifications currentBuild.result
+            sh "$DOCKER_COMPOSE -f docker-compose-build.yml down || true"
+            deleteDir()
         }
     }
 }
