@@ -108,10 +108,6 @@ else
 fi
 
 if [[ -z ${COMPOSERFILE} ]]; then
-    info "Creating vendor dir in application directory"
-    mkdir ${APP_ROOT}/vendor
-    info "Fixing vendor directory's permissions"
-    chown -R $(getent passwd | grep www-data | awk -F ':' '{print $3 ":" $4}') ${APP_ROOT}/vendor}
     info "Running composer install with file: ${COMPOSERFILE}"
     # Inject composer dependencies into the docker image itself to avoid BW usage
     COMPOSER=${COMPOSERFILE} COMPOSER_PROCESS_TIMEOUT=${TIMEOUT} composer install --no-scripts --no-autoloader --prefer-dist --no-suggest

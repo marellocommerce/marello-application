@@ -36,6 +36,8 @@ pipeline {
                 sendNotifications 'STARTED'
                 sh 'docker network prune -f'
                 sh "$DOCKER_COMPOSE up -d --build"
+                sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "mkdir $DOCKER_APP_ROOT/vendor"'
+                sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "COMPOSER=dev.json COMPOSER_PROCESS_TIMEOUT=3000 composer install --no-suggest --prefer-dist;"'
             }
         }
 
