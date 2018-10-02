@@ -38,6 +38,7 @@ pipeline {
                 sh "$DOCKER_COMPOSE up -d --build"
                 sh '$DOCKER_COMPOSE exec -T web bash -c "mkdir -p $DOCKER_APP_ROOT/vendor $DOCKER_APP_ROOT/web/bundles; chown -R www-data:www-data $DOCKER_APP_ROOT/vendor $DOCKER_APP_ROOT/web/bundles $DOCKER_APP_ROOT/bin;"'
                 sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "COMPOSER=dev.json COMPOSER_PROCESS_TIMEOUT=3000 composer install --no-suggest --prefer-dist;"'
+                sh '$DOCKER_COMPOSE exec -T web bash -c "chown -R www-data:www-data $DOCKER_APP_ROOT/vendor $DOCKER_APP_ROOT/web/bundles $DOCKER_APP_ROOT/bin;"'
             }
         }
 
