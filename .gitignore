@@ -21,7 +21,6 @@
 !app/logs/.gitkeep
 behat.yml
 *~
-bin
 phpunit.xml
 /app/SymfonyRequirements.php
 /web/uploads/behat

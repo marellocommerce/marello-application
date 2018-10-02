@@ -29,6 +29,12 @@ for i in ${!VOLUMES[*]}; do
   fi
 done
 
+if [[ -z ${COMPOSERFILE} ]]; then
+    info "Running composer install with file: ${COMPOSERFILE}"
+    # Inject composer dependencies into the docker image itself to avoid BW usage
+    COMPOSER=${COMPOSERFILE} COMPOSER_PROCESS_TIMEOUT=${TIMEOUT} composer install --no-scripts --no-autoloader --prefer-dist --no-suggest
+fi
+
 # Check if the local usage
 if [[ ! -z ${IS_LOCAL} ]]; then
     # Map environment variables
@@ -106,12 +112,4 @@ else
   info "Starting supervisord for platform 1.x"
   exec /usr/local/bin/supervisord -n -c /etc/supervisord-1.x.conf
 fi
-
-if [[ -z ${COMPOSERFILE} ]]; then
-    info "Running composer install with file: ${COMPOSERFILE}"
-    # Inject composer dependencies into the docker image itself to avoid BW usage
-    COMPOSER=${COMPOSERFILE} COMPOSER_PROCESS_TIMEOUT=${TIMEOUT} composer install --no-scripts --no-autoloader --prefer-dist --no-suggest
-fi
-
-
 
