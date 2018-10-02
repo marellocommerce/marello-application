@@ -58,8 +58,6 @@ pipeline {
     post {
         always {
             sendNotifications currentBuild.result
-            sh "$DOCKER_COMPOSE -f docker-compose-build.yml down || true"
-            deleteDir()
         }
     }
 }
