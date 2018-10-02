@@ -22,3 +22,8 @@ services:
             - '@marello_supplier.provider.supplier'
         tags:
             - { name: twig.extension }
+
+    marello_supplier.provider.suppliers_choices:
+        class: Marello\Bundle\SupplierBundle\Provider\SuppliersChoicesProvider
+        arguments:
+            - '@oro_entity.doctrine_helper'

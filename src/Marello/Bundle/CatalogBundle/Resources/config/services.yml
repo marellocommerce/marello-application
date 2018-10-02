@@ -31,3 +31,8 @@ services:
 
     marello_catalog.formatter.category_code:
         class: Marello\Bundle\CatalogBundle\Formatter\CategoryCodeFormatter
+
+    marello_catalog.provider.categories_choices:
+        class: Marello\Bundle\CatalogBundle\Provider\CategoriesChoicesProvider
+        arguments:
+            - '@oro_entity.doctrine_helper'

@@ -26,6 +26,7 @@ marello:
         manufacturing_code.label:   Manufacturing Code
         image.label:                Image
         categories.label:           Categories
+        suppliers.label:            Suppliers
         variant:
             label:                    Variant
             entity_plural_label:      Variants
