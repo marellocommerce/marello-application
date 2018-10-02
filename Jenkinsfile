@@ -35,22 +35,10 @@ pipeline {
             steps {
                 sendNotifications 'STARTED'
                 sh 'docker network prune -f'
-                sh "$DOCKER_COMPOSE up -d --build"
+                sh "$DOCKER_COMPOSE up --build"
             }
         }
 
-        stage('Testing') {
-            steps {
-                parallel (
-                    phpunit: {
-                        sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "php ./bin/phpunit --color --testsuite unit"'
-                    },
-                    phplint: {
-                        sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "php ./bin/phpcs vendor/marellocommerce/marello -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml"'
-                    }
-                )
-            }
-        }
     }
     post {
         always {
