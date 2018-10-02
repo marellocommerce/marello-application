@@ -35,6 +35,7 @@ pipeline {
             steps {
                 sendNotifications 'STARTED'
                 sh 'docker network prune -f'
+                sh 'whoami'
                 sh "$DOCKER_COMPOSE up -d --build"
                 sh '$DOCKER_COMPOSE exec -T web bash -c "mkdir -p $DOCKER_APP_ROOT/vendor $DOCKER_APP_ROOT/web/bundles; chown -R www-data:www-data $DOCKER_APP_ROOT/vendor $DOCKER_APP_ROOT/web/bundles $DOCKER_APP_ROOT/bin;"'
                 sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "COMPOSER=dev.json COMPOSER_PROCESS_TIMEOUT=3000 composer install --no-suggest --prefer-dist;"'
@@ -58,6 +59,8 @@ pipeline {
     post {
         always {
             sendNotifications currentBuild.result
+            sh "$DOCKER_COMPOSE -f docker-compose-build.yml down || true"
+            deleteDir()
         }
     }
 }
