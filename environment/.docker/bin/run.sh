@@ -13,14 +13,16 @@ function info {
     printf "\033[0;36m===> \033[0;33m${1}\033[0m\n"
 }
 
-# Check and fix ownership if invalid
 
+# Check and fix ownership if invalid
 VOLUMES[0]="/var/www/app/logs"
 VOLUMES[1]="/var/www/app/cache"
 VOLUMES[2]="/var/www/web/uploads";
 VOLUMES[3]="/var/www/web/media";
 VOLUMES[4]="/var/www/app/attachment";
 VOLUMES[5]="/var/www/app/import_export";
+VOLUMES[6]="/var/www/vendor";
+VOLUMES[7]="/var/www/web/bundles";
 
 for i in ${!VOLUMES[*]}; do 
   if [[ `stat -c '%u:%g' ${VOLUMES[$i]}` != `getent passwd | grep www-data | awk -F ':' '{print $3 ":" $4}'` ]]; then

@@ -45,6 +45,7 @@ rm -rf /var/www
 # Create data folder
 mkdir -p /srv/app-data
 mkdir -p /var/www
+mkdir -p /var/www/vendor
 
 mkdir -p /var/run/php
 ln -sf /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm
