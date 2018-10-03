@@ -39,7 +39,7 @@ pipeline {
                 sh '$DOCKER_COMPOSE exec -T web bash -c "ls -lat"'
                 timeout(time: 3, unit: 'MINUTES') {
                     retry(5) {
-                        sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "COMPOSER=dev.json COMPOSER_PROCESS_TIMEOUT=3000 composer install --no-suggest --prefer-dist;"'
+                        sh '$DOCKER_COMPOSE exec -T web bash -c "COMPOSER=dev.json COMPOSER_PROCESS_TIMEOUT=3000 composer install --no-suggest --prefer-dist;"'
                     }
                 }
             }
@@ -49,10 +49,10 @@ pipeline {
             steps {
                 parallel (
                     phpunit: {
-                        sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "php ./bin/phpunit --color --testsuite unit"'
+                        sh '$DOCKER_COMPOSE exec -T web bash -c "php ./bin/phpunit --color --testsuite unit"'
                     },
                     phplint: {
-                        sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "php ./bin/phpcs vendor/marellocommerce/marello -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml"'
+                        sh '$DOCKER_COMPOSE exec -T web bash -c "php ./bin/phpcs vendor/marellocommerce/marello -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml"'
                     }
                 )
             }

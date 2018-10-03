@@ -150,9 +150,6 @@ COPY conf/php/php.cli.ini   /etc/php/${PHP_VERSION}/cli/php.ini
 COPY conf/fpm/fpm.conf      /etc/php/${PHP_VERSION}/fpm/php-fpm.conf
 COPY conf/fpm/fpm.www.conf  /etc/php/${PHP_VERSION}/fpm/pool.d/www.conf
 
-RUN mkdir -p /var/www/vendor
-RUN mkdir -p /var/www/web/bundles/components
-
 VOLUME ["/var/www/app/cache", "/var/www/web/uploads", "/var/www/web/media", "/var/www/app/attachment"]
 EXPOSE 443 80 8080
 
