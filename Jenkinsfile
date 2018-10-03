@@ -35,7 +35,7 @@ pipeline {
             steps {
                 sendNotifications 'STARTED'
                 sh 'docker network prune -f'
-                sh '$DOCKER_COMPOSE up -d --build'
+                sh '$DOCKER_COMPOSE up -d --build --force-recreate'
                 sh '$DOCKER_COMPOSE exec -u www-data -T web bash -c "ls -lat"'
                 timeout(time: 3, unit: 'MINUTES') {
                     retry(5) {
