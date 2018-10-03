@@ -2,7 +2,7 @@
 APP_ROOT="/var/www"
 DATA_ROOT="/srv/app-data"
 
-#echo "deb http://ftp.de.debian.org/debian stretch main" >> /etc/apt/sources.list
+echo "deb http://ftp.de.debian.org/debian stretch main" >> /etc/apt/sources.list
 export DEBIAN_FRONTEND=noninteractive
 apt-get -qy update
 apt-get -qqy upgrade
@@ -39,11 +39,11 @@ fi
 if [[ ! -z ${IS_LOCAL} ]]; then
     # Map environment variables
     info "Map parameters.yml to environment variables"
-    /usr/local/bin/composer-map-env.php ${APP_ROOT}/dev.json
+    /usr/local/bin/composer-map-env.php ${APP_ROOT}/${COMPOSERFILE}
 
 #    # Generate parameters.yml
     info "Run composer script 'post-install-cmd'"
-    runuser -s /bin/sh -c "COMPOSER=dev.json composer --no-interaction run-script post-install-cmd -n -d ${APP_ROOT}" www-data
+    runuser -s /bin/sh -c "COMPOSER=${COMPOSERFILE} composer --no-interaction run-script post-install-cmd -n -d ${APP_ROOT}" www-data
 fi
 
 if [[ -z ${APP_DB_PORT} ]]; then
