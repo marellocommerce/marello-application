@@ -13,8 +13,6 @@ function info {
     printf "\033[0;36m===> \033[0;33m${1}\033[0m\n"
 }
 
-mkdir -p ${APP_ROOT}/vendor
-
 # Check and fix ownership if invalid
 VOLUMES[0]="/var/www/app/logs"
 VOLUMES[1]="/var/www/app/cache"
