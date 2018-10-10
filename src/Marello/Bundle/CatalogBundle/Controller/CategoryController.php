@@ -10,18 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class CategoryController extends Controller
 {
     /**
-     * @Config\Route(
-     *      "/{_format}",
-     *      name="marello_category_index",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format"="html"}
-     * )
+     * @Config\Route("/", name="marello_category_index")
      * @AclAncestor("marello_category_view")
      * @Config\Template
      */
     public function indexAction()
     {
-        return [];
+        return ['entity_class' => 'MarelloCatalogBundle:Category'];
     }
 
     /**
