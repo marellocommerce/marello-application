@@ -1,7 +1,7 @@
 data:
     -
         type: marelloassembledchannelpricelists
-        id: '122'
+        id: '36'
         attributes:
             currency: EUR
         relationships:
@@ -16,12 +16,12 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '123'
+                    id: '36'
             specialPrice:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '123'
+        id: '37'
         attributes:
             currency: EUR
         relationships:
@@ -36,12 +36,12 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '124'
+                    id: '37'
             specialPrice:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '124'
+        id: '38'
         attributes:
             currency: EUR
         relationships:
@@ -56,12 +56,12 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '125'
+                    id: '38'
             specialPrice:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '125'
+        id: '39'
         attributes:
             currency: EUR
         relationships:
@@ -76,6 +76,6 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '126'
+                    id: '39'
             specialPrice:
                 data: null

@@ -1,7 +1,7 @@
 data:
     -
         type: marelloassembledpricelists
-        id: '356'
+        id: '105'
         attributes:
             currency: EUR
         relationships:
@@ -12,14 +12,14 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductprices
-                    id: '356'
+                    id: '105'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: marelloassembledpricelists
-        id: '357'
+        id: '106'
         attributes:
             currency: EUR
         relationships:
@@ -30,14 +30,14 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductprices
-                    id: '357'
+                    id: '106'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: marelloassembledpricelists
-        id: '358'
+        id: '107'
         attributes:
             currency: USD
         relationships:
@@ -48,14 +48,14 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductprices
-                    id: '358'
+                    id: '107'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: marelloassembledpricelists
-        id: '359'
+        id: '108'
         attributes:
             currency: EUR
         relationships:
@@ -66,14 +66,14 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductprices
-                    id: '359'
+                    id: '108'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: marelloassembledpricelists
-        id: '360'
+        id: '109'
         attributes:
             currency: GBP
         relationships:
@@ -84,14 +84,14 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductprices
-                    id: '360'
+                    id: '109'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: marelloassembledpricelists
-        id: '361'
+        id: '110'
         attributes:
             currency: EUR
         relationships:
@@ -102,14 +102,14 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductprices
-                    id: '361'
+                    id: '110'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: marelloassembledpricelists
-        id: '362'
+        id: '111'
         attributes:
             currency: USD
         relationships:
@@ -120,14 +120,14 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductprices
-                    id: '362'
+                    id: '111'
             specialPrice:
                 data: null
             msrpPrice:
                 data: null
     -
         type: marelloassembledpricelists
-        id: '363'
+        id: '112'
         attributes:
             currency: GBP
         relationships:
@@ -138,7 +138,7 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductprices
-                    id: '363'
+                    id: '112'
             specialPrice:
                 data: null
             msrpPrice:

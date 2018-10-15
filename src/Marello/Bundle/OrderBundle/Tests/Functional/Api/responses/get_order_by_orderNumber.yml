@@ -23,7 +23,7 @@ data:
         couponCode: null
         invoicedAt: null
         salesChannelName: channel3
-        purchaseDate: '2018-09-20T19:47:26Z'
+        purchaseDate: '2018-10-15T08:34:24Z'
         data: []
         locale: null
     relationships:
@@ -31,16 +31,16 @@ data:
             data:
                 -
                     type: marelloorderitems
-                    id: '368'
+                    id: '26'
                 -
                     type: marelloorderitems
-                    id: '369'
+                    id: '27'
                 -
                     type: marelloorderitems
-                    id: '370'
+                    id: '28'
                 -
                     type: marelloorderitems
-                    id: '371'
+                    id: '29'
         customer:
             data:
                 type: marellocustomers
@@ -48,11 +48,11 @@ data:
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '529'
+                id: '60'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '529'
+                id: '60'
         salesChannel:
             data:
                 type: marellosaleschannels
