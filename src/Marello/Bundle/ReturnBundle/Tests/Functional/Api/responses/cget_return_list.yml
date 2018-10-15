@@ -5,7 +5,7 @@ data:
         attributes:
             returnNumber: '000000001'
             salesChannelName: channel1
-            returnReference: 0000000025bc499d982d0b
+            returnReference: '@return0->returnReference'
             locale: null
         relationships:
             order:
@@ -16,16 +16,16 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '1'
+                        id: '<toString(@return0->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '2'
+                        id: '<toString(@return0->returnItems->get(1)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '3'
+                        id: '<toString(@return0->returnItems->get(2)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '4'
+                        id: '<toString(@return0->returnItems->get(3)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -42,7 +42,7 @@ data:
         attributes:
             returnNumber: '000000002'
             salesChannelName: channel1
-            returnReference: 0000000035bc499d9844a8
+            returnReference: '@return1->returnReference'
             locale: null
         relationships:
             order:
@@ -53,13 +53,13 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '5'
+                        id: '<toString(@return1->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '6'
+                        id: '<toString(@return1->returnItems->get(1)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '7'
+                        id: '<toString(@return1->returnItems->get(2)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -76,7 +76,7 @@ data:
         attributes:
             returnNumber: '000000003'
             salesChannelName: channel1
-            returnReference: 0000000045bc499d984a1b
+            returnReference: '@return2->returnReference'
             locale: null
         relationships:
             order:
@@ -87,16 +87,16 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '8'
+                        id: '<toString(@return2->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '9'
+                        id: '<toString(@return2->returnItems->get(1)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '10'
+                        id: '<toString(@return2->returnItems->get(2)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '11'
+                        id: '<toString(@return2->returnItems->get(3)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -113,7 +113,7 @@ data:
         attributes:
             returnNumber: '000000004'
             salesChannelName: channel1
-            returnReference: 0000000055bc499d985004
+            returnReference: '@return3->returnReference'
             locale: null
         relationships:
             order:
@@ -124,7 +124,7 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '12'
+                        id: '<toString(@return3->returnItems->get(0)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -141,7 +141,7 @@ data:
         attributes:
             returnNumber: '000000005'
             salesChannelName: channel1
-            returnReference: 0000000065bc499d985341
+            returnReference: '@return4->returnReference'
             locale: null
         relationships:
             order:
@@ -152,10 +152,10 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '13'
+                        id: '<toString(@return4->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '14'
+                        id: '<toString(@return4->returnItems->get(1)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -172,7 +172,7 @@ data:
         attributes:
             returnNumber: '000000006'
             salesChannelName: channel1
-            returnReference: 0000000075bc499d985758
+            returnReference: '@return5->returnReference'
             locale: null
         relationships:
             order:
@@ -183,16 +183,16 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '15'
+                        id: '<toString(@return5->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '16'
+                        id: '<toString(@return5->returnItems->get(1)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '17'
+                        id: '<toString(@return5->returnItems->get(2)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '18'
+                        id: '<toString(@return5->returnItems->get(3)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -209,7 +209,7 @@ data:
         attributes:
             returnNumber: '000000007'
             salesChannelName: channel1
-            returnReference: 0000000085bc499d985ce7
+            returnReference: '@return6->returnReference'
             locale: null
         relationships:
             order:
@@ -220,7 +220,7 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '19'
+                        id: '<toString(@return6->returnItems->get(0)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -237,7 +237,7 @@ data:
         attributes:
             returnNumber: '000000008'
             salesChannelName: channel1
-            returnReference: 0000000095bc499d985fa0
+            returnReference: '@return7->returnReference'
             locale: null
         relationships:
             order:
@@ -248,10 +248,10 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '20'
+                        id: '<toString(@return7->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '21'
+                        id: '<toString(@return7->returnItems->get(1)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -268,7 +268,7 @@ data:
         attributes:
             returnNumber: '000000009'
             salesChannelName: channel1
-            returnReference: 0000000105bc499d9862e6
+            returnReference: '@return8->returnReference'
             locale: null
         relationships:
             order:
@@ -279,10 +279,10 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '22'
+                        id: '<toString(@return8->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '23'
+                        id: '<toString(@return8->returnItems->get(1)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels

@@ -32,7 +32,6 @@ class CategoryJsonApiTest extends RestJsonApiTestCase
 
 
         $this->assertResponseCount(3, $response);
-        $this->dumpYmlTemplate('cget_categories_list.yml', $response);
         $this->assertResponseContains('cget_categories_list.yml', $response);
     }
 
@@ -49,7 +48,6 @@ class CategoryJsonApiTest extends RestJsonApiTestCase
         );
 
         $this->assertJsonResponse($response);
-        $this->dumpYmlTemplate('get_category_by_id.yml', $response);
         $this->assertResponseContains('get_category_by_id.yml', $response);
     }
 
