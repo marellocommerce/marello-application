@@ -31,7 +31,6 @@ class ReturnJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(9, $response);
-        $this->dumpYmlTemplate('cget_return_list.yml', $response);
         $this->assertResponseContains('cget_return_list.yml', $response);
     }
 
@@ -48,7 +47,6 @@ class ReturnJsonApiTest extends RestJsonApiTestCase
         );
 
         $this->assertJsonResponse($response);
-        $this->dumpYmlTemplate('get_return_by_id.yml', $response);
         $this->assertResponseContains('get_return_by_id.yml', $response);
     }
 

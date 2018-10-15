@@ -33,7 +33,6 @@ class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(8, $response);
-        $this->dumpYmlTemplate('cget_virtualinventory_list.yml', $response);
         $this->assertResponseContains('cget_virtualinventory_list.yml', $response);
     }
 
@@ -51,7 +50,6 @@ class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
             ]
         );
         $this->assertJsonResponse($response);
-        $this->dumpYmlTemplate('get_virtualinventory_by_product_sku.yml', $response);
         $this->assertResponseContains('get_virtualinventory_by_product_sku.yml', $response);
     }
 
@@ -70,7 +68,6 @@ class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
             ]
         );
         $this->assertJsonResponse($response);
-        $this->dumpYmlTemplate('get_virtualinventory_by_saleschannel.yml', $response);
         $this->assertResponseContains('get_virtualinventory_by_saleschannel.yml', $response);
     }
 

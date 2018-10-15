@@ -31,7 +31,6 @@ class AssembledPriceListJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(8, $response);
-        $this->dumpYmlTemplate('cget_assembled_price_list.yml', $response);
         $this->assertResponseContains('cget_assembled_price_list.yml', $response);
     }
 
@@ -49,7 +48,6 @@ class AssembledPriceListJsonApiTest extends RestJsonApiTestCase
             ]
         );
         $this->assertJsonResponse($response);
-        $this->dumpYmlTemplate('get_pricelist_by_product_sku.yml', $response);
         $this->assertResponseContains('get_pricelist_by_product_sku.yml', $response);
     }
 
