@@ -1,7 +1,7 @@
 data:
     -
         type: marellovirtualinventorylevels
-        id: '193'
+        id: '1'
         attributes:
             inventory: 100
             balancedInventory: 100

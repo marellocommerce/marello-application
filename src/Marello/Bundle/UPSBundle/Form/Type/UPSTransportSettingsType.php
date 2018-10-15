@@ -119,8 +119,8 @@ class UPSTransportSettingsType extends AbstractType
                 'required' => true,
                 'choices' => [
                     'marello.ups.transport.pickup_type.regular_daily.label' => UPSSettings::PICKUP_TYPE_REGULAR_DAILY,
-                    'marello.ups.transport.pickup_type.customer_counter.label' => UPSSettings::PICKUP_TYPE_CUSTOMER_COUNTER,
-                    'marello.ups.transport.pickup_type.one_time.label' => UPSSettings::PICKUP_TYPE_ONE_TIME ,
+                    'marello.ups.transport.pickup_type.customer_counter.label' => UPSSettings::PICKUP_TYPE_CUST_COUNTER,
+                    'marello.ups.transport.pickup_type.one_time.label' => UPSSettings::PICKUP_TYPE_ONE_TIME,
                     'marello.ups.transport.pickup_type.on_call_air.label' => UPSSettings::PICKUP_TYPE_ON_CALL_AIR,
                     'marello.ups.transport.pickup_type.letter_center.label' => UPSSettings::PICKUP_TYPE_LETTER_CENTER,
                 ]
