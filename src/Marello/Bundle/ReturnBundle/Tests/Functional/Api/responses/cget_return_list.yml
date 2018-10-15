@@ -5,7 +5,7 @@ data:
         attributes:
             returnNumber: '000000001'
             salesChannelName: channel1
-            returnReference: 0000000025bc4979758aa9
+            returnReference: 0000000025bc499d982d0b
             locale: null
         relationships:
             order:
@@ -42,7 +42,7 @@ data:
         attributes:
             returnNumber: '000000002'
             salesChannelName: channel1
-            returnReference: 0000000035bc497975a1b1
+            returnReference: 0000000035bc499d9844a8
             locale: null
         relationships:
             order:
@@ -76,7 +76,7 @@ data:
         attributes:
             returnNumber: '000000003'
             salesChannelName: channel1
-            returnReference: 0000000045bc497975a73f
+            returnReference: 0000000045bc499d984a1b
             locale: null
         relationships:
             order:
@@ -113,7 +113,7 @@ data:
         attributes:
             returnNumber: '000000004'
             salesChannelName: channel1
-            returnReference: 0000000055bc497975ac8b
+            returnReference: 0000000055bc499d985004
             locale: null
         relationships:
             order:
@@ -141,7 +141,7 @@ data:
         attributes:
             returnNumber: '000000005'
             salesChannelName: channel1
-            returnReference: 0000000065bc497975b026
+            returnReference: 0000000065bc499d985341
             locale: null
         relationships:
             order:
@@ -172,7 +172,7 @@ data:
         attributes:
             returnNumber: '000000006'
             salesChannelName: channel1
-            returnReference: 0000000075bc497975b430
+            returnReference: 0000000075bc499d985758
             locale: null
         relationships:
             order:
@@ -209,7 +209,7 @@ data:
         attributes:
             returnNumber: '000000007'
             salesChannelName: channel1
-            returnReference: 0000000085bc497975b9c5
+            returnReference: 0000000085bc499d985ce7
             locale: null
         relationships:
             order:
@@ -237,7 +237,7 @@ data:
         attributes:
             returnNumber: '000000008'
             salesChannelName: channel1
-            returnReference: 0000000095bc497975bcf0
+            returnReference: 0000000095bc499d985fa0
             locale: null
         relationships:
             order:
@@ -268,7 +268,7 @@ data:
         attributes:
             returnNumber: '000000009'
             salesChannelName: channel1
-            returnReference: 0000000105bc497975c09c
+            returnReference: 0000000105bc499d9862e6
             locale: null
         relationships:
             order:

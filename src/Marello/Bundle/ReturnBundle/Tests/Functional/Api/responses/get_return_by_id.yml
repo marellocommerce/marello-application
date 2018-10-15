@@ -4,7 +4,7 @@ data:
     attributes:
         returnNumber: '000000002'
         salesChannelName: channel1
-        returnReference: 0000000035bc497975a1b1
+        returnReference: 0000000035bc499d9844a8
         locale: null
     relationships:
         order:

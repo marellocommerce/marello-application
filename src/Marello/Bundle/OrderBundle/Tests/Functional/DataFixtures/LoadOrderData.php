@@ -121,8 +121,8 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
 
                 $order = $this->createOrder($orderRow, $organization);
                 $order->setOrderNumber($itemRow['order_number']);
-
             }
+
             $this->setReference('marello_order_' . $createdOrders, $order);
             $item = $this->createOrderItem($itemRow);
             $order->addItem($item);
@@ -169,7 +169,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     /**
      * @return array|bool
      */
-    protected function  popOrderItemRow()
+    protected function popOrderItemRow()
     {
         if (!$this->itemsFile) {
             $this->itemsFile       = fopen(__DIR__ . '/dictionaries/order_items.csv', 'r');
