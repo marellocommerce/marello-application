@@ -24,7 +24,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-10-15T07:16:02Z'
+            purchaseDate: '2018-10-15T09:28:01Z'
             data: []
             locale: null
         relationships:
@@ -80,7 +80,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-10-15T07:16:02Z'
+            purchaseDate: '2018-10-15T09:28:01Z'
             data: []
             locale: null
         relationships:
@@ -145,7 +145,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-10-15T07:16:02Z'
+            purchaseDate: '2018-10-15T09:28:01Z'
             data: []
             locale: null
         relationships:
@@ -207,7 +207,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-10-15T07:16:02Z'
+            purchaseDate: '2018-10-15T09:28:01Z'
             data: []
             locale: null
         relationships:
@@ -272,7 +272,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-10-15T07:16:02Z'
+            purchaseDate: '2018-10-15T09:28:01Z'
             data: []
             locale: null
         relationships:
@@ -328,7 +328,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-10-15T07:16:02Z'
+            purchaseDate: '2018-10-15T09:28:01Z'
             data: []
             locale: null
         relationships:
@@ -387,7 +387,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-10-15T07:16:03Z'
+            purchaseDate: '2018-10-15T09:28:02Z'
             data: []
             locale: null
         relationships:
@@ -452,7 +452,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-10-15T07:16:03Z'
+            purchaseDate: '2018-10-15T09:28:02Z'
             data: []
             locale: null
         relationships:
@@ -508,7 +508,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-10-15T07:16:03Z'
+            purchaseDate: '2018-10-15T09:28:02Z'
             data: []
             locale: null
         relationships:
@@ -567,7 +567,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel1
-            purchaseDate: '2018-10-15T07:16:03Z'
+            purchaseDate: '2018-10-15T09:28:02Z'
             data: []
             locale: null
         relationships:

@@ -19,6 +19,19 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
+    marello_sales.provider.basic_sales_channels_choices:
+        class: Marello\Bundle\SalesBundle\Provider\BasicSalesChannelsChoicesProvider
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
+    marello_sales.provider.basic_sales_channels_choices.enabled_channels_decorator:
+         class: Marello\Bundle\SalesBundle\Provider\EnabledSalesChannelsChoicesProviderDecorator
+         public: false
+         decorates: marello_sales.provider.basic_sales_channels_choices
+         decoration_priority: 255
+         arguments:
+            - '@oro_entity.doctrine_helper'
+
     # Autocomplete search handler
     marello_sales.saleschannel.form.autocomplete.search_handler:
         parent: oro_form.autocomplete.search_handler

@@ -23,7 +23,7 @@ data:
         couponCode: null
         invoicedAt: null
         salesChannelName: channel3
-        purchaseDate: '2018-10-15T07:16:02Z'
+        purchaseDate: '2018-10-15T09:28:01Z'
         data: []
         locale: null
     relationships:

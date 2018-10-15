@@ -128,3 +128,8 @@ services:
             - ['setOrderItemMapper',  ['@marello_tax.order_tax.mapper.order_item_mapper']]
         tags:
             - { name: marello_tax.tax_mapper }
+
+    marello_tax.provider.tax_codes_choices:
+        class: 'Marello\Bundle\TaxBundle\Provider\TaxCode\TaxCodesChoicesProvider'
+        arguments:
+            - '@oro_entity.doctrine_helper'

@@ -7,9 +7,15 @@ marello:
             entity_label:               Assembled Price List
             currency.label:             Currency
             id.label:                   Id
-            default_price.label:        Default Price
-            special_price.label:        Special Price
-            msrp_price.label:           MSRP Price
+            default_price:
+                label:                  Default Price
+                plural_label:           Default Prices
+            special_price:
+                label:                  Special Price
+                plural_label:           Special Prices
+            msrp_price:
+                label:                  MSRP Price
+                plural_label:           MSRP Prices
             product.label:              Product
 
         assembledchannelpricelist:
@@ -17,8 +23,12 @@ marello:
             entity_label:               Assembled Channel Price List
             currency.label:             Currency
             id.label:                   Id
-            default_price.label:        Default Price
-            special_price.label:        Special Price
+            default_price:
+                label:                  Default Channel Price
+                plural_label:           Default Channel Prices
+            special_price:
+                label:                  Special Channel Price
+                plural_label:           Special Channel Prices
             product.label:              Product
             channel.label:              Channel
 
