@@ -122,7 +122,7 @@ abstract class AbstractOrderAddressType extends AbstractType
         $choices['marello.order.form.address.manual'] = 0;
         array_walk_recursive(
             $addresses,
-            function ($item, $key) use (&$choices)  {
+            function ($item, $key) use (&$choices) {
                 if ($item instanceof MarelloAddress) {
                     $choices[$this->addressFormatter->format($item, null, ', ')] = $key;
                 }

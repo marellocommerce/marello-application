@@ -2,9 +2,9 @@ data:
     type: marelloreturns
     id: '<toString(@return1->id)>'
     attributes:
-        returnNumber: '000000058'
+        returnNumber: '000000002'
         salesChannelName: channel1
-        returnReference: 0000000035ba3f99b2bc7c
+        returnReference: 0000000035bc43ef3983f8
         locale: null
     relationships:
         order:
@@ -15,13 +15,13 @@ data:
             data:
                 -
                     type: marelloreturnitems
-                    id: '145'
+                    id: '5'
                 -
                     type: marelloreturnitems
-                    id: '146'
+                    id: '6'
                 -
                     type: marelloreturnitems
-                    id: '147'
+                    id: '7'
         salesChannel:
             data:
                 type: marellosaleschannels

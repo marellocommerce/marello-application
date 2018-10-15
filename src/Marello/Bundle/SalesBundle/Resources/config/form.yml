@@ -3,7 +3,7 @@ parameters:
     marello_sales.form_type.saleschannel.class:                                Marello\Bundle\SalesBundle\Form\Type\SalesChannelType
     marello_sales.form_type.saleschannel.select.class:                         Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType
     marello_sales.form_type.saleschannel.select.api.class:                     Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectApiType
-    marello_sales.form_type.saleschannel.multiselect.class:                    Marello\Bundle\SalesBundle\Form\Type\SalesChannelMultiselectType
+    marello_sales.form_type.saleschannel.multiselect.class:                    Marello\Bundle\SalesBundle\Form\Type\SalesChannelMultiSelectType
     marello_sales.form_type.system_group_saleschannel.multiselect.class:       Marello\Bundle\SalesBundle\Form\Type\SystemGroupSalesChannelMultiselectType
     marello_sales.form_type.saleschannelgroup.class:                           Marello\Bundle\SalesBundle\Form\Type\SalesChannelGroupType
     #form handlers

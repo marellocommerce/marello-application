@@ -1,7 +1,7 @@
 data:
     -
         type: marelloassembledpricelists
-        id: '356'
+        id: '105'
         attributes:
             currency: EUR
         relationships:
@@ -12,7 +12,7 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductprices
-                    id: '356'
+                    id: '105'
             specialPrice:
                 data: null
             msrpPrice:

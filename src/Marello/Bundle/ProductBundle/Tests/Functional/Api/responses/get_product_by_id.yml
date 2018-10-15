@@ -2,7 +2,7 @@ data:
     type: marelloproducts
     id: p1
     attributes:
-        productId: 196
+        productId: 67
         name: product1
         manufacturingCode: null
         productType: null
@@ -23,7 +23,7 @@ data:
             data:
                 -
                     type: marelloassembledpricelists
-                    id: '381'
+                    id: '130'
         channelPrices:
             data: []
         saleschannels:
