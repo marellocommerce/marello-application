@@ -13,14 +13,14 @@ data:
         primaryAddress:
             data:
                 type: marelloaddresses
-                id: '44'
+                id: '3'
         shippingAddress:
             data: null
         addresses:
             data:
                 -
                     type: marelloaddresses
-                    id: '44'
+                    id: '3'
         organization:
             data:
                 type: organizations

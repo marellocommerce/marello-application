@@ -24,7 +24,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-10-15T09:28:01Z'
+            purchaseDate: '@marello_order_0->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
         relationships:
@@ -32,7 +32,7 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '25'
+                        id: '<toString(@marello_order_0->items->get(0)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -40,11 +40,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '58'
+                    id: '<toString(@marello_order_0->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '58'
+                    id: '<toString(@marello_order_0->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -80,7 +80,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-10-15T09:28:01Z'
+            purchaseDate: '@marello_order_1->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
         relationships:
@@ -88,16 +88,16 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '26'
+                        id: '<toString(@marello_order_1->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '27'
+                        id: '<toString(@marello_order_1->items->get(1)->id)>'
                     -
                         type: marelloorderitems
-                        id: '28'
+                        id: '<toString(@marello_order_1->items->get(2)->id)>'
                     -
                         type: marelloorderitems
-                        id: '29'
+                        id: '<toString(@marello_order_1->items->get(3)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -105,11 +105,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '60'
+                    id: '<toString(@marello_order_1->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '60'
+                    id: '<toString(@marello_order_1->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -145,7 +145,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-10-15T09:28:01Z'
+            purchaseDate: '@marello_order_2->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
         relationships:
@@ -153,13 +153,13 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '30'
+                        id: '<toString(@marello_order_2->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '31'
+                        id: '<toString(@marello_order_2->items->get(1)->id)>'
                     -
                         type: marelloorderitems
-                        id: '32'
+                        id: '<toString(@marello_order_2->items->get(2)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -167,11 +167,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '62'
+                    id: '<toString(@marello_order_2->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '62'
+                    id: '<toString(@marello_order_2->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -207,7 +207,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-10-15T09:28:01Z'
+            purchaseDate: '@marello_order_3->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
         relationships:
@@ -215,16 +215,16 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '33'
+                        id: '<toString(@marello_order_3->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '34'
+                        id: '<toString(@marello_order_3->items->get(1)->id)>'
                     -
                         type: marelloorderitems
-                        id: '35'
+                        id: '<toString(@marello_order_3->items->get(2)->id)>'
                     -
                         type: marelloorderitems
-                        id: '36'
+                        id: '<toString(@marello_order_3->items->get(3)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -232,11 +232,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '64'
+                    id: '<toString(@marello_order_3->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '64'
+                    id: '<toString(@marello_order_3->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -272,7 +272,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-10-15T09:28:01Z'
+            purchaseDate: '@marello_order_4->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
         relationships:
@@ -280,7 +280,7 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '37'
+                        id: '<toString(@marello_order_4->items->get(0)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -288,11 +288,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '66'
+                    id: '<toString(@marello_order_4->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '66'
+                    id: '<toString(@marello_order_4->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -328,7 +328,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-10-15T09:28:01Z'
+            purchaseDate: '@marello_order_5->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
         relationships:
@@ -336,10 +336,10 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '38'
+                        id: '<toString(@marello_order_5->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '39'
+                        id: '<toString(@marello_order_5->items->get(1)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -347,11 +347,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '68'
+                    id: '<toString(@marello_order_5->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '68'
+                    id: '<toString(@marello_order_5->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -387,7 +387,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-10-15T09:28:02Z'
+            purchaseDate: '@marello_order_6->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
         relationships:
@@ -395,16 +395,16 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '40'
+                        id: '<toString(@marello_order_6->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '41'
+                        id: '<toString(@marello_order_6->items->get(1)->id)>'
                     -
                         type: marelloorderitems
-                        id: '42'
+                        id: '<toString(@marello_order_6->items->get(2)->id)>'
                     -
                         type: marelloorderitems
-                        id: '43'
+                        id: '<toString(@marello_order_6->items->get(3)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -412,11 +412,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '70'
+                    id: '<toString(@marello_order_6->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '70'
+                    id: '<toString(@marello_order_6->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -452,7 +452,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-10-15T09:28:02Z'
+            purchaseDate: '@marello_order_7->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
         relationships:
@@ -460,7 +460,7 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '44'
+                        id: '<toString(@marello_order_7->items->get(0)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -468,11 +468,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '72'
+                    id: '<toString(@marello_order_7->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '72'
+                    id: '<toString(@marello_order_7->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -508,7 +508,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-10-15T09:28:02Z'
+            purchaseDate: '@marello_order_8->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
         relationships:
@@ -516,10 +516,10 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '45'
+                        id: '<toString(@marello_order_8->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '46'
+                        id: '<toString(@marello_order_8->items->get(1)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -527,11 +527,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '74'
+                    id: '<toString(@marello_order_8->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '74'
+                    id: '<toString(@marello_order_8->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -544,7 +544,7 @@ data:
                     id: '1'
     -
         type: marelloorders
-        id: '20'
+        id: '<toString(@marello_order_9->id)>'
         attributes:
             orderNumber: '000000010'
             orderReference: '100000334'
@@ -567,7 +567,7 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel1
-            purchaseDate: '2018-10-15T09:28:02Z'
+            purchaseDate: '@marello_order_9->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
         relationships:
@@ -575,10 +575,10 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '47'
+                        id: '<toString(@marello_order_9->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '48'
+                        id: '<toString(@marello_order_9->items->get(1)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -586,11 +586,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '76'
+                    id: '<toString(@marello_order_9->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '76'
+                    id: '<toString(@marello_order_9->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
