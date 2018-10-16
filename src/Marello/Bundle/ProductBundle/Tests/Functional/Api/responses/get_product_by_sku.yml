@@ -3,7 +3,7 @@ data:
         type: marelloproducts
         id: p1
         attributes:
-            productId: 27
+            productId: '@product1->id'
             name: product1
             manufacturingCode: null
             productType: null
@@ -24,7 +24,7 @@ data:
                 data:
                     -
                         type: marelloassembledpricelists
-                        id: '50'
+                        id: '<toString(@product1->prices->get(0)->id)>'
             channelPrices:
                 data: []
             saleschannels:
