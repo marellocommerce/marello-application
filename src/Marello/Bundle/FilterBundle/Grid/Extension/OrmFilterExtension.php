@@ -25,6 +25,9 @@ class OrmFilterExtension extends BaseOrmFilterExtension
         } else {
             $parameters = $this->getParameters();
             $currentFilters = $parameters->get(self::FILTER_ROOT_PARAM, []);
+            if ($currentFilters === null) {
+                $currentFilters = [];
+            }
             $pager = $parameters->get(PagerInterface::PAGER_ROOT_PARAM, []);
             $appearance = $parameters->get(AppearanceExtension::APPEARANCE_ROOT_PARAM, []);
             $sorter = $parameters->get(AbstractSorterExtension::SORTERS_ROOT_PARAM, []);

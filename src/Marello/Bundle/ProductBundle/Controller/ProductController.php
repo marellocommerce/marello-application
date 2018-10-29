@@ -158,4 +158,30 @@ class ProductController extends Controller
             'product' => $product
         ];
     }
+
+    /**
+     * @Config\Route("/assign-sales-channels", name="marello_product_assign_sales_channels")
+     * @AclAncestor("marello_product_update")
+     * @Config\Template
+     *
+     * @return array
+     */
+    public function assignSalesChannelsAction()
+    {
+        $handler = $this->get('marello_product.sales_channels_assign.handler');
+        $result = $handler->process();
+
+        if (true === $result['success']) {
+            $this->get('session')->getFlashBag()->add(
+                $result['type'],
+                $this->get('translator')->trans($result['message'])
+            );
+
+            return $this->redirectToRoute('marello_product_index');
+        }
+
+        return [
+            'form' => $handler->getFormView(),
+        ];
+    }
 }

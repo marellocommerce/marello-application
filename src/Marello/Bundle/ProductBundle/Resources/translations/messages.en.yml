@@ -52,15 +52,19 @@ marello:
             tax_code.label:                     Tax Code
             form.add_productchanneltaxrelation: Add Sales Channel Tax Code
 
-
         messages:
             success:
                 product:
                     saved:          Product saved
                 variant:
                     saved:          Variant saved
+                sales_channels:
+                    assignment:         Sales Channels were successfully assigned
+                    assignment_started: Sales Channels assignment was started successfully. You will receive email notification upon completion.
             error:
                 sku:                SKU already exists, please provide a unique SKU
+                sales_channels:
+                    assignment: There was failure during Sales Channels assignment
 
         sections:
             general:                General Information
@@ -88,3 +92,8 @@ marello:
             save_and_duplicate: Save And Duplicate
             product.duplicated.message: Product has been duplicated
             product.saved_and_duplicated.message: Product has been saved and duplicated
+            assign_sales_channels: Assign Sales Channels to Products
+
+        datagrid:
+            action:
+                assign_sales_channels: Assign Sales Channels

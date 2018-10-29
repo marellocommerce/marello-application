@@ -128,7 +128,7 @@ datagrids:
                 params:     [ id ]
             delete_link:
                 type:       url
-                route:      marello_product_api_delete_product
+                route:      oro_rest_api_product_item
                 params:     [ id ]
             inventory_link:
                 type:       url
@@ -256,6 +256,13 @@ datagrids:
                 acl_recource:   marello_inventory_inventory_update
                 icon:           cubes
                 label:          marello.inventory.management.label
+        mass_actions:
+            assign_sales_channels:
+                type:         redirect
+                route:        marello_product_assign_sales_channels
+                acl_resource: marello_product_update
+                label:        marello.product.datagrid.action.assign_sales_channels
+                icon:         exchange
         options:
             entityHint: product
             export: true
