@@ -4,7 +4,7 @@ namespace Marello\Bundle\OrderBundle\Entity\Manager;
 
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 
-use Marello\Bundle\ExtendWorkflowBundle\Model\WorkflowItemApiAwareInterface;
+use Marello\Bundle\WorkflowBundle\Model\WorkflowItemApiAwareInterface;
 
 class OrderApiEntityManager extends ApiEntityManager implements WorkflowItemApiAwareInterface
 {

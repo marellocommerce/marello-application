@@ -1,10 +1,10 @@
 <?php
 
-namespace Marello\Bundle\ExtendWorkflowBundle;
+namespace Marello\Bundle\WorkflowBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class MarelloExtendWorkflowBundle extends Bundle
+class MarelloWorkflowBundle extends Bundle
 {
     public function getParent()
     {
