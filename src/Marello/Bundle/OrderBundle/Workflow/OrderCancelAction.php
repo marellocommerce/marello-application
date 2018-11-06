@@ -24,7 +24,7 @@ class OrderCancelAction extends OrderTransitionAction
     protected $eventDispatcher;
 
     /**
-     * OrderShipAction constructor.
+     * OrderCancelAction constructor.
      *
      * @param ContextAccessor           $contextAccessor
      * @param Registry                  $doctrine
@@ -55,7 +55,7 @@ class OrderCancelAction extends OrderTransitionAction
     }
 
     /**
-     * handle the inventory update for items which have been shipped
+     * handle the inventory update for the order's items which have cancelled
      * @param OrderItem $item
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
