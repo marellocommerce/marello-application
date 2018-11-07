@@ -42,7 +42,7 @@ class BasicShippingMethodChoicesProvider implements ShippingMethodChoicesProvide
                 if ($translate) {
                     $label = $this->translator->trans($label);
                 }
-                $result[$label] = $method->getIdentifier();
+                $result[$method->getIdentifier()] = $label;
 
                 return $result;
             },
