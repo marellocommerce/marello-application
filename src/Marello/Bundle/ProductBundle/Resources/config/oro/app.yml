@@ -1,0 +1,18 @@
+liip_imagine:
+    loaders:
+        default:
+            filesystem:
+                bundle_resources:
+                    enabled: true
+    filter_sets:
+        cache : ~
+        product_grid:
+            quality:          95
+            filters:
+                thumbnail:    { size: [25, 35], mode: outbound }
+                strip:        ~
+        product_view:
+            quality:          95
+            filters:
+                thumbnail:    { size: [185, 250], mode: outbound }
+                strip:        ~

@@ -52,9 +52,9 @@
         }) }}
     {% endset %}
 
-    {% set productImage = asset('bundles/marelloproduct/img/no_image_available.jpg') %}
+    {% set productImage = 'bundles/marelloproduct/img/no_image_available.jpg' | imagine_filter('product_view') %}
     {% if entity.image is not null %}
-        {% set productImage = file_url(entity, 'image', entity.image) %}
+        {% set productImage = filtered_image_url(entity.image, 'product_view') %}
     {% endif %}
 
     {% set productImageWidget %}
