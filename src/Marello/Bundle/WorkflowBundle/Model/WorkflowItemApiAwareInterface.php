@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ExtendWorkflowBundle\Model;
+namespace Marello\Bundle\WorkflowBundle\Model;
 
 interface WorkflowItemApiAwareInterface
 {

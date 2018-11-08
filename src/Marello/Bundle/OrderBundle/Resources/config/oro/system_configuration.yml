@@ -2,7 +2,7 @@ system_configuration:
     fields:
         marello_order.order_notification:
             data_type: boolean
-            type: oro_config_checkbox
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
                 label: marello.order.system_configuration.fields.order_notification.label
                 required: false

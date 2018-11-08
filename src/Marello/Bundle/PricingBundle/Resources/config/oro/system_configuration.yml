@@ -11,7 +11,7 @@ system_configuration:
     fields:
         marello_pricing.is_vat_included:
             data_type: boolean
-            type: oro_config_checkbox
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
                 label: marello.pricing.system_configuration.fields.vat.label
                 required: false

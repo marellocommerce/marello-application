@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\ExtendWorkflowBundle\Api\Processor;
+namespace Marello\Bundle\WorkflowBundle\Api\Processor;
 
 use Oro\Bundle\ApiBundle\Config\EntityDefinitionConfig;
 use Oro\Bundle\ApiBundle\Config\EntityDefinitionFieldConfig;

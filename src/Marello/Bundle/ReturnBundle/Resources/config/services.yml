@@ -68,12 +68,12 @@ services:
             - { name: marello_entity_notification_configuration_provider, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
 
     marello_return.api.add_workflow_step_config:
-        class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowStepConfig'
+        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowStepConfig'
         tags:
             - { name: oro.api.processor, action: get_config,  class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
 
     marello_return.api.add_workflow_step:
-        class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowStep'
+        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowStep'
         arguments:
             - '@oro_workflow.manager'
             - '@oro_entity.doctrine_helper'

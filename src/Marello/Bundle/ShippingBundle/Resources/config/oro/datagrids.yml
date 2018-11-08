@@ -95,13 +95,7 @@ datagrids:
                 expression:
                     type:      string
                     data_name: rule.expression
-                methodConfigs:
-                    type: choice
-                    data_name: methodConfig.method
-                    options:
-                        field_options:
-                            multiple: true
-                            choices: '@marello_shipping.provider.basic_shipping_methods_choices->getMethods()'
+
         actions:
             view:
                 type:          navigate
