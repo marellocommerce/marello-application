@@ -50,7 +50,7 @@ class ShippingMethodsConfigsRuleType extends AbstractType
             ->add('rule', RuleType::class, ['label' => 'marello.shipping.shippingmethodsconfigsrule.rule.label'])
             ->add('currency', CurrencySelectionType::class, [
                 'label' => 'marello.shipping.shippingmethodsconfigsrule.currency.label',
-                'empty_value' => 'oro.currency.currency.form.choose',
+                'placeholder' => 'oro.currency.currency.form.choose',
             ])
             ->add('destinations', CollectionType::class, [
                 'required'             => false,

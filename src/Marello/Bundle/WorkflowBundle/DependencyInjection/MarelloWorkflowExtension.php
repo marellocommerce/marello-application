@@ -1,13 +1,13 @@
 <?php
 
-namespace Marello\Bundle\ExtendWorkflowBundle\DependencyInjection;
+namespace Marello\Bundle\WorkflowBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-class MarelloExtendWorkflowExtension extends Extension
+class MarelloWorkflowExtension extends Extension
 {
     /**
      * Loads a specific configuration.

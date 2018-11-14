@@ -84,7 +84,6 @@ class ShipmentCreateAction extends AbstractAction
      */
     protected function executeAction($context)
     {
-
         /** @var ShippingContextInterface $entity */
         $shippingContext = $this->contextAccessor->getValue($context, $this->shippingContext);
 

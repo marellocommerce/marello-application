@@ -37,8 +37,12 @@ class EnabledShippingMethodChoicesProviderDecorator implements ShippingMethodCho
         $enabledMethods = [];
         foreach ($methods as $methodId => $label) {
             $method = $this->shippingMethodProvider->getShippingMethod($methodId);
+            if (!$method) {
+                continue;
+            }
+
             if ($method->isEnabled()) {
-                $enabledMethods[$label] = $methodId;
+                $enabledMethods[$methodId] = $label;
             }
         }
 
