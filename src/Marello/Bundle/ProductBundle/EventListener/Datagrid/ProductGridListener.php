@@ -23,8 +23,8 @@ class ProductGridListener
         foreach ($groupByParts as $key => $groupByPart) {
             $parts = [];
             foreach ($groupByPart->getParts() as $k => $part) {
-                $part = str_replace('hasImage', '',$part);
-                $part = str_replace(',,', ',',$part);
+                $part = str_replace('hasImage', '', $part);
+                $part = str_replace(',,', ',', $part);
                 $parts[$k] = $part;
             }
             $newGroupByParts[$key] = new GroupBy($parts);

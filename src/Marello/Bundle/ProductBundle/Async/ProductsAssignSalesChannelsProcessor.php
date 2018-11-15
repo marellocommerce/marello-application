@@ -164,27 +164,41 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
     }
 
     /**
-     * @param SalesChannel[] $salesChannels
+     * @param SalesChannel[] $assignedSalesChannels
      * @param Product[] $modifiedProducts
      */
-    private function sendMail(array $salesChannels, array $modifiedProducts)
+    private function sendMail(array $assignedSalesChannels, array $modifiedProducts)
     {
         /** @var User $currentUser */
         $currentUser = $this->tokenStorage->getToken()->getUser();
         $emailModel = $this->emailModelFactory->getEmail();
+
+        $salesChannels = array_map(
+            function (SalesChannel $channel) {
+                return $channel->getName();
+            },
+            $assignedSalesChannels
+        );
+
+        $products = array_map(
+            function (Product $product) {
+                return $product->getSku();
+            },
+            $modifiedProducts
+        );
+
         $emailModel
             ->setType('html')
             ->setFrom($currentUser->getEmail())
             ->setTo([$currentUser->getEmail()])
             ->setSubject('Sales Channels to Products assignment')
             ->setBody(
-                sprintf("Sales Channels:<br> %s <br><br>Have been assigned to Products:<br> %s",
-                implode('<br>', array_map(function(SalesChannel $channel){
-                    return $channel->getName();
-                }, $salesChannels)),
-                implode('<br>', array_map(function(Product $product){
-                    return $product->getSku();
-                }, $modifiedProducts))));
+                sprintf(
+                    "Sales Channels:<br> %s <br><br>Have been assigned to Products:<br> %s",
+                    implode('<br>', $salesChannels),
+                    implode('<br>', $products)
+                )
+            );
         $this->emailProcessor->process($emailModel);
     }
 }
