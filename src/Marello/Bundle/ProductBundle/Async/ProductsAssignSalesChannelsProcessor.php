@@ -53,6 +53,7 @@ class ProductsAssignSalesChannelsProcessor implements MessageProcessorInterface,
      * @var Processor
      */
     private $emailProcessor;
+
     /**
      * @param LoggerInterface $logger
      * @param EntityManagerInterface $entityManager
