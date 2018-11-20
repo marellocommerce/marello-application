@@ -47,10 +47,7 @@ class OrderItemFormChangesProvider extends AbstractOrderItemFormChangesProvider
             foreach ($this->providers as $field => $provider) {
                 $provider->processFormChanges($context);
             }
-            $productIds = [];
-            foreach ($submittedData[self::ITEMS_FIELD] as $item) {
-                $productIds[] = (int)$item['product'];
-            }
+
             $itemsCount = count($submittedData[self::ITEMS_FIELD]);
             $result = $context->getResult();
             $itemResult = [];
@@ -61,6 +58,7 @@ class OrderItemFormChangesProvider extends AbstractOrderItemFormChangesProvider
                 }
 
                 if ($itemsCount !== $resultCount) {
+                    $productIds = $this->getProductIdsFromSubmittedData($submittedData);
                     foreach ($productIds as $product) {
                         if (!array_key_exists(self::IDENTIFIER_PREFIX . $product, $itemResult) ||
                             !array_key_exists($field, $itemResult[self::IDENTIFIER_PREFIX . $product])) {
@@ -75,5 +73,20 @@ class OrderItemFormChangesProvider extends AbstractOrderItemFormChangesProvider
             $result[self::ITEMS_FIELD] = $itemResult;
             $context->setResult($result);
         }
+    }
+
+    /**
+     * Get product ids from the submitted data
+     * @param $data
+     * @return array
+     */
+    protected function getProductIdsFromSubmittedData($data)
+    {
+        $productIds = [];
+        foreach ($data[self::ITEMS_FIELD] as $item) {
+            $productIds[] = (int)$item['product'];
+        }
+
+        return $productIds;
     }
 }

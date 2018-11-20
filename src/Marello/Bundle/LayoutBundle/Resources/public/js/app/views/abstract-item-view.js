@@ -32,6 +32,11 @@ define(function(require) {
         change: {},
 
         /**
+         * @property {Object}
+         */
+        itemIdentifier: 'line-item-identifier',
+
+        /**
          * @inheritDoc
          */
         initialize: function(options) {
@@ -56,7 +61,12 @@ define(function(require) {
                 var $field = $(this);
                 var name = self.normalizeName($field.data('ftid').replace(self.options.ftid + '_', ''));
                 self.fieldsByName[name] = $field;
+
             });
+
+            var lineItemName = self.options.ftid;
+            var itemIdentifier = lineItemName.split('_');
+            this.fieldsByName[this.itemIdentifier] = itemIdentifier[itemIdentifier.length - 1];
         },
 
         /**
@@ -65,6 +75,14 @@ define(function(require) {
          */
         _getProductId: function() {
             return this.fieldsByName.hasOwnProperty('product') ? this.fieldsByName.product.val() : '';
+        },
+
+        /**
+         * @returns {number}
+         * @private
+         */
+        _getRowItemIdentifier: function() {
+            return !_.isEmpty(this.fieldsByName[this.itemIdentifier]) ? this.fieldsByName[this.itemIdentifier] : 0;
         },
 
         /**

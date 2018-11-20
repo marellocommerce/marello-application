@@ -21,11 +21,6 @@ define(function(require) {
         /**
          * @property {Object}
          */
-        itemIdentifier: null,
-
-        /**
-         * @property {Object}
-         */
         data: {},
 
         /**
@@ -73,6 +68,10 @@ define(function(require) {
             }
         },
 
+        /**
+         * @inheritDoc
+         * @param data
+         */
         setOrderItemData: function(data) {
             if (data === undefined || typeof(data) == 'undefined' || data.length == 0) {
                 return;
@@ -99,7 +98,6 @@ define(function(require) {
                 $priceValue = '';
             }
 
-
             this.fieldsByName.price.val($priceValue);
             this.fieldsByName.taxCode.val(this.getTaxCode());
 
@@ -125,7 +123,7 @@ define(function(require) {
          * @returns {Array|Null}
          */
         getRowTotals: function() {
-            return !_.isEmpty(this.data['row_totals']) ? this.data['row_totals'] : null;
+            return !_.isEmpty(this.data['row_totals']) ? this.data['row_totals'][this._getRowItemIdentifier()] : null;
         },
 
         /**
@@ -168,8 +166,11 @@ define(function(require) {
          */
         _getItemIdentifier: function() {
             var productId = this._getProductId();
+            if (productId.length === 0) {
+                return null;
+            }
 
-            return productId.length === 0 ? null : 'product-id-' + productId;
+            return 'product-id-' + productId;
         },
 
         /**

@@ -116,7 +116,7 @@ class OrderItemRowTotalsProviderTest extends \PHPUnit_Framework_TestCase
         ];
 
         $expectedResults = $resultBefore;
-        $expectedResults[OrderItemRowTotalsProvider::ITEMS_FIELD]['row_totals']['product-id-1'] = $calculationResult;
+        $expectedResults[OrderItemRowTotalsProvider::ITEMS_FIELD]['row_totals']['product-id-1'][0] = $calculationResult;
 
         return [
             [
