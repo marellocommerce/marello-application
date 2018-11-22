@@ -90,10 +90,10 @@ marello:
             subject_type.label:             Related Subject
             user.label:                     User
 
-        virtualinventorylevel:
+        balancedinventorylevel:
             id.label:                       Id
-            entity_label:                   Virtual Inventory Level
-            entity_plural_label:            Virtual Inventory Levels
+            entity_label:                   Balanced Inventory Level
+            entity_plural_label:            Balanced Inventory Levels
             product.label:                  Product
             saleschannelgroup:              SalesChannel Group
             inventory.label:                Inventory Qty

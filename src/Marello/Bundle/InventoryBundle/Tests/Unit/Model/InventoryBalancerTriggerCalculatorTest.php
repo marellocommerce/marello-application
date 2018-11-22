@@ -5,7 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Tests\Unit\Model;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\InventoryBundle\DependencyInjection\Configuration;
-use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventoryLevelInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
 
 class InventoryBalancerTriggerCalculatorTest extends \PHPUnit_Framework_TestCase
@@ -13,8 +13,8 @@ class InventoryBalancerTriggerCalculatorTest extends \PHPUnit_Framework_TestCase
     /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
     protected $configManager;
 
-    /** @var VirtualInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $virtualLevel */
-    protected $virtualLevel;
+    /** @var BalancedInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $virtualLevel */
+    protected $balancedInventoryLevel;
 
     public function setUp()
     {
@@ -33,10 +33,10 @@ class InventoryBalancerTriggerCalculatorTest extends \PHPUnit_Framework_TestCase
 
         $calculator = new InventoryBalancerTriggerCalculator($this->configManager);
 
-        /** @var VirtualInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $virtualLevel */
-        $this->setupVirtualLevel(20, 100);
+        /** @var BalancedInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $balancedInventoryLevel */
+        $this->setupBalancedInventoryLevel(20, 100);
 
-        $this->assertTrue($calculator->isBalanceThresholdReached($this->virtualLevel));
+        $this->assertTrue($calculator->isBalanceThresholdReached($this->balancedInventoryLevel));
     }
 
     /**
@@ -48,10 +48,10 @@ class InventoryBalancerTriggerCalculatorTest extends \PHPUnit_Framework_TestCase
 
         $calculator = new InventoryBalancerTriggerCalculator($this->configManager);
 
-        /** @var VirtualInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $virtualLevel */
-        $this->setupVirtualLevel(50, 100);
+        /** @var BalancedInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $balancedInventoryLevel */
+        $this->setupBalancedInventoryLevel(50, 100);
 
-        $this->assertFalse($calculator->isBalanceThresholdReached($this->virtualLevel));
+        $this->assertFalse($calculator->isBalanceThresholdReached($this->balancedInventoryLevel));
     }
 
     /**
@@ -60,18 +60,18 @@ class InventoryBalancerTriggerCalculatorTest extends \PHPUnit_Framework_TestCase
     public function testBalancerThresholdCalculation()
     {
         $calculator = new InventoryBalancerTriggerCalculator($this->configManager);
-        /** @var VirtualInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $virtualLevel */
-        $this->setupVirtualLevel(50, 100);
+        /** @var BalancedInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $balancedInventoryLevel */
+        $this->setupBalancedInventoryLevel(50, 100);
 
-        $this->assertTrue($calculator->calculate($this->virtualLevel, 0.5));
-        $this->assertFalse($calculator->calculate($this->virtualLevel, 0.2));
+        $this->assertTrue($calculator->calculate($this->balancedInventoryLevel, 0.5));
+        $this->assertFalse($calculator->calculate($this->balancedInventoryLevel, 0.2));
     }
 
-    protected function setupVirtualLevel($inventory, $balancedIventory)
+    protected function setupBalancedInventoryLevel($inventory, $balancedIventory)
     {
-        $this->virtualLevel =
+        $this->balancedInventoryLevel =
             $this->createConfiguredMock(
-                VirtualInventoryLevelInterface::class,
+                BalancedInventoryLevelInterface::class,
                 [
                     'getInventoryQty' => $inventory,
                     'getBalancedInventoryQty' => $balancedIventory

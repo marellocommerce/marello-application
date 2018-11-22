@@ -7,16 +7,16 @@ use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 use Marello\Bundle\InventoryBundle\Async\Topics;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Marello\Bundle\InventoryBundle\Event\VirtualInventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Event\BalancedInventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
-use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
-use Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventoryLevelInterface;
+use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
 
-class VirtualInventoryLevelUpdateAfterEventListener
+class BalancedInventoryUpdateAfterEventListener
 {
-    const VIRTUAL_LEVEL_CONTEXT_KEY = 'virtualInventoryLevel';
+    const BALANCED_LEVEL_CONTEXT_KEY = 'balancedInventoryLevel';
     const SALESCHANNELGROUP_CONTEXT_KEY  = 'salesChannelGroup';
 
     /** @var MessageProducerInterface $messageProducer */
@@ -25,19 +25,19 @@ class VirtualInventoryLevelUpdateAfterEventListener
     /** @var InventoryBalancerTriggerCalculator $triggerCalculator */
     private $triggerCalculator;
 
-    /** @var VirtualInventoryRepository $repository */
+    /** @var BalancedInventoryRepository $repository */
     private $repository;
 
     /**
      * VirtualInventoryUpdateAfterEventListener constructor.
      * @param MessageProducerInterface $messageProducer
      * @param InventoryBalancerTriggerCalculator $triggerCalculator
-     * @param VirtualInventoryRepository $repository
+     * @param BalancedInventoryRepository $repository
      */
     public function __construct(
         MessageProducerInterface $messageProducer,
         InventoryBalancerTriggerCalculator $triggerCalculator,
-        VirtualInventoryRepository $repository
+        BalancedInventoryRepository $repository
     ) {
         $this->messageProducer = $messageProducer;
         $this->triggerCalculator = $triggerCalculator;
@@ -46,10 +46,10 @@ class VirtualInventoryLevelUpdateAfterEventListener
 
     /**
      * Handle incoming event
-     * @param VirtualInventoryUpdateEvent $event
+     * @param BalancedInventoryUpdateEvent $event
      * @return mixed
      */
-    public function handleInventoryUpdateAfterEvent(VirtualInventoryUpdateEvent $event)
+    public function handleInventoryUpdateAfterEvent(BalancedInventoryUpdateEvent $event)
     {
         /** @var InventoryUpdateContext $context */
         $context = $event->getInventoryUpdateContext();
@@ -58,13 +58,13 @@ class VirtualInventoryLevelUpdateAfterEventListener
             return;
         }
 
-        if (!$context->getValue(self::VIRTUAL_LEVEL_CONTEXT_KEY)
+        if (!$context->getValue(self::BALANCED_LEVEL_CONTEXT_KEY)
             || !$context->getValue(self::SALESCHANNELGROUP_CONTEXT_KEY)
         ) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'To few arguments given in the context, no %s or %s given, please check your data',
-                    self::VIRTUAL_LEVEL_CONTEXT_KEY,
+                    self::BALANCED_LEVEL_CONTEXT_KEY,
                     self::SALESCHANNELGROUP_CONTEXT_KEY
                 )
             );
@@ -72,7 +72,7 @@ class VirtualInventoryLevelUpdateAfterEventListener
 
         /** @var ProductInterface $product */
         $product = $context->getProduct();
-        $level = $context->getValue(self::VIRTUAL_LEVEL_CONTEXT_KEY);
+        $level = $context->getValue(self::BALANCED_LEVEL_CONTEXT_KEY);
         $group = $context->getValue(self::SALESCHANNELGROUP_CONTEXT_KEY);
         if ($this->isRebalanceApplicable($product, $level, $group)) {
             $this->messageProducer->send(
@@ -85,13 +85,13 @@ class VirtualInventoryLevelUpdateAfterEventListener
     /**
      * Check if the rebalancing is applicable for the product
      * @param ProductInterface $product
-     * @param VirtualInventoryLevelInterface $level
+     * @param BalancedInventoryLevelInterface $level
      * @param SalesChannelGroup $group
      * @return bool
      */
     protected function isRebalanceApplicable(
         ProductInterface $product,
-        VirtualInventoryLevelInterface $level = null,
+        BalancedInventoryLevelInterface $level = null,
         SalesChannelGroup $group = null
     ) {
         if (!$level || !$group) {
@@ -100,7 +100,7 @@ class VirtualInventoryLevelUpdateAfterEventListener
         }
 
         if (!$level) {
-            $level = $this->findExistingVirtualInventory($product, $group);
+            $level = $this->findExistingBalancedInventory($product, $group);
         }
 
         if (!$level) {
@@ -112,14 +112,14 @@ class VirtualInventoryLevelUpdateAfterEventListener
     }
 
     /**
-     * Find existing VirtualInventoryLevel
+     * Find existing BalancedInventoryLevel
      * @param ProductInterface $product
      * @param SalesChannelGroup $group
-     * @return VirtualInventoryLevel|object
+     * @return BalancedInventoryRepository|object
      */
-    protected function findExistingVirtualInventory(ProductInterface $product, SalesChannelGroup $group)
+    protected function findExistingBalancedInventory(ProductInterface $product, SalesChannelGroup $group)
     {
-        /** @var VirtualInventoryRepository $repository */
-        return $this->repository->findExistingVirtualInventory($product, $group);
+        /** @var BalancedInventoryRepository $repository */
+        return $this->repository->findExistingBalancedInventory($product, $group);
     }
 }

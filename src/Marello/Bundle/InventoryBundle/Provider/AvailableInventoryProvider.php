@@ -8,7 +8,7 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 
 class AvailableInventoryProvider
 {
@@ -56,13 +56,13 @@ class AvailableInventoryProvider
      * Get associated VirtualInventoryLevel
      * @param Product $product
      * @param SalesChannelGroup $salesChannelGroup
-     * @return VirtualInventoryLevel
+     * @return BalancedInventoryLevel
      */
     protected function getVirtualInventoryLevel(Product $product, SalesChannelGroup $salesChannelGroup)
     {
         return $this->doctrineHelper
-            ->getEntityManagerForClass(VirtualInventoryLevel::class)
-            ->getRepository(VirtualInventoryLevel::class)
-            ->findExistingVirtualInventory($product, $salesChannelGroup);
+            ->getEntityManagerForClass(BalancedInventoryLevel::class)
+            ->getRepository(BalancedInventoryLevel::class)
+            ->findExistingBalancedInventory($product, $salesChannelGroup);
     }
 }

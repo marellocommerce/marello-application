@@ -9,10 +9,10 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Event\VirtualInventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
-use Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository;
-use Marello\Bundle\InventoryBundle\EventListener\VirtualInventoryLevelUpdateAfterEventListener;
+use Marello\Bundle\InventoryBundle\Event\BalancedInventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventoryLevelInterface;
+use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
+use Marello\Bundle\InventoryBundle\EventListener\BalancedInventoryUpdateAfterEventListener;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
 
 class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framework_TestCase
@@ -23,7 +23,7 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
     protected $inventoryUpdateContext;
 
     /**
-     * @var VirtualInventoryLevelUpdateAfterEventListener $listener
+     * @var BalancedInventoryUpdateAfterEventListener $listener
      */
     protected $listener;
 
@@ -38,7 +38,7 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
     protected $producer;
 
     /**
-     * @var VirtualInventoryRepository
+     * @var BalancedInventoryRepository
      */
     protected $repository;
 
@@ -54,9 +54,9 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
         $configManager =  $this->createMock(ConfigManager::class);
         $calculator = new InventoryBalancerTriggerCalculator($configManager);
 
-        $this->repository =  $this->createMock(VirtualInventoryRepository::class);
+        $this->repository =  $this->createMock(BalancedInventoryRepository::class);
 
-        $this->listener = new VirtualInventoryLevelUpdateAfterEventListener(
+        $this->listener = new BalancedInventoryUpdateAfterEventListener(
             $this->producer,
             $calculator,
             $this->repository
@@ -93,11 +93,14 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
     public function testRebalanceThresholdHasBeenReachedAndTriggerIsBeingSend()
     {
         $context = new InventoryUpdateContext();
-        /** @var VirtualInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $level */
-        $level = $this->createMock(VirtualInventoryLevelInterface::class);
+        /** @var BalancedInventoryLevelInterface|\PHPUnit_Framework_MockObject_MockObject $level */
+        $level = $this->createMock(BalancedInventoryLevelInterface::class);
 
-        $context->setValue('virtualInventoryLevel', $level);
-        $context->setValue('salesChannelGroup', $this->createMock(SalesChannelGroup::class));
+        $context->setValue(BalancedInventoryUpdateAfterEventListener::BALANCED_LEVEL_CONTEXT_KEY, $level);
+        $context->setValue(
+            BalancedInventoryUpdateAfterEventListener::SALESCHANNELGROUP_CONTEXT_KEY,
+            $this->createMock(SalesChannelGroup::class)
+        );
         $context->setProduct($this->createMock(Product::class));
         $context->setIsVirtual(true);
         $event = $this->prepareEvent($context);
@@ -108,10 +111,10 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
         $calculator
             ->expects($this->once())
             ->method('isBalanceThresholdReached')
-            ->with($this->createMock(VirtualInventoryLevelInterface::class))
+            ->with($this->createMock(BalancedInventoryLevelInterface::class))
             ->willReturn(true);
 
-        $listener = new VirtualInventoryLevelUpdateAfterEventListener(
+        $listener = new BalancedInventoryUpdateAfterEventListener(
             $this->producer,
             $calculator,
             $this->repository
@@ -122,10 +125,10 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
 
     /**
      * @param InventoryUpdateContext $context
-     * @return VirtualInventoryUpdateEvent
+     * @return BalancedInventoryUpdateEvent
      */
     protected function prepareEvent(InventoryUpdateContext $context)
     {
-        return new VirtualInventoryUpdateEvent($context);
+        return new BalancedInventoryUpdateEvent($context);
     }
 }

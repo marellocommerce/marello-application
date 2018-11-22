@@ -1,6 +1,6 @@
 data:
     -
-        type: marellovirtualinventorylevels
+        type: marellobalancedinventorylevels
         id: '1'
         attributes:
             inventory: 100
@@ -21,7 +21,7 @@ data:
                         type: marellosaleschannels
                         id: chan_eur
     -
-        type: marellovirtualinventorylevels
+        type: marellobalancedinventorylevels
         id: '2'
         attributes:
             inventory: 50
@@ -42,7 +42,7 @@ data:
                         type: marellosaleschannels
                         id: chan_eur
     -
-        type: marellovirtualinventorylevels
+        type: marellobalancedinventorylevels
         id: '4'
         attributes:
             inventory: 50
@@ -63,7 +63,7 @@ data:
                         type: marellosaleschannels
                         id: chan_eur
     -
-        type: marellovirtualinventorylevels
+        type: marellobalancedinventorylevels
         id: '6'
         attributes:
             inventory: 33

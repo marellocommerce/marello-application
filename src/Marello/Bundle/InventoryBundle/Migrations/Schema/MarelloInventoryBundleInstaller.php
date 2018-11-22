@@ -227,7 +227,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     protected function createMarelloInventoryVirtualInventoryLevel(Schema $schema)
     {
-        $table = $schema->createTable('marello_vrtl_inventory_level');
+        $table = $schema->createTable('marello_blncd_inventory_level');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('inventory_qty', 'integer', ['notnull' => true]);
         $table->addColumn('blncd_inventory_qty', 'integer', ['notnull' => true]);
@@ -410,7 +410,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     protected function addMarelloInventoryVirtualInventoryLevelForeignKeys(Schema $schema)
     {
-        $table = $schema->getTable('marello_vrtl_inventory_level');
+        $table = $schema->getTable('marello_blncd_inventory_level');
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],

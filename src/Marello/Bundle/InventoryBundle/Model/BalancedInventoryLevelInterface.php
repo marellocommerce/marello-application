@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Model;
 
-interface VirtualInventoryLevelInterface
+interface BalancedInventoryLevelInterface
 {
     /**
      * @return int

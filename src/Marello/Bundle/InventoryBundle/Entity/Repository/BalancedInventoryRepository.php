@@ -8,9 +8,9 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 
-class VirtualInventoryRepository extends EntityRepository
+class BalancedInventoryRepository extends EntityRepository
 {
     /**
      * @var AclHelper
@@ -30,15 +30,15 @@ class VirtualInventoryRepository extends EntityRepository
      *
      * @param ProductInterface $product
      * @param SalesChannelGroup $group
-     * @return VirtualInventoryLevel
+     * @return BalancedInventoryLevel
      */
-    public function findExistingVirtualInventory(ProductInterface $product, SalesChannelGroup $group)
+    public function findExistingBalancedInventory(ProductInterface $product, SalesChannelGroup $group)
     {
-        $qb = $this->createQueryBuilder('virtual_inventory');
+        $qb = $this->createQueryBuilder('balanced_inventory');
         $qb
             ->where(
-                $qb->expr()->eq('virtual_inventory.salesChannelGroup', ':salesChannelGroup'),
-                $qb->expr()->eq('virtual_inventory.product', ':product')
+                $qb->expr()->eq('balanced_inventory.salesChannelGroup', ':salesChannelGroup'),
+                $qb->expr()->eq('balanced_inventory.product', ':product')
             )
             ->setParameter('product', $product)
             ->setParameter('salesChannelGroup', $group);

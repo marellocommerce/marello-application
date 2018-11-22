@@ -8,12 +8,12 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
-use Marello\Bundle\InventoryBundle\Event\VirtualInventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
+use Marello\Bundle\InventoryBundle\Event\BalancedInventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextValidator;
-use Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryHandler;
 
-class VirtualInventoryManager implements InventoryManagerInterface
+class BalancedInventoryManager implements InventoryManagerInterface
 {
     /** @var InventoryUpdateContextValidator $contextValidator */
     protected $contextValidator;
@@ -21,28 +21,19 @@ class VirtualInventoryManager implements InventoryManagerInterface
     /** @var EventDispatcherInterface $eventDispatcher */
     protected $eventDispatcher;
 
-    /** @var VirtualInventoryHandler $handler */
+    /** @var BalancedInventoryHandler $handler */
     protected $handler;
 
     /**
-     * @deprecated use updateInventoryLevel instead
-     * @param InventoryUpdateContext $context
-     */
-    public function updateInventoryItems(InventoryUpdateContext $context)
-    {
-        $this->updateInventoryLevel($context);
-    }
-
-    /**
-     * Update the virtual inventory levels to keep track of inventory needed to be reserved and available
+     * Update the balanced inventory levels to keep track of inventory needed to be reserved and available
      * @param InventoryUpdateContext $context
      * @throws \Exception
      */
     public function updateInventoryLevel(InventoryUpdateContext $context)
     {
         $this->eventDispatcher->dispatch(
-            VirtualInventoryUpdateEvent::VIRTUAL_UPDATE_BEFORE,
-            new VirtualInventoryUpdateEvent($context)
+            BalancedInventoryUpdateEvent::BALANCED_UPDATE_BEFORE,
+            new BalancedInventoryUpdateEvent($context)
         );
 
         if (!$this->contextValidator->validateContext($context)) {
@@ -61,21 +52,21 @@ class VirtualInventoryManager implements InventoryManagerInterface
         }
 
         $product = $context->getProduct();
-        /** @var VirtualInventoryLevel $level */
-        $level = $this->handler->findExistingVirtualInventory($product, $salesChannelGroup);
+        /** @var BalancedInventoryLevel $level */
+        $level = $this->handler->findExistingBalancedInventory($product, $salesChannelGroup);
         if (!$level) {
-            $level = $this->handler->createVirtualInventory($product, $salesChannelGroup);
+            $level = $this->handler->createBalancedInventoryLevel($product, $salesChannelGroup);
         }
 
         $level = $this->updateReservedInventory($level, $context->getAllocatedInventory());
         $level = $this->updateInventory($level, $context);
-        $this->handler->saveVirtualInventory($level, true);
+        $this->handler->saveBalancedInventory($level, true);
 
         $context->setValue('virtualInventoryLevel', $level);
         
         $this->eventDispatcher->dispatch(
-            VirtualInventoryUpdateEvent::VIRTUAL_UPDATE_AFTER,
-            new VirtualInventoryUpdateEvent($context)
+            BalancedInventoryUpdateEvent::BALANCED_UPDATE_AFTER,
+            new BalancedInventoryUpdateEvent($context)
         );
     }
 
@@ -91,11 +82,11 @@ class VirtualInventoryManager implements InventoryManagerInterface
     }
 
     /**
-     * @param VirtualInventoryLevel $level
+     * @param BalancedInventoryLevel $level
      * @param InventoryUpdateContext $context
-     * @return VirtualInventoryLevel
+     * @return BalancedInventoryLevel
      */
-    private function updateInventory(VirtualInventoryLevel $level, $context)
+    private function updateInventory(BalancedInventoryLevel $level, $context)
     {
         $allocQty = $context->getAllocatedInventory();
         $inventoryQty = $context->getInventory();
@@ -114,11 +105,11 @@ class VirtualInventoryManager implements InventoryManagerInterface
     }
 
     /**
-     * @param VirtualInventoryLevel $level
+     * @param BalancedInventoryLevel $level
      * @param int $allocQty
-     * @return VirtualInventoryLevel
+     * @return BalancedInventoryLevel
      */
-    private function updateReservedInventory(VirtualInventoryLevel $level, $allocQty)
+    private function updateReservedInventory(BalancedInventoryLevel $level, $allocQty)
     {
         $newInventoryQty = ($level->getReservedInventoryQty() + $allocQty);
         $level->setReservedInventoryQty($newInventoryQty);
@@ -146,10 +137,10 @@ class VirtualInventoryManager implements InventoryManagerInterface
     }
 
     /**
-     * Sets the virtual inventory handler
-     * @param VirtualInventoryHandler $handler
+     * Sets the balanced inventory handler
+     * @param BalancedInventoryHandler $handler
      */
-    public function setVirtualInventoryHandler(VirtualInventoryHandler $handler)
+    public function setVirtualInventoryHandler(BalancedInventoryHandler $handler)
     {
         $this->handler = $handler;
     }

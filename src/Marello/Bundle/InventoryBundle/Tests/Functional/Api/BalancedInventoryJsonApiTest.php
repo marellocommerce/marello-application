@@ -11,9 +11,9 @@ use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\InventoryBundle\Tests\Functional\DataFixtures\LoadInventoryData;
 
-class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
+class BalancedInventoryJsonApiTest extends RestJsonApiTestCase
 {
-    const TESTING_ENTITY = 'marellovirtualinventorylevels';
+    const TESTING_ENTITY = 'marellobalancedinventorylevels';
 
     protected function setUp()
     {
@@ -33,7 +33,7 @@ class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(8, $response);
-        $this->assertResponseContains('cget_virtualinventory_list.yml', $response);
+        $this->assertResponseContains('cget_balancedinventory_list.yml', $response);
     }
 
     /**
@@ -50,7 +50,7 @@ class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
             ]
         );
         $this->assertJsonResponse($response);
-        $this->assertResponseContains('get_virtualinventory_by_product_sku.yml', $response);
+        $this->assertResponseContains('get_balancedinventory_by_product_sku.yml', $response);
     }
 
 
@@ -68,7 +68,7 @@ class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
             ]
         );
         $this->assertJsonResponse($response);
-        $this->assertResponseContains('get_virtualinventory_by_saleschannel.yml', $response);
+        $this->assertResponseContains('get_balancedinventory_by_saleschannel.yml', $response);
     }
 
     /**
@@ -78,7 +78,7 @@ class VirtualInventoryJsonApiTest extends RestJsonApiTestCase
     {
         $response = $this->post(
             ['entity' => self::TESTING_ENTITY],
-            'virtualinventorylevel_create.yml',
+            'balancedinventorylevel_create.yml',
             [],
             false
         );

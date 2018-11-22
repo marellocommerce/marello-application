@@ -5,7 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Model\InventoryBalancer;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 use Marello\Bundle\InventoryBundle\DependencyInjection\Configuration;
-use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventoryLevelInterface;
 
 class InventoryBalancerTriggerCalculator
 {
@@ -22,25 +22,25 @@ class InventoryBalancerTriggerCalculator
 
     /**
      * Check whether the balance threshold has been reached
-     * @param VirtualInventoryLevelInterface $virtualInventoryLevel
+     * @param BalancedInventoryLevelInterface $balancedInventoryLevel
      * @return bool
      */
-    public function isBalanceThresholdReached(VirtualInventoryLevelInterface $virtualInventoryLevel)
+    public function isBalanceThresholdReached(BalancedInventoryLevelInterface $balancedInventoryLevel)
     {
         $balanceThreshold = $this->getBalanceTriggerThreshold();
-        return $this->calculate($virtualInventoryLevel, $balanceThreshold);
+        return $this->calculate($balancedInventoryLevel, $balanceThreshold);
     }
 
     /**
      * Calculate the percentage the inventory currently is and compare it to systems threshold
-     * @param VirtualInventoryLevelInterface $virtualInventoryLevel
+     * @param BalancedInventoryLevelInterface $balancedInventoryLevel
      * @param float $balanceThreshold
      * @return bool
      */
-    public function calculate(VirtualInventoryLevelInterface $virtualInventoryLevel, $balanceThreshold)
+    public function calculate(BalancedInventoryLevelInterface $balancedInventoryLevel, $balanceThreshold)
     {
-        $currentInventoryQty = $virtualInventoryLevel->getInventoryQty();
-        $balancedInventoryQty = $virtualInventoryLevel->getBalancedInventoryQty();
+        $currentInventoryQty = $balancedInventoryLevel->getInventoryQty();
+        $balancedInventoryQty = $balancedInventoryLevel->getBalancedInventoryQty();
         if ($balancedInventoryQty === 0) {
             return false;
         }
