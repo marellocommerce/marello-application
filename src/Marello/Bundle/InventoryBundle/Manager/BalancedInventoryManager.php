@@ -62,7 +62,7 @@ class BalancedInventoryManager implements InventoryManagerInterface
         $level = $this->updateInventory($level, $context);
         $this->handler->saveBalancedInventory($level, true);
 
-        $context->setValue('virtualInventoryLevel', $level);
+        $context->setValue('balancedInventoryLevel', $level);
         
         $this->eventDispatcher->dispatch(
             BalancedInventoryUpdateEvent::BALANCED_UPDATE_AFTER,
@@ -140,7 +140,7 @@ class BalancedInventoryManager implements InventoryManagerInterface
      * Sets the balanced inventory handler
      * @param BalancedInventoryHandler $handler
      */
-    public function setVirtualInventoryHandler(BalancedInventoryHandler $handler)
+    public function setBalancedInventoryHandler(BalancedInventoryHandler $handler)
     {
         $this->handler = $handler;
     }

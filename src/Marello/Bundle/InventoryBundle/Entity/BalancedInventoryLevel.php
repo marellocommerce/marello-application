@@ -149,7 +149,7 @@ class BalancedInventoryLevel implements OrganizationAwareInterface, BalancedInve
     protected $reservedInventory;
 
     /**
-     * VirtualInventoryLevel constructor.
+     * BalancedInventoryLevel constructor.
      * @param ProductInterface $product
      * @param SalesChannelGroup $group
      * @param null $inventory

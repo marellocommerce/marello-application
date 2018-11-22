@@ -29,7 +29,7 @@ class BalancedInventoryUpdateAfterEventListener
     private $repository;
 
     /**
-     * VirtualInventoryUpdateAfterEventListener constructor.
+     * BalancedInventoryUpdateAfterEventListener constructor.
      * @param MessageProducerInterface $messageProducer
      * @param InventoryBalancerTriggerCalculator $triggerCalculator
      * @param BalancedInventoryRepository $repository

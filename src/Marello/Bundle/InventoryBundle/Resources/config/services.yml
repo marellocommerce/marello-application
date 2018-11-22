@@ -129,7 +129,7 @@ services:
     marello_inventory.manager.balancedinventory_manager:
         class: 'Marello\Bundle\InventoryBundle\Manager\BalancedInventoryManager'
         calls:
-            - [setVirtualInventoryHandler, ['@marello_inventory.model.balancedinventory.balanced_inventory_handler']]
+            - [setBalancedInventoryHandler, ['@marello_inventory.model.balancedinventory.balanced_inventory_handler']]
             - [setContextValidator, ['@marello_inventory.validator.inventory_update_context']]
             - [setEventDispatcher, ['@event_dispatcher']]
         lazy: true

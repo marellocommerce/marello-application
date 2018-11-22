@@ -33,7 +33,7 @@ class AvailableInventoryProvider
     public function getAvailableInventory(Product $product, SalesChannel $salesChannel)
     {
         $salesChannelGroup = $salesChannel->getGroup();
-        $result = $this->getVirtualInventoryLevel($product, $salesChannelGroup);
+        $result = $this->getBalancedInventoryLevel($product, $salesChannelGroup);
 
         return ($result) ? $result->getInventoryQty() : 0;
     }
@@ -58,7 +58,7 @@ class AvailableInventoryProvider
      * @param SalesChannelGroup $salesChannelGroup
      * @return BalancedInventoryLevel
      */
-    protected function getVirtualInventoryLevel(Product $product, SalesChannelGroup $salesChannelGroup)
+    protected function getBalancedInventoryLevel(Product $product, SalesChannelGroup $salesChannelGroup)
     {
         return $this->doctrineHelper
             ->getEntityManagerForClass(BalancedInventoryLevel::class)

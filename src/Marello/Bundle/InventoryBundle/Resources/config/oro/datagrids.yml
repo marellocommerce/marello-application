@@ -234,16 +234,16 @@ datagrids:
             type: orm
             query:
                 select:
-                    - vrtIl
+                    - balancedInventoryLevel
                     - p.name as productName
                     - p.sku as productSku
                     - scg.name as salesChannelGroupName
                 from:
-                    - { table: MarelloInventoryBundle:VirtualInventoryLevel, alias: vrtIl }
+                    - { table: MarelloInventoryBundle:BalancedInventoryLevel, alias: balancedInventoryLevel }
                 join:
                     left:
-                        - { join: vrtIl.product, alias: p }
-                        - { join: vrtIl.salesChannelGroup, alias: scg }
+                        - { join: balancedInventoryLevel.product, alias: p }
+                        - { join: balancedInventoryLevel.salesChannelGroup, alias: scg }
         columns:
             productName:
                 label:              marello.product.name.label
@@ -255,14 +255,19 @@ datagrids:
                 frontend_type:      string
                 data_name:          productSku
             inventoryQty:
-                label:              marello.inventory.virtualinventorylevel.inventory.label
+                label:              marello.inventory.balancedinventorylevel.inventory.label
                 frontend_type:      number
                 data_name:          inventoryQty
                 align:              left
             balancedInventoryQty:
-                label:              marello.inventory.virtualinventorylevel.balanced_inventory_qty.label
+                label:              marello.inventory.balancedinventorylevel.balanced_inventory_qty.label
                 frontend_type:      number
                 data_name:          balancedInventoryQty
+                align:              left
+            reservedInventoryQty:
+                label:              marello.inventory.balancedinventorylevel.reserved_inventory_qty.label
+                frontend_type:      number
+                data_name:          reservedInventoryQty
                 align:              left
             salesChannelGroupName:
                 label:              marello.sales.saleschannelgroup.entity_label
@@ -286,7 +291,7 @@ datagrids:
         sorters:
             columns:
                 createdAt:
-                    data_name:  vrtIl.createdAt
+                    data_name:  balancedInventoryLevel.createdAt
                 salesChannelGroupName:
                     data_name:  salesChannelGroupName
                 productName:
@@ -294,8 +299,10 @@ datagrids:
                 productSku:
                     data_name:  productSku
                 inventoryQty:
-                    data_name:  vrtIl.inventory
+                    data_name:  balancedInventoryLevel.inventory
                 balancedInventoryQty:
-                    data_name:  vrtIl.balancedInventory
+                    data_name:  balancedInventoryLevel.balancedInventory
+                reservedInventoryQty:
+                    data_name:  balancedInventoryLevel.reservedInventory
             default:
                 createdAt:      DESC

@@ -15,7 +15,7 @@ use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository
 use Marello\Bundle\InventoryBundle\EventListener\BalancedInventoryUpdateAfterEventListener;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
 
-class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framework_TestCase
+class BalancedInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var InventoryUpdateContext|\PHPUnit_Framework_MockObject_MockObject
@@ -79,7 +79,7 @@ class VirtualInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framewo
      * Test that the event is not handled because the context is for an inventory level
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage To few arguments given in the context,
-        no virtualInventoryLevel or salesChannelGroup given, please check your data
+        no balancedInventoryLevel or salesChannelGroup given, please check your data
      */
     public function testThrowInvalidArgumentExceptionOnToFewDataGivenInContext()
     {

@@ -42,7 +42,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->createMarelloInventoryWarehouseGroupTable($schema);
         $this->createMarelloInventoryWarehouseChannelGroupLinkTable($schema);
         $this->createMarelloInventoryWhChLinkJoinChannelGroupTable($schema);
-        $this->createMarelloInventoryVirtualInventoryLevel($schema);
+        $this->createMarelloInventoryBalancedInventoryLevel($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloInventoryItemForeignKeys($schema);
@@ -52,7 +52,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $this->addMarelloInventoryInventoryLevelLogForeignKeys($schema);
         $this->addMarelloInventoryWarehouseChannelGroupLinkForeignKeys($schema);
         $this->addMarelloInventoryWhChLinkJoinChannelGroupForeignKeys($schema);
-        $this->addMarelloInventoryVirtualInventoryLevelForeignKeys($schema);
+        $this->addMarelloInventoryBalancedInventoryLevelForeignKeys($schema);
     }
 
     /**
@@ -146,15 +146,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('is_default', 'boolean', []);
         $table->addColumn('warehouse_type', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('group_id', 'integer', ['notnull' => false]);
-        /*$table->addColumn(
-            'create_group',
-            'boolean',
-            [
-                'oro_options' => [
-                    'extend'    => ['is_extend' => true, 'is_serialized' => true, 'owner' => ExtendScope::OWNER_SYSTEM],
-                ]
-            ]
-        );*/
+
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['address_id'], 'uniq_15597d1f5b7af75');
         $table->addUniqueIndex(['code'], 'UNIQ_15597D177153098');
@@ -225,7 +217,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
     /**
      * @param Schema $schema
      */
-    protected function createMarelloInventoryVirtualInventoryLevel(Schema $schema)
+    protected function createMarelloInventoryBalancedInventoryLevel(Schema $schema)
     {
         $table = $schema->createTable('marello_blncd_inventory_level');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
@@ -408,7 +400,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
     /**
      * @param Schema $schema
      */
-    protected function addMarelloInventoryVirtualInventoryLevelForeignKeys(Schema $schema)
+    protected function addMarelloInventoryBalancedInventoryLevelForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_blncd_inventory_level');
         $table->addForeignKeyConstraint(
