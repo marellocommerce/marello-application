@@ -37,6 +37,9 @@ workflows:
                 allowed_transitions:
                     - hold_invoice
                     - credit
+                    - payment_received
+            paid:
+                allowed_transitions:
                     - prepare_shipping
             credit:
                 allowed_transitions: []
@@ -79,6 +82,18 @@ workflows:
                 transition_definition: invoice_definition
                 form_options:
                     attribute_fields:
+                        invoiced_at:
+                            form_type: Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
+                            options:
+                                required: true
+                                constraints:
+                                  - NotBlank: ~
+                                  - DateTime: ~
+            payment_received:
+                step_to:  paid
+                transition_definition: payment_received_definition
+                form_options:
+                    attribute_fields:
                         payment_reference:
                             form_type: Symfony\Component\Form\Extension\Core\Type\TextType
                             options:
@@ -91,13 +106,6 @@ workflows:
                                 required: true
                                 constraints:
                                   - NotBlank: ~
-                        invoiced_at:
-                            form_type: Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
-                            options:
-                                required: true
-                                constraints:
-                                  - NotBlank: ~
-                                  - DateTime: ~
             ship:
                 step_to:  shipped
                 transition_definition: ship_definition
@@ -135,18 +143,30 @@ workflows:
                             salesChannel: $order.salesChannel
                 post_actions:
                     - '@assign_value':
-                        attribute: $order.paymentReference
-                        value: $payment_reference
-                    - '@assign_value':
-                        attribute: $order.paymentDetails
-                        value: $payment_details
-                    - '@assign_value':
                         attribute: $order.invoicedAt
                         value: $invoiced_at
                     - '@marello_notification_send':
                         entity: $order
                         recipient: $order.customer.email
                         template: marello_order_invoiced
+                    - '@extendable':
+                        events: [extendable_action.order_invoiced]
+            payment_received_definition:
+                conditions:
+                    '@and':
+                        - '@sales_channel_has_valid_integration':
+                            salesChannel: $order.salesChannel
+                post_actions:
+                    - '@assign_value':
+                        attribute: $order.paymentReference
+                        value: $payment_reference
+                    - '@assign_value':
+                        attribute: $order.paymentDetails
+                        value: $payment_details
+                    - '@marello_notification_send':
+                        entity: $order
+                        recipient: $order.customer.email
+                        template: marello_order_paid
                     - '@extendable':
                         events: [extendable_action.order_paid]
             credit_definition:
