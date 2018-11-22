@@ -25,7 +25,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v1_2_4';
+        return 'v2_0';
     }
 
     /**
