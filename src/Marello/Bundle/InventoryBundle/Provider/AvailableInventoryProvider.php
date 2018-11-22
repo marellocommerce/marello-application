@@ -53,7 +53,7 @@ class AvailableInventoryProvider
     }
 
     /**
-     * Get associated VirtualInventoryLevel
+     * Get associated BalancedInventoryLevel
      * @param Product $product
      * @param SalesChannelGroup $salesChannelGroup
      * @return BalancedInventoryLevel

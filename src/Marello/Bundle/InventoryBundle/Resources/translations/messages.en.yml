@@ -123,7 +123,7 @@ marello:
                         strategy.label:     Balancing Strategy
             fields:
                 balancing_strategy.label:             Strategy
-                balance_threshold_percentage.label:   Threshhold Percentage
+                balance_threshold_percentage.label:   Threshold Percentage
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully
