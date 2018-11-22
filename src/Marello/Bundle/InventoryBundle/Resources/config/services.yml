@@ -114,6 +114,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    marello_inventory.twig.warehouse_extension:
+        class: 'Marello\Bundle\InventoryBundle\Twig\WarehouseExtension'
+        arguments:
+            - '@marello_inventory.repository.warehouse'
+        tags:
+            - { name: twig.extension }
+
     marello_inventory.provider.order_warehouse:
         class: 'Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProvider'
         arguments:

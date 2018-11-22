@@ -25,7 +25,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v1_2_4';
+        return 'v1_3_1';
     }
 
     /**
@@ -146,6 +146,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('is_default', 'boolean', []);
         $table->addColumn('warehouse_type', 'string', ['notnull' => false, 'length' => 32]);
         $table->addColumn('group_id', 'integer', ['notnull' => false]);
+        $table->addColumn('email', 'string', ['notnull' => false, 'length' => 255]);
         /*$table->addColumn(
             'create_group',
             'boolean',

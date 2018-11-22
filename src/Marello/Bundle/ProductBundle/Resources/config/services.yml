@@ -32,6 +32,7 @@ services:
         class: Marello\Bundle\ProductBundle\Twig\ProductExtension
         arguments:
             - '@marello_sales.saleschannel.provider.channel_provider'
+            - '@marello_product.repository.product'
         tags:
             - { name: twig.extension }
 

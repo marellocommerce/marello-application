@@ -9,6 +9,7 @@ marello:
             label.label:                Name
             code.label:                 Code
             default.label:              Default
+            email.label:                Email
             address.label:              Address
             id.label:                   Id
             owner.label:                Owner
