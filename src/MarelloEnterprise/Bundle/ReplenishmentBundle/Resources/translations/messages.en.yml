@@ -1,0 +1,68 @@
+marello:
+    replenishment:
+        replenishment_order_config:
+            id.label:               Id
+            entity_label:           Replenishment Order Config
+            entity_plural_label:    Replenishment Order Configs
+            origins.label:          Origin(s)
+            destinations.label:     Destination(s)
+            products.label:         Products
+            strategy.label:         Strategy
+            execution_date.label:   Execution Date
+            percentage.label:       Percentage of total inventory (%)
+            organization.label:     Organization
+
+        replenishment_order:
+            id.label:                 Id
+            entity_label:             Replenishment Order
+            entity_plural_label:      Replenishment Orders
+            repl_order_number.label:  Replenishment Order Number
+            origin.label:             Origin
+            destination.label:        Destination
+            execution_date.label:     Execution Date
+            percentage.label:         Percentage of total inventory (%)
+            description.label:        Description
+            repl_order_items.label:   Replenishment Order Items
+            ro_code.label:            Replenishment Order Code
+            repl_order_config.label:  Replenishment Order Config
+
+        replenishment_order_item:
+            id.label:                  Id
+            entity_label:              Replenishment Order Item
+            entity_plural_label:       Replenishment Order Items
+            order.label:               Replenishment Order
+            product.label:             Product
+            product_name.label:        Product Name
+            product_sku.label:         Product Label
+            note.label:                Note
+            inventory_qty.label:       Inventory Quantity
+            total_inventory_qty.label: Total Inventory Quantity
+
+        form:
+            marello_replenishment_order_config:
+                percentage:
+                    tooltip: |
+                        Represents a percentage on how much of the available inventory is being distributed to destinations based on the origins.
+                        So if the origin has 100 available and 50% is given as percentage, this means that only 50 products are being distributedto the destinations (100/100*50)=50.
+                        If there are more origins given, let's say  3 origins with individual quantities of 100, 50 and 150 which  totals to 300 the 50% is being taken of each individual origin.
+                        Meaning the first origin should ship 50, the second origin should ship 25 and the third origin should ship 75.
+                        This approach will be used for each individual product
+
+        replenishment_strategies:
+            equal_division:           Equal Division
+
+        menu:
+            replenishment.label:      Replenishment
+
+        messages:
+            success:
+                replenishment_order_config:
+                    saved:            Replenishment Order Config has been saved successfully
+
+        system_configuration:
+            groups:
+                replenishment.title:                Replenishment
+                replenishment_configuration.title:  Replenishment Configuration
+                replenishment_general.title:        General
+            fields:
+                replenishment_carrier_email:        Replenishment Carrier Email
