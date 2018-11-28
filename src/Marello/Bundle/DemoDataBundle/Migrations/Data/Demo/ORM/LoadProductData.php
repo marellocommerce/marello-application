@@ -177,7 +177,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $productSupplierRelation
                 ->setProduct($product)
                 ->setSupplier($supplier)
-                ->setQuantityOfUnit(100)
+                ->setQuantityOfUnit(1)
                 ->setCanDropship(true)
                 ->setPriority(1)
                 ->setCost($this->calculateSupplierCost($product))
