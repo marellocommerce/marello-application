@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\RefundBundle\Form\Type;
 
-use Marello\Bundle\RefundBundle\Entity\RefundItem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+
+use Marello\Bundle\RefundBundle\Entity\RefundItem;
 
 class OrderItemRefundType extends AbstractType
 {
@@ -28,13 +31,13 @@ class OrderItemRefundType extends AbstractType
                 $form = $event->getForm();
 
                 if ($item === null) {
-                    $form->add('refundAmount', 'money');
+                    $form->add('refundAmount', MoneyType::class);
 
                     return;
                 }
 
                 $form
-                    ->add('refundAmount', 'money', [
+                    ->add('refundAmount', MoneyType::class, [
                         'empty_data' => 0,
                         'currency' => $item->getRefund()->getCurrency()
                     ]);
