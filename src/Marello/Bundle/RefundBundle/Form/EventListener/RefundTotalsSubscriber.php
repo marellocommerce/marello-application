@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\RefundBundle\Form\EventListener;
 
-use Marello\Bundle\RefundBundle\Entity\Refund;
-use Marello\Bundle\RefundBundle\Entity\RefundItem;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Exception\ValidatorException;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\RefundBundle\Entity\Refund;
+use Marello\Bundle\RefundBundle\Entity\RefundItem;
 
 class RefundTotalsSubscriber implements EventSubscriberInterface
 {
@@ -20,6 +23,10 @@ class RefundTotalsSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     * @param FormEvent $event
+     */
     public function onSubmit(FormEvent $event)
     {
         /** @var Refund $refund */
@@ -32,6 +39,12 @@ class RefundTotalsSubscriber implements EventSubscriberInterface
         $refund->getItems()->map(function (RefundItem $item) use (&$refundTotal) {
             $refundTotal += $item->getRefundAmount();
         });
+
+        /** @var Order $order */
+        $order = $refund->getOrder();
+        if ($order->getGrandTotal() < $refundTotal) {
+            throw new ValidatorException('Cannot refund more than is actually paid');
+        }
 
         $refund->setRefundAmount($refundTotal);
         $event->setData($refund);
