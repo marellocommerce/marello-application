@@ -12,12 +12,12 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Marello\Bundle\InventoryBundle\Async\Topics;
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 
-class VirtualInventoryLevelController extends Controller
+class BalancedInventoryLevelController extends Controller
 {
     /**
-     * @Config\Route("/", name="marello_inventory_virtualinventorylevel_index")
+     * @Config\Route("/", name="marello_inventory_balancedinventorylevel_index")
      * @AclAncestor("marello_inventory_inventory_view")
      * @Config\Template
      *
@@ -26,16 +26,16 @@ class VirtualInventoryLevelController extends Controller
     public function indexAction()
     {
         return [
-            'entity_class' => VirtualInventoryLevel::class,
+            'entity_class' => BalancedInventoryLevel::class,
         ];
     }
 
     /**
-     * @Config\Route("/recalculate", name="marello_inventory_virtualinventorylevel_recalculate")
+     * @Config\Route("/recalculate", name="marello_inventory_balancedinventorylevel_recalculate")
      * @Acl(
      *      id="marello_inventory_inventory_recalculate_update",
      *      type="entity",
-     *      class="MarelloInventoryBundle:VirtualInventoryLevel",
+     *      class="MarelloInventoryBundle:BalancedInventoryLevel",
      *      permission="EDIT"
      * )
      */
@@ -51,6 +51,6 @@ class VirtualInventoryLevelController extends Controller
             'success',
             $this->get('translator')->trans('marello.inventory.messages.success.inventory_rebalance.started')
         );
-        return $this->redirectToRoute('marello_inventory_virtualinventorylevel_index');
+        return $this->redirectToRoute('marello_inventory_balancedinventorylevel_index');
     }
 }

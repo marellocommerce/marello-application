@@ -4,7 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InventoryBundle\Model\VirtualInventoryLevelInterface;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventoryLevelInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -12,8 +12,8 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
- * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository")
- * @ORM\Table(name="marello_vrtl_inventory_level",
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository")
+ * @ORM\Table(name="marello_blncd_inventory_level",
  *       uniqueConstraints={
  *          @ORM\UniqueConstraint(columns={"product_id", "channel_group_id"})
  *      }
@@ -39,7 +39,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInventoryLevelInterface
+class BalancedInventoryLevel implements OrganizationAwareInterface, BalancedInventoryLevelInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
@@ -101,7 +101,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
-     *              "label"="marello.inventory.virtualinventorylevel.inventory.label"
+     *              "label"="marello.inventory.balancedinventorylevel.inventory.label"
      *          },
      *          "dataaudit"={
      *              "auditable"=true
@@ -118,7 +118,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
-     *              "label"="marello.inventory.virtualinventorylevel.balanced_inventory_qty.label"
+     *              "label"="marello.inventory.balancedinventorylevel.balanced_inventory_qty.label"
      *          },
      *          "dataaudit"={
      *              "auditable"=true
@@ -136,7 +136,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
      * @Oro\ConfigField(
      *      defaultValues={
      *          "entity"={
-     *              "label"="marello.inventory.virtualinventorylevel.reserved_inventory_qty.label"
+     *              "label"="marello.inventory.balancedinventorylevel.reserved_inventory_qty.label"
      *          },
      *          "dataaudit"={
      *              "auditable"=true
@@ -149,7 +149,7 @@ class VirtualInventoryLevel implements OrganizationAwareInterface, VirtualInvent
     protected $reservedInventory;
 
     /**
-     * VirtualInventoryLevel constructor.
+     * BalancedInventoryLevel constructor.
      * @param ProductInterface $product
      * @param SalesChannelGroup $group
      * @param null $inventory

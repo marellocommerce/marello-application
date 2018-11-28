@@ -4,6 +4,6 @@ oro_entity:
             alias: marelloinventorylevel
             plural_alias: marelloinventorylevels
 
-        Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel:
-            alias: marellovirtualinventorylevel
-            plural_alias: marellovirtualinventorylevels
+        Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel:
+            alias: marellobalancedinventorylevel
+            plural_alias: marellobalancedinventorylevels
