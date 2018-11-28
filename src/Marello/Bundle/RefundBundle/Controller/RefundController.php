@@ -92,6 +92,11 @@ class RefundController extends Controller
             $manager->persist($entity = $form->getData());
             $manager->flush();
 
+            $this->get('session')->getFlashBag()->add(
+                'success',
+                $this->get('translator')->trans('marello.refund.messages.success.refund.saved')
+            );
+
             return $this->get('oro_ui.router')->redirectAfterSave(
                 [
                     'route'      => 'marello_refund_update',
