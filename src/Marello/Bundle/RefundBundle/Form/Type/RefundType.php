@@ -75,12 +75,6 @@ class RefundType extends AbstractType
                         $data->addItem($item);
                     }
 
-                    $filtered = $data->getItems()->filter(function (RefundItem $item) {
-                        return $item->getRefundAmount();
-                    });
-
-                    $data->setItems($filtered);
-
                     $event->setData($data);
                 }
             )
