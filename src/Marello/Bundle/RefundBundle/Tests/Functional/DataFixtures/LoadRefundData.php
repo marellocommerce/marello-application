@@ -36,15 +36,12 @@ class LoadRefundData extends AbstractFixture implements DependentFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
-        $orders = $manager
-            ->getRepository(Order::class)
-            ->findAll();
+        $orders = [
+            $this->getReference('marello_order_0'),
+            $this->getReference('marello_order_1')
+        ];
 
-        foreach ($orders as $order) {
-            if (mt_rand(0, 4) !== 0) {
-                continue;
-            }
-
+        foreach ($orders as $refKey => $order) {
             $refund = new Refund();
             $refund->setOrder($order);
             $refund->setCustomer($order->getCustomer());
@@ -79,6 +76,8 @@ class LoadRefundData extends AbstractFixture implements DependentFixtureInterfac
             );
 
             $manager->persist($refund);
+
+            $this->setReference(sprintf('marello_refund_%s', $refKey), $refund);
         }
 
         $manager->flush();

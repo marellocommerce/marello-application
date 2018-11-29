@@ -42,3 +42,8 @@ marello:
             subtotal.label:         Subtotal (incl VAT)
             refund.label:           Refund (incl VAT)
             add_item.label:         Add Item
+
+        messages:
+            success:
+                refund:
+                    saved:          Refund saved
