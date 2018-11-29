@@ -4,13 +4,17 @@ namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
-class LoadSupplierData extends AbstractFixture
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
+
+class LoadSupplierData extends AbstractFixture implements DependentFixtureInterface
 {
     const SUPPLIER_COST_PERCENTAGE = 0.40;
 
@@ -56,6 +60,18 @@ class LoadSupplierData extends AbstractFixture
             'email' => 'supplier2@bicsport.com'
         ]
     ];
+
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
+    public function getDependencies()
+    {
+        return [
+            LoadProductData::class
+        ];
+    }
+
 
     /**
      * {@inheritdoc}
@@ -108,5 +124,65 @@ class LoadSupplierData extends AbstractFixture
         }
 
         $this->manager->flush();
+    }
+
+    /**
+     * Add product suppliers to product
+     * @param Product $product
+     */
+    protected function addProductSuppliers(Product $product, $data)
+    {
+        $suppliers = $this->manager
+            ->getRepository('MarelloSupplierBundle:Supplier')
+            ->findBy([
+                'name' => $data['supplier']
+            ]);
+
+        foreach ($suppliers as $supplier) {
+            $productSupplierRelation = new ProductSupplierRelation();
+            $productSupplierRelation
+                ->setProduct($product)
+                ->setSupplier($supplier)
+                ->setQuantityOfUnit(1)
+                ->setCanDropship(true)
+                ->setPriority(1)
+                ->setCost(rand(0, 100))
+            ;
+            $this->manager->persist($productSupplierRelation);
+            $product->addSupplier($productSupplierRelation);
+        }
+
+        $preferredSupplier = null;
+        $preferredPriority = 0;
+        foreach ($product->getSuppliers() as $productSupplierRelation) {
+            if (null == $preferredSupplier) {
+                $preferredSupplier = $productSupplierRelation->getSupplier();
+                $preferredPriority = $productSupplierRelation->getPriority();
+                continue;
+            }
+            if ($productSupplierRelation->getPriority() < $preferredPriority) {
+                $preferredSupplier = $productSupplierRelation->getSupplier();
+                $preferredPriority = $productSupplierRelation->getPriority();
+            }
+        }
+
+        if ($preferredSupplier) {
+            $product->setPreferredSupplier($preferredSupplier);
+        }
+    }
+
+    /**
+     * Calculate the cost for the supplier based of a static percentage
+     * of the retail price
+     * @param Product $product
+     * @return float $supplierCost
+     */
+    private function calculateSupplierCost(Product $product)
+    {
+        $percentage = LoadSupplierData::SUPPLIER_COST_PERCENTAGE;
+        $assembledPriceList = $product->getPrice();
+        $supplierCost = $assembledPriceList->getDefaultPrice()->getValue() * $percentage;
+
+        return $supplierCost;
     }
 }

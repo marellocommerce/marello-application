@@ -11,6 +11,8 @@ use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
 
 class LoadProductChannelPricingData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -23,8 +25,7 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
     public function getDependencies()
     {
         return [
-            LoadSalesData::class,
-            LoadProductData::class,
+            LoadProductPriceData::class
         ];
     }
 
@@ -50,12 +51,10 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
                 //read headers
                 $headers = $data;
             }
-            $i = 0;
+
             while (($data = fgetcsv($handle, 1000, ",")) !== false) {
                 $data = array_combine($headers, array_values($data));
-
-                $this->createProductPrice($data);
-                $i++;
+                $this->createProductChannelPrice($data);
             }
             fclose($handle);
         }
@@ -63,44 +62,78 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
     }
 
     /**
-     * Create new product price
+     * Create new product channel prices
      *
      * @param $data
      */
-    private function createProductPrice($data)
+    private function createProductChannelPrice($data)
     {
-        $productResult = $this->getRepository()->findBySku($data['sku']);
-        if (is_array($productResult)) {
-            $product = array_shift($productResult);
-        } else {
+        /** @var Product $product */
+        $product = $this->manager->getRepository(Product::class)->findOneBySku($data['sku']);
+        if (!$product) {
             return;
         }
 
         /** @var SalesChannel $channel */
-        $channel                = $this->getReference($data['channel']);
-        $productChannelPrice    = new ProductChannelPrice();
-        $productChannelPrice->setType(
-            $this->manager->getRepository(PriceType::class)->find(PriceTypeInterface::DEFAULT_PRICE)
-        );
-        $productData            = $product->getData();
+        $channel = $this->getReference($data['channel']);
+        $prices = [];
+        foreach ($data as $identifier => $priceValue) {
+            if ($identifier === 'sku' || $identifier === 'channel') {
+                continue;
+            }
 
+            if (!$priceValue) {
+                continue;
+            }
+
+            $identifiers = explode('_', $identifier);
+            $priceType = array_shift($identifiers);
+            $type = $this->manager->getRepository(PriceType::class)->find($priceType);
+            if (!$type) {
+                $type = $this->manager->getRepository(PriceType::class)->find(PriceTypeInterface::DEFAULT_PRICE);
+            }
+
+            $productChannelPrice = new ProductChannelPrice();
+            $productChannelPrice
+                ->setCurrency($channel->getCurrency())
+                ->setType($type)
+                ->setValue($priceValue)
+                ->setProduct($product);
+
+            $prices[$priceType] = $productChannelPrice;
+        }
+
+        $assembledChannelPriceList = $this->createAssembledChannelPricelist($channel, $prices);
+        $assembledChannelPriceList->setProduct($product);
+        $product->addChannelPrice($assembledChannelPriceList);
+
+        $productData = $product->getData();
         $productData[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
         $product->setData($productData);
-        $productChannelPrice->setProduct($product);
-        $productChannelPrice->setCurrency($channel->getCurrency());
-        $productChannelPrice->setValue((float)$data['price']);
-        $productChannelPrice->setChannel($channel);
+
         $this->manager->persist($product);
-        $this->manager->persist($productChannelPrice);
     }
 
     /**
-     * get repository
-     * @return \Doctrine\Common\Persistence\ObjectRepository
+     * Create assembled prices list per currency and add all price types that are available
+     * @param SalesChannel $channel
+     * @param $prices
+     * @return AssembledChannelPriceList
      */
-    private function getRepository()
+    private function createAssembledChannelPricelist(SalesChannel $channel, $prices)
     {
-        return $this->manager->getRepository('MarelloProductBundle:Product');
+        $assembledChannelPriceList = new AssembledChannelPriceList();
+        $assembledChannelPriceList
+            ->setCurrency($channel->getCurrency())
+            ->setChannel($channel);
+
+        /** @var ProductChannelPrice $price */
+        foreach ($prices as $type => $price) {
+            $method = sprintf('set%sPrice', ucfirst($type));
+            $assembledChannelPriceList->$method($price);
+        }
+
+        return $assembledChannelPriceList;
     }
 
     /**
