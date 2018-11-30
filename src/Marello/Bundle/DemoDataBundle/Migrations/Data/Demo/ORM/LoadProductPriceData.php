@@ -116,7 +116,7 @@ class LoadProductPriceData extends AbstractFixture implements DependentFixtureIn
                 continue;
             }
 
-            if(!$priceValue) {
+            if (!$priceValue) {
                 continue;
             }
 
