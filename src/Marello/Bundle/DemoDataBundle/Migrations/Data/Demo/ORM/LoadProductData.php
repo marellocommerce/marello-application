@@ -64,7 +64,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
                 $data = array_combine($headers, array_values($data));
 
                 $product = $this->createProduct($data);
-                $this->setReference('marello-product-' . $i, $product);
+                $this->setReference('marello_product_' . $product->getSku(), $product);
                 $i++;
             }
             fclose($handle);
@@ -100,12 +100,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         * set default taxCode
         */
         $product->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_0_REF));
-
-        /**
-         * add suppliers per product
-         */
-//        $this->addProductSuppliers($product, $data);
-
         $this->manager->persist($product);
 
         return $product;

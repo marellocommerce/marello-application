@@ -76,6 +76,7 @@ class LoadProductPriceData extends AbstractFixture implements DependentFixtureIn
             $assembledPriceList = $this->createAssembledPricelist($currency, $prices);
             $assembledPriceList->setProduct($product);
             $product->addPrice($assembledPriceList);
+            $this->setReference(sprintf('marello_product_price_%s', $product->getSku()), $assembledPriceList);
         }
 
         $this->manager->persist($product);
