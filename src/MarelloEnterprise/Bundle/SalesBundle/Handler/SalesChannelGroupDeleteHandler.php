@@ -4,7 +4,7 @@ namespace MarelloEnterprise\Bundle\SalesBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
@@ -18,11 +18,11 @@ class SalesChannelGroupDeleteHandler extends BaseDeleteHandler
     protected $repository;
 
     /**
-     * @param AuthorizationChecker $authorizationChecker
+     * @param AuthorizationCheckerInterface $authorizationChecker
      * @param WarehouseChannelGroupLinkRepository $repository
      */
     public function __construct(
-        AuthorizationChecker $authorizationChecker,
+        AuthorizationCheckerInterface $authorizationChecker,
         WarehouseChannelGroupLinkRepository $repository
     ) {
         parent::__construct($authorizationChecker);

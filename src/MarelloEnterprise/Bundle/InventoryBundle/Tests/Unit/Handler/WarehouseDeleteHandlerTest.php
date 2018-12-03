@@ -5,9 +5,10 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Handler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 use PHPUnit\Framework\TestCase;
 
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
 
@@ -18,7 +19,7 @@ use MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseDeleteHandler;
 class WarehouseDeleteHandlerTest extends TestCase
 {
     /**
-     * @var SecurityFacade|\PHPUnit_Framework_MockObject_MockObject
+     * @var AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $securityFacade;
 
@@ -44,11 +45,7 @@ class WarehouseDeleteHandlerTest extends TestCase
     {
         parent::setUp();
 
-        $this->securityFacade = $this
-            ->getMockBuilder(SecurityFacade::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
+        $this->securityFacade = $this->createMock(AuthorizationCheckerInterface::class);
         $this->apiEntityManager = $this->getMockBuilder(ApiEntityManager::class)
             ->disableOriginalConstructor()
             ->getMock();

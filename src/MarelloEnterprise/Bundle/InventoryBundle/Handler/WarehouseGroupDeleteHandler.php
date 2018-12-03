@@ -4,7 +4,7 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use Oro\Bundle\SoapBundle\Handler\DeleteHandler;
 use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
@@ -15,7 +15,7 @@ use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecke
 class WarehouseGroupDeleteHandler extends DeleteHandler
 {
     /**
-     * @var AuthorizationChecker $authorizationChecker
+     * @var AuthorizationCheckerInterface $authorizationChecker
      */
     protected $authorizationChecker;
     
@@ -25,10 +25,10 @@ class WarehouseGroupDeleteHandler extends DeleteHandler
     protected $checker;
 
     /**
-     * @param AuthorizationChecker $authorizationChecker
+     * @param AuthorizationCheckerInterface $authorizationChecker
      * @param IsFixedWarehouseGroupChecker $checker
      */
-    public function __construct(AuthorizationChecker $authorizationChecker, IsFixedWarehouseGroupChecker $checker)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, IsFixedWarehouseGroupChecker $checker)
     {
         $this->authorizationChecker = $authorizationChecker;
         $this->checker = $checker;
