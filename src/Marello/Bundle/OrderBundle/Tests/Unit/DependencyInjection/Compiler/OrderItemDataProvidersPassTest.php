@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Marello\Bundle\OrderBundle\DependencyInjection\Compiler\OrderItemDataProvidersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class OrderItemDataProvidersPassTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\OrderBundle\DependencyInjection\Compiler\OrderItemDataProvidersPass;
+
+class OrderItemDataProvidersPassTest extends TestCase
 {
     /**
      * @var OrderItemDataProvidersPass

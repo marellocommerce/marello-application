@@ -3,12 +3,15 @@
 namespace Marello\Bundle\SalesBundle\Tests\Unit\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\SalesBundle\Handler\SalesChannelGroupDeleteHandler;
+
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Marello\Bundle\SalesBundle\Handler\SalesChannelGroupDeleteHandler;
 
 class SalesChannelGroupDeleteHandlerTest extends TestCase
 {

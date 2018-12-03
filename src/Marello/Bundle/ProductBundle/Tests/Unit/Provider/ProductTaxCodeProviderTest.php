@@ -3,18 +3,23 @@
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
-use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
-use Marello\Bundle\ProductBundle\Provider\ProductTaxCodeProvider;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Oro\Component\Testing\Unit\EntityTrait;
+
 use Symfony\Component\Form\FormInterface;
 
-class ProductTaxCodeProviderTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Component\Testing\Unit\EntityTrait;
+
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
+use Marello\Bundle\ProductBundle\Provider\ProductTaxCodeProvider;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
+
+class ProductTaxCodeProviderTest extends TestCase
 {
     use EntityTrait;
     /**

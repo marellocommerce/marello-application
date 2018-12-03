@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Calculator;
 
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
 use Marello\Bundle\TaxBundle\Calculator\TaxCalculator;
 use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
 
-class TaxCalculatorTest extends \PHPUnit_Framework_TestCase
+class TaxCalculatorTest extends TestCase
 {
     /**
      * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject

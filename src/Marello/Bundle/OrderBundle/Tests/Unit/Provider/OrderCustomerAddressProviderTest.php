@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\OrderBundle\Entity\Customer;
-use Marello\Bundle\OrderBundle\Provider\OrderCustomerAddressProvider;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTrait;
 
-class OrderCustomerAddressProviderTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\OrderBundle\Provider\OrderCustomerAddressProvider;
+
+class OrderCustomerAddressProviderTest extends TestCase
 {
     use EntityTrait;
 

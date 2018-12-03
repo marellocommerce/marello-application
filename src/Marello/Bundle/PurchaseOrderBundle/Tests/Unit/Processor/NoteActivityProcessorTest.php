@@ -4,13 +4,15 @@ namespace Marello\Bundle\PurchaseOrderBundle\Tests\Unit\Processor;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\NoteBundle\Entity\Note;
 
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
 
-class NoteActivityProcessorTest extends \PHPUnit_Framework_TestCase
+class NoteActivityProcessorTest extends TestCase
 {
     /** @var NoteActivityProcessor $processor */
     protected $processor;

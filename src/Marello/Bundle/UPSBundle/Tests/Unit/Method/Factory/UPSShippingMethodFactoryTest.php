@@ -6,22 +6,24 @@ use Doctrine\Common\Collections\Collection;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Generator\IntegrationIdentifierGeneratorInterface;
 use Oro\Bundle\IntegrationBundle\Provider\IntegrationIconProviderInterface;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 
-use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
-use Marello\Bundle\UPSBundle\Entity\ShippingService;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Provider\UPSTransport;
+use Marello\Bundle\UPSBundle\Entity\ShippingService;
+use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
+use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
 use Marello\Bundle\UPSBundle\Factory\PriceRequestFactory;
+use Marello\Bundle\UPSBundle\Method\UPSShippingMethodType;
 use Marello\Bundle\UPSBundle\Method\Factory\UPSShippingMethodFactory;
 use Marello\Bundle\UPSBundle\Method\Factory\UPSShippingMethodTypeFactoryInterface;
-use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
-use Marello\Bundle\UPSBundle\Method\UPSShippingMethodType;
-use Marello\Bundle\UPSBundle\Provider\UPSTransport;
 
-class UPSShippingMethodFactoryTest extends \PHPUnit_Framework_TestCase
+class UPSShippingMethodFactoryTest extends TestCase
 {
     /**
      * @var UPSTransport|\PHPUnit_Framework_MockObject_MockObject

@@ -2,19 +2,23 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Connection\Validator;
 
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface;
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
-use Marello\Bundle\UPSBundle\Client\Factory\UpsClientFactoryInterface;
-use Marello\Bundle\UPSBundle\Client\Request\UpsClientRequestInterface;
-use Marello\Bundle\UPSBundle\Connection\Validator\Request\Factory\UpsConnectionValidatorRequestFactoryInterface;
-use Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionValidatorResultFactoryInterface;
-use Marello\Bundle\UPSBundle\Connection\Validator\Result\UpsConnectionValidatorResultInterface;
-use Marello\Bundle\UPSBundle\Connection\Validator\UpsConnectionValidator;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Psr\Log\LoggerInterface;
 
-class UpsConnectionValidatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
+
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Client\Factory\UpsClientFactoryInterface;
+use Marello\Bundle\UPSBundle\Client\Request\UpsClientRequestInterface;
+use Marello\Bundle\UPSBundle\Connection\Validator\UpsConnectionValidator;
+use Marello\Bundle\UPSBundle\Connection\Validator\Result\UpsConnectionValidatorResultInterface;
+use Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionValidatorResultFactoryInterface;
+use Marello\Bundle\UPSBundle\Connection\Validator\Request\Factory\UpsConnectionValidatorRequestFactoryInterface;
+
+class UpsConnectionValidatorTest extends TestCase
 {
     /**
      * @var UpsConnectionValidatorRequestFactoryInterface|\PHPUnit_Framework_MockObject_MockObject

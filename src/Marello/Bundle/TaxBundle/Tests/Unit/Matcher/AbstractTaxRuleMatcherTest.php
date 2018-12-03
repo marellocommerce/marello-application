@@ -2,13 +2,16 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Matcher;
 
+use PHPUnit\Framework\TestCase;
+
+use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
 use Marello\Bundle\TaxBundle\Entity\Repository\TaxRuleRepository;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
 use Marello\Bundle\TaxBundle\Matcher\TaxRuleMatcherInterface;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Oro\Component\Testing\Unit\EntityTrait;
 
-abstract class AbstractTaxRuleMatcherTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractTaxRuleMatcherTest extends TestCase
 {
     use EntityTrait;
     
@@ -53,7 +56,7 @@ abstract class AbstractTaxRuleMatcherTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param int $id
-     * @return TaxRule
+     * @return TaxRule|object
      */
     protected function getTaxRule($id)
     {

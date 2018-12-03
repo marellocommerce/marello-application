@@ -2,27 +2,30 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Method;
 
-use Oro\Bundle\AddressBundle\Entity\Country;
-use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
-use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
-use Marello\Bundle\UPSBundle\Cache\ShippingPriceCacheKey;
-use Marello\Bundle\UPSBundle\Entity\ShippingService;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
-use Marello\Bundle\UPSBundle\Factory\PriceRequestFactory;
-use Marello\Bundle\UPSBundle\Form\Type\UPSShippingMethodOptionsType;
-use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
-use Marello\Bundle\UPSBundle\Method\UPSShippingMethodType;
-use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
-use Marello\Bundle\UPSBundle\Model\Response\PriceResponse;
-use Marello\Bundle\UPSBundle\Provider\UPSTransport as UPSTransportProvider;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Bundle\CurrencyBundle\Entity\Price;
+use Oro\Bundle\AddressBundle\Entity\Country;
+
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Entity\ShippingService;
+use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
+use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
+use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
+use Marello\Bundle\UPSBundle\Cache\ShippingPriceCacheKey;
+use Marello\Bundle\UPSBundle\Factory\PriceRequestFactory;
+use Marello\Bundle\UPSBundle\Model\Response\PriceResponse;
+use Marello\Bundle\UPSBundle\Method\UPSShippingMethodType;
+use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
+use Marello\Bundle\UPSBundle\Form\Type\UPSShippingMethodOptionsType;
+use Marello\Bundle\UPSBundle\Provider\UPSTransport as UPSTransportProvider;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
-class UPSShippingMethodTest extends \PHPUnit_Framework_TestCase
+class UPSShippingMethodTest extends TestCase
 {
     use EntityTrait;
 

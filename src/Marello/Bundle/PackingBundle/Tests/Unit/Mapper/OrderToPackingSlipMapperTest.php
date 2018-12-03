@@ -3,24 +3,29 @@
 namespace Marello\Bundle\PackingBundle\Tests\Unit\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
-use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
-use Marello\Bundle\OrderBundle\Entity\Customer;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\PackingBundle\Entity\PackingSlip;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
-use Marello\Bundle\PackingBundle\Mapper\OrderToPackingSlipMapper;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Component\Testing\Unit\EntityTrait;
+
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class OrderToPackingSlipMapperTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\PackingBundle\Entity\PackingSlip;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
+use Marello\Bundle\PackingBundle\Mapper\OrderToPackingSlipMapper;
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
+
+class OrderToPackingSlipMapperTest extends TestCase
 {
     use EntityTrait;
 

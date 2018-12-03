@@ -3,26 +3,24 @@
 namespace Marello\Bundle\ShippingBundle\Tests\Unit\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
-use Marello\Bundle\ShippingBundle\Entity\Shipment;
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
-use Marello\Bundle\ShippingBundle\Method\ShippingMethodInterface;
-use Marello\Bundle\ShippingBundle\Method\ShippingMethodProviderInterface;
-use Marello\Bundle\ShippingBundle\Method\ShippingMethodTypeInterface;
-use Marello\Bundle\ShippingBundle\Workflow\ShipmentCreateAction;
+
+use Symfony\Component\PropertyAccess\PropertyPath;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\ActionBundle\Model\ActionData;
 use Oro\Component\ConfigExpression\ContextAccessor;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\PropertyAccess\PropertyPath;
 
-class ShipmentCreateActionTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\ShippingBundle\Entity\Shipment;
+use Marello\Bundle\ShippingBundle\Workflow\ShipmentCreateAction;
+use Marello\Bundle\ShippingBundle\Method\ShippingMethodInterface;
+use Marello\Bundle\ShippingBundle\Context\ShippingContextInterface;
+use Marello\Bundle\ShippingBundle\Method\ShippingMethodTypeInterface;
+use Marello\Bundle\ShippingBundle\Method\ShippingMethodProviderInterface;
+
+class ShipmentCreateActionTest extends TestCase
 {
     /**
      * @var ContextAccessor

@@ -5,6 +5,8 @@ namespace Marello\Bundle\CoreBundle\Tests\Unit;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\ConfigExpression\ContextAccessor;
 use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -12,7 +14,7 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction;
 
-class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
+class WorkflowTransitActionTest extends TestCase
 {
     /** @var ContextAccessor|\PHPUnit_Framework_MockObject_MockObject $contextAccessor */
     protected $contextAccessor;

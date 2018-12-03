@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Validator\Constraints;
 
-use Marello\Bundle\UPSBundle\Validator\Constraints\RemoveUsedShippingServiceConstraint;
 use Symfony\Component\Validator\Constraint;
 
-class RemoveUsedShippingServiceConstraintTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\UPSBundle\Validator\Constraints\RemoveUsedShippingServiceConstraint;
+
+class RemoveUsedShippingServiceConstraintTest extends TestCase
 {
     public function testValidatedBy()
     {

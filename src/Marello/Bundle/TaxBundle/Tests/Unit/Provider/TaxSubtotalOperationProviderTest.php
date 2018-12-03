@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Provider;
 
-use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
-use Marello\Bundle\PricingBundle\Subtotal\Model\Subtotal;
-use Marello\Bundle\TaxBundle\Provider\TaxSubtotalOperationProvider;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
-class TaxSubtotalOperationProviderTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\PricingBundle\Subtotal\Model\Subtotal;
+use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
+use Marello\Bundle\TaxBundle\Provider\TaxSubtotalOperationProvider;
+
+class TaxSubtotalOperationProviderTest extends TestCase
 {
     /**
      * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject

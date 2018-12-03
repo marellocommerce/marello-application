@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Client\Factory\Basic;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientFactoryInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface;
+
 use Marello\Bundle\UPSBundle\Client\Factory\Basic\BasicUpsClientFactory;
 use Marello\Bundle\UPSBundle\Client\Url\Provider\UpsClientUrlProviderInterface;
 
-class BasicUpsClientFactoryTest extends \PHPUnit_Framework_TestCase
+class BasicUpsClientFactoryTest extends TestCase
 {
     /**
      * @var RestClientFactoryInterface|\PHPUnit_Framework_MockObject_MockObject

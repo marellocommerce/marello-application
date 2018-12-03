@@ -2,14 +2,16 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Resolver;
 
-use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\TaxBundle\Model\Result;
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
-use Marello\Bundle\TaxBundle\Model\Result;
 use Marello\Bundle\TaxBundle\Model\ResultElement;
 use Marello\Bundle\TaxBundle\Resolver\RowTotalResolver;
+use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
 
-class RowTotalResolverTest extends \PHPUnit_Framework_TestCase
+class RowTotalResolverTest extends TestCase
 {
     /**
      * @var RowTotalResolver

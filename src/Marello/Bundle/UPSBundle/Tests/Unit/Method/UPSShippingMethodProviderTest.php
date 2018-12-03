@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Method;
 
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
-use Marello\Bundle\ShippingBundle\Method\Factory\IntegrationShippingMethodFactoryInterface;
-use Marello\Bundle\UPSBundle\Method\UPSShippingMethodProvider;
+use PHPUnit\Framework\TestCase;
 
-class UPSShippingMethodProviderTest extends \PHPUnit_Framework_TestCase
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+
+use Marello\Bundle\UPSBundle\Method\UPSShippingMethodProvider;
+use Marello\Bundle\ShippingBundle\Method\Factory\IntegrationShippingMethodFactoryInterface;
+
+class UPSShippingMethodProviderTest extends TestCase
 {
     const CHANNEL_TYPE = 'channel_type';
 

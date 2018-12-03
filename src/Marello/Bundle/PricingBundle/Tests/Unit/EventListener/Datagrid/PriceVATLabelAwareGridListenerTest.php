@@ -2,13 +2,16 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Unit\EventListener\Datagrid;
 
-use Marello\Bundle\PricingBundle\EventListener\Datagrid\PriceVATLabelAwareGridListener;
-use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use PHPUnit\Framework\TestCase;
 
-class PriceVATLabelAwareGridListenerTest extends \PHPUnit_Framework_TestCase
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+
+use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
+use Marello\Bundle\PricingBundle\EventListener\Datagrid\PriceVATLabelAwareGridListener;
+
+class PriceVATLabelAwareGridListenerTest extends TestCase
 {
     const ORIGINAL_LABEL = 'Original Label';
     const FORMATTED_LABEL = 'Formatted Label';

@@ -2,14 +2,17 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
+use PHPUnit\Framework\TestCase;
 
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class ProductChannelTaxRelationTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
+
+
+class ProductChannelTaxRelationTest extends TestCase
 {
     use EntityTestCaseTrait;
 

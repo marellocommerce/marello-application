@@ -2,13 +2,15 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+use PHPUnit\Framework\TestCase;
 
 use Marello\Bundle\PricingBundle\DependencyInjection\Compiler\SubtotalProviderPass;
 
-class SubtotalProviderPassTest extends \PHPUnit_Framework_TestCase
+class SubtotalProviderPassTest extends TestCase
 {
     /**
      * @var SubtotalProviderPass

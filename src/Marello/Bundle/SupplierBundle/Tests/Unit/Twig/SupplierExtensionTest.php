@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\SupplierBundle\Tests\Unit\Twig;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Twig\SupplierExtension;
 use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
 
-class SupplierExtensionTest extends \PHPUnit_Framework_TestCase
+class SupplierExtensionTest extends TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject

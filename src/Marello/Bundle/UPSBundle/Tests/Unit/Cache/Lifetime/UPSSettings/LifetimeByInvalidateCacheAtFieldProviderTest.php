@@ -2,10 +2,12 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Cache\Lifetime\UPSSettings;
 
-use Marello\Bundle\UPSBundle\Cache\Lifetime\UPSSettings\LifetimeByInvalidateCacheAtFieldProvider;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use PHPUnit\Framework\TestCase;
 
-class LifetimeByInvalidateCacheAtFieldProviderTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Cache\Lifetime\UPSSettings\LifetimeByInvalidateCacheAtFieldProvider;
+
+class LifetimeByInvalidateCacheAtFieldProviderTest extends TestCase
 {
     /**
      * @internal

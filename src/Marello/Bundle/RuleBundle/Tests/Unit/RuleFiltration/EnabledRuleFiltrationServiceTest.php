@@ -2,13 +2,15 @@
 
 namespace Marello\Bundle\RuleBundle\Tests\Unit\RuleFiltration;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\RuleBundle\Entity\Rule;
 use Marello\Bundle\RuleBundle\Entity\RuleInterface;
 use Marello\Bundle\RuleBundle\Entity\RuleOwnerInterface;
-use Marello\Bundle\RuleBundle\RuleFiltration\EnabledRuleFiltrationServiceDecorator;
 use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
+use Marello\Bundle\RuleBundle\RuleFiltration\EnabledRuleFiltrationServiceDecorator;
 
-class EnabledRuleFiltrationServiceTest extends \PHPUnit_Framework_TestCase
+class EnabledRuleFiltrationServiceTest extends TestCase
 {
     /**
      * @var RuleFiltrationServiceInterface|\PHPUnit_Framework_MockObject_MockObject

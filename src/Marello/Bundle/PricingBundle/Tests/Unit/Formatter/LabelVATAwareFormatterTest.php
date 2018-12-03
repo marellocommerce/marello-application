@@ -2,12 +2,16 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Unit\Formatter;
 
-use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
-use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class LabelVATAwareFormatterTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+
+use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
+use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
+
+class LabelVATAwareFormatterTest extends TestCase
 {
     /**
      * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject

@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+use PHPUnit\Framework\TestCase;
 
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class ProductStatusTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\ProductBundle\Entity\ProductStatus;
+
+class ProductStatusTest extends TestCase
 {
     use EntityTestCaseTrait;
 

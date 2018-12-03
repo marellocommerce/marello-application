@@ -3,24 +3,27 @@
 namespace Marello\Bundle\SalesBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+
 use Oro\Bundle\SoapBundle\Handler\DeleteHandler;
+use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 
 class SalesChannelGroupDeleteHandler extends DeleteHandler
 {
     /**
-     * @var SecurityFacade
+     * @var AuthorizationChecker $authorizationChecker
      */
-    protected $securityFacade;
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityFacade $securityFacade
+     * @param AuthorizationChecker $authorizationChecker
      */
-    public function __construct(SecurityFacade $securityFacade)
+    public function __construct(AuthorizationChecker $authorizationChecker)
     {
-        $this->securityFacade = $securityFacade;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -30,7 +33,7 @@ class SalesChannelGroupDeleteHandler extends DeleteHandler
     {
         /** @var $entity SalesChannelGroup */
         parent::checkPermissions($entity, $em);
-        if (!$this->securityFacade->isGranted('EDIT', $entity->getOrganization())) {
+        if (!$this->authorizationChecker->isGranted('EDIT', $entity->getOrganization())) {
             throw new ForbiddenException('You have no rights to delete this entity');
         }
         if ($entity->isSystem()) {

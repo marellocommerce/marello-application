@@ -2,10 +2,12 @@
 
 namespace Marello\Bundle\CustomerBundle\Tests\Unit\Entity;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\TaxBundle\Model\Result;
 use Marello\Bundle\TaxBundle\Model\ResultElement;
 
-class ResultTest extends \PHPUnit_Framework_TestCase
+class ResultTest extends TestCase
 {
     public function testProperties()
     {

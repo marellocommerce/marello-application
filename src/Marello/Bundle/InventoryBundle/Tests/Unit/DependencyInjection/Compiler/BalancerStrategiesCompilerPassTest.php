@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\DependencyInjection;
 
-use Marello\Bundle\InventoryBundle\DependencyInjection\CompilerPass\BalancerStrategiesCompilerPass;
+use PHPUnit\Framework\TestCase;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class BalancerStrategiesCompilerPassTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\InventoryBundle\DependencyInjection\CompilerPass\BalancerStrategiesCompilerPass;
+
+class BalancerStrategiesCompilerPassTest extends TestCase
 {
     /**
      * @var BalancerStrategiesCompilerPass

@@ -2,12 +2,13 @@
 
 namespace Marello\Bundle\ReturnBundle\Tests\Unit\Validator;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
 use Marello\Bundle\ReturnBundle\Validator\ReturnItemValidator;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnItemConstraint;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ReturnItemValidatorTest extends TestCase

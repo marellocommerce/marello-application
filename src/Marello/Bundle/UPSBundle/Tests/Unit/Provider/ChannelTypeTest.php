@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Provider;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\UPSBundle\Provider\ChannelType;
 
-class ChannelTypeTest extends \PHPUnit_Framework_TestCase
+class ChannelTypeTest extends TestCase
 {
     /** @var ChannelType */
     protected $channel;
