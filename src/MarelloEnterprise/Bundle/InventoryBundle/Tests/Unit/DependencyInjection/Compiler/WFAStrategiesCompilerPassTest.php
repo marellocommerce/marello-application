@@ -2,11 +2,14 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\DependencyInjection;
 
-use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\WFAStrategiesCompilerPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class WFAStrategiesCompilerPassTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use MarelloEnterprise\Bundle\InventoryBundle\DependencyInjection\CompilerPass\WFAStrategiesCompilerPass;
+
+class WFAStrategiesCompilerPassTest extends TestCase
 {
     /**
      * @var WFAStrategiesCompilerPass

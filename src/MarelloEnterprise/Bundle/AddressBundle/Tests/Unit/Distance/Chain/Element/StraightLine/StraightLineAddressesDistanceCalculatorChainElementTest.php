@@ -2,15 +2,19 @@
 
 namespace MarelloEnterprise\Bundle\AddressBundle\Tests\Unit\Distance\Chain\Element\StraightLine;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalculatorChainElement;
-use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class StraightLineAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
+use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalculatorChainElement;
+
+class StraightLineAddressesDistanceCalculatorChainElementTest extends TestCase
 {
     /**
      * @var AddressCoordinatesProviderInerface|\PHPUnit_Framework_MockObject_MockObject

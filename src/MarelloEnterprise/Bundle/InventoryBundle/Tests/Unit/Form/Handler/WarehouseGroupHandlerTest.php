@@ -4,15 +4,19 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
+
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ParameterBag;
+
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
 
-class WarehouseGroupHandlerTest extends \PHPUnit_Framework_TestCase
+class WarehouseGroupHandlerTest extends TestCase
 {
     /**
      * @var FormInterface|\PHPUnit_Framework_MockObject_MockObject

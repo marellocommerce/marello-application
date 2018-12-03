@@ -2,14 +2,16 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumDistance;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumDistance\MinimumDistanceWFAStrategy;
 
-class MinimumDistanceWFAStrategyTest extends \PHPUnit_Framework_TestCase
+class MinimumDistanceWFAStrategyTest extends TestCase
 {
     /**
      * @var AddressesDistanceCalculatorInterface|\PHPUnit_Framework_MockObject_MockObject

@@ -4,13 +4,16 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
+use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseDeleteHandler;
-use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class WarehouseDeleteHandlerTest extends TestCase
 {

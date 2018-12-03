@@ -2,12 +2,15 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Client\Factory;
 
-use MarelloEnterprise\Bundle\GoogleApiBundle\Client\Factory\GoogleApiClientFactory;
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientFactoryInterface;
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface;
+use PHPUnit\Framework\TestCase;
 
-class GoogleApiClientFactoryTest extends \PHPUnit_Framework_TestCase
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientFactoryInterface;
+
+use MarelloEnterprise\Bundle\GoogleApiBundle\Client\Factory\GoogleApiClientFactory;
+
+class GoogleApiClientFactoryTest extends TestCase
 {
     /**
      * @var RestClientFactoryInterface|\PHPUnit_Framework_MockObject_MockObject

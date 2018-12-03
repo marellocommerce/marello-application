@@ -12,5 +12,5 @@ services:
         decorates: marello_sales.handler.saleschannelgroup_delete
         scope: request
         arguments:
-            - '@oro_security.security_facade'
+            - '@security.authorization_checker'
             - '@marello_inventory.repository.warehousechannelgrouplink'

@@ -4,19 +4,24 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
+
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ParameterBag;
+
+use PHPUnit\Framework\TestCase;
+
+use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseHandler;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-use Oro\Component\Testing\Unit\EntityTrait;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 
-class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
+class WarehouseHandlerTest extends TestCase
 {
     use EntityTrait;
 

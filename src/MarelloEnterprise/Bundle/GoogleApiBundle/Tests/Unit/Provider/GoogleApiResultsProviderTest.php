@@ -2,17 +2,20 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Provider;
 
-use MarelloEnterprise\Bundle\GoogleApiBundle\Request\Factory\GoogleApiRequestFactoryInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Request\GoogleApiRequestInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GoogleApiResultFactoryInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Client\Factory\GoogleApiClientFactoryInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProvider;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientInterface;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
 
-class GoogleApiResultsProviderTest extends \PHPUnit_Framework_TestCase
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Request\GoogleApiRequestInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProvider;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Request\Factory\GoogleApiRequestFactoryInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GoogleApiResultFactoryInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Client\Factory\GoogleApiClientFactoryInterface;
+
+class GoogleApiResultsProviderTest extends TestCase
 {
     /**
      * @var GoogleApiRequestFactoryInterface|\PHPUnit_Framework_MockObject_MockObject

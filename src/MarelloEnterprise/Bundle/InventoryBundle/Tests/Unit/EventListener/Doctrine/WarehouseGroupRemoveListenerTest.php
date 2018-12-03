@@ -4,12 +4,15 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Doct
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
+
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupRemoveListener;
 
-class WarehouseGroupREmoveListenerTest extends \PHPUnit_Framework_TestCase
+class WarehouseGroupREmoveListenerTest extends TestCase
 {
     /**
      * @var WarehouseGroupRemoveListener

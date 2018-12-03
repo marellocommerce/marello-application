@@ -2,10 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Context;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContext;
 
-class GoogleApiContextTest extends \PHPUnit_Framework_TestCase
+class GoogleApiContextTest extends TestCase
 {
     public function testGetters()
     {

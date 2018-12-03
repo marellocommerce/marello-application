@@ -3,13 +3,16 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Datagrid;
 
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Event\OrmResultBeforeQuery;
+
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Oro\Bundle\DataGridBundle\Event\OrmResultBeforeQuery;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\InventoryLevelsGridListener;
 
-class InventoryLevelsGridListenerTest extends \PHPUnit_Framework_TestCase
+class InventoryLevelsGridListenerTest extends TestCase
 {
     /**
      * @var InventoryLevelsGridListener

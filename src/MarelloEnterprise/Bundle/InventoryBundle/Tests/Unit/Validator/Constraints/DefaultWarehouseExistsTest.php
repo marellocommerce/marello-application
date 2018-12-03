@@ -2,10 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Validator\Constraints;
 
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists;
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator;
+use PHPUnit\Framework\TestCase;
 
-class DefaultWarehouseExistsTest extends \PHPUnit_Framework_TestCase
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator;
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\DefaultWarehouseExists;
+
+class DefaultWarehouseExistsTest extends TestCase
 {
     /**
      * @var DefaultWarehouseExists

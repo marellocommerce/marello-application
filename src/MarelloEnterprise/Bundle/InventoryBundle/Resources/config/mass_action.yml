@@ -26,4 +26,4 @@ services:
             - 'MarelloEnterpriseInventoryBundle:WFARule'
             - '@doctrine.orm.entity_manager'
             - '@translator'
-            - '@oro_security.security_facade.link'
+#            - '@oro_security.security_facade.link'

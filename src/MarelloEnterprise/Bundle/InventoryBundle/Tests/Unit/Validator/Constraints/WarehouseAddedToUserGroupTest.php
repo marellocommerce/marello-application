@@ -2,10 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Validator\Constraints;
 
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\WarehouseAddedToLinkedGroup;
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToLinkedGroupValidator;
+use PHPUnit\Framework\TestCase;
 
-class WarehouseAddedToLinkedGroupTest extends \PHPUnit_Framework_TestCase
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\WarehouseAddedToLinkedGroupValidator;
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\Constraints\WarehouseAddedToLinkedGroup;
+
+class WarehouseAddedToLinkedGroupTest extends TestCase
 {
     /**
      * @var WarehouseAddedToLinkedGroup

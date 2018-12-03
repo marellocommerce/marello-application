@@ -3,14 +3,17 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
-use MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseGroupDeleteHandler;
-use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
+
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
+use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
+
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
+use MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseGroupDeleteHandler;
 
 class WarehouseGroupDeleteHandlerTest extends TestCase
 {

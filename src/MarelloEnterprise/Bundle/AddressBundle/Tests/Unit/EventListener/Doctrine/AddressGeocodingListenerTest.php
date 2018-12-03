@@ -6,19 +6,24 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\UnitOfWork;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
-use MarelloEnterprise\Bundle\AddressBundle\EventListener\Doctrine\AddressGeocodingListener;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
-use Oro\Component\Testing\Unit\EntityTrait;
+
+use PHPUnit\Framework\TestCase;
+
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class AddressGeocodingListenerTest extends \PHPUnit_Framework_TestCase
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use Oro\Component\Testing\Unit\EntityTrait;
+
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
+use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
+use MarelloEnterprise\Bundle\AddressBundle\EventListener\Doctrine\AddressGeocodingListener;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
+
+class AddressGeocodingListenerTest extends TestCase
 {
     use EntityTrait;
 

@@ -2,12 +2,15 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Datagrid;
 
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
 use MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseGroupActionPermissionProvider;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
-class WarehouseGroupActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
+class WarehouseGroupActionPermissionProviderTest extends TestCase
 {
     /**
      * @var IsFixedWarehouseGroupChecker|\PHPUnit_Framework_MockObject_MockObject

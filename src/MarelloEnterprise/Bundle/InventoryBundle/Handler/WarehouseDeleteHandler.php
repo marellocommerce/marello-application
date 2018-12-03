@@ -3,24 +3,27 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+
 use Oro\Bundle\SoapBundle\Handler\DeleteHandler;
+use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 
 class WarehouseDeleteHandler extends DeleteHandler
 {
     /**
-     * @var SecurityFacade
+     * @var AuthorizationChecker
      */
-    protected $securityFacade;
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityFacade $securityFacade
+     * @param AuthorizationChecker $authorizationChecker
      */
-    public function __construct(SecurityFacade $securityFacade)
+    public function __construct(AuthorizationChecker $authorizationChecker)
     {
-        $this->securityFacade = $securityFacade;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -30,7 +33,7 @@ class WarehouseDeleteHandler extends DeleteHandler
     {
         /** @var $entity Warehouse */
         parent::checkPermissions($entity, $em);
-        if (!$this->securityFacade->isGranted('EDIT', $entity->getOwner())) {
+        if (!$this->authorizationChecker->isGranted('EDIT', $entity->getOwner())) {
             throw new ForbiddenException('You have no rights to delete this entity');
         }
         if ($entity->isDefault()) {

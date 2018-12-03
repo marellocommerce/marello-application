@@ -2,9 +2,11 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Result;
 
+use PHPUnit\Framework\TestCase;
+
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
 
-class GoogleApiResultTest extends \PHPUnit_Framework_TestCase
+class GoogleApiResultTest extends TestCase
 {
     public function testGetters()
     {

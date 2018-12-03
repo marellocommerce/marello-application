@@ -2,12 +2,15 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Provider;
 
-use MarelloEnterprise\Bundle\InventoryBundle\Provider\WFAStrategyChoicesProvider;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class WFAStrategyChoicesProviderTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
+use MarelloEnterprise\Bundle\InventoryBundle\Provider\WFAStrategyChoicesProvider;
+
+class WFAStrategyChoicesProviderTest extends TestCase
 {
     /**
      * @var WFAStrategiesRegistry|\PHPUnit_Framework_MockObject_MockObject

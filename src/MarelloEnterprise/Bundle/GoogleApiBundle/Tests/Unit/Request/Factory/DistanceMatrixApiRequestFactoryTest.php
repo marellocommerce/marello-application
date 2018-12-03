@@ -2,17 +2,20 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Request\Factory;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Request\Factory\DistanceMatrixApiRequestFactory;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Request\GoogleApiRequest;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
+
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
-class DistanceMatrixApiRequestFactoryTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Request\GoogleApiRequest;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
+use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Request\Factory\DistanceMatrixApiRequestFactory;
+
+class DistanceMatrixApiRequestFactoryTest extends TestCase
 {
     /**
      * @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject

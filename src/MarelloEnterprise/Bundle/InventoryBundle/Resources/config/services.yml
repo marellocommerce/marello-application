@@ -102,14 +102,14 @@ services:
         parent: oro_soap.handler.delete.abstract
         scope: request
         arguments:
-            - '@oro_security.security_facade'
+            - '@security.authorization_checker'
 
     marelloenterprise_inventory.handler.warehousegroup_delete:
         class:  'MarelloEnterprise\Bundle\InventoryBundle\Handler\WarehouseGroupDeleteHandler'
         parent: oro_soap.handler.delete.abstract
         scope: request
         arguments:
-            - '@oro_security.security_facade'
+            - '@security.authorization_checker'
             - '@marelloenterprise_inventory.checker.warehousegroup.is_fixed'
 
     marelloenterprise_inventory.checker.warehousegroup.is_fixed:
@@ -139,7 +139,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@marelloenterprise_inventory.metadata.warehouse'
         calls:
-            - [setAclHelper, ['@oro_securitypro.security.acl_helper']]
+            - [setAclHelper, ['@oro_security.acl_helper']]
 
     marelloenterprise_inventory.repository.warehousechannelgrouplink:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository'
@@ -147,7 +147,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@marelloenterprise_inventory.metadata.warehousechannelgrouplink'
         calls:
-            - [setAclHelper, ['@oro_securitypro.security.acl_helper']]
+            - [setAclHelper, ['@oro_security.acl_helper']]
 
     marelloenterprise_inventory.datagrid.wfa_rule_actions_visibility_provider:
         parent: marello_rule.action.visibility_provider
@@ -203,7 +203,7 @@ services:
         arguments:
             - 'MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule'
         calls:
-            - [setAclHelper, ['@oro_securitypro.security.acl_helper']]
+            - [setAclHelper, ['@oro_security.acl_helper']]
 
     marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.chain_element.multiple_wh:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\MultipleWarehouses\MultipleWHCalculatorChainElement'

@@ -3,31 +3,34 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
+
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+
+use Oro\Bundle\SoapBundle\Handler\DeleteHandler;
+use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Oro\Bundle\SoapBundle\Handler\DeleteHandler;
 
 class WarehouseGroupDeleteHandler extends DeleteHandler
 {
     /**
-     * @var SecurityFacade
+     * @var AuthorizationChecker $authorizationChecker
      */
-    protected $securityFacade;
+    protected $authorizationChecker;
     
     /**
-     * @var IsFixedWarehouseGroupChecker
+     * @var IsFixedWarehouseGroupChecker $checker
      */
     protected $checker;
 
     /**
-     * @param SecurityFacade $securityFacade
+     * @param AuthorizationChecker $authorizationChecker
      * @param IsFixedWarehouseGroupChecker $checker
      */
-    public function __construct(SecurityFacade $securityFacade, IsFixedWarehouseGroupChecker $checker)
+    public function __construct(AuthorizationChecker $authorizationChecker, IsFixedWarehouseGroupChecker $checker)
     {
-        $this->securityFacade = $securityFacade;
+        $this->authorizationChecker = $authorizationChecker;
         $this->checker = $checker;
     }
 
@@ -38,7 +41,7 @@ class WarehouseGroupDeleteHandler extends DeleteHandler
     {
         /** @var $entity WarehouseGroup */
         parent::checkPermissions($entity, $em);
-        if (!$this->securityFacade->isGranted('EDIT', $entity->getOrganization())) {
+        if (!$this->authorizationChecker->isGranted('EDIT', $entity->getOrganization())) {
             throw new ForbiddenException('You have no rights to delete this entity');
         }
         if ($entity->isSystem()) {

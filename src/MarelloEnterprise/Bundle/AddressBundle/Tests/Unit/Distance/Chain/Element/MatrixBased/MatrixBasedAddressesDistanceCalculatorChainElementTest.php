@@ -2,20 +2,24 @@
 
 namespace MarelloEnterprise\Bundle\AddressBundle\Tests\Unit\Distance\Chain\Element\MatrixBased;
 
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
 use Psr\Log\LoggerInterface;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\
-MatrixBasedAddressesDistanceCalculatorChainElement;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\DistanceMatrixApiResultFactory;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class MatrixBasedAddressesDistanceCalculatorChainElementTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderInterface;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\DistanceMatrixApiResultFactory;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\
+MatrixBasedAddressesDistanceCalculatorChainElement;
+
+class MatrixBasedAddressesDistanceCalculatorChainElementTest extends TestCase
 {
     /**
      * @var GoogleApiResultsProviderInterface|\PHPUnit_Framework_MockObject_MockObject
