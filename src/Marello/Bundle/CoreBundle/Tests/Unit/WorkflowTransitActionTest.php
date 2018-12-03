@@ -27,6 +27,7 @@ class WorkflowTransitActionTest extends TestCase
      */
     protected $action;
 
+
     protected function setUp()
     {
         $this->contextAccessor = new ContextAccessor();
@@ -46,6 +47,7 @@ class WorkflowTransitActionTest extends TestCase
         $dispatcher = $this->getMockBuilder(EventDispatcher::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->action->setDispatcher($dispatcher);
     }
 
@@ -90,23 +92,5 @@ class WorkflowTransitActionTest extends TestCase
 
         $this->action->initialize($options);
         $this->assertAttributeEquals($options, 'options', $this->action);
-    }
-
-    public function testExecute()
-    {
-        $workflowItemMock = $this
-            ->getMockBuilder(WorkflowItem::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $options = [
-            'transitionName'    => 'go_to_next_definition'
-        ];
-
-        $contextData = ['test_item' => $workflowItemMock];
-        $context = new ItemStub($contextData);
-
-        $this->action->initialize($options);
-        $this->action->execute($context);
     }
 }

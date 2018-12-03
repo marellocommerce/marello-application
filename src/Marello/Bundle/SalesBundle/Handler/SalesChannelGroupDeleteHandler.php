@@ -4,7 +4,7 @@ namespace Marello\Bundle\SalesBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use Oro\Bundle\SoapBundle\Handler\DeleteHandler;
 use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
@@ -14,14 +14,14 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 class SalesChannelGroupDeleteHandler extends DeleteHandler
 {
     /**
-     * @var AuthorizationChecker $authorizationChecker
+     * @var AuthorizationCheckerInterface $authorizationChecker
      */
     protected $authorizationChecker;
 
     /**
-     * @param AuthorizationChecker $authorizationChecker
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(AuthorizationChecker $authorizationChecker)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->authorizationChecker = $authorizationChecker;
     }
