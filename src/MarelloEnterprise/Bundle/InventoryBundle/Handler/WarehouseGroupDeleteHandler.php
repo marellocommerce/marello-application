@@ -28,8 +28,10 @@ class WarehouseGroupDeleteHandler extends DeleteHandler
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param IsFixedWarehouseGroupChecker $checker
      */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker, IsFixedWarehouseGroupChecker $checker)
-    {
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        IsFixedWarehouseGroupChecker $checker
+    ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->checker = $checker;
     }
