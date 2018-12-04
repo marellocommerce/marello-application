@@ -1,30 +1,24 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Datagrid;
+namespace Marello\Bundle\RefundBundle\Datagrid;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\DataGridBundle\Action\ActionPermissionInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
-class OrderActionPermissionProvider implements ActionPermissionInterface
+class RefundActionPermissionProvider implements ActionPermissionInterface
 {
-    protected $excludedRefundableSteps = [
-        'payment_reminder',
-        'pending',
-        'cancelled'
+    protected $allowedUpdateSteps = [
+        'pending'
     ];
 
-    protected $allowedReturnSteps = [
-        'credit',
-        'shipped',
-        'complete'
-    ];
-
-    /** @var ObjectManager */
+    /**
+     * @var ObjectManager
+     */
     protected $objectManager;
 
     /**
-     * @param ObjectManager      $objectManager
+     * @param ObjectManager $objectManager
      */
     public function __construct(ObjectManager $objectManager)
     {
@@ -38,8 +32,7 @@ class OrderActionPermissionProvider implements ActionPermissionInterface
     public function getActionPermissions(ResultRecordInterface $record)
     {
         return array(
-            'return'    => $this->isReturnApplicable($record),
-            'refund'    => $this->isRefundApplicable($record),
+            'update'    => $this->isUpdateApplicable($record),
             'view'      => true,
             'delete'    => false
         );
@@ -47,31 +40,10 @@ class OrderActionPermissionProvider implements ActionPermissionInterface
 
     /**
      * {@inheritdoc}
-     * @param ResultRecordInterface $record
-     * @return bool
-     */
-    protected function isRefundApplicable($record)
-    {
-        if (!$this->hasWorkflowStep($record)) {
-            return false;
-        }
-
-        $workflowStep = $this->getWorkflowStep($record)['stepName'];
-
-        foreach ($this->excludedRefundableSteps as $excludedRefundableStep) {
-            if (strpos($workflowStep, $excludedRefundableStep) !== false) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
      * @param $record
      * @return bool
      */
-    protected function isReturnApplicable($record)
+    protected function isUpdateApplicable($record)
     {
         if (!$this->hasWorkflowStep($record)) {
             return false;
@@ -79,8 +51,8 @@ class OrderActionPermissionProvider implements ActionPermissionInterface
 
         $workflowStep = $this->getWorkflowStep($record)['stepName'];
 
-        foreach ($this->allowedReturnSteps as $allowedReturnStep) {
-            if (strpos($workflowStep, $allowedReturnStep) !== false) {
+        foreach ($this->allowedUpdateSteps as $allowedUpdateStep) {
+            if (strpos($workflowStep, $allowedUpdateStep) !== false) {
                 return true;
             }
         }

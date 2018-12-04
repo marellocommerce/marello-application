@@ -5,6 +5,8 @@ namespace Marello\Bundle\ReturnBundle\Form\Type;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Form\EventListener\ReturnTypeSubscriber;
 use Marello\Bundle\ReturnBundle\Validator\Constraints\ReturnEntityConstraint;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
 use Oro\Bundle\FormBundle\Form\Type\Select2ChoiceType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,17 +34,10 @@ class ReturnType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'salesChannel',
-            Select2ChoiceType::class,
-            [
-                'class' => 'MarelloSalesBundle:SalesChannel',
-            ]
-        );
-
-        $builder->add('returnItems', ReturnItemCollectionType::class);
-
-        $builder->addEventSubscriber($this->returnTypeSubscriber);
+        $builder
+            ->add('salesChannel', SalesChannelSelectType::class)
+            ->add('returnItems', ReturnItemCollectionType::class)
+            ->addEventSubscriber($this->returnTypeSubscriber);
     }
 
     /**

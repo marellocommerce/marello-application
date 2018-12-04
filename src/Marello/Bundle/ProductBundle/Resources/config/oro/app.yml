@@ -9,10 +9,10 @@ liip_imagine:
         product_grid:
             quality:          95
             filters:
-                thumbnail:    { size: [25, 35], mode: outbound }
+                thumbnail:    { size: [35, 35], mode: inset }
                 strip:        ~
         product_view:
             quality:          95
             filters:
-                thumbnail:    { size: [185, 250], mode: outbound }
+                thumbnail:    { size: [250, 250], mode: inset }
                 strip:        ~

@@ -1,0 +1,27 @@
+system_configuration:
+    groups:
+        invoicing:
+            title: marello.invoice.system_configuration.groups.invoicing.title
+        invoicing_configuration:
+            title: marello.invoice.system_configuration.groups.invoicing_configuration.title
+            icon: fa-file
+        invoicing_general:
+            title: marello.invoice.system_configuration.groups.invoicing_general.label
+    fields:
+        marello_invoice.auto_invoicing:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: marello.invoice.system_configuration.fields.auto_invoicing.label
+                required: false
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    invoicing:
+                        children:
+                            invoicing_configuration:
+                                children:
+                                   invoicing_general:
+                                        children:
+                                            - marello_invoice.auto_invoicing

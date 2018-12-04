@@ -89,6 +89,12 @@ workflows:
                                 constraints:
                                   - NotBlank: ~
                                   - DateTime: ~
+                triggers:
+                    -
+                        entity_class: Marello\Bundle\InvoiceBundle\Entity\Invoice
+                        event: create
+                        queued: false
+                        relation: order
             payment_received:
                 step_to:  paid
                 transition_definition: payment_received_definition
@@ -178,6 +184,7 @@ workflows:
             prepare_shipping_definition:
                 conditions:
                     '@and':
+                        - '@not_empty': $order.shippingMethod
                         - '@not_empty': $order.shippingAddress.country
                         - '@not_empty': $order.shippingAddress.postalCode
                         - '@not_empty': $order.shippingAddress.city
