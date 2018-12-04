@@ -18,8 +18,7 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
     const PROCESSOR_BAG_CONFIG_PROVIDER_SERVICE_ID = 'oro_api.processor_bag_config_provider';
 
     protected $processors = [
-        'marelloenterprise_instoreassistant.api.processor.authenticate.processor',
-        'marelloenterprise_instoreassistant.api.processor.options.processor'
+        'marelloenterprise_instoreassistant.api.processor.authenticate.processor'
     ];
 
     protected $actions = [
@@ -29,8 +28,6 @@ class AddOroProcessorsCompilerPass implements CompilerPassInterface
     /** @var array  */
     protected $groups = [
         'initialize',
-        // tmp remove resource_check group during issues with correct action configuration
-//        'resource_check',
         'normalize_input',
         'security_check',
         'load_data',

@@ -35,7 +35,7 @@ class InstoreUserRestRouteOptionsResolver implements RouteOptionsResolverInterfa
      */
     public function resolve(Route $route, RouteCollectionAccessor $routes)
     {
-        if (RestRouteOptionsResolver::ROUTE_GROUP !== $route->getOption('group')
+        if (RestRouteOptionsResolver::GROUP_OPTION !== $route->getOption('group')
             || ApiActions::GET !== $route->getDefault('_action')
             || $route->getDefault(RestRouteOptionsResolver::ENTITY_ATTRIBUTE)
         ) {

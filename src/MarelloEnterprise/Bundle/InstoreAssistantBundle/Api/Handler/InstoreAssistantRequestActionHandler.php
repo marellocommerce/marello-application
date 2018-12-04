@@ -28,21 +28,4 @@ class InstoreAssistantRequestActionHandler extends RequestActionHandler
 
         return $this->buildResponse($context);
     }
-
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function handleOptions(Request $request): Response
-    {
-        $processor = $this->getProcessor('options');
-        /** @var AuthenticationContext $context */
-        $context = $processor->createContext();
-        $this->preparePrimaryContext($context, $request);
-
-        $processor->process($context);
-
-        return $this->buildResponse($context);
-    }
 }
