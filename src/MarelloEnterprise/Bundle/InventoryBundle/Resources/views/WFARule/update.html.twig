@@ -2,6 +2,8 @@
 
 {% if entity.id %}
     {% oro_title_set({params : {"%wfarule.label%": entity.rule.name|default('N/A'|trans) } }) %}
+{% else %}
+    {% oro_title_set({params : {'%entityName%': 'marelloenterprise.inventory.wfarule.entity_short_label'|trans} }) %}
 {% endif %}
 
 {% set formAction = entity.id ? path('marelloenterprise_inventory_wfa_rule_update', { 'id': entity.id }) : path('marelloenterprise_inventory_wfa_rule_create')  %}
