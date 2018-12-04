@@ -11,7 +11,6 @@ use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 
-
 class ProductChannelTaxRelationTest extends TestCase
 {
     use EntityTestCaseTrait;

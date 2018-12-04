@@ -12,7 +12,6 @@ use Marello\Bundle\UPSBundle\Connection\Validator\Result\UpsConnectionValidatorR
 use Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionValidatorResultFactory;
 use Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionValidatorResultFactoryInterface;
 
-
 class UpsConnectionValidatorResultFactoryTest extends TestCase
 {
     /**
