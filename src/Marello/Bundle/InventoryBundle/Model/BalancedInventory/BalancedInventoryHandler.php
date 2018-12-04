@@ -1,61 +1,63 @@
 <?php
 
-namespace Marello\Bundle\InventoryBundle\Model\VirtualInventory;
+namespace Marello\Bundle\InventoryBundle\Model\BalancedInventory;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Marello\Bundle\InventoryBundle\Entity\Repository\VirtualInventoryRepository;
-use Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryFactory;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryFactory;
 
-class VirtualInventoryHandler
+class BalancedInventoryHandler
 {
-    /** @var VirtualInventoryFactory $virtualInventoryFactory */
-    protected $virtualInventoryFactory;
+    /** @var BalancedInventoryFactory $balancedInventoryFactory */
+    protected $balancedInventoryFactory;
 
     /** @var ManagerRegistry $doctrine */
     protected $doctrine;
 
     /**
      * @param ManagerRegistry $doctrine
-     * @param VirtualInventoryFactory $virtualInventoryFactory
+     * @param BalancedInventoryFactory $balancedInventoryFactory
      */
     public function __construct(
         ManagerRegistry $doctrine,
-        VirtualInventoryFactory $virtualInventoryFactory
+        BalancedInventoryFactory $balancedInventoryFactory
     ) {
         $this->doctrine = $doctrine;
-        $this->virtualInventoryFactory = $virtualInventoryFactory;
+        $this->balancedInventoryFactory = $balancedInventoryFactory;
     }
 
     /**
      * @param ProductInterface $product
      * @param SalesChannelGroup $group
      * @param $inventoryQty
-     * @return VirtualInventoryLevel
+     * @return BalancedInventoryLevel
      */
-    public function createVirtualInventory(ProductInterface $product, SalesChannelGroup $group, $inventoryQty = 0)
-    {
-        return $this->virtualInventoryFactory->create($product, $group, $inventoryQty);
+    public function createBalancedInventoryLevel(
+        ProductInterface $product,
+        SalesChannelGroup $group,
+        $inventoryQty = 0
+    ) {
+        return $this->balancedInventoryFactory->create($product, $group, $inventoryQty);
     }
 
     /**
-     * Save virtual inventory
-     * @param VirtualInventoryLevel $level
+     * Save balanced inventory level
+     * @param BalancedInventoryLevel $level
      * @param bool $force
      * @param bool $flushManager
      * @throws \Exception
      */
-    public function saveVirtualInventory(VirtualInventoryLevel $level, $force = false, $flushManager = false)
+    public function saveBalancedInventory(BalancedInventoryLevel $level, $force = false, $flushManager = false)
     {
-        /** @var VirtualInventoryLevel $existingLevel */
-        $existingLevel = $this->findExistingVirtualInventory($level->getProduct(), $level->getSalesChannelGroup());
+        /** @var BalancedInventoryLevel $existingLevel */
+        $existingLevel = $this->findExistingBalancedInventory($level->getProduct(), $level->getSalesChannelGroup());
         if ($existingLevel) {
             if (!$this->isLevelChanged($existingLevel, $level) && !$force) {
                 return;
@@ -87,31 +89,32 @@ class VirtualInventoryHandler
     }
 
     /**
-     * Find existing VirtualInventoryLevel
+     * Find existing BalancedInventoryLevel
      * @param ProductInterface $product
      * @param SalesChannelGroup $group
-     * @return VirtualInventoryLevel|object
+     * @return BalancedInventoryLevel|object
      */
-    public function findExistingVirtualInventory(ProductInterface $product, SalesChannelGroup $group)
+    public function findExistingBalancedInventory(ProductInterface $product, SalesChannelGroup $group)
     {
-        /** @var VirtualInventoryRepository $repository */
-        $repository = $this->doctrine->getRepository(VirtualInventoryLevel::class);
-        return $repository->findExistingVirtualInventory($product, $group);
+        /** @var BalancedInventoryRepository $repository */
+        $repository = $this->doctrine->getRepository(BalancedInventoryLevel::class);
+        return $repository->findExistingBalancedInventory($product, $group);
     }
 
     /**
+     * {@inheritdoc}
      * @param $entityClass
      * @return \Doctrine\Common\Persistence\ObjectManager|null
      */
-    private function getManagerForClass($entityClass = VirtualInventoryLevel::class)
+    private function getManagerForClass($entityClass = BalancedInventoryLevel::class)
     {
         return $this->doctrine->getManagerForClass($entityClass);
     }
 
     /**
      * Check whether the existing level has changed inventory
-     * @param VirtualInventoryLevel $existingLevel
-     * @param VirtualInventoryLevel $level
+     * @param BalancedInventoryLevel $existingLevel
+     * @param BalancedInventoryLevel $level
      * @return bool
      */
     private function isLevelChanged($existingLevel, $level)

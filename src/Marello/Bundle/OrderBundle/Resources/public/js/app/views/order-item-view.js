@@ -53,14 +53,7 @@ define(function(require) {
          * Trigger subtotals update
          */
         updateOrderItemData: function() {
-            if (this.itemIdentifier &&
-                this.itemIdentifier === this._getItemIdentifier()
-            ) {
-                this.setOrderItemData();
-                return;
-            }
-            var productId = this._getProductId();
-
+            var productId = this.getProductId();
             if (productId.length === 0) {
                 this.setOrderItemData({});
             } else {
@@ -123,7 +116,13 @@ define(function(require) {
          * @returns {Array|Null}
          */
         getRowTotals: function() {
-            return !_.isEmpty(this.data['row_totals']) ? this.data['row_totals'][this._getRowItemIdentifier()] : null;
+            if (this.getRowItemIdentifier() === null) {
+                return null;
+            }
+            if (_.isEmpty(this.data['row_totals'])) {
+                return null;
+            }
+            return !_.isEmpty(this.data['row_totals'][this.getRowItemIdentifier()]) ? this.data['row_totals'][this.getRowItemIdentifier()] : null;
         },
 
         /**
@@ -165,7 +164,7 @@ define(function(require) {
          * @private
          */
         _getItemIdentifier: function() {
-            var productId = this._getProductId();
+            var productId = this.getProductId();
             if (productId.length === 0) {
                 return null;
             }

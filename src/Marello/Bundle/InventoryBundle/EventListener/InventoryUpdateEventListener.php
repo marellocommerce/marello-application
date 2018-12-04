@@ -4,26 +4,26 @@ namespace Marello\Bundle\InventoryBundle\EventListener;
 
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Manager\VirtualInventoryManager;
+use Marello\Bundle\InventoryBundle\Manager\BalancedInventoryManager;
 
 class InventoryUpdateEventListener
 {
     /** @var InventoryManager $manager */
     protected $manager;
 
-    /** @var VirtualInventoryManager $virtualInventoryManager */
-    protected $virtualInventoryManager;
+    /** @var BalancedInventoryManager $balancedInventoryManager */
+    protected $balancedInventoryManager;
 
     /**
      * @param InventoryManager $manager
-     * @param VirtualInventoryManager $virtualInventoryManager
+     * @param BalancedInventoryManager $balancedInventoryManager
      */
     public function __construct(
         InventoryManager $manager,
-        VirtualInventoryManager $virtualInventoryManager
+        BalancedInventoryManager $balancedInventoryManager
     ) {
         $this->manager = $manager;
-        $this->virtualInventoryManager = $virtualInventoryManager;
+        $this->balancedInventoryManager = $balancedInventoryManager;
     }
 
     /**
@@ -38,6 +38,6 @@ class InventoryUpdateEventListener
             return;
         }
 
-        $this->virtualInventoryManager->updateInventoryLevel($context);
+        $this->balancedInventoryManager->updateInventoryLevel($context);
     }
 }

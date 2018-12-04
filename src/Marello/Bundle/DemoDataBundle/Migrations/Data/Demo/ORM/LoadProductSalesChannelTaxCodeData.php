@@ -41,6 +41,10 @@ class LoadProductSalesChannelTaxCodeData extends AbstractFixture implements Depe
             'tax_code'  => 'DE_high'
         ],
         [
+            'code'      => 'sales_channel_de_outlet_webshop',
+            'tax_code'  => 'DE_high'
+        ],
+        [
             'code'      => 'sales_channel_fr_webshop',
             'tax_code'  => 'FR_high'
         ],

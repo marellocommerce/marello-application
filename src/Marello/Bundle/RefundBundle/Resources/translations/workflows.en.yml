@@ -1,7 +1,7 @@
 oro:
     workflow:
         marello_refund_workflow:
-            label: 'Marello refund workflow'
+            label: 'Status'
             step:
                 pending:
                     label: 'Pending Refund'

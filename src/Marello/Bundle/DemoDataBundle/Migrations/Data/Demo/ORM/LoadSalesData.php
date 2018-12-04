@@ -50,6 +50,11 @@ class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
             'code' => 'sales_channel_de_webshop',
             'type' => 'magento',
             'currency' => 'EUR',
+        ],        [
+            'name' => 'Sales Channel DE Outlet Webshop',
+            'code' => 'sales_channel_de_outlet_webshop',
+            'type' => 'magento',
+            'currency' => 'EUR',
         ],
         [
             'name' => 'Sales Channel FR Webshop',

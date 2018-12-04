@@ -16,5 +16,5 @@ acls:
 
     marello_inventory_inventory_recalculate_update:
         type:       entity
-        class:      MarelloInventoryBundle:VirtualInventoryLevel
+        class:      MarelloInventoryBundle:BalancedInventoryLevel
         permission: EDIT

@@ -288,6 +288,7 @@ datagrids:
             default:
                 name: ASC
                 sku: ASC
+        mass_actions: ~
 
     marello-products-supplier-no-actions-grid:
         extends: marello-products-grid

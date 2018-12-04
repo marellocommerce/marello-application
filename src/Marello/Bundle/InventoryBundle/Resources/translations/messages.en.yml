@@ -90,10 +90,10 @@ marello:
             subject_type.label:             Related Subject
             user.label:                     User
 
-        virtualinventorylevel:
+        balancedinventorylevel:
             id.label:                       Id
-            entity_label:                   Virtual Inventory Level
-            entity_plural_label:            Virtual Inventory Levels
+            entity_label:                   Balanced Inventory Level
+            entity_plural_label:            Balanced Inventory Levels
             product.label:                  Product
             saleschannelgroup:              SalesChannel Group
             inventory.label:                Inventory Qty
@@ -123,7 +123,7 @@ marello:
                         strategy.label:     Balancing Strategy
             fields:
                 balancing_strategy.label:             Strategy
-                balance_threshold_percentage.label:   Threshhold Percentage
+                balance_threshold_percentage.label:   Threshold Percentage
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully

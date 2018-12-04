@@ -3,29 +3,28 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceType;
-use Marello\Bundle\PricingBundle\Entity\ProductChannelPrice;
 use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
-use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList;
+use Marello\Bundle\PricingBundle\Entity\ProductPrice;
 
-class LoadProductChannelPricingData extends AbstractFixture implements DependentFixtureInterface
+class LoadProductPriceData extends AbstractFixture implements DependentFixtureInterface
 {
     /** @var ObjectManager $manager */
     protected $manager;
 
     /**
+     * {@inheritdoc}
      * @return array
      */
     public function getDependencies()
     {
         return [
-            LoadProductPriceData::class
+            LoadProductData::class
         ];
     }
 
@@ -40,21 +39,20 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
     }
 
     /**
-     * {@inheritDoc}
+     * load product prices
      */
     public function loadProductPrices()
     {
-        $handle = fopen($this->getDictionary('product_channel_prices.csv'), "r");
+        $handle = fopen($this->getDictionary('product_prices.csv'), "r");
         if ($handle) {
             $headers = [];
             if (($data = fgetcsv($handle, 1000, ",")) !== false) {
                 //read headers
                 $headers = $data;
             }
-
             while (($data = fgetcsv($handle, 1000, ",")) !== false) {
                 $data = array_combine($headers, array_values($data));
-                $this->createProductChannelPrice($data);
+                $this->createProductPrice($data);
             }
             fclose($handle);
         }
@@ -62,23 +60,59 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
     }
 
     /**
-     * Create new product channel prices
-     *
-     * @param $data
+     * create new product prices
+     * @param array $data
      */
-    private function createProductChannelPrice($data)
+    private function createProductPrice(array $data)
     {
         /** @var Product $product */
         $product = $this->manager->getRepository(Product::class)->findOneBySku($data['sku']);
         if (!$product) {
             return;
         }
+        $currencies = $this->createPricesByCurrency($data, $product);
 
-        /** @var SalesChannel $channel */
-        $channel = $this->getReference($data['channel']);
-        $prices = [];
+        foreach ($currencies as $currency => $prices) {
+            $assembledPriceList = $this->createAssembledPricelist($currency, $prices);
+            $assembledPriceList->setProduct($product);
+            $product->addPrice($assembledPriceList);
+            $this->setReference(sprintf('marello_product_price_%s', $product->getSku()), $assembledPriceList);
+        }
+
+        $this->manager->persist($product);
+    }
+
+    /**
+     * Create assembled prices list per currency and add all price types that are available
+     * @param $currency
+     * @param $prices
+     * @return AssembledPriceList
+     */
+    private function createAssembledPricelist($currency, $prices)
+    {
+        $assembledPriceList = new AssembledPriceList();
+        $assembledPriceList->setCurrency($currency);
+
+        /** @var ProductPrice $price */
+        foreach ($prices as $type => $price) {
+            $method = sprintf('set%sPrice', ucfirst($type));
+            $assembledPriceList->$method($price);
+        }
+
+        return $assembledPriceList;
+    }
+
+    /**
+     * Create prices by type and currency
+     * @param array $data
+     * @param Product $product
+     * @return array
+     */
+    private function createPricesByCurrency(array $data, Product $product)
+    {
+        $currencies = [];
         foreach ($data as $identifier => $priceValue) {
-            if ($identifier === 'sku' || $identifier === 'channel') {
+            if ($identifier === 'sku') {
                 continue;
             }
 
@@ -88,59 +122,29 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
 
             $identifiers = explode('_', $identifier);
             $priceType = array_shift($identifiers);
+
             $type = $this->manager->getRepository(PriceType::class)->find($priceType);
             if (!$type) {
                 $type = $this->manager->getRepository(PriceType::class)->find(PriceTypeInterface::DEFAULT_PRICE);
             }
 
-            $productChannelPrice = new ProductChannelPrice();
-            $productChannelPrice
-                ->setCurrency($channel->getCurrency())
+            $currency = array_pop($identifiers);
+            $price = new ProductPrice();
+            $price
+                ->setCurrency($currency)
                 ->setType($type)
                 ->setValue($priceValue)
                 ->setProduct($product);
 
-            $prices[$priceType] = $productChannelPrice;
+            $currencies[$currency][$priceType] = $price;
         }
 
-        $assembledChannelPriceList = $this->createAssembledChannelPricelist($channel, $prices);
-        $assembledChannelPriceList->setProduct($product);
-        $product->addChannelPrice($assembledChannelPriceList);
-
-        $productData = $product->getData();
-        $productData[PricingAwareInterface::CHANNEL_PRICING_STATE_KEY] = true;
-        $product->setData($productData);
-
-        $this->manager->persist($product);
-    }
-
-    /**
-     * Create assembled prices list per currency and add all price types that are available
-     * @param SalesChannel $channel
-     * @param $prices
-     * @return AssembledChannelPriceList
-     */
-    private function createAssembledChannelPricelist(SalesChannel $channel, $prices)
-    {
-        $assembledChannelPriceList = new AssembledChannelPriceList();
-        $assembledChannelPriceList
-            ->setCurrency($channel->getCurrency())
-            ->setChannel($channel);
-
-        /** @var ProductChannelPrice $price */
-        foreach ($prices as $type => $price) {
-            $method = sprintf('set%sPrice', ucfirst($type));
-            $assembledChannelPriceList->$method($price);
-        }
-
-        return $assembledChannelPriceList;
+        return $currencies;
     }
 
     /**
      * Get dictionary file by name
-     *
      * @param $name
-     *
      * @return string
      */
     protected function getDictionary($name)
