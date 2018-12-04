@@ -15,11 +15,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterface
 {
+    /** @var ContainerInterface $container */
+    protected $container;
+
+    /** @var DoctrineHelper $doctrineHelper */
+    protected $doctrineHelper;
+
     const RULES_DATA = [
         MinimumQuantityWFAStrategy::IDENTIFIER =>
             [
                 'enabled'          => true,
-                'name'             => 'WFA Rule #1',
+                'name'             => 'Minimum Quantity',
                 'sortOrder'        => 0,
                 'stopProcessing'   => false,
                 'strategy'         => MinimumQuantityWFAStrategy::IDENTIFIER
@@ -27,17 +33,12 @@ class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterf
         MinimumDistanceWFAStrategy::IDENTIFIER =>
             [
                 'enabled'          => true,
-                'name'             => 'WFA Rule #2',
+                'name'             => 'Minimum Distance',
                 'sortOrder'        => 10,
                 'stopProcessing'   => false,
                 'strategy'         => MinimumDistanceWFAStrategy::IDENTIFIER
             ],
     ];
-    
-    /**
-     * @var DoctrineHelper
-     */
-    protected $doctrineHelper;
 
     /**
      * {@inheritdoc}
@@ -52,6 +53,7 @@ class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterf
                     ->setSortOrder($ruleData['sortOrder'])
                     ->setStopProcessing($ruleData['stopProcessing'])
                     ->setSystem(true);
+
                 $wfaRule = new WFARule();
                 $wfaRule
                     ->setRule($rule)
@@ -72,7 +74,7 @@ class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterf
      */
     public function setContainer(ContainerInterface $container = null)
     {
-        $this->doctrineHelper = $container->get('oro_entity.doctrine_helper');
+        $this->container = $container;
     }
 
     /**
@@ -80,7 +82,8 @@ class LoadSystemWFARules extends AbstractFixture implements ContainerAwareInterf
      */
     protected function getOrganizations()
     {
-        return $this->doctrineHelper
+        return $this->container
+            ->get('oro_entity.doctrine_helper')
             ->getEntityManagerForClass(Organization::class)
             ->getRepository(Organization::class)
             ->findAll();
