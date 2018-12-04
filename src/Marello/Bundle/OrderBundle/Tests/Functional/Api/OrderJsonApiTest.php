@@ -32,6 +32,7 @@ class OrderJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(10, $response);
+
         $this->assertResponseContains('cget_order_list.yml', $response);
     }
 

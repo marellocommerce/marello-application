@@ -25,7 +25,7 @@ data:
             invoicedAt: null
             salesChannelName: channel2
             purchaseDate: '@marello_order_0->purchaseDate->format("Y-m-d\TH:i:s\Z")'
-            data: []
+            data: null
             locale: null
         relationships:
             items:
@@ -81,7 +81,7 @@ data:
             invoicedAt: null
             salesChannelName: channel3
             purchaseDate: '@marello_order_1->purchaseDate->format("Y-m-d\TH:i:s\Z")'
-            data: []
+            data: null
             locale: null
         relationships:
             items:
@@ -146,7 +146,7 @@ data:
             invoicedAt: null
             salesChannelName: channel2
             purchaseDate: '@marello_order_2->purchaseDate->format("Y-m-d\TH:i:s\Z")'
-            data: []
+            data: null
             locale: null
         relationships:
             items:
@@ -208,7 +208,7 @@ data:
             invoicedAt: null
             salesChannelName: channel3
             purchaseDate: '@marello_order_3->purchaseDate->format("Y-m-d\TH:i:s\Z")'
-            data: []
+            data: null
             locale: null
         relationships:
             items:
@@ -273,7 +273,7 @@ data:
             invoicedAt: null
             salesChannelName: channel3
             purchaseDate: '@marello_order_4->purchaseDate->format("Y-m-d\TH:i:s\Z")'
-            data: []
+            data: null
             locale: null
         relationships:
             items:
@@ -329,7 +329,7 @@ data:
             invoicedAt: null
             salesChannelName: channel3
             purchaseDate: '@marello_order_5->purchaseDate->format("Y-m-d\TH:i:s\Z")'
-            data: []
+            data: null
             locale: null
         relationships:
             items:
@@ -388,7 +388,7 @@ data:
             invoicedAt: null
             salesChannelName: channel3
             purchaseDate: '@marello_order_6->purchaseDate->format("Y-m-d\TH:i:s\Z")'
-            data: []
+            data: null
             locale: null
         relationships:
             items:
@@ -453,7 +453,7 @@ data:
             invoicedAt: null
             salesChannelName: channel2
             purchaseDate: '@marello_order_7->purchaseDate->format("Y-m-d\TH:i:s\Z")'
-            data: []
+            data: null
             locale: null
         relationships:
             items:
@@ -509,7 +509,7 @@ data:
             invoicedAt: null
             salesChannelName: channel2
             purchaseDate: '@marello_order_8->purchaseDate->format("Y-m-d\TH:i:s\Z")'
-            data: []
+            data: null
             locale: null
         relationships:
             items:
@@ -568,7 +568,7 @@ data:
             invoicedAt: null
             salesChannelName: channel1
             purchaseDate: '@marello_order_9->purchaseDate->format("Y-m-d\TH:i:s\Z")'
-            data: []
+            data: null
             locale: null
         relationships:
             items:
