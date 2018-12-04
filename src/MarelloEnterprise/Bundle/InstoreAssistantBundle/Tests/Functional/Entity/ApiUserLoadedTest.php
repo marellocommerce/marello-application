@@ -52,10 +52,8 @@ class ApiUserLoadedTest extends WebTestCase
         $userManager = $this->getContainer()->get('oro_user.manager');
         /** @var User $user */
         $user = $userManager->loadUserByUsername(LoadApiUser::INSTORE_API_USERNAME);
-        // using the Oro Security Facade instead of directly using the SecurityContext during the deprecation
-        // since Symfony version 2.6 and removal in Symfony 3.0
         $securityContext = $this->getContainer()->get('security.authorization_checker');
-        if (!$securityContext->getToken()) {
+        if (!$this->getContainer()->get('security.token_storage')->getToken()) {
             $this->updateUserSecurityToken($user->getEmail());
         }
         $this->assertTrue(
