@@ -87,7 +87,7 @@ class LoadManualShippingIntegration extends AbstractFixture implements
         $typeConfig->setEnabled(true);
         $typeConfig->setType(ManualShippingMethodType::IDENTIFIER)
             ->setOptions([
-                ManualShippingMethodType::PRICE_OPTION => 0.0,
+                ManualShippingMethodType::PRICE_OPTION => 5.00,
                 ManualShippingMethodType::TYPE_OPTION => ManualShippingMethodType::PER_ORDER_TYPE,
             ]);
 
