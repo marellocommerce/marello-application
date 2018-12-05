@@ -36,7 +36,23 @@ class LoadWarehouseChannelGroupLinkData extends AbstractFixture implements Depen
         ],
         'whscglink2' => [
             'channelgroup'         => 'US Group',
-            'warehousegroup'       => 'Europe'
+            'warehousegroup'       => 'US'
+        ],
+        'whscglink3' => [
+            'channelgroup'         => 'Sales Channel DE Berlin',
+            'warehousegroup'       => 'Store Warehouse DE Berlin'
+        ],
+        'whscglink4' => [
+            'channelgroup'         => 'Sales Channel DE Dortmund',
+            'warehousegroup'       => 'Store Warehouse DE Dortmund'
+        ],
+        'whscglink5' => [
+            'channelgroup'         => 'Sales Channel DE Frankfurt',
+            'warehousegroup'       => 'Store Warehouse DE Frankfurt'
+        ],
+        'whscglink6' => [
+            'channelgroup'         => 'Sales Channel DE München',
+            'warehousegroup'       => 'Store Warehouse DE München'
         ],
     ];
 
@@ -80,7 +96,7 @@ class LoadWarehouseChannelGroupLinkData extends AbstractFixture implements Depen
             /** @var SalesChannelGroup $channelGroup */
             $channelGroup = $this->getReference($data['channelgroup']);
             /** @var WarehouseGroup $warehouseGroup */
-            $warehouseGroup = $this->getReference($data['warehousegroup']);
+            $warehouseGroup = $this->getReference(sprintf('warehouse.%s',$data['warehousegroup']));
 
             $channelLink = $this->getExistingWarehouseChannelGroupLink($warehouseGroup);
             if (!$channelLink) {

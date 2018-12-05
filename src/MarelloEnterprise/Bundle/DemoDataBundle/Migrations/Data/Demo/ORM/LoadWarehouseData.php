@@ -41,7 +41,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'type'      => 'global',
             'group'         => 'Europe'
         ],
-        'additional1' => [
+        'warehouse_de_2' => [
             'name'          => 'Warehouse DE 2',
             'code'          => 'warehouse_de_2',
             'default'       => false,
@@ -57,7 +57,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'type'          => 'global',
             'group'         => 'Europe'
         ],
-        'additional2' => [
+        'warehouse_fr_1' => [
             'name'          => 'Warehouse FR 1',
             'code'          => 'warehouse_fr_1',
             'default'       => false,
@@ -73,7 +73,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'type'          => 'global',
             'group'         => 'Europe'
         ],
-        'additional3' => [
+        'warehouse_fr_2' => [
             'name'          => 'Warehouse FR 2',
             'code'          => 'warehouse_fr_2',
             'default'       => false,
@@ -89,7 +89,23 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'type'          => 'global',
             'group'         => 'Europe'
         ],
-        'additional4' => [
+        'warehouse_us_1' => [
+            'name'          => 'Warehouse US 1',
+            'code'          => 'warehouse_us_1',
+            'default'       => false,
+            'address'       => [
+                'country' => 'US',
+                'street' => 'Rusk 2714',
+                'city' => 'Tucson',
+                'state' => 'AZ',
+                'postalCode' => '58742',
+                'phone' => '520-921-7115',
+                'company' => null
+            ],
+            'type'          => 'global',
+            'group'         => 'US'
+        ],
+        'warehouse_de_munchen' => [
             'name'          => 'Store Warehouse DE München',
             'code'          => 'store_warehouse_de_munchen',
             'default'       => false,
@@ -103,9 +119,9 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
                 'company' => 'Goodwaves München'
             ],
             'type'          => 'fixed',
-            'group'         => null
+            'group'         => 'Store Warehouse DE München'
         ],
-        'additional5' => [
+        'warehouse_de_frankfurt' => [
             'name'          => 'Store Warehouse DE Frankfurt',
             'code'          => 'store_warehouse_de_frankfurt',
             'default'       => false,
@@ -119,9 +135,9 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
                 'company' => 'Goodwaves Frankfurt'
             ],
             'type'          => 'fixed',
-            'group'         => null
+            'group'         => 'Store Warehouse DE Frankfurt'
         ],
-        'additional6' => [
+        'warehouse_de_berlin' => [
             'name'          => 'Store Warehouse DE Berlin',
             'code'          => 'store_warehouse_de_berlin',
             'default'       => false,
@@ -135,7 +151,55 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
                 'company' => 'Goodwaves Berlin'
             ],
             'type'          => 'fixed',
-            'group'         => null
+            'group'         => 'Store Warehouse DE Berlin'
+        ],
+        'warehouse_de_dortmund' => [
+            'name'          => 'Store Warehouse DE Dortmund',
+            'code'          => 'store_warehouse_de_dortmund',
+            'default'       => false,
+            'address'       => [
+                'country' => 'DE',
+                'street' => 'Straße der Pariser Kommune 23',
+                'city' => 'Dortmund',
+                'state' => 'NW',
+                'postalCode' => '44369',
+                'phone' => '0231 41 39356',
+                'company' => 'Goodwaves Dortmund'
+            ],
+            'type'          => 'fixed',
+            'group'         => 'Store Warehouse DE Dortmund'
+        ],
+        'warehouse_uk_1' => [
+            'name'          => 'Warehouse UK 1',
+            'code'          => 'warehouse_uk_1',
+            'default'       => false,
+            'address'       => [
+                'country' => 'UK',
+                'street' => '71 Harehills Lane',
+                'city' => 'Rowton',
+                'state' => 'CHW',
+                'postalCode' => 'TF6 4AA',
+                'phone' => '079 6390 9378',
+                'company' => 'Goodwaves Rowton'
+            ],
+            'type'          => 'global',
+            'group'         =>  null
+        ],
+        'warehouse_uk_2' => [
+            'name'          => 'Warehouse UK 2',
+            'code'          => 'warehouse_uk_2',
+            'default'       => false,
+            'address'       => [
+                'country' => 'UK',
+                'street' => '49 St James Boulevard',
+                'city' => 'Hornby',
+                'state' => 'NYK',
+                'postalCode' => 'LA2 9HE',
+                'phone' => '077 5352 6738',
+                'company' => 'Goodwaves Hornby'
+            ],
+            'type'          => 'global',
+            'group'         =>  null
         ],
     ];
 
@@ -228,7 +292,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
     {
         $group = null;
         if ($warehouse->getWarehouseType()->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
-            $group = $this->createNewWarehouseGroup($warehouse);
+            $group = $this->createNewWarehouseGroup($warehouse, $data['group']);
         } elseif (isset($data['group'])) {
             $existingGroup = $this->getExistingWarehouseGroup($data['group']);
             if ($existingGroup) {
@@ -242,7 +306,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
 
         if ($group) {
             $warehouse->setGroup($group);
-            $this->setReference($data['group'], $group);
+            $this->setReference(sprintf('warehouse.%s',$data['group']), $group);
         }
     }
 
@@ -259,7 +323,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
         $group
             ->setName($groupName)
             ->setOrganization($warehouse->getOwner())
-            ->setDescription(sprintf('%s group', $description))
+            ->setDescription($description)
             ->setSystem(false);
 
         $this->manager->persist($group);
