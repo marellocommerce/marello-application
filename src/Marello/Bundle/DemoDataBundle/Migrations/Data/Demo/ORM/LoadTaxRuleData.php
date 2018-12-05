@@ -18,25 +18,59 @@ class LoadTaxRuleData extends AbstractFixture implements DependentFixtureInterfa
     const TAX_RULE_3 = 'TAX_RULE_3';
     const TAX_RULE_4 = 'TAX_RULE_4';
     const TAX_RULE_5 = 'TAX_RULE_5';
+    const TAX_RULE_6 = 'TAX_RULE_6';
+    const TAX_RULE_7 = 'TAX_RULE_7';
+    const TAX_RULE_8 = 'TAX_RULE_8';
+    const TAX_RULE_9 = 'TAX_RULE_9';
 
     const REFERENCE_PREFIX = 'tax_rule';
 
     /** @var array $data */
     protected $data = [
         self::TAX_RULE_1 => [
-            'tax_code' => LoadTaxCodeData::TAXCODE_0_REF,
-            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_3,
-            'tax_rate' => LoadTaxRateData::CODE_3
-        ],
-        self::TAX_RULE_2 => [
             'tax_code' => LoadTaxCodeData::TAXCODE_1_REF,
             'tax_jurisdiction' => LoadTaxJurisdictionData::REF_1,
             'tax_rate' => LoadTaxRateData::CODE_1
         ],
-        self::TAX_RULE_3 => [
+        self::TAX_RULE_2 => [
             'tax_code' => LoadTaxCodeData::TAXCODE_2_REF,
             'tax_jurisdiction' => LoadTaxJurisdictionData::REF_2,
             'tax_rate' => LoadTaxRateData::CODE_2
+        ],
+        self::TAX_RULE_3 => [
+            'tax_code' => LoadTaxCodeData::TAXCODE_3_REF,
+            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_3,
+            'tax_rate' => LoadTaxRateData::CODE_3
+        ],
+        self::TAX_RULE_4 => [
+            'tax_code' => LoadTaxCodeData::TAXCODE_4_REF,
+            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_4,
+            'tax_rate' => LoadTaxRateData::CODE_4
+        ],
+        self::TAX_RULE_5 => [
+            'tax_code' => LoadTaxCodeData::TAXCODE_4_REF,
+            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_5,
+            'tax_rate' => LoadTaxRateData::CODE_5
+        ],
+        self::TAX_RULE_6 => [
+            'tax_code' => LoadTaxCodeData::TAXCODE_4_REF,
+            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_6,
+            'tax_rate' => LoadTaxRateData::CODE_6
+        ],
+        self::TAX_RULE_7 => [
+            'tax_code' => LoadTaxCodeData::TAXCODE_4_REF,
+            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_7,
+            'tax_rate' => LoadTaxRateData::CODE_7
+        ],
+        self::TAX_RULE_8 => [
+            'tax_code' => LoadTaxCodeData::TAXCODE_4_REF,
+            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_8,
+            'tax_rate' => LoadTaxRateData::CODE_8
+        ],
+        self::TAX_RULE_9 => [
+            'tax_code' => LoadTaxCodeData::TAXCODE_4_REF,
+            'tax_jurisdiction' => LoadTaxJurisdictionData::REF_9,
+            'tax_rate' => LoadTaxRateData::CODE_9
         ],
     ];
 

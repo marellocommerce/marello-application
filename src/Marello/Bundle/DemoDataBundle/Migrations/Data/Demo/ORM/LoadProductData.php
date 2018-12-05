@@ -99,7 +99,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         /**
         * set default taxCode
         */
-        $product->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_0_REF));
+        $product->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_1_REF));
         $this->manager->persist($product);
 
         return $product;
