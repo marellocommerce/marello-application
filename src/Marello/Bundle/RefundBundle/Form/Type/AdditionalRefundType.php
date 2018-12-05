@@ -31,7 +31,7 @@ class AdditionalRefundType extends AbstractType
             ]);
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
                 /** @var RefundItem $item */
                 $item = $event->getData();
                 $form = $event->getForm();
@@ -39,6 +39,7 @@ class AdditionalRefundType extends AbstractType
                 if ($item === null) {
                     $form->add('refundAmount', MoneyType::class, [
                         'empty_data' => 0,
+                        'currency' => $options['currency'],
                         'constraints' => [
                             new GreaterThan(0),
                         ]
@@ -66,6 +67,7 @@ class AdditionalRefundType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => RefundItem::class,
+                'currency'   => null
             ]
         );
     }
