@@ -306,7 +306,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
 
         if ($group) {
             $warehouse->setGroup($group);
-            $this->setReference(sprintf('warehouse.%s',$data['group']), $group);
+            $this->setReference(sprintf('warehouse.%s', $data['group']), $group);
         }
     }
 

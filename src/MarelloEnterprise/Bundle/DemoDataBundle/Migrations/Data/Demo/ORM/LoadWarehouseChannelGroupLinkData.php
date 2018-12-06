@@ -96,7 +96,7 @@ class LoadWarehouseChannelGroupLinkData extends AbstractFixture implements Depen
             /** @var SalesChannelGroup $channelGroup */
             $channelGroup = $this->getReference($data['channelgroup']);
             /** @var WarehouseGroup $warehouseGroup */
-            $warehouseGroup = $this->getReference(sprintf('warehouse.%s',$data['warehousegroup']));
+            $warehouseGroup = $this->getReference(sprintf('warehouse.%s', $data['warehousegroup']));
 
             $channelLink = $this->getExistingWarehouseChannelGroupLink($warehouseGroup);
             if (!$channelLink) {
