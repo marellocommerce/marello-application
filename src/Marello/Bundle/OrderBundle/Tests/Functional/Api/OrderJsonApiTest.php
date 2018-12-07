@@ -2,12 +2,13 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Api;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Symfony\Component\HttpFoundation\Response;
 
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
+use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderWorkflowData;
 
 class OrderJsonApiTest extends RestJsonApiTestCase
 {
@@ -17,7 +18,8 @@ class OrderJsonApiTest extends RestJsonApiTestCase
     {
         parent::setUp();
         $this->loadFixtures([
-            LoadOrderData::class
+            LoadOrderData::class,
+            LoadOrderWorkflowData::class
         ]);
     }
 

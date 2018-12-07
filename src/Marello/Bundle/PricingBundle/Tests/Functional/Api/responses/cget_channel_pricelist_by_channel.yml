@@ -1,7 +1,7 @@
 data:
     -
         type: marelloassembledchannelpricelists
-        id: '6'
+        id: '<toString(@product1->channelPrices->get(0)->defaultPrice->id)>'
         attributes:
             currency: EUR
         relationships:
@@ -16,12 +16,12 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '6'
+                    id: '<toString(@product1->channelPrices->get(0)->defaultPrice->id)>'
             specialPrice:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '7'
+        id: '<toString(@product2->channelPrices->get(0)->defaultPrice->id)>'
         attributes:
             currency: EUR
         relationships:
@@ -36,12 +36,12 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '7'
+                    id: '<toString(@product2->channelPrices->get(0)->defaultPrice->id)>'
             specialPrice:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '8'
+        id: '<toString(@product3->channelPrices->get(0)->defaultPrice->id)>'
         attributes:
             currency: EUR
         relationships:
@@ -56,12 +56,12 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '8'
+                    id: '<toString(@product3->channelPrices->get(0)->defaultPrice->id)>'
             specialPrice:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '9'
+        id: '<toString(@product4->channelPrices->get(0)->defaultPrice->id)>'
         attributes:
             currency: EUR
         relationships:
@@ -76,6 +76,6 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '9'
+                    id: '<toString(@product4->channelPrices->get(0)->defaultPrice->id)>'
             specialPrice:
                 data: null

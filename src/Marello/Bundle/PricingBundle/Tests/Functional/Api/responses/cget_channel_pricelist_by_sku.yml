@@ -1,7 +1,7 @@
 data:
     -
         type: marelloassembledchannelpricelists
-        id: '6'
+        id: '<toString(@product1->channelPrices->get(0)->defaultPrice->id)>'
         attributes:
             currency: EUR
         relationships:
@@ -16,6 +16,6 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductchannelprices
-                    id: '6'
+                    id: '<toString(@product1->channelPrices->get(0)->defaultPrice->id)>'
             specialPrice:
                 data: null

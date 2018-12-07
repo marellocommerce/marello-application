@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
 use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnData;
+use Marello\Bundle\ReturnBundle\Tests\Functional\DataFixtures\LoadReturnWorkflowData;
 
 class ReturnJsonApiTest extends RestJsonApiTestCase
 {
@@ -16,7 +17,8 @@ class ReturnJsonApiTest extends RestJsonApiTestCase
     {
         parent::setUp();
         $this->loadFixtures([
-            LoadReturnData::class
+            LoadReturnData::class,
+            LoadReturnWorkflowData::class
         ]);
     }
 

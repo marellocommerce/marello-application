@@ -14,14 +14,14 @@ data:
             primaryAddress:
                 data:
                     type: marelloaddresses
-                    id: '12'
+                    id: '<toString(@marello-customer-1->primaryAddress->id)>'
             shippingAddress:
                 data: null
             addresses:
                 data:
                     -
                         type: marelloaddresses
-                        id: '12'
+                        id: '<toString(@marello-customer-1->primaryAddress->id)>'
             organization:
                 data:
                     type: organizations

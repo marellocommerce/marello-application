@@ -24,11 +24,11 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-14T11:38:08Z'
+            purchaseDate: '@marello_order_0->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
             workflowItem:
-                id: 1
+                id: '@marello_order_workflow_item_0->id'
                 currentStep:
                     name: pending
                     label: 'Pending Order'
@@ -37,7 +37,7 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '1'
+                        id: '<toString(@marello_order_0->items->get(0)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -45,11 +45,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '26'
+                    id: '<toString(@marello_order_0->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '26'
+                    id: '<toString(@marello_order_0->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -85,11 +85,11 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-14T11:38:09Z'
+            purchaseDate: '@marello_order_1->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
             workflowItem:
-                id: 2
+                id: '@marello_order_workflow_item_1->id'
                 currentStep:
                     name: pending
                     label: 'Pending Order'
@@ -98,16 +98,16 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '2'
+                        id: '<toString(@marello_order_1->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '3'
+                        id: '<toString(@marello_order_1->items->get(1)->id)>'
                     -
                         type: marelloorderitems
-                        id: '4'
+                        id: '<toString(@marello_order_1->items->get(2)->id)>'
                     -
                         type: marelloorderitems
-                        id: '5'
+                        id: '<toString(@marello_order_1->items->get(3)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -115,11 +115,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '28'
+                    id: '<toString(@marello_order_1->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '28'
+                    id: '<toString(@marello_order_1->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -155,11 +155,11 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-14T11:38:09Z'
+            purchaseDate: '@marello_order_2->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
             workflowItem:
-                id: 3
+                id: '@marello_order_workflow_item_2->id'
                 currentStep:
                     name: pending
                     label: 'Pending Order'
@@ -168,13 +168,13 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '6'
+                        id: '<toString(@marello_order_2->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '7'
+                        id: '<toString(@marello_order_2->items->get(1)->id)>'
                     -
                         type: marelloorderitems
-                        id: '8'
+                        id: '<toString(@marello_order_2->items->get(2)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -182,11 +182,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '30'
+                    id: '<toString(@marello_order_2->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '30'
+                    id: '<toString(@marello_order_2->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -222,11 +222,11 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-14T11:38:09Z'
+            purchaseDate: '@marello_order_3->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
             workflowItem:
-                id: 4
+                id: '@marello_order_workflow_item_3->id'
                 currentStep:
                     name: pending
                     label: 'Pending Order'
@@ -235,16 +235,16 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '9'
+                        id: '<toString(@marello_order_3->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '10'
+                        id: '<toString(@marello_order_3->items->get(1)->id)>'
                     -
                         type: marelloorderitems
-                        id: '11'
+                        id: '<toString(@marello_order_3->items->get(2)->id)>'
                     -
                         type: marelloorderitems
-                        id: '12'
+                        id: '<toString(@marello_order_3->items->get(3)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -252,11 +252,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '32'
+                    id: '<toString(@marello_order_3->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '32'
+                    id: '<toString(@marello_order_3->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -292,11 +292,11 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-14T11:38:09Z'
+            purchaseDate: '@marello_order_4->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
             workflowItem:
-                id: 5
+                id: '@marello_order_workflow_item_4->id'
                 currentStep:
                     name: pending
                     label: 'Pending Order'
@@ -305,7 +305,7 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '13'
+                        id: '<toString(@marello_order_4->items->get(0)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -313,11 +313,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '34'
+                    id: '<toString(@marello_order_4->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '34'
+                    id: '<toString(@marello_order_4->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -353,11 +353,11 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-14T11:38:09Z'
+            purchaseDate: '@marello_order_5->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
             workflowItem:
-                id: 6
+                id: '@marello_order_workflow_item_5->id'
                 currentStep:
                     name: pending
                     label: 'Pending Order'
@@ -366,10 +366,10 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '14'
+                        id: '<toString(@marello_order_5->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '15'
+                        id: '<toString(@marello_order_5->items->get(1)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -377,11 +377,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '36'
+                    id: '<toString(@marello_order_5->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '36'
+                    id: '<toString(@marello_order_5->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -417,11 +417,11 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel3
-            purchaseDate: '2018-09-14T11:38:09Z'
+            purchaseDate: '@marello_order_6->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
             workflowItem:
-                id: 7
+                id: '@marello_order_workflow_item_6->id'
                 currentStep:
                     name: pending
                     label: 'Pending Order'
@@ -430,16 +430,16 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '16'
+                        id: '<toString(@marello_order_6->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '17'
+                        id: '<toString(@marello_order_6->items->get(1)->id)>'
                     -
                         type: marelloorderitems
-                        id: '18'
+                        id: '<toString(@marello_order_6->items->get(2)->id)>'
                     -
                         type: marelloorderitems
-                        id: '19'
+                        id: '<toString(@marello_order_6->items->get(3)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -447,11 +447,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '38'
+                    id: '<toString(@marello_order_6->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '38'
+                    id: '<toString(@marello_order_6->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -487,11 +487,11 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-14T11:38:09Z'
+            purchaseDate: '@marello_order_7->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
             workflowItem:
-                id: 8
+                id: '@marello_order_workflow_item_7->id'
                 currentStep:
                     name: pending
                     label: 'Pending Order'
@@ -500,7 +500,7 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '20'
+                        id: '<toString(@marello_order_7->items->get(0)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -508,11 +508,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '40'
+                    id: '<toString(@marello_order_7->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '40'
+                    id: '<toString(@marello_order_7->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -548,11 +548,11 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel2
-            purchaseDate: '2018-09-14T11:38:09Z'
+            purchaseDate: '@marello_order_8->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
             workflowItem:
-                id: 9
+                id: '@marello_order_workflow_item_8->id'
                 currentStep:
                     name: pending
                     label: 'Pending Order'
@@ -561,10 +561,10 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '21'
+                        id: '<toString(@marello_order_8->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '22'
+                        id: '<toString(@marello_order_8->items->get(1)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -572,11 +572,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '42'
+                    id: '<toString(@marello_order_8->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '42'
+                    id: '<toString(@marello_order_8->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -589,7 +589,7 @@ data:
                     id: '1'
     -
         type: marelloorders
-        id: '10'
+        id: '<toString(@marello_order_9->id)>'
         attributes:
             orderNumber: '000000010'
             orderReference: '100000334'
@@ -612,11 +612,11 @@ data:
             couponCode: null
             invoicedAt: null
             salesChannelName: channel1
-            purchaseDate: '2018-09-14T11:38:09Z'
+            purchaseDate: '@marello_order_9->purchaseDate->format("Y-m-d\TH:i:s\Z")'
             data: []
             locale: null
             workflowItem:
-                id: 10
+                id: '@marello_order_workflow_item_9->id'
                 currentStep:
                     name: pending
                     label: 'Pending Order'
@@ -625,10 +625,10 @@ data:
                 data:
                     -
                         type: marelloorderitems
-                        id: '23'
+                        id: '<toString(@marello_order_9->items->get(0)->id)>'
                     -
                         type: marelloorderitems
-                        id: '24'
+                        id: '<toString(@marello_order_9->items->get(1)->id)>'
             customer:
                 data:
                     type: marellocustomers
@@ -636,11 +636,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '44'
+                    id: '<toString(@marello_order_9->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '44'
+                    id: '<toString(@marello_order_9->shippingAddress->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels

@@ -1,7 +1,7 @@
 data:
     -
         type: marelloassembledpricelists
-        id: '33'
+        id: '<toString(@product1->prices->get(0)->id)>'
         attributes:
             currency: EUR
         relationships:
@@ -12,7 +12,7 @@ data:
             defaultPrice:
                 data:
                     type: marelloproductprices
-                    id: '33'
+                    id: '<toString(@product1->prices->get(0)->defaultPrice->id)>'
             specialPrice:
                 data: null
             msrpPrice:

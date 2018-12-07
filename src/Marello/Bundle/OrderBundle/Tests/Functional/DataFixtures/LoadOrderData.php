@@ -112,7 +112,6 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 ;
 
                 $manager->persist($order);
-                $this->setReference('marello_order_' . $createdOrders, $order);
                 $createdOrders++;
                 $order = null;
             }
@@ -124,6 +123,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
                 $order->setOrderNumber($itemRow['order_number']);
             }
 
+            $this->setReference('marello_order_' . $createdOrders, $order);
             $item = $this->createOrderItem($itemRow);
             $order->addItem($item);
             $manager->flush();
@@ -264,7 +264,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
         $itemEntity->setRowTotalInclTax($row['total_price']);
         $itemEntity->setRowTotalExclTax($row['total_price']);
         $itemEntity->setTax($row['tax']);
-        
+
         return $itemEntity;
     }
 }
