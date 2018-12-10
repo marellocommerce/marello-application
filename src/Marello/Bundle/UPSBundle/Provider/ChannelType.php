@@ -7,7 +7,7 @@ use Oro\Bundle\IntegrationBundle\Provider\IconAwareIntegrationInterface;
 
 class ChannelType implements ChannelInterface, IconAwareIntegrationInterface
 {
-    const TYPE = 'ups';
+    const TYPE = 'marello_ups';
 
     /**
      * {@inheritdoc}
