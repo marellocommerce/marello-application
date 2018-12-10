@@ -2,14 +2,18 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Functional\DataFixtures;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadAdminUserData;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
 
 class LoadChannelData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
@@ -19,14 +23,14 @@ class LoadChannelData extends AbstractFixture implements DependentFixtureInterfa
     protected $channelData = [
         [
             'name' => 'UPS1',
-            'type' => 'ups',
+            'type' => UPSShippingMethod::IDENTIFIER,
             'transport' => 'ups:transport_1',
             'enabled' => true,
             'reference' => 'ups:channel_1',
         ],
         [
             'name' => 'UPS2',
-            'type' => 'ups',
+            'type' => UPSShippingMethod::IDENTIFIER,
             'transport' => 'ups:transport_2',
             'enabled' => true,
             'reference' => 'ups:channel_2',

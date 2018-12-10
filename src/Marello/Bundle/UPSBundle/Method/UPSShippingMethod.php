@@ -25,7 +25,7 @@ class UPSShippingMethod implements
     PricesAwareShippingMethodInterface,
     ShippingTrackingAwareInterface
 {
-    const IDENTIFIER = 'ups';
+    const IDENTIFIER = 'marello_ups';
     const OPTION_SURCHARGE = 'surcharge';
     const REQUEST_OPTION = 'Shop';
 
