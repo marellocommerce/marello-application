@@ -174,7 +174,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'code'          => 'warehouse_uk_1',
             'default'       => false,
             'address'       => [
-                'country' => 'UK',
+                'country' => 'GB',
                 'street' => '71 Harehills Lane',
                 'city' => 'Rowton',
                 'state' => 'CHW',
@@ -190,7 +190,7 @@ class LoadWarehouseData extends AbstractFixture implements DependentFixtureInter
             'code'          => 'warehouse_uk_2',
             'default'       => false,
             'address'       => [
-                'country' => 'UK',
+                'country' => 'GB',
                 'street' => '49 St James Boulevard',
                 'city' => 'Hornby',
                 'state' => 'NYK',
