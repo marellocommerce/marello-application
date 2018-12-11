@@ -61,6 +61,13 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-products-grid, method: buildAfter }
 
+    marello_product.product_search_listener:
+        class: Marello\Bundle\ProductBundle\EventListener\ProductSearchListener
+        arguments:
+            - '@oro_search.provider.search_mapping'
+        tags:
+            - { name: kernel.event_listener, event: oro_search.before_search, method: process }
+
     marello_product.provider.tax_code_provider:
         class: Marello\Bundle\ProductBundle\Provider\ProductTaxCodeProvider
         arguments:
