@@ -3,13 +3,17 @@
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Cache;
 
 use Doctrine\Common\Cache\CacheProvider;
+
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Marello\Bundle\UPSBundle\Cache\Lifetime\LifetimeProviderInterface;
+
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
 use Marello\Bundle\UPSBundle\Cache\ShippingPriceCacheKey;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Cache\Lifetime\LifetimeProviderInterface;
 
-class ShippingPriceCacheTest extends \PHPUnit_Framework_TestCase
+class ShippingPriceCacheTest extends TestCase
 {
     /**
      * @internal

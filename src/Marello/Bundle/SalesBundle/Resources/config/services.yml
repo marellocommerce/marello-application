@@ -117,7 +117,7 @@ services:
         parent: oro_soap.handler.delete.abstract
         scope: request
         arguments:
-            - '@oro_security.security_facade'
+            - '@security.authorization_checker'
 
     marello_sales.condition.sales_channel_has_valid_integration:
         class: 'Marello\Bundle\SalesBundle\Condition\HasValidIntegration'

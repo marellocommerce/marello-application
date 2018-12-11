@@ -2,6 +2,8 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Resolver;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
@@ -12,7 +14,7 @@ use Marello\Bundle\TaxBundle\Resolver\AbstractItemResolver;
 use Marello\Bundle\TaxBundle\Resolver\RowTotalResolver;
 use Marello\Bundle\TaxBundle\Tests\ResultComparatorTrait;
 
-abstract class AbstractItemResolverTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractItemResolverTestCase extends TestCase
 {
     use ResultComparatorTrait;
 

@@ -2,14 +2,17 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider\OrderItem;
 
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
-class OrderItemFormChangesProviderTest extends \PHPUnit_Framework_TestCase
+class OrderItemFormChangesProviderTest extends TestCase
 {
     /**
      * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject

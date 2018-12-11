@@ -2,15 +2,16 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Unit\Twig;
 
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Twig\ProductExtension;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SupplierBundle\Provider\SupplierProvider;
 
-class ProductExtensionTest extends \PHPUnit_Framework_TestCase
+class ProductExtensionTest extends TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var \PHPUnit_Framework_MockObject_MockObject|ChannelProvider
      */
     protected $channelProvider;
 

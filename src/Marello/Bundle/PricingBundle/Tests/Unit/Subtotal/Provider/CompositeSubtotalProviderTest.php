@@ -3,15 +3,20 @@
 namespace Marello\Bundle\PricingBundle\Tests\Unit\Subtotal\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
+use Symfony\Component\Translation\TranslatorInterface;
+
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
+use Oro\Bundle\CurrencyBundle\Provider\DefaultCurrencyProviderInterface;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PricingBundle\Subtotal\Model\Subtotal;
 use Marello\Bundle\PricingBundle\Subtotal\Provider\CompositeSubtotalProvider;
 use Marello\Bundle\PricingBundle\Subtotal\Provider\SubtotalProviderInterface;
-use Oro\Bundle\CurrencyBundle\Provider\DefaultCurrencyProviderInterface;
-use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
-class CompositeSubtotalProviderTest extends \PHPUnit_Framework_TestCase
+class CompositeSubtotalProviderTest extends TestCase
 {
     /**
      * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject

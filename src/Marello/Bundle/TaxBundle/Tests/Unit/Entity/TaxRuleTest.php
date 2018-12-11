@@ -2,13 +2,16 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
-use Marello\Bundle\TaxBundle\Entity\TaxRate;
-use Marello\Bundle\TaxBundle\Entity\TaxRule;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class TaxRuleTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\TaxBundle\Entity\TaxRate;
+use Marello\Bundle\TaxBundle\Entity\TaxRule;
+use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
+
+class TaxRuleTest extends TestCase
 {
     use EntityTestCaseTrait;
 

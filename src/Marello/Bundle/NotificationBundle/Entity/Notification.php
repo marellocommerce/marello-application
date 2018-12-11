@@ -3,11 +3,12 @@
 namespace Marello\Bundle\NotificationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\NotificationBundle\Model\ExtendNotification;
+
 use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\NotificationBundle\Model\EmailNotificationInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
+use Marello\Bundle\NotificationBundle\Model\ExtendNotification;
 
 /**
  * @ORM\Entity()
@@ -29,7 +30,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Organization;
  *  }
  * )
  */
-class Notification extends ExtendNotification implements EmailNotificationInterface
+class Notification extends ExtendNotification
 {
     /**
      * @ORM\Id

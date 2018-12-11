@@ -2,15 +2,18 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Provider;
 
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Templating\EngineInterface;
+
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 use Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider;
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Templating\EngineInterface;
 
-class OrderAddressFormChangesProviderTest extends \PHPUnit_Framework_TestCase
+class OrderAddressFormChangesProviderTest extends TestCase
 {
     /**
      * @var EngineInterface|\PHPUnit_Framework_MockObject_MockObject

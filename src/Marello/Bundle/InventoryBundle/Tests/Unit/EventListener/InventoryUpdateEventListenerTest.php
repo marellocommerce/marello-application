@@ -2,13 +2,15 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\EventListener;
 
-use Marello\Bundle\InventoryBundle\Manager\BalancedInventoryManager;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\EventListener\InventoryUpdateEventListener;
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use PHPUnit\Framework\TestCase;
 
-class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Manager\BalancedInventoryManager;
+use Marello\Bundle\InventoryBundle\EventListener\InventoryUpdateEventListener;
+
+class InventoryUpdateEventListenerTest extends TestCase
 {
     /**
      * @var InventoryUpdateContext|\PHPUnit_Framework_MockObject_MockObject

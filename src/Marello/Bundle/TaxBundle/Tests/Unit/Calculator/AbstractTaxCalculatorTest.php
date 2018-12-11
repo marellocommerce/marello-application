@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Calculator;
 
-use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\CurrencyBundle\Rounding\RoundingServiceInterface;
 
-abstract class AbstractTaxCalculatorTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
+
+abstract class AbstractTaxCalculatorTest extends TestCase
 {
     /**
      * @var TaxCalculatorInterface

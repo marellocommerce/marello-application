@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
-use Marello\Bundle\TaxBundle\Entity\ZipCode;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class ZipCodeTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\TaxBundle\Entity\ZipCode;
+use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
+
+class ZipCodeTest extends TestCase
 {
     use EntityTestCaseTrait;
 

@@ -4,9 +4,11 @@ namespace Marello\Bundle\CoreBundle\Tests\Unit\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanOrEqualToValue;
 
-class GreaterThanOrEqualToValueTest extends \PHPUnit_Framework_TestCase
+class GreaterThanOrEqualToValueTest extends TestCase
 {
     /** @var GreaterThanOrEqualToValue $constraint */
     protected $constraint;

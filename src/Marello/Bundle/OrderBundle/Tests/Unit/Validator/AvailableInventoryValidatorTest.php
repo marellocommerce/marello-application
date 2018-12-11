@@ -5,21 +5,23 @@ namespace Marello\Bundle\OrderBundle\Tests\Unit\Validator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\OrderBundle\Validator\AvailableInventoryValidator;
 use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
 
-class AvailableInventoryValidatorTest extends \PHPUnit_Framework_TestCase
+class AvailableInventoryValidatorTest extends TestCase
 {
     /** @var AvailableInventory $constraint */
     protected $constraint;

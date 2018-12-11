@@ -2,13 +2,16 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use PHPUnit\Framework\TestCase;
 
-class WarehouseChannelGroupLinkTest extends \PHPUnit_Framework_TestCase
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+
+class WarehouseChannelGroupLinkTest extends TestCase
 {
     use EntityTestCaseTrait;
 

@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Unit\Datagrid;
 
-use Marello\Bundle\SalesBundle\Datagrid\SalesChannelGroupActionPermissionProvider;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
-class SalesChannelGroupActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\SalesBundle\Datagrid\SalesChannelGroupActionPermissionProvider;
+
+class SalesChannelGroupActionPermissionProviderTest extends TestCase
 {
     /**
      * @var SalesChannelGroupActionPermissionProvider

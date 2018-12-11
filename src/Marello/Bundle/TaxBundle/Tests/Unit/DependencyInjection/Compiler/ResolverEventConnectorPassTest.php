@@ -2,14 +2,17 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Marello\Bundle\TaxBundle\DependencyInjection\Compiler\ResolverEventConnectorPass;
-use Marello\Bundle\TaxBundle\Event\ResolverEventConnector;
-use Marello\Bundle\TaxBundle\Event\ResolveTaxEvent;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
-class ResolverEventConnectorPassTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\TaxBundle\Event\ResolveTaxEvent;
+use Marello\Bundle\TaxBundle\Event\ResolverEventConnector;
+use Marello\Bundle\TaxBundle\DependencyInjection\Compiler\ResolverEventConnectorPass;
+
+class ResolverEventConnectorPassTest extends TestCase
 {
     /**
      * @var ResolverEventConnectorPass

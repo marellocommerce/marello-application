@@ -3,17 +3,21 @@
 namespace Marello\Bundle\SalesBundle\Tests\Unit\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
+
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
+use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
+
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Handler\SalesChannelGroupDeleteHandler;
-use Oro\Bundle\OrganizationBundle\Ownership\OwnerDeletionManager;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
-use Symfony\Bundle\FrameworkBundle\Tests\TestCase;
 
 class SalesChannelGroupDeleteHandlerTest extends TestCase
 {
     /**
-     * @var SecurityFacade|\PHPUnit_Framework_MockObject_MockObject
+     * @var AuthorizationCheckerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $securityFacade;
 
@@ -40,7 +44,7 @@ class SalesChannelGroupDeleteHandlerTest extends TestCase
         parent::setUp();
 
         $this->securityFacade = $this
-            ->getMockBuilder(SecurityFacade::class)
+            ->getMockBuilder(AuthorizationCheckerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 

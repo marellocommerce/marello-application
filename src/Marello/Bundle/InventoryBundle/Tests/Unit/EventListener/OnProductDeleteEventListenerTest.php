@@ -2,14 +2,17 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\EventListener;
 
+use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\UnitOfWork;
-use Marello\Bundle\InventoryBundle\EventListener\OnProductDeleteEventListener;
-use Marello\Bundle\InventoryBundle\Manager\InventoryItemManagerInterface;
-use Marello\Bundle\ProductBundle\Entity\Product;
 
-class OnProductDeleteEventListenerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Manager\InventoryItemManagerInterface;
+use Marello\Bundle\InventoryBundle\EventListener\OnProductDeleteEventListener;
+
+class OnProductDeleteEventListenerTest extends TestCase
 {
     /**
      * @var OnProductDeleteEventListener

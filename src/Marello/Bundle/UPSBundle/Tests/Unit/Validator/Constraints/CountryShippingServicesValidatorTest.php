@@ -2,16 +2,20 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Validator\Constraints;
 
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
+
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
+
 use Marello\Bundle\UPSBundle\Entity\ShippingService;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Validator\Constraints\CountryShippingServicesConstraint;
 use Marello\Bundle\UPSBundle\Validator\Constraints\CountryShippingServicesValidator;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class CountryShippingServicesValidatorTest extends \PHPUnit_Framework_TestCase
+class CountryShippingServicesValidatorTest extends TestCase
 {
     const ALIAS = 'marello_ups_country_shipping_services_validator';
 

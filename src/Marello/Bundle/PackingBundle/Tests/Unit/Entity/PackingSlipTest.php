@@ -2,17 +2,20 @@
 
 namespace Marello\Bundle\PackingBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\OrderBundle\Entity\Customer;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\PackingBundle\Entity\PackingSlip;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use PHPUnit\Framework\TestCase;
 
-class PackingSlipTest extends \PHPUnit_Framework_TestCase
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\PackingBundle\Entity\PackingSlip;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+
+class PackingSlipTest extends TestCase
 {
     use EntityTestCaseTrait;
 
