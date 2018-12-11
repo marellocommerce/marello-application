@@ -28,13 +28,6 @@ class RefundType extends AbstractType
             ->add(
                 'items',
                 OrderItemRefundCollectionType::class
-            )
-            ->add(
-                'additionalItems',
-                AdditionalRefundCollectionType::class,
-                [
-                    'mapped' => false,
-                ]
             );
 
         $builder
@@ -58,6 +51,17 @@ class RefundType extends AbstractType
                     );
 
                     $form->get('items')->setData($orderedItems);
+                    $form
+                        ->add(
+                            'additionalItems',
+                            AdditionalRefundCollectionType::class,
+                            [
+                                'mapped' => false,
+                                'entry_options' => [
+                                    'currency' => $data->getCurrency()
+                                ]
+                            ]
+                        );
                     $form->get('additionalItems')->setData($additionalItems);
                 }
             )
