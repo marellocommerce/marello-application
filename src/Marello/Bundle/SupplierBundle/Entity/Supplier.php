@@ -5,6 +5,7 @@ namespace Marello\Bundle\SupplierBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
+use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
@@ -30,7 +31,7 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  * )
  * @ORM\HasLifecycleCallbacks()
  */
-class Supplier implements CurrencyAwareInterface
+class Supplier implements CurrencyAwareInterface, EmailHolderInterface
 {
     use EntityCreatedUpdatedAtTrait, AuditableOrganizationAwareTrait;
 
@@ -238,9 +239,7 @@ class Supplier implements CurrencyAwareInterface
     }
 
     /**
-     * Get email
-     *
-     * @return string
+     * {@inheritDoc}
      */
     public function getEmail()
     {

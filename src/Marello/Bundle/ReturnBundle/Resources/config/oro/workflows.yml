@@ -63,13 +63,13 @@ workflows:
                 post_actions:
                     - '@marello_notification_send':
                         entity: $return
-                        recipient: $return.order.customer.email
+                        recipient: $return.order.customer
                         template: marello_return_reminder
             receive_def:
                 post_actions:
                     - '@marello_notification_send':
                         entity: $return
-                        recipient: $return.order.customer.email
+                        recipient: $return.order.customer
                         template: marello_return_received
             contents_verified_def:
                 post_actions:
@@ -78,14 +78,14 @@ workflows:
                 post_actions:
                     - '@marello_notification_send':
                         entity: $return
-                        recipient: $return.order.customer.email
+                        recipient: $return.order.customer
                         template: marello_return_not_verified
             continue_received_def: ~
             inspection_not_ok_def:
                 post_actions:
                     - '@marello_notification_send':
                         entity: $return
-                        recipient: $return.order.customer.email
+                        recipient: $return.order.customer
                         template: marello_return_inspection_not_ok
             credit_def:
                 post_actions:
