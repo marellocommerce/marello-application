@@ -554,6 +554,16 @@
                                                     <span class="price" style="white-space: nowrap;">{{ entity.totalTax|oro_format_currency({'currency': entity.currency}) }}</span>
                                                 </td>
                                             </tr>
+                                            {% if entity.discountAmount %}
+                                                <tr class="discount">
+                                                    <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                        Discount:
+                                                    </th>
+                                                    <td data-th="discount" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px; padding-top: 0; text-align: right;">
+                                                        <span class="price" style="white-space: nowrap;">{{ entity.discountAmount|oro_format_currency({'currency': entity.currency}) }}</span>
+                                                    </td>
+                                                </tr>
+                                            {% endif %}
                                             <tr class="shipping">
                                                 <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
                                                     Shipping cost:
