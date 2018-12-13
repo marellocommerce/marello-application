@@ -5,7 +5,9 @@ namespace Marello\Bundle\OrderBundle\Form\Type;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Form\DataTransformer\TaxCodeToCodeTransformer;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderItemPurchasePriceSubscriber;
+use Marello\Bundle\PricingBundle\DependencyInjection\Configuration;
 use Marello\Bundle\ProductBundle\Form\Type\ProductSalesChannelAwareSelectType;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,11 +24,18 @@ class OrderItemType extends AbstractType
     protected $taxCodeModelTransformer;
 
     /**
-     * @param TaxCodeToCodeTransformer $taxCodeModelTransformer
+     * @var ConfigManager
      */
-    public function __construct(TaxCodeToCodeTransformer $taxCodeModelTransformer)
+    protected $configManager;
+
+    /**
+     * @param TaxCodeToCodeTransformer $taxCodeModelTransformer
+     * @param ConfigManager $configManager
+     */
+    public function __construct(TaxCodeToCodeTransformer $taxCodeModelTransformer, ConfigManager $configManager )
     {
         $this->taxCodeModelTransformer = $taxCodeModelTransformer;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -76,7 +85,9 @@ class OrderItemType extends AbstractType
         ;
 
         $builder->get('taxCode')->addModelTransformer($this->taxCodeModelTransformer);
-        $builder->addEventSubscriber(new OrderItemPurchasePriceSubscriber());
+        $builder->addEventSubscriber(
+            new OrderItemPurchasePriceSubscriber($this->configManager->get(Configuration::VAT_SYSTEM_CONFIG_PATH))
+        );
     }
 
     /**
