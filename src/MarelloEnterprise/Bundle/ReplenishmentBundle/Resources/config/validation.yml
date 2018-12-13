@@ -1,0 +1,6 @@
+MarelloEnterprice\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem:
+    properties:
+        inventoryQty:
+            - NotBlank: ~
+        totalInventoryQty:
+            - NotBlank: ~

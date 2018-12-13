@@ -1,0 +1,96 @@
+datagrids:
+    marello-replenishment-orders-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - ro
+                    - o.label as originLabel
+                    - d.label as destinationLabel
+                from:
+                    - { table: MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder, alias: ro }
+                join:
+                    inner:
+                        - { join: ro.origin, alias: o }
+                        - { join: ro.destination, alias: d }
+                        - { join: ro.replOrderItems, alias: roi }
+        columns:
+            replOrderNumber:
+                label: marello.replenishment.replenishment_order.repl_order_number.label
+                frontend_type: string
+            originLabel:
+                label: marello.replenishment.replenishment_order.origin.label
+                frontend_type: string
+            destinationLabel:
+                label: marello.replenishment.replenishment_order.destination.label
+                frontend_type: string
+            executionDate:
+                label: marello.replenishment.replenishment_order.execution_date.label
+                frontend_type: date
+            percentage:
+                label: marello.replenishment.replenishment_order.percentage.label
+                type: twig
+                frontend_type: html
+                template: MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:Datagrid/Property/percentage.html.twig
+            replOrderItems:
+                label: marello.replenishment.replenishment_order.repl_order_items.label
+                type: twig
+                frontend_type: html
+                template: MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:Datagrid/Property/replOrderItems.html.twig
+            description:
+                label: marello.replenishment.replenishment_order.description.label
+                frontend_type: string
+        sorters:
+            columns:
+                replOrderNumber:
+                    data_name: ro.replOrderNumber
+                originLabel:
+                    data_name: o.label
+                destinationLabel:
+                    data_name: d.label
+                percentage:
+                    data_name: ro.percentage
+        properties:
+            view_link:
+                type:   url
+                route:  marello_replenishment_order_view
+                params:
+                    id: id
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                acl_recource:   marello_replenishment_order_view
+                rowAction:      true
+
+    marello-replenishment-order-items-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - roi
+                from:
+                    - { table: MarelloEnterpriseReplenishmentBundle:ReplenishmentOrderItem, alias: roi }
+                where:
+                    and:
+                        - roi.order = :order_id
+            bind_parameters:
+                order_id: replOrderId
+        columns:
+            productSku:
+                label: marello.replenishment.replenishment_order_item.product_sku.label
+                frontend_type: string
+            productName:
+                label: marello.replenishment.replenishment_order_item.product_name.label
+                frontend_type: string
+            inventoryQty:
+                label: marello.replenishment.replenishment_order_item.inventory_qty.label
+                frontend_type: integer
+            totalInventoryQty:
+                label: marello.replenishment.replenishment_order_item.total_inventory_qty.label
+                frontend_type: integer
+            note:
+                label: marello.replenishment.replenishment_order_item.note.label
+                frontend_type: string

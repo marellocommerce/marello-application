@@ -1,0 +1,43 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% oro_title_set({params : {'%entityName%': 'marello.replenishment.replenishment_order.entity_label'|trans }}) %}
+
+{% set formAction = path('marello_replenishment_order_config_create') %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_replenishment_order_index')) }}
+    {% if resource_granted('marello_replenishment_order_config_create') %}
+        {% set html = UI.saveAndStayButton({
+        'route': 'marello_replenishment_order_index'
+        }) %}
+
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
+{% endblock %}
+
+{% block pageHeader %}
+    {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'marello.replenishment.replenishment_order_config.entity_label'|trans}) %}
+    {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-replenishment-order-config-create' %}
+
+    {% set dataBlocks = [{
+    'title': 'General'|trans,
+    'class': 'active',
+    'subblocks': [{
+    'title': '',
+    'formErrors': form_errors(form)? form_errors(form) : null,
+    'data': [
+    form_rest(form)
+    ]
+    }]
+    }]
+    %}
+    {% set data = {
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

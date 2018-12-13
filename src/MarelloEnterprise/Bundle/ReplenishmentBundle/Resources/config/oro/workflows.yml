@@ -1,0 +1,93 @@
+workflows:
+    marello_replenishment_order_workflow:
+        entity: MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder
+        entity_attribute: replenishment_order
+        start_step: draft
+
+        defaults:
+            active: true
+
+        attributes:
+            repl_order_items:
+                property_path: replenishment_order.replOrderItems
+        steps:
+            draft:
+                allowed_transitions:
+                    - allocate_inventory
+            prepared_for_shipping:
+                allowed_transitions:
+                    - check_and_pack
+            ready_for_shipping:
+                allowed_transitions:
+                    - ship
+            in_transit:
+                allowed_transitions:
+                    - receive
+            received:
+                allowed_transitions:
+                    - complete
+            completed:
+                allowed_transitions: []
+
+        transitions:
+            allocate_inventory:
+                step_to: prepared_for_shipping
+                transition_definition: allocate_inventory_definition
+            check_and_pack:
+                step_to: ready_for_shipping
+                transition_definition: check_and_pack_definition
+                form_options:
+                    attribute_fields:
+                        repl_order_items:
+                            form_type: MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type\ReplenishmentOrderItemCollectionType
+                            options:
+                                data: $repl_order_items
+            ship:
+                step_to: in_transit
+                transition_definition: ship_definition
+            receive:
+                step_to: received
+                transition_definition: receive_definition
+            complete:
+                step_to: completed
+                transition_definition: complete_definition
+
+        transition_definitions:
+            allocate_inventory_definition:
+                post_actions:
+                    - '@marello_allocate_origin_replenished_inventory': ~
+                    - '@marello_notification_send':
+                        conditions:
+                            '@not_empty': $replenishment_order.origin.email
+                        parameters:
+                            entity: $replenishment_order
+                            recipient: $replenishment_order.origin.email
+                            template: marello_replenishment_order_allocated
+            check_and_pack_definition:
+                post_actions:
+                    - '@flush_entity': $replenishment_order
+                    - '@call_service_method':
+                        service: oro_config.manager
+                        method: get
+                        method_parameters: ['marello_enterprise_replenishment.replenishment_carrier_email']
+                        attribute: $.result.replenishment_carrier_email
+                    - '@marello_notification_send':
+                        conditions:
+                            '@not_empty': $.result.replenishment_carrier_email
+                        parameters:
+                            entity: $replenishment_order
+                            recipient: $.result.replenishment_carrier_email
+                            template: marello_replenishment_order_ready_for_shipping
+            ship_definition:
+                post_actions:
+                    - '@marello_notification_send':
+                        conditions:
+                            '@not_empty': $replenishment_order.destination.email
+                        parameters:
+                            entity: $replenishment_order
+                            recipient: $replenishment_order.destination.email
+                            template: marello_replenishment_order_in_transit
+            receive_definition: ~
+            complete_definition:
+                post_actions:
+                    - '@marello_allocate_destination_replenished_inventory': ~
