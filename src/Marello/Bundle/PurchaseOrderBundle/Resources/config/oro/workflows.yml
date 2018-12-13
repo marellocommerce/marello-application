@@ -55,7 +55,7 @@ workflows:
                 post_actions:
                     - '@marello_purchase_order_send':
                         entity: $po
-                        recipient: $po.supplier.email
+                        recipient: $po.supplier
                         template: marello_purchase_order_supplier
             partially_receive_definition:
                 post_actions:

@@ -31,5 +31,5 @@ workflows:
                 post_actions:
                     - '@marello_notification_send':
                         entity: $refund
-                        recipient: $refund.order.customer.email
+                        recipient: $refund.order.customer
                         template: marello_refund_credited

@@ -124,7 +124,7 @@ workflows:
                     - '@marello_cancel_order': ~
                     - '@marello_notification_send':
                         entity: $order
-                        recipient: $order.customer.email
+                        recipient: $order.customer
                         template: marello_order_cancelled
             hold_definition: []
             un_hold_definition: []
@@ -145,7 +145,7 @@ workflows:
                         value: $invoiced_at
                     - '@marello_notification_send':
                         entity: $order
-                        recipient: $order.customer.email
+                        recipient: $order.customer
                         template: marello_order_invoiced
                     - '@extendable':
                         events: [extendable_action.order_paid]
@@ -153,7 +153,7 @@ workflows:
                 post_actions:
                     - '@marello_notification_send':
                         entity: $order
-                        recipient: $order.customer.email
+                        recipient: $order.customer
                         template: marello_order_credited
             prepare_shipping_definition:
                 conditions:
@@ -177,7 +177,7 @@ workflows:
                     - '@marello_pick_pack_order': ~
                     - '@marello_notification_send':
                         entity: $order
-                        recipient: $order.customer.email
+                        recipient: $order.customer
                         template: marello_order_shipping_prepared
             ship_definition:
                 conditions:
@@ -192,7 +192,7 @@ workflows:
                     - '@marello_ship_order': ~
                     - '@marello_notification_send':
                         entity: $order
-                        recipient: $order.customer.email
+                        recipient: $order.customer
                         template: marello_order_shipped_confirmation
                     - '@extendable':
                        events: [extendable_action.order_shipped]
@@ -200,7 +200,7 @@ workflows:
                 post_actions:
                     - '@marello_notification_send':
                         entity: $order
-                        recipient: $order.customer.email
+                        recipient: $order.customer
                         template: marello_order_payment_reminder
                     - '@flash_message':
                         message: 'Reminder has been sent.'
@@ -320,7 +320,7 @@ workflows:
 #                    - @marello_cancel_order: ~
 #                    - @marello_notification_send:
 #                        entity: $order
-#                        recipient: $order.customer.email
+#                        recipient: $order.customer
 #                        template: marello_order_cancelled
 #            hold_definition: []
 #            un_hold_definition: []
@@ -337,20 +337,20 @@ workflows:
 #                        value: invoiced_at
 #                    - @marello_notification_send:
 #                        entity: $order
-#                        recipient: $order.customer.email
+#                        recipient: $order.customer
 #                        template: marello_order_invoiced
 #            credit_definition:
 #                post_actions:
 #                    - @marello_notification_send:
 #                        entity: $order
-#                        recipient: $order.customer.email
+#                        recipient: $order.customer
 #                        template: marello_order_credited
 #            ship_definition:
 #                post_actions:
 #                    - @marello_ship_order: ~
 #                    - @marello_notification_send:
 #                        entity: $order
-#                        recipient: $order.customer.email
+#                        recipient: $order.customer
 #                        template: marello_order_shipped_confirmation
 #            prepare_shipping_definition:
 #                post_actions:
@@ -361,7 +361,7 @@ workflows:
 #                post_actions:
 #                    - @marello_notification_send:
 #                        entity: $order
-#                        recipient: $order.customer.email
+#                        recipient: $order.customer
 #                        template: marello_order_payment_reminder
 #                    - @flash_message:
 #                        message: 'Reminder has been sent.'
