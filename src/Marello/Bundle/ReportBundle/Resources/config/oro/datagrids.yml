@@ -183,30 +183,10 @@ datagrids:
                         items: [5]
                         default_per_page: 5
 
-    # All non aggregated columns are being added to the group by,
-    # meaning that they will be added by default if no aggregated columns
-    # are specifically grouped by
-    #see https://github.com/orocrm/platform/issues/241#issuecomment-83146700
     marello_report-returns-returned_qty_by_reason:
             pageTitle: marello.report.title.returned_qty_by_reason
             source:
-                type: orm
-                acl_resource: oro_report_view
-                query:
-                    select:
-                        - rre.name as returnReason
-                        - oi.productSku
-                        - oi.productName
-                        - SUM(ri.quantity) AS quantityReturned
-                        - SUM(oi.quantity) AS quantityOrdered
-                        - COALESCE(((ri.quantity / oi.quantity)), 0) AS percentageReturned
-                    from:
-                        - { table: MarelloReturnBundle:ReturnItem, alias: ri }
-                    join:
-                        left:
-                            - { join: ri.orderItem, alias: oi }
-                            - { join: ri.reason, alias: rre }
-                            - { join: oi.order, alias: o }
+                type: array
             columns:
                 productSku:
                     label:              marello.product.sku.label
@@ -235,8 +215,8 @@ datagrids:
                     align:              left
             sorters:
                 columns:
-                    productSku:             { data_name: oi.productSku }
-                    productName:            { data_name: oi.productName }
+                    productSku:             { data_name: productSku }
+                    productName:            { data_name: productName }
                     quantityReturned:       { data_name: quantityReturned }
                     quantityOrdered:        { data_name: quantityOrdered }
                     returnReason:           { data_name: returnReason }
@@ -247,10 +227,10 @@ datagrids:
                 columns:
                     productSku:
                         type:           string
-                        data_name:      oi.productSku
+                        data_name:      productSku
                     productName:
                         type:           string
-                        data_name:      oi.productName
+                        data_name:      productName
                     percentageReturned:
                         type:           percent
                         data_name:      percentageReturned
@@ -258,10 +238,6 @@ datagrids:
                 entityHint: report data
                 export: false
 
-    # All non aggregated columns are being added to the group by,
-    # meaning that they will be added by default if no aggregated columns
-    # are specifically grouped by
-    #see https://github.com/orocrm/platform/issues/241#issuecomment-83146700
     marello_report-returns-returned_qty:
             pageTitle: marello.report.title.returned_qty_by_reason
             source:
@@ -271,15 +247,15 @@ datagrids:
                     select:
                         - oi.productSku
                         - oi.productName
-                        - SUM(ri.quantity) AS quantityReturned
-                        - SUM(oi.quantity) AS quantityOrdered
-                        - COALESCE(((ri.quantity / oi.quantity)), 0) AS percentageReturned
+                        - SUM(COALESCE(ri.quantity, 0)) AS quantityReturned
+                        - SUM(COALESCE(oi.quantity, 0)) AS quantityOrdered
+                        - SUM(COALESCE(ri.quantity, 0)) / SUM(COALESCE(oi.quantity, 0)) AS percentageReturned
                     from:
-                        - { table: MarelloReturnBundle:ReturnItem, alias: ri }
+                        - { table: MarelloOrderBundle:OrderItem, alias: oi }
                     join:
                         left:
-                            - { join: ri.orderItem, alias: oi }
-                            - { join: oi.order, alias: o }
+                            - { join: MarelloReturnBundle:ReturnItem, alias: ri, conditionType: 'WITH', condition: 'oi.id = ri.orderItem' }
+                    groupBy: oi.productSku, oi.productName
             columns:
                 productSku:
                     label:              marello.product.sku.label
