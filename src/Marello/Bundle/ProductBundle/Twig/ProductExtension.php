@@ -9,12 +9,12 @@ class ProductExtension extends \Twig_Extension
 {
     const NAME = 'marello_product';
     
-    /** @var ChannelProvider */
+    /**
+     * @var ChannelProvider
+     */
     protected $channelProvider;
 
     /**
-     * ProductExtension constructor.
-     *
      * @param ChannelProvider $channelProvider
      */
     public function __construct(ChannelProvider $channelProvider)

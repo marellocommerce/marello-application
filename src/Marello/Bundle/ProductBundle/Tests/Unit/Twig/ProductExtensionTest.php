@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Twig\ProductExtension;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
+use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
 class ProductExtensionTest extends TestCase
 {
@@ -20,25 +21,38 @@ class ProductExtensionTest extends TestCase
      */
     protected $extension;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->channelProvider = $this->getMockBuilder(ChannelProvider::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->extension = new ProductExtension($this->channelProvider);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function tearDown()
     {
         unset($this->extension);
         unset($this->channelProvider);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testGetName()
     {
         $this->assertEquals(ProductExtension::NAME, $this->extension->getName());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testGetFunctions()
     {
         $functions = $this->extension->getFunctions();
@@ -55,11 +69,16 @@ class ProductExtensionTest extends TestCase
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function testGetSalesChannelsIds()
     {
+        /** @var Product $product */
         $product = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->assertEquals(0, $this->extension->getSalesChannelsIds($product));
     }
 }
