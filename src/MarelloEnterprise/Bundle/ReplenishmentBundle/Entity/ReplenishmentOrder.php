@@ -13,7 +13,9 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
- * @ORM\Entity(repositoryClass="MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderRepository")
+ * @ORM\Entity(
+ *     repositoryClass="MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderRepository"
+ * )
  * @ORM\Table(name="marello_repl_order")
  * @ORM\HasLifecycleCallbacks
  * @Oro\Config(
@@ -24,7 +26,8 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *      }
  * )
  */
-class ReplenishmentOrder extends ExtendReplenishmentOrder implements DerivedPropertyAwareInterface,
+class ReplenishmentOrder extends ExtendReplenishmentOrder implements
+    DerivedPropertyAwareInterface,
     OrganizationAwareInterface
 {
     use AuditableOrganizationAwareTrait;
@@ -174,9 +177,9 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements DerivedProp
     /**
      * {@inheritdoc}
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
-
         $this->replOrderItems = new ArrayCollection();
     }
 

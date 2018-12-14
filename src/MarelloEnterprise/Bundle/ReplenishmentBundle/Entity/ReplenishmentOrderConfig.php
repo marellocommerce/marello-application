@@ -216,7 +216,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
 
     /**
      * @param \DateTime $executionDate
-     * @return ReplenishmentOrder
+     * @return ReplenishmentOrderConfig
      */
     public function setExecutionDate(\DateTime $executionDate)
     {

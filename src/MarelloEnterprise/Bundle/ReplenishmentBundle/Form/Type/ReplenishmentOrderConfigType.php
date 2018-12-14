@@ -80,7 +80,7 @@ class ReplenishmentOrderConfigType extends AbstractType
                 'executionDate',
                 OroDateType::class,
                 [
-                    'required' => true,
+                    'required' => false,
                     'label' => 'marello.replenishment.replenishment_order_config.execution_date.label',
                 ]
             )

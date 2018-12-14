@@ -48,6 +48,5 @@ class ReplenishmentOrderItemListener
                 new InventoryUpdateEvent($context)
             );
         }
-        
     }
 }
