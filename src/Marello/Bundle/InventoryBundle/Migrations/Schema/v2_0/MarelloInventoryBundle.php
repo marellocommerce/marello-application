@@ -33,7 +33,7 @@ class MarelloInventoryBundle implements Migration
         if ($schema->hasTable('marello_blncd_inventory_level')) {
             return;
         }
-        
+
         $table = $schema->createTable('marello_blncd_inventory_level');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('inventory_qty', 'integer', ['notnull' => true]);
