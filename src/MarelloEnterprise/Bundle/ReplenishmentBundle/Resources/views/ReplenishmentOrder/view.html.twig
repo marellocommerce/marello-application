@@ -6,7 +6,7 @@
     {% set breadcrumbs = {
         'entity':      entity,
         'indexPath':   path('marello_replenishment_order_index'),
-        'indexLabel': 'marello.replenishment.replenishment_order.entity_label'|trans,
+        'indexLabel': 'marelloenterprise.replenishment.replenishmentorder.entity_label'|trans,
         'entityTitle': entity.id
     } %}
     {{ parent() }}
@@ -18,12 +18,12 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('marello.replenishment.replenishment_order.repl_order_number.label'|trans, entity.replOrderNumber) }}
-                    {{ UI.renderProperty('marello.replenishment.replenishment_order.origin.label'|trans, entity.origin) }}
-                    {{ UI.renderProperty('marello.replenishment.replenishment_order.destination.label'|trans, entity.destination) }}
-                    {{ UI.renderProperty('marello.replenishment.replenishment_order.execution_date.label'|trans, entity.executionDate|oro_format_date) }}
-                    {{ UI.renderProperty('marello.replenishment.replenishment_order.percentage.label'|trans, (entity.percentage/100)|oro_format_percent) }}
-                    {{ UI.renderProperty('marello.replenishment.replenishment_order.description.label'|trans, entity.description) }}
+                    {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.repl_order_number.label'|trans, entity.replOrderNumber) }}
+                    {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.origin.label'|trans, entity.origin) }}
+                    {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.destination.label'|trans, entity.destination) }}
+                    {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.execution_date.label'|trans, entity.executionDate|oro_format_date) }}
+                    {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.percentage.label'|trans, (entity.percentage/100)|oro_format_percent) }}
+                    {{ UI.renderProperty('marelloenterprise.replenishment.replenishmentorder.description.label'|trans, entity.description) }}
 
                     {% set steps = marello_core_get_current_workflow_steps(entity) %}
                     {% for stepLabel, stepName in steps %}
@@ -52,7 +52,7 @@
             ]
         },
         {
-            'title': 'marello.replenishment.replenishment_order_item.entity_plural_label'|trans,
+            'title': 'marelloenterprise.replenishment.replenishmentorderitem.entity_plural_label'|trans,
             'class': 'active',
             'subblocks': [
                 { 'data' : [items] }

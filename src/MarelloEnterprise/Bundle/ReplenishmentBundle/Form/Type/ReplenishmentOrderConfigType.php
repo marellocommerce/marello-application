@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ReplenishmentOrderConfigType extends AbstractType
 {
@@ -44,7 +45,7 @@ class ReplenishmentOrderConfigType extends AbstractType
                 WarehouseMultiSelectType::class,
                 [
                     'required'       => true,
-                    'label'          => 'marello.replenishment.replenishment_order_config.origins.label',
+                    'label'          => 'marelloenterprise.replenishment.replenishmentorderconfig.origins.label',
                     'placeholder'    => 'marelloenterprise.inventory.warehouse.form.select_warehouse',
                     'mapped'         => false,
                 ]
@@ -54,7 +55,7 @@ class ReplenishmentOrderConfigType extends AbstractType
                 WarehouseMultiSelectType::class,
                 [
                     'required'       => true,
-                    'label'          => 'marello.replenishment.replenishment_order_config.destinations.label',
+                    'label'          => 'marelloenterprise.replenishment.replenishmentorderconfig.destinations.label',
                     'placeholder'    => 'marelloenterprise.inventory.warehouse.form.select_warehouse',
                     'mapped'         => false,
                 ]
@@ -64,7 +65,7 @@ class ReplenishmentOrderConfigType extends AbstractType
                 ProductSelectCollectionType::class,
                 [
                     'required'       => true,
-                    'label'          => 'marello.replenishment.replenishment_order_config.products.label',
+                    'label'          => 'marelloenterprise.replenishment.replenishmentorderconfig.products.label',
                     'mapped'         => false,
                 ]
             )
@@ -73,7 +74,7 @@ class ReplenishmentOrderConfigType extends AbstractType
                 ReplenishmentStrategyChoiceType::class,
                 [
                     'required' => true,
-                    'label' => 'marello.replenishment.replenishment_order_config.strategy.label',
+                    'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.strategy.label',
                 ]
             )
             ->add(
@@ -81,7 +82,8 @@ class ReplenishmentOrderConfigType extends AbstractType
                 OroDateType::class,
                 [
                     'required' => false,
-                    'label' => 'marello.replenishment.replenishment_order_config.execution_date.label',
+                    'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.execution_date.label',
+                    'constraints' => new NotNull()
                 ]
             )
             ->add(
@@ -89,8 +91,8 @@ class ReplenishmentOrderConfigType extends AbstractType
                 NumberType::class,
                 [
                     'required' => true,
-                    'label' => 'marello.replenishment.replenishment_order_config.percentage.label',
-                    'tooltip' => 'marello.replenishment.form.marello_replenishment_order_config.percentage.tooltip'
+                    'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.percentage.label',
+                    'tooltip' => 'marelloenterprise.replenishment.form.marello_replenishment_order_config.percentage.tooltip'
                 ]
             )
         ;

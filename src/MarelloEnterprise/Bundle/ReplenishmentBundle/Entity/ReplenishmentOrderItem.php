@@ -90,7 +90,7 @@ class ReplenishmentOrderItem implements ProductAwareInterface
     protected $productSku;
 
     /**
-     * @ORM\Column(name="note", type="text")
+     * @ORM\Column(name="note", type="text", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

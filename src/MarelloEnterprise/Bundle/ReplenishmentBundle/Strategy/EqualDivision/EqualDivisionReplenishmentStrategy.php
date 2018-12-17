@@ -12,7 +12,7 @@ use MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\ReplenishmentStrategyI
 class EqualDivisionReplenishmentStrategy implements ReplenishmentStrategyInterface
 {
     const IDENTIFIER = 'equal_division';
-    const LABEL = 'marello.replenishment.replenishment_strategies.equal_division';
+    const LABEL = 'marelloenterprise.replenishment.replenishment_strategies.equal_division';
 
     /**
      * @var ObjectManager
@@ -79,6 +79,7 @@ class EqualDivisionReplenishmentStrategy implements ReplenishmentStrategyInterfa
         $totalQty = [];
         $result = [];
         foreach ($products as $product) {
+            $totalQty[$product->getId()] = 0;
             $inventoryItems = $product->getInventoryItems();
             foreach ($inventoryItems as $inventoryItem) {
                 /** @var InventoryLevel $inventoryLevel */

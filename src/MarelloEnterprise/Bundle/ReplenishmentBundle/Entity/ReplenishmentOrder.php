@@ -42,7 +42,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     protected $id;
 
     /**
-     * @ORM\Column(name="repl_order_number", type="string")
+     * @ORM\Column(name="repl_order_number", type="string", unique=true, nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -86,7 +86,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     protected $destination;
 
     /**
-     * @ORM\Column(name="execution_date", type="datetime")
+     * @ORM\Column(name="execution_date", type="datetime", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -114,7 +114,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     protected $percentage;
 
     /**
-     * @ORM\Column(name="description", type="text")
+     * @ORM\Column(name="description", type="text", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -148,7 +148,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     /**
      * @var string
      *
-     * @ORM\Column(name="ro_code", type="string", nullable=false, unique=true)
+     * @ORM\Column(name="ro_code", type="string", nullable=true, unique=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -161,7 +161,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
 
     /**
      * @ORM\ManyToOne(targetEntity="ReplenishmentOrderConfig")
-     * @ORM\JoinColumn(name="repl_order_config_id", nullable=false, onDelete="CASCADE")
+     * @ORM\JoinColumn(name="repl_order_config_id", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

@@ -71,13 +71,13 @@ class ReplenishmentOrderConfigHandler
             $this->submitPostPutRequest($this->form, $this->request);
 
             if ($this->form->isValid()) {
-                $this->onSuccess($entity);
-
-                return true;
+                return $this->onSuccess($entity);
             }
         }
 
-        return false;
+        return [
+            'result' => false,
+        ];
     }
 
     /**
@@ -94,12 +94,22 @@ class ReplenishmentOrderConfigHandler
      * "Success" form handler
      *
      * @param ReplenishmentOrderConfig $entity
+     * @return array
      */
     protected function onSuccess(ReplenishmentOrderConfig $entity)
     {
         $this->manager->persist($entity);
         $strategy = $this->replenishmentStrategiesRegistry->getStrategy($entity->getStrategy());
         $replenishmentResults = $strategy->getResults($entity);
+        
+        if (empty($replenishmentResults)) {
+            return [
+                'result' => true,
+                'messageType' => 'info',
+                'message' => 'marelloenterprise.replenishment.messages.info.replenishment_order_config.no_products_in_origins'
+            ];
+        }
+        
         $orders = [];
         foreach ($replenishmentResults as $result) {
             /** @var Warehouse $origin */
@@ -140,5 +150,11 @@ class ReplenishmentOrderConfigHandler
             $this->manager->persist($order);
         }
         $this->manager->flush();
+
+        return [
+            'result' => true,
+            'messageType' => 'success',
+            'message' => 'marelloenterprise.replenishment.messages.success.replenishment_order_config.saved'
+        ];
     }
 }

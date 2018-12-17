@@ -2,7 +2,7 @@ navigation:
     menu_config:
         items:
             replenishment:
-                label: 'marello.replenishment.menu.replenishment.label'
+                label: 'marelloenterprise.replenishment.menu.replenishment.label'
                 route: 'marello_replenishment_order_index'
                 extras:
                     routes: ['marello_replenishment_order_*']
@@ -17,4 +17,4 @@ navigation:
                                     replenishment: ~
 
     titles:
-        marello_replenishment_order_index: 'marello.replenishment.replenishment_order.entity_label'
+        marello_replenishment_order_index: 'marelloenterprise.replenishment.replenishmentorder.entity_label'

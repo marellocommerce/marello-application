@@ -1,3 +1,11 @@
+MarelloEnterprice\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig:
+    properties:
+        executionDate:
+            - NotBlank: ~
+MarelloEnterprice\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder:
+    properties:
+        executionDate:
+            - NotBlank: ~
 MarelloEnterprice\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem:
     properties:
         inventoryQty:

@@ -39,7 +39,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     protected $id;
 
     /**
-     * @ORM\Column(name="origins", type="json_array")
+     * @ORM\Column(name="origins", nullable=false, type="json_array")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -53,7 +53,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     protected $origins;
 
     /**
-     * @ORM\Column(name="destinations", type="json_array")
+     * @ORM\Column(name="destinations", nullable=false, type="json_array")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -81,7 +81,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     protected $products;
 
     /**
-     * @ORM\Column(name="strategy", type="string")
+     * @ORM\Column(name="strategy", type="string", nullable=false, length=50)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -95,7 +95,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     protected $strategy;
 
     /**
-     * @ORM\Column(name="execution_date", type="datetime")
+     * @ORM\Column(name="execution_date", type="datetime", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

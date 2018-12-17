@@ -1,13 +1,13 @@
 system_configuration:
     groups:
         replenishment:
-            title: marello.replenishment.system_configuration.groups.replenishment.title
+            title: marelloenterprise.replenishment.system_configuration.groups.replenishment.title
         replenishment_configuration:
-            title: marello.replenishment.system_configuration.groups.replenishment_configuration.title
+            title: marelloenterprise.replenishment.system_configuration.groups.replenishment_configuration.title
             icon: fa-refresh
             priority: 50
         replenishment_general:
-            title: marello.replenishment.system_configuration.groups.replenishment_general.title
+            title: marelloenterprise.replenishment.system_configuration.groups.replenishment_general.title
             icon: fa-refresh
             priority: 50
     fields:
@@ -16,7 +16,7 @@ system_configuration:
             data_type: string
             priority: 120
             options:
-                label: marello.replenishment.system_configuration.fields.replenishment_carrier_email
+                label: marelloenterprise.replenishment.system_configuration.fields.replenishment_carrier_email
                 resettable: true
                 required: true
                 constraints:

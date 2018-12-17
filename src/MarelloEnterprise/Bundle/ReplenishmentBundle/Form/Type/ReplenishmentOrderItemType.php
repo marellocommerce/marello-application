@@ -26,7 +26,7 @@ class ReplenishmentOrderItemType extends AbstractType
                 TextType::class,
                 [
                     'required'       => true,
-                    'label'          => 'marello.replenishment.replenishment_order_item.product_sku.label',
+                    'label'          => 'marelloenterprise.replenishment.replenishmentorderitem.product_sku.label',
                     'disabled'       => true,
                 ]
             )
@@ -35,7 +35,7 @@ class ReplenishmentOrderItemType extends AbstractType
                 TextType::class,
                 [
                     'required'       => true,
-                    'label'          => 'marello.replenishment.replenishment_order_item.product_name.label',
+                    'label'          => 'marelloenterprise.replenishment.replenishmentorderitem.product_name.label',
                     'disabled'       => true,
                 ]
             )
@@ -44,7 +44,7 @@ class ReplenishmentOrderItemType extends AbstractType
                 NumberType::class,
                 [
                     'required'       => true,
-                    'label'          => 'marello.replenishment.replenishment_order_item.inventory_qty.label',
+                    'label'          => 'marelloenterprise.replenishment.replenishmentorderitem.inventory_qty.label',
                     'constraints'    => [new NotBlank(), new Type(['type' => 'numeric'])]
                 ]
             )
@@ -53,7 +53,7 @@ class ReplenishmentOrderItemType extends AbstractType
                 TextType::class,
                 [
                     'required'       => true,
-                    'label'          => 'marello.replenishment.replenishment_order_item.note.label',
+                    'label'          => 'marelloenterprise.replenishment.replenishmentorderitem.note.label',
                 ]
             )
         ;

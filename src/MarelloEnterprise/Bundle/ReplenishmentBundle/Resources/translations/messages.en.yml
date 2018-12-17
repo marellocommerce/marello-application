@@ -1,6 +1,6 @@
-marello:
+marelloenterprise:
     replenishment:
-        replenishment_order_config:
+        replenishmentorderconfig:
             id.label:               Id
             entity_label:           Replenishment Order Config
             entity_plural_label:    Replenishment Order Configs
@@ -12,7 +12,7 @@ marello:
             percentage.label:       Percentage of total inventory (%)
             organization.label:     Organization
 
-        replenishment_order:
+        replenishmentorder:
             id.label:                 Id
             entity_label:             Replenishment Order
             entity_plural_label:      Replenishment Orders
@@ -25,8 +25,9 @@ marello:
             repl_order_items.label:   Replenishment Order Items
             ro_code.label:            Replenishment Order Code
             repl_order_config.label:  Replenishment Order Config
+            organization.label:       Organization
 
-        replenishment_order_item:
+        replenishmentorderitem:
             id.label:                  Id
             entity_label:              Replenishment Order Item
             entity_plural_label:       Replenishment Order Items
@@ -57,7 +58,10 @@ marello:
         messages:
             success:
                 replenishment_order_config:
-                    saved:            Replenishment Order Config has been saved successfully
+                    saved:                          Replenishment Order Config has been saved successfully
+            info:
+                replenishment_order_config:
+                    no_products_in_origins:         No one Replenishment Order was created, because there are no selected products in selected origins
 
         system_configuration:
             groups:

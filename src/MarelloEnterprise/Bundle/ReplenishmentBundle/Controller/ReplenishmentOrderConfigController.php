@@ -30,12 +30,13 @@ class ReplenishmentOrderConfigController extends Controller
     protected function update(ReplenishmentOrderConfig $orderConfig = null)
     {
         $handler = $this->get('marelloenterprise_replenishment.form.handler.replenishment_order_config');
-
-        if ($handler->process($orderConfig)) {
+        $result = $handler->process($orderConfig);
+        if (isset($result['result']) && isset($result['messageType']) && isset($result['message']) &&
+            $result['result'] !== false) {
             $this->get('session')->getFlashBag()->add(
-                'success',
+                $result['messageType'],
                 $this->get('translator')
-                    ->trans('marello.replenishment.messages.success.replenishment_order_config.saved')
+                    ->trans($result['message'])
             );
 
             return $this->redirect($this->generateUrl('marello_replenishment_order_index'));

@@ -16,29 +16,29 @@ datagrids:
                         - { join: ro.replOrderItems, alias: roi }
         columns:
             replOrderNumber:
-                label: marello.replenishment.replenishment_order.repl_order_number.label
+                label: marelloenterprise.replenishment.replenishmentorder.repl_order_number.label
                 frontend_type: string
             originLabel:
-                label: marello.replenishment.replenishment_order.origin.label
+                label: marelloenterprise.replenishment.replenishmentorder.origin.label
                 frontend_type: string
             destinationLabel:
-                label: marello.replenishment.replenishment_order.destination.label
+                label: marelloenterprise.replenishment.replenishmentorder.destination.label
                 frontend_type: string
             executionDate:
-                label: marello.replenishment.replenishment_order.execution_date.label
+                label: marelloenterprise.replenishment.replenishmentorder.execution_date.label
                 frontend_type: date
             percentage:
-                label: marello.replenishment.replenishment_order.percentage.label
+                label: marelloenterprise.replenishment.replenishmentorder.percentage.label
                 type: twig
                 frontend_type: html
                 template: MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:Datagrid/Property/percentage.html.twig
             replOrderItems:
-                label: marello.replenishment.replenishment_order.repl_order_items.label
+                label: marelloenterprise.replenishment.replenishmentorder.repl_order_items.label
                 type: twig
                 frontend_type: html
                 template: MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:Datagrid/Property/replOrderItems.html.twig
             description:
-                label: marello.replenishment.replenishment_order.description.label
+                label: marelloenterprise.replenishment.replenishmentorder.description.label
                 frontend_type: string
         sorters:
             columns:
@@ -80,17 +80,17 @@ datagrids:
                 order_id: replOrderId
         columns:
             productSku:
-                label: marello.replenishment.replenishment_order_item.product_sku.label
+                label: marelloenterprise.replenishment.replenishmentorderitem.product_sku.label
                 frontend_type: string
             productName:
-                label: marello.replenishment.replenishment_order_item.product_name.label
+                label: marelloenterprise.replenishment.replenishmentorderitem.product_name.label
                 frontend_type: string
             inventoryQty:
-                label: marello.replenishment.replenishment_order_item.inventory_qty.label
+                label: marelloenterprise.replenishment.replenishmentorderitem.inventory_qty.label
                 frontend_type: integer
             totalInventoryQty:
-                label: marello.replenishment.replenishment_order_item.total_inventory_qty.label
+                label: marelloenterprise.replenishment.replenishmentorderitem.total_inventory_qty.label
                 frontend_type: integer
             note:
-                label: marello.replenishment.replenishment_order_item.note.label
+                label: marelloenterprise.replenishment.replenishmentorderitem.note.label
                 frontend_type: string
