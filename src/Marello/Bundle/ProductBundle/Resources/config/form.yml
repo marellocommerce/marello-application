@@ -3,6 +3,7 @@ parameters:
     marello_product.product_form.type.class:                                    Marello\Bundle\ProductBundle\Form\Type\ProductType
     marello_product.product_form.type.product_api.class:                        Marello\Bundle\ProductBundle\Form\Type\ProductApiType
     marello_product.product_form.type.product_select.class:                     Marello\Bundle\ProductBundle\Form\Type\ProductSelectType
+    marello_product.product_form.type.product_select_collection.class:          Marello\Bundle\ProductBundle\Form\Type\ProductSelectCollectionType
     marello_product.product_form.type.product_sales_channel_aware_select.class: Marello\Bundle\ProductBundle\Form\Type\ProductSalesChannelAwareSelectType
     marello_product.form.type.product_collection.class:                         Marello\Bundle\ProductBundle\Form\Type\ProductCollectionType
     marello_product.product_variant_form.type.class:                            Marello\Bundle\ProductBundle\Form\Type\ProductVariantType
@@ -36,6 +37,11 @@ services:
 
     marello_product.product_form.type.product_select:
         class: '%marello_product.product_form.type.product_select.class%'
+        tags:
+            - { name: form.type }
+
+    marello_product.product_form.type.product_select_collection:
+        class: '%marello_product.product_form.type.product_select_collection.class%'
         tags:
             - { name: form.type }
 
