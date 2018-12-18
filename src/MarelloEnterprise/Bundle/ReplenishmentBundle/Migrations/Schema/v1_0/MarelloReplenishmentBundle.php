@@ -42,6 +42,7 @@ class MarelloEnterpriseReplenishmentBundle implements Migration
         $table->addColumn('strategy', 'string', ['length' => 50, 'notnull' => true]);
         $table->addColumn('execution_date', 'datetime', ['notnull' => true]);
         $table->addColumn('percentage', 'float', ['notnull' => true]);
+        $table->addColumn('description', 'text', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
     }

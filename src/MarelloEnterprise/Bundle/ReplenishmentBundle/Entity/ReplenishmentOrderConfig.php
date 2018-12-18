@@ -121,6 +121,20 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      * @var float
      */
     protected $percentage;
+    
+    /**
+     * @ORM\Column(name="description", type="text", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var string
+     */
+    protected $description;
 
     /**
      * @return int
@@ -240,6 +254,25 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     public function setPercentage($percentage)
     {
         $this->percentage = $percentage;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return ReplenishmentOrder
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
 
         return $this;
     }

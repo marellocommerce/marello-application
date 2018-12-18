@@ -127,7 +127,8 @@ class ReplenishmentOrderConfigHandler
                     ->setDestination($destination)
                     ->setExecutionDate($entity->getExecutionDate())
                     ->setPercentage($entity->getPercentage())
-                    ->setReplOrderConfig($entity);
+                    ->setReplOrderConfig($entity)
+                    ->setDescription($entity->getDescription());
                 $orders[sprintf('%s-%s', $origin->getId(), $destination->getId())] = $order;
             }
             /** @var ReplenishmentOrder $order */

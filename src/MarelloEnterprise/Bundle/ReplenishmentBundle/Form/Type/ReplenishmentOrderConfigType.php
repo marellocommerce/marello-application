@@ -11,6 +11,7 @@ use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseMultiSelectType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -93,6 +94,14 @@ class ReplenishmentOrderConfigType extends AbstractType
                     'required' => true,
                     'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.percentage.label',
                     'tooltip' => 'marelloenterprise.replenishment.form.marello_replenishment_order_config.percentage.tooltip'
+                ]
+            )
+            ->add(
+                'description',
+                TextareaType::class,
+                [
+                    'required' => false,
+                    'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.description.label'
                 ]
             )
         ;

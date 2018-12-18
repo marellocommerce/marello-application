@@ -10,6 +10,7 @@ marelloenterprise:
             strategy.label:         Strategy
             execution_date.label:   Execution Date
             percentage.label:       Percentage of total inventory (%)
+            description.label:      Description
             organization.label:     Organization
 
         replenishmentorder:
