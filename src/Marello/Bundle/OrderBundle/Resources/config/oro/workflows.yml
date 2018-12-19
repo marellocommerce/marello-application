@@ -18,6 +18,8 @@ workflows:
                     class: \DateTime
             note:
                 type: string
+            update_balanced_inventory:
+                type: boolean
         steps:
             pending:
                 allowed_transitions:
@@ -50,6 +52,10 @@ workflows:
                 allowed_transitions: []
 
         transitions:
+            __start__:
+                step_to: pending
+                is_start: true
+                transition_definition: pending_definition
             cancel:
                 step_to:  cancelled
                 transition_definition: cancel_definition
@@ -126,6 +132,10 @@ workflows:
                 transition_definition: payment_reminder_definition
 
         transition_definitions:
+            pending_definition:
+                actions:
+                    - '@assign_value':
+                        - [$update_balanced_inventory, true]
             cancel_definition:
                 conditions:
                     '@and':
@@ -135,7 +145,8 @@ workflows:
                     - '@extendable':
                         events: [extendable_action.order_cancel]
                 post_actions:
-                    - '@marello_cancel_order': ~
+                    - '@marello_cancel_order':
+                        update_balanced_inventory: $update_balanced_inventory
                     - '@marello_notification_send':
                         entity: $order
                         recipient: $order.customer
