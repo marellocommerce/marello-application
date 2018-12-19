@@ -6,11 +6,13 @@ use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
 
 class WarehouseType extends AbstractType
 {
@@ -21,7 +23,8 @@ class WarehouseType extends AbstractType
         'firstName',
         'middleName',
         'lastName',
-        'nameSuffix'
+        'nameSuffix',
+        'email'
     ];
 
     /**
@@ -47,6 +50,16 @@ class WarehouseType extends AbstractType
                 'address',
                 AddressType::class,
                 ['required' => true]
+            )
+            ->add(
+                'email',
+                EmailType::class,
+                [
+                    'required' => false,
+                    'constraints' => [
+                        new Email(),
+                    ],
+                ]
             )
             ->addEventListener(
                 FormEvents::PRE_SET_DATA,

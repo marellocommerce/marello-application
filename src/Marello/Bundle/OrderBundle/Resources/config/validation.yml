@@ -37,6 +37,8 @@ Marello\Bundle\OrderBundle\Entity\Order:
             - NotBlank: ~
         salesChannel:
             - NotBlank: ~
+        shippingMethod:
+            - NotBlank: ~
         billingAddress:
             - NotBlank:
                 message: 'marello.order.address.validation.billing_not_blank'

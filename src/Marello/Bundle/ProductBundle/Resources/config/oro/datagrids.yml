@@ -289,6 +289,10 @@ datagrids:
                 name: ASC
                 sku: ASC
         mass_actions: ~
+        options:
+            export: false
+            entity_pagination: false
+
 
     marello-products-supplier-no-actions-grid:
         extends: marello-products-grid

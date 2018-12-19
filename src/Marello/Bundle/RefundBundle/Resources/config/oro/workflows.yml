@@ -13,6 +13,9 @@ workflows:
                     - approve
             approved:
                 allowed_transitions:
+                    - credit
+            credited:
+                allowed_transitions:
                     - complete
             completed:
                 allowed_transitions: []
@@ -21,12 +24,19 @@ workflows:
             approve:
                 step_to: approved
                 transition_definition: approve_definition
+            credit:
+                step_to: credited
+                transition_definition: credit_definition
             complete:
                 step_to: completed
                 transition_definition: complete_definition
 
         transition_definitions:
             approve_definition: []
+            credit_definition:
+                post_actions:
+                    - '@extendable':
+                        events: [extendable_action.refund_credited]
             complete_definition:
                 post_actions:
                     - '@marello_notification_send':

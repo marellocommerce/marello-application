@@ -92,6 +92,7 @@ datagrids:
                 label:          oro.grid.action.update
                 icon:           edit
                 link:           update_link
+        action_configuration: ['@marello_refund.datagrid.action_permission_provider', 'getActionPermissions']
 
     marello-refund-customer:
         source:
