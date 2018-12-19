@@ -4,15 +4,19 @@ namespace Marello\Bundle\SalesBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
+
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ParameterBag;
+
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\Form\Handler\SalesChannelGroupHandler;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
+use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 
-class SalesChannelGroupHandlerTest extends \PHPUnit_Framework_TestCase
+class SalesChannelGroupHandlerTest extends TestCase
 {
     /**
      * @var FormInterface|\PHPUnit_Framework_MockObject_MockObject

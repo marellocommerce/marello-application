@@ -11,11 +11,13 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\CoreBundle\Validator\Exception\InvalidMethodException;
 use Marello\Bundle\CoreBundle\Validator\GreaterThanOrEqualToValueValidator;
 use Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanOrEqualToValue;
 
-class GreaterThanOrEqualToValueValidatorTest extends \PHPUnit_Framework_TestCase
+class GreaterThanOrEqualToValueValidatorTest extends TestCase
 {
     /** @var GreaterThanOrEqualToValue $constraint */
     protected $constraint;

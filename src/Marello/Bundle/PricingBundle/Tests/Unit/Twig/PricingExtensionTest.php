@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Unit\Twig;
 
-use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\PricingBundle\Twig\PricingExtension;
 use Marello\Bundle\PricingBundle\Provider\CurrencyProvider;
+use Marello\Bundle\PricingBundle\Formatter\LabelVATAwareFormatter;
 
-class PricingExtensionTest extends \PHPUnit_Framework_TestCase
+class PricingExtensionTest extends TestCase
 {
     /**
      * @var CurrencyProvider|\PHPUnit_Framework_MockObject_MockObject

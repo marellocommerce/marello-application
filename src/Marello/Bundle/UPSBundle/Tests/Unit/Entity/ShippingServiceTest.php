@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Entity;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\AddressBundle\Entity\Country;
-use Marello\Bundle\UPSBundle\Entity\ShippingService;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class ShippingServiceTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\UPSBundle\Entity\ShippingService;
+
+class ShippingServiceTest extends TestCase
 {
     use EntityTestCaseTrait;
 

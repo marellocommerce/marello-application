@@ -2,12 +2,14 @@
 
 namespace Marello\Bundle\ShippingBundle\Tests\Unit\Integration;
 
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;
-use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
+use PHPUnit\Framework\TestCase;
 
-class ShippingServiceRegistryTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\ShippingBundle\Integration\ShippingServiceRegistry;
+use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataFactoryInterface;
+use Marello\Bundle\ShippingBundle\Integration\ShippingServiceIntegrationInterface;
+use Marello\Bundle\ShippingBundle\Integration\ShippingServiceDataProviderInterface;
+
+class ShippingServiceRegistryTest extends TestCase
 {
     /**
      * @var ShippingServiceIntegrationInterface[]

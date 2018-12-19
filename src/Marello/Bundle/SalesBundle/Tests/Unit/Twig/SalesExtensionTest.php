@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Unit\Twig;
 
-use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Twig\SalesExtension;
+use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 
-class SalesExtensionTest extends \PHPUnit_Framework_TestCase
+class SalesExtensionTest extends TestCase
 {
     /**
      * @var SalesChannelRepository|\PHPUnit_Framework_MockObject_MockObject

@@ -2,14 +2,17 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class OrderItemTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
+
+class OrderItemTest extends TestCase
 {
     use EntityTestCaseTrait;
 

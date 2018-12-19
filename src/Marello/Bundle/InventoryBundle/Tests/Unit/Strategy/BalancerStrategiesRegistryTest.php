@@ -2,10 +2,12 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Strategy;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategyInterface;
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry;
 
-class BalancerStrategiesRegistryTest extends \PHPUnit_Framework_TestCase
+class BalancerStrategiesRegistryTest extends TestCase
 {
     /**
      * @var BalancerStrategiesRegistry

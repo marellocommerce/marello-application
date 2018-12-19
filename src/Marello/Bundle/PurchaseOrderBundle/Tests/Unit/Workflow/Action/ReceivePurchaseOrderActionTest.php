@@ -5,21 +5,22 @@ namespace Marello\Bundle\PurchaseOrderBundle\Tests\Unit\Workflow\Action;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+
+use PHPUnit\Framework\TestCase;
 
 use Oro\Component\ConfigExpression\ContextAccessor;
 use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
 
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
-use Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
+use Marello\Bundle\PurchaseOrderBundle\Workflow\Action\ReceivePurchaseOrderAction;
 
-class ReceivePurchaseOrderActionTest extends \PHPUnit_Framework_TestCase
+class ReceivePurchaseOrderActionTest extends TestCase
 {
     /** @var ReceivePurchaseOrderAction $action */
     protected $action;

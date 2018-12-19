@@ -4,14 +4,17 @@ namespace Marello\Bundle\SalesBundle\Tests\Unit\EventListener\Doctrine;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
+
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 use Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 
-class SalesChannelGroupListenerTest extends \PHPUnit_Framework_TestCase
+class SalesChannelGroupListenerTest extends TestCase
 {
     /**
      * @var SalesChannelGroupListener

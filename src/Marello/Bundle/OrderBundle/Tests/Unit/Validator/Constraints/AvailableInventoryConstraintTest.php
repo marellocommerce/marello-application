@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Validator\Constraints;
 
+use PHPUnit\Framework\TestCase;
+
 use Symfony\Component\Validator\Constraint;
 
 use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory;
 
-class AvailableInventoryContraintTest extends \PHPUnit_Framework_TestCase
+class AvailableInventoryContraintTest extends TestCase
 {
     /** @var AvailableInventory $constraint */
     protected $constraint;

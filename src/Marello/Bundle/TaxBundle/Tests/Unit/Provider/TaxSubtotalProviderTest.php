@@ -2,17 +2,20 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Provider;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\PricingBundle\Subtotal\Model\Subtotal;
-use Marello\Bundle\TaxBundle\Event\TaxEventDispatcher;
-use Marello\Bundle\TaxBundle\Factory\TaxFactory;
-use Marello\Bundle\TaxBundle\Model\Result;
-use Marello\Bundle\TaxBundle\Model\ResultElement;
-use Marello\Bundle\TaxBundle\Model\Taxable;
-use Marello\Bundle\TaxBundle\Provider\TaxSubtotalProvider;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class TaxSubtotalProviderTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\TaxBundle\Model\Result;
+use Marello\Bundle\TaxBundle\Model\Taxable;
+use Marello\Bundle\TaxBundle\Factory\TaxFactory;
+use Marello\Bundle\TaxBundle\Model\ResultElement;
+use Marello\Bundle\TaxBundle\Event\TaxEventDispatcher;
+use Marello\Bundle\PricingBundle\Subtotal\Model\Subtotal;
+use Marello\Bundle\TaxBundle\Provider\TaxSubtotalProvider;
+
+class TaxSubtotalProviderTest extends TestCase
 {
     /**
      * @var TaxSubtotalProvider

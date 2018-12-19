@@ -36,3 +36,17 @@ services:
         class: Marello\Bundle\CatalogBundle\Provider\CategoriesChoicesProvider
         arguments:
             - '@oro_entity.doctrine_helper'
+
+    marello_catalog.provider.categories_ids:
+        class: Marello\Bundle\CatalogBundle\Provider\CategoriesIdsProvider
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    marello_catalog.repository.category:
+        class: Marello\Bundle\CatalogBundle\Entity\Repository\CategoryRepository
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\CatalogBundle\Entity\Category'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+

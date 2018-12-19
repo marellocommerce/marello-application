@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Resolver;
 
-use Marello\Bundle\TaxBundle\Model\Taxable;
-use Marello\Bundle\TaxBundle\Resolver\CustomerAddressItemResolver;
-use Marello\Bundle\TaxBundle\Resolver\CustomerAddressResolver;
+use PHPUnit\Framework\TestCase;
 
-class CustomerAddressResolverTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\TaxBundle\Model\Taxable;
+use Marello\Bundle\TaxBundle\Resolver\CustomerAddressResolver;
+use Marello\Bundle\TaxBundle\Resolver\CustomerAddressItemResolver;
+
+class CustomerAddressResolverTest extends TestCase
 {
     /**
      * @var CustomerAddressResolver

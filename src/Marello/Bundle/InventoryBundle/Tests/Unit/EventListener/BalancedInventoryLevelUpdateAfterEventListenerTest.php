@@ -5,6 +5,8 @@ namespace Marello\Bundle\InventoryBundle\Tests\Unit\EventListener;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Component\MessageQueue\Client\MessageProducerInterface;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
@@ -15,7 +17,7 @@ use Marello\Bundle\InventoryBundle\Entity\Repository\BalancedInventoryRepository
 use Marello\Bundle\InventoryBundle\EventListener\BalancedInventoryUpdateAfterEventListener;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
 
-class BalancedInventoryLevelUpdateAfterEventListenerTest extends \PHPUnit_Framework_TestCase
+class BalancedInventoryLevelUpdateAfterEventListenerTest extends TestCase
 {
     /**
      * @var InventoryUpdateContext|\PHPUnit_Framework_MockObject_MockObject

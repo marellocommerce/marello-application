@@ -17,3 +17,7 @@ search:
                 name: sku
                 target_type: text
                 target_fields: [sku]
+            -
+                name: manufacturingCode
+                target_type: text
+                target_fields: [manufacturingCode]

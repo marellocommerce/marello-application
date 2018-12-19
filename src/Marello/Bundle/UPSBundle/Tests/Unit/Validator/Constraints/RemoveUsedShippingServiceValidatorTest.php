@@ -2,19 +2,23 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Validator\Constraints;
 
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Marello\Bundle\ShippingBundle\Method\Factory\IntegrationShippingMethodFactoryInterface;
-use Marello\Bundle\ShippingBundle\Method\Validator\Result\Error;
-use Marello\Bundle\ShippingBundle\Method\Validator\Result\ShippingMethodValidatorResultInterface;
-use Marello\Bundle\ShippingBundle\Method\Validator\ShippingMethodValidatorInterface;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
-use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
-use Marello\Bundle\UPSBundle\Validator\Constraints\RemoveUsedShippingServiceConstraint;
-use Marello\Bundle\UPSBundle\Validator\Constraints\RemoveUsedShippingServiceValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class RemoveUsedShippingServiceValidatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
+
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Method\UPSShippingMethod;
+use Marello\Bundle\ShippingBundle\Method\Validator\Result\Error;
+use Marello\Bundle\ShippingBundle\Method\Validator\ShippingMethodValidatorInterface;
+use Marello\Bundle\UPSBundle\Validator\Constraints\RemoveUsedShippingServiceValidator;
+use Marello\Bundle\UPSBundle\Validator\Constraints\RemoveUsedShippingServiceConstraint;
+use Marello\Bundle\ShippingBundle\Method\Factory\IntegrationShippingMethodFactoryInterface;
+use Marello\Bundle\ShippingBundle\Method\Validator\Result\ShippingMethodValidatorResultInterface;
+
+class RemoveUsedShippingServiceValidatorTest extends TestCase
 {
     /**
      * @var IntegrationShippingMethodFactoryInterface|\PHPUnit_Framework_MockObject_MockObject

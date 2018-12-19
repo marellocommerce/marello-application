@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\ShippingBundle\Tests\Unit\DependencyInjection\CompilerPass;
 
-use Marello\Bundle\ShippingBundle\DependencyInjection\CompilerPass\ShippingServiceRegistryCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class ShippingServiceRegistryCompilerPassTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\ShippingBundle\DependencyInjection\CompilerPass\ShippingServiceRegistryCompilerPass;
+
+class ShippingServiceRegistryCompilerPassTest extends TestCase
 {
     /**
      * @var ShippingServiceRegistryCompilerPass

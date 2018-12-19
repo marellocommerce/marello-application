@@ -128,7 +128,7 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-product-categories-grid', {'categories': entity.categories}) }}
+                    {{ dataGrid.renderGrid('marello-product-categories-grid', {'categories': marello_product_get_categories_ids(entity)}) }}
                 </div>
             </div>
         </div>

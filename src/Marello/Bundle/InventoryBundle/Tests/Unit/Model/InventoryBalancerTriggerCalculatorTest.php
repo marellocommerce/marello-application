@@ -4,11 +4,13 @@ namespace Marello\Bundle\InventoryBundle\Tests\Unit\Model;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\InventoryBundle\DependencyInjection\Configuration;
 use Marello\Bundle\InventoryBundle\Model\BalancedInventoryLevelInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancerTriggerCalculator;
 
-class InventoryBalancerTriggerCalculatorTest extends \PHPUnit_Framework_TestCase
+class InventoryBalancerTriggerCalculatorTest extends TestCase
 {
     /** @var ConfigManager|\PHPUnit_Framework_MockObject_MockObject $configManager */
     protected $configManager;

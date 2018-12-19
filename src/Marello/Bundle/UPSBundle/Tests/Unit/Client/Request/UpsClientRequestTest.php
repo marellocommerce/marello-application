@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Client\Request;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\UPSBundle\Client\Request\UpsClientRequest;
 
-class UpsClientRequestTest extends \PHPUnit_Framework_TestCase
+class UpsClientRequestTest extends TestCase
 {
     public function testGetters()
     {

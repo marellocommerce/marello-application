@@ -81,8 +81,10 @@ class LoadCustomerData extends AbstractFixture
         $primaryAddress->setNamePrefix($row['title']);
         $primaryAddress->setFirstName($row['firstname']);
         $primaryAddress->setLastName($row['lastname']);
-        $street = sprintf('%s %s', $row['street'], $this->generateRandomInt());
-        $primaryAddress->setStreet($street);
+        if (!preg_match("/([0-9]+)/", $row['street'])) {
+            $row['street'] = sprintf('%s %s', $row['street'], $this->generateRandomInt());
+        }
+        $primaryAddress->setStreet($row['street']);
         $primaryAddress->setPostalCode($row['zipcode']);
         $primaryAddress->setCity($row['city']);
         /** @var Country $country */

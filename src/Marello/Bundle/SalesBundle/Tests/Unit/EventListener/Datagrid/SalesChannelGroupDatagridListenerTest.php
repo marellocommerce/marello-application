@@ -3,12 +3,16 @@
 namespace Marello\Bundle\SalesBundle\Tests\Unit\EventListener\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\DataGridBundle\Event\OrmResultAfter;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\EventListener\Datagrid\SalesChannelGroupDatagridListener;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Oro\Bundle\DataGridBundle\Event\OrmResultAfter;
 
-class SalesChannelGroupDatagridListenerTest extends \PHPUnit_Framework_TestCase
+class SalesChannelGroupDatagridListenerTest extends TestCase
 {
     /**
      * @var SalesChannelGroupDatagridListener

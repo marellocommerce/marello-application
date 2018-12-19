@@ -40,33 +40,51 @@ class LoadSalesData extends AbstractFixture implements DependentFixtureInterface
             'currency' => 'EUR',
         ],
         [
+            'name' => 'Sales Channel DE Dortmund',
+            'code' => 'sales_channel_de_dortmund',
+            'type' => 'pos',
+            'currency' => 'EUR',
+        ],
+        [
             'name' => 'Sales Channel US Webshop',
             'code' => 'sales_channel_us_webshop',
-            'type' => 'magento',
+            'type' => 'webshop',
             'currency' => 'USD',
         ],
         [
             'name' => 'Sales Channel DE Webshop',
             'code' => 'sales_channel_de_webshop',
-            'type' => 'magento',
+            'type' => 'webshop',
             'currency' => 'EUR',
         ],        [
             'name' => 'Sales Channel DE Outlet Webshop',
             'code' => 'sales_channel_de_outlet_webshop',
-            'type' => 'magento',
+            'type' => 'webshop',
             'currency' => 'EUR',
         ],
         [
             'name' => 'Sales Channel FR Webshop',
             'code' => 'sales_channel_fr_webshop',
-            'type' => 'magento',
+            'type' => 'webshop',
             'currency' => 'EUR',
         ],
         [
             'name' => 'Sales Channel UK Webshop',
             'code' => 'sales_channel_uk_webshop',
-            'type' => 'magento',
+            'type' => 'webshop',
             'currency' => 'GBP',
+        ],
+        [
+            'name' => 'Sales Channel DE eBay',
+            'code' => 'sales_channel_de_ebay',
+            'type' => 'marketplace',
+            'currency' => 'EUR',
+        ],
+        [
+            'name' => 'Sales Channel US Amazon',
+            'code' => 'sales_channel_us_amazon',
+            'type' => 'marketplace',
+            'currency' => 'USD',
         ]
     ];
 

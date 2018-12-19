@@ -2,13 +2,15 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Resolver;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\TaxBundle\Model\Result;
-use Marello\Bundle\TaxBundle\Model\ResultElement;
 use Marello\Bundle\TaxBundle\Model\Taxable;
+use Marello\Bundle\TaxBundle\Model\ResultElement;
 use Marello\Bundle\TaxBundle\Resolver\CurrencyResolver;
 use Marello\Bundle\TaxBundle\Tests\ResultComparatorTrait;
 
-class CurrencyResolverTest extends \PHPUnit_Framework_TestCase
+class CurrencyResolverTest extends TestCase
 {
     use ResultComparatorTrait;
 

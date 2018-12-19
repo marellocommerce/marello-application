@@ -35,14 +35,15 @@ class RefundTotalsSubscriber implements EventSubscriberInterface
         /*
          * Reduce items to sum up the new refund amount
          */
-        $refundTotal = 0;
+        $refundTotal = 0.00;
         $refund->getItems()->map(function (RefundItem $item) use (&$refundTotal) {
             $refundTotal += $item->getRefundAmount();
         });
 
         /** @var Order $order */
         $order = $refund->getOrder();
-        if ($order->getGrandTotal() < $refundTotal) {
+
+        if (round($order->getGrandTotal(), 4) < round($refundTotal, 4)) {
             throw new ValidatorException('Cannot refund more than is actually paid');
         }
 
