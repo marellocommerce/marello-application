@@ -55,5 +55,4 @@ services:
         arguments:
             - '@oro_locale.dql.formatter.name'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-invoices-grid, method: onBuildBefore }
-            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-creditmemos-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-invoices-base-grid, method: onBuildBefore }

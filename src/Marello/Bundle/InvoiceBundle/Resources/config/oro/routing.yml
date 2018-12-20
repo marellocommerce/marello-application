@@ -2,8 +2,3 @@ marello_invoice:
     resource: "@MarelloInvoiceBundle/Controller/InvoiceController.php"
     type:     annotation
     prefix:   /marello/invoice
-
-marello_invoice_creditmemo:
-    resource: "@MarelloInvoiceBundle/Controller/CreditmemoController.php"
-    type:     annotation
-    prefix:   /marello/creditmemo

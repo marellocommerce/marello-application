@@ -46,6 +46,7 @@ class MarelloInvoiceBundleInstaller implements Installation
         $table->addColumn('name', 'string', ['length' => 50]);
         $table->addColumn('label', 'string', ['length' => 255]);
         $table->setPrimaryKey(['name']);
+        $table->addUniqueIndex(['name'], 'UNIQ_3700F5D2EA750E8');
     }
 
     /**
@@ -68,10 +69,10 @@ class MarelloInvoiceBundleInstaller implements Installation
         $table->addColumn('payment_details', 'text', ['notnull' => false]);
         $table->addColumn('shipping_method', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('shipping_method_type', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('order_id', 'integer', ['notnull' => false]);
+        $table->addColumn('order_id', 'integer', ['notnull' => true]);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
-        $table->addColumn('type', 'string', ['notnull' => false, 'length' => 50]);
-        $table->addColumn('status', 'string', ['notnull' => false, 'length' => 50]);
+        $table->addColumn('type', 'string', ['notnull' => true]);
+        $table->addColumn('status', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('customer_id', 'integer', ['notnull' => false]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
         $table->addColumn('subtotal', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
@@ -95,6 +96,7 @@ class MarelloInvoiceBundleInstaller implements Installation
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['invoice_number'], 'UNIQ_45AB65072DA68207');
         $table->addIndex(['order_id'], 'IDX_A619DD647BE036FC1');
         $table->addIndex(['customer_id'], 'IDX_A619DD649395C3F31', []);
         $table->addIndex(['billing_address_id'], 'IDX_A619DD6443656FE61', []);
@@ -155,7 +157,7 @@ class MarelloInvoiceBundleInstaller implements Installation
             $schema->getTable('marello_invoice_invoice_type'),
             ['type'],
             ['name'],
-            ['onDelete' => null, 'onUpdate' => null]
+            ['onDelete' => 'SET NULL', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),

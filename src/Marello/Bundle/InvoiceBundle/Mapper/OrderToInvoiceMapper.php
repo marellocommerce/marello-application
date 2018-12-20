@@ -4,13 +4,12 @@ namespace Marello\Bundle\InvoiceBundle\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;
 use Marello\Bundle\InvoiceBundle\Entity\InvoiceType;
-use Marello\Bundle\InvoiceBundle\Migrations\Data\ORM\LoadInvoiceTypesData;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 
 class OrderToInvoiceMapper extends AbstractInvoiceMapper
 {
@@ -56,7 +55,7 @@ class OrderToInvoiceMapper extends AbstractInvoiceMapper
 
     /**
      * @param OrderItem $orderItem
-     * @return PackingSlipItem
+     * @return InvoiceItem
      */
     protected function mapItem(OrderItem $orderItem)
     {

@@ -47,7 +47,7 @@
                 </div>
                 {{ UI.renderProperty('marello.invoice.subtotal.label'|trans, entity.subtotal|oro_format_currency({'currency':entity.currency})) }}
                 {{ UI.renderProperty('marello.invoice.shipping_amount_incl_tax.label'|trans, entity.shippingAmountInclTax|oro_format_currency({'currency':entity.currency})) }}
-                {{ UI.renderProperty('marello.invoice.tax_total.label'|trans, entity.totalTax|oro_format_currency({'currency':entity.currency})) }}
+                {{ UI.renderProperty('marello.invoice.total_tax.label'|trans, entity.totalTax|oro_format_currency({'currency':entity.currency})) }}
                 {{ UI.renderProperty('marello.invoice.grand_total.label'|trans, entity.grandTotal|oro_format_currency({'currency':entity.currency})) }}
             </div>
         </div>

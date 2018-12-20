@@ -7,12 +7,6 @@ navigation:
                 extras:
                     routes: ['marello_invoice_invoice_*']
                     position: 20
-            creditmemos:
-                label: marello.invoice.creditmemo.plural_label
-                route: marello_invoice_creditmemo_index
-                extras:
-                    routes: ['marello_invoice_creditmemo_*']
-                    position: 45
 
         tree:
             application_menu:
@@ -20,10 +14,7 @@ navigation:
                     sales_tab:
                         children:
                             invoices: ~
-                            creditmemos: ~
 
     titles:
         marello_invoice_invoice_index: marello.invoice.entity_plural_label
         marello_invoice_invoice_view: 'Invoice #%id%'
-        marello_invoice_creditmemo_index: marello.invoice.creditmemo.plural_label
-        marello_invoice_creditmemo_view: 'Credit Memo #%id%'

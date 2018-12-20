@@ -23,7 +23,7 @@ class InvoiceType
     const CREDITMEMO_TYPE = 'creditmemo';
 
     /**
-     * @ORM\Column(name="name", type="string", length=50)
+     * @ORM\Column(name="name", type="string", length=50, unique=true)
      * @ORM\Id
      * @Oro\ConfigField(
      *      defaultValues={
@@ -36,7 +36,7 @@ class InvoiceType
     protected $name;
 
     /**
-     * @ORM\Column(name="label", type="string", length=255, unique=true)
+     * @ORM\Column(name="label", type="string", length=255)
      */
     protected $label;
 

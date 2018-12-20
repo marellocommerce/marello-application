@@ -24,11 +24,12 @@ marello:
         sales_channel.label:        Salse Channel
         items.label:                Items
         subtotal.label:             Subtotal
-        tax_total.label:            Tax Total
+        total_tax.label:            Tax Total
         grand_total.label:          Grand Total
         shipping_amount_incl_tax.label: Shipping Amount Including Tax
         shipping_amount_excl_tax.label: Shipping Amount Excluding Tax
         organization.label:         Organization
+        type.label:                 Invoice Type
 
         system_configuration:
             groups:
@@ -54,12 +55,22 @@ marello:
             id.label:                 Id
             entity_label:             Invoice Item
             entity_plural_label:      Invoice Items
+            invoice.label:            Invoice
             quantity.label:           Quantity
             price.label:              Price
             product.label:            Product
             tax.label:                Tax
+            discount_amount.label:    Discount Amount
+            product_name.label:       Product Name
+            product_sku.label:        Product Sku
             row_total_incl_tax.label: Row Total Including Tax
             row_total_excl_tax.label: Row Total Excluding Tax
+
+        invoicetype:
+            entity_label:             Invoice Type
+            entity_plural_label:      Invoice Types
+            label.label:              Label
+            name.label:               Name
 
         creditmemo:
             label:  Credit Memo
