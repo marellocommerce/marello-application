@@ -26,15 +26,6 @@ services:
         arguments:
             - '@marello_invoice.mapper.refund_to_creditmemo'
             - '@oro_entity.doctrine_helper'
-            
-    marello_invoice.listener.invoice_create.auto:
-        class: 'Marello\Bundle\InvoiceBundle\EventListener\Doctrine\AutoInvoiceCreationListener'
-        arguments:
-            - '@oro_config.manager'
-            - '@marello_invoice.manager.invoice'
-        tags:
-            - { name: doctrine.event_listener, event: onFlush, priority: 250 }
-            - { name: doctrine.event_listener, event: postFlush, priority: 250 }
 
     marello_invoice.listener.invoice_create.manual:
         class: 'Marello\Bundle\InvoiceBundle\EventListener\ManualInvoiceCreationListener'
