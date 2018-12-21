@@ -22,7 +22,7 @@ workflows:
             pending:
                 allowed_transitions:
                     - payment_reminder
-                    - invoice
+                    - payment_received
                     - hold_pending
                     - cancel
             cancelled:
@@ -37,10 +37,10 @@ workflows:
                 allowed_transitions:
                     - hold_invoice
                     - credit
-                    - payment_received
+                    - prepare_shipping
             paid:
                 allowed_transitions:
-                    - prepare_shipping
+                    - invoice
             credit:
                 allowed_transitions: []
             pick_and_pack:
@@ -89,12 +89,6 @@ workflows:
                                 constraints:
                                   - NotBlank: ~
                                   - DateTime: ~
-                triggers:
-                    -
-                        entity_class: Marello\Bundle\InvoiceBundle\Entity\Invoice
-                        event: create
-                        queued: false
-                        relation: order
             payment_received:
                 step_to:  paid
                 transition_definition: payment_received_definition
