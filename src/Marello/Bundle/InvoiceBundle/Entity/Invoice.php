@@ -392,8 +392,7 @@ class Invoice extends ExtendInvoice implements
     public function __construct(
         AbstractAddress $billingAddress = null,
         AbstractAddress $shippingAddress = null
-    )
-    {
+    ) {
         parent::__construct();
 
         $this->items = new ArrayCollection();

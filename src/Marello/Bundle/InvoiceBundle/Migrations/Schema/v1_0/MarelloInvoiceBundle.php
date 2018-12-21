@@ -97,7 +97,7 @@ class MarelloInvoiceBundle implements Migration
      *
      * @param Schema $schema
      */
-        protected function createMarelloInvoiceInvoiceItemTable(Schema $schema)
+    protected function createMarelloInvoiceInvoiceItemTable(Schema $schema)
     {
         $table = $schema->createTable('marello_invoice_invoice_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
