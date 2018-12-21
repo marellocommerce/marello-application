@@ -31,13 +31,6 @@ marello:
         organization.label:         Organization
         type.label:                 Invoice Type
 
-        system_configuration:
-            groups:
-                invoicing.title: Invoicing
-                invoicing_configuration.title: Invoicing Configuration
-                invoicing_general.label: General
-            fields:
-                auto_invoicing.label: Auto Invoicing
         datablock:
             general:                General
             billing_and_payment:    Billing & Payment
