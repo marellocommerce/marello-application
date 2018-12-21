@@ -73,7 +73,7 @@ class Invoice extends ExtendInvoice implements
      * @var InvoiceType
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\InvoiceBundle\Entity\InvoiceType")
-     * @ORM\JoinColumn(onDelete="SET NULL", nullable=false, name="type", referencedColumnName="name")
+     * @ORM\JoinColumn(onDelete="cascade", nullable=false, name="type", referencedColumnName="name")
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={

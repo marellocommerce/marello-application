@@ -31,10 +31,9 @@ class MarelloInvoiceBundle implements Migration
     protected function createMarelloInvoiceInvoiceTypeTable(Schema $schema)
     {
         $table = $schema->createTable('marello_invoice_invoice_type');
-        $table->addColumn('name', 'string', ['length' => 50]);
+        $table->addColumn('name', 'string', ['notnull' => true]);
         $table->addColumn('label', 'string', ['length' => 255]);
         $table->setPrimaryKey(['name']);
-        $table->addUniqueIndex(['name'], 'UNIQ_3700F5D2EA750E8');
     }
 
     /**
@@ -98,7 +97,7 @@ class MarelloInvoiceBundle implements Migration
      *
      * @param Schema $schema
      */
-    protected function createMarelloInvoiceInvoiceItemTable(Schema $schema)
+        protected function createMarelloInvoiceInvoiceItemTable(Schema $schema)
     {
         $table = $schema->createTable('marello_invoice_invoice_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
@@ -145,7 +144,7 @@ class MarelloInvoiceBundle implements Migration
             $schema->getTable('marello_invoice_invoice_type'),
             ['type'],
             ['name'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),

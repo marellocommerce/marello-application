@@ -17,7 +17,7 @@ class MarelloInvoiceBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_1';
+        return 'v1_0';
     }
 
     /**
@@ -43,10 +43,9 @@ class MarelloInvoiceBundleInstaller implements Installation
     protected function createMarelloInvoiceInvoiceTypeTable(Schema $schema)
     {
         $table = $schema->createTable('marello_invoice_invoice_type');
-        $table->addColumn('name', 'string', ['length' => 50]);
+        $table->addColumn('name', 'string', ['notnull' => true]);
         $table->addColumn('label', 'string', ['length' => 255]);
         $table->setPrimaryKey(['name']);
-        $table->addUniqueIndex(['name'], 'UNIQ_3700F5D2EA750E8');
     }
 
     /**
@@ -157,7 +156,7 @@ class MarelloInvoiceBundleInstaller implements Installation
             $schema->getTable('marello_invoice_invoice_type'),
             ['type'],
             ['name'],
-            ['onDelete' => 'SET NULL', 'onUpdate' => null]
+            ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
