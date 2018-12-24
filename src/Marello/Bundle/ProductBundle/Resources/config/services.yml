@@ -32,6 +32,7 @@ services:
         class: Marello\Bundle\ProductBundle\Twig\ProductExtension
         arguments:
             - '@marello_sales.saleschannel.provider.channel_provider'
+            - '@marello_catalog.provider.categories_ids'
         tags:
             - { name: twig.extension }
 

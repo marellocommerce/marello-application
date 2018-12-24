@@ -13,3 +13,8 @@ services:
             - '@oro_workflow.manager'
         tags:
             - { name: twig.extension }
+
+    marello_refund.datagrid.action_permission_provider:
+        class: Marello\Bundle\RefundBundle\Datagrid\RefundActionPermissionProvider
+        arguments:
+            - '@doctrine.orm.entity_manager'

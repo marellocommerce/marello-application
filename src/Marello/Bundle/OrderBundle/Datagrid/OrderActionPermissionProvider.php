@@ -3,11 +3,8 @@
 namespace Marello\Bundle\OrderBundle\Datagrid;
 
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
-
 use Marello\Bundle\DataGridBundle\Action\ActionPermissionInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class OrderActionPermissionProvider implements ActionPermissionInterface
 {
@@ -59,9 +56,14 @@ class OrderActionPermissionProvider implements ActionPermissionInterface
             return false;
         }
 
-        $workflowStep = $this->getWorkflowStep($record);
+        $workflowStep = $this->getWorkflowStep($record)['stepName'];
 
-        return (!in_array($workflowStep->getName(), $this->excludedRefundableSteps));
+        foreach ($this->excludedRefundableSteps as $excludedRefundableStep) {
+            if (strpos($workflowStep, $excludedRefundableStep) !== false) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -75,9 +77,14 @@ class OrderActionPermissionProvider implements ActionPermissionInterface
             return false;
         }
 
-        $workflowStep = $this->getWorkflowStep($record);
+        $workflowStep = $this->getWorkflowStep($record)['stepName'];
 
-        return (in_array($workflowStep->getName(), $this->allowedReturnSteps));
+        foreach ($this->allowedReturnSteps as $allowedReturnStep) {
+            if (strpos($workflowStep, $allowedReturnStep) !== false) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -87,7 +94,7 @@ class OrderActionPermissionProvider implements ActionPermissionInterface
      */
     protected function hasWorkflowStep(ResultRecordInterface $record)
     {
-        return (bool) ($record->getValue('workflowStep'));
+        return (bool) ($record->getValue('workflowStepLabel'));
     }
 
     /**
@@ -97,6 +104,8 @@ class OrderActionPermissionProvider implements ActionPermissionInterface
      */
     protected function getWorkflowStep(ResultRecordInterface $record)
     {
-        return $record->getValue('workflowStep');
+        $value = $record->getValue('workflowStepLabel');
+
+        return reset($value);
     }
 }
