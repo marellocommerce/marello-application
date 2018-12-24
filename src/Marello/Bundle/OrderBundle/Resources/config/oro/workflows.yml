@@ -134,7 +134,16 @@ workflows:
                         entity: $order
                         recipient: $order.customer
                         template: marello_order_cancelled
-            hold_definition: []
+            hold_definition:
+                actions:
+                    - '@tree':
+                        conditions:
+                            '@not_empty': $note
+                        actions:
+                            - '@create_note':
+                                message: $note
+                                target_entity: $order
+                            - '@assign_value': [$note, ~]
             un_hold_definition: []
             invoice_definition:
                 conditions:
