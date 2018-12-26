@@ -86,7 +86,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     protected $destination;
 
     /**
-     * @ORM\Column(name="execution_date", type="datetime", nullable=false)
+     * @ORM\Column(name="execution_date_time", type="datetime", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -97,7 +97,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
      *
      * @var \DateTime
      */
-    protected $executionDate;
+    protected $executionDateTime;
 
     /**
      * @ORM\Column(name="percentage", type="float")
@@ -261,18 +261,18 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     /**
      * @return \DateTime
      */
-    public function getExecutionDate()
+    public function getExecutionDateTime()
     {
-        return $this->executionDate;
+        return $this->executionDateTime;
     }
 
     /**
-     * @param \DateTime $executionDate
+     * @param \DateTime $executionDateTime
      * @return ReplenishmentOrder
      */
-    public function setExecutionDate(\DateTime $executionDate)
+    public function setExecutionDateTime(\DateTime $executionDateTime)
     {
-        $this->executionDate = $executionDate;
+        $this->executionDateTime = $executionDateTime;
 
         return $this;
     }

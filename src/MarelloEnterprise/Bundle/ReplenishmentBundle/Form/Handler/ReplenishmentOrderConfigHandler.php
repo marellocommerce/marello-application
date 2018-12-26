@@ -3,12 +3,9 @@
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\ReplenishmentStrategiesRegistry;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Provider\ReplenishmentOrdersFromConfigProvider;
 use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,26 +31,26 @@ class ReplenishmentOrderConfigHandler
     protected $manager;
 
     /**
-     * @var ReplenishmentStrategiesRegistry
+     * @var ReplenishmentOrdersFromConfigProvider
      */
-    protected $replenishmentStrategiesRegistry;
+    protected $replenishmentOrdersProvider;
 
     /**
      * @param FormInterface $form
      * @param RequestStack $requestStack
      * @param ObjectManager $manager
-     * @param ReplenishmentStrategiesRegistry $replenishmentStrategiesRegistry
+     * @param ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider
      */
     public function __construct(
         FormInterface $form,
         RequestStack $requestStack,
         ObjectManager $manager,
-        ReplenishmentStrategiesRegistry $replenishmentStrategiesRegistry
+        ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider
     ) {
         $this->form = $form;
         $this->request = $requestStack->getCurrentRequest();
         $this->manager = $manager;
-        $this->replenishmentStrategiesRegistry = $replenishmentStrategiesRegistry;
+        $this->replenishmentOrdersProvider = $replenishmentOrdersProvider;
     }
 
     /**
@@ -98,49 +95,34 @@ class ReplenishmentOrderConfigHandler
      */
     protected function onSuccess(ReplenishmentOrderConfig $entity)
     {
+        if (!$entity->getExecutionDateTime()) {
+            $entity->setExecutionDateTime(new \DateTime());
+        }
         $this->manager->persist($entity);
-        $strategy = $this->replenishmentStrategiesRegistry->getStrategy($entity->getStrategy());
-        $replenishmentResults = $strategy->getResults($entity);
-        
-        if (empty($replenishmentResults)) {
+
+        if ($entity->getExecutionDateTime() > new \DateTime()) {
+            $this->manager->flush();
+
+            return [
+                'result' => true,
+                'messageType' => 'info',
+                'message' => 'marelloenterprise.replenishment.messages.info.replenishment_order_config.delayed_replenishment_orders'
+            ];
+        }
+
+        $entity->setExecuted(true);
+        $this->manager->persist($entity);
+
+        $orders = $this->replenishmentOrdersProvider->getReplenishmentOrders($entity);
+
+        if (empty($orders)) {
             return [
                 'result' => true,
                 'messageType' => 'info',
                 'message' => 'marelloenterprise.replenishment.messages.info.replenishment_order_config.no_products_in_origins'
             ];
         }
-        
-        $orders = [];
-        foreach ($replenishmentResults as $result) {
-            /** @var Warehouse $origin */
-            $origin = $result['origin'];
-            /** @var Warehouse $destination */
-            $destination = $result['destination'];
-            /** @var Product $product */
-            $product = $result['product'];
 
-            if (!isset($orders[sprintf('%s-%s', $origin->getId(), $destination->getId())])) {
-                $order = new ReplenishmentOrder();
-                $order
-                    ->setOrganization($entity->getOrganization())
-                    ->setOrigin($origin)
-                    ->setDestination($destination)
-                    ->setExecutionDate($entity->getExecutionDate())
-                    ->setPercentage($entity->getPercentage())
-                    ->setReplOrderConfig($entity)
-                    ->setDescription($entity->getDescription());
-                $orders[sprintf('%s-%s', $origin->getId(), $destination->getId())] = $order;
-            }
-            /** @var ReplenishmentOrder $order */
-            $order = $orders[sprintf('%s-%s', $origin->getId(), $destination->getId())];
-            $orderItem = new ReplenishmentOrderItem();
-            $orderItem
-                ->setInventoryQty($result['quantity'])
-                ->setTotalInventoryQty($result['total_quantity'])
-                ->setProduct($product)
-                ->setOrder($order);
-            $order->addReplOrderItem($orderItem);
-        }
         if ($entity->getId()) {
             $existingOrders = $this->manager->getRepository(ReplenishmentOrder::class)->findByConfig($entity->getId());
             foreach ($existingOrders as $existingOrder) {

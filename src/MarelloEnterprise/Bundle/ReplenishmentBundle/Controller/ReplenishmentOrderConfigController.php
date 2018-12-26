@@ -47,4 +47,19 @@ class ReplenishmentOrderConfigController extends Controller
             'form'   => $handler->getFormView(),
         ];
     }
+
+    /**
+     * @Config\Route(
+     *      "/widget/products/{id}",
+     *      name="marello_replenishment_order_config_widget_products_candidates",
+     *      requirements={"id"="\d+"},
+     *      defaults={"id"=0}
+     * )
+     * @AclAncestor("marello_product_view")
+     * @Config\Template()
+     */
+    public function productsCandidatesAction()
+    {
+        return [];
+    }
 }

@@ -5,33 +5,44 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Form\Type\ProductSelectCollectionType;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseMultiSelectType;
+use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\Validator\Constraints\NotNull;
 
 class ReplenishmentOrderConfigType extends AbstractType
 {
     const BLOCK_PREFIX = 'marello_replenishment_order_config';
-
+    /**
+     * @var Router
+     */
+    protected $router;
+    
     /**
      * @var ObjectManager
      */
     protected $manager;
 
     /**
+     * @param Router $router
      * @param ObjectManager $manager
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(Router $router, ObjectManager $manager)
     {
+        $this->router = $router;
         $this->manager = $manager;
     }
 
@@ -63,11 +74,10 @@ class ReplenishmentOrderConfigType extends AbstractType
             )
             ->add(
                 'products',
-                ProductSelectCollectionType::class,
+                ReplenishmentOrderConfigProductsType::class,
                 [
-                    'required'       => true,
-                    'label'          => 'marelloenterprise.replenishment.replenishmentorderconfig.products.label',
-                    'mapped'         => false,
+                    'mapped'                => true,
+                    'required'              => true,
                 ]
             )
             ->add(
@@ -79,11 +89,11 @@ class ReplenishmentOrderConfigType extends AbstractType
                 ]
             )
             ->add(
-                'executionDate',
-                OroDateType::class,
+                'executionDateTime',
+                OroDateTimeType::class,
                 [
                     'required' => false,
-                    'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.execution_date.label',
+                    'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.execution_date_time.label',
                     'constraints' => new NotNull()
                 ]
             )
@@ -106,28 +116,20 @@ class ReplenishmentOrderConfigType extends AbstractType
             )
         ;
         $builder
-            ->addEventListener(
-                FormEvents::POST_SET_DATA,
-                function (FormEvent $event) {
-                    /** @var ReplenishmentOrderConfig $data */
-                    $data = $event->getData();
-                    if (!$data instanceof ReplenishmentOrderConfig) {
-                        return;
-                    }
-                    $form = $event->getForm();
-
-                    $warehouseRepository = $this->manager->getRepository(Warehouse::class);
-                    $productRepository = $this->manager->getRepository(Product::class);
-
-                    $origins = $warehouseRepository->findBy(['id' => $data->getOrigins()]);
-                    $destinations = $warehouseRepository->findBy(['id' => $data->getDestinations()]);
-                    $products = $productRepository->findBy(['id' => $data->getProducts()]);
-
-                    $form->get('origins')->setData($origins);
-                    $form->get('destinations')->setData($destinations);
-                    $form->get('products')->setData($products);
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+                $data = $event->getData();
+                $form = $event->getForm();
+                $data['products'] = $data['products']['added'];
+                $event->setData($data);
+                if ($form->has('products')) {
+                    $form->remove('products');
+                    $form->add(
+                        'products',
+                        TextType::class,
+                        ['required' => false]
+                    );
                 }
-            )
+            })
             ->addEventListener(
                 FormEvents::SUBMIT,
                 function (FormEvent $event) {
@@ -153,19 +155,24 @@ class ReplenishmentOrderConfigType extends AbstractType
                         $destinationsArray[] = $destination->getId();
                     }
                     $data->setDestinations($destinationsArray);
-
-                    /** @var Product[] $products */
-                    $products = $form->get('products')->getData();
-                    $productsArray = [];
-                    foreach ($products as $product) {
-                        $productsArray[] = $product->getId();
-                    }
-                    $data->setProducts($productsArray);
+                    $products = $form->get('products')->getViewData();
+                    $data->setProducts(explode(',', $products));
 
                     $event->setData($data);
                 }
             )
         ;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->children['products']->vars['grid_url'] = $this->router->generate(
+            'marello_replenishment_order_config_widget_products_candidates'
+        );
     }
 
     /**

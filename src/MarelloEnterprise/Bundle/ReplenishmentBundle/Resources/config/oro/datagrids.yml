@@ -24,9 +24,9 @@ datagrids:
             destinationLabel:
                 label: marelloenterprise.replenishment.replenishmentorder.destination.label
                 frontend_type: string
-            executionDate:
-                label: marelloenterprise.replenishment.replenishmentorder.execution_date.label
-                frontend_type: date
+            executionDateTime:
+                label: marelloenterprise.replenishment.replenishmentorder.execution_date_time.label
+                frontend_type: datetime
             percentage:
                 label: marelloenterprise.replenishment.replenishmentorder.percentage.label
                 type: twig
@@ -50,6 +50,8 @@ datagrids:
                     data_name: d.label
                 percentage:
                     data_name: ro.percentage
+            default:
+                replOrderNumber: "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         properties:
             view_link:
                 type:   url
@@ -94,3 +96,115 @@ datagrids:
             note:
                 label: marelloenterprise.replenishment.replenishmentorderitem.note.label
                 frontend_type: string
+
+    marello-replenishment-products-candidates:
+        source:
+            type: orm
+            query:
+                select:
+                    - p
+                    - p.id
+                    - p.sku
+                    - p.name
+                    - s.label as status
+                    - >
+                      (CASE WHEN p.id IN (:data_in) AND p.id NOT IN (:data_not_in)
+                        THEN true ELSE false
+                      END) as hasProduct
+                from:
+                    - { table: MarelloProductBundle:Product, alias: p }
+                join:
+                    left:
+                        - { join: p.status, alias: s }
+                        - { join: p.categories, alias: cat }
+                groupBy: p.id, s.label
+        columns:
+            hasProduct:
+                label:              marello.purchaseorder.has_item.label
+                editable:           true
+                frontend_type:      boolean
+            image:
+                label:            marello.product.image.label
+                type:             twig
+                frontend_type:    html
+                template:         MarelloProductBundle:Product/Datagrid/Property:image.html.twig
+            sku:
+                label:              marello.product.sku.label
+                frontend_type:      string
+            name:
+                label:              marello.product.name.label
+                frontend_type:      string
+            manufacturingCode:
+                label:              marello.product.manufacturing_code.label
+                frontend_type:      string
+            status:
+                label:              marello.product.status.label
+                frontend_type:      string
+            categories:
+                label:              marello.product.categories.label
+                type:               twig
+                frontend_type:      html
+                template:           MarelloProductBundle:Product/Datagrid/Property:categories.html.twig
+            createdAt:
+                label:              oro.ui.created_at
+                frontend_type:      datetime
+        sorters:
+            columns:
+                hasProduct:             { data_name: hasProduct }
+                sku:                    { data_name: p.sku }
+                name:                   { data_name: p.name }
+                manufacturingCode:      { data_name: p.manufacturingCode }
+                status:                 { data_name: s.label }
+                categories:             { data_name: categoriesCount }
+                createdAt:              { data_name: p.createdAt }
+            default:
+                hasProduct: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+        filters:
+            columns:
+                hasProduct:
+                    data_name:        hasProduct
+                    type:             boolean
+                image:
+                    type:             boolean
+                    data_name:        hasImage
+                sku:
+                    type:             string
+                    data_name:        p.sku
+                name:
+                    type:             string
+                    data_name:        p.name
+                status:
+                    type: entity
+                    data_name: s
+                    options:
+                        field_options:
+                            class: Marello\Bundle\ProductBundle\Entity\ProductStatus
+                manufacturingCode:
+                    data_name:          p.manufacturingCode
+                    type:               string
+                categories:
+                    type:               choice
+                    data_name:          cat.code
+                    options:
+                        field_options:
+                            multiple:   true
+                            choices:    '@marello_catalog.provider.categories_choices->getCategories()'
+                    enabled:            false
+        properties:
+            id: ~
+            view_link:
+                type: url
+                route: marello_product_view
+                params:
+                    - id
+        options:
+            entityHint: p
+            rowSelection:
+                dataField: id
+                columnName: hasProduct
+                selectAll: true
+                selectors:
+                    included: '#appendProducts'
+                    excluded: '#removeProducts'
+            requireJSModules:
+                - marelloenterprisereplenishment/js/datagrid/marello-replenishment-products-candidates-builder
