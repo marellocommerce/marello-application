@@ -56,28 +56,30 @@ class ReplenishmentOrderConfigType extends AbstractType
                 'origins',
                 WarehouseMultiSelectType::class,
                 [
-                    'required'       => true,
-                    'label'          => 'marelloenterprise.replenishment.replenishmentorderconfig.origins.label',
-                    'placeholder'    => 'marelloenterprise.inventory.warehouse.form.select_warehouse',
-                    'mapped'         => false,
+                    'required' => true,
+                    'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.origins.label',
+                    'placeholder' => 'marelloenterprise.inventory.warehouse.form.select_warehouse',
+                    'mapped'=> false,
+                    'constraints' => new NotNull()
                 ]
             )
             ->add(
                 'destinations',
                 WarehouseMultiSelectType::class,
                 [
-                    'required'       => true,
-                    'label'          => 'marelloenterprise.replenishment.replenishmentorderconfig.destinations.label',
-                    'placeholder'    => 'marelloenterprise.inventory.warehouse.form.select_warehouse',
-                    'mapped'         => false,
+                    'required' => true,
+                    'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.destinations.label',
+                    'placeholder' => 'marelloenterprise.inventory.warehouse.form.select_warehouse',
+                    'mapped' => false,
+                    'constraints' => new NotNull()
                 ]
             )
             ->add(
                 'products',
                 ReplenishmentOrderConfigProductsType::class,
                 [
-                    'mapped'                => true,
-                    'required'              => true,
+                    'mapped' => true,
+                    'required' => true,
                 ]
             )
             ->add(
@@ -93,8 +95,7 @@ class ReplenishmentOrderConfigType extends AbstractType
                 OroDateTimeType::class,
                 [
                     'required' => false,
-                    'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.execution_date_time.label',
-                    'constraints' => new NotNull()
+                    'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.execution_date_time.label'
                 ]
             )
             ->add(

@@ -108,24 +108,26 @@ class EqualDivisionReplenishmentStrategy implements ReplenishmentStrategyInterfa
         }
         foreach ($destinationProductsQty as $productId => $whQty) {
             foreach ($whQty as $dwh => $dqty) {
-                foreach ($originProductsQty[$productId] as $owh => $oqty) {
-                    if ($oqty >= $dqty) {
-                        $qty = $dqty;
-                        $dqty = 0;
-                    } else {
-                        $qty = $oqty;
-                        $dqty = $dqty - $oqty;
+                if (isset($originProductsQty[$productId])) {
+                    foreach ($originProductsQty[$productId] as $owh => $oqty) {
+                        if ($oqty >= $dqty) {
+                            $qty = $dqty;
+                            $dqty = 0;
+                        } else {
+                            $qty = $oqty;
+                            $dqty = $dqty - $oqty;
+                        }
+                        if ($qty > 0) {
+                            $result[] = [
+                                'origin' => $origins[$owh],
+                                'destination' => $destinations[$dwh],
+                                'product' => $products[$productId],
+                                'quantity' => $qty,
+                                'total_quantity' => $oqty
+                            ];
+                        }
+                        $originProductsQty[$productId][$owh] = $oqty - $qty;
                     }
-                    if ($qty > 0) {
-                        $result[] = [
-                            'origin' => $origins[$owh],
-                            'destination' => $destinations[$dwh],
-                            'product' => $products[$productId],
-                            'quantity' => $qty,
-                            'total_quantity' => $oqty
-                        ];
-                    }
-                    $originProductsQty[$productId][$owh] = $oqty - $qty;
                 }
             }
         }
