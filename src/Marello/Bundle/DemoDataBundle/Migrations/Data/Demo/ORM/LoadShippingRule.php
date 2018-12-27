@@ -12,26 +12,41 @@ use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
 
 class LoadShippingRule extends AbstractFixture
 {
-    const DEFAULT_EU_RULE_NAME = 'Manual Shipping';
+    const DEFAULT_RULE_NAME = 'Manual Shipping';
     const DEFAULT_RULE_REFERENCE = 'shipping_rule.default';
+    const DEFAULT_RULE_REFERENCE_GBP = 'shipping_rule.default_gbp';
+
+    protected $data = [
+        self::DEFAULT_RULE_REFERENCE => [
+            'currency' => 'EUR',
+            'sort_order' => 10
+        ],
+        self::DEFAULT_RULE_REFERENCE_GBP => [
+            'currency' => 'GBP',
+            'sort_order' => 15
+        ]
+    ];
 
     /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
-        $rule = new Rule();
-        $rule->setName(self::DEFAULT_EU_RULE_NAME)
-            ->setEnabled(true)
-            ->setSortOrder(10);
+        foreach ($this->data as $shippingRuleReferenceName => $config) {
+            $rule = new Rule();
+            $rule->setName(self::DEFAULT_RULE_NAME)
+                ->setEnabled(true)
+                ->setSortOrder($config['sort_order']);
 
-        $shippingRule = new ShippingMethodsConfigsRule();
+            $shippingRuleConfig = new ShippingMethodsConfigsRule();
 
-        $shippingRule->setRule($rule)
-            ->setOrganization($this->getOrganization($manager))
-            ->setCurrency('EUR');
-        $this->addReference(self::DEFAULT_RULE_REFERENCE, $shippingRule);
-        $manager->persist($shippingRule);
+            $shippingRuleConfig->setRule($rule)
+                ->setOrganization($this->getOrganization($manager))
+                ->setCurrency($config['currency']);
+            $this->addReference($shippingRuleReferenceName, $shippingRuleConfig);
+            $manager->persist($shippingRuleConfig);
+        }
+
         $manager->flush();
     }
 
