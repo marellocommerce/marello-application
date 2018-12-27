@@ -44,6 +44,7 @@ HASLINK;
             ->createQueryBuilder('scg');
         $qb
             ->select(
+                'scg.id',
                 'scg',
                 $hasLink
             )

@@ -3,6 +3,8 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\MinQtyWHCalculatorInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
@@ -18,11 +20,20 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
     private $minQtyWHCalculator;
 
     /**
-     * @param MinQtyWHCalculatorInterface $minQtyWHCalculator
+     * @var WarehouseChannelGroupLinkRepository
      */
-    public function __construct(MinQtyWHCalculatorInterface $minQtyWHCalculator)
-    {
+    private $warehouseChannelGroupLinkRepository;
+
+    /**
+     * @param MinQtyWHCalculatorInterface $minQtyWHCalculator
+     * @param WarehouseChannelGroupLinkRepository $warehouseChannelGroupLinkRepository
+     */
+    public function __construct(
+        MinQtyWHCalculatorInterface $minQtyWHCalculator,
+        WarehouseChannelGroupLinkRepository $warehouseChannelGroupLinkRepository
+    ) {
         $this->minQtyWHCalculator = $minQtyWHCalculator;
+        $this->warehouseChannelGroupLinkRepository = $warehouseChannelGroupLinkRepository;
     }
 
     /**
@@ -58,16 +69,31 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         $warehouses = [];
         $orderItems = $order->getItems();
         $orderItemsByProducts = [];
+
+        $linkedWarehouses = $this->warehouseChannelGroupLinkRepository
+            ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup())
+            ->getWarehouseGroup()
+            ->getWarehouses()
+            ->toArray();
+        if (empty($linkedWarehouses)) {
+            return null;
+        }
+        $linkedWarehousesIds = array_map(function( Warehouse $warehouse) {
+            return $warehouse->getId();
+        }, $linkedWarehouses);
+
         foreach ($orderItems as $orderItem) {
             $orderItemsByProducts[$orderItem->getProduct()->getSku()] = $orderItem;
             $inventoryItems = $orderItem->getInventoryItems();
             foreach ($inventoryItems as $inventoryItem) {
                 /** @var InventoryLevel $inventoryLevel */
                 foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
-                    if ($inventoryLevel->getInventoryQty() >= $orderItem->getQuantity()) {
-                        $warehouse = $inventoryLevel->getWarehouse();
-                        $warehouses[$warehouse->getId()] = $warehouse;
-                        $productsByWh[$warehouse->getId()] [] = $inventoryItem->getProduct()->getSku();
+                    $warehouse = $inventoryLevel->getWarehouse();
+                    $warehouseId = $warehouse->getId();
+                    if ($inventoryLevel->getInventoryQty() >= $orderItem->getQuantity() &&
+                        in_array($warehouseId, $linkedWarehousesIds)) {
+                        $warehouses[$warehouseId] = $warehouse;
+                        $productsByWh[$warehouseId] [] = $inventoryItem->getProduct()->getSku();
                     }
                 }
             }

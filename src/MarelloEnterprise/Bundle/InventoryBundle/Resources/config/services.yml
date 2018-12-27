@@ -159,6 +159,7 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy'
         arguments:
             - '@marelloenterprise_inventory.wfa_strategy.min_quantity.calculator.main'
+            - '@marello_inventory.repository.warehousechannelgrouplink'
         tags:
             - { name: marello_inventory_wfa_strategy }
 
