@@ -239,7 +239,7 @@ datagrids:
                 export: false
 
     marello_report-returns-returned_qty:
-            pageTitle: marello.report.title.returned_qty_by_reason
+            pageTitle: marello.report.title.returned_qty
             source:
                 type: orm
                 acl_resource: oro_report_view

@@ -22,13 +22,13 @@ class ReturnItemRepository extends EntityRepository
                 rri.returnedQty/ooi.orderedQty AS percentageReturned
             FROM (
                 SELECT oi.product_sku, oi.product_name, ri.reason_id, SUM(ri.quantity) AS returnedQty
-                FROM marello_application_2.marello_return_item ri
+                FROM marello_return_item ri
                 INNER JOIN marello_order_order_item as oi on ri.order_item_id = oi.id
                 GROUP BY oi.product_sku, oi.product_name, ri.reason_id
             ) AS rri
             INNER JOIN (
                 SELECT oi.product_sku, SUM(oi.quantity) as orderedQty 
-                FROM marello_application_2.marello_order_order_item as oi
+                FROM marello_order_order_item as oi
                 group by oi.product_sku
             ) AS ooi ON rri.product_sku = ooi.product_sku'
         );
