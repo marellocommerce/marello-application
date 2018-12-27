@@ -63,23 +63,36 @@ class LoadShippingRuleConfig extends AbstractFixture implements
      */
     private function addMethodConfigToDefaultShippingRule(ObjectManager $manager, Channel $channel)
     {
-        $typeConfig = new ShippingMethodTypeConfig();
-        $typeConfig->setEnabled(true);
-        $typeConfig->setType(ManualShippingMethodType::IDENTIFIER)
-            ->setOptions([
-                ManualShippingMethodType::PRICE_OPTION => 5.00,
-                ManualShippingMethodType::TYPE_OPTION => ManualShippingMethodType::PER_ORDER_TYPE,
-            ]);
+        foreach ($this->getShippingRuleReferences() as $shippingRuleReference) {
+            $typeConfig = new ShippingMethodTypeConfig();
+            $typeConfig->setEnabled(true);
+            $typeConfig->setType(ManualShippingMethodType::IDENTIFIER)
+                ->setOptions([
+                    ManualShippingMethodType::PRICE_OPTION => 5.00,
+                    ManualShippingMethodType::TYPE_OPTION => ManualShippingMethodType::PER_ORDER_TYPE,
+                ]);
 
-        $methodConfig = new ShippingMethodConfig();
-        $methodConfig->setMethod($this->getIdentifier($channel))
-            ->addTypeConfig($typeConfig);
+            $methodConfig = new ShippingMethodConfig();
+            $methodConfig->setMethod($this->getIdentifier($channel))
+                ->addTypeConfig($typeConfig);
 
-        $defaultShippingRule = $this->getReference(LoadShippingRule::DEFAULT_RULE_REFERENCE);
-        $defaultShippingRule->addMethodConfig($methodConfig);
+            $shippingRuleReference->addMethodConfig($methodConfig);
+            $manager->persist($shippingRuleReference);
+        }
 
-        $manager->persist($defaultShippingRule);
         $manager->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return array
+     */
+    protected function getShippingRuleReferences()
+    {
+        return [
+            $this->getReference(LoadShippingRule::DEFAULT_RULE_REFERENCE),
+            $this->getReference(LoadShippingRule::DEFAULT_RULE_REFERENCE_GBP)
+        ];
     }
 
     /**
