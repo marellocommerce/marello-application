@@ -46,9 +46,10 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation
         $table->addColumn('destinations', 'json_array', ['notnull' => true, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('products', 'json_array', ['notnull' => true, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('strategy', 'string', ['length' => 50, 'notnull' => true]);
-        $table->addColumn('execution_date', 'datetime', ['notnull' => true]);
+        $table->addColumn('execution_date_time', 'datetime', ['notnull' => false]);
         $table->addColumn('percentage', 'float', ['notnull' => true]);
         $table->addColumn('description', 'text', ['notnull' => false]);
+        $table->addColumn('executed', 'boolean', ['default' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
     }
@@ -67,11 +68,13 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation
         $table->addColumn('repl_order_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('origin_id', 'integer', ['notnull' => true]);
         $table->addColumn('destination_id', 'integer', ['notnull' => true]);
-        $table->addColumn('execution_date', 'datetime', ['notnull' => true]);
+        $table->addColumn('execution_date_time', 'datetime', ['notnull' => false]);
         $table->addColumn('percentage', 'float', ['notnull' => true]);
         $table->addColumn('description', 'text', ['notnull' => false]);
         $table->addColumn('ro_code', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('repl_order_config_id', 'integer', ['notnull' => true]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['repl_order_number'], 'UNIQ_A619DD647BE036FC11');
