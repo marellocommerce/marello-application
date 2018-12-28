@@ -2,11 +2,11 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Provider;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\ReplenishmentStrategiesRegistry;
 
 class ReplenishmentOrdersFromConfigProvider
@@ -19,9 +19,8 @@ class ReplenishmentOrdersFromConfigProvider
     /**
      * @param ReplenishmentStrategiesRegistry $replenishmentStrategiesRegistry
      */
-    public function __construct(
-        ReplenishmentStrategiesRegistry $replenishmentStrategiesRegistry
-    ) {
+    public function __construct(ReplenishmentStrategiesRegistry $replenishmentStrategiesRegistry)
+    {
         $this->replenishmentStrategiesRegistry = $replenishmentStrategiesRegistry;
     }
 

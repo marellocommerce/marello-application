@@ -106,7 +106,8 @@ class ReplenishmentOrderConfigHandler
             return [
                 'result' => true,
                 'messageType' => 'info',
-                'message' => 'marelloenterprise.replenishment.messages.info.replenishment_order_config.delayed_replenishment_orders'
+                'message'
+                => 'marelloenterprise.replenishment.replenishmentorderconfig.messages.info.delayed_replenishment_orders'
             ];
         }
 
@@ -118,8 +119,9 @@ class ReplenishmentOrderConfigHandler
         if (empty($orders)) {
             return [
                 'result' => true,
-                'messageType' => 'info',
-                'message' => 'marelloenterprise.replenishment.messages.info.replenishment_order_config.no_products_in_origins'
+                'messageType' => 'error',
+                'message'
+                    => 'marelloenterprise.replenishment.replenishmentorderconfig.messages.error.no_products_in_origins'
             ];
         }
 
@@ -137,7 +139,7 @@ class ReplenishmentOrderConfigHandler
         return [
             'result' => true,
             'messageType' => 'success',
-            'message' => 'marelloenterprise.replenishment.messages.success.replenishment_order_config.saved'
+            'message' => 'marelloenterprise.replenishment.replenishmentorderconfig.messages.success.saved'
         ];
     }
 }

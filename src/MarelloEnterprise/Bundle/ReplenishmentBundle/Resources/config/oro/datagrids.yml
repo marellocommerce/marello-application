@@ -13,7 +13,6 @@ datagrids:
                     inner:
                         - { join: ro.origin, alias: o }
                         - { join: ro.destination, alias: d }
-                        - { join: ro.replOrderItems, alias: roi }
         columns:
             replOrderNumber:
                 label: marelloenterprise.replenishment.replenishmentorder.repl_order_number.label
@@ -32,11 +31,6 @@ datagrids:
                 type: twig
                 frontend_type: html
                 template: MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:Datagrid/Property/percentage.html.twig
-            replOrderItems:
-                label: marelloenterprise.replenishment.replenishmentorder.repl_order_items.label
-                type: twig
-                frontend_type: html
-                template: MarelloEnterpriseReplenishmentBundle:ReplenishmentOrder:Datagrid/Property/replOrderItems.html.twig
             description:
                 label: marelloenterprise.replenishment.replenishmentorder.description.label
                 frontend_type: string
@@ -82,10 +76,10 @@ datagrids:
                 order_id: replOrderId
         columns:
             productSku:
-                label: marelloenterprise.replenishment.replenishmentorderitem.product_sku.label
+                label: marello.product.sku.label
                 frontend_type: string
             productName:
-                label: marelloenterprise.replenishment.replenishmentorderitem.product_name.label
+                label: marello.product.name.label
                 frontend_type: string
             inventoryQty:
                 label: marelloenterprise.replenishment.replenishmentorderitem.inventory_qty.label

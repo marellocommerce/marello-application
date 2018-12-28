@@ -50,7 +50,12 @@ class CreateDelayedReplenishmentOrdersCommand extends ContainerAwareCommand impl
                 'jobId' => md5(rand(1, 5))
             ]
         );
-        $output->writeln('<info>Clear expired guest shopping lists completed</info>');
+        $output->writeln(
+            sprintf(
+                '<info>%s</info>',
+                'Replenishment Order Configs processed and Replenishment Order creation pushed to message queue'
+            )
+        );
     }
     
     /**

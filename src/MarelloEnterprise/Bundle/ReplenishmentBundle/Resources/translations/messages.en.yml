@@ -12,6 +12,14 @@ marelloenterprise:
             percentage.label:           Percentage of total inventory (%)
             description.label:          Description
             organization.label:         Organization
+            executed.label:             Executed
+
+            messages:
+                success.saved:                      Replenishment Order Config has been saved successfully
+                info:
+                    delayed_replenishment_orders:   Replenishment Orders will be created at execution DateTime
+                error:
+                    no_products_in_origins:         No one Replenishment Order was created, because there are no selected products in selected origins
 
         replenishmentorder:
             id.label:                   Id
@@ -41,25 +49,17 @@ marelloenterprise:
             total_inventory_qty.label: Total Inventory Qty Origin
 
         form:
-            marello_replenishment_order_config:
+            replenishmentorderconfig:
                 percentage:
                     tooltip: '...'
                 products:
                     selector_window.title: Select Products
+
         replenishment_strategies:
             equal_division:           Equal Division
 
         menu:
             replenishment.label:      Replenishment
-
-        messages:
-            success:
-                replenishment_order_config:
-                    saved:                          Replenishment Order Config has been saved successfully
-            info:
-                replenishment_order_config:
-                    no_products_in_origins:         No one Replenishment Order was created, because there are no selected products in selected origins
-                    delayed_replenishment_orders:   Replenishment Orders will be created at execution DateTime
 
         system_configuration:
             groups:

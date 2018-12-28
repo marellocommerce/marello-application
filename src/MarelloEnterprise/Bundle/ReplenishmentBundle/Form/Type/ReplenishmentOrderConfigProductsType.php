@@ -2,20 +2,18 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type;
 
-use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
+use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
+
 class ReplenishmentOrderConfigProductsType extends AbstractType
 {
     const BLOCK_PREFIX = 'marello_replenishment_order_config_products';
-
 
     /**
      * @var AuthorizationCheckerInterface
@@ -25,9 +23,8 @@ class ReplenishmentOrderConfigProductsType extends AbstractType
     /**
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(
-        AuthorizationCheckerInterface $authorizationChecker
-    ) {
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    {
         $this->authorizationChecker = $authorizationChecker;
     }
 
@@ -68,7 +65,8 @@ class ReplenishmentOrderConfigProductsType extends AbstractType
                 'class'                      => 'MarelloProductBundle:Product',
                 'default_element'            => null,
                 'initial_elements'           => null,
-                'selector_window_title'      => 'marelloenterprise.replenishment.form.replenishmentorderconfig.products.selector_window.title',
+                'selector_window_title'
+                    => 'marelloenterprise.replenishment.form.replenishmentorderconfig.products.selector_window.title',
                 'extra_config'               => null,
                 'selection_url'              => null,
                 'selection_route'            => null,
@@ -110,7 +108,6 @@ class ReplenishmentOrderConfigProductsType extends AbstractType
     {
         $view->vars[$option] = isset($options[$option]) ? $options[$option] : null;
     }
-
 
     /**
      * {@inheritdoc}

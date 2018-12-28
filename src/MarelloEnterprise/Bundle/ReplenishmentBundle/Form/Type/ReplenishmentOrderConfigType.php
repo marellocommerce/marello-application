@@ -104,7 +104,8 @@ class ReplenishmentOrderConfigType extends AbstractType
                 [
                     'required' => true,
                     'label' => 'marelloenterprise.replenishment.replenishmentorderconfig.percentage.label',
-                    'tooltip' => 'marelloenterprise.replenishment.form.marello_replenishment_order_config.percentage.tooltip'
+                    'tooltip'
+                        => 'marelloenterprise.replenishment.form.replenishmentorderconfig.percentage.tooltip'
                 ]
             )
             ->add(

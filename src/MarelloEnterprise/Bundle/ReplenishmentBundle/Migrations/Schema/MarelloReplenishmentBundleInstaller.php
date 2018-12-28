@@ -73,6 +73,8 @@ class MarelloEnterpriseReplenishmentBundleInstaller implements Installation
         $table->addColumn('description', 'text', ['notnull' => false]);
         $table->addColumn('ro_code', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('repl_order_config_id', 'integer', ['notnull' => true]);
+        $table->addColumn('created_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['repl_order_number'], 'UNIQ_A619DD647BE036FC11');

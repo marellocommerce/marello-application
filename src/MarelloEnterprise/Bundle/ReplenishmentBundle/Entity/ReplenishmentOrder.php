@@ -5,12 +5,15 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrder;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrder;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @ORM\Entity(
@@ -31,7 +34,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     OrganizationAwareInterface
 {
     use AuditableOrganizationAwareTrait;
-
+    use EntityCreatedUpdatedAtTrait;
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

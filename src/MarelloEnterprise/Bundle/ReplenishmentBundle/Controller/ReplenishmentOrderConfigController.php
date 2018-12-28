@@ -6,6 +6,7 @@ use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderConfig
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ReplenishmentOrderConfigController extends Controller
 {
@@ -25,7 +26,7 @@ class ReplenishmentOrderConfigController extends Controller
     /**
      * @param ReplenishmentOrderConfig $orderConfig
      *
-     * @return array
+     * @return RedirectResponse|array
      */
     protected function update(ReplenishmentOrderConfig $orderConfig = null)
     {
