@@ -76,10 +76,10 @@ datagrids:
                 order_id: replOrderId
         columns:
             productSku:
-                label: marello.product.sku.label
+                label: marelloenterprise.replenishment.replenishmentorderitem.product_sku.label
                 frontend_type: string
             productName:
-                label: marello.product.name.label
+                label: marelloenterprise.replenishment.replenishmentorderitem.product_name.label
                 frontend_type: string
             inventoryQty:
                 label: marelloenterprise.replenishment.replenishmentorderitem.inventory_qty.label
@@ -155,9 +155,6 @@ datagrids:
                 hasProduct: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
-                hasProduct:
-                    data_name:        hasProduct
-                    type:             boolean
                 image:
                     type:             boolean
                     data_name:        hasImage
@@ -183,7 +180,6 @@ datagrids:
                         field_options:
                             multiple:   true
                             choices:    '@marello_catalog.provider.categories_choices->getCategories()'
-                    enabled:            false
         properties:
             id: ~
             view_link:
