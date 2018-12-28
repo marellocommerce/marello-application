@@ -11,7 +11,7 @@ define(['underscore', 'backbone', 'oro/dialog-widget'
 
         tagName: "tr",
 
-        className: "purchase-order-line-item display-values marello-line-item",
+        className: "replenishment-order-line-item display-values marello-line-item",
 
         events: {
             'click .remove-btn': 'removeElement',
@@ -73,7 +73,7 @@ define(['underscore', 'backbone', 'oro/dialog-widget'
 
         render: function() {
             var data = this.model.toJSON();
-            data.purchasePrice = parseFloat(data.purchasePrice).toFixed(2)
+            data.purchasePrice = parseFloat(data.purchasePrice).toFixed(2);
             this.$el.append(this.template(data));
             this.$el.find('a.entity-info').click(_.bind(this.viewDetails, this));
             this.toggleDefault();

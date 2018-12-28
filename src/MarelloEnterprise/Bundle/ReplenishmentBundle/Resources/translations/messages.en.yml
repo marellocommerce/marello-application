@@ -43,7 +43,7 @@ marelloenterprise:
             order.label:               Replenishment Order
             product.label:             Product
             product_name.label:        Product Name
-            product_sku.label:         Product Label
+            product_sku.label:         Product Sku
             note.label:                Note
             inventory_qty.label:       Qty
             total_inventory_qty.label: Total Inventory Qty Origin
