@@ -5,12 +5,15 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrder;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
+
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Model\ExtendReplenishmentOrder;
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 
 /**
  * @ORM\Entity(
@@ -31,7 +34,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     OrganizationAwareInterface
 {
     use AuditableOrganizationAwareTrait;
-
+    use EntityCreatedUpdatedAtTrait;
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -86,7 +89,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     protected $destination;
 
     /**
-     * @ORM\Column(name="execution_date", type="datetime", nullable=false)
+     * @ORM\Column(name="execution_date_time", type="datetime", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -97,7 +100,7 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
      *
      * @var \DateTime
      */
-    protected $executionDate;
+    protected $executionDateTime;
 
     /**
      * @ORM\Column(name="percentage", type="float")
@@ -261,18 +264,18 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
     /**
      * @return \DateTime
      */
-    public function getExecutionDate()
+    public function getExecutionDateTime()
     {
-        return $this->executionDate;
+        return $this->executionDateTime;
     }
 
     /**
-     * @param \DateTime $executionDate
+     * @param \DateTime $executionDateTime
      * @return ReplenishmentOrder
      */
-    public function setExecutionDate(\DateTime $executionDate)
+    public function setExecutionDateTime(\DateTime $executionDateTime)
     {
-        $this->executionDate = $executionDate;
+        $this->executionDateTime = $executionDateTime;
 
         return $this;
     }

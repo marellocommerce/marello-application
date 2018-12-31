@@ -9,7 +9,9 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(
+ *     repositoryClass="MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderConfigRepository"
+ * )
  * @ORM\Table(name="marello_repl_order_config")
  * @ORM\HasLifecycleCallbacks
  * @Oro\Config(
@@ -95,7 +97,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     protected $strategy;
 
     /**
-     * @ORM\Column(name="execution_date", type="datetime", nullable=false)
+     * @ORM\Column(name="execution_date_time", type="datetime", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -106,7 +108,7 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      *
      * @var \DateTime
      */
-    protected $executionDate;
+    protected $executionDateTime;
 
     /**
      * @ORM\Column(name="percentage", type="float")
@@ -135,6 +137,21 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      * @var string
      */
     protected $description;
+
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="executed", type="boolean", nullable=false, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     *  )
+     */
+    protected $executed = false;
 
     /**
      * @return int
@@ -223,18 +240,18 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     /**
      * @return \DateTime
      */
-    public function getExecutionDate()
+    public function getExecutionDateTime()
     {
-        return $this->executionDate;
+        return $this->executionDateTime;
     }
 
     /**
-     * @param \DateTime $executionDate
+     * @param \DateTime $executionDateTime
      * @return ReplenishmentOrderConfig
      */
-    public function setExecutionDate(\DateTime $executionDate)
+    public function setExecutionDateTime(\DateTime $executionDateTime = null)
     {
-        $this->executionDate = $executionDate;
+        $this->executionDateTime = $executionDateTime;
 
         return $this;
     }
@@ -274,6 +291,25 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     {
         $this->description = $description;
 
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isExecuted()
+    {
+        return $this->executed;
+    }
+
+    /**
+     * @param boolean $executed
+     * @return ReplenishmentOrderConfig
+     */
+    public function setExecuted($executed)
+    {
+        $this->executed = $executed;
+        
         return $this;
     }
 }
