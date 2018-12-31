@@ -78,7 +78,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         if (empty($linkedWarehouses)) {
             return null;
         }
-        $linkedWarehousesIds = array_map(function( Warehouse $warehouse) {
+        $linkedWarehousesIds = array_map(function (Warehouse $warehouse) {
             return $warehouse->getId();
         }, $linkedWarehouses);
 
@@ -98,6 +98,7 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
                 }
             }
         }
+
         uasort($productsByWh, function ($a, $b) {
             return count($b) > count($a) ? 1 : -1 ;
         });
