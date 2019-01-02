@@ -41,6 +41,7 @@
                     {{ UI.renderProperty('marello.order.total_tax.label'|trans, entity.order.totalTax|oro_format_currency({'currency':entity.order.currency})) }}
                     {{ UI.renderProperty('marello.order.discount_amount.label'|trans, entity.order.discountAmount|oro_format_currency({'currency':entity.order.currency})) }}
                     {{ UI.renderProperty('marello.order.discount_percent.label'|trans, entity.order.discountPercent) }}
+                    {{ UI.renderProperty('marello.order.shipping_amount_incl_tax.label'|trans, entity.order.shippingAmountInclTax|oro_format_currency({'currency':entity.order.currency})) }}
                     {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
                 </div>
             </div>
