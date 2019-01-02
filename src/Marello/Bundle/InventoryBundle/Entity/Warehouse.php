@@ -163,7 +163,7 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
     protected $group;
     
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      *
      * @var string
      */

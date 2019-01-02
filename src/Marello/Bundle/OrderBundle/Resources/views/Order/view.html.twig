@@ -163,6 +163,16 @@
         </div>
     {% endset %}
 
+    {% set invoices %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-order-invoices-grid', {'orderId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'marello.order.datablock.general'|trans,
@@ -191,6 +201,13 @@
             'class': 'active',
             'subblocks': [
                 { 'data' : [packingSlips] }
+            ]
+        },
+        {
+            'title': 'marello.order.datablock.invoices'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [invoices] }
             ]
         }
     ] %}

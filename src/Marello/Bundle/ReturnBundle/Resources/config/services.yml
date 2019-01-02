@@ -80,3 +80,9 @@ services:
             - '@translator.default'
         tags:
             - { name: oro.api.processor, action: customize_loaded_data,  class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
+
+    marello_return.repository.return_item:
+        class: 'Marello\Bundle\ReturnBundle\Entity\Repository\ReturnItemRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\ReturnBundle\Entity\ReturnItem'
