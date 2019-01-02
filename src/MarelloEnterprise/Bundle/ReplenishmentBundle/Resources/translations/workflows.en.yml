@@ -1,7 +1,7 @@
 oro:
     workflow:
         marello_replenishment_order_workflow:
-            label: 'Marello Replenishment Order Workflow'
+            label: 'Replenishment Order Workflow'
             attribute:
                 repl_order_items.label: 'Replenishment Order Items'
             step:
