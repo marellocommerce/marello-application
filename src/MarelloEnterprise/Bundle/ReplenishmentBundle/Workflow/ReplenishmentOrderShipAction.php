@@ -2,16 +2,18 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Component\ConfigExpression\ContextAccessor;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Component\ConfigExpression\ContextAccessor;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrderTransitionAction
+class ReplenishmentOrderShipAction extends ReplenishmentOrderTransitionAction
 {
     /**
      * @var EventDispatcherInterface
@@ -40,14 +42,14 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
         $order = $context->getEntity();
         $warehouse = $order->getOrigin();
         $items = $order->getReplOrderItems();
-            $items->map(function (ReplenishmentOrderItem $item) use ($order, $warehouse) {
-                $this->handleInventoryUpdate(
-                    $item,
-                    null,
-                    $item->getInventoryQty(),
-                    $warehouse
-                );
-            });
+        $items->map(function (ReplenishmentOrderItem $item) use ($order, $warehouse) {
+            $this->handleInventoryUpdate(
+                $item,
+                -$item->getInventoryQty(),
+                -$item->getInventoryQty(),
+                $warehouse
+            );
+        });
     }
 
     /**
@@ -64,7 +66,7 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
             null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
-            'replenishment_order_workflow.prepared_for_shipping'
+            'replenishment_order_workflow.shipped'
         );
 
         $context->setValue('warehouse', $warehouse);

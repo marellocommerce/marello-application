@@ -1,0 +1,8 @@
+services:
+    marelloenterprise_replenishment.workflow.order_ship_action:
+        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderShipAction'
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@event_dispatcher'
+        tags:
+            - { name: oro_action.action, alias: marelloenterprise_replenishment_order_ship_action }

@@ -22,6 +22,7 @@ class MarelloEnterpriseReplenishmentExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('form.yml');
+        $loader->load('workflow_actions.yml');
 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);

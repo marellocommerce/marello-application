@@ -89,6 +89,7 @@ workflows:
                             entity: $replenishment_order
                             recipient: $replenishment_order.destination.email
                             template: marello_replenishment_order_in_transit
+                    - '@marelloenterprise_replenishment_order_ship_action': ~
             receive_definition: ~
             complete_definition:
                 post_actions:

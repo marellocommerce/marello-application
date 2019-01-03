@@ -38,17 +38,8 @@ class ReplenishmentOrderAllocateDestinationInventoryAction extends Replenishment
     {
         /** @var ReplenishmentOrder $order */
         $order = $context->getEntity();
-        $originWarehouse = $order->getOrigin();
         $destinationWarehouse = $order->getDestination();
         $items = $order->getReplOrderItems();
-        $items->map(function (ReplenishmentOrderItem $item) use ($order, $originWarehouse) {
-            $this->handleInventoryUpdate(
-                $item,
-                0,
-                -$item->getInventoryQty(),
-                $originWarehouse
-            );
-        });
         $items->map(function (ReplenishmentOrderItem $item) use ($order, $destinationWarehouse) {
             $this->handleInventoryUpdate(
                 $item,
