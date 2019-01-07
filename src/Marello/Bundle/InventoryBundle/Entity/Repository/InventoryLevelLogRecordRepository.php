@@ -18,21 +18,22 @@ class InventoryLevelLogRecordRepository extends EntityRepository
         $qb = $this->createQueryBuilder('ir');
         $qb
             ->join('ir.inventoryLevel', 'il');
-
         /*
          * Select sums of changes and group them by date.
          */
         $qb
             ->select(
-                'SUM(ir.inventoryAlteration) AS inventory',
-                'SUM(ir.allocatedInventoryAlteration) AS allocatedInventory',
+                'SUM(ir.inventoryLevelQty) AS inventory',
+                'SUM(ir.allocatedInventoryLevelQty) AS allocatedInventory',
                 'DATE(ir.createdAt) AS date'
             )
+            ->distinct()
             ->andWhere($qb->expr()->eq('IDENTITY(il.inventoryItem)', ':inventoryItem'))
             ->andWhere($qb->expr()->between('ir.createdAt', ':from', ':to'))
             ->groupBy('date');
 
         $qb->setParameters(compact('inventoryItem', 'from', 'to'));
+
 
         $results = $qb
             ->getQuery()
@@ -55,13 +56,12 @@ class InventoryLevelLogRecordRepository extends EntityRepository
         /*
          * First. Find first record on same day.
          */
-
         $qb = $this->createQueryBuilder('ir');
 
         $qb
             ->select(
-                'COALESCE(ir.inventoryAlteration, 0) AS inventory',
-                'COALESCE(ir.allocatedInventoryAlteration, 0) AS allocatedInventory'
+                'COALESCE(ir.inventoryLevelQty, 0) AS inventory',
+                'COALESCE(ir.allocatedInventoryLevelQty, 0) AS allocatedInventory'
             )
             ->join('ir.inventoryLevel', 'il')
             ->andWhere($qb->expr()->eq('IDENTITY(il.inventoryItem)', ':inventoryItem'))
