@@ -25,7 +25,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_0';
+        return 'v2_1';
     }
 
     /**
@@ -119,6 +119,8 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('user_id', 'integer', ['notnull' => false]);
         $table->addColumn('inventory_alteration', 'integer', []);
         $table->addColumn('allocated_inventory_alteration', 'integer', []);
+        $table->addColumn('inventory_level_qty', 'integer', ['notnull' => false]);
+        $table->addColumn('alloc_inventory_level_qty', 'integer', ['notnull' => false]);
         $table->addColumn('change_trigger', 'string', ['length' => 255]);
         $table->addColumn('subject_type', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('subject_id', 'integer', ['notnull' => false]);

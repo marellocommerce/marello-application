@@ -150,6 +150,34 @@ class InventoryLevelLogRecord
     protected $subjectId = null;
 
     /**
+     * @ORM\Column(name="inventory_level_qty", type="integer", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var int
+     */
+    protected $inventoryLevelQty;
+
+    /**
+     * @ORM\Column(name="alloc_inventory_level_qty", type="integer", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var int
+     */
+    protected $allocatedInventoryLevelQty;
+
+    /**
      * @ORM\Column(name="created_at", type="datetime")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -294,6 +322,15 @@ class InventoryLevelLogRecord
     public function prePersistTimestamp()
     {
         $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistCurrentInventoryLevels()
+    {
+        $this->inventoryLevelQty = $this->inventoryLevel->getInventoryQty();
+        $this->allocatedInventoryLevelQty = $this->inventoryLevel->getAllocatedInventoryQty();
     }
 
     /**

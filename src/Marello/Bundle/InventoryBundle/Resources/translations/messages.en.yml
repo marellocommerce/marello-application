@@ -90,6 +90,8 @@ marello:
             subject_id.label:               Subject
             subject_type.label:             Related Subject
             user.label:                     User
+            inventory_level_qty.label:      InventoryLevel Qty
+            allocated_inventory_level_qty.label: Allocated InventoryLevel Qty
 
         balancedinventorylevel:
             id.label:                       Id
