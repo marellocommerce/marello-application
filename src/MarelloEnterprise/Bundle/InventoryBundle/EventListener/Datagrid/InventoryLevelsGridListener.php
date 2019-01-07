@@ -8,16 +8,6 @@ use Oro\Bundle\DataGridBundle\Event\OrmResultBeforeQuery;
 class InventoryLevelsGridListener
 {
     /**
-     * @param OrmResultBeforeQuery $event
-     */
-    public function onResultBeforeQuery(OrmResultBeforeQuery $event)
-    {
-        $event
-            ->getQueryBuilder()
-            ->leftJoin('il.warehouse', 'warehouse');
-    }
-
-    /**
      * @param BuildBefore $event
      */
     public function onBuildBefore(BuildBefore $event)

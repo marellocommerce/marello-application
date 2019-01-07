@@ -24,25 +24,6 @@ class InventoryLevelsGridListenerTest extends TestCase
         $this->inventoryLevelsGridListener = new InventoryLevelsGridListener();
     }
 
-    public function testOnResultBeforeQuery()
-    {
-        $queryBuilder = $this->createMock(QueryBuilder::class);
-        $queryBuilder
-            ->expects(static::once())
-            ->method('leftJoin')
-            ->with('il.warehouse', 'warehouse');
-
-        /** @var OrmResultBeforeQuery|\PHPUnit_Framework_MockObject_MockObject $event **/
-        $event = $this->getMockBuilder(OrmResultBeforeQuery::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $event->expects(static::once())
-            ->method('getQueryBuilder')
-            ->willReturn($queryBuilder);
-
-        $this->inventoryLevelsGridListener->onResultBeforeQuery($event);
-    }
-
     public function testOnBuildBefore()
     {
         $addedColumn = [

@@ -221,4 +221,9 @@ services:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\InventoryLevelsGridListener'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-inventory-levels, method: onBuildBefore }
-            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.marello-inventory-levels, method: onResultBeforeQuery, priority: -255 }
+
+    marelloenterprise_inventory.listener.datagrid.inventory_level_log:
+        class: 'MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\InventoryLevelLogGridListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-inventory-log, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before_query.marello-inventory-log, method: onResultBeforeQuery, priority: -255 }
