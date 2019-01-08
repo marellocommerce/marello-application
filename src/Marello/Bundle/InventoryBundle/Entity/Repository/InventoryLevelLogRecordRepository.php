@@ -3,10 +3,26 @@
 namespace Marello\Bundle\InventoryBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 
 class InventoryLevelLogRecordRepository extends EntityRepository
 {
+    /**
+     * @var AclHelper
+     */
+    private $aclHelper;
+
+    /**
+     * @param AclHelper $aclHelper
+     */
+    public function setAclHelper(AclHelper $aclHelper)
+    {
+        $this->aclHelper = $aclHelper;
+    }
+
     /**
      * @param InventoryItem $inventoryItem
      * @param \DateTime $from
@@ -23,66 +39,21 @@ class InventoryLevelLogRecordRepository extends EntityRepository
          */
         $qb
             ->select(
-                'SUM(ir.inventoryLevelQty) AS inventory',
-                'SUM(ir.allocatedInventoryLevelQty) AS allocatedInventory',
+                'SUM(ir.inventoryAlteration) AS inventory',
+                'SUM(ir.allocatedInventoryAlteration) AS allocatedInventory',
                 'DATE(ir.createdAt) AS date'
             )
-            ->distinct()
             ->andWhere($qb->expr()->eq('IDENTITY(il.inventoryItem)', ':inventoryItem'))
             ->andWhere($qb->expr()->between('ir.createdAt', ':from', ':to'))
-            ->groupBy('date');
+            ->groupBy('date')
+            ->orderBy('date', 'DESC');
 
         $qb->setParameters(compact('inventoryItem', 'from', 'to'));
 
-
-        $results = $qb
-            ->getQuery()
+        $results = $this->aclHelper
+            ->apply($qb)
             ->getArrayResult();
 
         return $results;
-    }
-
-
-    /**
-     * Returns initial inventory for given day.
-     *
-     * @param InventoryItem $inventoryItem
-     * @param \DateTime $at
-     *
-     * @return array
-     */
-    public function getInitialInventory(InventoryItem $inventoryItem, \DateTime $at)
-    {
-        /*
-         * First. Find first record on same day.
-         */
-        $qb = $this->createQueryBuilder('ir');
-
-        $qb
-            ->select(
-                'COALESCE(ir.inventoryLevelQty, 0) AS inventory',
-                'COALESCE(ir.allocatedInventoryLevelQty, 0) AS allocatedInventory'
-            )
-            ->join('ir.inventoryLevel', 'il')
-            ->andWhere($qb->expr()->eq('IDENTITY(il.inventoryItem)', ':inventoryItem'))
-            ->andWhere('DATE(ir.createdAt) <= DATE(:at)')
-            ->orderBy('ir.createdAt', 'DESC');
-
-        $qb
-            ->setParameters(compact('inventoryItem', 'at'));
-
-        $result = $qb
-            ->getQuery()
-            ->setMaxResults(1)
-            ->getArrayResult();
-
-        if (!empty($result)) {
-            return $result[0];
-        }
-
-        return [
-            'inventory'          => 0,
-            'allocatedInventory' => 0,
-        ];
     }
 }

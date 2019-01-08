@@ -15,7 +15,8 @@ services:
     marello_inventory.logging.chart_builder:
         class: Marello\Bundle\InventoryBundle\Logging\ChartBuilder
         arguments:
-            - '@doctrine'
+            - '@marello_inventory.repository.inventorylevellogrecord'
+            - '@marello_inventory.model.inventory_level_totals_calculator'
             - '@oro_dashboard.datetime.helper'
             - '@translator'
 
@@ -164,5 +165,13 @@ services:
         parent: oro_entity.abstract_repository
         arguments:
             - 'Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_inventory.repository.inventorylevellogrecord:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
