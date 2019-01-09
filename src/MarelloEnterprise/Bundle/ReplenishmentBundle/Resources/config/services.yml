@@ -44,39 +44,32 @@ services:
         tags:
             - { name: twig.extension }
 
-    marelloenterprise_replenishment.workflow.repl_order_allocate_origin_inventory_action:
-        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateOriginInventoryAction'
+    marelloenterprise_replenishment.listener.doctrine.workflow_transit:
+        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentOrderWorkflowAllocateInventoryTransitListener'
         arguments:
-            - '@oro_action.expression.context_accessor'
-            - '@event_dispatcher'
+            - '@oro_workflow.manager'
         tags:
-            - { name: oro_action.action, alias: marello_allocate_origin_replenished_inventory }
-
-    marelloenterprise_replenishment.workflow.repl_order_allocate_destination_inventory_action:
-        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow\ReplenishmentOrderAllocateDestinationInventoryAction'
-        arguments:
-            - '@oro_action.expression.context_accessor'
-            - '@event_dispatcher'
-        tags:
-            - { name: oro_action.action, alias: marello_allocate_destination_replenished_inventory }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }
 
     marelloenterprise_replenishment.entity_listener.repl_order_item:
         class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentOrderItemListener'
         arguments:
             - '@event_dispatcher'
+            - '@translator.default'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem', event: postUpdate }
 
-    marelloenterprise_replenishment.async.create_replenishment_orders_processor:
-        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Async\CreateReplenishmentOrdersProcessor'
+    marelloenterprise_replenishment.async.allocate_replenishment_orders_inventory_processor:
+        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Async\AllocateReplenishmentOrdersInventoryProcessor'
         arguments:
             - '@logger'
             - '@doctrine.orm.entity_manager'
-            - '@marelloenterprise_replenishment.provider.replenishment_orders_from_config'
+            - '@oro_workflow.manager'
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
 
-    marelloenterprise_replenishment.command.create_delayed_replenishment_orders:
-        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Command\CreateDelayedReplenishmentOrdersCommand'
+    marelloenterprise_replenishment.command.allocate_delayed_replenishment_orders_inventory:
+        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\Command\AllocateDelayedReplenishmentOrdersInventoryCommand'
         tags:
             - { name: console.command }

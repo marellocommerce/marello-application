@@ -3,6 +3,7 @@
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Strategy\EqualDivision;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -77,24 +78,29 @@ class EqualDivisionReplenishmentStrategy implements ReplenishmentStrategyInterfa
         $originProductsQty = [];
         $destinationProductsQty = [];
         $totalQty = [];
+        $totalPercentageQty = [];
         $result = [];
         foreach ($products as $product) {
             $totalQty[$product->getId()] = 0;
+            $totalPercentageQty[$product->getId()] = 0;
             $inventoryItems = $product->getInventoryItems();
+            /** @var InventoryItem $inventoryItem */
             foreach ($inventoryItems as $inventoryItem) {
                 /** @var InventoryLevel $inventoryLevel */
                 foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
                     $warehouse =$inventoryLevel->getWarehouse();
                     if (in_array($warehouse->getId(), $config->getOrigins())) {
-                        $replQty = round($inventoryLevel->getVirtualInventoryQty() * $config->getPercentage() / 100);
+                        $inventoryQty = $inventoryLevel->getInventoryQty();
+                        $totalQty[$product->getId()] += $inventoryQty;
+                        $replQty = round($inventoryQty * $config->getPercentage() / 100);
                         $originProductsQty[$product->getId()][$warehouse->getId()] = $replQty;
-                        $totalQty[$product->getId()] += $replQty;
+                        $totalPercentageQty[$product->getId()] += $replQty;
                     }
                 }
             }
         }
         $destinationsQty = count($destinations);
-        foreach ($totalQty as $product => $qty) {
+        foreach ($totalPercentageQty as $product => $qty) {
             $qtyPerDestination = round($qty/$destinationsQty);
             $assignedQty = 0;
             foreach ($config->getDestinations() as $destId) {
@@ -123,7 +129,7 @@ class EqualDivisionReplenishmentStrategy implements ReplenishmentStrategyInterfa
                                 'destination' => $destinations[$dwh],
                                 'product' => $products[$productId],
                                 'quantity' => $qty,
-                                'total_quantity' => $oqty
+                                'total_quantity' => $totalQty[$productId]
                             ];
                         }
                         $originProductsQty[$productId][$owh] = $oqty - $qty;

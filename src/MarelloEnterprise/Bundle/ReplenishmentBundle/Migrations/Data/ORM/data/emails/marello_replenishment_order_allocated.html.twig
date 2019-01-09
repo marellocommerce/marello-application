@@ -466,7 +466,7 @@
                                         {% if entity.description %}
                                             <p style="font-size: 16px; margin: 1em 0;">Description <span class="no-link">#{{ entity.description }}</span></p>
                                         {% endif %}
-                                        <p style="font-size: 16px; margin: 1em 0;">Execution date {{ entity.executionDate|date('d-m-Y') }}</p>
+                                        <p style="font-size: 16px; margin: 1em 0;">Execution dateTime {{ entity.executionDateTime|date('d-m-Y H:i:s') }}</p>
                                         <div class="control-group attribute-row" style="font-size: 16px; margin: 1em 0;">
                                             <label class="control-label">Origin Address:</label>
                                             <div class="controls">

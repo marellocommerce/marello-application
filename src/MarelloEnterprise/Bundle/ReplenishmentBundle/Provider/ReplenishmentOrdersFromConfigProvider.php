@@ -26,9 +26,10 @@ class ReplenishmentOrdersFromConfigProvider
 
     /**
      * @param ReplenishmentOrderConfig $config
+     * @param bool $calculateQuantities
      * @return ReplenishmentOrder[]
      */
-    public function getReplenishmentOrders(ReplenishmentOrderConfig $config)
+    public function getReplenishmentOrders(ReplenishmentOrderConfig $config, $calculateQuantities = false)
     {
         $strategy = $this->replenishmentStrategiesRegistry->getStrategy($config->getStrategy());
         $replenishmentResults = $strategy->getResults($config);
@@ -62,10 +63,13 @@ class ReplenishmentOrdersFromConfigProvider
             $order = $orders[sprintf('%s-%s', $origin->getId(), $destination->getId())];
             $orderItem = new ReplenishmentOrderItem();
             $orderItem
-                ->setInventoryQty($result['quantity'])
-                ->setTotalInventoryQty($result['total_quantity'])
                 ->setProduct($product)
                 ->setOrder($order);
+            if ($calculateQuantities) {
+                $orderItem
+                    ->setInventoryQty($result['quantity'])
+                    ->setTotalInventoryQty($result['total_quantity']);
+            }
             $order->addReplOrderItem($orderItem);
         }
 

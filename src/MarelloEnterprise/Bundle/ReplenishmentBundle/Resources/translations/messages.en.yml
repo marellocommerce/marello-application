@@ -15,11 +15,10 @@ marelloenterprise:
             executed.label:             Executed
 
             messages:
-                success.saved:                      Replenishment Order Config has been saved successfully
+                success:
+                    saved:                      Replenishment Order Config has been saved successfully
                 info:
-                    delayed_replenishment_orders:   Replenishment Orders will be created at execution DateTime
-                error:
-                    no_products_in_origins:         No one Replenishment Order was created, because there are no selected products in selected origins
+                    no_products_in_origins:     No one Replenishment Order was created, because there are no selected products in selected origins
 
         replenishmentorder:
             id.label:                   Id
@@ -35,6 +34,13 @@ marelloenterprise:
             ro_code.label:              Replenishment Order Code
             repl_order_config.label:    Replenishment Order Config
             organization.label:         Organization
+
+            workflow:
+                prepared_for_shipping:  'Replenishment Order Workflow (Step: Prepared for Shipping)'
+                ready_for_shipping:     'Replenishment Order Workflow (Step: Ready for Shipping)'
+                shipped:                'Replenishment Order Workflow (Step: Shipped)'
+                completed:              'Replenishment Order Workflow (Step: Completed)'
+                cancelled:              'Replenishment Order Workflow (Step: Cancelled)'
 
         replenishmentorderitem:
             id.label:                  Id

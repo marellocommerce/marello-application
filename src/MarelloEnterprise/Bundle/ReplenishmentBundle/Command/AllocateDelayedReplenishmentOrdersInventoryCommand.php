@@ -2,15 +2,15 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Command;
 
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Async\CreateReplenishmentOrdersProcessor;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Async\AllocateReplenishmentOrdersInventoryProcessor;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CreateDelayedReplenishmentOrdersCommand extends ContainerAwareCommand implements CronCommandInterface
+class AllocateDelayedReplenishmentOrdersInventoryCommand extends ContainerAwareCommand implements CronCommandInterface
 {
-    const NAME = 'oro:cron:marello:replenishment:create-delayed-orders';
+    const NAME = 'oro:cron:marello:replenishment:allocate-delayed-orders-inventory';
 
     /**
      * {@inheritdoc}
@@ -19,7 +19,7 @@ class CreateDelayedReplenishmentOrdersCommand extends ContainerAwareCommand impl
     {
         $this
             ->setName(self::NAME)
-            ->setDescription('Creates Replenishment Orders with delayed execution DateTime');
+            ->setDescription('Allocate inventory for Replenishment Orders with delayed execution DateTime');
     }
 
     /**
@@ -27,26 +27,26 @@ class CreateDelayedReplenishmentOrdersCommand extends ContainerAwareCommand impl
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $replenishmentOrderConfigRepository = $this
+        $replenishmentOrdersRepository = $this
             ->getContainer()
-            ->get('marelloenterprise_replenishment.repository.replenishment_order_config');
+            ->get('marelloenterprise_replenishment.repository.replenishment_order');
         $messageProducer = $this
             ->getContainer()
             ->get('oro_message_queue.client.message_producer');
-        $notExecutedConfigs = $replenishmentOrderConfigRepository->findNotExecuted();
+        $notAllocatedOrders = $replenishmentOrdersRepository->findNotAllocated();
         
-        if (empty($notExecutedConfigs)) {
-            $output->writeln('<info>There are no Replenishment Order Configs to process</info>');
+        if (empty($notAllocatedOrders)) {
+            $output->writeln('<info>There are no Replenishment Orders to process</info>');
             return;
         }
-        $configIds = [];
-        foreach ($notExecutedConfigs as $config) {
-            $configIds[] = $config->getId();
+        $ordersIds = [];
+        foreach ($notAllocatedOrders as $order) {
+            $ordersIds[] = $order->getId();
         }
         $messageProducer->send(
-            CreateReplenishmentOrdersProcessor::TOPIC,
+            AllocateReplenishmentOrdersInventoryProcessor::TOPIC,
             [
-                CreateReplenishmentOrdersProcessor::CONFIGS => $configIds,
+                AllocateReplenishmentOrdersInventoryProcessor::ORDERS => $ordersIds,
                 'jobId' => md5(rand(1, 5))
             ]
         );

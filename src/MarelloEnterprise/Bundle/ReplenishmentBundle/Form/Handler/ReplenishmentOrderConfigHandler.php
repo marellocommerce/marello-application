@@ -99,29 +99,14 @@ class ReplenishmentOrderConfigHandler
             $entity->setExecutionDateTime(new \DateTime());
         }
         $this->manager->persist($entity);
-
-        if ($entity->getExecutionDateTime() > new \DateTime()) {
-            $this->manager->flush();
-
-            return [
-                'result' => true,
-                'messageType' => 'info',
-                'message'
-                => 'marelloenterprise.replenishment.replenishmentorderconfig.messages.info.delayed_replenishment_orders'
-            ];
-        }
-
-        $entity->setExecuted(true);
-        $this->manager->persist($entity);
-
         $orders = $this->replenishmentOrdersProvider->getReplenishmentOrders($entity);
 
         if (empty($orders)) {
             return [
                 'result' => true,
-                'messageType' => 'error',
+                'messageType' => 'info',
                 'message'
-                    => 'marelloenterprise.replenishment.replenishmentorderconfig.messages.error.no_products_in_origins'
+                    => 'marelloenterprise.replenishment.replenishmentorderconfig.messages.info.no_products_in_origins'
             ];
         }
 
