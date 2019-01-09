@@ -31,7 +31,7 @@
                 </table>
             </div>
             {% if allow_add %}
-                <a class="btn add-list-item" data-container=".oro-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ form.vars.add_label|default('oro.form.collection.add')|trans }}</a>
+                <a class="btn marello-add-line-item" data-container=".marello-item-collection tbody" href="javascript: void(0);"><i class="fa-plus"></i>{{ form.vars.add_label|default('oro.form.collection.add')|trans }}</a>
             {% endif %}
         </div>
     {% endspaceless %}
@@ -48,8 +48,8 @@
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
         class="tax-zip-code-list tax-zip-code-list-item">
         {{ form_widget(form) }}
-        <td class="tax-zip-code-list-remove">
-            <button type="button" class="removeRow btn icons-holder"><i class="fa-close"></i></button>
+        <td class="tax-zip-code-list-item-remove marello-line-item-remove">
+            <button type="button" class="marello-remove-line-item btn icons-holder removeRow"><i class="fa-remove"></i></button>
         </td>
     </tr>
 {% endmacro %}
