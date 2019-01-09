@@ -604,12 +604,12 @@ datagrids:
             quantityOfUnit:
                 label:                marello.supplier.quantity_of_unit.label
                 frontend_type:        string
-            priority:
-                label:                marello.supplier.priority.label
-                frontend_type:        number
             cost:
                 label:                marello.supplier.cost.label
                 frontend_type:        currency
+            priority:
+                label:                marello.supplier.priority.label
+                frontend_type:        number
             canDropship:
                 label:                marello.supplier.can_dropship.label
                 frontend_type:        boolean
