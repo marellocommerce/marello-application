@@ -92,11 +92,13 @@ class LoadProductImageData extends AbstractFixture implements DependentFixtureIn
                 $this->manager->persist($image);
                 $image->setOwner($this->adminUser);
             }
+
+            return $image;
         } catch (\Exception $e) {
             //image not found
         }
 
-        return $image;
+        return null;
     }
 
     /**
