@@ -3,7 +3,6 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Event\OrmResultBeforeQuery;
 
 class InventoryLevelsGridListener
 {
