@@ -15,7 +15,7 @@ class ProductsGridSqlWalker extends SqlWalker
     {
         $select = str_replace('SELECT ', '', parent::walkSelectClause($selectClause));
 
-        return sprintf('SELECT %s', $this->cutExcludedFields($select));
+        return sprintf('SELECT %s', $this->removeExcludedFields($select));
     }
     
     /**
@@ -25,13 +25,13 @@ class ProductsGridSqlWalker extends SqlWalker
     {
         $groupBy = str_replace(' GROUP BY ', '', parent::walkGroupByClause($groupByClause));
 
-        return sprintf(' GROUP BY %s', $this->cutExcludedFields($groupBy));
+        return sprintf(' GROUP BY %s', $this->removeExcludedFields($groupBy));
     }
 
     /**
      * @param string $sql
      */
-    private function cutExcludedFields($sql)
+    private function removeExcludedFields($sql)
     {
         $sqlParts = explode(', ', $sql);
         foreach ($sqlParts as $key => $part) {
@@ -41,7 +41,6 @@ class ProductsGridSqlWalker extends SqlWalker
                 }
             }
         }
-
         return implode(', ', $sqlParts);
     }
 }

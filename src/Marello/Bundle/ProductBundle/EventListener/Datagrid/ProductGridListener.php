@@ -4,10 +4,12 @@ namespace Marello\Bundle\ProductBundle\EventListener\Datagrid;
 
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\GroupBy;
-use Marello\Bundle\ProductBundle\Datagrid\ORM\Query\ProductsGridSqlWalker;
+
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\OrmResultBefore;
+
+use Marello\Bundle\ProductBundle\Datagrid\ORM\Query\ProductsGridSqlWalker;
 
 class ProductGridListener
 {
