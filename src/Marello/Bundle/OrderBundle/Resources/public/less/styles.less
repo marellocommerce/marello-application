@@ -151,9 +151,14 @@ table.hero-products-table {
         background-color: #f1f1f1;
     }
 
+    td {
+        vertical-align: middle !important;
+        border-bottom: 0 !important;
+        padding: 5px 8px 5px !important;
+    }
+
     td.medal {
         width: 45px;
-        text-align: center;
 
         img {
             height: 20px;
@@ -178,8 +183,14 @@ table.hero-products-table {
 
     td.value {
         width: 100px;
-        text-align: center;
     }
+}
+
+.hero-product-widget-item {
+    width: 100%;
+    text-align: left;
+    vertical-align: top;
+    margin: 10px 0 30px 0;
 }
 
 form[name=hero_products_widget] {

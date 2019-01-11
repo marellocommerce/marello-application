@@ -2,12 +2,25 @@
 
 namespace Marello\Bundle\ProductBundle\EventListener\Datagrid;
 
+use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\GroupBy;
+
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Oro\Bundle\DataGridBundle\Event\OrmResultBefore;
+
+use Marello\Bundle\ProductBundle\Datagrid\ORM\Query\ProductsGridSqlWalker;
 
 class ProductGridListener
 {
+    /**
+     * @param OrmResultBefore $event
+     */
+    public function onResultBefore(OrmResultBefore $event)
+    {
+        $event->getQuery()->setHint(Query::HINT_CUSTOM_OUTPUT_WALKER, ProductsGridSqlWalker::class);
+    }
+    
     /**
      *
      * @param BuildAfter $event
