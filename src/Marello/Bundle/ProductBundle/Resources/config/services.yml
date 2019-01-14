@@ -60,6 +60,7 @@ services:
     marello_product.listener.datagrid.product_grid_listener:
         class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductGridListener
         tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before.marello-products-grid, method: onResultBefore }
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-products-grid, method: buildAfter }
 
     marello_product.product_search_listener:

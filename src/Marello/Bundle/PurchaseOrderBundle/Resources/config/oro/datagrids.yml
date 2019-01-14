@@ -253,7 +253,7 @@ datagrids:
                 params:
                     - id
         options:
-            entityHint: p
+            entityHint: products
             rowSelection:
                 dataField: id
                 columnName: hasProduct

@@ -49,19 +49,26 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    <div class="responsive-block">
-                        <h5>{{ 'marello.order.customer.primary_address.label' | trans }}</h5>
-                        {{ Address.renderAddress(entity.primaryAddress) }}
+                    <div class="attribute-item">
+                        <div class="attribute-item__description">
+                            <b>{{ 'marello.order.customer.primary_address.label' | trans }}</b>
+                            <br/>
+                            {{ Address.renderAddress(entity.primaryAddress) }}
+                        </div>
                     </div>
+                    <br/>
                     {% if entity.shippingAddress %}
-                    <div class="responsive-block">
-                        <h5>{{ 'marello.order.customer.shipping_address.label' | trans }}</h5>
-                        {{ Address.renderAddress(entity.shippingAddress) }}
+                    <div class="attribute-item">
+                        <div class="attribute-item__description">
+                            <b>{{ 'marello.order.customer.shipping_address.label' | trans }}</b>
+                            <br/>
+                            {{ Address.renderAddress(entity.shippingAddress) }}
+                        </div>
                     </div>
                     {% endif %}
-                </div>
-                <div class="responsive-block">
-                    {% placeholder marello_customer_address with {'address' : entity.primaryAddress} %}
+                    <div class="attribute-item">
+                        {% placeholder marello_customer_address with {'address' : entity.primaryAddress} %}
+                    </div>
                 </div>
             </div>
         </div>
