@@ -11,7 +11,7 @@ use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\ReturnBundle\Entity\Repository\ReturnItemRepository")
  * @ORM\Table(name="marello_return_item")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Config(

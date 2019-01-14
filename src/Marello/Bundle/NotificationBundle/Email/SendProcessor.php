@@ -102,7 +102,10 @@ class SendProcessor
          * This depends on application configuration.
          */
         $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
-        $this->emailNotificationManager->processSingle($this->getNotification($templateName, $recipients, $entity), [$notification]);
+        $this->emailNotificationManager->processSingle(
+            $this->getNotification($templateName, $recipients, $entity),
+            [$notification]
+        );
 
         $this->activityManager->addActivityTarget($notification, $entity);
 

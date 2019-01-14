@@ -61,6 +61,17 @@ class LoadWarehouseChannelLinkData extends AbstractFixture implements DependentF
             ->setWarehouseGroup($systemWarehouseGroup)
             ->addSalesChannelGroup($systemSalesChannelGroup);
 
+        $addtionalSalesChannelGroups = [
+            $this->getReference(LoadSalesChannelGroupData::CHANNELGROUP_1_REF),
+            $this->getReference(LoadSalesChannelGroupData::CHANNELGROUP_2_REF),
+            $this->getReference(LoadSalesChannelGroupData::CHANNELGROUP_3_REF),
+            $this->getReference(LoadSalesChannelGroupData::CHANNELGROUP_4_REF),
+        ];
+
+        foreach ($addtionalSalesChannelGroups as $group) {
+            $defaultWarehouseChannelGroupLink->addSalesChannelGroup($group);
+        }
+
         $this->manager->persist($defaultWarehouseChannelGroupLink);
         $this->manager->flush();
     }

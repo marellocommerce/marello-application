@@ -32,9 +32,10 @@ datagrids:
                 frontend_type:      html
             orderTotal:
                 label:              marello.purchaseorder.order_total.label
-                type:               twig
-                template:           MarelloPurchaseOrderBundle:Datagrid:Column/orderTotal.html.twig
-                frontend_type:      html
+                type:               localized_number
+                method:             formatCurrency
+                context_resolver:   Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:              right
         sorters:
             columns:
                 purchaseOrderNumber:
@@ -252,7 +253,7 @@ datagrids:
                 params:
                     - id
         options:
-            entityHint: p
+            entityHint: products
             rowSelection:
                 dataField: id
                 columnName: hasProduct

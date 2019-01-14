@@ -5,6 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\InventoryBundle\Model\ExtendWarehouse;
+use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
@@ -32,7 +33,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *      }
  * )
  */
-class Warehouse extends ExtendWarehouse
+class Warehouse extends ExtendWarehouse implements EmailHolderInterface
 {
     /**
      * @ORM\Id
@@ -160,6 +161,13 @@ class Warehouse extends ExtendWarehouse
      * )
      */
     protected $group;
+    
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
+     */
+    protected $email;
 
     /**
      * @param string $label
@@ -325,6 +333,25 @@ class Warehouse extends ExtendWarehouse
     {
         $this->group = $group;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     * @return Warehouse
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        
         return $this;
     }
 }
