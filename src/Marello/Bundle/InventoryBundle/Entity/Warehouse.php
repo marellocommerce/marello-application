@@ -348,7 +348,7 @@ class Warehouse extends ExtendWarehouse implements EmailHolderInterface
      * @param string $email
      * @return Warehouse
      */
-    public function setEmail($email)
+    public function setEmail($email = null)
     {
         $this->email = $email;
         
