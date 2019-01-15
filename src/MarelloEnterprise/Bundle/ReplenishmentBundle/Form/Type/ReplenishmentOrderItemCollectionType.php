@@ -5,6 +5,7 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Form\Type;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ReplenishmentOrderItemCollectionType extends AbstractType
 {
@@ -19,7 +20,7 @@ class ReplenishmentOrderItemCollectionType extends AbstractType
             'entry_type' => ReplenishmentOrderItemType::class,
             'show_form_when_empty' => false,
             'error_bubbling' => false,
-            'cascade_validation' => true,
+            'constraints' => [new Valid()],
             'prototype_name' => '__namereplenishmentorderitem__',
             'prototype' => true,
             'handle_primary' => false,
