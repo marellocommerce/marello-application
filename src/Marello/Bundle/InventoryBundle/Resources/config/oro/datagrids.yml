@@ -128,7 +128,7 @@ datagrids:
                 data_name:      changeTrigger
                 label:          marello.inventory.inventorylevellogrecord.change_trigger.label
                 type:           translatable
-                domain:         MarelloStockLevelChangeTrigger
+                domain:         MarelloInventoryLevelChangeTrigger
                 frontend_type:  string
             user:
                 label:          marello.inventory.inventorylevellogrecord.user.label
