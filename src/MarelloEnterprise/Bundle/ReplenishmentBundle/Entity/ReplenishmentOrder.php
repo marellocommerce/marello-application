@@ -403,4 +403,12 @@ class ReplenishmentOrder extends ExtendReplenishmentOrder implements
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('#%s', $this->replOrderNumber);
+    }
 }

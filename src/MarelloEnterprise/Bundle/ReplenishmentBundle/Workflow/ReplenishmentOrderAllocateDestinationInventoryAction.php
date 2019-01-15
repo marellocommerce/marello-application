@@ -27,7 +27,8 @@ class ReplenishmentOrderAllocateDestinationInventoryAction extends Replenishment
                 $item,
                 $item->getInventoryQty(),
                 0,
-                $destinationWarehouse
+                $destinationWarehouse,
+                $order
             );
         });
     }
@@ -38,15 +39,17 @@ class ReplenishmentOrderAllocateDestinationInventoryAction extends Replenishment
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
      * @param Warehouse $warehouse
+     * @param ReplenishmentOrder $order
      */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $warehouse)
+    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $warehouse, $order)
     {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
-            $this->translator->trans('marelloenterprise.replenishment.replenishmentorder.workflow.completed')
+            'marelloenterprise.replenishment.replenishmentorder.workflow.completed',
+            $order
         );
 
         $context->setValue('warehouse', $warehouse);

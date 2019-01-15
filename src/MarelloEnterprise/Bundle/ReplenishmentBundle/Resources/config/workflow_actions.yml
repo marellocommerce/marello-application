@@ -4,7 +4,6 @@ services:
         arguments:
             - '@oro_action.expression.context_accessor'
             - '@event_dispatcher'
-            - '@translator.default'
             - '@marelloenterprise_replenishment.provider.replenishment_orders_from_config'
             - '@doctrine'
         tags:
@@ -15,7 +14,6 @@ services:
         arguments:
             - '@oro_action.expression.context_accessor'
             - '@event_dispatcher'
-            - '@translator.default'
         tags:
             - { name: oro_action.action, alias: marelloenterprise_replenishment_order_ship_action }
 
@@ -24,7 +22,6 @@ services:
         arguments:
             - '@oro_action.expression.context_accessor'
             - '@event_dispatcher'
-            - '@translator.default'
         tags:
             - { name: oro_action.action, alias: marelloenterprise_replenishment_order_allocate_destination_inventory_action }
 
@@ -33,6 +30,5 @@ services:
         arguments:
             - '@oro_action.expression.context_accessor'
             - '@event_dispatcher'
-            - '@translator.default'
         tags:
             - { name: oro_action.action, alias: marelloenterprise_replenishment_order_cancel_action }

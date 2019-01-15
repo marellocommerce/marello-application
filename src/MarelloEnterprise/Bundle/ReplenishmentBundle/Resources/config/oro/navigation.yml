@@ -3,9 +3,9 @@ navigation:
         items:
             replenishment:
                 label: 'marelloenterprise.replenishment.menu.replenishment.label'
-                route: 'marello_replenishment_order_index'
+                route: 'marelloenterprise_replenishmentorder_index'
                 extras:
-                    routes: ['marello_replenishment_order_*']
+                    routes: ['marelloenterprise_replenishmentorder_*']
                     position: 40
         tree:
             application_menu:
@@ -17,4 +17,4 @@ navigation:
                                     replenishment: ~
 
     titles:
-        marello_replenishment_order_index: 'marelloenterprise.replenishment.replenishmentorder.entity_label'
+        marelloenterprise_replenishmentorder_index: 'marelloenterprise.replenishment.replenishmentorder.entity_label'

@@ -20,26 +20,18 @@ abstract class ReplenishmentOrderTransitionAction extends AbstractAction
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
-    
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
 
     /**
      * @param ContextAccessor           $contextAccessor
      * @param EventDispatcherInterface  $eventDispatcher
-     * @param TranslatorInterface       $translator
      */
     public function __construct(
         ContextAccessor $contextAccessor,
-        EventDispatcherInterface $eventDispatcher,
-        TranslatorInterface $translator
+        EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct($contextAccessor);
 
         $this->eventDispatcher = $eventDispatcher;
-        $this->translator = $translator;
     }
 
     /**

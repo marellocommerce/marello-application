@@ -20,7 +20,7 @@ class ReplenishmentOrderCancelAction extends ReplenishmentOrderTransitionAction
         $order = $context->getEntity();
 
         $order->getReplOrderItems()->map(function (ReplenishmentOrderItem $item) use ($order) {
-            $this->handleInventoryUpdate($item, null, -$item->getInventoryQty(), $order->getOrigin());
+            $this->handleInventoryUpdate($item, null, -$item->getInventoryQty(), $order->getOrigin(), $order);
         });
     }
 
@@ -30,15 +30,17 @@ class ReplenishmentOrderCancelAction extends ReplenishmentOrderTransitionAction
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
      * @param Warehouse $warehouse
+     * @param ReplenishmentOrder $order
      */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $warehouse)
+    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $warehouse, $order)
     {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
-            $this->translator->trans('marelloenterprise.replenishment.replenishmentorder.workflow.cancelled')
+            'marelloenterprise.replenishment.replenishmentorder.workflow.cancelled',
+            $order
         );
 
         $context->setValue('warehouse', $warehouse);
