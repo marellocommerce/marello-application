@@ -4,11 +4,17 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Migrations\Schema\v1_0;
 
 use Doctrine\DBAL\Schema\Schema;
 
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
-class MarelloEnterpriseReplenishmentBundle implements Migration
+class MarelloEnterpriseReplenishmentBundle implements Migration, ActivityExtensionAwareInterface
 {
+    /**
+     * @var ActivityExtension
+     */
+    protected $activityExtension;
 
     /**
      * {@inheritdoc}
@@ -43,7 +49,6 @@ class MarelloEnterpriseReplenishmentBundle implements Migration
         $table->addColumn('execution_date_time', 'datetime', ['notnull' => false]);
         $table->addColumn('percentage', 'float', ['notnull' => true]);
         $table->addColumn('description', 'text', ['notnull' => false]);
-        $table->addColumn('executed', 'boolean', ['default' => false]);
         $table->setPrimaryKey(['id']);
         $table->addIndex(['organization_id']);
     }
@@ -90,8 +95,8 @@ class MarelloEnterpriseReplenishmentBundle implements Migration
         $table->addColumn('product_name', 'string', ['length' => 255]);
         $table->addColumn('product_sku', 'string', ['length' => 255]);
         $table->addColumn('note', 'text', ['notnull' => false]);
-        $table->addColumn('inventory_qty', 'integer', []);
-        $table->addColumn('total_inventory_qty', 'integer', []);
+        $table->addColumn('inventory_qty', 'integer', ['notnull' => false]);
+        $table->addColumn('total_inventory_qty', 'integer', ['notnull' => false]);
 
         $table->setPrimaryKey(['id']);
     }
@@ -160,5 +165,15 @@ class MarelloEnterpriseReplenishmentBundle implements Migration
             ['id'],
             ['onDelete' => 'CASCADE', 'onUpdate' => null]
         );
+    }
+
+    /**
+     * Sets the ActivityExtension
+     *
+     * @param ActivityExtension $activityExtension
+     */
+    public function setActivityExtension(ActivityExtension $activityExtension)
+    {
+        $this->activityExtension = $activityExtension;
     }
 }

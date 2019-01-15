@@ -7,6 +7,7 @@ use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ReplenishmentOrderItemListener
 {
@@ -16,11 +17,20 @@ class ReplenishmentOrderItemListener
     protected $eventDispatcher;
 
     /**
-     * @param EventDispatcherInterface  $eventDispatcher
+     * @var TranslatorInterface
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
+    protected $translator;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        TranslatorInterface $translator
+    ) {
         $this->eventDispatcher = $eventDispatcher;
+        $this->translator = $translator;
     }
     
     /**
@@ -31,14 +41,16 @@ class ReplenishmentOrderItemListener
     {
         $em = $args->getEntityManager();
         $changes = $em->getUnitOfWork()->getEntityChangeSet($item);
-        if (isset($changes['inventoryQty']) && $changes['inventoryQty'][0] !== $changes['inventoryQty'][1]) {
+        if (isset($changes['inventoryQty']) &&
+            $changes['inventoryQty'][0] !== null &&
+            $changes['inventoryQty'][0] !== $changes['inventoryQty'][1]) {
             $diff = $changes['inventoryQty'][1] - $changes['inventoryQty'][0];
             $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
                 $item,
                 null,
-                -$diff,
+                null,
                 $diff,
-                'replenishment_order_workflow.check_and_pack'
+                $this->translator->trans('marelloenterprise.replenishment.replenishmentorder.workflow.ready_for_shipping')
             );
 
             $context->setValue('warehouse', $item->getOrder()->getOrigin());

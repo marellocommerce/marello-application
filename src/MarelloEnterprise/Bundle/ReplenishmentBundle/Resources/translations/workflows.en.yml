@@ -17,6 +17,8 @@ oro:
                     label: 'Received'
                 completed:
                     label: 'Completed'
+                cancelled:
+                    label: 'Cancelled'
             transition:
                 allocate_inventory:
                     label: 'Allocate Inventory'
@@ -28,3 +30,5 @@ oro:
                     label: 'Receive'
                 complete:
                     label: 'Complete'
+                cancel:
+                    label: 'Cancel'

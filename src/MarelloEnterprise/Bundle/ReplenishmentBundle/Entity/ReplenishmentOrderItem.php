@@ -104,7 +104,7 @@ class ReplenishmentOrderItem implements ProductAwareInterface
     protected $note;
 
     /**
-     * @ORM\Column(name="inventory_qty", type="integer")
+     * @ORM\Column(name="inventory_qty", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -118,7 +118,7 @@ class ReplenishmentOrderItem implements ProductAwareInterface
     protected $inventoryQty;
 
     /**
-     * @ORM\Column(name="total_inventory_qty", type="integer")
+     * @ORM\Column(name="total_inventory_qty", type="integer", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={

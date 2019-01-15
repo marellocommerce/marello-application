@@ -2,33 +2,48 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Workflow;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Component\ConfigExpression\ContextAccessor;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Component\ConfigExpression\ContextAccessor;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Provider\ReplenishmentOrdersFromConfigProvider;
 
 class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrderTransitionAction
 {
     /**
-     * @var EventDispatcherInterface
+     * @var ReplenishmentOrdersFromConfigProvider
      */
-    protected $eventDispatcher;
+    protected $replenishmentOrdersProvider;
 
     /**
-     * @param ContextAccessor           $contextAccessor
-     * @param EventDispatcherInterface  $eventDispatcher
+     * @var ManagerRegistry
+     */
+    protected $registry;
+
+    /**
+     * @param ContextAccessor $contextAccessor
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider
+     * @param ManagerRegistry $registry
      */
     public function __construct(
         ContextAccessor $contextAccessor,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ReplenishmentOrdersFromConfigProvider $replenishmentOrdersProvider,
+        ManagerRegistry $registry
     ) {
-        parent::__construct($contextAccessor);
+        parent::__construct($contextAccessor, $eventDispatcher);
 
-        $this->eventDispatcher = $eventDispatcher;
+        $this->replenishmentOrdersProvider = $replenishmentOrdersProvider;
+        $this->registry = $registry;
     }
 
     /**
@@ -38,6 +53,32 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
     {
         /** @var ReplenishmentOrder $order */
         $order = $context->getEntity();
+        
+        $calculatedOrders = $this->replenishmentOrdersProvider
+            ->getReplenishmentOrders(
+                $order->getReplOrderConfig(),
+                true
+            );
+        foreach ($calculatedOrders as $calculatedOrder) {
+            if ($order->getOrigin()->getCode() === $calculatedOrder->getOrigin()->getCode() &&
+                $order->getDestination()->getCode() === $calculatedOrder->getDestination()->getCode()) {
+                /** @var ReplenishmentOrderItem $orderItem */
+                foreach ($order->getReplOrderItems()->toArray() as $orderItem) {
+                    /** @var ReplenishmentOrderItem $calcOrderItem */
+                    foreach ($calculatedOrder->getReplOrderItems()->toArray() as $calcOrderItem) {
+                        if ($orderItem->getProductSku() === $calcOrderItem->getProductSku()) {
+                            $orderItem
+                                ->setInventoryQty($calcOrderItem->getInventoryQty())
+                                ->setTotalInventoryQty($calcOrderItem->getTotalInventoryQty());
+                            $em = $this->registry->getManagerForClass(ReplenishmentOrderItem::class);
+                            $em->persist($orderItem);
+                            $em->flush($orderItem);
+                        }
+                    }
+                }
+            }
+        }
+        
         $warehouse = $order->getOrigin();
         $items = $order->getReplOrderItems();
             $items->map(function (ReplenishmentOrderItem $item) use ($order, $warehouse) {
@@ -45,7 +86,8 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
                     $item,
                     null,
                     $item->getInventoryQty(),
-                    $warehouse
+                    $warehouse,
+                    $order
                 );
             });
     }
@@ -56,15 +98,22 @@ class ReplenishmentOrderAllocateOriginInventoryAction extends ReplenishmentOrder
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
      * @param Warehouse $warehouse
+     * @param ReplenishmentOrder $order
      */
-    protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $warehouse)
-    {
+    protected function handleInventoryUpdate(
+        $item,
+        $inventoryUpdateQty,
+        $allocatedInventoryQty,
+        $warehouse,
+        $order
+    ) {
         $context = InventoryUpdateContextFactory::createInventoryUpdateContext(
             $item,
             null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
-            'replenishment_order_workflow.prepared_for_shipping'
+            'marelloenterprise.replenishment.replenishmentorder.workflow.prepared_for_shipping',
+            $order
         );
 
         $context->setValue('warehouse', $warehouse);

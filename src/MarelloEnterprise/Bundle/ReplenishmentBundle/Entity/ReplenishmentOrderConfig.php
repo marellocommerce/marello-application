@@ -138,21 +138,6 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
      */
     protected $description;
 
-
-    /**
-     * @var bool
-     *
-     * @ORM\Column(name="executed", type="boolean", nullable=false, options={"default"=false})
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     *  )
-     */
-    protected $executed = false;
-
     /**
      * @return int
      */
@@ -291,25 +276,6 @@ class ReplenishmentOrderConfig extends ExtendReplenishmentOrderConfig implements
     {
         $this->description = $description;
 
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isExecuted()
-    {
-        return $this->executed;
-    }
-
-    /**
-     * @param boolean $executed
-     * @return ReplenishmentOrderConfig
-     */
-    public function setExecuted($executed)
-    {
-        $this->executed = $executed;
-        
         return $this;
     }
 }

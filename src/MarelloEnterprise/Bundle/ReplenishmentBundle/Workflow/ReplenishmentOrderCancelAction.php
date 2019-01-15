@@ -8,10 +8,8 @@ use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrderItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Component\ConfigExpression\ContextAccessor;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ReplenishmentOrderAllocateDestinationInventoryAction extends ReplenishmentOrderTransitionAction
+class ReplenishmentOrderCancelAction extends ReplenishmentOrderTransitionAction
 {
     /**
      * @param WorkflowItem|mixed $context
@@ -20,16 +18,9 @@ class ReplenishmentOrderAllocateDestinationInventoryAction extends Replenishment
     {
         /** @var ReplenishmentOrder $order */
         $order = $context->getEntity();
-        $destinationWarehouse = $order->getDestination();
-        $items = $order->getReplOrderItems();
-        $items->map(function (ReplenishmentOrderItem $item) use ($order, $destinationWarehouse) {
-            $this->handleInventoryUpdate(
-                $item,
-                $item->getInventoryQty(),
-                0,
-                $destinationWarehouse,
-                $order
-            );
+
+        $order->getReplOrderItems()->map(function (ReplenishmentOrderItem $item) use ($order) {
+            $this->handleInventoryUpdate($item, null, -$item->getInventoryQty(), $order->getOrigin(), $order);
         });
     }
 
@@ -48,7 +39,7 @@ class ReplenishmentOrderAllocateDestinationInventoryAction extends Replenishment
             null,
             $inventoryUpdateQty,
             $allocatedInventoryQty,
-            'marelloenterprise.replenishment.replenishmentorder.workflow.completed',
+            'marelloenterprise.replenishment.replenishmentorder.workflow.cancelled',
             $order
         );
 

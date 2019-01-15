@@ -40,7 +40,7 @@ class ReplenishmentOrderConfigController extends Controller
                     ->trans($result['message'])
             );
 
-            return $this->redirect($this->generateUrl('marello_replenishment_order_index'));
+            return $this->redirect($this->generateUrl('marelloenterprise_replenishmentorder_index'));
         }
 
         return [
