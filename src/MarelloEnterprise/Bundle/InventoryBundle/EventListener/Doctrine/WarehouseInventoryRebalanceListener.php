@@ -93,23 +93,26 @@ class WarehouseInventoryRebalanceListener
     protected function triggerRebalance(Warehouse $entity)
     {
         $productIds = [];
-        $link = $entity->getGroup()->getWarehouseChannelGroupLink();
-        if ($link) {
-            /** @var SalesChannelGroup[] $channelsGroups */
-            $channelsGroups = $link->getSalesChannelGroups()->toArray();
-            foreach ($channelsGroups as $salesChannelGroup) {
-                foreach ($salesChannelGroup->getSalesChannels() as $salesChannel) {
-                    $products = $this->em->getRepository(Product::class)->findByChannel($salesChannel);
-                    foreach ($products as $product) {
-                        $productIds[$product->getId()] = $product->getId();
+        $group = $entity->getGroup();
+        if ($group) {
+            $link = $group->getWarehouseChannelGroupLink();
+            if ($link) {
+                /** @var SalesChannelGroup[] $channelsGroups */
+                $channelsGroups = $link->getSalesChannelGroups()->toArray();
+                foreach ($channelsGroups as $salesChannelGroup) {
+                    foreach ($salesChannelGroup->getSalesChannels() as $salesChannel) {
+                        $products = $this->em->getRepository(Product::class)->findByChannel($salesChannel);
+                        foreach ($products as $product) {
+                            $productIds[$product->getId()] = $product->getId();
+                        }
                     }
                 }
-            }
-            foreach ($productIds as $id) {
-                $this->messageProducer->send(
-                    Topics::RESOLVE_REBALANCE_INVENTORY,
-                    ['product_id' => $id, 'jobId' => md5($id)]
-                );
+                foreach ($productIds as $id) {
+                    $this->messageProducer->send(
+                        Topics::RESOLVE_REBALANCE_INVENTORY,
+                        ['product_id' => $id, 'jobId' => md5($id)]
+                    );
+                }
             }
         }
     }
