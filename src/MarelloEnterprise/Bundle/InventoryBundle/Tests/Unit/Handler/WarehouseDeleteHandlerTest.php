@@ -4,8 +4,11 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 use PHPUnit\Framework\TestCase;
 
@@ -34,6 +37,10 @@ class WarehouseDeleteHandlerTest extends TestCase
     protected $apiEntityManager;
 
     /**
+     * @varTranslatorInterface|\PHPUnit_Framework_MockObject_MockObject $translator
+     */
+    protected $translator;
+    /**
      * @var WarehouseDeleteHandler
      */
     protected $warehouseDeleteHandler;
@@ -46,15 +53,11 @@ class WarehouseDeleteHandlerTest extends TestCase
         parent::setUp();
 
         $this->securityFacade = $this->createMock(AuthorizationCheckerInterface::class);
-        $this->apiEntityManager = $this->getMockBuilder(ApiEntityManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->apiEntityManager = $this->createMock(ApiEntityManager::class);
+        $this->ownerDeletionManager = $this->createMock(OwnerDeletionManager::class);
+        $this->translator = $this->createMock(TranslatorInterface::class);
 
-        $this->ownerDeletionManager = $this->getMockBuilder(OwnerDeletionManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->warehouseDeleteHandler = new WarehouseDeleteHandler($this->securityFacade);
+        $this->warehouseDeleteHandler = new WarehouseDeleteHandler($this->securityFacade, $this->translator);
         $this->warehouseDeleteHandler->setOwnerDeletionManager($this->ownerDeletionManager);
     }
 
@@ -137,6 +140,10 @@ class WarehouseDeleteHandlerTest extends TestCase
             ->method('isOwner')
             ->willReturn(false);
 
+        $this->translator->expects($this->once())
+            ->method('trans')
+            ->willReturn('You have no rights to delete this entity');
+
         $this->warehouseDeleteHandler->handleDelete($warehouseId, $this->apiEntityManager);
     }
 
@@ -175,6 +182,10 @@ class WarehouseDeleteHandlerTest extends TestCase
             ->method('isDefault')
             ->willReturn(true);
 
+        $this->translator->expects($this->once())
+            ->method('trans')
+            ->willReturn('It is forbidden to delete default Warehouse');
+
         $this->warehouseDeleteHandler->handleDelete($warehouseId, $this->apiEntityManager);
     }
 
@@ -200,6 +211,10 @@ class WarehouseDeleteHandlerTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $objectRepository = $this->getMockBuilder(ObjectRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->apiEntityManager->expects($this->once())
             ->method('find')
             ->with($warehouseId)
@@ -212,6 +227,18 @@ class WarehouseDeleteHandlerTest extends TestCase
         $this->apiEntityManager->expects($this->atLeastOnce())
             ->method('getObjectManager')
             ->willReturn($objectManagerMock);
+
+        $objectManagerMock
+            ->expects($this->once())
+            ->method('getRepository')
+            ->with(InventoryLevel::class)
+            ->willReturn($objectRepository);
+
+        $objectRepository
+            ->expects($this->atLeastOnce())
+            ->method('findBy')
+            ->with(['warehouse' => $warehouseMock])
+            ->willReturn([]);
 
         $objectManagerMock->expects($this->atLeastOnce())
             ->method('remove');
