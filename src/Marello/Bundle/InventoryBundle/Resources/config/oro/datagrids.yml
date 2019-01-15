@@ -244,17 +244,14 @@ datagrids:
                 label:              marello.inventory.balancedinventorylevel.inventory.label
                 frontend_type:      number
                 data_name:          inventoryQty
-                align:              left
             balancedInventoryQty:
                 label:              marello.inventory.balancedinventorylevel.balanced_inventory_qty.label
                 frontend_type:      number
                 data_name:          balancedInventoryQty
-                align:              left
             reservedInventoryQty:
                 label:              marello.inventory.balancedinventorylevel.reserved_inventory_qty.label
                 frontend_type:      number
                 data_name:          reservedInventoryQty
-                align:              left
             salesChannelGroupName:
                 label:              marello.sales.saleschannelgroup.entity_label
                 frontend_type:      string
