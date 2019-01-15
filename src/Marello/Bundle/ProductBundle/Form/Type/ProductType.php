@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductType extends AbstractType
 {
@@ -132,8 +133,7 @@ class ProductType extends AbstractType
                 'suppliers',
                 ProductSupplierRelationCollectionType::class,
                 [
-                    'label'              => 'marello.supplier.entity_label',
-                    'cascade_validation' => true,
+                    'label' => 'marello.supplier.entity_label',
                 ]
             )
             ->add('taxCode', TaxCodeSelectType::class)
@@ -141,8 +141,7 @@ class ProductType extends AbstractType
                 'salesChannelTaxCodes',
                 ProductChannelTaxRelationCollectionType::class,
                 [
-                    'label'              => 'marello.tax.taxcode.entity_label',
-                    'cascade_validation' => true,
+                    'label' => 'marello.tax.taxcode.entity_label',
                 ]
             )
             ->add(
@@ -188,7 +187,7 @@ class ProductType extends AbstractType
             'data_class'         => Product::class,
             'intention'          => 'product',
             'single_form'        => true,
-            'cascade_validation' => true,
+            'constraints'        => [new Valid()],
         ]);
     }
 

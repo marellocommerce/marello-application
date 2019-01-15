@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ReturnItemType extends AbstractType
 {
@@ -59,9 +60,11 @@ class ReturnItemType extends AbstractType
             'data_class'         => ReturnItem::class,
             'update'             => false,
             'constraints'        => function (Options $options) {
-                return new ReturnItemConstraint(!$options['update']);
+                return [
+                    new ReturnItemConstraint(!$options['update']),
+                    new Valid()
+                ];
             },
-            'cascade_validation' => true,
         ]);
     }
 

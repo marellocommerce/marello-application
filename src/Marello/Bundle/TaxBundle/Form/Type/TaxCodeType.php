@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class TaxCodeType extends AbstractType
 {
@@ -43,8 +44,10 @@ class TaxCodeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => TaxCode::class,
-            'cascade_validation' => true,
+            'data_class'  => TaxCode::class,
+            'constraints' => [
+                new Valid()
+            ]
         ]);
     }
 

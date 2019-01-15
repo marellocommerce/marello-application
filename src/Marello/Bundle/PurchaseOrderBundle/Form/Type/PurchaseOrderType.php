@@ -32,10 +32,7 @@ class PurchaseOrderType extends AbstractType
             )
             ->add(
                 'items',
-                PurchaseOrderItemCollectionType::class,
-                [
-                    'cascade_validation' => true,
-                ]
+                PurchaseOrderItemCollectionType::class
             )
             ->add(
                 'dueDate',

@@ -7,6 +7,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class OrderApiUpdateType extends AbstractType
 {
@@ -38,7 +39,7 @@ class OrderApiUpdateType extends AbstractType
         $resolver->setDefaults([
             'data_class'         => Order::class,
             'intention'          => 'order',
-            'cascade_validation' => true,
+            'constraints'        => [new Valid()],
             'csrf_protection'    => false,
         ]);
     }

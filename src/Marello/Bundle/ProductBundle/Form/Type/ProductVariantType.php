@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductVariantType extends AbstractType
 {
@@ -54,7 +55,7 @@ class ProductVariantType extends AbstractType
             'data_class'         => Variant::class,
             'intention'          => 'variant',
             'single_form'        => false,
-            'cascade_validation' => true,
+            'constraints'        => [new Valid()],
         ]);
     }
 

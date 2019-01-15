@@ -5,6 +5,7 @@ namespace Marello\Bundle\ProductBundle\Form\Type;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductSelectCollectionType extends AbstractType
 {
@@ -19,7 +20,7 @@ class ProductSelectCollectionType extends AbstractType
             'entry_type'           => ProductSelectType::class,
             'show_form_when_empty' => false,
             'error_bubbling'       => false,
-            'cascade_validation'   => true,
+            'constraints'          => [new Valid()],
             'prototype_name'       => '__nameproductselect__',
             'prototype'            => true,
             'handle_primary'       => false,

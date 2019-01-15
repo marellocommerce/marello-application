@@ -7,6 +7,7 @@ use Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductSupplierRelationType extends AbstractType
 {
@@ -41,7 +42,7 @@ class ProductSupplierRelationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class'         => ProductSupplierRelation::class,
-            'cascade_validation' => true,
+            'constraints'        => [new Valid()],
         ]);
     }
 

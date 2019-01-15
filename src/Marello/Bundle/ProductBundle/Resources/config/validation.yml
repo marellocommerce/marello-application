@@ -12,6 +12,10 @@ Marello\Bundle\ProductBundle\Entity\Product:
             - NotBlank: ~
         prices:
             - NotBlank: ~
+        suppliers:
+            - Valid: ~
+        salesChannelTaxCodes:
+            - Valid: ~
 
 Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation:
     constraints:

@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class PurchaseOrderItemReceiveCollectionType extends AbstractType
 {
@@ -45,7 +46,7 @@ class PurchaseOrderItemReceiveCollectionType extends AbstractType
             'entry_type'            => PurchaseOrderItemReceiveType::class,
             'show_form_when_empty'  => false,
             'error_bubbling'        => true,
-            'cascade_validation'    => true,
+            'constraints'           => [new Valid()],
             'prototype_name'        => '__namepurchaseorderitemreceive__',
             'prototype'             => true,
             'handle_primary'        => false,

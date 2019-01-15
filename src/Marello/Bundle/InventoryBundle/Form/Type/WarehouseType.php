@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class WarehouseType extends AbstractType
 {
@@ -93,8 +94,8 @@ class WarehouseType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => Warehouse::class,
-            'cascade_validation' => true,
+            'data_class'  => Warehouse::class,
+            'constraints' => [new Valid()],
         ]);
     }
 
