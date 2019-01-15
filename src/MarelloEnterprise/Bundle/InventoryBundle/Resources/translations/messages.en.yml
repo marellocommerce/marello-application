@@ -24,6 +24,11 @@ marelloenterprise:
                     success_message:    "{0} No entities status were changed|{1} One entity status was changed|]1,Inf[ %count% entities status were changed"
 
         messages:
+            error:
+                warehouse:
+                    no_rights_to_delete:           'You have no rights to delete this entity'
+                    default_warehouse_deletion:    'It is forbidden to delete default Warehouse'
+                    warehouse_with_inventory_deletion: 'This Warehouse has inventory, please remove it before warehouse deletion'
             warning:
                 wfarule:
                     is_system_update_attempt:      System WFA Rule can't be updated

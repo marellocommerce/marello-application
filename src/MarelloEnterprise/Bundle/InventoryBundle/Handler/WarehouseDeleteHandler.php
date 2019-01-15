@@ -3,13 +3,12 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Handler;
 
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-
-use Oro\Bundle\SoapBundle\Handler\DeleteHandler;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
-
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+use Oro\Bundle\SoapBundle\Handler\DeleteHandler;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class WarehouseDeleteHandler extends DeleteHandler
 {
@@ -19,11 +18,18 @@ class WarehouseDeleteHandler extends DeleteHandler
     protected $authorizationChecker;
 
     /**
-     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @var TranslatorInterface
      */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    protected $translator;
+
+    /**
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, TranslatorInterface $translator)
     {
         $this->authorizationChecker = $authorizationChecker;
+        $this->translator = $translator;
     }
 
     /**
@@ -34,10 +40,22 @@ class WarehouseDeleteHandler extends DeleteHandler
         /** @var $entity Warehouse */
         parent::checkPermissions($entity, $em);
         if (!$this->authorizationChecker->isGranted('EDIT', $entity->getOwner())) {
-            throw new ForbiddenException('You have no rights to delete this entity');
+            throw new ForbiddenException(
+                $this->translator->trans('marelloenterprise.inventory.messages.error.warehouse.no_rights_to_delete')
+            );
         }
         if ($entity->isDefault()) {
-            throw new ForbiddenException('It is forbidden to delete default Warehouse');
+            throw new ForbiddenException(
+                $this->translator->trans('marelloenterprise.inventory.messages.error.warehouse.default_warehouse_deletion')
+            );
+        }
+        $inventoryLevels = $em->getRepository(InventoryLevel::class)->findBy(['warehouse' => $entity]);
+        if (!empty($inventoryLevels)) {
+            throw new \Exception(
+                $this->translator->trans(
+                    'marelloenterprise.inventory.messages.error.warehouse.warehouse_with_inventory_deletion'
+                )
+            );
         }
     }
 
