@@ -68,30 +68,35 @@ datagrids:
                 frontend_type:      html
                 template:           MarelloProductBundle:Product/Datagrid/Property:defaultPrices.html.twig
                 renderable:         false
+                align:              right
             specialPrices:
                 label:              marello.pricing.assembledpricelist.special_price.plural_label
                 type:               twig
                 frontend_type:      html
                 template:           MarelloProductBundle:Product/Datagrid/Property:specialPrices.html.twig
                 renderable:         false
+                align:              right
             msrpPrices:
                 label:              marello.pricing.assembledpricelist.msrp_price.plural_label
                 type:               twig
                 frontend_type:      html
                 template:           MarelloProductBundle:Product/Datagrid/Property:msrpPrices.html.twig
                 renderable:         false
+                align:              right
             defaultChannelPrices:
                 label:              marello.pricing.assembledchannelpricelist.default_price.plural_label
                 type:               twig
                 frontend_type:      html
                 template:           MarelloProductBundle:Product/Datagrid/Property:defaultChannelPrices.html.twig
                 renderable:         false
+                align:              right
             specialChannelPrices:
                 label:              marello.pricing.assembledchannelpricelist.special_price.plural_label
                 type:               twig
                 frontend_type:      html
                 template:           MarelloProductBundle:Product/Datagrid/Property:specialChannelPrices.html.twig
                 renderable:         false
+                align:              right
             channels:
                 label:              marello.product.channels.label
                 type:               twig
