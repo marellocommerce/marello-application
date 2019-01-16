@@ -20,11 +20,11 @@ trait HasShipmentTrait
     }
 
     /**
-     * @param Shipment $shipment
+     * @param null|Shipment $shipment
      *
      * @return $this
      */
-    public function setShipment(Shipment $shipment)
+    public function setShipment(?Shipment $shipment = null)
     {
         $this->shipment = $shipment;
 
