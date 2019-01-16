@@ -37,7 +37,7 @@ class WarehouseDeleteHandlerTest extends TestCase
     protected $apiEntityManager;
 
     /**
-     * @varTranslatorInterface|\PHPUnit_Framework_MockObject_MockObject $translator
+     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject $translator
      */
     protected $translator;
     /**

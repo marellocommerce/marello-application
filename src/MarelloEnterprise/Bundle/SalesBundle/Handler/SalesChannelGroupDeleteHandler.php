@@ -38,7 +38,9 @@ class SalesChannelGroupDeleteHandler extends BaseDeleteHandler
         parent::checkPermissions($entity, $em);
         $linkOwner = $this->repository->findLinkBySalesChannelGroup($entity);
         if ($linkOwner && !$linkOwner->isSystem()) {
-            throw new \Exception('It is forbidden to delete Linked Sales Channel(Group), unlink it first');
+            throw new \Exception(
+                'It is forbidden to delete a Sales Channel(Group) linked to a WarehouseGroup, unlink it first'
+            );
         }
     }
 }
