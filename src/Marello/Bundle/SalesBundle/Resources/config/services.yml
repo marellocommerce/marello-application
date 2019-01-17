@@ -97,6 +97,14 @@ services:
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup', event: preRemove }
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup', event: postPersist }
 
+    marello_sales.event_listener.doctrine.sales_channel_group.inventory_rebalance:
+        class: 'Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupInventoryRebalanceListener'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+
     marello_sales.event_listener.datagrid.saleschannelgroups_grid:
         class: 'Marello\Bundle\SalesBundle\EventListener\Datagrid\SalesChannelGroupDatagridListener'
         tags:

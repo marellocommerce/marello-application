@@ -6,6 +6,7 @@ use Doctrine\ORM\Query;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\OrmResultAfter;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
+use Oro\Bundle\DataGridBundle\Exception\LogicException;
 
 class RowSelectionSelectAllListener
 {
@@ -73,6 +74,7 @@ class RowSelectionSelectAllListener
         }
 
         $properties = $config->offsetGetByPath('properties', []);
+        $rowSelectionDataField = $rowSelectionConfig['dataField'];
         $rowSelectionColumnName = $rowSelectionConfig['columnName'];
         /** @var Query $query */
         $query = $event->getQuery();
@@ -86,8 +88,16 @@ class RowSelectionSelectAllListener
         $selectedRows = [];
         $allRowsIds = [];
         foreach ($allResults as $result) {
-            $result['id'] = (string)$result['id'];
-            $allRowsIds[] = $result['id'];
+            if (!isset($result[$rowSelectionDataField])) {
+                throw new LogicException(
+                    sprintf(
+                        'datagrid results don\'t have field `%s` selected as rowSelection dataField ',
+                        $rowSelectionDataField
+                    )
+                );
+            }
+            $result[$rowSelectionDataField] = (string)$result[$rowSelectionDataField];
+            $allRowsIds[] = $result[$rowSelectionDataField];
             if (isset($result[$rowSelectionColumnName]) && $result[$rowSelectionColumnName] === '1') {
                 ++$selectedCnt;
                 $selectedRows[] = $result;

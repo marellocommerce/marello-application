@@ -7,6 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class VariantInventoryType extends AbstractType
 {
@@ -21,7 +22,7 @@ class VariantInventoryType extends AbstractType
             'entry_type'               => ProductInventoryType::class,
             'allow_add'          => false,
             'allow_delete'       => false,
-            'cascade_validation' => true,
+            'constraints'        => [new Valid()],
             'options'            => [
                 'include_variants' => false,
             ],
@@ -34,8 +35,10 @@ class VariantInventoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => Variant::class,
-            'cascade_validation' => true,
+            'data_class'  => Variant::class,
+            'constraints' => [
+                new Valid()
+            ]
         ]);
     }
 

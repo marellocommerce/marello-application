@@ -5,6 +5,7 @@ namespace Marello\Bundle\ProductBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class ProductRepository extends EntityRepository
@@ -21,7 +22,24 @@ class ProductRepository extends EntityRepository
     {
         $this->aclHelper = $aclHelper;
     }
-    
+
+    /**
+     * @param SalesChannel $salesChannel
+     *
+     * @return Product[]
+     */
+    public function findByChannel(SalesChannel $salesChannel)
+    {
+        $qb = $this->createQueryBuilder('product');
+        $qb
+            ->where(
+                $qb->expr()->isMemberOf(':salesChannel', 'product.channels')
+            )
+            ->setParameter('salesChannel', $salesChannel->getId());
+
+        return $this->aclHelper->apply($qb->getQuery())->getResult();
+    }
+
     /**
      * Return products for specified price list and product IDs
      *

@@ -1,0 +1,4 @@
+assets:
+    css:
+        marello_datagrid:
+            - bundles/marellodatagrid/less/styles.less

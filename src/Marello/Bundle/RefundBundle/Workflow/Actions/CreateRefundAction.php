@@ -3,12 +3,15 @@
 namespace Marello\Bundle\RefundBundle\Workflow\Actions;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use Marello\Bundle\RefundBundle\Entity\Refund;
-use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+
 use Oro\Component\Action\Exception\InvalidParameterException;
 use Oro\Component\Action\Action\AbstractAction;
 use Oro\Component\Action\Action\ActionInterface;
 use Oro\Component\ConfigExpression\ContextAccessor;
+
+use Marello\Bundle\RefundBundle\Entity\Refund;
+use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\OrderBundle\Entity\Order;
 
 class CreateRefundAction extends AbstractAction
 {
@@ -36,10 +39,13 @@ class CreateRefundAction extends AbstractAction
      */
     protected function executeAction($context)
     {
-        /** @var ReturnEntity $return */
-        $return = $context->getEntity();
-
-        $refund = Refund::fromReturn($return);
+        /** @var ReturnEntity|Order $creditedEntity */
+        $creditedEntity = $context->getEntity();
+        if ($creditedEntity instanceof ReturnEntity) {
+            $refund = Refund::fromReturn($creditedEntity);
+        } else {
+            $refund = Refund::fromOrder($creditedEntity);
+        }
 
         $this->doctrine->getManager()->persist($refund);
         $this->doctrine->getManager()->flush();

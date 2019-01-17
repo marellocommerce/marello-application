@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class PurchaseOrderCreateStepTwoType extends AbstractType
 {
@@ -79,16 +80,16 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                 'itemsAdditional',
                 PurchaseOrderItemCollectionType::class,
                 [
-                    'mapped'             => false,
-                    'cascade_validation' => true,
+                    'mapped'      => false,
+                    'constraints' => [new Valid()],
                 ]
             )
             ->add(
                 'items',
                 PurchaseOrderItemCollectionType::class,
                 [
-                    'mapped'             => false,
-                    'cascade_validation' => true,
+                    'mapped'      => false,
+                    'constraints' => [new Valid()],
                 ]
             )
         ;
@@ -105,7 +106,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                         PurchaseOrderItemCollectionType::class,
                         [
                             'mapped' => false,
-                            'cascade_validation' => true,
+                            'constraints' => [new Valid()],
                             'entry_options' => [
                                 'currency' => $currency,
                                 'currency_symbol' => $currencySymbol
@@ -118,7 +119,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                         PurchaseOrderItemCollectionType::class,
                         [
                             'mapped' => false,
-                            'cascade_validation' => true,
+                            'constraints' => [new Valid()],
                             'entry_options' => [
                                 'currency' => $currency,
                                 'currency_symbol' => $currencySymbol

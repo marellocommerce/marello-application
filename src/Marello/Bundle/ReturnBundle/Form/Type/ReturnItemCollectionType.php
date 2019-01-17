@@ -6,6 +6,7 @@ use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ReturnItemCollectionType extends AbstractType
 {
@@ -31,7 +32,7 @@ class ReturnItemCollectionType extends AbstractType
             },
             'show_form_when_empty' => false,
             'error_bubbling'       => false,
-            'cascade_validation'   => true,
+            'constraints'          => [new Valid()],
             'prototype_name'       => '__namereturnitem__',
             'prototype'            => true,
             'handle_primary'       => false,

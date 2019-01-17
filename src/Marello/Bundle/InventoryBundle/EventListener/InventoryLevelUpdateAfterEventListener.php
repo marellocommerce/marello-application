@@ -75,6 +75,11 @@ class InventoryLevelUpdateAfterEventListener
             $allocatedInventoryAlt = 0;
         }
 
+        // no inventory level has changed, so logging it is pointless...
+        if ($inventoryAlt === 0 && $allocatedInventoryAlt === 0) {
+            return;
+        }
+
         $record = new InventoryLevelLogRecord(
             $level,
             $inventoryAlt,

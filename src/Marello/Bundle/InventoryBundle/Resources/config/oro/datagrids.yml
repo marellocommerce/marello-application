@@ -124,12 +124,11 @@ datagrids:
                 type:           twig
                 frontend_type:  html
                 template:       MarelloInventoryBundle::Datagrid/InventoryLevel/diff.html.twig
-
             changeTrigger:
                 data_name:      changeTrigger
                 label:          marello.inventory.inventorylevellogrecord.change_trigger.label
                 type:           translatable
-                domain:         MarelloStockLevelChangeTrigger
+                domain:         MarelloInventoryLevelChangeTrigger
                 frontend_type:  string
             user:
                 label:          marello.inventory.inventorylevellogrecord.user.label
@@ -245,17 +244,14 @@ datagrids:
                 label:              marello.inventory.balancedinventorylevel.inventory.label
                 frontend_type:      number
                 data_name:          inventoryQty
-                align:              left
             balancedInventoryQty:
                 label:              marello.inventory.balancedinventorylevel.balanced_inventory_qty.label
                 frontend_type:      number
                 data_name:          balancedInventoryQty
-                align:              left
             reservedInventoryQty:
                 label:              marello.inventory.balancedinventorylevel.reserved_inventory_qty.label
                 frontend_type:      number
                 data_name:          reservedInventoryQty
-                align:              left
             salesChannelGroupName:
                 label:              marello.sales.saleschannelgroup.entity_label
                 frontend_type:      string

@@ -12,8 +12,8 @@ data:
           paymentDetails: null
           shippingAmountInclTax: null
           shippingAmountExclTax: null
-          shippingMethod: null
-          shippingMethodType: null
+          shippingMethod: 'manual_shipping_1'
+          shippingMethodType: 'primary'
           estimatedShippingCostAmount: null
           overriddenShippingCostAmount: null
           discountAmount: null
