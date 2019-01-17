@@ -2,4 +2,4 @@ marelloenterprise:
     inventory:
         inventoryitem:
             inventory_levels:
-                delete.confirmation: Any stock assigned to this warehouse (inventory level) will be lost, are you sure you want to delete it?
+                delete.confirmation: Any inventory assigned to this warehouse will be lost, are you sure you want to delete it?
