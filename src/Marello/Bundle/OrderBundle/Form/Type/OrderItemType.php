@@ -32,7 +32,7 @@ class OrderItemType extends AbstractType
      * @param TaxCodeToCodeTransformer $taxCodeModelTransformer
      * @param ConfigManager $configManager
      */
-    public function __construct(TaxCodeToCodeTransformer $taxCodeModelTransformer, ConfigManager $configManager )
+    public function __construct(TaxCodeToCodeTransformer $taxCodeModelTransformer, ConfigManager $configManager)
     {
         $this->taxCodeModelTransformer = $taxCodeModelTransformer;
         $this->configManager = $configManager;
