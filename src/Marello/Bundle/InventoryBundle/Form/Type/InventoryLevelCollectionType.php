@@ -2,10 +2,10 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\FormBundle\Form\Type\CollectionType;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class InventoryLevelCollectionType extends AbstractType
 {
@@ -20,7 +20,7 @@ class InventoryLevelCollectionType extends AbstractType
             'entry_type'           => InventoryLevelType::class,
             'show_form_when_empty' => true,
             'error_bubbling'       => false,
-            'cascade_validation'   => true,
+            'constraints'          => [new Valid()],
             'prototype_name'       => '__nameinventorylevelcollection__',
             'prototype'            => true,
             'handle_primary'       => false,

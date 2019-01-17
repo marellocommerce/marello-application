@@ -17,6 +17,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class OrderApiType extends AbstractType
 {
@@ -98,7 +99,7 @@ class OrderApiType extends AbstractType
         $resolver->setDefaults([
             'data_class'         => Order::class,
             'intention'          => 'order',
-            'cascade_validation' => true,
+            'constraints'        => [new Valid()],
             'csrf_protection'    => false,
         ]);
     }

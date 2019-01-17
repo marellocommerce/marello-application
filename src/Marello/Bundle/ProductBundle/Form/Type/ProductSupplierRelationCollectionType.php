@@ -5,6 +5,7 @@ namespace Marello\Bundle\ProductBundle\Form\Type;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductSupplierRelationCollectionType extends AbstractType
 {
@@ -18,8 +19,8 @@ class ProductSupplierRelationCollectionType extends AbstractType
         $resolver->setDefaults([
             'entry_type'           => ProductSupplierRelationType::class,
             'show_form_when_empty' => false,
-            'error_bubbling'       => false,
-            'cascade_validation'   => true,
+            'error_bubbling'       => true,
+            'constraints'          => [new Valid()],
             'prototype_name'       => '__nameproductsupplierrelation__',
             'prototype'            => true,
             'handle_primary'       => false,

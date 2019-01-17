@@ -5,6 +5,7 @@ namespace Marello\Bundle\TaxBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class TaxRuleType extends AbstractType
 {
@@ -37,8 +38,8 @@ class TaxRuleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\TaxBundle\Entity\TaxRule',
-            'cascade_validation' => true,
+            'data_class'  => 'Marello\Bundle\TaxBundle\Entity\TaxRule',
+            'constraints' => [new Valid()],
         ]);
     }
 

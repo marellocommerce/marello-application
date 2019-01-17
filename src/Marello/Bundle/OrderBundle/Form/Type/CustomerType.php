@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class CustomerType extends AbstractType
 {
@@ -61,7 +62,7 @@ class CustomerType extends AbstractType
             'data_class'           => Customer::class,
             'intention'            => 'customer',
             'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
-            'cascade_validation'   => true,
+            'constraints'          => [new Valid()],
             'allow_extra_fields'   => true,
         ]);
     }

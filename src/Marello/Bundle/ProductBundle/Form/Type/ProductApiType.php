@@ -11,6 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductApiType extends AbstractType
 {
@@ -62,7 +63,7 @@ class ProductApiType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class'         => Product::class,
-                'cascade_validation' => true,
+                'constraints'        => [new Valid()],
                 'csrf_protection'    => false,
             ]
         );

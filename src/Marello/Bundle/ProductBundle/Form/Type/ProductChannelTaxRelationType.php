@@ -8,6 +8,7 @@ use Marello\Bundle\TaxBundle\Form\Type\TaxCodeSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductChannelTaxRelationType extends AbstractType
 {
@@ -31,7 +32,7 @@ class ProductChannelTaxRelationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class'         => ProductChannelTaxRelation::class,
-            'cascade_validation' => true,
+            'constraints'        => [new Valid()],
         ]);
     }
 
