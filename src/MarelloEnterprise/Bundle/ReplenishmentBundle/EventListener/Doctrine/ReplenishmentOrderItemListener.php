@@ -50,7 +50,9 @@ class ReplenishmentOrderItemListener
                 null,
                 null,
                 $diff,
-                $this->translator->trans('marelloenterprise.replenishment.replenishmentorder.workflow.ready_for_shipping')
+                $this->translator->trans(
+                    'marelloenterprise.replenishment.replenishmentorder.workflow.ready_for_shipping'
+                )
             );
 
             $context->setValue('warehouse', $item->getOrder()->getOrigin());

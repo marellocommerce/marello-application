@@ -2,9 +2,10 @@
 
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Async;
 
+use Psr\Log\LoggerInterface;
+
 use Doctrine\ORM\EntityManagerInterface;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
-use MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentOrderWorkflowAllocateInventoryTransitListener;
+
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Component\MessageQueue\Client\TopicSubscriberInterface;
@@ -12,7 +13,9 @@ use Oro\Component\MessageQueue\Consumption\MessageProcessorInterface;
 use Oro\Component\MessageQueue\Transport\MessageInterface;
 use Oro\Component\MessageQueue\Transport\SessionInterface;
 use Oro\Component\MessageQueue\Util\JSON;
-use Psr\Log\LoggerInterface;
+
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentWorkflowAllocateInventoryListener;
 
 class AllocateReplenishmentOrdersInventoryProcessor implements MessageProcessorInterface, TopicSubscriberInterface
 {
@@ -72,8 +75,8 @@ class AllocateReplenishmentOrdersInventoryProcessor implements MessageProcessorI
             foreach ($orders as $order) {
                 $this->transitTo(
                     $order,
-                    ReplenishmentOrderWorkflowAllocateInventoryTransitListener::WORKFLOW,
-                    ReplenishmentOrderWorkflowAllocateInventoryTransitListener::TRANSITION
+                    ReplenishmentWorkflowAllocateInventoryListener::WORKFLOW,
+                    ReplenishmentWorkflowAllocateInventoryListener::TRANSITION
                 );
             }
         } catch (\Exception $e) {

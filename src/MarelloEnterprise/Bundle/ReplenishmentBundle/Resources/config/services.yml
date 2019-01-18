@@ -45,7 +45,7 @@ services:
             - { name: twig.extension }
 
     marelloenterprise_replenishment.listener.doctrine.workflow_transit:
-        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentOrderWorkflowAllocateInventoryTransitListener'
+        class: 'MarelloEnterprise\Bundle\ReplenishmentBundle\EventListener\Doctrine\ReplenishmentWorkflowAllocateInventoryListener'
         arguments:
             - '@oro_workflow.manager'
         tags:
