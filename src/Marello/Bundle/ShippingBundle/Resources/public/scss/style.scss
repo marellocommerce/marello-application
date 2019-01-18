@@ -27,7 +27,10 @@
     }
   }
   input[type="text"] {
-    width: 280px;
+    width: 290px;
+  }
+  [data-name*="field__region-text"] {
+    margin-top:0 !important;
   }
   input.method-options-surcharge {
     width: 110px;
