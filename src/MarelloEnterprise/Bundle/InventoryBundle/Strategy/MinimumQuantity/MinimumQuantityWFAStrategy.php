@@ -70,13 +70,20 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         $orderItems = $order->getItems();
         $orderItemsByProducts = [];
 
-        $linkedWarehouses = $this->warehouseChannelGroupLinkRepository
-            ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup())
+        $warehouseGroupLink = $this->warehouseChannelGroupLinkRepository
+            ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
+
+        if (!$warehouseGroupLink) {
+            return [];
+        }
+
+        $linkedWarehouses = $warehouseGroupLink
             ->getWarehouseGroup()
             ->getWarehouses()
             ->toArray();
+
         if (empty($linkedWarehouses)) {
-            return null;
+            return [];
         }
         $linkedWarehousesIds = array_map(function (Warehouse $warehouse) {
             return $warehouse->getId();
