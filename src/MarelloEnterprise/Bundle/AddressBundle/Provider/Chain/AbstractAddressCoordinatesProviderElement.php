@@ -4,7 +4,7 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Provider\Chain;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
-abstract class AbstractAddressCoordinatesProviderChainElement implements AddressCoordinatesProviderChainElementInterface
+abstract class AbstractAddressCoordinatesProviderElement implements AddressCoordinatesProviderChainElementInterface
 {
     /**
      * @var AddressCoordinatesProviderChainElementInterface|null

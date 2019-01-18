@@ -5,12 +5,12 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\SavedCoordinates
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\Repository\MarelloEnterpriseAddressRepository;
-use MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\AbstractAddressCoordinatesProviderChainElement;
+use MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\AbstractAddressCoordinatesProviderElement;
 use MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\AddressCoordinatesProviderChainElementInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
-class SavedAddressCoordinatesProviderChainElement extends AbstractAddressCoordinatesProviderChainElement implements
+class SavedAddressCoordinatesProviderElement extends AbstractAddressCoordinatesProviderElement implements
     AddressCoordinatesProviderChainElementInterface
 {
     /**

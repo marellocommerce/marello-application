@@ -14,7 +14,7 @@ use Oro\Bundle\FeatureToggleBundle\Checker\FeatureToggleableInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class MatrixBasedAddressesDistanceCalculatorChainElement extends AbstractAddressesDistanceCalculator implements
+class MatrixBasedAddressesDistanceCalcElement extends AbstractAddressesDistanceCalculator implements
     FeatureToggleableInterface
 {
     use FeatureCheckerHolderTrait;

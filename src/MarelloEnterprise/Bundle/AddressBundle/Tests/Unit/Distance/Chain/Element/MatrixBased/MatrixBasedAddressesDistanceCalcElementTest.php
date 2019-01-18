@@ -16,10 +16,9 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderInterface;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\DistanceMatrixApiResultFactory;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\
-MatrixBasedAddressesDistanceCalculatorChainElement;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\MatrixBasedAddressesDistanceCalcElement;
 
-class MatrixBasedAddressesDistanceCalculatorChainElementTest extends TestCase
+class MatrixBasedAddressesDistanceCalcElementTest extends TestCase
 {
     /**
      * @var GoogleApiResultsProviderInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -27,7 +26,7 @@ class MatrixBasedAddressesDistanceCalculatorChainElementTest extends TestCase
     protected $distanceMatrixResultsProvider;
 
     /**
-     * @var MatrixBasedAddressesDistanceCalculatorChainElement
+     * @var MatrixBasedAddressesDistanceCalcElement
      */
     protected $distanceCalculator;
 
@@ -42,7 +41,7 @@ class MatrixBasedAddressesDistanceCalculatorChainElementTest extends TestCase
         /** @var Session|\PHPUnit_Framework_MockObject_MockObject $session */
         $session = $this->createMock(Session::class);
         $this->distanceCalculator =
-            new MatrixBasedAddressesDistanceCalculatorChainElement(
+            new MatrixBasedAddressesDistanceCalcElement(
                 $this->distanceMatrixResultsProvider,
                 $logger,
                 $session

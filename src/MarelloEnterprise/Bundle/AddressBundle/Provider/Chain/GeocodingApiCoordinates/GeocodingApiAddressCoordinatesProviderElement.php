@@ -5,7 +5,7 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\GeocodingApiCoor
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\Repository\MarelloEnterpriseAddressRepository;
-use MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\AbstractAddressCoordinatesProviderChainElement;
+use MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\AbstractAddressCoordinatesProviderElement;
 use MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\AddressCoordinatesProviderChainElementInterface;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\Factory\GoogleApiContextFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Exception\GoogleApiException;
@@ -13,7 +13,7 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderIn
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
-class GeocodingApiAddressCoordinatesProviderChainElement extends AbstractAddressCoordinatesProviderChainElement implements
+class GeocodingApiAddressCoordinatesProviderElement extends AbstractAddressCoordinatesProviderElement implements
     AddressCoordinatesProviderChainElementInterface
 {
     /**

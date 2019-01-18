@@ -13,7 +13,7 @@ use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFa
 use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistCalcChainElement;
 
-class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddressesDistCalcChainElement implements
+class StraightLineAddressesDistanceCalcElement extends AbstractAddressesDistCalcChainElement implements
     FeatureToggleableInterface
 {
     use FeatureCheckerHolderTrait;

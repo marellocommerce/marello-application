@@ -12,9 +12,9 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Entity\MarelloEnterpriseAddress;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalculatorChainElement;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalcElement;
 
-class StraightLineAddressesDistanceCalculatorChainElementTest extends TestCase
+class StraightLineAddressesDistanceCalcElementTest extends TestCase
 {
     /**
      * @var AddressCoordinatesProviderInerface|\PHPUnit_Framework_MockObject_MockObject
@@ -22,7 +22,7 @@ class StraightLineAddressesDistanceCalculatorChainElementTest extends TestCase
     private $coordinatesProvider;
 
     /**
-     * @var StraightLineAddressesDistanceCalculatorChainElement
+     * @var StraightLineAddressesDistanceCalcElement
      */
     protected $distanceCalculator;
 
@@ -37,7 +37,7 @@ class StraightLineAddressesDistanceCalculatorChainElementTest extends TestCase
         /** @var Session|\PHPUnit_Framework_MockObject_MockObject $session */
         $session = $this->createMock(Session::class);
         $this->distanceCalculator =
-            new StraightLineAddressesDistanceCalculatorChainElement($this->coordinatesProvider, $session);
+            new StraightLineAddressesDistanceCalcElement($this->coordinatesProvider, $session);
     }
 
     /**
