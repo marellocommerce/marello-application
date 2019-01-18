@@ -5,7 +5,7 @@ namespace MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
 
-abstract class AbstractAddressesDistanceCalculatorChainElement implements AddressesDistanceCalculatorInterface
+abstract class AbstractAddressesDistCalcChainElement implements AddressesDistanceCalculatorInterface
 {
     /**
      * @var AddressesDistanceCalculatorInterface|null

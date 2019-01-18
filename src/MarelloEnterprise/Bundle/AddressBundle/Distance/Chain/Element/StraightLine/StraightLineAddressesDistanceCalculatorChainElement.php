@@ -11,9 +11,9 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Exception\GoogleApiException;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
 use MarelloEnterprise\Bundle\AddressBundle\Provider\AddressCoordinatesProviderInerface;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistanceCalculatorChainElement;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistCalcChainElement;
 
-class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddressesDistanceCalculatorChainElement implements
+class StraightLineAddressesDistanceCalculatorChainElement extends AbstractAddressesDistCalcChainElement implements
     FeatureToggleableInterface
 {
     use FeatureCheckerHolderTrait;

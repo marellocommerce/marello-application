@@ -3,7 +3,7 @@
 namespace MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistanceCalculatorChainElement as
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistCalcChainElement as
     AbstractAddressesDistanceCalculator;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Context\Factory\GoogleApiContextFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Exception\GoogleApiException;
