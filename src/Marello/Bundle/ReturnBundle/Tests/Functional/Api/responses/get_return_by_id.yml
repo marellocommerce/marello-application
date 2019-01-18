@@ -6,6 +6,7 @@ data:
         salesChannelName: channel1
         returnReference: '@return1->returnReference'
         locale: null
+        workflowStep: 'Pending'
     relationships:
         order:
             data:

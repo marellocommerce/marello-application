@@ -1,6 +1,7 @@
 api:
     entities:
         Marello\Bundle\OrderBundle\Entity\Order:
+            documentation_resource: '@MarelloOrderBundle/Resources/doc/api/order.md'
             fields:
                 createdAt:
                     exclude: true
@@ -53,6 +54,7 @@ api:
                 delete_relationship: false
 
         Marello\Bundle\OrderBundle\Entity\Customer:
+            documentation_resource: '@MarelloOrderBundle/Resources/doc/api/customer.md'
             fields:
                 createdAt:
                     exclude: true

@@ -7,6 +7,7 @@ data:
             salesChannelName: channel1
             returnReference: '@return0->returnReference'
             locale: null
+            workflowStep: 'Pending'
         relationships:
             order:
                 data:
@@ -44,6 +45,7 @@ data:
             salesChannelName: channel1
             returnReference: '@return1->returnReference'
             locale: null
+            workflowStep: 'Pending'
         relationships:
             order:
                 data:
@@ -78,6 +80,7 @@ data:
             salesChannelName: channel1
             returnReference: '@return2->returnReference'
             locale: null
+            workflowStep: 'Pending'
         relationships:
             order:
                 data:
@@ -115,6 +118,7 @@ data:
             salesChannelName: channel1
             returnReference: '@return3->returnReference'
             locale: null
+            workflowStep: 'Pending'
         relationships:
             order:
                 data:
@@ -143,6 +147,7 @@ data:
             salesChannelName: channel1
             returnReference: '@return4->returnReference'
             locale: null
+            workflowStep: 'Pending'
         relationships:
             order:
                 data:
@@ -174,6 +179,7 @@ data:
             salesChannelName: channel1
             returnReference: '@return5->returnReference'
             locale: null
+            workflowStep: 'Pending'
         relationships:
             order:
                 data:
@@ -211,6 +217,7 @@ data:
             salesChannelName: channel1
             returnReference: '@return6->returnReference'
             locale: null
+            workflowStep: 'Pending'
         relationships:
             order:
                 data:
@@ -239,6 +246,7 @@ data:
             salesChannelName: channel1
             returnReference: '@return7->returnReference'
             locale: null
+            workflowStep: 'Pending'
         relationships:
             order:
                 data:
@@ -270,6 +278,7 @@ data:
             salesChannelName: channel1
             returnReference: '@return8->returnReference'
             locale: null
+            workflowStep: 'Pending'
         relationships:
             order:
                 data:

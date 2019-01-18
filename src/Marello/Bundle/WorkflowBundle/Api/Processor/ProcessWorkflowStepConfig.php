@@ -26,7 +26,8 @@ class ProcessWorkflowStepConfig implements ProcessorInterface
         }
 
         $fieldConfig = new EntityDefinitionFieldConfig();
-        $fieldConfig->set('data_type', 'string');
+        $fieldConfig->setDataType('string');
+        $fieldConfig->setExcluded(false);
         $fieldConfig->setFormOptions(
             [
                 'mapped' => false
