@@ -36,13 +36,10 @@ workflows:
             invoice:
                 allowed_transitions:
                     - hold_invoice
-                    - credit
                     - prepare_shipping
             paid:
                 allowed_transitions:
                     - invoice
-            credit:
-                allowed_transitions: []
             pick_and_pack:
                 allowed_transitions:
                     - ship
@@ -109,9 +106,6 @@ workflows:
             ship:
                 step_to:  shipped
                 transition_definition: ship_definition
-            credit:
-                step_to:  credit
-                transition_definition: credit_definition
             prepare_shipping:
                 step_to:  pick_and_pack
                 transition_definition: prepare_shipping_definition
@@ -174,16 +168,6 @@ workflows:
                         value: $payment_details
                     - '@extendable':
                         events: [extendable_action.order_paid]
-            credit_definition:
-                post_actions:
-                    - '@marello_create_refund':
-                          entity: $order
-                    - '@flash_message':
-                        message: 'A Refund has been created.'
-                    - '@marello_notification_send':
-                        entity: $order
-                        recipient: $order.customer
-                        template: marello_order_credited
             prepare_shipping_definition:
                 conditions:
                     '@and':
@@ -277,13 +261,10 @@ workflows:
 #            invoice:
 #                allowed_transitions:
 #                    - hold_invoice
-#                    - credit
 #                    - prepare_shipping
 #            paid:
 #                allowed_transitions:
 #                    - invoice
-#            credit:
-#                allowed_transitions: []
 #
 #        transitions:
 #            cancel:
@@ -345,9 +326,6 @@ workflows:
 #            ship:
 #                step_to:  shipped
 #                transition_definition: ship_definition
-#            credit:
-#                step_to:  credit
-#                transition_definition: credit_definition
 #            prepare_shipping:
 #                step_to:  pick_and_pack
 #                transition_definition: prepare_shipping_definition
@@ -405,12 +383,6 @@ workflows:
 #                        template: marello_order_invoiced
 #                    - '@extendable':
 #                        events: [extendable_action.order_paid]
-#            credit_definition:
-#                post_actions:
-#                    - '@marello_notification_send':
-#                        entity: $order
-#                        recipient: $order.customer
-#                        template: marello_order_credited
 #            prepare_shipping_definition:
 #                conditions:
 #                    '@and':

@@ -63,3 +63,11 @@ services:
         lazy:  true
         tags:
             - { name: doctrine.event_listener, event: onFlush }
+
+    marello_inventory.event_listener.doctrine.warehouse_group_link.inventory_rebalance:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupLinkRebalanceListener'
+        arguments:
+            - '@oro_message_queue.client.message_producer'
+        lazy:  true
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
