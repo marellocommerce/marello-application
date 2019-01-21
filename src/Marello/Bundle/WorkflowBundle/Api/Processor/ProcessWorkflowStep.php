@@ -12,8 +12,6 @@ use Oro\Component\ChainProcessor\ProcessorInterface;
 
 class ProcessWorkflowStep implements ProcessorInterface
 {
-    const CONFIG_WORKFLOW_STEP = 'workflowStep';
-
     /**
      * @var WorkflowManager
      */
