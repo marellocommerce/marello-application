@@ -247,24 +247,24 @@ datagrids:
                 rowAction:      true
             update:
                 type:           navigate
-#                acl_resource:   marello_product_update
                 label:          oro.grid.action.update
                 icon:           edit
                 link:           update_link
+                acl_resource:   marello_product_update
             delete:
                 type:           delete
                 link:           delete_link
-#                acl_resource:   marello_product_delete
                 icon:           trash
                 label:          oro.grid.action.delete
+                acl_resource:   marello_product_delete
                 rowAction:      true
                 confirmation:   true
             inventory:
                 type:           navigate
                 link:           inventory_link
-                acl_recource:   marello_inventory_inventory_update
                 icon:           cubes
                 label:          marello.inventory.management.label
+                acl_recource:   marello_inventory_inventory_update
         mass_actions:
             assign_sales_channels:
                 type:         redirect
@@ -293,10 +293,6 @@ datagrids:
                         - ch.id = :channelId
             bind_parameters:
                 - channelId
-        sorters:
-            default:
-                name: ASC
-                sku: ASC
         mass_actions: ~
         options:
             export: false
@@ -353,7 +349,7 @@ datagrids:
                 sku:            { data_name: p.sku }
                 inventoryQty:   { data_name: inventoryQty }
             default:
-                inventoryQty:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
+                name:  "%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC"
         options:
             entityHint: product
             toolbarOptions:
@@ -667,7 +663,7 @@ datagrids:
                 name:                 { data_name: p.name }
                 manufacturingCode:    { data_name: p.manufacturingCode }
             default:
-                sku:  '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
+                name:  '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         properties:
             id: ~
         options:
@@ -739,7 +735,7 @@ datagrids:
                 - categories
         sorters:
             default:
-                code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
+                name: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
 
     marello-product-categories-extend-grid:
         extends: marello-product-categories-base-grid
