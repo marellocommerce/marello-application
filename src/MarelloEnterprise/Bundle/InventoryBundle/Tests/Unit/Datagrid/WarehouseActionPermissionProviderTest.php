@@ -49,7 +49,7 @@ class WarehouseActionPermissionProviderTest extends TestCase
                 'result' => [
                     'update' => true,
                     'view' => true,
-                    'delete' => false,
+                    'marello_delete_warehouse' => false,
                 ]
             ],
             [
@@ -57,7 +57,7 @@ class WarehouseActionPermissionProviderTest extends TestCase
                 'result' => [
                     'update' => true,
                     'view' => true,
-                    'delete' => true
+                    'marello_delete_warehouse' => true
                 ]
             ]
         ];

@@ -71,7 +71,7 @@ class WarehouseGroupActionPermissionProviderTest extends TestCase
                 'result' => [
                     'update' => false,
                     'view' => true,
-                    'delete' => false,
+                    'marello_delete_warehouse_group' => false,
                 ]
             ],
             [
@@ -80,7 +80,7 @@ class WarehouseGroupActionPermissionProviderTest extends TestCase
                 'result' => [
                     'update' => true,
                     'view' => true,
-                    'delete' => false
+                    'marello_delete_warehouse_group' => false
                 ]
             ],
             [
@@ -89,7 +89,7 @@ class WarehouseGroupActionPermissionProviderTest extends TestCase
                 'result' => [
                     'update' => true,
                     'view' => true,
-                    'delete' => true
+                    'marello_delete_warehouse_group' => true
                 ]
             ],
             [
@@ -98,7 +98,7 @@ class WarehouseGroupActionPermissionProviderTest extends TestCase
                 'result' => [
                     'update' => false,
                     'view' => true,
-                    'delete' => false
+                    'marello_delete_warehouse_group' => false
                 ]
             ]
         ];

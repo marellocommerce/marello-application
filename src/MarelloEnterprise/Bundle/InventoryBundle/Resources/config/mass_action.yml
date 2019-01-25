@@ -3,7 +3,7 @@ services:
         class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\Actions\StatusEnableMassAction'
         arguments:
             - 'marelloenterprise.inventory.mass_action.status_handler'
-            - 'marelloenterprise_inventory_api_mass_wfarule'
+            - 'marelloenterprise_inventory_wfa_rule_massaction'
             - true
         shared: false
         tags:
@@ -13,7 +13,7 @@ services:
         class: 'Marello\Bundle\RuleBundle\Datagrid\Extension\MassAction\Actions\StatusEnableMassAction'
         arguments:
             - 'marelloenterprise.inventory.mass_action.status_handler'
-            - 'marelloenterprise_inventory_api_mass_wfarule'
+            - 'marelloenterprise_inventory_wfa_rule_massaction'
             - false
         shared: false
         tags:

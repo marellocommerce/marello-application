@@ -4,27 +4,50 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Doct
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-
-use PHPUnit\Framework\TestCase;
-
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
+use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
 use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupRemoveListener;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class WarehouseGroupREmoveListenerTest extends TestCase
 {
     /**
      * @var WarehouseGroupRemoveListener
      */
-    protected $warehouseGroupRemoveListener;
+    private $warehouseGroupRemoveListener;
+
+    /**
+     * @var IsFixedWarehouseGroupChecker|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $checker;
+
+    /**
+     * @var TranslatorInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $translator;
+
+    /**
+     * @var Session|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $session;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->warehouseGroupRemoveListener = new WarehouseGroupRemoveListener();
+        $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->session = $this->createMock(Session::class);
+        $this->checker = $this->createMock(IsFixedWarehouseGroupChecker::class);
+        $this->warehouseGroupRemoveListener = new WarehouseGroupRemoveListener(
+            $this->translator,
+            $this->session,
+            $this->checker
+        );
     }
 
     /**
@@ -66,7 +89,9 @@ class WarehouseGroupREmoveListenerTest extends TestCase
         $entityManager
             ->expects(static::exactly($qty))
             ->method('flush');
-
+        $this->checker->expects($this->once())
+            ->method('check')
+            ->willReturn(false);
         /** @var LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject $args **/
         $args = $this->getMockBuilder(LifecycleEventArgs::class)
             ->disableOriginalConstructor()

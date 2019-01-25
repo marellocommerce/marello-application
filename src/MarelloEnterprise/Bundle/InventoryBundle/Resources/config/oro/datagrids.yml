@@ -59,10 +59,6 @@ datagrids:
                 type:   url
                 route:  marelloenterprise_inventory_warehouse_update
                 params: [ id ]
-            delete_link:
-                type:   url
-                route:  marelloenterprise_inventory_api_delete_warehouse
-                params: [ id ]
         actions:
             view:
                 type: navigate
@@ -74,13 +70,6 @@ datagrids:
                 link: update_link
                 icon: edit
                 rowAction: true
-            delete:
-                type: delete
-                label: oro.grid.action.delete
-                link: delete_link
-                icon: trash
-                rowAction: true
-                confirmation: true
         action_configuration: ['@marelloenterprise_inventory.datagrid.warehouse.action_permission_provider', "getActionPermissions"]
         options:
             mass_actions:
@@ -134,10 +123,6 @@ datagrids:
                 type:   url
                 route:  marelloenterprise_inventory_warehousegroup_update
                 params: [ id ]
-            delete_link:
-                type:   url
-                route:  marelloenterprise_inventory_api_delete_warehousegroup
-                params: [ id ]
         actions:
             view:
                 type:           navigate
@@ -152,13 +137,6 @@ datagrids:
                 link:           update_link
                 icon:           edit
                 rowAction:      true
-            delete:
-                type:           delete
-                label:          oro.grid.action.delete
-                link:           delete_link
-                icon:           trash
-                rowAction:      true
-                confirmation:   true
         action_configuration: ['@marelloenterprise_inventory.datagrid.warehousegroup.action_permission_provider', "getActionPermissions"]
         options:
             entity_pagination: true
@@ -226,10 +204,6 @@ datagrids:
                 type:   url
                 route:  marelloenterprise_inventory_warehousechannelgrouplink_update
                 params: [ id ]
-            delete_link:
-                type:   url
-                route:  marelloenterprise_inventory_api_delete_warehousechannelgrouplink
-                params: [ id ]
         actions:
             update:
                 type:           navigate
@@ -238,13 +212,6 @@ datagrids:
                 icon:           edit
                 acl_resource:   marelloenterprise_inventory_warehousechannelgrouplink_update
                 rowAction:      true
-            delete:
-                type:           delete
-                label:          oro.grid.action.delete
-                link:           delete_link
-                icon:           trash
-                rowAction:      true
-                confirmation:   true
         options:
             entity_pagination: true
 
@@ -333,14 +300,6 @@ datagrids:
                 type:     url
                 route:    marelloenterprise_inventory_wfa_rule_view
                 params:   [ id ]
-            enable_link:
-                type:     url
-                route:    marelloenterprise_inventory_api_enable_wfarule
-                params:   [ id ]
-            disable_link:
-                type:     url
-                route:    marelloenterprise_inventory_api_disable_wfarule
-                params:   [ id ]
         sorters:
             columns:
                 name:
@@ -386,18 +345,6 @@ datagrids:
                 icon:          eye
                 label:         oro.grid.action.view
                 rowAction:     true
-            enable:
-                type:         ajax
-                acl_resource: marelloenterprise_inventory_wfa_rule_update
-                label:        marelloenterprise.inventory.wfarule.datagrid.action.enable
-                icon:         check
-                link:         enable_link
-            disable:
-                type:         ajax
-                acl_resource: marelloenterprise_inventory_wfa_rule_update
-                label:        marelloenterprise.inventory.wfarule.datagrid.action.disable
-                icon:         close
-                link:         disable_link
         action_configuration: ['@marelloenterprise_inventory.datagrid.wfa_rule_actions_visibility_provider', getActionsVisibility]
         options:
             mass_actions:
