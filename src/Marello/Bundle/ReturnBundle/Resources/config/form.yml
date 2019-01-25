@@ -11,25 +11,12 @@ services:
         tags:
             - { name: form.type }
 
-    marello_return.form.type.return_api:
-        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnApiType
-        arguments:
-            - '@marello_return.form.data_transformer.order_to_order_number'
-            - '@marello_order.form.data_transformer.sales_channel_to_id'
-        tags:
-            - { name: form.type }
-
     marello_return.form.type.return_item:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemType
         tags:
             - { name: form.type }
         arguments:
             - '@marello_return.form.event_listener.return_item_type_subscriber'
-
-    marello_return.form.type.return_item_api:
-        class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemApiType
-        tags:
-            - { name: form.type }
 
     marello_return.form.type.return_item_collection:
         class: Marello\Bundle\ReturnBundle\Form\Type\ReturnItemCollectionType
@@ -43,23 +30,6 @@ services:
         class: Marello\Bundle\ReturnBundle\Form\EventListener\ReturnItemTypeSubscriber
         arguments:
             - '@doctrine.orm.entity_manager'
-
-    marello_return.form.return_api:
-        class: Symfony\Component\Form\Form
-        factory: ["@form.factory", 'createNamed']
-        scope: request
-        arguments:
-            - ~
-            - Marello\Bundle\ReturnBundle\Form\Type\ReturnApiType
-
-    marello_return.form.handler.return_api:
-        class: Marello\Bundle\ReturnBundle\Form\Handler\ReturnApiHandler
-        scope: request
-        arguments:
-            - '@marello_return.form.return_api'
-            - '@request_stack'
-            - '@doctrine.orm.entity_manager'
-            - '@oro_entity.routing_helper'
 
     marello_return.form.data_transformer.order_to_order_number:
         class: Marello\Bundle\ReturnBundle\Form\DataTransformer\OrderToOrderNumberTransformer

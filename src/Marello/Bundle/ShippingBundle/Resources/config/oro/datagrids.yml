@@ -54,14 +54,6 @@ datagrids:
                 type:    url
                 route:   marello_shipping_methods_configs_rule_view
                 params:  [ id ]
-            enable_link:
-                type:       url
-                route:      marello_api_enable_shippingrules
-                params:     [ id ]
-            disable_link:
-                type:       url
-                route:      marello_api_disable_shippingrules
-                params:     [ id ]
         sorters:
             columns:
                 id:
@@ -95,7 +87,6 @@ datagrids:
                 expression:
                     type:      string
                     data_name: rule.expression
-
         actions:
             view:
                 type:          navigate
@@ -104,18 +95,6 @@ datagrids:
                 icon:          eye
                 label:         oro.grid.action.view
                 rowAction:     true
-            enable:
-                type:         ajax
-                acl_resource: marello_shipping_methods_configs_rule_update
-                label:        marello.shipping.datagrid.action.enable
-                icon:         check
-                link:         enable_link
-            disable:
-                type:         ajax
-                acl_resource: marello_shipping_methods_configs_rule_update
-                label:        marello.shipping.datagrid.action.disable
-                icon:         close
-                link:         disable_link
         action_configuration: ['@marello_shipping.datagrid.shipping_rule_actions_visibility_provider', getActionsVisibility]
         mass_actions:
             enable:

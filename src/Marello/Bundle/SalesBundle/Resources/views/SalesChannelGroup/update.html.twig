@@ -5,17 +5,7 @@
 {% oro_title_set({params : {'%name%': entity.name, '%entityName%': 'marello.sales.saleschannelgroup.entity_label'|trans} }) %}
 
 {% block navButtons %}
-    {% if entity.id and not entity.system and resource_granted('DELETE', entity) %}
-        {{ UI.deleteButton({
-            'dataUrl': path('marello_sales_api_delete_saleschannelgroup', {'id': entity.id}),
-            'dataRedirect': path('marello_sales_saleschannelgroup_index'),
-            'aCss': 'no-hash remove-button',
-            'id': 'btn-remove-tag',
-            'dataId': entity.id,
-            'entity_label': 'marello.sales.saleschannelgroup.entity_label'|trans
-        }) }}
-        {{ UI.buttonSeparator() }}
-    {% endif %}
+    {{ parent() }}
     {{ UI.cancelButton(path('marello_sales_saleschannelgroup_index')) }}
     {% if entity.id and resource_granted('marello_sales_saleschannelgroup_update') or resource_granted('marello_sales_saleschannelgroup_create') %}
         {% set html = '' %}

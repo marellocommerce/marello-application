@@ -53,56 +53,6 @@ services:
         tags:
             - { name: form.type }
 
-    marello_order.form.type.order_api:
-        class: Marello\Bundle\OrderBundle\Form\Type\OrderApiType
-        arguments:
-            - '@marello_order.form.data_transformer.sales_channel_to_id'
-        tags:
-            - { name: form.type }
-
-    marello_order.form.type.order_update_api:
-        class: Marello\Bundle\OrderBundle\Form\Type\OrderApiUpdateType
-        tags:
-            - { name: form.type }
-
-    marello_order.form.type.order_item_api:
-        class: Marello\Bundle\OrderBundle\Form\Type\OrderItemApiType
-        arguments:
-            - '@marello_order.form.data_transformer.product_to_sku'
-            - '@marello_order.form.data_transformer.tax_code_to_code'
-        tags:
-            - { name: form.type }
-
-    marello_order.form.type.customer_api:
-        class: Marello\Bundle\OrderBundle\Form\Type\CustomerApiType
-        arguments:
-            - '@security.token_storage'
-        tags:
-            - { name: form.type }
-
-    marello_order.form.order_api:
-        class: Symfony\Component\Form\Form
-        factory: ['@form.factory', 'createNamed']
-        arguments:
-            - ~
-            - Marello\Bundle\OrderBundle\Form\Type\OrderApiType
-
-    marello_order.form.order_update_api:
-        class: Symfony\Component\Form\Form
-        factory: ['@form.factory', 'createNamed']
-        arguments:
-            - ~
-            - Marello\Bundle\OrderBundle\Form\Type\OrderApiUpdateType
-
-    marello_order.form.handler.order_api:
-        class: Marello\Bundle\OrderBundle\Form\Handler\OrderApiHandler
-        scope: request
-        arguments:
-            - '@marello_order.form.order_api'
-            - '@marello_order.form.order_update_api'
-            - '@request_stack'
-            - '@doctrine.orm.entity_manager'
-
     marello_order.form.customer:
         class: Symfony\Component\Form\Form
         factory: ['@form.factory', 'create']
@@ -114,21 +64,6 @@ services:
         scope: request
         arguments:
             - '@marello_order.form.customer'
-            - '@request_stack'
-            - '@doctrine.orm.entity_manager'
-
-    marello_order.form.customer_api:
-        class: Symfony\Component\Form\Form
-        factory: ['@form.factory', 'createNamed']
-        arguments:
-            - ~
-            - Marello\Bundle\OrderBundle\Form\Type\CustomerApiType
-
-    marello_order.form.handler.customer_api:
-        class: Marello\Bundle\OrderBundle\Form\Handler\CustomerApiHandler
-        scope: request
-        arguments:
-            - '@marello_order.form.customer_api'
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
 

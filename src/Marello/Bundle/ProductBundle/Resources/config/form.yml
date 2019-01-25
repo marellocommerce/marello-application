@@ -12,10 +12,7 @@ parameters:
 
     ## form handlers
     marello_product.product_form.handler.class:               Marello\Bundle\ProductBundle\Form\Handler\ProductHandler
-    marello_product.product_form.handler.product_api.class:   Marello\Bundle\ProductBundle\Form\Handler\ProductApiHandler
     marello_product.product_variant_form.handler.class:       Marello\Bundle\ProductBundle\Form\Handler\ProductVariantHandler
-    ## api manager
-    marello_product.manager.api.class:                        Marello\Bundle\ProductBundle\Entity\Manager\ProductApiEntityManager
 
 services:
     ## form types
@@ -25,13 +22,6 @@ services:
             - '@marello_sales.form.event_listener.default_sales_channel_subscriber'
             - '@marello_productprice.pricing.form.event_listener.pricing_subscriber'
             - '@marello_productprice.pricing.form.event_listener.channel_pricing_subscriber'
-        tags:
-            - { name: form.type }
-
-    marello_product.product_form.type.product_api:
-        class: '%marello_product.product_form.type.product_api.class%'
-        arguments:
-            - '@marello_productprice.pricing.form.event_listener.pricing_subscriber'
         tags:
             - { name: form.type }
 
@@ -124,15 +114,6 @@ services:
             - '@request_stack'
             - '@doctrine.orm.entity_manager'
 
-    marello_product.product_form.handler.product_api:
-        class: '%marello_product.product_form.handler.product_api.class%'
-        scope: request
-        arguments:
-            - '@marello_product.product_api.form'
-            - '@request_stack'
-            - '@doctrine.orm.entity_manager'
-            - '@oro_entity.routing_helper'
-
     marello_product.product_variant_form.handler:
         class: '%marello_product.product_variant_form.handler.class%'
         scope: request
@@ -150,10 +131,3 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_message_queue.client.message_producer'
-
-    marello_product.manager.api:
-        class: '%marello_product.manager.api.class%'
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - '%marello_product.entity.class%'
-            - '@doctrine.orm.entity_manager'

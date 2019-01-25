@@ -132,10 +132,6 @@ datagrids:
                 type:       url
                 route:      marello_product_update
                 params:     [ id ]
-            delete_link:
-                type:       url
-                route:      marello_product_api_delete_product
-                params:     [ id ]
             inventory_link:
                 type:       url
                 route:      marello_inventory_inventory_update
@@ -251,14 +247,6 @@ datagrids:
                 icon:           edit
                 link:           update_link
                 acl_resource:   marello_product_update
-            delete:
-                type:           delete
-                link:           delete_link
-                icon:           trash
-                label:          oro.grid.action.delete
-                acl_resource:   marello_product_delete
-                rowAction:      true
-                confirmation:   true
             inventory:
                 type:           navigate
                 link:           inventory_link

@@ -17,28 +17,18 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    {{ UI.button({
-        'path': path('marello_inventory_inventory_update', {'id': entity.id}),
-        'label': 'marello.inventory.management.label'|trans
-    }) }}
-    {% if resource_granted('DELETE', entity) %}
-        {{ UI.buttonSeparator() }}
-        {{ UI.deleteButton({
-            'dataUrl': path('marello_product_api_delete_product', {'id': entity.id}),
-            'dataRedirect': path('marello_product_index'),
-            'aCss': 'no-hash remove-button',
-            'id': 'btn-remove-channel',
-            'dataId': entity.id,
-            'entity_label': 'marello.product.entity_label'|trans,
-        }) }}
-    {% endif %}
+    {{ parent() }}
     {% if resource_granted('EDIT', entity) %}
-        {{ UI.buttonSeparator() }}
         {{ UI.editButton({
             'path': path('marello_product_update', {'id': entity.id}),
             'entity_label': 'marello.product.entity_label'|trans
         }) }}
     {% endif %}
+    {{ UI.buttonSeparator() }}
+    {{ UI.button({
+        'path': path('marello_inventory_inventory_update', {'id': entity.id}),
+        'label': 'marello.inventory.management.label'|trans
+    }) }}
 {% endblock %}
 
 {% block content_data %}

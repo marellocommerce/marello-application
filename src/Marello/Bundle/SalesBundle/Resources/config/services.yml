@@ -93,8 +93,9 @@ services:
         class: 'Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener'
         arguments:
             - '%installed%'
+            - '@session'
         tags:
-            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup', event: preRemove }
+            - { name: doctrine.event_listener, event: preRemove, priority: 10 }
             - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\SalesBundle\Entity\SalesChannelGroup', event: postPersist }
 
     marello_sales.event_listener.doctrine.sales_channel_group.inventory_rebalance:
@@ -112,20 +113,6 @@ services:
 
     marello_sales.datagrid.saleschannelgroup.action_permission_provider:
         class: 'Marello\Bundle\SalesBundle\Datagrid\SalesChannelGroupActionPermissionProvider'
-
-    marello_sales.saleschannelgroup.manager.api:
-        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - '%marello_sales.saleschannelgroup.entity.class%'
-            - '@doctrine.orm.entity_manager'
-
-    marello_sales.handler.saleschannelgroup_delete:
-        class:  'Marello\Bundle\SalesBundle\Handler\SalesChannelGroupDeleteHandler'
-        parent: oro_soap.handler.delete.abstract
-        scope: request
-        arguments:
-            - '@security.authorization_checker'
 
     marello_sales.condition.sales_channel_has_valid_integration:
         class: 'Marello\Bundle\SalesBundle\Condition\HasValidIntegration'

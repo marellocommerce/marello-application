@@ -7,12 +7,3 @@ marello_product_variant:
     resource: "@MarelloProductBundle/Controller/VariantController.php"
     type:     annotation
     prefix:   /marello/product/variant
-
-marello_product_bundle_api:
-    resource: "@MarelloProductBundle/Resources/config/oro/routing_api.yml"
-    type: rest
-    prefix: api/rest/{version}
-    requirements:
-        version:  latest|v1
-    defaults:
-        version:  latest

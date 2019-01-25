@@ -18,6 +18,7 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  * @ORM\Entity(repositoryClass="Marello\Bundle\SupplierBundle\Entity\Repository\SupplierRepository")
  * @ORM\Table(name="marello_supplier_supplier")
  * @Oro\Config(
+ *      routeName="marello_supplier_supplier_index",
  *      routeView="marello_supplier_supplier_view",
  *      defaultValues={
  *          "security"={
