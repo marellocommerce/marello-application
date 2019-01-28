@@ -2,6 +2,7 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'MarelloAddressBundle::macros.html.twig' as Address %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
 
 {% oro_title_set({params : {"%name%": entity.fullName }}) %}
 
@@ -104,12 +105,22 @@
         </div>
     {% endset %}
 
+    {% set additionalData %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ entityConfig.renderDynamicFields(entity) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'General'|trans,
             'class': 'active',
             'subblocks': [
-                { 'data' : [general] },
+                { 'data' : [general, additionalData] },
                 { 'data' : [addressBlock] }
             ]
         },
@@ -135,7 +146,7 @@
             ]
         }
     ] %}
-
+    
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

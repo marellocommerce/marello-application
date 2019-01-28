@@ -172,6 +172,7 @@ marello:
             general: General
             shipping_information: Shipping Information
             subtotals: Order Totals
+            additional: Additional
 
         form:
             address:
