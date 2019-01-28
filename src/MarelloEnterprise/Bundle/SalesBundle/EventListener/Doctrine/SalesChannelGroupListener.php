@@ -42,7 +42,10 @@ class SalesChannelGroupListener
         if ($linkOwner && !$linkOwner->isSystem()) {
             $this->session
                 ->getFlashBag()
-                ->add('error', 'It is forbidden to delete a Sales Channel(Group) linked to a WarehouseGroup, unlink it first');
+                ->add(
+                    'error',
+                    'It is forbidden to delete a Sales Channel(Group) linked to a WarehouseGroup, unlink it first'
+                );
             throw new \Exception();
         }
     }
