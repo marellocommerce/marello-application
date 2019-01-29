@@ -47,6 +47,7 @@ class MarelloInvoiceBundle implements Migration
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('invoice_number', 'string', ['notnull' => false, 'length' => 255]);
+        $table->addColumn('invoice_type', 'string', []);
         $table->addColumn('billing_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('invoiced_at', 'datetime', ['notnull' => false]);
@@ -101,6 +102,7 @@ class MarelloInvoiceBundle implements Migration
     {
         $table = $schema->createTable('marello_invoice_invoice_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('invoice_item_type', 'string', []);
         $table->addColumn('invoice_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_name', 'string', ['length' => 255]);

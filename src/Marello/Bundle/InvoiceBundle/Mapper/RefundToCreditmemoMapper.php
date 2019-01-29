@@ -4,6 +4,8 @@ namespace Marello\Bundle\InvoiceBundle\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
+use Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem;
 use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;
 use Marello\Bundle\InvoiceBundle\Entity\InvoiceType;
@@ -24,8 +26,8 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
             );
         }
         /** @var Refund $sourceEntity */
-        $invoice = new Invoice();
-        $data = $this->getData($sourceEntity->getOrder(), Invoice::class);
+        $invoice = new Creditmemo();
+        $data = $this->getData($sourceEntity->getOrder(), Creditmemo::class);
         $data['order'] = $sourceEntity->getOrder();
         $data['items'] = $this->getItems($sourceEntity->getItems());
         $subtotal = 0.00;
@@ -65,11 +67,11 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
 
     /**
      * @param RefundItem $refundItem
-     * @return InvoiceItem
+     * @return CreditmemoItem
      */
     protected function mapItem(RefundItem $refundItem)
     {
-        $invoiceItem = new InvoiceItem();
+        $invoiceItem = new CreditmemoItem();
         $invoiceItemData = $this->getData($refundItem->getOrderItem(), InvoiceItem::class);
         $quantity = $refundItem->getQuantity();
         $tax = $invoiceItemData['tax']/$invoiceItemData['quantity']*$quantity;

@@ -23,6 +23,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  *      }
  * )
  * @ORM\Table(name="marello_invoice_invoice_item")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="invoice_item_type", type="string")
+ * @ORM\DiscriminatorMap({"invoiceitem" = "InvoiceItem", "creditmemoitem" = "CreditmemoItem"})
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("ALL")
  */
