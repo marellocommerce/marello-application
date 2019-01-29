@@ -1,6 +1,16 @@
 api:
+    entity_aliases:
+        Marello\Bundle\PackingBundle\Entity\PackingSlip:
+            alias: marellopackingslip
+            plural_alias: marellopackingslips
+
+        Marello\Bundle\PackingBundle\Entity\PackingSlipItem:
+            alias: marellopackingslipitem
+            plural_alias: marellopackingslipitems
+
     entities:
-        Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
+        Marello\Bundle\PackingBundle\Entity\PackingSlip:
+#            documentation_resource: '@MarelloInvoiceBundle/Resources/doc/api/invoice.md'
             fields:
                 createdAt:
                     exclude: true
@@ -9,11 +19,6 @@ api:
             filters:
                 exclusion_policy: all
                 fields:
-                    purchaseOrderNumber:
-                        data_type: string
-                        allow_array: true
-                        property_path: purchaseOrderNumber
-                        description: 'Filter by purchase order number'
                     createdAt:
                         exclude: true
                     updatedAt:
@@ -26,7 +31,9 @@ api:
                 update_relationship: false
                 delete_relationship: false
 
-        Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem:
+        Marello\Bundle\PackingBundle\Entity\PackingSlipItem:
+            form_options:
+                validation_groups: ['api']
             fields:
                 createdAt:
                     exclude: true
@@ -34,14 +41,9 @@ api:
                     exclude: true
             filters:
                 exclusion_policy: all
-                fields:
-                    orders:
-                        data_type: integer
-                        allow_array: true
-                        property_path: order
-                        description: 'Filter by purchase order ID'
             actions:
                 create: false
+                update: false
                 delete: false
                 delete_list: false
                 update_relationship: false

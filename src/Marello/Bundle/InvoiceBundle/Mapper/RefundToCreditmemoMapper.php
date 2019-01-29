@@ -65,7 +65,7 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
 
     /**
      * @param RefundItem $refundItem
-     * @return PackingSlipItem
+     * @return InvoiceItem
      */
     protected function mapItem(RefundItem $refundItem)
     {

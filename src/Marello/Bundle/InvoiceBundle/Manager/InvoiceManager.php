@@ -46,6 +46,7 @@ class InvoiceManager
                     'type' => InvoiceType::INVOICE_TYPE
                 ]
             );
+
         if (!$existingInvoice) {
             $invoice = $this->mapper->map($sourceEntity);
             $this->entityManager->persist($invoice);
