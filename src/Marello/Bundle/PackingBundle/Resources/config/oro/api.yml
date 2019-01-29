@@ -10,7 +10,6 @@ api:
 
     entities:
         Marello\Bundle\PackingBundle\Entity\PackingSlip:
-#            documentation_resource: '@MarelloInvoiceBundle/Resources/doc/api/invoice.md'
             fields:
                 createdAt:
                     exclude: true
