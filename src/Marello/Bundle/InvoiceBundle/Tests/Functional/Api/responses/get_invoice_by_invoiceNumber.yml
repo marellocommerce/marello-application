@@ -1,6 +1,8 @@
 data:
     type: marelloinvoices
     id: '<toString(@marello_invoice_1->id)>'
+    meta:
+        __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
     attributes:
         invoiceNumber: '000000002'
         invoicedAt: '@marello_invoice_1->invoicedAt->format("Y-m-d\TH:i:s\Z")'
@@ -18,10 +20,6 @@ data:
         shippingAmountInclTax: '10.0000'
         shippingAmountExclTax: '10.0000'
     relationships:
-        invoiceType:
-            data:
-                type: marelloinvoicetypes
-                id: invoice
         billingAddress:
             data:
                 type: marelloaddresses

@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\Collection;
 
 use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;
-use Marello\Bundle\InvoiceBundle\Entity\InvoiceType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
@@ -31,7 +30,7 @@ class OrderToInvoiceMapper extends AbstractInvoiceMapper
         if ($data['invoicedAt'] === null) {
             $data['invoicedAt'] = new \DateTime('now', new \DateTimeZone('UTC'));
         }
-        $data['type'] = $this->getInvoiceType(InvoiceType::INVOICE_TYPE);
+
         $this->assignData($invoice, $data);
 
         return $invoice;

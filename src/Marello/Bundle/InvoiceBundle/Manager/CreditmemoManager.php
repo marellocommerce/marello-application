@@ -3,6 +3,7 @@
 namespace Marello\Bundle\InvoiceBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
 use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\InvoiceBundle\Mapper\MapperInterface;
 use Marello\Bundle\RefundBundle\Entity\Refund;
@@ -29,7 +30,7 @@ class CreditmemoManager
         DoctrineHelper $doctrineHelper
     ) {
         $this->mapper = $mapper;
-        $this->entityManager = $doctrineHelper->getEntityManagerForClass(Invoice::class);
+        $this->entityManager = $doctrineHelper->getEntityManagerForClass(Creditmemo::class);
     }
 
     /**

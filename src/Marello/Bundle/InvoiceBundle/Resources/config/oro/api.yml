@@ -8,10 +8,6 @@ api:
             alias: marelloinvoiceitem
             plural_alias: marelloinvoiceitems
 
-        Marello\Bundle\InvoiceBundle\Entity\InvoiceType:
-            alias: marelloinvoicetype
-            plural_alias: marelloinvoicetypes
-
     entities:
         Marello\Bundle\InvoiceBundle\Entity\Invoice:
             documentation_resource: '@MarelloInvoiceBundle/Resources/doc/api/invoice.md'
@@ -37,26 +33,10 @@ api:
                         allow_array: true
                         property_path: invoiceReference
                         description: 'Filter by invoice reference'
-                    invoiceType:
-                        data_type: string
-                        property_path: invoiceType
-                        description: 'Filter by invoice type'
                     createdAt:
                         exclude: true
                     updatedAt:
                         exclude: true
-            actions:
-                create: false
-                update: false
-                delete: false
-                delete_list: false
-                update_relationship: false
-                delete_relationship: false
-
-        Marello\Bundle\InvoiceBundle\Entity\InvoiceType:
-            identifier_field_names: [name]
-            filters:
-                exclusion_policy: all
             actions:
                 create: false
                 update: false

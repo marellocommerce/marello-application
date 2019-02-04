@@ -5,7 +5,6 @@ namespace Marello\Bundle\InvoiceBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\DiscriminatorColumn;
 
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -24,10 +23,10 @@ use Marello\Bundle\PricingBundle\Subtotal\Model\SubtotalAwareInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
 
-
 /**
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"invoice" = "Invoice", "creditmemo" = "Creditmemo"})
  * @ORM\Table(name="marello_invoice_invoice")
  * @Oro\Config(
@@ -65,6 +64,8 @@ class Invoice extends ExtendInvoice implements
     use EntityCreatedUpdatedAtTrait;
     use AuditableOrganizationAwareTrait;
 
+    const INVOICE_TYPE = 'invoice';
+
     /**
      * @var int
      *
@@ -75,10 +76,7 @@ class Invoice extends ExtendInvoice implements
     protected $id;
 
     /**
-     * @var InvoiceType
-     *
-     * @ORM\ManyToOne(targetEntity="Marello\Bundle\InvoiceBundle\Entity\InvoiceType")
-     * @ORM\JoinColumn(onDelete="cascade", nullable=false, name="type", referencedColumnName="name")
+     * @var string
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -90,7 +88,7 @@ class Invoice extends ExtendInvoice implements
      *      }
      * )
      */
-    protected $type;
+    protected $type = self::INVOICE_TYPE;
 
     /**
      * @var string
@@ -414,22 +412,11 @@ class Invoice extends ExtendInvoice implements
     }
 
     /**
-     * @return InvoiceType
+     * @return string
      */
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * @param InvoiceType $type
-     * @return Invoice
-     */
-    public function setType(InvoiceType $type)
-    {
-        $this->type = $type;
-        
-        return $this;
     }
 
     /**

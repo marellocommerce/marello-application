@@ -6,7 +6,6 @@ datagrids:
                 select:
                     - i
                     - sc.name as salesChannelName
-                    - it.label as invoiceTypeLabel
                     - o.orderNumber as orderNumber
                 from:
                     - { table: MarelloInvoiceBundle:Invoice, alias: i }
@@ -16,7 +15,6 @@ datagrids:
                         - { join: i.billingAddress, alias: ba }
                         - { join: i.shippingAddress, alias: sa }
                         - { join: i.order, alias: o }
-                        - { join: i.type, alias: it }
         columns:
             invoiceNumber:
                 label:            marello.invoice.invoice_number.label
@@ -24,7 +22,6 @@ datagrids:
             invoiceType:
                 label:            marello.invoice.invoicetype.entity_label
                 frontend_type:    string
-                data_name:        invoiceTypeLabel
             orderNumber:
                 label:            marello.order.order_number.label
             salesChannel:
@@ -56,7 +53,7 @@ datagrids:
                 invoiceNumber:
                     data_name: i.invoiceNumber
                 invoiceType:
-                    data_name: invoiceTypeLabel
+                    data_name: i.invoiceType
                 orderNumber:
                     data_name: o.orderNumber
                 salesChannel:
@@ -80,7 +77,7 @@ datagrids:
                     data_name: i.invoiceNumber
                 invoiceType:
                     type: string
-                    data_name: invoiceTypeLabel
+                    data_name: i.invoiceType
                 orderNumber:
                     type: string
                     data_name: o.orderNumber

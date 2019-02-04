@@ -2,11 +2,11 @@
 
 namespace Marello\Bundle\InvoiceBundle\Mapper;
 
-use Marello\Bundle\InvoiceBundle\Entity\InvoiceType;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
+
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
-use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 abstract class AbstractInvoiceMapper implements MapperInterface
 {
@@ -100,17 +100,5 @@ abstract class AbstractInvoiceMapper implements MapperInterface
         );
 
         return array_column($withoutIds, 'name');
-    }
-
-    /**
-     * @param string $type
-     * @return InvoiceType
-     */
-    protected function getInvoiceType($type)
-    {
-        return $this->doctrineHelper
-            ->getEntityManagerForClass(InvoiceType::class)
-            ->getRepository(InvoiceType::class)
-            ->find($type);
     }
 }

@@ -73,25 +73,6 @@ class InvoiceJsonApiTest extends RestJsonApiTestCase
     }
 
     /**
-     * Test
-     */
-    public function testGetInvoicesByType()
-    {
-        /** @var Invoice $invoice */
-        $invoice = $this->getReference('marello_invoice_1');
-        $response = $this->get(
-            ['entity' => self::TESTING_ENTITY, 'id' => $invoice->getId()],
-            [
-                'filter' => ['invoiceType' =>  $invoice->getType()->getName() ]
-            ]
-        );
-
-        $this->assertJsonResponse($response);
-        $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
-        $this->assertResponseContains('get_invoice_by_invoiceType.yml', $response);
-    }
-
-    /**
      * Test cget (getting a list of invoices) of Invoice entity filter by order id
      *
      */

@@ -4,12 +4,10 @@ namespace Marello\Bundle\InvoiceBundle\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
 use Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem;
-use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;
-use Marello\Bundle\InvoiceBundle\Entity\InvoiceType;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
 
@@ -43,7 +41,7 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
         if ($data['invoicedAt'] === null) {
             $data['invoicedAt'] = new \DateTime('now', new \DateTimeZone('UTC'));
         }
-        $data['type'] = $this->getInvoiceType(InvoiceType::CREDITMEMO_TYPE);
+
         $this->assignData($invoice, $data);
 
         return $invoice;

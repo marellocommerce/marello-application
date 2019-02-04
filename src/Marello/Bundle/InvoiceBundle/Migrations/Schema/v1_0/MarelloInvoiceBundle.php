@@ -14,26 +14,12 @@ class MarelloInvoiceBundle implements Migration
     public function up(Schema $schema, QueryBag $queries)
     {
         /** Tables generation **/
-        $this->createMarelloInvoiceInvoiceTypeTable($schema);
         $this->createMarelloInvoiceInvoiceTable($schema);
         $this->createMarelloInvoiceInvoiceItemTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloInvoiceInvoiceForeignKeys($schema);
         $this->addMarelloInvoiceInvoiceItemForeignKeys($schema);
-    }
-
-    /**
-     * Create marello_invoice_invoice_item table
-     *
-     * @param Schema $schema
-     */
-    protected function createMarelloInvoiceInvoiceTypeTable(Schema $schema)
-    {
-        $table = $schema->createTable('marello_invoice_invoice_type');
-        $table->addColumn('name', 'string', ['notnull' => true]);
-        $table->addColumn('label', 'string', ['length' => 255]);
-        $table->setPrimaryKey(['name']);
     }
 
     /**
@@ -47,7 +33,6 @@ class MarelloInvoiceBundle implements Migration
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
         $table->addColumn('invoice_number', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('invoice_type', 'string', []);
         $table->addColumn('billing_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('invoiced_at', 'datetime', ['notnull' => false]);
@@ -142,12 +127,6 @@ class MarelloInvoiceBundle implements Migration
     protected function addMarelloInvoiceInvoiceForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_invoice_invoice');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_invoice_invoice_type'),
-            ['type'],
-            ['name'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
-        );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
