@@ -16,8 +16,8 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
-        "oro/commerce": "~1.5"
+        "php": ">=7.1",
+        "oro/commerce": "3.1.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
