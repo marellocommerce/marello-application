@@ -8,6 +8,14 @@ api:
             alias: marelloinvoiceitem
             plural_alias: marelloinvoiceitems
 
+        Marello\Bundle\InvoiceBundle\Entity\Creditmemo:
+            alias: marellocreditmemo
+            plural_alias: marellocreditmemos
+
+        Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem:
+            alias: marellocreditmemoitem
+            plural_alias: marellocreditmemoitems
+
     entities:
         Marello\Bundle\InvoiceBundle\Entity\Invoice:
             documentation_resource: '@MarelloInvoiceBundle/Resources/doc/api/invoice.md'

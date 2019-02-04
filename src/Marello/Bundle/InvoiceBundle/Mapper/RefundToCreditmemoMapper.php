@@ -5,11 +5,10 @@ namespace Marello\Bundle\InvoiceBundle\Mapper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
-use Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem;
-use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
+use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
+use Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem;
 
 class RefundToCreditmemoMapper extends AbstractInvoiceMapper
 {
@@ -23,14 +22,15 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
                 sprintf('Wrong source entity "%s" provided to RefundToCreditmemoMapper', get_class($sourceEntity))
             );
         }
+
         /** @var Refund $sourceEntity */
-        $invoice = new Creditmemo();
+        $creditmemo = new Creditmemo();
         $data = $this->getData($sourceEntity->getOrder(), Creditmemo::class);
         $data['order'] = $sourceEntity->getOrder();
         $data['items'] = $this->getItems($sourceEntity->getItems());
         $subtotal = 0.00;
         $totalTax = 0.00;
-        /** @var InvoiceItem $item */
+        /** @var CreditmemoItem $item */
         foreach ($data['items'] as $item) {
             $subtotal += $item->getRowTotalExclTax();
             $totalTax += $item->getTax();
@@ -42,9 +42,9 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
             $data['invoicedAt'] = new \DateTime('now', new \DateTimeZone('UTC'));
         }
 
-        $this->assignData($invoice, $data);
+        $this->assignData($creditmemo, $data);
 
-        return $invoice;
+        return $creditmemo;
     }
 
     /**
@@ -54,13 +54,13 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
     protected function getItems(Collection $items)
     {
         $refundItems = $items->toArray();
-        $invoiceItems = [];
+        $creditmemoItems = [];
         /** @var RefundItem $item */
         foreach ($refundItems as $item) {
-            $invoiceItems[] = $this->mapItem($item);
+            $creditmemoItems[] = $this->mapItem($item);
         }
 
-        return new ArrayCollection($invoiceItems);
+        return new ArrayCollection($creditmemoItems);
     }
 
     /**
@@ -69,20 +69,20 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
      */
     protected function mapItem(RefundItem $refundItem)
     {
-        $invoiceItem = new CreditmemoItem();
-        $invoiceItemData = $this->getData($refundItem->getOrderItem(), InvoiceItem::class);
+        $creditmemoItem = new CreditmemoItem();
+        $creditmemoItemData = $this->getData($refundItem->getOrderItem(), CreditmemoItem::class);
         $quantity = $refundItem->getQuantity();
-        $tax = $invoiceItemData['tax']/$invoiceItemData['quantity']*$quantity;
+        $tax = $creditmemoItemData['tax'] / $creditmemoItemData['quantity'] * $quantity;
 
-        $rowTotalExclTax =  $invoiceItemData['rowTotalExclTax']/$invoiceItemData['quantity']*$quantity;
-        $rowTotalInclTax =  $invoiceItemData['rowTotalInclTax']/$invoiceItemData['quantity']*$quantity;
+        $rowTotalExclTax =  $creditmemoItemData['rowTotalExclTax'] / $creditmemoItemData['quantity'] * $quantity;
+        $rowTotalInclTax =  $creditmemoItemData['rowTotalInclTax'] / $creditmemoItemData['quantity'] * $quantity;
 
-        $invoiceItemData['quantity'] = $quantity;
-        $invoiceItemData['rowTotalExclTax'] = $rowTotalExclTax;
-        $invoiceItemData['rowTotalInclTax'] = $rowTotalInclTax;
-        $invoiceItemData['tax'] = $tax;
-        $this->assignData($invoiceItem, $invoiceItemData);
+        $creditmemoItemData['quantity'] = $quantity;
+        $creditmemoItemData['rowTotalExclTax'] = $rowTotalExclTax;
+        $creditmemoItemData['rowTotalInclTax'] = $rowTotalInclTax;
+        $creditmemoItemData['tax'] = $tax;
+        $this->assignData($creditmemoItem, $creditmemoItemData);
 
-        return $invoiceItem;
+        return $creditmemoItem;
     }
 }

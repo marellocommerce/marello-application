@@ -19,8 +19,8 @@ datagrids:
             invoiceNumber:
                 label:            marello.invoice.invoice_number.label
                 frontend_type:    string
-            invoiceType:
-                label:            marello.invoice.invoicetype.entity_label
+            type:
+                label:            marello.invoice.type.label
                 frontend_type:    string
             orderNumber:
                 label:            marello.order.order_number.label
@@ -52,8 +52,8 @@ datagrids:
             columns:
                 invoiceNumber:
                     data_name: i.invoiceNumber
-                invoiceType:
-                    data_name: i.invoiceType
+                type:
+                    data_name: i.type
                 orderNumber:
                     data_name: o.orderNumber
                 salesChannel:
@@ -75,9 +75,9 @@ datagrids:
                 invoiceNumber:
                     type: string
                     data_name: i.invoiceNumber
-                invoiceType:
+                type:
                     type: string
-                    data_name: i.invoiceType
+                    data_name: i.type
                 orderNumber:
                     type: string
                     data_name: o.orderNumber

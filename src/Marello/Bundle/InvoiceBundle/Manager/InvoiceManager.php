@@ -41,8 +41,7 @@ class InvoiceManager
             ->getRepository(Invoice::class)
             ->findBy(
                 [
-                    'order' => $sourceEntity,
-                    'type' => Invoice::INVOICE_TYPE
+                    'order' => $sourceEntity
                 ]
             );
 
