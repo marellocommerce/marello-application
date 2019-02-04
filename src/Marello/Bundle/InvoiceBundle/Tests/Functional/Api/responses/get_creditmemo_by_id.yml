@@ -1,0 +1,60 @@
+data:
+    type: marellocreditmemos
+    id: '<toString(@marello_creditmemo_1->id)>'
+    meta:
+        __class__: Marello\Bundle\InvoiceBundle\Entity\Creditmemo
+    attributes:
+        invoiceNumber: '000000002'
+        invoicedAt: '2019-02-04T16:03:31Z'
+        invoiceDueDate: null
+        paymentMethod: Paypal
+        paymentReference: null
+        paymentDetails: null
+        shippingMethod: null
+        shippingMethodType: null
+        currency: GBP
+        status: null
+        subtotal: '1501.0000'
+        totalTax: '260.5040'
+        grandTotal: '1771.5040'
+        shippingAmountInclTax: '10.0000'
+        shippingAmountExclTax: '10.0000'
+    relationships:
+        billingAddress:
+            data:
+                type: marelloaddresses
+                id: '25'
+        shippingAddress:
+            data:
+                type: marelloaddresses
+                id: '25'
+        order:
+            data:
+                type: marelloorders
+                id: '<toString(@marello_order_1->id)>'
+        customer:
+            data:
+                type: marellocustomers
+                id: '<toString(@customer1->id)>'
+        salesChannel:
+            data:
+                type: marellosaleschannels
+                id: chan_gbp
+        items:
+            data:
+                -
+                    type: marellocreditmemoitems
+                    id: '2'
+                -
+                    type: marellocreditmemoitems
+                    id: '3'
+                -
+                    type: marellocreditmemoitems
+                    id: '4'
+                -
+                    type: marellocreditmemoitems
+                    id: '5'
+        organization:
+            data:
+                type: organizations
+                id: '1'
