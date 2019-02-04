@@ -10,7 +10,7 @@ use Marello\Bundle\InvoiceBundle\Model\ExtendInvoice;
 /**
  * @ORM\Entity
  */
-class Invoice extends ExtendInvoice
+class Invoice extends AbstractInvoice
 {
     const INVOICE_TYPE = 'invoice';
 

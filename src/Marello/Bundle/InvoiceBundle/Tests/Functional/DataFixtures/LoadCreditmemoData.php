@@ -51,11 +51,7 @@ class LoadCreditmemoData extends AbstractFixture implements DependentFixtureInte
                 $refund = $this->getReference(sprintf('marello_refund_%s', $createdRefunds));
                 $creditmemo = $creditmemoMapper->map($refund);
                 $manager->persist($creditmemo);
-                file_put_contents(
-                    '/var/www/var/logs/refunddata.log',
-                    __METHOD__ . " " . print_r(sprintf('marello_creditmemo_%s', $createdRefunds), true) . "\r\n",
-                    FILE_APPEND
-                );
+
                 $this->setReference(sprintf('marello_creditmemo_%s', $createdRefunds), $creditmemo);
             }
         }

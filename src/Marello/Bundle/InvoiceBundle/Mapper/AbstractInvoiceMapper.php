@@ -53,6 +53,10 @@ abstract class AbstractInvoiceMapper implements MapperInterface
     protected function getData($sourceEntity, $targetEntityClass)
     {
         $result = [];
+        if (!$sourceEntity) {
+            return $result;
+        }
+
         $mapFields = $this->getMapFields($targetEntityClass);
         foreach ($mapFields as $field) {
             try {

@@ -167,7 +167,7 @@ abstract class AbstractInvoiceItem implements
      *
      * @JMS\Expose
      */
-    protected $discountAmount;
+    protected $discountAmount = 0;
 
     /**
      * @var int

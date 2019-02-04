@@ -4,13 +4,12 @@ namespace Marello\Bundle\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Marello\Bundle\InvoiceBundle\Model\ExtendCreditmemo;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
  * @ORM\Entity
  */
-class Creditmemo extends ExtendCreditmemo
+class Creditmemo extends AbstractInvoice
 {
     const CREDITMEMO_TYPE = 'creditmemo';
 

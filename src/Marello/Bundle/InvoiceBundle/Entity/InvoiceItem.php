@@ -11,7 +11,7 @@ use Marello\Bundle\InvoiceBundle\Model\ExtendInvoiceItem;
 /**
  * @ORM\Entity()
  */
-class InvoiceItem extends ExtendInvoiceItem
+class InvoiceItem extends AbstractInvoiceItem
 {
     /**
      * @var int

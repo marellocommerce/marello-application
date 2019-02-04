@@ -5,6 +5,7 @@ namespace Marello\Bundle\InvoiceBundle\Mapper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
 use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
@@ -57,6 +58,9 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
         $creditmemoItems = [];
         /** @var RefundItem $item */
         foreach ($refundItems as $item) {
+            if (!$item->getOrderItem()) {
+                continue;
+            }
             $creditmemoItems[] = $this->mapItem($item);
         }
 
@@ -65,7 +69,7 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
 
     /**
      * @param RefundItem $refundItem
-     * @return CreditmemoItem
+     * @return CreditmemoItem|null
      */
     protected function mapItem(RefundItem $refundItem)
     {
@@ -74,8 +78,8 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
         $quantity = $refundItem->getQuantity();
         $tax = $creditmemoItemData['tax'] / $creditmemoItemData['quantity'] * $quantity;
 
-        $rowTotalExclTax =  $creditmemoItemData['rowTotalExclTax'] / $creditmemoItemData['quantity'] * $quantity;
-        $rowTotalInclTax =  $creditmemoItemData['rowTotalInclTax'] / $creditmemoItemData['quantity'] * $quantity;
+        $rowTotalExclTax = $creditmemoItemData['rowTotalExclTax'] / $creditmemoItemData['quantity'] * $quantity;
+        $rowTotalInclTax = $creditmemoItemData['rowTotalInclTax'] / $creditmemoItemData['quantity'] * $quantity;
 
         $creditmemoItemData['quantity'] = $quantity;
         $creditmemoItemData['rowTotalExclTax'] = $rowTotalExclTax;
