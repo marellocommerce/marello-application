@@ -22,79 +22,74 @@ class CreditmemoJsonApiTest extends RestJsonApiTestCase
     }
 
     /**
-     * Test cget (getting a list of invoices) of Invoice entity
+     * Test cget (getting a list of creditmemos) of Creditmemo entity
      *
      */
-//    public function testGetListOfInvoices()
-//    {
-//        $response = $this->cget(['entity' => self::TESTING_ENTITY], []);
-//
-//        $this->assertJsonResponse($response);
-//        $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
-//        $this->assertResponseCount(4, $response);
-//
-//        $this->dumpYmlTemplate('cget_creditmemo_list.yml', $response);
-//        $this->assertResponseContains('cget_creditmemo_list.yml', $response);
-//    }
+    public function testGetListOfCreditmemos()
+    {
+        $response = $this->cget(['entity' => self::TESTING_ENTITY], []);
+
+        $this->assertJsonResponse($response);
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
+        $this->assertResponseCount(2, $response);
+        $this->assertResponseContains('cget_creditmemo_list.yml', $response);
+    }
 
     /**
-     * Test get invoice by id
+     * Test get creditmemo by id
      */
-    public function testGetInvoiceById()
+    public function testGetCreditmemoById()
     {
         /** @var Invoice $invoice */
-        $invoice = $this->getReference('marello_creditmemo_1');
+        $invoice = $this->getReference('marello_creditmemo_0');
         $response = $this->get(
             ['entity' => self::TESTING_ENTITY, 'id' => $invoice->getId()],
             []
         );
 
-        $this->dumpYmlTemplate('get_creditmemo_by_id.yml', $response);
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseContains('get_creditmemo_by_id.yml', $response);
     }
 
-//    /**
-//     * Test get creditmemo by invoiceNumber
-//     */
-//    public function testGetInvoiceByInvoiceNumber()
-//    {
-//        /** @var Invoice $invoice */
-//        $invoice = $this->getReference('marello_creditmemo_1');
-//        $response = $this->get(
-//            ['entity' => self::TESTING_ENTITY, 'id' => $invoice->getId()],
-//            [
-//                'filter' => ['invoiceNumber' =>  $invoice->getInvoiceNumber() ]
-//            ]
-//        );
-//
-//        $this->assertJsonResponse($response);
-//        $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
-//        $this->dumpYmlTemplate('get_creditmemo_by_invoiceNumber.yml', $response);
-//        $this->assertResponseContains('get_creditmemo_by_invoiceNumber.yml', $response);
-//    }
-//
-//    /**
-//     * Test cget (getting a list of invoices) of Invoice entity filter by order id
-//     *
-//     */
-//    public function testGetListOfInvoicesFilteredByOrder()
-//    {
-//        /** @var Order $order */
-//        $order = $this->getReference('marello_creditmemo_2');
-//
-//        $response = $this->cget(
-//            ['entity' => self::TESTING_ENTITY],
-//            [
-//                'filter' => ['order' =>  $order->getId() ]
-//            ]
-//        );
-//
-//        $this->assertJsonResponse($response);
-//        $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
-//        $this->assertResponseCount(1, $response);
-//        $this->dumpYmlTemplate('cget_creditmemo_list_by_order.yml', $response);
-//        $this->assertResponseContains('cget_creditmemo_list_by_order.yml', $response);
-//    }
+    /**
+     * Test get creditmemo by invoiceNumber
+     */
+    public function testGetCreditmemoByInvoiceNumber()
+    {
+        /** @var Invoice $invoice */
+        $invoice = $this->getReference('marello_creditmemo_1');
+        $response = $this->get(
+            ['entity' => self::TESTING_ENTITY, 'id' => $invoice->getId()],
+            [
+                'filter' => ['invoiceNumber' =>  $invoice->getInvoiceNumber() ]
+            ]
+        );
+
+        $this->assertJsonResponse($response);
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
+        $this->assertResponseContains('get_creditmemo_by_invoiceNumber.yml', $response);
+    }
+
+    /**
+     * Test cget (getting a list of creditmemos) of Creditmemo entity filter by order id
+     *
+     */
+    public function testGetListOfCreditmemosFilteredByOrder()
+    {
+        /** @var Order $order */
+        $order = $this->getReference('marello_order_1');
+
+        $response = $this->cget(
+            ['entity' => self::TESTING_ENTITY],
+            [
+                'filter' => ['order' =>  $order->getId() ]
+            ]
+        );
+
+        $this->assertJsonResponse($response);
+        $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
+        $this->assertResponseCount(1, $response);
+        $this->assertResponseContains('cget_creditmemo_list_by_order.yml', $response);
+    }
 }

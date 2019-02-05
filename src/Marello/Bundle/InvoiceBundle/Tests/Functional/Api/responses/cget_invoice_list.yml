@@ -5,7 +5,7 @@ data:
         meta:
             __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
         attributes:
-            invoiceNumber: '000000001'
+            invoiceNumber: '000000003'
             invoicedAt: '@marello_invoice_0->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: 'Credit Card'
@@ -24,11 +24,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '23'
+                    id: '46'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '23'
+                    id: '46'
             order:
                 data:
                     type: marelloorders
@@ -45,7 +45,7 @@ data:
                 data:
                     -
                         type: marelloinvoiceitems
-                        id: '1'
+                        id: '6'
             organization:
                 data:
                     type: organizations
@@ -56,7 +56,7 @@ data:
         meta:
             __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
         attributes:
-            invoiceNumber: '000000002'
+            invoiceNumber: '000000004'
             invoicedAt: '@marello_invoice_1->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: Paypal
@@ -75,11 +75,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '25'
+                    id: '48'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '25'
+                    id: '48'
             order:
                 data:
                     type: marelloorders
@@ -96,16 +96,16 @@ data:
                 data:
                     -
                         type: marelloinvoiceitems
-                        id: '2'
+                        id: '7'
                     -
                         type: marelloinvoiceitems
-                        id: '3'
+                        id: '8'
                     -
                         type: marelloinvoiceitems
-                        id: '4'
+                        id: '9'
                     -
                         type: marelloinvoiceitems
-                        id: '5'
+                        id: '10'
             organization:
                 data:
                     type: organizations
@@ -116,7 +116,7 @@ data:
         meta:
             __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
         attributes:
-            invoiceNumber: '000000003'
+            invoiceNumber: '000000005'
             invoicedAt: '@marello_invoice_2->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: 'Credit Card'
@@ -135,11 +135,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '27'
+                    id: '50'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '27'
+                    id: '50'
             order:
                 data:
                     type: marelloorders
@@ -156,13 +156,13 @@ data:
                 data:
                     -
                         type: marelloinvoiceitems
-                        id: '6'
+                        id: '11'
                     -
                         type: marelloinvoiceitems
-                        id: '7'
+                        id: '12'
                     -
                         type: marelloinvoiceitems
-                        id: '8'
+                        id: '13'
             organization:
                 data:
                     type: organizations
@@ -173,7 +173,7 @@ data:
         meta:
             __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
         attributes:
-            invoiceNumber: '000000004'
+            invoiceNumber: '000000006'
             invoicedAt: '@marello_invoice_3->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: Paypal
@@ -192,11 +192,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '29'
+                    id: '52'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '29'
+                    id: '52'
             order:
                 data:
                     type: marelloorders
@@ -213,16 +213,16 @@ data:
                 data:
                     -
                         type: marelloinvoiceitems
-                        id: '9'
+                        id: '14'
                     -
                         type: marelloinvoiceitems
-                        id: '10'
+                        id: '15'
                     -
                         type: marelloinvoiceitems
-                        id: '11'
+                        id: '16'
                     -
                         type: marelloinvoiceitems
-                        id: '12'
+                        id: '17'
             organization:
                 data:
                     type: organizations

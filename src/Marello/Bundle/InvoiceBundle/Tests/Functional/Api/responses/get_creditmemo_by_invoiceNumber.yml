@@ -1,11 +1,11 @@
 data:
-    type: marelloinvoices
-    id: '<toString(@marello_invoice_1->id)>'
+    type: marellocreditmemos
+    id: '<toString(@marello_creditmemo_1->id)>'
     meta:
-        __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
+        __class__: Marello\Bundle\InvoiceBundle\Entity\Creditmemo
     attributes:
-        invoiceNumber: '000000004'
-        invoicedAt: '@marello_invoice_1->invoicedAt->format("Y-m-d\TH:i:s\Z")'
+        invoiceNumber: '000000002'
+        invoicedAt: '@marello_creditmemo_1->invoicedAt->format("Y-m-d\TH:i:s\Z")'
         invoiceDueDate: null
         paymentMethod: Paypal
         paymentReference: null
@@ -16,18 +16,18 @@ data:
         status: null
         subtotal: '1501.0000'
         totalTax: '260.5040'
-        grandTotal: '1511.0000'
+        grandTotal: '1771.5040'
         shippingAmountInclTax: '10.0000'
         shippingAmountExclTax: '10.0000'
     relationships:
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '48'
+                id: '25'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '48'
+                id: '25'
         order:
             data:
                 type: marelloorders
@@ -43,17 +43,17 @@ data:
         items:
             data:
                 -
-                    type: marelloinvoiceitems
-                    id: '7'
+                    type: marellocreditmemoitems
+                    id: '2'
                 -
-                    type: marelloinvoiceitems
-                    id: '8'
+                    type: marellocreditmemoitems
+                    id: '3'
                 -
-                    type: marelloinvoiceitems
-                    id: '9'
+                    type: marellocreditmemoitems
+                    id: '4'
                 -
-                    type: marelloinvoiceitems
-                    id: '10'
+                    type: marellocreditmemoitems
+                    id: '5'
         organization:
             data:
                 type: organizations

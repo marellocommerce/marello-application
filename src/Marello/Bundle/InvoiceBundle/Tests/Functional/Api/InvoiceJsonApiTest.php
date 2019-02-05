@@ -32,7 +32,6 @@ class InvoiceJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(4, $response);
-
         $this->assertResponseContains('cget_invoice_list.yml', $response);
     }
 
