@@ -10,7 +10,6 @@
             };
 
             $.ajax(options).then(function() {
-                console.log(options);
             }, function() {
                 if (typeof(console) != 'undefined' && console.hasOwnProperty('error')) {
                     console.error('Unable to load external script.');
