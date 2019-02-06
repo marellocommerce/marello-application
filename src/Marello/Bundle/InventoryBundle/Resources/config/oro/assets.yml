@@ -1,4 +1,3 @@
-assets:
-    css:
-        marello_inventory:
-            - 'bundles/marelloinventory/less/styles.less'
+css:
+    inputs:
+        - 'bundles/marelloinventory/css/scss/main.scss'
