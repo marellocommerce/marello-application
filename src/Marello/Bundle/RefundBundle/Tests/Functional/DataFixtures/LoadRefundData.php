@@ -76,7 +76,6 @@ class LoadRefundData extends AbstractFixture implements DependentFixtureInterfac
             );
 
             $manager->persist($refund);
-
             $this->setReference(sprintf('marello_refund_%s', $refKey), $refund);
         }
 

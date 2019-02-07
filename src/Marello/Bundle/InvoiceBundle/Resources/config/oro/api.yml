@@ -8,14 +8,20 @@ api:
             alias: marelloinvoiceitem
             plural_alias: marelloinvoiceitems
 
-        Marello\Bundle\InvoiceBundle\Entity\InvoiceType:
-            alias: marelloinvoicetype
-            plural_alias: marelloinvoicetypes
+        Marello\Bundle\InvoiceBundle\Entity\Creditmemo:
+            alias: marellocreditmemo
+            plural_alias: marellocreditmemos
+
+        Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem:
+            alias: marellocreditmemoitem
+            plural_alias: marellocreditmemoitems
 
     entities:
         Marello\Bundle\InvoiceBundle\Entity\Invoice:
             documentation_resource: '@MarelloInvoiceBundle/Resources/doc/api/invoice.md'
             fields:
+                invoiceType:
+                    exclude: true
                 createdAt:
                     exclude: true
                 updatedAt:
@@ -37,26 +43,10 @@ api:
                         allow_array: true
                         property_path: invoiceReference
                         description: 'Filter by invoice reference'
-                    invoiceType:
-                        data_type: string
-                        property_path: invoiceType
-                        description: 'Filter by invoice type'
                     createdAt:
                         exclude: true
                     updatedAt:
                         exclude: true
-            actions:
-                create: false
-                update: false
-                delete: false
-                delete_list: false
-                update_relationship: false
-                delete_relationship: false
-
-        Marello\Bundle\InvoiceBundle\Entity\InvoiceType:
-            identifier_field_names: [name]
-            filters:
-                exclusion_policy: all
             actions:
                 create: false
                 update: false
@@ -81,6 +71,67 @@ api:
                         allow_array: true
                         property_path: invoice
                         description: 'Filter by invoice ID'
+            actions:
+                create: false
+                delete: false
+                delete_list: false
+                update_relationship: false
+                delete_relationship: false
+
+        Marello\Bundle\InvoiceBundle\Entity\Creditmemo:
+            documentation_resource: '@MarelloInvoiceBundle/Resources/doc/api/creditmemo.md'
+            fields:
+                invoiceType:
+                    exclude: true
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    order:
+                        data_type: string
+                        property_path: order
+                        description: 'Filter by Order'
+                    invoiceNumber:
+                        data_type: string
+                        allow_array: true
+                        property_path: invoiceNumber
+                        description: 'Filter by creditmemo number'
+                    invoiceReference:
+                        data_type: string
+                        allow_array: true
+                        property_path: invoiceReference
+                        description: 'Filter by creditmemo reference'
+                    createdAt:
+                        exclude: true
+                    updatedAt:
+                        exclude: true
+            actions:
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+                update_relationship: false
+                delete_relationship: false
+
+        Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem:
+            form_options:
+                validation_groups: ['api']
+            fields:
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    invoices:
+                        data_type: integer
+                        allow_array: true
+                        property_path: invoice
+                        description: 'Filter by creditmemo ID'
             actions:
                 create: false
                 delete: false

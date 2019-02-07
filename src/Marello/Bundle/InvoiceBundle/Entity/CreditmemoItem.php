@@ -11,7 +11,7 @@ use Marello\Bundle\InvoiceBundle\Model\ExtendInvoiceItem;
 /**
  * @ORM\Entity
  */
-class InvoiceItem extends ExtendInvoiceItem
+class CreditmemoItem extends ExtendInvoiceItem
 {
     /**
      * @var int
@@ -23,9 +23,9 @@ class InvoiceItem extends ExtendInvoiceItem
     protected $id;
 
     /**
-     * @var Invoice
+     * @var Creditmemo
      *
-     * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="items")
+     * @ORM\ManyToOne(targetEntity="Creditmemo", inversedBy="items")
      * @ORM\JoinColumn(onDelete="CASCADE")
      * @Oro\ConfigField(
      *      defaultValues={

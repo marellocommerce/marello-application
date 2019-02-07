@@ -1,8 +1,10 @@
 data:
     type: marelloinvoices
     id: '<toString(@marello_invoice_1->id)>'
+    meta:
+        __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
     attributes:
-        invoiceNumber: '000000002'
+        invoiceNumber: '000000004'
         invoicedAt: '@marello_invoice_1->invoicedAt->format("Y-m-d\TH:i:s\Z")'
         invoiceDueDate: null
         paymentMethod: Paypal
@@ -18,18 +20,14 @@ data:
         shippingAmountInclTax: '10.0000'
         shippingAmountExclTax: '10.0000'
     relationships:
-        invoiceType:
-            data:
-                type: marelloinvoicetypes
-                id: invoice
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '25'
+                id: '48'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '25'
+                id: '48'
         order:
             data:
                 type: marelloorders
@@ -46,16 +44,16 @@ data:
             data:
                 -
                     type: marelloinvoiceitems
-                    id: '2'
+                    id: '7'
                 -
                     type: marelloinvoiceitems
-                    id: '3'
+                    id: '8'
                 -
                     type: marelloinvoiceitems
-                    id: '4'
+                    id: '9'
                 -
                     type: marelloinvoiceitems
-                    id: '5'
+                    id: '10'
         organization:
             data:
                 type: organizations

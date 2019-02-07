@@ -4,44 +4,44 @@ namespace Marello\Bundle\OrderBundle\Tests\Functional\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 
-use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
-use Marello\Bundle\InvoiceBundle\Tests\Functional\DataFixtures\LoadInvoiceData;
-use Marello\Bundle\InvoiceBundle\Entity\Invoice;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\InvoiceBundle\Entity\Invoice;
+use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
+use Marello\Bundle\InvoiceBundle\Tests\Functional\DataFixtures\LoadCreditmemoData;
 
-class InvoiceJsonApiTest extends RestJsonApiTestCase
+class CreditmemoJsonApiTest extends RestJsonApiTestCase
 {
-    const TESTING_ENTITY = 'marelloinvoices';
+    const TESTING_ENTITY = 'marellocreditmemos';
 
     protected function setUp()
     {
         parent::setUp();
         $this->loadFixtures([
-            LoadInvoiceData::class
+            LoadCreditmemoData::class
         ]);
     }
 
     /**
-     * Test cget (getting a list of invoices) of Invoice entity
+     * Test cget (getting a list of creditmemos) of Creditmemo entity
      *
      */
-    public function testGetListOfInvoices()
+    public function testGetListOfCreditmemos()
     {
         $response = $this->cget(['entity' => self::TESTING_ENTITY], []);
 
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
-        $this->assertResponseCount(4, $response);
-        $this->assertResponseContains('cget_invoice_list.yml', $response);
+        $this->assertResponseCount(2, $response);
+        $this->assertResponseContains('cget_creditmemo_list.yml', $response);
     }
 
     /**
-     * Test get invoice by id
+     * Test get creditmemo by id
      */
-    public function testGetInvoiceById()
+    public function testGetCreditmemoById()
     {
         /** @var Invoice $invoice */
-        $invoice = $this->getReference('marello_invoice_1');
+        $invoice = $this->getReference('marello_creditmemo_0');
         $response = $this->get(
             ['entity' => self::TESTING_ENTITY, 'id' => $invoice->getId()],
             []
@@ -49,16 +49,16 @@ class InvoiceJsonApiTest extends RestJsonApiTestCase
 
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
-        $this->assertResponseContains('get_invoice_by_id.yml', $response);
+        $this->assertResponseContains('get_creditmemo_by_id.yml', $response);
     }
 
     /**
-     * Test get invoice by invoiceNumber
+     * Test get creditmemo by invoiceNumber
      */
-    public function testGetInvoiceByInvoiceNumber()
+    public function testGetCreditmemoByInvoiceNumber()
     {
         /** @var Invoice $invoice */
-        $invoice = $this->getReference('marello_invoice_1');
+        $invoice = $this->getReference('marello_creditmemo_1');
         $response = $this->get(
             ['entity' => self::TESTING_ENTITY, 'id' => $invoice->getId()],
             [
@@ -68,17 +68,17 @@ class InvoiceJsonApiTest extends RestJsonApiTestCase
 
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
-        $this->assertResponseContains('get_invoice_by_invoiceNumber.yml', $response);
+        $this->assertResponseContains('get_creditmemo_by_invoiceNumber.yml', $response);
     }
 
     /**
-     * Test cget (getting a list of invoices) of Invoice entity filter by order id
+     * Test cget (getting a list of creditmemos) of Creditmemo entity filter by order id
      *
      */
-    public function testGetListOfInvoicesFilteredByOrder()
+    public function testGetListOfCreditmemosFilteredByOrder()
     {
         /** @var Order $order */
-        $order = $this->getReference('marello_order_2');
+        $order = $this->getReference('marello_order_1');
 
         $response = $this->cget(
             ['entity' => self::TESTING_ENTITY],
@@ -90,6 +90,6 @@ class InvoiceJsonApiTest extends RestJsonApiTestCase
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
         $this->assertResponseCount(1, $response);
-        $this->assertResponseContains('cget_invoice_list_by_order.yml', $response);
+        $this->assertResponseContains('cget_creditmemo_list_by_order.yml', $response);
     }
 }

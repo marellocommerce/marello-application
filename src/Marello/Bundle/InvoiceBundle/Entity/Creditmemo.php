@@ -12,9 +12,9 @@ use Marello\Bundle\InvoiceBundle\Model\ExtendInvoice;
 /**
  * @ORM\Entity
  */
-class Invoice extends ExtendInvoice
+class Creditmemo extends ExtendInvoice
 {
-    const INVOICE_TYPE = 'invoice';
+    const CREDITMEMO_TYPE = 'creditmemo';
 
     /**
      * @var int
@@ -28,12 +28,12 @@ class Invoice extends ExtendInvoice
     /**
      * @var string
      */
-    protected $invoiceType = self::INVOICE_TYPE;
+    protected $invoiceType = self::CREDITMEMO_TYPE;
 
     /**
-     * @var Collection|InvoiceItem[]
+     * @var Collection|CreditmemoItem[]
      *
-     * @ORM\OneToMany(targetEntity="InvoiceItem", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="CreditmemoItem", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
      * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={

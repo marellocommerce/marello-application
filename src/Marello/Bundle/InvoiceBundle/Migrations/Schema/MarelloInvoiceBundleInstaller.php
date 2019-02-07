@@ -26,26 +26,12 @@ class MarelloInvoiceBundleInstaller implements Installation
     public function up(Schema $schema, QueryBag $queries)
     {
         /** Tables generation **/
-        $this->createMarelloInvoiceInvoiceTypeTable($schema);
         $this->createMarelloInvoiceInvoiceTable($schema);
         $this->createMarelloInvoiceInvoiceItemTable($schema);
 
         /** Foreign keys generation **/
         $this->addMarelloInvoiceInvoiceForeignKeys($schema);
         $this->addMarelloInvoiceInvoiceItemForeignKeys($schema);
-    }
-
-    /**
-     * Create marello_invoice_invoice_item table
-     *
-     * @param Schema $schema
-     */
-    protected function createMarelloInvoiceInvoiceTypeTable(Schema $schema)
-    {
-        $table = $schema->createTable('marello_invoice_invoice_type');
-        $table->addColumn('name', 'string', ['notnull' => true]);
-        $table->addColumn('label', 'string', ['length' => 255]);
-        $table->setPrimaryKey(['name']);
     }
 
     /**
@@ -71,6 +57,7 @@ class MarelloInvoiceBundleInstaller implements Installation
         $table->addColumn('order_id', 'integer', ['notnull' => true]);
         $table->addColumn('currency', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('type', 'string', ['notnull' => true]);
+        $table->addColumn('invoice_type', 'string', ['notnull' => false]);
         $table->addColumn('status', 'string', ['notnull' => false, 'length' => 10]);
         $table->addColumn('customer_id', 'integer', ['notnull' => false]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
@@ -113,6 +100,7 @@ class MarelloInvoiceBundleInstaller implements Installation
     {
         $table = $schema->createTable('marello_invoice_invoice_item');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('invoice_item_type', 'string', []);
         $table->addColumn('invoice_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_id', 'integer', ['notnull' => false]);
         $table->addColumn('product_name', 'string', ['length' => 255]);
@@ -152,12 +140,6 @@ class MarelloInvoiceBundleInstaller implements Installation
     protected function addMarelloInvoiceInvoiceForeignKeys(Schema $schema)
     {
         $table = $schema->getTable('marello_invoice_invoice');
-        $table->addForeignKeyConstraint(
-            $schema->getTable('marello_invoice_invoice_type'),
-            ['type'],
-            ['name'],
-            ['onDelete' => 'CASCADE', 'onUpdate' => null]
-        );
         $table->addForeignKeyConstraint(
             $schema->getTable('oro_organization'),
             ['organization_id'],
