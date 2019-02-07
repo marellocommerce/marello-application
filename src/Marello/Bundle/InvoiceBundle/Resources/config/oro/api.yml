@@ -20,6 +20,8 @@ api:
         Marello\Bundle\InvoiceBundle\Entity\Invoice:
             documentation_resource: '@MarelloInvoiceBundle/Resources/doc/api/invoice.md'
             fields:
+                invoiceType:
+                    exclude: true
                 createdAt:
                     exclude: true
                 updatedAt:
@@ -77,8 +79,10 @@ api:
                 delete_relationship: false
 
         Marello\Bundle\InvoiceBundle\Entity\Creditmemo:
-            documentation_resource: '@MarelloInvoiceBundle/Resources/doc/api/invoice.md'
+            documentation_resource: '@MarelloInvoiceBundle/Resources/doc/api/creditmemo.md'
             fields:
+                invoiceType:
+                    exclude: true
                 createdAt:
                     exclude: true
                 updatedAt:
@@ -94,12 +98,12 @@ api:
                         data_type: string
                         allow_array: true
                         property_path: invoiceNumber
-                        description: 'Filter by invoice number'
+                        description: 'Filter by creditmemo number'
                     invoiceReference:
                         data_type: string
                         allow_array: true
                         property_path: invoiceReference
-                        description: 'Filter by invoice reference'
+                        description: 'Filter by creditmemo reference'
                     createdAt:
                         exclude: true
                     updatedAt:
@@ -127,7 +131,7 @@ api:
                         data_type: integer
                         allow_array: true
                         property_path: invoice
-                        description: 'Filter by invoice ID'
+                        description: 'Filter by creditmemo ID'
             actions:
                 create: false
                 delete: false

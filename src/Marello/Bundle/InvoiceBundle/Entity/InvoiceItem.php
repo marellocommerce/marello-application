@@ -9,9 +9,9 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Marello\Bundle\InvoiceBundle\Model\ExtendInvoiceItem;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  */
-class InvoiceItem extends AbstractInvoiceItem
+class InvoiceItem extends ExtendInvoiceItem
 {
     /**
      * @var int
@@ -21,4 +21,22 @@ class InvoiceItem extends AbstractInvoiceItem
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var Invoice
+     *
+     * @ORM\ManyToOne(targetEntity="Invoice", inversedBy="items")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $invoice;
 }

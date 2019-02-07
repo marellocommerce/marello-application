@@ -30,6 +30,7 @@ marello:
         shipping_amount_excl_tax.label: Shipping Amount Excluding Tax
         organization.label:         Organization
         type.label:                 Invoice Type
+        invoice_type.label:         Invoice Type
 
         creditmemo:
             id.label:                   Id
@@ -62,6 +63,7 @@ marello:
             shipping_amount_excl_tax.label: Shipping Amount Excluding Tax
             organization.label:         Organization
             type.label:                 Invoice Type
+            invoice_type.label:         Invoice Type
 
         datablock:
             general:                General
@@ -137,6 +139,7 @@ marello:
             shipping_amount_excl_tax.label: Shipping Amount Excluding Tax
             organization.label:         Organization
             type.label:                 Invoice Type
+            invoice_type.label:         Invoice Type
 
         abstractinvoiceitem:
             id.label:                 Id

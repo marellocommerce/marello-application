@@ -4,10 +4,14 @@ namespace Marello\Bundle\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
+use Marello\Bundle\InvoiceBundle\Model\ExtendInvoiceItem;
+
 /**
  * @ORM\Entity
  */
-class CreditmemoItem extends AbstractInvoiceItem
+class CreditmemoItem extends ExtendInvoiceItem
 {
     /**
      * @var int
@@ -17,4 +21,22 @@ class CreditmemoItem extends AbstractInvoiceItem
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var Creditmemo
+     *
+     * @ORM\ManyToOne(targetEntity="Creditmemo", inversedBy="items")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $invoice;
 }

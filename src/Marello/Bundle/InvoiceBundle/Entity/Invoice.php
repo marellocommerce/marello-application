@@ -3,14 +3,16 @@
 namespace Marello\Bundle\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
 use Marello\Bundle\InvoiceBundle\Model\ExtendInvoice;
 
 /**
  * @ORM\Entity
  */
-class Invoice extends AbstractInvoice
+class Invoice extends ExtendInvoice
 {
     const INVOICE_TYPE = 'invoice';
 
@@ -25,10 +27,18 @@ class Invoice extends AbstractInvoice
 
     /**
      * @var string
+     */
+    protected $invoiceType = self::INVOICE_TYPE;
+
+    /**
+     * @var Collection|InvoiceItem[]
+     *
+     * @ORM\OneToMany(targetEntity="InvoiceItem", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
+     *          "email"={
+     *              "available_in_template"=true
      *          },
      *          "dataaudit"={
      *              "auditable"=true
@@ -36,5 +46,5 @@ class Invoice extends AbstractInvoice
      *      }
      * )
      */
-    protected $type = self::INVOICE_TYPE;
+    protected $items;
 }

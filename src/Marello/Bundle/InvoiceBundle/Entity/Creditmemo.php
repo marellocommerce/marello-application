@@ -3,13 +3,16 @@
 namespace Marello\Bundle\InvoiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+
+use Marello\Bundle\InvoiceBundle\Model\ExtendInvoice;
 
 /**
  * @ORM\Entity
  */
-class Creditmemo extends AbstractInvoice
+class Creditmemo extends ExtendInvoice
 {
     const CREDITMEMO_TYPE = 'creditmemo';
 
@@ -24,10 +27,18 @@ class Creditmemo extends AbstractInvoice
 
     /**
      * @var string
+     */
+    protected $invoiceType = self::CREDITMEMO_TYPE;
+
+    /**
+     * @var Collection|CreditmemoItem[]
+     *
+     * @ORM\OneToMany(targetEntity="CreditmemoItem", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OrderBy({"id" = "ASC"})
      * @Oro\ConfigField(
      *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
+     *          "email"={
+     *              "available_in_template"=true
      *          },
      *          "dataaudit"={
      *              "auditable"=true
@@ -35,5 +46,5 @@ class Creditmemo extends AbstractInvoice
      *      }
      * )
      */
-    protected $type = self::CREDITMEMO_TYPE;
+    protected $items;
 }

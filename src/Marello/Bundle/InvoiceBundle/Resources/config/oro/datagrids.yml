@@ -8,7 +8,7 @@ datagrids:
                     - sc.name as salesChannelName
                     - o.orderNumber as orderNumber
                 from:
-                    - { table: MarelloInvoiceBundle:Invoice, alias: i }
+                    - { table: MarelloInvoiceBundle:AbstractInvoice, alias: i }
                 join:
                     left:
                         - { join: i.salesChannel, alias: sc }
@@ -19,7 +19,7 @@ datagrids:
             invoiceNumber:
                 label:            marello.invoice.invoice_number.label
                 frontend_type:    string
-            type:
+            invoiceType:
                 label:            marello.invoice.type.label
                 frontend_type:    string
             orderNumber:
@@ -52,8 +52,8 @@ datagrids:
             columns:
                 invoiceNumber:
                     data_name: i.invoiceNumber
-                type:
-                    data_name: i.type
+                invoiceType:
+                    data_name: i.invoiceType
                 orderNumber:
                     data_name: o.orderNumber
                 salesChannel:
@@ -75,9 +75,13 @@ datagrids:
                 invoiceNumber:
                     type: string
                     data_name: i.invoiceNumber
-                type:
-                    type: string
-                    data_name: i.type
+                invoiceType:
+                    type: choice
+                    data_name: i.invoiceType
+                    options:
+                        field_options:
+                            multiple:   false
+                            choices:    '@marello_invoice.provider.invoice_type_choices->getInvoiceTypes()'
                 orderNumber:
                     type: string
                     data_name: o.orderNumber
@@ -134,7 +138,7 @@ datagrids:
                     - product.sku as productSku
                     - product.name as productName
                 from:
-                    - { table: MarelloInvoiceBundle:InvoiceItem, alias: i}
+                    - { table: MarelloInvoiceBundle:AbstractInvoiceItem, alias: i}
                 join:
                     left:
                         - { join: i.invoice, alias: inv }

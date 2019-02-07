@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\InvoiceBundle\Controller;
 
-use Marello\Bundle\InvoiceBundle\Entity\Invoice;
+use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,7 +16,7 @@ class InvoiceController extends Controller
      */
     public function indexAction()
     {
-        return ['entity_class' => 'MarelloInvoiceBundle:Invoice'];
+        return ['entity_class' => AbstractInvoice::class];
     }
 
     /**
@@ -24,11 +24,11 @@ class InvoiceController extends Controller
      * @Config\Template
      * @AclAncestor("marello_invoice_view")
      *
-     * @param Invoice $invoice
+     * @param AbstractInvoice $invoice
      *
      * @return array
      */
-    public function viewAction(Invoice $invoice)
+    public function viewAction(AbstractInvoice $invoice)
     {
         return ['entity' => $invoice];
     }

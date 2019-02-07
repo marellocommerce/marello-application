@@ -14,7 +14,6 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\InvoiceBundle\Model\ExtendInvoice;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
@@ -24,7 +23,7 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\ChannelAwareInterface;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
  * @ORM\DiscriminatorMap({"invoice" = "Invoice", "creditmemo" = "Creditmemo"})
@@ -75,6 +74,7 @@ abstract class AbstractInvoice implements
 
     /**
      * @var string
+     * @ORM\Column(name="invoice_type", type="string", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={
@@ -86,7 +86,7 @@ abstract class AbstractInvoice implements
      *      }
      * )
      */
-    protected $type;
+    protected $invoiceType;
 
     /**
      * @var string
@@ -299,20 +299,7 @@ abstract class AbstractInvoice implements
     protected $salesChannel;
 
     /**
-     * @var Collection|InvoiceItem[]
-     *
-     * @ORM\OneToMany(targetEntity="AbstractInvoiceItem", mappedBy="invoice", cascade={"persist"}, orphanRemoval=true)
-     * @ORM\OrderBy({"id" = "ASC"})
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "email"={
-     *              "available_in_template"=true
-     *          },
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
+     * @var Collection|AbstractInvoiceItem[]
      */
     protected $items;
 
@@ -410,9 +397,20 @@ abstract class AbstractInvoice implements
     /**
      * @return string
      */
-    public function getType()
+    public function getInvoiceType()
     {
-        return $this->type;
+        return $this->invoiceType;
+    }
+
+    /**
+     * @param string $invoiceType
+     * @return AbstractInvoice
+     */
+    public function setInvoiceType($invoiceType)
+    {
+        $this->invoiceType = $invoiceType;
+
+        return $this;
     }
 
     /**

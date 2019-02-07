@@ -14,7 +14,7 @@ use Oro\Bundle\CurrencyBundle\Entity\PriceAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity
  * @Oro\Config(
  *      defaultValues={
  *          "dataaudit"={
@@ -45,19 +45,6 @@ abstract class AbstractInvoiceItem implements
 
     /**
      * @var AbstractInvoice
-     *
-     * @ORM\ManyToOne(targetEntity="AbstractInvoice", inversedBy="items")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "full"=true
-     *          },
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          }
-     *      }
-     * )
      */
     protected $invoice;
 
