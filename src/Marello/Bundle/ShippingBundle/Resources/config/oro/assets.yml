@@ -1,4 +1,3 @@
-assets:
-    css:
-        marelloshipping:
-            - 'bundles/marelloshipping/scss/main.scss'
+css:
+    inputs:
+        - 'bundles/marelloshipping/css/scss/main.scss'
