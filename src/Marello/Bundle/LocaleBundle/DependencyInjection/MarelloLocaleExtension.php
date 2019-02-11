@@ -37,9 +37,4 @@ class MarelloLocaleExtension extends Extension
     {
         return self::ALIAS;
     }
-
-    public function prepend(ContainerBuilder $container)
-    {
-        // ...
-    }
 }
