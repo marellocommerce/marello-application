@@ -1,31 +1,35 @@
-Marello Application
+Marello Unified Commerce Application
 ==============================
 
-Marello is an Open Source ERP for Commerce tool.
+Marello Unified Commerce Management provides capabilities to meet and exceed rising expectations in commerce. Add and manage any sales channel, gain real-time insight into your B2C and B2B orders, inventory, fulfillment, customers and more. A unique unified experience allows shoppers to buy anywhere, fulfill anywhere, and return anywhere with one piece of software, one single version of the truth.
 
 This document contains information on how to download, install, and start
 using Marello.
 
 ## Requirements
 
-Marello is a Symfony 2 based application with the following requirements:
+Marello is a Symfony 3.4 based application with the following requirements:
 
-* PHP 7.0 or above with command line interface
+* PHP 7.1.26 or above with command line interface
 * PHP Extensions
-    * GD
-    * Mcrypt
+    * Ctype
+    * Fileinfo
+    * GD 2.0 and above
+    * Intl (ICU library 4.4 and above)
     * JSON
-    * ctype
-    * Tokenizer
+    * Mbstring
+    * Mcrypt
+    * Mysql
+    * PCRE 8.0 and above
     * SimpleXML
-    * PCRE
-    * ICU
-* MySQL 5.1 or above
-* PostgreSQL 9.1 or above
+    * Tokenizer
+    * Xml
+    * Zip    
+* MySQL 5.7 or above
 
 ## Installation instructions
 
-As both Symfony and Marello use [Composer][2] to manage their dependencies, this is the recommended way to install Marello.
+As both Symfony and Marello use [Composer][1] to manage their dependencies, this is the recommended way to install Marello.
 
 - Clone Marello application repository:
 
@@ -39,9 +43,9 @@ where x.y.z is the latest [release tag](https://github.com/marellocommerce/marel
     git clone https://github.com/marellocommerce/marello-application.git
 ```
 
-- Install [Composer][3] globally following the official Composer [installation documentation][4]
+- Install [Composer][1] globally following the official Composer installation documentation
 
-- Make sure that you have [NodeJS][4] installed
+- Make sure that you have [NodeJS][3] installed
 
 - Install Marello dependencies with composer. If installation process seems too slow you can use `--prefer-dist` option. Go to marello-application folder and run composer installation:
 
@@ -61,7 +65,7 @@ memory_limit=1024M
 - Install application and admin user with Installation Wizard by opening install.php in the browser or from CLI:
 
 ```bash  
-php app/console oro:install --env prod
+php bin/console oro:install --env prod
 ```
 
 **Note** If the installation process times out, add the `--timeout=0` argument to the oro:install command.
@@ -69,25 +73,25 @@ php app/console oro:install --env prod
 - Enable WebSockets messaging
 
 ```bash
-php app/console clank:server --env prod
+php bin/console gos:websocket:server --env prod
 ```
 
 - Configure crontab or scheduled tasks execution to run the command below every minute:
 
 ```bash
-php app/console oro:cron --env prod
+php bin/console oro:cron --env prod
 
 ```
 - Launch the message queue processing:
 ```bash
-php app/console oro:message-queue:consume --env=prod
+php bin/console oro:message-queue:consume --env=prod
 ```
 **Note** We do recommend to use a supervisor for running the ``oro:message-queue:consume`` command. This will make sure that the command and
 the consumer will run all the time. This has become important for every Oro Platform based application since a lot of background tasks depend
- on the consumer to run. For more information about configuration and what supervisor can do for you can either through the [Oro(CRM) docs][6] or the
- [site of Supervisord][7].
+ on the consumer to run. For more information about configuration and what supervisor can do for you can either be found in the [Oro(CRM) docs][5] or the
+ [site of Supervisord][6].
  
-**Note:** ``app/console`` is a path from project root folder. Please make sure you are using full path for crontab configuration or if you running console command from other location.
+**Note:** ``bin/console`` is a path from project root folder. Please make sure you are using full path for crontab configuration or if you running console command from other location.
 
 ## Installation notes
 
@@ -105,7 +109,7 @@ And ensure that timeout has default value
 
     wait_timeout = 28800
 
-See [Optimizing InnoDB Disk I/O][3] for more
+See [Optimizing InnoDB Disk I/O][2] for more
 
 ## PostgreSQL installation notes
 
@@ -118,16 +122,15 @@ CREATE EXTENSION "uuid-ossp";
 
 ## Web Server Configuration
 
-The Marello application is based on the Symfony standard application so web server configuration recommendations are the [same][5].
+The Marello application is based on the Symfony standard application so web server configuration recommendations are the [same][4].
 
 ## Package Manager Configuration
 
 Github OAuth token should be configured in package manager settings
 
-[1]:  http://symfony.com/doc/2.8/book/installation.html
-[2]:  http://getcomposer.org/
-[3]:  http://dev.mysql.com/doc/refman/5.6/en/optimizing-innodb-diskio.html
-[4]:  https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
-[5]:  http://symfony.com/doc/2.8/cookbook/configuration/web_server_configuration.html
-[6]:  https://www.orocrm.com/documentation/2.0/book/installation#activating-background-tasks
-[7]:  http://supervisord.org/
+[1]:  https://getcomposer.org/
+[2]:  https://dev.mysql.com/doc/refman/5.6/en/optimizing-innodb-diskio.html
+[3]:  https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
+[4]:  https://symfony.com/doc/3.4/setup/web_server_configuration.html
+[5]:  https://oroinc.com/orocrm/doc/current/install-upgrade/installation-quick-start-dev/crm#step-4-post-installation-environment-configuration
+[6]:  https://supervisord.org/
