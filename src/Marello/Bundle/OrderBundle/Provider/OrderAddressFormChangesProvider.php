@@ -51,7 +51,7 @@ class OrderAddressFormChangesProvider implements FormChangesProviderInterface
                 ->createNamedBuilder($orderFormName)
                 ->add(
                     $this->fieldName,
-                    $field->getConfig()->getType()->getName(),
+                    get_class($field->getConfig()->getType()->getInnerType()),
                     $field->getConfig()->getOptions()
                 )
                 ->getForm();

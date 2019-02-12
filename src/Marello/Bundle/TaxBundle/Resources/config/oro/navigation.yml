@@ -6,6 +6,7 @@ navigation:
                 uri: '#'
                 extras:
                     position: 30
+                    icon: fa-filter
 
             marello_tax_code_list:
                 label: 'marello.tax.taxcode.entity_plural_label'

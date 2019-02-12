@@ -2,17 +2,20 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Cache;
 
-use Oro\Bundle\AddressBundle\Entity\Country;
-use Oro\Bundle\AddressBundle\Entity\Region;
-use Marello\Bundle\UPSBundle\Cache\ShippingPriceCacheKey;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
-use Marello\Bundle\UPSBundle\Model\Package;
-use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
-use Marello\Bundle\UPSBundle\Tests\Unit\Cache\Stub\PriceRequestAddressStub;
-use Oro\Component\Testing\Unit\EntityTestCaseTrait;
-use Oro\Component\Testing\Unit\EntityTrait;
+use PHPUnit\Framework\TestCase;
 
-class ShippingPriceCacheKeyTest extends \PHPUnit_Framework_TestCase
+use Oro\Bundle\AddressBundle\Entity\Region;
+use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Bundle\AddressBundle\Entity\Country;
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+
+use Marello\Bundle\UPSBundle\Model\Package;
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
+use Marello\Bundle\UPSBundle\Cache\ShippingPriceCacheKey;
+use Marello\Bundle\UPSBundle\Tests\Unit\Cache\Stub\PriceRequestAddressStub;
+
+class ShippingPriceCacheKeyTest extends TestCase
 {
     use EntityTrait;
     use EntityTestCaseTrait;

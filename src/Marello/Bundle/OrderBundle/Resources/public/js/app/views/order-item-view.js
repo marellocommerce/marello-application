@@ -21,11 +21,6 @@ define(function(require) {
         /**
          * @property {Object}
          */
-        itemIdentifier: null,
-
-        /**
-         * @property {Object}
-         */
         data: {},
 
         /**
@@ -58,14 +53,7 @@ define(function(require) {
          * Trigger subtotals update
          */
         updateOrderItemData: function() {
-            if (this.itemIdentifier &&
-                this.itemIdentifier === this._getItemIdentifier()
-            ) {
-                this.setOrderItemData();
-                return;
-            }
-            var productId = this._getProductId();
-
+            var productId = this.getProductId();
             if (productId.length === 0) {
                 this.setOrderItemData({});
             } else {
@@ -73,6 +61,10 @@ define(function(require) {
             }
         },
 
+        /**
+         * @inheritDoc
+         * @param data
+         */
         setOrderItemData: function(data) {
             if (data === undefined || typeof(data) == 'undefined' || data.length == 0) {
                 return;
@@ -99,7 +91,6 @@ define(function(require) {
                 $priceValue = '';
             }
 
-
             this.fieldsByName.price.val($priceValue);
             this.fieldsByName.taxCode.val(this.getTaxCode());
 
@@ -125,7 +116,13 @@ define(function(require) {
          * @returns {Array|Null}
          */
         getRowTotals: function() {
-            return !_.isEmpty(this.data['row_totals']) ? this.data['row_totals'] : null;
+            if (this.getRowItemIdentifier() === null) {
+                return null;
+            }
+            if (_.isEmpty(this.data['row_totals'])) {
+                return null;
+            }
+            return !_.isEmpty(this.data['row_totals'][this.getRowItemIdentifier()]) ? this.data['row_totals'][this.getRowItemIdentifier()] : null;
         },
 
         /**
@@ -167,9 +164,12 @@ define(function(require) {
          * @private
          */
         _getItemIdentifier: function() {
-            var productId = this._getProductId();
+            var productId = this.getProductId();
+            if (productId.length === 0) {
+                return null;
+            }
 
-            return productId.length === 0 ? null : 'product-id-' + productId;
+            return 'product-id-' + productId;
         },
 
         /**

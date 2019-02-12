@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\SupplierBundle\Controller;
 
+use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -148,7 +149,7 @@ class SupplierController extends Controller
         $responseData = array(
             'saved' => false,
         );
-        $form  = $this->createForm('marello_address', $address);
+        $form  = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

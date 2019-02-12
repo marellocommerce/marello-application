@@ -2,15 +2,18 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\OrderTax\Mapper;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Marello\Bundle\TaxBundle\Model\Taxable;
-use Marello\Bundle\TaxBundle\OrderTax\Mapper\OrderItemMapper;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTrait;
 
-class OrderItemMapperTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\TaxBundle\Model\Taxable;
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\TaxBundle\OrderTax\Mapper\OrderItemMapper;
+
+class OrderItemMapperTest extends TestCase
 {
     use EntityTrait;
 

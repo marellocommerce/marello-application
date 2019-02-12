@@ -1,12 +1,12 @@
 {
     "name": "marellocommerce/marello",
-    "description": "Marello ERP for Commerce",
+    "description": "Marello Unified Commerce Management",
     "homepage": "https://github.com/marellocommerce/marello.git",
     "license": "OSL-3.0",
     "authors": [
         {
             "name": "Madia B.V.",
-            "homepage": "http://www.marello.com"
+            "homepage": "https://www.marello.com"
         }
     ],
     "repositories": {
@@ -20,16 +20,16 @@
         }
     },
     "require": {
-        "php": "7.1.*",
-        "oro/platform": "2.6.*",
-        "oro/platform-serialised-fields": "2.6.*",
-        "oro/calendar-bundle": "2.6.*"
+        "php": ">=7.1",
+        "oro/platform": "3.1.*",
+        "oro/platform-serialised-fields": "3.1.*",
+        "oro/calendar-bundle": "3.1.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "1.5.x-dev"
+            "dev-master": "2.x-dev"
         }
     },
     "autoload": {

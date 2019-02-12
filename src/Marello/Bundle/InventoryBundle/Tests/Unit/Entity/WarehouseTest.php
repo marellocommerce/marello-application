@@ -2,14 +2,17 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use PHPUnit\Framework\TestCase;
 
-class WarehouseTest extends \PHPUnit_Framework_TestCase
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+
+class WarehouseTest extends TestCase
 {
     use EntityTestCaseTrait;
 

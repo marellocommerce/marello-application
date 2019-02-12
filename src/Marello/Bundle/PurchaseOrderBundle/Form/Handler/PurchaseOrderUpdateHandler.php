@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class PurchaseOrderUpdateHandler
 {
@@ -22,16 +23,16 @@ class PurchaseOrderUpdateHandler
      * Constructor.
      *
      * @param FormInterface         $form
-     * @param Request               $request
+     * @param RequestStack          $requestStack
      * @param EntityManager         $entityManager
      */
     public function __construct(
         FormInterface $form,
-        Request $request,
+        RequestStack  $requestStack,
         EntityManager $entityManager
     ) {
         $this->form             = $form;
-        $this->request          = $request;
+        $this->request          = $requestStack->getCurrentRequest();
         $this->entityManager    = $entityManager;
     }
 

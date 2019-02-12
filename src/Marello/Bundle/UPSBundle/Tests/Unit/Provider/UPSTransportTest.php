@@ -2,18 +2,22 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Provider;
 
-use Marello\Bundle\UPSBundle\Client\Url\Provider\UpsClientUrlProviderInterface;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
-use Marello\Bundle\UPSBundle\Form\Type\UPSTransportSettingsType;
-use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
-use Marello\Bundle\UPSBundle\Provider\UPSTransport;
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientFactoryInterface;
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
-use Oro\Component\Testing\Unit\EntityTrait;
 use Psr\Log\LoggerInterface;
 
-class UPSTransportTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestClientFactoryInterface;
+
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Provider\UPSTransport;
+use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
+use Marello\Bundle\UPSBundle\Form\Type\UPSTransportSettingsType;
+use Marello\Bundle\UPSBundle\Client\Url\Provider\UpsClientUrlProviderInterface;
+
+class UPSTransportTest extends TestCase
 {
     use EntityTrait;
 

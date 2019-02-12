@@ -23,20 +23,69 @@ class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixt
     protected $data = [
         [
             'name' => 'Europe Group',
-            'description' => 'Europe Sales Channel Group',
+            'description' => 'Europe Sales Channel group',
             'system' => false,
             'channels' => [
                 'sales_channel_de_webshop',
                 'sales_channel_fr_webshop',
                 'sales_channel_uk_webshop',
+                'sales_channel_de_outlet_webshop'
             ]
         ],
         [
             'name' => 'US Group',
-            'description' => 'US Sales Channel Group',
+            'description' => 'US Sales Channel group',
             'system' => false,
             'channels' => [
                 'sales_channel_us_webshop'
+            ]
+        ],
+        [
+            'name' => 'Sales Channel DE Berlin',
+            'description' => 'Sales Channel DE Berlin group',
+            'system' => false,
+            'channels' => [
+                'sales_channel_de_berlin'
+            ]
+        ],
+        [
+            'name' => 'Sales Channel DE Frankfurt',
+            'description' => 'Sales Channel DE Frankfurt group',
+            'system' => false,
+            'channels' => [
+                'sales_channel_de_frankfurt'
+            ]
+        ],
+        [
+            'name' => 'Sales Channel DE München',
+            'description' => 'Sales Channel DE München group',
+            'system' => false,
+            'channels' => [
+                'sales_channel_de_munchen'
+            ]
+        ],
+        [
+            'name' => 'Sales Channel DE Dortmund',
+            'description' => 'Sales Channel DE Dortmund group',
+            'system' => false,
+            'channels' => [
+                'sales_channel_de_dortmund'
+            ]
+        ],
+        [
+            'name' => 'Sales Channel DE eBay',
+            'description' => 'Sales Channel DE eBay group',
+            'system' => false,
+            'channels' => [
+                'sales_channel_de_ebay'
+            ]
+        ],
+        [
+            'name' => 'Sales Channel US Amazon',
+            'description' => 'Sales Channel US Amazon group',
+            'system' => false,
+            'channels' => [
+                'sales_channel_us_amazon'
             ]
         ]
     ];
@@ -61,10 +110,8 @@ class LoadSalesChannelGroupData extends AbstractFixture implements DependentFixt
         foreach ($this->data as $values) {
             $group = new SalesChannelGroup();
             $group
-                ->setName(
-                    sprintf('%s %s', $organization->getName(), $values['name'])
-                )
-                ->setDescription(sprintf('%s for %s organization', $values['description'], $organization->getName()))
+                ->setName($values['name'])
+                ->setDescription($values['description'])
                 ->setSystem($values['system'])
                 ->setOrganization($organization);
             $this->manager->persist($group);

@@ -10,6 +10,7 @@ use Marello\Bundle\PricingBundle\Model\PricingAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
@@ -78,7 +79,7 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
         $form->add(
             PricingAwareInterface::CHANNEL_PRICING_STATE_KEY,
-            'checkbox',
+            CheckboxType::class,
             [
                 'label' => 'marello.pricing.productchannelprice.form.pricing_enabled.label',
                 'mapped' => false,
@@ -92,9 +93,7 @@ class ChannelPricingSubscriber implements EventSubscriberInterface
             'channelPrices',
             AssembledChannelPriceListCollectionType::class,
             [
-                'options' => [
-                    'excluded_channels' => $channels
-                ]
+               'excluded_channels' => $channels
             ]
         );
 

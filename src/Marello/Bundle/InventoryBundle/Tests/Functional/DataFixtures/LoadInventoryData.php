@@ -9,9 +9,9 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\InventoryBalancer;
-use Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryHandler;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
@@ -176,16 +176,16 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
         foreach ($salesChannels as $salesChannel) {
             $salesChannelGroups[$salesChannel->getGroup()->getId()] = $salesChannel->getGroup();
         }
-        /** @var VirtualInventoryHandler $handler */
-        $handler = $this->container->get('marello_inventory.model.virtualinventory.virtual_inventory_handler');
+        /** @var BalancedInventoryHandler $handler */
+        $handler = $this->container->get('marello_inventory.model.balancedinventory.balanced_inventory_handler');
         $balancedQty = ($inventoryQty / count($salesChannelGroups));
         foreach ($salesChannelGroups as $salesChannelGroup) {
-            /** @var VirtualInventoryLevel $level */
-            $level = $handler->findExistingVirtualInventory($product, $salesChannelGroup);
+            /** @var BalancedInventoryLevel $level */
+            $level = $handler->findExistingBalancedInventory($product, $salesChannelGroup);
             if (!$level) {
-                $level = $handler->createVirtualInventory($product, $salesChannelGroup, $balancedQty);
+                $level = $handler->createBalancedInventoryLevel($product, $salesChannelGroup, $balancedQty);
             }
-            $handler->saveVirtualInventory($level, true, true);
+            $handler->saveBalancedInventory($level, true, true);
         }
     }
 

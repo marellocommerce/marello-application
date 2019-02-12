@@ -10,7 +10,7 @@ data:
             cost: null
             weight: 0
             warranty: null
-            data: []
+            data: null
         relationships:
             productstatus:
                 data:

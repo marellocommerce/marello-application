@@ -1,6 +1,6 @@
 data:
     -
-        type: categories
+        type: marellocategories
         id: '<toString(@category1->id)>'
         attributes:
             name: 'category with multiple products'
@@ -20,7 +20,7 @@ data:
                     type: organizations
                     id: '1'
     -
-        type: categories
+        type: marellocategories
         id: '<toString(@category2->id)>'
         attributes:
             name: 'category with a single product'
@@ -37,7 +37,7 @@ data:
                     type: organizations
                     id: '1'
     -
-        type: categories
+        type: marellocategories
         id: '<toString(@category3->id)>'
         attributes:
             name: 'category without products'

@@ -179,7 +179,7 @@ class SalesChannelGroupControllerTest extends WebTestCase
     protected function assertSalesChannelGroupSave(Crawler $crawler, $name, $description, array $channels)
     {
         $token = $this->getContainer()->get('security.csrf.token_manager')
-            ->getToken(SalesChannelGroupType::NAME)->getValue();
+            ->getToken(SalesChannelGroupType::BLOCK_PREFIX)->getValue();
 
         $channelIds = array_map(
             function (SalesChannel $channel) {
@@ -197,7 +197,7 @@ class SalesChannelGroupControllerTest extends WebTestCase
 
         $formData = [
             'input_action' => '{"route":"marello_sales_saleschannelgroup_view","params":{"id":"$id"}}',
-            SalesChannelGroupType::NAME => [
+            SalesChannelGroupType::BLOCK_PREFIX => [
                 'name' => $name,
                 'description' => $description,
                 'salesChannels' => implode(',', $channelIds),

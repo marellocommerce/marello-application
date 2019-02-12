@@ -2,22 +2,23 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Tests\Unit\Workflow\Action;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-use Oro\Component\ConfigExpression\ContextAccessor;
-use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use PHPUnit\Framework\TestCase;
 
-use Marello\Bundle\PurchaseOrderBundle\Workflow\Action\TransitCompleteAction;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Component\ConfigExpression\ContextAccessor;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
+
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\PurchaseOrderBundle\Workflow\Action\TransitCompleteAction;
 
-class TransitCompleteActionTest extends \PHPUnit_Framework_TestCase
+class TransitCompleteActionTest extends TestCase
 {
     /** @var TransitCompleteAction $action */
     protected $action;

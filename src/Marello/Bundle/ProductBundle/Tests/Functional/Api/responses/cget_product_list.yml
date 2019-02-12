@@ -10,7 +10,7 @@ data:
             cost: null
             weight: 0
             warranty: null
-            data: []
+            data: null
         relationships:
             productstatus:
                 data:
@@ -51,7 +51,7 @@ data:
             cost: null
             weight: 2
             warranty: null
-            data: []
+            data: null
         relationships:
             productstatus:
                 data:
@@ -98,7 +98,7 @@ data:
             cost: null
             weight: 5
             warranty: null
-            data: []
+            data: null
         relationships:
             productstatus:
                 data:
@@ -145,7 +145,7 @@ data:
             cost: null
             weight: 10
             warranty: null
-            data: []
+            data: null
         relationships:
             productstatus:
                 data:

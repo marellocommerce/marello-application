@@ -33,7 +33,7 @@ class OrderAjaxControllerTest extends WebTestCase
             'POST',
             $this->getUrl('marello_order_form_changes'),
             [
-                OrderType::NAME => [
+                OrderType::BLOCK_PREFIX => [
                     'salesChannel' => $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId(),
                     'items' => [
                         ['product' => $productIds[0], 'quantity' => 1],

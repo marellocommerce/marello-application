@@ -5,7 +5,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SystemGroupSalesChannelMultiselectType extends AbstractSalesChannelMultiSelectType
 {
-    const NAME = 'marello_system_group_sales_saleschannel_multi_select';
+    const BLOCK_PREFIX = 'marello_system_group_sales_saleschannel_multi_select';
 
     /**
      * {@inheritdoc}
@@ -26,16 +26,8 @@ class SystemGroupSalesChannelMultiselectType extends AbstractSalesChannelMultiSe
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

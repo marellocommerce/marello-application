@@ -13,7 +13,7 @@ define(function(require) {
      */
     AbstractItemView = BaseView.extend({
         options: {
-            ftid: '',
+            ftid: ''
         },
 
         /**
@@ -30,6 +30,11 @@ define(function(require) {
          * @property {Object}
          */
         change: {},
+
+        /**
+         * @property {Object}
+         */
+        rowItemIdentifier: 'lineItemId',
 
         /**
          * @inheritDoc
@@ -57,14 +62,32 @@ define(function(require) {
                 var name = self.normalizeName($field.data('ftid').replace(self.options.ftid + '_', ''));
                 self.fieldsByName[name] = $field;
             });
+
+            this.initRowItemIdentifier();
+        },
+
+        /**
+         * @inheritDoc
+         */
+        initRowItemIdentifier: function() {
+            var lineItemName = this.options.ftid;
+            var rowItemIdentifier = lineItemName.split('_');
+            this.fieldsByName[this.rowItemIdentifier] = rowItemIdentifier[rowItemIdentifier.length - 1];
         },
 
         /**
          * @returns {String}
          * @private
          */
-        _getProductId: function() {
+        getProductId: function() {
             return this.fieldsByName.hasOwnProperty('product') ? this.fieldsByName.product.val() : '';
+        },
+
+        /**
+         * @returns {number|null}
+         */
+        getRowItemIdentifier: function() {
+            return this.fieldsByName.hasOwnProperty('lineItemId') ? this.fieldsByName.lineItemId : null;
         },
 
         /**

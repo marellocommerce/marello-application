@@ -1,5 +1,5 @@
 data:
-      type: categories
+      type: marellocategories
       attributes:
           code: 'new_category'
           name: 'new category'

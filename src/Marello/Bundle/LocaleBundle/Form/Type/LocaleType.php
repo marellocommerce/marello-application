@@ -3,11 +3,14 @@
 namespace Marello\Bundle\LocaleBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\LocaleType as SymfonyLocaleType;
 use Symfony\Component\Intl\Intl;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LocaleType extends AbstractType
 {
+    const BLOCK_PREFIX = 'marello_locale';
+
     /**
      * {@inheritdoc}
      */
@@ -25,15 +28,7 @@ class LocaleType extends AbstractType
      */
     public function getParent()
     {
-        return 'locale';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
+        return SymfonyLocaleType::class;
     }
 
     /**
@@ -41,6 +36,6 @@ class LocaleType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'marello_locale';
+        return self::BLOCK_PREFIX;
     }
 }

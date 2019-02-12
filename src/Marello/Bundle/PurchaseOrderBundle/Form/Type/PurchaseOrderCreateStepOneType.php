@@ -3,20 +3,24 @@
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PurchaseOrderCreateStepOneType extends AbstractType
 {
-    const NAME = 'marello_purchase_order_create_step_one';
+    const BLOCK_PREFIX = 'marello_purchase_order_create_step_one';
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(
                 'supplier',
-                'marello_supplier_select_form',
+                SupplierSelectType::class,
                 [
                     'required'       => true,
                     'label'          => 'marello.supplier.entity_label',
@@ -26,6 +30,9 @@ class PurchaseOrderCreateStepOneType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -35,12 +42,10 @@ class PurchaseOrderCreateStepOneType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

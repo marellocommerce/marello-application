@@ -10,7 +10,7 @@ use Marello\Bundle\CatalogBundle\Tests\Functional\DataFixtures\LoadCategoryData;
 
 class CategoryJsonApiTest extends RestJsonApiTestCase
 {
-    const TESTING_ENTITY = 'categories';
+    const TESTING_ENTITY = 'marellocategories';
 
     protected function setUp()
     {

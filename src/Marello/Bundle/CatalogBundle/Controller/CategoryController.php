@@ -2,26 +2,21 @@
 
 namespace Marello\Bundle\CatalogBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Marello\Bundle\CatalogBundle\Entity\Category;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class CategoryController extends Controller
 {
     /**
-     * @Config\Route(
-     *      "/{_format}",
-     *      name="marello_category_index",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format"="html"}
-     * )
+     * @Config\Route("/", name="marello_category_index")
      * @AclAncestor("marello_category_view")
      * @Config\Template
      */
     public function indexAction()
     {
-        return [];
+        return ['entity_class' => 'MarelloCatalogBundle:Category'];
     }
 
     /**

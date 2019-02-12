@@ -13,18 +13,22 @@ system_configuration:
     fields:
         marello_inventory.balance_threshold_percentage:
             data_type: percent
-            type: oro_percent
+            type: Oro\Bundle\FormBundle\Form\Type\OroPercentType
             options:
                 label: marello.inventory.system_configuration.fields.balance_threshold_percentage.label
                 tooltip: marello.inventory.system_configuration.fields.balance_threshold_percentage
                 required: true
+                constraints:
+                    - NotBlank: ~
 
         marello_inventory.balancing_strategy:
             data_type: string
-            type: marello_inventory_balancer_strategy_choice
+            type: Marello\Bundle\InventoryBundle\Form\Type\BalancerStrategyChoiceType
             options:
                 label: marello.inventory.system_configuration.fields.balancing_strategy.label
                 required: true
+                constraints:
+                    - NotBlank: ~
 
     tree:
         system_configuration:

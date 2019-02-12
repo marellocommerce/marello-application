@@ -2,6 +2,7 @@
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -9,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductSupplierSelectType extends AbstractType
 {
-    const NAME = 'marello_product_supplier_select';
+    const BLOCK_PREFIX = 'marello_product_supplier_select';
 
     /**
      * {@inheritdoc}
@@ -37,9 +38,11 @@ class ProductSupplierSelectType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $supplierId = $form->getParent()->getParent()->getParent()->get('supplier')->getData()->getId();
+        if ($data = $form->getParent()->getParent()->getParent()->get('supplier')->getData()) {
+            $supplierId = $data->getId();
 
-        $view->vars['grid_parameters'] = ['supplierId' => $supplierId];
+            $view->vars['grid_parameters'] = ['supplierId' => $supplierId];
+        }
     }
 
     /**
@@ -47,14 +50,14 @@ class ProductSupplierSelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'oro_entity_create_or_select_inline';
+        return OroEntitySelectOrCreateInlineType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

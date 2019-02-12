@@ -1,5 +1,5 @@
 oro_entity:
     entity_aliases:
         Marello\Bundle\CatalogBundle\Entity\Category:
-            alias: category
-            plural_alias: categories
+            alias: marellocategory
+            plural_alias: marellocategories

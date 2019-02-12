@@ -1,12 +1,13 @@
 <?php
 namespace Marello\Bundle\ProductBundle\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\Type\OroEntitySelectOrCreateInlineType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductSelectType extends AbstractType
 {
-    const NAME = 'marello_product_select';
+    const BLOCK_PREFIX = 'marello_product_select';
     
     /**
      * {@inheritdoc}
@@ -32,14 +33,14 @@ class ProductSelectType extends AbstractType
      */
     public function getParent()
     {
-        return 'oro_entity_create_or_select_inline';
+        return OroEntitySelectOrCreateInlineType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

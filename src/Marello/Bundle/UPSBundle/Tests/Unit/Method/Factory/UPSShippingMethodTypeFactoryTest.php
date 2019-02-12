@@ -2,18 +2,21 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Method\Factory;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Generator\IntegrationIdentifierGeneratorInterface;
-use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
-use Marello\Bundle\UPSBundle\Entity\ShippingService;
+
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Provider\UPSTransport;
+use Marello\Bundle\UPSBundle\Entity\ShippingService;
+use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache;
 use Marello\Bundle\UPSBundle\Factory\PriceRequestFactory;
+use Marello\Bundle\UPSBundle\Method\UPSShippingMethodType;
 use Marello\Bundle\UPSBundle\Method\Factory\UPSShippingMethodTypeFactory;
 use Marello\Bundle\UPSBundle\Method\Identifier\UPSMethodTypeIdentifierGeneratorInterface;
-use Marello\Bundle\UPSBundle\Method\UPSShippingMethodType;
-use Marello\Bundle\UPSBundle\Provider\UPSTransport;
 
-class UPSShippingMethodTypeFactoryTest extends \PHPUnit_Framework_TestCase
+class UPSShippingMethodTypeFactoryTest extends TestCase
 {
     /**
      * @var UPSMethodTypeIdentifierGeneratorInterface|\PHPUnit_Framework_MockObject_MockObject

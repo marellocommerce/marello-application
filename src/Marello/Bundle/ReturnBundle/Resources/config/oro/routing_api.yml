@@ -1,3 +1,0 @@
-marello_return_return_api:
-    resource:     "@MarelloReturnBundle/Controller/Api/Rest/ReturnController.php"
-    type:         rest

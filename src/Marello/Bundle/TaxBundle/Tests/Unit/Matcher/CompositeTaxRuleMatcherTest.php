@@ -2,16 +2,19 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Matcher;
 
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\AddressBundle\Entity\Region;
+use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Bundle\AddressBundle\Entity\Address;
+use Oro\Bundle\AddressBundle\Entity\Country;
+
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Entity\TaxRule;
 use Marello\Bundle\TaxBundle\Matcher\CompositeTaxRuleMatcher;
 use Marello\Bundle\TaxBundle\Matcher\TaxRuleMatcherInterface;
-use Oro\Bundle\AddressBundle\Entity\Address;
-use Oro\Bundle\AddressBundle\Entity\Country;
-use Oro\Bundle\AddressBundle\Entity\Region;
-use Oro\Component\Testing\Unit\EntityTrait;
 
-class CompositeTaxRuleMatcherTest extends \PHPUnit_Framework_TestCase
+class CompositeTaxRuleMatcherTest extends TestCase
 {
     use EntityTrait;
 

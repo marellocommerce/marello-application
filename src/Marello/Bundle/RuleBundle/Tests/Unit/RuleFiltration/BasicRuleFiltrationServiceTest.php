@@ -2,10 +2,12 @@
 
 namespace Marello\Bundle\RuleBundle\Tests\Unit\RuleFiltration;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\RuleBundle\Entity\RuleOwnerInterface;
 use Marello\Bundle\RuleBundle\RuleFiltration\BasicRuleFiltrationService;
 
-class BasicRuleFiltrationServiceTest extends \PHPUnit_Framework_TestCase
+class BasicRuleFiltrationServiceTest extends TestCase
 {
     /**
      * @var BasicRuleFiltrationService

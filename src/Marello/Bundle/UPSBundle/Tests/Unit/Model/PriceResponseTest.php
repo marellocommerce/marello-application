@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Model;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Marello\Bundle\UPSBundle\Model\Response\PriceResponse;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
 
-class PriceResponseTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\UPSBundle\Model\Response\PriceResponse;
+
+class PriceResponseTest extends TestCase
 {
     /**
      * @var PriceResponse

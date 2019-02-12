@@ -5,17 +5,18 @@ namespace Marello\Bundle\PricingBundle\Form\Type;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductChannelPriceCollectionType extends AbstractType
 {
-    const NAME = 'marello_product_channel_price_collection';
+    const BLOCK_PREFIX = 'marello_product_channel_price_collection';
 
     /**
      * {@inheritdoc}
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 
     /**
@@ -25,10 +26,10 @@ class ProductChannelPriceCollectionType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'type'                 => ProductChannelPriceType::NAME,
+                'entry_type'           => ProductChannelPriceType::class,
                 'show_form_when_empty' => false,
                 'error_bubbling'       => false,
-                'cascade_validation'   => true,
+                'constraints'          => [new Valid()],
                 'prototype_name'       => '__nameproductchannelprice__',
                 'prototype'            => true,
                 'handle_primary'       => false,
@@ -39,8 +40,8 @@ class ProductChannelPriceCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

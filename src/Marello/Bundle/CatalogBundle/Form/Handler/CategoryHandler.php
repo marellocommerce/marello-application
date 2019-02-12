@@ -6,12 +6,15 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CategoryHandler
 {
+    use RequestHandlerTrait;
+
     /** @var FormInterface */
     protected $form;
 
@@ -23,16 +26,16 @@ class CategoryHandler
 
     /**
      * @param FormInterface $form
-     * @param Request $request
+     * @param RequestStack  $requestStack
      * @param ObjectManager $manager
      */
     public function __construct(
         FormInterface $form,
-        Request $request,
+        RequestStack  $requestStack,
         ObjectManager $manager
     ) {
         $this->form = $form;
-        $this->request = $request;
+        $this->request = $requestStack->getCurrentRequest();
         $this->manager = $manager;
     }
 
@@ -46,7 +49,7 @@ class CategoryHandler
         $this->form->setData($category);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($this->request);
+            $this->submitPostPutRequest($this->form, $this->request);
             if ($this->form->isValid()) {
                 $appendProducts = $this->form->get('appendProducts')->getData();
                 $removeProducts = $this->form->get('removeProducts')->getData();

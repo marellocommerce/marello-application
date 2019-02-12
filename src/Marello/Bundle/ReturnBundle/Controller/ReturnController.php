@@ -4,6 +4,7 @@ namespace Marello\Bundle\ReturnBundle\Controller;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
+use Marello\Bundle\ReturnBundle\Form\Type\ReturnType;
 use Marello\Bundle\ReturnBundle\Form\Type\ReturnUpdateType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
@@ -40,7 +41,7 @@ class ReturnController extends Controller
         $return->setSalesChannel($order->getSalesChannel());
 
         if (null !== $order->getShipment()) {
-            $form = $this->createForm('marello_return', $return);
+            $form = $this->createForm(ReturnType::class, $return);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
@@ -105,7 +106,7 @@ class ReturnController extends Controller
      */
     public function updateAction(ReturnEntity $return, Request $request)
     {
-        $form = $this->createForm(ReturnUpdateType::NAME, $return);
+        $form = $this->createForm(ReturnUpdateType::class, $return);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

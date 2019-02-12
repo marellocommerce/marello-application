@@ -19,15 +19,17 @@ oro_theme:
     themes:
         oro:
             icon: bundles/marellolayout/images/marello.ico
+            logo: bundles/marellocore/img/marello-logo.png
 
 oro_sidebar:
     sidebar_widgets:
         sticky_note:
-            icon: "bundles/marellolayout/images/marello.ico"
+            icon: "bundles/marellolayout/images/marello.svg"
+            iconClass: ~
             settings:
                 content: |
                     Welcome to Marello!
-                    Marello is an easy-to-use, open source ERP for your ecommerce business. learn more at www.marello.com
+                    Marello is an easy-to-use, open source ERP for your ecommerce business. Learn more at www.marello.com
 oro_ui:
     settings:
         organization_name:

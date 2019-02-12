@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\LayoutBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Marello\Bundle\LayoutBundle\DependencyInjection\Compiler\FormChangesProviderPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class FormChangesProviderPassTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\LayoutBundle\DependencyInjection\Compiler\FormChangesProviderPass;
+
+class FormChangesProviderPassTest extends TestCase
 {
     /**
      * @var FormChangesProviderPass

@@ -2,27 +2,27 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderConstraint;
+use Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
-use Oro\Bundle\FormBundle\Form\Type\OroDateType;
-
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 
 class PurchaseOrderType extends AbstractType
 {
-    const NAME = 'marello_purchase_order';
+    const BLOCK_PREFIX = 'marello_purchase_order';
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(
                 'supplier',
-                'marello_supplier_select_form',
+                SupplierSelectType::class,
                 [
                     'attr'           => ['readonly' => true],
                     'required'       => true,
@@ -32,14 +32,11 @@ class PurchaseOrderType extends AbstractType
             )
             ->add(
                 'items',
-                PurchaseOrderItemCollectionType::NAME,
-                [
-                    'cascade_validation' => true,
-                ]
+                PurchaseOrderItemCollectionType::class
             )
             ->add(
                 'dueDate',
-                OroDateType::NAME,
+                OroDateType::class,
                 [
                     'required' => false,
                     'label' => 'marello.purchaseorder.due_date.label',
@@ -48,6 +45,9 @@ class PurchaseOrderType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -59,12 +59,10 @@ class PurchaseOrderType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

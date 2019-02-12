@@ -12,8 +12,12 @@
     </td>
     <td class="inventorylevel-adjustment {{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
-            {{ form_widget(form.adjustmentOperator) }}
-            {{ form_widget(form.quantity) }}
+            <div class="marello-line-item-related-field">
+                {{ form_widget(form.adjustmentOperator) }}
+            </div>
+            <div class="marello-line-item-related-field">
+                {{ form_widget(form.quantity) }}
+            </div>
             {{ form_errors(form.quantity) }}
         </div>
     </td>

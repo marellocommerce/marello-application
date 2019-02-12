@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\RuleBundle\Tests\Unit\Datagrid;
 
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Marello\Bundle\RuleBundle\Datagrid\RuleActionsVisibilityProvider;
-use Marello\Bundle\RuleBundle\Entity\Rule;
+use PHPUnit\Framework\TestCase;
 
-class RuleActionsVisibilityProviderTest extends \PHPUnit_Framework_TestCase
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+
+use Marello\Bundle\RuleBundle\Entity\Rule;
+use Marello\Bundle\RuleBundle\Datagrid\RuleActionsVisibilityProvider;
+
+class RuleActionsVisibilityProviderTest extends TestCase
 {
     /**
      * @var RuleActionsVisibilityProvider

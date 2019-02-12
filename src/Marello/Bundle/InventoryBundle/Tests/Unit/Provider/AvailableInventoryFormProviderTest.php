@@ -2,11 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Provider;
 
+use PHPUnit\Framework\TestCase;
+
+use Symfony\Component\Form\FormInterface;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Symfony\Component\Form\FormInterface;
-
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
@@ -14,7 +16,7 @@ use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemFormChangesProvider;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryFormProvider;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
 
-class AvailableInventoryFormProviderTest extends \PHPUnit_Framework_TestCase
+class AvailableInventoryFormProviderTest extends TestCase
 {
     /**
      * @var AvailableInventoryFormProvider

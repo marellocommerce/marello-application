@@ -5,6 +5,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\PurchaseOrderBundle\Validator\Constraints\PurchaseOrderConstraint;
+use Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType;
 use Oro\Bundle\CurrencyBundle\Utils\CurrencyNameHelper;
 use Oro\Bundle\FormBundle\Form\Type\MultipleEntityType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateType;
@@ -16,10 +17,11 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class PurchaseOrderCreateStepTwoType extends AbstractType
 {
-    const NAME = 'marello_purchase_order_create_step_two';
+    const BLOCK_PREFIX = 'marello_purchase_order_create_step_two';
 
     /**
      * @var Router
@@ -46,7 +48,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
         $builder
             ->add(
                 'supplier',
-                'marello_supplier_select_form',
+                SupplierSelectType::class,
                 [
                     'attr'           => ['readonly' => true],
                     'required'       => true,
@@ -56,7 +58,7 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
             )
             ->add(
                 'dueDate',
-                OroDateType::NAME,
+                OroDateType::class,
                 [
                     'required' => false,
                     'label' => 'marello.purchaseorder.due_date.label',
@@ -76,18 +78,18 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
             )
             ->add(
                 'itemsAdditional',
-                PurchaseOrderItemCollectionType::NAME,
+                PurchaseOrderItemCollectionType::class,
                 [
-                    'mapped'             => false,
-                    'cascade_validation' => true,
+                    'mapped'      => false,
+                    'constraints' => [new Valid()],
                 ]
             )
             ->add(
                 'items',
-                PurchaseOrderItemCollectionType::NAME,
+                PurchaseOrderItemCollectionType::class,
                 [
-                    'mapped'             => false,
-                    'cascade_validation' => true,
+                    'mapped'      => false,
+                    'constraints' => [new Valid()],
                 ]
             )
         ;
@@ -101,10 +103,10 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                     $form->remove('itemsAdditional');
                     $form->add(
                         'itemsAdditional',
-                        PurchaseOrderItemCollectionType::NAME,
+                        PurchaseOrderItemCollectionType::class,
                         [
                             'mapped' => false,
-                            'cascade_validation' => true,
+                            'constraints' => [new Valid()],
                             'entry_options' => [
                                 'currency' => $currency,
                                 'currency_symbol' => $currencySymbol
@@ -114,10 +116,10 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
                     $form->remove('items');
                     $form->add(
                         'items',
-                        PurchaseOrderItemCollectionType::NAME,
+                        PurchaseOrderItemCollectionType::class,
                         [
                             'mapped' => false,
-                            'cascade_validation' => true,
+                            'constraints' => [new Valid()],
                             'entry_options' => [
                                 'currency' => $currency,
                                 'currency_symbol' => $currencySymbol
@@ -172,11 +174,14 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
             'marello_purchase_order_widget_products_by_supplier',
             [
                 'id' => $purchaseOrder->getId(),
-                'supplierId' => $form->get('supplier')->getData()->getId()
+                'supplierId' => $form->get('supplier')->getData() ? $form->get('supplier')->getData()->getId() : null
             ]
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -189,12 +194,10 @@ class PurchaseOrderCreateStepTwoType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

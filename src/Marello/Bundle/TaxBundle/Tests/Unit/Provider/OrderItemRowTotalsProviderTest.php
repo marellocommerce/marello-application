@@ -2,19 +2,23 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Provider;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
-use Marello\Bundle\TaxBundle\Entity\TaxRate;
-use Marello\Bundle\TaxBundle\Entity\TaxRule;
-use Marello\Bundle\TaxBundle\Matcher\TaxRuleMatcherInterface;
-use Marello\Bundle\TaxBundle\Model\ResultElement;
-use Marello\Bundle\TaxBundle\Provider\OrderItemRowTotalsProvider;
-use Oro\Component\Testing\Unit\EntityTrait;
 use Symfony\Component\Form\FormInterface;
 
-class OrderItemRowTotalsProviderTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Component\Testing\Unit\EntityTrait;
+
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\TaxBundle\Entity\TaxRate;
+use Marello\Bundle\TaxBundle\Entity\TaxRule;
+use Marello\Bundle\TaxBundle\Model\ResultElement;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
+use Marello\Bundle\TaxBundle\Matcher\TaxRuleMatcherInterface;
+use Marello\Bundle\TaxBundle\Calculator\TaxCalculatorInterface;
+use Marello\Bundle\TaxBundle\Provider\OrderItemRowTotalsProvider;
+
+class OrderItemRowTotalsProviderTest extends TestCase
 {
     use EntityTrait;
 
@@ -116,7 +120,7 @@ class OrderItemRowTotalsProviderTest extends \PHPUnit_Framework_TestCase
         ];
 
         $expectedResults = $resultBefore;
-        $expectedResults[OrderItemRowTotalsProvider::ITEMS_FIELD]['row_totals']['product-id-1'] = $calculationResult;
+        $expectedResults[OrderItemRowTotalsProvider::ITEMS_FIELD]['row_totals']['product-id-1'][0] = $calculationResult;
 
         return [
             [

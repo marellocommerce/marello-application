@@ -78,7 +78,7 @@ abstract class AbstractPackingSlipMapper implements MapperInterface
         if (isset($this->mappedFields[$entityClass])) {
             $fields = $this->mappedFields[$entityClass];
         } else {
-            $fields = $this->entityFieldProvider->getFields($entityClass, true, true, false, true, true, false);
+            $fields = $this->entityFieldProvider->getFields($entityClass, true, true, false, false, true, false);
             $this->mappedFields[$entityClass] = $fields;
         }
 

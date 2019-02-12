@@ -18,18 +18,13 @@ class ProductController extends Controller
     const ACTION_SAVE_AND_DUPLICATE = 'save_and_duplicate';
 
     /**
-     * @Config\Route(
-     *      "/{_format}",
-     *      name="marello_product_index",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format"="html"}
-     * )
+     * @Config\Route("/", name="marello_product_index")
      * @AclAncestor("marello_product_view")
      * @Config\Template
      */
     public function indexAction()
     {
-        return [];
+        return ['entity_class' => 'MarelloProductBundle:Product'];
     }
 
     /**
@@ -161,6 +156,32 @@ class ProductController extends Controller
     {
         return [
             'product' => $product
+        ];
+    }
+
+    /**
+     * @Config\Route("/assign-sales-channels", name="marello_product_assign_sales_channels")
+     * @AclAncestor("marello_product_update")
+     * @Config\Template
+     *
+     * @return array
+     */
+    public function assignSalesChannelsAction()
+    {
+        $handler = $this->get('marello_product.sales_channels_assign.handler');
+        $result = $handler->process();
+
+        if (true === $result['success']) {
+            $this->get('session')->getFlashBag()->add(
+                $result['type'],
+                $this->get('translator')->trans($result['message'])
+            );
+
+            return $this->redirectToRoute('marello_product_index');
+        }
+
+        return [
+            'form' => $handler->getFormView(),
         ];
     }
 }

@@ -51,7 +51,7 @@ class ReturnCreatedNotificationSender
     {
         $this->emailSendProcessorLink->getService()->sendNotification(
             'marello_return_created',
-            [$returnEntity->getOrder()->getCustomer()->getEmail()],
+            [$returnEntity->getOrder()->getCustomer()],
             $returnEntity
         );
     }

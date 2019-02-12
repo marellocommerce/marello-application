@@ -69,5 +69,5 @@ services:
         class: Marello\Bundle\ShippingBundle\Form\Handler\ShippingMethodsConfigsRuleHandler
         scope: request
         arguments:
-            - '@request'
+            - '@request_stack'
             - '@doctrine.orm.entity_manager'

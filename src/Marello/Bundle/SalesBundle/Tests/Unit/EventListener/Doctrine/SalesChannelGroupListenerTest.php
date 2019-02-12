@@ -10,20 +10,28 @@ use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Session\Session;
 
-class SalesChannelGroupListenerTest extends \PHPUnit_Framework_TestCase
+class SalesChannelGroupListenerTest extends TestCase
 {
     /**
      * @var SalesChannelGroupListener
      */
-    protected $salesChannelGroupListener;
+    private $salesChannelGroupListener;
+
+    /**
+     * @var Session|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private $session;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->salesChannelGroupListener = new SalesChannelGroupListener(true);
+        $this->session = $this->createMock(Session::class);
+        $this->salesChannelGroupListener = new SalesChannelGroupListener(true, $this->session);
     }
 
     /**
@@ -91,8 +99,12 @@ class SalesChannelGroupListenerTest extends \PHPUnit_Framework_TestCase
             ->expects(static::once())
             ->method('getEntityManager')
             ->willReturn($entityManager);
+        $args
+            ->expects(static::once())
+            ->method('getEntity')
+            ->willReturn($salesChannelGroup);
 
-        $this->salesChannelGroupListener->preRemove($salesChannelGroup, $args);
+        $this->salesChannelGroupListener->preRemove($args);
     }
     
     /**

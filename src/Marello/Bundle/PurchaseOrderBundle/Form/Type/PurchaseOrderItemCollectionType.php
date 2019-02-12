@@ -5,10 +5,11 @@ namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class PurchaseOrderItemCollectionType extends AbstractType
 {
-    const NAME = 'marello_purchase_order_item_collection';
+    const BLOCK_PREFIX = 'marello_purchase_order_item_collection';
 
     /**
      * {@inheritdoc}
@@ -16,10 +17,10 @@ class PurchaseOrderItemCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'                 => PurchaseOrderItemType::NAME,
+            'entry_type'           => PurchaseOrderItemType::class,
             'show_form_when_empty' => false,
             'error_bubbling'       => false,
-            'cascade_validation'   => true,
+            'constraints'          => [new Valid()],
             'prototype_name'       => '__namepurchaseorderitem__',
             'prototype'            => true,
             'handle_primary'       => false,
@@ -29,13 +30,11 @@ class PurchaseOrderItemCollectionType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**
@@ -43,6 +42,6 @@ class PurchaseOrderItemCollectionType extends AbstractType
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 }

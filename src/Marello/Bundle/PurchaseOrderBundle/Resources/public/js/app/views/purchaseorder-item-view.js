@@ -18,7 +18,7 @@ define(function(require) {
          * @property {Object}
          */
         options: {
-            route: 'marello_purchase_order_supplier_product_price',
+            route: 'marello_purchase_order_supplier_product_price'
         },
 
         /**

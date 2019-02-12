@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\TaxBundle\Form\Type;
 
+use Marello\Bundle\TaxBundle\Entity\TaxJurisdiction;
 use Oro\Bundle\AddressBundle\Form\EventListener\AddressCountryAndRegionSubscriber;
 use Oro\Bundle\AddressBundle\Form\Type\CountryType;
 use Oro\Bundle\AddressBundle\Form\Type\RegionType;
@@ -14,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaxJurisdictionType extends AbstractType
 {
-    const NAME = 'marello_tax_jurisdiction_type';
+    const BLOCK_PREFIX = 'marello_tax_jurisdiction_type';
 
     /**
      * @var AddressCountryAndRegionSubscriber
@@ -58,7 +59,7 @@ class TaxJurisdictionType extends AbstractType
                 'random_id' => true,
                 'label' => 'marello.tax.taxjurisdiction.region_text.label'
             ])
-            ->add('zipCodes', ZipCodeCollectionType::NAME, [
+            ->add('zipCodes', ZipCodeCollectionType::class, [
                 'required' => false,
                 'label' => 'marello.tax.taxjurisdiction.zip_codes.label',
                 'tooltip'  => 'marello.tax.form.tooltip.zip_codes'
@@ -71,16 +72,8 @@ class TaxJurisdictionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Marello\Bundle\TaxBundle\Entity\TaxJurisdiction',
+            'data_class' => TaxJurisdiction::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getBlockPrefix();
     }
 
     /**
@@ -88,6 +81,6 @@ class TaxJurisdictionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

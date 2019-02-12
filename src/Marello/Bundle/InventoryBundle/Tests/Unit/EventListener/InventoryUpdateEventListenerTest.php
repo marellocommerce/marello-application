@@ -2,13 +2,15 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\EventListener;
 
-use Marello\Bundle\InventoryBundle\Manager\VirtualInventoryManager;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\EventListener\InventoryUpdateEventListener;
-use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use PHPUnit\Framework\TestCase;
 
-class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\InventoryBundle\Manager\InventoryManager;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Manager\BalancedInventoryManager;
+use Marello\Bundle\InventoryBundle\EventListener\InventoryUpdateEventListener;
+
+class InventoryUpdateEventListenerTest extends TestCase
 {
     /**
      * @var InventoryUpdateContext|\PHPUnit_Framework_MockObject_MockObject
@@ -26,9 +28,9 @@ class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
     protected $inventoryManager;
 
     /**
-     * @var VirtualInventoryManager|\PHPUnit_Framework_MockObject_MockObject
+     * @var BalancedInventoryManager|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $virtualInventoryManager;
+    protected $balancedInventoryManager;
 
     /**
      * {@inheritdoc}
@@ -41,14 +43,14 @@ class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->virtualInventoryManager = $this
-            ->getMockBuilder(VirtualInventoryManager::class)
+        $this->balancedInventoryManager = $this
+            ->getMockBuilder(BalancedInventoryManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->listener = new InventoryUpdateEventListener(
             $this->inventoryManager,
-            $this->virtualInventoryManager
+            $this->balancedInventoryManager
         );
     }
 
@@ -66,7 +68,7 @@ class InventoryUpdateEventListenerTest extends \PHPUnit_Framework_TestCase
     {
         $this->inventoryUpdateContext->setIsVirtual(true);
         $event = $this->prepareEvent();
-        $this->virtualInventoryManager->expects($this->once())
+        $this->balancedInventoryManager->expects($this->once())
             ->method('updateInventoryLevel')
             ->with($this->inventoryUpdateContext);
 

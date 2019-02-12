@@ -5,17 +5,18 @@ namespace Marello\Bundle\OrderBundle\Form\Type;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class OrderItemCollectionType extends AbstractType
 {
-    const NAME = 'marello_order_item_collection';
+    const BLOCK_PREFIX = 'marello_order_item_collection';
 
     /**
      * {@inheritdoc}
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 
     /**
@@ -24,10 +25,10 @@ class OrderItemCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'                 => OrderItemType::NAME,
+            'entry_type'           => OrderItemType::class,
             'show_form_when_empty' => false,
             'error_bubbling'       => false,
-            'cascade_validation'   => true,
+            'constraints'          => [new Valid()],
             'prototype_name'       => '__nameorderitem__',
             'prototype'            => true,
             'handle_primary'       => false,
@@ -37,8 +38,8 @@ class OrderItemCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

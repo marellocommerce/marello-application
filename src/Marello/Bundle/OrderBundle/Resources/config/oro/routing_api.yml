@@ -1,7 +1,0 @@
-marello_order_order_api:
-    resource:     "@MarelloOrderBundle/Controller/Api/Rest/OrderController.php"
-    type:         rest
-
-marello_order_customer_api:
-    resource:     "@MarelloOrderBundle/Controller/Api/Rest/CustomerController.php"
-    type:         rest

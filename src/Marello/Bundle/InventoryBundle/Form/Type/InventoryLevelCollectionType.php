@@ -2,14 +2,14 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\Type;
 
+use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\FormBundle\Form\Type\CollectionType;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class InventoryLevelCollectionType extends AbstractType
 {
-    const NAME = 'marello_inventory_inventorylevel_collection';
+    const BLOCK_PREFIX = 'marello_inventory_inventorylevel_collection';
 
     /**
      * @param OptionsResolver $resolver
@@ -17,10 +17,10 @@ class InventoryLevelCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'                 => InventoryLevelType::NAME,
+            'entry_type'           => InventoryLevelType::class,
             'show_form_when_empty' => true,
             'error_bubbling'       => false,
-            'cascade_validation'   => true,
+            'constraints'          => [new Valid()],
             'prototype_name'       => '__nameinventorylevelcollection__',
             'prototype'            => true,
             'handle_primary'       => false,
@@ -30,9 +30,9 @@ class InventoryLevelCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**
@@ -40,6 +40,6 @@ class InventoryLevelCollectionType extends AbstractType
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 }

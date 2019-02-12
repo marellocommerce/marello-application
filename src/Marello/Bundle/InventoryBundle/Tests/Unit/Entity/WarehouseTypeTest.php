@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class WarehouseTypeTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+
+class WarehouseTypeTest extends TestCase
 {
     use EntityTestCaseTrait;
 

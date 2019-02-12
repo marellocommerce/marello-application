@@ -2,13 +2,16 @@
 
 namespace Marello\Bundle\LayoutBundle\Tests\Unit\Provider;
 
+use Symfony\Component\Form\FormInterface;
+
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\LayoutBundle\Provider\CompositeFormChangesProvider;
 use Marello\Bundle\LayoutBundle\Provider\FormChangesProviderInterface;
-use Symfony\Component\Form\FormInterface;
 
-class CompositeFormChangesProviderTest extends \PHPUnit_Framework_TestCase
+class CompositeFormChangesProviderTest extends TestCase
 {
     /**
      * @var CompositeFormChangesProvider

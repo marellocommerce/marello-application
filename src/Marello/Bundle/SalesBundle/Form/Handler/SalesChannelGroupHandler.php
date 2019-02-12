@@ -7,11 +7,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class SalesChannelGroupHandler implements FormHandlerInterface
 {
+    use RequestHandlerTrait;
+
     /**
      * @var EntityManagerInterface
      */
@@ -38,7 +41,7 @@ class SalesChannelGroupHandler implements FormHandlerInterface
         $form->setData($data);
 
         if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-            $form->submit($request);
+            $this->submitPostPutRequest($form, $request);
 
             if ($form->isValid()) {
                 $this->onSuccess($data, $channelsBefore);

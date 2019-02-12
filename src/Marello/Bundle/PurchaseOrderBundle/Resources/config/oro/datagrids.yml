@@ -32,9 +32,10 @@ datagrids:
                 frontend_type:      html
             orderTotal:
                 label:              marello.purchaseorder.order_total.label
-                type:               twig
-                template:           MarelloPurchaseOrderBundle:Datagrid:Column/orderTotal.html.twig
-                frontend_type:      html
+                type:               localized_number
+                method:             formatCurrency
+                context_resolver:   Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:              right
         sorters:
             columns:
                 purchaseOrderNumber:
@@ -214,7 +215,7 @@ datagrids:
                 virtualInventory:       { data_name: virtualInventory }
                 orderAmount:            { data_name: orderAmount }
             default:
-                hasProduct: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                hasProduct: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
                 hasProduct:
@@ -252,7 +253,7 @@ datagrids:
                 params:
                     - id
         options:
-            entityHint: p
+            entityHint: products
             rowSelection:
                 dataField: id
                 columnName: hasProduct

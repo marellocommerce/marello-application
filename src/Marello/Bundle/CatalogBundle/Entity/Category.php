@@ -13,7 +13,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\CatalogBundle\Entity\Repository\CategoryRepository")
  * @ORM\Table(name="marello_catalog_category",
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(

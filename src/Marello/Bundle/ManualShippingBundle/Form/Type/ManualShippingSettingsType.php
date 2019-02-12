@@ -25,7 +25,7 @@ class ManualShippingSettingsType extends AbstractType
                 [
                     'label'    => 'marello.manual_shipping.settings.labels.label',
                     'required' => true,
-                    'options'  => ['constraints' => [new NotBlank()]],
+                    'constraints' => [new NotBlank()],
                 ]
             );
     }

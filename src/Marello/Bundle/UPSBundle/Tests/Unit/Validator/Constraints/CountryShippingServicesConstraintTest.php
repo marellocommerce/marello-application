@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Validator\Constraints;
 
-use Marello\Bundle\UPSBundle\Validator\Constraints\CountryShippingServicesConstraint;
 use Symfony\Component\Validator\Constraint;
 
-class CountryShippingServicesConstraintTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\UPSBundle\Validator\Constraints\CountryShippingServicesConstraint;
+
+class CountryShippingServicesConstraintTest extends TestCase
 {
     public function testValidatedBy()
     {

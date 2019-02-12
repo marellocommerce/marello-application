@@ -135,16 +135,9 @@ class NotificationActivityListProvider implements ActivityListProviderInterface
     }
 
     /**
-     * Should return array of route names as key => value
-     * e.g. [
-     *      'itemView'  => 'item_view_route',
-     *      'itemEdit'  => 'item_edit_route',
-     *      'itemDelete' => 'item_delete_route'
-     * ]
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getRoutes()
+    public function getRoutes($activityEntity)
     {
         return [
             'itemView'  => 'marello_notification_thread_view'

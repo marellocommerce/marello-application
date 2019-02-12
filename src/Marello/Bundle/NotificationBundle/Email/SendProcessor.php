@@ -3,14 +3,16 @@
 namespace Marello\Bundle\NotificationBundle\Email;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
 use Marello\Bundle\LocaleBundle\Manager\EmailTemplateManager;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
 use Marello\Bundle\NotificationBundle\Provider\EntityNotificationConfigurationProviderInterface;
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
+use Oro\Bundle\EmailBundle\Model\EmailTemplateCriteria;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\NotificationBundle\Manager\EmailNotificationManager;
+use Oro\Bundle\NotificationBundle\Model\TemplateEmailNotification;
+use Oro\Bundle\NotificationBundle\Model\TemplateEmailNotificationInterface;
 
 class SendProcessor
 {
@@ -69,7 +71,7 @@ class SendProcessor
      */
     public function sendNotification($templateName, array $recipients, $entity, array $data = [])
     {
-        $entityName = ClassUtils::getRealClass(get_class($entity));
+        $entityName = $this->getRealClassName($entity);
 
         if ($this->entityNotificationConfigurationProvider->isNotificationEnabled($entityName) === false) {
             return;
@@ -100,11 +102,41 @@ class SendProcessor
          * This depends on application configuration.
          */
         $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
-        $this->emailNotificationManager->process($entity, [$notification]);
+        $this->emailNotificationManager->processSingle(
+            $this->getNotification($templateName, $recipients, $entity),
+            [$notification]
+        );
 
         $this->activityManager->addActivityTarget($notification, $entity);
 
         $this->manager->persist($notification);
         $this->manager->flush();
+    }
+
+    /**
+     * @param string $templateName
+     * @param array $recipients
+     * @param object $entity
+     * @return TemplateEmailNotificationInterface
+     */
+    protected function getNotification($templateName, array $recipients, $entity)
+    {
+        return new TemplateEmailNotification(
+            new EmailTemplateCriteria(
+                $templateName,
+                $this->getRealClassName($entity)
+            ),
+            $recipients,
+            $entity
+        );
+    }
+
+    /**
+     * @param object $entity
+     * @return string
+     */
+    protected function getRealClassName($entity)
+    {
+        return $this->manager->getClassMetadata(get_class($entity))->getName();
     }
 }

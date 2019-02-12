@@ -2,16 +2,19 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\OrderBundle\Entity\Customer;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\AddressBundle\Entity\Address;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-class OrderTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+
+class OrderTest extends TestCase
 {
     use EntityTestCaseTrait;
 

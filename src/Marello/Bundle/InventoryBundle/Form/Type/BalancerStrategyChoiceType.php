@@ -11,7 +11,7 @@ use Marello\Bundle\InventoryBundle\Provider\BalancingStrategyChoicesProvider;
 
 class BalancerStrategyChoiceType extends AbstractType
 {
-    const NAME = 'marello_inventory_balancer_strategy_choice';
+    const BLOCK_PREFIX = 'marello_inventory_balancer_strategy_choice';
 
     /**
      * @var BalancingStrategyChoicesProvider
@@ -33,7 +33,7 @@ class BalancerStrategyChoiceType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'choices' => $this->choicesProvider->getChoices()
+                'choices' => array_flip($this->choicesProvider->getChoices())
             ]
         );
     }
@@ -43,15 +43,7 @@ class BalancerStrategyChoiceType extends AbstractType
      */
     public function getParent()
     {
-        return OroChoiceType::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return self::NAME;
+        return OroChoiceType::class;
     }
 
     /**
@@ -59,6 +51,6 @@ class BalancerStrategyChoiceType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

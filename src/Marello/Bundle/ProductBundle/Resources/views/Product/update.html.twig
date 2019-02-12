@@ -30,34 +30,22 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    {% if entity.id and resource_granted('DELETE', entity) %}
-        {{ UI.deleteButton({
-            'dataUrl': path('marello_product_api_delete_product', {'id': entity.id}),
-            'dataRedirect': path('marello_product_index'),
-            'aCss': 'no-hash remove-button',
-            'id': 'btn-remove-channel',
-            'dataId': entity.id,
-            'entity_label': 'marello.product.entity_label'|trans,
-        }) }}
-        {{ UI.buttonSeparator() }}
-    {% endif %}
+    {{ parent() }}
 
     {{ UI.cancelButton(path('marello_product_index')) }}
-
     {% set html = UI.saveAndCloseButton() %}
-
-    {% if resource_granted('marello_product_create') %}
+    {% if is_granted('oro_product_create') %}
         {% set saveAndDuplicateButton = UI.saveActionButton({
         'label': 'marello.product.ui.save_and_duplicate'|trans,
         'action': 'save_and_duplicate'
         }) %}
         {% set html = html ~ saveAndDuplicateButton %}
     {% endif %}
-    {% if form.vars.value.id or resource_granted('marello_product_update') %}
+    {% if entity.id or is_granted('marello_product_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
     {{ UI.dropdownSaveButton({'html': html}) }}
-{% endblock %}
+{% endblock navButtons %}
 
 
 {% block content_data %}

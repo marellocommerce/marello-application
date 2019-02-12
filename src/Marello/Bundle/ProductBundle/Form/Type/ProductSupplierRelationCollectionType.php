@@ -5,10 +5,11 @@ namespace Marello\Bundle\ProductBundle\Form\Type;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductSupplierRelationCollectionType extends AbstractType
 {
-    const NAME = 'marello_product_supplier_relation_collection_form';
+    const BLOCK_PREFIX = 'marello_product_supplier_relation_collection_form';
 
     /**
      * @param OptionsResolver $resolver
@@ -16,10 +17,10 @@ class ProductSupplierRelationCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'                 => ProductSupplierRelationType::NAME,
+            'entry_type'           => ProductSupplierRelationType::class,
             'show_form_when_empty' => false,
-            'error_bubbling'       => false,
-            'cascade_validation'   => true,
+            'error_bubbling'       => true,
+            'constraints'          => [new Valid()],
             'prototype_name'       => '__nameproductsupplierrelation__',
             'prototype'            => true,
             'handle_primary'       => false,
@@ -29,17 +30,9 @@ class ProductSupplierRelationCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**
@@ -47,6 +40,6 @@ class ProductSupplierRelationCollectionType extends AbstractType
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 }

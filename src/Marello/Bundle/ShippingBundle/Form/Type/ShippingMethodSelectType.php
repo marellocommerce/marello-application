@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ShippingMethodSelectType extends AbstractType
 {
-    const NAME = 'marello_shipping_method_select';
+    const BLOCK_PREFIX = 'marello_shipping_method_select';
     
     /**
      * @var ShippingMethodChoicesProviderInterface
@@ -32,7 +32,7 @@ class ShippingMethodSelectType extends AbstractType
         $resolver
             ->setDefaults([
                 'expanded' => true,
-                'choices' => $this->getChoices(),
+                'choices' => array_flip($this->getChoices()),
             ]);
     }
 
@@ -47,9 +47,9 @@ class ShippingMethodSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**

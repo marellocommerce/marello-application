@@ -2,15 +2,19 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\AddressBundle\Entity\Country;
-use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
-use Marello\Bundle\UPSBundle\Entity\ShippingService;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
-use Oro\Component\Testing\Unit\EntityTestCaseTrait;
-use Oro\Component\Testing\Unit\EntityTrait;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class UPSTransportTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Bundle\AddressBundle\Entity\Country;
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue;
+
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Entity\ShippingService;
+
+class UPSTransportTest extends TestCase
 {
     use EntityTestCaseTrait;
     use EntityTrait;

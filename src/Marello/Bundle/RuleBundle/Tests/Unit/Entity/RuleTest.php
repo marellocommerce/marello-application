@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\RuleBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\RuleBundle\Entity\Rule;
-use Oro\Component\Testing\Unit\EntityTestCaseTrait;
-use Oro\Component\Testing\Unit\EntityTrait;
+use PHPUnit\Framework\TestCase;
 
-class RuleTest extends \PHPUnit_Framework_TestCase
+use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+
+use Marello\Bundle\RuleBundle\Entity\Rule;
+
+class RuleTest extends TestCase
 {
     use EntityTestCaseTrait;
     use EntityTrait;

@@ -4,7 +4,6 @@ namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -13,7 +12,7 @@ use Oro\Component\ConfigExpression\ContextAccessor;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
+use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 
 class OrderCancelAction extends OrderTransitionAction
 {
@@ -22,6 +21,9 @@ class OrderCancelAction extends OrderTransitionAction
 
     /** @var EventDispatcherInterface $eventDispatcher */
     protected $eventDispatcher;
+
+    /** @var boolean */
+    protected $shouldUpdateBalancedInventory;
 
     /**
      * OrderCancelAction constructor.
@@ -42,12 +44,31 @@ class OrderCancelAction extends OrderTransitionAction
     }
 
     /**
+     * @param array $options
+     *
+     * @return $this
+     */
+    public function initialize(array $options)
+    {
+        parent::initialize($options);
+
+        $this->shouldUpdateBalancedInventory = $this->getOption($options, 'update_balanced_inventory', true);
+
+        return $this;
+    }
+
+    /**
      * @param WorkflowItem|mixed $context
      */
     protected function executeAction($context)
     {
         /** @var Order $order */
         $order = $context->getEntity();
+
+        $this->shouldUpdateBalancedInventory = $this->contextAccessor->getValue(
+            $context,
+            $this->shouldUpdateBalancedInventory
+        );
 
         $order->getItems()->map(function (OrderItem $item) use ($order) {
             $this->handleInventoryUpdate($item, null, -$item->getQuantity(), $order);
@@ -59,7 +80,7 @@ class OrderCancelAction extends OrderTransitionAction
      * @param OrderItem $item
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
-     * @param OrderItem $entity
+     * @param Order $entity
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity)
     {
@@ -70,7 +91,7 @@ class OrderCancelAction extends OrderTransitionAction
             $allocatedInventoryQty,
             'order_workflow.cancelled',
             $entity,
-            true
+            $this->shouldUpdateBalancedInventory
         );
 
         $this->eventDispatcher->dispatch(

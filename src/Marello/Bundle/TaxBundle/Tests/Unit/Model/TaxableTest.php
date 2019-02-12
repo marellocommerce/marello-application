@@ -2,13 +2,16 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Model;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Marello\Bundle\TaxBundle\Model\Result;
-use Marello\Bundle\TaxBundle\Model\Taxable;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class TaxableTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\TaxBundle\Model\Result;
+use Marello\Bundle\TaxBundle\Model\Taxable;
+use Marello\Bundle\TaxBundle\Entity\TaxCode;
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+
+class TaxableTest extends TestCase
 {
     use EntityTestCaseTrait;
 
