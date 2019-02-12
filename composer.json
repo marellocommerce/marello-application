@@ -1,12 +1,12 @@
 {
     "name": "marellocommerce/marello-enterprise",
-    "description": "Marello Enterprise ERP for Commerce",
-    "homepage": "https://github.com/marellocommerce/marello-enterprise.git",
+    "description": "Marello Unified Commerce Management Enterprise edition",
+    "homepage": "https://github.com/marellocommerce/marello-ee.git",
     "license": "Commercial",
     "authors": [
         {
             "name": "Madia B.V.",
-            "homepage": "http://www.marello.com"
+            "homepage": "https://www.marello.com"
         }
     ],
     "autoload": {
@@ -29,15 +29,15 @@
         }
     },
     "require": {
-        "php": "7.1.*",
-        "oro/platform-enterprise": "2.6.*",
-        "marellocommerce/marello": "1.5.*"
+        "php": ">=7.1",
+        "oro/platform-enterprise": "3.x-dev",
+        "marellocommerce/marello": "2.x-dev"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
         "branch-alias": {
-            "dev-master": "1.3.x-dev"
+            "dev-master": "2.x-dev"
         }
     }
 }

@@ -38,7 +38,7 @@ class WarehouseGroupActionPermissionProvider implements ActionPermissionInterfac
         return [
             'update' => !$system,
             'view' => true,
-            'delete' => $delete,
+            'marello_delete_warehouse_group' => $delete,
         ];
     }
 }

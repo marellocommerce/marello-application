@@ -3,9 +3,9 @@
 namespace MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AddressBased;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistanceCalculatorChainElement;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AbstractAddressesDistCalcChainElement;
 
-class AddressBasedAddressesDistanceCalculatorChainElement extends AbstractAddressesDistanceCalculatorChainElement
+class AddressBasedAddressesDistanceCalculatorChainElement extends AbstractAddressesDistCalcChainElement
 {
     const COUNTRY_RATE = 10000;
     const REGION_RATE = 1000;

@@ -2,11 +2,13 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Context\Factory;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Context\Factory\GoogleApiContextFactory;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContext;
+use PHPUnit\Framework\TestCase;
 
-class GoogleApiContextFactoryTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContext;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Context\Factory\GoogleApiContextFactory;
+
+class GoogleApiContextFactoryTest extends TestCase
 {
     /**
      * @var GoogleApiContextFactory

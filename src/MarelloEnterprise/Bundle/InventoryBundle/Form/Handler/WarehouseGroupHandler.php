@@ -7,11 +7,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Oro\Bundle\FormBundle\Form\Handler\FormHandlerInterface;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class WarehouseGroupHandler implements FormHandlerInterface
 {
+    use RequestHandlerTrait;
+
     /**
      * @var EntityManagerInterface
      */
@@ -38,7 +41,7 @@ class WarehouseGroupHandler implements FormHandlerInterface
         $form->setData($data);
 
         if (in_array($request->getMethod(), ['POST', 'PUT'])) {
-            $form->submit($request);
+            $this->submitPostPutRequest($form, $request);
 
             if ($form->isValid()) {
                 $this->onSuccess($data, $warehousesBefore);

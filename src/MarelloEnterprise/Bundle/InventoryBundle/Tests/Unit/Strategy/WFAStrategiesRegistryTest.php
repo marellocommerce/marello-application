@@ -2,10 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy;
 
+use PHPUnit\Framework\TestCase;
+
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
 
-class WFAStrategiesRegistryTest extends \PHPUnit_Framework_TestCase
+class WFAStrategiesRegistryTest extends TestCase
 {
     /**
      * @var WFAStrategiesRegistry

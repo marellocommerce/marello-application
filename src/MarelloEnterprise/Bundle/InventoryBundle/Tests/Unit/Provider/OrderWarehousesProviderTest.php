@@ -2,16 +2,18 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Provider;
 
-use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
-use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
-use MarelloEnterprise\Bundle\InventoryBundle\Provider\OrderWarehousesProvider;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
+use PHPUnit\Framework\TestCase;
 
-class OrderWarehousesProviderTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\OrderBundle\Entity\Order;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
+use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
+use Marello\Bundle\RuleBundle\RuleFiltration\RuleFiltrationServiceInterface;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
+use MarelloEnterprise\Bundle\InventoryBundle\Provider\OrderWarehousesProvider;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WFARuleRepository;
+
+class OrderWarehousesProviderTest extends TestCase
 {
     /**
      * @var WFAStrategiesRegistry|\PHPUnit_Framework_MockObject_MockObject

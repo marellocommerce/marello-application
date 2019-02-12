@@ -2,15 +2,19 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Validator;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
-use MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator;
-use Oro\Component\Testing\Unit\EntityTrait;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class DefaultWarehouseExistsValidatorTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Component\Testing\Unit\EntityTrait;
+
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
+use MarelloEnterprise\Bundle\InventoryBundle\Validator\DefaultWarehouseExistsValidator;
+
+class DefaultWarehouseExistsValidatorTest extends TestCase
 {
     use EntityTrait;
 

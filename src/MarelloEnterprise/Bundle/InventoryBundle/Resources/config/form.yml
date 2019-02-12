@@ -2,12 +2,12 @@ services:
     marello_enterprise.form.extension.warehouse:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\WarehouseExtension'
         tags:
-            - { name: form.type_extension, alias: marello_warehouse }
+            - { name: form.type_extension, alias: marello_warehouse, extended_type: Marello\Bundle\InventoryBundle\Form\Type\WarehouseType }
 
     marello_enterprise.form.extension.inventorylevel:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Extension\InventoryLevelExtension'
         tags:
-            - { name: form.type_extension, alias: marello_inventory_inventorylevel }
+            - { name: form.type_extension, alias: marello_inventory_inventorylevel, extended_type: Marello\Bundle\InventoryBundle\Form\Type\InventoryLevelType }
 
     # Autocomplete search handler
     marelloenterprise_inventory.form.autocomplete.search_handler.warehouses:
@@ -53,36 +53,36 @@ services:
     marelloenterprise_inventory.form_type.warehouse_select:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseSelectType'
         tags:
-            - { name: form.type, alias: marello_warehouse_select }
+            - { name: form.type }
 
     marelloenterprise_inventory.form_type.warehouse_multi_select:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseMultiSelectType'
         arguments:
             - '@marelloenterprise_inventory.form.data_transformer.warehouse'
         tags:
-            - { name: form.type, alias: marello_warehouse_multi_select }
+            - { name: form.type }
 
     marelloenterprise_inventory.form_type.system_group_global_warehouse_multi_select:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\SystemGroupGlobalWarehouseMultiSelectType'
         arguments:
             - '@marelloenterprise_inventory.form.data_transformer.warehouse'
         tags:
-            - { name: form.type, alias: marello_system_group_global_warehouse_multi_select }
+            - { name: form.type }
 
     marelloenterprise_inventory.form_type.warehousegroup:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseGroupType'
         tags:
-            - { name: form.type, alias: marello_warehouse_group }
+            - { name: form.type }
 
     marelloenterprise_inventory.form_type.not_linked_warehousegroup_autocomplete:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\NotLinkedWarehouseGroupAutocompleteType'
         tags:
-            - { name: form.type, alias: marello_not_linked_warehousegroup_autocomplete }
+            - { name: form.type }
 
     marelloenterprise_inventory.form_type.warehousechannelgrouplink:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WarehouseChannelGroupLinkType'
         tags:
-            - { name: form.type, alias: marello_warehouse_channel_group_link }
+            - { name: form.type }
 
     marelloenterprise_inventory.form_type.wfarule:
         class: 'MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WFARuleType'
@@ -90,7 +90,7 @@ services:
             - '@marelloenterprise_inventory.provider.wfa_strategy.choices'
             - '@marelloenterprise_inventory.repository.wfa_rule'
         tags:
-            - { name: form.type, alias: marello_inventory_wfarule_type }
+            - { name: form.type }
 
     #form handlers
     marelloenterprise_inventory.form_handler.warehouse:

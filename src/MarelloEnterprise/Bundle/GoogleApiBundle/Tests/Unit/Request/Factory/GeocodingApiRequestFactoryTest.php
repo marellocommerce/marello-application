@@ -2,15 +2,18 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Request\Factory;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Request\Factory\GeocodingApiRequestFactory;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Request\GoogleApiRequest;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\AddressBundle\Entity\Region;
 use Oro\Component\Testing\Unit\EntityTrait;
 
-class GeocodingApiRequestFactoryTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Request\GoogleApiRequest;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Request\Factory\GeocodingApiRequestFactory;
+
+class GeocodingApiRequestFactoryTest extends TestCase
 {
     use EntityTrait;
 

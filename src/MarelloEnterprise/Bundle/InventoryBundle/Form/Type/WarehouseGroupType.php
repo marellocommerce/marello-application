@@ -13,7 +13,7 @@ use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 
 class WarehouseGroupType extends AbstractType
 {
-    const NAME = 'marello_warehouse_group';
+    const BLOCK_PREFIX = 'marello_warehouse_group';
 
     /**
      * {@inheritdoc}
@@ -69,16 +69,8 @@ class WarehouseGroupType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }
