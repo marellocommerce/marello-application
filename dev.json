@@ -10,15 +10,15 @@
         }
     ],
     "autoload": {
+        "psr-0": {
+            "Marello\\Bundle\\": "src/Marello/src",
+            "MarelloEnterprise\\Bundle\\": "src/MarelloEnterprise/src"
+        },
         "psr-4": {"": "src/"},
         "files": ["src/AppKernel.php"],
         "exclude-from-classmap": ["**/Tests/"]
     },
     "repositories": {
-        "health-check-bundle": {
-            "type": "vcs",
-            "url": "https://github.com/oroinc/OroHealthCheckBundle.git"
-        },
         "composer": {
             "type": "composer",
             "url": "https://packagist.orocrm.com"
@@ -37,16 +37,15 @@
         },
         "marello-enterprise": {
             "type": "vcs",
-            "url": "https://github.com/marellocommerce/marello-enterprise.git"
+            "url": "https://github.com/marellocommerce/marello-enterprise.git",
+            "branch": "master"
         }
     },
     "require": {
         "php": ">=7.1",
         "oro/platform-enterprise": "~3.1.1",
         "oro/platform-serialised-fields": "~3.1.1",
-        "oro/calendar-bundle": "~3.1.1",
-        "oro/health-check-bundle": "~3.1.1",
-        "marellocommerce/marello-enterprise": "~2.0.0"
+        "oro/calendar-bundle": "~3.1.1"
     },
     "require-dev": {
         "sensio/generator-bundle": "3.1.*",
@@ -74,6 +73,35 @@
         }
     },
     "scripts": {
+        "marello-reset": [
+            "rm -rf var/cache/*",
+            "rm -rf var/logs/*",
+            "sed -i -e 's/installed:.*/installed: ~/g' config/parameters.yml",
+            "bin/console oro:install --timeout 3600 --sample-data=y --drop-database --env=prod --user-name=admin --user-firstname=John --user-lastname=Doe --user-password=marello123 --user-email=johndoe@example.com  --organization-name=Marello"
+        ],
+        "test": [
+            "rm -rf var/cache/*",
+            "rm -rf var/logs/*",
+            "php ./bin/phpunit --color --testsuite=\"unit\""
+        ],
+        "test-functional": [
+            "rm -rf var/cache/*",
+            "rm -rf var/logs/*",
+            "bin/console cache:clear --env test",
+            "php ./bin/phpunit --color --testsuite=\"functional\""
+        ],
+        "test-extended": [
+            "rm -rf var/cache/*",
+            "rm -rf var/logs/*",
+            "sed -i -e 's/installed:.*/installed: ~/g' config/parameters_test.yml",
+            "bin/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets",
+            "php ./bin/phpunit --color --testsuite=\"unit\"",
+            "php ./bin/phpunit --color --testsuite=\"functional\"",
+            "php ./bin/phpcs src/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
+        ],
+        "test-psr": [
+            "php ./bin/phpcs src/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=var/logs/phpcs.xml"
+        ],
         "post-install-cmd": [
             "@build-parameters",
             "@build-bootstrap",
@@ -117,7 +145,26 @@
         "symfony-bin-dir": "bin",
         "symfony-tests-dir": "tests",
         "incenteev-parameters": {
-            "file": "config/parameters.yml"
+            "file": "config/parameters.yml",
+            "env-map": {
+                "database_driver": "APP_DB_DRIVER",
+                "database_host": "APP_DB_HOST",
+                "database_port": "APP_DB_PORT",
+                "database_name": "APP_DB_NAME",
+                "database_user": "APP_DB_USER",
+                "database_password": "APP_DB_PASSWORD",
+                "mailer_transport": "APP_MAILER_TRANSPORT",
+                "mailer_host": "APP_MAILER_HOST",
+                "mailer_port": "APP_MAILER_PORT",
+                "mailer_encryption": "APP_MAILER_ENCRYPTION",
+                "mailer_user": "APP_MAILER_USER",
+                "mailer_password": "APP_MAILER_PASSWORD",
+                "websocket_bind_port": "APP_WEBSOCKET_BACKEND_PORT",
+                "websocket_backend_port": "APP_WEBSOCKET_BACKEND_PORT",
+                "websocket_frontend_port": "APP_WEBSOCKET_FRONTEND_PORT",
+                "installed": "APP_IS_INSTALLED",
+                "secret": "APP_SECRET"
+            }
         }
     }
 }
