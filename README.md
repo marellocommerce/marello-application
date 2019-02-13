@@ -1,33 +1,45 @@
 Marello Enterprise
 ========================
 
-Marello Enterprise is the commercial extension of [Marello][1]. This extension enables Microsoft Outlook integration, improves multiple organization support for the sales channel.
+What is Marello?
+-----------
 
-This document contains information on how to download, install, and start
-using Marello. For a more detailed explanation, see the **Installation** chapter.
-
-Requirements
-------------
-
-Marello Enterprise requires
-- Symfony 2.8.x;
-- Doctrine 2;
-- PHP 7.0 or above;
-- Oro Platform Enterprise
+Marello Unified Commerce Management provides capabilities to meet and exceed rising expectations in commerce. Add and manage any sales channel, gain real-time insight into your B2C and B2B orders, inventory, fulfillment, customers and more. A unique unified experience allows shoppers to buy anywhere, fulfill anywhere, and return anywhere with one piece of software, one single version of the truth.
 
 Installation
 ------------
 
-Marello Enterprise is a composer package that requires an application to initialize and run it,
-[marello-enterprise-application][2] is an example of such application. 
+This package requires an application to run it.
+Please check the installation instructions in [marello-application-enterprise repository][1]
 
-Documentation
+Use as dependency in composer
 ------------
 
-The documentation for the Marello Enterprise application can be found on the [Marello website][3]. Additional documentation for Oro Platform / OroCRM can be found at the [website of OroCRM][4] or on the website of [Symfony][5]
+```yaml
+    "require": {
+        "marellocommerce/marello-enterprise": "dev-master"
+    }
+```
 
-[1]: https://github.com/marellocommerce/marello
-[2]: https://github.com/marellocommerce/marello-application-ee
-[3]: https://www.marello.com/
-[4]: http://www.orocrm.com/documentation/
-[5]: http://symfony.com/doc/2.8/index.html
+In addition to adding it as dependency in composer, you might need to add an additional repository to get the enterprise version.
+```yaml
+    "repositories": {
+        ...
+        "marello-enterprise": {
+            "type": "vcs",
+            "url": "https://github.com/marellocommerce/marello-enterprise.git"
+        }
+    }
+```
+
+Run unit tests
+--------------
+
+Please make sure you have at least phpunit 6.5 or above.
+To run unit tests of any bundles:
+
+```bash
+phpunit
+```
+
+[1]: https://github.com/marellcommerce/marello-application-enterprise
