@@ -32,4 +32,4 @@ To run unit tests of any bundles:
 phpunit
 ```
 
-[1]: https://github.com/marellcommerce/marello-application
+[1]: https://github.com/marellocommerce/marello-application
