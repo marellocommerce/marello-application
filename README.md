@@ -65,7 +65,7 @@ memory_limit=1024M
 - Install application and admin user with Installation Wizard by opening install.php in the browser or from CLI:
 
 ```bash  
-php bin/console oro:install --env prod
+php app/console oro:install --env prod
 ```
 
 **Note** If the installation process times out, add the `--timeout=0` argument to the oro:install command.
@@ -73,25 +73,25 @@ php bin/console oro:install --env prod
 - Enable WebSockets messaging
 
 ```bash
-php bin/console gos:websocket:server --env prod
+php app/console gos:websocket:server --env prod
 ```
 
 - Configure crontab or scheduled tasks execution to run the command below every minute:
 
 ```bash
-php bin/console oro:cron --env prod
+php app/console oro:cron --env prod
 
 ```
 - Launch the message queue processing:
 ```bash
-php bin/console oro:message-queue:consume --env=prod
+php app/console oro:message-queue:consume --env=prod
 ```
 **Note** We do recommend to use a supervisor for running the ``oro:message-queue:consume`` command. This will make sure that the command and
 the consumer will run all the time. This has become important for every Oro Platform based application since a lot of background tasks depend
  on the consumer to run. For more information about configuration and what supervisor can do for you can either be found in the [Oro(CRM) docs][5] or the
  [site of Supervisord][6].
  
-**Note:** ``bin/console`` is a path from project root folder. Please make sure you are using full path for crontab configuration or if you running console command from other location.
+**Note:** ``app/console`` is a path from project root folder. Please make sure you are using full path for crontab configuration or if you running console command from other location.
 
 ## Installation notes
 
