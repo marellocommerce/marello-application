@@ -38,6 +38,10 @@
         "marello-enterprise": {
             "type": "vcs",
             "url": "https://github.com/marellocommerce/marello-enterprise.git"
+        },
+        "marello": {
+            "type": "vcs",
+            "url": "https://github.com/marellocommerce/marello.git"
         }
     },
     "require": {
