@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
 class ProductExportCreateWriter extends AbstractProductExportWriter
@@ -18,7 +17,7 @@ class ProductExportCreateWriter extends AbstractProductExportWriter
             $response['data']['type'] === 'products') {
             $em = $this->registry->getManagerForClass(Product::class);
             $sku = $response['data']['attributes']['sku'];
-            $channeId = $this->channel->getId();
+            $channelId = $this->channel->getId();
             /** @var Product $processedProduct */
             $processedProduct = $em
                 ->getRepository(Product::class)
@@ -28,10 +27,10 @@ class ProductExportCreateWriter extends AbstractProductExportWriter
 
             if ($processedProduct) {
                 $productData = $processedProduct->getData();
-                $productData[self::PRODUCT_ID_FIELD][$channeId] = $response['data']['id'];
-                $productData[self::UNIT_PRECISION_ID_FIELD][$channeId] =
+                $productData[self::PRODUCT_ID_FIELD][$channelId] = $response['data']['id'];
+                $productData[self::UNIT_PRECISION_ID_FIELD][$channelId] =
                     $response['data']['relationships']['primaryUnitPrecision']['data']['id'];
-                $productData[self::INVENTORY_LEVEL_ID_FIELD][$channeId] =
+                $productData[self::INVENTORY_LEVEL_ID_FIELD][$channelId] =
                     $response['data']['relationships']['inventoryLevel']['data']['id'];
                 $processedProduct->setData($productData);
 

@@ -4,7 +4,7 @@ namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 
-class TaxCodeExportCreateWriter extends AbstractExportWriter
+class TaxCodeExportCreateWriter extends AbstractItemExportWriter
 {
     const PRODUCT_TAX_CODE_ID = 'orocommerce_producttaxcode_id';
     /**

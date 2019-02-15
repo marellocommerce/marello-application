@@ -121,6 +121,22 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
+                'deleteRemoteDataOnDeactivation',
+                CheckboxType::class,
+                [
+                    'label' => 'marello.orocommerce.orocommercesettings.delete_remote_data_on_deactivation.label',
+                    'required' => false
+                ]
+            )
+            ->add(
+                'deleteRemoteDataOnDeletion',
+                CheckboxType::class,
+                [
+                    'label' => 'marello.orocommerce.orocommercesettings.delete_remote_data_on_deletion.label',
+                    'required' => false
+                ]
+            )
+            ->add(
                 'productUnit',
                 ChoiceType::class,
                 [

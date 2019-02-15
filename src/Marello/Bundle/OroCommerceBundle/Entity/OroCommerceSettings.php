@@ -22,6 +22,9 @@ class OroCommerceSettings extends Transport
     const INVENTORYTHRESHOLD_FIELD = 'inventorythreshold';
     const LOWINVENTORYTHRESHOLD_FIELD = 'lowinventorythreshold';
     const BACKORDER_FIELD = 'backorder';
+    const DELETE_REMOTE_DATA_ON_DEACTIVATION = 'deleteRemoteDataOnDeactivation';
+    const DELETE_REMOTE_DATA_ON_DELETION = 'deleteRemoteDataOnDeletion';
+    const DATA = 'data';
 
     /**
      * @var string
@@ -100,6 +103,27 @@ class OroCommerceSettings extends Transport
      */
     private $backOrder;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="orocommerce_deldataondeactiv", type="boolean", nullable=true)
+     */
+    private $deleteRemoteDataOnDeactivation;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="orocommerce_deldataondel", type="boolean", nullable=true)
+     */
+    private $deleteRemoteDataOnDeletion;
+
+    /**
+     * @var array $data
+     *
+     * @ORM\Column(name="orocommerce_data", type="json_array", nullable=true)
+     */
+    protected $data;
+    
     /**
      * @var ParameterBag
      */
@@ -315,6 +339,64 @@ class OroCommerceSettings extends Transport
     }
 
     /**
+     * @return bool
+     */
+    public function isDeleteRemoteDataOnDeactivation()
+    {
+        return $this->deleteRemoteDataOnDeactivation;
+    }
+
+    /**
+     * @param bool $deleteRemoteDataOnDeactivation
+     * @return $this
+     */
+    public function setDeleteRemoteDataOnDeactivation($deleteRemoteDataOnDeactivation)
+    {
+        $this->deleteRemoteDataOnDeactivation = $deleteRemoteDataOnDeactivation;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDeleteRemoteDataOnDeletion()
+    {
+        return $this->deleteRemoteDataOnDeletion;
+    }
+
+    /**
+     * @param boolean $deleteRemoteDataOnDeletion
+     * @return OroCommerceSettings
+     */
+    public function setDeleteRemoteDataOnDeletion($deleteRemoteDataOnDeletion)
+    {
+        $this->deleteRemoteDataOnDeletion = $deleteRemoteDataOnDeletion;
+        
+        return $this;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return $this
+     */
+    public function setData(array $data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getSettingsBag()
@@ -332,7 +414,10 @@ class OroCommerceSettings extends Transport
                     self::PRODUCTFAMILY_FIELD => $this->getProductFamily(),
                     self::INVENTORYTHRESHOLD_FIELD => $this->getInventoryThreshold(),
                     self::LOWINVENTORYTHRESHOLD_FIELD => $this->getLowInventoryThreshold(),
-                    self::BACKORDER_FIELD => $this->isBackOrder()
+                    self::BACKORDER_FIELD => $this->isBackOrder(),
+                    self::DELETE_REMOTE_DATA_ON_DEACTIVATION => $this->isDeleteRemoteDataOnDeactivation(),
+                    self::DELETE_REMOTE_DATA_ON_DELETION => $this->isDeleteRemoteDataOnDeletion(),
+                    self::DATA => $this->getData()
                 ]
             );
         }

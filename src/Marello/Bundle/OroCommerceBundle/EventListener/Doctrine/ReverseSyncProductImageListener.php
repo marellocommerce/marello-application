@@ -2,8 +2,8 @@
 
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportCreateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
@@ -13,51 +13,22 @@ use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\AttachmentBundle\Entity\File;
+use Oro\Bundle\EntityBundle\Event\OroEventManager;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
 use Oro\Bundle\IntegrationBundle\Reader\EntityReaderById;
-use Oro\Component\DependencyInjection\ServiceLink;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ReverseSyncProductImageListener
+class ReverseSyncProductImageListener extends AbstractReverseSyncListener
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     * @var ServiceLink
-     */
-    private $syncScheduler;
-
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param ServiceLink $schedulerServiceLink
-     */
-    public function __construct(TokenStorageInterface $tokenStorage, ServiceLink $schedulerServiceLink)
-    {
-        $this->tokenStorage = $tokenStorage;
-        $this->syncScheduler = $schedulerServiceLink;
-    }
-
     /**
      * @param LifecycleEventArgs $args
      */
     public function postPersist(LifecycleEventArgs $args)
     {
-        // check for logged user is for confidence that data changes mes from UI, not from sync process.
-        if (!$this->tokenStorage->getToken() || !$this->tokenStorage->getToken()->getUser()) {
-            return;
-        }
-        $this->entityManager = $args->getEntityManager();
+        parent::init($args->getEntityManager());
+        
         $entity = $args->getEntity();
         if ($entity instanceof Product) {
-            $changeSet = $this->entityManager->getUnitOfWork()->getEntityChangeSet($entity);
+            $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
             if (in_array('image', array_keys($changeSet))) {
                 $this->scheduleSync($entity);
             }
@@ -69,15 +40,22 @@ class ReverseSyncProductImageListener
      */
     public function postUpdate(LifecycleEventArgs $args)
     {
-        // check for logged user is for confidence that data changes mes from UI, not from sync process.
-        if (!$this->tokenStorage->getToken() || !$this->tokenStorage->getToken()->getUser()) {
-            return;
-        }
-        $this->entityManager = $args->getEntityManager();
+        parent::init($args->getEntityManager());
+        
         $entity = $args->getEntity();
         if ($entity instanceof Product) {
-            $changeSet = $this->entityManager->getUnitOfWork()->getEntityChangeSet($entity);
-            if (in_array('image', array_keys($changeSet))) {
+            $data = $entity->getData();
+            $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
+            if (in_array('image', array_keys($changeSet)) ||
+                (ReverseSyncProductListener::isSyncRequired($entity, $this->unitOfWork) &&
+                    $entity->getImage() &&
+                    (!isset($data[AbstractProductExportWriter::IMAGE_ID_FIELD]) ||
+                        (count($data[AbstractProductExportWriter::IMAGE_ID_FIELD]) <
+                            count($this->getIntegrationChannels($entity))
+                        )
+                    )
+                )
+            ) {
                 $this->scheduleSync($entity);
             }
         } elseif ($entity instanceof File) {
@@ -129,11 +107,29 @@ class ReverseSyncProductImageListener
             }
 
             if (!empty($connector_params)) {
-                $this->syncScheduler->getService()->schedule(
-                    $integrationChannel->getId(),
-                    OroCommerceProductImageConnector::TYPE,
-                    $connector_params
-                );
+                /** @var OroCommerceSettings $transport */
+                $transport = $integrationChannel->getTransport();
+                $settingsBag = $transport->getSettingsBag();
+                if ($integrationChannel->isEnabled()) {
+                    $this->syncScheduler->getService()->schedule(
+                        $integrationChannel->getId(),
+                        OroCommerceProductImageConnector::TYPE,
+                        $connector_params
+                    );
+                } elseif($settingsBag->get(OroCommerceSettings::DELETE_REMOTE_DATA_ON_DEACTIVATION) === false) {
+                    $transportData = $transport->getData();
+                    $transportData[AbstractExportWriter::NOT_SYNCHRONIZED]
+                    [OroCommerceProductImageConnector::TYPE]
+                    [$this->generateConnectionParametersKey($connector_params)] = $connector_params;
+                    $transport->setData($transportData);
+                    /** @var OroEventManager $eventManager */
+                    $eventManager = $this->entityManager->getEventManager();
+                    $eventManager->removeEventListener(
+                        'onFlush',
+                        'marello_orocommerce.event_listener.doctrine.reverse_sync_product_image'
+                    );
+                    $this->entityManager->flush($transport);
+                }
             }
         }
     }
@@ -149,7 +145,7 @@ class ReverseSyncProductImageListener
         $integrationChannels = [];
         foreach ($salesChannels as $salesChannel) {
             $channel = $salesChannel->getIntegrationChannel();
-            if ($channel && $channel->getType() === OroCommerceChannelType::TYPE && $channel->isEnabled() &&
+            if ($channel && $channel->getType() === OroCommerceChannelType::TYPE &&
                 $channel->getSynchronizationSettings()->offsetGetOr('isTwoWaySyncEnabled', false)) {
                 $integrationChannels[] = $channel;
             }

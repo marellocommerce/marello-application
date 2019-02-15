@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\Integration\Connector;
 
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Oro\Bundle\IntegrationBundle\Provider\TwoWaySyncConnectorInterface;
 
 class OroCommerceInventoryLevelConnector extends AbstractOroCommerceConnector implements TwoWaySyncConnectorInterface
@@ -34,7 +34,7 @@ class OroCommerceInventoryLevelConnector extends AbstractOroCommerceConnector im
      */
     public function getImportEntityFQCN()
     {
-        return VirtualInventoryLevel::class;
+        return BalancedInventoryLevel::class;
     }
 
     /**

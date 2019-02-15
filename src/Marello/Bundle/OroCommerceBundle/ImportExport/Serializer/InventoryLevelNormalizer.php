@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Serializer;
 
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\ProductBundle\Entity\Product;
 
@@ -13,7 +13,7 @@ class InventoryLevelNormalizer extends AbstractNormalizer
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        if ($object instanceof VirtualInventoryLevel && isset($context['channel'])) {
+        if ($object instanceof BalancedInventoryLevel && isset($context['channel'])) {
             /** @var Product $product */
             $product = $object->getProduct();
             $productData = $product->getData();
@@ -64,7 +64,7 @@ class InventoryLevelNormalizer extends AbstractNormalizer
      */
     public function supportsNormalization($data, $format = null, array $context = array())
     {
-        return ($data instanceof VirtualInventoryLevel && isset($context['channel']) &&
+        return ($data instanceof BalancedInventoryLevel && isset($context['channel']) &&
             $this->getIntegrationChannel($context['channel']));
     }
 }

@@ -216,6 +216,7 @@ class ProductNormalizer extends AbstractNormalizer
                 isset($productData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId])) {
                 $data['data']['id'] =
                     $productData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId];
+                //$data['data']['meta']['update'] = true;
             }
 
             if ($taxCode) {
@@ -240,6 +241,8 @@ class ProductNormalizer extends AbstractNormalizer
                             'description' => $taxCode->getDescription(),
                         ],
                     ];
+                } else {
+                    
                 }
             }
 

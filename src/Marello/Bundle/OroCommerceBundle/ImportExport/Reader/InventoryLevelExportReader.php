@@ -3,7 +3,7 @@
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Reader;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
@@ -68,7 +68,7 @@ class InventoryLevelExportReader extends EntityReader
      */
     protected function initializeFromContext(ContextInterface $context)
     {
-        if ($context->getOption('entityName') === VirtualInventoryLevel::class) {
+        if ($context->getOption('entityName') === BalancedInventoryLevel::class) {
             if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action) {
                 $this->productId = $context->getOption('product');
                 $this->groupId = $context->getOption('group');

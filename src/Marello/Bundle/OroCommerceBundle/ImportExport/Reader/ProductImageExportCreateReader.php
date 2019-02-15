@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Reader;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Oro\Bundle\AttachmentBundle\Entity\File;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
