@@ -1,0 +1,8 @@
+oro_entity:
+    entity_aliases:
+        Marello\Bundle\InvoiceBundle\Entity\Invoice:
+            alias: marello_invoice
+            plural_alias: marello_invoices
+        Marello\Bundle\InvoiceBundle\Entity\InvoiceItem:
+            alias: marello_invoiceitem
+            plural_alias: marello_invoiceitems

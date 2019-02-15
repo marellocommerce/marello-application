@@ -180,4 +180,19 @@ class TaxRuleRepository extends EntityRepository
         
         return count($results) > 0 ? reset($results) : null;
     }
+
+    /**
+     * @param string $key
+     * @return TaxRule[]
+     */
+    public function findByDataKey($key)
+    {
+        $qb = $this->createQueryBuilder('taxRule');
+        $qb
+            ->where($qb->expr()->like('taxRule.data', $qb->expr()->literal("%$key%")));
+        
+        $results = $qb->getQuery()->getResult();
+        
+        return $results;
+    }
 }

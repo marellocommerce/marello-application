@@ -103,4 +103,17 @@ class ProductRepository extends EntityRepository
 
         return $matchedSku;
     }
+
+    /**
+     * @param string $key
+     * @return Product[]
+     */
+    public function findByDataKey($key)
+    {
+        $qb = $this->createQueryBuilder('product');
+        $qb
+            ->where($qb->expr()->like('product.data', $qb->expr()->literal("%$key%")));
+
+        return $this->aclHelper->apply($qb->getQuery())->getResult();
+    }
 }
