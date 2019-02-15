@@ -47,3 +47,6 @@ services:
             - '@oro_locale.dql.formatter.name'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-invoices-base-grid, method: onBuildBefore }
+
+    marello_invoice.provider.invoice_type_choices:
+        class: 'Marello\Bundle\InvoiceBundle\Provider\InvoiceTypeChoicesProvider'

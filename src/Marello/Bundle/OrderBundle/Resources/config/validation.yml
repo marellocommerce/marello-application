@@ -26,6 +26,8 @@ Marello\Bundle\OrderBundle\Entity\OrderItem:
             - NotBlank: { groups: [api, Default] }
         rowTotalExclTax:
             - NotBlank: { groups: [api, Default] }
+        quantity:
+            - GreaterThanOrEqual: 1
     constraints:
         - Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory:
             fields: [quantity, order, product]

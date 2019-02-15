@@ -4,12 +4,12 @@ namespace Marello\Bundle\InvoiceBundle\Mapper;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Marello\Bundle\InvoiceBundle\Entity\Invoice;
-use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;
-use Marello\Bundle\InvoiceBundle\Entity\InvoiceType;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
+use Marello\Bundle\InvoiceBundle\Entity\Creditmemo;
+use Marello\Bundle\InvoiceBundle\Entity\CreditmemoItem;
 
 class RefundToCreditmemoMapper extends AbstractInvoiceMapper
 {
@@ -23,14 +23,15 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
                 sprintf('Wrong source entity "%s" provided to RefundToCreditmemoMapper', get_class($sourceEntity))
             );
         }
+
         /** @var Refund $sourceEntity */
-        $invoice = new Invoice();
-        $data = $this->getData($sourceEntity->getOrder(), Invoice::class);
+        $creditmemo = new Creditmemo();
+        $data = $this->getData($sourceEntity->getOrder(), Creditmemo::class);
         $data['order'] = $sourceEntity->getOrder();
         $data['items'] = $this->getItems($sourceEntity->getItems());
         $subtotal = 0.00;
         $totalTax = 0.00;
-        /** @var InvoiceItem $item */
+        /** @var CreditmemoItem $item */
         foreach ($data['items'] as $item) {
             $subtotal += $item->getRowTotalExclTax();
             $totalTax += $item->getTax();
@@ -41,10 +42,10 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
         if ($data['invoicedAt'] === null) {
             $data['invoicedAt'] = new \DateTime('now', new \DateTimeZone('UTC'));
         }
-        $data['type'] = $this->getInvoiceType(InvoiceType::CREDITMEMO_TYPE);
-        $this->assignData($invoice, $data);
 
-        return $invoice;
+        $this->assignData($creditmemo, $data);
+
+        return $creditmemo;
     }
 
     /**
@@ -54,35 +55,38 @@ class RefundToCreditmemoMapper extends AbstractInvoiceMapper
     protected function getItems(Collection $items)
     {
         $refundItems = $items->toArray();
-        $invoiceItems = [];
+        $creditmemoItems = [];
         /** @var RefundItem $item */
         foreach ($refundItems as $item) {
-            $invoiceItems[] = $this->mapItem($item);
+            if (!$item->getOrderItem()) {
+                continue;
+            }
+            $creditmemoItems[] = $this->mapItem($item);
         }
 
-        return new ArrayCollection($invoiceItems);
+        return new ArrayCollection($creditmemoItems);
     }
 
     /**
      * @param RefundItem $refundItem
-     * @return PackingSlipItem
+     * @return CreditmemoItem|null
      */
     protected function mapItem(RefundItem $refundItem)
     {
-        $invoiceItem = new InvoiceItem();
-        $invoiceItemData = $this->getData($refundItem->getOrderItem(), InvoiceItem::class);
+        $creditmemoItem = new CreditmemoItem();
+        $creditmemoItemData = $this->getData($refundItem->getOrderItem(), CreditmemoItem::class);
         $quantity = $refundItem->getQuantity();
-        $tax = $invoiceItemData['tax']/$invoiceItemData['quantity']*$quantity;
+        $tax = $creditmemoItemData['tax'] / $creditmemoItemData['quantity'] * $quantity;
 
-        $rowTotalExclTax =  $invoiceItemData['rowTotalExclTax']/$invoiceItemData['quantity']*$quantity;
-        $rowTotalInclTax =  $invoiceItemData['rowTotalInclTax']/$invoiceItemData['quantity']*$quantity;
+        $rowTotalExclTax = $creditmemoItemData['rowTotalExclTax'] / $creditmemoItemData['quantity'] * $quantity;
+        $rowTotalInclTax = $creditmemoItemData['rowTotalInclTax'] / $creditmemoItemData['quantity'] * $quantity;
 
-        $invoiceItemData['quantity'] = $quantity;
-        $invoiceItemData['rowTotalExclTax'] = $rowTotalExclTax;
-        $invoiceItemData['rowTotalInclTax'] = $rowTotalInclTax;
-        $invoiceItemData['tax'] = $tax;
-        $this->assignData($invoiceItem, $invoiceItemData);
+        $creditmemoItemData['quantity'] = $quantity;
+        $creditmemoItemData['rowTotalExclTax'] = $rowTotalExclTax;
+        $creditmemoItemData['rowTotalInclTax'] = $rowTotalInclTax;
+        $creditmemoItemData['tax'] = $tax;
+        $this->assignData($creditmemoItem, $creditmemoItemData);
 
-        return $invoiceItem;
+        return $creditmemoItem;
     }
 }

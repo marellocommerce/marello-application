@@ -19,6 +19,7 @@ api:
                     updatedAt:
                         exclude: true
             actions:
+                create: false
                 update: false
                 delete: false
                 delete_list: false
@@ -40,6 +41,7 @@ api:
                         property_path: order
                         description: 'Filter by purchase order ID'
             actions:
+                create: false
                 delete: false
                 delete_list: false
                 update_relationship: false

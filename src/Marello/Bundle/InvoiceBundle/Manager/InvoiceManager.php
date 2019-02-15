@@ -4,7 +4,6 @@ namespace Marello\Bundle\InvoiceBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\InvoiceBundle\Entity\Invoice;
-use Marello\Bundle\InvoiceBundle\Entity\InvoiceType;
 use Marello\Bundle\InvoiceBundle\Mapper\MapperInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -42,10 +41,10 @@ class InvoiceManager
             ->getRepository(Invoice::class)
             ->findBy(
                 [
-                    'order' => $sourceEntity,
-                    'type' => InvoiceType::INVOICE_TYPE
+                    'order' => $sourceEntity
                 ]
             );
+
         if (!$existingInvoice) {
             $invoice = $this->mapper->map($sourceEntity);
             $this->entityManager->persist($invoice);

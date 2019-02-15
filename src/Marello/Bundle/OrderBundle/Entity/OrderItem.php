@@ -339,7 +339,7 @@ class OrderItem extends ExtendOrderItem implements
         if (is_null($this->productName)) {
             $this->setProductName($this->product->getName());
         }
-        $this->productSku  = $this->product->getSku();
+        $this->setProductSku($this->product->getSku());
     }
 
     /**
@@ -542,6 +542,17 @@ class OrderItem extends ExtendOrderItem implements
     {
         $this->productName = $productName;
         
+        return $this;
+    }
+
+    /**
+     * @param $productSku
+     * @return $this
+     */
+    public function setProductSku($productSku)
+    {
+        $this->productSku = $productSku;
+
         return $this;
     }
     

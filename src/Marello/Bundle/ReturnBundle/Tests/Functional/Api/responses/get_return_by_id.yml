@@ -6,7 +6,11 @@ data:
         salesChannelName: channel1
         returnReference: '@return1->returnReference'
         locale: null
-        workflowStep: 'Pending'
+        workflowItem:
+            id: 114
+            currentStep:
+                name: pending
+                label: Pending
     relationships:
         order:
             data:
@@ -16,17 +20,19 @@ data:
             data:
                 -
                     type: marelloreturnitems
-                    id: '<toString(@return1->returnItems->get(0)->id)>'
+                    id: '5'
                 -
                     type: marelloreturnitems
-                    id: '<toString(@return1->returnItems->get(1)->id)>'
+                    id: '6'
                 -
                     type: marelloreturnitems
-                    id: '<toString(@return1->returnItems->get(2)->id)>'
+                    id: '7'
         salesChannel:
             data:
                 type: marellosaleschannels
                 id: chan_eur
+        shipment:
+            data: null
         localization:
             data: null
         organization:

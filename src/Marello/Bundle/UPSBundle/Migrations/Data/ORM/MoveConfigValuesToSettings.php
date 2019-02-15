@@ -21,7 +21,7 @@ class MoveConfigValuesToSettings extends AbstractMoveConfigValuesToSettings impl
 {
     const SECTION_NAME = 'marello_shipping';
 
-    const UPS_TYPE = 'ups';
+    const UPS_TYPE = 'marello_ups';
 
     /**
      * {@inheritdoc}

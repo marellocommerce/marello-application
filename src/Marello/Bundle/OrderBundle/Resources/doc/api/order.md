@@ -178,6 +178,10 @@ The updated record is returned in the response.
 
 Current step in workflow
 
+### workflowItem
+
+Workflow Item related to entity
+
 #### create
 
 {@inheritdoc}

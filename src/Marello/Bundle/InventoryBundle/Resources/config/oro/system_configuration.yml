@@ -18,6 +18,8 @@ system_configuration:
                 label: marello.inventory.system_configuration.fields.balance_threshold_percentage.label
                 tooltip: marello.inventory.system_configuration.fields.balance_threshold_percentage
                 required: true
+                constraints:
+                    - NotBlank: ~
 
         marello_inventory.balancing_strategy:
             data_type: string
@@ -25,6 +27,8 @@ system_configuration:
             options:
                 label: marello.inventory.system_configuration.fields.balancing_strategy.label
                 required: true
+                constraints:
+                    - NotBlank: ~
 
     tree:
         system_configuration:

@@ -26,22 +26,26 @@ data:
         purchaseDate: '@marello_order_1->purchaseDate->format("Y-m-d\TH:i:s\Z")'
         data: null
         locale: null
-        workflowStep: 'Pending Order'
+        workflowItem:
+            id: 46
+            currentStep:
+                name: pending
+                label: 'Pending Order'
     relationships:
         items:
             data:
                 -
                     type: marelloorderitems
-                    id: '<toString(@marello_order_1->items->get(0)->id)>'
+                    id: '98'
                 -
                     type: marelloorderitems
-                    id: '<toString(@marello_order_1->items->get(1)->id)>'
+                    id: '99'
                 -
                     type: marelloorderitems
-                    id: '<toString(@marello_order_1->items->get(2)->id)>'
+                    id: '100'
                 -
                     type: marelloorderitems
-                    id: '<toString(@marello_order_1->items->get(3)->id)>'
+                    id: '101'
         customer:
             data:
                 type: marellocustomers
@@ -49,15 +53,17 @@ data:
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '<toString(@marello_order_1->billingAddress->id)>'
+                id: '129'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '<toString(@marello_order_1->shippingAddress->id)>'
+                id: '129'
         salesChannel:
             data:
                 type: marellosaleschannels
                 id: chan_gbp
+        shipment:
+            data: null
         localization:
             data: null
         organization:

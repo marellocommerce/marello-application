@@ -1,4 +1,3 @@
-assets:
-    css:
-        marello_order:
-            - 'bundles/marellopurchaseorder/less/styles.less'
+css:
+    inputs:
+        - 'bundles/marellopurchaseorder/css/scss/main.scss'

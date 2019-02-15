@@ -2,16 +2,8 @@
 
 namespace Marello\Bundle\InvoiceBundle\Model;
 
-class ExtendInvoice
+use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
+
+class ExtendInvoice extends AbstractInvoice
 {
-    /**
-     * Constructor
-     *
-     * The real implementation of this method is auto generated.
-     *
-     * IMPORTANT: If the derived class has own constructor it must call parent constructor.
-     */
-    public function __construct()
-    {
-    }
 }

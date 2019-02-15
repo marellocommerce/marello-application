@@ -39,7 +39,6 @@ class PurchaseOrderControllerTest extends WebTestCase
     {
         /** @var PurchaseOrder $po */
         $po = $this->getReference(LoadPurchaseOrderData::PURCHASE_ORDER_1_REF);
-
         $this->client->request(
             'GET',
             $this->getUrl('marello_purchaseorder_purchaseorder_view', ['id' => $po->getId()])

@@ -14,6 +14,20 @@ services:
         tags:
             - { name: twig.extension }
 
+    marello_refund.api.add_workflow_item_config:
+        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowItemConfig'
+        tags:
+            - { name: oro.api.processor, action: get_config, class: Marello\Bundle\RefundBundle\Entity\Refund }
+
+    marello_refund.api.add_workflow_item:
+        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowItem'
+        arguments:
+            - '@oro_workflow.manager'
+            - '@oro_entity.doctrine_helper'
+            - '@translator.default'
+        tags:
+            - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\RefundBundle\Entity\Refund }
+
     marello_refund.datagrid.action_permission_provider:
         class: Marello\Bundle\RefundBundle\Datagrid\RefundActionPermissionProvider
         arguments:

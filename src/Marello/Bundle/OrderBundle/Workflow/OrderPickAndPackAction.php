@@ -28,7 +28,7 @@ class OrderPickAndPackAction extends OrderTransitionAction
     protected $warehousesProvider;
 
     /**
-     * OrderShipAction constructor.
+     * OrderPickAndPackAction constructor.
      *
      * @param ContextAccessor           $contextAccessor
      * @param Registry                  $doctrine
@@ -65,7 +65,7 @@ class OrderPickAndPackAction extends OrderTransitionAction
     }
 
     /**
-     * handle the inventory update for items which have been shipped
+     * handle the inventory update for items which have been picked and packed
      * @param OrderItem $item
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
