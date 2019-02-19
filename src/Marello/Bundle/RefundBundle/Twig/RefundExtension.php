@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\RefundBundle\Twig;
 
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
@@ -10,17 +10,24 @@ class RefundExtension extends \Twig_Extension
 {
     const NAME = 'marello_refund';
 
-    /** @var WorkflowManager */
+    /**
+     * @var WorkflowManager
+     */
     protected $workflowManager;
 
     /**
-     * RefundExtension constructor.
-     *
-     * @param WorkflowManager $workflowManager
+     * @var Registry
      */
-    public function __construct(WorkflowManager $workflowManager)
+    protected $doctrine;
+
+    /**
+     * @param WorkflowManager $workflowManager
+     * @param Registry $doctrine
+     */
+    public function __construct(WorkflowManager $workflowManager, Registry $doctrine)
     {
         $this->workflowManager = $workflowManager;
+        $this->doctrine = $doctrine;
     }
 
     /**
@@ -45,6 +52,10 @@ class RefundExtension extends \Twig_Extension
                 'marello_refund_is_pending',
                 [$this, 'isPending']
             ),
+            new \Twig_SimpleFunction(
+                'marello_refund_get_balance',
+                [$this, 'getBalance']
+            ),
         ];
     }
 
@@ -62,5 +73,23 @@ class RefundExtension extends \Twig_Extension
         }
 
         return false;
+    }
+
+    /**
+     * @param Refund $refund
+     * @return float
+     */
+    public function getBalance(Refund $refund)
+    {
+        $refundsForSameOrder = $this->doctrine
+            ->getManagerForClass(Refund::class)
+            ->getRepository(Refund::class)
+            ->findBy(['order' => $refund->getOrder()]);
+        $refundsAmount = 0.0;
+        foreach ($refundsForSameOrder as $prevRefund) {
+            $refundsAmount += $prevRefund->getRefundAmount();
+        }
+        
+        return $refund->getOrder()->getGrandTotal() - $refundsAmount;
     }
 }

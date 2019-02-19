@@ -11,6 +11,7 @@ services:
         class: Marello\Bundle\RefundBundle\Twig\RefundExtension
         arguments:
             - '@oro_workflow.manager'
+            - '@doctrine'
         tags:
             - { name: twig.extension }
 

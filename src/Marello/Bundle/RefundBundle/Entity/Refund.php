@@ -265,7 +265,7 @@ class Refund extends ExtendRefund implements
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getRefundAmount()
     {
