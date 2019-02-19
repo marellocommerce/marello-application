@@ -24,11 +24,17 @@ class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
         array $warehouses,
         Collection $orderItems
     ) {
+        $products = array_map(
+            function($sku) {
+                return strstr($sku, '_|_', true);
+            },
+            array_keys($orderItemsByProducts)
+        );
         $this->getMultipleWarehouseResults(
             $productsByWh,
             $orderItemsByProducts,
             $warehouses,
-            array_keys($orderItemsByProducts)
+            $products
         );
         
         if (count($this->results) <= 1) {
@@ -79,7 +85,12 @@ class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
             if (count($matchedProducts) > 0) {
                 $matchedOrderItems = new ArrayCollection();
                 foreach ($matchedProducts as $productId) {
-                    $matchedOrderItems->add($orderItemsByProducts[$productId]);
+                    foreach ($orderItemsByProducts as $combinedSku => $orderItem) {
+                        $sku = strstr($combinedSku, '_|_', true);
+                        if ($productId === $sku && !$matchedOrderItems->contains($orderItem)) {
+                            $matchedOrderItems->add($orderItem);
+                        }
+                    }
                 }
                 $this->results[$index][implode('|', $matchedProducts)] = new OrderWarehouseResult(
                     [

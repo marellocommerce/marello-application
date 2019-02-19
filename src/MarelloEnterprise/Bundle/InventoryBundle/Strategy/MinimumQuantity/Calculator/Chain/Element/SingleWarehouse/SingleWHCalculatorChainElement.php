@@ -19,9 +19,15 @@ class SingleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
         Collection $orderItems
     ) {
         $results = [];
+        $orderItemsProducts = array_map(
+            function($sku) {
+                return strstr($sku, '_|_', true);
+            },
+            array_keys($orderItemsByProducts)
+        );
         foreach ($productsByWh as $id => $whProducts) {
-            if (count($whProducts) === count(array_keys($orderItemsByProducts)) &&
-                $whProducts === array_keys($orderItemsByProducts)) {
+            if (count($whProducts) === count($orderItemsProducts) &&
+                $whProducts === $orderItemsProducts) {
                 $results[][implode('|', $whProducts)] = new OrderWarehouseResult(
                     [
                         OrderWarehouseResult::WAREHOUSE_FIELD => $warehouses[$id],
