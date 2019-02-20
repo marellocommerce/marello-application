@@ -111,15 +111,6 @@ And ensure that timeout has default value
 
 See [Optimizing InnoDB Disk I/O][2] for more
 
-## PostgreSQL installation notes
-
-You need to load `uuid-ossp` extension for proper doctrine's `guid` type handling.
-Log into database and run sql query:
-
-```
-CREATE EXTENSION "uuid-ossp";
-```
-
 ## Web Server Configuration
 
 The Marello application is based on the Symfony standard application so web server configuration recommendations are the [same][4].
