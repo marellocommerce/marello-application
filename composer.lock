@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "0ba80d33491e108b2b68253951728ca2",
@@ -8973,16 +8973,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.12.7",
+            "version": "v2.12.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "a1ebeac583031f55fa5d9b2bfdc26bf764e6daee"
+                "reference": "e6a3793d371bbaec9112654f59c0c2d6a6bed0e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/a1ebeac583031f55fa5d9b2bfdc26bf764e6daee",
-                "reference": "a1ebeac583031f55fa5d9b2bfdc26bf764e6daee",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/e6a3793d371bbaec9112654f59c0c2d6a6bed0e2",
+                "reference": "e6a3793d371bbaec9112654f59c0c2d6a6bed0e2",
                 "shasum": ""
             },
             "require": {
@@ -9002,9 +9002,6 @@
                 "symfony/polyfill-php72": "^1.4",
                 "symfony/process": "^3.0 || ^4.0",
                 "symfony/stopwatch": "^3.0 || ^4.0"
-            },
-            "conflict": {
-                "hhvm": "*"
             },
             "require-dev": {
                 "johnkary/phpunit-speedtrap": "^1.1 || ^2.0 || ^3.0",
@@ -9060,7 +9057,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2019-02-10T22:48:55+00:00"
+            "time": "2019-02-17T17:41:19+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -9358,7 +9355,7 @@
                     "email": "shelburt02@gmail.com"
                 },
                 {
-                    "name": "Théo FIDRY",
+                    "name": "Théo Fidry",
                     "email": "theo.fidry@gmail.com"
                 }
             ],
@@ -10346,6 +10343,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2018-08-09T05:50:03+00:00"
         },
         {
