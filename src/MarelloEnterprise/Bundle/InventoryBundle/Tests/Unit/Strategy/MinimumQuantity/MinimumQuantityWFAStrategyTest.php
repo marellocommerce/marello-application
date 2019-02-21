@@ -122,9 +122,18 @@ class MinimumQuantityWFAStrategyTest extends TestCase
         $product2->addInventoryItem($inventoryItem2);
         $product3->addInventoryItem($inventoryItem3);
 
-        $orderItem1 = $this->getEntity(OrderItem::class, ['product' => $product1, 'quantity' => 1]);
-        $orderItem2 = $this->getEntity(OrderItem::class, ['product' => $product2, 'quantity' => 1]);
-        $orderItem3 = $this->getEntity(OrderItem::class, ['product' => $product3, 'quantity' => 1]);
+        $orderItem1 = $this->getEntity(
+            OrderItem::class,
+            ['productSku' => $product1->getSku(), 'product' => $product1, 'quantity' => 1]
+        );
+        $orderItem2 = $this->getEntity(
+            OrderItem::class,
+            ['productSku' => $product2->getSku(), 'product' => $product2, 'quantity' => 1]
+        );
+        $orderItem3 = $this->getEntity(
+            OrderItem::class,
+            ['productSku' => $product3->getSku(), 'product' => $product3, 'quantity' => 1]
+        );
 
         $salesChannelGroup = $this->getEntity(SalesChannelGroup::class, ['id' => 1]);
         $salesChannel = $this->getEntity(SalesChannel::class, ['id' => 1, 'group' => $salesChannelGroup]);
@@ -145,9 +154,9 @@ class MinimumQuantityWFAStrategyTest extends TestCase
             3 => ['TPD0002', 'TPD0003']
         ];
         $orderItemsByProducts = [
-            'TPD0001' => $orderItem1,
-            'TPD0002' => $orderItem2,
-            'TPD0003' => $orderItem3,
+            'TPD0001_|_' => $orderItem1,
+            'TPD0002_|_' => $orderItem2,
+            'TPD0003_|_' => $orderItem3,
         ];
         $warehouses = [
             1 => $warehouse1,

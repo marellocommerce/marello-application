@@ -20,11 +20,12 @@ class SingleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
     ) {
         $results = [];
         $orderItemsProducts = array_map(
-            function($sku) {
+            function ($sku) {
                 return strstr($sku, '_|_', true);
             },
             array_keys($orderItemsByProducts)
         );
+
         foreach ($productsByWh as $id => $whProducts) {
             if (count($whProducts) === count($orderItemsProducts) &&
                 $whProducts === $orderItemsProducts) {

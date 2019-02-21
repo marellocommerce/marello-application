@@ -25,7 +25,7 @@ class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
         Collection $orderItems
     ) {
         $products = array_map(
-            function($sku) {
+            function ($sku) {
                 return strstr($sku, '_|_', true);
             },
             array_keys($orderItemsByProducts)
