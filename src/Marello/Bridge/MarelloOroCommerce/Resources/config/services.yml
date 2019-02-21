@@ -10,9 +10,3 @@ services:
         class: Marello\Bridge\MarelloOroCommerce\UPS\EventListener\UpsShippingMethodTypesCreateBeforeEventListener
         tags:
             - { name: kernel.event_listener, event: marello_ups.shipping_method_types_create.before, method: onBeforeCreate }
-
-    marello_commerce_bridge.entity_alias_provider:
-        class: Marello\Bridge\MarelloOroCommerce\Provider\MarelloEntityAliasProvider
-        public: false
-        tags:
-            - { name: oro_entity.alias_provider }
