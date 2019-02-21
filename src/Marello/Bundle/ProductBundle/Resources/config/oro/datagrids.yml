@@ -23,7 +23,6 @@ datagrids:
                     left:
                         - { join: p.status, alias: s }
                         - { join: p.taxCode, alias: tc }
-                        - { join: p.inventoryItems, alias: i }
                         - { join: p.channels, alias: sc }
                         - { join: p.categories, alias: cat }
                         - { join: p.suppliers, alias: psr }
