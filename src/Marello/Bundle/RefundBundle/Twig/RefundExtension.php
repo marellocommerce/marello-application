@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\RefundBundle\Twig;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
@@ -16,18 +16,18 @@ class RefundExtension extends \Twig_Extension
     protected $workflowManager;
 
     /**
-     * @var Registry
+     * @var RefundBalanceCalculator
      */
-    protected $doctrine;
+    protected $refundBalanceCalculator;
 
     /**
      * @param WorkflowManager $workflowManager
-     * @param Registry $doctrine
+     * @param RefundBalanceCalculator $refundBalanceCalculator
      */
-    public function __construct(WorkflowManager $workflowManager, Registry $doctrine)
+    public function __construct(WorkflowManager $workflowManager, RefundBalanceCalculator $refundBalanceCalculator)
     {
         $this->workflowManager = $workflowManager;
-        $this->doctrine = $doctrine;
+        $this->refundBalanceCalculator = $refundBalanceCalculator;
     }
 
     /**
@@ -81,15 +81,6 @@ class RefundExtension extends \Twig_Extension
      */
     public function getBalance(Refund $refund)
     {
-        $refundsForSameOrder = $this->doctrine
-            ->getManagerForClass(Refund::class)
-            ->getRepository(Refund::class)
-            ->findBy(['order' => $refund->getOrder()]);
-        $refundsAmount = 0.0;
-        foreach ($refundsForSameOrder as $prevRefund) {
-            $refundsAmount += $prevRefund->getRefundAmount();
-        }
-        
-        return $refund->getOrder()->getGrandTotal() - $refundsAmount;
+        return $this->refundBalanceCalculator->caclulateBalance($refund);
     }
 }
