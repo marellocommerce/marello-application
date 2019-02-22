@@ -1,0 +1,5 @@
+oro_entity:
+    entity_aliases:
+        Marello\Bundle\ShippingBundle\Entity\Shipment:
+            alias: marelloshipment
+            plural_alias: marelloshipments

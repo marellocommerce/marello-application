@@ -1,9 +1,4 @@
 api:
-    entity_aliases:
-        Marello\Bundle\ShippingBundle\Entity\Shipment:
-            alias: marelloshipment
-            plural_alias: marelloshipments
-
     entities:
         Marello\Bundle\ShippingBundle\Entity\Shipment:
             fields:
