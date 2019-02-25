@@ -1,4 +1,25 @@
 api:
+    entity_aliases:
+        Marello\Bundle\PricingBundle\Entity\ProductPrice:
+            alias: marelloproductprice
+            plural_alias: marelloproductprices
+
+        Marello\Bundle\PricingBundle\Entity\ProductChannelPrice:
+            alias: marelloproductchannelprice
+            plural_alias: marelloproductchannelprices
+
+        Marello\Bundle\PricingBundle\Entity\PriceType:
+            alias: marellopricetype
+            plural_alias: marellopricetypes
+
+        Marello\Bundle\PricingBundle\Entity\AssembledPriceList:
+            alias: marelloassembledpricelist
+            plural_alias: marelloassembledpricelists
+
+        Marello\Bundle\PricingBundle\Entity\AssembledChannelPriceList:
+            alias: marelloassembledchannelpricelist
+            plural_alias: marelloassembledchannelpricelists
+
     entities:
         Marello\Bundle\PricingBundle\Entity\AssembledPriceList:
             documentation_resource: '@MarelloPricingBundle/Resources/doc/api/assembledpricelist.md'
