@@ -175,3 +175,11 @@ services:
             - 'Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+
+    marello_inventory.repository.inventoryitem:
+        class: 'Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\InventoryBundle\Entity\InventoryItem'
+        calls:
+            - [setAclHelper, ['@oro_security.acl_helper']]
