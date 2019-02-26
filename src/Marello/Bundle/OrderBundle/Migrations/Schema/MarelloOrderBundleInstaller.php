@@ -30,7 +30,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_7';
+        return 'v1_8';
     }
 
     /**
@@ -50,6 +50,7 @@ class MarelloOrderBundleInstaller implements
         $this->addMarelloAddressForeignKeys($schema);
         $this->addMarelloOrderCustomerOwnerToOroEmailAddress($schema);
 
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_order_customer');
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_order_order');
     }
 
