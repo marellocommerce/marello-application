@@ -131,10 +131,6 @@ datagrids:
                 type:       url
                 route:      marello_product_update
                 params:     [ id ]
-            inventory_link:
-                type:       url
-                route:      marello_inventory_inventory_update
-                params:     [ id ]
         sorters:
             columns:
                 sku:                    { data_name: p.sku }
@@ -246,12 +242,6 @@ datagrids:
                 icon:           edit
                 link:           update_link
                 acl_resource:   marello_product_update
-            inventory:
-                type:           navigate
-                link:           inventory_link
-                icon:           cubes
-                label:          marello.inventory.management.label
-                acl_recource:   marello_inventory_inventory_update
         mass_actions:
             assign_sales_channels:
                 type:         redirect
