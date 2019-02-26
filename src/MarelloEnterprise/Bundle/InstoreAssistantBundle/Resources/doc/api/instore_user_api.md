@@ -11,12 +11,12 @@ Retrieve a api key for the logged in Instore User.
 {@request:json_api}
 Example:
 
-`<web_backend_prefix/api/instoreuserapi/authenticate>`
+`<web_backend_prefix/api/marelloinstoreuserapi/authenticate>`
 
 ```JSON
 {  
    "data":{  
-      "type":"instoreuserapi",
+      "type":"marelloinstoreuserapi",
       "attributes":{
          "apiKey":"62674f15490a74cf0c607a83274d3883d8099496"
       }
