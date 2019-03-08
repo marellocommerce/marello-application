@@ -13,13 +13,18 @@ use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProviderInterface;
 
 class InventoryLevelExportReader extends EntityReader
 {
+    const PRODUCT_FILTER = 'product';
+    const GROUP_FILTER = 'group';
+
     /**
      * @var int
+     * @deprecated will be removed in 2.0
      */
     protected $productId;
 
     /**
      * @var int
+     * @deprecated will be removed in 2.0
      */
     protected $groupId;
 
@@ -57,14 +62,33 @@ class InventoryLevelExportReader extends EntityReader
             ->innerJoin('o.salesChannelGroup', 'g')
             ->andWhere('p.id = :productId')
             ->andWhere('g.id = :groupId')
-            ->setParameter('productId', $this->productId ? : -1)
-            ->setParameter('groupId', $this->groupId ? : -1);
+            ->setParameter('productId', $this->getParametersFromContext(self::PRODUCT_FILTER))
+            ->setParameter('groupId', $this->getParametersFromContext(self::GROUP_FILTER));
 
         return $qb;
     }
 
     /**
+     * @param string $parameter
+     * @return string|null
+     */
+    protected function getParametersFromContext($parameter)
+    {
+        $context = $this->getContext();
+        if ($context->getOption('entityName') === VirtualInventoryLevel::class) {
+            if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action
+                && $context->hasOption($parameter)
+            ) {
+                return $context->getOption($parameter);
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * {@inheritdoc}
+     * @deprecated will be removed in 2.0
      */
     protected function initializeFromContext(ContextInterface $context)
     {
