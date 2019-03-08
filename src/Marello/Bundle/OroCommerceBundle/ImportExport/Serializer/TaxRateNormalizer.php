@@ -21,7 +21,7 @@ class TaxRateNormalizer extends AbstractNormalizer
                     'type' => 'taxes',
                     'attributes' => [
                         'code' => $object->getCode(),
-                        'rate' => $object->getRate() * 100
+                        'rate' => $object->getRate()
                     ],
                 ]
             ];
