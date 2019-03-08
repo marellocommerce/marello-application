@@ -26,9 +26,25 @@ class ProductExportCreateReader extends EntityReader
 
         $qb
             ->andWhere('o.' . self::SKU_FILTER . ' = :sku')
-            ->setParameter('sku', $this->sku ? : -1);
+            ->setParameter(self::SKU_FILTER, $this->getParametersFromContext(self::SKU_FILTER));
 
         return $qb;
+    }
+
+    /**
+     * @param string $parameter
+     * @return string|null
+     */
+    protected function getParametersFromContext($parameter)
+    {
+        $context = $this->getContext();
+        if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === AbstractExportWriter::CREATE_ACTION
+            && $context->hasOption($parameter)
+        ) {
+            return $context->getOption($parameter);
+        }
+
+        return null;
     }
 
     /**
