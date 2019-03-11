@@ -30,19 +30,38 @@ class ProductImageExportCreateReader extends EntityReader
     protected function createSourceEntityQueryBuilder($entityName, Organization $organization = null, array $ids = [])
     {
         $qb = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
-        
+
+        $property = EntityReaderById::ID_FILTER;
+        $value = $this->getParametersFromContext($property);
+
         if ($this->filename) {
             $property = self::ORIGINAL_FILE_NAME_FILTER;
-            $value = $this->filename;
-        } else {
-            $property = EntityReaderById::ID_FILTER;
-            $value = $this->id;
+            $value = $this->getParametersFromContext($property);
         }
+
         $qb
             ->andWhere('o.' . $property . ' = :' . $property)
-            ->setParameter($property, $value ? : -1);
+            ->setParameter($property, $value);
 
         return $qb;
+    }
+
+    /**
+     * @param string $parameter
+     * @return string|null
+     */
+    protected function getParametersFromContext($parameter)
+    {
+        $context = $this->getContext();
+        if ($context->getOption('entityName') === File::class) {
+            if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === AbstractExportWriter::CREATE_ACTION
+                && $context->hasOption($parameter)
+            ) {
+                return $context->getOption($parameter);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -55,6 +74,7 @@ class ProductImageExportCreateReader extends EntityReader
             $this->filename = $context->getOption(self::ORIGINAL_FILE_NAME_FILTER);
             $this->id = $context->getOption(EntityReaderById::ID_FILTER);
         }
+
         parent::initializeFromContext($context);
     }
 }
