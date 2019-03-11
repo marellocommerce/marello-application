@@ -16,11 +16,13 @@ class ProductImageExportCreateReader extends EntityReader
     
     /**
      * @var string
+     * @deprecated will be removed in 2.0
      */
     protected $filename;
     
     /**
      * @var string
+     * @deprecated will be removed in 2.0
      */
     protected $id;
 
@@ -47,6 +49,7 @@ class ProductImageExportCreateReader extends EntityReader
     }
 
     /**
+     * {@inheritdoc}
      * @param string $parameter
      * @return string|null
      */
@@ -66,6 +69,7 @@ class ProductImageExportCreateReader extends EntityReader
 
     /**
      * {@inheritdoc}
+     * @deprecated will be removed in 2.0 in favour of the parent action
      */
     protected function initializeFromContext(ContextInterface $context)
     {

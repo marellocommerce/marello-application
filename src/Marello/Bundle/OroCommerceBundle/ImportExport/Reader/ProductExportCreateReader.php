@@ -14,6 +14,7 @@ class ProductExportCreateReader extends EntityReader
 
     /**
      * @var string
+     * @deprecated will be removed in 2.0
      */
     protected $sku;
 
@@ -32,6 +33,7 @@ class ProductExportCreateReader extends EntityReader
     }
 
     /**
+     * {@inheritdoc}
      * @param string $parameter
      * @return string|null
      */
