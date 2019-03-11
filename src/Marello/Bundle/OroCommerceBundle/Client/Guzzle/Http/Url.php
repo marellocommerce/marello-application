@@ -17,8 +17,16 @@ class Url extends BaseUrl
      */
     public static function factory($url)
     {
-        static $defaults = array('scheme' => null, 'host' => null, 'path' => null, 'port' => null, 'query' => null,
-            'user' => null, 'pass' => null, 'fragment' => null);
+        static $defaults = array(
+            'scheme' => null,
+            'host' => null,
+            'path' => null,
+            'port' => null,
+            'query' => null,
+            'user' => null,
+            'pass' => null,
+            'fragment' => null
+        );
 
         if (false === ($parts = parse_url($url))) {
             throw new InvalidArgumentException('Was unable to parse malformed url: ' . $url);
@@ -31,8 +39,15 @@ class Url extends BaseUrl
             $parts['query'] = QueryString::fromString($parts['query']);
         }
 
-        return new self($parts['scheme'], $parts['host'], $parts['user'],
-            $parts['pass'], $parts['port'], $parts['path'], $parts['query'],
-            $parts['fragment']);
+        return new self(
+            $parts['scheme'],
+            $parts['host'],
+            $parts['user'],
+            $parts['pass'],
+            $parts['port'],
+            $parts['path'],
+            $parts['query'],
+            $parts['fragment']
+        );
     }
 }
