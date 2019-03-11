@@ -19,16 +19,19 @@ class TaxRuleExportReader extends EntityReader
 
     /**
      * @var string
+     * @deprecated will be removed in 2.0
      */
     protected $taxCode;
 
     /**
      * @var float
+     * @deprecated will be removed in 2.0
      */
     protected $taxRate;
 
     /**
      * @var string
+     * @deprecated will be removed in 2.0
      */
     protected $taxJurisdiction;
 
@@ -68,15 +71,34 @@ class TaxRuleExportReader extends EntityReader
             ->andWhere('tc.code = :tc_code')
             ->andWhere('tr.code = :tr_code')
             ->andWhere('tj.code = :tj_code')
-            ->setParameter('tc_code', $this->taxCode ? : -1)
-            ->setParameter('tr_code', $this->taxRate ? : -1)
-            ->setParameter('tj_code', $this->taxJurisdiction ? : -1);
+            ->setParameter('tc_code', $this->getParametersFromContext(self::TAXCODE_FILTER))
+            ->setParameter('tr_code', $this->getParametersFromContext(self::TAXRATE_FILTER))
+            ->setParameter('tj_code', $this->getParametersFromContext(self::TAXJURISDICTION_FILTER));
 
         return $qb;
     }
 
     /**
+     * @param string $parameter
+     * @return string|null
+     */
+    protected function getParametersFromContext($parameter)
+    {
+        $context = $this->getContext();
+        if ($context->getOption('entityName') === TaxRule::class) {
+            if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action
+                && $context->hasOption($parameter)
+            ) {
+                return $context->getOption($parameter);
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * {@inheritdoc}
+     * @deprecated will be removed in 2.0 in favour of the parent action
      */
     protected function initializeFromContext(ContextInterface $context)
     {
