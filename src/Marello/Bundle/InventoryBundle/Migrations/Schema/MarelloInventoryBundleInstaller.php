@@ -25,7 +25,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
      */
     public function getMigrationVersion()
     {
-        return 'v2_0';
+        return 'v2_1';
     }
 
     /**
@@ -99,6 +99,7 @@ class MarelloInventoryBundleInstaller implements Installation, ExtendExtensionAw
         $table->addColumn('updated_at', 'datetime');
         $table->addColumn('inventory_item_id', 'integer', ['notnull' => false]);
         $table->addColumn('organization_id', 'integer', ['notnull' => false]);
+        $table->addColumn('managed_inventory', 'boolean', ['notnull' => false, 'default' => false]);
         
         $table->setPrimaryKey(['id']);
         $table->addIndex(['inventory_item_id']);

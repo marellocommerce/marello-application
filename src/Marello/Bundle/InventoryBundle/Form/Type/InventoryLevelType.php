@@ -5,13 +5,18 @@ namespace Marello\Bundle\InventoryBundle\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Event\InventoryLevelFinishFormViewEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\Valid;
@@ -26,11 +31,18 @@ class InventoryLevelType extends AbstractType
     protected $subscriber;
 
     /**
-     * @param EventSubscriberInterface $subscriber
+     * @var EventDispatcherInterface
      */
-    public function __construct(EventSubscriberInterface $subscriber)
+    protected $eventDispatcher;
+
+    /**
+     * @param EventSubscriberInterface $subscriber
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(EventSubscriberInterface $subscriber, EventDispatcherInterface $eventDispatcher)
     {
         $this->subscriber = $subscriber;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -79,6 +91,10 @@ class InventoryLevelType extends AbstractType
                 [
                     'disabled' => true
                 ]
+            )
+            ->add(
+                'managedInventory',
+                CheckboxType::class
             );
 
         $builder->addEventSubscriber($this->subscriber);
@@ -91,10 +107,22 @@ class InventoryLevelType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => InventoryLevel::class,
+            'display' => true,
             'constraints' => [
                 new Valid()
             ]
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $this->eventDispatcher->dispatch(
+            InventoryLevelFinishFormViewEvent::NAME,
+            new InventoryLevelFinishFormViewEvent($view)
+        );
     }
 
     /**

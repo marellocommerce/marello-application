@@ -6,11 +6,16 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 class InventoryLevelSubscriber implements EventSubscriberInterface
 {
@@ -44,8 +49,59 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            FormEvents::POST_SET_DATA   => 'postSet',
             FormEvents::POST_SUBMIT     => 'handleUnMappedFields'
         ];
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function postSet(FormEvent $event)
+    {
+        /** @var InventoryLevel $inventoryLevel */
+        $inventoryLevel = $event->getData();
+        if ($inventoryLevel instanceof InventoryLevel) {
+            $form = $event->getForm();
+            $warehouseType = $inventoryLevel->getWarehouse()->getWarehouseType();
+            if ($warehouseType->getName() !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                $form->remove('adjustmentOperator');
+                $form->remove('quantity');
+                $form->remove('managedInventory');
+                $form
+                    ->add(
+                        'adjustmentOperator',
+                        ChoiceType::class,
+                        [
+                            'choices' =>
+                                [
+                                    'increase' => InventoryLevelCalculator::OPERATOR_INCREASE,
+                                    'decrease' => InventoryLevelCalculator::OPERATOR_DECREASE,
+                                ],
+                            'translation_domain' => 'MarelloInventoryChangeDirection',
+                            'mapped' => false,
+                            'disabled' => true
+                        ]
+                    )
+                    ->add(
+                        'quantity',
+                        NumberType::class,
+                        [
+                            'constraints' => new GreaterThanOrEqual(0),
+                            'data'        => 0,
+                            'mapped' => false,
+                            'disabled' => true
+                        ]
+                    )
+                    ->add(
+                        'managedInventory',
+                        CheckboxType::class,
+                        [
+                            'disabled' => true
+                        ]
+                    );
+            }
+        }
     }
 
     /**
