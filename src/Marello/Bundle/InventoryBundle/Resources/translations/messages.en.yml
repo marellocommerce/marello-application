@@ -45,6 +45,8 @@ marello:
             organization.label:         Organization
             sales_channel_groups.label: Sales Channel (Groups)
             warehouse_group.label:      Warehouse (Group)
+            menu:
+                linking_channels.label: Linking Sales Channels
 
         model:
             warehouse:
