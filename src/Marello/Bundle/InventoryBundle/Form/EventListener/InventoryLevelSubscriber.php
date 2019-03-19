@@ -73,11 +73,10 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
                         'adjustmentOperator',
                         ChoiceType::class,
                         [
-                            'choices' =>
-                                [
-                                    'increase' => InventoryLevelCalculator::OPERATOR_INCREASE,
-                                    'decrease' => InventoryLevelCalculator::OPERATOR_DECREASE,
-                                ],
+                            'choices' => [
+                                'increase' => InventoryLevelCalculator::OPERATOR_INCREASE,
+                                'decrease' => InventoryLevelCalculator::OPERATOR_DECREASE,
+                            ],
                             'translation_domain' => 'MarelloInventoryChangeDirection',
                             'mapped' => false,
                             'disabled' => true

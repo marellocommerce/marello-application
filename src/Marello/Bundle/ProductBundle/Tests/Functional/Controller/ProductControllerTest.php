@@ -2,18 +2,14 @@
 
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
-use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadProductReplenishmentData;
-use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
-use Symfony\Component\DomCrawler\Form;
-use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\Response;
-
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
+use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @outputBuffering enabled
@@ -58,6 +54,7 @@ class ProductControllerTest extends WebTestCase
         $form['marello_product_form[sku]']                = $sku;
         $form['marello_product_form[status]']             = 'enabled';
         $form['marello_product_form[addSalesChannels]']   = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
+        $form['marello_product_form[taxCode]']            = $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);

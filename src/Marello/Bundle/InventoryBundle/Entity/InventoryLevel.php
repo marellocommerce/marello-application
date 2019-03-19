@@ -5,9 +5,7 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\InventoryBundle\Model\InventoryQtyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
@@ -170,7 +168,7 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
     protected $updatedAt;
 
     /**
-     * @ORM\Column(name="managed_inventory", type="boolean")
+     * @ORM\Column(name="managed_inventory", type="boolean", nullable=true, options={"default"=false})
      * @Oro\ConfigField(
      *      defaultValues={
      *          "importexport"={

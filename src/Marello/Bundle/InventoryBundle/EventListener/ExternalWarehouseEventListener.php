@@ -38,7 +38,8 @@ class ExternalWarehouseEventListener
     /**
      * @param SupplierDropshipEvent $event
      */
-    public function onSupplierDropshipToggle(SupplierDropshipEvent $event) {
+    public function onSupplierDropshipToggle(SupplierDropshipEvent $event)
+    {
         $supplier = $event->getSupplier();
         if ($event->isCanDropship() === true) {
             $this->onSupplierDropshipOn($supplier);
@@ -50,7 +51,8 @@ class ExternalWarehouseEventListener
     /**
      * @param ProductDropshipEvent $event
      */
-    public function onProductDropshipToggle(ProductDropshipEvent $event) {
+    public function onProductDropshipToggle(ProductDropshipEvent $event)
+    {
         $productSupplierRelation = $event->getProductSupplierRelation();
         if ($event->isCanDropship() === true) {
             $this->onProductDropshipOn($productSupplierRelation);
@@ -81,7 +83,6 @@ class ExternalWarehouseEventListener
             $this->removeInventoryLevelsForRelatedProducts($warehouse);
             $this->removeWarehouse($supplier);
         }
-
     }
 
     /**
@@ -241,7 +242,6 @@ class ExternalWarehouseEventListener
             ->getEntityManagerForClass(InventoryLevel::class)
             ->getRepository(InventoryLevel::class)
             ->deleteForWarehouse($warehouse);
-
     }
 
     /**
