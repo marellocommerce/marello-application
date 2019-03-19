@@ -187,3 +187,44 @@ data:
                 data: []
             image:
                 data: null
+    -
+        type: marelloproducts
+        id: p5
+        attributes:
+            productId: '@product5->id'
+            name: product5
+            manufacturingCode: null
+            productType: null
+            cost: null
+            weight: 1
+            warranty: null
+            data: null
+        relationships:
+            productstatus:
+                data:
+                    type: marelloproductstatuses
+                    id: enabled
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
+            prices:
+                data:
+                    -
+                        type: marelloassembledpricelists
+                        id: '<toString(@product5->prices->get(0)->id)>'
+            channelPrices:
+                data: []
+            saleschannels:
+                data:
+                    -
+                        type: marellosaleschannels
+                        id: chan_eur
+            taxcode:
+                data:
+                    type: marellotaxcodes
+                    id: TAX_HIGH
+            categories:
+                data: []
+            image:
+                data: null
