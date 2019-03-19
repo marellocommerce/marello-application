@@ -120,17 +120,20 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
             $product = $orderItem->getProduct();
             $inventoryItems = $product->getInventoryItems();
             $preferedSupplier = $this->getPreferredSupplierWhichCanDropship($product);
-            $supplierWarehouseCode = sprintf(
-                '%s_external_warehouse',
-                str_replace(' ', '_', strtolower($preferedSupplier->getName()))
-            );
-            foreach ($inventoryItems as $inventoryItem) {
-                foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
-                    $warehouse = $inventoryLevel->getWarehouse();
-                    if ($warehouse->getWarehouseType()->getName() ===
-                        WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL &&
-                        $supplierWarehouseCode === $warehouse->getCode()) {
-                        $warehouses[$warehouse->getId()] = $warehouse;
+            if ($preferedSupplier) {
+                $supplierWarehouseCode = sprintf(
+                    '%s_external_warehouse',
+                    str_replace(' ', '_', strtolower($preferedSupplier->getName()))
+                );
+                foreach ($inventoryItems as $inventoryItem) {
+                    foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
+                        $warehouse = $inventoryLevel->getWarehouse();
+                        if ($warehouse->getWarehouseType()->getName() ===
+                            WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL &&
+                            $supplierWarehouseCode === $warehouse->getCode()
+                        ) {
+                            $warehouses[$warehouse->getId()] = $warehouse;
+                        }
                     }
                 }
             }

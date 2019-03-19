@@ -7,6 +7,8 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -45,7 +47,9 @@ class WarehouseListenerTest extends TestCase
      */
     public function testPrePersist(\PHPUnit_Framework_MockObject_MockObject $warehouseGroup = null)
     {
+        $warehouseType = new WarehouseType(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL);
         $warehouse = new Warehouse();
+        $warehouse->setWarehouseType($warehouseType);
 
         $repository = $this->createMock(WarehouseGroupRepository::class);
         $repository
