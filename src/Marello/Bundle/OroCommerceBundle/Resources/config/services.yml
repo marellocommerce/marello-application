@@ -57,6 +57,7 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush, priority: 100 }
 
@@ -65,6 +66,7 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush, priority: 10 }
 
@@ -73,6 +75,7 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush, priority: 20 }
 
@@ -81,6 +84,7 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: postUpdate }
@@ -90,6 +94,7 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
@@ -98,6 +103,7 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
@@ -106,6 +112,7 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
@@ -114,6 +121,7 @@ services:
         arguments:
             - '@security.token_storage'
             - '@oro_integration.sync_scheduler.link'
+            - '@oro_security.encoder.default'
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 

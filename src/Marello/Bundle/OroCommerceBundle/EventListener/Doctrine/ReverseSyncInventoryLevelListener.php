@@ -2,14 +2,7 @@
 
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
-use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Component\DependencyInjection\ServiceLink;
-
 use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
@@ -17,58 +10,21 @@ use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceInventoryL
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Oro\Bundle\IntegrationBundle\Entity\Channel;
 
-class ReverseSyncInventoryLevelListener
+class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     * @var ServiceLink
-     */
-    private $syncScheduler;
-
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
-     * @var array
-     */
-    private $processedEntities = [];
-
-    /**
-     * @var array
-     */
-    protected $syncFields = [
+    const SYNC_FIELDS = [
         'inventory',
         'balancedInventory',
     ];
-
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param ServiceLink $schedulerServiceLink
-     */
-    public function __construct(TokenStorageInterface $tokenStorage, ServiceLink $schedulerServiceLink)
-    {
-        $this->tokenStorage = $tokenStorage;
-        $this->syncScheduler = $schedulerServiceLink;
-    }
 
     /**
      * @param OnFlushEventArgs $event
      */
     public function onFlush(OnFlushEventArgs $event)
     {
-        $this->entityManager = $event->getEntityManager();
-
-        // check for logged user is for confidence that data changes mes from UI, not from sync process.
-        if (!$this->tokenStorage->getToken() || !$this->tokenStorage->getToken()->getUser()) {
-            return;
-        }
+        parent::init($event->getEntityManager());
 
         foreach ($this->getEntitiesToSync() as $entity) {
             $this->scheduleSync($entity);
@@ -80,9 +36,9 @@ class ReverseSyncInventoryLevelListener
      */
     protected function getEntitiesToSync()
     {
-        $entities = $this->entityManager->getUnitOfWork()->getScheduledEntityInsertions();
-        $entities = array_merge($entities, $this->entityManager->getUnitOfWork()->getScheduledEntityUpdates());
-        $entities = array_merge($entities, $this->entityManager->getUnitOfWork()->getScheduledEntityDeletions());
+        $entities = $this->unitOfWork->getScheduledEntityInsertions();
+        $entities = array_merge($entities, $this->unitOfWork->getScheduledEntityUpdates());
+        $entities = array_merge($entities, $this->unitOfWork->getScheduledEntityDeletions());
         return $this->filterEntities($entities);
     }
 
@@ -95,6 +51,36 @@ class ReverseSyncInventoryLevelListener
         $result = [];
 
         foreach ($entities as $entity) {
+            if ($entity instanceof Product) {
+                $data = $entity->getData();
+                if (ReverseSyncProductListener::isSyncRequired($entity, $this->unitOfWork)) {
+                    $salesChannelsGroups = [];
+                    foreach ($entity->getChannels() as $channel) {
+                        if ($channel->getIntegrationChannel()) {
+                            $group = $channel->getGroup();
+                            $salesChannelsGroups[$group->getName()] = $group;
+                        }
+                    }
+                    $repo = $this->entityManager->getRepository(VirtualInventoryLevel::class);
+                    foreach ($salesChannelsGroups as $group) {
+                        $balancedInventory = $repo->findExistingVirtualInventory($entity, $group);
+                        if ($balancedInventory &&
+                            (!isset($data[AbstractProductExportWriter::INVENTORY_LEVEL_ID_FIELD]) ||
+                                count($data[AbstractProductExportWriter::INVENTORY_LEVEL_ID_FIELD]) <
+                                count($this->getIntegrationChannels($balancedInventory))
+                            )
+                        ) {
+                            $result[
+                            sprintf(
+                                '%s_%s',
+                                $entity->getSku(),
+                                $group->getId()
+                            )
+                            ] = $balancedInventory;
+                        }
+                    }
+                }
+            }
             if ($entity instanceof VirtualInventoryLevel) {
                 if ($this->isSyncRequired($entity)) {
                     $result[
@@ -117,19 +103,19 @@ class ReverseSyncInventoryLevelListener
      */
     protected function isSyncRequired(VirtualInventoryLevel $entity)
     {
-        $changeSet = $this->entityManager->getUnitOfWork()->getEntityChangeSet($entity);
+        $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
 
         if (count($changeSet) === 0) {
-            return true;
+            return false;
         }
 
         foreach (array_keys($changeSet) as $fieldName) {
-            if (in_array($fieldName, $this->syncFields)) {
+            if (in_array($fieldName, self::SYNC_FIELDS)) {
                 return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     /**

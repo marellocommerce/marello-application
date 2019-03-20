@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\ProductExportUpdateReader;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Reader\TaxExportReader;
@@ -12,61 +11,21 @@ use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceTaxRateCon
 use Marello\Bundle\OroCommerceBundle\Integration\OroCommerceChannelType;
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
-use Oro\Component\DependencyInjection\ServiceLink;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ReverseSyncTaxRateListener
+class ReverseSyncTaxRateListener extends AbstractReverseSyncListener
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    /**
-     * @var ServiceLink
-     */
-    private $syncScheduler;
-
-    /**
-     * @var EntityManager
-     */
-    private $entityManager;
-
-    /**
-     * @var array
-     */
-    private $processedEntities = [];
-
-    /**
-     * @var array
-     */
-    protected $syncFields = [
+    const SYNC_FIELDS = [
         'code',
         'description',
         'rate'
     ];
 
     /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param ServiceLink $schedulerServiceLink
-     */
-    public function __construct(TokenStorageInterface $tokenStorage, ServiceLink $schedulerServiceLink)
-    {
-        $this->tokenStorage = $tokenStorage;
-        $this->syncScheduler = $schedulerServiceLink;
-    }
-
-    /**
      * @param OnFlushEventArgs $event
      */
     public function onFlush(OnFlushEventArgs $event)
     {
-        $this->entityManager = $event->getEntityManager();
-
-        // check for logged user is for confidence that data changes mes from UI, not from sync process.
-        if (!$this->tokenStorage->getToken() || !$this->tokenStorage->getToken()->getUser()) {
-            return;
-        }
+        parent::init($event->getEntityManager());
 
         foreach ($this->getEntitiesToSync() as $action => $entities) {
             foreach ($entities as $entity) {
@@ -123,7 +82,7 @@ class ReverseSyncTaxRateListener
             return true;
         }
         foreach (array_keys($changeSet) as $fieldName) {
-            if (in_array($fieldName, $this->syncFields)) {
+            if (in_array($fieldName, self::SYNC_FIELDS)) {
                 return true;
             }
         }
