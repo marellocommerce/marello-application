@@ -50,11 +50,11 @@ class ProductControllerTest extends WebTestCase
         $sku     = 'SKU-1234';
         $form    = $crawler->selectButton('Save and Close')->form();
 
-        $form['marello_product_form[name]']               = $name;
-        $form['marello_product_form[sku]']                = $sku;
-        $form['marello_product_form[status]']             = 'enabled';
-        $form['marello_product_form[addSalesChannels]']   = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
-        $form['marello_product_form[taxCode]']            = $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
+        $form['marello_product_form[name]'] = $name;
+        $form['marello_product_form[sku]'] = $sku;
+        $form['marello_product_form[status]'] = 'enabled';
+        $form['marello_product_form[addSalesChannels]'] = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
+        $form['marello_product_form[taxCode]'] = $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);

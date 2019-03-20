@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
-class LoadOrderItemStatusData  extends AbstractFixture
+class LoadOrderItemStatusData extends AbstractFixture
 {
     const ITEM_STATUS_ENUM_CLASS = 'marello_item_status';
     
