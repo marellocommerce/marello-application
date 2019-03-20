@@ -222,7 +222,7 @@ class ReverseSyncProductListener extends AbstractReverseSyncListener
 
         $changeSet = $unitOfWork->getEntityChangeSet($entity);
         if (count($changeSet) === 0) {
-            return true;
+            return false;
         }
 
         foreach (array_keys($changeSet) as $fieldName) {

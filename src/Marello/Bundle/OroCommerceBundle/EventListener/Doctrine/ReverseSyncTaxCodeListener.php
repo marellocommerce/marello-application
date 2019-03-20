@@ -80,7 +80,7 @@ class ReverseSyncTaxCodeListener extends AbstractReverseSyncListener
         $changeSet = $this->entityManager->getUnitOfWork()->getEntityChangeSet($entity);
 
         if (count($changeSet) === 0) {
-            return true;
+            return false;
         }
         foreach (array_keys($changeSet) as $fieldName) {
             if (in_array($fieldName, self::SYNC_FIELDS)) {
