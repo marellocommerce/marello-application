@@ -54,7 +54,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $this->settings->get(OroCommerceSettings::URL_FIELD),
             []
         );
-        
+
         return $this;
     }
 
@@ -156,6 +156,9 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 foreach ($order['relationships'] as &$relationship) {
                     foreach ($ordersResponse['included'] as $included) {
                         if (!isset($relationship['data']['type'])) {
+                            if(!isset($relationship['data'])) {
+                                break;
+                            }
                             foreach ($relationship['data'] as $key => $data) {
                                 if ($data['type'] === 'orderlineitems') {
                                     $lineItems[$data['id']] = $data['id'];
@@ -185,6 +188,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 $orders[] = $order;
             }
         }
+
         if (count($orderIds) > 0) {
             $paymentStatusesRequest = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
@@ -416,7 +420,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
 
             return $json;
         }
-        
+
         return null;
     }
 
@@ -452,7 +456,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
 
         return $json;
     }
-    
+
     /**
      * @param int $id
      * @return RestResponseInterface
@@ -479,7 +483,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
 
         return $response;
     }
-    
+
     /**
      * @param array $data
      * @return array
