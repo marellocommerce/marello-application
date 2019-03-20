@@ -126,7 +126,7 @@ class OrderControllerTest extends WebTestCase
             ->getManagerForClass(PackingSlip::class)
             ->getRepository(PackingSlip::class)
             ->findOneBy([
-                'order' => $entity 
+                'order' => $entity
             ]);
         $this->assertNotEmpty($packingSlip);
         foreach ($packingSlip->getItems() as $packingSlipItem) {
@@ -247,11 +247,14 @@ class OrderControllerTest extends WebTestCase
             $orderItem = $packingSlipItem->getOrderItem();
             $warehouseType = $packingSlip->getWarehouse()->getWarehouseType()->getName();
             if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
-                $this->assertEquals($packingSlipItem->getProductSku(),$externalProduct->getSku());
-                $this->assertEquals(LoadOrderItemStatusData::COULD_NOT_ALLOCATE, $packingSlipItem->getStatus()->getId());
+                $this->assertEquals($packingSlipItem->getProductSku(), $externalProduct->getSku());
+                $this->assertEquals(
+                    LoadOrderItemStatusData::COULD_NOT_ALLOCATE,
+                    $packingSlipItem->getStatus()->getId()
+                );
                 $this->assertEquals(LoadOrderItemStatusData::COULD_NOT_ALLOCATE, $orderItem->getStatus()->getId());
             } else {
-                $this->assertEquals($packingSlipItem->getProductSku(),$ownProduct->getSku());
+                $this->assertEquals($packingSlipItem->getProductSku(), $ownProduct->getSku());
                 $this->assertEquals(LoadOrderItemStatusData::PENDING, $packingSlipItem->getStatus()->getId());
                 $this->assertEquals(LoadOrderItemStatusData::PENDING, $orderItem->getStatus()->getId());
             }

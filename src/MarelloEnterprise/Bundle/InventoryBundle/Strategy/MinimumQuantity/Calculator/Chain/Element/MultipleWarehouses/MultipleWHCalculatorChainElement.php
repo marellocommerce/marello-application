@@ -64,7 +64,7 @@ class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
             });
 
             return $finalResults;
-        }  elseif ($this->getSuccessor()) {
+        } elseif ($this->getSuccessor()) {
             return $this->getSuccessor()->calculate($productsByWh, $orderItemsByProducts, $warehouses, $orderItems);
         }
 
