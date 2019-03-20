@@ -5,6 +5,9 @@ namespace Marello\Bundle\PackingBundle\Migrations\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
+use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Installation;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
@@ -12,7 +15,10 @@ use Oro\Bundle\MigrationBundle\Migration\QueryBag;
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  */
-class MarelloPackingBundleInstaller implements Installation, ActivityExtensionAwareInterface
+class MarelloPackingBundleInstaller implements
+    Installation,
+    ActivityExtensionAwareInterface,
+    ExtendExtensionAwareInterface
 {
     const MARELLO_PACKING_SLIP_TABLE = 'marello_packing_packing_slip';
     const MARELLO_PACKING_SLIP_ITEM_TABLE = 'marello_packing_pack_slip_item';
@@ -21,13 +27,18 @@ class MarelloPackingBundleInstaller implements Installation, ActivityExtensionAw
      * @var ActivityExtension
      */
     protected $activityExtension;
+    
+    /**
+     * @var ExtendExtension
+     */
+    protected $extendExtension;
 
     /**
      * {@inheritdoc}
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -87,6 +98,17 @@ class MarelloPackingBundleInstaller implements Installation, ActivityExtensionAw
         $table->addColumn('comment', 'text', ['notnull' => false]);
         $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'status',
+            'marello_item_status',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
         
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['order_item_id'], 'UNIQ_DBF8FC2AE415FB15', []);
@@ -174,5 +196,15 @@ class MarelloPackingBundleInstaller implements Installation, ActivityExtensionAw
     public function setActivityExtension(ActivityExtension $activityExtension)
     {
         $this->activityExtension = $activityExtension;
+    }
+
+    /**
+     * Sets the ExtendExtension
+     *
+     * @param ExtendExtension $extendExtension
+     */
+    public function setExtendExtension(ExtendExtension $extendExtension)
+    {
+        $this->extendExtension = $extendExtension;
     }
 }

@@ -893,7 +893,7 @@ class Product extends ExtendProduct implements
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|ProductSupplierRelation[]
      */
     public function getSuppliers()
     {

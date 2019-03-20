@@ -1,7 +1,7 @@
 data:
     -
         type: marellobalancedinventorylevels
-        id: '1'
+        id: '<toString(@marello_balancedinvlev_p1_channelgroup1->id)>'
         attributes:
             inventory: 100
             balancedInventory: 100
@@ -22,7 +22,7 @@ data:
                         id: chan_eur
     -
         type: marellobalancedinventorylevels
-        id: '2'
+        id: '<toString(@marello_balancedinvlev_p2_channelgroup1->id)>'
         attributes:
             inventory: 50
             balancedInventory: 50
@@ -43,7 +43,7 @@ data:
                         id: chan_eur
     -
         type: marellobalancedinventorylevels
-        id: '3'
+        id: '<toString(@marello_balancedinvlev_p2_channelgroup2->id)>'
         attributes:
             inventory: 50
             balancedInventory: 50
@@ -64,7 +64,7 @@ data:
                         id: chan_usd
     -
         type: marellobalancedinventorylevels
-        id: '4'
+        id: '<toString(@marello_balancedinvlev_p3_channelgroup1->id)>'
         attributes:
             inventory: 50
             balancedInventory: 50
@@ -85,7 +85,7 @@ data:
                         id: chan_eur
     -
         type: marellobalancedinventorylevels
-        id: '5'
+        id: '<toString(@marello_balancedinvlev_p3_channelgroup3->id)>'
         attributes:
             inventory: 50
             balancedInventory: 50
@@ -106,7 +106,7 @@ data:
                         id: chan_gbp
     -
         type: marellobalancedinventorylevels
-        id: '6'
+        id: '<toString(@marello_balancedinvlev_p4_channelgroup1->id)>'
         attributes:
             inventory: 33
             balancedInventory: 33
@@ -127,7 +127,7 @@ data:
                         id: chan_eur
     -
         type: marellobalancedinventorylevels
-        id: '7'
+        id: '<toString(@marello_balancedinvlev_p4_channelgroup2->id)>'
         attributes:
             inventory: 33
             balancedInventory: 33
@@ -148,7 +148,7 @@ data:
                         id: chan_usd
     -
         type: marellobalancedinventorylevels
-        id: '8'
+        id: '<toString(@marello_balancedinvlev_p4_channelgroup3->id)>'
         attributes:
             inventory: 33
             balancedInventory: 33

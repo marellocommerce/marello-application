@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContextInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Provider\OrderItem\AbstractOrderItemFormChangesProvider;
-use Marello\Bundle\OrderBundle\Provider\OrderItem\OrderItemDataProviderInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Repository\ProductRepository;
 
@@ -47,16 +46,19 @@ class ProductTaxCodeProvider extends AbstractOrderItemFormChangesProvider
 
         foreach ($products as $product) {
             $taxCode = $product->getSalesChannelTaxCode($salesChannel) ? : $product->getTaxCode();
-            $data[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())] = [
-                'id' => $taxCode->getId(),
-                'code' => $taxCode->getCode(),
+            if ($taxCode) {
+                $data[sprintf('%s%s', self::IDENTIFIER_PREFIX, $product->getId())] = [
+                    'id' => $taxCode->getId(),
+                    'code' => $taxCode->getCode(),
 
-            ];
+                ];
+            }
         }
-
-        $result = $context->getResult();
-        $result[self::ITEMS_FIELD]['tax_code'] = $data;
-        $context->setResult($result);
+        if (!empty($data)) {
+            $result = $context->getResult();
+            $result[self::ITEMS_FIELD]['tax_code'] = $data;
+            $context->setResult($result);
+        }
     }
 
     /**

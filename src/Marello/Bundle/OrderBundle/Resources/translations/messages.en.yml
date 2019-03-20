@@ -95,6 +95,7 @@ marello:
             row_total_excl_tax.label:    Row Total Excl. Tax
             row_total_incl_tax.label:    Row Total Incl. Tax
             inventory.label:     Inventory Available
+            status.label:        Status
 
             messages:
                 product_not_salable:    Product cannot be sold in the chosen Sales Channel

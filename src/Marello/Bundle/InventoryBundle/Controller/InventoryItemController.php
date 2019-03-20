@@ -62,12 +62,14 @@ class InventoryItemController extends Controller
      */
     public function updateAction(InventoryItem $inventoryItem, Request $request)
     {
-        return $this->get('oro_form.update_handler')->update(
+        $result = $this->get('oro_form.update_handler')->update(
             $inventoryItem,
             $this->createForm(InventoryItemType::class, $inventoryItem),
             $this->get('translator')->trans('marello.inventory.messages.success.inventoryitem.saved'),
             $request
         );
+        
+        return $result;
     }
 
 

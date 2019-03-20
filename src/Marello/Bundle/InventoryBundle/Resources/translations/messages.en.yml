@@ -81,6 +81,7 @@ marello:
             log.label:                      Inventory Level Log
             warehouse.label:                Warehouse
             organization.label:             Organization
+            managed_inventory.label:        Manage Inventory
 
         inventorylevellogrecord:
             id.label:                       Id

@@ -25,6 +25,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     const PRODUCT_2_REF = 'product2';
     const PRODUCT_3_REF = 'product3';
     const PRODUCT_4_REF = 'product4';
+    const PRODUCT_5_REF = 'product5';
 
     const PRICE_REF_SUFFIX = '-price';
 
@@ -40,7 +41,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             'name'          => 'product1',
             'sku'           => 'p1',
             'price'         => 10,
-            'weight'        => 0.00,
+            'weight'        => 1.00,
             'status'        => 'enabled',
             'channel'       => 'channel1',
             'supplier'      => [
@@ -119,6 +120,23 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
                     'ref' => 'supplier3',
                     'qou' => 10,
                     'cost' => 750.00,
+                ]
+            ]
+        ],
+        self::PRODUCT_5_REF => [
+            'name'          => 'product5',
+            'sku'           => 'p5',
+            'price'         => 10,
+            'weight'        => 1.00,
+            'status'        => 'enabled',
+            'channel'       => 'channel1;channel2;channel3',
+            'supplier'      => [
+                [
+                    'ref' => 'supplier1',
+                    'qou' => 1,
+                    'cost' => 2.50,
+                    'canDropship' => true,
+                    'priority' => 1
                 ]
             ]
         ],

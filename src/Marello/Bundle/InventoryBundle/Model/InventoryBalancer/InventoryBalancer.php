@@ -153,8 +153,10 @@ class InventoryBalancer
             $warehouse = $level->getWarehouse();
             /** @var WarehouseGroup $warehouseGroup */
             $warehouseGroup = $this->getGroup($warehouse);
-            $channelLink = $this->getWarehouseChannelGroupLink($warehouse);
-            $linkedWhgToScgs[$warehouseGroup->getId()] = $channelLink->getSalesChannelGroups();
+            if ($warehouseGroup) {
+                $channelLink = $this->getWarehouseChannelGroupLink($warehouse);
+                $linkedWhgToScgs[$warehouseGroup->getId()] = $channelLink->getSalesChannelGroups();
+            }
         });
 
         return $linkedWhgToScgs;
@@ -194,13 +196,17 @@ class InventoryBalancer
     /**
      * Get warehouse channelgroup link
      * @param Warehouse $warehouse
-     * @return WarehouseChannelGroupLink
+     * @return WarehouseChannelGroupLink|null
      */
     protected function getWarehouseChannelGroupLink(Warehouse $warehouse)
     {
         /** @var WarehouseGroup $warehouseGroup */
         $warehouseGroup = $this->getGroup($warehouse);
-        return $warehouseGroup->getWarehouseChannelGroupLink();
+        if ($warehouseGroup) {
+            return $warehouseGroup->getWarehouseChannelGroupLink();
+        }
+
+        return null;
     }
 
     /**

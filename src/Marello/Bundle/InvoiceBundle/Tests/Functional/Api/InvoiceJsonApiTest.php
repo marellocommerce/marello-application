@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\OrderBundle\Tests\Functional\Api;
+namespace Marello\Bundle\InvoiceBundle\Tests\Functional\Api;
 
 use Symfony\Component\HttpFoundation\Response;
 
