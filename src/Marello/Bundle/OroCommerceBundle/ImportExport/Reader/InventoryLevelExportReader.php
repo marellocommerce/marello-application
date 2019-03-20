@@ -76,7 +76,7 @@ class InventoryLevelExportReader extends EntityReader
     protected function getParametersFromContext($parameter)
     {
         $context = $this->getContext();
-        if ($context->getOption('entityName') === VirtualInventoryLevel::class) {
+        if ($context->getOption('entityName') === BalancedInventoryLevel::class) {
             if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action
                 && $context->hasOption($parameter)
             ) {
