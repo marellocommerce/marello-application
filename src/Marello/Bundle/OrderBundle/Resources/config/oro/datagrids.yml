@@ -331,7 +331,10 @@ datagrids:
                 method:           formatCurrency
                 context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
                 align:            right
-
+            status:
+                label:            marello.order.orderitem.status.label
+                frontend_type:    string
+                data_name:        status
     dashboard-latest-orders-grid:
             source:
                 type: orm
