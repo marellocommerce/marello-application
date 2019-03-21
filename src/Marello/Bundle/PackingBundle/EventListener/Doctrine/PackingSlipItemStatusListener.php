@@ -36,7 +36,8 @@ class PackingSlipItemStatusListener
             if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                 foreach ($entity->getProduct()->getInventoryItems() as $inventoryItem) {
                     if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
-                        if ($inventoryLevel->getInventoryQty() >= $entity->getQuantity()) {
+                        if ($inventoryLevel->getVirtualInventoryQty() >= $entity->getQuantity() ||
+                            $inventoryLevel->isManagedInventory() === false) {
                             $entity->setStatus($this->findStatus(LoadOrderItemStatusData::DROPSHIPPED));
                         } else {
                             $entity->setStatus($this->findStatus(LoadOrderItemStatusData::COULD_NOT_ALLOCATE));
