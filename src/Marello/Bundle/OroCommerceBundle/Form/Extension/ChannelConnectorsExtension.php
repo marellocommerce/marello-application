@@ -30,6 +30,9 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
     public function onPreSubmit(FormEvent $event)
     {
         $data = $event->getData();
+        if (!$data || $data->getType() !== OroCommerceChannelType::TYPE) {
+            return;
+        }
         $data['synchronizationSettings'] = [
             'isTwoWaySyncEnabled' => 1,
             'syncPriority' => 'local'
