@@ -63,6 +63,15 @@ services:
             - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before.marello-products-grid, method: onResultBefore }
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-products-grid, method: buildAfter }
 
+    marello_product.listener.doctrine.product_dropship:
+        class: Marello\Bundle\ProductBundle\EventListener\Doctrine\ProductDropshipEventListener
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postFlush }
+
     marello_product.product_search_listener:
         class: Marello\Bundle\ProductBundle\EventListener\ProductSearchListener
         arguments:

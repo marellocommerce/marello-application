@@ -119,3 +119,33 @@ data:
                 data:
                     type: marellopricetypes
                     id: default
+    -
+        type: marelloproductprices
+        id: '<toString(@product5->prices->get(0)->defaultPrice->id)>'
+        attributes:
+            value: '10.0000'
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p5
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: default
+    -
+        type: marelloproductprices
+        id: '<toString(@product5->prices->get(1)->defaultPrice->id)>'
+        attributes:
+            value: '11.2000'
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p5
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: default

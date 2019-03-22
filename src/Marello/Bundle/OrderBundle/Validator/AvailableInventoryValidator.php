@@ -13,7 +13,7 @@
 
 namespace Marello\Bundle\OrderBundle\Validator;
 
-use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -22,8 +22,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
-use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
 use Marello\Bundle\OrderBundle\Validator\Constraints\AvailableInventory;
 
 class AvailableInventoryValidator extends ConstraintValidator
@@ -37,6 +38,9 @@ class AvailableInventoryValidator extends ConstraintValidator
 
     /** @var AvailableInventoryProvider $availableInventoryProvider */
     private $availableInventoryProvider;
+
+    /** @var array */
+    private $collection = [];
 
     /**
      * {@inheritdoc}
@@ -85,16 +89,54 @@ class AvailableInventoryValidator extends ConstraintValidator
         $result = $this->availableInventoryProvider
             ->getAvailableInventory($values[self::PRODUCT_FIELD], $values[self::SALES_CHANNEL_FIELD]);
 
+        $productSku = $this->getProductSku($values[self::PRODUCT_FIELD]);
+        if (array_key_exists($productSku, $this->collection)) {
+            $values[self::QUANTITY_FIELD] += $this->collection[$productSku];
+        }
+
         if (!isset($values[self::QUANTITY_FIELD])) {
             throw new ConstraintDefinitionException('Cannot compare values if because there nothing to compare');
         }
 
         if (!$this->compareValues($result, $values[self::QUANTITY_FIELD])) {
-            $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
-            $this->context->buildViolation($constraint->message)
-                ->atPath($errorPath)
-                ->addViolation();
+            if (isset($values[self::PRODUCT_FIELD]) && !$this->isProductCanDropship($values[self::PRODUCT_FIELD])) {
+                $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
+                $this->context->buildViolation($constraint->message)
+                    ->atPath($errorPath)
+                    ->addViolation();
+            }
         }
+
+        if (isset($values[self::PRODUCT_FIELD])) {
+            $sku = $this->getProductSku($values[self::PRODUCT_FIELD]);
+            $this->collection[$sku] = $values[self::QUANTITY_FIELD];
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param ProductInterface $product
+     * @return string
+     */
+    private function getProductSku(ProductInterface $product)
+    {
+        return $product->getSku();
+    }
+
+    /**
+     * @param ProductInterface|Product $product
+     * @return bool
+     */
+    private function isProductCanDropship(ProductInterface $product)
+    {
+        foreach ($product->getSuppliers() as $productSupplierRelation) {
+            if ($productSupplierRelation->getSupplier()->getCanDropship() &&
+                $productSupplierRelation->getCanDropship()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -13,7 +13,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository")
  * @ORM\Table(
  *      name="marello_inventory_item",
  *      uniqueConstraints={
@@ -306,11 +306,29 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|InventoryLevel[]
      */
     public function getInventoryLevels()
     {
         return $this->inventoryLevels;
+    }
+
+    /**
+     * @param Warehouse $warehouse
+     * @return InventoryLevel|null
+     */
+    public function getInventoryLevel(Warehouse $warehouse)
+    {
+        $inventoryLevel = $this->getInventoryLevels()
+            ->filter(function (InventoryLevel $inventoryLevel) use ($warehouse) {
+                return $inventoryLevel->getWarehouse() === $warehouse;
+            })
+            ->first();
+        if ($inventoryLevel) {
+            return $inventoryLevel;
+        }
+
+        return null;
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Marello\Bundle\RuleBundle\Tests\Functional\Entity\DataFixtures;
+namespace Marello\Bundle\RuleBundle\Tests\Functional\DataFixtures;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\RuleBundle\Entity\Rule;
