@@ -51,7 +51,7 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
         $result = [];
 
         foreach ($entities as $entity) {
-            if ($entity instanceof Product) {
+            if ($entity instanceof Product && $entity->getId() !== null) {
                 $data = $entity->getData();
                 if (ReverseSyncProductListener::isSyncRequired($entity, $this->unitOfWork)) {
                     $salesChannelsGroups = [];
