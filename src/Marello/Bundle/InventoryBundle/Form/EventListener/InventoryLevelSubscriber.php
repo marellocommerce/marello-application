@@ -64,6 +64,7 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
         if ($inventoryLevel instanceof InventoryLevel) {
             $form = $event->getForm();
             $warehouseType = $inventoryLevel->getWarehouse()->getWarehouseType();
+            $isManagedInventory = (bool) $inventoryLevel->isManagedInventory();
             if ($warehouseType->getName() !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                 $form->remove('adjustmentOperator');
                 $form->remove('quantity');
@@ -79,7 +80,7 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
                             ],
                             'translation_domain' => 'MarelloInventoryChangeDirection',
                             'mapped' => false,
-                            'disabled' => true
+                            'disabled' => $isManagedInventory
                         ]
                     )
                     ->add(
@@ -89,14 +90,14 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
                             'constraints' => new GreaterThanOrEqual(0),
                             'data'        => 0,
                             'mapped' => false,
-                            'disabled' => true
+                            'disabled' => $isManagedInventory
                         ]
                     )
                     ->add(
                         'managedInventory',
                         CheckboxType::class,
                         [
-                            'disabled' => true
+                            'disabled' => $isManagedInventory
                         ]
                     );
             }
