@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Serializer;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRateExportCreateWriter;
 use Marello\Bundle\TaxBundle\Entity\TaxRate;
 

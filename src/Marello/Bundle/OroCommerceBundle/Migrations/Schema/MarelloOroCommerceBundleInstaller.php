@@ -13,7 +13,7 @@ class MarelloOroCommerceBundleInstaller implements Installation
      */
     public function getMigrationVersion()
     {
-        return 'v1_0';
+        return 'v1_1';
     }
 
     /**
@@ -43,5 +43,7 @@ class MarelloOroCommerceBundleInstaller implements Installation
         $table->addColumn('orocommerce_inventorythreshold', 'integer', ['notnull' => false]);
         $table->addColumn('orocommerce_lowinvthreshold', 'integer', ['notnull' => false]);
         $table->addColumn('orocommerce_backorder', 'boolean', ['notnull' => false]);
+        $table->addColumn('orocommerce_enterprise', 'boolean', ['notnull' => false]);
+        $table->addColumn('orocommerce_warehouse', 'integer', ['notnull' => false]);
     }
 }

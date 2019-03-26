@@ -6,6 +6,7 @@ use Doctrine\Common\Cache\Cache;
 use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\Generator\CacheKeyGenerator;
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -96,6 +97,25 @@ class AjaxOroCommerceController extends Controller
     }
 
     /**
+     * @Route("/get-warehouses/{channelId}/", name="marello_orocommerce_get_warehouses")
+     * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
+     * @Method("POST")
+     *
+     * @param Request $request
+     * @param Channel $channel
+     * @return JsonResponse
+     */
+    public function getWarehousesAction(Request $request, Channel $channel = null)
+    {
+        return $this->getIntegrationData(
+            CacheKeyGenerator::WAREHOUSE,
+            'getWarehouses',
+            'name',
+            $this->getTransport($request, $channel)
+        );
+    }
+
+    /**
      * @param Request $request
      * @param Channel|null $channel
      * @return OroCommerceSettings
@@ -107,7 +127,7 @@ class AjaxOroCommerceController extends Controller
         }
 
         $form = $this->createForm(
-            $this->get('oro_integration.form.type.channel'),
+            ChannelType::class,
             $channel
         );
         $form->handleRequest($request);
@@ -158,11 +178,12 @@ class AjaxOroCommerceController extends Controller
                     'label' => $label
                 ];
             }
-
-            $cache->save(
-                $key,
-                $jsonResult
-            );
+            if (!empty($jsonResult)) {
+                $cache->save(
+                    $key,
+                    $jsonResult
+                );
+            }
         }
 
         return new JsonResponse($jsonResult);
@@ -185,7 +206,7 @@ class AjaxOroCommerceController extends Controller
         }
 
         $form = $this->createForm(
-            $this->get('oro_integration.form.type.channel'),
+            ChannelType::class,
             $channel
         );
         $form->handleRequest($request);

@@ -44,7 +44,7 @@ class OroCommerceRequestFactory implements OroCommerceRequestFactoryInterface
                 foreach ($filters as $key => $filter) {
                     $value = $filter->getValue();
                     $path .= sprintf(
-                        '%sfilter[%s]%s%s',
+                        '%sfilter[%s][%s]=%s',
                         $key === 0 && count($include) === 0 ? '' : '&',
                         $filter->getPath(),
                         $filter->getOperator(),

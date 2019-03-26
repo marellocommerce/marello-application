@@ -12,6 +12,9 @@ use Symfony\Component\Form\FormView;
 
 class ChannelConnectorsExtension extends AbstractTypeExtension
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventListener(
@@ -57,9 +60,7 @@ class ChannelConnectorsExtension extends AbstractTypeExtension
     /**
      * Set all connectors disabled and checked on view
      *
-     * @param FormView $view
-     * @param FormInterface $form
-     * @param array $options
+     * {@inheritdoc}
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {

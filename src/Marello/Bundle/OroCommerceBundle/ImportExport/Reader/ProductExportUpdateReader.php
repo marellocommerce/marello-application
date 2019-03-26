@@ -26,7 +26,10 @@ class ProductExportUpdateReader extends EntityReaderById
                     }
                 }
             }
-            return $ids;
+        }
+
+        if (empty($ids)) {
+            $ids[] = -1;
         }
 
         return $ids;
