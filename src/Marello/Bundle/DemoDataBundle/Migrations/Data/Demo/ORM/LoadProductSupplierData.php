@@ -8,6 +8,12 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 
 class LoadProductSupplierData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -16,6 +22,9 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
 
     /** @var ObjectManager $manager */
     protected $manager;
+
+    /** @var Warehouse $warehouse */
+    protected $warehouse;
 
     /**
      * {@inheritdoc}
@@ -35,6 +44,7 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
     {
         $this->manager = $manager;
         $this->addProductsToSuppliers();
+        $this->updateCurrentSuppliers();
     }
 
     /**
@@ -127,6 +137,117 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
         $supplierCost = $assembledPriceList->getDefaultPrice()->getValue() * $percentage;
 
         return $supplierCost;
+    }
+
+    /**
+     * Persist current suppliers that support dropshipping
+     * in order to create external warehouse
+     */
+    public function updateCurrentSuppliers()
+    {
+        $suppliers = $this->manager
+            ->getRepository('MarelloSupplierBundle:Supplier')
+            ->findBy(['canDropship' => true]);
+
+        /** @var Supplier $supplier */
+        foreach ($suppliers as $supplier) {
+            $warehouse = $this->getWarehouse($supplier);
+            if (!$warehouse) {
+                $warehouse = $this->createWarehouse($supplier);
+            }
+            $this->createInventoryLevelsForRelatedProducts($supplier, $warehouse);
+        }
+        $this->manager->flush();
+    }
+
+    /**
+     * @param Supplier $supplier
+     * @param Warehouse $warehouse
+     */
+    private function createInventoryLevelsForRelatedProducts(Supplier $supplier, Warehouse $warehouse)
+    {
+        $productSupplierRelations = $this->manager
+            ->getRepository(ProductSupplierRelation::class)
+            ->findBy(['supplier' => $supplier, 'canDropship' => true]);
+
+        foreach ($productSupplierRelations as $productSupplierRelation) {
+            $this->createInventoryLevelForRelatedProduct($productSupplierRelation, $warehouse);
+        }
+
+        $this->manager->flush();
+    }
+
+    /**
+     * @param Supplier $supplier
+     * @return Warehouse
+     */
+    private function getWarehouse(Supplier $supplier)
+    {
+        if ($this->warehouse === null) {
+            $warehouseType = $this->manager
+                ->getRepository(WarehouseType::class)
+                ->find(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
+            $warehouse = $this->manager
+                ->getRepository(Warehouse::class)
+                ->findOneBy([
+                    'code' => sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplier->getName()))),
+                    'warehouseType' => $warehouseType
+                ]);
+            if ($warehouse) {
+                $this->warehouse = $warehouse;
+            }
+        }
+
+        return $this->warehouse;
+    }
+
+    /**
+     * @param Supplier $supplier
+     * @return Warehouse
+     */
+    private function createWarehouse(Supplier $supplier)
+    {
+        $warehouseType = $this->manager
+            ->getRepository(WarehouseType::class)
+            ->find(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL);
+
+        $warehouse = new Warehouse(sprintf('%s External Warehouse', $supplier->getName()));
+        $warehouse
+            ->setAddress(clone $supplier->getAddress())
+            ->setCode(sprintf('%s_external_warehouse', str_replace(' ', '_', strtolower($supplier->getName()))))
+            ->setWarehouseType($warehouseType);
+        if ($organization = $supplier->getOrganization()) {
+            $warehouse->setOwner($organization);
+        }
+
+        $this->manager->persist($warehouse);
+        $this->manager->flush();
+
+        return $warehouse;
+    }
+
+    /**
+     * @param ProductSupplierRelation $productSupplierRelation
+     * @param Warehouse $warehouse
+     */
+    private function createInventoryLevelForRelatedProduct(
+        ProductSupplierRelation $productSupplierRelation,
+        Warehouse $warehouse
+    ) {
+        $inventoryItem = $this->manager
+            ->getRepository(InventoryItem::class)
+            ->findOneByProduct($productSupplierRelation->getProduct());
+        $existingInvLevel = $inventoryItem->getInventoryLevel($warehouse);
+        if (!$existingInvLevel) {
+            $inventoryLevel = new InventoryLevel();
+            $inventoryLevel
+                ->setInventoryItem($inventoryItem)
+                ->setWarehouse($warehouse)
+                ->setInventoryQty(0)
+                ->setOrganization($inventoryItem->getOrganization())
+                ->setManagedInventory(false);
+            $this->manager->persist($inventoryLevel);
+        }
     }
 
     /**
