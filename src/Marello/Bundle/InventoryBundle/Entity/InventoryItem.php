@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\InventoryBundle\Model\ExtendInventoryItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -213,7 +214,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     }
 
     /**
-     * @return ProductInterface
+     * @return Product|ProductInterface
      */
     public function getProduct()
     {
