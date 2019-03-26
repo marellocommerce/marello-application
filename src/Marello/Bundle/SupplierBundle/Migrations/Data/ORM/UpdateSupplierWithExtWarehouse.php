@@ -4,22 +4,19 @@ namespace Marello\Bundle\SupplierBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Migrations\Data\ORM\AddExternalWarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 
-class UpdateSupplierWithExtWarehouse extends AbstractFixture implements ContainerAwareInterface
+class UpdateSupplierWithExtWarehouse extends AbstractFixture implements DependentFixtureInterface
 {
-    use ContainerAwareTrait;
-
     /**
      * @var ObjectManager
      */
@@ -27,6 +24,16 @@ class UpdateSupplierWithExtWarehouse extends AbstractFixture implements Containe
 
     /** @var Warehouse $warehouse */
     protected $warehouse;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDependencies()
+    {
+        return [
+            AddExternalWarehouseType::class
+        ];
+    }
 
     /**
      * {@inheritdoc}
