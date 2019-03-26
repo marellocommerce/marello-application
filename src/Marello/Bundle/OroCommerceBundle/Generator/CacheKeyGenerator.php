@@ -11,6 +11,7 @@ class CacheKeyGenerator implements CacheKeyGeneratorInterface
     const CUSTOMER_TAX_CODE = 'customer_tax_code';
     const PRICE_LIST = 'price_list';
     const PRODUCT_FAMILY = 'product_family';
+    const WAREHOUSE = 'warehouse';
 
     /**
      * {@inheritdoc}

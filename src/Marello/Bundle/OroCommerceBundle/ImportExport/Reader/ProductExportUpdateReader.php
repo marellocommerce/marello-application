@@ -18,6 +18,7 @@ class ProductExportUpdateReader extends EntityReaderById
         if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === AbstractExportWriter::UPDATE_ACTION) {
             if ($context->hasOption('id')) {
                 $id = $context->getOption('id');
+
                 if (is_array($id)) {
                     $ids = array_unique(array_merge($ids, $id));
                 } else {
@@ -26,7 +27,10 @@ class ProductExportUpdateReader extends EntityReaderById
                     }
                 }
             }
-            return $ids;
+        }
+
+        if (empty($ids)) {
+            $ids[] = -1;
         }
 
         return $ids;

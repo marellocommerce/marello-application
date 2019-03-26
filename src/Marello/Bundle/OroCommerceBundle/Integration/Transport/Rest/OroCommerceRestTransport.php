@@ -732,7 +732,6 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         );
     }
 
-
     /**
      * @return array
      */
@@ -1134,6 +1133,27 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
 
     /**
+     * @return array
+     */
+    public function getTaxRules()
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_GET,
+            $this->settings,
+            self::TAXRULES_ALIAS,
+            [],
+            [],
+            []
+        );
+
+        return $this->client->getJSON(
+            $request->getPath(),
+            $request->getPayload(),
+            $request->getHeaders()
+        );
+    }
+
+    /**
      * @param array $data
      * @return array
      */
@@ -1275,24 +1295,44 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     }
 
     /**
+     * @return array
+     */
+    public function getWarehouses()
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_GET,
+            $this->settings,
+            'warehouses',
+            [],
+            [],
+            []
+        );
+
+        return $this->client->getJSON(
+            $request->getPath(),
+            $request->getPayload(),
+            $request->getHeaders()
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function ping()
     {
         try {
-            $request = OroCommerceRequestFactory::createRequest(
-                OroCommerceRequestFactory::METHOD_GET,
-                $this->settings,
-                self::TAXRULES_ALIAS,
-                [],
-                [],
-                []
-            );
-            $this->client->get(
-                $request->getPath(),
-                $request->getPayload(),
-                $request->getHeaders()
-            );
+            $this->getTaxRules();
+            if ($this->settings->get(OroCommerceSettings::ENTERPRISE_FIELD)) {
+                $result = $this->getWarehouses();
+                if (empty($result) || empty($result['data'])) {
+                    return [
+                        'result' => false,
+                        'message' =>
+                            'For integration with OroCommerce EE
+                             at least one warehouse should be created on OroCommerce side'
+                    ];
+                }
+            }
         } catch (RestException $e) {
             return ['result' => false, 'message' => $e->getMessage()];
         }

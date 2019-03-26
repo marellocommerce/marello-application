@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Reader;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
@@ -57,14 +58,25 @@ class InventoryLevelExportReader extends EntityReader
     {
         $qb = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
 
-        $qb
-            ->innerJoin('o.product', 'p')
-            ->innerJoin('o.salesChannelGroup', 'g')
-            ->andWhere('p.id = :productId')
-            ->andWhere('g.id = :groupId')
-            ->setParameter('productId', $this->getParametersFromContext(self::PRODUCT_FILTER))
-            ->setParameter('groupId', $this->getParametersFromContext(self::GROUP_FILTER));
-
+        if ($entityName === BalancedInventoryLevel::class) {
+            $qb
+                ->innerJoin('o.product', 'p')
+                ->innerJoin('o.salesChannelGroup', 'g')
+                ->andWhere('p.id = :productId')
+                ->andWhere('g.id = :groupId')
+                ->setParameter('productId', $this->getParametersFromContext(self::PRODUCT_FILTER))
+                ->setParameter('groupId', $this->getParametersFromContext(self::GROUP_FILTER));
+        } elseif ($entityName === InventoryLevel::class) {
+            $qb
+                ->innerJoin('o.inventoryItem', 'ii')
+                ->innerJoin('ii.product', 'p')
+                ->innerJoin('p.channels', 'c')
+                ->innerJoin('c.group', 'g')
+                ->andWhere('p.id = :productId')
+                ->andWhere('g.id = :groupId')
+                ->setParameter('productId', $this->getParametersFromContext(self::PRODUCT_FILTER))
+                ->setParameter('groupId', $this->getParametersFromContext(self::GROUP_FILTER));
+        }
         return $qb;
     }
 
@@ -76,7 +88,7 @@ class InventoryLevelExportReader extends EntityReader
     protected function getParametersFromContext($parameter)
     {
         $context = $this->getContext();
-        if ($context->getOption('entityName') === BalancedInventoryLevel::class) {
+        if (in_array($context->getOption('entityName'), [BalancedInventoryLevel::class, InventoryLevel::class])) {
             if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action
                 && $context->hasOption($parameter)
             ) {
@@ -93,7 +105,7 @@ class InventoryLevelExportReader extends EntityReader
      */
     protected function initializeFromContext(ContextInterface $context)
     {
-        if ($context->getOption('entityName') === BalancedInventoryLevel::class) {
+        if (in_array($context->getOption('entityName'), [BalancedInventoryLevel::class, InventoryLevel::class])) {
             if ($context->getOption(AbstractExportWriter::ACTION_FIELD) === $this->action) {
                 $this->productId = $context->getOption('product');
                 $this->groupId = $context->getOption('group');

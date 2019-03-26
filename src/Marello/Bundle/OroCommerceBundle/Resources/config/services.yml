@@ -753,3 +753,8 @@ services:
     marello_orocommerce.importexport.writer.export.tax_rule.delete.bulk:
         class: 'Marello\Bundle\OroCommerceBundle\ImportExport\Writer\TaxRuleExportBulkDeleteWriter'
         parent: marello_orocommerce.importexport.writer.export.abstract.bulk
+
+    marello_orocommerce.validator.warehouse_exists_for_enterprise_edition:
+        class: 'Marello\Bundle\OroCommerceBundle\Validator\WarehouseExistsForEnterpriseEditionValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: 'marello_orocommerce.warehouse_exists_for_enterprise_edition_validator' }

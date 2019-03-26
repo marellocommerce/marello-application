@@ -97,6 +97,25 @@ class AjaxOroCommerceController extends Controller
     }
 
     /**
+     * @Route("/get-warehouses/{channelId}/", name="marello_orocommerce_get_warehouses")
+     * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
+     * @Method("POST")
+     *
+     * @param Request $request
+     * @param Channel $channel
+     * @return JsonResponse
+     */
+    public function getWarehousesAction(Request $request, Channel $channel = null)
+    {
+        return $this->getIntegrationData(
+            CacheKeyGenerator::WAREHOUSE,
+            'getWarehouses',
+            'name',
+            $this->getTransport($request, $channel)
+        );
+    }
+
+    /**
      * @param Request $request
      * @param Channel|null $channel
      * @return OroCommerceSettings
@@ -159,11 +178,12 @@ class AjaxOroCommerceController extends Controller
                     'label' => $label
                 ];
             }
-
-            $cache->save(
-                $key,
-                $jsonResult
-            );
+            if (!empty($jsonResult)) {
+                $cache->save(
+                    $key,
+                    $jsonResult
+                );
+            }
         }
 
         return new JsonResponse($jsonResult);
