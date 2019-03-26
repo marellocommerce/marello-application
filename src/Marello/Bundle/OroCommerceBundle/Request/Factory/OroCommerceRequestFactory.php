@@ -12,6 +12,13 @@ class OroCommerceRequestFactory implements OroCommerceRequestFactoryInterface
     const METHOD_POST = 'POST';
     const METHOD_PATCH = 'PATCH';
     const METHOD_DELETE = 'DELETE';
+
+    const EQ = 'eq';
+    const NEQ = 'neq';
+    const LT = 'lt';
+    const LTE = 'lte';
+    const GT = 'gt';
+    const GTE = 'gte';
     
     /**
      * {@inheritdoc}

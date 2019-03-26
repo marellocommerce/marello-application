@@ -58,7 +58,7 @@ class InventoryLevelExportReader extends EntityReader
     {
         $qb = parent::createSourceEntityQueryBuilder($entityName, $organization, $ids);
 
-        if ($entityName === BalancedInventoryLevel::class) {
+        if ($entityName === VirtualInventoryLevel::class) {
             $qb
                 ->innerJoin('o.product', 'p')
                 ->innerJoin('o.salesChannelGroup', 'g')
