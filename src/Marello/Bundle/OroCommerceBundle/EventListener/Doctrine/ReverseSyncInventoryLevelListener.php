@@ -5,7 +5,6 @@ namespace Marello\Bundle\OroCommerceBundle\EventListener\Doctrine;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\VirtualInventoryLevel;
-use Marello\Bundle\InventoryBundle\Model\InventoryQtyAwareInterface;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractExportWriter;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Writer\AbstractProductExportWriter;
 use Marello\Bundle\OroCommerceBundle\Integration\Connector\OroCommerceInventoryLevelConnector;
@@ -139,9 +138,9 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
     }
 
     /**
-     * @param InventoryQtyAwareInterface $entity
+     * @param VirtualInventoryLevel|InventoryLevel $entity
      */
-    protected function scheduleSync(InventoryQtyAwareInterface $entity)
+    protected function scheduleSync($entity)
     {
         if (!in_array($entity, $this->processedEntities)) {
             $product = null;
@@ -187,10 +186,10 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
     }
 
     /**
-     * @param InventoryQtyAwareInterface $entity
+     * @param VirtualInventoryLevel|InventoryLevel $entity
      * @return Channel[]
      */
-    protected function getIntegrationChannels(InventoryQtyAwareInterface $entity)
+    protected function getIntegrationChannels($entity)
     {
         $integrationChannels = [];
         $salesChannels = [];
