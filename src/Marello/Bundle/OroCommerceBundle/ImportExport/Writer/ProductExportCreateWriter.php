@@ -2,10 +2,25 @@
 
 namespace Marello\Bundle\OroCommerceBundle\ImportExport\Writer;
 
+use Marello\Bundle\OroCommerceBundle\Event\RemoteProductCreatedEvent;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductExportCreateWriter extends AbstractProductExportWriter
 {
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+    }
+    
     /**
      * @param array $data
      */
@@ -36,6 +51,20 @@ class ProductExportCreateWriter extends AbstractProductExportWriter
 
                 $em->persist($processedProduct);
                 $em->flush();
+
+                if ($this->eventDispatcher) {
+                    $salesChannel = null;
+                    foreach ($processedProduct->getChannels() as $sChannel) {
+                        if ($sChannel->getIntegrationChannel() &&
+                            $sChannel->getIntegrationChannel()->getId() === $channelId) {
+                            $salesChannel = $sChannel;
+                        }
+                    }
+                    $this->eventDispatcher->dispatch(
+                        RemoteProductCreatedEvent::NAME,
+                        new RemoteProductCreatedEvent($processedProduct, $salesChannel)
+                    );
+                }
             }
             $this->context->incrementAddCount();
         }

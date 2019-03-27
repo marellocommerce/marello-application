@@ -8,7 +8,6 @@ use Marello\Bundle\OroCommerceBundle\Entity\OroCommerceSettings;
 use Marello\Bundle\OroCommerceBundle\Form\Type\OroCommerceSettingsType;
 use Marello\Bundle\OroCommerceBundle\ImportExport\Serializer\TaxCodeNormalizer;
 use Marello\Bundle\OroCommerceBundle\Request\Factory\OroCommerceRequestFactory;
-use Oro\Bundle\ApiBundle\Filter\ComparisonFilter;
 use Oro\Bundle\ApiBundle\Filter\FilterValue;
 use Oro\Bundle\IntegrationBundle\Entity\Transport;
 use Oro\Bundle\IntegrationBundle\Provider\PingableInterface;
@@ -30,7 +29,8 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     const TAXES_ALIAS = 'taxes';
     const TAXRULES_ALIAS = 'taxrules';
     const TAXJURISDICTIONS_ALIAS = 'taxjurisdictions';
-    
+    const WAREHOUSES_ALIAS = 'warehouses';
+
     /**
      * @var ParameterBag
      */
@@ -113,12 +113,12 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'currency',
                     $this->settings->get(OroCommerceSettings::CURRENCY_FIELD),
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 ),
                 new FilterValue(
                     'updatedAt',
                     $lastSyncStr,
-                    ComparisonFilter::GT
+                    OroCommerceRequestFactory::GT
                 )
             ],
             ['customerUser', 'lineItems', 'shippingAddress', 'billingAddress']
@@ -138,12 +138,12 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'updatedAt',
                     $lastSyncStr,
-                    ComparisonFilter::GT
+                    OroCommerceRequestFactory::GT
                 ),
                 new FilterValue(
                     'entityClass',
                     'Oro\Bundle\OrderBundle\Entity\Order',
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 )
             ]
         );
@@ -210,12 +210,12 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                     new FilterValue(
                         'entityIdentifier',
                         $orderIds,
-                        ComparisonFilter::EQ
+                        OroCommerceRequestFactory::EQ
                     ),
                     new FilterValue(
                         'entityClass',
                         'Oro\Bundle\OrderBundle\Entity\Order',
-                        ComparisonFilter::EQ
+                        OroCommerceRequestFactory::EQ
                     )
                 ]
             );
@@ -236,12 +236,12 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                     new FilterValue(
                         'entityId',
                         $lineItems,
-                        ComparisonFilter::EQ
+                        OroCommerceRequestFactory::EQ
                     ),
                     new FilterValue(
                         'entityClass',
                         'Oro\Bundle\OrderBundle\Entity\OrderLineItem',
-                        ComparisonFilter::EQ
+                        OroCommerceRequestFactory::EQ
                     )
                 ]
             );
@@ -362,7 +362,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             $request->getHeaders()
         );
         foreach ($json['included'] as $included) {
-            if ($included['type'] === 'producttaxcode' &&
+            if ($included['type'] === self::PRODUCTTAXCODES_ALIAS &&
                 (int)$included['id'] === (int)$json['data']['relationships']['taxCode']['data']['id']) {
                 $json['data']['relationships']['taxCode']['data']['attributes'] = $included['attributes'];
             }
@@ -401,22 +401,31 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
             }
             $productId = $json['data']['id'];
             $unitPrecisionId = $json['data']['relationships']['primaryUnitPrecision']['data']['id'];
+            $inventoryFilters = [
+                new FilterValue(
+                    'product',
+                    $productId,
+                    OroCommerceRequestFactory::EQ
+                ),
+                new FilterValue(
+                    'productUnitPrecision',
+                    $unitPrecisionId,
+                    OroCommerceRequestFactory::EQ
+                )
+            ];
+            if ($this->settings->get(OroCommerceSettings::ENTERPRISE_FIELD) &&
+                $this->settings->get(OroCommerceSettings::WAREHOUSE_FIELD)) {
+                $inventoryFilters[] = new FilterValue(
+                    'warehouse',
+                    $this->settings->get(OroCommerceSettings::WAREHOUSE_FIELD),
+                    OroCommerceRequestFactory::EQ
+                );
+            }
             $request = OroCommerceRequestFactory::createRequest(
                 OroCommerceRequestFactory::METHOD_GET,
                 $this->settings,
                 self::INVENTORYLEVELS_ALIAS,
-                [
-                    new FilterValue(
-                        'product',
-                        $productId,
-                        ComparisonFilter::EQ
-                    ),
-                    new FilterValue(
-                        'productUnitPrecision',
-                        $unitPrecisionId,
-                        ComparisonFilter::EQ
-                    )
-                ],
+                $inventoryFilters,
                 [],
                 []
             );
@@ -484,7 +493,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'id',
                     $ids,
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 )
             ],
             [],
@@ -796,7 +805,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'entityClass',
                     'Oro\Bundle\ProductBundle\Entity\Product',
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 )
             ],
             ['labels'],
@@ -882,7 +891,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'id',
                     $ids,
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 )
             ],
             [],
@@ -986,7 +995,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'id',
                     $ids,
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 )
             ],
             [],
@@ -1090,7 +1099,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'id',
                     $ids,
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 )
             ],
             [],
@@ -1252,7 +1261,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
                 new FilterValue(
                     'id',
                     $ids,
-                    ComparisonFilter::EQ
+                    OroCommerceRequestFactory::EQ
                 )
             ],
             [],
@@ -1302,7 +1311,7 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
         $request = OroCommerceRequestFactory::createRequest(
             OroCommerceRequestFactory::METHOD_GET,
             $this->settings,
-            'warehouses',
+            self::WAREHOUSES_ALIAS,
             [],
             [],
             []
