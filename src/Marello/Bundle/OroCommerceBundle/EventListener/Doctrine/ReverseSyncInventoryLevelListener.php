@@ -117,10 +117,10 @@ class ReverseSyncInventoryLevelListener extends AbstractReverseSyncListener
     }
 
     /**
-     * @param VirtualInventoryLevel $entity
+     * @param VirtualInventoryLevel|InventoryLevel $entity
      * @return bool
      */
-    protected function isSyncRequired(VirtualInventoryLevel $entity)
+    protected function isSyncRequired($entity)
     {
         $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
 
