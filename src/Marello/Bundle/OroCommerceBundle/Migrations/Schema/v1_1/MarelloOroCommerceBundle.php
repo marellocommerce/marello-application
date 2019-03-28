@@ -29,11 +29,11 @@ class MarelloOroCommerceBundle implements Migration
         $table->addColumn('orocommerce_warehouse', 'integer', ['notnull' => false]);
 
         $query = "
-            UPDATE oro_integration_transport it
+            UPDATE oro_integration_transport
                 SET
-                    it.orocommerce_enterprise = false
+                    orocommerce_enterprise = false
                 WHERE
-                    it.type = 'orocommercesettings'
+                    type = 'orocommercesettings'
         ";
         $queries->addQuery($query);
     }
