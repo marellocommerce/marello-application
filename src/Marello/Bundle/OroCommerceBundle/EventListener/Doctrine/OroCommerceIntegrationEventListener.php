@@ -62,8 +62,7 @@ class OroCommerceIntegrationEventListener
 
             $salesChannel = $em->getRepository(SalesChannel::class)->findOneBy(['integrationChannel' => $channel]);
             if ($salesChannel) {
-                $em->remove($salesChannel);
-                $em->flush();
+                $em->getUnitOfWork()->scheduleForDelete($salesChannel);
             }
         }
     }

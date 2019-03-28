@@ -125,6 +125,13 @@ services:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
 
+    marello_orocommerce.event_listener.doctrine.reverse_sync_tax_rule.all:
+        class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\ReverseSyncAllTaxRulesListener'
+        arguments:
+            - '@oro_integration.sync_scheduler.link'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+
     marello_orocommerce.rest.client_factory:
         class: 'Marello\Bundle\OroCommerceBundle\Client\Factory\OroCommerceRestClientFactory'
 
