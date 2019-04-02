@@ -15,7 +15,7 @@ use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 
-class UpdateSupplierWithExtWarehouse extends AbstractFixture implements DependentFixtureInterface
+class UpdateCurrentSuppliersWithWarehouseAndInvLevels extends AbstractFixture implements DependentFixtureInterface
 {
     /**
      * @var ObjectManager

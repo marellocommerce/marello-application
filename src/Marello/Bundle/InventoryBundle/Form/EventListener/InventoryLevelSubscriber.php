@@ -65,7 +65,7 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
             $form = $event->getForm();
             $warehouseType = $inventoryLevel->getWarehouse()->getWarehouseType();
             $isInventoryLevelDisabled = $this->isInventoryLevelDisabled($inventoryLevel);
-            if ($warehouseType->getName() !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+            if ($warehouseType->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                 $form->remove('adjustmentOperator');
                 $form->remove('quantity');
                 $form->remove('managedInventory');
@@ -95,7 +95,10 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
                     )
                     ->add(
                         'managedInventory',
-                        CheckboxType::class
+                        CheckboxType::class,
+                        [
+                            'disabled' => $isInventoryLevelDisabled
+                        ]
                     );
             }
         }
