@@ -23,7 +23,7 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\Response;
 
-class OrderControllerTest extends WebTestCase
+class OrderControllerDropshipmentTest extends WebTestCase
 {
     /**
      * @var WorkflowManager
@@ -53,7 +53,7 @@ class OrderControllerTest extends WebTestCase
     /**
      * @return Order
      */
-    public function testCreateWithOwhWarehouse()
+    public function testCreateWithOwnWarehouse()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_order_order_create'));
         $result  = $this->client->getResponse();
@@ -111,7 +111,7 @@ class OrderControllerTest extends WebTestCase
     }
     
     /**
-     * @depends testCreateWithOwhWarehouse
+     * @depends testCreateWithOwnWarehouse
      * @param Order $entity
      */
     public function testAssigningOwnWarehouse(Order $entity)
@@ -141,7 +141,7 @@ class OrderControllerTest extends WebTestCase
     /**
      * @return Order
      */
-    public function testCreateWithOwhAnExternalWarehouse()
+    public function testCreateWithOwnAndExternalWarehouse()
     {
         $crawler = $this->client->request('GET', $this->getUrl('marello_order_order_create'));
         $result  = $this->client->getResponse();
@@ -215,7 +215,7 @@ class OrderControllerTest extends WebTestCase
     }
 
     /**
-     * @depends testCreateWithOwhAnExternalWarehouse
+     * @depends testCreateWithOwnAndExternalWarehouse
      * @param Order $entity
      */
     public function testAssigningOwnAndExternalWarehouse(Order $entity)
