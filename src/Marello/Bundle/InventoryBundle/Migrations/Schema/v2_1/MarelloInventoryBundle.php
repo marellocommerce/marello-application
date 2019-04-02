@@ -16,7 +16,27 @@ class MarelloInventoryBundle implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
+        $this->addColumnsToInventoryItemTable($schema, $queries);
         $this->addManagedInventoryColumnToInventoryLevelTable($schema, $queries);
+    }
+
+    /**
+     * @param Schema $schema
+     * @param QueryBag $queries
+     */
+    protected function addColumnsToInventoryItemTable(Schema $schema, QueryBag $queries)
+    {
+        $table = $schema->getTable('marello_inventory_item');
+        $table->addColumn('backorder_allowed', 'boolean', ['notnull' => false, 'default' => false]);
+        $table->addColumn('max_qty_to_backorder', 'integer', ['notnull' => false, 'default' => 0]);
+        $table->addColumn('can_preorder', 'boolean', ['notnull' => false, 'default' => false]);
+
+        $query = "
+            UPDATE marello_inventory_item
+            SET
+              backorder_allowed = FALSE, max_qty_to_backorder = 0, can_preorder = FALSE
+        ";
+        $queries->addQuery($query);
     }
 
     /**
@@ -29,10 +49,7 @@ class MarelloInventoryBundle implements Migration
         $table->addColumn('managed_inventory', 'boolean', ['notnull' => false, 'default' => false]);
 
         $query = "
-            UPDATE marello_inventory_level il INNER JOIN (
-              SELECT * FROM marello_inventory_warehouse wh 
-              WHERE wh.warehouse_type <> 'external'
-            ) AS wh ON il.warehouse_id = wh.id
+            UPDATE marello_inventory_level
             SET
               managed_inventory = FALSE 
         ";

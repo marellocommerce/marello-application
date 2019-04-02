@@ -6,6 +6,8 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -35,6 +37,30 @@ class InventoryItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add(
+                'backorderAllowed',
+                CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.backorder_allowed.label'
+                ]
+            )
+            ->add(
+                'maxQtyToBackorder',
+                IntegerType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.max_qty_to_backorder.label'
+                ]
+            )
+            ->add(
+                'canPreorder',
+                CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.can_preorder.label'
+                ]
+            )
             ->add(
                 'replenishment',
                 EnumChoiceType::class,

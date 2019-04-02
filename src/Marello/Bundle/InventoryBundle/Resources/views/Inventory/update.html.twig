@@ -65,6 +65,18 @@
 
     {% set dataBlocks = [
         {
+            'title': 'marello.inventory.inventoryitem.section.general.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_row(form.backorderAllowed),
+                    form_row(form.maxQtyToBackorder),
+                    form_row(form.canPreorder)
+                ]
+            }]
+        },
+        {
             'title': 'marello.inventory.inventorylevel.totals.label'|trans,
             'class': 'active',
             'subblocks': [{

@@ -15,6 +15,7 @@ class LoadOrderItemStatusData extends AbstractFixture
     const SHIPPED = 'shipped';
     const DROPSHIPPED = 'dropshipped';
     const COULD_NOT_ALLOCATE = 'could_not_allocate';
+    const WAITING_FOR_SUPPLY = 'waiting_for_supply';
 
     /** @var array */
     protected $data = [
@@ -22,6 +23,7 @@ class LoadOrderItemStatusData extends AbstractFixture
         'Shipped' => false,
         'Dropshipped' => false,
         'Could Not Allocate' => false,
+        'Waiting For Supply' => false,
     ];
 
     /**
