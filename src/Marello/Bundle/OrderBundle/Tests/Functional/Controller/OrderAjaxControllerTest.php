@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\OrderBundle\Tests\Functional\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
 use Marello\Bundle\OrderBundle\Form\Type\OrderType;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 class OrderAjaxControllerTest extends WebTestCase
 {
@@ -45,7 +48,7 @@ class OrderAjaxControllerTest extends WebTestCase
         );
 
         $response = $this->client->getResponse();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
+        $this->assertInstanceOf(Response::class, $response);
 
         $result = $this->getJsonResponseContent($response, 200);
         $this->assertArrayHasKey(self::ITEMS_FIELD, $result);
