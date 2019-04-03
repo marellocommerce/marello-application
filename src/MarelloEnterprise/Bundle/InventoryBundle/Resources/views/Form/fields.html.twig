@@ -36,7 +36,7 @@
         {% set disabled = widget.vars.disabled %}
         {% set allow_delete = widget.vars.allow_delete %}
     {% else %}
-        {% if widget.vars.disallow_delete is defined and widget.vars.disallow_delete %}
+        {% if widget.vars.allow_delete is defined and widget.vars.allow_delete != true %}
             {% set allow_delete = false %}
         {% else %}
             {% set allow_delete = widget.parent.vars.allow_delete %}
@@ -57,8 +57,6 @@
                 <td class="inventorylevel-line-item-remove marello-line-item-remove">
                     <button type="button" class="marello-remove-line-item btn icons-holder"><i class="fa-remove"></i></button>
                 </td>
-            {% elseif widget.parent.vars.allow_delete %}
-                <td></td>
             {% endif %}
         </tr>
     {% endif %}
