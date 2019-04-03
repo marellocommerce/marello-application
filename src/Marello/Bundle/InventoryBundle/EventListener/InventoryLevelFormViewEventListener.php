@@ -15,7 +15,7 @@ class InventoryLevelFormViewEventListener
         if ($inventoryLevel instanceof InventoryLevel) {
             $warehouseType = $inventoryLevel->getWarehouse()->getWarehouseType();
             if ($warehouseType->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
-                //$view->vars['display'] = false;
+                $view->vars['allow_delete'] = false;
             }
         }
     }
