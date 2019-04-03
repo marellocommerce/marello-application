@@ -95,10 +95,7 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
                     )
                     ->add(
                         'managedInventory',
-                        CheckboxType::class,
-                        [
-                            'disabled' => $isInventoryLevelDisabled
-                        ]
+                        CheckboxType::class
                     );
             }
         }
