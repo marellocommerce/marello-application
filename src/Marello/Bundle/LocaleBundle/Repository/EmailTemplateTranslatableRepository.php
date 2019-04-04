@@ -41,10 +41,11 @@ class EmailTemplateTranslatableRepository extends AbstractTranslatableRepository
 
     /**
      * @param array $params
-     * @return null|EmailTemplate
+     * @param array|null $orderBy
+     * @return null|object|EmailTemplate
      */
-    public function findOneBy(array $params = [])
+    public function findOneBy(array $params = [], ?array $orderBy = null)
     {
-        return $this->_em->getRepository($this->class)->findOneBy($params);
+        return $this->_em->getRepository($this->class)->findOneBy($params, $orderBy);
     }
 }

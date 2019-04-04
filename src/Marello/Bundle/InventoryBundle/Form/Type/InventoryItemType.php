@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Form\Type;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,6 +15,19 @@ use Symfony\Component\Validator\Constraints\Valid;
 class InventoryItemType extends AbstractType
 {
     const BLOCK_PREFIX = 'marello_inventory_item';
+
+    /**
+     * @var EventSubscriberInterface
+     */
+    protected $subscriber;
+
+    /**
+     * @param EventSubscriberInterface|null $subscriber
+     */
+    public function __construct(EventSubscriberInterface $subscriber = null)
+    {
+        $this->subscriber = $subscriber;
+    }
 
     /**
      * {@inheritdoc}
@@ -48,6 +62,9 @@ class InventoryItemType extends AbstractType
                 'inventoryLevels',
                 InventoryLevelCollectionType::class
             );
+        if ($this->subscriber !== null) {
+            $builder->addEventSubscriber($this->subscriber);
+        }
     }
 
     /**

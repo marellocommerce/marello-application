@@ -33,14 +33,15 @@
         {% set name = widget.vars.full_name %}
         {% set disabled = widget.parent.vars.disabled %}
     {% endif %}
-
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
-        class="marello-line-item display-values"
-        data-page-component-module="oroui/js/app/components/view-component"
-        data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}"
-        data-layout="separate">
-        {{ form_widget(form) }}
-    </tr>
+    {% if form.vars.display is not defined or form.vars.display != false %}
+        <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+            class="marello-line-item display-values"
+            data-page-component-module="oroui/js/app/components/view-component"
+            data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}"
+            data-layout="separate">
+            {{ form_widget(form) }}
+        </tr>
+    {% endif %}
 {% endmacro %}
 
 {% block marello_inventory_inventorylevel_collection_widget %}

@@ -1,7 +1,7 @@
 data:
     -
         type: marelloassembledchannelpricelists
-        id: '<toString(@product1->channelPrices->get(0)->defaultPrice->id)>'
+        id: '<toString(@marello_assembledchannelpricelist_p1_EUR->id)>'
         attributes:
             currency: EUR
         relationships:
@@ -21,7 +21,7 @@ data:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '<toString(@product2->channelPrices->get(0)->defaultPrice->id)>'
+        id: '<toString(@marello_assembledchannelpricelist_p2_EUR->id)>'
         attributes:
             currency: EUR
         relationships:
@@ -41,7 +41,7 @@ data:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '<toString(@product3->channelPrices->get(0)->defaultPrice->id)>'
+        id: '<toString(@marello_assembledchannelpricelist_p3_EUR->id)>'
         attributes:
             currency: EUR
         relationships:
@@ -61,7 +61,7 @@ data:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '<toString(@product4->channelPrices->get(0)->defaultPrice->id)>'
+        id: '<toString(@marello_assembledchannelpricelist_p4_EUR->id)>'
         attributes:
             currency: EUR
         relationships:
@@ -81,7 +81,7 @@ data:
                 data: null
     -
         type: marelloassembledchannelpricelists
-        id: '<toString(@product4->channelPrices->get(1)->defaultPrice->id)>'
+        id: '<toString(@marello_assembledchannelpricelist_p4_USD->id)>'
         attributes:
             currency: USD
         relationships:

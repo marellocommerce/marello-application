@@ -13,6 +13,7 @@
 
 namespace Marello\Bundle\OrderBundle\Validator;
 
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -98,10 +99,12 @@ class AvailableInventoryValidator extends ConstraintValidator
         }
 
         if (!$this->compareValues($result, $values[self::QUANTITY_FIELD])) {
-            $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
-            $this->context->buildViolation($constraint->message)
-                ->atPath($errorPath)
-                ->addViolation();
+            if (isset($values[self::PRODUCT_FIELD]) && !$this->isProductCanDropship($values[self::PRODUCT_FIELD])) {
+                $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
+                $this->context->buildViolation($constraint->message)
+                    ->atPath($errorPath)
+                    ->addViolation();
+            }
         }
 
         if (isset($values[self::PRODUCT_FIELD])) {
@@ -118,6 +121,22 @@ class AvailableInventoryValidator extends ConstraintValidator
     private function getProductSku(ProductInterface $product)
     {
         return $product->getSku();
+    }
+
+    /**
+     * @param ProductInterface|Product $product
+     * @return bool
+     */
+    private function isProductCanDropship(ProductInterface $product)
+    {
+        foreach ($product->getSuppliers() as $productSupplierRelation) {
+            if ($productSupplierRelation->getSupplier()->getCanDropship() &&
+                $productSupplierRelation->getCanDropship()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

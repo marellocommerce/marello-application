@@ -32,10 +32,42 @@ class AvailableInventoryProvider
      */
     public function getAvailableInventory(Product $product, SalesChannel $salesChannel)
     {
+        $balancedInventory = $this->getAvailableBalancedInventory($product, $salesChannel);
+        $externalInventory = $this->getAvailableExternalInventory($product);
+
+        return $balancedInventory + $externalInventory;
+    }
+
+    /**
+     * @param $product Product
+     * @param $salesChannel SalesChannel
+     * @return int
+     */
+    private function getAvailableBalancedInventory(Product $product, SalesChannel $salesChannel)
+    {
         $salesChannelGroup = $salesChannel->getGroup();
         $result = $this->getBalancedInventoryLevel($product, $salesChannelGroup);
 
         return ($result) ? $result->getInventoryQty() : 0;
+    }
+
+    /**
+     * @param $product Product
+     * @return int
+     */
+    private function getAvailableExternalInventory(Product $product)
+    {
+        $inventory = 0;
+        foreach ($product->getInventoryItems() as $inventoryItem) {
+            foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
+                $warehouseType = $inventoryLevel->getWarehouse()->getWarehouseType()->getName();
+                if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+                    $inventory += $inventoryLevel->getVirtualInventoryQty();
+                }
+            }
+        }
+
+        return $inventory;
     }
 
     /**

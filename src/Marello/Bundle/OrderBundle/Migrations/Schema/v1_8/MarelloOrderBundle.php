@@ -23,7 +23,7 @@ class MarelloOrderBundle implements Migration, ActivityExtensionAwareInterface
     {
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_order_customer');
     }
-    
+
     /**
      * Sets the ActivityExtension
      *

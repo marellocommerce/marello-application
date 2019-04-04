@@ -114,6 +114,14 @@ class LoadProductChannelPricingData extends AbstractFixture implements Dependent
             ->setProduct($product);
 
         $this->manager->persist($assembledChannelPriceList);
+        $this->setReference(
+            sprintf(
+                'marello_assembledchannelpricelist_%s_%s',
+                $product->getSku(),
+                $assembledChannelPriceList->getCurrency()
+            ),
+            $assembledChannelPriceList
+        );
         $this->manager->persist($product);
     }
 }

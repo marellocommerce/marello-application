@@ -1,7 +1,7 @@
 data:
     -
         type: marellobalancedinventorylevels
-        id: '1'
+        id: '<toString(@marello_balancedinvlev_p1_channelgroup1->id)>'
         attributes:
             inventory: 100
             balancedInventory: 100
