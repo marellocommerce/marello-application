@@ -49,7 +49,7 @@ class InventoryLevelCollectionType extends AbstractType
             'constraints'          => [new Valid()],
             'prototype_name'       => '__nameinventorylevelcollection__',
             'prototype'            => true,
-            'handle_primary'       => false,
+            'handle_primary'       => false
         ]);
     }
 

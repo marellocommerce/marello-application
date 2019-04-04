@@ -36,7 +36,7 @@ class CompositeFormChangesProvider implements FormChangesProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function setRequiredFields(array $fields = null)
+    public function setRequiredFields(array $fields = [])
     {
         $this->requiredFields = $fields;
         
