@@ -80,6 +80,14 @@ class LoadProductSupplierData extends AbstractFixture implements DependentFixtur
             return;
         }
 
+        $existingSupplierRelation = $this->manager
+            ->getRepository(ProductSupplierRelation::class)
+            ->findOneBy(['product' => $product]);
+
+        if ($existingSupplierRelation) {
+            return;
+        }
+
         $suppliers = $this->manager
             ->getRepository('MarelloSupplierBundle:Supplier')
             ->findBy([
