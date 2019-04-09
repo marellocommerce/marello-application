@@ -108,7 +108,8 @@ class AvailableInventoryValidator extends ConstraintValidator
                 } elseif ($this->isProductCanBackorder($values[self::PRODUCT_FIELD]) &&
                     $this->compareValues(
                         $this->getBackorderQty($values[self::PRODUCT_FIELD]),
-                        $values[self::QUANTITY_FIELD])
+                        $values[self::QUANTITY_FIELD]
+                    )
                 ) {
                     $violation = false;
                 }
