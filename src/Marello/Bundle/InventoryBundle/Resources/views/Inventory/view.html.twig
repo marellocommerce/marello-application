@@ -28,27 +28,6 @@
 {% block content_data %}
     {% set id = 'marello-inventory-view' %}
     {% set generalSubblocks = [] %}
-    {% set generalWidget %}
-        <div class="responsive-block">
-            <div class="box-type1">
-                <div class="title">
-                    <span class="widget-title">{{ 'marello.inventory.inventoryitem.section.general.label'|trans }}</span>
-                </div>
-                {{ UI.renderProperty('marello.inventory.inventoryitem.backorder_allowed.label'|trans, entity.backorderAllowed ?
-                'marello.core.yes.label'|trans
-                :
-                'marello.core.no.label'|trans
-                ) }}
-                {{ UI.renderProperty('marello.inventory.inventoryitem.max_qty_to_backorder.label'|trans, entity.maxQtyToBackorder) }}
-                {{ UI.renderProperty('marello.inventory.inventoryitem.can_preorder.label'|trans, entity.canPreorder ?
-                'marello.core.yes.label'|trans
-                :
-                'marello.core.no.label'|trans
-                ) }}
-            </div>
-        </div>
-    {% endset %}
-    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalWidget] }]) %}
 
     {% set inventoryInformationWidget %}
         <div class="widget-content">
