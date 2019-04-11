@@ -6,6 +6,7 @@ use Marello\Bundle\TaxBundle\Entity\TaxCode;
 
 abstract class AbstractProductExportWriter extends AbstractItemExportWriter
 {
+    const SECTION_FIELD = 'orocommerce';
     const PRODUCT_ID_FIELD = 'orocommerce_product_id';
     const UNIT_PRECISION_ID_FIELD = 'orocommerce_unit_precision_id';
     const PRICE_ID_FIELD = 'orocommerce_price_id';

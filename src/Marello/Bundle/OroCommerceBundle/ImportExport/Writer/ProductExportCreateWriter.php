@@ -60,10 +60,12 @@ class ProductExportCreateWriter extends AbstractProductExportWriter
                             $salesChannel = $sChannel;
                         }
                     }
-                    $this->eventDispatcher->dispatch(
-                        RemoteProductCreatedEvent::NAME,
-                        new RemoteProductCreatedEvent($processedProduct, $salesChannel)
-                    );
+                    if ($salesChannel) {
+                        $this->eventDispatcher->dispatch(
+                            RemoteProductCreatedEvent::NAME,
+                            new RemoteProductCreatedEvent($processedProduct, $salesChannel)
+                        );
+                    }
                 }
             }
             $this->context->incrementAddCount();

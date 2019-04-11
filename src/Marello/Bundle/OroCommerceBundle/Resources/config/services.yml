@@ -29,6 +29,8 @@ services:
 
     marello_orocommerce.event_listener.doctrine.integration:
         class: 'Marello\Bundle\OroCommerceBundle\EventListener\Doctrine\OroCommerceIntegrationEventListener'
+        arguments:
+            - '%database_driver%'
         tags:
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: postPersist }
             - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: postUpdate }
