@@ -10,6 +10,14 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class ProductRepository extends EntityRepository
 {
+    const PGSQL_DRIVER = 'pdo_pgsql';
+    const MYSQL_DRIVER = 'pdo_mysql';
+
+    /**
+     * @var string
+     */
+    private $databaseDriver;
+    
     /**
      * @var AclHelper
      */
@@ -21,6 +29,14 @@ class ProductRepository extends EntityRepository
     public function setAclHelper(AclHelper $aclHelper)
     {
         $this->aclHelper = $aclHelper;
+    }
+
+    /**
+     * @param string $databaseDriver
+     */
+    public function setDatabaseDriver($databaseDriver)
+    {
+        $this->databaseDriver = $databaseDriver;
     }
 
     /**
@@ -110,9 +126,15 @@ class ProductRepository extends EntityRepository
      */
     public function findByDataKey($key)
     {
-        $qb = $this->createQueryBuilder('product');
+        if($this->databaseDriver === self::PGSQL_DRIVER) {
+            $formattedDataField = 'CAST(p.data as TEXT)';
+        } else {
+            $formattedDataField = 'p.data';
+        }
+        $qb = $this->createQueryBuilder('p');
         $qb
-            ->where($qb->expr()->like('product.data', $qb->expr()->literal("%$key%")));
+            ->where(sprintf('%s LIKE :key', $formattedDataField))
+            ->setParameter('key', '%' . $key . '%');
 
         return $this->aclHelper->apply($qb->getQuery())->getResult();
     }
