@@ -84,8 +84,3 @@ services:
         lazy:  true
         tags:
             - { name: doctrine.event_listener, event: onFlush }
-
-    marello_inventory.listener.datagrid.inventory_levels:
-        class: 'Marello\Bundle\InventoryBundle\EventListener\Datagrid\InventoryLevelsGridListener'
-        tags:
-            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before_query.marello-inventory-levels, method: onResultBeforeQuery }
