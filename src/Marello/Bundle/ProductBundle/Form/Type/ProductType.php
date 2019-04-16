@@ -187,6 +187,7 @@ class ProductType extends AbstractType
             'data_class'         => Product::class,
             'intention'          => 'product',
             'single_form'        => true,
+            'enable_attributes'  => true,
             'constraints'        => [new Valid()],
         ]);
     }
