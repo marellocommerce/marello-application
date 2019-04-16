@@ -7,6 +7,8 @@ use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 
+use Marello\Bundle\ProductBundle\Entity\Product;
+
 class MarelloProductBundle implements Migration
 {
     const PRODUCT_TABLE = 'marello_product_product';
@@ -18,6 +20,7 @@ class MarelloProductBundle implements Migration
     {
         /** Add attribute family and attribute family relation **/
         $this->addAttributeFamily($schema);
+        $this->updateProductEntityConfig($queries);
     }
 
     /**
@@ -33,6 +36,23 @@ class MarelloProductBundle implements Migration
             ['attribute_family_id'],
             ['id'],
             ['onUpdate' => null, 'onDelete' => 'RESTRICT']
+        );
+    }
+
+    /**
+     * @param QueryBag $queries
+     */
+    protected function updateProductEntityConfig(QueryBag $queries)
+    {
+        // Cleanup entity config of account entity
+        $queries->addPostQuery(
+            new UpdateEntityConfigDataQuery(
+                function ($data) {
+                    $data['attribute']['schema']['has_attributes'] = true;
+                    return $data;
+                },
+                Product::class
+            )
         );
     }
 }
