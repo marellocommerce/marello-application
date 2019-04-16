@@ -27,6 +27,7 @@ marello:
         image.label:                Image
         categories.label:           Categories
         suppliers.label:            Suppliers
+        attribute_family.label:     Attribute Family
         variant:
             label:                    Variant
             entity_plural_label:      Variants
