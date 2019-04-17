@@ -48,7 +48,7 @@ class MarelloProductBundle implements Migration
         $queries->addPostQuery(
             new UpdateEntityConfigDataQuery(
                 function ($data) {
-                    $data['attribute']['schema']['has_attributes'] = true;
+                    $data['attribute']['has_attributes'] = true;
                     return $data;
                 },
                 Product::class
