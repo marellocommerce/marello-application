@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
@@ -143,6 +144,10 @@ class ExternalWarehouseEventListener
      */
     private function createWarehouse(Supplier $supplier)
     {
+        $systemWarehouseGroup = $this->doctrineHelper
+            ->getEntityManagerForClass(WarehouseGroup::class)
+            ->getRepository(WarehouseGroup::class)
+            ->findOneBy(['system' => true]);
         $warehouseType = $this->doctrineHelper
             ->getEntityManagerForClass(WarehouseType::class)
             ->getRepository(WarehouseType::class)
@@ -157,6 +162,9 @@ class ExternalWarehouseEventListener
             $warehouse->setOwner($organization);
         } else {
             $warehouse->setOwner($this->getOrganization());
+        }
+        if ($systemWarehouseGroup) {
+            $warehouse->setGroup($systemWarehouseGroup);
         }
 
         $entityManager = $this->doctrineHelper

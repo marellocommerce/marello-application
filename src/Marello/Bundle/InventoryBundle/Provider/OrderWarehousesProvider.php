@@ -7,6 +7,8 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\SupplierBundle\Entity\Supplier;
 
 class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 {
@@ -31,7 +33,7 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
                 /** @var InventoryLevel $inventoryLevel */
                 foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
                     $invLevelQtyKey = sprintf('%s_|_%s', $sku, $inventoryLevel->getId());
-                    $invLevelQty = $inventoryLevel->getInventoryQty();
+                    $invLevelQty = $inventoryLevel->getVirtualInventoryQty();
                     if (isset($productsQty[$invLevelQtyKey])) {
                         $invLevelQty = $invLevelQty - $productsQty[$invLevelQtyKey];
                     }
@@ -44,7 +46,7 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
                     }
                 }
             }
-            usort($productsByWh[$key], function(Warehouse $a, Warehouse $b) use ($product){
+            usort($productsByWh[$key], function (Warehouse $a, Warehouse $b) use ($product) {
                 if ($a->isDefault() === true) {
                     return -1;
                 } elseif ($b->isDefault() === true) {
@@ -62,11 +64,15 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
                     } elseif ($aWhType === $externalType && $bWhType === $externalType) {
                         $aWhCode = $a->getCode();
                         $bWhCode = $b->getCode();
-                        $supplier = $product->getPreferredSupplier();
-                        if ($supplier) {
-                            if (strpos($aWhCode, str_replace(' ', '_', strtolower($supplier->getName())) !== false)) {
+                        $preferedSupplier = $this->getPreferredSupplierWhichCanDropship($product);
+                        if ($preferedSupplier) {
+                            $supplierWarehouseCode = sprintf(
+                                '%s_external_warehouse',
+                                str_replace(' ', '_', strtolower($preferedSupplier->getName()))
+                            );
+                            if ($aWhCode === $supplierWarehouseCode) {
                                 return -1;
-                            } elseif (strpos($bWhCode, str_replace(' ', '_', strtolower($supplier->getName())) !== false)) {
+                            } elseif ($bWhCode === $supplierWarehouseCode) {
                                 return 1;
                             }
                         }
@@ -100,5 +106,29 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
             $result[] = new OrderWarehouseResult($resultItem);
         }
         return $result;
+    }
+    
+    /**
+     * @param Product $product
+     * @return Supplier|null
+     */
+    protected function getPreferredSupplierWhichCanDropship(Product $product)
+    {
+        $preferredSupplier = null;
+        $preferredPriority = 0;
+        foreach ($product->getSuppliers() as $productSupplierRelation) {
+            if (null == $preferredSupplier && $productSupplierRelation->getCanDropship() === true) {
+                $preferredSupplier = $productSupplierRelation->getSupplier();
+                $preferredPriority = $productSupplierRelation->getPriority();
+                continue;
+            }
+            if ($productSupplierRelation->getPriority() < $preferredPriority  &&
+                $productSupplierRelation->getCanDropship() === true) {
+                $preferredSupplier = $productSupplierRelation->getSupplier();
+                $preferredPriority = $productSupplierRelation->getPriority();
+            }
+        }
+
+        return $preferredSupplier;
     }
 }

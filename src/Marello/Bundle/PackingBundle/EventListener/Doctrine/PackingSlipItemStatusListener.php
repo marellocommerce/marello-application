@@ -4,10 +4,15 @@ namespace Marello\Bundle\PackingBundle\EventListener\Doctrine;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
+use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
+use Oro\Component\Action\Event\ExtendableActionEvent;
 
 class PackingSlipItemStatusListener
 {
@@ -46,6 +51,43 @@ class PackingSlipItemStatusListener
                 }
             }
         }
+    }
+
+    /**
+     * @param ExtendableActionEvent $event
+     */
+    public function onOrderShipped(ExtendableActionEvent $event)
+    {
+        if (!$this->isCorrectOrderContext($event->getContext())) {
+            return;
+        }
+        /** @var Order $entity */
+        $order = $event->getContext()->getData()->get('order');
+        $packingSlips = $this->doctrineHelper
+            ->getEntityManagerForClass(PackingSlip::class)
+            ->getRepository(PackingSlip::class)
+            ->findBy(['order' => $order]);
+        $entityManager = $this->doctrineHelper->getEntityManagerForClass(PackingSlipItem::class);
+        foreach ($packingSlips as $packingSlip) {
+            foreach ($packingSlip->getItems() as $item) {
+                $item->setStatus($this->findStatus(LoadOrderItemStatusData::SHIPPED));
+                $entityManager->persist($item);
+            }
+        }
+        $entityManager->flush();
+    }
+
+    /**
+     * @param mixed $context
+     * @return bool
+     */
+    protected function isCorrectOrderContext($context)
+    {
+        return ($context instanceof WorkflowItem
+            && $context->getData() instanceof WorkflowData
+            && $context->getData()->has('order')
+            && $context->getData()->get('order') instanceof Order
+        );
     }
 
     /**

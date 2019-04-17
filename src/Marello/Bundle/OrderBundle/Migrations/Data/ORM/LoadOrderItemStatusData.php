@@ -12,6 +12,7 @@ class LoadOrderItemStatusData extends AbstractFixture
     const ITEM_STATUS_ENUM_CLASS = 'marello_item_status';
     
     const PENDING = 'pending';
+    const PROCESSING = 'processing';
     const SHIPPED = 'shipped';
     const DROPSHIPPED = 'dropshipped';
     const COULD_NOT_ALLOCATE = 'could_not_allocate';
@@ -20,6 +21,7 @@ class LoadOrderItemStatusData extends AbstractFixture
     /** @var array */
     protected $data = [
         'Pending' => true,
+        'Processing' => false,
         'Shipped' => false,
         'Dropshipped' => false,
         'Could Not Allocate' => false,

@@ -64,7 +64,7 @@ class OrderWarehousesProviderTest extends TestCase
         $product4 = new Product();
         $product4
             ->setSku('SKU-4')
-            ->setPreferredSupplier($preferredSupplier);;
+            ->setPreferredSupplier($preferredSupplier);
 
         $inventoryItem1 = new InventoryItem(null, $product1);
         $inventoryItem2 = new InventoryItem(null, $product2);
@@ -91,7 +91,7 @@ class OrderWarehousesProviderTest extends TestCase
             ->setCode('supplier2_external_warehouse')
             ->setWarehouseType($externalWarehouseType);
         /** @var Warehouse $externalPreferableWarehouse */
-        $externalPreferableWarehouse = $this->getEntity(Warehouse::class, ['id' => 4]);;
+        $externalPreferableWarehouse = $this->getEntity(Warehouse::class, ['id' => 4]);
         $externalPreferableWarehouse
             ->setCode('supplier1_external_warehouse')
             ->setWarehouseType($externalWarehouseType);
