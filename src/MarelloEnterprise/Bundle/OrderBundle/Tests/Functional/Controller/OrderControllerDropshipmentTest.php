@@ -132,9 +132,9 @@ class OrderControllerDropshipmentTest extends WebTestCase
         foreach ($packingSlip->getItems() as $packingSlipItem) {
             $warehouseType = $packingSlip->getWarehouse()->getWarehouseType()->getName();
             $this->assertNotEquals(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL, $warehouseType);
-            $this->assertEquals(LoadOrderItemStatusData::PENDING, $packingSlipItem->getStatus()->getId());
+            $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $packingSlipItem->getStatus()->getId());
             $orderItem = $packingSlipItem->getOrderItem();
-            $this->assertEquals(LoadOrderItemStatusData::PENDING, $orderItem->getStatus()->getId());
+            $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $orderItem->getStatus()->getId());
         }
     }
 
@@ -255,8 +255,8 @@ class OrderControllerDropshipmentTest extends WebTestCase
                 $this->assertEquals(LoadOrderItemStatusData::DROPSHIPPED, $orderItem->getStatus()->getId());
             } else {
                 $this->assertEquals($packingSlipItem->getProductSku(), $ownProduct->getSku());
-                $this->assertEquals(LoadOrderItemStatusData::PENDING, $packingSlipItem->getStatus()->getId());
-                $this->assertEquals(LoadOrderItemStatusData::PENDING, $orderItem->getStatus()->getId());
+                $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $packingSlipItem->getStatus()->getId());
+                $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $orderItem->getStatus()->getId());
             }
         }
     }

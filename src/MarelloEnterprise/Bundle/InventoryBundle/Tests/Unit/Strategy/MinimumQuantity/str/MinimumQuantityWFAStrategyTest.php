@@ -97,7 +97,7 @@ class MinimumQuantityWFAStrategyTest extends TestCase
 
         $inventoryLevel1 = $this->getEntity(InventoryLevel::class, ['inventory' => 10, 'warehouse' => $warehouse1]);
         $inventoryLevel2 = $this->getEntity(InventoryLevel::class, ['inventory' => 10, 'warehouse' => $warehouse2]);
-        $inventoryLevel3 = $this->getEntity(InventoryLevel::class, ['inventory' => 10, 'warehouse' => $warehouse3]);
+        $inventoryLevel3 = $this->getEntity(InventoryLevel::class, ['inventory' => 0, 'warehouse' => $warehouse3]);
 
         $inventoryItem1 = $this->getEntity(
             InventoryItem::class,

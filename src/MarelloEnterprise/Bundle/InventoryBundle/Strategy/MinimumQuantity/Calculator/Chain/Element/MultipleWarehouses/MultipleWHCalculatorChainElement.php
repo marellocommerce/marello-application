@@ -49,21 +49,8 @@ class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
             $finalResults = array_filter($this->results, function ($result) {
                 return count($result) <= count(reset($this->results));
             });
-
-            usort($finalResults, function ($a, $b) {
-                $aHasDefaultWh = $this->hasDefaultWarehouse($a);
-                $bHasDefaultWh = $this->hasDefaultWarehouse($b);
-
-                if (($aHasDefaultWh && $bHasDefaultWh) || (!$aHasDefaultWh && !$bHasDefaultWh)) {
-                    return 0;
-                } elseif ($aHasDefaultWh && !$bHasDefaultWh) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            });
-
-            return $finalResults;
+            
+            return $this->usort($finalResults);
         } elseif ($this->getSuccessor()) {
             return $this->getSuccessor()->calculate($productsByWh, $orderItemsByProducts, $warehouses, $orderItems);
         }
