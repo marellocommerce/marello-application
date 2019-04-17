@@ -10,6 +10,7 @@ use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceType;
 use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
@@ -18,6 +19,7 @@ use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -216,6 +218,11 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ->getRepository('MarelloProductBundle:ProductStatus')
             ->findOneByName($data['status']);
         $product->setStatus($status);
+
+        $defaultAttributeFamily = $this->manager
+            ->getRepository(AttributeFamily::class)
+            ->findOneBy(['code' => LoadDefaultAttributeFamilyData::DEFAULT_FAMILY_CODE]);
+        $product->setAttributeFamily($defaultAttributeFamily);
 
         $currencies = $this->addSalesChannels($product, $data);
         $channelCurrencies = array_unique($currencies);
