@@ -148,3 +148,19 @@ services:
             - '@oro_email.mailer.processor'
         tags:
             - { name: 'oro_message_queue.client.message_processor' }
+
+    marello_product.event_listener.attribute_family_form_view:
+        parent: oro_entity_config.event_listener.attribute_family_form_view.abstract
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-product-update, method: onEdit }
+
+    marello_product.event_listener.attributes_form_view:
+        parent: oro_entity_config.event_listener.attributes_form_view.abstract
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-product-update, method: onEdit, priority: -255 }
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.marello-product-view, method: onViewList, priority: -255 }
+
+    marello_product.product.form.event_listener.default_attribute_family:
+        class: Marello\Bundle\ProductBundle\Form\EventListener\DefaultAttributeFamilySubscriber
+        arguments:
+            - '@doctrine.orm.entity_manager'

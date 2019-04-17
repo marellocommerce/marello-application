@@ -8,6 +8,8 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
+use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -101,6 +103,12 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         */
         $product->setTaxCode($this->getReference(LoadTaxCodeData::TAXCODE_1_REF));
         $this->manager->persist($product);
+
+        /** @var AttributeFamily $attributeFamily */
+        $attributeFamily = $this->manager
+            ->getRepository(AttributeFamily::class)
+            ->findOneByCode(LoadDefaultAttributeFamilyData::DEFAULT_FAMILY_CODE);
+        $product->setAttributeFamily($attributeFamily);
 
         return $product;
     }
