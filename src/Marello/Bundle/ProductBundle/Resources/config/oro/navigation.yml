@@ -16,7 +16,7 @@ navigation:
                     position: 10
 
             products_families_index:
-                label: 'Product Families'
+                label: 'marello.product.menu.product_families.label'
                 route: 'oro_attribute_family_index'
                 route_parameters:
                     alias: 'marelloproduct'
@@ -25,7 +25,7 @@ navigation:
                     position: 15
 
             products_attributes_index:
-                label: 'Product Attributes'
+                label: 'marello.product.menu.product_attributes.label'
                 route: 'oro_attribute_index'
                 route_parameters:
                     alias: 'marelloproduct'

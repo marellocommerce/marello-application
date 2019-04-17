@@ -87,6 +87,8 @@ marello:
             shortcut_new_product.description: Create new product instance
             shortcut_list_products.label: Show product list
             shortcut_list_products.description: List of products
+            product_attributes.label: Product Attributes
+            product_families.label: Product Families
 
         ui:
             duplicate: Duplicate
