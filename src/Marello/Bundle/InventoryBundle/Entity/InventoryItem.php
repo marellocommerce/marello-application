@@ -152,6 +152,57 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     protected $replenishment;
 
     /**
+     * @ORM\Column(name="backorder_allowed", type="boolean", nullable=true, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Backorder Allowed"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
+     */
+    protected $backorderAllowed;
+
+    /**
+     * @ORM\Column(name="max_qty_to_backorder", type="integer", nullable=true, options={"default"=0})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Max Quantity To Backorder"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var integer
+     */
+    protected $maxQtyToBackorder;
+
+    /**
+     * @ORM\Column(name="can_preorder", type="boolean", nullable=true, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Can Preorder"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
+     */
+    protected $canPreorder;
+
+    /**
      * @var Warehouse
      */
     protected $warehouse;
@@ -306,11 +357,29 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|InventoryLevel[]
      */
     public function getInventoryLevels()
     {
         return $this->inventoryLevels;
+    }
+
+    /**
+     * @param Warehouse $warehouse
+     * @return InventoryLevel|null
+     */
+    public function getInventoryLevel(Warehouse $warehouse)
+    {
+        $inventoryLevel = $this->getInventoryLevels()
+            ->filter(function (InventoryLevel $inventoryLevel) use ($warehouse) {
+                return $inventoryLevel->getWarehouse() === $warehouse;
+            })
+            ->first();
+        if ($inventoryLevel) {
+            return $inventoryLevel;
+        }
+
+        return null;
     }
 
     /**
@@ -319,5 +388,62 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     public function hasInventoryLevels()
     {
         return ($this->inventoryLevels->count() > 0);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isBackorderAllowed()
+    {
+        return $this->backorderAllowed;
+    }
+
+    /**
+     * @param boolean $backorderAllowed
+     * @return $this
+     */
+    public function setBackorderAllowed($backorderAllowed)
+    {
+        $this->backorderAllowed = $backorderAllowed;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxQtyToBackorder()
+    {
+        return $this->maxQtyToBackorder;
+    }
+
+    /**
+     * @param int $maxQtyToBackorder
+     * @return $this
+     */
+    public function setMaxQtyToBackorder($maxQtyToBackorder)
+    {
+        $this->maxQtyToBackorder = $maxQtyToBackorder;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCanPreorder()
+    {
+        return $this->canPreorder;
+    }
+
+    /**
+     * @param bool $canPreorder
+     * @return $this
+     */
+    public function setCanPreorder($canPreorder)
+    {
+        $this->canPreorder = $canPreorder;
+        
+        return $this;
     }
 }

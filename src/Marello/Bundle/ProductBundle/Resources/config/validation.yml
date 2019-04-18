@@ -16,6 +16,8 @@ Marello\Bundle\ProductBundle\Entity\Product:
             - Valid: ~
         salesChannelTaxCodes:
             - Valid: ~
+        taxCode:
+            - NotBlank: ~
 
 Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation:
     constraints:

@@ -47,6 +47,9 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
  *          },
+ *          "grid"={
+ *              "default"="marello-order-select-grid"
+ *          },
  *          "dataaudit"={
  *              "auditable"=true
  *          }

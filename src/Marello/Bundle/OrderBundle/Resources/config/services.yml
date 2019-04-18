@@ -39,6 +39,14 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 
+    marello_order.listener.doctrine.order_item_status:
+        class: Marello\Bundle\OrderBundle\EventListener\Doctrine\OrderItemStatusListener
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@marello_inventory.provider.available_inventory_provider'
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+
     marello_order.provider.order_statistic_provider:
         class: '%marello_order.provider.order_statistic_provider.class%'
         arguments:
