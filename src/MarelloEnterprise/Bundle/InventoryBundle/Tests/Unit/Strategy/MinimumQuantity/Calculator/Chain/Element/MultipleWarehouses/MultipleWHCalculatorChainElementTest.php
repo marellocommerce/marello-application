@@ -53,9 +53,9 @@ class MultipleWHCalculatorChainElementTest extends TestCase
             3 => ['TPD0002', 'TPD0003']
         ];
         $orderItemsByProducts = [
-            'TPD0001' => $orderItem1,
-            'TPD0002' => $orderItem2,
-            'TPD0003' => $orderItem3
+            'TPD0001_|_' => $orderItem1,
+            'TPD0002_|_' => $orderItem2,
+            'TPD0003_|_' => $orderItem3
         ];
         $warehouses = [
             1 => $warehouse1,
@@ -97,6 +97,7 @@ class MultipleWHCalculatorChainElementTest extends TestCase
                 ])
             ],
         ];
+
         $actualResult = $this->multipleWHCalculatorChainElement->calculate(
             $productsByWh,
             $orderItemsByProducts,

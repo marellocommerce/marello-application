@@ -50,8 +50,8 @@ class SingleWHCalculatorChainElementTest extends TestCase
             2 => ['TPD0001', 'TPD0002']
         ];
         $orderItemsByProducts = [
-            'TPD0001' => $orderItem1,
-            'TPD0002' => $orderItem2
+            'TPD0001_|_' => $orderItem1,
+            'TPD0002_|_' => $orderItem2
         ];
         $warehouses = [
             1 => $warehouse1,

@@ -4,6 +4,8 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumQu
 
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use PHPUnit\Framework\TestCase;
@@ -78,10 +80,20 @@ class MinimumQuantityWFAStrategyTest extends TestCase
         $product1 = $this->getEntity(Product::class, ['sku' => 'TPD0001']);
         $product2 = $this->getEntity(Product::class, ['sku' => 'TPD0002']);
         $product3 = $this->getEntity(Product::class, ['sku' => 'TPD0003']);
-
-        $warehouse1 = $this->getEntity(Warehouse::class, ['id' => 1, 'default' => true]);
-        $warehouse2 = $this->getEntity(Warehouse::class, ['id' => 2]);
-        $warehouse3 = $this->getEntity(Warehouse::class, ['id' => 3]);
+        
+        $warehouse1 = $this->getEntity(Warehouse::class, [
+            'id' => 1,
+            'default' => true,
+            'warehouseType' => new WarehouseType(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL)
+        ]);
+        $warehouse2 = $this->getEntity(Warehouse::class, [
+            'id' => 2,
+            'warehouseType' => new WarehouseType(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL)
+        ]);
+        $warehouse3 = $this->getEntity(Warehouse::class, [
+            'id' => 3,
+            'warehouseType' => new WarehouseType(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL)
+        ]);
 
         $inventoryLevel1 = $this->getEntity(InventoryLevel::class, ['inventory' => 10, 'warehouse' => $warehouse1]);
         $inventoryLevel2 = $this->getEntity(InventoryLevel::class, ['inventory' => 10, 'warehouse' => $warehouse2]);
@@ -122,9 +134,18 @@ class MinimumQuantityWFAStrategyTest extends TestCase
         $product2->addInventoryItem($inventoryItem2);
         $product3->addInventoryItem($inventoryItem3);
 
-        $orderItem1 = $this->getEntity(OrderItem::class, ['product' => $product1, 'quantity' => 1]);
-        $orderItem2 = $this->getEntity(OrderItem::class, ['product' => $product2, 'quantity' => 1]);
-        $orderItem3 = $this->getEntity(OrderItem::class, ['product' => $product3, 'quantity' => 1]);
+        $orderItem1 = $this->getEntity(
+            OrderItem::class,
+            ['productSku' => $product1->getSku(), 'product' => $product1, 'quantity' => 1]
+        );
+        $orderItem2 = $this->getEntity(
+            OrderItem::class,
+            ['productSku' => $product2->getSku(), 'product' => $product2, 'quantity' => 1]
+        );
+        $orderItem3 = $this->getEntity(
+            OrderItem::class,
+            ['productSku' => $product3->getSku(), 'product' => $product3, 'quantity' => 1]
+        );
 
         $salesChannelGroup = $this->getEntity(SalesChannelGroup::class, ['id' => 1]);
         $salesChannel = $this->getEntity(SalesChannel::class, ['id' => 1, 'group' => $salesChannelGroup]);
@@ -145,9 +166,9 @@ class MinimumQuantityWFAStrategyTest extends TestCase
             3 => ['TPD0002', 'TPD0003']
         ];
         $orderItemsByProducts = [
-            'TPD0001' => $orderItem1,
-            'TPD0002' => $orderItem2,
-            'TPD0003' => $orderItem3,
+            'TPD0001_|_' => $orderItem1,
+            'TPD0002_|_' => $orderItem2,
+            'TPD0003_|_' => $orderItem3,
         ];
         $warehouses = [
             1 => $warehouse1,
