@@ -27,6 +27,7 @@ marello:
         image.label:                Image
         categories.label:           Categories
         suppliers.label:            Suppliers
+        attribute_family.label:     Attribute Family
         variant:
             label:                    Variant
             entity_plural_label:      Variants
@@ -86,6 +87,8 @@ marello:
             shortcut_new_product.description: Create new product instance
             shortcut_list_products.label: Show product list
             shortcut_list_products.description: List of products
+            product_attributes.label: Product Attributes
+            product_families.label: Product Families
 
         ui:
             duplicate: Duplicate
@@ -97,3 +100,9 @@ marello:
         datagrid:
             action:
                 assign_sales_channels: Assign Sales Channels
+
+oro:
+    marelloproduct:
+        menu:
+            marelloproduct_attributes: Product Attributes
+            marelloproduct_attribute_families: Product Families

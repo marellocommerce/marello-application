@@ -16,6 +16,9 @@ datagrids:
                             join: o.shippingAddress
                             alias: sa
         columns:
+            id:
+                label:            marello.order.id.label
+                renderable:       false
             orderNumber:
                 label:            marello.order.order_number.label
                 frontend_type:    string
@@ -145,6 +148,12 @@ datagrids:
             mass_actions:
                 delete:
                     enabled: false
+
+    marello-order-select-grid:
+        extends: marello-order
+        properties:
+            id: ~
+        actions: ~
 
     marello-order-customer:
         source:
@@ -428,6 +437,9 @@ datagrids:
                 from:
                     - { table: MarelloOrderBundle:Customer, alias: c }
         columns:
+            id:
+                label: marello.order.customer.id.label
+                renderable: false
             namePrefix:
                 label: marello.order.customer.name_prefix.label
             firstName:

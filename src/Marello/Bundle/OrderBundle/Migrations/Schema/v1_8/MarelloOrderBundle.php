@@ -4,45 +4,33 @@ namespace Marello\Bundle\OrderBundle\Migrations\Schema\v1_8;
 
 use Doctrine\DBAL\Schema\Schema;
 
-use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
-use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
+use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
 use Oro\Bundle\MigrationBundle\Migration\Migration;
 use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
-class MarelloOrderBundle implements Migration, ExtendExtensionAwareInterface
+class MarelloOrderBundle implements Migration, ActivityExtensionAwareInterface
 {
     /**
-     * @var ExtendExtension
+     * @var ActivityExtension
      */
-    protected $extendExtension;
-    
+    protected $activityExtension;
+
     /**
      * {@inheritdoc}
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $table = $schema->getTable('marello_order_order_item');
-        $this->extendExtension->addEnumField(
-            $schema,
-            $table,
-            'status',
-            'marello_item_status',
-            false,
-            false,
-            [
-                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
-            ]
-        );
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_order_customer');
     }
-    
+
     /**
-     * Sets the ExtendExtension
+     * Sets the ActivityExtension
      *
-     * @param ExtendExtension $extendExtension
+     * @param ActivityExtension $activityExtension
      */
-    public function setExtendExtension(ExtendExtension $extendExtension)
+    public function setActivityExtension(ActivityExtension $activityExtension)
     {
-        $this->extendExtension = $extendExtension;
+        $this->activityExtension = $activityExtension;
     }
 }

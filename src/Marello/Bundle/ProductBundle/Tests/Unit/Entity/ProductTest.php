@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Oro\Component\Testing\Unit\EntityTrait;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\ProductBundle\Entity\Product;
@@ -51,6 +52,7 @@ class ProductTest extends TestCase
             ['data', []],
             ['preferredSupplier', new Supplier()],
             ['taxCode', new TaxCode()],
+            ['attributeFamily', new AttributeFamily()],
             ['createdAt', new \DateTime()],
             ['updatedAt', new \DateTime()]
         ]);

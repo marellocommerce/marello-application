@@ -63,6 +63,12 @@ marello:
             inventory_levels.label:     Inventory Levels
             organization.label:         Organization
             warehouse.label:            Warehouse
+            backorder_allowed.label:    Backorders allowed
+            max_qty_to_backorder.label: Max qty to backorder
+            can_preorder.label:         Pre-order allowed
+
+            section:
+                backorder_preorder.label:   Backorder/Pre-order
 
         inventorylevel:
             entity_label:                   Inventory Level

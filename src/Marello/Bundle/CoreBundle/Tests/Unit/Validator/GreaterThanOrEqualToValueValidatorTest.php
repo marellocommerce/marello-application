@@ -95,7 +95,7 @@ class GreaterThanOrEqualToValueValidatorTest extends TestCase
             sprintf('No manager found for class %s', null)
         );
 
-        $this->getValidator()->validate(null, $this->getConstraint());
+        $this->getValidator()->validate(new \StdClass(), $this->getConstraint());
     }
 
     /**
@@ -122,7 +122,7 @@ class GreaterThanOrEqualToValueValidatorTest extends TestCase
             sprintf('The field "%s" is not mapped by Doctrine on entity %s', 'test', null)
         );
 
-        $this->getValidator()->validate(null, $this->getConstraint());
+        $this->getValidator()->validate(new \StdClass(), $this->getConstraint());
     }
 
     /**

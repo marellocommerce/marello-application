@@ -99,7 +99,7 @@ class AvailableInventoryValidatorTest extends TestCase
             sprintf('No manager found for class %s', null)
         );
 
-        $this->getValidator()->validate(null, $this->getConstraint());
+        $this->getValidator()->validate(new \StdClass(), $this->getConstraint());
     }
 
     /**
@@ -126,7 +126,7 @@ class AvailableInventoryValidatorTest extends TestCase
             sprintf('The field "%s" is not mapped by Doctrine on entity %s', 'test', null)
         );
 
-        $this->getValidator()->validate(null, $this->getConstraint());
+        $this->getValidator()->validate(new \StdClass(), $this->getConstraint());
     }
 
     /**
@@ -173,6 +173,7 @@ class AvailableInventoryValidatorTest extends TestCase
             'errorPath' => 'quantity'
         ]);
         $entity->product->expects($this->once())->method('getSuppliers')->willReturn([]);
+        $entity->product->expects($this->exactly(2))->method('getInventoryItems')->willReturn([]);
         $violationBuilderMock = $this->createMock(ConstraintViolationBuilderInterface::class);
 
         $this->doctrineHelper->expects($this->once())

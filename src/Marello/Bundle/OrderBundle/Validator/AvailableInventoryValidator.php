@@ -99,11 +99,26 @@ class AvailableInventoryValidator extends ConstraintValidator
         }
 
         if (!$this->compareValues($result, $values[self::QUANTITY_FIELD])) {
-            if (isset($values[self::PRODUCT_FIELD]) && !$this->isProductCanDropship($values[self::PRODUCT_FIELD])) {
-                $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
-                $this->context->buildViolation($constraint->message)
-                    ->atPath($errorPath)
-                    ->addViolation();
+            if (isset($values[self::PRODUCT_FIELD])) {
+                $violation = true;
+                if ($this->isProductCanDropship($values[self::PRODUCT_FIELD])) {
+                    $violation = false;
+                } elseif ($this->isProductCanPreOrder($values[self::PRODUCT_FIELD])) {
+                    $violation = false;
+                } elseif ($this->isProductCanBackorder($values[self::PRODUCT_FIELD]) &&
+                    $this->compareValues(
+                        $this->getBackorderQty($values[self::PRODUCT_FIELD]),
+                        $values[self::QUANTITY_FIELD]
+                    )
+                ) {
+                    $violation = false;
+                }
+                if ($violation === true) {
+                    $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
+                    $this->context->buildViolation($constraint->message)
+                        ->atPath($errorPath)
+                        ->addViolation();
+                }
             }
         }
 
@@ -132,6 +147,51 @@ class AvailableInventoryValidator extends ConstraintValidator
         foreach ($product->getSuppliers() as $productSupplierRelation) {
             if ($productSupplierRelation->getSupplier()->getCanDropship() &&
                 $productSupplierRelation->getCanDropship()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param ProductInterface|Product $product
+     * @return bool
+     */
+    private function isProductCanBackorder(ProductInterface $product)
+    {
+        foreach ($product->getInventoryItems() as $inventoryItem) {
+            if ($inventoryItem->isBackorderAllowed()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param ProductInterface|Product $product
+     * @return integer
+     */
+    private function getBackorderQty(ProductInterface $product)
+    {
+        foreach ($product->getInventoryItems() as $inventoryItem) {
+            if ($inventoryItem->isBackorderAllowed()) {
+                return $inventoryItem->getMaxQtyToBackorder();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * @param ProductInterface|Product $product
+     * @return bool
+     */
+    private function isProductCanPreOrder(ProductInterface $product)
+    {
+        foreach ($product->getInventoryItems() as $inventoryItem) {
+            if ($inventoryItem->isCanPreorder()) {
                 return true;
             }
         }

@@ -5,6 +5,14 @@ namespace Marello\Bundle\ProductBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamilyAwareInterface;
+
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryItemAwareInterface;
@@ -17,10 +25,6 @@ use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Model\SalesChannelAwareInterface;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 
 /**
  * Represents a Marello Product
@@ -57,6 +61,9 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
  *          "type"="ACL",
  *          "group_name"=""
  *      },
+ *     "attribute"={
+            "has_attributes"=true
+ *     }
  *  }
  * )
  */
@@ -65,7 +72,8 @@ class Product extends ExtendProduct implements
     SalesChannelAwareInterface,
     PricingAwareInterface,
     OrganizationAwareInterface,
-    InventoryItemAwareInterface
+    InventoryItemAwareInterface,
+    AttributeFamilyAwareInterface
 {
     /**
      * @var integer
@@ -461,6 +469,24 @@ class Product extends ExtendProduct implements
      * )
      */
     protected $categories;
+
+    /**
+     * @var AttributeFamily
+     *
+     * @ORM\ManyToOne(targetEntity="Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily")
+     * @ORM\JoinColumn(name="attribute_family_id", referencedColumnName="id", onDelete="RESTRICT")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=false
+     *          },
+     *          "importexport"={
+     *              "order"=10
+     *          }
+     *      }
+     *  )
+     */
+    protected $attributeFamily;
 
     public function __construct()
     {
@@ -1131,5 +1157,24 @@ class Product extends ExtendProduct implements
     public function hasCategory(Category $category)
     {
         return $this->categories->contains($category);
+    }
+
+    /**
+     * @return AttributeFamily
+     */
+    public function getAttributeFamily()
+    {
+        return $this->attributeFamily;
+    }
+
+    /**
+     * @param AttributeFamily $attributeFamily
+     * @return $this
+     */
+    public function setAttributeFamily(AttributeFamily $attributeFamily)
+    {
+        $this->attributeFamily = $attributeFamily;
+
+        return $this;
     }
 }

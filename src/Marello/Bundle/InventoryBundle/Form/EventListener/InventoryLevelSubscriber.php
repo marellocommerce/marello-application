@@ -64,7 +64,8 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
         if ($inventoryLevel instanceof InventoryLevel) {
             $form = $event->getForm();
             $warehouseType = $inventoryLevel->getWarehouse()->getWarehouseType();
-            if ($warehouseType->getName() !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
+            $isInventoryLevelDisabled = $this->isInventoryLevelDisabled($inventoryLevel);
+            if ($warehouseType->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                 $form->remove('adjustmentOperator');
                 $form->remove('quantity');
                 $form->remove('managedInventory');
@@ -79,7 +80,7 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
                             ],
                             'translation_domain' => 'MarelloInventoryChangeDirection',
                             'mapped' => false,
-                            'disabled' => true
+                            'disabled' => $isInventoryLevelDisabled
                         ]
                     )
                     ->add(
@@ -89,15 +90,12 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
                             'constraints' => new GreaterThanOrEqual(0),
                             'data'        => 0,
                             'mapped' => false,
-                            'disabled' => true
+                            'disabled' => $isInventoryLevelDisabled
                         ]
                     )
                     ->add(
                         'managedInventory',
-                        CheckboxType::class,
-                        [
-                            'disabled' => true
-                        ]
+                        CheckboxType::class
                     );
             }
         }
@@ -176,6 +174,21 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
     protected function isApplicable(InventoryLevel $inventoryLevel = null)
     {
         if (!$inventoryLevel) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine whether whe should disable the InventoryLevel's ability to be updated
+     * If the inventory is managed, we should not disable the fields related to updating the InventoryLevel
+     * @param InventoryLevel $inventoryLevel
+     * @return bool
+     */
+    protected function isInventoryLevelDisabled(InventoryLevel $inventoryLevel)
+    {
+        if ($inventoryLevel->isManagedInventory()) {
             return false;
         }
 

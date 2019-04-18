@@ -56,10 +56,6 @@ class InventoryLevelType extends AbstractType
                 EntityType::class,
                 [
                     'class' => Warehouse::class,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('wh')
-                            ->where('wh.default = true');
-                    },
                     'attr'  => ['readonly' => true]
                 ]
             )
