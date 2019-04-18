@@ -54,19 +54,22 @@ class MultipleWHCalculatorChainElementTest extends AbstractWHCalculatorChainElem
     public function calculateDataProvider()
     {
         $orderItem1_1 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(1, [1 => 5, 2 => 5, 3 => 5], [1 => 5, 2 => 4, 3 => 3]),
                 'quantity' => 3
             ]
         );
         $orderItem1_2 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(2, [1 => 5, 2 => 5, 3 => 5], [1 => 5, 2 => 4, 3 => 3]),
                 'quantity' => 5
             ]
         );
         $orderItem1_3 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(3, [1 => 5, 2 => 5, 3 => 5], [1 => 5, 2 => 4, 3 => 3]),
                 'quantity' => 5
             ]
@@ -74,19 +77,22 @@ class MultipleWHCalculatorChainElementTest extends AbstractWHCalculatorChainElem
         $orderItems1 = new ArrayCollection([$orderItem1_1, $orderItem1_2, $orderItem1_3]);
 
         $orderItem3_1 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(1, [2 => 5, 3 => 5, 4 => 5], [2 => 5, 3 => 1, 4 => 3]),
                 'quantity' => 3
             ]
         );
         $orderItem3_2 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(2, [2 => 5, 3 => 5, 4 => 5], [2 => 5, 3 => 1, 4 => 3]),
                 'quantity' => 5
             ]
         );
         $orderItem3_3 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(5, [2 => 5, 3 => 5, 4 => 5], [2 => 5, 3 => 1, 4 => 3]),
                 'quantity' => 3
             ]
@@ -94,19 +100,22 @@ class MultipleWHCalculatorChainElementTest extends AbstractWHCalculatorChainElem
         $orderItems3 = new ArrayCollection([$orderItem3_1, $orderItem3_2, $orderItem3_3]);
 
         $orderItem4_1 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(1, [3 => 5, 4 => 0, 5 => 0], [3 => 5, 4 => 2, 5 => 1]),
                 'quantity' => 3
             ]
         );
         $orderItem4_2 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(2, [3 => 5, 4 => 0, 5 => 0], [3 => 5, 4 => 2, 5 => 1]),
                 'quantity' => 5
             ]
         );
         $orderItem4_3 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(3, [3 => 5, 4 => 0, 5 => 0], [3 => 5, 4 => 2, 5 => 1]),
                 'quantity' => 5
             ]
@@ -114,19 +123,22 @@ class MultipleWHCalculatorChainElementTest extends AbstractWHCalculatorChainElem
         $orderItems4 = new ArrayCollection([$orderItem4_1, $orderItem4_2]);
 
         $orderItem5_1 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(1, [3 => 5, 4 => 5, 5 => 5], [3 => 1, 4 => 2, 5 => 3]),
                 'quantity' => 3
             ]
         );
         $orderItem5_2 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(2, [3 => 5, 4 => 5, 5 => 5], [3 => 1, 4 => 2, 5 => 3]),
                 'quantity' => 5
             ]
         );
         $orderItem5_3 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(3, [3 => 5, 4 => 5, 5 => 5], [3 => 1, 4 => 2, 5 => 3]),
                 'quantity' => 5
             ]
@@ -134,19 +146,22 @@ class MultipleWHCalculatorChainElementTest extends AbstractWHCalculatorChainElem
         $orderItems5 = new ArrayCollection([$orderItem5_1, $orderItem5_2, $orderItem5_3]);
 
         $orderItem6_1 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(1, [3 => 0, 4 => 0, 5 => 0], [3 => 1, 4 => 2, 5 => 3]),
                 'quantity' => 3
             ]
         );
         $orderItem6_2 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(1, [3 => 0, 4 => 0, 5 => 0], [3 => 1, 4 => 2, 5 => 3]),
                 'quantity' => 5
             ]
         );
         $orderItem6_3 = $this->getEntity(
-            OrderItem::class, [
+            OrderItem::class,
+            [
                 'product' => $this->mockProduct(1, [3 => 0, 4 => 0, 5 => 0], [3 => 1, 4 => 2, 5 => 3]),
                 'quantity' => 5
             ]

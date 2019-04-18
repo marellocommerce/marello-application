@@ -178,15 +178,13 @@ abstract class AbstractWHCalculatorChainElement implements MinQtyWHCalculatorInt
                                 ($aExtWhData[self::HAS_QUANTITY] === false &&
                                     $bExtWhData[self::HAS_QUANTITY] === false)
                             ) {
-                                //if ($aExtWhData[self::ITEMS_QTY] === $bExtWhData[self::ITEMS_QTY]) {
-                                    if ($aExtWhData[self::PRIORITY]/$aExtWhData[self::ITEMS_QTY] <
-                                        $bExtWhData[self::PRIORITY]/$bExtWhData[self::ITEMS_QTY]) {
-                                        $result += -1*$aExtWhData[self::ITEMS_QTY];
-                                    } elseif ($aExtWhData[self::PRIORITY]/$aExtWhData[self::ITEMS_QTY] >
-                                        $bExtWhData[self::PRIORITY]/$bExtWhData[self::ITEMS_QTY]) {
-                                        $result += 1*$bExtWhData[self::ITEMS_QTY];
-                                    }
-                                //}
+                                if ($aExtWhData[self::PRIORITY]/$aExtWhData[self::ITEMS_QTY] <
+                                    $bExtWhData[self::PRIORITY]/$bExtWhData[self::ITEMS_QTY]) {
+                                    $result += -1*$aExtWhData[self::ITEMS_QTY];
+                                } elseif ($aExtWhData[self::PRIORITY]/$aExtWhData[self::ITEMS_QTY] >
+                                    $bExtWhData[self::PRIORITY]/$bExtWhData[self::ITEMS_QTY]) {
+                                    $result += 1*$bExtWhData[self::ITEMS_QTY];
+                                }
                             } elseif ($aExtWhData[self::HAS_QUANTITY] === true &&
                                 $bExtWhData[self::HAS_QUANTITY] === false
                             ) {

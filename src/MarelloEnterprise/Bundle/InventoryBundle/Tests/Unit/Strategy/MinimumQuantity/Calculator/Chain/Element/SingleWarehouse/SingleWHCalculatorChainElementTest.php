@@ -56,50 +56,62 @@ class SingleWHCalculatorChainElementTest extends AbstractWHCalculatorChainElemen
     public function calculateDataProvider()
     {
         $orderItem1_1 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(1, [1 => 5, 2 => 5], [1 => 5, 2 => 1]), 'quantity' => 3]
+            OrderItem::class,
+            ['product' => $this->mockProduct(1, [1 => 5, 2 => 5], [1 => 5, 2 => 1]), 'quantity' => 3]
         );
         $orderItem1_2 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(2, [1 => 5, 2 => 5], [1 => 5, 2 => 1]), 'quantity' => 5]
+            OrderItem::class,
+            ['product' => $this->mockProduct(2, [1 => 5, 2 => 5], [1 => 5, 2 => 1]), 'quantity' => 5]
         );
         $orderItems1 = new ArrayCollection([$orderItem1_1, $orderItem1_2]);
 
         $orderItem2_1 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(1, [1 => 5, 3 => 5], [1 => 5, 3 => 1]), 'quantity' => 3]
+            OrderItem::class,
+            ['product' => $this->mockProduct(1, [1 => 5, 3 => 5], [1 => 5, 3 => 1]), 'quantity' => 3]
         );
         $orderItem2_2 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(2, [1 => 5, 3 => 5], [1 => 5, 3 => 1]), 'quantity' => 5]
+            OrderItem::class,
+            ['product' => $this->mockProduct(2, [1 => 5, 3 => 5], [1 => 5, 3 => 1]), 'quantity' => 5]
         );
         $orderItems2 = new ArrayCollection([$orderItem2_1, $orderItem2_2]);
 
         $orderItem3_1 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(1, [2 => 5, 3 => 5], [2 => 5, 3 => 1]), 'quantity' => 3]
+            OrderItem::class,
+            ['product' => $this->mockProduct(1, [2 => 5, 3 => 5], [2 => 5, 3 => 1]), 'quantity' => 3]
         );
         $orderItem3_2 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(2, [2 => 5, 3 => 5], [2 => 5, 3 => 1]), 'quantity' => 5]
+            OrderItem::class,
+            ['product' => $this->mockProduct(2, [2 => 5, 3 => 5], [2 => 5, 3 => 1]), 'quantity' => 5]
         );
         $orderItems3 = new ArrayCollection([$orderItem3_1, $orderItem3_2]);
 
         $orderItem4_1 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(1, [3 => 5, 4 => 0], [3 => 5, 4 => 1]), 'quantity' => 3]
+            OrderItem::class,
+            ['product' => $this->mockProduct(1, [3 => 5, 4 => 0], [3 => 5, 4 => 1]), 'quantity' => 3]
         );
         $orderItem4_2 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(2, [3 => 5, 4 => 0], [3 => 5, 4 => 1]), 'quantity' => 5]
+            OrderItem::class,
+            ['product' => $this->mockProduct(2, [3 => 5, 4 => 0], [3 => 5, 4 => 1]), 'quantity' => 5]
         );
         $orderItems4 = new ArrayCollection([$orderItem4_1, $orderItem4_2]);
 
         $orderItem5_1 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(1, [3 => 5, 5 => 5], [3 => 5, 5 => 1]), 'quantity' => 3]
+            OrderItem::class,
+            ['product' => $this->mockProduct(1, [3 => 5, 5 => 5], [3 => 5, 5 => 1]), 'quantity' => 3]
         );
         $orderItem5_2 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(2, [3 => 5, 5 => 5], [3 => 5, 5 => 1]), 'quantity' => 5]
+            OrderItem::class,
+            ['product' => $this->mockProduct(2, [3 => 5, 5 => 5], [3 => 5, 5 => 1]), 'quantity' => 5]
         );
         $orderItems5 = new ArrayCollection([$orderItem5_1, $orderItem5_2]);
 
         $orderItem6_1 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(1, [4 => 0, 6 => 0], [4 => 5, 6 => 1]), 'quantity' => 3]
+            OrderItem::class,
+            ['product' => $this->mockProduct(1, [4 => 0, 6 => 0], [4 => 5, 6 => 1]), 'quantity' => 3]
         );
         $orderItem6_2 = $this->getEntity(
-            OrderItem::class, ['product' => $this->mockProduct(2, [4 => 0, 6 => 0], [4 => 5, 6 => 1]), 'quantity' => 5]
+            OrderItem::class,
+            ['product' => $this->mockProduct(2, [4 => 0, 6 => 0], [4 => 5, 6 => 1]), 'quantity' => 5]
         );
         $orderItems6 = new ArrayCollection([$orderItem6_1, $orderItem6_2]);
         return [
