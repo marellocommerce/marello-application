@@ -126,7 +126,7 @@ class ProductRepository extends EntityRepository
      */
     public function findByDataKey($key)
     {
-        if($this->databaseDriver === self::PGSQL_DRIVER) {
+        if ($this->databaseDriver === self::PGSQL_DRIVER) {
             $formattedDataField = 'CAST(p.data as TEXT)';
         } else {
             $formattedDataField = 'p.data';
