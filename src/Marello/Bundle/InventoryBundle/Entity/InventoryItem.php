@@ -266,7 +266,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     }
 
     /**
-     * @return ProductInterface
+     * @return Product|ProductInterface
      */
     public function getProduct()
     {

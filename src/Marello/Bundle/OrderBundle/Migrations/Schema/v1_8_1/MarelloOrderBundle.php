@@ -1,4 +1,5 @@
 <?php
+
 namespace Marello\Bundle\OrderBundle\Migrations\Schema\v1_8_1;
 
 use Doctrine\DBAL\Schema\Schema;
@@ -22,8 +23,8 @@ class MarelloOrderBundle implements Migration, ExtendExtensionAwareInterface
     public function up(Schema $schema, QueryBag $queries)
     {
         $tableName = $this->extendExtension->getNameGenerator()->generateEnumTableName('marello_item_status');
-        // enum is table is already available and created...
-        if ($schema->getTable($tableName)) {
+        // enum table is already available and created...
+        if ($schema->hasTable($tableName)) {
             return;
         }
 
