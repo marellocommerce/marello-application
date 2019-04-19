@@ -9,6 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\UserBundle\Migrations\Data\ORM\LoadAdminUserData;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeGroup;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\OrganizationBundle\Migrations\Data\ORM\LoadOrganizationAndBusinessUnitData;
 
@@ -30,7 +31,7 @@ class LoadDefaultAttributeFamilyData extends AbstractFixture implements Dependen
             'groupLabel' => 'General',
             'groupCode' => self::GENERAL_GROUP_CODE,
             'attributes' => [],
-            'groupVisibility' => true
+            'groupVisibility' => false
         ]
     ];
 
@@ -61,8 +62,7 @@ class LoadDefaultAttributeFamilyData extends AbstractFixture implements Dependen
 
         $this->setReference(self::DEFAULT_FAMILY_CODE, $attributeFamily);
 
-        $manager->persist($attributeFamily);
-        $manager->flush();
+        $this->addGroupsWithAttributesToFamily($this->data, $attributeFamily, $manager);
     }
 
     /**
@@ -79,5 +79,28 @@ class LoadDefaultAttributeFamilyData extends AbstractFixture implements Dependen
                 ->getRepository('OroOrganizationBundle:Organization')
                 ->getFirst();
         }
+    }
+
+    /**
+     *
+     * @param array $groupsData
+     * @param AttributeFamily $attributeFamily
+     * @param ObjectManager $manager
+     */
+    protected function addGroupsWithAttributesToFamily(
+        array $groupsData,
+        AttributeFamily $attributeFamily,
+        ObjectManager $manager
+    ) {
+        foreach ($groupsData as $groupData) {
+            $attributeGroup = new AttributeGroup();
+            $attributeGroup->setDefaultLabel($groupData['groupLabel']);
+            $attributeGroup->setIsVisible($groupData['groupVisibility']);
+            $attributeGroup->setCode($groupData['groupCode']);
+            $attributeFamily->addAttributeGroup($attributeGroup);
+        }
+
+        $manager->persist($attributeFamily);
+        $manager->flush();
     }
 }
