@@ -74,7 +74,8 @@ class SystemGroupGlobalWarehousesSearchHandler extends SearchHandler
                 ->setParameter('isSystem', true)
                 ->setParameter('types', [
                     WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL,
-                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_VIRTUAL,
+                    WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL
                 ])
                 ->setParameter('id', $groupId);
         }
