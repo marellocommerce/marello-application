@@ -22,3 +22,21 @@ div.product-image {
         max-width: 35px;
     }
 }
+.attibute-group-collection {
+    .oro-item-collection {
+        .row-oro {
+            position: relative;
+            padding: 25px 34px;
+            margin-bottom: 8px;
+            background: #f8f8f8;
+            border-radius: 4px;
+        }
+
+        .removeRow {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            text-decoration: none;
+        }
+    }
+}
