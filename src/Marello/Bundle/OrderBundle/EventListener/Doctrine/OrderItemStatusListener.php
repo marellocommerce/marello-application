@@ -5,11 +5,15 @@ namespace Marello\Bundle\OrderBundle\EventListener\Doctrine;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
+use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
+use Oro\Component\Action\Event\ExtendableActionEvent;
 
 class OrderItemStatusListener
 {
@@ -66,6 +70,55 @@ class OrderItemStatusListener
         }
     }
 
+    /**
+     * @param ExtendableActionEvent $event
+     */
+    public function onOrderPaid(ExtendableActionEvent $event)
+    {
+        if (!$this->isCorrectOrderContext($event->getContext())) {
+            return;
+        }
+        $entityManager = $this->doctrineHelper->getEntityManagerForClass(OrderItem::class);
+        /** @var Order $entity */
+        $entity = $event->getContext()->getData()->get('order');
+        foreach ($entity->getItems() as $orderItem) {
+            $orderItem->setStatus($this->findStatusByName(LoadOrderItemStatusData::PROCESSING));
+            $entityManager->persist($orderItem);
+        }
+        $entityManager->flush();
+    }
+    
+    /**
+     * @param ExtendableActionEvent $event
+     */
+    public function onOrderShipped(ExtendableActionEvent $event)
+    {
+        if (!$this->isCorrectOrderContext($event->getContext())) {
+            return;
+        }
+        $entityManager = $this->doctrineHelper->getEntityManagerForClass(OrderItem::class);
+        /** @var Order $entity */
+        $entity = $event->getContext()->getData()->get('order');
+        foreach ($entity->getItems() as $orderItem) {
+            $orderItem->setStatus($this->findStatusByName(LoadOrderItemStatusData::SHIPPED));
+            $entityManager->persist($orderItem);
+        }
+        $entityManager->flush();
+    }
+
+    /**
+     * @param mixed $context
+     * @return bool
+     */
+    protected function isCorrectOrderContext($context)
+    {
+        return ($context instanceof WorkflowItem
+            && $context->getData() instanceof WorkflowData
+            && $context->getData()->has('order')
+            && $context->getData()->get('order') instanceof Order
+        );
+    }
+    
     /**
      * @return null|object
      */

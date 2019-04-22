@@ -93,6 +93,7 @@ services:
             - 'Marello\Bundle\ProductBundle\Entity\Product'
         calls:
             - [setAclHelper, ['@oro_security.acl_helper']]
+            - [setDatabaseDriver, ['%database_driver%']]
 
     marello_product.service.duplicator:
         class: 'Marello\Bundle\ProductBundle\Duplicator\ProductDuplicator'
