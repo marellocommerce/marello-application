@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\EntityConfigBundle\Tests\Functional\Controller\AttributeControllerTest;
 
 /**
+ * @dbIsolationPerTest
  * @outputBuffering enabled
  */
 class ProductAttributeControllerTest extends AttributeControllerTest

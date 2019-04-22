@@ -12,4 +12,15 @@ services:
         class: '%marello_locale.manager.email_template.class%'
         arguments:
             - '@marello_locale.repository.email_template_translatable_repository'
-            - '@oro_config.user'
+            - '@marello_locale.entity_localization_provider.chain'
+
+    marello_locale.entity_localization_provider.chain:
+        class: 'Marello\Bundle\LocaleBundle\Provider\ChainEntityLocalizationProvider'
+
+    marello_locale.entity_localization_provider.default:
+        class: 'Marello\Bundle\LocaleBundle\Provider\DefaultEntityLocalizationProvider'
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - {name: marello_entity_localization_provider, priority: 0}

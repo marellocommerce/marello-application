@@ -11,13 +11,14 @@ use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateCriteria;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\NotificationBundle\Manager\EmailNotificationManager;
+use Oro\Bundle\NotificationBundle\Manager\EmailNotificationSender;
 use Oro\Bundle\NotificationBundle\Model\TemplateEmailNotification;
 use Oro\Bundle\NotificationBundle\Model\TemplateEmailNotificationInterface;
 
 class SendProcessor
 {
-    /** @var EmailNotificationManager */
-    protected $emailNotificationManager;
+    /** @var EmailNotificationSender */
+    protected $emailNotificationSender;
 
     /** @var ObjectManager */
     protected $manager;
@@ -35,9 +36,7 @@ class SendProcessor
     protected $entityNotificationConfigurationProvider;
 
     /**
-     * EmailSendProcessor constructor.
-     *
-     * @param EmailNotificationManager                         $emailNotificationManager
+     * @param EmailNotificationSender                          $emailNotificationSender
      * @param ObjectManager                                    $manager
      * @param ActivityManager                                  $activityManager
      * @param EmailRenderer                                    $renderer
@@ -45,14 +44,14 @@ class SendProcessor
      * @param EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider
      */
     public function __construct(
-        EmailNotificationManager $emailNotificationManager,
+        EmailNotificationSender $emailNotificationSender,
         ObjectManager $manager,
         ActivityManager $activityManager,
         EmailRenderer $renderer,
         EmailTemplateManager $emailTeplateManager,
         EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider
     ) {
-        $this->emailNotificationManager                = $emailNotificationManager;
+        $this->emailNotificationSender                 = $emailNotificationSender;
         $this->manager                                 = $manager;
         $this->activityManager                         = $activityManager;
         $this->renderer                                = $renderer;
@@ -102,9 +101,9 @@ class SendProcessor
          * This depends on application configuration.
          */
         $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
-        $this->emailNotificationManager->processSingle(
+        $this->emailNotificationSender->send(
             $this->getNotification($templateName, $recipients, $entity),
-            [$notification]
+            $template
         );
 
         $this->activityManager->addActivityTarget($notification, $entity);
