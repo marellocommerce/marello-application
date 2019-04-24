@@ -119,9 +119,14 @@ The Marello application is based on the Symfony standard application so web serv
 
 Github OAuth token should be configured in package manager settings
 
+## Need Support?
+
+[Join the Community Chat][7] and get help from other users in the Marello community.
+
 [1]:  https://getcomposer.org/
 [2]:  https://dev.mysql.com/doc/refman/5.6/en/optimizing-innodb-diskio.html
 [3]:  https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
 [4]:  https://symfony.com/doc/3.4/setup/web_server_configuration.html
 [5]:  https://oroinc.com/orocrm/doc/current/install-upgrade/installation-quick-start-dev/crm#step-4-post-installation-environment-configuration
 [6]:  https://supervisord.org/
+[7]:  https://www.marello.com/community/
