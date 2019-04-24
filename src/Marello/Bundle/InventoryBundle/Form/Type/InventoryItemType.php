@@ -4,6 +4,7 @@ namespace Marello\Bundle\InventoryBundle\Form\Type;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
+use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -59,6 +60,21 @@ class InventoryItemType extends AbstractType
                 [
                     'required' => false,
                     'label' => 'marello.inventory.inventoryitem.can_preorder.label'
+                ]
+            )
+            ->add(
+                'maxQtyToPreorder',
+                IntegerType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.max_qty_to_preorder.label'
+                ]
+            )
+            ->add(
+                'backPreOrdersDatetime',
+                OroDateTimeType::class,
+                [
+                    'required' => false,
                 ]
             )
             ->add(

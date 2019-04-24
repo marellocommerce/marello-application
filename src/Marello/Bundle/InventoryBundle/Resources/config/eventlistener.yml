@@ -16,6 +16,13 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    marello_inventory.listener.doctrine.back_pre_orders_datetime:
+        class: 'Marello\Bundle\InventoryBundle\EventListener\Doctrine\BackPreOrdersDatetimeListener'
+        calls:
+            - [setFeatureChecker, ['@oro_featuretoggle.checker.feature_checker']]
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder', event: postPersist }
+
     marello_inventory.event_listener.inventory_update_event_listener:
         class: 'Marello\Bundle\InventoryBundle\EventListener\InventoryUpdateEventListener'
         arguments:

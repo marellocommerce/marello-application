@@ -204,6 +204,37 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     protected $canPreorder;
 
     /**
+     * @ORM\Column(name="max_qty_to_preorder", type="integer", nullable=true, options={"default"=0})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Max Quantity To Preorder"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var integer
+     */
+    protected $maxQtyToPreorder;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="back_pre_orders_datetime", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $backPreOrdersDatetime;
+    
+    /**
      * @var Warehouse
      */
     protected $warehouse;
@@ -446,6 +477,44 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     {
         $this->canPreorder = $canPreorder;
         
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxQtyToPreorder()
+    {
+        return $this->maxQtyToPreorder;
+    }
+
+    /**
+     * @param int $maxQtyToPreorder
+     * @return $this
+     */
+    public function setMaxQtyToPreorder($maxQtyToPreorder)
+    {
+        $this->maxQtyToPreorder = $maxQtyToPreorder;
+
+        return $this;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getBackPreOrdersDatetime()
+    {
+        return $this->backPreOrdersDatetime;
+    }
+
+    /**
+     * @param \DateTime|null $backPreOrdersDatetime
+     * @return $this
+     */
+    public function setBackPreOrdersDatetime(\DateTime $backPreOrdersDatetime = null)
+    {
+        $this->backPreOrdersDatetime = $backPreOrdersDatetime;
+
         return $this;
     }
 }

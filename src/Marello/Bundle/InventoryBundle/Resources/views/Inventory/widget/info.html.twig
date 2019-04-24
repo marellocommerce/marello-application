@@ -13,6 +13,8 @@
             {{ UI.renderProperty('marello.inventory.inventoryitem.backorder_allowed.label'|trans, item.backorderAllowed ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
             {{ UI.renderProperty('marello.inventory.inventoryitem.max_qty_to_backorder.label'|trans, item.maxQtyToBackorder) }}
             {{ UI.renderProperty('marello.inventory.inventoryitem.can_preorder.label'|trans, item.canPreorder ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
+            {{ UI.renderProperty('marello.inventory.inventoryitem.max_qty_to_preorder.label'|trans, item.maxQtyToPreorder) }}
+            {{ UI.renderProperty('marello.inventory.inventoryitem.back_pre_orders_datetime.label'|trans, item.backPreOrdersDatetime|oro_format_datetime) }}
         </div>
     </div>
 </div>
