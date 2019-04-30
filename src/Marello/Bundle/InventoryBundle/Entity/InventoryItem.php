@@ -223,7 +223,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="back_pre_orders_datetime", type="datetime", nullable=true)
+     * @ORM\Column(name="back_orders_datetime", type="datetime", nullable=true)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -232,7 +232,21 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      *      }
      * )
      */
-    protected $backPreOrdersDatetime;
+    protected $backOrdersDatetime;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="pre_orders_datetime", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $preOrdersDatetime;
     
     /**
      * @var Warehouse
@@ -502,18 +516,37 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     /**
      * @return \DateTime
      */
-    public function getBackPreOrdersDatetime()
+    public function getBackOrdersDatetime()
     {
-        return $this->backPreOrdersDatetime;
+        return $this->backOrdersDatetime;
     }
 
     /**
-     * @param \DateTime|null $backPreOrdersDatetime
+     * @param \DateTime|null $backOrdersDatetime
      * @return $this
      */
-    public function setBackPreOrdersDatetime(\DateTime $backPreOrdersDatetime = null)
+    public function setBackOrdersDatetime(\DateTime $backOrdersDatetime = null)
     {
-        $this->backPreOrdersDatetime = $backPreOrdersDatetime;
+        $this->backOrdersDatetime = $backOrdersDatetime;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPreOrdersDatetime()
+    {
+        return $this->preOrdersDatetime;
+    }
+
+    /**
+     * @param \DateTime|null $preOrdersDatetime
+     * @return $this
+     */
+    public function setPreOrdersDatetime(\DateTime $preOrdersDatetime = null)
+    {
+        $this->preOrdersDatetime = $preOrdersDatetime;
 
         return $this;
     }

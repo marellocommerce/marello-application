@@ -69,7 +69,10 @@ class BackPreOrdersDatetimeListenerTest extends TestCase
             ->willReturn(new \DateTime());
         $this->inventoryItem
             ->expects(static::once())
-            ->method('setBackPreOrdersDatetime');
+            ->method('setBackOrdersDatetime');
+        $this->inventoryItem
+            ->expects(static::once())
+            ->method('setPreOrdersDatetime');
         $uow
             ->expects(static::once())
             ->method('scheduleForUpdate')
@@ -104,7 +107,10 @@ class BackPreOrdersDatetimeListenerTest extends TestCase
             ->willReturn(new \DateTime());
         $this->inventoryItem
             ->expects(static::never())
-            ->method('setBackPreOrdersDatetime');
+            ->method('setBackOrdersDatetime');
+        $this->inventoryItem
+            ->expects(static::never())
+            ->method('setPreOrdersDatetime');
         $uow
             ->expects(static::never())
             ->method('scheduleForUpdate')
@@ -139,7 +145,10 @@ class BackPreOrdersDatetimeListenerTest extends TestCase
             ->willReturn(null);
         $this->inventoryItem
             ->expects(static::never())
-            ->method('setBackPreOrdersDatetime');
+            ->method('setBackOrdersDatetime');
+        $this->inventoryItem
+            ->expects(static::never())
+            ->method('setPreOrdersDatetime');
         $uow
             ->expects(static::never())
             ->method('scheduleForUpdate')

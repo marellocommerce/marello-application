@@ -31,7 +31,8 @@ class MarelloInventoryBundle implements Migration
         $table->addColumn('max_qty_to_backorder', 'integer', ['notnull' => false, 'default' => 0]);
         $table->addColumn('can_preorder', 'boolean', ['notnull' => false, 'default' => false]);
         $table->addColumn('max_qty_to_preorder', 'integer', ['notnull' => false, 'default' => 0]);
-        $table->addColumn('back_pre_orders_datetime', 'datetime', ['notnull' => false]);
+        $table->addColumn('back_orders_datetime', 'datetime', ['notnull' => false]);
+        $table->addColumn('pre_orders_datetime', 'datetime', ['notnull' => false]);
 
         $query = "
             UPDATE marello_inventory_item

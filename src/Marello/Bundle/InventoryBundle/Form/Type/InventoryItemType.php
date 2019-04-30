@@ -55,6 +55,13 @@ class InventoryItemType extends AbstractType
                 ]
             )
             ->add(
+                'backOrdersDatetime',
+                OroDateTimeType::class,
+                [
+                    'required' => false,
+                ]
+            )
+            ->add(
                 'canPreorder',
                 CheckboxType::class,
                 [
@@ -71,7 +78,7 @@ class InventoryItemType extends AbstractType
                 ]
             )
             ->add(
-                'backPreOrdersDatetime',
+                'preOrdersDatetime',
                 OroDateTimeType::class,
                 [
                     'required' => false,
