@@ -23,7 +23,6 @@
         }
     },
     "require": {
-        "php": "7.1.*",
         "oro/platform": "2.6.*",
         "oro/platform-serialised-fields": "2.6.*",
         "oro/calendar-bundle": "2.6.*",
@@ -55,6 +54,15 @@
         }
     },
     "scripts": {
+        "test-extended": [
+            "rm -rf app/cache/*",
+            "rm -rf app/logs/*",
+            "sed -i -e 's/installed:.*/installed: ~/g' app/config/parameters_test.yml",
+            "app/console oro:install --env test --organization-name Oro --user-name admin --user-email admin@example.com --user-firstname John --user-lastname Doe --user-password admin --sample-data n --application-url http://localhost --drop-database --timeout 3600 --skip-translations --skip-assets",
+            "php ./bin/phpunit --color --testsuite=\"unit\"",
+            "php ./bin/phpunit --color --testsuite=\"functional\"",
+            "php ./bin/phpcs src/ -p --encoding=utf-8 --extensions=php --standard=psr2 --report=checkstyle --report-file=app/logs/phpcs.xml"
+        ],
         "marello-reset": [
             "rm -rf app/cache/*",
             "rm -rf app/logs/*",

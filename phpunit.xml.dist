@@ -40,6 +40,7 @@
             <directory>vendor/oro/*/*/*/Tests/Unit</directory>
             <directory>vendor/oro/*/*/*/*/Tests/Unit</directory>
             <directory>vendor/oro/*/*/*/*/*/Tests/Unit</directory>
+            <directory>vendor/marellocommerce/*/*/*/*/*/Tests/Unit</directory>
         </testsuite>
         <testsuite name="functional">
             <directory>vendor/oro/*/Tests/Functional</directory>
@@ -47,6 +48,7 @@
             <directory>vendor/oro/*/*/*/Tests/Functional</directory>
             <directory>vendor/oro/*/*/*/*/Tests/Functional</directory>
             <directory>vendor/oro/*/*/*/*/*/Tests/Functional</directory>
+            <directory>vendor/marellocommerce/*/*/*/*/*/Tests/Functional</directory>
         </testsuite>
         <testsuite name="selenium">
             <directory>vendor/oro/*/Tests/Selenium</directory>
@@ -86,6 +88,9 @@
         <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN" value="admin"/>
         <const name="PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_PASS" value="admin"/>
     </php>
+    <logging>
+        <log type="junit" target="app/logs/junit.xml" logIncompleteSkipped="true"/>
+    </logging>
     <listeners>
         <listener class="Oro\Bundle\TestFrameworkBundle\Test\TestListener">
             <arguments>
