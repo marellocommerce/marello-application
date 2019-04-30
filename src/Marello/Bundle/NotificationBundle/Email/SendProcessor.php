@@ -17,8 +17,8 @@ use Oro\Bundle\NotificationBundle\Model\TemplateEmailNotificationInterface;
 
 class SendProcessor
 {
-    /** @var EmailNotificationSender */
-    protected $emailNotificationSender;
+    /** @var EmailNotificationManager */
+    protected $emailNotificationManager;
 
     /** @var ObjectManager */
     protected $manager;
@@ -35,8 +35,13 @@ class SendProcessor
     /** @var  EntityNotificationConfigurationProviderInterface */
     protected $entityNotificationConfigurationProvider;
 
+    /** @var EmailNotificationSender */
+    protected $emailNotificationSender;
+
     /**
-     * @param EmailNotificationSender                          $emailNotificationSender
+     * EmailSendProcessor constructor.
+     *
+     * @param EmailNotificationManager                         $emailNotificationManager
      * @param ObjectManager                                    $manager
      * @param ActivityManager                                  $activityManager
      * @param EmailRenderer                                    $renderer
@@ -44,19 +49,24 @@ class SendProcessor
      * @param EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider
      */
     public function __construct(
-        EmailNotificationSender $emailNotificationSender,
+        EmailNotificationManager $emailNotificationManager,
         ObjectManager $manager,
         ActivityManager $activityManager,
         EmailRenderer $renderer,
         EmailTemplateManager $emailTeplateManager,
         EntityNotificationConfigurationProviderInterface $entityNotificationConfigurationProvider
     ) {
-        $this->emailNotificationSender                 = $emailNotificationSender;
+        $this->emailNotificationManager                = $emailNotificationManager;
         $this->manager                                 = $manager;
         $this->activityManager                         = $activityManager;
         $this->renderer                                = $renderer;
         $this->emailTemplateManager                    = $emailTeplateManager;
         $this->entityNotificationConfigurationProvider = $entityNotificationConfigurationProvider;
+    }
+
+    public function setEmailNotificationSender(EmailNotificationSender $emailNotificationSender)
+    {
+        $this->emailNotificationSender = $emailNotificationSender;
     }
 
     /**
@@ -101,11 +111,17 @@ class SendProcessor
          * This depends on application configuration.
          */
         $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
-        $this->emailNotificationSender->send(
-            $this->getNotification($templateName, $recipients, $entity),
-            $template
-        );
-
+        try {
+            $this->emailNotificationSender->send(
+                $this->getNotification($templateName, $recipients, $entity),
+                $template
+            );
+        } catch (\Exception $e) {
+            $this->emailNotificationManager->processSingle(
+                $this->getNotification($templateName, $recipients, $entity),
+                [$notification]
+            );
+        }
         $this->activityManager->addActivityTarget($notification, $entity);
 
         $this->manager->persist($notification);

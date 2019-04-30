@@ -2,12 +2,14 @@ services:
     marello_notification.email.send_processor:
         class: Marello\Bundle\NotificationBundle\Email\SendProcessor
         arguments:
-            - '@oro_notification.manager.email_notification_sender'
+            - '@oro_notification.manager.email_notification'
             - '@doctrine.orm.entity_manager'
             - '@oro_activity.manager'
             - '@oro_email.email_renderer'
             - '@marello_locale.manager.email_template'
             - '@marello_notification.provider.entity_notification_configuration'
+        calls:
+            - ['setEmailNotificationSender', ['@oro_notification.manager.email_notification_sender']]
 
     marello_notification.workflow.send_notification_action:
         class: Marello\Bundle\NotificationBundle\Workflow\SendNotificationAction
