@@ -1,0 +1,13 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridName = 'marello-taxrate-grid' %}
+{% set pageTitle = 'marello.tax.taxrate.entity_plural_label'|trans %}
+
+{% block navButtons %}
+    <div class="btn-group">
+        {{ UI.addButton({
+            'path': path('marello_tax_taxrate_create'),
+            'entity_label': 'marello.tax.taxrate.entity_label'|trans
+        }) }}
+    </div>
+{% endblock %}

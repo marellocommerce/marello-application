@@ -1,0 +1,20 @@
+acls:
+    marello_supplier_create:
+        type:       entity
+        class:      MarelloSupplierBundle:Supplier
+        permission: CREATE
+
+    marello_supplier_view:
+        type:       entity
+        class:      MarelloSupplierBundle:Supplier
+        permission: VIEW
+
+    marello_supplier_update:
+        type:       entity
+        class:      MarelloSupplierBundle:Supplier
+        permission: EDIT
+
+    marello_supplier_delete:
+        type:       entity
+        class:      MarelloSupplierBundle:Supplier
+        permission: DELETE

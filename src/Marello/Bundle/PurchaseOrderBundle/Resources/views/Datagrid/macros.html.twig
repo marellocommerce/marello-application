@@ -1,0 +1,3 @@
+{% macro formatDueDate(class, date) -%}
+    <span class="label label-{{ class }}">{{ date ? date|oro_format_date : 'N/A' }}</span>
+{%- endmacro %}

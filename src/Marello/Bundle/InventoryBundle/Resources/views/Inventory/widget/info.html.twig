@@ -1,0 +1,16 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% if item and item is defined %}
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ UI.renderHtmlProperty('marello.product.name.label'|trans, product.name) }}
+            {{ UI.renderHtmlProperty('marello.product.sku.label'|trans, product.sku) }}
+            {{ UI.renderHtmlProperty('marello.product.productstatus.entity_label'|trans, product.status) }}
+            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.purchase_inventory.label'|trans, item.purchaseInventory) }}
+            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.desired_inventory.label'|trans, item.desiredInventory) }}
+            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.replenishment.label'|trans, item.replenishment) }}
+        </div>
+    </div>
+</div>
+{% endif %}

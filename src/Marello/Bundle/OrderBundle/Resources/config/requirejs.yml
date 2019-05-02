@@ -1,0 +1,9 @@
+config:
+    paths:
+        'marelloorder/js/app/views/order-items-view': 'bundles/marelloorder/js/app/views/order-items-view.js'
+        'marelloorder/js/app/views/order-item-view': 'bundles/marelloorder/js/app/views/order-item-view.js'
+        'marelloorder/js/app/views/order-address-view': 'bundles/marelloorder/js/app/views/order-address-view.js'
+        'marelloorder/js/app/views/order-discount-view': 'bundles/marelloorder/js/app/views/order-discount-view.js'
+        'marelloorder/js/app/views/shipping-cost-view': 'bundles/marelloorder/js/app/views/shipping-cost-view.js'
+        'marelloorder/js/app/views/possible-shipping-methods-view': 'bundles/marelloorder/js/app/views/possible-shipping-methods-view.js'
+        'marelloorder/js/app/components/customer-selection-component': 'bundles/marelloorder/js/app/components/customer-selection-component.js'

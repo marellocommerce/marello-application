@@ -1,0 +1,61 @@
+data:
+      type: marelloassembledchannelpricelists
+      attributes:
+          currency: '<toString(@channel1->currency)>'
+      relationships:
+          product:
+              data:
+                  type: marelloproducts
+                  id: 'my-sku'
+          saleschannel:
+              data:
+                  type: marellosaleschannels
+                  id: '<toString(@channel1->code)>'
+          defaultPrice:
+              data:
+                  type: marelloproductchannelprices
+                  id: '8da4d8e7-6b25-4c5c-8075-b510f7bbb84f'
+          specialPrice:
+              data:
+                  type: marelloproductchannelprices
+                  id: '8da4d8e7-6b25-4c5c-8075-b5617bc'
+
+included:
+    -
+        type: marelloproductchannelprices
+        id: '8da4d8e7-6b25-4c5c-8075-b510f7bbb84f'
+        attributes:
+            value: 10
+            currency: '<toString(@channel1->currency)>'
+        relationships:
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: '<toString(@channel1->code)>'
+            product:
+                data:
+                    type: marelloproducts
+                    id: 'my-sku'
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: 'default'
+    -
+        type: marelloproductchannelprices
+        id: '8da4d8e7-6b25-4c5c-8075-b5617bc'
+        attributes:
+            value: 10
+            currency: '<toString(@channel1->currency)>'
+        relationships:
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: '<toString(@channel1->code)>'
+            product:
+                data:
+                    type: marelloproducts
+                    id: 'my-sku'
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: 'special'

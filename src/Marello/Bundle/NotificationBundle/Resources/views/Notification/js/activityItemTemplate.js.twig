@@ -1,0 +1,22 @@
+{% extends 'OroActivityListBundle:ActivityList/js:activityItemTemplate.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI%}
+{% import 'OroEmailBundle::actions.html.twig' as EA %}
+
+{% set entityClass = 'Marello\\Bundle\\NotificationBundle\\Entity\\Notification' %}
+{% set entityName = oro_entity_config_value(entityClass, 'label')|trans %}
+
+{% block activityDetails %}
+    {{ entityName|raw }}
+{% endblock %}
+
+{% block activityActions %}
+    {% set actions = [] %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block activityContent %}
+    <div class="marello-notification-activity-body">
+        {{ parent() }}
+    </div>
+{% endblock %}

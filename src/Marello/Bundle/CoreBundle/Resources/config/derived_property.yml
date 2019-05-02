@@ -1,0 +1,8 @@
+services:
+    marello_core_derived_property_setter:
+        class: Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertySetter
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: doctrine.event_listener, event: onFlush, priority: 255 }
+            - { name: doctrine.event_listener, event: postFlush, priority: 255 }

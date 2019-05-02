@@ -1,0 +1,45 @@
+marello:
+    return:
+        returnentity:
+            id.label:                 Id
+            entity_label:             Return
+            entity_plural_label:      Returns
+            return_number.label:      Return Number
+            return_reference.label:   Return Reference
+            order.label:              Order
+            return_items.label:       Returned items
+            workflow_item.label:      Workflow Item
+            workflow_step.label:      Workflow Step
+            locale.label:             Locale
+            sales_channel_name.label: Sales Channel Name
+            localization.label:       Localization
+            organization.label:       Organization
+            sales_channel.label:      Sales Channel
+            shipment.label:           Shipment
+            messages:
+                success:
+                    returnentity:
+                        saved:        Return saved
+        returnitem:
+            id.label:                   Id
+            entity_label:               Returned Item
+            entity_plural_label:        Returned items
+            ordered_quantity.label:     Quantity Ordered
+            returned_quantity.label:    Quantity Returned
+            quantity.label:             Return Quantity
+            reason.label:               Return Reason
+            status.label:               Status
+            status_n_a.label:           To be decided
+            order_item.label:           Order Item
+            return.label:               Return
+
+        system_configuration:
+            groups:
+                return.title:               Return
+                return_configuration.title: Warranty Configuration
+                ror_settings.title:         Right of Return Settings
+                warranty_settings.title:    Product Warranty Settings
+            fields:
+                ror_period:                 Right of return period
+                warranty_period:            Warranty period
+                return_notification.label:  Return Notification

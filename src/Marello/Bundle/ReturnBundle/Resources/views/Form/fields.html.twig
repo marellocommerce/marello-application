@@ -1,0 +1,101 @@
+{% block marello_return_item_widget %}
+    <td class="return-line-item-name">
+        <div class="fields-row">
+            {{ form.vars.value.orderItem.productSku|default('') }}
+        </div>
+    </td>
+    <td class="return-line-item-name">
+        <div class="fields-row">
+            {{ form.vars.value.orderItem.productName|default('') }}
+        </div>
+    </td>
+    <td class="return-line-item-ordered-quantity">
+        <div class="fields-row">
+            {{ form.vars.value.orderItem.quantity|default('') }}
+        </div>
+    </td>
+    <td class="return-line-item-ordered-quantity">
+        <div class="fields-row">
+            {% if form.vars.value is not null %}
+                {{ marello_return_get_order_item_returned_quantity(form.vars.value.orderItem) }}
+            {% endif %}
+        </div>
+    </td>
+    <td class="return-line-item-quantity">
+        <div class="fields-row">
+            {{ form_widget(form.quantity) }}
+        </div>
+        {{ form_errors(form.quantity) }}
+    </td>
+    <td class="return-line-item-status">
+        <div class="fields-row">
+            <span>{{ 'marello.return.returnitem.status_n_a.label'|trans }}</span>
+        </div>
+    </td>
+    <td class="return-line-item-reason">
+        <div class="fields-row">
+            {{ form_widget(form.reason) }}
+        </div>
+        {{ form_errors(form.reason) }}
+    </td>
+{% endblock %}
+
+{% macro marello_return_item_collection_item_prototype(widget) %}
+    {% if 'collection' in widget.vars.block_prefixes %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
+        {% set disabled = widget.vars.disabled %}
+        {% set allow_delete = widget.vars.allow_delete %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+        {% set disabled = widget.parent.vars.disabled %}
+    {% endif %}
+
+    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+        class="return-line-item display-values">
+        {{ form_widget(form) }}
+
+        <td class="return-line-item-notifications">
+            <span class="error" style="display:none;"><i class="fa-exclamation-triangle"></i></span>
+        </td>
+    </tr>
+{% endmacro %}
+
+{% block marello_return_item_collection_widget %}
+    {% spaceless %}
+        {% if prototype is defined %}
+            {% set prototype_html = _self.marello_return_item_collection_item_prototype(form) %}
+        {% endif %}
+        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
+        {% set id = id ~ '_collection' %}
+        <div class="row-oro">
+            {% set prototype_name = form.vars.prototype_name %}
+            <div {{ block('widget_container_attributes') }}>
+                <table class="grid table-hover table table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th class="return-line-item-name"><span>{{ 'marello.product.sku.label'|trans }}</span></th>
+                        <th class="return-line-item-name"><span>{{ 'marello.product.entity_label'|trans }}</span></th>
+                        <th class="return-line-item-ordered-quantity"><span>{{ 'marello.return.returnitem.ordered_quantity.label'|trans }}</span></th>
+                        <th class="return-line-item-returned-quantity"><span>{{ 'marello.return.returnitem.returned_quantity.label'|trans }}</span></th>
+                        <th class="return-line-item-quantity"><span>{{ 'marello.return.returnitem.quantity.label'|trans }}</span></th>
+                        <th class="return-line-item-status"><span>{{ 'marello.return.returnitem.status.label'|trans }}</span></th>
+                        <th class="return-line-item-reason"><span>{{ 'marello.return.returnitem.reason.label'|trans }}</span></th>
+                        <th class="return-line-item-notifications"></th>
+                    </tr>
+                    </thead>
+                    <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
+                    {% if form.children|length %}
+                        {% for child in form.children %}
+                            {{ _self.marello_return_item_collection_item_prototype(child) }}
+                        {% endfor %}
+                    {% elseif show_form_when_empty and prototype_html is defined %}
+                        {{ prototype_html|replace({(prototype_name): '0'})|raw }}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}

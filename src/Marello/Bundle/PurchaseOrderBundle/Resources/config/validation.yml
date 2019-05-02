@@ -1,0 +1,25 @@
+Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
+    properties:
+        supplier:
+            - NotBlank:
+                groups: [step_one]
+        items:
+            - Valid: ~
+        dueDate:
+            - Date: ~
+    constraints:
+        - Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanDate:
+            field: 'dueDate'
+            greaterThan: 'today'
+            nullable: true
+            errorPath: dueDate
+            message: 'marello.purchaseorder.due_date.messages.error.greater_than_date'
+
+Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem:
+    properties:
+        product:
+            - NotBlank:
+        orderedAmount:
+            - NotBlank: ~
+        purchasePrice:
+            - NotBlank: ~

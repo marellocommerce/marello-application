@@ -1,0 +1,11 @@
+.pricing-line-items {
+    .marello-item-collection {
+        display: none;
+    }
+}
+
+.pricing-line-items.pricing-enabled {
+    .marello-item-collection {
+        display: block;
+    }
+}

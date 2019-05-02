@@ -1,0 +1,62 @@
+.marello-item-collection {
+    .marello-line-item {
+        .fields-row-narrow {
+            width: 80px;
+
+            span {
+                width: 80px;
+            }
+
+            input {
+                width: 80px;
+            }
+        }
+    }
+}
+
+.inventorylevel-warehouse {
+    .select2-container {
+        width: 190px;
+
+        .select2-choice {
+            .select2-arrow {
+                right: 8px;
+            }
+        }
+
+        select {
+            width: 190px;
+        }
+    }
+}
+
+.inventorylevel-adjustment {
+    .selector {
+        width: 100px !important;
+
+        span {
+            width: 98px !important;
+        }
+
+        select {
+            width: 100px;
+        }
+    }
+
+    input {
+        width: 80px;
+    }
+}
+
+// Font Awesome
+.fa-caret-down:before {
+  content: "\f0d7";
+}
+
+.fa-caret-up:before {
+  content: "\f0d8";
+}
+
+.fa-caret-right:before {
+  content: "\f0da";
+}

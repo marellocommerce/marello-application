@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bundle\LocaleBundle\MarelloLocaleBundle, priority: 30 }

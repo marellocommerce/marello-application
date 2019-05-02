@@ -1,0 +1,37 @@
+data:
+    type: marellocustomers
+    attributes:
+        firstName: 'test'
+        lastName: 'user'
+        email: 'new_customer@example.com'
+    relationships:
+        primaryAddress:
+            data:
+                type: marelloaddresses
+                id: '8da4d8e7-6b25-4c5c-8075-b510f7bbb84f'
+included:
+    -
+        type: marelloaddresses
+        id: '8da4d8e7-6b25-4c5c-8075-b510f7bbb84f'
+        attributes:
+            phone: '777-777-777'
+            label:
+            street: '1215 Caldwell Road'
+            street2:
+            city: 'Rochester'
+            postalCode: '14608'
+            organization: 'test organization'
+            namePrefix:
+            firstName: 'test'
+            middleName:
+            lastName: 'user'
+            nameSuffix:
+        relationships:
+            country:
+                data:
+                    type: countries
+                    id: US
+            region:
+                data:
+                    type: regions
+                    id: US-NY

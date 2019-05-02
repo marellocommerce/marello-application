@@ -1,0 +1,13 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridName = 'marello-customer' %}
+{% set pageTitle = 'marello.order.customer.entity_plural_label'|trans %}
+
+{% block navButtons %}
+    {% if resource_granted('marello_customer_create') %}
+        {{ UI.addButton({
+            'path': path('marello_order_customer_create'),
+            'entity_label': 'marello.order.customer.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% set gridName = 'marello-product-variant-grid' %}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ dataGrid.renderGrid(gridName, { variantId: product.variant.id, productId: product.id }, { cssClass: 'inner-grid' }) }}
+        </div>
+    </div>
+</div>

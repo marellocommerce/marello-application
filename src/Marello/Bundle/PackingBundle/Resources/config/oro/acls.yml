@@ -1,0 +1,15 @@
+acls:
+    marello_packing_slip_create:
+        type: entity
+        class: MarelloPackingBundle:PackingSlip
+        permission: CREATE
+
+    marello_packing_slip_view:
+        type: entity
+        class: MarelloPackingBundle:PackingSlip
+        permission: VIEW
+
+    marello_packing_slip_update:
+        type: entity
+        class: MarelloPackingBundle:PackingSlip
+        permission: EDIT

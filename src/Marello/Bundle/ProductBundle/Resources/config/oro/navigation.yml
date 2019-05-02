@@ -1,0 +1,52 @@
+navigation:
+    menu_config:
+        items:
+            products_tab:
+                label: marello.product.navigation.product.label
+                uri: '#'
+                extras:
+                    position: 10
+                    icon: fa-barcode
+
+            products_list:
+                label: marello.product.entity_plural_label
+                route: marello_product_index
+                extras:
+                    routes: ['marello_product_*']
+                    position: 10
+
+            shortcut_new_product:
+                label: 'marello.product.menu.shortcut_new_product.label'
+                route: 'marello_product_create'
+                extras:
+                    description: 'marello.product.menu.shortcut_new_product.description'
+                    isCustomAction: true
+
+            shortcut_list_products:
+                label: 'marello.product.menu.shortcut_list_products.label'
+                route: 'marello_product_index'
+                extras:
+                    description: 'marello.product.menu.shortcut_list_products.description'
+                    isCustomAction: true
+
+            # disable activities tab and it's children
+            activities_tab:
+                display: false
+                display_children: false
+        tree:
+            application_menu:
+                children:
+                    products_tab:
+                        children:
+                            products_list: ~
+                        position: 10
+            shortcuts:
+                children:
+                    shortcut_new_product: ~
+                    shortcut_list_products: ~
+
+    titles:
+        marello_product_index: marello.product.entity_plural_label
+        marello_product_view: '%name%'
+        marello_product_update: '%name%'
+        marello_product_create: 'New product'

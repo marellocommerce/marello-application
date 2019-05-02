@@ -1,0 +1,28 @@
+data:
+    -
+        type: marellocustomers
+        id: '<toString(@marello-customer-1->id)>'
+        attributes:
+            taxIdentificationNumber: null
+            namePrefix: null
+            firstName: James
+            middleName: null
+            lastName: Boling
+            nameSuffix: null
+            email: JamesCBoling@einrot.com
+        relationships:
+            primaryAddress:
+                data:
+                    type: marelloaddresses
+                    id: '<toString(@marello-customer-1->primaryAddress->id)>'
+            shippingAddress:
+                data: null
+            addresses:
+                data:
+                    -
+                        type: marelloaddresses
+                        id: '<toString(@marello-customer-1->primaryAddress->id)>'
+            organization:
+                data:
+                    type: organizations
+                    id: '1'
