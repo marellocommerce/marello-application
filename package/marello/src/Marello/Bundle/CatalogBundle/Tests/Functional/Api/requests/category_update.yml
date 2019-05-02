@@ -1,5 +1,0 @@
-data:
-      type: marellocategories
-      id: '<toString(@category1->id)>'
-      attributes:
-          name: 'new category name'

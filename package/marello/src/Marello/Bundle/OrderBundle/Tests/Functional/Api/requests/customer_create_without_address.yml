@@ -1,6 +1,0 @@
-data:
-    type: marellocustomers
-    attributes:
-        firstName: 'test'
-        lastName: 'user'
-        email: 'new_customer2@example.com'
