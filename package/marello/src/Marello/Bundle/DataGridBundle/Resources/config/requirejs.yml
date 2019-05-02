@@ -1,6 +1,0 @@
-config:
-    paths:
-        'oro/datagrid/cell/boolean-select-row-cell': 'bundles/marellodatagrid/js/datagrid/cell/boolean-select-row-cell.js'
-        'marellodatagrid/js/datagrid/listener/select-all-listener': 'bundles/marellodatagrid/js/datagrid/listener/select-all-listener.js'
-        'marellodatagrid/js/datagrid/listener/column-form-listener': 'bundles/marellodatagrid/js/datagrid/listener/column-form-listener.js'
-        'marellodatagrid/js/datagrid/header-cell/select-all-header-cell': 'bundles/marellodatagrid/js/datagrid/header-cell/select-all-header-cell.js'

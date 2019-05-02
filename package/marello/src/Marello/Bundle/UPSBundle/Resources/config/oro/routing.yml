@@ -1,4 +1,0 @@
-marello_ups:
-    resource:     "@MarelloUPSBundle/Controller/AjaxUPSController.php"
-    type:         annotation
-    prefix:       /ups

@@ -1,7 +1,0 @@
-services:
-    marello_manual_shipping.form.type.manual_shipping_options:
-        class: 'Marello\Bundle\ManualShippingBundle\Form\Type\ManualShippingOptionsType'
-        arguments:
-            - '@oro_currency.rounding.price_rounding_service'
-        tags:
-            - { name: form.type }

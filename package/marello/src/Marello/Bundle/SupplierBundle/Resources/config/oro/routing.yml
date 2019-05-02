@@ -1,4 +1,0 @@
-marello_supplier_supplier:
-    resource: "@MarelloSupplierBundle/Controller/SupplierController.php"
-    type:     annotation
-    prefix:   /marello/supplier
