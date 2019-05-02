@@ -1,7 +1,0 @@
-config:
-    paths:
-        'marelloenterprisereplenishment/js/datagrid/marello-replenishment-products-candidates-builder': 'bundles/marelloenterprisereplenishment/js/datagrid/marello-replenishment-products-candidates-builder.js'
-        'marelloenterprisereplenishment/js/multiple-entity': 'bundles/marelloenterprisereplenishment/js/multiple-entity.js'
-        'marelloenterprisereplenishment/js/multiple-entity/view': 'bundles/marelloenterprisereplenishment/js/multiple-entity/view.js'
-        'marelloenterprisereplenishment/js/multiple-entity/model': 'bundles/marelloenterprisereplenishment/js/multiple-entity/model.js'
-        'marelloenterprisereplenishment/js/multiple-entity/collection': 'bundles/marelloenterprisereplenishment/js/multiple-entity/collection.js'

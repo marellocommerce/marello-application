@@ -1,5 +1,0 @@
-{% for index, assembledChannelPriceList in record.getValue('channelPrices') %}
-    {% if assembledChannelPriceList.specialPrice %}
-        {{ assembledChannelPriceList.channel.name }}: {{ assembledChannelPriceList.specialPrice.value|oro_format_currency({'currency': assembledChannelPriceList.currency}) }}<br>
-    {% endif %}
-{% endfor %}

@@ -1,2 +1,0 @@
-bundles:
-    - { name: Marello\Bundle\RuleBundle\MarelloRuleBundle, priority: -10 }

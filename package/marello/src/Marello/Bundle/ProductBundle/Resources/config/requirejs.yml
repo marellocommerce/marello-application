@@ -1,5 +1,0 @@
-config:
-    paths:
-        'marelloproduct/js/app/components/select-create-inline-type-component': 'bundles/marelloproduct/js/app/components/select-create-inline-type-component.js'
-        'marelloproduct/js/app/components/select-create-inline-type-async-component': 'bundles/marelloproduct/js/app/components/select-create-inline-type-async-component.js'
-        'oro/select2-autocomplete-sales-channel-aware-component': 'bundles/marelloproduct/js/app/components/select2-autocomplete-sales-channel-aware-component.js'

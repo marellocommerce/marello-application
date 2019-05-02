@@ -1,5 +1,0 @@
-api:
-    entities:
-        Marello\Bundle\InventoryBundle\Entity\Warehouse:
-            # this entity does not have own Data API resource
-            actions: false
