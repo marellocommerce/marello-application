@@ -1,6 +1,0 @@
-marello:
-    pricing:
-        productchannelprice:
-            messages:
-                error:
-                    unique_channel_price: Combination for Sales Channel and Currency should be unique

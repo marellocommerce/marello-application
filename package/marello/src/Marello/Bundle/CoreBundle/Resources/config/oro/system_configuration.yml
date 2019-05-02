@@ -1,5 +1,0 @@
-system_configuration:
-    groups:
-        marello:
-            title: marello.core.system_configuration.groups.marello.title
-            icon:  fa-shopping-cart

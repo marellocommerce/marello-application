@@ -1,9 +1,0 @@
-marelloenterprise:
-    replenishment:
-        replenishmentorder:
-            workflow:
-                prepared_for_shipping:  'Replenishment Order Prepared for Shipping'
-                ready_for_shipping:     'Replenishment Order Ready for Shipping'
-                shipped:                'Replenishment Order Shipped'
-                completed:              'Replenishment Order Completed'
-                cancelled:              'Replenishment Order Cancelled'

@@ -1,3 +1,0 @@
-config:
-    paths:
-        'marellopurchaseorder/js/app/views/purchaseorder-totals-view': 'bundles/marellopurchaseorder/js/app/views/purchaseorder-totals-view.js'

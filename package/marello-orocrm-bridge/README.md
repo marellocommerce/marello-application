@@ -1,2 +1,0 @@
-Marello OroCRM Bridge
-========================

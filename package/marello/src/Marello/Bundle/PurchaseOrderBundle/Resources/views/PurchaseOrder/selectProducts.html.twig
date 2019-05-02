@@ -1,8 +1,0 @@
-{% extends 'OroUIBundle:actions:index.html.twig' %}
-{% import 'OroUIBundle::macros.html.twig' as UI %}
-{% set gridName = 'marello-purchase-order-item-candidates' %}
-{% set pageTitle = 'marello.purchaseorder.select_products'|trans %}
-
-{% block navButtons %}
-    {{ UI.cancelButton(path('marello_purchaseorder_purchaseorder_index')) }}
-{% endblock navButtons %}
