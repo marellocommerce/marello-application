@@ -1,0 +1,2 @@
+bundles:
+    - { name: MarelloEnterprise\Bundle\PackingBundle\MarelloEnterprisePackingBundle, priority: 50 }

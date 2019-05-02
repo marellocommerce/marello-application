@@ -1,0 +1,2 @@
+bundles:
+    - { name: MarelloEnterprise\Bundle\PurchaseOrderBundle\MarelloEnterprisePurchaseOrderBundle, priority: 55 }
