@@ -1,0 +1,4 @@
+marello_shipping_methods_configs_rule:
+    resource:     "@MarelloShippingBundle/Controller/ShippingMethodsConfigsRuleController.php"
+    type:         annotation
+    prefix:       /marello/shippingrule

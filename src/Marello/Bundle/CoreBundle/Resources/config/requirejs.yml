@@ -1,0 +1,3 @@
+config:
+    paths:
+        'marellocore/js/app/elements-helper': 'bundles/marellocore/js/app/elements-helper.js'

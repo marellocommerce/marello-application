@@ -1,0 +1,35 @@
+{% import 'MarelloPurchaseOrderBundle:Datagrid:macros.html.twig' as macros %}
+
+{% set dueDate = record.getValue('dueDate') %}
+{% set class = '' %}
+{% set complete = false %}
+
+{% for ws in record.getValue('workflowStepLabel')  %}
+    {% if 'complete' in ws.stepName %}
+        {% set complete = true %}
+    {% endif %}
+{% endfor %}
+
+{% if dueDate is not null and not complete %}
+
+    {# date passed already #}
+    {% if dueDate < date('now') %}
+        {% set class = 'important' %}
+
+    {# less than a week left #}
+    {% elseif date('now') < dueDate and dueDate < date('7days') %}
+        {% set class = 'warning' %}
+
+    {# more than a week left #}
+    {% elseif date('7days') < dueDate %}
+        {% set class = 'success' %}
+
+    {% endif %}
+
+{% endif %}
+
+{% if complete %}
+    {% set class = 'success' %}
+{% endif %}
+
+{{ macros.formatDueDate(class, dueDate) }}

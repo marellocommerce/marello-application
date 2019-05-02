@@ -1,0 +1,4 @@
+marello_refund_refund:
+    resource: "@MarelloRefundBundle/Controller/RefundController.php"
+    type:     annotation
+    prefix:   /marello/refund

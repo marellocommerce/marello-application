@@ -1,0 +1,5 @@
+marello:
+    sales:
+        messages:
+            error:
+                code:                Sales Channel with same code already exists. Please provide unique code for this Sales Channel

@@ -1,0 +1,56 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'MarelloAddressBundle::macros.html.twig' as address %}
+{% set label = 'marello.order.'~ addressType ~'_address.label' %}
+<div class="widget-content">
+    <div id="flash-messages">
+        {% block messages %}
+            <div class="flash-messages-frame">
+                <div class="flash-messages-holder"></div>
+            </div>
+            <script type="text/javascript">
+                require(['jquery', 'oroui/js/messenger'],
+                        function($, messenger) {
+                            {% if app.session.flashbag.peekAll|length > 0 %}
+                            $(function() {
+                                {% for type, messages in app.session.flashbag.all %}
+                                {% for message in messages %}
+                                messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
+                                {% endfor %}
+                                {% endfor %}
+                            });
+                            {% endif %}
+                        });
+            </script>
+        {% endblock messages %}
+    </div>
+    <div class="address-block order-address">
+        <div id="order-address-{{ orderAddress.id }}">
+            {% if marello_order_order_address is not defined or resource_granted(marello_order_order_address) %}
+                <div class="address-edit">
+                    <button class="btn address-edit-button" id="edit-address-{{ orderAddress.id }}" title="{{ 'marello.order.address.edit_action'|trans }}"><i class="fa-edit hide-text">{{ 'marello.order.address.edit_action'|trans }}</i></button>
+                </div>
+            {% endif %}
+
+            <address>
+                {{ UI.renderHtmlProperty(label|trans, address.renderAddress(orderAddress)) }}
+                {{ UI.renderProperty('marello.order.address.phone.label'|trans, orderAddress.phone) }}
+            </address>
+            <script type="text/javascript">
+                require(['jquery', 'underscore', 'routing', 'marelloaddress/js/address', 'oroui/js/widget-manager'],
+                    function($, _, routing, Address, widgetManager) {
+                        widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget){
+                            /** @type marelloaddress.Address */
+                            var orderAddress = new Address({
+                                el: '#order-address-{{ orderAddress.id }}',
+                                addressId: {{ orderAddress.id }},
+                                addressUpdateUrl: function() {
+                                    return routing.generate('marello_order_order_updateaddress', {'id': {{ orderAddress.id }} })
+                                },
+                                widget: widget
+                            });
+                        });
+                    });
+            </script>
+        </div>
+    </div>
+</div>

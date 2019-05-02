@@ -1,0 +1,10 @@
+marello:
+    inventory:
+        validation:
+            messages:
+                error:
+                    unique_warehouse_code:  Warehouse code should be unique
+                    warehousechannelgrouplink.has_no_channel_groups: At least one Sales Channel Group should be selected
+
+                    inventoryitem:
+                        desired_should_be_greater_than_purchase_inventory: Desired Inventory needs to be greater than or equal to the Purchase Inventory

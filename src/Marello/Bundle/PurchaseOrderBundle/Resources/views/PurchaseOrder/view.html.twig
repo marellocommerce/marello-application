@@ -1,0 +1,81 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'MarelloAddressBundle::macros.html.twig' as Address %}
+
+{% block navButtons %}
+    {% if marello_purchaseorder_can_edit(entity)  %}
+
+        {% if resource_granted('EDIT', entity) %}
+            {{ UI.editButton({
+                'path': path('marello_purchaseorder_purchaseorder_update', {'id': entity.id}),
+                'entity_label': 'marello.purchaseorder.entity_label'|trans
+            }) }}
+            {{ UI.buttonSeparator() }}
+        {% endif %}
+
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('marello_purchaseorder_purchaseorder_index'),
+        'indexLabel': 'marello.purchaseorder.entity_label'|trans,
+        'entityTitle': entity.purchaseOrderNumber
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-purchase-order-view' %}
+    {% set data %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.purchaseorder.purchase_order_number.label'|trans, entity.purchaseOrderNumber) }}
+                    {{ UI.renderProperty('marello.purchaseorder.purchase_order_date.label'|trans, entity.createdAt|oro_format_datetime) }}
+                    {{ UI.renderProperty('marello.purchaseorder.purchase_order_supplier.label'|trans, entity.supplier.name) }}
+                    {{ UI.renderProperty('marello.purchaseorder.purchase_order_due_date.label'|trans, entity.dueDate|oro_format_date) }}
+                    {{ UI.renderProperty('marello.purchaseorder.order_total.label'|trans, entity.orderTotal|oro_format_currency({'currency':entity.supplier.currency})) }}
+                    {{ UI.renderHtmlProperty('marello.purchaseorder.shipping_address.label'|trans, Address.renderAddress(entity.warehouse.address)) }}
+                    {{ UI.renderProperty('marello.order.address.phone.label'|trans, entity.warehouse.address.phone) }}
+
+                    {% set steps = marello_core_get_current_workflow_steps(entity) %}
+                    {% for stepLabel, stepName in steps %}
+                        {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set items %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-purchase-order-items', {'order_id': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [data] }
+            ]
+        },
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [items] }
+            ]
+        }
+    ] %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

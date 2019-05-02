@@ -1,0 +1,101 @@
+data:
+    -
+        type: marelloassembledchannelpricelists
+        id: '<toString(@product1->channelPrices->get(0)->defaultPrice->id)>'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p1
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '<toString(@product1->channelPrices->get(0)->defaultPrice->id)>'
+            specialPrice:
+                data: null
+    -
+        type: marelloassembledchannelpricelists
+        id: '<toString(@product2->channelPrices->get(0)->defaultPrice->id)>'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p2
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '<toString(@product2->channelPrices->get(0)->defaultPrice->id)>'
+            specialPrice:
+                data: null
+    -
+        type: marelloassembledchannelpricelists
+        id: '<toString(@product3->channelPrices->get(0)->defaultPrice->id)>'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p3
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '<toString(@product3->channelPrices->get(0)->defaultPrice->id)>'
+            specialPrice:
+                data: null
+    -
+        type: marelloassembledchannelpricelists
+        id: '<toString(@product4->channelPrices->get(0)->defaultPrice->id)>'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p4
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_eur
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '<toString(@product4->channelPrices->get(0)->defaultPrice->id)>'
+            specialPrice:
+                data: null
+    -
+        type: marelloassembledchannelpricelists
+        id: '<toString(@product4->channelPrices->get(1)->defaultPrice->id)>'
+        attributes:
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p4
+            saleschannel:
+                data:
+                    type: marellosaleschannels
+                    id: chan_usd
+            defaultPrice:
+                data:
+                    type: marelloproductchannelprices
+                    id: '<toString(@product4->channelPrices->get(1)->defaultPrice->id)>'
+            specialPrice:
+                data: null

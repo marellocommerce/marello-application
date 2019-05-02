@@ -1,0 +1,26 @@
+services:
+    marello_shipping.shipping_method_provider:
+        class: 'Marello\Bundle\ShippingBundle\Method\CompositeShippingMethodProvider'
+        public: false
+
+    marello_shipping.formatter.shipping_method_label:
+        class: 'Marello\Bundle\ShippingBundle\Formatter\ShippingMethodLabelFormatter'
+        arguments:
+            - "@marello_shipping.shipping_method_provider"
+
+    marello_shipping.translator.shipping_method_label:
+        public: false
+        class: 'Marello\Bundle\ShippingBundle\Translator\ShippingMethodLabelTranslator'
+        arguments:
+            - "@marello_shipping.formatter.shipping_method_label"
+            - "@translator.default"
+
+    marello_shipping.twig.shipping_method_extension:
+        class: 'Marello\Bundle\ShippingBundle\Twig\ShippingMethodExtension'
+        public: false
+        arguments:
+            - "@marello_shipping.formatter.shipping_method_label"
+            - '@event_dispatcher'
+            - '@marello_shipping.checker.shipping_method_enabled'
+        tags:
+            - { name: twig.extension }

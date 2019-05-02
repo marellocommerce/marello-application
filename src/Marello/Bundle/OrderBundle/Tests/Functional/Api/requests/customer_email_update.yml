@@ -1,0 +1,5 @@
+data:
+    type: marellocustomers
+    id: '<toString(@marello-customer-1->id)>'
+    attributes:
+        email: mynewemailaddres@example.com

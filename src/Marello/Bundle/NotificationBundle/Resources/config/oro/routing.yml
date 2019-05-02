@@ -1,0 +1,4 @@
+marello_notification_notification:
+    resource: "@MarelloNotificationBundle/Controller/NotificationController.php"
+    type:     annotation
+    prefix:   /marello/notification

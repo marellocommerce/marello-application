@@ -1,0 +1,4 @@
+marello_packing_packingslip:
+    resource: "@MarelloPackingBundle/Controller/PackingSlipController.php"
+    type:     annotation
+    prefix:   /marello/packing

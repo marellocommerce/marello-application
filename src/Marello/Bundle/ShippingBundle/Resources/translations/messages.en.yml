@@ -1,0 +1,97 @@
+marello:
+    shipping:
+        shipment:
+            entity_label:                      Shipment
+            entity_plural_label:               Shipments
+            base64_encoded_label.label:        Base64 Encoded Label
+            id.label:                          Id
+            identification_number.label:       Identification Number
+            shipping_service.label:            Shipping Service
+            ups_package_tracking_number.label: UPS Package Tracking Number
+            ups_shipment_digest.label:         UPS Shipment Digest
+            shipping_label.label:              Shipping Label
+            organization.label:                Organization
+        shippingmethodsconfigsrule:
+            entity_label: Shipping Rule
+            entity_plural_label: Shipping Rules
+            id.label: Id
+            rule.label: Rule
+            destinations.label: Destinations
+            address.label: Address
+            method_configs.label: Configurations
+            currency.label: Currency
+            organization.label: Organization
+        shippingmethodconfig:
+            entity_label: Shipping Rule Method Config
+            entity_plural_label: Shipping Rule Methods Configs
+            id.label: Id
+            method.label: Method
+            options.label: Options
+            method_configs_rule.label: Shipping Rule
+            type_configs.label: Types
+        shippingmethodtypeconfig:
+            entity_label: Shipping Rule Method Type Config
+            entity_plural_label: Shipping Rule Method Types Configs
+            id.label: Id
+            type.label: Type
+            enabled.label: Enabled
+            options.label: Options
+            method_config.label: Method Config
+        system_configuration:
+            ups_username:               'API Username'
+            ups_password:               'API Password'
+            ups_access_license_key:     'API Access Key'
+            ups_account_number:         'Shipper Account Number'
+            ups_api_base_url:           'API Base URL'
+            shipper_name:               'Name'
+            shipper_attention_name:     'Attention Name'
+            shipper_tax_id:             'Tax Identification Number'
+            shipper_phone:              'Phone'
+            shipper_email:              'E-Mail'
+            shipper_address_line_1:     'Address Line 1'
+            shipper_address_line_2:     'Address Line 2'
+            shipper_address_line_3:     'Address Line 3'
+            shipper_address_city:       'City'
+            shipper_address_state:      'State/Region'
+            shipper_address_postal_code: 'Postal Code'
+            shipper_address_country_code: 'Country'
+
+        shipment:
+            id.label: Id
+            entity_label: Shipment
+            entity_plural_label: Shipments
+            base64_encoded_label.label: Base 64 Encoded Label
+            identification_number.label: Identification Service
+            shipping_service.label: Shipping Service
+            ups_package_tracking_number.label: Ups Tracking number
+            ups_shipment_digest.label: Ups Shipment Digest
+            shipping_label.label: Shipping Label
+
+        notification:
+            channel:
+                enabled: Shipping rule has been enabled successfully
+                disabled: Shipping rule has been disabled successfully
+
+        sections:
+            general: 'General Information'
+            shippingrule_destination: 'Destinations'
+            shippingrule_conditions: 'Conditions'
+            shippingrule_configurations:
+                no_methods.message: 'Please enable at least one shipping integration.'
+                label: 'Shipping Method Configurations'
+                placeholder.label: 'Choose a Method...'
+
+        controller:
+            rule.saved.message: 'Shipping rule has been saved'
+
+        shipping_methods_table:
+            method.label: Method
+            options.label: Options
+            additional_options.label: Additional Options
+            option.label: Option
+            status.label: Status
+            active.label: Active
+
+        datagrid:
+            action.enable: Enable
+            action.disable: Disable

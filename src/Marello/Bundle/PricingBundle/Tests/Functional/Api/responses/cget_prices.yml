@@ -1,0 +1,121 @@
+data:
+    -
+        type: marelloproductprices
+        id: '<toString(@product1->prices->get(0)->defaultPrice->id)>'
+        attributes:
+            value: '10.0000'
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p1
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: default
+    -
+        type: marelloproductprices
+        id: '<toString(@product2->prices->get(0)->defaultPrice->id)>'
+        attributes:
+            value: '25.0000'
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p2
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: default
+    -
+        type: marelloproductprices
+        id: '<toString(@product2->prices->get(1)->defaultPrice->id)>'
+        attributes:
+            value: '28.0000'
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p2
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: default
+    -
+        type: marelloproductprices
+        id: '<toString(@product3->prices->get(0)->defaultPrice->id)>'
+        attributes:
+            value: '50.0000'
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p3
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: default
+    -
+        type: marelloproductprices
+        id: '<toString(@product3->prices->get(1)->defaultPrice->id)>'
+        attributes:
+            value: '50.0000'
+            currency: GBP
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p3
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: default
+    -
+        type: marelloproductprices
+        id: '<toString(@product4->prices->get(0)->defaultPrice->id)>'
+        attributes:
+            value: '100.0000'
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p4
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: default
+    -
+        type: marelloproductprices
+        id: '<toString(@product4->prices->get(1)->defaultPrice->id)>'
+        attributes:
+            value: '112.0000'
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p4
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: default
+    -
+        type: marelloproductprices
+        id: '<toString(@product4->prices->get(2)->defaultPrice->id)>'
+        attributes:
+            value: '100.0000'
+            currency: GBP
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p4
+            pricetype:
+                data:
+                    type: marellopricetypes
+                    id: default

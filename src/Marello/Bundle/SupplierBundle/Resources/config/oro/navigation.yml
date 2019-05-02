@@ -1,0 +1,45 @@
+navigation:
+    menu_config:
+        items:
+            purchasing:
+                label: 'marello.supplier.navigation.purchasing.label'
+                uri: '#'
+                extras:
+                    position: 50
+
+            suppliers_list:
+                label: 'marello.supplier.entity_plural_label'
+                route: 'marello_supplier_supplier_index'
+                extras:
+                    routes: ['marello_supplier_supplier_*']
+                    position: 10
+
+            shortcut_new_supplier:
+                label: 'marello.supplier.menu.shortcut_new_supplier.label'
+                route: 'marello_supplier_supplier_create'
+                extras:
+                    description: 'marello.supplier.menu.shortcut_new_supplier.description'
+                    isCustomAction: true
+
+            shortcut_list_suppliers:
+                label: 'marello.supplier.menu.shortcut_list_suppliers.label'
+                route: 'marello_supplier_supplier_index'
+                extras:
+                    description: 'marello.supplier.menu.shortcut_list_suppliers.description'
+                    isCustomAction: true
+
+
+        tree:
+            application_menu:
+                children:
+                    purchasing:
+                        children:
+                            suppliers_list: ~
+
+            shortcuts:
+                children:
+                    shortcut_new_supplier: ~
+                    shortcut_list_suppliers: ~
+
+    titles:
+        marello_supplier_supplier_index: 'marello.supplier.entity_plural_label'

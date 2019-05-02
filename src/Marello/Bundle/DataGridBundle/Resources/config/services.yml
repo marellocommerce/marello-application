@@ -1,0 +1,13 @@
+parameters:
+    marello_datagrid.event_listener.datagrid.workflow_grid_listener.class: Marello\Bundle\DataGridBundle\EventListener\Datagrid\WorkflowGridListener
+    marello_datagrid.event_listener.datagrid.row_selection_select_all.class: Marello\Bundle\DataGridBundle\EventListener\Datagrid\RowSelectionSelectAllListener
+
+services:
+    marello_datagrid.datagridhelper:
+        class: Marello\Bundle\DataGridBundle\Helper\DatagridHelper
+
+    marello_datagrid.event_listener.row_selection_select_all:
+        class: '%marello_datagrid.event_listener.datagrid.row_selection_select_all.class%'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after, method: onBuildAfter, priority: 250 }
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.after, method: onResultAfter }

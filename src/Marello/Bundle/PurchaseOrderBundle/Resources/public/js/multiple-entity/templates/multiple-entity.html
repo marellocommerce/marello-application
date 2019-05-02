@@ -1,0 +1,100 @@
+        <td class="purchase-order-line-item-product" style="width: 440px; border-right: 0;">
+            <div class="fields-row">
+
+                <input type="hidden"
+                       id="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_product"
+                       name="marello_purchase_order_create_step_two[items][<%= _.escape(id) %>][product]"
+                       readonly="" required="required" data-required="data-required"
+                       data-validation='{"NotBlank":{"message":"This value should not be blank.","payload":null}}'
+                       data-ftid="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_product"
+                       data-name="field__ordered-amount"
+                       value="<%= _.escape(id) %>"
+                >
+
+                <div id="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_product-uid-5927ec973f9dd-el" class="entity-create-or-select-container">
+                    <div class="input-append" style="width: 100%">
+                        <div class="select2-container select2 oro-select2 input-widget" style="width: 100%"
+                             id="id_marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_product-uid-5927ec973f9dd">
+
+                            <a href="javascript:void(0)" onclick="return false;" class="select2-choice" tabindex="-1">
+                                <span class="select2-chosen">
+
+                                <% if (!_.isUndefined(label)) { %>
+                                    <% if (!hasOwnProperty('value') || !value) {
+                                        value = _.__('N/A');
+                                    } %>
+                                    <%= _.escape(value) %>
+                                <% } %>
+
+                            </span>
+                            </a>
+
+
+                    </div>
+                </div>
+
+                </div>
+            </div>
+
+        </td>
+        <td class="purchase-order-line-item-ordered-amount" style="border-left: 0; border-right: 0;">
+            <div class="fields-row">
+                <input type="text"
+                       id="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_orderedAmount"
+                       name="marello_purchase_order_create_step_two[items][<%= _.escape(id) %>][orderedAmount]"
+                       required="required" data-required="data-required"
+                       data-validation='{"NotBlank":{"message":"This value should not be blank.","payload":null},"GreaterThanOrEqual":{"message":"This value should be greater than or equal to {{ compared_value }}.","value":0,"payload":null}}'
+                       data-ftid="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_orderedAmount"
+                       data-name="field__ordered-amount"
+                       value="<%= _.escape(orderAmount) %>"
+                >
+            </div>
+
+        </td>
+        <td class="purchase-order-line-item-purchase-price" style="border-left: 0; border-right: 0;">
+            <div class="fields-row">
+                <div
+                        id="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_purchasePrice-uid-5ac534cd17595"
+                        data-ftid="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_purchasePrice"
+                        data-name="field__purchase-price"
+                >
+                    <input type="hidden"
+                           id="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_purchasePrice_currency-uid-5ac534cd16fc0"
+                           name="marello_purchase_order_create_step_two[items][<%= _.escape(id) %>][purchasePrice][currency]"
+                           required="required"
+                           data-ftid="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_purchasePrice_currency"
+                           data-name="field__currency"
+                    >
+                    <div class="control-group control-group-money multicurrency-selection-control-group">
+                        <div class="control-label wrap">
+                            <label for="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_purchasePrice_value-uid-5ac534cd1729d" class="required">
+                                Price (<%= currency %>)<em>*</em>
+                            </label>
+                        </div>
+                        <div class="controls">
+                            <input type="text"
+                                   id="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_purchasePrice_value-uid-5ac534cd1729d"
+                                   name="marello_purchase_order_create_step_two[items][<%= _.escape(id) %>][purchasePrice][value]"
+                                   required="required"
+                                   data-validation="{NotBlank:{message:This value should not be blank.,payload:null}, &quot;LessThan&quot;:{&quot;message&quot;:&quot;This value should be less than {{ compared_value }}.&quot;,&quot;value&quot;:1000000000000000,&quot;payload&quot;:null}}"
+                                   data-ftid="marello_purchase_order_create_step_two_items_<%= _.escape(id) %>_purchasePrice_value"
+                                   data-name="field__value"
+                                   value="<%= _.escape(purchasePrice) %>"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </td>
+        <td class="purchase-order-line-item-row-total" style="border-left: 0; border-right: 0;"></td>
+        <td class="purchase-order-line-item-notifications" style="border-left: 0; border-right: 0;">
+                    <span class="error" style="display:none;">
+                        <i class="fa-exclamation-triangle"></i>
+                    </span>
+        </td>
+        <td class="purchase-order-line-item-remove marello-line-item-remove" style="border-left: 0;">
+            <button type="button"
+                    class="marello-remove-line-item btn icons-holder remove-btn"
+                    title="<%= _.__('Remove') %>">
+                <i class="fa-remove"></i></button>
+        </td>

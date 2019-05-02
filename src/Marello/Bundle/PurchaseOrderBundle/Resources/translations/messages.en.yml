@@ -1,0 +1,79 @@
+marello:
+    purchaseorder:
+        id.label:                                       Id
+        entity_label:                                   Purchase Order
+        entity_plural_label:                            Purchase Orders
+        id.label:                                       Id
+        organization.label:                             Organization
+        supplier.label:                                 Supplier
+        purchase_order_number.label:                    PO Number
+        purchase_order_supplier.label:                  Supplier
+        warehouse.label:                                Warehouse
+        order_total.label:                              Order Total
+        status.label:                                   Purchase Order Status
+        purchase_order_date.label:                      Purchase Order Date
+        purchase_order_due_date.label:                  Purchase Order Due Date
+        items.label:                                    Purchase Order Items
+        due_date.label:                                 Due date
+        select_products:                                Products to include in new PO
+        select_supplier:                                Choose a supplier
+        items_advice:                                   Products from Advice
+        select_products_advice:                         Add products from Purchase Order Advice for this supplier
+        items_additional:                               Additional products
+        select_products_additional:                     Add additional products from this supplier
+        all_items_have_been_received:                   All items have been received, please proceed to click "Fully received"
+        has_item.label:                                 Has Product
+        billing_and_shipping.label:                     Billing & Shipping Info
+        supplier.label:                                 Supplier
+        organization.label:                             Organization
+        shipping_address.label:                         Shipping Address
+
+        ui:
+            continue:                                   Continue
+
+        form:
+            add_product:                                Add Product
+
+        purchaseorderitem:
+            entity_label:                               Purchase Order Item
+            entity_plural_label:                        Purchase Order Items
+            id.label:                                   Id
+            data.label:                                 Data
+            order_amount.label:                         Order Amount
+            ordered_amount.label:                       Ordered Amount
+            received_amount.label:                      Received Quantity
+            status.label:                               Status
+            accepted_qty.label:                         Accepted Quantity
+            order.label:                                Order
+            product.label:                              Product
+            product_name.label:                         Product Name
+            product_sku.label:                          Product SKU
+            supplier.label:                             Supplier
+            purchase_stock_level.label:                 Purchase Level
+            desired_stock_level.label:                  Desired Level
+            virtual_stock_level.label:                  Virtual Level
+            product.label:                              Product
+            purchase_price.label:                       Purchase Price
+            purchase_price_value.label:                 Purchase Price
+            row_total.label:                            Row Total
+            order.label:                                Order
+            supplier.label:                             Supplier
+            product_sku.label:                          Product Sku
+            product_name.label:                         Product Name
+            data.label:                                 Data
+            validation:
+                received_amount:                        Total amount received can only be as many items as ordered amount.
+
+        navigation:
+            purchasing.label:                           Purchasing
+
+        menu:
+            shortcut_new_purchase_order.label:          Create new purchase order
+            shortcut_new_purchase_order.description:    Create new purchase order from selected items
+            shortcut_list_purchase_orders.label:        Show list order purchase orders
+            shortcut_list_purchase_orders.description:  List of purchase orders
+
+        messages:
+            purchaseorder:
+                saved:                                  Purchase Order saved succesfully
+                not_saved:                              Something went wrong, Purchase Order was not saved

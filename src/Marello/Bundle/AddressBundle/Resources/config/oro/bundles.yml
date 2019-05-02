@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bundle\AddressBundle\MarelloAddressBundle, priority: 20 }

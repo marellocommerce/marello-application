@@ -1,0 +1,37 @@
+api:
+    entities:
+        Marello\Bundle\ProductBundle\Entity\Product:
+            documentation_resource: '@MarelloProductBundle/Resources/doc/api/product.md'
+            identifier_field_names: [sku]
+            fields:
+                saleschannels:
+                    property_path: channels
+                taxcode:
+                    property_path: taxCode
+                productstatus:
+                    property_path: status
+                price:
+                    exclude: true
+                createdAt:
+                    exclude: true
+                updatedAt:
+                    exclude: true
+            filters:
+                exclusion_policy: all
+                fields:
+                    sku:
+                        data_type: string
+                        allow_array: true
+                        property_path: sku
+                        description: 'Filter by sku'
+                    createdAt:
+                        exclude: true
+                    updatedAt:
+                        exclude: true
+            actions:
+                create:
+                    fields:
+                        prices:
+                            exclude: true
+                        channelPrices:
+                            exclude: true

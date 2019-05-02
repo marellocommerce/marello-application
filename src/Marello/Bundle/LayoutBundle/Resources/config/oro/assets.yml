@@ -1,0 +1,3 @@
+css:
+    inputs:
+        - 'bundles/marellolayout/css/scss/main.scss'
