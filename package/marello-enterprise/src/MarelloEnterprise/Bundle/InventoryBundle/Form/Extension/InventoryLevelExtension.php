@@ -15,7 +15,7 @@ class InventoryLevelExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return InventoryLevelType::NAME;
+        return InventoryLevelType::class;
     }
 
     /**
@@ -29,6 +29,6 @@ class InventoryLevelExtension extends AbstractTypeExtension
             $builder->remove('warehouse');
         }
 
-        $builder->add('warehouse', WarehouseSelectType::NAME);
+        $builder->add('warehouse', WarehouseSelectType::class);
     }
 }

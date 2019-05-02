@@ -3,8 +3,10 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Oro\Bundle\SecurityProBundle\ORM\Walker\AclHelper;
 
 class WarehouseChannelGroupLinkRepository extends EntityRepository
 {
@@ -42,6 +44,7 @@ HASLINK;
             ->createQueryBuilder('scg');
         $qb
             ->select(
+                'scg.id',
                 'scg',
                 $hasLink
             )

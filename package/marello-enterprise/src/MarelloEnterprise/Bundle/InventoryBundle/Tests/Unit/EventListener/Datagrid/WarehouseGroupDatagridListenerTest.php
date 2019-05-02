@@ -3,12 +3,16 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\EventListener\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\WarehouseGroupDatagridListener;
+
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Event\OrmResultAfter;
 
-class WarehouseGroupDatagridListenerTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid\WarehouseGroupDatagridListener;
+
+class WarehouseGroupDatagridListenerTest extends TestCase
 {
     /**
      * @var WarehouseGroupDatagridListener

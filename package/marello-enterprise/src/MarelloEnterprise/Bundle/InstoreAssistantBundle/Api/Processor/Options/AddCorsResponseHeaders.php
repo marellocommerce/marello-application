@@ -16,15 +16,6 @@ class AddCorsResponseHeaders implements ProcessorInterface
     protected $corsRequestHeaders;
 
     /**
-     * AddCorsResponseHeaders constructor.
-     * @param CorsRequestHeaders $corsRequestHeaders
-     */
-    public function __construct(CorsRequestHeaders $corsRequestHeaders)
-    {
-        $this->corsRequestHeaders = $corsRequestHeaders;
-    }
-
-    /**
      * {@inheritdoc}
      * @param ContextInterface $context
      */
@@ -33,24 +24,6 @@ class AddCorsResponseHeaders implements ProcessorInterface
         /** @var OptionsContext $context */
         if (!$context->getErrors()) {
             $context->getResponseHeaders()->set(self::RESPONSE_HEADER_ALLOW_ORIGIN, '*');
-
-            if ($context->get(CorsRequestHeaders::PREFLIGHT_REQUEST)) {
-                $context->removeResult();
-                $context->getResponseHeaders()->set(
-                    self::RESPONSE_HEADER_ALLOW_METHODS,
-                    implode(',', $this->corsRequestHeaders->getAllowedAccessControlRequestMethods())
-                );
-                $context->getResponseHeaders()->set(
-                    self::RESPONSE_HEADER_ALLOW_HEADERS,
-                    implode(',', $this->corsRequestHeaders->getAllowedAccessControlRequestHeaders())
-                );
-                $context->getResponseHeaders()->set(
-                    self::RESPONSE_HEADER_MAX_AGE,
-                    $this->corsRequestHeaders->getAccessControlMaxAge()
-                );
-
-                $context->setResponseStatusCode(204);
-            }
         }
     }
 }

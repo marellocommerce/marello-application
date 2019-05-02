@@ -16,15 +16,7 @@
 
 {% block navButtons %}
     {% if entity.id and not entity.default and resource_granted('DELETE', entity) %}
-        {{ UI.deleteButton({
-            'dataUrl': path('marelloenterprise_inventory_api_delete_warehouse', {'id': entity.id}),
-            'dataRedirect': path('marelloenterprise_inventory_warehouse_index'),
-            'aCss': 'no-hash remove-button',
-            'id': 'btn-remove-tag',
-            'dataId': entity.id,
-            'entity_label': 'marello.inventory.warehouse.entity_label'|trans
-        }) }}
-        {{ UI.buttonSeparator() }}
+        {{ parent() }}
     {% endif %}
     {{ UI.cancelButton(path('marelloenterprise_inventory_warehouse_index')) }}
     {% if entity.id and resource_granted('marelloenterprise_inventory_warehouse_update') or resource_granted('marelloenterprise_inventory_warehouse_create') %}

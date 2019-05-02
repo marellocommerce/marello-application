@@ -18,7 +18,7 @@ services:
         class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\AddressBased\AddressBasedAddressesDistanceCalculatorChainElement'
 
     marelloenterprise_address.distance_calculator.chain_element.straight_line:
-        class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalculatorChainElement'
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\StraightLine\StraightLineAddressesDistanceCalcElement'
         arguments:
             - '@marelloenterprise_address.coordinates_provider.main'
             - '@session'
@@ -27,7 +27,7 @@ services:
             - [setSuccessor, ['@marelloenterprise_address.distance_calculator.chain_element.address_based']]
 
     marelloenterprise_address.distance_calculator.chain_element.matrix_based:
-        class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\MatrixBasedAddressesDistanceCalculatorChainElement'
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\MatrixBasedAddressesDistanceCalcElement'
         arguments:
             - '@marelloenterprise.google_api.result_provider.distance_matrix'
             - '@logger'
@@ -40,14 +40,14 @@ services:
         parent: marelloenterprise_address.distance_calculator.chain_element.matrix_based
 
     marelloenterprise_address.coordinates_provider.chain_element.saved_coordinates:
-        class: 'MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\SavedCoordinates\SavedAddressCoordinatesProviderChainElement'
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\SavedCoordinates\SavedAddressCoordinatesProviderElement'
         arguments:
             - '@oro_entity.doctrine_helper'
         calls:
             - [setSuccessor, ['@marelloenterprise_address.coordinates_provider.chain_element.geocoding_api_coordinates']]
 
     marelloenterprise_address.coordinates_provider.chain_element.geocoding_api_coordinates:
-        class: 'MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\GeocodingApiCoordinates\GeocodingApiAddressCoordinatesProviderChainElement'
+        class: 'MarelloEnterprise\Bundle\AddressBundle\Provider\Chain\GeocodingApiCoordinates\GeocodingApiAddressCoordinatesProviderElement'
         arguments:
             - '@oro_entity.doctrine_helper'
             - '@marelloenterprise.google_api.result_provider.geocoding'

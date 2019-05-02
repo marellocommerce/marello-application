@@ -15,7 +15,7 @@ class WarehouseActionPermissionProvider implements ActionPermissionInterface
         return [
             'update' => true,
             'view' => true,
-            'delete' => !$record->getValue('default'),
+            'marello_delete_warehouse' => !$record->getValue('default'),
         ];
     }
 }

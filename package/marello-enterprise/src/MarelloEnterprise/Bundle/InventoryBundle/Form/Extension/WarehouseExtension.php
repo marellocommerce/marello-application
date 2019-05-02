@@ -15,7 +15,7 @@ class WarehouseExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return WarehouseType::NAME;
+        return WarehouseType::class;
     }
 
     /**
@@ -33,7 +33,6 @@ class WarehouseExtension extends AbstractTypeExtension
             ->add('warehouseType', EntityType::class, [
                 'label'    => 'marello.inventory.warehouse.warehouse_type.label',
                 'class'    => 'MarelloInventoryBundle:WarehouseType',
-                'property' => 'label',
                 'required' => true,
             ]);
     }

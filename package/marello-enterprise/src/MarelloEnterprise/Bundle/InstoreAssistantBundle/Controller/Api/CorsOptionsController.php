@@ -2,14 +2,12 @@
 
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Controller\Api;
 
+use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Handler\InstoreAssistantRequestActionHandler;
+use Oro\Bundle\ApiBundle\Controller\RestApiController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-use Oro\Bundle\ApiBundle\Controller\AbstractRestApiController;
-
-use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Processor\Options\OptionsContext;
-
-class CorsOptionsController extends AbstractRestApiController
+class CorsOptionsController extends RestApiController
 {
     /**
      * {@inheritdoc}
@@ -19,11 +17,14 @@ class CorsOptionsController extends AbstractRestApiController
      */
     public function optionsAction(Request $request)
     {
-        $processor = $this->getProcessor($request);
-        /** @var OptionsContext $context */
-        $context = $this->getContext($processor, $request);
-        $processor->process($context);
+        return $this->getHandler()->handleOptions($request);
+    }
 
-        return $this->buildResponse($context);
+    /**
+     * @return InstoreAssistantRequestActionHandler
+     */
+    private function getHandler(): InstoreAssistantRequestActionHandler
+    {
+        return $this->get('marelloenterprise_instoreassistant.api.handler.request_action_handler');
     }
 }

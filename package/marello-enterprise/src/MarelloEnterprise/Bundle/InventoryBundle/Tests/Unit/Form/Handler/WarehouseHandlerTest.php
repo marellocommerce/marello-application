@@ -4,18 +4,24 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseHandler;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
-use Oro\Component\Testing\Unit\EntityTrait;
+
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
-class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Component\Testing\Unit\EntityTrait;
+use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
+
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseHandler;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
+
+class WarehouseHandlerTest extends TestCase
 {
     use EntityTrait;
 
@@ -60,6 +66,8 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects(static::once())
             ->method('getMethod')
             ->willReturn('POST');
+        $this->request->request = new ParameterBag([]);
+        $this->request->files = new ParameterBag([]);
         $organization = $this->createMock(OrganizationInterface::class);
         $this->entity
             ->expects(static::any())
@@ -73,7 +81,7 @@ class WarehouseHandlerTest extends \PHPUnit_Framework_TestCase
         $this->form
             ->expects(static::once())
             ->method('submit')
-            ->with($this->request);
+            ->with([]);
         $this->form
             ->expects(static::once())
             ->method('isValid')

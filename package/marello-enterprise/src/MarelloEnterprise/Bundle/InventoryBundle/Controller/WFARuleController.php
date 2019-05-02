@@ -4,11 +4,13 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Controller;
 
 use MarelloEnterprise\Bundle\InventoryBundle\Entity\WFARule;
 use MarelloEnterprise\Bundle\InventoryBundle\Form\Type\WFARuleType;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -108,5 +110,34 @@ class WFARuleController extends Controller
             $this->get('translator')->trans('marelloenterprise.inventory.messages.success.wfarule.saved'),
             $request
         );
+    }
+
+    /**
+     * @Route("/{gridName}/massAction/{actionName}", name="marelloenterprise_inventory_wfa_rule_massaction")
+     * @Acl(
+     *     id="marelloenterprise_inventory_wfa_rule_update",
+     *     type="entity",
+     *     permission="EDIT",
+     *     class="MarelloEnterpriseInventoryBundle:WFARule"
+     * )
+     * @param string $gridName
+     * @param string $actionName
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function markMassAction($gridName, $actionName, Request $request)
+    {
+        /** @var MassActionDispatcher $massActionDispatcher */
+        $massActionDispatcher = $this->get('oro_datagrid.mass_action.dispatcher');
+
+        $response = $massActionDispatcher->dispatchByRequest($gridName, $actionName, $request);
+
+        $data = [
+            'successful' => $response->isSuccessful(),
+            'message' => $response->getMessage()
+        ];
+
+        return new JsonResponse(array_merge($data, $response->getOptions()));
     }
 }

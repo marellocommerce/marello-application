@@ -2,9 +2,11 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Request;
 
+use PHPUnit\Framework\TestCase;
+
 use MarelloEnterprise\Bundle\GoogleApiBundle\Request\GoogleApiRequest;
 
-class GoogleApiRequestTest extends \PHPUnit_Framework_TestCase
+class GoogleApiRequestTest extends TestCase
 {
     public function testGetters()
     {

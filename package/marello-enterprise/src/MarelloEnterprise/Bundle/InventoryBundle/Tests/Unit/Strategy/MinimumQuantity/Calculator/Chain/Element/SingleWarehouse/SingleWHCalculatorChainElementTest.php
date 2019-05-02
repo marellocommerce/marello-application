@@ -5,17 +5,21 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumQu
 
 // @codingStandardsIgnoreEnd
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\SingleWarehouse\
-SingleWHCalculatorChainElement;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTrait;
 
-class SingleWHCalculatorChainElementTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\Chain\Element\SingleWarehouse\
+SingleWHCalculatorChainElement;
+
+class SingleWHCalculatorChainElementTest extends TestCase
 {
     use EntityTrait;
 

@@ -3,8 +3,10 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
+
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Oro\Bundle\SecurityProBundle\ORM\Walker\AclHelper;
 
 class WarehouseRepository extends EntityRepository
 {

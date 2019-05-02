@@ -12,10 +12,14 @@
     </td>
     <td class="inventorylevel-adjustment {{ form.quantity.vars.errors|length ? 'has-errors' : '' }}">
         <div class="fields-row">
-            {{ form_widget(form.adjustmentOperator) }}
-            {{ form_widget(form.quantity) }}
+            <div class="marello-line-item-related-field">
+                {{ form_widget(form.adjustmentOperator) }}
+            </div>
+            <div class="marello-line-item-related-field">
+                {{ form_widget(form.quantity) }}
+            </div>
+            {{ form_errors(form.quantity) }}
         </div>
-        {{ form_errors(form.quantity) }}
     </td>
 {% endblock %}
 
@@ -41,7 +45,7 @@
     <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
         class="marello-line-item display-values"
         data-page-component-module="oroui/js/app/components/view-component"
-        data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}"
+        data-page-component-options="{{ {view: 'marelloenterpriseinventory/js/app/views/inventorylevel-item-view'}|json_encode }}"
         data-layout="separate">
         {{ form_widget(form) }}
         {% if allow_delete %}

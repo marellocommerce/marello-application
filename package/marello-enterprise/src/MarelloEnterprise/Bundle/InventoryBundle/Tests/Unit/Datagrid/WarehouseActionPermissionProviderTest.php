@@ -2,10 +2,13 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Datagrid;
 
-use MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseActionPermissionProvider;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
-class WarehouseActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
+use MarelloEnterprise\Bundle\InventoryBundle\Datagrid\WarehouseActionPermissionProvider;
+
+class WarehouseActionPermissionProviderTest extends TestCase
 {
     /**
      * @var WarehouseActionPermissionProvider
@@ -46,7 +49,7 @@ class WarehouseActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
                 'result' => [
                     'update' => true,
                     'view' => true,
-                    'delete' => false,
+                    'marello_delete_warehouse' => false,
                 ]
             ],
             [
@@ -54,7 +57,7 @@ class WarehouseActionPermissionProviderTest extends \PHPUnit_Framework_TestCase
                 'result' => [
                     'update' => true,
                     'view' => true,
-                    'delete' => true
+                    'marello_delete_warehouse' => true
                 ]
             ]
         ];

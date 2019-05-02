@@ -1,0 +1,6 @@
+marelloenterprise:
+    replenishment:
+        replenishmentorderconfig:
+            form:
+                products:
+                    add.label:  Add Products

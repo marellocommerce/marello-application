@@ -3,20 +3,9 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\EventListener\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Event\OrmResultBeforeQuery;
 
 class InventoryLevelsGridListener
 {
-    /**
-     * @param OrmResultBeforeQuery $event
-     */
-    public function onResultBeforeQuery(OrmResultBeforeQuery $event)
-    {
-        $event
-            ->getQueryBuilder()
-            ->leftJoin('il.warehouse', 'warehouse');
-    }
-
     /**
      * @param BuildBefore $event
      */

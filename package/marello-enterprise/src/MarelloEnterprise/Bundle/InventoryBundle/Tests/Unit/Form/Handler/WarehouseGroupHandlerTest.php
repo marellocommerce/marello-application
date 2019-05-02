@@ -4,14 +4,19 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler;
+
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
-class WarehouseGroupHandlerTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseGroupRepository;
+use MarelloEnterprise\Bundle\InventoryBundle\Form\Handler\WarehouseGroupHandler;
+
+class WarehouseGroupHandlerTest extends TestCase
 {
     /**
      * @var FormInterface|\PHPUnit_Framework_MockObject_MockObject
@@ -94,7 +99,8 @@ class WarehouseGroupHandlerTest extends \PHPUnit_Framework_TestCase
             ->expects(static::once())
             ->method('getMethod')
             ->willReturn('POST');
-
+        $request->request = new ParameterBag([]);
+        $request->files = new ParameterBag([]);
         $this->form
             ->expects(static::once())
             ->method('setData')
@@ -102,7 +108,7 @@ class WarehouseGroupHandlerTest extends \PHPUnit_Framework_TestCase
         $this->form
             ->expects(static::once())
             ->method('submit')
-            ->with($request);
+            ->with([]);
         $this->form
             ->expects(static::once())
             ->method('isValid')

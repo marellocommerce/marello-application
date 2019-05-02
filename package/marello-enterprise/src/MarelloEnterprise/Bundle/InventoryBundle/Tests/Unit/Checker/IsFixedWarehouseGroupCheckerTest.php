@@ -2,14 +2,17 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Checker;
 
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTrait;
 
-class IsFixedWarehouseGroupCheckerTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
+
+class IsFixedWarehouseGroupCheckerTest extends TestCase
 {
     use EntityTrait;
 

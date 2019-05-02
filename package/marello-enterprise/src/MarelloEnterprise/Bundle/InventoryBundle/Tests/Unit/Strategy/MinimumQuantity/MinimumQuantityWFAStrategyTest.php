@@ -2,17 +2,25 @@
 
 namespace MarelloEnterprise\Bundle\InventoryBundle\Tests\Unit\Strategy\MinimumQuantity;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\MinQtyWHCalculatorInterface;
-use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTrait;
 
-class MinimumQuantityWFAStrategyTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\MinimumQuantityWFAStrategy;
+use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\MinQtyWHCalculatorInterface;
+
+class MinimumQuantityWFAStrategyTest extends TestCase
 {
     use EntityTrait;
 
@@ -26,10 +34,19 @@ class MinimumQuantityWFAStrategyTest extends \PHPUnit_Framework_TestCase
      */
     protected $minimumQuantityWFAStrategy;
 
+    /**
+     * @var WarehouseChannelGroupLinkRepository|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $warehouseChannelGroupLinkRepository;
+
     protected function setUp()
     {
         $this->minQtyWHCalculator = $this->createMock(MinQtyWHCalculatorInterface::class);
-        $this->minimumQuantityWFAStrategy = new MinimumQuantityWFAStrategy($this->minQtyWHCalculator);
+        $this->warehouseChannelGroupLinkRepository = $this->createMock(WarehouseChannelGroupLinkRepository::class);
+        $this->minimumQuantityWFAStrategy = new MinimumQuantityWFAStrategy(
+            $this->minQtyWHCalculator,
+            $this->warehouseChannelGroupLinkRepository
+        );
     }
 
     public function testGetIdentifier()
@@ -109,8 +126,17 @@ class MinimumQuantityWFAStrategyTest extends \PHPUnit_Framework_TestCase
         $orderItem2 = $this->getEntity(OrderItem::class, ['product' => $product2, 'quantity' => 1]);
         $orderItem3 = $this->getEntity(OrderItem::class, ['product' => $product3, 'quantity' => 1]);
 
+        $salesChannelGroup = $this->getEntity(SalesChannelGroup::class, ['id' => 1]);
+        $salesChannel = $this->getEntity(SalesChannel::class, ['id' => 1, 'group' => $salesChannelGroup]);
+
         /** @var Order|\PHPUnit_Framework_MockObject_MockObject $order **/
-        $order = $this->getEntity(Order::class, ['items' => [$orderItem1, $orderItem2, $orderItem3]]);
+        $order = $this->getEntity(
+            Order::class,
+            [
+                'items' => [$orderItem1, $orderItem2, $orderItem3],
+                'salesChannel' => $salesChannel
+            ]
+        );
         $initialResults = [];
 
         $productsByWh = [
@@ -128,6 +154,28 @@ class MinimumQuantityWFAStrategyTest extends \PHPUnit_Framework_TestCase
             2 => $warehouse2,
             3 => $warehouse3,
         ];
+
+
+        $warehouseGroup = $this->getEntity(
+            WarehouseGroup::class,
+            [
+                'id' => 1,
+                'warehouses' => $warehouses
+            ]
+        );
+        $warehouseGroupLink = $this->getEntity(
+            WarehouseChannelGroupLink::class,
+            [
+                'warehouseGroup' => $warehouseGroup,
+                'salesChannelGroups' => [$salesChannelGroup]
+            ]
+        );
+
+        $this->warehouseChannelGroupLinkRepository
+            ->expects(static::once())
+            ->method('findLinkBySalesChannelGroup')
+            ->with($salesChannelGroup)
+            ->willReturn($warehouseGroupLink);
 
         $this->minQtyWHCalculator
             ->expects(static::once())

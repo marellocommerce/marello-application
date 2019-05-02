@@ -2,16 +2,20 @@
 
 namespace MarelloEnterprise\Bundle\GoogleApiBundle\Tests\Unit\Result\Factory;
 
-use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
 use Psr\Log\LoggerInterface;
 
-class GeocodingApiResultFactoryTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
+
+use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Context\GoogleApiContextInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\GeocodingApiResultFactory;
+
+class GeocodingApiResultFactoryTest extends TestCase
 {
     /**
      * @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject

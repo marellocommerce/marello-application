@@ -6,7 +6,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SystemGroupGlobalWarehouseMultiSelectType extends AbstractWarehouseMultiSelectType
 {
-    const NAME = 'marello_system_group_global_warehouse_multi_select';
+    const BLOCK_PREFIX = 'marello_system_group_global_warehouse_multi_select';
 
     /**
      * {@inheritdoc}
@@ -31,16 +31,8 @@ class SystemGroupGlobalWarehouseMultiSelectType extends AbstractWarehouseMultiSe
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }
