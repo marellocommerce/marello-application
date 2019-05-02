@@ -31,11 +31,13 @@ services:
             driver: "none"
 
     web:
-        build: ./.docker
-        args:
-          - SYMFONY_ENV=prod
-          - COMPOSERFILE=dev.json
-          - TIMEOUT=3000
+        build:
+            context: ./.docker
+            args:
+              - SYMFONY_ENV=prod
+              - COMPOSERFILE=dev.json
+              - TIMEOUT=3000
+              - APP_ROOT=/var/www
         working_dir: /var/www/
         links:
             - "db"
