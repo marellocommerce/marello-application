@@ -16,26 +16,18 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class RefundType extends AbstractType
 {
-    const NAME = 'marello_refund';
+    const BLOCK_PREFIX = 'marello_refund';
     const VALIDATION_MESSAGE = 'Refund must contain at least one refunded item, or additional custom refunded item.';
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add(
                 'items',
-                OrderItemRefundCollectionType::NAME
-            )
-            ->add(
-                'additionalItems',
-                AdditionalRefundCollectionType::NAME,
-                [
-                    'mapped' => false,
-                ]
+                OrderItemRefundCollectionType::class
             );
 
         $builder
@@ -59,6 +51,17 @@ class RefundType extends AbstractType
                     );
 
                     $form->get('items')->setData($orderedItems);
+                    $form
+                        ->add(
+                            'additionalItems',
+                            AdditionalRefundCollectionType::class,
+                            [
+                                'mapped' => false,
+                                'entry_options' => [
+                                    'currency' => $data->getCurrency()
+                                ]
+                            ]
+                        );
                     $form->get('additionalItems')->setData($additionalItems);
                 }
             )
@@ -76,12 +79,6 @@ class RefundType extends AbstractType
                         $data->addItem($item);
                     }
 
-                    $filtered = $data->getItems()->filter(function (RefundItem $item) {
-                        return $item->getRefundAmount();
-                    });
-
-                    $data->setItems($filtered);
-
                     $event->setData($data);
                 }
             )
@@ -90,6 +87,9 @@ class RefundType extends AbstractType
         ;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
@@ -111,12 +111,10 @@ class RefundType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

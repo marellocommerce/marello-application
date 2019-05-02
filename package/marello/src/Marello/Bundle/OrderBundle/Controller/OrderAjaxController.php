@@ -2,16 +2,18 @@
 
 namespace Marello\Bundle\OrderBundle\Controller;
 
-use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\Type\OrderType;
-use Oro\Bundle\SecurityBundle\Annotation as Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Form;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 
 class OrderAjaxController extends Controller
 {
@@ -42,10 +44,11 @@ class OrderAjaxController extends Controller
                 FormChangeContext::RESULT_FIELD => [],
             ]
         );
+
         $formChangesProvider = $this->get('marello_layout.provider.form_changes_data.composite');
         $formChangesProvider
             ->setRequiredDataClass(Order::class)
-            ->setRequiredFields($request->get('updateFields'))
+            ->setRequiredFields($request->get('updateFields', []))
             ->processFormChanges($context);
 
         return new JsonResponse($context->getResult());
@@ -53,7 +56,7 @@ class OrderAjaxController extends Controller
 
     /**
      * @param Order $order
-     * @return Form
+     * @return FormInterface
      */
     protected function getType(Order $order)
     {

@@ -8,15 +8,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdditionalRefundCollectionType extends AbstractType
 {
-    const NAME = 'marello_additional_refund_collection';
+    const BLOCK_PREFIX = 'marello_additional_refund_collection';
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
-                'type'         => AdditionalRefundType::NAME,
-                'allow_add'    => true,
-                'allow_remove' => true,
+                'entry_type'           => AdditionalRefundType::class,
+                'allow_add'            => true,
+                'allow_remove'         => true,
                 'prototype_name'       => '__namerefunditem__',
                 'prototype'            => true,
                 'handle_primary'       => false,
@@ -26,18 +29,19 @@ class AdditionalRefundCollectionType extends AbstractType
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

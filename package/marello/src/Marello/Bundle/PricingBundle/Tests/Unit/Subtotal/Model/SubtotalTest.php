@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\PricingBundle\Tests\Unit\Subtotal\Model;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\PricingBundle\Subtotal\Model\Subtotal;
 
-class SubtotalTest extends \PHPUnit_Framework_TestCase
+class SubtotalTest extends TestCase
 {
     public function testGetters()
     {

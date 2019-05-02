@@ -1,4 +1,3 @@
-assets:
-    css:
-        'marelloups':
-            - 'bundles/marelloups/css/style.less'
+css:
+    inputs:
+        - 'bundles/marelloups/css/scss/main.scss'

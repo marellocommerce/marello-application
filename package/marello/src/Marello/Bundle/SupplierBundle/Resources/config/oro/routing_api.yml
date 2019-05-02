@@ -1,3 +1,0 @@
-marello_supplier_supplier_api:
-    resource:     "@MarelloSupplierBundle/Controller/Api/Rest/SupplierController.php"
-    type:         rest

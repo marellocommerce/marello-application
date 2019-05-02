@@ -3,17 +3,20 @@
 namespace Marello\Bundle\PackingBundle\Tests\Unit\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Marello\Bundle\OrderBundle\Entity\Order;
-use Marello\Bundle\PackingBundle\Entity\PackingSlip;
-use Marello\Bundle\PackingBundle\Mapper\MapperInterface;
-use Marello\Bundle\PackingBundle\EventListener\CreatePackingSlipEventListener;
+
+use PHPUnit\Framework\TestCase;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Component\Action\Event\ExtendableActionEvent;
 
-class CreatePackingSlipEventListenerTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\PackingBundle\Entity\PackingSlip;
+use Marello\Bundle\PackingBundle\Mapper\MapperInterface;
+use Marello\Bundle\PackingBundle\EventListener\CreatePackingSlipEventListener;
+
+class CreatePackingSlipEventListenerTest extends TestCase
 {
     /**
      * @var MapperInterface|\PHPUnit_Framework_MockObject_MockObject

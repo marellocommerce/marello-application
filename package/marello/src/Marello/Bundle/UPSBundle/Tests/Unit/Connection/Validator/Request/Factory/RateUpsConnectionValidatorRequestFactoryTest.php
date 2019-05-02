@@ -2,13 +2,16 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Connection\Validator\Request\Factory;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\SecurityBundle\Encoder\SymmetricCrypterInterface;
+
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Client\Request\UpsClientRequest;
 use Marello\Bundle\UPSBundle\Connection\Validator\Request\Factory\RateUpsConnectionValidatorRequestFactory;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 
-class RateUpsConnectionValidatorRequestFactoryTest extends \PHPUnit_Framework_TestCase
+class RateUpsConnectionValidatorRequestFactoryTest extends TestCase
 {
     const USERNAME = 'user';
     const PASS = 'pass';

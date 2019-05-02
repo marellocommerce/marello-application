@@ -3,6 +3,8 @@ data:
       attributes:
           orderReference: 'NOPENOPE'
           currency: 'USD'
+          shippingMethod: 'manual_shipping_1'
+          shippingMethodType: 'primary'
       relationships:
           billingAddress:
               data:

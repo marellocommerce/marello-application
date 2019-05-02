@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\PackingBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\PackingBundle\Entity\PackingSlip;
-use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
-use Marello\Bundle\ProductBundle\Entity\Product;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class PackingSlipItemTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\PackingBundle\Entity\PackingSlip;
+use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
+
+class PackingSlipItemTest extends TestCase
 {
     use EntityTestCaseTrait;
 

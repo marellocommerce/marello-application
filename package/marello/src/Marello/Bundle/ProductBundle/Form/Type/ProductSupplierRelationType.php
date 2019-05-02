@@ -7,10 +7,11 @@ use Marello\Bundle\SupplierBundle\Form\Type\SupplierSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductSupplierRelationType extends AbstractType
 {
-    const NAME = 'marello_product_supplier_relation_form';
+    const BLOCK_PREFIX = 'marello_product_supplier_relation_form';
 
     /**
      * {@inheritdoc}
@@ -41,16 +42,8 @@ class ProductSupplierRelationType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class'         => ProductSupplierRelation::class,
-            'cascade_validation' => true,
+            'constraints'        => [new Valid()],
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return self::NAME;
     }
 
     /**
@@ -58,6 +51,6 @@ class ProductSupplierRelationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

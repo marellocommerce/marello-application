@@ -32,7 +32,7 @@ class PurchaseOrderItemTypeTest extends FormIntegrationTestCase
 
     public function testGetBlockPrefix()
     {
-        $this->assertEquals(PurchaseOrderItemType::NAME, $this->formType->getBlockPrefix());
+        $this->assertEquals(PurchaseOrderItemType::BLOCK_PREFIX, $this->formType->getBlockPrefix());
     }
 
     /**
@@ -44,7 +44,7 @@ class PurchaseOrderItemTypeTest extends FormIntegrationTestCase
      */
     public function testSubmit($submittedData, $expectedData, $defaultData = null)
     {
-        $form = $this->factory->create($this->formType, $defaultData);
+        $form = $this->factory->create(PurchaseOrderItemType::class, $defaultData);
 
         $this->assertEquals($defaultData, $form->getData());
 

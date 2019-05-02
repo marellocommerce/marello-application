@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssembledPriceListType extends AbstractType
 {
-    const NAME = 'marello_assembled_price_list';
+    const BLOCK_PREFIX = 'marello_assembled_price_list';
 
     /**
      * {@inheritdoc}
@@ -46,8 +46,8 @@ class AssembledPriceListType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

@@ -5,12 +5,16 @@ namespace Marello\Bundle\ProductBundle\Form\Handler;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Variant;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ProductVariantHandler
 {
+    use RequestHandlerTrait;
+    
     /**
      * @var FormInterface
      */
@@ -31,23 +35,25 @@ class ProductVariantHandler
      */
     protected $parent;
 
-    /** @var EventDispatcherInterface */
+    /**
+     * @var EventDispatcherInterface
+     */
     protected $eventDispatcher;
 
     /**
      * @param FormInterface            $form
-     * @param Request                  $request
+     * @param RequestStack             $requestStack
      * @param ObjectManager            $manager
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         FormInterface $form,
-        Request $request,
+        RequestStack $requestStack,
         ObjectManager $manager,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->form            = $form;
-        $this->request         = $request;
+        $this->request         = $requestStack->getCurrentRequest();
         $this->manager         = $manager;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -66,7 +72,7 @@ class ProductVariantHandler
         $this->form->setData($entity);
 
         if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
-            $this->form->submit($this->request);
+            $this->submitPostPutRequest($this->form, $this->request);
 
             if ($this->form->isValid()) {
                 $addVariants = $this->form->get('addVariants')->getData();

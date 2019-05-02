@@ -4,13 +4,15 @@ namespace Marello\Bundle\AddressBundle\Form\Type;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Constraint;
+use Oro\Bundle\AddressBundle\Form\Type\AddressType as OroAddressType;
 
 class AddressType extends AbstractType
 {
-    const NAME = 'marello_address';
+    const BLOCK_PREFIX = 'marello_address';
 
     /**
      * {@inheritdoc}
@@ -21,10 +23,10 @@ class AddressType extends AbstractType
         $builder->remove('organization');
 
         $builder
-            ->add('phone', 'text', [
+            ->add('phone', TextType::class, [
                 'required' => false,
             ])
-            ->add('company', 'text', [
+            ->add('company', TextType::class, [
                 'required' => false,
             ])
         ;
@@ -45,14 +47,14 @@ class AddressType extends AbstractType
      */
     public function getParent()
     {
-        return 'oro_address';
+        return OroAddressType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

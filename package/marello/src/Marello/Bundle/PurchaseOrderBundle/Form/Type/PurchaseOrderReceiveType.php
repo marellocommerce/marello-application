@@ -9,13 +9,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PurchaseOrderReceiveType extends AbstractType
 {
-    const NAME = 'marello_purchase_order_receive';
+    const BLOCK_PREFIX = 'marello_purchase_order_receive';
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('items', PurchaseOrderItemReceiveCollectionType::NAME);
+        $builder->add('items', PurchaseOrderItemReceiveCollectionType::class);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -24,12 +30,10 @@ class PurchaseOrderReceiveType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

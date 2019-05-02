@@ -1,3 +1,0 @@
-marello_product_product_api:
-    resource:     "@MarelloProductBundle/Controller/Api/Rest/ProductController.php"
-    type:         rest

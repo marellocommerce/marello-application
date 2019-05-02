@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\EventListener;
 
-use Marello\Bundle\TaxBundle\Event\ResolveTaxEvent;
-use Marello\Bundle\TaxBundle\Event\TaxEventDispatcher;
-use Marello\Bundle\TaxBundle\Model\Taxable;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class TaxEventDispatcherTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\TaxBundle\Model\Taxable;
+use Marello\Bundle\TaxBundle\Event\ResolveTaxEvent;
+use Marello\Bundle\TaxBundle\Event\TaxEventDispatcher;
+
+class TaxEventDispatcherTest extends TestCase
 {
     public function testDispatch()
     {

@@ -8,10 +8,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class TaxCodeType extends AbstractType
 {
-    const NAME = 'marello_tax_code_form';
+    const BLOCK_PREFIX = 'marello_tax_code_form';
 
     /**
      * {@inheritdoc}
@@ -43,16 +44,18 @@ class TaxCodeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => TaxCode::class,
-            'cascade_validation' => true,
+            'data_class'  => TaxCode::class,
+            'constraints' => [
+                new Valid()
+            ]
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

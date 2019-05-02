@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Client\Url\Provider\Basic;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\UPSBundle\Client\Url\Provider\Basic\BasicUpsClientUrlProvider;
 
-class BasicUpsClientUrlProviderTest extends \PHPUnit_Framework_TestCase
+class BasicUpsClientUrlProviderTest extends TestCase
 {
     const TEST_URL = 'test_url';
     const PROD_URL = 'prod_url';

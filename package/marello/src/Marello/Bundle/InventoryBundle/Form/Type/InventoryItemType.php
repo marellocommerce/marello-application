@@ -9,10 +9,11 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class InventoryItemType extends AbstractType
 {
-    const NAME = 'marello_inventory_item';
+    const BLOCK_PREFIX = 'marello_inventory_item';
 
     /**
      * {@inheritdoc}
@@ -55,17 +56,11 @@ class InventoryItemType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => InventoryItem::class,
-            'cascade_validation' => true,
+            'data_class' => InventoryItem::class,
+            'constraints' => [
+                new Valid()
+            ]
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return self::NAME;
     }
 
     /**
@@ -73,6 +68,6 @@ class InventoryItemType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

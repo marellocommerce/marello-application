@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\CatalogBundle\Tests\Unit\Formatter;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\CatalogBundle\Formatter\CategoryCodeFormatter;
 
-class CategoryCodeFormatterTest extends \PHPUnit_Framework_TestCase
+class CategoryCodeFormatterTest extends TestCase
 {
     /** @var CategoryCodeFormatter $formatter */
     protected $formatter;

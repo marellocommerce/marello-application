@@ -4,9 +4,12 @@ namespace Marello\Bundle\OrderBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 
+use Marello\Bundle\OrderBundle\Form\Type\OrderType;
+use Marello\Bundle\OrderBundle\Form\Type\OrderUpdateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -81,7 +84,7 @@ class OrderController extends Controller
      */
     protected function update(Request $request, Order $order = null)
     {
-        $formName = $order ? 'marello_order_update' : 'marello_order_order';
+        $formClass = $order ? OrderUpdateType::class : OrderType::class;
 
         if ($order === null) {
             $order = new Order();
@@ -92,7 +95,7 @@ class OrderController extends Controller
          */
         $originalItems = new ArrayCollection($order->getItems()->toArray());
 
-        $form = $this->createForm($formName, $order);
+        $form = $this->createForm($formClass, $order);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -176,7 +179,7 @@ class OrderController extends Controller
         $responseData = array(
             'saved' => false
         );
-        $form  = $this->createForm('marello_address', $address);
+        $form  = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

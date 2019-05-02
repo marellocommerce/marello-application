@@ -6,6 +6,8 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepOneType;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +15,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 class PurchaseOrderCreateStepOneHandler
 {
+    use RequestHandlerTrait;
+
     /** @var FormInterface */
     private $form;
 
@@ -39,7 +43,7 @@ class PurchaseOrderCreateStepOneHandler
     public function process()
     {
         if ($this->request->isMethod(Request::METHOD_POST)) {
-            $this->form->submit($this->request);
+            $this->submitPostPutRequest($this->form, $this->request);
 
             if ($this->form->isValid()) {
                 return true;

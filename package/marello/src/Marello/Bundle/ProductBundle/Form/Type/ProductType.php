@@ -7,15 +7,20 @@ use Marello\Bundle\PricingBundle\Form\EventListener\ChannelPricingSubscriber;
 use Marello\Bundle\PricingBundle\Form\EventListener\PricingSubscriber;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Form\EventListener\DefaultSalesChannelSubscriber;
+use Marello\Bundle\TaxBundle\Form\Type\TaxCodeSelectType;
 use Oro\Bundle\AttachmentBundle\Form\Type\ImageType;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductType extends AbstractType
 {
-    const NAME = 'marello_product_form';
+    const BLOCK_PREFIX = 'marello_product_form';
 
     /**
      * @var DefaultSalesChannelSubscriber
@@ -33,7 +38,6 @@ class ProductType extends AbstractType
     protected $channelPricingSubscriber;
 
     /**
-     * ProductType constructor.
      * @param DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber
      * @param PricingSubscriber $pricingSubscriber
      * @param ChannelPricingSubscriber $channelPricingSubscriber
@@ -43,9 +47,9 @@ class ProductType extends AbstractType
         PricingSubscriber $pricingSubscriber,
         ChannelPricingSubscriber $channelPricingSubscriber
     ) {
-        $this->defaultSalesChannelSubscriber    = $defaultSalesChannelSubscriber;
-        $this->pricingSubscriber         = $pricingSubscriber;
-        $this->channelPricingSubscriber  = $channelPricingSubscriber;
+        $this->defaultSalesChannelSubscriber = $defaultSalesChannelSubscriber;
+        $this->pricingSubscriber = $pricingSubscriber;
+        $this->channelPricingSubscriber = $channelPricingSubscriber;
     }
 
     /**
@@ -56,7 +60,7 @@ class ProductType extends AbstractType
         $builder
             ->add(
                 'name',
-                'text',
+                TextType::class,
                 [
                     'required' => true,
                     'label'    => 'marello.product.name.label',
@@ -64,7 +68,7 @@ class ProductType extends AbstractType
             )
             ->add(
                 'sku',
-                'text',
+                TextType::class,
                 [
                     'required' => true,
                     'label'    => 'marello.product.sku.label',
@@ -72,7 +76,7 @@ class ProductType extends AbstractType
             )
             ->add(
                 'manufacturingCode',
-                'text',
+                TextType::class,
                 [
                     'required' => false,
                     'label'    => 'marello.product.manufacturing_code.label',
@@ -80,7 +84,7 @@ class ProductType extends AbstractType
             )
             ->add(
                 'weight',
-                'number',
+                NumberType::class,
                 [
                     'required'  => false,
                     'scale'     => 2,
@@ -89,7 +93,7 @@ class ProductType extends AbstractType
             )
             ->add(
                 'warranty',
-                'number',
+                NumberType::class,
                 [
                     'required'  => false,
                     'label'     => 'marello.product.warranty.label',
@@ -98,17 +102,16 @@ class ProductType extends AbstractType
             )
             ->add(
                 'status',
-                'entity',
+                EntityType::class,
                 [
-                    'label'    => 'marello.product.status.label',
-                    'class'    => 'MarelloProductBundle:ProductStatus',
-                    'property' => 'label',
-                    'required' => true,
+                    'label'         => 'marello.product.status.label',
+                    'class'         => 'MarelloProductBundle:ProductStatus',
+                    'required'      => true,
                 ]
             )
             ->add(
                 'addSalesChannels',
-                EntityIdentifierType::NAME,
+                EntityIdentifierType::class,
                 [
                     'class'    => 'MarelloSalesBundle:SalesChannel',
                     'required' => false,
@@ -118,7 +121,7 @@ class ProductType extends AbstractType
             )
             ->add(
                 'removeSalesChannels',
-                EntityIdentifierType::NAME,
+                EntityIdentifierType::class,
                 [
                     'class'    => 'MarelloSalesBundle:SalesChannel',
                     'required' => false,
@@ -128,19 +131,17 @@ class ProductType extends AbstractType
             )
             ->add(
                 'suppliers',
-                'marello_product_supplier_relation_collection_form',
+                ProductSupplierRelationCollectionType::class,
                 [
-                    'label'              => 'marello.supplier.entity_label',
-                    'cascade_validation' => true,
+                    'label' => 'marello.supplier.entity_label',
                 ]
             )
-            ->add('taxCode', 'marello_tax_taxcode_select')
+            ->add('taxCode', TaxCodeSelectType::class)
             ->add(
                 'salesChannelTaxCodes',
-                'marello_product_channel_tax_relation_collection_form',
+                ProductChannelTaxRelationCollectionType::class,
                 [
-                    'label'              => 'marello.tax.taxcode.entity_label',
-                    'cascade_validation' => true,
+                    'label' => 'marello.tax.taxcode.entity_label',
                 ]
             )
             ->add(
@@ -153,7 +154,7 @@ class ProductType extends AbstractType
             )
             ->add(
                 'appendCategories',
-                EntityIdentifierType::NAME,
+                EntityIdentifierType::class,
                 [
                     'class'    => Category::class,
                     'required' => false,
@@ -163,7 +164,7 @@ class ProductType extends AbstractType
             )
             ->add(
                 'removeCategories',
-                EntityIdentifierType::NAME,
+                EntityIdentifierType::class,
                 [
                     'class'    => Category::class,
                     'required' => false,
@@ -186,15 +187,15 @@ class ProductType extends AbstractType
             'data_class'         => Product::class,
             'intention'          => 'product',
             'single_form'        => true,
-            'cascade_validation' => true,
+            'constraints'        => [new Valid()],
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

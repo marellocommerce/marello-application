@@ -2,16 +2,18 @@
 
 namespace Marello\Bundle\TaxBundle\Form\Type;
 
+use Marello\Bundle\TaxBundle\Entity\TaxRate;
 use Oro\Bundle\FormBundle\Form\Type\OroPercentType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class TaxRateType extends AbstractType
 {
-    const NAME = 'marello_tax_rate_form';
+    const BLOCK_PREFIX = 'marello_tax_rate_form';
 
     /**
      * {@inheritdoc}
@@ -45,16 +47,16 @@ class TaxRateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => 'Marello\Bundle\TaxBundle\Entity\TaxRate',
-            'cascade_validation' => true,
+            'data_class'  => TaxRate::class,
+            'constraints' => [new Valid()],
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

@@ -2,12 +2,14 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\Factory;
 
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\TaxBundle\Model\Taxable;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\TaxBundle\Factory\TaxFactory;
 use Marello\Bundle\TaxBundle\Mapper\TaxMapperInterface;
-use Marello\Bundle\TaxBundle\Model\Taxable;
 
-class TaxFactoryTest extends \PHPUnit_Framework_TestCase
+class TaxFactoryTest extends TestCase
 {
     /**
      * @var TaxFactory

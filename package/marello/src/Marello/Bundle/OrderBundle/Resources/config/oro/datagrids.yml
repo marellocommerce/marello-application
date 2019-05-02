@@ -139,7 +139,7 @@ datagrids:
                 type:       navigate
                 link:       refund_link
                 icon:       eur
-        action_configuration: [@marello_order.datagrid.action_permission_provider, "getActionPermissions"]
+        action_configuration: ['@marello_order.datagrid.action_permission_provider', 'getActionPermissions']
         options:
             export: true
             mass_actions:
@@ -362,7 +362,7 @@ datagrids:
                     orderNumber:
                         data_name: o.orderNumber
                 default:
-                    orderNumber: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                    orderNumber: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
             options:
                 export: false
                 toolbarOptions:
@@ -406,7 +406,7 @@ datagrids:
                 totalOrders:            { data_name: totalOrders }
                 totalRevenue:           { data_name: totalRevenue }
             default:
-                totalOrders: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                totalOrders: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         options:
             entityHint: orders
             export: false

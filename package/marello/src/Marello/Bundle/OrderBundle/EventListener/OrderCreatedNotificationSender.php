@@ -49,7 +49,7 @@ class OrderCreatedNotificationSender
     {
         $this->emailSendProcessorLink->getService()->sendNotification(
             'marello_order_accepted_confirmation',
-            [$order->getCustomer()->getEmail()],
+            [$order->getCustomer()],
             $order
         );
     }

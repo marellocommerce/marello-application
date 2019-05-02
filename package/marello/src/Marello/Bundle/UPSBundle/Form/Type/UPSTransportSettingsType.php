@@ -9,6 +9,7 @@ use Oro\Bundle\AddressBundle\Form\Type\CountryType;
 use Oro\Bundle\FormBundle\Form\Type\OroEncodedPlaceholderPasswordType;
 use Oro\Bundle\IntegrationBundle\Provider\TransportInterface;
 use Oro\Bundle\LocaleBundle\Form\Type\LocalizedFallbackValueCollectionType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -37,7 +38,7 @@ class UPSTransportSettingsType extends AbstractType
     protected $transport;
 
     /**
-     * @param TransportInterface        $transport
+     * @param TransportInterface $transport
      */
     public function __construct(TransportInterface $transport)
     {
@@ -59,7 +60,7 @@ class UPSTransportSettingsType extends AbstractType
             [
                 'label' => 'marello.ups.transport.labels.label',
                 'required' => true,
-                'options' => ['constraints' => [new NotBlank()]],
+                'entry_options' => ['constraints' => [new NotBlank()]],
             ]
         );
         $builder->add(
@@ -117,12 +118,11 @@ class UPSTransportSettingsType extends AbstractType
                 'label' => 'marello.ups.transport.pickup_type.label',
                 'required' => true,
                 'choices' => [
-                    UPSSettings::PICKUP_TYPE_REGULAR_DAILY => 'marello.ups.transport.pickup_type.regular_daily.label',
-                    UPSSettings::PICKUP_TYPE_CUSTOMER_COUNTER =>
-                        'marello.ups.transport.pickup_type.customer_counter.label',
-                    UPSSettings::PICKUP_TYPE_ONE_TIME => 'marello.ups.transport.pickup_type.one_time.label',
-                    UPSSettings::PICKUP_TYPE_ON_CALL_AIR => 'marello.ups.transport.pickup_type.on_call_air.label',
-                    UPSSettings::PICKUP_TYPE_LETTER_CENTER => 'marello.ups.transport.pickup_type.letter_center.label',
+                    'marello.ups.transport.pickup_type.regular_daily.label' => UPSSettings::PICKUP_TYPE_REGULAR_DAILY,
+                    'marello.ups.transport.pickup_type.customer_counter.label' => UPSSettings::PICKUP_TYPE_CUST_COUNTER,
+                    'marello.ups.transport.pickup_type.one_time.label' => UPSSettings::PICKUP_TYPE_ONE_TIME,
+                    'marello.ups.transport.pickup_type.on_call_air.label' => UPSSettings::PICKUP_TYPE_ON_CALL_AIR,
+                    'marello.ups.transport.pickup_type.letter_center.label' => UPSSettings::PICKUP_TYPE_LETTER_CENTER,
                 ]
             ]
         );
@@ -133,8 +133,8 @@ class UPSTransportSettingsType extends AbstractType
                 'label' => 'marello.ups.transport.unit_of_weight.label',
                 'required' => true,
                 'choices' => [
-                    UPSSettings::UNIT_OF_WEIGHT_LBS => 'marello.ups.transport.unit_of_weight.lbs.label',
-                    UPSSettings::UNIT_OF_WEIGHT_KGS => 'marello.ups.transport.unit_of_weight.kgs.label'
+                    'marello.ups.transport.unit_of_weight.lbs.label' => UPSSettings::UNIT_OF_WEIGHT_LBS,
+                    'marello.ups.transport.unit_of_weight.kgs.label' => UPSSettings::UNIT_OF_WEIGHT_KGS
                 ]
             ]
         );
@@ -148,7 +148,7 @@ class UPSTransportSettingsType extends AbstractType
         );
         $builder->add(
             'applicableShippingServices',
-            'entity',
+            EntityType::class,
             $this->getApplicableShippingServicesOptions()
         );
     }

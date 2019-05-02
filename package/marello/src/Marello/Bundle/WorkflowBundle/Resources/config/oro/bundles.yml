@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bundle\WorkflowBundle\MarelloWorkflowBundle, priority: 20 }

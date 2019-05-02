@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Connection\Validator\Result;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\UPSBundle\Connection\Validator\Result\UpsConnectionValidatorResult;
 
-class UpsConnectionValidatorResultTest extends \PHPUnit_Framework_TestCase
+class UpsConnectionValidatorResultTest extends TestCase
 {
     /**
      * @var array

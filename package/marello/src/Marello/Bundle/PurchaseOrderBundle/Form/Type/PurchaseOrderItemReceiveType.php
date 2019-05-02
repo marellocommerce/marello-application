@@ -2,24 +2,24 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\Form\Type;
 
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
+use Marello\Bundle\PurchaseOrderBundle\Form\EventListener\PurchaseOrderItemSubscriber;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
-use Marello\Bundle\PurchaseOrderBundle\Form\EventListener\PurchaseOrderItemSubscriber;
-
 class PurchaseOrderItemReceiveType extends AbstractType
 {
-    const NAME = 'marello_purchase_order_item_receive';
+    const BLOCK_PREFIX = 'marello_purchase_order_item_receive';
 
-    /** @var PurchaseOrderItemSubscriber $purchaseOrderItemSubscriber */
+    /**
+     * @var PurchaseOrderItemSubscriber
+     */
     protected $purchaseOrderItemSubscriber;
 
     /**
-     * PurchaseOrderItemReceiveType constructor.
-     *
      * @param PurchaseOrderItemSubscriber $purchaseOrderItemSubscriber
      */
     public function __construct(PurchaseOrderItemSubscriber $purchaseOrderItemSubscriber)
@@ -29,12 +29,10 @@ class PurchaseOrderItemReceiveType extends AbstractType
 
     /**
      * {@inheritdoc}
-     * @param FormBuilderInterface $builder
-     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('accepted_qty', 'integer', [
+        $builder->add('accepted_qty', IntegerType::class, [
             'mapped' => false,
             'required'  => true,
             'constraints'   => new GreaterThan(['value' => 0]),
@@ -45,7 +43,6 @@ class PurchaseOrderItemReceiveType extends AbstractType
 
     /**
      * {@inheritdoc}
-     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -56,12 +53,10 @@ class PurchaseOrderItemReceiveType extends AbstractType
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

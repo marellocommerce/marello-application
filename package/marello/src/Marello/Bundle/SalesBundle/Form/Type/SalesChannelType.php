@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SalesChannelType extends AbstractType
 {
-    const NAME = 'marello_sales_channel';
+    const BLOCK_PREFIX = 'marello_sales_channel';
 
     /**
      * @var CurrencySubscriber
@@ -93,16 +93,8 @@ class SalesChannelType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

@@ -4,10 +4,10 @@ data:
     attributes:
         returnNumber: '000000002'
         salesChannelName: channel1
-        returnReference: 0000000035b9b9ebd0775f
+        returnReference: '@return1->returnReference'
         locale: null
         workflowItem:
-            id: 24
+            id: 114
             currentStep:
                 name: pending
                 label: Pending
@@ -31,6 +31,8 @@ data:
             data:
                 type: marellosaleschannels
                 id: chan_eur
+        shipment:
+            data: null
         localization:
             data: null
         organization:

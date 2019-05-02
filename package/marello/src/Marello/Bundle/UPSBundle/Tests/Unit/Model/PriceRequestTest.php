@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Model;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
-use Marello\Bundle\AddressBundle\Tests\Stubs\AddressStub;
+
 use Marello\Bundle\UPSBundle\Model\Package;
 use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
+use Marello\Bundle\AddressBundle\Tests\Stubs\AddressStub;
 
-class PriceRequestTest extends \PHPUnit_Framework_TestCase
+class PriceRequestTest extends TestCase
 {
     use EntityTestCaseTrait;
 

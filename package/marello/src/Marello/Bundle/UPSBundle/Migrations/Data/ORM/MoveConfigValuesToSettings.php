@@ -21,7 +21,7 @@ class MoveConfigValuesToSettings extends AbstractMoveConfigValuesToSettings impl
 {
     const SECTION_NAME = 'marello_shipping';
 
-    const UPS_TYPE = 'ups';
+    const UPS_TYPE = 'marello_ups';
 
     /**
      * {@inheritdoc}
@@ -66,7 +66,7 @@ class MoveConfigValuesToSettings extends AbstractMoveConfigValuesToSettings impl
             new UPSConfigToSettingsConverter(
                 $container->getParameter('marello_ups.api.url.production'),
                 $container->get('doctrine'),
-                $container->get('oro_security.encoder.mcrypt')
+                $container->get('oro_security.encoder.default')
             );
         $this->shippingMethodIdentifierByChannelGenerator =
             $container->get('marello_ups.method.identifier_generator.method');

@@ -39,22 +39,6 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 
-    marello_order.manager.order.api:
-        class: Marello\Bundle\OrderBundle\Entity\Manager\OrderApiEntityManager
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - '%marello_order.entity.order.class%'
-            - '@doctrine.orm.entity_manager'
-        calls:
-            - [setEntitySerializer, ['@marello_core.entity_serializer']]
-
-    marello_order.manager.customer.api:
-        class: Marello\Bundle\OrderBundle\Entity\Manager\CustomerApiEntityManager
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - '%marello_order_customer.class%'
-            - '@doctrine.orm.entity_manager'
-
     marello_order.provider.order_statistic_provider:
         class: '%marello_order.provider.order_statistic_provider.class%'
         arguments:
@@ -231,15 +215,15 @@ services:
             - { name: marello_entity_notification_configuration_provider, class: Marello\Bundle\OrderBundle\Entity\Order }
 
     marello_order.api.add_workflow_item_config:
-        class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowItemConfig'
+        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowItemConfig'
         tags:
-            - { name: oro.api.processor, action: get_config,  class: Marello\Bundle\OrderBundle\Entity\Order }
+            - { name: oro.api.processor, action: get_config, class: Marello\Bundle\OrderBundle\Entity\Order }
 
     marello_order.api.add_workflow_item:
-        class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowItem'
+        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowItem'
         arguments:
             - '@oro_workflow.manager'
             - '@oro_entity.doctrine_helper'
             - '@translator.default'
         tags:
-            - { name: oro.api.processor, action: customize_loaded_data,  class: Marello\Bundle\OrderBundle\Entity\Order }
+            - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\OrderBundle\Entity\Order }

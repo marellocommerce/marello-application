@@ -289,7 +289,9 @@ class Product extends ExtendProduct implements
     /**
      * @var ArrayCollection
      * unidirectional many-to-many
-     * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel")
+     * @ORM\ManyToMany(targetEntity="Marello\Bundle\SalesBundle\Entity\SalesChannel",
+     *      fetch="EAGER"
+     * )
      * @ORM\JoinTable(name="marello_product_saleschannel")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -742,6 +744,15 @@ class Product extends ExtendProduct implements
     {
         return count($this->channels) > 0;
     }
+    
+    /**
+     * @param SalesChannel $channel
+     * @return bool
+     */
+    public function hasChannel(SalesChannel $channel)
+    {
+        return $this->channels->contains($channel);
+    }
 
     /**
      * Remove item
@@ -1058,7 +1069,7 @@ class Product extends ExtendProduct implements
 
     /**
      * @param SalesChannel $salesChannel
-     * @return ProductChannelPrice|null
+     * @return AssembledChannelPriceList|null
      */
     public function getSalesChannelPrice(SalesChannel $salesChannel)
     {

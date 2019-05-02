@@ -8,6 +8,7 @@
 {% endif %}
 
 {% block navButtons %}
+    {{ parent() }}
     {{ UI.cancelButton(path('marello_supplier_supplier_index')) }}
     {% set html = UI.saveAndCloseButton() %}
     {% set html = html ~ UI.saveAndStayButton() %}

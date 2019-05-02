@@ -85,60 +85,48 @@
 {% block content_data %}
     {% set id = 'shipping-rule-edit' %}
 
-    {% set dataBlocks = [
-    {
-    'title': 'marello.shipping.sections.general'|trans,
-    'class': 'active',
-    'subblocks': [
-    {
-    'data': [
-    form_row(form.rule.enabled),
-    form_row(form.rule.name),
-    form_row(form.rule.sortOrder),
-    form_row(form.currency),
-    form_row(form.rule.stopProcessing),
-    ]
-    },
-    ]
+    {% set dataBlocks = [{
+        'title': 'marello.shipping.sections.general'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'data': [
+                form_row(form.rule.enabled),
+                form_row(form.rule.name),
+                form_row(form.rule.sortOrder),
+                form_row(form.currency),
+                form_row(form.rule.stopProcessing)
+            ]
+        }]
     },
     {
-    'title': 'marello.shipping.sections.shippingrule_destination'|trans,
-    'subblocks': [
-    {
-    'data': [
-    form_widget(form.destinations, {'attr': {'class': 'marello-shipping-rule-collection marello-shipping-rule-destinations-collection row-oro'}}),
-    ]
-    }
-    ]
+        'title': 'marello.shipping.sections.shippingrule_destination'|trans,
+        'subblocks': [{
+            'data': [
+                form_widget(form.destinations, {'attr': {'class': 'marello-shipping-rule-collection marello-shipping-rule-destinations-collection row-oro'}}),
+            ]
+        }]
     },
     {
-    'title': 'marello.shipping.sections.shippingrule_conditions'|trans,
-    'subblocks': [
-    {
-    'data': [
-
-    ]
-    }
-    ]
+        'title': 'marello.shipping.sections.shippingrule_conditions'|trans,
+        'subblocks': [{
+            'data': []
+        }]
     },
     {
-    'title': 'marello.shipping.sections.shippingrule_configurations.label'|trans,
-    'content_attr': {
-    'class': 'shipping-rule-methods-wrapper'
-    },
-    'subblocks': [
-    {
-    'data': [
-    block('marello_shipping_rule_methods')
-    ]
-    }
-    ]
-    },
-    ] %}
+        'title': 'marello.shipping.sections.shippingrule_configurations.label'|trans,
+        'content_attr': {
+            'class': 'shipping-rule-methods-wrapper'
+        },
+        'subblocks': [{
+            'data': [
+                block('marello_shipping_rule_methods')
+            ]
+        }]
+    }] %}
 
     {% set data = {
-    'formErrors': form_errors(form),
-    'dataBlocks': dataBlocks
+        'formErrors': form_errors(form),
+        'dataBlocks': dataBlocks
     } %}
 
     {{ parent() }}

@@ -38,7 +38,6 @@
                             <span class="widget-title">{{ 'marello.order.datablock.order_information'|trans }}</span>
                         </div>
                         {{ UI.renderProperty('marello.order.order_number.label'|trans, entity.orderNumber) }}
-                        {{ UI.renderProperty('marello.order.create_date.label'|trans, entity.createdAt|oro_format_datetime) }}
                         {{ UI.renderProperty('marello.order.purchase_date.label'|trans, entity.purchaseDate|oro_format_datetime) }}
 
                         {% set steps = marello_core_get_current_workflow_steps(entity) %}
@@ -68,16 +67,18 @@
 
     {% set totalsWidget %}
         <div class="responsive-block">
-            <div class="box-type1">
-                <div class="title">
-                    <span class="widget-title">{{ 'marello.order.datablock.order_totals'|trans }}</span>
+            <div class="order-totals-wrapper">
+                <div class="box-type1">
+                    <div class="title">
+                        <span class="widget-title">{{ 'marello.order.datablock.order_totals'|trans }}</span>
+                    </div>
+                    {{ UI.renderProperty('marello.order.subtotal.label'|trans, entity.subtotal|oro_format_currency({'currency':entity.currency})) }}
+                    {{ UI.renderProperty('marello.order.shipping_amount_incl_tax.label'|trans, entity.shippingAmountInclTax|oro_format_currency({'currency':entity.currency})) }}
+                    {{ UI.renderProperty('marello.order.total_tax.label'|trans, entity.totalTax|oro_format_currency({'currency':entity.currency})) }}
+                    {{ UI.renderProperty('marello.order.discount_amount.label'|trans, entity.discountAmount|oro_format_currency({'currency':entity.currency})) }}
+                    {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.grandTotal|oro_format_currency({'currency':entity.currency})) }}
+                    {{ UI.renderProperty('marello.order.coupon_code.label'|trans, entity.couponCode) }}
                 </div>
-                {{ UI.renderProperty('marello.order.subtotal.label'|trans, entity.subtotal|oro_format_currency({'currency':entity.currency})) }}
-                {{ UI.renderProperty('marello.order.shipping_amount_incl_tax.label'|trans, entity.shippingAmountInclTax|oro_format_currency({'currency':entity.currency})) }}
-                {{ UI.renderProperty('marello.order.total_tax.label'|trans, entity.totalTax|oro_format_currency({'currency':entity.currency})) }}
-                {{ UI.renderProperty('marello.order.discount_amount.label'|trans, entity.discountAmount|oro_format_currency({'currency':entity.currency})) }}
-                {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.grandTotal|oro_format_currency({'currency':entity.currency})) }}
-                {{ UI.renderProperty('marello.order.coupon_code.label'|trans, entity.couponCode) }}
             </div>
         </div>
     {% endset %}
@@ -164,6 +165,16 @@
         </div>
     {% endset %}
 
+    {% set invoices %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ dataGrid.renderGrid('marello-order-invoices-grid', {'orderId': entity.id}) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
     {% set dataBlocks = [
         {
             'title': 'marello.order.datablock.general'|trans,
@@ -192,6 +203,13 @@
             'class': 'active',
             'subblocks': [
                 { 'data' : [packingSlips] }
+            ]
+        },
+        {
+            'title': 'marello.order.datablock.invoices'|trans,
+            'class': 'active',
+            'subblocks': [
+                { 'data' : [invoices] }
             ]
         }
     ] %}

@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Controller;
 
+use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,7 +27,7 @@ class WarehouseController extends Controller
             ->getRepository('MarelloInventoryBundle:Warehouse')
             ->getDefault();
 
-        $form = $this->createForm('marello_warehouse', $entity);
+        $form = $this->createForm(WarehouseType::class, $entity);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

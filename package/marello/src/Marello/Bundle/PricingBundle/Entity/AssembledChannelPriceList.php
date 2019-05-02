@@ -280,4 +280,17 @@ class AssembledChannelPriceList extends ExtendAssembledChannelPriceList
 
         return $this;
     }
+
+    public function __clone()
+    {
+        if ($this->id) {
+            $this->id = null;
+        }
+        if ($this->defaultPrice) {
+            $this->defaultPrice = clone $this->getDefaultPrice();
+        }
+        if ($this->specialPrice) {
+            $this->specialPrice = clone $this->getSpecialPrice();
+        }
+    }
 }

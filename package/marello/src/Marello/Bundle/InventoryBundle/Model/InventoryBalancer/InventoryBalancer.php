@@ -20,15 +20,15 @@ use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategyInterface;
 use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\BalancedResultObject;
-use Marello\Bundle\InventoryBundle\Model\VirtualInventory\VirtualInventoryHandler;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryHandler;
 
 class InventoryBalancer
 {
     /** @var BalancerStrategiesRegistry $balancerStrategyRegistry */
     protected $balancerStrategyRegistry;
 
-    /** @var VirtualInventoryHandler $virtualInventoryHandler */
-    protected $virtualInventoryHandler;
+    /** @var BalancedInventoryHandler $balancedInventoryHandler */
+    protected $balancedInventoryHandler;
 
     /** @var InventoryItemManager $inventoryItemManager */
     protected $inventoryItemManager;
@@ -42,18 +42,18 @@ class InventoryBalancer
     /**
      * @param BalancerStrategiesRegistry $balancerRegistry
      * @param InventoryItemManager $inventoryItemManager
-     * @param VirtualInventoryHandler $virtualInventoryHandler
+     * @param BalancedInventoryHandler $balancedInventoryHandler
      * @param ConfigManager $configManager
      */
     public function __construct(
         BalancerStrategiesRegistry $balancerRegistry,
         InventoryItemManager $inventoryItemManager,
-        VirtualInventoryHandler $virtualInventoryHandler,
+        BalancedInventoryHandler $balancedInventoryHandler,
         ConfigManager $configManager
     ) {
         $this->balancerStrategyRegistry = $balancerRegistry;
         $this->inventoryItemManager = $inventoryItemManager;
-        $this->virtualInventoryHandler = $virtualInventoryHandler;
+        $this->balancedInventoryHandler = $balancedInventoryHandler;
         $this->configManager = $configManager;
     }
 
@@ -243,9 +243,9 @@ class InventoryBalancer
     private function processResults($results, $product, $flushManager)
     {
         foreach ($results as $groupId => $result) {
-            $virtualLevel = $this->virtualInventoryHandler
-                ->createVirtualInventory($product, $result->getGroup(), $result->getInventoryQty());
-            $this->virtualInventoryHandler->saveVirtualInventory($virtualLevel, true, $flushManager);
+            $virtualLevel = $this->balancedInventoryHandler
+                ->createBalancedInventoryLevel($product, $result->getGroup(), $result->getInventoryQty());
+            $this->balancedInventoryHandler->saveBalancedInventory($virtualLevel, true, $flushManager);
         }
     }
 
@@ -259,7 +259,7 @@ class InventoryBalancer
     {
         $reservedInventory = 0;
         foreach ($scgs as $scg) {
-            $level = $this->virtualInventoryHandler->findExistingVirtualInventory($product, $scg);
+            $level = $this->balancedInventoryHandler->findExistingBalancedInventory($product, $scg);
             if ($level) {
                 $reservedInventory += $level->getReservedInventoryQty();
             }

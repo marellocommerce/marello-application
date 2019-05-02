@@ -5,10 +5,10 @@ data:
         attributes:
             returnNumber: '000000001'
             salesChannelName: channel1
-            returnReference: 0000000025b9b9ebd0603c
+            returnReference: '@return0->returnReference'
             locale: null
             workflowItem:
-                id: 23
+                id: 113
                 currentStep:
                     name: pending
                     label: Pending
@@ -35,6 +35,8 @@ data:
                 data:
                     type: marellosaleschannels
                     id: chan_eur
+            shipment:
+                data: null
             localization:
                 data: null
             organization:
@@ -47,10 +49,10 @@ data:
         attributes:
             returnNumber: '000000002'
             salesChannelName: channel1
-            returnReference: 0000000035b9b9ebd0775f
+            returnReference: '@return1->returnReference'
             locale: null
             workflowItem:
-                id: 24
+                id: 114
                 currentStep:
                     name: pending
                     label: Pending
@@ -74,6 +76,8 @@ data:
                 data:
                     type: marellosaleschannels
                     id: chan_eur
+            shipment:
+                data: null
             localization:
                 data: null
             organization:
@@ -86,10 +90,10 @@ data:
         attributes:
             returnNumber: '000000003'
             salesChannelName: channel1
-            returnReference: 0000000045b9b9ebd07c28
+            returnReference: '@return2->returnReference'
             locale: null
             workflowItem:
-                id: 25
+                id: 115
                 currentStep:
                     name: pending
                     label: Pending
@@ -116,6 +120,8 @@ data:
                 data:
                     type: marellosaleschannels
                     id: chan_eur
+            shipment:
+                data: null
             localization:
                 data: null
             organization:
@@ -128,10 +134,10 @@ data:
         attributes:
             returnNumber: '000000004'
             salesChannelName: channel1
-            returnReference: 0000000055b9b9ebd0809e
+            returnReference: '@return3->returnReference'
             locale: null
             workflowItem:
-                id: 26
+                id: 116
                 currentStep:
                     name: pending
                     label: Pending
@@ -149,6 +155,8 @@ data:
                 data:
                     type: marellosaleschannels
                     id: chan_eur
+            shipment:
+                data: null
             localization:
                 data: null
             organization:
@@ -161,10 +169,10 @@ data:
         attributes:
             returnNumber: '000000005'
             salesChannelName: channel1
-            returnReference: 0000000065b9b9ebd08347
+            returnReference: '@return4->returnReference'
             locale: null
             workflowItem:
-                id: 27
+                id: 117
                 currentStep:
                     name: pending
                     label: Pending
@@ -185,6 +193,8 @@ data:
                 data:
                     type: marellosaleschannels
                     id: chan_eur
+            shipment:
+                data: null
             localization:
                 data: null
             organization:
@@ -197,10 +207,10 @@ data:
         attributes:
             returnNumber: '000000006'
             salesChannelName: channel1
-            returnReference: 0000000075b9b9ebd08676
+            returnReference: '@return5->returnReference'
             locale: null
             workflowItem:
-                id: 28
+                id: 118
                 currentStep:
                     name: pending
                     label: Pending
@@ -227,6 +237,8 @@ data:
                 data:
                     type: marellosaleschannels
                     id: chan_eur
+            shipment:
+                data: null
             localization:
                 data: null
             organization:
@@ -239,10 +251,10 @@ data:
         attributes:
             returnNumber: '000000007'
             salesChannelName: channel1
-            returnReference: 0000000085b9b9ebd08ac4
+            returnReference: '@return6->returnReference'
             locale: null
             workflowItem:
-                id: 29
+                id: 119
                 currentStep:
                     name: pending
                     label: Pending
@@ -260,6 +272,8 @@ data:
                 data:
                     type: marellosaleschannels
                     id: chan_eur
+            shipment:
+                data: null
             localization:
                 data: null
             organization:
@@ -272,10 +286,10 @@ data:
         attributes:
             returnNumber: '000000008'
             salesChannelName: channel1
-            returnReference: 0000000095b9b9ebd08d93
+            returnReference: '@return7->returnReference'
             locale: null
             workflowItem:
-                id: 30
+                id: 120
                 currentStep:
                     name: pending
                     label: Pending
@@ -296,6 +310,8 @@ data:
                 data:
                     type: marellosaleschannels
                     id: chan_eur
+            shipment:
+                data: null
             localization:
                 data: null
             organization:
@@ -308,10 +324,10 @@ data:
         attributes:
             returnNumber: '000000009'
             salesChannelName: channel1
-            returnReference: 0000000105b9b9ebd09154
+            returnReference: '@return8->returnReference'
             locale: null
             workflowItem:
-                id: 31
+                id: 121
                 currentStep:
                     name: pending
                     label: Pending
@@ -319,7 +335,7 @@ data:
             order:
                 data:
                     type: marelloorders
-                    id: '22'
+                    id: '<toString(@marello_order_9->id)>'
             returnItems:
                 data:
                     -
@@ -332,6 +348,8 @@ data:
                 data:
                     type: marellosaleschannels
                     id: chan_eur
+            shipment:
+                data: null
             localization:
                 data: null
             organization:

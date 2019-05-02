@@ -2,11 +2,14 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Units\Method\Identifier;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\IntegrationBundle\Entity\Channel;
+
 use Marello\Bundle\UPSBundle\Entity\ShippingService;
 use Marello\Bundle\UPSBundle\Method\Identifier\UPSMethodTypeIdentifierGenerator;
 
-class UPSMethodTypeIdentifierGeneratorTest extends \PHPUnit_Framework_TestCase
+class UPSMethodTypeIdentifierGeneratorTest extends TestCase
 {
     public function testGenerateIdentifier()
     {

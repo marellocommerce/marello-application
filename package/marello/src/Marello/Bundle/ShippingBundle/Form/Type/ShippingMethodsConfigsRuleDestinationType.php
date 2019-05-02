@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ShippingMethodsConfigsRuleDestinationType extends AbstractType
 {
-    const NAME = 'marello_shipping_methods_configs_rule_destination';
+    const BLOCK_PREFIX = 'marello_shipping_methods_configs_rule_destination';
 
     /**
      * @var AddressCountryAndRegionSubscriber
@@ -84,6 +84,6 @@ class ShippingMethodsConfigsRuleDestinationType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

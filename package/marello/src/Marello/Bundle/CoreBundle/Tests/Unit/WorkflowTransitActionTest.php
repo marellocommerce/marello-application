@@ -5,6 +5,8 @@ namespace Marello\Bundle\CoreBundle\Tests\Unit;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\ConfigExpression\ContextAccessor;
 use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
@@ -12,7 +14,7 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 use Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction;
 
-class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
+class WorkflowTransitActionTest extends TestCase
 {
     /** @var ContextAccessor|\PHPUnit_Framework_MockObject_MockObject $contextAccessor */
     protected $contextAccessor;
@@ -24,6 +26,7 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
      * @var WorkflowTransitAction
      */
     protected $action;
+
 
     protected function setUp()
     {
@@ -44,6 +47,7 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
         $dispatcher = $this->getMockBuilder(EventDispatcher::class)
             ->disableOriginalConstructor()
             ->getMock();
+
         $this->action->setDispatcher($dispatcher);
     }
 
@@ -88,23 +92,5 @@ class WorkflowTransitActionTest extends \PHPUnit_Framework_TestCase
 
         $this->action->initialize($options);
         $this->assertAttributeEquals($options, 'options', $this->action);
-    }
-
-    public function testExecute()
-    {
-        $workflowItemMock = $this
-            ->getMockBuilder(WorkflowItem::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $options = [
-            'transitionName'    => 'go_to_next_definition'
-        ];
-
-        $contextData = ['test_item' => $workflowItemMock];
-        $context = new ItemStub($contextData);
-
-        $this->action->initialize($options);
-        $this->action->execute($context);
     }
 }

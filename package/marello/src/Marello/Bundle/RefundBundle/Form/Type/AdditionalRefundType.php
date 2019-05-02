@@ -2,9 +2,10 @@
 
 namespace Marello\Bundle\RefundBundle\Form\Type;
 
-use Marello\Bundle\RefundBundle\Entity\Refund;
 use Marello\Bundle\RefundBundle\Entity\RefundItem;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -14,12 +15,15 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class AdditionalRefundType extends AbstractType
 {
-    const NAME = 'marello_additional_refund';
+    const BLOCK_PREFIX = 'marello_additional_refund';
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'text', [
+            ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new NotNull(),
@@ -27,14 +31,15 @@ class AdditionalRefundType extends AbstractType
             ]);
 
         $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($options) {
                 /** @var RefundItem $item */
                 $item = $event->getData();
                 $form = $event->getForm();
 
                 if ($item === null) {
-                    $form->add('refundAmount', 'money', [
+                    $form->add('refundAmount', MoneyType::class, [
                         'empty_data' => 0,
+                        'currency' => $options['currency'],
                         'constraints' => [
                             new GreaterThan(0),
                         ]
@@ -44,7 +49,7 @@ class AdditionalRefundType extends AbstractType
                 }
 
                 $form
-                    ->add('refundAmount', 'money', [
+                    ->add('refundAmount', MoneyType::class, [
                         'empty_data' => 0,
                         'currency' => $item->getRefund()->getCurrency(),
                         'constraints' => [
@@ -54,22 +59,24 @@ class AdditionalRefundType extends AbstractType
             });
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [
                 'data_class' => RefundItem::class,
+                'currency'   => null
             ]
         );
     }
 
     /**
-     * Returns the name of this type.
-     *
-     * @return string The name of this type
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

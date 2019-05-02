@@ -2,32 +2,34 @@ Marello
 ========================
 [![GitHub release](https://img.shields.io/github/release/marellocommerce/marello.svg)](https://github.com/marellocommerce/marello/releases)
 
-Marello an Open Source ERP for Commerce tool.
+What is Marello?
+-----------
 
-This document contains information on how to download, install, and start
-using Marello. For a more detailed explanation, see the [Installation]
-chapter.
-
-Requirements
-------------
-
-Marello requires Symfony 2.8.x, Doctrine 2 and PHP 7.0 or above.
+Marello Unified Commerce Management provides capabilities to meet and exceed rising expectations in commerce. Add and manage any sales channel, gain real-time insight into your B2C and B2B orders, inventory, fulfillment, customers and more. A unique unified experience allows shoppers to buy anywhere, fulfill anywhere, and return anywhere with one piece of software, one single version of the truth.
 
 Installation
 ------------
 
-```bash
-curl -s https://getcomposer.org/installer | php
+This package requires an application to run it.
+Please check the installation instructions in [marello-application repository][1]
 
-php composer.phar install
+Use as dependency in composer
+------------
+
+```yaml
+    "require": {
+        "marellocommerce/marello": "dev-master"
+    }
 ```
 
 Run unit tests
 --------------
 
-Please make sure you have at least phpunit 4.5.0 or above.
-To run unit tests of any bundles :
+Please make sure you have at least phpunit 6.5 or above.
+To run unit tests of any bundles:
 
 ```bash
 phpunit
 ```
+
+[1]: https://github.com/marellocommerce/marello-application

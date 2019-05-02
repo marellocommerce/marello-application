@@ -6,6 +6,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
+use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class SalesChannelGroupListener
 {
@@ -17,11 +19,18 @@ class SalesChannelGroupListener
     protected $installed;
 
     /**
-     * @param bool $installed
+     * @var Session
      */
-    public function __construct($installed)
+    protected $session;
+
+    /**
+     * @param bool $installed
+     * @param Session $session
+     */
+    public function __construct($installed, Session $session)
     {
         $this->installed = $installed;
+        $this->session = $session;
     }
     
     /**
@@ -30,11 +39,23 @@ class SalesChannelGroupListener
     private $systemWarehouseChannelGroupLink;
 
     /**
-     * @param SalesChannelGroup $salesChannelGroup
      * @param LifecycleEventArgs $args
+     * @throws ForbiddenException
      */
-    public function preRemove(SalesChannelGroup $salesChannelGroup, LifecycleEventArgs $args)
+    public function preRemove(LifecycleEventArgs $args)
     {
+        $entity = $args->getEntity();
+
+        if (!$entity instanceof SalesChannelGroup) {
+            return;
+        }
+        if ($entity->isSystem()) {
+            $message = 'It is forbidden to delete system Sales Channel Group';
+            $this->session
+                ->getFlashBag()
+                ->add('error', $message);
+            throw new ForbiddenException($message);
+        }
         $em = $args->getEntityManager();
         $systemGroup = $em
             ->getRepository(SalesChannelGroup::class)
@@ -45,14 +66,14 @@ class SalesChannelGroupListener
             return;
         }
         if ($systemGroup) {
-            $salesChannels = $salesChannelGroup->getSalesChannels();
+            $salesChannels = $entity->getSalesChannels();
             foreach ($salesChannels as $salesChannel) {
                 $salesChannel->setGroup($systemGroup);
                 $em->persist($salesChannel);
             }
         }
         if ($systemWarehouseChannelGroupLink) {
-            $systemWarehouseChannelGroupLink->removeSalesChannelGroup($salesChannelGroup);
+            $systemWarehouseChannelGroupLink->removeSalesChannelGroup($entity);
         }
         
         $em->flush();

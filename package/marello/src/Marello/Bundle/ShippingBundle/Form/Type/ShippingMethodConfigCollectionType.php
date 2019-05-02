@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ShippingMethodConfigCollectionType extends AbstractType
 {
-    const NAME = 'marello_shipping_method_config_collection';
+    const BLOCK_PREFIX = 'marello_shipping_method_config_collection';
 
     /**
      * @var MethodConfigCollectionSubscriber
@@ -68,6 +68,6 @@ class ShippingMethodConfigCollectionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\TaxBundle\Tests\Unit\DependencyInjection\CompilerPass;
 
-use Marello\Bundle\TaxBundle\DependencyInjection\Compiler\TaxMapperPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class TaxMapperPassTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\TaxBundle\DependencyInjection\Compiler\TaxMapperPass;
+
+class TaxMapperPassTest extends TestCase
 {
     /**
      * @var TaxMapperPass

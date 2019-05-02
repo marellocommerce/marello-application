@@ -1,7 +1,7 @@
 data:
     -
         type: marelloproductprices
-        id: '42'
+        id: '<toString(@product1->prices->get(0)->defaultPrice->id)>'
         attributes:
             value: '10.0000'
             currency: EUR
@@ -16,7 +16,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '43'
+        id: '<toString(@product2->prices->get(0)->defaultPrice->id)>'
         attributes:
             value: '25.0000'
             currency: EUR
@@ -31,7 +31,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '44'
+        id: '<toString(@product2->prices->get(1)->defaultPrice->id)>'
         attributes:
             value: '28.0000'
             currency: USD
@@ -46,7 +46,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '45'
+        id: '<toString(@product3->prices->get(0)->defaultPrice->id)>'
         attributes:
             value: '50.0000'
             currency: EUR
@@ -61,7 +61,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '46'
+        id: '<toString(@product3->prices->get(1)->defaultPrice->id)>'
         attributes:
             value: '50.0000'
             currency: GBP
@@ -76,7 +76,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '47'
+        id: '<toString(@product4->prices->get(0)->defaultPrice->id)>'
         attributes:
             value: '100.0000'
             currency: EUR
@@ -91,7 +91,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '48'
+        id: '<toString(@product4->prices->get(1)->defaultPrice->id)>'
         attributes:
             value: '112.0000'
             currency: USD
@@ -106,7 +106,7 @@ data:
                     id: default
     -
         type: marelloproductprices
-        id: '49'
+        id: '<toString(@product4->prices->get(2)->defaultPrice->id)>'
         attributes:
             value: '100.0000'
             currency: GBP

@@ -9,6 +9,7 @@ marello:
             label.label:                Name
             code.label:                 Code
             default.label:              Default
+            email.label:                Email
             address.label:              Address
             id.label:                   Id
             owner.label:                Owner
@@ -82,18 +83,20 @@ marello:
         inventorylevellogrecord:
             id.label:                       Id
             entity_label:                   Inventory Level Logrecord
-            entity_plural_label:            Inventory Level Logrecord
+            entity_plural_label:            Inventory Level Logrecords
             allocated_inventory_alteration.label: Allocated Inventory Alteration
             change_trigger.label:           Trigger
             inventory_alteration.label:     Inventory Alteration
             subject_id.label:               Subject
             subject_type.label:             Related Subject
             user.label:                     User
+            inventory_level_qty.label:      InventoryLevel Qty
+            allocated_inventory_level_qty.label: Allocated InventoryLevel Qty
 
-        virtualinventorylevel:
+        balancedinventorylevel:
             id.label:                       Id
-            entity_label:                   Virtual Inventory Level
-            entity_plural_label:            Virtual Inventory Levels
+            entity_label:                   Balanced Inventory Level
+            entity_plural_label:            Balanced Inventory Levels
             product.label:                  Product
             saleschannelgroup:              SalesChannel Group
             inventory.label:                Inventory Qty
@@ -111,6 +114,7 @@ marello:
             menu:
                 label:                      Inventory
                 balanced_inventory.label:   Balanced Inventory
+                inventory_level_log.label:  Inventory Level Log
             label:                          Inventory Management
             add_to_warehouse.label:         Add to Warehouse
         system_configuration:
@@ -123,7 +127,7 @@ marello:
                         strategy.label:     Balancing Strategy
             fields:
                 balancing_strategy.label:             Strategy
-                balance_threshold_percentage.label:   Threshhold Percentage
+                balance_threshold_percentage.label:   Threshold Percentage
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully

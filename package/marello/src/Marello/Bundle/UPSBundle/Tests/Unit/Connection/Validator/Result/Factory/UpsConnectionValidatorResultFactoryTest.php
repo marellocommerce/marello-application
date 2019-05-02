@@ -2,14 +2,17 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Connection\Validator\Result\Factory;
 
-use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Bundle\IntegrationBundle\Provider\Rest\Exception\RestException;
-use Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionValidatorResultFactory;
-use Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionValidatorResultFactoryInterface;
+use Oro\Bundle\IntegrationBundle\Provider\Rest\Client\RestResponseInterface;
+
 use Marello\Bundle\UPSBundle\Connection\Validator\Result\UpsConnectionValidatorResult;
 use Marello\Bundle\UPSBundle\Connection\Validator\Result\UpsConnectionValidatorResultInterface;
+use Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionValidatorResultFactory;
+use Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionValidatorResultFactoryInterface;
 
-class UpsConnectionValidatorResultFactoryTest extends \PHPUnit_Framework_TestCase
+class UpsConnectionValidatorResultFactoryTest extends TestCase
 {
     /**
      * @var UpsConnectionValidatorResultFactoryInterface

@@ -2,10 +2,13 @@
 
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Model;
 
-use Marello\Bundle\UPSBundle\Model\Package;
+use PHPUnit\Framework\TestCase;
+
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class PackageTest extends \PHPUnit_Framework_TestCase
+use Marello\Bundle\UPSBundle\Model\Package;
+
+class PackageTest extends TestCase
 {
     use EntityTestCaseTrait;
 

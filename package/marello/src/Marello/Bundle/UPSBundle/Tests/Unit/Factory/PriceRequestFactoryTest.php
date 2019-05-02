@@ -4,23 +4,27 @@ namespace Marello\Bundle\UPSBundle\Tests\Unit\Method;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Marello\Bundle\OrderBundle\Entity\Customer;
-use Oro\Bundle\AddressBundle\Entity\Country;
+
+use PHPUnit\Framework\TestCase;
+
+use Oro\Component\Testing\Unit\EntityTrait;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
-use Marello\Bundle\AddressBundle\Tests\Stubs\AddressStub;
-use Marello\Bundle\ProductBundle\Entity\Product;
+use Oro\Bundle\AddressBundle\Entity\Country;
 use Oro\Bundle\SecurityBundle\Encoder\SymmetricCrypterInterface;
-use Marello\Bundle\ShippingBundle\Context\LineItem\Collection\Doctrine\DoctrineShippingLineItemCollection;
+
+use Marello\Bundle\UPSBundle\Model\Package;
+use Marello\Bundle\OrderBundle\Entity\Customer;
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Marello\Bundle\UPSBundle\Entity\ShippingService;
+use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
+use Marello\Bundle\AddressBundle\Tests\Stubs\AddressStub;
+use Marello\Bundle\UPSBundle\Factory\PriceRequestFactory;
 use Marello\Bundle\ShippingBundle\Context\ShippingContext;
 use Marello\Bundle\ShippingBundle\Context\ShippingLineItem;
-use Marello\Bundle\UPSBundle\Entity\ShippingService;
-use Marello\Bundle\UPSBundle\Entity\UPSSettings;
-use Marello\Bundle\UPSBundle\Factory\PriceRequestFactory;
-use Marello\Bundle\UPSBundle\Model\Package;
-use Marello\Bundle\UPSBundle\Model\Request\PriceRequest;
-use Oro\Component\Testing\Unit\EntityTrait;
+use Marello\Bundle\ShippingBundle\Context\LineItem\Collection\Doctrine\DoctrineShippingLineItemCollection;
 
-class PriceRequestFactoryTest extends \PHPUnit_Framework_TestCase
+class PriceRequestFactoryTest extends TestCase
 {
     use EntityTrait;
 

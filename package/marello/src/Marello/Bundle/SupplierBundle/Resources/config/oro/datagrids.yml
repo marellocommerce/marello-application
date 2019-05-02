@@ -67,10 +67,6 @@ datagrids:
                 type:       url
                 route:      marello_supplier_supplier_update
                 params:     [ id ]
-            delete_link:
-                type:       url
-                route:      marello_supplier_api_delete_supplier
-                params:     [ id ]
         actions:
             view:
                 type:           navigate
@@ -82,14 +78,6 @@ datagrids:
                 label:          marello.supplier.update
                 icon:           edit
                 link:           update_link
-            delete:
-                type:           delete
-                link:           delete_link
-                acl_resource:   marello_supplier_delete
-                icon:           trash
-                label:          oro.grid.action.delete
-                defaultMessages:
-                    confirm_content: marello.supplier.action.delete.content
         options:
             export: true
 

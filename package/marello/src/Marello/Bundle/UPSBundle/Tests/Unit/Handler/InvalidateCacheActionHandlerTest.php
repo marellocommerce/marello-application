@@ -3,14 +3,18 @@
 namespace Marello\Bundle\UPSBundle\Tests\Unit\Handler;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Marello\Bundle\ShippingBundle\Provider\Cache\ShippingPriceCache;
-use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache as UPSShippingPriceCache;
+
+use PHPUnit\Framework\TestCase;
+
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Oro\Bundle\CacheBundle\Action\DataStorage\InvalidateCacheDataStorage;
+
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Marello\Bundle\UPSBundle\Handler\InvalidateCacheActionHandler;
-use Oro\Bundle\CacheBundle\Action\DataStorage\InvalidateCacheDataStorage;
-use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Marello\Bundle\ShippingBundle\Provider\Cache\ShippingPriceCache;
+use Marello\Bundle\UPSBundle\Cache\ShippingPriceCache as UPSShippingPriceCache;
 
-class InvalidateCacheActionHandlerTest extends \PHPUnit_Framework_TestCase
+class InvalidateCacheActionHandlerTest extends TestCase
 {
     const TRANSPORT_ID = 1;
 

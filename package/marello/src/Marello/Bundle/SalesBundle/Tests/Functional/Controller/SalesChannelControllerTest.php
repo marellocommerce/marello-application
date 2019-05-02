@@ -215,11 +215,11 @@ class SalesChannelControllerTest extends WebTestCase
         $locale
     ) {
         $token = $this->getContainer()->get('security.csrf.token_manager')
-            ->getToken(SalesChannelType::NAME)->getValue();
+            ->getToken(SalesChannelType::BLOCK_PREFIX)->getValue();
 
         $formData = [
             'input_action' => '{"route":"marello_sales_saleschannel_view","params":{"id":"$id"}}',
-            SalesChannelType::NAME => [
+            SalesChannelType::BLOCK_PREFIX => [
                 'name' => $name,
                 'code' => $code,
                 'channelType' => $channelType,

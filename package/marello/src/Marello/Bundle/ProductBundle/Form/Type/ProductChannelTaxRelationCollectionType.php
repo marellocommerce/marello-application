@@ -5,10 +5,11 @@ namespace Marello\Bundle\ProductBundle\Form\Type;
 use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class ProductChannelTaxRelationCollectionType extends AbstractType
 {
-    const NAME = 'marello_product_channel_tax_relation_collection_form';
+    const BLOCK_PREFIX = 'marello_product_channel_tax_relation_collection_form';
 
     /**
      * @param OptionsResolver $resolver
@@ -16,10 +17,10 @@ class ProductChannelTaxRelationCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type'                 => ProductChannelTaxRelationType::NAME,
+            'entry_type'           => ProductChannelTaxRelationType::class,
             'show_form_when_empty' => false,
             'error_bubbling'       => false,
-            'cascade_validation'   => true,
+            'constraints'          => [new Valid()],
             'prototype_name'       => '__nameproductchanneltaxrelation__',
             'prototype'            => true,
             'handle_primary'       => false,
@@ -29,9 +30,9 @@ class ProductChannelTaxRelationCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**
@@ -39,6 +40,6 @@ class ProductChannelTaxRelationCollectionType extends AbstractType
      */
     public function getParent()
     {
-        return CollectionType::NAME;
+        return CollectionType::class;
     }
 }

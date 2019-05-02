@@ -1,5 +1,5 @@
 data:
-    type: categories
+    type: marellocategories
     id: '<toString(@category1->id)>'
     attributes:
         name: 'category with multiple products'

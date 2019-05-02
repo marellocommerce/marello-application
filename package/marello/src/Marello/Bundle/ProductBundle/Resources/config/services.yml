@@ -32,6 +32,7 @@ services:
         class: Marello\Bundle\ProductBundle\Twig\ProductExtension
         arguments:
             - '@marello_sales.saleschannel.provider.channel_provider'
+            - '@marello_catalog.provider.categories_ids'
         tags:
             - { name: twig.extension }
 
@@ -55,6 +56,19 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-product-supplier-grid, method: buildBeforeProductsBySupplier }
+
+    marello_product.listener.datagrid.product_grid_listener:
+        class: Marello\Bundle\ProductBundle\EventListener\Datagrid\ProductGridListener
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.orm_datasource.result.before.marello-products-grid, method: onResultBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.after.marello-products-grid, method: buildAfter }
+
+    marello_product.product_search_listener:
+        class: Marello\Bundle\ProductBundle\EventListener\ProductSearchListener
+        arguments:
+            - '@oro_search.provider.search_mapping'
+        tags:
+            - { name: kernel.event_listener, event: oro_search.before_search, method: process }
 
     marello_product.provider.tax_code_provider:
         class: Marello\Bundle\ProductBundle\Provider\ProductTaxCodeProvider
@@ -105,3 +119,23 @@ services:
                 - '@doctrine'
             calls:
                 - [setVirtualRelationProvider, ['@oro_entity.virtual_relation_provider.chain']]
+
+    marello_product.mass_action.sales_channels_assign:
+        class: 'Marello\Bundle\ProductBundle\Datagrid\Extension\MassAction\SalesChannelsAssignMassAction'
+        arguments:
+            - 'marello_product_assign_sales_channels'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: sales_channels_assign }
+
+    marello_product.async.assign_sales_channels_to_products_processor:
+        class: 'Marello\Bundle\ProductBundle\Async\ProductsAssignSalesChannelsProcessor'
+        arguments:
+            - '@logger'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_datagrid.datagrid.manager'
+            - '@security.token_storage'
+            - '@oro_email.form.factory'
+            - '@oro_email.mailer.processor'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }

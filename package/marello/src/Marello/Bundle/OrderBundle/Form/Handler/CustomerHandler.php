@@ -4,11 +4,15 @@ namespace Marello\Bundle\OrderBundle\Form\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Marello\Bundle\OrderBundle\Entity\Customer;
+use Oro\Bundle\FormBundle\Form\Handler\RequestHandlerTrait;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CustomerHandler
 {
+    use RequestHandlerTrait;
+
     /**
      * @var FormInterface
      */
@@ -24,13 +28,13 @@ class CustomerHandler
 
     /**
      * @param FormInterface $form
-     * @param Request $request
+     * @param RequestStack $requestStack
      * @param EntityManagerInterface $manager
      */
-    public function __construct(FormInterface $form, Request $request, EntityManagerInterface $manager)
+    public function __construct(FormInterface $form, RequestStack $requestStack, EntityManagerInterface $manager)
     {
         $this->form = $form;
-        $this->request = $request;
+        $this->request = $requestStack->getCurrentRequest();
         $this->manager = $manager;
     }
 
@@ -44,7 +48,7 @@ class CustomerHandler
         $this->form->setData($entity);
 
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
-            $this->form->submit($this->request);
+            $this->submitPostPutRequest($this->form, $this->request);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($entity);

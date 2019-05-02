@@ -6,6 +6,7 @@ navigation:
                 uri: '#'
                 extras:
                     position: 40
+                    icon: fa-industry
 
             purchase_orders_list:
                 label: marello.purchaseorder.entity_plural_label

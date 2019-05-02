@@ -21,6 +21,8 @@ oro:
                 invoice_on_hold:
                     label:  'On Hold'
                 invoice:
+                    label:  'Invoiced'
+                paid:
                     label:  'Order Payed'
                 credit:
                     label:  'Closed'
@@ -41,6 +43,8 @@ oro:
                     label:    'Un-Hold'
                 invoice:
                     label:    'Invoice'
+                payment_received:
+                    label:    'Payment Received'
                 ship:
                     label:    'Ship'
                 credit:

@@ -4,7 +4,7 @@ services:
         arguments:
             - "@marello_ups.provider.transport"
         tags:
-            - { name: form.type, alias: marello_ups_transport_settings_type }
+            - { name: form.type }
 
     marello_ups.form.type.shipping_method_config_options:
         class: Marello\Bundle\UPSBundle\Form\Type\UPSShippingMethodOptionsType

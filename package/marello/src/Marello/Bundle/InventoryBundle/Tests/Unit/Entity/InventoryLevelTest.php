@@ -2,13 +2,16 @@
 
 namespace Marello\Bundle\InventoryBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Component\Testing\Unit\EntityTestCaseTrait;
 
-class InventoryLevelTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+
+class InventoryLevelTest extends TestCase
 {
     use EntityTestCaseTrait;
 

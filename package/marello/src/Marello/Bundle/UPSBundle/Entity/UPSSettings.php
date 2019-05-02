@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class UPSSettings extends Transport
 {
     const PICKUP_TYPE_REGULAR_DAILY = '01';
-    const PICKUP_TYPE_CUSTOMER_COUNTER = '03';
+    const PICKUP_TYPE_CUST_COUNTER = '03';
     const PICKUP_TYPE_ONE_TIME = '06';
     const PICKUP_TYPE_ON_CALL_AIR = '07';
     const PICKUP_TYPE_LETTER_CENTER = '19';

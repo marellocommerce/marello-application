@@ -19,7 +19,7 @@ system_configuration:
 
     fields:
         marello_return.ror_period:
-            type: text
+            type: Symfony\Component\Form\Extension\Core\Type\TextType
             data_type: integer
             priority: 120
             options:
@@ -32,7 +32,7 @@ system_configuration:
                         min: 1
 
         marello_return.warranty_period:
-            type: text
+            type: Symfony\Component\Form\Extension\Core\Type\TextType
             data_type: integer
             priority: 120
             options:
@@ -46,7 +46,7 @@ system_configuration:
 
         marello_return.return_notification:
             data_type: boolean
-            type: oro_config_checkbox
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
                 label: marello.return.system_configuration.fields.return_notification.label
                 required: false

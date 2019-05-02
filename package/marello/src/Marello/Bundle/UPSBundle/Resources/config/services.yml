@@ -1,6 +1,6 @@
 parameters:
-    marello_ups.integration.channel.type: 'ups'
-    marello_ups.integration.transport.type: 'ups'
+    marello_ups.integration.channel.type: 'marello_ups'
+    marello_ups.integration.transport.type: 'marello_ups'
     marello_ups.api.url.production: 'https://onlinetools.ups.com'
     marello_ups.api.url.test: 'https://wwwcie.ups.com'
     marello_ups.admin_view.method_template: 'MarelloUPSBundle::UPSMethodWithOptions.html.twig'
@@ -90,7 +90,7 @@ services:
         class: 'Marello\Bundle\UPSBundle\Factory\PriceRequestFactory'
         public: false
         arguments:
-            - '@oro_security.encoder.mcrypt'
+            - '@oro_security.encoder.default'
         tags:
             - { name: marello_ups_request_factory, request_class: 'Marello\Bundle\UPSBundle\Model\Request\PriceRequest' }
 
@@ -98,7 +98,7 @@ services:
         class: 'Marello\Bundle\UPSBundle\Factory\ShipmentConfirmRequestFactory'
         public: false
         arguments:
-            - '@oro_security.encoder.mcrypt'
+            - '@oro_security.encoder.default'
         tags:
             - { name: marello_ups_request_factory, request_class: 'Marello\Bundle\UPSBundle\Model\Request\ShipmentConfirmRequest' }
 
@@ -106,7 +106,7 @@ services:
         class: 'Marello\Bundle\UPSBundle\Factory\ShipmentAcceptRequestFactory'
         public: false
         arguments:
-            - '@oro_security.encoder.mcrypt'
+            - '@oro_security.encoder.default'
         tags:
             - { name: marello_ups_request_factory, request_class: 'Marello\Bundle\UPSBundle\Model\Request\ShipmentAcceptRequest' }
 

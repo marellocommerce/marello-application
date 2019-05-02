@@ -18,7 +18,7 @@ class UPSShippingMethodOptionsType extends AbstractType
     protected $roundingService;
 
     /**
-     * @param RoundingServiceInterface $roundingService
+     * {@inheritdoc}
      */
     public function __construct(RoundingServiceInterface $roundingService)
     {

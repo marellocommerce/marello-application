@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\SalesBundle\Tests\Unit\Entity;
 
-use Marello\Bundle\SalesBundle\Entity\SalesChannel;
-use Oro\Bundle\LocaleBundle\Entity\Localization;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use PHPUnit\Framework\TestCase;
 
-class SalesChannelTest extends \PHPUnit_Framework_TestCase
+use Oro\Bundle\LocaleBundle\Entity\Localization;
+use Oro\Component\Testing\Unit\EntityTestCaseTrait;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+
+class SalesChannelTest extends TestCase
 {
     use EntityTestCaseTrait;
 

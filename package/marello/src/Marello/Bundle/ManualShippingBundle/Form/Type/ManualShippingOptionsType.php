@@ -54,10 +54,10 @@ class ManualShippingOptionsType extends AbstractType
             ->add(ManualShippingMethodType::TYPE_OPTION, ChoiceType::class, [
                 'required' => true,
                 'choices' => [
-                    ManualShippingMethodType::PER_ITEM_TYPE
-                    => 'marello.manual_shipping.method.processing_type.per_item.label',
-                    ManualShippingMethodType::PER_ORDER_TYPE
-                    => 'marello.manual_shipping.method.processing_type.per_order.label',
+                    'marello.manual_shipping.method.processing_type.per_item.label' =>
+                        ManualShippingMethodType::PER_ITEM_TYPE,
+                    'marello.manual_shipping.method.processing_type.per_order.label' =>
+                        ManualShippingMethodType::PER_ORDER_TYPE,
                 ],
                 'label' => 'marello.manual_shipping.method.processing_type.label',
             ]);

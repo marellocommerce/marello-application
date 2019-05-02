@@ -6,22 +6,26 @@ use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class WarehouseType extends AbstractType
 {
-    const NAME = 'marello_warehouse';
+    const BLOCK_PREFIX = 'marello_warehouse';
 
     public static $nonStreetAttributes = [
         'namePrefix',
         'firstName',
         'middleName',
         'lastName',
-        'nameSuffix'
+        'nameSuffix',
+        'email'
     ];
 
     /**
@@ -47,6 +51,16 @@ class WarehouseType extends AbstractType
                 'address',
                 AddressType::class,
                 ['required' => true]
+            )
+            ->add(
+                'email',
+                EmailType::class,
+                [
+                    'required' => false,
+                    'constraints' => [
+                        new Email(),
+                    ],
+                ]
             )
             ->addEventListener(
                 FormEvents::PRE_SET_DATA,
@@ -80,25 +94,17 @@ class WarehouseType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => Warehouse::class,
-            'cascade_validation' => true,
+            'data_class'  => Warehouse::class,
+            'constraints' => [new Valid()],
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return self::NAME;
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 
     /**

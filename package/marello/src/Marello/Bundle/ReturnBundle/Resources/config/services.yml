@@ -2,15 +2,6 @@ parameters:
     marello_return.entity.return.class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity
 
 services:
-    marello_return.manager.return.api:
-        class: Marello\Bundle\ReturnBundle\Entity\Manager\ReturnApiEntityManager
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - %marello_return.entity.return.class%
-            - '@doctrine.orm.entity_manager'
-        calls:
-            - [setEntitySerializer, ['@marello_core.entity_serializer']]
-
     marello_return.util.return_helper:
         class: Marello\Bundle\ReturnBundle\Util\ReturnHelper
 
@@ -68,15 +59,35 @@ services:
             - { name: marello_entity_notification_configuration_provider, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
 
     marello_return.api.add_workflow_item_config:
-        class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowItemConfig'
+        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowItemConfig'
         tags:
-            - { name: oro.api.processor, action: get_config,  class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
+            - { name: oro.api.processor, action: get_config, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
 
     marello_return.api.add_workflow_item:
-        class: 'Marello\Bundle\ExtendWorkflowBundle\Api\Processor\ProcessWorkflowItem'
+        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowItem'
         arguments:
             - '@oro_workflow.manager'
             - '@oro_entity.doctrine_helper'
             - '@translator.default'
         tags:
-            - { name: oro.api.processor, action: customize_loaded_data,  class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
+            - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
+
+#    marello_return.api.add_workflow_step_config:
+#        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowStepConfig'
+#        tags:
+#            - { name: oro.api.processor, action: get_config, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
+#
+#    marello_return.api.add_workflow_step:
+#        class: 'Marello\Bundle\WorkflowBundle\Api\Processor\ProcessWorkflowStep'
+#        arguments:
+#            - '@oro_workflow.manager'
+#            - '@oro_entity.doctrine_helper'
+#            - '@translator.default'
+#        tags:
+#            - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\ReturnBundle\Entity\ReturnEntity }
+
+    marello_return.repository.return_item:
+        class: 'Marello\Bundle\ReturnBundle\Entity\Repository\ReturnItemRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - 'Marello\Bundle\ReturnBundle\Entity\ReturnItem'

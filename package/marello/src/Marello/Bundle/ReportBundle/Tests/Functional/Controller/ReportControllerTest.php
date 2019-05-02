@@ -7,12 +7,19 @@ use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 class ReportControllerTest extends WebTestCase
 {
     const ORDERS_REPORT_GROUP = 'orders';
-    const ORDERS_REPORT_NAME = 'revenue_per_sales_channel';
     const ORDERS_GRID_NAME = 'marello_report-orders';
+    const ORDERS_REPORT_NAME = 'revenue_per_sales_channel';
+    const ORDERS_BESTSELLING_REPORT_NAME = 'best_selling_items';
+    const ORDERS_WORSTSELLING_REPORT_NAME = 'worst_selling_items';
 
     const PRODUCTS_REPORT_GROUP = 'products';
-    const PRODUCTS_REPORT_NAME = 'low_inventory_products';
     const PRODUCTS_GRID_NAME = 'marello_report-products';
+    const PRODUCTS_REPORT_NAME = 'low_inventory_products';
+
+    const RETURNS_REPORT_GROUP = 'returns';
+    const RETURNS_GRID_NAME = 'marello_report-returns';
+    const RETURN_QTY_BY_REASON_REPORT_NAME = 'returned_qty_by_reason';
+    const RETURN_RETURNED_QTY_REPORT_NAME = 'returned_qty';
 
     /**
      * {@inheritdoc}
@@ -81,18 +88,42 @@ class ReportControllerTest extends WebTestCase
     public function reportsProvider()
     {
         return [
-            self::ORDERS_REPORT_NAME  => [
+            'order_per_saleschannel'  => [
                 self::ORDERS_GRID_NAME,
                 self::ORDERS_REPORT_NAME,
                 self::ORDERS_REPORT_GROUP,
                 'Revenue per Sales Channel'
             ],
-            self::PRODUCTS_REPORT_NAME => [
+            'orders_best_selling_items'  => [
+                self::ORDERS_GRID_NAME,
+                self::ORDERS_BESTSELLING_REPORT_NAME,
+                self::ORDERS_REPORT_GROUP,
+                'Top selling products'
+            ],
+            'orders_worst_selling_items'  => [
+                self::ORDERS_GRID_NAME,
+                self::ORDERS_WORSTSELLING_REPORT_NAME,
+                self::ORDERS_REPORT_GROUP,
+                'Flop selling products'
+            ],
+            'low_inventory_products' => [
                 self::PRODUCTS_GRID_NAME,
                 self::PRODUCTS_REPORT_NAME,
                 self::PRODUCTS_REPORT_GROUP,
                 'Low Inventory Products'
             ],
+            'returns_by_reason' => [
+                self::RETURNS_GRID_NAME,
+                self::RETURN_QTY_BY_REASON_REPORT_NAME,
+                self::RETURNS_REPORT_GROUP,
+                'Returned quantity by reason'
+            ],
+            'returns_returned_qty' => [
+                self::RETURNS_GRID_NAME,
+                self::RETURN_RETURNED_QTY_REPORT_NAME,
+                self::RETURNS_REPORT_GROUP,
+                'Returned quantity per product'
+            ]
         ];
     }
 }

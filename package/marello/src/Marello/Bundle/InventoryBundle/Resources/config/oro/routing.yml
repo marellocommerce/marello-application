@@ -8,10 +8,10 @@ marello_inventory_inventorylevel:
     type:     annotation
     prefix:   /marello/inventory/inventory-level
 
-marello_inventory_virtualinventorylevel:
-    resource: "@MarelloInventoryBundle/Controller/VirtualInventoryLevelController.php"
+marello_inventory_balancedinventorylevel:
+    resource: "@MarelloInventoryBundle/Controller/BalancedInventoryLevelController.php"
     type:     annotation
-    prefix:   /marello/inventory/virtual-inventory-level
+    prefix:   /marello/inventory/balanced-inventory-level
 
 marello_inventory_warehouse:
     resource: "@MarelloInventoryBundle/Controller/WarehouseController.php"

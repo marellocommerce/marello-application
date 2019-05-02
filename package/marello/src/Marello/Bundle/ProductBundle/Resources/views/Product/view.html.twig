@@ -17,28 +17,18 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    {{ UI.button({
-        'path': path('marello_inventory_inventory_update', {'id': entity.id}),
-        'label': 'marello.inventory.management.label'|trans
-    }) }}
-    {% if resource_granted('DELETE', entity) %}
-        {{ UI.buttonSeparator() }}
-        {{ UI.deleteButton({
-            'dataUrl': path('marello_product_api_delete_product', {'id': entity.id}),
-            'dataRedirect': path('marello_product_index'),
-            'aCss': 'no-hash remove-button',
-            'id': 'btn-remove-channel',
-            'dataId': entity.id,
-            'entity_label': 'marello.product.entity_label'|trans,
-        }) }}
-    {% endif %}
+    {{ parent() }}
     {% if resource_granted('EDIT', entity) %}
-        {{ UI.buttonSeparator() }}
         {{ UI.editButton({
             'path': path('marello_product_update', {'id': entity.id}),
             'entity_label': 'marello.product.entity_label'|trans
         }) }}
     {% endif %}
+    {{ UI.buttonSeparator() }}
+    {{ UI.button({
+        'path': path('marello_inventory_inventory_update', {'id': entity.id}),
+        'label': 'marello.inventory.management.label'|trans
+    }) }}
 {% endblock %}
 
 {% block content_data %}
@@ -52,9 +42,9 @@
         }) }}
     {% endset %}
 
-    {% set productImage = asset('bundles/marelloproduct/img/no_image_available.jpg') %}
+    {% set productImage = 'bundles/marelloproduct/img/no_image_available.jpg' | imagine_filter('product_view') %}
     {% if entity.image is not null %}
-        {% set productImage = file_url(entity, 'image', entity.image) %}
+        {% set productImage = filtered_image_url(entity.image, 'product_view') %}
     {% endif %}
 
     {% set productImageWidget %}
@@ -128,7 +118,7 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-product-categories-grid', {'categories': entity.categories}) }}
+                    {{ dataGrid.renderGrid('marello-product-categories-grid', {'categories': marello_product_get_categories_ids(entity)}) }}
                 </div>
             </div>
         </div>

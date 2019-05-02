@@ -2,18 +2,20 @@
 
 namespace Marello\Bundle\ShippingBundle\Form\Type;
 
-use Oro\Bundle\CurrencyBundle\Form\Type\CurrencySelectionType;
-use Oro\Bundle\FormBundle\Form\Type\CollectionType;
-use Marello\Bundle\RuleBundle\Form\Type\RuleType;
-use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
-use Marello\Bundle\ShippingBundle\Provider\ShippingMethodChoicesProviderInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
+
+use Oro\Bundle\FormBundle\Form\Type\OroChoiceType;
+use Oro\Bundle\FormBundle\Form\Type\CollectionType;
+use Oro\Bundle\CurrencyBundle\Form\Type\CurrencySelectionType;
+
+use Marello\Bundle\RuleBundle\Form\Type\RuleType;
+use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
+use Marello\Bundle\ShippingBundle\Provider\ShippingMethodChoicesProviderInterface;
 
 class ShippingMethodsConfigsRuleType extends AbstractType
 {
@@ -50,7 +52,7 @@ class ShippingMethodsConfigsRuleType extends AbstractType
             ->add('rule', RuleType::class, ['label' => 'marello.shipping.shippingmethodsconfigsrule.rule.label'])
             ->add('currency', CurrencySelectionType::class, [
                 'label' => 'marello.shipping.shippingmethodsconfigsrule.currency.label',
-                'empty_value' => 'oro.currency.currency.form.choose',
+                'placeholder' => 'oro.currency.currency.form.choose',
             ])
             ->add('destinations', CollectionType::class, [
                 'required'             => false,
@@ -61,9 +63,9 @@ class ShippingMethodsConfigsRuleType extends AbstractType
             ->add('methodConfigs', ShippingMethodConfigCollectionType::class, [
                 'required' => false,
             ])
-            ->add('method', ChoiceType::class, [
+            ->add('method', OroChoiceType::class, [
                 'mapped' => false,
-                'choices' => $this->provider->getMethods()
+                'choices' => array_flip($this->provider->getMethods())
             ]);
     }
 
@@ -76,7 +78,7 @@ class ShippingMethodsConfigsRuleType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {

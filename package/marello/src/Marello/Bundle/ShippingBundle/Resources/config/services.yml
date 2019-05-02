@@ -235,13 +235,6 @@ services:
         arguments:
             - '@marello_shipping.line_item.factory_basic'
 
-    marello_shipping.shipping_rule.manager.api:
-        class: 'Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager'
-        parent: oro_soap.manager.entity_manager.abstract
-        arguments:
-            - '%marello_shipping.entity.shipping_methods_configs_rule.class%'
-            - "@doctrine.orm.entity_manager"
-
     marello_shipping.validator.enabled_type_config_validation_group:
         class: 'Marello\Bundle\ShippingBundle\Validator\Constraints\EnabledTypeConfigsValidationGroupValidator'
         tags:
@@ -300,6 +293,18 @@ services:
     marello_shipping.helper.filtered_datagrid_route:
         class: 'Marello\Bundle\ShippingBundle\Tools\FilteredDatagridRouteHelper'
         arguments:
-                - '%marello_shipping.rule_grid_route_name%'
-                - '%marello_shipping.rule_grid_name%'
-                - '@oro_datagrid.helper.route'
+            - '%marello_shipping.rule_grid_route_name%'
+            - '%marello_shipping.rule_grid_name%'
+            - '@oro_datagrid.helper.route'
+
+    marello_shipping.action.handler.shipping_methods_configs_rule.enable_status:
+        class: 'Marello\Bundle\ShippingBundle\Action\Handler\ShippingMethodsConfigsRuleToggleStatusActionHandler'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - true
+
+    marello_shipping.action.handler.shipping_methods_configs_rule.disable_status:
+        class: 'Marello\Bundle\ShippingBundle\Action\Handler\ShippingMethodsConfigsRuleToggleStatusActionHandler'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - false

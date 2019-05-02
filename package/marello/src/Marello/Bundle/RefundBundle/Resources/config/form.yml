@@ -2,24 +2,24 @@ services:
     marello_refund.form.type.refund:
         class: Marello\Bundle\RefundBundle\Form\Type\RefundType
         tags:
-            - { name: form.type, alias: marello_refund }
+            - { name: form.type }
 
     marello_refund.form.type.order_item_refund_collection:
         class: Marello\Bundle\RefundBundle\Form\Type\OrderItemRefundCollectionType
         tags:
-            - { name: form.type, alias: marello_order_item_refund_collection }
+            - { name: form.type }
 
     marello_refund.form.type.order_item_refund:
         class: Marello\Bundle\RefundBundle\Form\Type\OrderItemRefundType
         tags:
-            - { name: form.type, alias: marello_order_item_refund }
+            - { name: form.type }
 
     marello_refund.form.type.additional_refund_collection:
         class: Marello\Bundle\RefundBundle\Form\Type\AdditionalRefundCollectionType
         tags:
-            - { name: form.type, alias: marello_additional_refund_collection }
+            - { name: form.type }
 
     marello_refund.form.type.additional_refund:
         class: Marello\Bundle\RefundBundle\Form\Type\AdditionalRefundType
         tags:
-            - { name: form.type, alias: marello_additional_refund }
+            - { name: form.type }

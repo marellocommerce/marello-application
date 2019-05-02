@@ -44,7 +44,7 @@ class SendProcessorTest extends WebTestCase
 
         $this->sendProcessor->sendNotification(
             'marello_order_accepted_confirmation',
-            [$order->getCustomer()->getEmail()],
+            [$order->getCustomer()],
             $order
         );
 

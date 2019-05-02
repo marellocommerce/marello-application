@@ -7,10 +7,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
 class VariantInventoryType extends AbstractType
 {
-    const NAME = 'marello_variant_inventory';
+    const BLOCK_PREFIX = 'marello_variant_inventory';
 
     /**
      * {@inheritdoc}
@@ -18,10 +19,10 @@ class VariantInventoryType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('products', CollectionType::class, [
-            'type'               => ProductInventoryType::NAME,
+            'entry_type'               => ProductInventoryType::class,
             'allow_add'          => false,
             'allow_delete'       => false,
-            'cascade_validation' => true,
+            'constraints'        => [new Valid()],
             'options'            => [
                 'include_variants' => false,
             ],
@@ -34,17 +35,11 @@ class VariantInventoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'         => Variant::class,
-            'cascade_validation' => true,
+            'data_class'  => Variant::class,
+            'constraints' => [
+                new Valid()
+            ]
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return self::NAME;
     }
 
     /**
@@ -52,6 +47,6 @@ class VariantInventoryType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

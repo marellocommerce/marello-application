@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ShippingMethodConfigType extends AbstractType
 {
-    const NAME = 'marello_shipping_method_config';
+    const BLOCK_PREFIX = 'marello_shipping_method_config';
 
     /**
      * @var ShippingMethodProviderInterface
@@ -83,6 +83,6 @@ class ShippingMethodConfigType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return self::NAME;
+        return self::BLOCK_PREFIX;
     }
 }

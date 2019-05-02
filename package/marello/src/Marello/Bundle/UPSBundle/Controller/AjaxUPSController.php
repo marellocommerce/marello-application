@@ -8,6 +8,7 @@ use Marello\Bundle\UPSBundle\Connection\Validator\Result\Factory\UpsConnectionVa
 use Marello\Bundle\UPSBundle\Connection\Validator\Result\UpsConnectionValidatorResultInterface;
 use Marello\Bundle\UPSBundle\Entity\Repository\ShippingServiceRepository;
 use Marello\Bundle\UPSBundle\Entity\UPSSettings;
+use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -58,7 +59,7 @@ class AjaxUPSController extends Controller
         }
 
         $form = $this->createForm(
-            $this->get('oro_integration.form.type.channel'),
+            ChannelType::class,
             $channel
         );
         $form->handleRequest($request);

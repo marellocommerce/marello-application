@@ -2,9 +2,11 @@
 
 namespace Marello\Bundle\CustomerBundle\Tests\Unit\Entity;
 
+use PHPUnit\Framework\TestCase;
+
 use Marello\Bundle\TaxBundle\Model\ResultElement;
 
-class ResultElementTest extends \PHPUnit_Framework_TestCase
+class ResultElementTest extends TestCase
 {
     const INCLUDING_TAX = 1.2;
     const EXCLUDING_TAX = 1;
