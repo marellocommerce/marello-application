@@ -1,0 +1,59 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% set gridName = 'marello-product-variant-extended-grid' %}
+
+{% set entity = form.vars.value %}
+{% set formAction = entity.id ? path('marello_product_add_variant', { parentId: parent.id, id: entity.id }) : path('marello_product_create_variant', { id: parent.id }) %}
+
+{% if parent.id %}
+    {% oro_title_set({params : {"%product.name%": parent.name } }) %}
+{% endif %}
+
+{% block pageHeader %}
+    {% if entity.id %}
+        {% set breadcrumbs = {
+            'entity':      parent,
+            'indexPath':   path('marello_product_view', { id: parent.id}),
+            'indexLabel':  'marello.product.variant.entity_plural_label'|trans,
+            'entityTitle': parent.name|default('N/A')
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'marello.layout.add_entity'|trans({'%entityName%': 'marello.product.variant.entity_plural_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title }%}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('marello_product_view', { id: parent.id })) }}
+
+    {% set html = UI.saveAndCloseButton() %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock %}
+
+
+{% block content_data %}
+    {% set id = 'marello-product-variant-update' %}
+    {% set dataBlocks = [
+        {
+            'title': 'marello.product.variant.entity_plural_label'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : [
+                    form_row(form.variantCode),
+                    form_widget(form.addVariants, {'id': 'addVariants'}),
+                    form_widget(form.removeVariants, {'id': 'removeVariants'}),
+                    dataGrid.renderGrid(gridName, { product: parent.id ? : null, variant: parent.variant.id ? : null })
+                ]
+            }]
+        }
+    ] %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+
+    {{ parent() }}
+{% endblock %}

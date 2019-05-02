@@ -1,0 +1,2 @@
+bundles:
+    - MarelloSalesBundle:Form:fields.html.twig

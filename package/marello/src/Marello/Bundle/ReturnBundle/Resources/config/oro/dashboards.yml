@@ -1,0 +1,10 @@
+dashboards:
+    widgets:
+        quick_launchpad:
+            items:
+                returns:
+                    label:      marello.return.returnentity.entity_plural_label
+                    icon:       undo
+                    route:      marello_return_return_index
+                    acl:        marello_return_view
+                    position:   30

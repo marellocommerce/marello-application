@@ -1,0 +1,14 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set pageTitle = 'marello.catalog.category.entity_plural_label'|trans %}
+{% set gridName  = 'marello-categories-grid' %}
+
+{% block navButtons %}
+    {% if resource_granted('marello_category_create') %}
+        {{ UI.addButton({
+            'path': path('marello_category_create'),
+            'entity_label': 'marello.catalog.category.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}

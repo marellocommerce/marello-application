@@ -1,0 +1,14 @@
+search:
+    Marello\Bundle\SalesBundle\Entity\SalesChannel:
+        alias:                          marello_saleschannels
+        title_fields:                   [name]
+        route:
+            name:                       marello_sales_saleschannel_index
+            parameters:
+                id:                     id
+        search_template: MarelloSalesBundle:SalesChannel:searchResult.html.twig
+        fields:
+            -
+                name:                   name
+                target_type:            text
+                target_fields:          [name]

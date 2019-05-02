@@ -1,0 +1,13 @@
+{% if value > 0 %}
+    {% set textColor = 'text-success' %}
+    {% set caret = 'up' %}
+{% elseif value < 0 %}
+    {% set textColor = 'text-error' %}
+    {% set caret = 'down' %}
+    {% set value = -value %}
+{% else %}
+    {% set caret = 'right' %}
+{% endif %}
+<span class="{{ textColor|default('') }}">
+    <i class="fa fa-caret-{{ caret }}"></i> {{ value }}
+</span>

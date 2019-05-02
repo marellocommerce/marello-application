@@ -1,0 +1,49 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% set formAction = path('marello_inventory_warehouse_updatedefault') %}
+
+{% block navButtons %}
+    {{ UI.dropdownSaveButton({ 'html': UI.saveAndStayButton() }) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath': app.request.uri,
+        'indexLabel': 'marello.inventory.warehouse.entity_plural_label'|trans,
+        'entityTitle': entity.label
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'marello-inventory-warehouse-update-default' %}
+    {% set addressField = form_widget(form.address) %}
+
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': '',
+            'data': [
+                form_rest(form)
+            ]
+        }]
+    },{
+        'title': 'marello.inventory.warehouse.address.label'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': '',
+            'data': [
+                addressField
+            ]
+        }]
+    }] %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

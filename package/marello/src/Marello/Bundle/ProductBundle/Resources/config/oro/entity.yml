@@ -1,0 +1,9 @@
+oro_entity:
+    entity_aliases:
+        Marello\Bundle\ProductBundle\Entity\Product:
+            alias: marelloproduct
+            plural_alias: marelloproducts
+
+        Marello\Bundle\ProductBundle\Entity\ProductStatus:
+            alias: marelloproductstatus
+            plural_alias: marelloproductstatuses

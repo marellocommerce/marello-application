@@ -1,0 +1,175 @@
+operations:
+    oro_integration_deactivate:
+        label: oro.integration.deactivate
+        preactions:
+            - '@assign_constant_value':
+                attribute: $.upsType
+                value: Marello\Bundle\UPSBundle\Provider\ChannelType::TYPE
+        preconditions:
+            '@and':
+                - '@not_equal': [$type, $.upsType]
+
+    oro_integration_delete:
+        label: oro.integration.delete
+        preactions:
+            - '@assign_constant_value':
+                attribute: $.upsType
+                value: Marello\Bundle\UPSBundle\Provider\ChannelType::TYPE
+        preconditions:
+            '@and':
+                - '@not_equal': [$type, $.upsType]
+
+    marello_ups_integration_invalidate_cache:
+        extends: oro_cache_invalidate
+        routes:
+            - oro_integration_update
+        acl_resource: [UPDATE, entity:Oro\Bundle\IntegrationBundle\Entity\Channel]
+        preactions:
+            - '@assign_value': [$.invalidateService, 'marello_ups.handler.action.invalidate_cache']
+            - '@assign_constant_value':
+                attribute: $.upsType
+                value: Marello\Bundle\UPSBundle\Provider\ChannelType::TYPE
+            - '@assign_constant_value':
+                attribute: $.paramTransportId
+                value: Marello\Bundle\UPSBundle\Handler\InvalidateCacheActionHandler::PARAM_TRANSPORT_ID
+            - '@call_method':
+                object: $.dataStorage
+                method: set
+                method_parameters:
+                    - $.paramTransportId
+                    - $.data.transport.id
+        preconditions:
+            '@equal': [$type, $.upsType]
+
+    marello_ups_integration_deactivate:
+        label: oro.integration.deactivate
+        extends: oro_integration_deactivate
+        for_all_entities: false
+        for_all_datagrids: false
+        replace:
+            - preactions
+            - preconditions
+            - frontend_options
+        preactions:
+            - '@assign_constant_value':
+                attribute: $.upsType
+                value: Marello\Bundle\UPSBundle\Provider\ChannelType::TYPE
+            - '@call_service_method':
+                attribute: $.actionAllowed
+                service: oro_integration.utils.edit_mode
+                method: isSwitchEnableAllowed
+                method_parameters: [$.data.editMode]
+            - '@call_service_method':
+                attribute: $.methodIdentifier
+                service: marello_ups.method.identifier_generator.method
+                method: generateIdentifier
+                method_parameters: [$.data]
+            - '@call_service_method':
+                attribute: $.linkGrid
+                service: marello_shipping.helper.filtered_datagrid_route
+                method: generate
+                method_parameters:  [{'methodConfigs': $.methodIdentifier}]
+        preconditions:
+            '@and':
+                - '@marello_shipping_method_has_enabled_shipping_rules':
+                    parameters:
+                        method_identifier: $.methodIdentifier
+                - '@equal': [$type, $.upsType]
+                - '@equal': [$.actionAllowed, true]
+                - '@equal': [$.data.enabled, true]
+        frontend_options:
+            confirmation:
+                title: marello.shipping.integration.deactivate.title
+                okText: marello.shipping.integration.deactivate.button.okText
+                message: marello.shipping.integration.deactivate.message
+                message_parameters:
+                    linkGrid: $.linkGrid
+                component: oroui/js/standart-confirmation
+
+    marello_ups_integration_deactivate_without_rules:
+        label: oro.integration.deactivate
+        extends: marello_ups_integration_deactivate
+        for_all_entities: false
+        for_all_datagrids: false
+        replace:
+            - preconditions
+            - frontend_options
+        preconditions:
+            '@and':
+                - '@not':
+                    - '@marello_shipping_method_has_enabled_shipping_rules':
+                        parameters:
+                            method_identifier: $.methodIdentifier
+                - '@equal': [$type, $.upsType]
+                - '@equal': [$.actionAllowed, true]
+                - '@equal': [$.data.enabled, true]
+        frontend_options: ~
+
+    marello_ups_integration_delete:
+        label: oro.integration.delete
+        extends: oro_integration_delete
+        for_all_entities: false
+        for_all_datagrids: false
+        replace:
+            - preactions
+            - preconditions
+            - frontend_options
+        preactions:
+            - '@assign_constant_value':
+                attribute: $.upsType
+                value: Marello\Bundle\UPSBundle\Provider\ChannelType::TYPE
+            - '@call_service_method':
+                service: oro_integration.utils.edit_mode
+                method: isEditAllowed
+                method_parameters: [$.data.editMode]
+                attribute: $.actionAllowed
+            - '@call_service_method':
+                attribute: $.methodIdentifier
+                service: marello_ups.method.identifier_generator.method
+                method: generateIdentifier
+                method_parameters: [$.data]
+            - '@call_service_method':
+                attribute: $.linkGrid
+                service: marello_shipping.helper.filtered_datagrid_route
+                method: generate
+                method_parameters:  [{'methodConfigs': $.methodIdentifier}]
+        preconditions:
+            '@and':
+                - '@marello_shipping_method_has_shipping_rules':
+                    parameters:
+                        method_identifier: $.methodIdentifier
+                - '@equal': [$type, $.upsType]
+                - '@equal': [$.actionAllowed, true]
+        frontend_options:
+            confirmation:
+                title: marello.shipping.integration.delete.title
+                okText: marello.shipping.integration.delete.button.okText
+                message: marello.shipping.integration.delete.message
+                message_parameters:
+                    linkGrid: $.linkGrid
+                component: oroui/js/standart-confirmation
+
+    marello_ups_integration_delete_without_rules:
+        label: oro.integration.delete
+        extends: marello_ups_integration_delete
+        for_all_entities: false
+        for_all_datagrids: false
+        replace:
+            - preconditions
+            - frontend_options
+        preconditions:
+            '@and':
+                - '@not':
+                    - '@marello_shipping_method_has_shipping_rules':
+                        parameters:
+                            method_identifier: $.methodIdentifier
+                - '@equal': [$type, $.upsType]
+                - '@equal': [$.actionAllowed, true]
+        frontend_options:
+            title: oro.action.delete_entity
+            confirmation:
+                title: oro.action.delete_entity
+                message: oro.action.delete_confirm
+                message_parameters:
+                    entityLabel: $name
+                component: oroui/js/delete-confirmation

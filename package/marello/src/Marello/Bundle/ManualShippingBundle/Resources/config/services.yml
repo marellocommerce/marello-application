@@ -1,0 +1,33 @@
+parameters:
+    marello_manual_shipping.integration.channel.type: 'manual_shipping'
+    marello_manual_shipping.integration.transport.type: 'manual_shipping'
+
+services:
+    marello_manual_shipping.integration.channel:
+        class: 'Marello\Bundle\ManualShippingBundle\Integration\ManualShippingChannelType'
+        public: false
+        tags:
+            - { name: oro_integration.channel, type: '%marello_manual_shipping.integration.channel.type%' }
+
+    marello_manual_shipping.integration.transport:
+        class: 'Marello\Bundle\ManualShippingBundle\Integration\ManualShippingTransport'
+        public: false
+        tags:
+            - { name: oro_integration.transport, type: '%marello_manual_shipping.integration.transport.type%', channel_type: '%marello_manual_shipping.integration.channel.type%' }
+
+    marello_manual_shipping.method.provider:
+        class: 'Marello\Bundle\ManualShippingBundle\Method\ManualShippingMethodProvider'
+        public: false
+        arguments:
+            - '%marello_manual_shipping.integration.channel.type%'
+            - '@oro_entity.doctrine_helper'
+            - '@marello_manual_shipping.factory.method'
+        tags:
+            - { name: marello_shipping_method_provider }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\IntegrationBundle\Entity\Channel', event: postLoad }
+
+    marello_manual_shipping.method.identifier_generator.method:
+        parent: oro_integration.generator.prefixed_identifier_generator
+        arguments:
+            - '%marello_manual_shipping.integration.channel.type%'
+

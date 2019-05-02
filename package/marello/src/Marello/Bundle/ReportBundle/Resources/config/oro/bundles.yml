@@ -1,0 +1,2 @@
+bundles:
+    - { name: Marello\Bundle\ReportBundle\MarelloReportBundle, priority: 30 }

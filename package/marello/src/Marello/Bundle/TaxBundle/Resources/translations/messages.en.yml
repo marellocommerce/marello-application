@@ -1,0 +1,70 @@
+marello:
+    tax:
+        navigation:
+            taxes.label:                        Taxes
+        taxcode:
+            id.label:                           Id
+            entity_label:                       Tax Code
+            entity_plural_label:                Tax Codes
+            widget_title:                       Default Tax Code
+            code.label:                         Code
+            description.label:                  Description
+            datablock.general:                  General
+            datablock.taxcode_information:      Tax Code Information
+            form.select_taxcode:                Select Tax Code
+            data.label:                         Data
+        taxrate:
+            id.label:                           Id
+            entity_label:                       Tax Rate
+            entity_plural_label:                Tax Rates
+            code.label:                         Code
+            rate.label:                         Rate
+            datablock.general:                  General
+            datablock.taxrate_information:      Tax Rate Information
+            data.label:                         Data
+        taxrule:
+            id.label:                           Id
+            entity_label:                       Tax Rule
+            entity_plural_label:                Tax Rules
+            tax_code.label:                     Tax Code
+            tax_rate.label:                     Tax Rate
+            tax_jurisdiction.label:             Tax Jurisdiction
+            datablock.general:                  General
+            datablock.taxrule_information:      Tax Rule Information
+            data.label:                         Data
+        taxjurisdiction:
+            entity_label:                       Tax Jurisdiction
+            entity_plural_label:                Tax Jurisdictions
+            description:                        List of Tax Jurisdictions
+            id.label:                           ID
+            code.label:                         Code
+            description.label:                  Description
+            country.label:                      Country
+            region.label:                       State
+            region_text.label:                  State
+            zip_codes.label:                    Zip Codes
+            data.label:                         Data
+        zipcode:
+            entity_label:                       Zip Code
+            entity_plural_label:                Zip Codes
+            id.label:                           ID
+            zip_code.label:                     Zip Code
+            zip_range_start.label:              Range start
+            zip_range_end.label:                Range end
+
+        messages.success.taxcode.saved:         Tax Code saved
+        messages.success.taxrate.saved:         Tax Rate saved
+        messages.success.taxrule.saved:         Tax Rule saved
+        messages.success.taxjurisdiction.saved: Tax Jurisdiction saved
+
+        form:
+            select_taxcode:                     Select Tax Code
+            select_taxrate:                     Select Tax Rate
+            select_taxjurisdiction:             Select Tax Jurisdiction
+            tooltip.zip_codes:                  If you want to type only one zip code, you can fill any field in the row
+
+        sections:
+            general:                            General Information
+
+        subtotals:
+            tax.label:                          TAX total
