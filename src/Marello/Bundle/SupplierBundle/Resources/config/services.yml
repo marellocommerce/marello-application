@@ -27,3 +27,11 @@ services:
         class: Marello\Bundle\SupplierBundle\Provider\SuppliersChoicesProvider
         arguments:
             - '@oro_entity.doctrine_helper'
+
+    marello_supplier.event_listener.dropship:
+        class: Marello\Bundle\SupplierBundle\EventListener\Doctrine\SupplierDropshipEventListener
+        arguments:
+            - '@event_dispatcher'
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }

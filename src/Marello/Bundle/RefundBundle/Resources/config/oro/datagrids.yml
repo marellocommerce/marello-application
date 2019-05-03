@@ -8,6 +8,9 @@ datagrids:
                 from:
                     - { table: MarelloRefundBundle:Refund, alias: r }
         columns:
+            id:
+                label: marello.refund.id.label
+                renderable: false
             refundNumber:
                 label: marello.refund.refund_number.label
                 frontend_type: string
@@ -93,6 +96,12 @@ datagrids:
                 icon:           edit
                 link:           update_link
         action_configuration: ['@marello_refund.datagrid.action_permission_provider', 'getActionPermissions']
+
+    marello-refund-select-grid:
+        extends: marello-refund
+        properties:
+            id: ~
+        actions: ~
 
     marello-refund-customer:
         source:

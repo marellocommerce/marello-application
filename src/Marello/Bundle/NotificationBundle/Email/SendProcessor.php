@@ -11,6 +11,7 @@ use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateCriteria;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
 use Oro\Bundle\NotificationBundle\Manager\EmailNotificationManager;
+use Oro\Bundle\NotificationBundle\Manager\EmailNotificationSender;
 use Oro\Bundle\NotificationBundle\Model\TemplateEmailNotification;
 use Oro\Bundle\NotificationBundle\Model\TemplateEmailNotificationInterface;
 
@@ -33,6 +34,9 @@ class SendProcessor
 
     /** @var  EntityNotificationConfigurationProviderInterface */
     protected $entityNotificationConfigurationProvider;
+
+    /** @var EmailNotificationSender */
+    protected $emailNotificationSender;
 
     /**
      * EmailSendProcessor constructor.
@@ -58,6 +62,11 @@ class SendProcessor
         $this->renderer                                = $renderer;
         $this->emailTemplateManager                    = $emailTeplateManager;
         $this->entityNotificationConfigurationProvider = $entityNotificationConfigurationProvider;
+    }
+
+    public function setEmailNotificationSender(EmailNotificationSender $emailNotificationSender)
+    {
+        $this->emailNotificationSender = $emailNotificationSender;
     }
 
     /**
@@ -102,11 +111,17 @@ class SendProcessor
          * This depends on application configuration.
          */
         $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
-        $this->emailNotificationManager->processSingle(
-            $this->getNotification($templateName, $recipients, $entity),
-            [$notification]
-        );
-
+        try {
+            $this->emailNotificationSender->send(
+                $this->getNotification($templateName, $recipients, $entity),
+                $template
+            );
+        } catch (\Exception $e) {
+            $this->emailNotificationManager->processSingle(
+                $this->getNotification($templateName, $recipients, $entity),
+                [$notification]
+            );
+        }
         $this->activityManager->addActivityTarget($notification, $entity);
 
         $this->manager->persist($notification);

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\InventoryBundle\Model\ExtendInventoryItem;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -13,7 +14,7 @@ use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryItemRepository")
  * @ORM\Table(
  *      name="marello_inventory_item",
  *      uniqueConstraints={
@@ -152,6 +153,57 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     protected $replenishment;
 
     /**
+     * @ORM\Column(name="backorder_allowed", type="boolean", nullable=true, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Backorder Allowed"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
+     */
+    protected $backorderAllowed;
+
+    /**
+     * @ORM\Column(name="max_qty_to_backorder", type="integer", nullable=true, options={"default"=0})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Max Quantity To Backorder"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var integer
+     */
+    protected $maxQtyToBackorder;
+
+    /**
+     * @ORM\Column(name="can_preorder", type="boolean", nullable=true, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Can Preorder"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
+     */
+    protected $canPreorder;
+
+    /**
      * @var Warehouse
      */
     protected $warehouse;
@@ -160,15 +212,16 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
      * InventoryItem constructor.
      *
      * @param Warehouse $warehouse
-     * @param ProductInterface $product
+     * @param ProductInterface|Product $product
      */
     public function __construct(Warehouse $warehouse = null, ProductInterface $product)
     {
         parent::__construct();
         
-        $this->product   = $product;
+        $this->product = $product;
+        $product->addInventoryItem($this);
         $this->warehouse = $warehouse;
-        $this->inventoryLevels    = new ArrayCollection();
+        $this->inventoryLevels = new ArrayCollection();
     }
 
     /**
@@ -213,7 +266,7 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     }
 
     /**
-     * @return ProductInterface
+     * @return Product|ProductInterface
      */
     public function getProduct()
     {
@@ -306,11 +359,29 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|InventoryLevel[]
      */
     public function getInventoryLevels()
     {
         return $this->inventoryLevels;
+    }
+
+    /**
+     * @param Warehouse $warehouse
+     * @return InventoryLevel|null
+     */
+    public function getInventoryLevel(Warehouse $warehouse)
+    {
+        $inventoryLevel = $this->getInventoryLevels()
+            ->filter(function (InventoryLevel $inventoryLevel) use ($warehouse) {
+                return $inventoryLevel->getWarehouse() === $warehouse;
+            })
+            ->first();
+        if ($inventoryLevel) {
+            return $inventoryLevel;
+        }
+
+        return null;
     }
 
     /**
@@ -319,5 +390,62 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     public function hasInventoryLevels()
     {
         return ($this->inventoryLevels->count() > 0);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isBackorderAllowed()
+    {
+        return $this->backorderAllowed;
+    }
+
+    /**
+     * @param boolean $backorderAllowed
+     * @return $this
+     */
+    public function setBackorderAllowed($backorderAllowed)
+    {
+        $this->backorderAllowed = $backorderAllowed;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxQtyToBackorder()
+    {
+        return $this->maxQtyToBackorder;
+    }
+
+    /**
+     * @param int $maxQtyToBackorder
+     * @return $this
+     */
+    public function setMaxQtyToBackorder($maxQtyToBackorder)
+    {
+        $this->maxQtyToBackorder = $maxQtyToBackorder;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCanPreorder()
+    {
+        return $this->canPreorder;
+    }
+
+    /**
+     * @param bool $canPreorder
+     * @return $this
+     */
+    public function setCanPreorder($canPreorder)
+    {
+        $this->canPreorder = $canPreorder;
+        
+        return $this;
     }
 }

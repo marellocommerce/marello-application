@@ -94,6 +94,18 @@
                     form_row(form.replenishment)
                 ]
             }]
+        },
+        {
+            'title': 'marello.inventory.inventoryitem.section.backorder_preorder.label'|trans,
+            'class': 'active',
+            'subblocks': [{
+                'title': '',
+                'data': [
+                    form_row(form.backorderAllowed),
+                    form_row(form.maxQtyToBackorder),
+                    form_row(form.canPreorder)
+                ]
+            }]
         }
     ] %}
 

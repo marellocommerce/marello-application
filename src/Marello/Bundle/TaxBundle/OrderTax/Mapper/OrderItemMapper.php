@@ -24,7 +24,7 @@ class OrderItemMapper extends AbstractOrderMapper
             ->setClassName($this->getProcessingClassName())
             ->setQuantity($lineItem->getQuantity())
             ->setTaxationAddress($this->getTaxationAddress($order))
-            ->setTaxCode($product->getSalesChannelTaxCode($salesChannel))
+            ->setTaxCode($product->getSalesChannelTaxCode($salesChannel) ? : $product->getTaxCode())
             ->setPrice($lineItem->getPrice())
             ->setCurrency($lineItem->getCurrency());
 

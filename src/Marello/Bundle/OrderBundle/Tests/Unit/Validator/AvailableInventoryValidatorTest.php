@@ -172,6 +172,8 @@ class AvailableInventoryValidatorTest extends TestCase
             'fields' => ['quantity', 'product', 'order'],
             'errorPath' => 'quantity'
         ]);
+        $entity->product->expects($this->once())->method('getSuppliers')->willReturn([]);
+        $entity->product->expects($this->exactly(2))->method('getInventoryItems')->willReturn([]);
         $violationBuilderMock = $this->createMock(ConstraintViolationBuilderInterface::class);
 
         $this->doctrineHelper->expects($this->once())

@@ -95,7 +95,7 @@ class UniqueEntityCollectionValidator extends ConstraintValidator
             }
 
             if ($fieldValue) {
-                $fieldValue = sprintf('%s-%s', $fieldValue, $value);
+                $fieldValue = sprintf('%s-%s-%s', $fieldName, $fieldValue, $value);
             } else {
                 $fieldValue = $value;
             }

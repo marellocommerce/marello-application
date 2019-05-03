@@ -23,6 +23,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 use Symfony\Component\Validator\Validation;
 
 class UPSTransportSettingsTypeTest extends FormIntegrationTestCase
@@ -208,7 +209,8 @@ class UPSTransportSettingsTypeTest extends FormIntegrationTestCase
         $resolver->expects(static::once())
             ->method('setDefaults')
             ->with([
-                'data_class' => $this->transport->getSettingsEntityFQCN()
+                'data_class' => $this->transport->getSettingsEntityFQCN(),
+                'constraints' => new Valid()
             ]);
 
         $this->formType->configureOptions($resolver);

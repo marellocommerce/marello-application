@@ -7,7 +7,7 @@ data:
         manufacturingCode: null
         productType: null
         cost: null
-        weight: 0
+        weight: 1
         warranty: null
         data: null
     relationships:

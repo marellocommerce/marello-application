@@ -22,7 +22,7 @@ oro:
                 send:
                     label: 'Send to supplier'
                 partially_receive:
-                    label: 'Receive partially'
+                    label: 'Receive items'
                 fully_receive:
                     label: 'Receive fully'
                 complete_purchase_order:

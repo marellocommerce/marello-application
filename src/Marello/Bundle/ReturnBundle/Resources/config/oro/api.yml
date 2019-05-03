@@ -1,4 +1,13 @@
 api:
+    entity_aliases:
+        Marello\Bundle\ReturnBundle\Entity\ReturnEntity:
+            alias: marelloreturn
+            plural_alias: marelloreturns
+
+        Marello\Bundle\ReturnBundle\Entity\ReturnItem:
+            alias: marelloreturnitem
+            plural_alias: marelloreturnitems
+
     entities:
         Marello\Bundle\ReturnBundle\Entity\ReturnEntity:
             documentation_resource: '@MarelloReturnBundle/Resources/doc/api/return.md'

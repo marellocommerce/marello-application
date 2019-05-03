@@ -4,7 +4,7 @@ data:
     meta:
         __class__: Marello\Bundle\InvoiceBundle\Entity\Creditmemo
     attributes:
-        invoiceNumber: '000000002'
+        invoiceNumber: '<toString(@marello_creditmemo_1->invoiceNumber)>'
         invoicedAt: '@marello_creditmemo_1->invoicedAt->format("Y-m-d\TH:i:s\Z")'
         invoiceDueDate: null
         paymentMethod: Paypal
@@ -23,11 +23,11 @@ data:
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '25'
+                id: '<toString(@marello_creditmemo_1->billingAddress->id)>'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '25'
+                id: '<toString(@marello_creditmemo_1->shippingAddress->id)>'
         order:
             data:
                 type: marelloorders
@@ -44,16 +44,16 @@ data:
             data:
                 -
                     type: marellocreditmemoitems
-                    id: '2'
+                    id: '<toString(@marello_creditmemo_1->items->get(0)->id)>'
                 -
                     type: marellocreditmemoitems
-                    id: '3'
+                    id: '<toString(@marello_creditmemo_1->items->get(1)->id)>'
                 -
                     type: marellocreditmemoitems
-                    id: '4'
+                    id: '<toString(@marello_creditmemo_1->items->get(2)->id)>'
                 -
                     type: marellocreditmemoitems
-                    id: '5'
+                    id: '<toString(@marello_creditmemo_1->items->get(3)->id)>'
         organization:
             data:
                 type: organizations

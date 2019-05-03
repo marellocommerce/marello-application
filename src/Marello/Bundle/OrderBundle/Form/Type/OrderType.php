@@ -10,6 +10,7 @@ use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
 use Oro\Bundle\CurrencyBundle\Entity\Price;
 use Oro\Bundle\CurrencyBundle\Form\Type\PriceType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
+use Oro\Bundle\LocaleBundle\Form\Type\LocalizationSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -68,8 +69,8 @@ class OrderType extends AbstractType
                 ]
             )
             ->add(
-                'locale',
-                TextType::class,
+                'localization',
+                LocalizationSelectType::class,
                 [
                     'required' => false,
                 ]
