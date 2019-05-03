@@ -138,16 +138,73 @@ datagrids:
                     - product.sku as productSku
                     - product.name as productName
                 from:
-                    - { table: MarelloInvoiceBundle:AbstractInvoiceItem, alias: i}
+                    - { table: MarelloInvoiceBundle:InvoiceItem, alias: i}
                 join:
                     left:
                         - { join: i.invoice, alias: inv }
                         - { join: i.product, alias: product }
                 where:
                     and:
-                        - i.invoice = :invoice_id
+                        - i.invoice = :entityId
             bind_parameters:
-                invoice_id: invoiceId
+                - entityId
+        columns:
+            productSku:
+                label:            marello.product.sku.label
+                frontend_type:    string
+                data_name:        productSku
+            productName:
+                label:            marello.product.name.label
+                frontend_type:    string
+                data_name:        productName
+            quantity:
+                label:            marello.invoice.invoiceitem.quantity.label
+                frontend_type:    number
+            price:
+                label:            marello.invoice.invoiceitem.price.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            tax:
+                label:            marello.invoice.invoiceitem.tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            rowTotalInclTax:
+                label:            marello.invoice.invoiceitem.row_total_incl_tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+            rowTotalExclTax:
+                label:            marello.invoice.invoiceitem.row_total_excl_tax.label
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getRootResolverCurrencyClosure
+                align:            right
+
+    marello-creditmemo-items:
+        source:
+            type: orm
+            query:
+                select:
+                    - i
+                    - inv.currency as currency
+                    - product.sku as productSku
+                    - product.name as productName
+                from:
+                    - { table: MarelloInvoiceBundle:CreditmemoItem, alias: i}
+                join:
+                    left:
+                        - { join: i.invoice, alias: inv }
+                        - { join: i.product, alias: product }
+                where:
+                    and:
+                        - i.invoice = :entityId
+            bind_parameters:
+                - entityId
         columns:
             productSku:
                 label:            marello.product.sku.label

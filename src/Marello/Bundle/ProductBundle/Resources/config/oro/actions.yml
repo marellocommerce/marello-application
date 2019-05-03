@@ -33,6 +33,27 @@ operations:
                 route_parameters:
                     id: $.product_copy_id
 
+    marello_product_manage_inventory:
+        label: marello.inventory.management.label
+        applications: [default]
+        routes:
+            - marello_product_view
+        datagrids:
+            - marello-products-grid
+        acl_resource: marello_inventory_inventory_update
+        order: 30
+        button_options:
+            icon: fa-cubes
+        actions:
+            - '@call_service_method':
+                service: marello_inventory.repository.inventoryitem
+                method: findOneByProduct
+                method_parameters: [$.data]
+                attribute: $.inventoryitem
+            - '@redirect':
+                route: marello_inventory_inventory_update
+                route_parameters:
+                    id: $.inventoryitem.id
 action_groups:
     marello_product_duplicate:
         parameters:

@@ -29,7 +29,7 @@ class ProductJsonApiTest extends RestJsonApiTestCase
 
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
-        $this->assertResponseCount(4, $response);
+        $this->assertResponseCount(6, $response);
         $this->assertResponseContains('cget_product_list.yml', $response);
     }
 
