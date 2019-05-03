@@ -48,7 +48,10 @@ class WarehouseListener
      */
     public function prePersist(Warehouse $warehouse, LifecycleEventArgs $args)
     {
-        if ($this->installed && !$warehouse->getGroup()) {
+        if ($this->installed &&
+            !$warehouse->getGroup() &&
+            $warehouse->getWarehouseType()->getName() !== WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL
+        ) {
             $em = $args->getEntityManager();
             $whType = $warehouse->getWarehouseType();
             if ($whType && $whType->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_FIXED) {
