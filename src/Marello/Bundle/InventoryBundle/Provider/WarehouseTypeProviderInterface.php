@@ -12,4 +12,5 @@ interface WarehouseTypeProviderInterface
     const WAREHOUSE_TYPE_FIXED      = 'fixed';
     const WAREHOUSE_TYPE_GLOBAL     = 'global';
     const WAREHOUSE_TYPE_VIRTUAL    = 'virtual';
+    const WAREHOUSE_TYPE_EXTERNAL   = 'external';
 }

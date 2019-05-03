@@ -2,18 +2,8 @@
 
 namespace Marello\Bundle\InventoryBundle\Model;
 
-interface BalancedInventoryLevelInterface
+interface BalancedInventoryLevelInterface extends InventoryQtyAwareInterface
 {
-    /**
-     * @return int
-     */
-    public function getInventoryQty();
-
-    /**
-     * @param int
-     */
-    public function setInventoryQty($quantity);
-
     /**
      * @return int
      */

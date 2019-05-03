@@ -17,6 +17,7 @@ use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
+use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -173,7 +174,9 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
     {
         /** @var SalesChannel[] $salesChannels */
         $salesChannels = $product->getChannels();
+        $salesChannelGroups = [];
         foreach ($salesChannels as $salesChannel) {
+            /** @var SalesChannelGroup[] $salesChannelGroups */
             $salesChannelGroups[$salesChannel->getGroup()->getId()] = $salesChannel->getGroup();
         }
         /** @var BalancedInventoryHandler $handler */
@@ -186,6 +189,10 @@ class LoadInventoryData extends AbstractFixture implements DependentFixtureInter
                 $level = $handler->createBalancedInventoryLevel($product, $salesChannelGroup, $balancedQty);
             }
             $handler->saveBalancedInventory($level, true, true);
+            $this->setReference(
+                sprintf('marello_balancedinvlev_%s_%s', $product->getSku(), $salesChannelGroup->getName()),
+                $level
+            );
         }
     }
 

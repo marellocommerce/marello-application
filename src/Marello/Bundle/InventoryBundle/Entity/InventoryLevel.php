@@ -5,13 +5,11 @@ namespace Marello\Bundle\InventoryBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\InventoryBundle\Model\InventoryQtyAwareInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelRepository")
  * @ORM\Table(name="marello_inventory_level",
  *       uniqueConstraints={
  *          @ORM\UniqueConstraint(columns={"inventory_item_id", "warehouse_id"})
@@ -170,6 +168,23 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
     protected $updatedAt;
 
     /**
+     * @ORM\Column(name="managed_inventory", type="boolean", nullable=true, options={"default"=false})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Managed Inventory"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var boolean
+     */
+    protected $managedInventory;
+
+    /**
      * @return int
      */
     public function getId()
@@ -291,5 +306,24 @@ class InventoryLevel implements OrganizationAwareInterface, InventoryQtyAwareInt
     public function getUpdatedAt()
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isManagedInventory()
+    {
+        return $this->managedInventory;
+    }
+
+    /**
+     * @param mixed $managedInventory
+     * @return $this
+     */
+    public function setManagedInventory($managedInventory)
+    {
+        $this->managedInventory = $managedInventory;
+        
+        return $this;
     }
 }
