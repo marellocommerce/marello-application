@@ -1,9 +1,4 @@
 api:
-    entity_aliases:
-        Marello\Bundle\TaxBundle\Entity\TaxCode:
-            alias: marellotaxcode
-            plural_alias: marellotaxcodes
-
     entities:
         Marello\Bundle\TaxBundle\Entity\TaxCode:
             documentation_resource: '@MarelloTaxBundle/Resources/doc/api/taxcode.md'

@@ -51,7 +51,7 @@
         <div class="responsive-block">
             {{ UI.renderProperty('marello.order.grand_total.label'|trans, entity.order.grandTotal|oro_format_currency({'currency':entity.order.currency})) }}
             {{ UI.renderProperty('marello.refund.refund_amount.label'|trans, entity.refundAmount|oro_format_currency({'currency':entity.order.currency})) }}
-            {{ UI.renderProperty('marello.refund.refund_balance.label'|trans, (entity.order.grandTotal - entity.refundAmount)|oro_format_currency({'currency':entity.order.currency})) }}
+            {{ UI.renderProperty('marello.refund.refund_balance.label'|trans, marello_refund_get_balance(entity)|oro_format_currency({'currency':entity.order.currency})) }}
         </div>
     {% endset %}
     {% set data %}

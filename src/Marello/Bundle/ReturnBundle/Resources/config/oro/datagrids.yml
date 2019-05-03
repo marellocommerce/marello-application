@@ -15,6 +15,9 @@ datagrids:
                         - { join: r.order, alias: o }
                 groupBy: r.id, o.id
         columns:
+            id:
+                label: marello.return.id.label
+                renderable: false
             returnNumber:
                 data_name: returnnumber
                 label: marello.return.returnentity.return_number.label
@@ -79,6 +82,12 @@ datagrids:
                 link:       view_link
                 icon:       eye
                 rowAction:  true
+
+    marello-return-select-grid:
+        extends: marello-return
+        properties:
+            id: ~
+        actions: ~
 
     marello-return-customer:
         source:

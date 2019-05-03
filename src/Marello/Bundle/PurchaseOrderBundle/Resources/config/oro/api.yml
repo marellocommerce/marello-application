@@ -1,4 +1,13 @@
 api:
+    entity_aliases:
+        Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
+            alias: marellopurchaseorder
+            plural_alias: marellopurchaseorders
+
+        Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem:
+            alias: marellopurchaseorderitem
+            plural_alias: marellopurchaseorderitems
+
     entities:
         Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder:
             fields:
