@@ -5,7 +5,10 @@ namespace MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity;
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseChannelGroupLinkRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\MinimumQuantity\Calculator\MinQtyWHCalculatorInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategyInterface;
 
@@ -23,6 +26,11 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
      * @var WarehouseChannelGroupLinkRepository
      */
     private $warehouseChannelGroupLinkRepository;
+
+    /**
+     * @var Warehouse[]
+     */
+    private $linkedWarehouses = [];
 
     /**
      * @param MinQtyWHCalculatorInterface $minQtyWHCalculator
@@ -70,35 +78,27 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         $orderItems = $order->getItems();
         $orderItemsByProducts = [];
 
-        $warehouseGroupLink = $this->warehouseChannelGroupLinkRepository
-            ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
-
-        if (!$warehouseGroupLink) {
-            return [];
-        }
-
-        $linkedWarehouses = $warehouseGroupLink
-            ->getWarehouseGroup()
-            ->getWarehouses()
-            ->toArray();
+        $linkedWarehouses = $this->getLinkedWarehouses($order);
 
         if (empty($linkedWarehouses)) {
             return [];
         }
-        $linkedWarehousesIds = array_map(function (Warehouse $warehouse) {
+        $warehousesIds = array_map(function (Warehouse $warehouse) {
             return $warehouse->getId();
         }, $linkedWarehouses);
 
         foreach ($orderItems as $orderItem) {
-            $orderItemsByProducts[$orderItem->getProduct()->getSku()] = $orderItem;
+            $orderItemsByProducts[sprintf('%s_|_%s', $orderItem->getProductSku(), $orderItem->getId())] = $orderItem;
             $inventoryItems = $orderItem->getInventoryItems();
             foreach ($inventoryItems as $inventoryItem) {
                 /** @var InventoryLevel $inventoryLevel */
                 foreach ($inventoryItem->getInventoryLevels() as $inventoryLevel) {
                     $warehouse = $inventoryLevel->getWarehouse();
+                    $warehouseType = $warehouse->getWarehouseType()->getName();
                     $warehouseId = $warehouse->getId();
-                    if ($inventoryLevel->getInventoryQty() >= $orderItem->getQuantity() &&
-                        in_array($warehouseId, $linkedWarehousesIds)) {
+                    if (($inventoryLevel->getInventoryQty() >= $orderItem->getQuantity() ||
+                            $warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) &&
+                        in_array($warehouseId, $warehousesIds)) {
                         $warehouses[$warehouseId] = $warehouse;
                         $productsByWh[$warehouseId] [] = $inventoryItem->getProduct()->getSku();
                     }
@@ -111,5 +111,56 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
         });
 
         return $this->minQtyWHCalculator->calculate($productsByWh, $orderItemsByProducts, $warehouses, $orderItems);
+    }
+
+    /**
+     * @param Product $product
+     * @return Warehouse|null
+     */
+    protected function getPreferredExternalWarehouse(Product $product)
+    {
+        $preferredSupplier = null;
+        $preferredPriority = 0;
+        foreach ($product->getSuppliers() as $productSupplierRelation) {
+            if (null == $preferredSupplier && $productSupplierRelation->getCanDropship() === true) {
+                $preferredSupplier = $productSupplierRelation->getSupplier();
+                $preferredPriority = $productSupplierRelation->getPriority();
+                continue;
+            }
+            if ($productSupplierRelation->getPriority() < $preferredPriority  &&
+                $productSupplierRelation->getCanDropship() === true) {
+                $preferredSupplier = $productSupplierRelation->getSupplier();
+                $preferredPriority = $productSupplierRelation->getPriority();
+            }
+        }
+
+        return $preferredSupplier;
+    }
+
+    /**
+     * @param Order $order
+     * @return Warehouse[]
+     */
+    private function getLinkedWarehouses(Order $order)
+    {
+        if (empty($this->linkedWarehouses)) {
+            /** @var WarehouseChannelGroupLink $warehouseGroupLink */
+            $warehouseGroupLink = $this->warehouseChannelGroupLinkRepository
+                ->findLinkBySalesChannelGroup($order->getSalesChannel()->getGroup());
+
+            if (!$warehouseGroupLink) {
+                return [];
+            }
+
+            /** @var Warehouse[] $linkedWarehouses */
+            $linkedWarehouses = $warehouseGroupLink
+                ->getWarehouseGroup()
+                ->getWarehouses()
+                ->toArray();
+
+            $this->linkedWarehouses = $linkedWarehouses;
+        }
+
+        return $this->linkedWarehouses;
     }
 }

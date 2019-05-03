@@ -19,9 +19,16 @@ class SingleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
         Collection $orderItems
     ) {
         $results = [];
+        $orderItemsProducts = array_map(
+            function ($sku) {
+                return strstr($sku, '_|_', true);
+            },
+            array_keys($orderItemsByProducts)
+        );
+
         foreach ($productsByWh as $id => $whProducts) {
-            if (count($whProducts) === count(array_keys($orderItemsByProducts)) &&
-                $whProducts === array_keys($orderItemsByProducts)) {
+            if (count($whProducts) === count($orderItemsProducts) &&
+                $whProducts === $orderItemsProducts) {
                 $results[][implode('|', $whProducts)] = new OrderWarehouseResult(
                     [
                         OrderWarehouseResult::WAREHOUSE_FIELD => $warehouses[$id],
@@ -33,20 +40,7 @@ class SingleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
         if (count($results) === 1) {
             return $results;
         } elseif (count($results) > 1) {
-            usort($results, function ($a, $b) {
-                $aHasDefaultWh = $this->hasDefaultWarehouse($a);
-                $bHasDefaultWh = $this->hasDefaultWarehouse($b);
-
-                if (($aHasDefaultWh && $bHasDefaultWh) || (!$aHasDefaultWh && !$bHasDefaultWh)) {
-                    return 0;
-                } elseif ($aHasDefaultWh && !$bHasDefaultWh) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            });
-
-            return $results;
+            return $this->usort($results);
         } elseif ($this->getSuccessor() && count($results) === 0) {
             return $this->getSuccessor()->calculate($productsByWh, $orderItemsByProducts, $warehouses, $orderItems);
         }

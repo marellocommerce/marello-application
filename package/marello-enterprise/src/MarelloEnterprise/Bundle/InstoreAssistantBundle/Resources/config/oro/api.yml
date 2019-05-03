@@ -1,8 +1,8 @@
 api:
     entity_aliases:
         MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi:
-            alias: instoreuserapi
-            plural_alias: instoreuserapi
+            alias: marelloinstoreuserapi
+            plural_alias: marelloinstoreuserapi
     entities:
         MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi:
             documentation_resource: '@MarelloEnterpriseInstoreAssistantBundle/Resources/doc/api/instore_user_api.md'
