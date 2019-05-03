@@ -5,6 +5,7 @@ namespace Marello\Bundle\SalesBundle\Tests\Functional\Controller;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelType;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
+use Oro\Bundle\LocaleBundle\Entity\Localization;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,6 @@ class SalesChannelControllerTest extends WebTestCase
     const DEFAULT = true;
     const ACTIVE = true;
     const LOCALIZATION = 1;
-    const LOCALE = 'nl_NL';
 
     const UPDATED_NAME = 'updatedName';
     const UPDATED_CODE = 'updatedCode';
@@ -27,7 +27,6 @@ class SalesChannelControllerTest extends WebTestCase
     const UPDATED_DEFAULT = false;
     const UPDATED_ACTIVE = false;
     const UPDATED_LOCALIZATION = 1;
-    const UPDATED_LOCALE = 'nl_NL';
 
     const SAVE_MESSAGE = 'Sales Channel has been saved successfully';
 
@@ -81,8 +80,7 @@ class SalesChannelControllerTest extends WebTestCase
             self::CURRENCY,
             self::DEFAULT,
             self::ACTIVE,
-            self::LOCALIZATION,
-            self::LOCALE
+            self::LOCALIZATION
         );
 
         /** @var SalesChannel $salesChannel */
@@ -118,8 +116,7 @@ class SalesChannelControllerTest extends WebTestCase
             self::UPDATED_CURRENCY,
             self::UPDATED_DEFAULT,
             self::UPDATED_ACTIVE,
-            self::UPDATED_LOCALIZATION,
-            self::UPDATED_LOCALE
+            self::UPDATED_LOCALIZATION
         );
 
         return $id;
@@ -147,7 +144,7 @@ class SalesChannelControllerTest extends WebTestCase
             self::UPDATED_CURRENCY,
             self::UPDATED_DEFAULT,
             self::UPDATED_ACTIVE,
-            self::UPDATED_LOCALE
+            self::UPDATED_LOCALIZATION
         );
     }
     
@@ -200,8 +197,7 @@ class SalesChannelControllerTest extends WebTestCase
      * @param string $currency
      * @param bool $default
      * @param bool $active
-     * @param int $localization
-     * @param string $locale
+     * @param int $localizationId
      */
     protected function assertSalesChannelSave(
         Crawler $crawler,
@@ -211,8 +207,7 @@ class SalesChannelControllerTest extends WebTestCase
         $currency,
         $default,
         $active,
-        $localization,
-        $locale
+        $localizationId
     ) {
         $token = $this->getContainer()->get('security.csrf.token_manager')
             ->getToken(SalesChannelType::BLOCK_PREFIX)->getValue();
@@ -226,8 +221,7 @@ class SalesChannelControllerTest extends WebTestCase
                 'currency' => $currency,
                 'default' => $default,
                 'active' => $active,
-                'localization' => $localization,
-                'locale' => $locale,
+                'localization' => $localizationId,
                 '_token' => $token,
             ],
         ];
@@ -242,7 +236,17 @@ class SalesChannelControllerTest extends WebTestCase
         $html = $crawler->html();
 
         $this->assertContains(self::SAVE_MESSAGE, $html);
-        $this->assertViewPage($html, $name, $code, $channelType, $currency, $default, $active, $locale);
+        
+        $this->assertViewPage(
+            $html,
+            $name,
+            $code,
+            $channelType,
+            $currency,
+            $default,
+            $active,
+            $localizationId
+        );
     }
     
     /**
@@ -254,7 +258,7 @@ class SalesChannelControllerTest extends WebTestCase
      * @param string $currency
      * @param bool $default
      * @param bool $active
-     * @param string $locale
+     * @param int $localizationId
      */
     protected function assertViewPage(
         $html,
@@ -264,15 +268,21 @@ class SalesChannelControllerTest extends WebTestCase
         $currency,
         $default,
         $active,
-        $locale
+        $localizationId
     ) {
+        /** @var Localization $localization */
+        $localization = $this->getContainer()->get('doctrine')
+            ->getManagerForClass(Localization::class)
+            ->getRepository(Localization::class)
+            ->find($localizationId);
+        
         $this->assertContains($name, $html);
         $this->assertContains($code, $html);
         $this->assertContains($channelType, $html);
         $this->assertContains($currency, $html);
         $this->assertContains($default ? 'Yes' : 'No', $html);
         $this->assertContains($active ? 'Yes' : 'No', $html);
-        $this->assertContains($locale, $html);
+        $this->assertContains($localization->getLanguageCode(), $html);
     }
 
     /**

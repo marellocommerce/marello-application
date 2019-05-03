@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Marello\Bundle\PricingBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\CurrencyBundle\Form\Type\CurrencyType;
+use Oro\Bundle\LocaleBundle\Form\Type\LocalizationSelectType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -48,17 +49,9 @@ class SalesChannelType extends AbstractType
             ->add('active', CheckboxType::class, [
                 'required' => false,
             ])
-            ->add('localization', EntityType::class, [
+            ->add('localization', LocalizationSelectType::class, [
                 'required' => true,
-                'multiple' => false,
-                'class' => 'OroLocaleBundle:Localization',
-                'query_builder' => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('l')
-                        ->orderBy('l.name', 'ASC');
-                },
-                'choice_label' => 'name'
             ])
-            ->add('locale')
             ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'preSetDataListener']);
     }
 
