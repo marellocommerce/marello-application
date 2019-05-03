@@ -24,7 +24,6 @@ class SalesChannelLocalizationProviderTest extends TestCase
         $this->provider = new SalesChannelLocalizationProvider();
     }
 
-
     public function testSalesChannelEntity()
     {
         $entity = $this->createMock(SalesChannel::class);
