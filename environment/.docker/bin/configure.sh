@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-PHP_VERSION="7.1"
+PHP_VERSION="7.2"
+function info {
+    printf "\033[0;36m===> \033[0;33m${1}\033[0m\n"
+}
 
 localedef -c -f UTF-8 -i en_US en_US.UTF-8
 export DEBIAN_FRONTEND=noninteractive
@@ -45,7 +48,6 @@ rm -rf /var/www
 # Create data folder
 mkdir -p /srv/app-data
 mkdir -p /var/www
-mkdir -p /var/www/vendor
 
 mkdir -p /var/run/php
 ln -sf /usr/sbin/php-fpm${PHP_VERSION} /usr/sbin/php-fpm

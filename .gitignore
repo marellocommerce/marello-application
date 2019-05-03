@@ -24,3 +24,6 @@ behat.yml
 phpunit.xml
 /app/SymfonyRequirements.php
 /web/uploads/behat
+.bash_history
+.npm/
+.viminfo

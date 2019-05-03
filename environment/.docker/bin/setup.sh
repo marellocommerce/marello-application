@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-PHP_VERSION="7.1"
-BLACKFIRE_VERSION="1.10.0"
+PHP_VERSION="7.2"
 
 export DEBIAN_FRONTEND=noninteractive \
 && export LC_ALL='en_US.UTF-8' \
@@ -42,7 +41,6 @@ export DEBIAN_FRONTEND=noninteractive \
   php${PHP_VERSION}-pgsql \
   php${PHP_VERSION}-curl \
   php${PHP_VERSION}-gd \
-  php${PHP_VERSION}-mcrypt \
   php${PHP_VERSION}-xmlrpc \
   php${PHP_VERSION}-ldap \
   php${PHP_VERSION}-xsl \
@@ -55,10 +53,21 @@ export DEBIAN_FRONTEND=noninteractive \
   php${PHP_VERSION}-bcmath \
 && apt-get -qy autoremove --purge software-properties-common python-software-properties \
 && apt-get autoclean || exit 1
+#  php${PHP_VERSION}-mcrypt \
 
+# install PostgreSQL
+apt-get install -qqy libpq-dev postgresql postgresql-contrib || exit 1
+apt-get install -qqy --no-install-recommends php-bcmath php-pgsql || exit 1
 
 # Install nginx
-apt-get install -qqy --reinstall nginx || exit 1
+apt-get install -qqy nginx || exit 1
+
+# Install librsvg2
+apt-get install -qqy librsvg2-2 librsvg2-dev || exit 1
+
+# Update nodejs to at least v6, change setup_6 to 7,8 or whatever version to get something new and shiny
+(curl -sL https://deb.nodesource.com/setup_6.x | bash -) || exit 1
+apt-get install -qqy nodejs || exit 1
 
 # Install composer
 (curl -sS https://getcomposer.org/installer | php) || exit 1
@@ -76,10 +85,6 @@ ln -sf /etc/php/${PHP_VERSION} /etc/php/current
 echo '#!/usr/bin/env bash' >> /usr/local/bin/composer
 echo 'COMPOSER_HOME=/opt/composer/$(whoami) /usr/local/bin/composer.phar $@' >> /usr/local/bin/composer
 chmod 0755 /usr/local/bin/composer
-
-# Install required composer-plugins
-runuser -s /bin/sh -c 'composer global require fxp/composer-asset-plugin:1.2.2' www-data || exit 1
-runuser -s /bin/sh -c 'composer global require hirak/prestissimo' www-data || exit 1
 
 # Install node.js
 apt-get install -qqy nodejs || exit 1
