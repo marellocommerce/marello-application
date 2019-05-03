@@ -22,6 +22,8 @@ services:
             - '@marello_sales.form.event_listener.default_sales_channel_subscriber'
             - '@marello_productprice.pricing.form.event_listener.pricing_subscriber'
             - '@marello_productprice.pricing.form.event_listener.channel_pricing_subscriber'
+        calls:
+            - [setDefaultAttributeFamilySubscriber, ['@marello_product.product.form.event_listener.default_attribute_family']]
         tags:
             - { name: form.type }
 

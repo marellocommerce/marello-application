@@ -41,6 +41,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
  *          },
+ *          "grid"={
+ *              "default"="marello-refund-select-grid"
+ *          },
  *          "dataaudit"={
  *              "auditable"=true
  *          }
@@ -265,7 +268,7 @@ class Refund extends ExtendRefund implements
     }
 
     /**
-     * @return int
+     * @return float
      */
     public function getRefundAmount()
     {

@@ -10,6 +10,7 @@ use Marello\Bundle\PricingBundle\Entity\AssembledPriceList;
 use Marello\Bundle\PricingBundle\Entity\PriceType;
 use Marello\Bundle\PricingBundle\Model\PriceTypeInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
@@ -18,6 +19,7 @@ use Marello\Bundle\ProductBundle\Entity\ProductChannelTaxRelation;
 use Marello\Bundle\TaxBundle\Tests\Functional\DataFixtures\LoadTaxCodeData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface
 {
@@ -25,6 +27,8 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     const PRODUCT_2_REF = 'product2';
     const PRODUCT_3_REF = 'product3';
     const PRODUCT_4_REF = 'product4';
+    const PRODUCT_5_REF = 'product5';
+    const PRODUCT_6_REF = 'product6';
 
     const PRICE_REF_SUFFIX = '-price';
 
@@ -40,7 +44,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             'name'          => 'product1',
             'sku'           => 'p1',
             'price'         => 10,
-            'weight'        => 0.00,
+            'weight'        => 1.00,
             'status'        => 'enabled',
             'channel'       => 'channel1',
             'supplier'      => [
@@ -122,6 +126,40 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
                 ]
             ]
         ],
+        self::PRODUCT_5_REF => [
+            'name'          => 'product5',
+            'sku'           => 'p5',
+            'price'         => 10,
+            'weight'        => 1.00,
+            'status'        => 'enabled',
+            'channel'       => 'channel1;channel2;channel3',
+            'supplier'      => [
+                [
+                    'ref' => 'supplier1',
+                    'qou' => 1,
+                    'cost' => 2.50,
+                    'canDropship' => true,
+                    'priority' => 1
+                ]
+            ]
+        ],
+        self::PRODUCT_6_REF => [
+            'name'          => 'product6',
+            'sku'           => 'p6',
+            'price'         => 10,
+            'weight'        => 1.00,
+            'status'        => 'enabled',
+            'channel'       => 'channel1;channel2;channel3',
+            'supplier'      => [
+                [
+                    'ref' => 'supplier1',
+                    'qou' => 1,
+                    'cost' => 2.50,
+                    'canDropship' => false,
+                    'priority' => 1
+                ]
+            ]
+        ],
     ];
 
     public function getDependencies()
@@ -180,6 +218,11 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             ->getRepository('MarelloProductBundle:ProductStatus')
             ->findOneByName($data['status']);
         $product->setStatus($status);
+
+        $defaultAttributeFamily = $this->manager
+            ->getRepository(AttributeFamily::class)
+            ->findOneBy(['code' => LoadDefaultAttributeFamilyData::DEFAULT_FAMILY_CODE]);
+        $product->setAttributeFamily($defaultAttributeFamily);
 
         $currencies = $this->addSalesChannels($product, $data);
         $channelCurrencies = array_unique($currencies);

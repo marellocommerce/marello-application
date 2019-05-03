@@ -1,4 +1,13 @@
 api:
+    entity_aliases:
+        Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel:
+            alias: marellobalancedinventorylevel
+            plural_alias: marellobalancedinventorylevels
+
+        Marello\Bundle\InventoryBundle\Entity\WarehouseType:
+            alias: marellowarehousetype
+            plural_alias: marellowarehousetypes
+
     entities:
         Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel:
             documentation_resource: '@MarelloInventoryBundle/Resources/doc/api/balancedinventorylevel.md'
