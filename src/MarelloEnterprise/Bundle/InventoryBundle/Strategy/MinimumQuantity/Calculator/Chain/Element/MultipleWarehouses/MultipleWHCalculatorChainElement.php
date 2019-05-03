@@ -24,39 +24,38 @@ class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
         array $warehouses,
         Collection $orderItems
     ) {
+        $products = array_map(
+            function ($sku) {
+                return strstr($sku, '_|_', true);
+            },
+            array_keys($orderItemsByProducts)
+        );
         $this->getMultipleWarehouseResults(
             $productsByWh,
             $orderItemsByProducts,
             $warehouses,
-            array_keys($orderItemsByProducts)
+            $products
         );
-        
-        if (count($this->results) <= 1) {
-            return $this->results;
+
+        if (count($this->results) >= 1) {
+            if (count($this->results) === 1) {
+                return $this->results;
+            }
+
+            usort($this->results, function ($a, $b) {
+                return count($b) > count($a) ? -1 : 1;
+            });
+
+            $finalResults = array_filter($this->results, function ($result) {
+                return count($result) <= count(reset($this->results));
+            });
+            
+            return $this->usort($finalResults);
+        } elseif ($this->getSuccessor()) {
+            return $this->getSuccessor()->calculate($productsByWh, $orderItemsByProducts, $warehouses, $orderItems);
         }
 
-        usort($this->results, function ($a, $b) {
-            return count($b) > count($a) ? -1 : 1 ;
-        });
-
-        $finalResults = array_filter($this->results, function ($result) {
-            return count($result) <= count(reset($this->results));
-        });
-
-        usort($finalResults, function ($a, $b) {
-            $aHasDefaultWh = $this->hasDefaultWarehouse($a);
-            $bHasDefaultWh = $this->hasDefaultWarehouse($b);
-
-            if (($aHasDefaultWh && $bHasDefaultWh) || (!$aHasDefaultWh && !$bHasDefaultWh)) {
-                return 0;
-            } elseif ($aHasDefaultWh && !$bHasDefaultWh) {
-                return -1;
-            } else {
-                return 1;
-            }
-        });
-
-        return $finalResults;
+        return [];
     }
 
     /**
@@ -79,7 +78,12 @@ class MultipleWHCalculatorChainElement extends AbstractWHCalculatorChainElement
             if (count($matchedProducts) > 0) {
                 $matchedOrderItems = new ArrayCollection();
                 foreach ($matchedProducts as $productId) {
-                    $matchedOrderItems->add($orderItemsByProducts[$productId]);
+                    foreach ($orderItemsByProducts as $combinedSku => $orderItem) {
+                        $sku = strstr($combinedSku, '_|_', true);
+                        if ($productId === $sku && !$matchedOrderItems->contains($orderItem)) {
+                            $matchedOrderItems->add($orderItem);
+                        }
+                    }
                 }
                 $this->results[$index][implode('|', $matchedProducts)] = new OrderWarehouseResult(
                     [

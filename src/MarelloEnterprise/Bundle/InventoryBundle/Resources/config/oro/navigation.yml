@@ -18,7 +18,7 @@ navigation:
                 extras:
                     routes: ['marelloenterprise_inventory_warehousegroup_*']
             warehousechannelgrouplinks:
-                label: marello.inventory.warehousechannelgrouplink.entity_plural_label
+                label: marello.inventory.warehousechannelgrouplink.menu.linking_channels.label
                 route: marelloenterprise_inventory_warehousechannelgrouplink_index
                 extras:
                     routes: ['marelloenterprise_inventory_warehousechannelgrouplink_*']
@@ -48,7 +48,7 @@ navigation:
         marelloenterprise_inventory_warehousegroup_create: 'oro.ui.create_entity'
         marelloenterprise_inventory_warehousegroup_update: '%name% - oro.ui.edit'
         marelloenterprise_inventory_warehousegroup_view: '%name% - oro.ui.view'
-        marelloenterprise_inventory_warehousechannelgrouplink_index:  'marello.inventory.warehousechannelgrouplink.entity_plural_label'
+        marelloenterprise_inventory_warehousechannelgrouplink_index:  'marello.inventory.warehousechannelgrouplink.menu.linking_channels.label'
         marelloenterprise_inventory_warehousechannelgrouplink_create: 'oro.ui.create_entity'
         marelloenterprise_inventory_warehousechannelgrouplink_update: '%id% - oro.ui.edit'
         marelloenterprise_inventory_wfa_rule_create:  'oro.ui.create_entity'
