@@ -1,5 +1,5 @@
 marelloenterprise_instoreassistant_rest_api_authenticate_instore_user:
-    path: /api/instoreuserapi/authenticate
+    path: /api/marelloinstoreuserapi/authenticate
     methods: [PUT]
     defaults:
         _controller: MarelloEnterpriseInstoreAssistantBundle:Api\InstoreAssistantUser:authenticate

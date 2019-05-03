@@ -21,7 +21,7 @@ class InstoreAssistantUserController extends RestApiController
      *     resource=true,
      *     description="authenticate instore assistant user by email, username and credentials",
      *     views={"rest_plain","rest_json_api"},
-     *     section="instoreuserapi",
+     *     section="marelloinstoreuserapi",
      *     requirements={
      *          {
      *              "name"="username",

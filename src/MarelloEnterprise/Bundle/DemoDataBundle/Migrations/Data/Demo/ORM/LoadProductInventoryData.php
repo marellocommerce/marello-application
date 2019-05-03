@@ -145,6 +145,7 @@ class LoadProductInventoryData extends AbstractFixture implements DependentFixtu
             ->findOneBy(['code' => $data['warehouse']]);
 
         $context->setValue('warehouse', $warehouse);
+        $context->setValue('isInventoryManaged', true);
 
         /** @var InventoryManager $inventoryManager */
         $inventoryManager = $this->container->get('marello_inventory.manager.inventory_manager');

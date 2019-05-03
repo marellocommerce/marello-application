@@ -50,6 +50,7 @@ class InventoryManager extends BaseInventoryManager
             $allocatedInventory = ($level->getAllocatedInventoryQty() + $context->getAllocatedInventory());
         }
 
+        $level->setManagedInventory($context->getValue('isInventoryManaged'));
         $updatedLevel = $this->updateInventory($level, $inventory, $allocatedInventory);
         $context->setInventoryLevel($updatedLevel);
 

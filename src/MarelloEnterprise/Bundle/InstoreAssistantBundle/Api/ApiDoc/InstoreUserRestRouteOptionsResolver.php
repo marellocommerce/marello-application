@@ -15,7 +15,7 @@ use Oro\Bundle\ApiBundle\Util\ValueNormalizerUtil;
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Model\InstoreUserApi;
 
 /**
- * Removes auto-generated API route "GET /api/instoreuserapi/{id}".
+ * Removes auto-generated API route "GET /api/marelloinstoreuserapi/{id}".
  */
 class InstoreUserRestRouteOptionsResolver implements RouteOptionsResolverInterface
 {
