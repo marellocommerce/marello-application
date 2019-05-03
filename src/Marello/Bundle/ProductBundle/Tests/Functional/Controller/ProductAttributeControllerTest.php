@@ -38,6 +38,9 @@ class ProductAttributeControllerTest extends AttributeControllerTest
     public function testCreateImage()
     {
         // skip test during hardcoded entity classname in dependent functions
+        $this->markTestIncomplete(
+            'This test has not been implemented yet.'
+        );
     }
 
     /**
@@ -46,5 +49,8 @@ class ProductAttributeControllerTest extends AttributeControllerTest
     public function testCreateFile()
     {
         // skip test during hardcoded entity classname in dependent functions
+        $this->markTestIncomplete(
+            'This test has not been implemented yet.'
+        );
     }
 }
