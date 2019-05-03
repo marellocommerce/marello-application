@@ -64,6 +64,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
     public function getDependencies()
     {
         return [
+            LoadCustomerData::class,
             LoadTaxCodeData::class,
             LoadSalesData::class,
             LoadProductData::class,

@@ -24,11 +24,6 @@
             'entity_label': 'marello.product.entity_label'|trans
         }) }}
     {% endif %}
-    {{ UI.buttonSeparator() }}
-    {{ UI.button({
-        'path': path('marello_inventory_inventory_update', {'id': entity.id}),
-        'label': 'marello.inventory.management.label'|trans
-    }) }}
 {% endblock %}
 
 {% block content_data %}

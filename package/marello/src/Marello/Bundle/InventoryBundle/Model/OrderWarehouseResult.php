@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\InventoryBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -20,7 +21,7 @@ class OrderWarehouseResult extends ParameterBag
     }
 
     /**
-     * @return OrderItem[]
+     * @return ArrayCollection|OrderItem[]
      */
     public function getOrderItems()
     {

@@ -3,12 +3,11 @@ data:
         type: marelloreturns
         id: '<toString(@return0->id)>'
         attributes:
-            returnNumber: '000000001'
+            returnNumber: '<toString(@return0->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return0->returnReference'
             locale: null
             workflowItem:
-                id: 113
                 currentStep:
                     name: pending
                     label: Pending
@@ -21,16 +20,16 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '1'
+                        id: '<toString(@return0->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '2'
+                        id: '<toString(@return0->returnItems->get(1)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '3'
+                        id: '<toString(@return0->returnItems->get(2)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '4'
+                        id: '<toString(@return0->returnItems->get(3)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -47,12 +46,11 @@ data:
         type: marelloreturns
         id: '<toString(@return1->id)>'
         attributes:
-            returnNumber: '000000002'
+            returnNumber: '<toString(@return1->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return1->returnReference'
             locale: null
             workflowItem:
-                id: 114
                 currentStep:
                     name: pending
                     label: Pending
@@ -65,13 +63,13 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '5'
+                        id: '<toString(@return1->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '6'
+                        id: '<toString(@return1->returnItems->get(1)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '7'
+                        id: '<toString(@return1->returnItems->get(2)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -88,12 +86,11 @@ data:
         type: marelloreturns
         id: '<toString(@return2->id)>'
         attributes:
-            returnNumber: '000000003'
+            returnNumber: '<toString(@return2->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return2->returnReference'
             locale: null
             workflowItem:
-                id: 115
                 currentStep:
                     name: pending
                     label: Pending
@@ -106,16 +103,16 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '8'
+                        id: '<toString(@return2->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '9'
+                        id: '<toString(@return2->returnItems->get(1)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '10'
+                        id: '<toString(@return2->returnItems->get(2)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '11'
+                        id: '<toString(@return2->returnItems->get(3)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -132,12 +129,11 @@ data:
         type: marelloreturns
         id: '<toString(@return3->id)>'
         attributes:
-            returnNumber: '000000004'
+            returnNumber: '<toString(@return3->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return3->returnReference'
             locale: null
             workflowItem:
-                id: 116
                 currentStep:
                     name: pending
                     label: Pending
@@ -150,7 +146,7 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '12'
+                        id: '<toString(@return3->returnItems->get(0)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -167,12 +163,11 @@ data:
         type: marelloreturns
         id: '<toString(@return4->id)>'
         attributes:
-            returnNumber: '000000005'
+            returnNumber: '<toString(@return4->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return4->returnReference'
             locale: null
             workflowItem:
-                id: 117
                 currentStep:
                     name: pending
                     label: Pending
@@ -185,10 +180,10 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '13'
+                        id: '<toString(@return4->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '14'
+                        id: '<toString(@return4->returnItems->get(1)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -205,12 +200,11 @@ data:
         type: marelloreturns
         id: '<toString(@return5->id)>'
         attributes:
-            returnNumber: '000000006'
+            returnNumber: '<toString(@return5->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return5->returnReference'
             locale: null
             workflowItem:
-                id: 118
                 currentStep:
                     name: pending
                     label: Pending
@@ -223,16 +217,16 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '15'
+                        id: '<toString(@return5->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '16'
+                        id: '<toString(@return5->returnItems->get(1)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '17'
+                        id: '<toString(@return5->returnItems->get(2)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '18'
+                        id: '<toString(@return5->returnItems->get(3)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -249,12 +243,11 @@ data:
         type: marelloreturns
         id: '<toString(@return6->id)>'
         attributes:
-            returnNumber: '000000007'
+            returnNumber: '<toString(@return6->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return6->returnReference'
             locale: null
             workflowItem:
-                id: 119
                 currentStep:
                     name: pending
                     label: Pending
@@ -267,7 +260,7 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '19'
+                        id: '<toString(@return6->returnItems->get(0)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -284,12 +277,11 @@ data:
         type: marelloreturns
         id: '<toString(@return7->id)>'
         attributes:
-            returnNumber: '000000008'
+            returnNumber: '<toString(@return7->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return7->returnReference'
             locale: null
             workflowItem:
-                id: 120
                 currentStep:
                     name: pending
                     label: Pending
@@ -302,10 +294,10 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '20'
+                        id: '<toString(@return7->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '21'
+                        id: '<toString(@return7->returnItems->get(1)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
@@ -322,12 +314,11 @@ data:
         type: marelloreturns
         id: '<toString(@return8->id)>'
         attributes:
-            returnNumber: '000000009'
+            returnNumber: '<toString(@return8->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return8->returnReference'
             locale: null
             workflowItem:
-                id: 121
                 currentStep:
                     name: pending
                     label: Pending
@@ -340,10 +331,10 @@ data:
                 data:
                     -
                         type: marelloreturnitems
-                        id: '22'
+                        id: '<toString(@return8->returnItems->get(0)->id)>'
                     -
                         type: marelloreturnitems
-                        id: '23'
+                        id: '<toString(@return8->returnItems->get(1)->id)>'
             salesChannel:
                 data:
                     type: marellosaleschannels
