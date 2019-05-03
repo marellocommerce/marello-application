@@ -34,6 +34,9 @@ use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
  *          },
+ *          "grid"={
+ *              "default"="marello-customer-select-grid"
+ *          },
  *          "dataaudit"={
  *              "auditable"=true
  *          }

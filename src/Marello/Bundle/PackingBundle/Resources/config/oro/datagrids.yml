@@ -133,6 +133,10 @@ datagrids:
                 label:            marello.packing.packingslipitem.quantity.label
             weight:
                 label:            marello.packing.packingslipitem.weight.label
+            status:
+                label:            marello.order.orderitem.status.label
+                frontend_type:    string
+                data_name:        status
             createdAt:
                 label:            oro.ui.created_at
                 frontend_type:    datetime
@@ -149,6 +153,8 @@ datagrids:
                     data_name: psi.quantity
                 weight:
                     data_name: ps.weight
+                status:
+                    data_name: psi.status
                 createdAt:
                     data_name: ps.createdAt
                 updatedAt:

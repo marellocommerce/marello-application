@@ -1,4 +1,17 @@
 api:
+    entity_aliases:
+        Marello\Bundle\OrderBundle\Entity\Customer:
+            alias: marellocustomer
+            plural_alias: marellocustomers
+
+        Marello\Bundle\OrderBundle\Entity\Order:
+            alias: marelloorder
+            plural_alias: marelloorders
+
+        Marello\Bundle\OrderBundle\Entity\OrderItem:
+            alias: marelloorderitem
+            plural_alias: marelloorderitems
+
     entities:
         Marello\Bundle\OrderBundle\Entity\Order:
             documentation_resource: '@MarelloOrderBundle/Resources/doc/api/order.md'

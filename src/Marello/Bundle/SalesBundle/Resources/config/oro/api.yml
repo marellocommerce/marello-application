@@ -1,4 +1,9 @@
 api:
+    entity_aliases:
+        Marello\Bundle\SalesBundle\Entity\SalesChannel:
+            alias: marellosaleschannel
+            plural_alias: marellosaleschannels
+
     entities:
         Marello\Bundle\SalesBundle\Entity\SalesChannel:
             documentation_resource: '@MarelloSalesBundle/Resources/doc/api/saleschannel.md'
