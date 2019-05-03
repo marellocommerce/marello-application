@@ -28,7 +28,7 @@ class MarelloProductBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_5';
+        return 'v1_6';
     }
 
     /**
@@ -52,6 +52,9 @@ class MarelloProductBundleInstaller implements
 
         /** Add Image attribute relation **/
         $this->addImageRelation($schema);
+
+        /** Add attribute family and attribute family relation **/
+        $this->addAttributeFamily($schema);
     }
 
     /**
@@ -318,6 +321,22 @@ class MarelloProductBundleInstaller implements
             self::MAX_PRODUCT_IMAGE_SIZE_IN_MB,
             self::MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS,
             self::MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS
+        );
+    }
+
+    /**
+     * @param Schema $schema
+     */
+    protected function addAttributeFamily(Schema $schema)
+    {
+        $table = $schema->getTable(self::PRODUCT_TABLE);
+        $table->addColumn('attribute_family_id', 'integer', ['notnull' => false]);
+        $table->addIndex(['attribute_family_id']);
+        $table->addForeignKeyConstraint(
+            $schema->getTable('oro_attribute_family'),
+            ['attribute_family_id'],
+            ['id'],
+            ['onUpdate' => null, 'onDelete' => 'RESTRICT']
         );
     }
 }

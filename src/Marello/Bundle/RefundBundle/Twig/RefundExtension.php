@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\RefundBundle\Twig;
 
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
@@ -10,17 +10,24 @@ class RefundExtension extends \Twig_Extension
 {
     const NAME = 'marello_refund';
 
-    /** @var WorkflowManager */
+    /**
+     * @var WorkflowManager
+     */
     protected $workflowManager;
 
     /**
-     * RefundExtension constructor.
-     *
-     * @param WorkflowManager $workflowManager
+     * @var RefundBalanceCalculator
      */
-    public function __construct(WorkflowManager $workflowManager)
+    protected $refundBalanceCalculator;
+
+    /**
+     * @param WorkflowManager $workflowManager
+     * @param RefundBalanceCalculator $refundBalanceCalculator
+     */
+    public function __construct(WorkflowManager $workflowManager, RefundBalanceCalculator $refundBalanceCalculator)
     {
         $this->workflowManager = $workflowManager;
+        $this->refundBalanceCalculator = $refundBalanceCalculator;
     }
 
     /**
@@ -45,6 +52,10 @@ class RefundExtension extends \Twig_Extension
                 'marello_refund_is_pending',
                 [$this, 'isPending']
             ),
+            new \Twig_SimpleFunction(
+                'marello_refund_get_balance',
+                [$this, 'getBalance']
+            ),
         ];
     }
 
@@ -62,5 +73,14 @@ class RefundExtension extends \Twig_Extension
         }
 
         return false;
+    }
+
+    /**
+     * @param Refund $refund
+     * @return float
+     */
+    public function getBalance(Refund $refund)
+    {
+        return $this->refundBalanceCalculator->caclulateBalance($refund);
     }
 }

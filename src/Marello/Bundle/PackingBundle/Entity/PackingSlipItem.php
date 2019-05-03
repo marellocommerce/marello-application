@@ -5,6 +5,9 @@ namespace Marello\Bundle\PackingBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\PackingBundle\Model\ExtendPackingSlipItem;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
@@ -148,6 +151,21 @@ class PackingSlipItem extends ExtendPackingSlipItem
     protected $comment;
 
     /**
+     * @var string
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $status;
+
+    /**
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -248,7 +266,7 @@ class PackingSlipItem extends ExtendPackingSlipItem
     }
 
     /**
-     * @return mixed
+     * @return OrderItem
      */
     public function getOrderItem()
     {
@@ -324,6 +342,25 @@ class PackingSlipItem extends ExtendPackingSlipItem
     {
         $this->comment = $comment;
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     * @return $this
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        
         return $this;
     }
 }

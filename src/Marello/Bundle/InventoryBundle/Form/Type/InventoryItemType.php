@@ -4,7 +4,10 @@ namespace Marello\Bundle\InventoryBundle\Form\Type;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,11 +19,48 @@ class InventoryItemType extends AbstractType
     const BLOCK_PREFIX = 'marello_inventory_item';
 
     /**
+     * @var EventSubscriberInterface
+     */
+    protected $subscriber;
+
+    /**
+     * @param EventSubscriberInterface|null $subscriber
+     */
+    public function __construct(EventSubscriberInterface $subscriber = null)
+    {
+        $this->subscriber = $subscriber;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add(
+                'backorderAllowed',
+                CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.backorder_allowed.label'
+                ]
+            )
+            ->add(
+                'maxQtyToBackorder',
+                IntegerType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.max_qty_to_backorder.label'
+                ]
+            )
+            ->add(
+                'canPreorder',
+                CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.can_preorder.label'
+                ]
+            )
             ->add(
                 'replenishment',
                 EnumChoiceType::class,
@@ -48,6 +88,9 @@ class InventoryItemType extends AbstractType
                 'inventoryLevels',
                 InventoryLevelCollectionType::class
             );
+        if ($this->subscriber !== null) {
+            $builder->addEventSubscriber($this->subscriber);
+        }
     }
 
     /**

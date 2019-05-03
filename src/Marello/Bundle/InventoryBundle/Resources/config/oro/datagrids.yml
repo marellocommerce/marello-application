@@ -183,11 +183,16 @@ datagrids:
             query:
                 select:
                     - il
+                    - wht.label as warehouseTypeLabel
                     - COALESCE(il.inventory, 0) AS inventoryQty
                     - COALESCE(il.allocatedInventory, 0) AS allocatedInventoryQty
                     - COALESCE(il.inventory - il.allocatedInventory, 0) AS virtualInventoryQty
                 from:
                     - { table: MarelloInventoryBundle:InventoryLevel, alias: il }
+                join:
+                    left:
+                        - { join: il.warehouse, alias: wh }
+                        - { join: wh.warehouseType, alias: wht }
                 where:
                     and:
                         - IDENTITY(il.inventoryItem) = :inventoryItemId
@@ -195,6 +200,12 @@ datagrids:
             bind_parameters:
                 inventoryItemId: inventoryItemId
         columns:
+            warehouse:
+                label:              marello.inventory.inventorylevel.warehouse.label
+                frontend_type:      string
+            warehouseTypeLabel:
+                label:              marello.inventory.warehousetype.entity_label
+                frontend_type:      string
             inventoryQty:
                 label:              marello.inventory.inventorylevel.inventory.label
                 frontend_type:      number
