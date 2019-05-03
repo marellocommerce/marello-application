@@ -27,3 +27,4 @@ phpunit.xml
 .bash_history
 .npm/
 .viminfo
+php-semver-checker.phar
