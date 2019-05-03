@@ -1,4 +1,9 @@
 api:
+    entity_aliases:
+        Marello\Bundle\CatalogBundle\Entity\Category:
+            alias: marellocategory
+            plural_alias: marellocategories
+
     entities:
         Marello\Bundle\CatalogBundle\Entity\Category:
             fields:

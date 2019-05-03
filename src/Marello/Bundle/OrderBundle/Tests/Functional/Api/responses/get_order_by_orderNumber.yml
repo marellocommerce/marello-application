@@ -27,7 +27,6 @@ data:
         data: null
         locale: null
         workflowItem:
-            id: 46
             currentStep:
                 name: pending
                 label: 'Pending Order'
@@ -36,16 +35,16 @@ data:
             data:
                 -
                     type: marelloorderitems
-                    id: '98'
+                    id: '<toString(@marello_order_1->items->get(0)->id)>'
                 -
                     type: marelloorderitems
-                    id: '99'
+                    id: '<toString(@marello_order_1->items->get(1)->id)>'
                 -
                     type: marelloorderitems
-                    id: '100'
+                    id: '<toString(@marello_order_1->items->get(2)->id)>'
                 -
                     type: marelloorderitems
-                    id: '101'
+                    id: '<toString(@marello_order_1->items->get(3)->id)>'
         customer:
             data:
                 type: marellocustomers
@@ -53,11 +52,11 @@ data:
         billingAddress:
             data:
                 type: marelloaddresses
-                id: '129'
+                id: '<toString(@marello_order_1->billingAddress->id)>'
         shippingAddress:
             data:
                 type: marelloaddresses
-                id: '129'
+                id: '<toString(@marello_order_1->shippingAddress->id)>'
         salesChannel:
             data:
                 type: marellosaleschannels

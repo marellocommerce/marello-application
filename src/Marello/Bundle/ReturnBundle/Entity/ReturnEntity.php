@@ -10,6 +10,7 @@ use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Order;
+use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
 use Marello\Bundle\ReturnBundle\Model\ExtendReturnEntity;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\ShippingBundle\Entity\HasShipmentTrait;
@@ -39,6 +40,9 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
  *              "owner_field_name"="organization",
  *              "owner_column_name"="organization_id"
  *          },
+ *          "grid"={
+ *              "default"="marello-return-select-grid"
+ *          },
  *          "dataaudit"={
  *              "auditable"=true
  *          }
@@ -49,7 +53,8 @@ class ReturnEntity extends ExtendReturnEntity implements
     DerivedPropertyAwareInterface,
     ShippingAwareInterface,
     LocaleAwareInterface,
-    OrganizationAwareInterface
+    OrganizationAwareInterface,
+    OrderAwareInterface
 {
     use HasShipmentTrait;
     use LocalizationTrait;

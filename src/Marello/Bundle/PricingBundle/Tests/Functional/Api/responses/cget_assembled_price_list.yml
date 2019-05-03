@@ -143,3 +143,39 @@ data:
                 data: null
             msrpPrice:
                 data: null
+    -
+        type: marelloassembledpricelists
+        id: '<toString(@product5->prices->get(0)->id)>'
+        attributes:
+            currency: EUR
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p5
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '<toString(@product5->prices->get(0)->defaultPrice->id)>'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null
+    -
+        type: marelloassembledpricelists
+        id: '<toString(@product5->prices->get(1)->id)>'
+        attributes:
+            currency: USD
+        relationships:
+            product:
+                data:
+                    type: marelloproducts
+                    id: p5
+            defaultPrice:
+                data:
+                    type: marelloproductprices
+                    id: '<toString(@product5->prices->get(1)->defaultPrice->id)>'
+            specialPrice:
+                data: null
+            msrpPrice:
+                data: null

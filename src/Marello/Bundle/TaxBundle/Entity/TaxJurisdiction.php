@@ -13,7 +13,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Marello\Bundle\TaxBundle\Entity\Repository\TaxJurisdictionRepository")
  * @ORM\Table("marello_tax_tax_jurisdiction",
  *      uniqueConstraints={
  *          @ORM\UniqueConstraint(
