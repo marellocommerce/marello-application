@@ -5,10 +5,13 @@ namespace Marello\Bundle\OrderBundle\Migrations\Schema;
 use Doctrine\DBAL\Schema\Schema;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtension;
 use Oro\Bundle\ActivityBundle\Migration\Extension\ActivityExtensionAwareInterface;
-use Oro\Bundle\MigrationBundle\Migration\Installation;
-use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtension;
 use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInterface;
+use Oro\Bundle\EntityExtendBundle\EntityConfig\ExtendScope;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension;
+use Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtensionAwareInterface;
+use Oro\Bundle\MigrationBundle\Migration\Installation;
+use Oro\Bundle\MigrationBundle\Migration\QueryBag;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyMethods)
@@ -17,20 +20,30 @@ use Oro\Bundle\AttachmentBundle\Migration\Extension\AttachmentExtensionAwareInte
 class MarelloOrderBundleInstaller implements
     Installation,
     ActivityExtensionAwareInterface,
-    AttachmentExtensionAwareInterface
+    AttachmentExtensionAwareInterface,
+    ExtendExtensionAwareInterface
 {
-    /** @var ActivityExtension */
+    /**
+     * @var ActivityExtension
+     */
     protected $activityExtension;
 
-    /** @var  AttachmentExtension */
+    /**
+     * @var AttachmentExtension
+     */
     protected $attachmentExtension;
+
+    /**
+     * @var ExtendExtension
+     */
+    protected $extendExtension;
 
     /**
      * {@inheritdoc}
      */
     public function getMigrationVersion()
     {
-        return 'v1_7';
+        return 'v1_8_1';
     }
 
     /**
@@ -50,6 +63,7 @@ class MarelloOrderBundleInstaller implements
         $this->addMarelloAddressForeignKeys($schema);
         $this->addMarelloOrderCustomerOwnerToOroEmailAddress($schema);
 
+        $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_order_customer');
         $this->activityExtension->addActivityAssociation($schema, 'oro_note', 'marello_order_order');
     }
 
@@ -242,6 +256,17 @@ class MarelloOrderBundleInstaller implements
             ]
         );
         $table->addColumn('tax_code_id', 'integer', ['notnull' => false]);
+        $this->extendExtension->addEnumField(
+            $schema,
+            $table,
+            'status',
+            'marello_item_status',
+            false,
+            false,
+            [
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+            ]
+        );
         $table->setPrimaryKey(['id']);
     }
 
@@ -384,5 +409,15 @@ class MarelloOrderBundleInstaller implements
     public function setAttachmentExtension(AttachmentExtension $attachmentExtension)
     {
         $this->attachmentExtension = $attachmentExtension;
+    }
+
+    /**
+     * Sets the ExtendExtension
+     *
+     * @param ExtendExtension $extendExtension
+     */
+    public function setExtendExtension(ExtendExtension $extendExtension)
+    {
+        $this->extendExtension = $extendExtension;
     }
 }

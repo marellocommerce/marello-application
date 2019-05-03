@@ -5,7 +5,7 @@ data:
         meta:
             __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
         attributes:
-            invoiceNumber: '000000003'
+            invoiceNumber: '<toString(@marello_invoice_0->invoiceNumber)>'
             invoicedAt: '@marello_invoice_0->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: 'Credit Card'
@@ -24,11 +24,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '46'
+                    id: '<toString(@marello_invoice_0->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '46'
+                    id: '<toString(@marello_invoice_0->shippingAddress->id)>'
             order:
                 data:
                     type: marelloorders
@@ -45,7 +45,7 @@ data:
                 data:
                     -
                         type: marelloinvoiceitems
-                        id: '6'
+                        id: '<toString(@marello_invoice_0->items->get(0)->id)>'
             organization:
                 data:
                     type: organizations
@@ -56,7 +56,7 @@ data:
         meta:
             __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
         attributes:
-            invoiceNumber: '000000004'
+            invoiceNumber: '<toString(@marello_invoice_1->invoiceNumber)>'
             invoicedAt: '@marello_invoice_1->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: Paypal
@@ -75,11 +75,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '48'
+                    id: '<toString(@marello_invoice_1->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '48'
+                    id: '<toString(@marello_invoice_1->shippingAddress->id)>'
             order:
                 data:
                     type: marelloorders
@@ -96,16 +96,16 @@ data:
                 data:
                     -
                         type: marelloinvoiceitems
-                        id: '7'
+                        id: '<toString(@marello_invoice_1->items->get(0)->id)>'
                     -
                         type: marelloinvoiceitems
-                        id: '8'
+                        id: '<toString(@marello_invoice_1->items->get(1)->id)>'
                     -
                         type: marelloinvoiceitems
-                        id: '9'
+                        id: '<toString(@marello_invoice_1->items->get(2)->id)>'
                     -
                         type: marelloinvoiceitems
-                        id: '10'
+                        id: '<toString(@marello_invoice_1->items->get(3)->id)>'
             organization:
                 data:
                     type: organizations
@@ -116,7 +116,7 @@ data:
         meta:
             __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
         attributes:
-            invoiceNumber: '000000005'
+            invoiceNumber: '<toString(@marello_invoice_2->invoiceNumber)>'
             invoicedAt: '@marello_invoice_2->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: 'Credit Card'
@@ -135,11 +135,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '50'
+                    id: '<toString(@marello_invoice_2->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '50'
+                    id: '<toString(@marello_invoice_2->shippingAddress->id)>'
             order:
                 data:
                     type: marelloorders
@@ -156,13 +156,13 @@ data:
                 data:
                     -
                         type: marelloinvoiceitems
-                        id: '11'
+                        id: '<toString(@marello_invoice_2->items->get(0)->id)>'
                     -
                         type: marelloinvoiceitems
-                        id: '12'
+                        id: '<toString(@marello_invoice_2->items->get(1)->id)>'
                     -
                         type: marelloinvoiceitems
-                        id: '13'
+                        id: '<toString(@marello_invoice_2->items->get(2)->id)>'
             organization:
                 data:
                     type: organizations
@@ -173,7 +173,7 @@ data:
         meta:
             __class__: Marello\Bundle\InvoiceBundle\Entity\Invoice
         attributes:
-            invoiceNumber: '000000006'
+            invoiceNumber: '<toString(@marello_invoice_3->invoiceNumber)>'
             invoicedAt: '@marello_invoice_3->invoicedAt->format("Y-m-d\TH:i:s\Z")'
             invoiceDueDate: null
             paymentMethod: Paypal
@@ -192,11 +192,11 @@ data:
             billingAddress:
                 data:
                     type: marelloaddresses
-                    id: '52'
+                    id: '<toString(@marello_invoice_3->billingAddress->id)>'
             shippingAddress:
                 data:
                     type: marelloaddresses
-                    id: '52'
+                    id: '<toString(@marello_invoice_3->shippingAddress->id)>'
             order:
                 data:
                     type: marelloorders
@@ -213,16 +213,16 @@ data:
                 data:
                     -
                         type: marelloinvoiceitems
-                        id: '14'
+                        id: '<toString(@marello_invoice_3->items->get(0)->id)>'
                     -
                         type: marelloinvoiceitems
-                        id: '15'
+                        id: '<toString(@marello_invoice_3->items->get(1)->id)>'
                     -
                         type: marelloinvoiceitems
-                        id: '16'
+                        id: '<toString(@marello_invoice_3->items->get(2)->id)>'
                     -
                         type: marelloinvoiceitems
-                        id: '17'
+                        id: '<toString(@marello_invoice_3->items->get(3)->id)>'
             organization:
                 data:
                     type: organizations

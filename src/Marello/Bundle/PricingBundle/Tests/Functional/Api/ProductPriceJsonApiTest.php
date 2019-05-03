@@ -29,7 +29,7 @@ class ProductPriceJsonApiTest extends RestJsonApiTestCase
 
         $this->assertJsonResponse($response);
         $this->assertResponseStatusCodeEquals($response, Response::HTTP_OK);
-        $this->assertResponseCount(8, $response);
+        $this->assertResponseCount(10, $response);
         $this->assertResponseContains('cget_prices.yml', $response);
     }
 

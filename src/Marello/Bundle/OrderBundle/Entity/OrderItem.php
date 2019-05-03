@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
 
+use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
@@ -319,6 +320,21 @@ class OrderItem extends ExtendOrderItem implements
      * @JMS\Expose
      */
     protected $taxCode;
+    
+    /**
+     * @var string
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          },
+     *          "importexport"={
+     *              "excluded"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $status;
 
     /**
      * OrderItem constructor.
@@ -499,7 +515,7 @@ class OrderItem extends ExtendOrderItem implements
     }
     
     /**
-     * @return ProductInterface
+     * @return ProductInterface|Product
      */
     public function getProduct()
     {
@@ -705,5 +721,24 @@ class OrderItem extends ExtendOrderItem implements
     public function getCurrency()
     {
         return $this->order->getCurrency();
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     * @return $this
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        
+        return $this;
     }
 }

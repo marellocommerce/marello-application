@@ -9,6 +9,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowStep;
 
 use Marello\Bundle\RefundBundle\Twig\RefundExtension;
 use Marello\Bundle\RefundBundle\Entity\Refund;
+use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
 
 class RefundExtensionTest extends WebTestCase
 {
@@ -22,6 +23,9 @@ class RefundExtensionTest extends WebTestCase
      */
     protected $extension;
 
+    /** @var RefundBalanceCalculator|\PHPUnit_Framework_MockObject_MockObject */
+    protected $refundCalculator;
+
     /**
      * {@inheritdoc}
      */
@@ -30,7 +34,15 @@ class RefundExtensionTest extends WebTestCase
         $this->workflowManager = $this->getMockBuilder(WorkflowManager::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->extension = new RefundExtension($this->workflowManager);
+
+        $this->refundCalculator = $this->getMockBuilder(RefundBalanceCalculator::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->extension = new RefundExtension(
+            $this->workflowManager,
+            $this->refundCalculator
+        );
     }
 
     /**
@@ -40,6 +52,7 @@ class RefundExtensionTest extends WebTestCase
     {
         unset($this->extension);
         unset($this->workflowManager);
+        unset($this->refundCalculator);
     }
 
     /**
@@ -56,10 +69,11 @@ class RefundExtensionTest extends WebTestCase
     public function testGetFunctionsAreRegisteredInExtension()
     {
         $functions = $this->extension->getFunctions();
-        $this->assertCount(1, $functions);
+        $this->assertCount(2, $functions);
 
         $expectedFunctions = array(
-            'marello_refund_is_pending'
+            'marello_refund_is_pending',
+            'marello_refund_get_balance'
         );
 
         /** @var \Twig_SimpleFunction $function */

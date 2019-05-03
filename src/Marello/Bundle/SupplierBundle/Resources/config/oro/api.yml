@@ -1,4 +1,9 @@
 api:
+    entity_aliases:
+        Marello\Bundle\SupplierBundle\Entity\Supplier:
+            alias: marellosupplier
+            plural_alias: marellosuppliers
+
     entities:
         Marello\Bundle\SupplierBundle\Entity\Supplier:
             fields:
