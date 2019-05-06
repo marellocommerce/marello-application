@@ -202,7 +202,8 @@ class OrderControllerBackorderTest extends WebTestCase
             ->findOneBy(['product' => $product->getId()]);
         $inventoryItem
             ->setBackorderAllowed(false)
-            ->setCanPreorder(true);
+            ->setCanPreorder(true)
+            ->setMaxQtyToPreorder(10);
         $inventoryItemManager->persist($inventoryItem);
         $inventoryItemManager->flush($inventoryItem);
 
