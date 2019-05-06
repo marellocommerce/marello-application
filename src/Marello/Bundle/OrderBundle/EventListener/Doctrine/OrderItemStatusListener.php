@@ -56,7 +56,8 @@ class OrderItemStatusListener
                 (
                     ($inventoryItem->isBackorderAllowed() &&
                         $inventoryItem->getMaxQtyToBackorder() >= $entity->getQuantity()
-                    ) || $inventoryItem->isCanPreorder()
+                    ) || ($inventoryItem->isCanPreorder() &&
+                        $inventoryItem->getMaxQtyToPreorder() >= $entity->getQuantity())
                 )
             ) {
                 $entity->setStatus($this->findStatusByName(LoadOrderItemStatusData::WAITING_FOR_SUPPLY));
