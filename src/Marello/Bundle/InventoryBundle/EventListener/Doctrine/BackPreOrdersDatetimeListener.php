@@ -26,7 +26,6 @@ class BackPreOrdersDatetimeListener implements FeatureToggleableInterface
                     /** @var InventoryItem $inventoryItem */
                     $inventoryItem = $product->getInventoryItems()->first();
                     $inventoryItem->setBackOrdersDatetime($purchaseOrder->getDueDate());
-                    $inventoryItem->setPreOrdersDatetime($purchaseOrder->getDueDate());
                     $uow->scheduleForUpdate($inventoryItem);
                 }
             }
