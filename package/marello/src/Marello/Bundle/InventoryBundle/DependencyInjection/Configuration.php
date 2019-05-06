@@ -19,6 +19,7 @@ class Configuration implements ConfigurationInterface
 {
     const SYSTEM_CONFIG_PATH_BALANCE_STRATEGY = 'marello_inventory.balancing_strategy';
     const SYSTEM_CONFIG_PATH_THRESHOLD_PERCENTAGE = 'marello_inventory.balance_threshold_percentage';
+    const SYSTEM_CONFIG_PATH_PO_DUEDATE_AS_BACK_PRE_ORDERS_DATEDIME = 'marello_inventory.po_duedate_as_back_pre_orders_datetime';
 
     /**
      * {@inheritDoc}
@@ -36,6 +37,9 @@ class Configuration implements ConfigurationInterface
                 ],
                 'balance_threshold_percentage' => [
                     'value' => 0.20
+                ],
+                'po_duedate_as_back_pre_orders_datetime' => [
+                    'value' => true
                 ]
             ]
         );
