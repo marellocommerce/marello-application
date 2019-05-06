@@ -103,7 +103,12 @@ class AvailableInventoryValidator extends ConstraintValidator
                 $violation = true;
                 if ($this->isProductCanDropship($values[self::PRODUCT_FIELD])) {
                     $violation = false;
-                } elseif ($this->isProductCanPreOrder($values[self::PRODUCT_FIELD])) {
+                } elseif ($this->isProductCanPreorder($values[self::PRODUCT_FIELD]) &&
+                    $this->compareValues(
+                        $this->getPreorderQty($values[self::PRODUCT_FIELD]),
+                        $values[self::QUANTITY_FIELD]
+                    )
+                ) {
                     $violation = false;
                 } elseif ($this->isProductCanBackorder($values[self::PRODUCT_FIELD]) &&
                     $this->compareValues(
@@ -188,7 +193,7 @@ class AvailableInventoryValidator extends ConstraintValidator
      * @param ProductInterface|Product $product
      * @return bool
      */
-    private function isProductCanPreOrder(ProductInterface $product)
+    private function isProductCanPreorder(ProductInterface $product)
     {
         foreach ($product->getInventoryItems() as $inventoryItem) {
             if ($inventoryItem->isCanPreorder()) {
@@ -197,6 +202,21 @@ class AvailableInventoryValidator extends ConstraintValidator
         }
 
         return false;
+    }
+    
+    /**
+     * @param ProductInterface|Product $product
+     * @return integer
+     */
+    private function getPreorderQty(ProductInterface $product)
+    {
+        foreach ($product->getInventoryItems() as $inventoryItem) {
+            if ($inventoryItem->isCanPreorder()) {
+                return $inventoryItem->getMaxQtyToPreorder();
+            }
+        }
+
+        return 0;
     }
 
     /**

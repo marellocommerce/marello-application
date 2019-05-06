@@ -5,6 +5,7 @@ namespace Marello\Bundle\PurchaseOrderBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Marello\Bundle\PricingBundle\Entity\ProductPrice;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -274,7 +275,7 @@ class PurchaseOrderItem implements
     }
 
     /**
-     * @return ProductInterface
+     * @return ProductInterface|Product
      */
     public function getProduct()
     {

@@ -204,6 +204,51 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     protected $canPreorder;
 
     /**
+     * @ORM\Column(name="max_qty_to_preorder", type="integer", nullable=true, options={"default"=0})
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "header"="Max Quantity To Preorder"
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     *
+     * @var integer
+     */
+    protected $maxQtyToPreorder;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="back_orders_datetime", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $backOrdersDatetime;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="pre_orders_datetime", type="datetime", nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $preOrdersDatetime;
+    
+    /**
      * @var Warehouse
      */
     protected $warehouse;
@@ -446,6 +491,63 @@ class InventoryItem extends ExtendInventoryItem implements ProductAwareInterface
     {
         $this->canPreorder = $canPreorder;
         
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxQtyToPreorder()
+    {
+        return $this->maxQtyToPreorder;
+    }
+
+    /**
+     * @param int $maxQtyToPreorder
+     * @return $this
+     */
+    public function setMaxQtyToPreorder($maxQtyToPreorder)
+    {
+        $this->maxQtyToPreorder = $maxQtyToPreorder;
+
+        return $this;
+    }
+    
+    /**
+     * @return \DateTime
+     */
+    public function getBackOrdersDatetime()
+    {
+        return $this->backOrdersDatetime;
+    }
+
+    /**
+     * @param \DateTime|null $backOrdersDatetime
+     * @return $this
+     */
+    public function setBackOrdersDatetime(\DateTime $backOrdersDatetime = null)
+    {
+        $this->backOrdersDatetime = $backOrdersDatetime;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPreOrdersDatetime()
+    {
+        return $this->preOrdersDatetime;
+    }
+
+    /**
+     * @param \DateTime|null $preOrdersDatetime
+     * @return $this
+     */
+    public function setPreOrdersDatetime(\DateTime $preOrdersDatetime = null)
+    {
+        $this->preOrdersDatetime = $preOrdersDatetime;
+
         return $this;
     }
 }
