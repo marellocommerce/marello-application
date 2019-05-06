@@ -70,9 +70,6 @@ class BackPreOrdersDatetimeListenerTest extends TestCase
         $this->inventoryItem
             ->expects(static::once())
             ->method('setBackOrdersDatetime');
-        $this->inventoryItem
-            ->expects(static::once())
-            ->method('setPreOrdersDatetime');
         $uow
             ->expects(static::once())
             ->method('scheduleForUpdate')
@@ -108,9 +105,6 @@ class BackPreOrdersDatetimeListenerTest extends TestCase
         $this->inventoryItem
             ->expects(static::never())
             ->method('setBackOrdersDatetime');
-        $this->inventoryItem
-            ->expects(static::never())
-            ->method('setPreOrdersDatetime');
         $uow
             ->expects(static::never())
             ->method('scheduleForUpdate')
