@@ -34,11 +34,11 @@ system_configuration:
                 required: true
                 constraints:
                     - NotBlank: ~
-        marello_inventory.po_duedate_as_back_pre_orders_datetime:
+        marello_inventory.po_duedate_as_back_orders_datetime:
             data_type: boolean
             type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
             options:
-                label: marello.inventory.system_configuration.fields.po_duedate_as_back_pre_orders_datetime.label
+                label: marello.inventory.system_configuration.fields.po_duedate_as_back_orders_datetime.label
                 required: false
 
     tree:
@@ -59,4 +59,4 @@ system_configuration:
                                 children:
                                     back_pre_orders_general:
                                         children:
-                                            - marello_inventory.po_duedate_as_back_pre_orders_datetime
+                                            - marello_inventory.po_duedate_as_back_orders_datetime
