@@ -66,6 +66,9 @@ marello:
             backorder_allowed.label:    Backorders allowed
             max_qty_to_backorder.label: Max qty to backorder
             can_preorder.label:         Pre-order allowed
+            max_qty_to_preorder.label:  Max qty to preorder
+            back_orders_datetime.label: Back-orders Datetime
+            pre_orders_datetime.label:  Pre-orders Datetime
 
             section:
                 backorder_preorder.label:   Backorder/Pre-order
@@ -134,9 +137,13 @@ marello:
                         title:              Inventory Balancer
                         general.label:      General
                         strategy.label:     Balancing Strategy
+                    back_pre_orders:
+                        title:              Back-Pre Orders
+                        general.label:      General
             fields:
-                balancing_strategy.label:             Strategy
-                balance_threshold_percentage.label:   Threshold Percentage
+                balancing_strategy.label:                     Strategy
+                balance_threshold_percentage.label:           Threshold Percentage
+                po_duedate_as_back_pre_orders_datetime.label: Use Purchase Order DueDate as Back-Pre Orders Datetime
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully
