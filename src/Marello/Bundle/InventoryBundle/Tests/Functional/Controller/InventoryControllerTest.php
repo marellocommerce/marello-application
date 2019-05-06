@@ -201,6 +201,7 @@ class InventoryControllerTest extends WebTestCase
                 'backorderAllowed' => true,
                 'maxQtyToBackorder' => 10,
                 'canPreorder' => true,
+                'maxQtyToPreorder' => 10,
                 'desiredInventory' => $inventoryItem->getDesiredInventory(),
                 'purchaseInventory' => $inventoryItem->getPurchaseInventory(),
                 'replenishment' => 'never_out_of_stock',
@@ -222,5 +223,6 @@ class InventoryControllerTest extends WebTestCase
         $this->assertEquals(true, $savedInventoryItem->isBackorderAllowed());
         $this->assertEquals(true, $savedInventoryItem->isCanPreorder());
         $this->assertEquals(10, $savedInventoryItem->getMaxQtyToBackorder());
+        $this->assertEquals(10, $savedInventoryItem->getMaxQtyToPreorder());
     }
 }
