@@ -29,6 +29,21 @@ navigation:
                     description: 'marello.product.menu.shortcut_list_products.description'
                     isCustomAction: true
 
+            product_attributes_index:
+                label: 'marello.product.menu.product_attributes.label'
+                route: 'oro_attribute_index'
+                route_parameters:
+                    alias: 'marelloproduct'
+                extras:
+                    routes: ['oro_attribute_*']
+
+            product_attribute_families:
+                label: 'marello.product.menu.product_families.label'
+                route: 'oro_attribute_family_index'
+                route_parameters:
+                    alias: 'marelloproduct'
+                extras:
+                    routes: ['oro_attribute_family_*']
             # disable activities tab and it's children
             activities_tab:
                 display: false
@@ -39,6 +54,8 @@ navigation:
                     products_tab:
                         children:
                             products_list: ~
+                            product_attribute_families: ~
+                            product_attributes_index: ~
                         position: 10
             shortcuts:
                 children:
