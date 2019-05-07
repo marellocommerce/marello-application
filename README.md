@@ -63,3 +63,18 @@ git subtree push  --prefix <package or application directory in mono-repo> <remo
 * Create maintenance branch for released version (if it's is a new version)
 * Repeat previous steps for applications and generate lock files
 * Push new maintenance branch to remote of the mono repository
+
+
+## Checking PR's
+* Create branch locally based of the branch on which the PR is based
+* Git subtree pull into the correct package or application from forked repo or remote repo 
+```bash
+git subtree pull --prefix <package or application> <remote repo> <remote branch> --squash
+``` 
+* Review changes
+* Run tests against changes
+* Merge into maintenance or master branch
+* Push the changes to downstream repositories
+```bash
+git subtree push --prefix <package or application> <remote repo> <remote branch> --squash
+``` 
