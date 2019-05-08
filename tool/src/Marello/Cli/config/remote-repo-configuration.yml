@@ -14,4 +14,3 @@ repositories:
         marello-application: 'https://github.com/marellocommerce/marello-application.git'
         marello-application-ee: 'https://github.com/marellocommerce/marello-application-ee.git'
         marello-orocommerce-ee-application: 'https://github.com/marellocommerce/marello-orocommerce-ee-application.git'
-
