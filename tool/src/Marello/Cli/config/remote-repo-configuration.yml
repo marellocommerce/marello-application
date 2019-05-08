@@ -1,5 +1,5 @@
 repositories:
-    packages:
+    package:
         marello: 'https://github.com/marellocommerce/marello.git'
         marello-enterprise: 'https://github.com/marellocommerce/marello-enterprise.git'
         marello-magento-bundle: 'https://github.com/marellocommerce/marello-magento-bundle.git'

@@ -44,7 +44,7 @@ class RemoteSyncCommand extends Command
                 $output->writeln(sprintf('<info>pulling from downstream remote %s %s</info>', $remoteName, $remoteUrl));
                 $prefix = sprintf('%s/%s', $repoType, $remoteName);
                 $branch = $this->defaultBranch;
-                $process = new Process(sprintf('git subtree pull --prefix %s %s %s --squash', $prefix, $remoteName, $branch));
+                $process = new Process(sprintf('git subtree pull --prefix %s %s %s', $prefix, $remoteName, $branch));
                 $process->setTimeout(60);
                 $process->run(
                     function ($type, $buffer) use ($output) {
