@@ -9,9 +9,9 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
 
-class RemoveRemoteRepositoriesCommand extends Command
+class RemoteInitCommand extends Command
 {
-    const NAME = 'remotes:remove';
+    const NAME = 'remote:init';
 
     protected $configurationFile = __DIR__ . '/../config/remote-repo-configuration.yml';
 
@@ -22,7 +22,7 @@ class RemoveRemoteRepositoriesCommand extends Command
     {
         $this
             ->setName(self::NAME)
-            ->setDescription('remove remote repositories from configuration');
+            ->setDescription('add remote repositories from configuration');
     }
 
     /**
@@ -37,10 +37,9 @@ class RemoveRemoteRepositoriesCommand extends Command
         }
 
         foreach ($values['repositories'] as $repoType => $repos) {
-            $output->writeln(sprintf('<info>repo type: %s</info>', $repoType));
             foreach ($repos as $remoteName => $remoteUrl) {
-                $output->writeln(sprintf('<info>removing remote %s %s</info>', $remoteName, $remoteUrl));
-                $process = new Process(sprintf('git remote remove %s', $remoteName));
+                $output->writeln(sprintf('<info>adding remote %s %s</info>', $remoteName, $remoteUrl));
+                $process = new Process(sprintf('git remote add %s %s', $remoteName, $remoteUrl));
                 $process->setTimeout(60);
                 $process->run(
                     function ($type, $buffer) use ($output) {
@@ -52,8 +51,6 @@ class RemoveRemoteRepositoriesCommand extends Command
 
         $output->writeln('<info>done processing config file</info>');
     }
-
-
 
     /**
      * Get array with values for remote repositories from pre configured file

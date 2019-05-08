@@ -9,9 +9,9 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Process\Process;
 
-class InitRemoteRepositoriesCommand extends Command
+class RemoteRemoveCommand extends Command
 {
-    const NAME = 'remotes:init';
+    const NAME = 'remote:remove';
 
     protected $configurationFile = __DIR__ . '/../config/remote-repo-configuration.yml';
 
@@ -22,7 +22,7 @@ class InitRemoteRepositoriesCommand extends Command
     {
         $this
             ->setName(self::NAME)
-            ->setDescription('add remote repositories from configuration');
+            ->setDescription('remove remote repositories from configuration');
     }
 
     /**
@@ -37,9 +37,10 @@ class InitRemoteRepositoriesCommand extends Command
         }
 
         foreach ($values['repositories'] as $repoType => $repos) {
+            $output->writeln(sprintf('<info>repo type: %s</info>', $repoType));
             foreach ($repos as $remoteName => $remoteUrl) {
-                $output->writeln(sprintf('<info>adding remote %s %s</info>', $remoteName, $remoteUrl));
-                $process = new Process(sprintf('git remote add %s %s', $remoteName, $remoteUrl));
+                $output->writeln(sprintf('<info>removing remote %s %s</info>', $remoteName, $remoteUrl));
+                $process = new Process(sprintf('git remote remove %s', $remoteName));
                 $process->setTimeout(60);
                 $process->run(
                     function ($type, $buffer) use ($output) {

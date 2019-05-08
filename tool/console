@@ -3,8 +3,9 @@
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Yaml\Command\LintCommand;
-use Marello\Cli\Command\InitRemoteRepositoriesCommand;
-use Marello\Cli\Command\RemoveRemoteRepositoriesCommand;
+use Marello\Cli\Command\RemoteInitCommand;
+use Marello\Cli\Command\RemoteRemoveCommand;
+use Marello\Cli\Command\RemoteSyncCommand;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -12,8 +13,9 @@ $application = new Application();
 $application->addCommands(
     [
         new LintCommand(),
-        new InitRemoteRepositoriesCommand(),
-        new RemoveRemoteRepositoriesCommand()
+        new RemoteInitCommand(),
+        new RemoteRemoveCommand(),
+        new RemoteSyncCommand()
     ]
 );
 
