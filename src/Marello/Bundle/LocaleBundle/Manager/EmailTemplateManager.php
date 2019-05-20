@@ -3,6 +3,7 @@
 namespace Marello\Bundle\LocaleBundle\Manager;
 
 use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Provider\EntityLocalizationProviderInterface;
 use Marello\Bundle\LocaleBundle\Repository\EmailTemplateTranslatableRepository;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
@@ -17,6 +18,9 @@ class EmailTemplateManager
     /** @var  ConfigManager */
     protected $configManager;
 
+    /** @var  EntityLocalizationProviderInterface */
+    protected $entityLocalizationProvider;
+
     /**
      * EmailTemplateManager constructor.
      * @param EmailTemplateTranslatableRepository $emailTemplateTranslatableRepository
@@ -26,8 +30,16 @@ class EmailTemplateManager
         EmailTemplateTranslatableRepository $emailTemplateTranslatableRepository,
         ConfigManager $configManager
     ) {
-        $this->emailTemplateTranslatableRepository  = $emailTemplateTranslatableRepository;
-        $this->configManager                        = $configManager;
+        $this->emailTemplateTranslatableRepository = $emailTemplateTranslatableRepository;
+        $this->configManager                       = $configManager;
+    }
+
+    /**
+     * @param EntityLocalizationProviderInterface $entityLocalizationProvider
+     */
+    public function setEntityLocalizationProvider(EntityLocalizationProviderInterface $entityLocalizationProvider)
+    {
+        $this->entityLocalizationProvider = $entityLocalizationProvider;
     }
 
     /**
@@ -49,6 +61,13 @@ class EmailTemplateManager
          */
         if ($template == null) {
             $template = $this->findSalesChannelDefaultLocaleTemplate($templateName, $entity);
+        }
+
+        /*
+         * 3. Try to get template by localization.
+         */
+        if ($template == null) {
+            $template = $this->findEntityLocalizationTemplate($templateName, $entity);
         }
 
         /*
@@ -92,6 +111,22 @@ class EmailTemplateManager
                 return $this->emailTemplateTranslatableRepository
                     ->findOneByNameAndLocale($templateName, $salesChannel->getLocale());
             }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $templateName
+     * @param $entity
+     * @return null|\Oro\Bundle\EmailBundle\Entity\EmailTemplate
+     */
+    public function findEntityLocalizationTemplate($templateName, $entity)
+    {
+        if ($entity instanceof LocaleAwareInterface) {
+            $localization = $this->entityLocalizationProvider->getLocalization($entity);
+            return $this->emailTemplateTranslatableRepository
+                ->findOneByNameAndLocale($templateName, $localization->getLanguageCode());
         }
 
         return null;

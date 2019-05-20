@@ -39,7 +39,8 @@ class OrderItem extends ExtendOrderItem implements
     QuantityAwareInterface,
     PriceAwareInterface,
     TaxAwareInterface,
-    ProductAwareInterface
+    ProductAwareInterface,
+    OrderAwareInterface
 {
     /**
      * @var int

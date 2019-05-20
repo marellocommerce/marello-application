@@ -5,10 +5,15 @@ system_configuration:
         inventory_balancing:
             title: marello.inventory.system_configuration.groups.inventory.balacing.title
             icon: fa-cubes
+        back_pre_orders:
+            title: marello.inventory.system_configuration.groups.inventory.back_pre_orders.title
+            icon: fa-box
         inventory_balancing_general:
             title: marello.inventory.system_configuration.groups.inventory.balacing.general.label
         inventory_balancing_strategy:
             title: marello.inventory.system_configuration.groups.inventory.balacing.strategy.label
+        back_pre_orders_general:
+            title: marello.inventory.system_configuration.groups.inventory.back_pre_orders.general.label
 
     fields:
         marello_inventory.balance_threshold_percentage:
@@ -29,6 +34,12 @@ system_configuration:
                 required: true
                 constraints:
                     - NotBlank: ~
+        marello_inventory.po_duedate_as_back_orders_datetime:
+            data_type: boolean
+            type: Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+            options:
+                label: marello.inventory.system_configuration.fields.po_duedate_as_back_orders_datetime.label
+                required: false
 
     tree:
         system_configuration:
@@ -44,3 +55,8 @@ system_configuration:
                                     inventory_balancing_strategy:
                                         children:
                                             - marello_inventory.balancing_strategy
+                            back_pre_orders:
+                                children:
+                                    back_pre_orders_general:
+                                        children:
+                                            - marello_inventory.po_duedate_as_back_orders_datetime
