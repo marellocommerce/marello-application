@@ -35,7 +35,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
             $this->scheduleSync($entity);
         }
     }
-    
+
     /**
      * @return array
      */
@@ -62,9 +62,9 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                     foreach ($entity->getChannels() as $salesChannel) {
                         if ($salesChannel->getIntegrationChannel()) {
                             $finalPrice = $this->getFinalPrice($entity, $salesChannel);
-                            if (!isset($data[AbstractProductExportWriter::PRICE_ID_FIELD]) || 
-                                    count($data[AbstractProductExportWriter::PRICE_ID_FIELD]) <
-                                    count($this->getIntegrationChannels($finalPrice)
+                            if (!isset($data[AbstractProductExportWriter::PRICE_ID_FIELD]) ||
+                                count($data[AbstractProductExportWriter::PRICE_ID_FIELD]) <
+                                count($this->getIntegrationChannels($finalPrice)
                                 )
                             ) {
                                 $key = sprintf(
@@ -88,7 +88,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                 }
             }
         }
-        
+
         usort($result, function ($a, $b) {
             if ($a instanceof ProductChannelPrice && $b instanceof ProductPrice) {
                 return -1;
@@ -109,7 +109,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
     protected function isSyncRequired(BasePrice $entity)
     {
         $changeSet = $this->unitOfWork->getEntityChangeSet($entity);
-        
+
         if (count($changeSet) === 0) {
             return false;
         }
@@ -250,7 +250,7 @@ class ReverseSyncProductPriceListener extends AbstractReverseSyncListener
                 return $salesChannel;
             }
         }
-        
+
         return null;
     }
 

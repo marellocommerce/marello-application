@@ -17,6 +17,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AjaxOroCommerceController extends Controller
 {
+    /**
+     * @Route("/get-business-units/{channelId}/", name="marello_orocommerce_get_businessunits")
+     * @ParamConverter("channel", class="OroIntegrationBundle:Channel", options={"id" = "channelId"})
+     * @Method("POST")
+     *
+     * @param Request $request
+     * @param Channel $channel
+     * @return JsonResponse
+     */
+    public function getBusinessUnitsAction(Request $request, Channel $channel = null)
+    {
+        return $this->getIntegrationData(
+            CacheKeyGenerator::BUSINESS_UNIT,
+            'getBusinessUnits',
+            'name',
+            $this->getTransport($request, $channel)
+        );
+    }
 
     /**
      * @Route("/get-product-units/{channelId}/", name="marello_orocommerce_get_productunits")

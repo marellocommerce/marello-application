@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CacheKeyGenerator implements CacheKeyGeneratorInterface
 {
+    const BUSINESS_UNIT = 'business_unit';
     const PRODUCT_UNIT = 'product_unit';
     const CUSTOMER_TAX_CODE = 'customer_tax_code';
     const PRICE_LIST = 'price_list';

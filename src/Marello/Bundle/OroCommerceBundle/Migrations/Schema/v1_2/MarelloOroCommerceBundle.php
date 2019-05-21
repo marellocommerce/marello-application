@@ -25,18 +25,6 @@ class MarelloOroCommerceBundle implements Migration
     {
         $table = $schema->getTable('oro_integration_transport');
 
-        $table->addColumn('orocommerce_deldataondeactiv', 'boolean', ['notnull' => false]);
-        $table->addColumn('orocommerce_deldataondel', 'boolean', ['notnull' => false]);
-        $table->addColumn('orocommerce_data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
-
-        $query = "
-            UPDATE oro_integration_transport
-                SET
-                    orocommerce_deldataondeactiv = false,
-                    orocommerce_deldataondel = false
-                WHERE
-                    type = 'orocommercesettings'
-        ";
-        $queries->addQuery($query);
+        $table->addColumn('orocommerce_businessunit', 'integer', ['notnull' => false]);
     }
 }

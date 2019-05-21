@@ -41,7 +41,7 @@ class ProductNormalizer extends AbstractNormalizer
                         'owner' => [
                             'data' => [
                                     'type' => 'businessunits',
-                                    'id' => '1'
+                                    'id' => $transport->getBusinessUnit() ? (string)$transport->getBusinessUnit() : '1'
                                 ]
                         ],
                         'names' => [
@@ -216,7 +216,6 @@ class ProductNormalizer extends AbstractNormalizer
                 isset($productData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId])) {
                 $data['data']['id'] =
                     $productData[AbstractProductExportWriter::PRODUCT_ID_FIELD][$channelId];
-                //$data['data']['meta']['update'] = true;
             }
 
             if ($taxCode) {
@@ -241,8 +240,6 @@ class ProductNormalizer extends AbstractNormalizer
                             'description' => $taxCode->getDescription(),
                         ],
                     ];
-                } else {
-                    
                 }
             }
 

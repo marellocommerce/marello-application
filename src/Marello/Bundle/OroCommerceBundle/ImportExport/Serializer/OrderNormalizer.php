@@ -45,7 +45,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         return ($data instanceof Order && isset($context['channel']) &&
             $this->getIntegrationChannel($context['channel']));
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -152,7 +152,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
             $this->getProperty($data, 'lineItems'),
             $order
         );
-        
+
         return $order;
     }
 
@@ -223,7 +223,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         } else {
             $price = (float)$row['excludingTax']/(float)$quantity;
         }
-        
+
         $item = new OrderItem();
         $item
             ->setPrice((float)$price)
@@ -246,7 +246,7 @@ class OrderNormalizer extends AbstractNormalizer implements DenormalizerInterfac
         if (isset($data['type']) && 'orderaddresses' === $data['type']) {
             $countryCode = $this->getProperty($data, 'country')['id'];
             $regionCode = $this->getProperty($data, 'region')['id'];
-            
+
             $country = $this->registry
                 ->getManagerForClass(Country::class)
                 ->getRepository(Country::class)

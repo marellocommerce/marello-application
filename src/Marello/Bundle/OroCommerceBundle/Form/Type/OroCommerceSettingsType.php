@@ -154,6 +154,14 @@ class OroCommerceSettingsType extends AbstractType
                 ]
             )
             ->add(
+                'businessUnit',
+                ChoiceType::class,
+                [
+                    'label' => 'marello.orocommerce.orocommercesettings.business_unit.label',
+                    'required' => true
+                ]
+            )
+            ->add(
                 'productUnit',
                 ChoiceType::class,
                 [
@@ -234,12 +242,14 @@ class OroCommerceSettingsType extends AbstractType
         ]);
 
         $key = $this->cacheKeyGenerator->generateKey($paramBag);
+        $businessUnitKey = sprintf('%s_%s', $key, CacheKeyGenerator::BUSINESS_UNIT);
         $productUnitKey = sprintf('%s_%s', $key, CacheKeyGenerator::PRODUCT_UNIT);
         $customerTaxCodeKey = sprintf('%s_%s', $key, CacheKeyGenerator::CUSTOMER_TAX_CODE);
         $priceListKey = sprintf('%s_%s_%s', $key, CacheKeyGenerator::PRICE_LIST, $data['currency']);
         $productFamilyKey = sprintf('%s_%s', $key, CacheKeyGenerator::PRODUCT_FAMILY);
         $warehouseKey = sprintf('%s_%s', $key, CacheKeyGenerator::WAREHOUSE);
 
+        $this->updateFormWithCachedData($businessUnitKey, $form, 'businessUnit', 'business_unit');
         $this->updateFormWithCachedData($productUnitKey, $form, 'productUnit', 'product_unit');
         $this->updateFormWithCachedData($customerTaxCodeKey, $form, 'customerTaxCode', 'customer_tax_code');
         $this->updateFormWithCachedData($priceListKey, $form, 'priceList', 'price_list');

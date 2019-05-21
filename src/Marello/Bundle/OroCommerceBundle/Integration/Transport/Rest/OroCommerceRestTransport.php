@@ -894,6 +894,27 @@ class OroCommerceRestTransport implements TransportInterface, PingableInterface
     /**
      * @return array
      */
+    public function getBusinessUnits()
+    {
+        $request = OroCommerceRequestFactory::createRequest(
+            OroCommerceRequestFactory::METHOD_GET,
+            $this->settings,
+            'businessunits',
+            [],
+            [],
+            []
+        );
+
+        return $this->client->getJSON(
+            $request->getPath(),
+            $request->getPayload(),
+            $request->getHeaders()
+        );
+    }
+
+    /**
+     * @return array
+     */
     public function getProductUnits()
     {
         $request = OroCommerceRequestFactory::createRequest(

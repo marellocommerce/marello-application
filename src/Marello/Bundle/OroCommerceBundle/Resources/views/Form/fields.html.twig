@@ -4,6 +4,8 @@
             data-layout="separate"
             data-page-component-options="{{ {
                 'formSelector': '[name="oro_integration_channel_form"]',
+                'selectedBusinessUnit': form.vars.value.businessUnit|default(null),
+                'businessUnitUpdateRoute': path('marello_orocommerce_get_businessunits', {'channelId': form.vars.value.channel.id|default(0) }),
                 'selectedProductUnit': form.vars.value.productUnit|default(null),
                 'productUnitUpdateRoute': path('marello_orocommerce_get_productunits', {'channelId': form.vars.value.channel.id|default(0) }),
                 'selectedCustomerTaxCode': form.vars.value.customerTaxCode|default(null),
