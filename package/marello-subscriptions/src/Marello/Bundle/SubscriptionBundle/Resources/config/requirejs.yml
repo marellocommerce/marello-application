@@ -1,0 +1,5 @@
+config:
+    paths:
+        'marellosubscriptions/js/app/views/subscription-address-view': 'bundles/marellosubscriptions/js/app/views/subscription-address-view.js'
+        'marellosubscriptions/js/app/views/subscription-possible-shipping-methods-view': 'bundles/marellosubscriptions/js/app/views/subscription-possible-shipping-methods-view.js'
+        'marellosubscriptions/js/app/components/customer-selection-component': 'bundles/marellosubscriptions/js/app/components/customer-selection-component.js'
