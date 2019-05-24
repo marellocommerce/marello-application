@@ -121,3 +121,8 @@ services:
         tags:
             - { name: oro_workflow.condition, alias: 'sales_channel_has_valid_integration' }
             - { name: oro_action.condition, alias: 'sales_channel_has_valid_integration' }
+
+    marello_sales.entity_localization_provider.sales_channel:
+        class: 'Marello\Bundle\SalesBundle\Provider\SalesChannelLocalizationProvider'
+        tags:
+            - {name: marello_entity_localization_provider, priority: 10}

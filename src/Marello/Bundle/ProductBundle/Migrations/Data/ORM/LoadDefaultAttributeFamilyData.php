@@ -50,6 +50,7 @@ class LoadDefaultAttributeFamilyData extends AbstractFixture implements Dependen
      */
     public function load(ObjectManager $manager)
     {
+        /** @var User $user */
         $user = $manager
             ->getRepository(User::class)->findOneBy(['username' => 'admin']);
         $organization = $this->getOrganization($manager);

@@ -20,13 +20,12 @@ class BackPreOrdersDatetimeListener implements FeatureToggleableInterface
     {
         $uow = $args->getEntityManager()->getUnitOfWork();
         if ($purchaseOrder->getDueDate() &&
-            $this->featureChecker->isFeatureEnabled('po_duedate_as_back_pre_orders_datetime')) {
+            $this->featureChecker->isFeatureEnabled('po_duedate_as_back_orders_datetime')) {
             foreach ($purchaseOrder->getItems() as $item) {
                 if ($product = $item->getProduct()) {
                     /** @var InventoryItem $inventoryItem */
                     $inventoryItem = $product->getInventoryItems()->first();
                     $inventoryItem->setBackOrdersDatetime($purchaseOrder->getDueDate());
-                    $inventoryItem->setPreOrdersDatetime($purchaseOrder->getDueDate());
                     $uow->scheduleForUpdate($inventoryItem);
                 }
             }

@@ -60,7 +60,7 @@ class BackPreOrdersDatetimeListenerTest extends TestCase
         $this->featureChecker
             ->expects(static::once())
             ->method('isFeatureEnabled')
-            ->with('po_duedate_as_back_pre_orders_datetime')
+            ->with('po_duedate_as_back_orders_datetime')
             ->willReturn(true);
         $po = $this->mockPurchaseOrder();
         $po
@@ -70,9 +70,6 @@ class BackPreOrdersDatetimeListenerTest extends TestCase
         $this->inventoryItem
             ->expects(static::once())
             ->method('setBackOrdersDatetime');
-        $this->inventoryItem
-            ->expects(static::once())
-            ->method('setPreOrdersDatetime');
         $uow
             ->expects(static::once())
             ->method('scheduleForUpdate')
@@ -98,7 +95,7 @@ class BackPreOrdersDatetimeListenerTest extends TestCase
         $this->featureChecker
             ->expects(static::once())
             ->method('isFeatureEnabled')
-            ->with('po_duedate_as_back_pre_orders_datetime')
+            ->with('po_duedate_as_back_orders_datetime')
             ->willReturn(false);
         $po = $this->mockPurchaseOrder();
         $po
@@ -108,9 +105,6 @@ class BackPreOrdersDatetimeListenerTest extends TestCase
         $this->inventoryItem
             ->expects(static::never())
             ->method('setBackOrdersDatetime');
-        $this->inventoryItem
-            ->expects(static::never())
-            ->method('setPreOrdersDatetime');
         $uow
             ->expects(static::never())
             ->method('scheduleForUpdate')
@@ -136,7 +130,7 @@ class BackPreOrdersDatetimeListenerTest extends TestCase
         $this->featureChecker
             ->expects(static::never())
             ->method('isFeatureEnabled')
-            ->with('po_duedate_as_back_pre_orders_datetime')
+            ->with('po_duedate_as_back_orders_datetime')
             ->willReturn(true);
         $po = $this->mockPurchaseOrder();
         $po
