@@ -10,9 +10,7 @@
         }
     ],
     "autoload": {
-        "psr-4": {
-            "Marello\\Bundle\\SubscriptionBundle\\": "src/"
-        }
+        "psr-4": {"": "src/"}
     },
     "repositories": {
         "oro": {
@@ -26,12 +24,16 @@
         "asset-packagist": {
             "type": "composer",
             "url": "https://asset-packagist.orocrm.com"
+        },
+        "marello-enterprise": {
+            "type": "vcs",
+            "url": "https://github.com/marellocommerce/marello-enterprise.git"
         }
     },
     "require": {
         "php": ">=7.1",
         "oro/platform-enterprise": "3.1.*",
-        "marellocommerce/marello-enterprise": "2.0.*"
+        "marellocommerce/marello-enterprise": "self.version"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
