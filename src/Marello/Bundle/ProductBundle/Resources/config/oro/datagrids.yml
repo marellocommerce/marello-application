@@ -555,8 +555,7 @@ datagrids:
                     excluded: '#removeSalesChannels'
             toolbarOptions:
                 pageSize:
-                    items: [10]
-                    default_per_page: 10
+                    default_per_page: 25
 
     marello-product-suppliers-grid:
         source:
