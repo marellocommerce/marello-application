@@ -91,6 +91,8 @@ marello:
             product_families.label: Product Families
 
         ui:
+            cancel: Cancel
+            continue: Continue
             duplicate: Duplicate
             save_and_duplicate: Save And Duplicate
             product.duplicated.message: Product has been duplicated
