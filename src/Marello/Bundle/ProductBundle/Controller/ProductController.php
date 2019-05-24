@@ -3,7 +3,11 @@
 namespace Marello\Bundle\ProductBundle\Controller;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Form\Handler\ProductCreateStepOneHandler;
+use Marello\Bundle\ProductBundle\Form\Type\ProductStepOneType;
+use Marello\Bundle\ProductBundle\Form\Type\ProductType;
 use Oro\Bundle\ActionBundle\Model\ActionData;
+use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\SecurityBundle\Annotation as Security;
 use Oro\Bundle\UIBundle\Route\Router;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
@@ -12,6 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -30,7 +35,7 @@ class ProductController extends Controller
     /**
      * @Config\Route("/create", name="marello_product_create")
      * @AclAncestor("marello_product_create")
-     * @Config\Template("MarelloProductBundle:Product:update.html.twig")
+     * @Config\Template("MarelloProductBundle:Product:createStepOne.html.twig")
      *
      * @param Request $request
      *
@@ -38,7 +43,90 @@ class ProductController extends Controller
      */
     public function createAction(Request $request)
     {
-        return $this->update(new Product(), $request);
+        return $this->createStepOne($request);
+    }
+
+    /**
+     * @param Request $request
+     * @return array|Response
+     */
+    protected function createStepOne(Request $request)
+    {
+        $form = $this->createForm(ProductStepOneType::class);
+        $handler = new ProductCreateStepOneHandler($form, $request);
+        $productTypesProvider = $this->get('marello_product.provider.product_types');
+
+        if ($handler->process()) {
+            return $this->forward('MarelloProductBundle:Product:createStepTwo');
+        }
+        if (count($productTypesProvider->getProductTypes()) === 1) {
+            $request->setMethod('POST');
+            $request->request->set('input_action', 'marello_product_create');
+            $request->request->set('single_product_type', true);
+            return $this->forward('MarelloProductBundle:Product:createStepTwo');
+        }
+
+        return [
+            'form' => $form->createView(),
+            'isWidgetContext' => (bool)$request->get('_wid', false)
+        ];
+    }
+
+    /**
+     * @Config\Route("/create/step-two", name="marello_product_create_step_two")
+     *
+     * @Config\Template("MarelloProductBundle:Product:createStepTwo.html.twig")
+     *
+     * @AclAncestor("marello_product_create")
+     *
+     * @param Request $request
+     * @return array|RedirectResponse
+     */
+    public function createStepTwoAction(Request $request)
+    {
+        return $this->createStepTwo($request, new Product());
+    }
+    
+    /**
+     * @param Request $request
+     * @param Product $product
+     * @return array|RedirectResponse
+     */
+    protected function createStepTwo(Request $request, Product $product)
+    {
+        if ($request->get('input_action') === 'marello_product_create') {
+            $formStepOne = $this->createForm(ProductStepOneType::class, $product);
+            if ($request->get('single_product_type')) {
+                $type = Product::DEFAULT_PRODUCT_TYPE;
+            } else {
+                $formStepOne->handleRequest($request);
+                $type = $formStepOne->get('type')->getData();
+            }
+            $product->setType($type);
+            $productTypesProvider = $this->get('marello_product.provider.product_types');
+            $em = $this->get('doctrine.orm.entity_manager');
+            $productType = $productTypesProvider->getProductType($type);
+            if ($productType) {
+                /** @var AttributeFamily $attributeFamily */
+                $attributeFamily = $em
+                    ->getRepository(AttributeFamily::class)
+                    ->findOneBy(['code' => $productType->getAttributeFamilyCode()]);
+                $product->setAttributeFamily($attributeFamily);
+
+                $form = $this->createForm(ProductType::class, $product);
+                $form->get('type')->setData($type);
+                $form->get('attributeFamily')->setData($attributeFamily->getId());
+            }
+            return [
+                'form' => $form->createView(),
+                'entity' => $product,
+                'isWidgetContext' => (bool)$request->get('_wid', false)
+            ];
+        }
+        //$form = $this->createForm(ProductStepOneType::class, $product, ['validation_groups'=> false]);
+        //$form->submit($request->request->get(ProductType::BLOCK_PREFIX));
+
+        return $this->update($product, $request);
     }
 
     /**

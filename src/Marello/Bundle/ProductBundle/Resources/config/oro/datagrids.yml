@@ -275,7 +275,6 @@ datagrids:
             export: false
             entity_pagination: false
 
-
     marello-products-supplier-no-actions-grid:
         extends: marello-products-grid
         actions: ~

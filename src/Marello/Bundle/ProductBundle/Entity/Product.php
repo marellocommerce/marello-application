@@ -75,6 +75,8 @@ class Product extends ExtendProduct implements
     InventoryItemAwareInterface,
     AttributeFamilyAwareInterface
 {
+    const DEFAULT_PRODUCT_TYPE = 'simple'; 
+ 
     /**
      * @var integer
      *
@@ -1175,6 +1177,25 @@ class Product extends ExtendProduct implements
     {
         $this->attributeFamily = $attributeFamily;
 
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return Product
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        
         return $this;
     }
 }
