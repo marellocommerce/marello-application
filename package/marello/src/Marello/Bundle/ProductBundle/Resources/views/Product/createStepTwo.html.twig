@@ -8,7 +8,7 @@
 {% set gridName = 'marello-product-saleschannel-extended-grid' %}
 
 {% set entity = form.vars.value %}
-{% set formAction = entity.id ? path('marello_product_update', { id: entity.id }) : path('marello_product_create') %}
+{% set formAction = path('marello_product_create_step_two')  %}
 
 {% if entity.id %}
     {% oro_title_set({params : {"%name%": entity.name } }) %}
@@ -49,7 +49,7 @@
 
 
 {% block content_data %}
-    {% set id = 'marello-product-update' %}
+    {% set id = 'marello-product-create-step-two' %}
     {% set productChannelPrices %}
         {% set pricingEnabled = form.vars.value.data.pricing_enabled is defined and form.vars.value.data.pricing_enabled %}
         {% set priceEnableElement = { pricing_enable_id: form.pricing_enabled.vars.id } %}
@@ -134,6 +134,7 @@
                     form_row(form.warranty),
                     form_row(form.manufacturingCode),
                     form_row(form.type),
+                    form_row(form.attributeFamily),
                     form_row(form.image),
                 ]
             }]
