@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d533ae0ffe9a611bee30e696a7ccfeee",
+    "content-hash": "e18e43ab5fcd77643a48c164b07c0c43",
     "packages": [
         {
             "name": "akeneo/batch-bundle",
@@ -646,23 +646,6 @@
             "license": [
                 "MIT"
             ]
-        },
-        {
-            "name": "bower-asset/json2",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/douglascrockford/JSON-js.git",
-                "reference": "03157639c7a7cddd2e9f032537f346f1a87c0f6d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/douglascrockford/JSON-js/zipball/03157639c7a7cddd2e9f032537f346f1a87c0f6d",
-                "reference": "03157639c7a7cddd2e9f032537f346f1a87c0f6d",
-                "shasum": null
-            },
-            "type": "bower-asset",
-            "time": "2018-07-23T18:12:50+00:00"
         },
         {
             "name": "bower-asset/jsplumb",
@@ -4835,16 +4818,16 @@
         },
         {
             "name": "liip/monitor-bundle",
-            "version": "2.7.7",
+            "version": "2.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipMonitorBundle.git",
-                "reference": "31ee0fd5a25daebf3d882ff0a03d958e6e41fccd"
+                "reference": "a16b04be08bf669b2a4e9cccd0ec65ee59401d13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipMonitorBundle/zipball/31ee0fd5a25daebf3d882ff0a03d958e6e41fccd",
-                "reference": "31ee0fd5a25daebf3d882ff0a03d958e6e41fccd",
+                "url": "https://api.github.com/repos/liip/LiipMonitorBundle/zipball/a16b04be08bf669b2a4e9cccd0ec65ee59401d13",
+                "reference": "a16b04be08bf669b2a4e9cccd0ec65ee59401d13",
                 "shasum": ""
             },
             "require": {
@@ -4859,7 +4842,7 @@
                 "matthiasnoback/symfony-dependency-injection-test": "^1.0|^2.0",
                 "phpunit/phpunit": "^6.0",
                 "sensiolabs/security-checker": "~1.3|~2.0|~3.0|~4.0|~5.0",
-                "swiftmailer/swiftmailer": "~5.4",
+                "swiftmailer/swiftmailer": "~5.4|~6.1",
                 "symfony/asset": "^3.1|^4.0",
                 "symfony/browser-kit": "^3.1|^4.0",
                 "symfony/expression-language": "~3.1|^4.0",
@@ -4911,7 +4894,7 @@
                 "monitor",
                 "monitoring"
             ],
-            "time": "2019-02-11T13:23:17+00:00"
+            "time": "2019-05-23T14:27:50+00:00"
         },
         {
             "name": "liuggio/ExcelBundle",
@@ -4981,7 +4964,7 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "dev-master",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "../../package/marello",
@@ -5022,15 +5005,15 @@
         },
         {
             "name": "marellocommerce/marello-enterprise",
-            "version": "dev-master",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "../../package/marello-enterprise",
-                "reference": "9b3aa8d62729d6a793adfbc42085b37d3d5922ed",
+                "reference": "392355867f06790b6362f0afe6f46e616e53b5ee",
                 "shasum": null
             },
             "require": {
-                "marellocommerce/marello": "2.0.*",
+                "marellocommerce/marello": "self.version",
                 "oro/platform-enterprise": "3.1.*",
                 "php": ">=7.1"
             },
@@ -5684,16 +5667,16 @@
         },
         {
             "name": "oro/calendar-bundle",
-            "version": "3.1.6",
+            "version": "3.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/OroCalendarBundle.git",
-                "reference": "8657e940fe2776e54ca3a6cd6a319f7d6c1ad028"
+                "reference": "dc4943a751ae0917828e5b9f583bb41f03982de8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/8657e940fe2776e54ca3a6cd6a319f7d6c1ad028",
-                "reference": "8657e940fe2776e54ca3a6cd6a319f7d6c1ad028",
+                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/dc4943a751ae0917828e5b9f583bb41f03982de8",
+                "reference": "dc4943a751ae0917828e5b9f583bb41f03982de8",
                 "shasum": ""
             },
             "require": {
@@ -5733,7 +5716,7 @@
                 "source": "https://github.com/oroinc/OroCalendarBundle/tree/3.1",
                 "issues": "https://github.com/oroinc/OroCalendarBundle/issues"
             },
-            "time": "2019-04-17T09:45:09+00:00"
+            "time": "2019-05-16T15:37:36+00:00"
         },
         {
             "name": "oro/doctrine-extensions",
@@ -5839,22 +5822,22 @@
                 "Oro"
             ],
             "support": {
-                "source": "https://github.com/oroinc/OroHealthCheckBundle/tree/3.1.2"
+                "source": "https://github.com/oroinc/OroHealthCheckBundle/tree/3.1"
             },
             "time": "2019-02-05T11:11:45+00:00"
         },
         {
             "name": "oro/platform",
-            "version": "3.1.6",
+            "version": "3.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/platform.git",
-                "reference": "bba89ab0034c34785f0df225c2ca77abcafdef6a"
+                "reference": "bf516a06801186aaea0299d61372aebfeb2ffbfe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform/zipball/bba89ab0034c34785f0df225c2ca77abcafdef6a",
-                "reference": "bba89ab0034c34785f0df225c2ca77abcafdef6a",
+                "url": "https://api.github.com/repos/oroinc/platform/zipball/bf516a06801186aaea0299d61372aebfeb2ffbfe",
+                "reference": "bf516a06801186aaea0299d61372aebfeb2ffbfe",
                 "shasum": ""
             },
             "require": {
@@ -5883,7 +5866,6 @@
                 "bower-asset/jquery-ui-multiselect-widget": "2.0.1",
                 "bower-asset/jquery-validate": "1.16.0",
                 "bower-asset/jquery.numeric": "1.5.0",
-                "bower-asset/json2": "dev-master",
                 "bower-asset/jsplumb": "1.7.*",
                 "bower-asset/lightgallery": "1.4.0",
                 "bower-asset/malihu-custom-scrollbar-plugin": "3.1.5",
@@ -6003,20 +5985,20 @@
                 "source": "https://github.com/oroinc/platform/tree/3.1",
                 "issues": "https://github.com/oroinc/platform/issues"
             },
-            "time": "2019-04-17T09:42:30+00:00"
+            "time": "2019-05-16T15:35:46+00:00"
         },
         {
             "name": "oro/platform-enterprise",
-            "version": "3.1.6",
+            "version": "3.1.7",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-enterprise.git",
-                "reference": "ddde9b749219768dd6e32f7931fa60d22eec6b89"
+                "reference": "ad09677906c6d06b3d8737044c9bf93ba397d687"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/ddde9b749219768dd6e32f7931fa60d22eec6b89",
-                "reference": "ddde9b749219768dd6e32f7931fa60d22eec6b89",
+                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/ad09677906c6d06b3d8737044c9bf93ba397d687",
+                "reference": "ad09677906c6d06b3d8737044c9bf93ba397d687",
                 "shasum": ""
             },
             "require": {
@@ -6049,7 +6031,7 @@
             "support": {
                 "source": "https://github.com/oroinc/platform-enterprise/tree/3.1"
             },
-            "time": "2019-04-17T09:47:00+00:00"
+            "time": "2019-05-16T15:39:14+00:00"
         },
         {
             "name": "oro/platform-serialised-fields",
@@ -9808,16 +9790,16 @@
         },
         {
             "name": "friendsofphp/php-cs-fixer",
-            "version": "v2.12.8",
+            "version": "v2.12.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "e6a3793d371bbaec9112654f59c0c2d6a6bed0e2"
+                "reference": "f9522af772c6e9d2d381729cf2788c95ce2744de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/e6a3793d371bbaec9112654f59c0c2d6a6bed0e2",
-                "reference": "e6a3793d371bbaec9112654f59c0c2d6a6bed0e2",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/f9522af772c6e9d2d381729cf2788c95ce2744de",
+                "reference": "f9522af772c6e9d2d381729cf2788c95ce2744de",
                 "shasum": ""
             },
             "require": {
@@ -9845,10 +9827,10 @@
                 "mikey179/vfsstream": "^1.6",
                 "php-coveralls/php-coveralls": "^2.1",
                 "php-cs-fixer/accessible-object": "^1.0",
-                "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.0.1",
-                "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.0.1",
+                "php-cs-fixer/phpunit-constraint-isidenticalstring": "^1.1",
+                "php-cs-fixer/phpunit-constraint-xmlmatchesxsd": "^1.1",
                 "phpunit/phpunit": "^5.7.27 || ^6.5.8 || ^7.1",
-                "phpunitgoodpractices/traits": "^1.5.1",
+                "phpunitgoodpractices/traits": "^1.8",
                 "symfony/phpunit-bridge": "^4.0"
             },
             "suggest": {
@@ -9892,7 +9874,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2019-02-17T17:41:19+00:00"
+            "time": "2019-05-04T21:31:06+00:00"
         },
         {
             "name": "fzaninotto/faker",
