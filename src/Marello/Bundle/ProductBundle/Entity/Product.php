@@ -75,7 +75,7 @@ class Product extends ExtendProduct implements
     InventoryItemAwareInterface,
     AttributeFamilyAwareInterface
 {
-    const DEFAULT_PRODUCT_TYPE = 'simple'; 
+    const DEFAULT_PRODUCT_TYPE = 'simple';
  
     /**
      * @var integer

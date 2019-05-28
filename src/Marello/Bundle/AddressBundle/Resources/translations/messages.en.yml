@@ -21,3 +21,7 @@ marello:
             country.label:         Country
             customer.label:        Customer
             region.label:          Region
+            country_iso2_code.label: Country Iso2 Code
+            country_iso3_code.label: Country Iso3 Code
+            country_name.label:     Country
+            region_name.label:      Region
