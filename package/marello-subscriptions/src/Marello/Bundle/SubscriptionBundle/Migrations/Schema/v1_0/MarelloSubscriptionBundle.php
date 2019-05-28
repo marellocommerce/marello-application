@@ -151,7 +151,8 @@ class MarelloSubscriptionBundle implements
         $table->addColumn(
             'special_price',
             'money',
-            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
+        );
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -295,4 +296,3 @@ class MarelloSubscriptionBundle implements
         $this->extendExtension = $extendExtension;
     }
 }
-

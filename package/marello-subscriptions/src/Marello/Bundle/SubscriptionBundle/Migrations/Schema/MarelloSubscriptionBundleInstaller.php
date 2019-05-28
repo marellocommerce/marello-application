@@ -158,8 +158,9 @@ class MarelloSubscriptionBundleInstaller implements
         $table->addColumn('price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn(
             'special_price',
-            'money', 
-            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+            'money',
+            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
+        );
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -303,4 +304,3 @@ class MarelloSubscriptionBundleInstaller implements
         $this->extendExtension = $extendExtension;
     }
 }
-

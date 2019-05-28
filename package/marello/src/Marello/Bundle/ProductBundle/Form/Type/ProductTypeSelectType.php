@@ -42,8 +42,7 @@ class ProductTypeSelectType extends AbstractType
     private function getChoices()
     {
         $choices = [];
-        foreach ($this->provider->getProductTypes() as $productType)
-        {
+        foreach ($this->provider->getProductTypes() as $productType) {
             $choices[$productType->getLabel()] = $productType->getName();
         }
 

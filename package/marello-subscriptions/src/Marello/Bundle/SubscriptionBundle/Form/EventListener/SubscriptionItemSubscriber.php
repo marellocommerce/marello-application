@@ -38,13 +38,15 @@ class SubscriptionItemSubscriber implements EventSubscriberInterface
         if ($product && $salesChannel) {
             $assembledPrice = $product->getSalesChannelPrice($salesChannel) ?:
                 $product->getPrice($salesChannel->getCurrency());
+            $defaultPrice = $assembledPrice->getDefaultPrice()->getValue();
+            $specialPrice = $assembledPrice->getSpecialPrice() ? $assembledPrice->getSpecialPrice()->getValue() : null;
 
             $subscriptionItem = new SubscriptionItem();
             $subscriptionItem
                 ->setSku($product->getSku())
                 ->setDuration($product->getSubscriptionDuration())
-                ->setPrice($assembledPrice->getDefaultPrice()->getValue())
-                ->setSpecialPrice($assembledPrice->getSpecialPrice() ? $assembledPrice->getSpecialPrice()->getValue() : null)
+                ->setPrice($defaultPrice)
+                ->setSpecialPrice($specialPrice)
                 ->setSpecialPriceDuration($product->getSpecialPriceDuration());
             $entity->setItem($subscriptionItem);
         }

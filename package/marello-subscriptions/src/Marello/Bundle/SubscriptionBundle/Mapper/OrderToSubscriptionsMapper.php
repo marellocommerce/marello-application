@@ -79,12 +79,13 @@ class OrderToSubscriptionsMapper extends AbstractSubscriptionsMapper
         $subscriptionItem = new SubscriptionItem();
         $assembledPrice = $product->getSalesChannelPrice($salesChannel) ? :
             $product->getPrice($salesChannel->getCurrency());
-
+        $defaultPrice = $assembledPrice->getDefaultPrice()->getValue();
+        $specialPrice = $assembledPrice->getSpecialPrice() ? $assembledPrice->getSpecialPrice()->getValue() : null;
         $data = [
             'sku' => $product->getSku(),
-            'price' => $assembledPrice->getDefaultPrice()->getValue(),
+            'price' => $defaultPrice,
             'duration' => $product->getSubscriptionDuration(),
-            'specialPrice' => $assembledPrice->getSpecialPrice() ? $assembledPrice->getSpecialPrice()->getValue() : null,
+            'specialPrice' => $specialPrice,
             'special_price_duration' => $product->getSpecialPriceDuration()
         ];
         $this->assignData($subscriptionItem, $data);

@@ -30,7 +30,7 @@ class OrderWithSubscriptionProductsCreationListenerTest extends TestCase
         $this->orderToSubscriptionsMapper = $this->getMockBuilder(OrderToSubscriptionsMapper::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->orderWithSubscriptionProductsCreationListener = 
+        $this->orderWithSubscriptionProductsCreationListener =
             new OrderWithSubscriptionProductsCreationListener($this->orderToSubscriptionsMapper);
     }
 

@@ -48,6 +48,7 @@
             <!--<directory>vendor/oro/*/*/*/Tests/Functional</directory>-->
             <!--<directory>vendor/oro/*/*/*/*/Tests/Functional</directory>-->
             <!--<directory>vendor/oro/*/*/*/*/*/Tests/Functional</directory>-->
+            <directory>vendor/oro/platform/src/Oro/Bundle/TestFrameworkBundle/Tests/Functional</directory>
             <directory>vendor/marellocommerce/*/*/*/*/*/Tests/Functional</directory>
         </testsuite>
         <testsuite name="selenium">
