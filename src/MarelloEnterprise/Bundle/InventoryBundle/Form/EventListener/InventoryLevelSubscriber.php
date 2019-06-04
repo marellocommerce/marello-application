@@ -66,7 +66,7 @@ class InventoryLevelSubscriber extends BaseInventoryLevelSubscriber
     protected function getWarehouse(FormInterface $form)
     {
         if (!$form->has('warehouse')) {
-            throw new \InvalidArgumentException(sprintf('%s form child is missing'));
+            throw new \InvalidArgumentException(sprintf('%s form child is missing', 'warehouse'));
         }
 
         return $form->get('warehouse')->getData();
