@@ -2,20 +2,16 @@
 
 namespace Marello\Bundle\InventoryBundle\Form\EventListener;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
 use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryLevelCalculator;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 
 class InventoryLevelSubscriber implements EventSubscriberInterface
 {
@@ -49,56 +45,8 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::POST_SET_DATA   => 'postSet',
             FormEvents::POST_SUBMIT     => 'handleUnMappedFields'
         ];
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function postSet(FormEvent $event)
-    {
-        /** @var InventoryLevel $inventoryLevel */
-        $inventoryLevel = $event->getData();
-        if ($inventoryLevel instanceof InventoryLevel) {
-            $form = $event->getForm();
-            $warehouseType = $inventoryLevel->getWarehouse()->getWarehouseType();
-            $isInventoryLevelDisabled = $this->isInventoryLevelDisabled($inventoryLevel);
-            if ($warehouseType->getName() === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
-                $form->remove('adjustmentOperator');
-                $form->remove('quantity');
-                $form->remove('managedInventory');
-                $form
-                    ->add(
-                        'adjustmentOperator',
-                        ChoiceType::class,
-                        [
-                            'choices' => [
-                                'increase' => InventoryLevelCalculator::OPERATOR_INCREASE,
-                                'decrease' => InventoryLevelCalculator::OPERATOR_DECREASE,
-                            ],
-                            'translation_domain' => 'MarelloInventoryChangeDirection',
-                            'mapped' => false,
-                            'disabled' => $isInventoryLevelDisabled
-                        ]
-                    )
-                    ->add(
-                        'quantity',
-                        NumberType::class,
-                        [
-                            'constraints' => new GreaterThanOrEqual(0),
-                            'data'        => 0,
-                            'mapped' => false,
-                            'disabled' => $isInventoryLevelDisabled
-                        ]
-                    )
-                    ->add(
-                        'managedInventory',
-                        CheckboxType::class
-                    );
-            }
-        }
     }
 
     /**
@@ -146,7 +94,7 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
     protected function getAdjustmentOperator(FormInterface $form)
     {
         if (!$form->has('adjustmentOperator')) {
-            throw new \InvalidArgumentException(sprintf('%s form child is missing'));
+            throw new \InvalidArgumentException(sprintf('%s form child is missing', 'adjustmentOperator'));
         }
 
         return $form->get('adjustmentOperator')->getData();
@@ -160,7 +108,7 @@ class InventoryLevelSubscriber implements EventSubscriberInterface
     protected function getAdjustmentQuantity(FormInterface $form)
     {
         if (!$form->has('quantity')) {
-            throw new \InvalidArgumentException(sprintf('%s form child is missing'));
+            throw new \InvalidArgumentException(sprintf('%s form child is missing', 'quantity'));
         }
 
         return $form->get('quantity')->getData();
