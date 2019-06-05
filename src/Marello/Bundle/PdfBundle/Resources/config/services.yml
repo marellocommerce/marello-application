@@ -1,3 +1,15 @@
-parameters:
-
 services:
+    marello_pdf.factory.pdf_writer:
+        class: 'Marello\Bundle\PdfBundle\Factory\PdfWriterFactory'
+        arguments: []
+
+    marello_pdf.renderer.html:
+        class: 'Marello\Bundle\PdfBundle\Renderer\HtmlRenderer'
+        arguments:
+            - '@marello_pdf.factory.pdf_writer'
+
+    marello_pdf.renderer.twig:
+        class: 'Marello\Bundle\PdfBundle\Renderer\TwigRenderer'
+        arguments:
+            - '@marello_pdf.renderer.html'
+            - '@twig'
