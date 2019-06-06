@@ -1,0 +1,3 @@
+config:
+    paths:
+        'oro/filter/select-filter': 'bundles/marellofilter/js/filter/select-filter.js'
