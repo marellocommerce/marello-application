@@ -60,7 +60,7 @@ class Subscription extends ExtendSubscription implements
     protected $id;
 
     /**
-     * @var AbstractAddress
+     * @var MarelloAddress
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
@@ -75,7 +75,7 @@ class Subscription extends ExtendSubscription implements
     protected $billingAddress;
 
     /**
-     * @var AbstractAddress
+     * @var MarelloAddress
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
@@ -271,7 +271,7 @@ class Subscription extends ExtendSubscription implements
     protected $salesChannel;
 
     /**
-     * @var SalesChannel
+     * @var SubscriptionItem
      *
      * @ORM\OneToOne(targetEntity="Marello\Bundle\SubscriptionBundle\Entity\SubscriptionItem", cascade={"persist"})
      * @ORM\JoinColumn(name="item_id", referencedColumnName="id")
