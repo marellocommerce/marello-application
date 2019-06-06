@@ -2,8 +2,10 @@ version: "2"
 services:
     data:
         image: djocker/orodata
+        container_name: enterprise-data
     db:
         image: percona:5.7
+        container_name: enterprise-db
         expose:
             - "3306"
         environment:
@@ -15,6 +17,7 @@ services:
             - data
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
+        container_name: enterprise-phpmyadmin
         ports:
             - "5082:80"
         links:
@@ -24,6 +27,7 @@ services:
 
     mailhog:
         image: mailhog/mailhog
+        container_name: enterprise-mailhog
         ports:
           - "5083:8025"
         logging:
@@ -36,6 +40,7 @@ services:
               - COMPOSERFILE=dev.json
               - TIMEOUT=3000
               - APP_ROOT=/var/www
+        container_name: enterprise-web
         working_dir: /var/www/
         links:
             - "db"
