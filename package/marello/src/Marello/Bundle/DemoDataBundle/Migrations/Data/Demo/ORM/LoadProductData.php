@@ -6,13 +6,17 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 
-class LoadProductData extends AbstractFixture implements DependentFixtureInterface
+class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
+    use ContainerAwareTrait;
+
     /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
     protected $defaultOrganization;
 
@@ -98,6 +102,13 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $channel = $this->getReference($channelCode);
             $product->addChannel($channel);
         }
+
+        $productTypesProvider = $this->container->get('marello_product.provider.product_types');
+        $defaultProductType = $productTypesProvider->getProductType(Product::DEFAULT_PRODUCT_TYPE);
+        if ($defaultProductType) {
+            $product->setType($defaultProductType->getName());
+        }
+
         /**
         * set default taxCode
         */
