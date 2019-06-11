@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\CalendarBundle\Migrations\Data\ORM;
+namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -15,7 +15,7 @@ class UpdatePurchaseOrderSupplierEmailTemplates extends AbstractEmailFixture imp
     protected function findExistingTemplate(ObjectManager $manager, array $template)
     {
         $name = $template['params']['name'];
-        if (empty($name) || 'marello_purchase_order_supplier' !== $name) {
+        if (empty($name)) {
             return null;
         }
 
