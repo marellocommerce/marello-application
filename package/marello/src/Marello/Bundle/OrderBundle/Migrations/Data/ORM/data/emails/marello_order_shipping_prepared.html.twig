@@ -465,11 +465,11 @@
                                         <h1>Dear {{ entity.customer.firstName ~ ' ' ~ entity.customer.middleName ~ ' ' ~ entity.customer.lastName }},</h1>
                                         <p class="greeting" style="font-size: 16px; margin: 1em 0;">Thank you for your order from {{ entity.salesChannelName }}.</p>
                                         <p class="greeting" style="font-size: 16px; margin: 1em 0;">
-                                            {% if entity.items | length > 1 %}
+                                            <!--{% if entity.items | length > 1 %}-->
                                                 The products below from your order #{{ entity.orderNumber }} are being prepared to ship.</p>
-                                            {% else %}
+                                            <!--{% else %}-->
                                                 The product below from your order #{{ entity.orderNumber }} is being prepared to ship.</p>
-                                            {% endif %}
+                                            <!--{% endif %}-->
                                     </td>
                                 </tr>
                                 <tr class="email-summary">
@@ -492,12 +492,12 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                {% if entity.shippingMethod is not null %}
+                                                <!--{% if entity.shippingMethod is not null %}-->
                                                     <td class="method-info" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
                                                         <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Shipping method:</h3>
                                                         <p style="font-size: 16px; margin: 1em 0;">{{ marello_shipping_method_with_type_label(entity.shippingMethod, entity.shippingMethodType) }}</p>
                                                     </td>
-                                                {% endif %}
+                                                <!--{% endif %}-->
                                                 <td class="method-info" style="font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 16px 16px 16px 0; width: 50%;">
                                                     <h3 style="display: block; font-size: 20px; font-weight: 600; margin: 0; margin-bottom: 16px; margin-top: 0; padding: 0;">Payment method:</h3>
                                                     <p style="font-size: 16px; margin: 1em 0;">{{ entity.paymentMethod }}</p>
@@ -528,7 +528,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {% for item in entity.items %}
+                                            <!--{% for item in entity.items %}-->
                                                 <tr>
                                                     <td class="item-info" style="border-top: 1px solid #d6d7d7; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; padding: 4px 8px;">
                                                         {{ item.productName }}
@@ -549,7 +549,7 @@
                                                         {{ item.rowTotalInclTax|oro_format_currency({'currency': entity.currency}) }}
                                                     </td>
                                                 </tr>
-                                            {% endfor %}
+                                            <!--{% endfor %}-->
                                             </tbody>
                                             <tfoot class="order-totals">
                                             <tr class="subtotal">
@@ -568,7 +568,7 @@
                                                     <span class="price" style="white-space: nowrap;">{{ entity.totalTax|oro_format_currency({'currency': entity.currency}) }}</span>
                                                 </td>
                                             </tr>
-                                            {% if entity.discountAmount %}
+                                            <!--{% if entity.discountAmount %}-->
                                                 <tr class="discount">
                                                     <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
                                                         Discount:
@@ -577,7 +577,7 @@
                                                         <span class="price" style="white-space: nowrap;">{{ entity.discountAmount|oro_format_currency({'currency': entity.currency}) }}</span>
                                                     </td>
                                                 </tr>
-                                            {% endif %}
+                                            <!--{% endif %}-->
                                             <tr class="shipping">
                                                 <th colspan="5" scope="row" style="background-color: #f8f8f8; border-top: 0; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 600; padding: 4px 8px; padding-top: 0; text-align: right;">
                                                     Shipping cost:

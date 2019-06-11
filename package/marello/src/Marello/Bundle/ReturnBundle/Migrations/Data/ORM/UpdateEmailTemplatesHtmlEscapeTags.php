@@ -1,13 +1,13 @@
 <?php
 
-namespace Marello\Bundle\PurchaseOrderBundle\Migrations\Data\ORM;
+namespace Marello\Bundle\ReturnBundle\Migrations\Data\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
 use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 
-class UpdatePurchaseOrderSupplierEmailTemplates extends AbstractEmailFixture implements VersionedFixtureInterface
+class UpdateEmailTemplatesHtmlEscapeTags extends AbstractEmailFixture implements VersionedFixtureInterface
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,7 @@ class UpdatePurchaseOrderSupplierEmailTemplates extends AbstractEmailFixture imp
 
         return $manager->getRepository('OroEmailBundle:EmailTemplate')->findOneBy([
             'name' => $template['params']['name'],
-            'entityName' => 'Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder',
+            'entityName' => 'Marello\Bundle\ReturnBundle\Entity\ReturnEntity',
         ]);
     }
 
@@ -34,7 +34,7 @@ class UpdatePurchaseOrderSupplierEmailTemplates extends AbstractEmailFixture imp
     {
         return $this->container
             ->get('kernel')
-            ->locateResource('@MarelloPurchaseOrderBundle/Migrations/Data/ORM/data/emails');
+            ->locateResource('@MarelloReturnBundle/Migrations/Data/ORM/data/emails');
     }
 
     /**
