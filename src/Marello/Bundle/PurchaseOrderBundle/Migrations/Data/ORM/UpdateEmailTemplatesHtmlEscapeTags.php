@@ -7,7 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
 use Oro\Bundle\MigrationBundle\Fixture\VersionedFixtureInterface;
 
-class UpdatePurchaseOrderSupplierEmailTemplates extends AbstractEmailFixture implements VersionedFixtureInterface
+class UpdateEmailTemplatesHtmlEscapeTags extends AbstractEmailFixture implements VersionedFixtureInterface
 {
     /**
      * {@inheritdoc}
@@ -15,7 +15,7 @@ class UpdatePurchaseOrderSupplierEmailTemplates extends AbstractEmailFixture imp
     protected function findExistingTemplate(ObjectManager $manager, array $template)
     {
         $name = $template['params']['name'];
-        if (empty($name)) {
+        if (empty($name) || 'marello_purchase_order_supplier' !== $name) {
             return null;
         }
 
@@ -42,6 +42,6 @@ class UpdatePurchaseOrderSupplierEmailTemplates extends AbstractEmailFixture imp
      */
     public function getVersion()
     {
-        return '1.1';
+        return '1.2';
     }
 }
