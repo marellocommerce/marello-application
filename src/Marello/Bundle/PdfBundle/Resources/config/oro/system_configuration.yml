@@ -1,0 +1,118 @@
+system_configuration:
+    groups:
+        pdf_settings:
+            title: marello.pdf.config.groups.pdf_settings.label
+
+        template_settings:
+            title: marello.pdf.config.groups.template_settings.label
+
+        sales_channel_settings:
+            title: marello.pdf.config.groups.sales_channel_settings.label
+
+    fields:
+        marello_pdf.language:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\LocaleType'
+            options:
+                label: marello.pdf.config.fields.language.label
+                tooltip: marello.pdf.config.fields.language.tooltip
+                required: true
+                constraints:
+                    - Locale: ~
+
+        marello_pdf.locale:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\LocaleType'
+            options:
+                label: marello.pdf.config.fields.locale.label
+                tooltip: marello.pdf.config.fields.locale.tooltip
+                required: true
+                constraints:
+                    - Locale: ~
+
+        marello_pdf.company_address:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\TextareaType'
+            options:
+                label: marello.pdf.config.fields.company_address.label
+                tooltip: marello.pdf.config.fields.company_address.tooltip
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        marello_pdf.company_email:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\EmailType'
+            options:
+                label: marello.pdf.config.fields.company_email.label
+                tooltip: marello.pdf.config.fields.company_email.tooltip
+                required: true
+                constraints:
+                    - NotBlank: ~
+                    - Email: ~
+
+        marello_pdf.company_phone:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\TextType'
+            options:
+                label: marello.pdf.config.fields.company_phone.label
+                tooltip: marello.pdf.config.fields.company_phone.tooltip
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        marello_pdf.company_bank:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\TextareaType'
+            options:
+                label: marello.pdf.config.fields.company_bank.label
+                tooltip: marello.pdf.config.fields.company_bank.tooltip
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        marello_pdf.company_coc:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\TextareaType'
+            options:
+                label: marello.pdf.config.fields.company_coc.label
+                tooltip: marello.pdf.config.fields.company_coc.tooltip
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+    tree:
+        system_configuration:
+            marello:
+                children:
+                    sales_channel_settings:
+                        children:
+                            pdf_settings:
+                                children:
+                                    template_settings:
+                                        children:
+                                            - marello_pdf.language
+                                            - marello_pdf.locale
+                                            - marello_pdf.company_address
+                                            - marello_pdf.company_email
+                                            - marello_pdf.company_phone
+                                            - marello_pdf.company_bank
+                                            - marello_pdf.company_coc
+
+        sales_channel_configuration:
+            marello:
+                children:
+                    sales_channel_settings:
+                        children:
+                            pdf_settings:
+                                children:
+                                    template_settings:
+                                        children:
+                                            - marello_pdf.language
+                                            - marello_pdf.locale
+                                            - marello_pdf.company_address
+                                            - marello_pdf.company_email
+                                            - marello_pdf.company_phone
+                                            - marello_pdf.company_bank
+                                            - marello_pdf.company_coc
+
