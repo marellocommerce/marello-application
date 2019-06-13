@@ -20,6 +20,6 @@ class SalesChannelConfigurationFormProvider extends AbstractProvider
 
     protected function getParentCheckboxLabel()
     {
-        return 'oro.config.system_configuration.use_default';
+        return 'marello.sales.config.use_default.label';
     }
 }
