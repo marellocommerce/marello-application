@@ -19,6 +19,7 @@ class Configuration implements ConfigurationInterface
     const CONFIG_KEY_LOCALE = 'locale';
     const CONFIG_KEY_COMPANY_ADDRESS = 'company_address';
     const CONFIG_KEY_COMPANY_EMAIL = 'company_email';
+    const CONFIG_KEY_LOGO = 'logo';
     const CONFIG_KEY_COMPANY_PHONE = 'company_phone';
     const CONFIG_KEY_COMPANY_BANK = 'company_bank';
     const CONFIG_KEY_COMPANY_COC = 'company_coc';
@@ -36,6 +37,7 @@ class Configuration implements ConfigurationInterface
                 self::CONFIG_KEY_LOCALE => ['value' => 'en'],
                 self::CONFIG_KEY_COMPANY_ADDRESS => ['value' => null],
                 self::CONFIG_KEY_COMPANY_EMAIL => ['value' => null],
+                self::CONFIG_KEY_LOGO => ['value' => null],
                 self::CONFIG_KEY_COMPANY_PHONE => ['value' => null],
                 self::CONFIG_KEY_COMPANY_BANK => ['value' => null],
                 self::CONFIG_KEY_COMPANY_COC => ['value' => null],
