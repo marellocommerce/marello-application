@@ -2,6 +2,9 @@ marello:
     sales:
         navigation:
             sales.label:                        Sales
+        config:
+            saleschannel.label:                 Sales Channel Configuration
+            use_default.label:                  Use system
         saleschannel:
             header.label:                       Manage Sales Channels
             entity_label:                       Sales Channel
@@ -20,7 +23,6 @@ marello:
             form.select_saleschannels:          Select Sales Channels
             form.select_saleschannel:           Select Sales Channel
             selected_channels.label:            Selected Sales Channels
-            localization.label:                 Localization
             group.label:                        Group
             create_own_group.label:             Create Sales Channel Group
             integration_channel.label:          Integration Channel
