@@ -138,3 +138,7 @@ services:
         parent: 'oro_config.provider.abstract_provider'
         lazy: true
 
+    marello_sales.event_listener.saleschannel_grid_listener:
+        class: 'Marello\Bundle\SalesBundle\EventListener\Datagrid\SalesChannelGridListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-sales-channel, method: onBuildBefore }
