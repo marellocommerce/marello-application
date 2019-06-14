@@ -1,13 +1,14 @@
 system_configuration:
     groups:
-        pdf_settings:
-            title: marello.pdf.config.groups.pdf_settings.label
+        documents:
+            title: marello.pdf.config.groups.documents.label
 
-        template_settings:
-            title: marello.pdf.config.groups.template_settings.label
+        document_configuration:
+            title: marello.pdf.config.groups.document_configuration.label
+            icon: fa-file-text-o
 
-        sales_channel_settings:
-            title: marello.pdf.config.groups.sales_channel_settings.label
+        template:
+            title: marello.pdf.config.groups.template.label
 
     fields:
         marello_pdf.language:
@@ -95,11 +96,11 @@ system_configuration:
         system_configuration:
             marello:
                 children:
-                    sales_channel_settings:
+                    documents:
                         children:
-                            pdf_settings:
+                            document_configuration:
                                 children:
-                                    template_settings:
+                                    template:
                                         children:
                                             - marello_pdf.language
                                             - marello_pdf.locale
@@ -113,11 +114,11 @@ system_configuration:
         sales_channel_configuration:
             marello:
                 children:
-                    sales_channel_settings:
+                    documents:
                         children:
-                            pdf_settings:
+                            document_configuration:
                                 children:
-                                    template_settings:
+                                    template:
                                         children:
                                             - marello_pdf.language
                                             - marello_pdf.locale
@@ -127,4 +128,3 @@ system_configuration:
                                             - marello_pdf.company_phone
                                             - marello_pdf.company_bank
                                             - marello_pdf.company_coc
-

@@ -2,10 +2,9 @@ marello:
     pdf:
         config:
             groups:
-                pdf_settings.label: PDF Settings
-                template_settings.label: Template Settings
-                sales_channel_settings.label: Sales Channel Settings
-                test_settings.label: Test Settings
+                documents.label: Documents
+                document_configuration.label: Document Configuration
+                template.label: Template Settings
             fields:
                 language:
                     label: "Language"
