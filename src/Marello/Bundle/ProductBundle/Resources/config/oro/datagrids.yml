@@ -41,6 +41,9 @@ datagrids:
                 type:             twig
                 frontend_type:    html
                 template:         MarelloProductBundle:Product/Datagrid/Property:image.html.twig
+            type:
+                label:              marello.product.type.label
+                frontend_type:      string
             sku:
                 label:              marello.product.sku.label
                 frontend_type:      string
@@ -133,6 +136,7 @@ datagrids:
                 params:     [ id ]
         sorters:
             columns:
+                type:                   { data_name: p.type }
                 sku:                    { data_name: p.sku }
                 name:                   { data_name: p.name }
                 status:                 { data_name: s.label }
@@ -155,6 +159,9 @@ datagrids:
                 image:
                     type:             boolean
                     data_name:        hasImage
+                type:
+                    type:             string
+                    data_name:        p.type
                 sku:
                     type:             string
                     data_name:        p.sku
