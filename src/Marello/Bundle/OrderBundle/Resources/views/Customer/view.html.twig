@@ -105,6 +105,12 @@
         </div>
     {% endset %}
 
+    {% if bundleExists('MarelloSubscriptionBundle') %}
+        {% set subscription %}
+            {% placeholder marello_customer_subscriptions with {'customerId': entity.id} %}
+        {% endset %}
+    {% endif %}
+
     {% set additionalData %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -146,6 +152,17 @@
             ]
         }
     ] %}
+    {% if bundleExists('MarelloSubscriptionBundle') %}
+        {% set dataBlocks = dataBlocks|merge([
+            {
+                'title': 'marello.subscription.entity_plural_label'|trans,
+                'class': 'active',
+                'subblocks': [
+                    { 'data': [subscription] }
+                ]
+            }
+        ]) %}
+    {% endif %}
 
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
