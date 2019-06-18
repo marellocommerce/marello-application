@@ -3,24 +3,27 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class LoadProductData extends AbstractFixture implements DependentFixtureInterface, ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
-    /** @var \Oro\Bundle\OrganizationBundle\Entity\Organization $defaultOrganization  */
+    /**
+     * @var Organization
+     */
     protected $defaultOrganization;
 
-    /** @var ObjectManager $manager */
+    /**
+     * @var ObjectManager
+     */
     protected $manager;
 
     /**
