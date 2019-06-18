@@ -31,6 +31,13 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: marello_core.greater_than_or_equal_to_value_validator }
 
+    marello_core.twig.core_extension:
+        class: Marello\Bundle\CoreBundle\Twig\CoreExtension
+        calls:
+          - [ setContainer, ['@service_container'] ]
+        tags:
+            - { name: twig.extension }
+
     marello_core.twig.workflow_extension:
         class: Marello\Bundle\CoreBundle\Twig\WorkflowExtension
         arguments:

@@ -45,6 +45,10 @@ class ProductControllerTest extends WebTestCase
      */
     public function testCreateProduct()
     {
+        $container = $this->getContainer();
+        if (array_key_exists('MarelloSubscriptionBundle', $container->getParameter('kernel.bundles'))) {
+            $this->markTestSkipped();
+        }
         $crawler = $this->client->request('GET', $this->getUrl('marello_product_create'));
         $name    = 'Super duper product';
         $sku     = 'SKU-1234';
