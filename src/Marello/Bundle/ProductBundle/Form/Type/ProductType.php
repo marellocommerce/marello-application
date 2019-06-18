@@ -12,6 +12,7 @@ use Marello\Bundle\TaxBundle\Form\Type\TaxCodeSelectType;
 use Oro\Bundle\AttachmentBundle\Form\Type\ImageType;
 use Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -45,21 +46,29 @@ class ProductType extends AbstractType
     protected $attributeFamilySubscriber;
 
     /**
+     * @var EventSubscriberInterface
+     */
+    protected $subscriptionProductSubscriber;
+
+    /**
      * @param DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber
      * @param PricingSubscriber $pricingSubscriber
      * @param ChannelPricingSubscriber $channelPricingSubscriber
      * @param AttributeFamilySubscriber $attributeFamilySubscriber
+     * @param EventSubscriberInterface|null $subscriptionProductSubscriber
      */
     public function __construct(
         DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber,
         PricingSubscriber $pricingSubscriber,
         ChannelPricingSubscriber $channelPricingSubscriber,
-        AttributeFamilySubscriber $attributeFamilySubscriber
+        AttributeFamilySubscriber $attributeFamilySubscriber,
+        EventSubscriberInterface $subscriptionProductSubscriber = null
     ) {
         $this->defaultSalesChannelSubscriber = $defaultSalesChannelSubscriber;
         $this->pricingSubscriber = $pricingSubscriber;
         $this->channelPricingSubscriber = $channelPricingSubscriber;
         $this->attributeFamilySubscriber = $attributeFamilySubscriber;
+        $this->subscriptionProductSubscriber = $subscriptionProductSubscriber;
     }
 
     /**
@@ -189,6 +198,9 @@ class ProductType extends AbstractType
         $builder->addEventSubscriber($this->pricingSubscriber);
         $builder->addEventSubscriber($this->channelPricingSubscriber);
         $builder->addEventSubscriber($this->attributeFamilySubscriber);
+        if ($this->subscriptionProductSubscriber) {
+            $builder->addEventSubscriber($this->subscriptionProductSubscriber);
+        }
     }
 
     /**
