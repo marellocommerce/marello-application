@@ -53,10 +53,12 @@
                         </div>
                         {{ form_row(form.salesChannel) }}
                         {{ form_row(form.startDate) }}
-                        {{ form_row(form.duration) }}
                         {{ form_row(form.terminationDate) }}
                         {{ form_row(form.terminationNoticePeriod) }}
                         {{ form_row(form.cancelBeforeDuration) }}
+                        {{ form_row(form.renewalType) }}
+                        {{ form_row(form.paymentMethod) }}
+                        {{ form_row(form.paymentFreq) }}
                     </div>
                 </div>
             </div>
@@ -81,12 +83,6 @@
                 }|json_encode }}"
                 data-layout="separate">
             {{ form_widget(form.billingAddress) }}
-        </div>
-        <br><br>
-        <div data-layout="separate">
-            {{ form_row(form.renewalType) }}
-            {{ form_row(form.paymentMethod) }}
-            {{ form_row(form.paymentFreq) }}
         </div>
     {% endset %}
     {% set shippingInformation %}

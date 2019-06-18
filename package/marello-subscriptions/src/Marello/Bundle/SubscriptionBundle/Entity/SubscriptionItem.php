@@ -111,6 +111,13 @@ class SubscriptionItem extends ExtendSubscriptionItem implements PriceAwareInter
     protected $specialPriceDuration;
 
     /**
+     * @var Subscription
+     *
+     * @ORM\OneToOne(targetEntity="Subscription", mappedBy="item")
+     */
+    protected $subscription;
+
+    /**
      * @return int
      */
     public function getId()
@@ -212,4 +219,25 @@ class SubscriptionItem extends ExtendSubscriptionItem implements PriceAwareInter
         
         return $this;
     }
+
+    /**
+     * @return Subscription
+     */
+    public function getSubscription()
+    {
+        return $this->subscription;
+    }
+
+    /**
+     * @param Subscription $subscription
+     * @return SubscriptionItem
+     */
+    public function setSubscription(Subscription $subscription)
+    {
+        $this->subscription = $subscription;
+        
+        return $this;
+    }
+    
+    
 }

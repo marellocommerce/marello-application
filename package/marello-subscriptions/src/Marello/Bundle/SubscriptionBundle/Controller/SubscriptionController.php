@@ -92,7 +92,7 @@ class SubscriptionController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('session')->getFlashBag()->add(
                 'success',
-                $this->get('translator')->trans('marello.order.messages.success.order.saved')
+                $this->get('translator')->trans('marello.subscription.messages.success.subscription.saved')
             );
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($subscription);

@@ -60,6 +60,9 @@ services:
     marello_subscription.form.event_listener.subscription_item:
         class: 'Marello\Bundle\SubscriptionBundle\Form\EventListener\SubscriptionItemSubscriber'
 
+    marello_subscription.form.event_listener.subscription_product:
+        class: 'Marello\Bundle\SubscriptionBundle\Form\EventListener\SubscriptionProductSubscriber'
+
     marello_subscription.provider.form_changes.billing_address:
         class: 'Marello\Bundle\OrderBundle\Provider\OrderAddressFormChangesProvider'
         arguments:
@@ -112,9 +115,26 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 
+    marello_subscription.listener.product_available_inventory_validation:
+        class: 'Marello\Bundle\SubscriptionBundle\EventListener\ProductAvailableInventoryValidationListener'
+        tags:
+            - { name: kernel.event_listener, event: marello_product.product_available_inventory_validation, method: onValidation }
+
     marello_subscription.listener.datagrid.subscriptions_grid_address_filter_listener:
         class: 'Marello\Bundle\OrderBundle\EventListener\Datagrid\OrderGridAddressFilterListener'
         arguments:
             - '@oro_locale.dql.formatter.name'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.marello-subscriptions-grid, method: onBuildBefore }
+
+    marello_subscription.twig.subscription_extension:
+        class: 'Marello\Bundle\SubscriptionBundle\Twig\SubscriptionExtension'
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: twig.extension }
+
+    marello_subscription.form.validator.subscription_product_attributes:
+        class: 'Marello\Bundle\SubscriptionBundle\Validator\SubscriptionProductAttributesValidator'
+        tags:
+            - { name: validator.constraint_validator, alias: marello_subscription.subscription_product_attributes_validator }

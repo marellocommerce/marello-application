@@ -35,7 +35,15 @@ class SubscriptionItemSubscriber implements EventSubscriberInterface
         $product = $form->get('item')->getData();
         /** @var SalesChannel $salesChannel */
         $salesChannel = $form->get('salesChannel')->getData();
+        $paymentFreq = $entity->getPaymentFreq();
+        if ($paymentFreq && $paymentFreq->getId()) {
+            $entity->setPaymentFreq($paymentFreq->getId());
+        }
         if ($product && $salesChannel) {
+            $entity
+                ->setCurrency($salesChannel->getCurrency())
+                ->setDuration($product->getSubscriptionDuration());
+            
             $assembledPrice = $product->getSalesChannelPrice($salesChannel) ?:
                 $product->getPrice($salesChannel->getCurrency());
             $defaultPrice = $assembledPrice->getDefaultPrice()->getValue();

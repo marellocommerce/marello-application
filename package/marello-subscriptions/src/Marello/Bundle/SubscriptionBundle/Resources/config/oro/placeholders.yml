@@ -1,0 +1,10 @@
+placeholders:
+    placeholders:
+        marello_customer_subscriptions:
+            items:
+                marello_customer_subscriptions_grid:
+                    order: 10
+
+    items:
+        marello_customer_subscriptions_grid:
+            template: MarelloSubscriptionBundle:Customer:customerSubscriptionsGrid.html.twig
