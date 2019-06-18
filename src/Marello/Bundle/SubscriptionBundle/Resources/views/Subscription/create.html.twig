@@ -48,15 +48,17 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     <div class="box-type1">
-                        <div data-page-component-module="marellosubscriptions/js/app/components/customer-selection-component">
+                        <div data-page-component-module="marellosubscription/js/app/components/customer-selection-component">
                             {{ form_row(form.customer) }}
                         </div>
                         {{ form_row(form.salesChannel) }}
                         {{ form_row(form.startDate) }}
-                        {{ form_row(form.duration) }}
                         {{ form_row(form.terminationDate) }}
                         {{ form_row(form.terminationNoticePeriod) }}
                         {{ form_row(form.cancelBeforeDuration) }}
+                        {{ form_row(form.renewalType) }}
+                        {{ form_row(form.paymentMethod) }}
+                        {{ form_row(form.paymentFreq) }}
                     </div>
                 </div>
             </div>
@@ -73,7 +75,7 @@
         <div
                 data-page-component-module="oroui/js/app/components/view-component"
                 data-page-component-options="{{ {
-                    view: 'marellosubscriptions/js/app/views/subscription-address-view',
+                    view: 'marellosubscription/js/app/views/subscription-address-view',
                     type: 'billing',
                     selectors: {
                         address: idAddressBlock
@@ -81,12 +83,6 @@
                 }|json_encode }}"
                 data-layout="separate">
             {{ form_widget(form.billingAddress) }}
-        </div>
-        <br><br>
-        <div data-layout="separate">
-            {{ form_row(form.renewalType) }}
-            {{ form_row(form.paymentMethod) }}
-            {{ form_row(form.paymentFreq) }}
         </div>
     {% endset %}
     {% set shippingInformation %}
@@ -98,7 +94,7 @@
         <div
                 data-page-component-module="oroui/js/app/components/view-component"
                 data-page-component-options="{{ {
-                    view: 'marellosubscriptions/js/app/views/subscription-address-view',
+                    view: 'marellosubscription/js/app/views/subscription-address-view',
                     type: 'shipping',
                     selectors: {
                         address: idAddressBlock,

@@ -90,14 +90,14 @@ class SubscriptionToOrderMapperTest extends WebTestCase
      * @param Customer $customer
      * @param SalesChannel $salesChannel
      * @param Organization $organization
-     * @return Subscription
+     * @return Order
      */
     private function createOrder(
         Product $product,
         Customer $customer,
         SalesChannel $salesChannel,
-        Organization $organization)
-    {
+        Organization $organization
+    ) {
          $orderItem = new OrderItem();
         $orderItem
             ->setProduct($product)

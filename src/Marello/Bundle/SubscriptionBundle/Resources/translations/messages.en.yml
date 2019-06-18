@@ -9,6 +9,7 @@ marello:
         entity_label:                 Subscription
         entity_plural_label:          Subscriptions
         id.label:                     Id
+        subscription_number.label:    Subscription Number
         billing_address:
             label:                    Billing Address
             name.label:               Bill to Name
@@ -55,6 +56,12 @@ marello:
             price.label:                  Price
             special_price.label:          Special Price
             special_price_duration.label: Special Price Duration
+            subscription.label:           Subscription
+
+        messages:
+            success:
+                subscription:
+                    saved:          Subscription saved
 
 oro:
     entityextend:

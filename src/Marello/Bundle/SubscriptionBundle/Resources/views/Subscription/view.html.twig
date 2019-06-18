@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% oro_title_set({params : {"%id%": entity.id }}) %}
 
@@ -33,6 +34,7 @@
                         {{ UI.renderProperty('marello.subscription.termination_date.label'|trans, entity.terminationDate|oro_format_datetime) }}
                         {{ UI.renderProperty('marello.subscription.termination_notice_period.label'|trans, entity.terminationNoticePeriod) }}
                         {{ UI.renderProperty('marello.subscription.cancel_before_duration.label'|trans, entity.cancelBeforeDuration) }}
+                        {{ UI.renderProperty('marello.subscription.renewal_type.label'|trans, entity.renewalType) }}
                     </div>
                 </div>
             </div>
@@ -70,7 +72,7 @@
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
                     {{ UI.renderProperty('marello.subscription.payment_method.label'|trans, entity.paymentMethod) }}
-                    {{ UI.renderProperty('marello.subscription.payment_freq.label'|trans, entity.paymentFreq) }}
+                    {{ UI.renderProperty('marello.subscription.payment_freq.label'|trans, format_payment_freq(entity.paymentFreq)) }}
                 </div>
             </div>
         </div>
@@ -101,11 +103,7 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {{ UI.renderProperty('marello.subscription_item.sku.label'|trans, entity.item.sku) }}
-                    {{ UI.renderProperty('marello.subscription_item.duration.label'|trans, entity.item.duration) }}
-                    {{ UI.renderProperty('marello.subscription_item.price.label'|trans, entity.item.price) }}
-                    {{ UI.renderProperty('marello.subscription_item.special_price.label'|trans, entity.item.specialPrice) }}
-                    {{ UI.renderProperty('marello.subscription_item.special_price_duration.label'|trans, entity.item.specialPriceDuration) }}
+                    {{ dataGrid.renderGrid('marello-subscription-items-grid', {'subscriptionId': entity.id}) }}
                 </div>
             </div>
         </div>

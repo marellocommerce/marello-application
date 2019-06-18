@@ -43,6 +43,21 @@
 
 {% block content_data %}
     {% set id = 'marello-subscription-update' %}
+    {% set generalSubblocks = [] %}
+    {% set generalInformation %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        {{ form_row(form.renewalType) }}
+                        {{ form_row(form.paymentMethod) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [generalInformation] }]) %}
+
     {% set billingInformation %}
         {% if form.billingAddress.customerAddress is defined %}
             {% set idAddressBlock = '#' ~ form.billingAddress.customerAddress.vars.id %}
@@ -52,7 +67,7 @@
         <div
                 data-page-component-module="oroui/js/app/components/view-component"
                 data-page-component-options="{{ {
-                    view: 'marellosubscriptions/js/app/views/subscription-address-view',
+                    view: 'marellosubscription/js/app/views/subscription-address-view',
                     type: 'billing',
                     selectors: {
                         address: idAddressBlock
@@ -60,11 +75,6 @@
                 }|json_encode }}"
                 data-layout="separate">
             {{ form_widget(form.billingAddress) }}
-        </div>
-        <br><br>
-        <div data-layout="separate">
-            {{ form_row(form.renewalType) }}
-            {{ form_row(form.paymentMethod) }}
         </div>
     {% endset %}
     {% set shippingInformation %}
@@ -76,7 +86,7 @@
         <div
                 data-page-component-module="oroui/js/app/components/view-component"
                 data-page-component-options="{{ {
-                    view: 'marellosubscriptions/js/app/views/subscription-address-view',
+                    view: 'marellosubscription/js/app/views/subscription-address-view',
                     type: 'shipping',
                     selectors: {
                         address: idAddressBlock,
@@ -99,6 +109,11 @@
     {% endset %}
 
     {% set dataBlocks = [
+        {
+            'title': 'marello.subscription.sections.general.label'|trans,
+            'class': 'active',
+            'subblocks': generalSubblocks
+        },
         {
             'title': 'marello.subscription.sections.billing_information.label'|trans,
             'class': 'active',

@@ -3,21 +3,15 @@
 namespace Marello\Bundle\SubscriptionBundle\Form\Type;
 
 use Marello\Bundle\OrderBundle\Form\Type\CustomerSelectType;
-use Marello\Bundle\ProductBundle\Form\Type\ProductSalesChannelAwareSelectType;
-use Marello\Bundle\ProductBundle\Form\Type\ProductSelectType;
-use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
 use Marello\Bundle\SalesBundle\Form\Type\SalesChannelSelectType;
-use Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodSelectType;
 use Marello\Bundle\SubscriptionBundle\Entity\Subscription;
 use Marello\Bundle\SubscriptionBundle\Form\EventListener\SubscriptionItemSubscriber;
 use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadPaymentTermData;
-use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadSubscriptionDurationData;
 use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadSubscriptionRenewalTypeData;
 use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadSubscriptionTerminationNoticePeriodData;
 use Oro\Bundle\EntityExtendBundle\Form\Type\EnumChoiceType;
 use Oro\Bundle\FormBundle\Form\Type\OroDateTimeType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -59,6 +53,7 @@ class SubscriptionType extends AbstractType
                 'salesChannel',
                 SalesChannelSelectType::class,
                 [
+                    'required' => true,
                     'autocomplete_alias' => 'active_saleschannels',
                 ]
             )
@@ -67,15 +62,6 @@ class SubscriptionType extends AbstractType
                 OroDateTimeType::class,
                 [
                     'required' => true,
-                ]
-            )
-            ->add(
-                'duration',
-                EnumChoiceType::class,
-                [
-                    'enum_code' => LoadSubscriptionDurationData::ENUM_CLASS,
-                    'required'  => true,
-                    'label'     => 'marello.subscription.duration.label',
                 ]
             )
             ->add(

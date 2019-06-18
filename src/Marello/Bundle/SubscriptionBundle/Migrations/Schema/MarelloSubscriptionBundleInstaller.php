@@ -71,6 +71,7 @@ class MarelloSubscriptionBundleInstaller implements
     {
         $table = $schema->createTable('marello_subscription');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
+        $table->addColumn('subscription_number', 'string', ['notnull' => false, 'length' => 255]);
         $table->addColumn('billing_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('start_date', 'datetime', ['notnull' => false]);
@@ -128,6 +129,7 @@ class MarelloSubscriptionBundleInstaller implements
         $table->addIndex(['sales_channel_id'], 'IDX_A619DD644C7A5B2E1', []);
         $table->addIndex(['organization_id']);
         $table->addUniqueIndex(['item_id'], 'UNIQ_75C456C9F5B7AF751134');
+        $table->addUniqueIndex(['subscription_number'], 'UNIQ_D411FA7F5F6607D3');
 
         $this->activityExtension->addActivityAssociation($schema, 'marello_notification', $table->getName());
         $this->activityExtension->addActivityAssociation($schema, 'oro_email', $table->getName());
@@ -158,8 +160,9 @@ class MarelloSubscriptionBundleInstaller implements
         $table->addColumn('price', 'money', ['precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
         $table->addColumn(
             'special_price',
-            'money', 
-            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']);
+            'money',
+            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
+        );
         $this->extendExtension->addEnumField(
             $schema,
             $table,
@@ -188,7 +191,7 @@ class MarelloSubscriptionBundleInstaller implements
             false,
             false,
             [
-                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM]
             ]
         );
         $table->addColumn(
@@ -211,7 +214,7 @@ class MarelloSubscriptionBundleInstaller implements
             false,
             false,
             [
-                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM]
             ]
         );
         $this->extendExtension->addEnumField(
@@ -303,4 +306,3 @@ class MarelloSubscriptionBundleInstaller implements
         $this->extendExtension = $extendExtension;
     }
 }
-

@@ -52,7 +52,7 @@ class OrderToSubscriptionsMapperTest extends WebTestCase
         $product1 = $this->getReference(LoadSubscriptionProductData::SUBSCRIPTION_PRODUCT_1_REF);
         $orderItem1 = new OrderItem();
         $orderItem1->setProduct($product1);
-        $product2 = $this->getReference(LoadSubscriptionProductData::SUBSCRIPTION_PRODUCT_2_REF);;
+        $product2 = $this->getReference(LoadSubscriptionProductData::SUBSCRIPTION_PRODUCT_2_REF);
         $orderItem2 = new OrderItem();
         $orderItem2->setProduct($product2);
         $order
@@ -88,17 +88,19 @@ class OrderToSubscriptionsMapperTest extends WebTestCase
         Product $product,
         Customer $customer,
         SalesChannel $salesChannel,
-        Organization $organization)
-    {
+        Organization $organization
+    ) {
         $assembledPrice = $product->getSalesChannelPrice($salesChannel) ? :
             $product->getPrice($salesChannel->getCurrency());
+        $defaultPrice = $assembledPrice->getDefaultPrice()->getValue();
+        $specialPrice = $assembledPrice->getSpecialPrice() ? $assembledPrice->getSpecialPrice()->getValue() : null;
 
         $subscriptionItem = new SubscriptionItem();
         $subscriptionItem
             ->setSku($product->getSku())
-            ->setPrice($assembledPrice->getDefaultPrice()->getValue())
+            ->setPrice($defaultPrice)
             ->setDuration($product->getSubscriptionDuration())
-            ->setSpecialPrice($assembledPrice->getSpecialPrice() ? $assembledPrice->getSpecialPrice()->getValue() : null)
+            ->setSpecialPrice($specialPrice)
             ->setSpecialPriceDuration($product->getSpecialPriceDuration());
         
         $duration = $product->getSubscriptionDuration()->getId();

@@ -4,6 +4,7 @@ namespace Marello\Bundle\SubscriptionBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
@@ -43,6 +44,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks()
  */
 class Subscription extends ExtendSubscription implements
+    DerivedPropertyAwareInterface,
     CurrencyAwareInterface,
     ChannelAwareInterface,
     OrganizationAwareInterface
@@ -60,7 +62,21 @@ class Subscription extends ExtendSubscription implements
     protected $id;
 
     /**
-     * @var AbstractAddress
+     * @var string
+     *
+     * @ORM\Column(name="subscription_number", type="string", unique=true, nullable=true)
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $subscriptionNumber;
+
+    /**
+     * @var MarelloAddress
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
@@ -75,7 +91,7 @@ class Subscription extends ExtendSubscription implements
     protected $billingAddress;
 
     /**
-     * @var AbstractAddress
+     * @var MarelloAddress
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
      * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
@@ -271,9 +287,9 @@ class Subscription extends ExtendSubscription implements
     protected $salesChannel;
 
     /**
-     * @var SalesChannel
+     * @var SubscriptionItem
      *
-     * @ORM\OneToOne(targetEntity="Marello\Bundle\SubscriptionBundle\Entity\SubscriptionItem", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="Marello\Bundle\SubscriptionBundle\Entity\SubscriptionItem", inversedBy="subscription", cascade={"persist"})
      * @ORM\JoinColumn(name="item_id", referencedColumnName="id")
      * @Oro\ConfigField(
      *      defaultValues={
@@ -308,6 +324,25 @@ class Subscription extends ExtendSubscription implements
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubscriptionNumber()
+    {
+        return $this->subscriptionNumber;
+    }
+
+    /**
+     * @param string $subscriptionNumber
+     * @return Subscription
+     */
+    public function setSubscriptionNumber($subscriptionNumber)
+    {
+        $this->subscriptionNumber = $subscriptionNumber;
+        
+        return $this;
     }
 
     /**
@@ -611,5 +646,23 @@ class Subscription extends ExtendSubscription implements
         $this->item = $item;
         
         return $this;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setDerivedProperty($id)
+    {
+        if (!$this->subscriptionNumber) {
+            $this->setSubscriptionNumber(sprintf('%09d', $id));
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('#%s', $this->subscriptionNumber);
     }
 }

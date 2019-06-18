@@ -1,0 +1,8 @@
+Marello\Bundle\ProductBundle\Entity\Product:
+     constraints:
+        - Marello\Bundle\SubscriptionBundle\Validator\Constraints\SubscriptionProductAttributes: ~
+#    properties:
+#        subscriptionDuration:
+#            - NotBlank: ~
+#        paymentTerm:
+#            - NotBlank: ~
