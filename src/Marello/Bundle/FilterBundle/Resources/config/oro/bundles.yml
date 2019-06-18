@@ -1,2 +1,2 @@
 bundles:
-    - { name: Marello\Bundle\FilterBundle\MarelloFilterBundle }
+    - { name: Marello\Bundle\FilterBundle\MarelloFilterBundle, priority: -100 }

@@ -3,14 +3,10 @@
 namespace Marello\Bundle\DemoDataBundle\Migrations\Data\Demo\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\ProductBundle\Entity\ProductSupplierRelation;
 use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
-use Marello\Bundle\ProductBundle\Model\ProductType;
-use Marello\Bundle\ProductBundle\Provider\ProductTypesProvider;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -31,11 +27,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     protected $manager;
 
     /**
-     * @var ProductType
-     */
-    protected $defaultProductType;
-
-    /**
      * {@inheritdoc}
      * @return array
      */
@@ -53,8 +44,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
      */
     public function load(ObjectManager $manager)
     {
-        $productTypesProvider = $this->container->get('marello_product.provider.product_types');
-        $this->defaultProductType = $productTypesProvider->getProductType(Product::DEFAULT_PRODUCT_TYPE);
         $this->manager = $manager;
         $organizations = $this->manager
             ->getRepository('OroOrganizationBundle:Organization')
@@ -100,13 +89,11 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
     private function createProduct(array $data)
     {
         $product = new Product();
-        $product
-            ->setSku($data['sku'])
-            ->setType($this->defaultProductType->getName())
-            ->setName($data['name'])
-            ->setOrganization($this->defaultOrganization)
-            ->setWeight($data['weight'])
-            ->setManufacturingCode($this->generateManufacturingCode($data['sku']));
+        $product->setSku($data['sku']);
+        $product->setName($data['name']);
+        $product->setOrganization($this->defaultOrganization);
+        $product->setWeight($data['weight']);
+        $product->setManufacturingCode($this->generateManufacturingCode($data['sku']));
 
         $status = $this->manager
             ->getRepository('MarelloProductBundle:ProductStatus')
@@ -118,6 +105,13 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             $channel = $this->getReference($channelCode);
             $product->addChannel($channel);
         }
+
+        $productTypesProvider = $this->container->get('marello_product.provider.product_types');
+        $defaultProductType = $productTypesProvider->getProductType(Product::DEFAULT_PRODUCT_TYPE);
+        if ($defaultProductType) {
+            $product->setType($defaultProductType->getName());
+        }
+
         /**
         * set default taxCode
         */
