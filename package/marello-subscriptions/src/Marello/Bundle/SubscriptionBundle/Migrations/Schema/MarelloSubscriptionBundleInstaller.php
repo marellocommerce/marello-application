@@ -191,7 +191,8 @@ class MarelloSubscriptionBundleInstaller implements
             false,
             false,
             [
-                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM]
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+                'datagrid'  => ['is_visible' => DatagridScope::IS_VISIBLE_HIDDEN]
             ]
         );
         $table->addColumn(
@@ -201,7 +202,7 @@ class MarelloSubscriptionBundleInstaller implements
                 'notnull' => false,
                 'oro_options' => [
                     'extend'    => ['is_extend' => true, 'owner' => ExtendScope::OWNER_SYSTEM],
-                    'datagrid'  => ['is_visible' => DatagridScope::IS_VISIBLE_TRUE],
+                    'datagrid'  => ['is_visible' => DatagridScope::IS_VISIBLE_HIDDEN],
                     'dataaudit' => ['auditable' => true]
                 ]
             ]
@@ -214,7 +215,8 @@ class MarelloSubscriptionBundleInstaller implements
             false,
             false,
             [
-                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM]
+                'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+                'datagrid'  => ['is_visible' => DatagridScope::IS_VISIBLE_HIDDEN]
             ]
         );
         $this->extendExtension->addEnumField(
@@ -226,6 +228,7 @@ class MarelloSubscriptionBundleInstaller implements
             false,
             [
                 'extend' => ['owner' => ExtendScope::OWNER_SYSTEM],
+                'datagrid'  => ['is_visible' => DatagridScope::IS_VISIBLE_HIDDEN]
             ]
         );
     }
