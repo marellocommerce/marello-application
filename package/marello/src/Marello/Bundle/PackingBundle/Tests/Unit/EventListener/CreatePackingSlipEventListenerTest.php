@@ -15,6 +15,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Mapper\MapperInterface;
 use Marello\Bundle\PackingBundle\EventListener\CreatePackingSlipEventListener;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CreatePackingSlipEventListenerTest extends TestCase
 {
@@ -27,6 +28,11 @@ class CreatePackingSlipEventListenerTest extends TestCase
      * @var EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $entityManager;
+    
+    /**
+     * @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $eventDispatcher;
 
     /**
      * @var CreatePackingSlipEventListener
@@ -38,6 +44,7 @@ class CreatePackingSlipEventListenerTest extends TestCase
         $this->mapper = $this->createMock(MapperInterface::class);
         /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
         $this->entityManager = $this->createMock(EntityManagerInterface::class);
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $doctrineHelper = $this->getMockBuilder(DoctrineHelper::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -48,7 +55,8 @@ class CreatePackingSlipEventListenerTest extends TestCase
 
         $this->createPackingSlipEventListener = new CreatePackingSlipEventListener(
             $this->mapper,
-            $doctrineHelper
+            $doctrineHelper,
+            $this->eventDispatcher
         );
     }
 
