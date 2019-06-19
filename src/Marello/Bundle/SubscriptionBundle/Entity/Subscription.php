@@ -62,6 +62,7 @@ class Subscription extends ExtendSubscription implements
     protected $id;
 
     /**
+     * @var MarelloAddress
      * @var string
      *
      * @ORM\Column(name="subscription_number", type="string", unique=true, nullable=true)
@@ -341,7 +342,7 @@ class Subscription extends ExtendSubscription implements
     public function setSubscriptionNumber($subscriptionNumber)
     {
         $this->subscriptionNumber = $subscriptionNumber;
-        
+
         return $this;
     }
 

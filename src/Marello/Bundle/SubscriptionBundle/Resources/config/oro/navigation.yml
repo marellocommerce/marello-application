@@ -18,3 +18,4 @@ navigation:
         marello_subscription_index: marello.subscription.entity_plural_label
         marello_subscription_view: 'Subscription #%id%'
         marello_subscription_create: 'New Subscription'
+        marello_subscription_update: 'Subscription #%id% - Update'

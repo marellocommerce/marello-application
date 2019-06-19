@@ -115,6 +115,11 @@ services:
         tags:
             - { name: doctrine.event_listener, event: postPersist }
 
+    marello_subscription.listener.order_item_status_update:
+        class: 'Marello\Bundle\SubscriptionBundle\EventListener\OrderItemStatusUpdateListener'
+        tags:
+            - { name: kernel.event_listener, event: marello_order.order_item_status_update, method: onStatusUpdate }
+
     marello_subscription.listener.product_available_inventory_validation:
         class: 'Marello\Bundle\SubscriptionBundle\EventListener\ProductAvailableInventoryValidationListener'
         tags:
