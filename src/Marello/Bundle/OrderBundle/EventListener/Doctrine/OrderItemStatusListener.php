@@ -7,6 +7,7 @@ use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Provider\AvailableInventoryProvider;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Marello\Bundle\OrderBundle\Event\OrderItemStatusUpdateEvent;
 use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
 use Marello\Bundle\PackingBundle\Entity\PackingSlipItem;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
@@ -14,6 +15,7 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Component\Action\Event\ExtendableActionEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrderItemStatusListener
 {
@@ -28,13 +30,23 @@ class OrderItemStatusListener
     protected $availableInventoryProvider;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * @param DoctrineHelper $doctrineHelper
      * @param AvailableInventoryProvider $availableInventoryProvider
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(DoctrineHelper $doctrineHelper, AvailableInventoryProvider $availableInventoryProvider)
-    {
+    public function __construct(
+        DoctrineHelper $doctrineHelper,
+        AvailableInventoryProvider $availableInventoryProvider,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->availableInventoryProvider = $availableInventoryProvider;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
 
@@ -83,7 +95,12 @@ class OrderItemStatusListener
         /** @var Order $entity */
         $entity = $event->getContext()->getData()->get('order');
         foreach ($entity->getItems() as $orderItem) {
-            $orderItem->setStatus($this->findStatusByName(LoadOrderItemStatusData::PROCESSING));
+            $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::PROCESSING);
+            $this->eventDispatcher->dispatch(
+                OrderItemStatusUpdateEvent::NAME,
+                $event
+            );
+            $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
             $entityManager->persist($orderItem);
         }
         $entityManager->flush();
@@ -101,7 +118,12 @@ class OrderItemStatusListener
         /** @var Order $entity */
         $entity = $event->getContext()->getData()->get('order');
         foreach ($entity->getItems() as $orderItem) {
-            $orderItem->setStatus($this->findStatusByName(LoadOrderItemStatusData::SHIPPED));
+            $event = new OrderItemStatusUpdateEvent($orderItem, LoadOrderItemStatusData::SHIPPED);
+            $this->eventDispatcher->dispatch(
+                OrderItemStatusUpdateEvent::NAME,
+                $event
+            );
+            $orderItem->setStatus($this->findStatusByName($event->getStatusName()));
             $entityManager->persist($orderItem);
         }
         $entityManager->flush();
