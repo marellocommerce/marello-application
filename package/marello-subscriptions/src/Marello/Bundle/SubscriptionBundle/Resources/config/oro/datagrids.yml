@@ -201,6 +201,7 @@ datagrids:
                         - s.customer = :customer_id
             bind_parameters:
                 customer_id: customerId
+        filters: ~
 
     marello-subscription-items-grid:
         source:

@@ -5,7 +5,7 @@
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 {% if form.vars.value.id %}
     {% set formAction = path('marello_subscription_update', { 'id': form.vars.value.id }) %}
-    {% oro_title_set({params : {"%id%": entity.id }}) %}
+    {% oro_title_set({params : {"%id%": entity.subscriptionNumber }}) %}
 {% else %}
     {% set formAction = path('marello_subscription_create') %}
 {% endif %}
@@ -23,7 +23,7 @@
         'entity':      form.vars.value,
         'indexPath':   path('marello_subscription_index'),
         'indexLabel': 'marello.subscription.entity_plural_label'|trans,
-        'entityTitle': form.vars.value.id
+        'entityTitle': form.vars.value.subscriptionNumber
         } %}
         {{ parent() }}
     {% else %}

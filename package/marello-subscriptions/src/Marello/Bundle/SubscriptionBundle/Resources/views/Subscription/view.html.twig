@@ -2,14 +2,14 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% oro_title_set({params : {"%id%": entity.id }}) %}
+{% oro_title_set({params : {"%id%": entity.subscriptionNumber }}) %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {
     'entity':      entity,
     'indexPath':   path('marello_subscription_index'),
     'indexLabel': 'marello.subscription.entity_plural_label'|trans,
-    'entityTitle': entity.id
+    'entityTitle': entity.subscriptionNumber
     } %}
     {{ parent() }}
 {% endblock pageHeader %}
