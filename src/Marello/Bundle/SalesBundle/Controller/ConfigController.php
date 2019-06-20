@@ -13,7 +13,7 @@ class ConfigController extends Controller
 {
     /**
      * @Route(
-     *      "/sales_channel/{id}/{activeGroup}/{activeSubGroup}",
+     *      "/saleschannel/{id}/{activeGroup}/{activeSubGroup}",
      *      name="marello_sales_config_saleschannel",
      *      requirements={"id"="\d+"},
      *      defaults={"activeGroup" = null, "activeSubGroup" = null}
@@ -27,8 +27,8 @@ class ConfigController extends Controller
         $activeGroup = null,
         $activeSubGroup = null
     ) {
-        $provider = $this->get('marello_sales.config_form_provider.sales_channel');
-        $manager = $this->get('oro_config.sales_channel');
+        $provider = $this->get('marello_sales.config_form_provider.saleschannel');
+        $manager = $this->get('oro_config.saleschannel');
         $prevScopeId = $manager->getScopeId();
         $manager->setScopeId($entity->getId());
 
@@ -50,7 +50,7 @@ class ConfigController extends Controller
                 );
 
                 // outdate content tags, it's only special case for generation that are not covered by NavigationBundle
-                $taggableData = ['name' => 'sales_channel_configuration', 'params' => [$activeGroup, $activeSubGroup]];
+                $taggableData = ['name' => 'saleschannel_configuration', 'params' => [$activeGroup, $activeSubGroup]];
                 $tagGenerator = $this->get('oro_sync.content.tag_generator');
                 $dataUpdateTopicSender = $this->get('oro_sync.content.data_update_topic_sender');
 

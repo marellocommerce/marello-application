@@ -6,7 +6,7 @@ use Oro\Bundle\ConfigBundle\Provider\AbstractProvider;
 
 class SalesChannelConfigurationFormProvider extends AbstractProvider
 {
-    const CONFIG_KEY = 'sales_channel_configuration';
+    const CONFIG_KEY = 'saleschannel_configuration';
 
     public function getTree()
     {

@@ -111,7 +111,7 @@ system_configuration:
                                             - marello_pdf.company_bank
                                             - marello_pdf.company_coc
 
-        sales_channel_configuration:
+        saleschannel_configuration:
             marello:
                 children:
                     documents:

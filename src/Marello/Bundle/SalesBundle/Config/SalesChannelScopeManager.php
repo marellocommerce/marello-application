@@ -7,7 +7,7 @@ use Oro\Bundle\ConfigBundle\Config\AbstractScopeManager;
 
 class SalesChannelScopeManager extends AbstractScopeManager
 {
-    const SCOPE_NAME = 'sales_channel';
+    const SCOPE_NAME = 'saleschannel';
 
     protected $scopeId = 0;
 
