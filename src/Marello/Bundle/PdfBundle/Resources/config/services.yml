@@ -13,3 +13,13 @@ services:
         arguments:
             - '@marello_pdf.renderer.html'
             - '@twig'
+
+    marello_pdf.provider.logo:
+        class: 'Marello\Bundle\PdfBundle\Provider\LogoProvider'
+        arguments:
+            - '@oro_config.manager'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_attachment.manager'
+            - '@oro_attachment.media_cache_manager'
+            - '@oro_attachment.image_resizer'
+            - '%kernel.project_dir%'
