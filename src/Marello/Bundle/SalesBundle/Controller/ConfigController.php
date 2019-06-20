@@ -30,7 +30,7 @@ class ConfigController extends Controller
         $provider = $this->get('marello_sales.config_form_provider.saleschannel');
         $manager = $this->get('oro_config.saleschannel');
         $prevScopeId = $manager->getScopeId();
-        $manager->setScopeId($entity->getId());
+        $manager->setScopeIdFromEntity($entity);
 
         list($activeGroup, $activeSubGroup) = $provider->chooseActiveGroups($activeGroup, $activeSubGroup);
 
@@ -68,7 +68,8 @@ class ConfigController extends Controller
             'data'           => $jsTree,
             'form'           => $form ? $form->createView() : null,
             'activeGroup'    => $activeGroup,
-            'activeSubGroup' => $activeSubGroup
+            'activeSubGroup' => $activeSubGroup,
+            'scopeInfo'      => $manager->getScopeInfo(),
         ];
     }
 }
