@@ -23,3 +23,6 @@ services:
             - '@oro_attachment.media_cache_manager'
             - '@oro_attachment.image_resizer'
             - '%kernel.project_dir%'
+
+    marello_pdf.provider.render_parameters:
+        class: 'Marello\Bundle\PdfBundle\Provider\RenderParametersProvider'
