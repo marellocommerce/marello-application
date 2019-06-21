@@ -34,8 +34,10 @@ class BeforePackingSlipCreationListener
                 /** @var Product $product */
                 $product = $item->getProduct();
                 if (!$product->getWeight()) {
-                    throw new \Exception(sprintf('Packing Slip can\'t be created because product %s added to order
-                     does not have weight specified', $product->getSku()));
+                    throw new \Exception(
+                        sprintf('Packing Slip can\'t be created because product %s added to order
+                     does not have weight specified', $product->getSku())
+                    );
                 }
             }
         }

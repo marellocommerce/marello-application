@@ -112,16 +112,16 @@ class AvailableInventoryValidator extends ConstraintValidator
                 $violation = true;
                 if ($this->isProductCanDropship($values[self::PRODUCT_FIELD])) {
                     $violation = false;
-                } elseif ($this->isProductCanPreorder($values[self::PRODUCT_FIELD]) &&
+                } elseif ($this->isProductCanBackorder($values[self::PRODUCT_FIELD]) &&
                     $this->compareValues(
-                        $this->getPreorderQty($values[self::PRODUCT_FIELD]),
+                        $this->getBackorderQty($values[self::PRODUCT_FIELD]),
                         $values[self::QUANTITY_FIELD]
                     )
                 ) {
                     $violation = false;
-                } elseif ($this->isProductCanBackorder($values[self::PRODUCT_FIELD]) &&
+                } elseif ($this->isProductCanPreorder($values[self::PRODUCT_FIELD]) &&
                     $this->compareValues(
-                        $this->getBackorderQty($values[self::PRODUCT_FIELD]),
+                        $this->getPreorderQty($values[self::PRODUCT_FIELD]),
                         $values[self::QUANTITY_FIELD]
                     )
                 ) {
