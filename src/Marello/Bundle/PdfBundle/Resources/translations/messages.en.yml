@@ -30,3 +30,6 @@ marello:
                 company_coc:
                     label: "Chamber Of Commerce information"
                     tooltip: "Chamber Of Commerce-related information, such as Chamber Of Commerce number."
+
+        filename:
+            invoice: "Invoice_%entityNumber%"
