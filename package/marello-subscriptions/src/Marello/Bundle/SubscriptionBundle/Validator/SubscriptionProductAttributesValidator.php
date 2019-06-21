@@ -30,12 +30,12 @@ class SubscriptionProductAttributesValidator extends ConstraintValidator
         $type = $entity->getType();
         if ($type === 'subscription') {
             if (!$entity->getSubscriptionDuration()) {
-                $this->context->buildViolation('Subscription Duration can\'t be empty' )
+                $this->context->buildViolation('Subscription Duration can\'t be empty')
                     ->atPath('subscriptionDuration')
                     ->addViolation();
             }
             if (!$entity->getPaymentTerm()) {
-                $this->context->buildViolation('Payment Term can\'t be empty' )
+                $this->context->buildViolation('Payment Term can\'t be empty')
                     ->atPath('paymentTerm')
                     ->addViolation();
             }

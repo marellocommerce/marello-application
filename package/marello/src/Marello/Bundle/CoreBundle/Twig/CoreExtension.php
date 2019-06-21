@@ -28,7 +28,8 @@ class CoreExtension extends \Twig_Extension implements ContainerAwareInterface
      * @param string $bundle
      * @return bool
      */
-    public function bundleExists($bundle){
+    public function bundleExists($bundle)
+    {
         return array_key_exists(
             $bundle,
             $this->container->getParameter('kernel.bundles')

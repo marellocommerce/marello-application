@@ -238,6 +238,4 @@ class SubscriptionItem extends ExtendSubscriptionItem implements PriceAwareInter
         
         return $this;
     }
-    
-    
 }
