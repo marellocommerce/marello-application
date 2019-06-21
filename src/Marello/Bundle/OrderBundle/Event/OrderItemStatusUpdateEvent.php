@@ -64,6 +64,4 @@ class OrderItemStatusUpdateEvent extends Event
         $this->statusName = $statusName;
         return $this;
     }
-    
-    
 }

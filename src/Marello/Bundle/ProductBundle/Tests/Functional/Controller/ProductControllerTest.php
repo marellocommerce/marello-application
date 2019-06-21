@@ -45,26 +45,37 @@ class ProductControllerTest extends WebTestCase
      */
     public function testCreateProduct()
     {
-        $container = $this->getContainer();
-        if (array_key_exists('MarelloSubscriptionBundle', $container->getParameter('kernel.bundles'))) {
-            $this->markTestSkipped();
-        }
+        $productTypesProvider = $this->getContainer()->get('marello_product.provider.product_types');
         $crawler = $this->client->request('GET', $this->getUrl('marello_product_create'));
+        $form    = $crawler->selectButton('Continue')->form();
+        $formValues = $form->getPhpValues();
+        $formValues['input_action'] = 'marello_product_create';
+        $formValues['marello_product_step_one']['type'] = $productTypesProvider->getProductType('simple')->getName();
+        $this->client->followRedirects(true);
+        $crawler = $this->client->request(
+            'POST',
+            $this->getUrl('marello_product_create'),
+            $formValues
+        );
+
         $name    = 'Super duper product';
         $sku     = 'SKU-1234';
-        $form    = $crawler->selectButton('Save and Close')->form();
 
-        $form['marello_product_form[name]'] = $name;
-        $form['marello_product_form[sku]'] = $sku;
-        $form['marello_product_form[status]'] = 'enabled';
-        $form['marello_product_form[addSalesChannels]'] = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
-        $form['marello_product_form[taxCode]'] = $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
+        $form    = $crawler->selectButton('Save and Close')->form();
+        $formValues = $form->getPhpValues();
+        $formValues['marello_product_form']['name'] = $name;
+        $formValues['marello_product_form']['sku'] = $sku;
+        $formValues['marello_product_form']['status'] = 'enabled';
+        $formValues['marello_product_form']['addSalesChannels']
+            = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
+        $formValues['marello_product_form']['taxCode']
+            = $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
 
         $this->client->followRedirects(true);
-        $crawler = $this->client->submit($form);
+        $crawler = $this->client->request($form->getMethod(), $form->getUri(), $formValues);
         $result  = $this->client->getResponse();
 
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
         $this->assertContains('Product saved', $crawler->html());
         $this->assertContains($name, $crawler->html());
 
@@ -79,10 +90,13 @@ class ProductControllerTest extends WebTestCase
         /** @var Product $product */
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
-        $crawler = $this->client->request('GET', $this->getUrl('marello_product_update', ['id' => $product->getId()]));
+        $crawler = $this->client->request(
+            'GET',
+            $this->getUrl('marello_product_update', ['id' => $product->getId()])
+        );
 
         $result  = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         /** @var Form $form */
         $form = $crawler->selectButton('Save')->form();
@@ -129,7 +143,7 @@ class ProductControllerTest extends WebTestCase
         // Submit form
         $result = $this->client->getResponse();
         $this->client->request($form->getMethod(), $form->getUri(), $submittedData);
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
     }
 
     /**
@@ -140,10 +154,13 @@ class ProductControllerTest extends WebTestCase
         /** @var Product $product */
         $product = $this->getReference(LoadProductData::PRODUCT_1_REF);
 
-        $crawler = $this->client->request('GET', $this->getUrl('marello_product_update', ['id' => $product->getId()]));
+        $crawler = $this->client->request(
+            'GET',
+            $this->getUrl('marello_product_update', ['id' => $product->getId()])
+        );
 
         $result  = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         /** @var Form $form */
         $form = $crawler->selectButton('Save')->form();
@@ -175,7 +192,7 @@ class ProductControllerTest extends WebTestCase
         // Submit form
         $result = $this->client->getResponse();
         $this->client->request($form->getMethod(), $form->getUri(), $submittedData);
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
     }
 
     /**
@@ -192,7 +209,7 @@ class ProductControllerTest extends WebTestCase
             ['marello-products-grid[_filter][name][value]' => $name]
         );
 
-        $result = $this->getJsonResponseContent($response, Response::HTTP_OK);
+        $result = self::getJsonResponseContent($response, Response::HTTP_OK);
         $result = reset($result['data']);
 
         $resultData = $result;
@@ -201,23 +218,25 @@ class ProductControllerTest extends WebTestCase
             $this->getUrl('marello_product_update', ['id' => $result['id']])
         );
         $result      = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
 
         $taxCode = $this->getReference(LoadTaxCodeData::TAXCODE_3_REF)->getId();
         /** @var Form $form */
         $form                                              = $crawler->selectButton('Save and Close')->form();
-        $name                                              = 'name' . $this->generateRandomString();
+        $name                                              = 'name' . self::generateRandomString();
         $form['marello_product_form[name]']                = $name;
-        $form['marello_product_form[removeSalesChannels]'] = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
-        $form['marello_product_form[addSalesChannels]']    = $this->getReference(LoadSalesData::CHANNEL_2_REF)->getId();
+        $form['marello_product_form[removeSalesChannels]']
+            = $this->getReference(LoadSalesData::CHANNEL_1_REF)->getId();
+        $form['marello_product_form[addSalesChannels]']
+            = $this->getReference(LoadSalesData::CHANNEL_2_REF)->getId();
         $form['marello_product_form[taxCode]']             = $taxCode;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
 
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains("Product saved", $crawler->html());
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertContains('Product saved', $crawler->html());
 
         $resultData['name'] = $name;
 
@@ -236,9 +255,12 @@ class ProductControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains("{$this->getReference(LoadSalesData::CHANNEL_2_REF)->getName()}", $crawler->html());
-        $this->assertContains("{$resultData['name']}", $crawler->html());
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertContains(
+            (string) $this->getReference(LoadSalesData::CHANNEL_2_REF)->getName(),
+            $crawler->html()
+        );
+        self::assertContains((string) $resultData['name'], $crawler->html());
     }
 
     /**
@@ -256,7 +278,7 @@ class ProductControllerTest extends WebTestCase
         );
 
         $result = $this->client->getResponse();
-        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains($resultData['name'], $crawler->html());
+        self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        self::assertContains($resultData['name'], $crawler->html());
     }
 }
