@@ -26,3 +26,30 @@ services:
 
     marello_pdf.provider.render_parameters:
         class: 'Marello\Bundle\PdfBundle\Provider\RenderParametersProvider'
+
+    marello_pdf.param_provider.entity:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\EntityProvider'
+        tags:
+            - { name: marello_pdf.render_parameter_provider }
+
+    marello_pdf.param_provider.logo:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\LogoProvider'
+        arguments:
+            - '@marello_pdf.provider.logo'
+        tags:
+            - { name: marello_pdf.render_parameter_provider }
+
+    marello_pdf.param_provider.saleschannel_config_values:
+        class: 'Marello\Bundle\PdfBundle\Provider\Render\ConfigValuesProvider'
+        arguments:
+            - '@oro_config.saleschannel'
+            -
+                language: marello_pdf.language
+                locale: marello_pdf.locale
+                company_address: marello_pdf.company_address
+                company_email: marello_pdf.company_email
+                company_phone: marello_pdf.company_phone
+                company_bank: marello_pdf.company_bank
+                company_coc: marello_pdf.company_coc
+        tags:
+            - { name: marello_pdf.render_parameter_provider }
