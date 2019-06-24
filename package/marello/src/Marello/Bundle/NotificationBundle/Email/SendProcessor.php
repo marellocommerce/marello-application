@@ -10,6 +10,9 @@ use Marello\Bundle\NotificationBundle\Provider\EntityNotificationConfigurationPr
 use Oro\Bundle\ActivityBundle\Manager\ActivityManager;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateCriteria;
 use Oro\Bundle\EmailBundle\Provider\EmailRenderer;
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+use Oro\Bundle\EmailBundle\Model\EmailTemplate as EmailTemplateModel;
+use Oro\Bundle\EmailBundle\Model\EmailTemplateInterface;
 use Oro\Bundle\NotificationBundle\Manager\EmailNotificationManager;
 use Oro\Bundle\NotificationBundle\Manager\EmailNotificationSender;
 use Oro\Bundle\NotificationBundle\Model\TemplateEmailNotification;
@@ -35,7 +38,7 @@ class SendProcessor
     /** @var  EntityNotificationConfigurationProviderInterface */
     protected $entityNotificationConfigurationProvider;
 
-    /** @var EmailNotificationSender */
+    /** @var EmailNotificationSender $emailNotificationSender */
     protected $emailNotificationSender;
 
     /**
@@ -64,6 +67,9 @@ class SendProcessor
         $this->entityNotificationConfigurationProvider = $entityNotificationConfigurationProvider;
     }
 
+    /**
+     * @param EmailNotificationSender $emailNotificationSender
+     */
     public function setEmailNotificationSender(EmailNotificationSender $emailNotificationSender)
     {
         $this->emailNotificationSender = $emailNotificationSender;
@@ -77,6 +83,8 @@ class SendProcessor
      * @param object $entity       Entity used to render template.
      * @param array  $data         Empty array for possible extending of additional parameters
      * @throws MarelloNotificationException
+     * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
+     * @throws \Twig_Error
      */
     public function sendNotification($templateName, array $recipients, $entity, array $data = [])
     {
@@ -105,6 +113,7 @@ class SendProcessor
             $template,
             compact('entity')
         );
+
         /*
          * Create new notification and process it using email notification processor.
          * Sending of notification emails is deferred, notification can be persisted but not yet sent.
@@ -112,9 +121,10 @@ class SendProcessor
          */
         $notification = new Notification($template, $recipients, $templateRendered, $entity->getOrganization());
         try {
+            // send compiled notification
             $this->emailNotificationSender->send(
                 $this->getNotification($templateName, $recipients, $entity),
-                $template
+                $this->createEmailModel($template, $templateRendered, $subjectRendered)
             );
         } catch (\Exception $e) {
             $this->emailNotificationManager->processSingle(
@@ -153,5 +163,33 @@ class SendProcessor
     protected function getRealClassName($entity)
     {
         return $this->manager->getClassMetadata(get_class($entity))->getName();
+    }
+
+    /**
+     * @param $template
+     * @param $renderedContent
+     * @param $renderedSubject
+     * @return EmailTemplateModel
+     */
+    private function createEmailModel($template, $renderedContent, $renderedSubject)
+    {
+        $emailTemplateModel = new EmailTemplateModel();
+        $emailTemplateModel
+            ->setSubject($renderedSubject)
+            ->setContent($renderedContent)
+            ->setType($this->getTemplateContentType($template));
+
+        return $emailTemplateModel;
+    }
+
+    /**
+     * @param EmailTemplateInterface $emailTemplate
+     * @return string
+     */
+    private function getTemplateContentType(EmailTemplateInterface $emailTemplate)
+    {
+        return $emailTemplate->getType() === EmailTemplate::TYPE_HTML
+            ? EmailTemplateModel::CONTENT_TYPE_HTML
+            : EmailTemplateModel::CONTENT_TYPE_TEXT;
     }
 }
