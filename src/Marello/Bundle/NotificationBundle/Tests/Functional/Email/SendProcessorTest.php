@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\NotificationBundle\Tests\Functional\Email;
 
+use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -56,5 +57,27 @@ class SendProcessorTest extends WebTestCase
         );
 
         $this->assertEquals(1, $notificationsAfter - $notificationsBefore);
+    }
+
+    /**
+     * @test
+     * @covers SendProcessor::sendNotification
+     */
+    public function isNotificationRendered()
+    {
+        /** @var Order $order */
+        $order = $this->getReference('marello_order_0');
+
+        $this->expectExceptionMessageRegExp(
+            '/Email template with name .* for entity .* was not found. Check if such template exists./'
+        );
+        $this->expectException(MarelloNotificationException::class);
+
+
+        $this->sendProcessor->sendNotification(
+            'no_valid_template',
+            [$order->getCustomer()],
+            $order
+        );
     }
 }
