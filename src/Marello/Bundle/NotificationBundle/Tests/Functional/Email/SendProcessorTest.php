@@ -2,16 +2,20 @@
 
 namespace Marello\Bundle\NotificationBundle\Tests\Functional\Email;
 
-use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
+use Oro\Bundle\NotificationBundle\Async\Topics;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+use Oro\Bundle\MessageQueueBundle\Test\Functional\MessageQueueExtension;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\NotificationBundle\Email\SendProcessor;
 use Marello\Bundle\NotificationBundle\Entity\Notification;
 use Marello\Bundle\OrderBundle\Tests\Functional\DataFixtures\LoadOrderData;
+use Marello\Bundle\NotificationBundle\Exception\MarelloNotificationException;
 
 class SendProcessorTest extends WebTestCase
 {
+    use MessageQueueExtension;
+
     /** @var SendProcessor */
     protected $sendProcessor;
 
@@ -29,10 +33,9 @@ class SendProcessorTest extends WebTestCase
     }
 
     /**
-     * @test
      * @covers SendProcessor::sendNotification
      */
-    public function sendsNotifications()
+    public function testSendsNotification()
     {
         /** @var Order $order */
         $order = $this->getReference('marello_order_0');
@@ -60,10 +63,11 @@ class SendProcessorTest extends WebTestCase
     }
 
     /**
-     * @test
-     * @covers SendProcessor::sendNotification
+     * @throws MarelloNotificationException
+     * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
+     * @throws \Twig_Error
      */
-    public function isNotificationRendered()
+    public function testExceptionisThrownWhenTemplateIsNotFoundForEntity()
     {
         /** @var Order $order */
         $order = $this->getReference('marello_order_0');
@@ -79,5 +83,30 @@ class SendProcessorTest extends WebTestCase
             [$order->getCustomer()],
             $order
         );
+    }
+
+    /**
+     * @throws MarelloNotificationException
+     * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
+     * @throws \Twig_Error
+     */
+    public function testMessageSendIsRenderedTemplateAndSubject()
+    {
+        /** @var Order $order */
+        $order = $this->getReference('marello_order_0');
+        $this->sendProcessor->sendNotification(
+            'marello_order_accepted_confirmation',
+            [$order->getCustomer()],
+            $order
+        );
+
+        self::assertMessageSent(Topics::SEND_NOTIFICATION_EMAIL);
+        $message = self::getSentMessage(Topics::SEND_NOTIFICATION_EMAIL);
+
+        self::assertNotContains('{{ entity', $message['subject']);
+        self::assertNotContains('{{ entity', $message['body']);
+        self::assertEquals('text/html', $message['contentType']);
+        self::assertContains($order->getOrderNumber(), $message['subject']);
+        self::assertContains($order->getOrderNumber(), $message['body']);
     }
 }
