@@ -143,3 +143,8 @@ services:
         class: 'Marello\Bundle\SubscriptionBundle\Validator\SubscriptionProductAttributesValidator'
         tags:
             - { name: validator.constraint_validator, alias: marello_subscription.subscription_product_attributes_validator }
+
+    marello_subscription.additional_placeholder_data.customer_subscriptions:
+        class: 'Marello\Bundle\SubscriptionBundle\Provider\AdditionalPlaceholderDataProvider'
+        tags:
+            - {name: marello_core.additional_placeholder_data }

@@ -1,6 +1,6 @@
 placeholders:
     placeholders:
-        marello_customer_subscriptions:
+        marello_customer_additional_info_subscriptions:
             items:
                 marello_customer_subscriptions_grid:
                     order: 10

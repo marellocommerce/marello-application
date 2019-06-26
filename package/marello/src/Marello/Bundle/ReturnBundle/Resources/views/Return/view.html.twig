@@ -121,6 +121,25 @@
         }
     ] %}
 
+    {%- set additionalInfoPlaceholders = marelloGetAdditionalPlaceHolderData('return') -%}
+    {% for additionalInfo in additionalInfoPlaceholders %}
+        {% set returnAdditionalInfoSection %}
+            {% set placeholderName = additionalInfo.placeholder %}
+            {% placeholder placeholderName with {'return': entity} %}
+        {% endset %}
+        {% if returnAdditionalInfoSection|trim is not empty %}
+            {% set dataBlocks = dataBlocks|merge([
+                {
+                    'title': additionalInfo.label|trans,
+                    'class': 'active',
+                    'subblocks': [
+                        { 'data': [returnAdditionalInfoSection] }
+                    ]
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
+
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}
