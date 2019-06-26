@@ -99,6 +99,25 @@
         }
     ] %}
 
+    {%- set additionalInfoPlaceholders = marelloGetAdditionalPlaceHolderData('supplier') -%}
+    {% for additionalInfo in additionalInfoPlaceholders %}
+        {% set supplierAdditionalInfoSection %}
+            {% set placeholderName = additionalInfo.placeholder %}
+            {% placeholder placeholderName with {'supplier': entity} %}
+        {% endset %}
+        {% if supplierAdditionalInfoSection|trim is not empty %}
+            {% set dataBlocks = dataBlocks|merge([
+                {
+                    'title': additionalInfo.label|trans,
+                    'class': 'active',
+                    'subblocks': [
+                        { 'data': [supplierAdditionalInfoSection] }
+                    ]
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
+
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

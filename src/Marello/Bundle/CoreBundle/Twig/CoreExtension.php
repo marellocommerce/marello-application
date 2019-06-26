@@ -2,14 +2,14 @@
 
 namespace Marello\Bundle\CoreBundle\Twig;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider;
 
-class CoreExtension extends \Twig_Extension implements ContainerAwareInterface
+class CoreExtension extends \Twig_Extension
 {
-    use ContainerAwareTrait;
-
     const NAME = 'marello_core';
+
+    /** @var AdditionalPlaceholderProvider $provider */
+    protected $provider;
 
     /**
      * {@inheritdoc}
@@ -18,22 +18,20 @@ class CoreExtension extends \Twig_Extension implements ContainerAwareInterface
     {
         return array(
             new \Twig_SimpleFunction(
-                'bundleExists',
-                array($this, 'bundleExists')
+                'marelloGetAdditionalPlaceHolderData',
+                array($this, 'getAdditionalPlaceHolderData')
             ),
         );
     }
 
     /**
-     * @param string $bundle
-     * @return bool
+     * {@inheritdoc}
+     * @param $section
+     * @return array
      */
-    public function bundleExists($bundle)
+    public function getAdditionalPlaceHolderData($section)
     {
-        return array_key_exists(
-            $bundle,
-            $this->container->getParameter('kernel.bundles')
-        );
+        return $this->provider->getPlaceHolderProvidersBySection($section);
     }
 
     /**
@@ -42,5 +40,14 @@ class CoreExtension extends \Twig_Extension implements ContainerAwareInterface
     public function getName()
     {
         return self::NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @param AdditionalPlaceholderProvider $provider
+     */
+    public function setPlaceholderProvider(AdditionalPlaceholderProvider $provider)
+    {
+        $this->provider = $provider;
     }
 }

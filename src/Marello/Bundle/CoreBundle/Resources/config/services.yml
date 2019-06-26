@@ -34,7 +34,7 @@ services:
     marello_core.twig.core_extension:
         class: Marello\Bundle\CoreBundle\Twig\CoreExtension
         calls:
-          - [ setContainer, ['@service_container'] ]
+          - [ setPlaceholderProvider, ['@marello_core.provider.additional_placeholder_provider'] ]
         tags:
             - { name: twig.extension }
 
@@ -68,3 +68,7 @@ services:
             - '@oro_workflow.manager'
         calls:
             - ["setFieldsFilter", ['@oro_security.serializer.filter_chain']]
+
+
+    marello_core.provider.additional_placeholder_provider:
+        class: 'Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider'
