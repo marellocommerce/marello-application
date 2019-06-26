@@ -140,7 +140,7 @@ class OrderDashboardOrderItemsByStatusProviderTest extends \PHPUnit\Framework\Te
         return [
             'request quantities'                                                    => [
                 'widgetOptions' => new WidgetOptionBag([
-                    'excluded_statuses' => [],
+                    'statuses' => [],
                     'useQuantityAsData' => true
                 ]),
                 'expected DQL'  =>
@@ -152,7 +152,7 @@ class OrderDashboardOrderItemsByStatusProviderTest extends \PHPUnit\Framework\Te
             ],
             'request quantities with excluded statuses - should not affect DQL'     => [
                 'widgetOptions' => new WidgetOptionBag([
-                    'excluded_statuses' => ['in_progress', 'won'],
+                    'statuses' => ['in_progress', 'won'],
                     'useQuantityAsData' => true
                 ]),
                 'expected DQL'  =>
@@ -223,7 +223,7 @@ class OrderDashboardOrderItemsByStatusProviderTest extends \PHPUnit\Framework\Te
         return [
             'result with all statuses, no exclusions - only labels should be added'               => [
                 'widgetOptions'             => new WidgetOptionBag([
-                    'excluded_statuses' => [],
+                    'statuses' => [],
                     'useQuantityAsData' => true
                 ]),
                 'result data'               => [
@@ -247,7 +247,7 @@ class OrderDashboardOrderItemsByStatusProviderTest extends \PHPUnit\Framework\Te
             ],
             'result with all statuses, with exclusions - excluded should be removed, labels'      => [
                 'widgetOptions'             => new WidgetOptionBag([
-                    'excluded_statuses' => ['identification_alignment', 'solution_development'],
+                    'statuses' => ['identification_alignment', 'solution_development'],
                     'useQuantityAsData' => true
                 ]),
                 'result data'               => [
@@ -260,16 +260,13 @@ class OrderDashboardOrderItemsByStatusProviderTest extends \PHPUnit\Framework\Te
                     6 => ['quantity' => 100, 'status' => 'lost'],
                 ],
                 'expected formatted result' => [
-                    0 => ['quantity' => 700, 'status' => 'won', 'label' => 'Won'],
-                    2 => ['quantity' => 500, 'status' => 'in_progress', 'label' => 'Open'],
-                    3 => ['quantity' => 400, 'status' => 'needs_analysis', 'label' => 'Analysis'],
-                    4 => ['quantity' => 300, 'status' => 'negotiation', 'label' => 'Negotiation'],
-                    6 => ['quantity' => 100, 'status' => 'lost', 'label' => 'Lost'],
+                    1 => ['quantity' => 600, 'status' => 'identification_alignment', 'label' => 'Identification'],
+                    5 => ['quantity' => 200, 'status' => 'solution_development', 'label' => 'Development'],
                 ]
             ],
             'result with NOT all statuses, no exclusions - all statuses, labels'                  => [
                 'widgetOptions'             => new WidgetOptionBag([
-                    'excluded_statuses' => [],
+                    'statuses' => [],
                     'useQuantityAsData' => true
                 ]),
                 'result data'               => [
@@ -288,7 +285,7 @@ class OrderDashboardOrderItemsByStatusProviderTest extends \PHPUnit\Framework\Te
             ],
             'result with NOT all statuses AND exclusions - all statuses(except excluded), labels' => [
                 'widgetOptions'             => new WidgetOptionBag([
-                    'excluded_statuses' => ['identification_alignment', 'lost', 'in_progress'],
+                    'statuses' => ['identification_alignment', 'lost', 'in_progress'],
                     'useQuantityAsData' => true
                 ]),
                 'result data'               => [
@@ -298,10 +295,9 @@ class OrderDashboardOrderItemsByStatusProviderTest extends \PHPUnit\Framework\Te
                     3 => ['quantity' => 100, 'status' => 'lost'],
                 ],
                 'expected formatted result' => [
-                    0 => ['quantity' => 700, 'status' => 'won', 'label' => 'Won'],
-                    2 => ['quantity' => 300, 'status' => 'negotiation', 'label' => 'Negotiation'],
-                    4 => ['quantity' => 0, 'status' => 'needs_analysis', 'label' => 'Analysis'],
-                    5 => ['quantity' => 0, 'status' => 'solution_development', 'label' => 'Development'],
+                    4 => ['quantity' => 0, 'status' => 'identification_alignment', 'label' => 'Identification'],
+                    1 => ['quantity' => 500, 'status' => 'in_progress', 'label' => 'Open'],
+                    3 => ['quantity' => 100, 'status' => 'lost', 'label' => 'Lost'],
                 ]
             ],
         ];

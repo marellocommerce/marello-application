@@ -169,7 +169,7 @@ marello:
             orderitems_by_status:
                 title: OrderItems by Status
                 description: OrderItems by Status
-                excluded_statuses.label: Excluded Statuses
+                statuses.label: Statuses
 
             statistics:
                 no_data: No data available

@@ -64,7 +64,7 @@ class OrderDashboardOrderItemsByStatusProvider
          * Excluded statuses will be filtered from result in method `formatResult` below.
          * Due to performance issues with `NOT IN` clause in database.
          */
-        $excludedStatuses = $widgetOptions->get('excluded_statuses') ? : [];
+        $statuses = $widgetOptions->get('statuses') ? : [];
 
         /** @var OrderItemRepository $orderitemRepository */
         $orderitemRepository = $this->registry->getRepository('MarelloOrderBundle:Order');
@@ -78,27 +78,29 @@ class OrderDashboardOrderItemsByStatusProvider
         $this->widgetProviderFilter->filter($qb, $widgetOptions);
         $result = $this->aclHelper->apply($qb)->getArrayResult();
 
-        return $this->formatResult($result, $excludedStatuses, 'quantity');
+        return $this->formatResult($result, $statuses, 'quantity');
     }
 
     /**
      * @param array    $result
-     * @param string[] $excludedStatuses
+     * @param string[] $statuses
      * @param string   $orderBy
      *
      * @return array
      */
-    protected function formatResult($result, $excludedStatuses, $orderBy)
+    protected function formatResult($result, $statuses, $orderBy)
     {
         $resultStatuses = array_flip(array_column($result, 'status', null));
 
         foreach ($this->getAvailableItemStatuses() as $statusKey => $statusLabel) {
             $resultIndex = isset($resultStatuses[$statusKey]) ? $resultStatuses[$statusKey] : null;
-            if (in_array($statusKey, $excludedStatuses)) {
-                if (null !== $resultIndex) {
-                    unset($result[$resultIndex]);
+            if (!empty($statuses)) {
+                if (!in_array($statusKey, $statuses)) {
+                    if (null !== $resultIndex) {
+                        unset($result[$resultIndex]);
+                    }
+                    continue;
                 }
-                continue;
             }
 
             if (null !== $resultIndex) {

@@ -127,9 +127,9 @@ dashboards:
                        label: oro.dashboard.date_range.label
                        value_types: true
                     show_on_widget: true
-                excluded_statuses:
+                statuses:
                     type: Marello\Bundle\OrderBundle\Form\Type\WidgetOrderItemStatusesSelectType
                     show_on_widget: true
                     options:
-                        label:  marello.order.dashboard.orderitems_by_status.excluded_statuses.label
+                        label:  marello.order.dashboard.orderitems_by_status.statuses.label
                         required: false
