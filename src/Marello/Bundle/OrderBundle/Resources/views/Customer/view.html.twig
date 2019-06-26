@@ -105,12 +105,6 @@
         </div>
     {% endset %}
 
-    {% if bundleExists('MarelloSubscriptionBundle') %}
-        {% set subscription %}
-            {% placeholder marello_customer_subscriptions with {'customerId': entity.id} %}
-        {% endset %}
-    {% endif %}
-
     {% set additionalData %}
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
@@ -152,17 +146,25 @@
             ]
         }
     ] %}
-    {% if bundleExists('MarelloSubscriptionBundle') %}
-        {% set dataBlocks = dataBlocks|merge([
-            {
-                'title': 'marello.subscription.entity_plural_label'|trans,
-                'class': 'active',
-                'subblocks': [
-                    { 'data': [subscription] }
-                ]
-            }
-        ]) %}
-    {% endif %}
+
+    {%- set additionalInfoPlaceholders = marelloGetAdditionalPlaceHolderData('customer') -%}
+    {% for additionalInfo in additionalInfoPlaceholders %}
+        {% set customerAdditionalInfoSection %}
+            {% set placeholderName = additionalInfo.placeholder %}
+            {% placeholder placeholderName with {'customer': entity} %}
+        {% endset %}
+        {% if customerAdditionalInfoSection|trim is not empty %}
+            {% set dataBlocks = dataBlocks|merge([
+                {
+                    'title': additionalInfo.label|trans,
+                    'class': 'active',
+                    'subblocks': [
+                        { 'data': [customerAdditionalInfoSection] }
+                    ]
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
 
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}

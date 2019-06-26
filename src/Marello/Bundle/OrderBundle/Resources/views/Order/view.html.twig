@@ -214,6 +214,24 @@
         }
     ] %}
 
+    {%- set additionalInfoPlaceholders = marelloGetAdditionalPlaceHolderData('order') -%}
+    {% for additionalInfo in additionalInfoPlaceholders %}
+        {% set orderAdditionalInfoSection %}
+            {% set placeholderName = additionalInfo.placeholder %}
+            {% placeholder placeholderName with {'order': entity} %}
+        {% endset %}
+        {% if orderAdditionalInfoSection|trim is not empty %}
+            {% set dataBlocks = dataBlocks|merge([
+                {
+                    'title': additionalInfo.label|trans,
+                    'class': 'active',
+                    'subblocks': [
+                        { 'data': [orderAdditionalInfoSection] }
+                    ]
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
 
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
