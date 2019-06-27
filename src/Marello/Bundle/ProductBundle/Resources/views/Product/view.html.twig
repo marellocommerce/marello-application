@@ -212,7 +212,7 @@
         }]
     }]) %}
 
-    {%- set additionalInfoPlaceholders = marelloGetAdditionalPlaceHolderData('product') -%}
+    {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('product') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}
         {% set productAdditionalInfoSection %}
             {% set placeholderName = additionalInfo.placeholder %}
