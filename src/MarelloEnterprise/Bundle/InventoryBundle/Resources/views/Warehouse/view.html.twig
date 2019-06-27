@@ -61,7 +61,7 @@
         }
     ] %}
 
-    {%- set additionalInfoPlaceholders = marelloGetAdditionalPlaceHolderData('warehouse') -%}
+    {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('warehouse') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}
         {% set warehouseAdditionalInfoSection %}
             {% set placeholderName = additionalInfo.placeholder %}
