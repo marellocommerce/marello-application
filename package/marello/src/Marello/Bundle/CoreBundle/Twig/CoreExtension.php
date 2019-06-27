@@ -18,7 +18,7 @@ class CoreExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction(
-                'marelloGetAdditionalPlaceHolderData',
+                'marello_get_additional_placeholder_data',
                 array($this, 'getAdditionalPlaceHolderData')
             ),
         );
