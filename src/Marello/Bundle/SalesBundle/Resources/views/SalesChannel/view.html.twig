@@ -52,7 +52,7 @@
         }
     ] %}
 
-    {%- set additionalInfoPlaceholders = marelloGetAdditionalPlaceHolderData('salesChannel') -%}
+    {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('salesChannel') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}
         {% set salesChannelAdditionalInfoSection %}
             {% set placeholderName = additionalInfo.placeholder %}

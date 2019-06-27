@@ -76,7 +76,7 @@
         }
     ] %}
 
-    {%- set additionalInfoPlaceholders = marelloGetAdditionalPlaceHolderData('purchaseOrder') -%}
+    {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('purchaseOrder') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}
         {% set purchaseOrderAdditionalInfoSection %}
             {% set placeholderName = additionalInfo.placeholder %}

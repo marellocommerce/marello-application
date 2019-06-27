@@ -121,7 +121,7 @@
         }
     ] %}
 
-    {%- set additionalInfoPlaceholders = marelloGetAdditionalPlaceHolderData('return') -%}
+    {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('return') -%}
     {% for additionalInfo in additionalInfoPlaceholders %}
         {% set returnAdditionalInfoSection %}
             {% set placeholderName = additionalInfo.placeholder %}
