@@ -59,6 +59,13 @@ services:
         arguments:
             - Marello\Bundle\OrderBundle\Form\Type\CustomerType
 
+    marello_order.form.type.widget_order_item_statuses_select:
+        class: 'Marello\Bundle\OrderBundle\Form\Type\WidgetOrderItemStatusesSelectType'
+        arguments:
+            - '@oro_entity_extend.enum_value_provider'
+        tags:
+            - { name: form.type }
+
     marello_order.form.handler.customer:
         class: Marello\Bundle\OrderBundle\Form\Handler\CustomerHandler
         scope: request
