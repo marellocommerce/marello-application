@@ -113,3 +113,23 @@ dashboards:
                         item_label: oro.dashboard.widget.big_number.metricName
                         required: false
                         widget_name: hero_products_widget
+
+        orderitems_by_status:
+            label:       marello.order.dashboard.orderitems_by_status.title
+            route:       marello_order_dashboard_orderitems_by_status_chart
+            acl:         marello_order_view
+            description: marello.order.dashboard.orderitems_by_status.description
+            icon_class:  fa-check
+            configuration:
+                dateRange:
+                    type: Oro\Bundle\DashboardBundle\Form\Type\WidgetDateRangeType
+                    options:
+                       label: oro.dashboard.date_range.label
+                       value_types: true
+                    show_on_widget: true
+                statuses:
+                    type: Marello\Bundle\OrderBundle\Form\Type\WidgetOrderItemStatusesSelectType
+                    show_on_widget: true
+                    options:
+                        label:  marello.order.dashboard.orderitems_by_status.statuses.label
+                        required: false
