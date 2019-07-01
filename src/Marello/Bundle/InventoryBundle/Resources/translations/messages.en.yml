@@ -63,11 +63,11 @@ marello:
             inventory_levels.label:     Inventory Levels
             organization.label:         Organization
             warehouse.label:            Warehouse
-            backorder_allowed.label:    Backorders allowed
+            backorder_allowed.label:    Backorder allowed
             max_qty_to_backorder.label: Max qty to backorder
             can_preorder.label:         Pre-order allowed
             max_qty_to_preorder.label:  Max qty to preorder
-            back_orders_datetime.label: Back-orders Datetime
+            back_orders_datetime.label: Backorders Datetime
             pre_orders_datetime.label:  Pre-orders Datetime
 
             section:
@@ -138,12 +138,12 @@ marello:
                         general.label:      General
                         strategy.label:     Balancing Strategy
                     back_pre_orders:
-                        title:              Back-Pre Orders
+                        title:              Backorders/Pre-orders
                         general.label:      General
             fields:
                 balancing_strategy.label:                     Strategy
                 balance_threshold_percentage.label:           Threshold Percentage
-                po_duedate_as_back_pre_orders_datetime.label: Use Purchase Order DueDate as Back-Pre Orders Datetime
+                po_duedate_as_back_orders_datetime.label:     Use Purchase Order DueDate as Back Orders Datetime
         messages:
             success:
                 warehouse.saved:        Warehouse has been saved successfully

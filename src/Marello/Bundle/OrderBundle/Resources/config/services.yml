@@ -237,3 +237,28 @@ services:
             - '@translator.default'
         tags:
             - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\OrderBundle\Entity\Order }
+
+    marello_order.entity_localization_provider.order:
+        class: 'Marello\Bundle\OrderBundle\Provider\OrderLocalizationProvider'
+        tags:
+            - {name: marello_entity_localization_provider, priority: 100}
+
+    marello_order.provider.order_item_status_choices:
+        class: 'Marello\Bundle\OrderBundle\Provider\OrderItemStatusesChoicesProvider'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
+    marello_order.provider.orderitems_by_status:
+        class: 'Marello\Bundle\OrderBundle\Provider\OrderDashboardOrderItemsByStatusProvider'
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+            - '@oro_dashboard.widget_provider.filter_manager'
+            - '@oro_dashboard.filter.date_filter_processor'
+            - '@oro_currency.query.currency_transformer'
+
+    marello_order.widget_config_value.widget_orderitems_by_status.converter:
+        parent: oro_dashboard.widget_config_value.widget_enum_select.converter
+        arguments: ['marello_item_status']
+        tags:
+            - { name: oro_dashboard.value.converter, form_type: Marello\Bundle\OrderBundle\Form\Type\WidgetOrderItemStatusesSelectType }
