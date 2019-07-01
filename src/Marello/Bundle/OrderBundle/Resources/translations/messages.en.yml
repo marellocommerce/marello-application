@@ -166,6 +166,11 @@ marello:
                 total_product_revenue.label: By Revenue
                 no_available_metrics: No metrics available
 
+            orderitems_by_status:
+                title: OrderItems by Status
+                description: OrderItems by Status
+                statuses.label: Statuses
+
             statistics:
                 no_data: No data available
 
@@ -194,3 +199,6 @@ marello:
         system_configuration:
             fields:
                 order_notification.label: Order Notification
+
+        report:
+            order_items_by_status.label: OrderItems by Status
