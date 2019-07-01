@@ -36,6 +36,16 @@ navigation:
                     description: 'marello.order.menu.shortcut_list_orders.description'
                     isCustomAction: true
 
+            order_items_by_status:
+                label: 'marello.order.report.order_items_by_status.label'
+                route: 'marello_report_index'
+                route_parameters:
+                    reportGroupName: 'orders'
+                    reportName:      'order_items_by_status'
+                extras:
+                    description: 'marello.order.report.order_items_by_status.description'
+                    skipBreadcrumbs: true
+
         tree:
             application_menu:
                 children:
@@ -45,6 +55,13 @@ navigation:
                     customers_tab:
                         children:
                             customers: ~
+                    reports_tab:
+                        children:
+                            static_reports_tab:
+                                children:
+                                    orders_report_tab:
+                                        children:
+                                            order_items_by_status: ~
             shortcuts:
                 children:
                     shortcut_new_order: ~
