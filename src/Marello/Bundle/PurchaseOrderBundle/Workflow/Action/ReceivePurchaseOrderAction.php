@@ -93,6 +93,17 @@ class ReceivePurchaseOrderAction extends AbstractAction
             if ($inventoryUpdateQty) {
                 $this->handleInventoryUpdate($item, $inventoryUpdateQty, $purchaseOrder);
                 $updatedItems[] = ['qty' => $inventoryUpdateQty, 'item' => $item];
+
+                // both cases are independant of the qty that has been received
+                if ($product = $item->getProduct()) {
+                    /** @var InventoryItem $inventoryItem */
+                    $inventoryItem = $product->getInventoryItems()->first();
+                    // back-order remove date for item
+                    $inventoryItem->setBackOrdersDatetime(null);
+                    // pre-order remove date and set pre-order to false for inventory item
+                    $inventoryItem->setCanPreorder(false);
+                    $inventoryItem->setPreOrdersDatetime(null);
+                }
             }
 
             if ($this->isItemFullyReceived($item)) {
