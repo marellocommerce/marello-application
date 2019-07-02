@@ -53,6 +53,7 @@ COMPOSER=dev.json COMPOSER_PROCESS_TIMEOUT=3000 composer marello-reset --working
 * Test application(s); run tests and try install of application and update of existing application
 * If tests are all ok, merge back into develop and master branch
 * Push branches (develop & master) to remote repo (mono repository)
+* Check versions in the composer.json files before pushing to the individual downstream repositories
 * Git subtree push to the individual downstream repositories to the corresponding branch (needs to be done for all individual downstream repositories)
 
 **NOTE**: subtree push to the packages first since they are needed to create the composer lock files for the applications
