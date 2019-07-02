@@ -36,9 +36,6 @@ class Configuration implements ConfigurationInterface
                 ],
                 'balance_threshold_percentage' => [
                     'value' => 0.20
-                ],
-                'po_duedate_as_back_orders_datetime' => [
-                    'value' => true
                 ]
             ]
         );
