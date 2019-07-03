@@ -3,6 +3,8 @@
 namespace Marello\Bundle\ProductBundle\Tests\Functional\Controller;
 
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Marello\Bundle\ProductBundle\Model\ProductType;
+use Marello\Bundle\ProductBundle\Provider\ProductTypesProvider;
 use Marello\Bundle\ProductBundle\Tests\Functional\DataFixtures\LoadProductData;
 use Marello\Bundle\SalesBundle\Tests\Functional\DataFixtures\LoadSalesData;
 use Marello\Bundle\SupplierBundle\Tests\Functional\DataFixtures\LoadSupplierData;
@@ -45,18 +47,22 @@ class ProductControllerTest extends WebTestCase
      */
     public function testCreateProduct()
     {
-        $productTypesProvider = $this->getContainer()->get('marello_product.provider.product_types');
         $crawler = $this->client->request('GET', $this->getUrl('marello_product_create'));
-        $form    = $crawler->selectButton('Continue')->form();
-        $formValues = $form->getPhpValues();
-        $formValues['input_action'] = 'marello_product_create';
-        $formValues['marello_product_step_one']['type'] = $productTypesProvider->getProductType('simple')->getName();
-        $this->client->followRedirects(true);
-        $crawler = $this->client->request(
-            'POST',
-            $this->getUrl('marello_product_create'),
-            $formValues
-        );
+        /** @var ProductTypesProvider $productTypesProvider */
+        $productTypesProvider = $this->getContainer()->get('marello_product.provider.product_types');
+        if (count($productTypesProvider->getProductTypes()) > 1) {
+            $defaultProductType = $productTypesProvider->getProductType('simple')->getName();
+            $form    = $crawler->selectButton('Continue')->form();
+            $formValues = $form->getPhpValues();
+            $formValues['input_action'] = 'marello_product_create';
+            $formValues['marello_product_step_one']['type'] = $defaultProductType;
+            $this->client->followRedirects(true);
+            $crawler = $this->client->request(
+                'POST',
+                $this->getUrl('marello_product_create'),
+                $formValues
+            );
+        }
 
         $name    = 'Super duper product';
         $sku     = 'SKU-1234';
@@ -281,4 +287,12 @@ class ProductControllerTest extends WebTestCase
         self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
         self::assertContains($resultData['name'], $crawler->html());
     }
+
+//    private function getProductTypesProvider()
+//    {
+//
+
+//
+//        return $productTypesProvider;
+//    }
 }
