@@ -13,8 +13,8 @@ use PHPUnit\Framework\TestCase;
 use Oro\Component\ConfigExpression\ContextAccessor;
 use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
 
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrderItem;
 use Marello\Bundle\PurchaseOrderBundle\Processor\NoteActivityProcessor;
@@ -202,14 +202,14 @@ class ReceivePurchaseOrderActionTest extends TestCase
             ->getMock();
 
         $productMock = $this
-            ->getMockBuilder(ProductInterface::class)
+            ->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $inventoryItemMock = $this
-            ->getMockBuilder(InventoryItem::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+            ->createMock(InventoryItem::class);
+        $inventoryItemCollection = new ArrayCollection();
+        $inventoryItemCollection->add($inventoryItemMock);
 
         $collection = new ArrayCollection();
         $collection->add($purchaseOrderItemMock);
@@ -242,6 +242,22 @@ class ReceivePurchaseOrderActionTest extends TestCase
         $purchaseOrderItemMock2->expects($this->atLeastOnce())
             ->method('getProduct')
             ->willReturn($productMock);
+
+        $productMock->expects($this->atLeastOnce())
+            ->method('getInventoryItems')
+            ->willReturn($inventoryItemCollection);
+
+        $inventoryItemMock->expects($this->atLeastOnce())
+            ->method('setBackOrdersDatetime')
+            ->with(null);
+
+        $inventoryItemMock->expects($this->atLeastOnce())
+            ->method('setCanPreorder')
+            ->with(false);
+
+        $inventoryItemMock->expects($this->atLeastOnce())
+            ->method('setPreOrdersDatetime')
+            ->with(null);
 
         $items[] = ['qty' => 10, 'item' => $purchaseOrderItemMock];
         $items[] = ['qty' => 10, 'item' => $purchaseOrderItemMock2];
@@ -276,9 +292,14 @@ class ReceivePurchaseOrderActionTest extends TestCase
             ->getMock();
 
         $productMock = $this
-            ->getMockBuilder(ProductInterface::class)
+            ->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
             ->getMock();
+
+        $inventoryItemMock = $this
+            ->createMock(InventoryItem::class);
+        $inventoryItemCollection = new ArrayCollection();
+        $inventoryItemCollection->add($inventoryItemMock);
 
         $collection = new ArrayCollection();
         $collection->add($purchaseOrderItemMock);
@@ -300,9 +321,25 @@ class ReceivePurchaseOrderActionTest extends TestCase
             ->method('getData')
             ->willReturn([]);
 
-        $purchaseOrderItemMock->expects($this->once())
+        $purchaseOrderItemMock->expects($this->atLeastOnce())
             ->method('getProduct')
             ->willReturn($productMock);
+
+        $productMock->expects($this->atLeastOnce())
+            ->method('getInventoryItems')
+            ->willReturn($inventoryItemCollection);
+
+        $inventoryItemMock->expects($this->once())
+            ->method('setBackOrdersDatetime')
+            ->with(null);
+
+        $inventoryItemMock->expects($this->once())
+            ->method('setCanPreorder')
+            ->with(false);
+
+        $inventoryItemMock->expects($this->once())
+            ->method('setPreOrdersDatetime')
+            ->with(null);
 
         $items[] = ['qty' => 10, 'item' => $purchaseOrderItemMock];
 
