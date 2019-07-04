@@ -19,6 +19,8 @@ define(function(require) {
          */
         options: {
             deleteMessage: 'marelloenterprise.inventory.inventoryitem.inventory_levels.delete.confirmation',
+            deleteForbiddenTitle: 'marelloenterprise.inventory.inventoryitem.inventory_levels.delete.forbidden.title',
+            deleteForbiddenMessage: 'marelloenterprise.inventory.inventoryitem.inventory_levels.delete.forbidden',
             managedInventorySelector: 'input[name*=managedInventory]',
             quantitySelector: 'input[name*=quantity]',
             adjustmentOperatorSelector: 'select[name*=adjustmentOperator]'
@@ -55,18 +57,35 @@ define(function(require) {
          * remove single line item
          */
         removeRow: function() {
-            if (!this.confirm) {
-                this.confirm = new DeleteConfirmation({
-                    content: __(this.options.deleteMessage)
-                });
+            var invLevQty = Number($(this.$el).find('.inventorylevel-quantity').find('div.fields-row').text());
+            if (invLevQty <= 0) {
+                if (!this.deleteConfirm) {
+                    this.deleteConfirm = new DeleteConfirmation({
+                        content: __(this.options.deleteMessage)
+                    });
+                }
+                if (this.deleteConfirm) {
+                    this.deleteConfirm
+                        .off('ok')
+                        .on('ok', _.bind(function () {
+                            InventoryLevelItemView.__super__.removeRow.apply(this, arguments);
+                        }, this))
+                        .open();
+                }
+            } else {
+                if (!this.deleteForbid) {
+                    this.deleteForbid = new DeleteConfirmation({
+                        title: __(this.options.deleteForbiddenTitle),
+                        content: __(this.options.deleteForbiddenMessage),
+                        allowOk: false
+                    });
+                }
+                if (this.deleteForbid) {
+                    this.deleteForbid
+                        .off('ok')
+                        .open();
+                }
             }
-
-            this.confirm
-                .off('ok')
-                .on('ok', _.bind(function() {
-                    InventoryLevelItemView.__super__.removeRow.apply(this, arguments);
-                }, this))
-                .open();
         },
         
         dispose: function() {
