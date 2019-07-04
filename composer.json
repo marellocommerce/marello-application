@@ -10,7 +10,9 @@
         }
     ],
     "autoload": {
-        "psr-4": {"": "src/"}
+        "psr-0": {
+            "MarelloEnterprise\\Bundle": "src/"
+        }
     },
     "repositories": {
         "oro": {
@@ -29,7 +31,7 @@
     "require": {
         "php": ">=7.1",
         "oro/platform-enterprise": "3.1.*",
-        "marellocommerce/marello": "self.version"
+        "marellocommerce/marello": "2.0.*"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
