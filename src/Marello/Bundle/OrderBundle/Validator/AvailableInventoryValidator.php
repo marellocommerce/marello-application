@@ -199,6 +199,9 @@ class AvailableInventoryValidator extends ConstraintValidator
     {
         foreach ($product->getInventoryItems() as $inventoryItem) {
             if ($inventoryItem->isBackorderAllowed()) {
+                if (null === $inventoryItem->getMaxQtyToBackorder()) {
+                    return PHP_INT_MAX;
+                }
                 return $inventoryItem->getMaxQtyToBackorder();
             }
         }
@@ -229,6 +232,9 @@ class AvailableInventoryValidator extends ConstraintValidator
     {
         foreach ($product->getInventoryItems() as $inventoryItem) {
             if ($inventoryItem->isCanPreorder()) {
+                if (null === $inventoryItem->getMaxQtyToPreorder()) {
+                    return PHP_INT_MAX;
+                }
                 return $inventoryItem->getMaxQtyToPreorder();
             }
         }
