@@ -34,6 +34,33 @@
 
 {% block content_data %}
     {% set id = 'marello-inventory-update' %}
+    {% set generalSubblocks = [] %}
+    {% set inventoryInformationWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    <div class="box-type1">
+                        {{ oro_widget_render({
+                            'widgetType': 'block',
+                            'url': path('marello_inventory_widget_info', {id: entity.id}),
+                            'title': 'marello.product.product_information'|trans
+                        }) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [inventoryInformationWidget] }]) %}
+
+    {% set totalsWidget %}
+        <div class="responsive-block">
+            <div class="box-type1">
+                {% placeholder marello_inventory_levels_totals with {'entity' : entity} %}
+            </div>
+        </div>
+    {% endset %}
+    {% set generalSubblocks = generalSubblocks|merge([{'data' : [totalsWidget] }]) %}
+
     {% set inventoryQuantityWidget %}
         <div class="responsive-block">
             <div class="box-type1">
@@ -50,29 +77,35 @@
         </div>
     {% endset %}
 
-    {% set currentInventoryWidget %}
-    <div class="responsive-block">
-        <div class="box-type1">
-            <div class="title">
-                <span class="widget-title">{{ 'marello.inventory.inventorylevel.totals.label'|trans }}</span>
+    {% set backOrderInfoWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ form_row(form.backorderAllowed) }}
+                    {{ form_row(form.maxQtyToBackorder) }}
+                    {{ form_row(form.backOrdersDatetime) }}
+                </div>
             </div>
-            {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.inventory.label'|trans, marello_inventory_get_inventorylevel_total_inventory(entity)) }}
-            {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.allocated_inventory.label'|trans, marello_inventory_get_inventorylevel_total_allocatedinventory(entity)) }}
-            {{ UI.renderHtmlProperty('marello.inventory.inventorylevel.virtual_inventory.label'|trans, marello_inventory_get_inventorylevel_total_virtualinventory(entity)) }}
         </div>
-    </div>
+    {% endset %}
+
+    {% set preOrderInfoWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ form_row(form.canPreorder) }}
+                    {{ form_row(form.maxQtyToPreorder) }}
+                    {{ form_row(form.preOrdersDatetime) }}
+                </div>
+            </div>
+        </div>
     {% endset %}
 
     {% set dataBlocks = [
         {
-            'title': 'marello.inventory.inventorylevel.totals.label'|trans,
+            'title': 'General Information'|trans,
             'class': 'active',
-            'subblocks': [{
-                'title': '',
-                'data': [
-                    currentInventoryWidget
-                ]
-            }]
+            'subblocks': generalSubblocks
         },        {
             'title': 'marello.inventory.inventorylevel.entity_plural_label'|trans,
             'class': 'active',
@@ -99,14 +132,15 @@
             'title': 'marello.inventory.inventoryitem.section.backorder_preorder.label'|trans,
             'class': 'active',
             'subblocks': [{
-                'title': '',
+                'title': 'marello.inventory.inventoryitem.section.backorder.label'|trans,
                 'data': [
-                    form_row(form.backorderAllowed),
-                    form_row(form.maxQtyToBackorder),
-                    form_row(form.backOrdersDatetime),
-                    form_row(form.canPreorder),
-                    form_row(form.maxQtyToPreorder),
-                    form_row(form.preOrdersDatetime)
+                    backOrderInfoWidget
+                ]
+            },
+            {
+                'title': 'marello.inventory.inventoryitem.section.preorder.label'|trans,
+                'data': [
+                    preOrderInfoWidget
                 ]
             }]
         }
