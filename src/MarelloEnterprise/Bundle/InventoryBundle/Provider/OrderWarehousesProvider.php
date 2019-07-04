@@ -65,6 +65,6 @@ class OrderWarehousesProvider implements OrderWarehousesProviderInterface
             return reset($results);
         }
 
-        return [];
+        return null;
     }
 }
