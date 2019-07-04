@@ -72,6 +72,8 @@ marello:
 
             section:
                 backorder_preorder.label:   Backorder/Pre-order
+                backorder.label:            Backorder
+                preorder.label:             Pre-order
 
         inventorylevel:
             entity_label:                   Inventory Level
