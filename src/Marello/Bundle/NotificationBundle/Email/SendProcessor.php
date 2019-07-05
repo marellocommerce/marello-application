@@ -82,11 +82,12 @@ class SendProcessor
      * @param array  $recipients   Array of recipient email addresses.
      * @param object $entity       Entity used to render template.
      * @param array  $data         Empty array for possible extending of additional parameters
+     * @param bool   $save
      * @throws MarelloNotificationException
      * @throws \Oro\Bundle\NotificationBundle\Exception\NotificationSendException
      * @throws \Twig_Error
      */
-    public function sendNotification($templateName, array $recipients, $entity, array $data = [])
+    public function sendNotification($templateName, array $recipients, $entity, array $data = [], $save = true)
     {
         $entityName = $this->getRealClassName($entity);
 
@@ -132,10 +133,12 @@ class SendProcessor
                 [$notification]
             );
         }
-        $this->activityManager->addActivityTarget($notification, $entity);
+        if ($save) {
+            $this->activityManager->addActivityTarget($notification, $entity);
 
-        $this->manager->persist($notification);
-        $this->manager->flush();
+            $this->manager->persist($notification);
+            $this->manager->flush();
+        }
     }
 
     /**
