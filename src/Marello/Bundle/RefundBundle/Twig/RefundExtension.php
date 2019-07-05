@@ -22,12 +22,10 @@ class RefundExtension extends \Twig_Extension
 
     /**
      * @param WorkflowManager $workflowManager
-     * @param RefundBalanceCalculator $refundBalanceCalculator
      */
-    public function __construct(WorkflowManager $workflowManager, RefundBalanceCalculator $refundBalanceCalculator)
+    public function __construct(WorkflowManager $workflowManager)
     {
         $this->workflowManager = $workflowManager;
-        $this->refundBalanceCalculator = $refundBalanceCalculator;
     }
 
     /**
@@ -82,5 +80,19 @@ class RefundExtension extends \Twig_Extension
     public function getBalance(Refund $refund)
     {
         return $this->refundBalanceCalculator->caclulateBalance($refund);
+    }
+
+    /**
+     * Add refund calculator via call method on service in order to keep BC
+     * should be removed for 3.0
+     * @deprecated remove in 3.0
+     * @param RefundBalanceCalculator $balanceCalculator
+     * @return $this
+     */
+    public function setRefundBalanceCalculator(RefundBalanceCalculator $balanceCalculator)
+    {
+        $this->refundBalanceCalculator = $balanceCalculator;
+
+        return $this;
     }
 }
