@@ -15,7 +15,7 @@ class UpdateEmailTemplatesHtmlEscapeTags extends AbstractEmailFixture implements
     protected function findExistingTemplate(ObjectManager $manager, array $template)
     {
         $name = $template['params']['name'];
-        if (empty($name) || 'marello_purchase_order_supplier' !== $name) {
+        if (empty($name)) {
             return null;
         }
 
