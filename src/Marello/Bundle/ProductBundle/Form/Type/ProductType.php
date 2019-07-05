@@ -55,20 +55,17 @@ class ProductType extends AbstractType
      * @param PricingSubscriber $pricingSubscriber
      * @param ChannelPricingSubscriber $channelPricingSubscriber
      * @param AttributeFamilySubscriber $attributeFamilySubscriber
-     * @param EventSubscriberInterface|null $subscriptionProductSubscriber
      */
     public function __construct(
         DefaultSalesChannelSubscriber $defaultSalesChannelSubscriber,
         PricingSubscriber $pricingSubscriber,
         ChannelPricingSubscriber $channelPricingSubscriber,
-        AttributeFamilySubscriber $attributeFamilySubscriber,
-        EventSubscriberInterface $subscriptionProductSubscriber = null
+        AttributeFamilySubscriber $attributeFamilySubscriber
     ) {
         $this->defaultSalesChannelSubscriber = $defaultSalesChannelSubscriber;
         $this->pricingSubscriber = $pricingSubscriber;
         $this->channelPricingSubscriber = $channelPricingSubscriber;
         $this->attributeFamilySubscriber = $attributeFamilySubscriber;
-        $this->subscriptionProductSubscriber = $subscriptionProductSubscriber;
     }
 
     /**
@@ -223,5 +220,15 @@ class ProductType extends AbstractType
     public function getBlockPrefix()
     {
         return self::BLOCK_PREFIX;
+    }
+
+    /**
+     * Added because of keeping BC
+     * @deprecated will be removed in 3.0
+     * @param EventSubscriberInterface|null $subscriptionProductSubscriber
+     */
+    public function setEventSubscriberInterface(EventSubscriberInterface $subscriptionProductSubscriber = null)
+    {
+        $this->subscriptionProductSubscriber = $subscriptionProductSubscriber;
     }
 }
