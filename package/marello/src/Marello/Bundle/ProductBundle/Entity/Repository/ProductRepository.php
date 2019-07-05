@@ -147,7 +147,11 @@ class ProductRepository extends EntityRepository
     {
         $qb = $this
             ->createQueryBuilder('p')
-            ->select('sup.name AS supplier, p.sku, (i.desiredInventory - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount')
+            ->select(
+                'sup.name AS supplier,
+                p.sku,
+                (i.desiredInventory - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount'
+            )
             ->innerJoin('p.preferredSupplier', 'sup')
             ->innerJoin('p.inventoryItems', 'i')
             ->innerJoin('i.inventoryLevels', 'l')
