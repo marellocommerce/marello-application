@@ -81,6 +81,7 @@ class ProductRepository extends EntityRepository
 
         return $this->aclHelper->apply($qb->getQuery())->getResult();
     }
+
     /**
      * @param string $sku
      *
@@ -135,6 +136,23 @@ class ProductRepository extends EntityRepository
         $qb
             ->where(sprintf('%s LIKE :key', $formattedDataField))
             ->setParameter('key', '%' . $key . '%');
+
+        return $this->aclHelper->apply($qb->getQuery())->getResult();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPurchaseOrderItemsCandidates()
+    {
+        $qb = $this
+            ->createQueryBuilder('p')
+            ->select('sup.name AS supplier, p.sku, (i.desiredInventory - COALESCE(SUM(l.inventory - l.allocatedInventory), 0)) AS orderAmount')
+            ->innerJoin('p.preferredSupplier', 'sup')
+            ->innerJoin('p.inventoryItems', 'i')
+            ->innerJoin('i.inventoryLevels', 'l')
+            ->groupBy('p.sku')
+            ->having('SUM(l.inventory - l.allocatedInventory) < i.purchaseInventory');
 
         return $this->aclHelper->apply($qb->getQuery())->getResult();
     }

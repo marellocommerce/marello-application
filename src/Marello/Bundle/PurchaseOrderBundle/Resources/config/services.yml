@@ -82,3 +82,10 @@ services:
             - '@translator.default'
         tags:
             - { name: oro.api.processor, action: customize_loaded_data, class: Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder }
+
+    marello_purchaseorder.command.purchase_order_advice:
+        class: 'Marello\Bundle\PurchaseOrderBundle\Cron\PurchaseOrderAdviceCommand'
+        calls:
+            - ['setContainer', ['@service_container']]
+        tags:
+            - { name: console.command }
