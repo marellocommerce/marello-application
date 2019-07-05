@@ -301,7 +301,19 @@ class PurchaseOrderItem implements
     {
         return $this->orderedAmount;
     }
-
+    
+    /**
+     * @param string $productSku
+     *
+     * @return $this
+     */
+    public function setProductSku($productSku)
+    {
+        $this->productSku = $productSku;
+        
+        return $this;
+    }
+    
     /**
      * @return string
      */
@@ -309,7 +321,19 @@ class PurchaseOrderItem implements
     {
         return $this->productSku;
     }
+    
+    /**
+     * @param string $productName
+     *
+     * @return $this
+     */
+    public function setProductName($productName)
+    {
+        $this->productName = $productName;
 
+        return $this;
+    }
+    
     /**
      * @return string
      */
@@ -321,7 +345,7 @@ class PurchaseOrderItem implements
     /**
      * @param String $supplier
      *
-     * @return string
+     * @return $this
      */
     public function setSupplier($supplier)
     {
