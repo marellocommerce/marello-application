@@ -36,17 +36,21 @@ class CreatePackingSlipEventListener
     protected $stopPropagation = false;
 
     /**
+     * Could not prevent BC break with event dispatcher in this case because of saving the PackingSlips directly
      * @param MapperInterface $mapper
      * @param DoctrineHelper $doctrineHelper
+     * @param EventDispatcherInterface $eventDispatcher
      * @param bool $stopPropagation
      */
     public function __construct(
         MapperInterface $mapper,
         DoctrineHelper $doctrineHelper,
+        EventDispatcherInterface $eventDispatcher,
         $stopPropagation = false
     ) {
         $this->mapper = $mapper;
         $this->entityManager = $doctrineHelper->getEntityManagerForClass(PackingSlip::class);
+        $this->eventDispatcher = $eventDispatcher;
         $this->stopPropagation = $stopPropagation;
     }
 
@@ -90,18 +94,5 @@ class CreatePackingSlipEventListener
             && $context->getData()->has('order')
             && $context->getData()->get('order') instanceof Order
         );
-    }
-
-    /**
-     * Added for keeping BC
-     * @deprecated will be removed in 3.0
-     * @param EventDispatcherInterface $eventDispatcher
-     * @return $this
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
     }
 }
