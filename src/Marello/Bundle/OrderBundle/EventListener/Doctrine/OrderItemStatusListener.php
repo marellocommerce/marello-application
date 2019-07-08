@@ -64,6 +64,7 @@ class OrderItemStatusListener
                 $product,
                 $entity->getOrder()->getSalesChannel()
             );
+            // add check for the 'quantity' that is not numeric (a.k.a. no qty set for back-and pre-order)
             if ($availableInventory < $entity->getQuantity() &&
                 (
                     ($inventoryItem->isBackorderAllowed() &&
