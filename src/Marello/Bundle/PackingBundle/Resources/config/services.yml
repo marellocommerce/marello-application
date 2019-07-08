@@ -11,8 +11,7 @@ services:
         arguments:
             - '@marello_packing.mapper.order_to_packingslip'
             - '@oro_entity.doctrine_helper'
-        calls:
-            - ['setEventDispatcher', ['@event_dispatcher']]
+            - '@event_dispatcher'
         tags:
             - { name: kernel.event_listener, event: extendable_action.create_packingslip, method: onCreatePackingSlip, priority: 10 }
 
