@@ -9,6 +9,7 @@ use Marello\Bundle\InventoryBundle\Model\OrderWarehouseResult;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
+use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 
 class OrderWarehousesProvider implements OrderWarehousesProviderInterface
 {
