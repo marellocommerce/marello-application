@@ -106,7 +106,6 @@ datagrids:
                         - o.id = :orderId
             bind_parameters:
                 - orderId
-        sorters: ~
         filters: ~
 
     marello-packingslip-items:
