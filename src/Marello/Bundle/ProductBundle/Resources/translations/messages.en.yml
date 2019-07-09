@@ -53,6 +53,10 @@ marello:
             tax_code.label:                     Tax Code
             form.add_productchanneltaxrelation: Add Sales Channel Tax Code
 
+        productsupplierrelation:
+            entity_label:        Product Supplier Relation
+            entity_plural_label: Product Supplier Relations
+
         messages:
             success:
                 product:
