@@ -1,0 +1,14 @@
+{% block header %}
+<div class="header">
+    <div class="company-logo">
+        <img src="{{ logo }}">
+    </div>
+</div>
+{% endblock header %}
+
+{% block footer %}
+<div class="footer clearfix">
+{#    <p class="invoice-payment">{{ 'marello.pdf.invoice.payment_statement.label'|trans({'%paymentTerm%': payment_term}, 'pdf', language) }}</p>#}
+    <p class="page-number">{{ 'marello.pdf.invoice.page_number.label'|trans({'%pageNumber%': '{PAGENO}', '%totalPages%': '{nbpg}'}, 'pdf') }}</p>
+</div>
+{% endblock footer %}
