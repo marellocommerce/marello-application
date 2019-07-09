@@ -32,7 +32,7 @@ services:
           - "5083:8025"
         logging:
             driver: "none"
-    web:
+    ee_sub_web:
         build:
             context: ./.docker
             args:
