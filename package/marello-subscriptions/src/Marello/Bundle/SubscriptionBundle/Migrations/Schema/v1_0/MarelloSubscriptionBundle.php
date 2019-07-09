@@ -64,8 +64,8 @@ class MarelloSubscriptionBundle implements
         $table = $schema->createTable('marello_subscription');
         $table->addColumn('id', 'integer', ['autoincrement' => true]);
         $table->addColumn('subscription_number', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn('billing_address_id', 'integer', ['notnull' => false]);
-        $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
+        $table->addColumn('billing_address_id', 'integer', ['notnull' => true]);
+        $table->addColumn('shipping_address_id', 'integer', ['notnull' => true]);
         $table->addColumn('start_date', 'datetime', ['notnull' => false]);
         $this->extendExtension->addEnumField(
             $schema,

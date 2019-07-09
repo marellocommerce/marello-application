@@ -80,7 +80,7 @@ class Subscription extends ExtendSubscription implements
      * @var MarelloAddress
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
-     * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="billing_address_id", referencedColumnName="id", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
@@ -95,7 +95,7 @@ class Subscription extends ExtendSubscription implements
      * @var MarelloAddress
      *
      * @ORM\ManyToOne(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", cascade={"persist"})
-     * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="shipping_address_id", referencedColumnName="id", nullable=false)
      * @Oro\ConfigField(
      *      defaultValues={
      *          "dataaudit"={
