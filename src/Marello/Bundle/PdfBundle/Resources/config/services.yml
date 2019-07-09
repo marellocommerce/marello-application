@@ -56,3 +56,10 @@ services:
 
     marello_pdf.provider.document_table:
         class: 'Marello\Bundle\PdfBundle\Provider\DocumentTableProvider'
+
+    marello_pdf.twig_extension.document_table:
+        class: 'Marello\Bundle\PdfBundle\Twig\Extension\DocumentTableExtension'
+        arguments:
+            - '@marello_pdf.provider.document_table'
+        tags:
+            - { name: twig.extension }
