@@ -230,10 +230,16 @@ datagrids:
                 frontend_type:    string
             price:
                 label:            marello.subscription.subscriptionitem.price.label
-                frontend_type:    string
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
             specialPrice:
                 label:            marello.subscription.subscriptionitem.special_price.label
-                frontend_type:    string
+                type:             localized_number
+                method:           formatCurrency
+                context_resolver: Marello\Bundle\DataGridBundle\Grid\FormatterContextResolver::getResolverCurrencyClosure
+                align:            right
             specialPriceDuration:
                 label:            marello.subscription.subscriptionitem.special_price_duration.label
                 frontend_type:    string

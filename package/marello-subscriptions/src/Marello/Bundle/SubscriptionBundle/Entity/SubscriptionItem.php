@@ -221,6 +221,14 @@ class SubscriptionItem extends ExtendSubscriptionItem implements PriceAwareInter
     }
 
     /**
+     * Get currency for SubscriptionItem from Subscription
+     */
+    public function getCurrency()
+    {
+        return $this->subscription->getCurrency();
+    }
+
+    /**
      * @return Subscription
      */
     public function getSubscription()
