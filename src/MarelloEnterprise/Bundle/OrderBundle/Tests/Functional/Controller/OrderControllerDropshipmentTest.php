@@ -249,10 +249,10 @@ class OrderControllerDropshipmentTest extends WebTestCase
             if ($warehouseType === WarehouseTypeProviderInterface::WAREHOUSE_TYPE_EXTERNAL) {
                 $this->assertEquals($packingSlipItem->getProductSku(), $externalProduct->getSku());
                 $this->assertEquals(
-                    LoadOrderItemStatusData::DROPSHIPPED,
+                    LoadOrderItemStatusData::DROPSHIPPING,
                     $packingSlipItem->getStatus()->getId()
                 );
-                $this->assertEquals(LoadOrderItemStatusData::DROPSHIPPED, $orderItem->getStatus()->getId());
+                $this->assertEquals(LoadOrderItemStatusData::DROPSHIPPING, $orderItem->getStatus()->getId());
             } else {
                 $this->assertEquals($packingSlipItem->getProductSku(), $ownProduct->getSku());
                 $this->assertEquals(LoadOrderItemStatusData::PROCESSING, $packingSlipItem->getStatus()->getId());
