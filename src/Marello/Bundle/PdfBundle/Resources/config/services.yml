@@ -53,3 +53,6 @@ services:
                 company_coc: marello_pdf.company_coc
         tags:
             - { name: marello_pdf.render_parameter_provider }
+
+    marello_pdf.provider.document_table:
+        class: 'Marello\Bundle\PdfBundle\Provider\DocumentTableProvider'
