@@ -8,5 +8,5 @@ Marello\Bundle\SubscriptionBundle\Entity\Subscription:
             - NotBlank:
                 message: 'marello.subscription.address.validation.billing_not_blank'
         shippingAddress:
-          - NotBlank:
-              message: 'marello.subscription.address.validation.shipping_not_blank'
+            - NotBlank:
+                message: 'marello.subscription.address.validation.shipping_not_blank'
