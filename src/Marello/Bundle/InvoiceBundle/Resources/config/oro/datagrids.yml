@@ -126,7 +126,6 @@ datagrids:
                 - orderId
         options:
             export: false
-        sorters: ~
         filters: ~
 
     marello-invoice-items:
