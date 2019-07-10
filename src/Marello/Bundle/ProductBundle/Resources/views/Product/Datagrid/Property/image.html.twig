@@ -1,6 +1,7 @@
 {% set productImage = 'bundles/marelloproduct/img/no_image_available.jpg' | imagine_filter('product_grid') %}
-{% set image = record.getValue('image') %}
-{% if image is not null %}
+{% set imageId = record.getValue('image') %}
+{% if imageId is not null %}
+    {% set image = get_file_by_id(imageId) %}
     {% set productImage = filtered_image_url(image, 'product_grid') %}
 {% endif %}
 <div class="product-image">
