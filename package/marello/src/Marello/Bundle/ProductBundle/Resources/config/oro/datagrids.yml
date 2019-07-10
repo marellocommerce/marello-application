@@ -6,7 +6,17 @@ datagrids:
             acl_resource: marello_product_view
             query:
                 select:
-                    - p
+                    - p.id
+                    - p.sku
+                    - p.type
+                    - IDENTITY(p.image) as image
+                    - p.name
+                    - p.weight
+                    - p.name
+                    - p.manufacturingCode
+                    - p.createdAt
+                    - p.updatedAt
+                    - p.manufacturingCode
                     - (CASE WHEN p.image IS NOT NULL THEN true ELSE false END) as hasImage
                     - s.label as status
                     - count(sc.code) as channelsCount
