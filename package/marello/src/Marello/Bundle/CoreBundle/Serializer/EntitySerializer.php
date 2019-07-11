@@ -116,7 +116,10 @@ class EntitySerializer extends BaseEntitySerializer
                     if ($this->isAssociation($propertyPath, $entityMetadata, $fieldConfig)) {
                         if (is_object($value)) {
                             $targetConfig = $this->getTargetEntity($config, $field);
-                            $targetEntityClass = $this->getAssociationTargetClass($path, $entityMetadata, $value);
+                            $targetEntityClass = $this->doctrineHelper->getAssociationTargetClass(
+                                $entityMetadata,
+                                $path
+                            );
                             $targetEntityId = $this->dataAccessor->getValue(
                                 $value,
                                 $this->doctrineHelper->getEntityIdFieldName($targetEntityClass)
