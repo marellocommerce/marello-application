@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "66339f904a76e7a05ed5357992daed5b",
+    "content-hash": "e18e43ab5fcd77643a48c164b07c0c43",
     "packages": [
         {
             "name": "akeneo/batch-bundle",
@@ -1588,16 +1588,16 @@
         },
         {
             "name": "doctrine/data-fixtures",
-            "version": "v1.3.1",
+            "version": "v1.3.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/data-fixtures.git",
-                "reference": "3a1e2c3c600e615a2dffe56d4ca0875cc5233e0a"
+                "reference": "09b16943b27f3d80d63988d100ff256148c2f78b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/data-fixtures/zipball/3a1e2c3c600e615a2dffe56d4ca0875cc5233e0a",
-                "reference": "3a1e2c3c600e615a2dffe56d4ca0875cc5233e0a",
+                "url": "https://api.github.com/repos/doctrine/data-fixtures/zipball/09b16943b27f3d80d63988d100ff256148c2f78b",
+                "reference": "09b16943b27f3d80d63988d100ff256148c2f78b",
                 "shasum": ""
             },
             "require": {
@@ -1644,7 +1644,7 @@
             "keywords": [
                 "database"
             ],
-            "time": "2018-03-20T09:06:36+00:00"
+            "time": "2019-07-10T18:30:35+00:00"
         },
         {
             "name": "doctrine/dbal",
@@ -3360,16 +3360,16 @@
         },
         {
             "name": "guzzlehttp/psr7",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/psr7.git",
-                "reference": "dc784032a3f6f4e7a4b882e272b771f6fe4c37cf"
+                "reference": "239400de7a173fe9901b9ac7c06497751f00727a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/psr7/zipball/dc784032a3f6f4e7a4b882e272b771f6fe4c37cf",
-                "reference": "dc784032a3f6f4e7a4b882e272b771f6fe4c37cf",
+                "url": "https://api.github.com/repos/guzzle/psr7/zipball/239400de7a173fe9901b9ac7c06497751f00727a",
+                "reference": "239400de7a173fe9901b9ac7c06497751f00727a",
                 "shasum": ""
             },
             "require": {
@@ -3427,7 +3427,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2019-06-30T00:37:05+00:00"
+            "time": "2019-07-01T23:21:34+00:00"
         },
         {
             "name": "guzzlehttp/ringphp",
@@ -4812,37 +4812,37 @@
         },
         {
             "name": "liip/monitor-bundle",
-            "version": "2.7.8",
+            "version": "2.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipMonitorBundle.git",
-                "reference": "a16b04be08bf669b2a4e9cccd0ec65ee59401d13"
+                "reference": "81e20349ef632aa55399e5f4db04e4c4463b25a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipMonitorBundle/zipball/a16b04be08bf669b2a4e9cccd0ec65ee59401d13",
-                "reference": "a16b04be08bf669b2a4e9cccd0ec65ee59401d13",
+                "url": "https://api.github.com/repos/liip/LiipMonitorBundle/zipball/81e20349ef632aa55399e5f4db04e4c4463b25a1",
+                "reference": "81e20349ef632aa55399e5f4db04e4c4463b25a1",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0",
-                "symfony/framework-bundle": "~3.1|^4.0",
-                "zendframework/zenddiagnostics": "^1.2.0"
+                "php": "^7.1",
+                "symfony/framework-bundle": "~3.4|^4.0",
+                "zendframework/zenddiagnostics": "^1.5.0"
             },
             "require-dev": {
-                "doctrine/doctrine-migrations-bundle": "~1.0",
-                "doctrine/migrations": "~1.0",
+                "doctrine/doctrine-migrations-bundle": "~2.0",
+                "doctrine/migrations": "~2.0",
                 "guzzlehttp/guzzle": "^5.3.2|^6.3.3",
-                "matthiasnoback/symfony-dependency-injection-test": "^1.0|^2.0",
-                "phpunit/phpunit": "^6.0",
-                "sensiolabs/security-checker": "~1.3|~2.0|~3.0|~4.0|~5.0",
+                "matthiasnoback/symfony-dependency-injection-test": "^3.0",
+                "phpunit/phpunit": "^7.0",
+                "sensiolabs/security-checker": "~5.0",
                 "swiftmailer/swiftmailer": "~5.4|~6.1",
-                "symfony/asset": "^3.1|^4.0",
-                "symfony/browser-kit": "^3.1|^4.0",
-                "symfony/expression-language": "~3.1|^4.0",
-                "symfony/finder": "^3.1|^4.0",
-                "symfony/templating": "^3.1|^4.0",
-                "symfony/twig-bundle": "^3.1|^4.0"
+                "symfony/asset": "^3.4|^4.0",
+                "symfony/browser-kit": "^3.4|^4.0",
+                "symfony/expression-language": "~3.4|^4.0",
+                "symfony/finder": "^3.4|^4.0",
+                "symfony/templating": "^3.4|^4.0",
+                "symfony/twig-bundle": "^3.4|^4.0"
             },
             "suggest": {
                 "sensio/distribution-bundle": "To be able to use the composer ScriptHandler",
@@ -4888,7 +4888,7 @@
                 "monitor",
                 "monitoring"
             ],
-            "time": "2019-05-23T14:27:50+00:00"
+            "time": "2019-07-05T12:03:56+00:00"
         },
         {
             "name": "liuggio/ExcelBundle",
@@ -4958,7 +4958,7 @@
         },
         {
             "name": "marellocommerce/marello",
-            "version": "dev-master",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "../../package/marello",
@@ -4999,15 +4999,15 @@
         },
         {
             "name": "marellocommerce/marello-enterprise",
-            "version": "dev-master",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "../../package/marello-enterprise",
-                "reference": "9b3aa8d62729d6a793adfbc42085b37d3d5922ed",
+                "reference": "c9d9aabd147866096fac4f5b8d301073715c0c62",
                 "shasum": null
             },
             "require": {
-                "marellocommerce/marello": "2.0.*",
+                "marellocommerce/marello": "self.version",
                 "oro/platform-enterprise": "3.1.*",
                 "php": ">=7.1"
             },
@@ -5018,8 +5018,8 @@
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "MarelloEnterprise\\Bundle": "src/"
+                "psr-4": {
+                    "": "src/"
                 }
             },
             "license": [
@@ -5254,17 +5254,17 @@
         },
         {
             "name": "nelmio/api-doc-bundle",
-            "version": "2.13.4",
+            "version": "2.13.3",
             "target-dir": "Nelmio/ApiDocBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "28802f2c44dbbf29aa7f5dc80a10f44d3558f580"
+                "reference": "f0a606b6362c363043e01aa079bee2b0b5eb47a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/28802f2c44dbbf29aa7f5dc80a10f44d3558f580",
-                "reference": "28802f2c44dbbf29aa7f5dc80a10f44d3558f580",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/f0a606b6362c363043e01aa079bee2b0b5eb47a2",
+                "reference": "f0a606b6362c363043e01aa079bee2b0b5eb47a2",
                 "shasum": ""
             },
             "require": {
@@ -5335,7 +5335,7 @@
                 "documentation",
                 "rest"
             ],
-            "time": "2019-06-01T13:34:59+00:00"
+            "time": "2017-12-05T06:14:09+00:00"
         },
         {
             "name": "nelmio/security-bundle",
@@ -5654,16 +5654,16 @@
         },
         {
             "name": "oro/calendar-bundle",
-            "version": "3.1.8",
+            "version": "3.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/OroCalendarBundle.git",
-                "reference": "d875731a4e68951deed799253e36d074c86c4705"
+                "reference": "08621fd4af2d0463ea5293810a17123980ee3c0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/d875731a4e68951deed799253e36d074c86c4705",
-                "reference": "d875731a4e68951deed799253e36d074c86c4705",
+                "url": "https://api.github.com/repos/oroinc/OroCalendarBundle/zipball/08621fd4af2d0463ea5293810a17123980ee3c0b",
+                "reference": "08621fd4af2d0463ea5293810a17123980ee3c0b",
                 "shasum": ""
             },
             "require": {
@@ -5705,7 +5705,7 @@
                 "source": "https://github.com/oroinc/OroCalendarBundle/tree/3.1",
                 "issues": "https://github.com/oroinc/OroCalendarBundle/issues"
             },
-            "time": "2019-06-04T09:58:21+00:00"
+            "time": "2019-06-26T17:19:21+00:00"
         },
         {
             "name": "oro/doctrine-extensions",
@@ -5817,16 +5817,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "3.1.8",
+            "version": "3.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/oroinc/platform.git",
-                "reference": "03c6aca9f42f9768d1b454f4f118767a5d03bab6"
+                "reference": "fdd175c7e72d297c39cd92799893e9a6fbe9728e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform/zipball/03c6aca9f42f9768d1b454f4f118767a5d03bab6",
-                "reference": "03c6aca9f42f9768d1b454f4f118767a5d03bab6",
+                "url": "https://api.github.com/repos/oroinc/platform/zipball/fdd175c7e72d297c39cd92799893e9a6fbe9728e",
+                "reference": "fdd175c7e72d297c39cd92799893e9a6fbe9728e",
                 "shasum": ""
             },
             "require": {
@@ -5903,7 +5903,7 @@
                 "liuggio/excelbundle": "2.1.*",
                 "monolog/monolog": "1.23.*",
                 "mtdowling/cron-expression": "1.2.*",
-                "nelmio/api-doc-bundle": "2.13.*",
+                "nelmio/api-doc-bundle": "2.13.3",
                 "nelmio/security-bundle": "2.5.*",
                 "nesbot/carbon": "1.29.*",
                 "npm-asset/bootstrap": "4.3.1",
@@ -5973,20 +5973,20 @@
                 "source": "https://github.com/oroinc/platform/tree/3.1",
                 "issues": "https://github.com/oroinc/platform/issues"
             },
-            "time": "2019-06-04T09:56:29+00:00"
+            "time": "2019-06-26T17:17:39+00:00"
         },
         {
             "name": "oro/platform-enterprise",
-            "version": "3.1.8",
+            "version": "3.1.9",
             "source": {
                 "type": "git",
                 "url": "git@github.com:oroinc/platform-enterprise.git",
-                "reference": "cc8ea621d54a14b5e97fb829c296c7b08e3bd30b"
+                "reference": "63a4d528c45502119d55d93f446567f3be43d0b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/cc8ea621d54a14b5e97fb829c296c7b08e3bd30b",
-                "reference": "cc8ea621d54a14b5e97fb829c296c7b08e3bd30b",
+                "url": "https://api.github.com/repos/oroinc/platform-enterprise/zipball/63a4d528c45502119d55d93f446567f3be43d0b8",
+                "reference": "63a4d528c45502119d55d93f446567f3be43d0b8",
                 "shasum": ""
             },
             "require": {
@@ -6019,7 +6019,7 @@
             "support": {
                 "source": "https://github.com/oroinc/platform-enterprise/tree/3.1"
             },
-            "time": "2019-06-03T09:33:51+00:00"
+            "time": "2019-06-26T17:20:59+00:00"
         },
         {
             "name": "oro/platform-serialised-fields",
@@ -10782,16 +10782,16 @@
         },
         {
             "name": "phpmd/phpmd",
-            "version": "2.6.0",
+            "version": "2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpmd/phpmd.git",
-                "reference": "4e9924b2c157a3eb64395460fcf56b31badc8374"
+                "reference": "7425e155cf22cdd2b4dd3458a7da4cf6c0201562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/4e9924b2c157a3eb64395460fcf56b31badc8374",
-                "reference": "4e9924b2c157a3eb64395460fcf56b31badc8374",
+                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/7425e155cf22cdd2b4dd3458a7da4cf6c0201562",
+                "reference": "7425e155cf22cdd2b4dd3458a7da4cf6c0201562",
                 "shasum": ""
             },
             "require": {
@@ -10844,7 +10844,7 @@
                 "phpmd",
                 "pmd"
             ],
-            "time": "2017-01-20T14:41:10+00:00"
+            "time": "2019-07-05T23:07:02+00:00"
         },
         {
             "name": "phpspec/prophecy",
