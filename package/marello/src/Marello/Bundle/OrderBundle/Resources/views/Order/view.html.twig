@@ -146,33 +146,15 @@
     {% set shippingSubblocks = shippingSubblocks|merge([{'data' : [shippingWidget] }]) %}
 
     {% set items %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-order-items', {'orderId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-order-items', {'orderId': entity.id}) }}
     {% endset %}
 
     {% set packingSlips %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-order-packingslips', {'orderId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-order-packingslips', {'orderId': entity.id}) }}
     {% endset %}
 
     {% set invoices %}
-        <div class="widget-content">
-            <div class="row-fluid form-horizontal">
-                <div class="responsive-block">
-                    {{ dataGrid.renderGrid('marello-order-invoices-grid', {'orderId': entity.id}) }}
-                </div>
-            </div>
-        </div>
+        {{ dataGrid.renderGrid('marello-order-invoices-grid', {'orderId': entity.id}) }}
     {% endset %}
 
     {% set dataBlocks = [
