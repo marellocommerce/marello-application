@@ -7,25 +7,18 @@ use Marello\Bundle\InvoiceBundle\Entity\InvoiceItem;
 use Marello\Bundle\PdfBundle\Lib\View\Line;
 use Marello\Bundle\PdfBundle\Lib\View\Table;
 use Marello\Bundle\PdfBundle\Provider\TableProviderInterface;
+use Marello\Bundle\PdfBundle\Provider\TableSizeProvider;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 
 class InvoiceTableProvider implements TableProviderInterface
 {
-    protected $maxTextWidth;
-
-    protected $maxHeight;
-
-    protected $firstPageInfoHeight;
-
-    protected $lastPageInfoHeight;
+    protected $tableSizeProvider;
 
     protected $firstPage = true;
 
-    public function __construct($maxTextWidth, $maxHeight, $firstPageInfoHeight, $lastPageInfoHeight)
+    public function __construct(TableSizeProvider $tableSizeProvider)
     {
-        $this->maxTextWidth = $maxTextWidth;
-        $this->maxHeight = $maxHeight;
-        $this->firstPageInfoHeight = $firstPageInfoHeight;
-        $this->lastPageInfoHeight = $lastPageInfoHeight;
+        $this->tableSizeProvider = $tableSizeProvider;
     }
 
     public function supports($entity)
@@ -39,7 +32,7 @@ class InvoiceTableProvider implements TableProviderInterface
     {
         $invoiceItems = $entity->getItems();
 
-        $table = $this->createTable();
+        $table = $this->createTable($this->getEntitySalesChannel($entity));
         $tables = [$table];
 
         $count = count($invoiceItems);
@@ -47,7 +40,7 @@ class InvoiceTableProvider implements TableProviderInterface
 
         foreach ($invoiceItems as $invoiceItem) {
             $i++;
-            $line = $this->createLine($invoiceItem);
+            $line = $this->createLine($invoiceItem, $entity);
 
             if ($table->fitsLine($line) === false) {
                 $table->disableFooter();
@@ -55,7 +48,7 @@ class InvoiceTableProvider implements TableProviderInterface
                 if ($table->fitsLine($line) === false
                     || $i === $count
                 ) {
-                    $table = $this->createTable();
+                    $table = $this->createTable($this->getEntitySalesChannel($entity));
                     $tables[] = $table;
                 }
             }
@@ -66,9 +59,13 @@ class InvoiceTableProvider implements TableProviderInterface
         return $tables;
     }
 
-    protected function createTable()
+    protected function createTable(SalesChannel $salesChannel)
     {
-        $table = new Table($this->maxHeight, $this->firstPageInfoHeight, $this->lastPageInfoHeight);
+        $table = new Table(
+            $this->tableSizeProvider->getMaxHeight($salesChannel),
+            $this->tableSizeProvider->getFirstPageInfoHeight($salesChannel),
+            $this->tableSizeProvider->getLastPageInfoHeight($salesChannel)
+        );
 
         if ($this->firstPage) {
             $this->firstPage = false;
@@ -79,13 +76,13 @@ class InvoiceTableProvider implements TableProviderInterface
         return $table;
     }
 
-    protected function createLine(InvoiceItem $invoiceItem)
+    protected function createLine(InvoiceItem $invoiceItem, Invoice $invoice)
     {
         $line = $this->createLineObject();
 
         $description = sprintf('%s - %s', $invoiceItem->getProductSku(), $invoiceItem->getProductName());
 
-        $line['description'] = $this->wrapLine($description);
+        $line['description'] = $this->wrapLine($description, $this->getEntitySalesChannel($invoice));
         $line['quantity'] = $invoiceItem->getQuantity();
         $line['price'] = $invoiceItem->getPrice();
         $line['discount'] = $invoiceItem->getDiscountAmount();
@@ -109,13 +106,18 @@ class InvoiceTableProvider implements TableProviderInterface
         ]);
     }
 
-    protected function wrapLine($text)
+    protected function wrapLine($text, SalesChannel $salesChannel)
     {
         $text = str_replace(['<br>', '<br/>', '<br />'], "\n", $text);
         $text = str_replace(["\r\n"], "\n", $text);
         $text = str_replace("\r", "\n", $text);
-        $text = wordwrap($text, $this->maxTextWidth, "\n", true);
+        $text = wordwrap($text, $this->tableSizeProvider->getMaxTextWidth($salesChannel), "\n", true);
 
         return explode("\n", $text);
+    }
+
+    protected function getEntitySalesChannel(Invoice $entity)
+    {
+        return $entity->getSalesChannel();
     }
 }

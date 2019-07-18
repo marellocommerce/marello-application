@@ -1,8 +1,12 @@
 parameters:
-    marello_pdf.document.invoice.description_width: 15
-    marello_pdf.document.invoice.total_rows: 42
-    marello_pdf.document.invoice.header_rows: 18
-    marello_pdf.document.invoice.footer_rows: 4
+    marello_pdf.document.invoice.total_rows:
+        a4: 36
+        letter: 33
+    marello_pdf.document.invoice.description_width:
+        a4: 20
+        letter: 20
+    marello_pdf.document.invoice.header_rows: 13
+    marello_pdf.document.invoice.footer_rows: 3
 
 services:
     marello_pdf.factory.pdf_writer:
@@ -74,9 +78,15 @@ services:
     marello_pdf.table_provider.invoice:
         class: 'Marello\Bundle\PdfBundle\Provider\Table\InvoiceTableProvider'
         arguments:
-            - '%marello_pdf.document.invoice.description_width%'
-            - '%marello_pdf.document.invoice.total_rows%'
-            - '%marello_pdf.document.invoice.header_rows%'
-            - '%marello_pdf.document.invoice.footer_rows%'
+            - '@marello_pdf.provider.table_size'
         tags:
             - { name: marello_pdf.document_table_provider }
+
+    marello_pdf.provider.table_size:
+        class: 'Marello\Bundle\PdfBundle\Provider\TableSizeProvider'
+        arguments:
+            - '@oro_config.saleschannel'
+            - '%marello_pdf.document.invoice.total_rows%'
+            - '%marello_pdf.document.invoice.description_width%'
+            - '%marello_pdf.document.invoice.header_rows%'
+            - '%marello_pdf.document.invoice.footer_rows%'
