@@ -10,7 +10,22 @@ system_configuration:
         template:
             title: marello.pdf.config.groups.template.label
 
+        dimensions:
+            title: marello.pdf.config.groups.dimensions.label
+
     fields:
+        marello_pdf.paper_size:
+            data_type: string
+            type: 'Symfony\Component\Form\Extension\Core\Type\ChoiceType'
+            options:
+                label: marello.pdf.config.fields.paper_size.label
+                choices:
+                    marello.pdf.config.fields.paper_size.a4.label: a4
+                    marello.pdf.config.fields.paper_size.letter.label: letter
+                constraints:
+                    - Choice:
+                        choices: [a4, letter]
+
         marello_pdf.language:
             data_type: string
             type: 'Symfony\Component\Form\Extension\Core\Type\LocaleType'
@@ -83,6 +98,9 @@ system_configuration:
                         children:
                             document_configuration:
                                 children:
+                                    dimensions:
+                                        children:
+                                            - marello_pdf.paper_size
                                     template:
                                         children:
                                             - marello_pdf.language

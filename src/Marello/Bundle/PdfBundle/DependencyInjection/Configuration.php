@@ -15,6 +15,7 @@ class Configuration implements ConfigurationInterface
 {
     const CONFIG_NAME = 'marello_pdf';
 
+    const CONFIG_KEY_PAPER_SIZE = 'paper_size';
     const CONFIG_KEY_LANGUAGE = 'language';
     const CONFIG_KEY_LOCALE = 'locale';
     const CONFIG_KEY_COMPANY_ADDRESS = 'company_address';
@@ -23,6 +24,9 @@ class Configuration implements ConfigurationInterface
     const CONFIG_KEY_COMPANY_PHONE = 'company_phone';
     const CONFIG_KEY_COMPANY_BANK = 'company_bank';
     const CONFIG_KEY_COMPANY_COC = 'company_coc';
+
+    const PAPER_SIZE_A4 = 'a4';
+    const PAPER_SIZE_LETTER = 'letter';
 
     public function getConfigTreeBuilder()
     {
@@ -33,6 +37,7 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             [
+                self::CONFIG_KEY_PAPER_SIZE => ['value' => self::PAPER_SIZE_A4],
                 self::CONFIG_KEY_LANGUAGE => ['value' => 'en'],
                 self::CONFIG_KEY_LOCALE => ['value' => 'en'],
                 self::CONFIG_KEY_COMPANY_ADDRESS => ['value' => null],

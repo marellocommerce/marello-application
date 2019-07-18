@@ -5,7 +5,12 @@ marello:
                 documents.label: Documents
                 document_configuration.label: Document Configuration
                 template.label: Template Settings
+                dimensions.label: Dimensions
             fields:
+                paper_size:
+                    label: "Paper size"
+                    a4.label: "A4"
+                    letter.label: "Letter"
                 language:
                     label: "Language"
                     tooltip: "Language applied to certain language-specific fields on invoice PDF."
