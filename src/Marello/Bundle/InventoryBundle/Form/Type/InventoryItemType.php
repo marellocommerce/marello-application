@@ -39,6 +39,14 @@ class InventoryItemType extends AbstractType
     {
         $builder
             ->add(
+                'orderOnDemandAllowed',
+                CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.order_on_demand_allowed.label'
+                ]
+            )
+            ->add(
                 'backorderAllowed',
                 CheckboxType::class,
                 [

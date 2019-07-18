@@ -69,6 +69,7 @@ marello:
             max_qty_to_preorder.label:  Max qty to preorder
             back_orders_datetime.label: Backorders Datetime
             pre_orders_datetime.label:  Pre-orders Datetime
+            order_on_demand_allowed.label: Order on demand allowed
 
             section:
                 backorder_preorder.label:   Backorder/Pre-order

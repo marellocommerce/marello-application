@@ -84,8 +84,8 @@ class ShipmentCreateAction extends AbstractAction
      */
     protected function executeAction($context)
     {
-        /** @var ShippingContextInterface $entity */
-        $shippingContext = $this->contextAccessor->getValue($context, $this->shippingContext);
+        /** @var ShippingContextInterface[] $shippingContextArray */
+        $shippingContextArray = $this->contextAccessor->getValue($context, $this->shippingContext);
 
         /** @var string $method */
         $method = $this->contextAccessor->getValue($context, $this->method);
@@ -95,11 +95,13 @@ class ShipmentCreateAction extends AbstractAction
 
         if ($shippingMethod = $this->shippingMethodProvider->getShippingMethod($method)) {
             if ($shippingMethodType = $shippingMethod->getType($methodType)) {
-                if ($shipment = $shippingMethodType->createShipment($shippingContext, $method, $methodType)) {
-                    $shipmentManager = $this->getShipmentManager();
-                    $shipmentManager->persist($shipment);
-                    $shipmentManager->flush();
+                $shipmentManager = $this->getShipmentManager();
+                foreach ($shippingContextArray as $shippingContext) {
+                    if ($shipment = $shippingMethodType->createShipment($shippingContext, $method, $methodType)) {
+                        $shipmentManager->persist($shipment);
+                    }
                 }
+                $shipmentManager->flush();
             }
         }
     }

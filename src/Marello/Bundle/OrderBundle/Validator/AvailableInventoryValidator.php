@@ -13,7 +13,9 @@
 
 namespace Marello\Bundle\OrderBundle\Validator;
 
+use Marello\Bundle\OrderBundle\Event\ProductAvailableInventoryValidationEvent;
 use Marello\Bundle\ProductBundle\Entity\Product;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -41,6 +43,11 @@ class AvailableInventoryValidator extends ConstraintValidator
 
     /** @var array */
     private $collection = [];
+    
+    /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
 
     /**
      * {@inheritdoc}
@@ -48,10 +55,12 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
-        AvailableInventoryProvider $availableInventoryProvider
+        AvailableInventoryProvider $availableInventoryProvider,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->availableInventoryProvider = $availableInventoryProvider;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -103,13 +112,6 @@ class AvailableInventoryValidator extends ConstraintValidator
                 $violation = true;
                 if ($this->isProductCanDropship($values[self::PRODUCT_FIELD])) {
                     $violation = false;
-                } elseif ($this->isProductCanPreorder($values[self::PRODUCT_FIELD]) &&
-                    $this->compareValues(
-                        $this->getPreorderQty($values[self::PRODUCT_FIELD]),
-                        $values[self::QUANTITY_FIELD]
-                    )
-                ) {
-                    $violation = false;
                 } elseif ($this->isProductCanBackorder($values[self::PRODUCT_FIELD]) &&
                     $this->compareValues(
                         $this->getBackorderQty($values[self::PRODUCT_FIELD]),
@@ -117,6 +119,23 @@ class AvailableInventoryValidator extends ConstraintValidator
                     )
                 ) {
                     $violation = false;
+                } elseif ($this->isProductCanPreorder($values[self::PRODUCT_FIELD]) &&
+                    $this->compareValues(
+                        $this->getPreorderQty($values[self::PRODUCT_FIELD]),
+                        $values[self::QUANTITY_FIELD]
+                    )
+                ) {
+                    $violation = false;
+                } elseif ($this->isOrderOnDemandAllowed($values[self::PRODUCT_FIELD])) {
+                    $violation = false;
+                }
+                if ($violation === true) {
+                    $event = new ProductAvailableInventoryValidationEvent($entity, $violation);
+                    $this->eventDispatcher->dispatch(
+                        ProductAvailableInventoryValidationEvent::NAME,
+                        $event
+                    );
+                    $violation = $event->getViolation();
                 }
                 if ($violation === true) {
                     $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
@@ -218,6 +237,22 @@ class AvailableInventoryValidator extends ConstraintValidator
 
         return 0;
     }
+
+    /**
+     * @param ProductInterface|Product $product
+     * @return bool
+     */
+    private function isOrderOnDemandAllowed(ProductInterface $product)
+    {
+        foreach ($product->getInventoryItems() as $inventoryItem) {
+            if ($inventoryItem->isOrderOnDemandAllowed()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     /**
      * Comparison of the values

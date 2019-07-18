@@ -5,6 +5,8 @@ namespace Marello\Bundle\OrderBundle\Tests\Unit\Validator;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
+use Marello\Bundle\OrderBundle\Entity\OrderItem;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -29,17 +31,20 @@ class AvailableInventoryValidatorTest extends TestCase
     /** @var ExecutionContextInterface|\PHPUnit_Framework_MockObject_MockObject $context */
     protected $context;
 
-    /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
+    /** @var DoctrineHelper|\PHPUnit_Framework_MockObject_MockObject */
     protected $doctrineHelper;
 
-    /** @var AvailableInventoryProvider|\PHPUnit_Framework_MockObject_MockObject $doctrineHelper */
+    /** @var AvailableInventoryProvider|\PHPUnit_Framework_MockObject_MockObject */
     protected $inventoryProvider;
 
-    /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject $objectManager */
+    /** @var ObjectManager|\PHPUnit_Framework_MockObject_MockObject */
     protected $objectManager;
 
-    /** @var ClassMetadata|\PHPUnit_Framework_MockObject_MockObject $classMetaData */
+    /** @var ClassMetadata|\PHPUnit_Framework_MockObject_MockObject */
     protected $classMetaData;
+
+    /** @var EventDispatcherInterface|\PHPUnit_Framework_MockObject_MockObject */
+    protected $eventDispatcher;
 
     /**
      * {@inheritdoc}
@@ -51,6 +56,7 @@ class AvailableInventoryValidatorTest extends TestCase
         $this->inventoryProvider = $this->createMock(AvailableInventoryProvider::class);
         $this->objectManager = $this->createMock(ObjectManager::class);
         $this->classMetaData = $this->createMock(ClassMetadata::class);
+        $this->eventDispatcher = $this->createMock(EventDispatcherInterface::class);
     }
 
     /**
@@ -164,16 +170,17 @@ class AvailableInventoryValidatorTest extends TestCase
     {
         $orderMock = $this->createMock(Order::class);
         $salesChannelMock = $this->createMock(SalesChannel::class);
-        $entity = new \StdClass();
-        $entity->product = $this->createMock(Product::class);
-        $entity->order = $orderMock;
-        $entity->quantity = 100;
+        $product = $this->createMock(Product::class);
+        $entity = new OrderItem();
+        $entity->setProduct($product);
+        $entity->setOrder($orderMock);
+        $entity->setQuantity(100);
         $constraint = $this->getConstraint([
             'fields' => ['quantity', 'product', 'order'],
             'errorPath' => 'quantity'
         ]);
-        $entity->product->expects($this->once())->method('getSuppliers')->willReturn([]);
-        $entity->product->expects($this->exactly(2))->method('getInventoryItems')->willReturn([]);
+        $product->expects($this->once())->method('getSuppliers')->willReturn([]);
+        $product->expects($this->exactly(3))->method('getInventoryItems')->willReturn([]);
         $violationBuilderMock = $this->createMock(ConstraintViolationBuilderInterface::class);
 
         $this->doctrineHelper->expects($this->once())
@@ -194,7 +201,7 @@ class AvailableInventoryValidatorTest extends TestCase
 
         $this->inventoryProvider->expects($this->exactly(1))
             ->method('getAvailableInventory')
-            ->with($entity->product, $salesChannelMock)
+            ->with($product, $salesChannelMock)
             ->willReturn(10);
 
         $this->context->expects($this->exactly(1))
@@ -326,7 +333,8 @@ class AvailableInventoryValidatorTest extends TestCase
     {
         $validator = new AvailableInventoryValidator(
             $this->doctrineHelper,
-            $this->inventoryProvider
+            $this->inventoryProvider,
+            $this->eventDispatcher
         );
         $validator->initialize($this->context);
 
