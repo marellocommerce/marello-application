@@ -17,7 +17,6 @@ system_configuration:
             options:
                 label: marello.pdf.config.fields.language.label
                 tooltip: marello.pdf.config.fields.language.tooltip
-                required: true
                 constraints:
                     - Locale: ~
 
@@ -27,7 +26,6 @@ system_configuration:
             options:
                 label: marello.pdf.config.fields.locale.label
                 tooltip: marello.pdf.config.fields.locale.tooltip
-                required: true
                 constraints:
                     - Locale: ~
 
@@ -37,7 +35,6 @@ system_configuration:
             options:
                 label: marello.pdf.config.fields.logo.label
                 tooltip: marello.pdf.config.fields.logo.tooltip
-                required: false
                 fileConstraints:
                     - Image: ~
 
@@ -47,9 +44,6 @@ system_configuration:
             options:
                 label: marello.pdf.config.fields.company_address.label
                 tooltip: marello.pdf.config.fields.company_address.tooltip
-                required: true
-                constraints:
-                    - NotBlank: ~
 
         marello_pdf.company_email:
             data_type: string
@@ -57,9 +51,7 @@ system_configuration:
             options:
                 label: marello.pdf.config.fields.company_email.label
                 tooltip: marello.pdf.config.fields.company_email.tooltip
-                required: true
                 constraints:
-                    - NotBlank: ~
                     - Email: ~
 
         marello_pdf.company_phone:
@@ -68,9 +60,6 @@ system_configuration:
             options:
                 label: marello.pdf.config.fields.company_phone.label
                 tooltip: marello.pdf.config.fields.company_phone.tooltip
-                required: true
-                constraints:
-                    - NotBlank: ~
 
         marello_pdf.company_bank:
             data_type: string
@@ -78,9 +67,6 @@ system_configuration:
             options:
                 label: marello.pdf.config.fields.company_bank.label
                 tooltip: marello.pdf.config.fields.company_bank.tooltip
-                required: true
-                constraints:
-                    - NotBlank: ~
 
         marello_pdf.company_coc:
             data_type: string
@@ -88,9 +74,6 @@ system_configuration:
             options:
                 label: marello.pdf.config.fields.company_coc.label
                 tooltip: marello.pdf.config.fields.company_coc.tooltip
-                required: true
-                constraints:
-                    - NotBlank: ~
 
     tree:
         system_configuration:
