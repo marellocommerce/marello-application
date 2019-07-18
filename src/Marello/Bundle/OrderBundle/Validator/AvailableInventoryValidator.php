@@ -56,7 +56,7 @@ class AvailableInventoryValidator extends ConstraintValidator
     public function __construct(
         DoctrineHelper $doctrineHelper,
         AvailableInventoryProvider $availableInventoryProvider,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher = null
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->availableInventoryProvider = $availableInventoryProvider;
@@ -138,6 +138,14 @@ class AvailableInventoryValidator extends ConstraintValidator
                     $violation = $event->getViolation();
                 }
                 if ($violation === true) {
+                    $event = new ProductAvailableInventoryValidationEvent($entity, $violation);
+                    $this->eventDispatcher->dispatch(
+                        ProductAvailableInventoryValidationEvent::NAME,
+                        $event
+                    );
+                    $violation = $event->getViolation();
+                }
+                if ($violation === true) {
                     $errorPath = $this->getErrorPathFromConfig($constraint, $fields);
                     $this->context->buildViolation($constraint->message)
                         ->atPath($errorPath)
@@ -201,6 +209,9 @@ class AvailableInventoryValidator extends ConstraintValidator
     {
         foreach ($product->getInventoryItems() as $inventoryItem) {
             if ($inventoryItem->isBackorderAllowed()) {
+                if (null === $inventoryItem->getMaxQtyToBackorder()) {
+                    return PHP_INT_MAX;
+                }
                 return $inventoryItem->getMaxQtyToBackorder();
             }
         }
@@ -231,6 +242,9 @@ class AvailableInventoryValidator extends ConstraintValidator
     {
         foreach ($product->getInventoryItems() as $inventoryItem) {
             if ($inventoryItem->isCanPreorder()) {
+                if (null === $inventoryItem->getMaxQtyToPreorder()) {
+                    return PHP_INT_MAX;
+                }
                 return $inventoryItem->getMaxQtyToPreorder();
             }
         }
@@ -335,5 +349,18 @@ class AvailableInventoryValidator extends ConstraintValidator
     private function getErrorPathFromConfig(Constraint $constraint, $fields)
     {
         return null !== $constraint->errorPath ? $constraint->errorPath : $fields[0];
+    }
+
+    /**
+     * Added for keeping BC
+     * @deprecated will be removed in 3.0
+     * @param EventDispatcherInterface $eventDispatcher
+     * @return $this
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
+
+        return $this;
     }
 }

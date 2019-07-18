@@ -14,7 +14,7 @@ class LoadOrderItemStatusData extends AbstractFixture
     const PENDING = 'pending';
     const PROCESSING = 'processing';
     const SHIPPED = 'shipped';
-    const DROPSHIPPED = 'dropshipped';
+    const DROPSHIPPING = 'dropshipping';
     const COULD_NOT_ALLOCATE = 'could_not_allocate';
     const WAITING_FOR_SUPPLY = 'waiting_for_supply';
 
@@ -23,7 +23,7 @@ class LoadOrderItemStatusData extends AbstractFixture
         'Pending' => true,
         'Processing' => false,
         'Shipped' => false,
-        'Dropshipped' => false,
+        'Dropshipping' => false,
         'Could Not Allocate' => false,
         'Waiting For Supply' => false,
     ];

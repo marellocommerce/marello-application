@@ -35,7 +35,7 @@ class ReturnTypeSubscriber implements EventSubscriberInterface
             ->getItems()
             ->map(function (OrderItem $orderItem) use ($return) {
                 $status = $orderItem->getStatus()->getId();
-                if (in_array($status, [LoadOrderItemStatusData::DROPSHIPPED, LoadOrderItemStatusData::SHIPPED])) {
+                if (in_array($status, [LoadOrderItemStatusData::DROPSHIPPING, LoadOrderItemStatusData::SHIPPED])) {
                     $return->addReturnItem(new ReturnItem($orderItem));
                 }
             });

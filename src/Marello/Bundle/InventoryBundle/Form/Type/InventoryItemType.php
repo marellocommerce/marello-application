@@ -59,7 +59,8 @@ class InventoryItemType extends AbstractType
                 IntegerType::class,
                 [
                     'required' => false,
-                    'label' => 'marello.inventory.inventoryitem.max_qty_to_backorder.label'
+                    'label' => 'marello.inventory.inventoryitem.max_qty_to_backorder.label',
+                    'tooltip'  => 'marello.inventory.form.tooltip.max_qty_to_backorder'
                 ]
             )
             ->add(
@@ -67,6 +68,8 @@ class InventoryItemType extends AbstractType
                 OroDateTimeType::class,
                 [
                     'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.back_orders_datetime.label',
+                    'tooltip'  => 'marello.inventory.form.tooltip.backorder_datetime'
                 ]
             )
             ->add(
@@ -82,7 +85,8 @@ class InventoryItemType extends AbstractType
                 IntegerType::class,
                 [
                     'required' => false,
-                    'label' => 'marello.inventory.inventoryitem.max_qty_to_preorder.label'
+                    'label' => 'marello.inventory.inventoryitem.max_qty_to_preorder.label',
+                    'tooltip'  => 'marello.inventory.form.tooltip.max_qty_to_preorder'
                 ]
             )
             ->add(
@@ -90,6 +94,8 @@ class InventoryItemType extends AbstractType
                 OroDateTimeType::class,
                 [
                     'required' => false,
+                    'label' => 'marello.inventory.inventoryitem.pre_orders_datetime.label',
+                    'tooltip'  => 'marello.inventory.form.tooltip.preorder_datetime'
                 ]
             )
             ->add(

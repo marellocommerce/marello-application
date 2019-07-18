@@ -76,6 +76,25 @@
         }
     ] %}
 
+    {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('purchaseOrder') -%}
+    {% for additionalInfo in additionalInfoPlaceholders %}
+        {% set purchaseOrderAdditionalInfoSection %}
+            {% set placeholderName = additionalInfo.placeholder %}
+            {% placeholder placeholderName with {'purchaseOrder': entity} %}
+        {% endset %}
+        {% if purchaseOrderAdditionalInfoSection|trim is not empty %}
+            {% set dataBlocks = dataBlocks|merge([
+                {
+                    'title': additionalInfo.label|trans,
+                    'class': 'active',
+                    'subblocks': [
+                        { 'data': [purchaseOrderAdditionalInfoSection] }
+                    ]
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
+
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
 {% endblock content_data %}

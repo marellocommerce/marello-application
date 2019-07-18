@@ -99,7 +99,7 @@ class OrderExtension extends \Twig_Extension
     
     public function isShippedOrderItem(OrderItem $orderItem) {
         if (in_array($orderItem->getStatus(),
-            [LoadOrderItemStatusData::DROPSHIPPED, LoadOrderItemStatusData::SHIPPED])) {
+            [LoadOrderItemStatusData::DROPSHIPPING, LoadOrderItemStatusData::SHIPPED])) {
             return true;
         }
         

@@ -6,7 +6,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\EmailBundle\Migrations\Data\ORM\AbstractEmailFixture;
 
-class UpdateOrderTemplatesForWaitingForSupplyNeeds3 extends AbstractEmailFixture implements DependentFixtureInterface
+class UpdateOrderTemplatesForWaitingForSupplyNeeds extends AbstractEmailFixture implements DependentFixtureInterface
 {
     const TEMPLATES = [
         'marello_order_accepted_confirmation',

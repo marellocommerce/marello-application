@@ -201,4 +201,4 @@ marello:
                 order_notification.label: Order Notification
 
         report:
-            order_items_by_status.label: OrderItems by Status
+            order_items_by_status.label: Order Items by Status

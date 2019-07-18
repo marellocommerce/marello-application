@@ -37,7 +37,7 @@
                         {{ oro_widget_render({
                             'widgetType': 'block',
                             'url': path('marello_inventory_widget_info', {id: entity.id}),
-                            'title': ''
+                            'title': 'marello.product.product_information'|trans
                         }) }}
                     </div>
                 </div>
@@ -99,6 +99,85 @@
             'subblocks': [
                 { 'data' : [productInventoryLogChart, productInventoryWidgetDatagrid] }
             ]
+        }])
+    %}
+
+    {% set replenishmentInfoWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.purchase_inventory.label'|trans, entity.purchaseInventory) }}
+                    {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.desired_inventory.label'|trans, entity.desiredInventory) }}
+                    {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.replenishment.label'|trans, entity.replenishment) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+     {% set backOrderInfoWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.inventory.inventoryitem.backorder_allowed.label'|trans, entity.backorderAllowed ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
+                    {{ UI.renderProperty('marello.inventory.inventoryitem.max_qty_to_backorder.label'|trans, entity.maxQtyToBackorder) }}
+                    {{ UI.renderProperty('marello.inventory.inventoryitem.back_orders_datetime.label'|trans, entity.backOrdersDatetime|oro_format_datetime) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set preOrderInfoWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.inventory.inventoryitem.can_preorder.label'|trans, entity.canPreorder ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
+                    {{ UI.renderProperty('marello.inventory.inventoryitem.max_qty_to_preorder.label'|trans, entity.maxQtyToPreorder) }}
+                    {{ UI.renderProperty('marello.inventory.inventoryitem.pre_orders_datetime.label'|trans, entity.preOrdersDatetime|oro_format_datetime) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set orderOnDemandInfoWidget %}
+        <div class="widget-content">
+            <div class="row-fluid form-horizontal">
+                <div class="responsive-block">
+                    {{ UI.renderProperty('marello.inventory.inventoryitem.order_on_demand_allowed.label'|trans, entity.orderOnDemandAllowed ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
+                </div>
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+            'title': 'marello.inventory.inventoryitem.replenishment.label'|trans,
+            'useSpan': false,
+            'subblocks': [
+                { 'data' : [replenishmentInfoWidget] }
+            ]
+        }])
+    %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+            'title': 'marello.inventory.inventoryitem.section.backorder_preorder.label'|trans,
+            'useSpan': false,
+            'subblocks': [{
+                'title': 'marello.inventory.inventoryitem.section.backorder.label'|trans,
+                'data': [
+                    backOrderInfoWidget
+                ]
+            },
+            {
+                'title': 'marello.inventory.inventoryitem.section.preorder.label'|trans,
+                'data': [
+                    preOrderInfoWidget
+                ]
+            },
+            {
+                'title': 'marello.inventory.inventoryitem.section.orderondemand.label'|trans,
+                'data': [
+                    orderOnDemandInfoWidget
+                ]
+            }]
         }])
     %}
 

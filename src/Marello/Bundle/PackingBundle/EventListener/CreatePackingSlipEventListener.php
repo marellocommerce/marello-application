@@ -6,8 +6,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
 use Marello\Bundle\PackingBundle\Event\AfterPackingSlipCreationEvent;
+use Marello\Bundle\PackingBundle\Event\BeforePackingSlipCreationEvent;
 use Marello\Bundle\PackingBundle\Mapper\MapperInterface;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
@@ -37,6 +37,7 @@ class CreatePackingSlipEventListener
     protected $stopPropagation = false;
 
     /**
+     * Could not prevent BC break with event dispatcher in this case because of saving the PackingSlips directly
      * @param MapperInterface $mapper
      * @param DoctrineHelper $doctrineHelper
      * @param EventDispatcherInterface $eventDispatcher
@@ -66,14 +67,8 @@ class CreatePackingSlipEventListener
 
         /** @var Order $entity */
         $entity = $event->getContext()->getData()->get('order');
-        foreach ($entity->getItems() as $item) {
-            /** @var Product $product */
-            $product = $item->getProduct();
-            if (!$product->getWeight()) {
-                throw new \Exception(sprintf('Packing Slip can\'t be created because product %s added to order
-                 does not have weight specified', $product->getSku()));
-            }
-        }
+        $this->eventDispatcher
+            ->dispatch(BeforePackingSlipCreationEvent::NAME, new BeforePackingSlipCreationEvent($entity));
         $packingSlips = $this->mapper->map($entity);
 
         if (0 === count($packingSlips)) {

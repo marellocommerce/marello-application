@@ -7,16 +7,6 @@
             {{ UI.renderHtmlProperty('marello.product.name.label'|trans, product.name) }}
             {{ UI.renderHtmlProperty('marello.product.sku.label'|trans, product.sku) }}
             {{ UI.renderHtmlProperty('marello.product.productstatus.entity_label'|trans, product.status) }}
-            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.purchase_inventory.label'|trans, item.purchaseInventory) }}
-            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.desired_inventory.label'|trans, item.desiredInventory) }}
-            {{ UI.renderHtmlProperty('marello.inventory.inventoryitem.replenishment.label'|trans, item.replenishment) }}
-            {{ UI.renderProperty('marello.inventory.inventoryitem.backorder_allowed.label'|trans, item.backorderAllowed ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
-            {{ UI.renderProperty('marello.inventory.inventoryitem.max_qty_to_backorder.label'|trans, item.maxQtyToBackorder) }}
-            {{ UI.renderProperty('marello.inventory.inventoryitem.back_orders_datetime.label'|trans, item.backOrdersDatetime|oro_format_datetime) }}
-            {{ UI.renderProperty('marello.inventory.inventoryitem.can_preorder.label'|trans, item.canPreorder ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
-            {{ UI.renderProperty('marello.inventory.inventoryitem.max_qty_to_preorder.label'|trans, item.maxQtyToPreorder) }}
-            {{ UI.renderProperty('marello.inventory.inventoryitem.pre_orders_datetime.label'|trans, item.preOrdersDatetime|oro_format_datetime) }}
-            {{ UI.renderProperty('marello.inventory.inventoryitem.order_on_demand_allowed.label'|trans, item.orderOnDemandAllowed ? 'marello.core.yes.label'|trans : 'marello.core.no.label'|trans) }}
         </div>
     </div>
 </div>

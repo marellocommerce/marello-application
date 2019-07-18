@@ -53,6 +53,10 @@ marello:
             tax_code.label:                     Tax Code
             form.add_productchanneltaxrelation: Add Sales Channel Tax Code
 
+        productsupplierrelation:
+            entity_label:        Product Supplier Relation
+            entity_plural_label: Product Supplier Relations
+
         messages:
             success:
                 product:
@@ -91,6 +95,8 @@ marello:
             product_families.label: Product Families
 
         ui:
+            cancel: Cancel
+            continue: Continue
             duplicate: Duplicate
             save_and_duplicate: Save And Duplicate
             product.duplicated.message: Product has been duplicated
