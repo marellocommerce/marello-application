@@ -113,7 +113,8 @@ class OrderControllerBackorderTest extends WebTestCase
             ->getManagerForClass('MarelloOrderBundle:Order')
             ->getRepository('MarelloOrderBundle:Order')
             ->findAll();
-        $this->assertEquals(count($ordersBefore), count($ordersAfter));
+
+        $this->assertCount(count($ordersBefore), $ordersAfter);
     }
 
     /**
@@ -181,7 +182,8 @@ class OrderControllerBackorderTest extends WebTestCase
             ->getManagerForClass('MarelloOrderBundle:Order')
             ->getRepository('MarelloOrderBundle:Order')
             ->findAll();
-        $this->assertEquals(count($ordersBefore) + 1, count($ordersAfter));
+
+        $this->assertCount(count($ordersBefore) + 1, $ordersAfter);
     }
 
     /**
@@ -250,7 +252,8 @@ class OrderControllerBackorderTest extends WebTestCase
             ->getManagerForClass('MarelloOrderBundle:Order')
             ->getRepository('MarelloOrderBundle:Order')
             ->findAll();
-        $this->assertEquals(count($ordersBefore) + 1, count($ordersAfter));
+
+        $this->assertCount(count($ordersBefore) + 1, $ordersAfter);
     }
 
     /**
@@ -319,7 +322,8 @@ class OrderControllerBackorderTest extends WebTestCase
             ->getManagerForClass('MarelloOrderBundle:Order')
             ->getRepository('MarelloOrderBundle:Order')
             ->findAll();
-        $this->assertEquals(count($ordersBefore) + 1, count($ordersAfter));
+
+        $this->assertCount(count($ordersBefore) + 1, $ordersAfter);
     }
 
     /**

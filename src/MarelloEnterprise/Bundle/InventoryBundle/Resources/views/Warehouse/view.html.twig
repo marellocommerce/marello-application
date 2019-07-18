@@ -61,8 +61,26 @@
         }
     ] %}
 
-        {% set data = {'dataBlocks': dataBlocks} %}
+    {%- set additionalInfoPlaceholders = marello_get_additional_placeholder_data('warehouse') -%}
+    {% for additionalInfo in additionalInfoPlaceholders %}
+        {% set warehouseAdditionalInfoSection %}
+            {% set placeholderName = additionalInfo.placeholder %}
+            {% placeholder placeholderName with {'warehouse': entity} %}
+        {% endset %}
+        {% if warehouseAdditionalInfoSection|trim is not empty %}
+            {% set dataBlocks = dataBlocks|merge([
+                {
+                    'title': additionalInfo.label|trans,
+                    'class': 'active',
+                    'subblocks': [
+                        { 'data': [warehouseAdditionalInfoSection] }
+                    ]
+                }
+            ]) %}
+        {% endif %}
+    {% endfor %}
 
+    {% set data = {'dataBlocks': dataBlocks} %}
     {{ parent() }}
 {% endblock content_data %}
 
