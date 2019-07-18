@@ -57,6 +57,7 @@ services:
                 company_phone: marello_pdf.company_phone
                 company_bank: marello_pdf.company_bank
                 company_coc: marello_pdf.company_coc
+                paper_size: marello_pdf.paper_size
         tags:
             - { name: marello_pdf.render_parameter_provider }
 
