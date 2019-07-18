@@ -181,7 +181,7 @@ class OrderControllerBackorderTest extends WebTestCase
             ->getManagerForClass('MarelloOrderBundle:Order')
             ->getRepository('MarelloOrderBundle:Order')
             ->findAll();
-        $this->assertEquals(count($ordersBefore), count($ordersAfter));
+        $this->assertEquals(count($ordersBefore) + 1, count($ordersAfter));
     }
 
     /**
