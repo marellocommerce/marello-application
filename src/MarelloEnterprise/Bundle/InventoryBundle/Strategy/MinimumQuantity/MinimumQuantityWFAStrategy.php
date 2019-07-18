@@ -87,8 +87,12 @@ class MinimumQuantityWFAStrategy implements WFAStrategyInterface
             return $warehouse->getId();
         }, $linkedWarehouses);
 
-        foreach ($orderItems as $orderItem) {
-            $orderItemsByProducts[sprintf('%s_|_%s', $orderItem->getProductSku(), $orderItem->getId())] = $orderItem;
+        foreach ($orderItems as $key => $orderItem) {
+            $orderItemsByProducts[sprintf(
+                '%s_|_%s',
+                $orderItem->getProduct()->getSku(),
+                $orderItem->getId() ? : $key
+            )] = $orderItem;
             $inventoryItems = $orderItem->getInventoryItems();
             foreach ($inventoryItems as $inventoryItem) {
                 /** @var InventoryLevel $inventoryLevel */
