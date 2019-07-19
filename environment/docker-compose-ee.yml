@@ -1,7 +1,8 @@
 version: "2"
 services:
     data:
-        image: djocker/orodata
+        build:
+            context: ./.docker-data
         container_name: enterprise-data
     db:
         image: percona:5.7
