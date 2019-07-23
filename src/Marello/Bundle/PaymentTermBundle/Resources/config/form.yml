@@ -1,0 +1,18 @@
+services:
+    marello_payment_term.payment_term.form.type:
+        class: 'Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermType'
+        tags:
+            - { name: form.type }
+
+    marello_payment_term.payment_term.form:
+        class: 'Symfony\Component\Form\Form'
+        factory: ['@form.factory', 'create']
+        arguments:
+            - 'Marello\Bundle\PaymentTermBundle\Form\Type\PaymentTermType'
+
+    marello_payment_term.payment_term.form.handler:
+        class: 'Marello\Bundle\PaymentTermBundle\Form\Handler\PaymentTermFormHandler'
+        arguments:
+            - '@marello_payment_term.payment_term.form'
+            - '@request_stack'
+            - '@doctrine.orm.entity_manager'

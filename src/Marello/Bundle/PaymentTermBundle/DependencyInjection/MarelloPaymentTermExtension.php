@@ -15,6 +15,7 @@ class MarelloPaymentTermExtension extends Extension
     public function load(array $config, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('form.yml');
         $loader->load('services.yml');
     }
 }
