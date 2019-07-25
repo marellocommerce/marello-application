@@ -2,7 +2,7 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
 
-{% oro_title_set({params : {"%name%": entity.labels|localized_value } }) %}
+{% oro_title_set({params : {"%label%": entity.labels|localized_value } }) %}
 {% set gridName  = 'marello-paymentterm-grid' %}
 
 {% block pageHeader %}

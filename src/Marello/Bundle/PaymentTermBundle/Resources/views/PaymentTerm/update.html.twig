@@ -3,7 +3,7 @@
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 {% if form.vars.value.id %}
     {% set formAction = path('marello_paymentterm_paymentterm_update', { 'id': form.vars.value.id }) %}
-    {% oro_title_set({params : {"%name%": entity.labels|localized_value }}) %}
+    {% oro_title_set({params : {"%label%": entity.labels|localized_value }}) %}
 {% else %}
     {% set formAction = path('marello_paymentterm_paymentterm_create') %}
 {% endif %}
