@@ -7,6 +7,7 @@ datagrids:
                     - p.id
                     - p.code
                     - p.term
+                    - p
                 from:
                     - { table: 'MarelloPaymentTermBundle:PaymentTerm', alias: p }
         columns:
@@ -72,6 +73,10 @@ datagrids:
                 icon: edit
                 link: update_link
                 acl_resource: marello_paymentterm_paymentterm_update
+        action_configuration: ['@marello_payment_term.action_permissions.payment_term', 'getActionPermissions']
         options:
             entityHint: marello.paymentterm.entity_plural_label
             entity_pagination: true
+            mass_actions:
+                delete:
+                    enabled: false

@@ -1,0 +1,13 @@
+operations:
+    marello_delete_paymentterm:
+        extends: DELETE
+        label: oro.action.delete
+        for_all_entities: false
+        for_all_datagrids: false
+        routes:
+            - marello_paymentterm_paymentterm_view
+            - marello_paymentterm_paymentterm_update
+        datagrids:
+            - marello-paymentterm-grid
+        preconditions: ~
+        substitute_operation: DELETE
