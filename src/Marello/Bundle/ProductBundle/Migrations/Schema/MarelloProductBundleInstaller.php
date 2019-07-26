@@ -28,7 +28,7 @@ class MarelloProductBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_6';
+        return 'v1_7';
     }
 
     /**
@@ -316,7 +316,10 @@ class MarelloProductBundleInstaller implements
             self::PRODUCT_TABLE,
             'image',
             [
-                'importexport' => ['excluded' => true]
+                'importexport' => ['excluded' => true],
+                'attachment' => [
+                    'acl_protected' => false
+                ]
             ],
             self::MAX_PRODUCT_IMAGE_SIZE_IN_MB,
             self::MAX_PRODUCT_IMAGE_DIMENSIONS_IN_PIXELS,
