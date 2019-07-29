@@ -69,6 +69,7 @@ class LoadOrderData extends AbstractFixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        return;
         $this->manager = $manager;
         $organization = $manager
             ->getRepository(Organization::class)
