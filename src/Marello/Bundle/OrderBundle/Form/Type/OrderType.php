@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Marello\Bundle\CustomerBundle\Form\Type\CompanySelectType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
@@ -28,6 +29,9 @@ class OrderType extends AbstractType
      */
     private $salesChannelRepository;
 
+    /**
+     * @param SalesChannelRepository $salesChannelRepository
+     */
     public function __construct(SalesChannelRepository $salesChannelRepository)
     {
         $this->salesChannelRepository = $salesChannelRepository;
@@ -40,8 +44,17 @@ class OrderType extends AbstractType
     {
         $builder
             ->add(
+                'company',
+                CompanySelectType::class,
+                [
+                    'mapped' => false,
+                    'required' => false,
+                    'create_enabled' => false,
+                ])
+
+            ->add(
                 'customer',
-                CustomerSelectType::class,
+                CompanyAwareCustomerSelectType::class,
                 [
                     'required' => true,
                 ]

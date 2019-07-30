@@ -1,0 +1,4 @@
+data:
+      type: marellocompanies
+      attributes:
+          name: 'new company'
