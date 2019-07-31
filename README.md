@@ -28,6 +28,10 @@ cd development-mono-repository
 composer self-update
 composer global require "fxp/composer-asset-plugin"
 ```
+* Install tools in `tool` folder:
+```bash
+composer install --working-dir=tool
+```
 * Install all dependencies for the application you are going to work on, for example:
 ```bash
 COMPOSER=dev.json composer install --working-dir=applications/marello-application
@@ -40,10 +44,18 @@ COMPOSER=dev.json COMPOSER_PROCESS_TIMEOUT=3000 composer marello-reset --working
 
 ## Development Experience
 
+* Enable PHPStorm configuration for the application you are going to work on:
+```bash
+php tool/console phpstorm:init-application {application_name}
+```
 * Create a feature branch
 * Perform code changes and testing
 * Push your branch to the remote repository and create a pull request
 
+*Note:* to see all existing applications run `phpstorm:init-application` without parameters:
+```bash
+php tool/console phpstorm:init-application
+```
 
 ## Release manager experience
 
