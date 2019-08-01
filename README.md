@@ -28,6 +28,10 @@ cd development-mono-repository
 composer self-update
 composer global require "fxp/composer-asset-plugin"
 ```
+* Install tools in `tool` folder:
+```bash
+composer install --working-dir=tool
+```
 * Install all dependencies for the application you are going to work on, for example:
 ```bash
 COMPOSER=dev.json composer install --working-dir=applications/marello-application
@@ -40,10 +44,18 @@ COMPOSER=dev.json COMPOSER_PROCESS_TIMEOUT=3000 composer marello-reset --working
 
 ## Development Experience
 
+* Enable PHPStorm configuration for the application you are going to work on:
+```bash
+php tool/console phpstorm:init-application {application_name}
+```
 * Create a feature branch
 * Perform code changes and testing
 * Push your branch to the remote repository and create a pull request
 
+*Note:* to see all existing applications run `phpstorm:init-application` without parameters:
+```bash
+php tool/console phpstorm:init-application
+```
 
 ## Release manager experience
 
@@ -64,6 +76,12 @@ git subtree push  --prefix <package or application directory in mono-repo> <remo
 * Create maintenance branch for released version (if it's is a new version)
 * Repeat previous steps for applications and generate lock files
 * Push new maintenance branch to remote of the mono repository
+
+**Pushing to individual downstream repo's master branches, make sure you've pulled from the downstream repo's first** 
+git push marello $(git subtree split --prefix=package/marello --onto=marello/master):master
+git push marello-enterprise $(git subtree split --prefix=package/marello-enterprise --onto=marello-enterprise/master):master
+git push marello-subscriptions $(git subtree split --prefix=package/marello-subscriptions --onto=marello-subscriptions/master):master
+
 
 
 ## Checking PR's
