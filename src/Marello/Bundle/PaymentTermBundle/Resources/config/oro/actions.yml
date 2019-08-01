@@ -9,5 +9,17 @@ operations:
             - marello_paymentterm_paymentterm_update
         datagrids:
             - marello-paymentterm-grid
-        preconditions: ~
+        preactions:
+            - '@tree':
+                conditions:
+                    '@not_blank': '$.data'
+                actions:
+                    - '@call_service_method':
+                        service: marello_payment_term.provider.payment_term_delete_permission
+                        method: isDeleteAllowed
+                        method_parameters: [$.data]
+                        attribute: $.isDeleteAllowed
+        preconditions:
+            '@and':
+                - '@equal': [$.isDeleteAllowed, true]
         substitute_operation: DELETE
