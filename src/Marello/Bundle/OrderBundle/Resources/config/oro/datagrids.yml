@@ -273,7 +273,6 @@ datagrids:
                     items: [10]
                     default_per_page: 10
 
-
     marello-order-items:
         source:
             type: orm
@@ -344,6 +343,7 @@ datagrids:
                 label:            marello.order.orderitem.status.label
                 frontend_type:    string
                 data_name:        status
+
     dashboard-latest-orders-grid:
             source:
                 type: orm
@@ -433,6 +433,7 @@ datagrids:
             type: orm
             query:
                 select:
+                    - c.id
                     - c
                 from:
                     - { table: MarelloOrderBundle:Customer, alias: c }
@@ -533,6 +534,9 @@ datagrids:
         properties:
             id: ~
         actions: ~
+
+    marello-company-customers-select-grid:
+        extends: marello-customer-select-grid
 
     marello_report-orders-order_items_by_status:
         pageTitle: marello.order.report.order_items_by_status.label
