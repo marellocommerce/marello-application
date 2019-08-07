@@ -110,11 +110,46 @@ class CompanyControllerTest extends WebTestCase
 
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
-        $this->assertContains("Company has been saved", $crawler->html());
+        $this->assertContains('Company has been saved', $crawler->html());
 
         $resultData['name'] = $name;
 
         return $resultData;
+    }
+
+    /**
+     * @param $resultData
+     *
+     * @depends testCompanyUpdate
+     */
+    public function testCompanyUpdateRemoveCustomers($resultData)
+    {
+        $response = $this->client->requestGrid(
+            self::GRID_NAME,
+            [self::GRID_NAME .'[_filter][name][value]' => $resultData['name']]
+        );
+        $result = $this->getJsonResponseContent($response, Response::HTTP_OK);
+        $result = reset($result['data']);
+
+        $crawler     = $this->client->request(
+            'GET',
+            $this->getUrl('marello_customer_company_update', ['id' => $result['id']])
+        );
+        $result      = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+
+        /** @var Form $form */
+        $form                                   = $crawler->selectButton('Save and Close')->form();
+        $customer = $this->getReference('marello-customer-7');
+        $form['marello_customer_company[removeCustomers]'] = $customer->getId();
+
+        $this->client->followRedirects(true);
+        $crawler = $this->client->submit($form);
+
+        $result = $this->client->getResponse();
+        $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
+        $this->assertContains('Company has been saved', $crawler->html());
+        $this->assertNotContains($customer->getName(), $crawler->html());
     }
 
     /**

@@ -35,11 +35,11 @@ class ParentCompanySelectType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $parentData = $form->getParent()->getData();
-        $customerId = null;
+        $companyId = null;
         if ($parentData instanceof Company) {
-            $customerId = $parentData->getId();
+            $companyId = $parentData->getId();
         }
-        $view->vars['configs']['entityId'] = $customerId;
+        $view->vars['configs']['entityId'] = $companyId;
     }
 
     /**
