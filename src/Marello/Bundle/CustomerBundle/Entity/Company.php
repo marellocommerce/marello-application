@@ -122,7 +122,9 @@ class Company extends ExtendCompany implements OrganizationAwareInterface
     /**
      * @var MarelloAddress[]
      *
-     * @ORM\ManyToMany(targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", fetch="EAGER", cascade={"persist"})
+     * @ORM\ManyToMany(
+     *     targetEntity="Marello\Bundle\AddressBundle\Entity\MarelloAddress", fetch="EAGER", cascade={"persist"}
+     *     )
      * @ORM\JoinTable(name="marello_company_join_address",
      *      joinColumns={@ORM\JoinColumn(name="company_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="address_id", referencedColumnName="id", unique=true)}
