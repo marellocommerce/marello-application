@@ -287,12 +287,4 @@ class ProductControllerTest extends WebTestCase
         self::assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
         self::assertContains($resultData['name'], $crawler->html());
     }
-
-//    private function getProductTypesProvider()
-//    {
-//
-
-//
-//        return $productTypesProvider;
-//    }
 }
