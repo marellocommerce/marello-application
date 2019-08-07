@@ -49,21 +49,21 @@ class OrderType extends AbstractType
                 [
                     'mapped' => false,
                     'required' => false,
-                    'create_enabled' => false,
-                ])
-
+                    'create_enabled' => false
+                ]
+            )
             ->add(
                 'customer',
                 CompanyAwareCustomerSelectType::class,
                 [
-                    'required' => true,
+                    'required' => true
                 ]
             )
             ->add(
                 'salesChannel',
                 SalesChannelSelectType::class,
                 [
-                    'autocomplete_alias' => 'active_saleschannels',
+                    'autocomplete_alias' => 'active_saleschannels'
                 ]
             )
             ->add(
@@ -71,28 +71,28 @@ class OrderType extends AbstractType
                 TextType::class,
                 [
                     'label'    => 'marello.order.discount_amount.label',
-                    'required' => false,
+                    'required' => false
                 ]
             )
             ->add(
                 'couponCode',
                 TextType::class,
                 [
-                    'required' => false,
+                    'required' => false
                 ]
             )
             ->add(
                 'localization',
                 LocalizationSelectType::class,
                 [
-                    'required' => false,
+                    'required' => false
                 ]
             )
             ->add(
                 'purchaseDate',
                 OroDateTimeType::class,
                 [
-                    'required' => false,
+                    'required' => false
                 ]
             )
             ->add('items', OrderItemCollectionType::class);
@@ -183,7 +183,7 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class'  => Order::class,
-            'constraints' => [new Valid()],
+            'constraints' => [new Valid()]
         ]);
     }
 
