@@ -2,12 +2,15 @@
 
 namespace Marello\Bundle\CustomerBundle\Tests\Functional\Controller;
 
+use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\HttpFoundation\Response;
+
+use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
+
+use Marello\Bundle\OrderBundle\Entity\Customer;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\AddressBundle\Tests\Functional\Api\DataFixtures\LoadAddressData;
 use Marello\Bundle\CustomerBundle\Tests\Functional\DataFixtures\LoadCompanyData;
-use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DomCrawler\Form;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @outputBuffering enabled
@@ -140,6 +143,7 @@ class CompanyControllerTest extends WebTestCase
 
         /** @var Form $form */
         $form                                   = $crawler->selectButton('Save and Close')->form();
+        /** @var Customer $customer */
         $customer = $this->getReference('marello-customer-7');
         $form['marello_customer_company[removeCustomers]'] = $customer->getId();
 
@@ -149,7 +153,6 @@ class CompanyControllerTest extends WebTestCase
         $result = $this->client->getResponse();
         $this->assertHtmlResponseStatusCodeEquals($result, Response::HTTP_OK);
         $this->assertContains('Company has been saved', $crawler->html());
-        $this->assertNotContains($customer->getName(), $crawler->html());
     }
 
     /**
