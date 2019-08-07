@@ -301,7 +301,7 @@ class Customer extends ExtendCustomer implements
      * @param Company $company
      * @return $this
      */
-    public function setCompany(Company $company)
+    public function setCompany(Company $company = null)
     {
         $this->company = $company;
 
