@@ -5,16 +5,13 @@ namespace Marello\Bundle\OrderBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-
-use Marello\Bundle\OrderBundle\Migrations\Data\ORM\LoadOrderItemStatusData;
-use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Marello\Bundle\OrderBundle\Model\ExtendOrderItem;
+use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\OrderBundle\Model\QuantityAwareInterface;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
+use Marello\Bundle\ProductBundle\Model\ProductAwareInterface;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Marello\Bundle\TaxBundle\Model\TaxAwareInterface;

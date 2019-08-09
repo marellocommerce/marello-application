@@ -11,12 +11,12 @@ use Marello\Bundle\UPSBundle\Entity\UPSSettings;
 use Oro\Bundle\IntegrationBundle\Form\Type\ChannelType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class AjaxUPSController extends Controller
+class AjaxUPSController extends AbstractController
 {
     /**
      * @Route("/get-shipping-services-by-country/{code}",

@@ -16,7 +16,7 @@
         {{ subject }}
     {% endset %}
 
-    {% if route and resource_granted('VIEW', subject) %}
+    {% if route and is_granted('VIEW', subject) %}
         <a href="{{ oro_entity_view_link(className, subject.id) }}">{{ label }}</a>
     {% else %}
         {{ label }}

@@ -4,8 +4,9 @@ namespace Marello\Bundle\InventoryBundle\Twig;
 
 use Marello\Bundle\InventoryBundle\Entity\Repository\WarehouseRepository;
 use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Twig\Extension\AbstractExtension;
 
-class WarehouseExtension extends \Twig_Extension
+class WarehouseExtension extends AbstractExtension
 {
     const NAME = 'marello_inventory_warehouse';
     

@@ -32,6 +32,7 @@ services:
 
     marello_refund.datagrid.action_permission_provider:
         class: 'Marello\Bundle\RefundBundle\Datagrid\RefundActionPermissionProvider'
+        public: true
         arguments:
             - '@doctrine.orm.entity_manager'
 

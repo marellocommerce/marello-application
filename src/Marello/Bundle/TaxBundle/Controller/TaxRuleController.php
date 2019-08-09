@@ -6,13 +6,13 @@ use Marello\Bundle\TaxBundle\Entity\TaxRule;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class TaxRuleController
  * @package Marello\Bundle\TaxBundle\Controller
  */
-class TaxRuleController extends Controller
+class TaxRuleController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_tax_taxrule_index")

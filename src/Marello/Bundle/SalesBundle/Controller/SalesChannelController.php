@@ -7,11 +7,11 @@ use Marello\Bundle\SalesBundle\Form\Type\SalesChannelType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class SalesChannelController extends Controller
+class SalesChannelController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_sales_saleschannel_index")

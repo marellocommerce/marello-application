@@ -60,6 +60,8 @@ class MarelloRorWarranty implements BusinessRuleInterface
                     $this->updateStatus(self::RETURN_ITEM_STATUS_AUTHORIZED, $returnItem);
                 }
             });
+
+        return $this;
     }
 
     /**

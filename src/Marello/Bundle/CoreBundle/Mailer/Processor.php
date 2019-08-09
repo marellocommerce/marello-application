@@ -2,18 +2,13 @@
 
 namespace Marello\Bundle\CoreBundle\Mailer;
 
-use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
-
-use Oro\Bundle\EmailBundle\Mailer\Processor as BaseProcessor;
 use Oro\Bundle\EmailBundle\Decoder\ContentDecoder;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachmentContent;
-use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
-use Oro\Bundle\EmailBundle\Entity\EmailUser;
-use Oro\Bundle\EmailBundle\Event\EmailBodyAdded;
 use Oro\Bundle\EmailBundle\Form\Model\Email as EmailModel;
 use Oro\Bundle\EmailBundle\Form\Model\EmailAttachment as EmailAttachmentModel;
-use Oro\Bundle\EmailBundle\Tools\EmailAddressHelper;
+use Oro\Bundle\EmailBundle\Mailer\Processor as BaseProcessor;
+use Symfony\Component\HttpFoundation\File\MimeType\ExtensionGuesser;
 
 class Processor extends BaseProcessor
 {
@@ -34,7 +29,7 @@ class Processor extends BaseProcessor
         }
         $addresses = $this->getAddresses($model->getFrom());
         $address = $this->emailAddressHelper->extractPureEmailAddress($model->getFrom());
-        $message->setDate($messageDate->getTimestamp());
+        $message->setDate($messageDate);
         $message->setFrom($addresses);
         $message->setReplyTo($addresses);
         $message->setReturnPath($address);
@@ -78,7 +73,7 @@ class Processor extends BaseProcessor
                         list($encoding, $file) = explode(',', $content);
                         $mime            = str_replace('data:', '', $mime);
                         $fileName        = sprintf('%s.%s', uniqid(), $guesser->guess($mime));
-                        $swiftAttachment = \Swift_Image::newInstance(
+                        $swiftAttachment = new \Swift_Image(
                             ContentDecoder::decode($file, $encoding),
                             $fileName,
                             $mime

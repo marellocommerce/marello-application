@@ -7,17 +7,15 @@ use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-
 use Marello\Bundle\OrderBundle\Form\Type\OrderType;
 use Marello\Bundle\OrderBundle\Form\Type\OrderUpdateType;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-class OrderController extends Controller
+class OrderController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_order_order_index")

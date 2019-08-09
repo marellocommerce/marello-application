@@ -19,8 +19,6 @@ api:
                     property_path: taxCode
                 productstatus:
                     property_path: status
-                price:
-                    exclude: true
                 createdAt:
                     exclude: true
                 updatedAt:

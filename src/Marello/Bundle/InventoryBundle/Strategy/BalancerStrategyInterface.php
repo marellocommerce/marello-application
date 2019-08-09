@@ -3,9 +3,7 @@
 namespace Marello\Bundle\InventoryBundle\Strategy;
 
 use ArrayAccess;
-
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
-use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 
 interface BalancerStrategyInterface
 {

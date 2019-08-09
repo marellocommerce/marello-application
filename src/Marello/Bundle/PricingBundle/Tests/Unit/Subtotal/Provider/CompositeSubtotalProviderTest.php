@@ -4,7 +4,7 @@ namespace Marello\Bundle\PricingBundle\Tests\Unit\Subtotal\Provider;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use PHPUnit\Framework\TestCase;
 

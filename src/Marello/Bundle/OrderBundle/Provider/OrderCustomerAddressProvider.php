@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\OrderBundle\Provider;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 

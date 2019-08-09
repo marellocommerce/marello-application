@@ -2,7 +2,6 @@
 
 namespace Marello\Bundle\ProductBundle\Model;
 
-use Oro\Bundle\BusinessEntitiesBundle\Entity\BaseProduct;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 
 /**
@@ -10,20 +9,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
  * @package Marello\Bundle\ProductBundle\Model
  *
  */
-class ExtendProduct extends BaseProduct
+class ExtendProduct
 {
-    /**
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $price;
-
-
     public function __construct()
     {
     }

@@ -6,8 +6,10 @@ use Marello\Bundle\OrderBundle\Entity\OrderItem;
 use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Util\ReturnHelper;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class ReturnExtension extends \Twig_Extension
+class ReturnExtension extends AbstractExtension
 {
     const NAME = 'marello_return';
 
@@ -47,11 +49,11 @@ class ReturnExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_return_get_order_item_returned_quantity',
                 [$this, 'getOrderItemReturnedQuantity']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_return_is_on_hold',
                 [$this, 'isOnHold']
             ),

@@ -16,7 +16,7 @@ services:
 
     marello_catalog.category.form.handler:
         class: 'Marello\Bundle\CatalogBundle\Form\Handler\CategoryHandler'
-        scope: request
+        public: true
         arguments:
             - '@marello_catalog.category.form'
             - '@request_stack'
@@ -34,6 +34,7 @@ services:
 
     marello_catalog.provider.categories_choices:
         class: 'Marello\Bundle\CatalogBundle\Provider\CategoriesChoicesProvider'
+        public: true
         arguments:
             - '@oro_entity.doctrine_helper'
 

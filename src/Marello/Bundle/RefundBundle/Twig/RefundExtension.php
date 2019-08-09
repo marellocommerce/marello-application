@@ -5,8 +5,10 @@ namespace Marello\Bundle\RefundBundle\Twig;
 use Marello\Bundle\RefundBundle\Calculator\RefundBalanceCalculator;
 use Marello\Bundle\RefundBundle\Entity\Refund;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class RefundExtension extends \Twig_Extension
+class RefundExtension extends AbstractExtension
 {
     const NAME = 'marello_refund';
 
@@ -46,11 +48,11 @@ class RefundExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_refund_is_pending',
                 [$this, 'isPending']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_refund_get_balance',
                 [$this, 'getBalance']
             ),

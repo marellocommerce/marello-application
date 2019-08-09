@@ -5,6 +5,7 @@ namespace Marello\Bundle\AddressBundle\Tests\Functional\Api;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\CoreBundle\Tests\Functional\RestJsonApiTestCase;
 use Marello\Bundle\AddressBundle\Tests\Functional\Api\DataFixtures\LoadAddressData;
+use PHPUnit\Framework\TestResult;
 
 class MarelloAddressJsonApiTest extends RestJsonApiTestCase
 {

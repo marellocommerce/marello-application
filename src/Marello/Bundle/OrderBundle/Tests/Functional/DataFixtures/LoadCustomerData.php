@@ -53,6 +53,7 @@ class LoadCustomerData extends AbstractFixture
 
     /**
      * Close all open files.
+     * @param resource $handle
      */
     protected function closeFiles($handle)
     {

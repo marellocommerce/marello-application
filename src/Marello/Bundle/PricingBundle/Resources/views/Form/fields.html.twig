@@ -22,7 +22,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_product_channel_price_collection_item_prototype(widget) %}
+{% macro marello_product_channel_price_collection_item_prototype(widget, widgetContainerAttributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -36,7 +36,7 @@
         {% set allow_delete = widget.parent.vars.allow_delete %}
         {% set allow_add_after = widget.parent.vars.allow_add_after %}
     {% endif %}
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
         class="marello-line-item display-values"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellopricing/js/app/views/channel-pricing-item-view'}|json_encode }}"
@@ -53,16 +53,19 @@
 {% endmacro %}
 
 {% block marello_product_channel_price_collection_widget %}
+    {% import _self as fields %}
+
      {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_product_channel_price_collection_item_prototype(form) %}
+            {% set prototype_html = fields.marello_product_channel_price_collection_item_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {{ form.parent.pricing_enabled is defined ? form_row(form.parent.pricing_enabled): '' }}
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ block('widget_container_attributes') }}>
+            <div {{ widgetContainerAttributes }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                         <tr>
@@ -77,7 +80,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                         {% if form.children|length %}
                             {% for child in form.children %}
-                                {{ _self.marello_product_channel_price_collection_item_prototype(child) }}
+                                {{ fields.marello_product_channel_price_collection_item_prototype(child, widgetContainerAttributes) }}
                             {% endfor %}
                         {% elseif show_form_when_empty and prototype_html is defined %}
                             {{ prototype_html|replace({(prototype_name): '0'})|raw }}
@@ -113,7 +116,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_product_price_collection_item_prototype(widget) %}
+{% macro marello_product_price_collection_item_prototype(widget, widgetContainerAttributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -127,7 +130,7 @@
         {% set allow_delete = widget.parent.vars.allow_delete %}
         {% set allow_add_after = widget.parent.vars.allow_add_after %}
     {% endif %}
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
         class="marello-line-item display-values"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}"
@@ -137,15 +140,18 @@
 {% endmacro %}
 
 {% block marello_product_price_collection_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_product_price_collection_item_prototype(form) %}
+            {% set prototype_html = fields.marello_product_price_collection_item_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ block('widget_container_attributes') }}>
+            <div {{ widgetContainerAttributes }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                     <tr>
@@ -156,7 +162,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_product_price_collection_item_prototype(child) }}
+                            {{ fields.marello_product_price_collection_item_prototype(child, widgetContainerAttributes) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {{ prototype_html|replace({(prototype_name): '0'})|raw }}
@@ -201,7 +207,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_assembled_price_list_collection_item_prototype(widget) %}
+{% macro marello_assembled_price_list_collection_item_prototype(widget, widgetContainerAttributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -215,7 +221,7 @@
         {% set allow_delete = widget.parent.vars.allow_delete %}
         {% set allow_add_after = widget.parent.vars.allow_add_after %}
     {% endif %}
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
         class="marello-line-item display-values"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellolayout/js/app/views/abstract-item-view'}|json_encode }}"
@@ -225,15 +231,18 @@
 {% endmacro %}
 
 {% block marello_assembled_price_list_collection_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_assembled_price_list_collection_item_prototype(form) %}
+            {% set prototype_html = fields.marello_assembled_price_list_collection_item_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ block('widget_container_attributes') }}>
+            <div {{ widgetContainerAttributes }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                     <tr>
@@ -246,7 +255,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_assembled_price_list_collection_item_prototype(child) }}
+                            {{ fields.marello_assembled_price_list_collection_item_prototype(child, widgetContainerAttributes) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {{ prototype_html|replace({(prototype_name): '0'})|raw }}
@@ -291,7 +300,7 @@
     </td>
 {% endblock %}
 
-{% macro marello_assembled_channel_price_list_collection_item_prototype(widget) %}
+{% macro marello_assembled_channel_price_list_collection_item_prototype(widget, widgetContainerAttributes) %}
     {% if 'collection' in widget.vars.block_prefixes %}
         {% set form = widget.vars.prototype %}
         {% set name = widget.vars.full_name ~ '[' ~ widget.vars.prototype.vars.name ~ ']' %}
@@ -305,7 +314,7 @@
         {% set allow_delete = widget.parent.vars.allow_delete %}
         {% set allow_add_after = widget.parent.vars.allow_add_after %}
     {% endif %}
-    <tr data-content="{{ name }}" data-validation-optional-group {{ block('widget_container_attributes') }}
+    <tr data-content="{{ name }}" data-validation-optional-group {{ widgetContainerAttributes }}
         class="marello-line-item display-values"
         data-page-component-module="oroui/js/app/components/view-component"
         data-page-component-options="{{ {view: 'marellopricing/js/app/views/channel-pricing-item-view'}|json_encode }}"
@@ -322,16 +331,19 @@
 {% endmacro %}
 
 {% block marello_assembled_channel_price_list_collection_widget %}
+    {% import _self as fields %}
+
     {% spaceless %}
+        {% set widgetContainerAttributes = block('widget_container_attributes') %}
         {% if prototype is defined %}
-            {% set prototype_html = _self.marello_assembled_channel_price_list_collection_item_prototype(form) %}
+            {% set prototype_html = fields.marello_assembled_channel_price_list_collection_item_prototype(form, widgetContainerAttributes) %}
         {% endif %}
         {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'marello-item-collection grid-container' }) %}
         {% set id = id ~ '_collection' %}
         <div class="row-oro">
             {{ form.parent.pricing_enabled is defined ? form_row(form.parent.pricing_enabled): '' }}
             {% set prototype_name = form.vars.prototype_name %}
-            <div {{ block('widget_container_attributes') }}>
+            <div {{ widgetContainerAttributes }}>
                 <table class="grid table-hover table table-bordered table-condensed">
                     <thead>
                     <tr>
@@ -347,7 +359,7 @@
                     <tbody data-last-index="{{ form.children|length}}" data-prototype-name="{{ prototype_name }}"{% if prototype_html is defined %} data-prototype="{{ prototype_html|escape }}"{% endif %}>
                     {% if form.children|length %}
                         {% for child in form.children %}
-                            {{ _self.marello_assembled_channel_price_list_collection_item_prototype(child) }}
+                            {{ fields.marello_assembled_channel_price_list_collection_item_prototype(child, widgetContainerAttributes) }}
                         {% endfor %}
                     {% elseif show_form_when_empty and prototype_html is defined %}
                         {{ prototype_html|replace({(prototype_name): '0'})|raw }}

@@ -1,4 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
 {% oro_title_set({params : {"%id%": form.vars.value.id }}) %}
@@ -10,7 +11,7 @@
     {{ UI.cancelButton(path('marello_return_return_view', {id: form.vars.value.id })) }}
 
     {% set html = UI.saveAndCloseButton() %}
-    {% if form.vars.value.id or resource_granted('marello_return_update') %}
+    {% if form.vars.value.id or is_granted('marello_return_update') %}
         {% set html = html ~ UI.saveAndStayButton() %}
     {% endif %}
     {{ UI.dropdownSaveButton({'html': html}) }}

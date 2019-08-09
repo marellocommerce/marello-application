@@ -90,7 +90,6 @@ class WarehouseGroupLinkRebalanceListener
      */
     protected function triggerRebalance(WarehouseChannelGroupLink $entity)
     {
-        $productIds = [];
         /** @var SalesChannelGroup[] $channelsGroups */
         $channelsGroups = $entity->getSalesChannelGroups()->toArray();
         foreach ($channelsGroups as $salesChannelGroup) {

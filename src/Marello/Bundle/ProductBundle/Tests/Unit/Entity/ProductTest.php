@@ -44,7 +44,6 @@ class ProductTest extends TestCase
             ['manufacturingCode', 'some string'],
             ['status', new ProductStatus('active')],
             ['type', 'some string'],
-            ['cost', 'some string'],
             ['weight', 3.1415926],
             ['warranty', 42],
             ['organization', new Organization()],

@@ -101,7 +101,7 @@ services:
     ## handlers
     marello_tax.form.handler.taxcode:
         class: Marello\Bundle\TaxBundle\Form\Handler\TaxCodeHandler
-        scope: request
+        public: true
         arguments:
             - '@marello_tax.taxcode.form'
             - '@request_stack'
@@ -109,7 +109,7 @@ services:
 
     marello_tax.form.handler.taxrate:
         class: Marello\Bundle\TaxBundle\Form\Handler\TaxRateHandler
-        scope: request
+        public: true
         arguments:
             - '@marello_tax.taxrate.form'
             - '@request_stack'
@@ -117,7 +117,7 @@ services:
 
     marello_tax.form.handler.taxrule:
         class: Marello\Bundle\TaxBundle\Form\Handler\TaxRuleHandler
-        scope: request
+        public: true
         arguments:
             - '@marello_tax.taxrule.form'
             - '@request_stack'

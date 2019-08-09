@@ -2,7 +2,6 @@ data:
       type: marelloproducts
       id: 'my-sku'
       attributes:
-          cost: 10
           manufacturingCode: '1234567890987654321'
           name: 'My name'
           warranty: 10

@@ -7,9 +7,7 @@ marello:
         sku.label:                  SKU
         weight.label:               Weight (in Kg)
         warranty.label:             Product Warranty
-        price.label:                Default price
         status.label:               Status
-        cost.label:                 Cost
         data.label:                 Data
         type.label:                 Product Type
         preferred_supplier.label:   Preferred Supplier

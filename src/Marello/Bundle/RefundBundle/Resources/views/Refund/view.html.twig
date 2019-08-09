@@ -3,7 +3,7 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block navButtons %}
-    {% if resource_granted('marello_refund_update') and marello_refund_is_pending(entity) %}
+    {% if is_granted('marello_refund_update') and marello_refund_is_pending(entity) %}
         {{ UI.editButton({
             'path' : path('marello_refund_update', { id: entity.id }),
             'entity_label': 'marello.refund.entity_label'|trans

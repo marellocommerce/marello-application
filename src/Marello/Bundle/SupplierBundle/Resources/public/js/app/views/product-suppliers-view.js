@@ -19,7 +19,7 @@ define(function(require) {
          */
         options: {
             suppliers: {},
-            supplierDataRoute: 'marello_supplier_supplier_get_default_data',
+            supplierDataRoute: 'marello_supplier_supplier_get_default_data'
         },
 
         /**

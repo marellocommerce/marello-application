@@ -7,7 +7,7 @@ use Marello\Bundle\TaxBundle\Form\Type\TaxJurisdictionType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  * Class TaxJurisdictionController
  * @package Marello\Bundle\TaxBundle\Controller
   */
-class TaxJurisdictionController extends Controller
+class TaxJurisdictionController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_tax_taxjurisdiction_index")
