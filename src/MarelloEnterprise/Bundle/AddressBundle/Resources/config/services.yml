@@ -11,6 +11,10 @@ services:
 
     marelloenterprise_address.cron.command.address_geocoding:
         class: 'MarelloEnterprise\Bundle\AddressBundle\Command\AddressGeocodingCommand'
+        arguments:
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@oro_entity.doctrine_helper'
+            - '@marelloenterprise.google_api.result_provider.geocoding'
         tags:
             - { name: console.command }
 

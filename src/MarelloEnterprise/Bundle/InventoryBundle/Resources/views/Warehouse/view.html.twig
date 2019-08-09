@@ -18,10 +18,10 @@
 
 {% block navButtons %}
     {% if entity.id %}
-        {% if not entity.default and resource_granted('DELETE', entity) %}
+        {% if not entity.default and is_granted('DELETE', entity) %}
             {{ parent() }}
         {% endif %}
-        {% if resource_granted('marelloenterprise_inventory_warehouse_update') or resource_granted('marelloenterprise_inventory_warehouse_create') %}
+        {% if is_granted('marelloenterprise_inventory_warehouse_update') or is_granted('marelloenterprise_inventory_warehouse_create') %}
             {{ UI.editButton({
                 'path' : path('marelloenterprise_inventory_warehouse_update', { id: entity.id }),
                 'entity_label': 'marello.inventory.warehouse.entity_label'|trans

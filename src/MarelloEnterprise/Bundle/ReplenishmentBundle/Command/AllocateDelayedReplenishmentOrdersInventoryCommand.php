@@ -3,14 +3,40 @@
 namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Command;
 
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Async\AllocateReplenishmentOrdersInventoryProcessor;
+use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\Repository\ReplenishmentOrderRepository;
 use Oro\Bundle\CronBundle\Command\CronCommandInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Oro\Component\MessageQueue\Client\MessageProducerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AllocateDelayedReplenishmentOrdersInventoryCommand extends ContainerAwareCommand implements CronCommandInterface
+class AllocateDelayedReplenishmentOrdersInventoryCommand extends Command implements CronCommandInterface
 {
     const NAME = 'oro:cron:marello:replenishment:allocate-delayed-orders-inventory';
+
+    /**
+     * @var ReplenishmentOrderRepository
+     */
+    private $replenishmentOrdersRepository;
+
+    /**
+     * @var MessageProducerInterface
+     */
+    private $messageProducer;
+
+    /**
+     * @param ReplenishmentOrderRepository $replenishmentOrderRepository
+     * @param MessageProducerInterface $messageProducer
+     */
+    public function __construct(
+        ReplenishmentOrderRepository $replenishmentOrderRepository,
+        MessageProducerInterface $messageProducer
+    ) {
+        $this->replenishmentOrdersRepository = $replenishmentOrderRepository;
+        $this->messageProducer = $messageProducer;
+        
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
@@ -27,13 +53,7 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends ContainerAwareC
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $replenishmentOrdersRepository = $this
-            ->getContainer()
-            ->get('marelloenterprise_replenishment.repository.replenishment_order');
-        $messageProducer = $this
-            ->getContainer()
-            ->get('oro_message_queue.client.message_producer');
-        $notAllocatedOrders = $replenishmentOrdersRepository->findNotAllocated();
+        $notAllocatedOrders = $this->replenishmentOrdersRepository->findNotAllocated();
         
         if (empty($notAllocatedOrders)) {
             $output->writeln('<info>There are no Replenishment Orders to process</info>');
@@ -43,7 +63,7 @@ class AllocateDelayedReplenishmentOrdersInventoryCommand extends ContainerAwareC
         foreach ($notAllocatedOrders as $order) {
             $ordersIds[] = $order->getId();
         }
-        $messageProducer->send(
+        $this->messageProducer->send(
             AllocateReplenishmentOrdersInventoryProcessor::TOPIC,
             [
                 AllocateReplenishmentOrdersInventoryProcessor::ORDERS => $ordersIds,

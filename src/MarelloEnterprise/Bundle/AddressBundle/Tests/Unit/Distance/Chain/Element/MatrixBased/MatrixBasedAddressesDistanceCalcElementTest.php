@@ -2,26 +2,23 @@
 
 namespace MarelloEnterprise\Bundle\AddressBundle\Tests\Unit\Distance\Chain\Element\MatrixBased;
 
-use Psr\Log\LoggerInterface;
-
-use Symfony\Component\HttpFoundation\Session\Session;
-
-use PHPUnit\Framework\TestCase;
-
-use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
-
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
+use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\MatrixBasedAddressesDistanceCalcElement;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderInterface;
+use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\DistanceMatrixApiResultFactory;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResult;
 use MarelloEnterprise\Bundle\GoogleApiBundle\Result\GoogleApiResultInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Provider\GoogleApiResultsProviderInterface;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\AddressesDistanceCalculatorInterface;
-use MarelloEnterprise\Bundle\GoogleApiBundle\Result\Factory\DistanceMatrixApiResultFactory;
-use MarelloEnterprise\Bundle\AddressBundle\Distance\Chain\Element\MatrixBased\MatrixBasedAddressesDistanceCalcElement;
+use Oro\Bundle\FeatureToggleBundle\Checker\FeatureChecker;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class MatrixBasedAddressesDistanceCalcElementTest extends TestCase
 {
     /**
-     * @var GoogleApiResultsProviderInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @var GoogleApiResultsProviderInterface|MockObject
      */
     protected $distanceMatrixResultsProvider;
 
@@ -36,9 +33,9 @@ class MatrixBasedAddressesDistanceCalcElementTest extends TestCase
     protected function setUp()
     {
         $this->distanceMatrixResultsProvider = $this->createMock(GoogleApiResultsProviderInterface::class);
-        /** @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject $logger */
+        /** @var LoggerInterface|MockObject $logger */
         $logger = $this->createMock(LoggerInterface::class);
-        /** @var Session|\PHPUnit_Framework_MockObject_MockObject $session */
+        /** @var Session|MockObject $session */
         $session = $this->createMock(Session::class);
         $this->distanceCalculator =
             new MatrixBasedAddressesDistanceCalcElement(
@@ -54,15 +51,15 @@ class MatrixBasedAddressesDistanceCalcElementTest extends TestCase
      * @param bool $isFeatureEnabled
      * @param GoogleApiResultInterface $apiResults
      * @param float $expectedDistance
-     * @param AddressesDistanceCalculatorInterface|\PHPUnit_Framework_MockObject_MockObject $successor
+     * @param AddressesDistanceCalculatorInterface|MockObject $successor
      */
     public function testCalculate(
         $isFeatureEnabled,
         GoogleApiResultInterface $apiResults,
         $expectedDistance,
-        \PHPUnit_Framework_MockObject_MockObject $successor = null
+        MockObject $successor = null
     ) {
-        /** @var FeatureChecker|\PHPUnit_Framework_MockObject_MockObject $featureChecker */
+        /** @var FeatureChecker|MockObject $featureChecker */
         $featureChecker = $this->getMockBuilder(FeatureChecker::class)->disableOriginalConstructor()->getMock();
         $featureChecker->expects(static::once())
             ->method('isFeatureEnabled')

@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% if entity.id %}
     {% oro_title_set({params : {"%wfarule.label%": entity.rule.name|default('N/A'|trans) } }) %}
 {% else %}
@@ -30,9 +30,9 @@
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marelloenterprise_inventory_wfa_rule_index')) }}
-    {% if entity.id and resource_granted('marelloenterprise_inventory_wfa_rule_update') or resource_granted('marelloenterprise_inventory_wfa_rule_create') %}
+    {% if entity.id and is_granted('marelloenterprise_inventory_wfa_rule_update') or is_granted('marelloenterprise_inventory_wfa_rule_create') %}
         {% set html = '' %}
-        {% if resource_granted('marelloenterprise_inventory_wfa_rule_view') %}
+        {% if is_granted('marelloenterprise_inventory_wfa_rule_view') %}
             {% set html = UI.saveAndCloseButton({
                 'route': 'marelloenterprise_inventory_wfa_rule_view',
                 'params': {'id': '$id'}

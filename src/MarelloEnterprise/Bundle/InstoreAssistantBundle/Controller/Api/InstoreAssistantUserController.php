@@ -3,7 +3,6 @@
 namespace MarelloEnterprise\Bundle\InstoreAssistantBundle\Controller\Api;
 
 use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Handler\InstoreAssistantRequestActionHandler;
-use MarelloEnterprise\Bundle\InstoreAssistantBundle\Api\Handler\InstoreAssistantRequestHandler;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\ApiBundle\Controller\RestApiController;
 use Symfony\Component\HttpFoundation\Request;

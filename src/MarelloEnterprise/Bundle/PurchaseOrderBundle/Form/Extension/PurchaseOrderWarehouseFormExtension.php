@@ -27,12 +27,12 @@ class PurchaseOrderWarehouseFormExtension extends AbstractTypeExtension
             ]
         );
     }
-
+    
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public static function getExtendedTypes()
     {
-        return PurchaseOrderCreateStepTwoType::class;
+        return [PurchaseOrderCreateStepTwoType::class];
     }
 }

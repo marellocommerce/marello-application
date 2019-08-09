@@ -4,12 +4,12 @@ namespace MarelloEnterprise\Bundle\ReplenishmentBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use MarelloEnterprise\Bundle\ReplenishmentBundle\Entity\ReplenishmentOrder;
 
-class ReplenishmentOrderController extends Controller
+class ReplenishmentOrderController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marelloenterprise_replenishmentorder_index")

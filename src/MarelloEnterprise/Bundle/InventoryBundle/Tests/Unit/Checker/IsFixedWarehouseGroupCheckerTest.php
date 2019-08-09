@@ -75,7 +75,7 @@ class IsFixedWarehouseGroupCheckerTest extends TestCase
      */
     private function buildWarehouse($typeName)
     {
-        $whType = $this->getEntity(WarehouseType::class, ['name' => $typeName]);
+        $whType = $this->getEntity(WarehouseType::class, [], [$typeName]);
         return $this->getEntity(Warehouse::class, ['warehouseType' => $whType]);
     }
 }
