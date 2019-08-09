@@ -33,6 +33,7 @@ services:
 
     marello_shipping.integration.ups.service_data_factory:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\UPSShippingServiceDataFactory
+        public: true
         arguments:
             - '@oro_config.manager'
             - '@doctrine'
@@ -41,6 +42,7 @@ services:
 
     marello_shipping.integration.manual.service_integration:
         class: Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceIntegration
+        public: true
         arguments:
             - '@doctrine'
         tags:
@@ -48,6 +50,7 @@ services:
 
     marello_shipping.integration.manual.service_data_factory:
         class: Marello\Bundle\ShippingBundle\Integration\Manual\ManualShippingServiceDataFactory
+        public: true
         arguments:
             - '@oro_config.manager'
             - '@doctrine'
@@ -57,6 +60,7 @@ services:
     # UPS Request buiders
     marello_shipping.integration.ups.request_builder.shipment_confirm:
         class: Marello\Bundle\ShippingBundle\Integration\UPS\RequestBuilder\ShipmentConfirmRequestBuilder
+        public: true
         arguments:
             - '@oro_config.manager'
 
@@ -133,6 +137,7 @@ services:
 
     marello_shipping.method.event.dispatcher.method_renaming:
         class: 'Marello\Bundle\ShippingBundle\Method\Event\BasicMethodRenamingEventDispatcher'
+        public: true
         arguments:
             - '@event_dispatcher'
 

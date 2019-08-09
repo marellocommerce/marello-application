@@ -10,6 +10,7 @@ use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelGroupRepository;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Marello\Bundle\SalesBundle\EventListener\Doctrine\SalesChannelGroupListener;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -38,14 +39,14 @@ class SalesChannelGroupListenerTest extends TestCase
      * @dataProvider preRemoveDataProvider
      * @param int $flushQty
      * @param int $persistQty
-     * @param \PHPUnit_Framework_MockObject_MockObject|null $systemSalesChannelGroup
-     * @param \PHPUnit_Framework_MockObject_MockObject|null $systemLink
+     * @param MockObject|null $systemSalesChannelGroup
+     * @param MockObject|null $systemLink
      */
     public function testPreRemove(
         $flushQty,
         $persistQty,
-        \PHPUnit_Framework_MockObject_MockObject $systemSalesChannelGroup = null,
-        \PHPUnit_Framework_MockObject_MockObject $systemLink = null
+        MockObject $systemSalesChannelGroup = null,
+        MockObject $systemLink = null
     ) {
         /** @var SalesChannel|\PHPUnit_Framework_MockObject_MockObject $salesChannel **/
         $salesChannel = $this->createMock(SalesChannel::class);
@@ -143,11 +144,11 @@ class SalesChannelGroupListenerTest extends TestCase
     /**
      * @dataProvider postPersistDataProvider
      * @param int $qty
-     * @param \PHPUnit_Framework_MockObject_MockObject|null $defaultLink
+     * @param MockObject|null $defaultLink
      */
-    public function testPostPersist($qty, \PHPUnit_Framework_MockObject_MockObject $defaultLink = null)
+    public function testPostPersist($qty, MockObject $defaultLink = null)
     {
-        /** @var SalesChannelGroup|\PHPUnit_Framework_MockObject_MockObject $salesChannelGroup **/
+        /** @var SalesChannelGroup|MockObject $salesChannelGroup **/
         $salesChannelGroup = $this->createMock(SalesChannelGroup::class);
 
         $repository = $this->createMock(WarehouseChannelGroupLinkRepository::class);

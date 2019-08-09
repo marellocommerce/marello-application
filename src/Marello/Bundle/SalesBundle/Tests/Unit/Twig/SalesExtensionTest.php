@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Marello\Bundle\SalesBundle\Twig\SalesExtension;
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
+use Twig\TwigFunction;
 
 class SalesExtensionTest extends TestCase
 {
@@ -31,7 +32,7 @@ class SalesExtensionTest extends TestCase
     {
         static::assertEquals(
             [
-                new \Twig_SimpleFunction(
+                new TwigFunction(
                     'marello_sales_has_active_channels',
                     [$this->extension, 'checkActiveChannels']
                 )

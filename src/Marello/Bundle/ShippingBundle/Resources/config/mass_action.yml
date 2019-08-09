@@ -5,6 +5,7 @@ services:
             - 'marello_shipping.mass_action.status_handler'
             - 'marello_status_shipping_rule_massaction'
             - true
+        public: true
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: shippingruleenable }
@@ -15,6 +16,7 @@ services:
             - 'marello_shipping.mass_action.status_handler'
             - 'marello_status_shipping_rule_massaction'
             - false
+        public: true
         shared: false
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: shippingruledisable }

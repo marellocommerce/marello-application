@@ -24,18 +24,11 @@ marello:
             base_amount.label:      Base Amount
             id.label:               Id
             name.label:             Name
-            quantity.label:         Quantity
-            refund_amount.label:    Refund Amount
             order_item.label:       Order Item
             refund.label:           Refund
             quantity_ordered.label: Ordered Quantity
             quantity.label:         Refunded Quantity
             refund_amount.label:    Refunded Amount
-            name.label:             Item Name
-            refund_amount.label:    Refund Amount
-            order_item.label:       Order Item
-            quantity.label:         Refunded Quantity
-            refund.label:           Refund
 
         form:
             price.label:            Price (incl VAT)

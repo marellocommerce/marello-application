@@ -4,7 +4,7 @@ namespace Marello\Bundle\ShippingBundle\Provider;
 
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodInterface;
 use Marello\Bundle\ShippingBundle\Method\ShippingMethodProviderInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BasicShippingMethodChoicesProvider implements ShippingMethodChoicesProviderInterface
 {

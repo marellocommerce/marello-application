@@ -5,13 +5,13 @@ namespace Marello\Bundle\InventoryBundle\Controller;
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Form\Type\InventoryItemType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Symfony\Component\HttpFoundation\Request;
 
-class InventoryItemController extends Controller
+class InventoryItemController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_inventory_inventory_index")

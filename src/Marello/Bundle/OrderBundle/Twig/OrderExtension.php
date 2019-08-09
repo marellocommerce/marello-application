@@ -4,8 +4,10 @@ namespace Marello\Bundle\OrderBundle\Twig;
 
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class OrderExtension extends \Twig_Extension
+class OrderExtension extends AbstractExtension
 {
     const NAME = 'marello_order';
     
@@ -40,7 +42,7 @@ class OrderExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_order_can_return',
                 [$this, 'canReturn']
             )

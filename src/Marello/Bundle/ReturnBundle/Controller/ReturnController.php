@@ -8,11 +8,11 @@ use Marello\Bundle\ReturnBundle\Form\Type\ReturnType;
 use Marello\Bundle\ReturnBundle\Form\Type\ReturnUpdateType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
 
-class ReturnController extends Controller
+class ReturnController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_return_return_index")

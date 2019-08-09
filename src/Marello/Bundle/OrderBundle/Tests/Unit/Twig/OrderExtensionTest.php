@@ -117,16 +117,6 @@ class OrderExtensionTest extends WebTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        /** @var WorkflowItem $workflowItem */
-        $workflowItem = $this->getMockBuilder(WorkflowItem::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /** @var WorkflowStep $workflowStep */
-        $workflowStep = $this->getMockBuilder(WorkflowStep::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $this->workflowManager
             ->expects($this->once())
             ->method('getWorkflowItemsByEntity')

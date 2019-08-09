@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\LayoutBundle\Tests\Unit\Provider;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormInterface;
 
 use PHPUnit\Framework\TestCase;
@@ -89,7 +90,7 @@ class CompositeFormChangesProviderTest extends TestCase
 
     /**
      * @param $data
-     * @return FormChangesProviderInterface|\PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return FormChangesProviderInterface|MockObject
      */
     protected function createProviderMock($data)
     {

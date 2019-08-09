@@ -45,7 +45,7 @@
                             {{ UI.renderProperty( stepLabel|trans({}, "workflows"), stepName|trans({}, "workflows") ) }}
                         {% endfor %}
 
-                        {% set channelViewGranted = resource_granted('marello_saleschannel_update') %}
+                        {% set channelViewGranted = is_granted('marello_saleschannel_update') %}
                         {%- if channelViewGranted -%}
                             {%- set channelData -%}
                                 <a href="{{ path('marello_sales_saleschannel_update', {'id': entity.salesChannel.id}) }}">

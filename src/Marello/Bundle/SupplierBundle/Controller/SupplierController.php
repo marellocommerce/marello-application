@@ -7,14 +7,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 
-class SupplierController extends Controller
+class SupplierController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_supplier_supplier_index")

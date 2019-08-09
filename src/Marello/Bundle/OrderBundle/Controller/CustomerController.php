@@ -5,10 +5,10 @@ namespace Marello\Bundle\OrderBundle\Controller;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
-class CustomerController extends Controller
+class CustomerController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_order_customer_index")
@@ -79,8 +79,8 @@ class CustomerController extends Controller
             $customer = new Customer();
         }
 
-        return $this->get('oro_form.model.update_handler')
-            ->handleUpdate(
+        return $this->get('oro_form.update_handler')
+            ->update(
                 $customer,
                 $this->get('marello_order.form.customer'),
                 function (Customer $entity) {

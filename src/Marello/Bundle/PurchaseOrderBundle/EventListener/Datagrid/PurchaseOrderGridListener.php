@@ -2,12 +2,10 @@
 
 namespace Marello\Bundle\PurchaseOrderBundle\EventListener\Datagrid;
 
-use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Doctrine\ORM\EntityManager;
+use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 
 class PurchaseOrderGridListener
 {

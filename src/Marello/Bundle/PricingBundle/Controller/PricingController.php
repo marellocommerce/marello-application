@@ -3,12 +3,12 @@
 namespace Marello\Bundle\PricingBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-class PricingController extends Controller
+class PricingController extends AbstractController
 {
     /**
      * @Config\Route("/get-currency-by-channel", name="marello_pricing_currency_by_channel")

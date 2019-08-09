@@ -82,7 +82,7 @@ datagrids:
                 inventoryQty:   { data_name: inventoryQty }
                 status:         { data_name: s.label }
             default:
-                inventoryQty:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                inventoryQty:  '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
         options:
             entityHint: report data
             export: false
@@ -125,7 +125,7 @@ datagrids:
                     createdAt:             { data_name: createdAt }
                     quantitySold:          { data_name: quantitySold }
                 default:
-                    quantitySold:  %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                    quantitySold:  '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
             options:
                 entityHint: report data
                 export: false

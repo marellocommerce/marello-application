@@ -27,7 +27,7 @@
                         </div>
                         {{ UI.renderProperty('marello.tax.taxcode.code.label'|trans, entity.code) }}
                         {{ UI.renderProperty('marello.tax.taxcode.description.label'|trans, entity.description) }}
-                        {% set taxCodeViewGranted = resource_granted('marello_tax_taxcode_update') %}
+                        {% set taxCodeViewGranted = is_granted('marello_tax_taxcode_update') %}
                         {%- if taxCodeViewGranted -%}
                             {%- set taxCodeData -%}
                                 <a href="{{ path('marello_tax_taxcode_update', {'id': entity.id}) }}">

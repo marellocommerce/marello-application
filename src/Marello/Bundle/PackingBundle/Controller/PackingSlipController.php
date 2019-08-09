@@ -2,17 +2,12 @@
 
 namespace Marello\Bundle\PackingBundle\Controller;
 
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\PackingBundle\Entity\PackingSlip;
-use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
-use Marello\Bundle\ReturnBundle\Form\Type\ReturnUpdateType;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class PackingSlipController extends Controller
+class PackingSlipController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_packing_packingslip_index")

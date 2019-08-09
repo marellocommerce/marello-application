@@ -1,6 +1,7 @@
 services:
     marello_productprice.pricing.provider.currency_provider:
         class: Marello\Bundle\PricingBundle\Provider\CurrencyProvider
+        public: true
         arguments:
             - '@doctrine'
             - '@oro_locale.settings'

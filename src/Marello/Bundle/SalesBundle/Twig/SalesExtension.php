@@ -3,8 +3,10 @@
 namespace Marello\Bundle\SalesBundle\Twig;
 
 use Marello\Bundle\SalesBundle\Entity\Repository\SalesChannelRepository;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class SalesExtension extends \Twig_Extension
+class SalesExtension extends AbstractExtension
 {
     const NAME = 'marello_sales';
 
@@ -27,7 +29,7 @@ class SalesExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_sales_has_active_channels',
                 [$this, 'checkActiveChannels']
             )

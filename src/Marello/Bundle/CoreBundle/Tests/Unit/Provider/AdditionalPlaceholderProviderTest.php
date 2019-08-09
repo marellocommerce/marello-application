@@ -2,12 +2,9 @@
 
 namespace Marello\Bundle\CoreBundle\Tests\Unit\Provider;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-use PHPUnit\Framework\TestCase;
-
-use Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider;
 use Marello\Bundle\CoreBundle\Model\AdditionalPlaceholderDataInterface;
+use Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider;
+use PHPUnit\Framework\TestCase;
 
 class AdditionalPlaceholderProviderTest extends TestCase
 {
