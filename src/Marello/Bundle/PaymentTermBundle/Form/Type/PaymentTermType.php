@@ -16,6 +16,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class PaymentTermType extends AbstractType
 {
+    const BLOCK_PREFIX = 'payment_term';
+
     /**
      * @inheritDoc
      */
@@ -48,5 +50,13 @@ class PaymentTermType extends AbstractType
                 'data_class' => PaymentTerm::class,
             ])
         ;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getBlockPrefix()
+    {
+        return self::BLOCK_PREFIX;
     }
 }
