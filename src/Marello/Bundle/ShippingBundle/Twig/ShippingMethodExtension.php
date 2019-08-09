@@ -6,8 +6,10 @@ use Marello\Bundle\ShippingBundle\Checker\ShippingMethodEnabledByIdentifierCheck
 use Marello\Bundle\ShippingBundle\Event\ShippingMethodConfigDataEvent;
 use Marello\Bundle\ShippingBundle\Formatter\ShippingMethodLabelFormatter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class ShippingMethodExtension extends \Twig_Extension
+class ShippingMethodExtension extends AbstractExtension
 {
     const SHIPPING_METHOD_EXTENSION_NAME = 'marello_shipping_method';
     const DEFAULT_METHOD_CONFIG_TEMPLATE
@@ -92,23 +94,23 @@ class ShippingMethodExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_get_shipping_method_label',
                 [$this->shippingMethodLabelFormatter, 'formatShippingMethodLabel']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_get_shipping_method_type_label',
                 [$this->shippingMethodLabelFormatter, 'formatShippingMethodTypeLabel']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_shipping_method_with_type_label',
                 [$this->shippingMethodLabelFormatter, 'formatShippingMethodWithTypeLabel']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_shipping_method_config_template',
                 [$this, 'getShippingMethodConfigRenderData']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_shipping_method_enabled',
                 [$this, 'isShippingMethodEnabled']
             )

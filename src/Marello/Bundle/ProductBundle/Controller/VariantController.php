@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\ProductBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -14,7 +14,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\Variant;
 
-class VariantController extends Controller
+class VariantController extends AbstractController
 {
     /**
      * @Config\Route("/create/parent/{id}", requirements={"id"="\d+"}, name="marello_product_create_variant")

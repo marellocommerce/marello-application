@@ -9,16 +9,14 @@ use Marello\Bundle\PurchaseOrderBundle\Form\Handler\PurchaseOrderCreateStepOneHa
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepOneType;
 use Marello\Bundle\PurchaseOrderBundle\Form\Type\PurchaseOrderCreateStepTwoType;
 use Marello\Bundle\SupplierBundle\Entity\Supplier;
-
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
-class PurchaseOrderController extends Controller
+class PurchaseOrderController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_purchaseorder_purchaseorder_index")
@@ -219,6 +217,7 @@ class PurchaseOrderController extends Controller
     }
 
     /**
+     * @param PurchaseOrder|null $purchaseOrder
      * @Config\Route(
      *      "/widget/products/{id}",
      *      name="marello_purchase_order_widget_products_by_supplier",

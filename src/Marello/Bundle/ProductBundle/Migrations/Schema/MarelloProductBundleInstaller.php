@@ -28,7 +28,7 @@ class MarelloProductBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_7';
+        return 'v1_8';
     }
 
     /**
@@ -72,19 +72,9 @@ class MarelloProductBundleInstaller implements
         $table->addColumn('name', 'string', ['length' => 255]);
         $table->addColumn('sku', 'string', ['length' => 255]);
         $table->addColumn('manufacturing_code', 'string', ['length' => 255, 'notnull' => false]);
-        $table->addColumn(
-            'price',
-            'money',
-            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
-        );
         $table->addColumn('created_at', 'datetime');
-        $table->addColumn('updated_at', 'datetime');
+        $table->addColumn('updated_at', 'datetime', ['notnull' => false]);
         $table->addColumn('type', 'string', ['notnull' => false, 'length' => 255]);
-        $table->addColumn(
-            'cost',
-            'money',
-            ['notnull' => false, 'precision' => 19, 'scale' => 4, 'comment' => '(DC2Type:money)']
-        );
         $table->addColumn('data', 'json_array', ['notnull' => false, 'comment' => '(DC2Type:json_array)']);
         $table->addColumn('weight', 'float', ['notnull' => false]);
         $table->addColumn('warranty', 'integer', ['notnull' => false]);

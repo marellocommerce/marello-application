@@ -5,7 +5,7 @@
 {% set gridName  = 'marello-products-grid' %}
 
 {% block navButtons %}
-    {% if resource_granted('marello_product_create') %}
+    {% if is_granted('marello_product_create') %}
         {{ UI.addButton({
             'path': path('marello_product_create'),
             'entity_label': 'marello.product.entity_label'|trans

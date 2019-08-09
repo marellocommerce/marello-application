@@ -6,13 +6,13 @@ use Marello\Bundle\TaxBundle\Entity\TaxCode;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * Class TaxCodeController
  * @package Marello\Bundle\TaxBundle\Controller
  */
-class TaxCodeController extends Controller
+class TaxCodeController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_tax_taxcode_index")

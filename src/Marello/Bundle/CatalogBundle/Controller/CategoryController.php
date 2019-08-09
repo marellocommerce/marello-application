@@ -5,9 +5,9 @@ namespace Marello\Bundle\CatalogBundle\Controller;
 use Marello\Bundle\CatalogBundle\Entity\Category;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class CategoryController extends Controller
+class CategoryController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_category_index")

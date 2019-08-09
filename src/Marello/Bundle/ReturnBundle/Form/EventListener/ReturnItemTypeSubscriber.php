@@ -3,8 +3,6 @@
 namespace Marello\Bundle\ReturnBundle\Form\EventListener;
 
 use Doctrine\ORM\EntityManager;
-use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\ReturnBundle\Entity\ReturnEntity;
 use Marello\Bundle\ReturnBundle\Entity\ReturnItem;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

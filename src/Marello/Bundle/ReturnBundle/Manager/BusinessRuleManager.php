@@ -2,9 +2,6 @@
 
 namespace Marello\Bundle\ReturnBundle\Manager;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-
 class BusinessRuleManager
 {
     /** @var ReturnBusinessRuleRegistry $businessRuleregistry */

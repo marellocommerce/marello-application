@@ -5,8 +5,9 @@ namespace Marello\Bundle\ProductBundle\Twig;
 use Marello\Bundle\CatalogBundle\Provider\CategoriesIdsProvider;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SalesBundle\Provider\ChannelProvider;
+use Twig\Extension\AbstractExtension;
 
-class ProductExtension extends \Twig_Extension
+class ProductExtension extends AbstractExtension
 {
     const NAME = 'marello_product';
     

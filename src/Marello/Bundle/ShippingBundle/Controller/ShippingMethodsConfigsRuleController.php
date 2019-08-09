@@ -8,13 +8,13 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Marello\Bundle\ShippingBundle\Entity\ShippingMethodsConfigsRule;
 use Marello\Bundle\ShippingBundle\Form\Handler\ShippingMethodsConfigsRuleHandler;
 use Marello\Bundle\ShippingBundle\Form\Type\ShippingMethodsConfigsRuleType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class ShippingMethodsConfigsRuleController extends Controller
+class ShippingMethodsConfigsRuleController extends AbstractController
 {
     /**
      * @Route("/", name="marello_shipping_methods_configs_rule_index")

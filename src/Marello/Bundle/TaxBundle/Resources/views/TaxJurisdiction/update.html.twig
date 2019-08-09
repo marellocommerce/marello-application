@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-
+{% import 'OroUIBundle::macros.html.twig' as UI %}
 {% set formAction = entity.id ? path('marello_tax_taxjurisdiction_update', {id: entity.id}) : path('marello_tax_taxjurisdiction_create') %}
 
 {% oro_title_set({params : {"%taxCode%": entity.code|default('N/A'|trans), '%entityName%': 'marello.tax.taxjurisdiction.entity_label'|trans} }) %}
@@ -8,9 +8,9 @@
     {{ parent() }}
 
     {{ UI.cancelButton(path('marello_tax_taxjurisdiction_index')) }}
-    {% if entity.id and resource_granted('marello_tax_taxjurisdiction_update') or resource_granted('marello_tax_taxjurisdiction_create') %}
+    {% if entity.id and is_granted('marello_tax_taxjurisdiction_update') or is_granted('marello_tax_taxjurisdiction_create') %}
         {% set html = '' %}
-        {% if resource_granted('marello_tax_taxjurisdiction_view') %}
+        {% if is_granted('marello_tax_taxjurisdiction_view') %}
             {% set html = UI.saveAndCloseButton({
             'route': 'marello_tax_taxjurisdiction_view',
             'params': {'id': '$id'}

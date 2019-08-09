@@ -3,24 +3,21 @@
 namespace Marello\Bundle\InventoryBundle\Model\InventoryBalancer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
+use Marello\Bundle\InventoryBundle\DependencyInjection\Configuration;
+use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
+use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
+use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
+use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
+use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryHandler;
+use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
+use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry;
+use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategyInterface;
+use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Entity\ProductInterface;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-
-use Marello\Bundle\ProductBundle\Entity\Product;
-use Marello\Bundle\InventoryBundle\Entity\Warehouse;
-use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevel;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
-use Marello\Bundle\InventoryBundle\Manager\InventoryItemManager;
-use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
-use Marello\Bundle\InventoryBundle\DependencyInjection\Configuration;
-use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategyInterface;
-use Marello\Bundle\InventoryBundle\Strategy\BalancerStrategiesRegistry;
-use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
-use Marello\Bundle\InventoryBundle\Model\InventoryBalancer\BalancedResultObject;
-use Marello\Bundle\InventoryBundle\Model\BalancedInventory\BalancedInventoryHandler;
 
 class InventoryBalancer
 {

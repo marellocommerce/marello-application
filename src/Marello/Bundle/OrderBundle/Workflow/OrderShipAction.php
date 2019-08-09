@@ -3,19 +3,15 @@
 namespace Marello\Bundle\OrderBundle\Workflow;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
-
+use Marello\Bundle\InventoryBundle\Entity\Warehouse;
+use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
 use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContextFactory;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Component\ConfigExpression\ContextAccessor;
-
+use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderItem;
-use Marello\Bundle\InventoryBundle\Event\InventoryUpdateEvent;
-use Marello\Bundle\InventoryBundle\Model\InventoryUpdateContext;
-
-use Marello\Bundle\InventoryBundle\Provider\OrderWarehousesProviderInterface;
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Component\ConfigExpression\ContextAccessor;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class OrderShipAction extends OrderTransitionAction
 {
@@ -71,6 +67,7 @@ class OrderShipAction extends OrderTransitionAction
      * @param $inventoryUpdateQty
      * @param $allocatedInventoryQty
      * @param Order $entity
+     * @param Warehouse $warehouse
      */
     protected function handleInventoryUpdate($item, $inventoryUpdateQty, $allocatedInventoryQty, $entity, $warehouse)
     {

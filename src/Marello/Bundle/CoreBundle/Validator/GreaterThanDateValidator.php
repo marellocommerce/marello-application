@@ -17,12 +17,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Marello\Bundle\CoreBundle\Validator\Constraints\GreaterThanDate;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
-use Marello\Bundle\CoreBundle\Validator\Constraints\UniqueEntityCollection;
-use Marello\Bundle\CoreBundle\Validator\Exception\InvalidMethodException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class GreaterThanDateValidator extends ConstraintValidator
 {
@@ -106,14 +102,5 @@ class GreaterThanDateValidator extends ConstraintValidator
                 ->atPath($errorPath)
                 ->addViolation();
         }
-    }
-
-    /**
-     * Get property accessor
-     * @return \Symfony\Component\PropertyAccess\PropertyAccessor
-     */
-    private function getPropertyAccessor()
-    {
-        return PropertyAccess::createPropertyAccessor();
     }
 }

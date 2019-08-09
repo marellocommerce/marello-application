@@ -7,7 +7,6 @@ data:
             name: product1
             manufacturingCode: null
             productType: null
-            cost: null
             weight: 1
             warranty: null
             data: null
@@ -48,7 +47,6 @@ data:
             name: 'product 2'
             manufacturingCode: null
             productType: null
-            cost: null
             weight: 2
             warranty: null
             data: null
@@ -95,7 +93,6 @@ data:
             name: 'product 3'
             manufacturingCode: null
             productType: null
-            cost: null
             weight: 5
             warranty: null
             data: null
@@ -142,7 +139,6 @@ data:
             name: 'product 4'
             manufacturingCode: null
             productType: null
-            cost: null
             weight: 10
             warranty: null
             data: null
@@ -195,7 +191,6 @@ data:
             name: product5
             manufacturingCode: null
             productType: null
-            cost: null
             weight: 1
             warranty: null
             data: null
@@ -236,7 +231,6 @@ data:
             name: product6
             manufacturingCode: null
             productType: null
-            cost: null
             weight: 1
             warranty: null
             data: null

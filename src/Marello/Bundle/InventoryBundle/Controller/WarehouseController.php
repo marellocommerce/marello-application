@@ -5,11 +5,11 @@ namespace Marello\Bundle\InventoryBundle\Controller;
 use Marello\Bundle\InventoryBundle\Form\Type\WarehouseType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class WarehouseController extends Controller
+class WarehouseController extends AbstractController
 {
     /**
      * @Config\Route("/update-default", requirements={"id"="\d+"}, name="marello_inventory_warehouse_updatedefault")

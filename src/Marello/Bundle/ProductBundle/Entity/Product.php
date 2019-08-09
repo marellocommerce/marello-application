@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
@@ -75,6 +76,8 @@ class Product extends ExtendProduct implements
     InventoryItemAwareInterface,
     AttributeFamilyAwareInterface
 {
+    use EntityCreatedUpdatedAtTrait;
+    
     const DEFAULT_PRODUCT_TYPE = 'simple';
  
     /**
@@ -180,23 +183,6 @@ class Product extends ExtendProduct implements
      * )
      */
     protected $type;
-
-    /**
-     * @var double
-     *
-     * @ORM\Column(name="cost", type="money", nullable=true)
-     * @Oro\ConfigField(
-     *      defaultValues={
-     *          "dataaudit"={
-     *              "auditable"=true
-     *          },
-     *          "importexport"={
-     *              "excluded"=true
-     *          }
-     *      }
-     * )
-     */
-    protected $cost;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -987,22 +973,6 @@ class Product extends ExtendProduct implements
         $this->preferredSupplier = $preferredSupplier;
 
         return $this;
-    }
-
-    /**
-     * @ORM\PreUpdate
-     */
-    public function preUpdateTimestamp()
-    {
-        $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function prePersistTimestamp()
-    {
-        $this->createdAt = $this->updatedAt = new \DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**

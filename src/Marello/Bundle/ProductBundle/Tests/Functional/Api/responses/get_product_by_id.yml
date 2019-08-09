@@ -6,7 +6,6 @@ data:
         name: product1
         manufacturingCode: null
         productType: null
-        cost: null
         weight: 1
         warranty: null
         data: null

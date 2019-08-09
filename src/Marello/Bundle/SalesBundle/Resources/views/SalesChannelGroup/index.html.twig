@@ -4,7 +4,7 @@
 {% set pageTitle = 'marello.sales.saleschannelgroup.entity_plural_label'|trans %}
 
 {% block navButtons %}
-    {% if resource_granted('marello_sales_saleschannelgroup_create') %}
+    {% if is_granted('marello_sales_saleschannelgroup_create') %}
         <div class="btn-group">
             {{ UI.addButton({
                 'path': path('marello_sales_saleschannelgroup_create'),

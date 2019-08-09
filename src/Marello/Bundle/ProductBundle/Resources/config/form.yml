@@ -124,7 +124,7 @@ services:
     ## form handlers
     marello_product.product_form.handler:
         class: '%marello_product.product_form.handler.class%'
-        scope: request
+        public: true
         arguments:
             - '@marello_product.product.form'
             - '@request_stack'
@@ -132,7 +132,7 @@ services:
 
     marello_product.product_variant_form.handler:
         class: '%marello_product.product_variant_form.handler.class%'
-        scope: request
+        public: true
         arguments:
             - '@marello_product.product_variant.form'
             - '@request_stack'
@@ -141,6 +141,7 @@ services:
 
     marello_product.sales_channels_assign.handler:
         class: 'Marello\Bundle\ProductBundle\Form\Handler\ProductsSalesChannelsAssignHandler'
+        public: true
         arguments:
             - '@marello_product.products_assign_sales_channels.form'
             - '@request_stack'

@@ -2,19 +2,14 @@
 
 namespace Marello\Bundle\InventoryBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 use Marello\Bundle\InventoryBundle\Async\Topics;
 use Marello\Bundle\InventoryBundle\Entity\BalancedInventoryLevel;
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class BalancedInventoryLevelController extends Controller
+class BalancedInventoryLevelController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_inventory_balancedinventorylevel_index")

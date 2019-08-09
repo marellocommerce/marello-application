@@ -4,8 +4,10 @@ namespace Marello\Bundle\PurchaseOrderBundle\Twig;
 
 use Marello\Bundle\PurchaseOrderBundle\Entity\PurchaseOrder;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class PurchaseOrderExtension extends \Twig_Extension
+class PurchaseOrderExtension extends AbstractExtension
 {
     const NAME = 'marello_purchaseorder';
     
@@ -40,7 +42,7 @@ class PurchaseOrderExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_purchaseorder_can_edit',
                 [$this, 'canEdit']
             )

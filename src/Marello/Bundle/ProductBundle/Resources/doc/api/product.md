@@ -35,7 +35,6 @@ Example:
       "name": "9'4\" Super Magnum",
       "manufacturingCode": "TZH-529-udz-090",
       "productType": null,
-      "cost": null,
       "weight": 12,
       "warranty": null,
       "data": []

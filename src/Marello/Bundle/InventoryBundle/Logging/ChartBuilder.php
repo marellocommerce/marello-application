@@ -2,16 +2,11 @@
 
 namespace Marello\Bundle\InventoryBundle\Logging;
 
-use Doctrine\Bundle\DoctrineBundle\Registry;
-
-use Symfony\Component\Translation\TranslatorInterface;
-
-use Oro\Bundle\DashboardBundle\Helper\DateHelper;
-
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
-use Marello\Bundle\InventoryBundle\Entity\InventoryLevelLogRecord;
-use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
 use Marello\Bundle\InventoryBundle\Entity\Repository\InventoryLevelLogRecordRepository;
+use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
+use Oro\Bundle\DashboardBundle\Helper\DateHelper;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChartBuilder
 {
@@ -38,8 +33,9 @@ class ChartBuilder
     /**
      * ChartBuilder constructor.
      *
-     * @param Registry            $doctrine
-     * @param DateHelper          $dateHelper
+     * @param InventoryLevelLogRecordRepository $logRecordRepository
+     * @param InventoryTotalCalculator $calculator
+     * @param DateHelper $dateHelper
      * @param TranslatorInterface $translator
      */
     public function __construct(

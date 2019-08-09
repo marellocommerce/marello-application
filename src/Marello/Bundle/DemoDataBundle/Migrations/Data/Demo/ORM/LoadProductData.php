@@ -7,6 +7,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\ProductBundle\Migrations\Data\ORM\LoadDefaultAttributeFamilyData;
+use Marello\Bundle\SalesBundle\Entity\SalesChannel;
 use Oro\Bundle\EntityConfigBundle\Attribute\Entity\AttributeFamily;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -102,6 +103,7 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
         $product->setStatus($status);
         $channels = explode(';', $data['channel']);
         foreach ($channels as $channelCode) {
+            /** @var SalesChannel $channel */
             $channel = $this->getReference($channelCode);
             $product->addChannel($channel);
         }

@@ -3,8 +3,10 @@
 namespace Marello\Bundle\CoreBundle\Twig;
 
 use Oro\Bundle\EntityBundle\ORM\DoctrineHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class FileExtension extends \Twig_Extension
+class FileExtension extends AbstractExtension
 {
     const NAME = 'marello_file';
 
@@ -39,7 +41,7 @@ class FileExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'get_file_by_id',
                 [$this, 'getFileById']
             )

@@ -16,7 +16,7 @@
 {% endblock pageHeader %}
 
 {% block navButtons %}
-    {% if resource_granted('EDIT', entity) and marello_return_is_on_hold(entity) %}
+    {% if is_granted('EDIT', entity) and marello_return_is_on_hold(entity) %}
         {{ UI.buttonSeparator() }}
         {{ UI.editButton({
             'path': path('marello_return_return_update', {'id': entity.id}),
@@ -31,7 +31,7 @@
         <div class="widget-content">
             <div class="row-fluid form-horizontal">
                 <div class="responsive-block">
-                    {% set orderViewGranted = resource_granted('marello_order_view') %}
+                    {% set orderViewGranted = is_granted('marello_order_view') %}
                     {%- if orderViewGranted -%}
                         {%- set orderNumberData -%}
                             <a href="{{ path('marello_order_order_view', {'id': entity.order.id}) }}">
@@ -43,7 +43,7 @@
                         {{ UI.renderProperty('marello.order.order_number.label'|trans, entity.order.orderNumber) }}
                     {%- endif -%}
                     {{ UI.renderProperty('marello.order.currency.label'|trans, entity.order.currency) }}
-                    {% set channelViewGranted = resource_granted('marello_saleschannel_update') %}
+                    {% set channelViewGranted = is_granted('marello_saleschannel_update') %}
                     {%- if channelViewGranted -%}
                         {%- set channelData -%}
                             <a href="{{ path('marello_sales_saleschannel_update', {'id': entity.order.salesChannel.id}) }}">
