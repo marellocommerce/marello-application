@@ -8,7 +8,6 @@ use Marello\Bundle\RuleBundle\Entity\RuleOwnerInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\Model\ExtendWFARule;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\OrganizationBundle\Entity\OrganizationAwareInterface;
-use Oro\Bundle\OrganizationBundle\Entity\OrganizationInterface;
 use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTrait;
 
 /**

@@ -10,9 +10,10 @@ use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseType;
 use Marello\Bundle\InventoryBundle\Provider\WarehouseTypeProviderInterface;
 use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseListener;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WarehouseListenerTest extends TestCase
 {
@@ -43,9 +44,9 @@ class WarehouseListenerTest extends TestCase
 
     /**
      * @dataProvider prePersistDataProvider
-     * @param \PHPUnit_Framework_MockObject_MockObject|null $warehouseGroup
+     * @param MockObject|null $warehouseGroup
      */
-    public function testPrePersist(\PHPUnit_Framework_MockObject_MockObject $warehouseGroup = null)
+    public function testPrePersist(MockObject $warehouseGroup = null)
     {
         $warehouseType = new WarehouseType(WarehouseTypeProviderInterface::WAREHOUSE_TYPE_GLOBAL);
         $warehouse = new Warehouse();

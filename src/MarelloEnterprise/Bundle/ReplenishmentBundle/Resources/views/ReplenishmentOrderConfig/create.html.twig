@@ -7,7 +7,7 @@
 
 {% block navButtons %}
     {{ UI.cancelButton(path('marelloenterprise_replenishmentorder_index')) }}
-    {% if resource_granted('marello_replenishment_order_config_create') %}
+    {% if is_granted('marello_replenishment_order_config_create') %}
         {% set html = UI.saveAndStayButton({
         'route': 'marelloenterprise_replenishmentorder_index'
         }) %}

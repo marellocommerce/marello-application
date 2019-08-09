@@ -2,11 +2,9 @@
 
 namespace MarelloEnterprise\Bundle\SalesBundle\EventListener\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseChannelGroupLink;
 use Marello\Bundle\SalesBundle\Entity\SalesChannelGroup;
-use Oro\Bundle\SecurityBundle\Exception\ForbiddenException;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class SalesChannelGroupListener

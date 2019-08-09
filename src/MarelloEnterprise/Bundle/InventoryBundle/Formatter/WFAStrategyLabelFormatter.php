@@ -3,7 +3,7 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Formatter;
 
 use MarelloEnterprise\Bundle\InventoryBundle\Strategy\WFAStrategiesRegistry;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WFAStrategyLabelFormatter
 {
