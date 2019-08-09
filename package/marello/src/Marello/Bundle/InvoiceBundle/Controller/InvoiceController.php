@@ -5,9 +5,9 @@ namespace Marello\Bundle\InvoiceBundle\Controller;
 use Marello\Bundle\InvoiceBundle\Entity\AbstractInvoice;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class InvoiceController extends Controller
+class InvoiceController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_invoice_invoice_index")

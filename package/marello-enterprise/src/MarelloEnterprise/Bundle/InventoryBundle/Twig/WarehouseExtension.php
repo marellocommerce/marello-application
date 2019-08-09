@@ -3,8 +3,10 @@
 namespace MarelloEnterprise\Bundle\InventoryBundle\Twig;
 
 use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class WarehouseExtension extends \Twig_Extension
+class WarehouseExtension extends AbstractExtension
 {
     const NAME = 'marelloenterprise_warehouse';
 
@@ -35,7 +37,7 @@ class WarehouseExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_inventory_is_fixed_warehousegroup',
                 [$this->isFixedWarehouseGroupChecker, 'check']
             )

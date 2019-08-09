@@ -6,7 +6,7 @@
 {% set pageTitle = 'marello.tax.taxjurisdiction.entity_plural_label'|trans %}
 
 {% block navButtons %}
-    {% if resource_granted('marello_tax_taxjurisdiction_create') %}
+    {% if is_granted('marello_tax_taxjurisdiction_create') %}
         <div class="btn-group">
             {{ UI.addButton({
                 'path': path('marello_tax_taxjurisdiction_create'),

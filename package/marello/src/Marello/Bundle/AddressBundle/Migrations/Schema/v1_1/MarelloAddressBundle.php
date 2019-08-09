@@ -25,6 +25,7 @@ class MarelloAddressBundle implements Migration
      * Update marello_address table
      *
      * @param Schema $schema
+     * @param QueryBag $queries
      */
     protected function updateDatetimeMarelloAddressTable(Schema $schema, QueryBag $queries)
     {

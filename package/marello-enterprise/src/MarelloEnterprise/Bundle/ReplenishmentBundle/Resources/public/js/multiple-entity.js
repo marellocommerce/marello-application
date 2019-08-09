@@ -209,7 +209,7 @@ define(['underscore', 'routing', 'backbone', './multiple-entity/view', './multip
             added = added.concat(_.keys(addedModels));
             added = added.filter(function(item, pos, self) {
                 return self.indexOf(item) == pos;
-            })
+            });
             
             _.intersection(added, removed).forEach(function(itemId) {
                 if (self._isInitialCollectionItem(itemId)) {

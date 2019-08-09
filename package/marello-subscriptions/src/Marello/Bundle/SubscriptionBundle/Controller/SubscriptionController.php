@@ -9,11 +9,11 @@ use Marello\Bundle\SubscriptionBundle\Form\Type\SubscriptionType;
 use Marello\Bundle\SubscriptionBundle\Form\Type\SubscriptionUpdateType;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class SubscriptionController extends Controller
+class SubscriptionController extends AbstractController
 {
     /**
      * @Config\Route("/", name="marello_subscription_index")

@@ -38,6 +38,7 @@ class PossibleShippingMethodsProvider implements FormChangesProviderInterface
      * @param ShippingContextFactoryInterface $factory
      * @param ShippingPricesConverter $priceConverter
      * @param ShippingPriceProviderInterface|null $priceProvider
+     * @param ShippingServiceRegistry $registry
      */
     public function __construct(
         ShippingContextFactoryInterface $factory,

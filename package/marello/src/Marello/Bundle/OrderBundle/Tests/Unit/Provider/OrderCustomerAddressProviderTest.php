@@ -34,7 +34,7 @@ class OrderCustomerAddressProviderTest extends TestCase
 
         static::assertEquals(
             [7 => $primaryAddress],
-            $this->orderCustomerAddressProvider->getCustomerAddresses($customer)
+            $this->orderCustomerAddressProvider->getCustomerBillingAddresses($customer)
         );
     }
 

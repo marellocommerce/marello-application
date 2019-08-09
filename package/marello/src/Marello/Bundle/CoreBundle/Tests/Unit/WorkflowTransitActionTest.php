@@ -2,17 +2,12 @@
 
 namespace Marello\Bundle\CoreBundle\Tests\Unit;
 
-use Symfony\Component\PropertyAccess\PropertyPath;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-
-use PHPUnit\Framework\TestCase;
-
-use Oro\Component\ConfigExpression\ContextAccessor;
-use Oro\Component\ConfigExpression\Tests\Unit\Fixtures\ItemStub;
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-
 use Marello\Bundle\CoreBundle\Workflow\Action\WorkflowTransitAction;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Oro\Component\ConfigExpression\ContextAccessor;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\PropertyAccess\PropertyPath;
 
 class WorkflowTransitActionTest extends TestCase
 {
@@ -78,7 +73,7 @@ class WorkflowTransitActionTest extends TestCase
     public function testInitializeExceptionNoTransitionName()
     {
         $options = [
-            'transitionNameInvalidArrayKey'      => $this->getPropertyPath(),
+            'transitionNameInvalidArrayKey' => $this->getPropertyPath(),
         ];
 
         $this->action->initialize($options);

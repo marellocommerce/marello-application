@@ -52,6 +52,7 @@ services:
 
     marello_core.form.url_generator:
         class: Marello\Bundle\CoreBundle\Form\UrlGenerator
+        public: true
         arguments:
             - '@oro_platform.provider.package'
             - '@oro_platform.url.cache'
@@ -67,7 +68,7 @@ services:
             - '@oro_soap.entity_serializer.query_factory'
             - '@oro_workflow.manager'
         calls:
-            - ["setFieldsFilter", ['@oro_security.serializer.filter_chain']]
+            - ["setFieldFilter", ['@oro_security.entity_serializer.field_filter']]
 
     marello_core.provider.additional_placeholder_provider:
         class: 'Marello\Bundle\CoreBundle\Provider\AdditionalPlaceholderProvider'

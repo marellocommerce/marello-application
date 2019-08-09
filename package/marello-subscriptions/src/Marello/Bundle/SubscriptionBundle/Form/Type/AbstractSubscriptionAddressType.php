@@ -4,10 +4,10 @@ namespace Marello\Bundle\SubscriptionBundle\Form\Type;
 
 use Marello\Bundle\AddressBundle\Entity\MarelloAddress;
 use Marello\Bundle\AddressBundle\Form\Type\AddressType as MarelloAddressType;
-use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Provider\OrderCustomerAddressProvider;
 use Marello\Bundle\SubscriptionBundle\Entity\Subscription;
 use Oro\Bundle\AddressBundle\Entity\AddressType;
+use Oro\Bundle\FormBundle\Form\Type\Select2ChoiceType;
 use Oro\Bundle\ImportExportBundle\Serializer\Serializer;
 use Oro\Bundle\LocaleBundle\Formatter\AddressFormatter;
 use Symfony\Component\Form\AbstractType;
@@ -17,7 +17,6 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Oro\Bundle\FormBundle\Form\Type\Select2ChoiceType;
 
 abstract class AbstractSubscriptionAddressType extends AbstractType
 {

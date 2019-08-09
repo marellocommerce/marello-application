@@ -3,7 +3,6 @@
 namespace Marello\Bundle\SubscriptionBundle\EventListener;
 
 use Marello\Bundle\OrderBundle\Event\OrderItemStatusUpdateEvent;
-use Marello\Bundle\ProductBundle\Entity\Product;
 use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadOrderItemSubscriptionStatus;
 
 class OrderItemStatusUpdateListener

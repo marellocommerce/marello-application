@@ -4,8 +4,10 @@ namespace Marello\Bundle\AddressBundle\Twig;
 
 use Oro\Bundle\LocaleBundle\Formatter\AddressFormatter;
 use Oro\Bundle\LocaleBundle\Model\AddressInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-class AddressExtension extends \Twig_Extension
+class AddressExtension extends AbstractExtension
 {
     /**
      * @var AddressFormatter
@@ -26,7 +28,7 @@ class AddressExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter(
+            new TwigFilter(
                 'marello_format_address',
                 [$this, 'formatAddress'],
                 ['is_safe' => ['html']]

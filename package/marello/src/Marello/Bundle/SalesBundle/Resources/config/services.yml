@@ -21,6 +21,7 @@ services:
 
     marello_sales.provider.basic_sales_channels_choices:
         class: Marello\Bundle\SalesBundle\Provider\BasicSalesChannelsChoicesProvider
+        public: true
         arguments:
             - '@oro_entity.doctrine_helper'
 
@@ -113,6 +114,7 @@ services:
 
     marello_sales.datagrid.saleschannelgroup.action_permission_provider:
         class: 'Marello\Bundle\SalesBundle\Datagrid\SalesChannelGroupActionPermissionProvider'
+        public: true
 
     marello_sales.condition.sales_channel_has_valid_integration:
         class: 'Marello\Bundle\SalesBundle\Condition\HasValidIntegration'

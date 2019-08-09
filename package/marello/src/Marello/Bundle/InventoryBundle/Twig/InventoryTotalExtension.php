@@ -4,8 +4,10 @@ namespace Marello\Bundle\InventoryBundle\Twig;
 
 use Marello\Bundle\InventoryBundle\Entity\InventoryItem;
 use Marello\Bundle\InventoryBundle\Model\InventoryTotalCalculator;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class InventoryTotalExtension extends \Twig_Extension
+class InventoryTotalExtension extends AbstractExtension
 {
     const NAME = 'marello_inventory_inventorylevel_total';
     
@@ -40,15 +42,15 @@ class InventoryTotalExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_inventory_get_inventorylevel_total_inventory',
                 [$this, 'getTotalInventory']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_inventory_get_inventorylevel_total_allocatedinventory',
                 [$this, 'getTotalAllocatedInventory']
             ),
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'marello_inventory_get_inventorylevel_total_virtualinventory',
                 [$this, 'getTotalVirtualInventory']
             )

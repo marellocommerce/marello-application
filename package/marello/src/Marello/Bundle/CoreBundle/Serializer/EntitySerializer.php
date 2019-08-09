@@ -3,24 +3,22 @@
 namespace Marello\Bundle\CoreBundle\Serializer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-
+use Doctrine\Common\Util\ClassUtils;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+use Oro\Bundle\EntityExtendBundle\Serializer\ExtendEntityFieldFilter;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Component\EntitySerializer\ConfigConverter;
 use Oro\Component\EntitySerializer\ConfigNormalizer;
+use Oro\Component\EntitySerializer\ConfigUtil;
 use Oro\Component\EntitySerializer\DataAccessorInterface as BaseDataAccessorInterface;
 use Oro\Component\EntitySerializer\DataNormalizer;
 use Oro\Component\EntitySerializer\DataTransformerInterface as BaseDataTransformerInterface;
 use Oro\Component\EntitySerializer\DoctrineHelper;
+use Oro\Component\EntitySerializer\EntityConfig;
 use Oro\Component\EntitySerializer\EntitySerializer as BaseEntitySerializer;
 use Oro\Component\EntitySerializer\FieldAccessor;
-use Oro\Component\EntitySerializer\Filter\EntityAwareFilterInterface;
-use Oro\Component\EntitySerializer\EntityConfig;
-use Oro\Component\EntitySerializer\ConfigUtil;
-use Oro\Component\EntitySerializer\SerializationHelper;
-
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityExtendBundle\Serializer\ExtendEntityFieldFilter;
 use Oro\Component\EntitySerializer\QueryFactory;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Oro\Component\EntitySerializer\SerializationHelper;
 
 class EntitySerializer extends BaseEntitySerializer
 {
@@ -95,9 +93,9 @@ class EntitySerializer extends BaseEntitySerializer
             $isReference = count($path) > 1;
 
             if (null !== $this->fieldFilter && !$isReference) {
-                $isFieldAllowed = $this->fieldFilter->checkField($entity, $entityClass, $propertyPath);
-                if (EntityAwareFilterInterface::FILTER_NOTHING !== $isFieldAllowed) {
-                    if (EntityAwareFilterInterface::FILTER_VALUE === $isFieldAllowed) {
+                $fieldCheckResult = $this->fieldFilter->checkField($entity, $entityClass, $propertyPath);
+                if (null !== $fieldCheckResult) {
+                    if (false === $fieldCheckResult) {
                         // return field but without value
                         $result[$field] = null;
                     }
@@ -120,37 +118,27 @@ class EntitySerializer extends BaseEntitySerializer
                                 $entityMetadata,
                                 $path
                             );
+                            if (!$targetEntityClass) {
+                                $targetEntityClass = ClassUtils::getClass($value);
+                            }
                             $targetEntityId = $this->dataAccessor->getValue(
                                 $value,
                                 $this->doctrineHelper->getEntityIdFieldName($targetEntityClass)
                             );
 
                             $value = $this->serializeItem($value, $targetEntityClass, $targetConfig, $context);
-                            $this->loadRelatedDataForOneEntity(
-                                $value,
-                                $targetEntityClass,
-                                $targetEntityId,
-                                $targetConfig,
-                                $context
-                            );
-
-                            $postSerializeHandler = $targetConfig->getPostSerializeHandler();
-                            if (null !== $postSerializeHandler) {
-                                $value = $this->serializationHelper->postSerialize(
+                            if (null === $this->getIdFieldNameIfIdOnlyRequested($targetConfig, $targetEntityClass)) {
+                                $this->loadRelatedDataForOneEntity(
                                     $value,
-                                    $postSerializeHandler,
+                                    $targetEntityClass,
+                                    $targetEntityId,
+                                    $targetConfig,
                                     $context
                                 );
                             }
                         }
                     } else {
-                        $value = $this->serializationHelper->transformValue(
-                            $entityClass,
-                            $field,
-                            $value,
-                            $context,
-                            $fieldConfig
-                        );
+                        $value = $this->serializationHelper->transformValue($value, $context, $fieldConfig);
                     }
                 }
                 $result[$field] = $value;
@@ -171,8 +159,6 @@ class EntitySerializer extends BaseEntitySerializer
                         $context
                     );
                     $result[$field] = $this->serializationHelper->transformValue(
-                        $entityClass,
-                        $field,
                         $value,
                         $context,
                         $fieldConfig

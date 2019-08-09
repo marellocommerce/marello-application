@@ -3,11 +3,11 @@
 namespace Marello\Bundle\ReportBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-class ReportController extends Controller
+class ReportController extends AbstractController
 {
     /**
      * @Config\Route(

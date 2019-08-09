@@ -7,8 +7,10 @@ use Marello\Bundle\SubscriptionBundle\Migrations\Data\ORM\LoadPaymentTermData;
 use Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue;
 use Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class SubscriptionExtension extends \Twig_Extension
+class SubscriptionExtension extends AbstractExtension
 {
     const NAME = 'marello_subscription';
 
@@ -32,7 +34,7 @@ class SubscriptionExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction(
+            new TwigFunction(
                 'format_payment_freq',
                 array($this, 'formatPaymentFreq')
             ),

@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
@@ -15,7 +15,7 @@ use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\Type\OrderType;
 use Marello\Bundle\LayoutBundle\Context\FormChangeContext;
 
-class OrderAjaxController extends Controller
+class OrderAjaxController extends AbstractController
 {
     /**
      * @Config\Route("/form-changes/{id}", name="marello_order_form_changes", defaults={"id" = 0})
