@@ -9,9 +9,10 @@ use Marello\Bundle\InventoryBundle\Entity\Warehouse;
 use Marello\Bundle\InventoryBundle\Entity\WarehouseGroup;
 use MarelloEnterprise\Bundle\InventoryBundle\Checker\IsFixedWarehouseGroupChecker;
 use MarelloEnterprise\Bundle\InventoryBundle\EventListener\Doctrine\WarehouseGroupRemoveListener;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class WarehouseGroupREmoveListenerTest extends TestCase
 {
@@ -53,9 +54,9 @@ class WarehouseGroupREmoveListenerTest extends TestCase
     /**
      * @dataProvider preRemoveDataProvider
      * @param int $qty
-     * @param \PHPUnit_Framework_MockObject_MockObject|null $systemWarehouseGroup
+     * @param MockObject|null $systemWarehouseGroup
      */
-    public function testPreRemove($qty, \PHPUnit_Framework_MockObject_MockObject $systemWarehouseGroup = null)
+    public function testPreRemove($qty, MockObject $systemWarehouseGroup = null)
     {
         /** @var Warehouse|\PHPUnit_Framework_MockObject_MockObject $warehouse **/
         $warehouse = $this->createMock(Warehouse::class);
