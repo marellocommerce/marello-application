@@ -3,6 +3,7 @@
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
 use Marello\Bundle\AddressBundle\Form\Type\AddressType;
+use Marello\Bundle\CustomerBundle\Form\Type\CompanySelectType;
 use Marello\Bundle\OrderBundle\Entity\Customer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -20,6 +21,10 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('company', CompanySelectType::class, [
+                'required' => false,
+                'create_enabled' => false,
+            ])
             ->add('namePrefix', TextType::class, [
                 'required' => false,
             ])

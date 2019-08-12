@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use Marello\Bundle\CustomerBundle\Entity\Company;
 use Oro\Bundle\AddressBundle\Entity\AbstractAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
@@ -125,6 +126,24 @@ class Customer extends ExtendCustomer implements
      * @var Collection|AbstractAddress[]
      */
     protected $addresses;
+
+    /**
+     * @var Company
+     *
+     * @ORM\ManyToOne(targetEntity="Marello\Bundle\CustomerBundle\Entity\Company", inversedBy="customers")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @Oro\ConfigField(
+     *      defaultValues={
+     *          "importexport"={
+     *              "full"=true
+     *          },
+     *          "dataaudit"={
+     *              "auditable"=true
+     *          }
+     *      }
+     * )
+     */
+    protected $company;
 
     /**
      * Customer constructor.
@@ -266,6 +285,25 @@ class Customer extends ExtendCustomer implements
     public function setTaxIdentificationNumber($taxIdentificationNumber)
     {
         $this->taxIdentificationNumber = $taxIdentificationNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return Company
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param Company $company
+     * @return $this
+     */
+    public function setCompany(Company $company = null)
+    {
+        $this->company = $company;
 
         return $this;
     }
