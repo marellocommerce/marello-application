@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\OrderBundle\Form\Type;
 
+use Marello\Bundle\CustomerBundle\Form\Type\CompanySelectType;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Form\EventListener\CurrencySubscriber;
 use Marello\Bundle\OrderBundle\Form\EventListener\OrderTotalsSubscriber;
@@ -28,6 +29,9 @@ class OrderType extends AbstractType
      */
     private $salesChannelRepository;
 
+    /**
+     * @param SalesChannelRepository $salesChannelRepository
+     */
     public function __construct(SalesChannelRepository $salesChannelRepository)
     {
         $this->salesChannelRepository = $salesChannelRepository;
@@ -40,17 +44,26 @@ class OrderType extends AbstractType
     {
         $builder
             ->add(
-                'customer',
-                CustomerSelectType::class,
+                'company',
+                CompanySelectType::class,
                 [
-                    'required' => true,
+                    'mapped' => false,
+                    'required' => false,
+                    'create_enabled' => false
+                ]
+            )
+            ->add(
+                'customer',
+                CompanyAwareCustomerSelectType::class,
+                [
+                    'required' => true
                 ]
             )
             ->add(
                 'salesChannel',
                 SalesChannelSelectType::class,
                 [
-                    'autocomplete_alias' => 'active_saleschannels',
+                    'autocomplete_alias' => 'active_saleschannels'
                 ]
             )
             ->add(
@@ -58,28 +71,28 @@ class OrderType extends AbstractType
                 TextType::class,
                 [
                     'label'    => 'marello.order.discount_amount.label',
-                    'required' => false,
+                    'required' => false
                 ]
             )
             ->add(
                 'couponCode',
                 TextType::class,
                 [
-                    'required' => false,
+                    'required' => false
                 ]
             )
             ->add(
                 'localization',
                 LocalizationSelectType::class,
                 [
-                    'required' => false,
+                    'required' => false
                 ]
             )
             ->add(
                 'purchaseDate',
                 OroDateTimeType::class,
                 [
-                    'required' => false,
+                    'required' => false
                 ]
             )
             ->add('items', OrderItemCollectionType::class);
@@ -170,7 +183,7 @@ class OrderType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class'  => Order::class,
-            'constraints' => [new Valid()],
+            'constraints' => [new Valid()]
         ]);
     }
 
