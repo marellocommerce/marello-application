@@ -2,6 +2,7 @@
 
 namespace Marello\Bundle\PaymentTermBundle\Form\Type;
 
+use Marello\Bundle\PaymentTermBundle\Entity\PaymentTerm;
 use Marello\Bundle\PaymentTermBundle\Provider\PaymentTermProvider;
 use Oro\Bundle\LocaleBundle\Helper\LocalizationHelper;
 use Symfony\Component\Form\AbstractType;
@@ -13,6 +14,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class PaymentTermChoiceType extends AbstractType
 {
+    const BLOCK_PREFIX = 'payment_term_choice';
+
     protected $paymentTermProvider;
     protected $localizationHelper;
 
@@ -54,5 +57,10 @@ class PaymentTermChoiceType extends AbstractType
     public function getParent()
     {
         return ChoiceType::class;
+    }
+
+    public function getBlockPrefix()
+    {
+        return self::BLOCK_PREFIX;
     }
 }

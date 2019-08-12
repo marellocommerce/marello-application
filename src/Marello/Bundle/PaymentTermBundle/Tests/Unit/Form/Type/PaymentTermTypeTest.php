@@ -16,20 +16,10 @@ use Symfony\Component\Validator\Validation;
 
 class PaymentTermTypeTest extends FormIntegrationTestCase
 {
-    /** @var PaymentTermType */
-    protected $formType;
-
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->formType = new PaymentTermType();
-    }
-
     protected function getExtensions()
     {
         /** @var ManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $registry */
-        $registry = $this->createMock('Doctrine\Common\Persistence\ManagerRegistry');
+        $registry = $this->createMock(ManagerRegistry::class);
         $localizedFallbackValue = new LocalizedFallbackValueCollectionType($registry);
 
         return [
@@ -95,5 +85,12 @@ class PaymentTermTypeTest extends FormIntegrationTestCase
                     ->addlabel((new LocalizedFallbackValue())->setString('first label'))
             ],
         ];
+    }
+
+    public function testGetBlockType()
+    {
+        $formType = new PaymentTermType();
+
+        static::assertEquals(PaymentTermType::BLOCK_PREFIX, $formType->getBlockPrefix());
     }
 }
