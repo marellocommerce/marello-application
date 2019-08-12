@@ -5,7 +5,6 @@ data:
         returnNumber: '<toString(@return1->returnNumber)>'
         salesChannelName: channel1
         returnReference: '@return1->returnReference'
-        locale: null
         workflowItem:
             currentStep:
                 name: pending

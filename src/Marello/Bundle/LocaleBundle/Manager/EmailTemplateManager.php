@@ -2,18 +2,18 @@
 
 namespace Marello\Bundle\LocaleBundle\Manager;
 
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
-use Marello\Bundle\LocaleBundle\Provider\EntityLocalizationProviderInterface;
-use Marello\Bundle\LocaleBundle\Repository\EmailTemplateTranslatableRepository;
-
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
+use Marello\Bundle\LocaleBundle\Provider\EntityLocalizationProviderInterface;
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+use Oro\Bundle\EmailBundle\Model\EmailTemplateCriteria;
 
 class EmailTemplateManager
 {
-    /** @var  EmailTemplateTranslatableRepository */
-    protected $emailTemplateTranslatableRepository;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var  ConfigManager */
     protected $configManager;
@@ -22,16 +22,15 @@ class EmailTemplateManager
     protected $entityLocalizationProvider;
 
     /**
-     * EmailTemplateManager constructor.
-     * @param EmailTemplateTranslatableRepository $emailTemplateTranslatableRepository
+     * @param ObjectManager $objectManager
      * @param ConfigManager $configManager
      */
     public function __construct(
-        EmailTemplateTranslatableRepository $emailTemplateTranslatableRepository,
+        ObjectManager $objectManager,
         ConfigManager $configManager
     ) {
-        $this->emailTemplateTranslatableRepository = $emailTemplateTranslatableRepository;
-        $this->configManager                       = $configManager;
+        $this->objectManager = $objectManager;
+        $this->configManager = $configManager;
     }
 
     /**
@@ -49,29 +48,10 @@ class EmailTemplateManager
      */
     public function findTemplate($templateName, $entity)
     {
-        $template = null;
+        $template = $this->findEntityLocalizationTemplate($templateName, $entity);
 
         /*
-         * 1. Try to get translated version.
-         */
-        $template = $this->findEntityLocaleTemplate($templateName, $entity);
-
-        /*
-         * 2. If translation not found or not supported, try to get sales channel's default locale.
-         */
-        if ($template == null) {
-            $template = $this->findSalesChannelDefaultLocaleTemplate($templateName, $entity);
-        }
-
-        /*
-         * 3. Try to get template by localization.
-         */
-        if ($template == null) {
-            $template = $this->findEntityLocalizationTemplate($templateName, $entity);
-        }
-
-        /*
-         * 3. If translation not found or not supported, try to get default template.
+         * If translation not found or not supported, try to get default template.
          */
         if ($template == null) {
             $template = $this->findDefaultTemplate($templateName, $entity);
@@ -85,47 +65,16 @@ class EmailTemplateManager
      * @param $entity
      * @return null|\Oro\Bundle\EmailBundle\Entity\EmailTemplate
      */
-    protected function findEntityLocaleTemplate($templateName, $entity)
-    {
-        if ($entity instanceof LocaleAwareInterface && $entity->getLocale() !== null) {
-            if ($this->isSupportedLocale($entity->getLocale())) {
-                return $this->emailTemplateTranslatableRepository
-                    ->findOneByNameAndLocale($templateName, $entity->getLocale());
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param $templateName
-     * @param $entity
-     * @return null|\Oro\Bundle\EmailBundle\Entity\EmailTemplate
-     */
-    protected function findSalesChannelDefaultLocaleTemplate($templateName, $entity)
-    {
-        if (method_exists($entity, 'getSalesChannel')) {
-            $salesChannel = $entity->getSalesChannel();
-            if ($salesChannel instanceof LocaleAwareInterface && $salesChannel->getLocale() !== null) {
-                return $this->emailTemplateTranslatableRepository
-                    ->findOneByNameAndLocale($templateName, $salesChannel->getLocale());
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param $templateName
-     * @param $entity
-     * @return null|\Oro\Bundle\EmailBundle\Entity\EmailTemplate
-     */
     public function findEntityLocalizationTemplate($templateName, $entity)
     {
-        if ($entity instanceof LocaleAwareInterface) {
+        if ($entity instanceof LocalizationAwareInterface) {
             $localization = $this->entityLocalizationProvider->getLocalization($entity);
-            return $this->emailTemplateTranslatableRepository
-                ->findOneByNameAndLocale($templateName, $localization->getLanguageCode());
+            $entityName = ClassUtils::getRealClass(get_class($entity));
+            $criteria = new EmailTemplateCriteria($templateName, $entityName);
+
+            return $this->objectManager
+                ->getRepository(EmailTemplate::class)
+                ->findOneLocalized($criteria, $localization->getLanguageCode());
         }
 
         return null;
@@ -140,29 +89,8 @@ class EmailTemplateManager
     {
         $entityName = ClassUtils::getRealClass(get_class($entity));
 
-        return $this->emailTemplateTranslatableRepository->findOneBy(
-            ['name' => $templateName, 'entityName' => $entityName]
-        );
-    }
-
-    /**
-     * @param $locale
-     * @return bool
-     */
-    protected function isSupportedLocale($locale)
-    {
-        //check if entity's locale is supported
-        $supportedLocales = $this->configManager->get('oro_locale.languages');
-        if (in_array($locale, $supportedLocales)) {
-            return true;
-        }
-
-        //check if entity locale is english, as it's saved as "en" string in config, not usual iso code locale
-        $lang = substr($locale, 0, 2);
-        if ($lang === "en" && in_array($lang, $supportedLocales)) {
-            return true;
-        }
-
-        return false;
+        return $this->objectManager
+            ->getRepository(EmailTemplate::class)
+            ->findOneBy(['name' => $templateName, 'entityName' => $entityName]);
     }
 }

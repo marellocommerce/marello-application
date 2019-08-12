@@ -4,7 +4,7 @@ namespace Marello\Bundle\SalesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Marello\Bundle\PricingBundle\Model\CurrencyAwareInterface;
 use Marello\Bundle\SalesBundle\Model\ExtendSalesChannel;
@@ -48,7 +48,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SalesChannel extends ExtendSalesChannel implements
     CurrencyAwareInterface,
-    LocaleAwareInterface
+    LocalizationAwareInterface
 {
     use EntityCreatedUpdatedAtTrait;
     use LocalizationTrait;

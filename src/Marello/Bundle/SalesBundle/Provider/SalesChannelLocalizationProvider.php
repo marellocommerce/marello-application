@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\SalesBundle\Provider;
 
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\LocaleBundle\Provider\EntityLocalizationProviderInterface;
 use Marello\Bundle\OrderBundle\Entity\Order;
 use Marello\Bundle\OrderBundle\Entity\OrderAwareInterface;
@@ -13,7 +13,7 @@ class SalesChannelLocalizationProvider implements EntityLocalizationProviderInte
     /**
      * @inheritDoc
      */
-    public function getLocalization(LocaleAwareInterface $entity)
+    public function getLocalization(LocalizationAwareInterface $entity)
     {
         if ($entity instanceof SalesChannel) {
             return $entity->getLocalization();
@@ -35,7 +35,7 @@ class SalesChannelLocalizationProvider implements EntityLocalizationProviderInte
     /**
      * @inheritDoc
      */
-    public function isApplicable(LocaleAwareInterface $entity)
+    public function isApplicable(LocalizationAwareInterface $entity)
     {
         if ($entity instanceof SalesChannel || $entity instanceof Order || $entity instanceof OrderAwareInterface) {
             return true;

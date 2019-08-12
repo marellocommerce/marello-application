@@ -6,7 +6,6 @@ data:
             returnNumber: '<toString(@return0->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return0->returnReference'
-            locale: null
             workflowItem:
                 currentStep:
                     name: pending
@@ -49,7 +48,6 @@ data:
             returnNumber: '<toString(@return1->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return1->returnReference'
-            locale: null
             workflowItem:
                 currentStep:
                     name: pending
@@ -89,7 +87,6 @@ data:
             returnNumber: '<toString(@return2->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return2->returnReference'
-            locale: null
             workflowItem:
                 currentStep:
                     name: pending
@@ -132,7 +129,6 @@ data:
             returnNumber: '<toString(@return3->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return3->returnReference'
-            locale: null
             workflowItem:
                 currentStep:
                     name: pending
@@ -166,7 +162,6 @@ data:
             returnNumber: '<toString(@return4->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return4->returnReference'
-            locale: null
             workflowItem:
                 currentStep:
                     name: pending
@@ -203,7 +198,6 @@ data:
             returnNumber: '<toString(@return5->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return5->returnReference'
-            locale: null
             workflowItem:
                 currentStep:
                     name: pending
@@ -246,7 +240,6 @@ data:
             returnNumber: '<toString(@return6->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return6->returnReference'
-            locale: null
             workflowItem:
                 currentStep:
                     name: pending
@@ -280,7 +273,6 @@ data:
             returnNumber: '<toString(@return7->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return7->returnReference'
-            locale: null
             workflowItem:
                 currentStep:
                     name: pending
@@ -317,7 +309,6 @@ data:
             returnNumber: '<toString(@return8->returnNumber)>'
             salesChannelName: channel1
             returnReference: '@return8->returnReference'
-            locale: null
             workflowItem:
                 currentStep:
                     name: pending

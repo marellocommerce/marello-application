@@ -56,8 +56,7 @@ Example without address:
         "discountPercent": null,
         "couponCode": null,
         "invoicedAt": null,
-        "data": [],
-        "locale": null
+        "data": []
       },
       "relationships": {
         "items": {
