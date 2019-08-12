@@ -49,6 +49,14 @@ class OrderCustomerAddressProvider
             foreach ($customer->getAddresses() as $address) {
                 $result[$address->getId()] = $address;
             }
+            
+            $company = $customer->getCompany();
+            if ($company) {
+                foreach ($company->getAddresses() as $address) {
+                    $result[$address->getId()] = $address;
+                }
+            }
+            
             $this->cache[self::CACHE_KEY_BILLING][$key] = $result;
 
             return $result;
@@ -79,6 +87,14 @@ class OrderCustomerAddressProvider
             foreach ($customer->getAddresses() as $address) {
                 $result[$address->getId()] = $address;
             }
+
+            $company = $customer->getCompany();
+            if ($company) {
+                foreach ($company->getAddresses() as $address) {
+                    $result[$address->getId()] = $address;
+                }
+            }
+            
             $this->cache[self::CACHE_KEY_SHIPPING][$key] = $result;
 
             return $result;
