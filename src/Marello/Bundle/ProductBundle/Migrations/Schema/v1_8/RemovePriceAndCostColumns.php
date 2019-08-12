@@ -14,7 +14,7 @@ class RemovePriceAndCostColumns implements Migration
      */
     public function up(Schema $schema, QueryBag $queries)
     {
-        $table = $schema->createTable(MarelloProductBundleInstaller::PRODUCT_TABLE);
+        $table = $schema->getTable(MarelloProductBundleInstaller::PRODUCT_TABLE);
         if ($table->hasColumn('price')) {
             $table->dropColumn('price');
         }
