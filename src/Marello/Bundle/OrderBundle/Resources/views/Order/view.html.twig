@@ -93,6 +93,12 @@
                             <span class="widget-title">{{ 'marello.order.datablock.customer_information'|trans }}</span>
                         </div>
                         {{ UI.renderProperty('marello.order.customer.email.label'|trans, entity.customer.email) }}
+                        {% if entity.customer.company %}
+                            {{ UI.renderHtmlProperty(
+                            'marello.customer.company.entity_label'|trans,
+                            UI.entityViewLink(entity.customer.company, entity.customer.company.name, 'marello_customer_company_view')
+                            ) }}
+                        {% endif %}
                     </div>
                 </div>
             </div>
