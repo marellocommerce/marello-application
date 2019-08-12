@@ -31,6 +31,8 @@ oro:
                 shipped:
                     label:  'Complete'
             transition:
+                pending:
+                    label:     'Pending'
                 cancel:
                     label:    'Cancel'
                 hold_pending:
@@ -72,10 +74,12 @@ oro:
                     label:  'Cancelled'
                 pending_on_hold:
                     label:  'On Hold'
-                shipped_on_hold:
+                invoice_on_hold:
                     label:  'On Hold'
                 invoice:
                     label:  'Complete'
+                paid:
+                    label:  'Order Payed'
                 credit:
                     label:  'Closed'
                 pick_and_pack:
@@ -83,11 +87,17 @@ oro:
                 shipped:
                     label:  'Shipped'
             transition:
+                pending:
+                    label:    'Pending'
                 cancel:
                     label:    'Cancel'
                 hold_pending:
                     label:    'Hold'
                 un_hold_pending:
+                    label:    'Un-Hold'
+                hold_invoice:
+                    label:    'Hold'
+                un_hold_invoice:
                     label:    'Un-Hold'
                 hold_shipped:
                     label:    'Hold'
@@ -95,6 +105,8 @@ oro:
                     label:    'Un-Hold'
                 invoice:
                     label:    'Invoice'
+                payment_received:
+                    label:    'Payment Received'
                 ship:
                     label:    'Ship'
                 credit:
