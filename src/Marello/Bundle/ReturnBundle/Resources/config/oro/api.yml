@@ -30,8 +30,6 @@ api:
                             exclude: true
                         salesChannelName:
                             exclude: true
-                        locale:
-                            exclude: true
                         localization:
                             exclude: true
                 update: false
