@@ -43,7 +43,7 @@ class MarelloOrderBundleInstaller implements
      */
     public function getMigrationVersion()
     {
-        return 'v1_8_1';
+        return 'v1_9';
     }
 
     /**
@@ -179,7 +179,6 @@ class MarelloOrderBundleInstaller implements
         $table->addColumn('shipping_address_id', 'integer', ['notnull' => false]);
         $table->addColumn('salesChannel_id', 'integer', ['notnull' => false]);
         $table->addColumn('localization_id', 'integer', ['notnull' => false]);
-        $table->addColumn('locale', 'string', ['notnull' => false, 'length' => 5]);
         $table->addColumn('shipment_id', 'integer', ['notnull' => false]);
         $table->setPrimaryKey(['id']);
         $table->addUniqueIndex(['shipment_id'], 'UNIQ_A619DD647BE036FC');

@@ -2,7 +2,7 @@
 
 namespace Marello\Bundle\LocaleBundle\Provider;
 
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 
 class ChainEntityLocalizationProvider implements EntityLocalizationProviderInterface
 {
@@ -19,7 +19,7 @@ class ChainEntityLocalizationProvider implements EntityLocalizationProviderInter
     /**
      * @inheritDoc
      */
-    public function getLocalization(LocaleAwareInterface $entity)
+    public function getLocalization(LocalizationAwareInterface $entity)
     {
         $localization = null;
         foreach ($this->providers as $provider) {
@@ -37,7 +37,7 @@ class ChainEntityLocalizationProvider implements EntityLocalizationProviderInter
     /**
      * @inheritDoc
      */
-    public function isApplicable(LocaleAwareInterface $entity)
+    public function isApplicable(LocalizationAwareInterface $entity)
     {
         return true;
     }

@@ -2,20 +2,20 @@
 
 namespace Marello\Bundle\LocaleBundle\Provider;
 
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Oro\Bundle\LocaleBundle\Entity\Localization;
 
 interface EntityLocalizationProviderInterface
 {
     /**
-     * @param LocaleAwareInterface $entity
+     * @param LocalizationAwareInterface $entity
      * @return Localization|null
      */
-    public function getLocalization(LocaleAwareInterface $entity);
+    public function getLocalization(LocalizationAwareInterface $entity);
 
     /**
-     * @param LocaleAwareInterface $entity
+     * @param LocalizationAwareInterface $entity
      * @return boolean
      */
-    public function isApplicable(LocaleAwareInterface $entity);
+    public function isApplicable(LocalizationAwareInterface $entity);
 }

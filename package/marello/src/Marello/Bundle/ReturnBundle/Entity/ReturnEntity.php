@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Marello\Bundle\CoreBundle\DerivedProperty\DerivedPropertyAwareInterface;
-use Marello\Bundle\LocaleBundle\Model\LocaleAwareInterface;
+use Marello\Bundle\LocaleBundle\Model\LocalizationAwareInterface;
 use Marello\Bundle\LocaleBundle\Model\LocalizationTrait;
 use Marello\Bundle\CoreBundle\Model\EntityCreatedUpdatedAtTrait;
 use Marello\Bundle\OrderBundle\Entity\Order;
@@ -52,7 +52,7 @@ use Oro\Bundle\OrganizationBundle\Entity\Ownership\AuditableOrganizationAwareTra
 class ReturnEntity extends ExtendReturnEntity implements
     DerivedPropertyAwareInterface,
     ShippingAwareInterface,
-    LocaleAwareInterface,
+    LocalizationAwareInterface,
     OrganizationAwareInterface,
     OrderAwareInterface
 {
@@ -197,7 +197,6 @@ class ReturnEntity extends ExtendReturnEntity implements
     {
         $this->order = $order;
         $this->organization = $order->getOrganization();
-        $this->locale= $order->getLocale();
         $this->localization = $order->getLocalization();
 
         return $this;
