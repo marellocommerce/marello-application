@@ -49,6 +49,14 @@ class PackingSlipItemStatusListener
                         }
                     }
                 }
+            } else {
+                foreach ($entity->getProduct()->getInventoryItems() as $inventoryItem) {
+                    if ($inventoryLevel = $inventoryItem->getInventoryLevel($warehouse)) {
+                        if ($inventoryLevel->getVirtualInventoryQty() >= $entity->getQuantity()) {
+                            $entity->setStatus($this->findStatus(LoadOrderItemStatusData::PROCESSING));
+                        }
+                    }
+                }
             }
         }
     }

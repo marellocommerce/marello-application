@@ -345,7 +345,6 @@ class LoadProductData extends AbstractFixture implements DependentFixtureInterfa
             if (null == $preferredSupplier) {
                 $preferredSupplier = $supplier;
                 $preferredPriority = $priority;
-                continue;
             }
             if ($priority < $preferredPriority) {
                 $preferredSupplier = $supplier;

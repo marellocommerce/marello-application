@@ -9,7 +9,6 @@ use Oro\Component\DependencyInjection\ServiceLink;
 
 class OrderCreatedNotificationSender
 {
-
     /**
      * @var ServiceLink
      */

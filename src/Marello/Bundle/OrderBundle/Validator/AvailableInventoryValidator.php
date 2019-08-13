@@ -55,10 +55,12 @@ class AvailableInventoryValidator extends ConstraintValidator
      */
     public function __construct(
         DoctrineHelper $doctrineHelper,
-        AvailableInventoryProvider $availableInventoryProvider
+        AvailableInventoryProvider $availableInventoryProvider,
+        EventDispatcherInterface $eventDispatcher = null
     ) {
         $this->doctrineHelper = $doctrineHelper;
         $this->availableInventoryProvider = $availableInventoryProvider;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -124,6 +126,24 @@ class AvailableInventoryValidator extends ConstraintValidator
                     )
                 ) {
                     $violation = false;
+                } elseif ($this->isOrderOnDemandAllowed($values[self::PRODUCT_FIELD])) {
+                    $violation = false;
+                }
+                if ($violation === true) {
+                    $event = new ProductAvailableInventoryValidationEvent($entity, $violation);
+                    $this->eventDispatcher->dispatch(
+                        ProductAvailableInventoryValidationEvent::NAME,
+                        $event
+                    );
+                    $violation = $event->getViolation();
+                }
+                if ($violation === true) {
+                    $event = new ProductAvailableInventoryValidationEvent($entity, $violation);
+                    $this->eventDispatcher->dispatch(
+                        ProductAvailableInventoryValidationEvent::NAME,
+                        $event
+                    );
+                    $violation = $event->getViolation();
                 }
                 if ($violation === true) {
                     $event = new ProductAvailableInventoryValidationEvent($entity, $violation);
@@ -239,6 +259,22 @@ class AvailableInventoryValidator extends ConstraintValidator
 
         return 0;
     }
+
+    /**
+     * @param ProductInterface|Product $product
+     * @return bool
+     */
+    private function isOrderOnDemandAllowed(ProductInterface $product)
+    {
+        foreach ($product->getInventoryItems() as $inventoryItem) {
+            if ($inventoryItem->isOrderOnDemandAllowed()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     /**
      * Comparison of the values
